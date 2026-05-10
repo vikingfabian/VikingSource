@@ -281,23 +281,69 @@ namespace VikingEngine.DSSWars.GameObject
         {
             writeGameState(w);
             w.Write((byte)state);
-            if (state == GroupState.FindArmyPlacement)
+            switch (state)
             {
-                WP.WritePosXZPercentU16(w, goalWp); 
+                case GroupState.CityCapture:
+                case GroupState.FindArmyPlacement:
+                    WP.WritePosXZPercentU16(w, goalWp);
+                    break;
+                case GroupState.FollowCommand:
+
+                    Vector3 goal = Vector3.Zero;
+
+                    var command_sp = command;
+                    if (command_sp != null)
+                    {
+                        if (command_sp.hasPathCommand(out bool towardsUnit))
+                        {
+                            goal = towardsUnit ? command_sp.AttackTarget().position : command_sp.GoalPosition();                            
+                        }
+                    }
+
+                    WP.WritePosXZPercentU16(w, goal);
+                    break;
+                case GroupState.Battle:
+                    WP.WritePosXZPercentU16(w, position);
+
+                    AbsGroup attack_sp = null;
+                    attackTarget_soldierGroupOrCity?.TryGetTarget(out attack_sp);
+                    
+                    Net.ObjectId.WriteSoldierGroup(w, attack_sp as SoldierGroup);
+                    break;
             }
+
         }
         public void readNet(AbsArmy tArmy, System.IO.BinaryReader r, bool needInit)
         {
             readGameState(tArmy, r, int.MaxValue, needInit, null);
             setGroundY();
             state = (GroupState)r.ReadByte();
-            if (state == GroupState.FindArmyPlacement)
+            
+            
+
+            switch (state)
             {
-                WP.ReadPosXZPercentU16(r, out goalWp, out _);
-            }
-            else
-            {
-                goalWp = position;
+                default:
+                    goalWp = position;
+                    break;
+                case GroupState.CityCapture:
+                case GroupState.FindArmyPlacement:
+                case GroupState.FollowCommand:
+                    goalWp = position;
+                    if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
+                    { 
+                        goalWp = newGoalWp;
+                    }
+                    break;
+                case GroupState.Battle:
+                    WP.ReadPosXZPercentU16(r, out position, out tilePos);
+
+                    SoldierGroup target = Net.ObjectId.ReadSoldierGroup(r, out _);
+                    if (target != null)
+                    {
+                        attackTarget_soldierGroupOrCity.SetTarget(target);
+                    }
+                    break;
             }
         }
 
@@ -308,8 +354,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void net_updateclient(bool playerDetailView)
         {
-            bool visible = playerDetailView && !lastNetUpdate.secPassed(30);
-            createSoldierObjects(visible, true);
+            //bool visible = playerDetailView && !lastNetUpdate.secPassed(30);
+            //createSoldierObjects(visible, true);
+            //updateDetailLevel();
 
             if (soldiers != null)
             {

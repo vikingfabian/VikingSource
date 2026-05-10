@@ -22,6 +22,11 @@ namespace VikingEngine
             w.Write(encoded);
         }
 
+        public static void FloatAsPercentU16_WriteEmpty(BinaryWriter w)
+        {
+            w.Write(ushort.MinValue);
+        }
+
         public static float ReadFloatFromPercentU16(BinaryReader r, float max)
         {
             ushort encoded = r.ReadUInt16();

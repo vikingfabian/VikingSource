@@ -122,14 +122,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
         {
-            NetWriteMapObjId(w, army);
+            Net.ObjectId.NetWriteMapObjId(w, army);
             
             army.writeNet(w);
         }
 
         public static void NetReadArmy(System.IO.BinaryReader r)
         {
-            if (NetReadMapObjId(r, out Faction faction, true, out AbsArmy mapObj, out bool needInit))
+            if (Net.ObjectId.NetReadMapObjId(r, out Faction faction, true, out AbsArmy mapObj, out bool needInit))
             {
                 Army army = mapObj.GetArmy();
                 army.readNet(r, needInit);
@@ -188,27 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void net_updateclient(bool playerDetailView)
-        {
-            if (inRender_overviewLayer)
-            {
-                updateModelsPosition();
-                overviewBanner.Frame = isShip ? 1 : 0;
-
-                if (lastNetUpdate.secPassed(30))
-                {
-                    inRender_overviewLayer = false;
-                    setInRenderState();
-                }
-                
-            }
-
-            var groupsC = groups.counter();
-            while (groupsC.Next())
-            {
-                groupsC.sel.net_updateclient(playerDetailView);
-            }
-        }
+        
 
         void writeResources(System.IO.BinaryWriter w)
         {
@@ -765,6 +745,42 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
+
+        public void net_updateclient(bool playerDetailView)
+        {
+            //if (inRender_overviewLayer)
+            //{
+            //    updateModelsPosition();
+            //    overviewBanner.Frame = isShip ? 1 : 0;
+
+            //    if (lastNetUpdate.secPassed(30))
+            //    {
+            //        inRender_overviewLayer = false;
+            //        setInRenderState();
+            //    }
+            //}
+            updateDetailLevel();
+            if (inRender_detailLayer)
+            {
+                updateArmyMembers(Ref.DeltaGameTimeMs, true);
+            }
+            if (inRender_overviewLayer)
+            {
+                if (overviewBanner != null)
+                {
+                    updateModelsPosition();
+                    overviewBanner.Frame = isShip ? 1 : 0;
+                }
+            }
+
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.net_updateclient(playerDetailView);
+            }
+        }
+
+
         void updateArmyMovement(float time)
         {
             bool inPointMode = false; //for later opt, all groups are removed for perfromance
@@ -842,7 +858,7 @@ namespace VikingEngine.DSSWars.GameObject
                         ++armyCenterCount;
                     }
 
-                    if ((!IdleObjetive() || Ref.peRnd.ChanceF(0.05f)) && armyCenterCount > 0)
+                    if ((!IdleObjetive() || Ref.peRnd.ChanceF(0.05f)) && armyCenterCount > 0 && armyCenter.X > 1) 
                     {
                         var newPosition = armyCenter / armyCenterCount;
 
@@ -861,9 +877,13 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         virtual public void updateModelsPosition()
-        { 
-            overviewBanner.position = VectorExt.AddY(position, 0.04f);
-            bound.Center = overviewBanner.position;
+        {
+            if (overviewBanner != null)
+            {
+                var tile = DssRef.world.tileGrid.Get(tilePos);
+                overviewBanner.position = VectorExt.AddY(position, tile.GroundY_aboveWater());
+                bound.Center = overviewBanner.position;
+            }
         }
 
         public void refreshPositions(bool onPurchase)
@@ -939,7 +959,7 @@ namespace VikingEngine.DSSWars.GameObject
         {              
             if (inRender_overviewLayer)
             {
-                if (overviewBanner == null)
+                if (overviewBanner == null && HasPlayer())
                 {
                     overviewBanner = GetFaction_NoChecks().AutoLoadModelInstance(
                         OverviewBannerModelName, 1f);

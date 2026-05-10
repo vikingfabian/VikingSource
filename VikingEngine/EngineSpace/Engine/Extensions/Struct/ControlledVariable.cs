@@ -67,6 +67,10 @@ namespace VikingEngine
             return Ref.TotalTimeSec - totalTimeStampSec >= TimeExt.MsToSec * ms;
         }
 
+        public bool belowTime_sec(float seconds)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec < seconds;
+        }
         public bool belowTime_ms(float ms)
         {
             return Ref.TotalTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;

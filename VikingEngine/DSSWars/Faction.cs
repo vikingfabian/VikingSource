@@ -71,6 +71,7 @@ namespace VikingEngine.DSSWars
         public Faction(int index)
         {
             this.myIndex = index;
+            factionIndex = index;
             workTemplate = new Work.WorkTemplate(false, index);
 
             cities = new SpottedPointerArray(8);
