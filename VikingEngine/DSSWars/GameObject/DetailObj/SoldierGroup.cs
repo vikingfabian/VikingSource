@@ -228,7 +228,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createSoldierObjects(bool create, bool models)
         {
-            //DssRef.state.OnDetailChange();
 
             if (create)
             {
@@ -342,16 +341,19 @@ namespace VikingEngine.DSSWars.GameObject
                         goalWp = position;
                         if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
                         {
-                            goalWp = newGoalWp;
                             var command_sp = command;
                             if (command_sp == null)
                             {
-                                command = new NetClientCommand(this, goalWp);
+                                command = new NetClientCommand(this, newGoalWp);
                             }
                             else
                             {
                                 command_sp.refreshGoal(newGoalWp);
                             }
+                        }
+                        else
+                        {
+                            cancelCommand();
                         }
                     }
                     break;
@@ -882,7 +884,7 @@ namespace VikingEngine.DSSWars.GameObject
             return target.position;
         }
 
-        void enterBattleState(bool enter)
+        public void enterBattleState(bool enter, bool localAction)
         {
             if (enter != (state == GroupState.Battle))
             {
@@ -892,6 +894,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                     state = GroupState.Battle;
                     createSoldierObjects(enter, false);
+
+                    if (localAction)
+                    { 
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEnterBattle, Network.PacketReliability.Reliable, out var packet);
+                        {
+                            Net.ObjectId.WriteSoldierGroup(w, this);
+                        } packet.EndWrite_Asynch();
+                    }
                 }
                 else
                 {
@@ -923,7 +933,7 @@ namespace VikingEngine.DSSWars.GameObject
             setGroundY();
         }
 
-        static readonly float FlankDistAdd = WorldData.SubTileWidth * 0.6f;
+        //static readonly float FlankDistAdd = WorldData.SubTileWidth * 0.6f;
 
         void updateMoveAndAttackTarget(float time, bool fullUpdate, AbsGroup attack_sp, ref float groupWalkSpeed)
         {
@@ -1024,22 +1034,10 @@ namespace VikingEngine.DSSWars.GameObject
         const float CaptureCheckMulti = (float)(1 / CaptureCheckChance);
         const float CaptureAddPerMs = 0.1f * CaptureCheckMulti;
         const float CaptureDistance = 0.4f;
-
-        //public void update_client()
-        //{
-        //    if (soldiers != null)
-        //    {
-        //        var soldiersC = soldiers.counter();
-        //        while (soldiersC.Next())
-        //        {
-        //            soldiersC.sel.update_client();
-        //        }
-        //    }
-        //}
         
         virtual public void update(float time, bool fullUpdate)
         {
-            if (army.TryGetTarget(out var tArmy2) && tArmy2.debugTagged)
+            if (command != null)
             {
                  lib.DoNothing();
             }
@@ -1072,7 +1070,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (state != GroupState.Battle)
                 {
-                    enterBattleState(true);
+                    enterBattleState(true, true);
                 }
 
                 if (command_sp != null)
@@ -1152,7 +1150,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     }
                                 }
                             }
-                            enterBattleState(false);
+                            enterBattleState(false, true);
                         }
                         break;
 
@@ -1279,7 +1277,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void OnBecomeAttackTarget()
         {
-            enterBattleState(true);
+            enterBattleState(true, true);
         }
 
         public bool HasIdleCommand()

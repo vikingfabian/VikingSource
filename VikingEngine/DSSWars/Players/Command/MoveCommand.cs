@@ -19,6 +19,12 @@ namespace VikingEngine.DSSWars.Players.Command
         {
             goalWp = goalPos;
         }
+
+        public override bool hasPathCommand(out bool pathTowardsUnit)
+        {
+            pathTowardsUnit = false;
+            return !haltCommand;
+        }
     }
     class MoveCommand : AbsCommand
     {

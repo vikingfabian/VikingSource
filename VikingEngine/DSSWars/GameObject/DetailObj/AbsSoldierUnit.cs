@@ -945,7 +945,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             int damageAmount = r.ReadUInt16();
             Rotation1D attackDir = new Rotation1D(r.ReadByte());
-            AbsSoldierUnit soldier = Net.ObjectId.ReadSoldier(r, out var mapObj);
+            AbsSoldierUnit soldier = Net.ObjectId.ReadSoldier_ForBattle(r, out var mapObj);
 
             if (soldier != null)
             {
