@@ -92,6 +92,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
         abstract protected CommandType GetCommandType();
 
+        virtual public void refreshGoal(Vector3 goalPos) { }
         virtual public void asyncUpdate(SoldierGroup group) { }
     }
 }

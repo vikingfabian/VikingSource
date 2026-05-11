@@ -288,6 +288,7 @@ namespace VikingEngine.DSSWars.GameObject
                     WP.WritePosXZPercentU16(w, goalWp);
                     break;
                 case GroupState.FollowCommand:
+                    WP.WritePosXZPercentU16(w, position);
 
                     Vector3 goal = Vector3.Zero;
 
@@ -329,10 +330,20 @@ namespace VikingEngine.DSSWars.GameObject
                 case GroupState.CityCapture:
                 case GroupState.FindArmyPlacement:
                 case GroupState.FollowCommand:
+                    WP.ReadPosXZPercentU16(r, out position, out tilePos);
                     goalWp = position;
                     if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
                     { 
                         goalWp = newGoalWp;
+                        var command_sp = command;
+                        if (command_sp == null)
+                        {
+                            command = new NetClientCommand(this, goalWp);
+                        }
+                        else
+                        {
+                            command_sp.refreshGoal(newGoalWp);
+                        }
                     }
                     break;
                 case GroupState.Battle:
