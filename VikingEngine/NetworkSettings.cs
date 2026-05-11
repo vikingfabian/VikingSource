@@ -22,6 +22,11 @@ namespace VikingEngine
 
         public VoiceOption voiceOption = VoiceOption.ButtonHold;
 
+        /// <summary>
+        /// Distance between players
+        /// </summary>
+        public int PlayerSpacing = 0;
+
         public NetworkSettings()
         {
             Ref.netsett = this;
