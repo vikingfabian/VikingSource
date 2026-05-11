@@ -92,7 +92,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
+            if (IsNetHosted || lastNetUpdate.belowTime_sec(20))
+            {
+                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
+            }
+            else
+            {
+                enterRender_overviewLayer_async = false;
+                enterRender_detailLayer_async = false;
+            }
         }
         
 
@@ -110,6 +118,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (enterRender_detailLayer_async != inRender_detailLayer)
             {
+                if (this.gameobjectType() == GameObjectType.Army)
+                {
+                    lib.DoNothing();
+                }
                 inRender_detailLayer = enterRender_detailLayer_async;
                 setInRenderState();
             }

@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -384,11 +385,22 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
+                case PacketType.DssAttackDamage:
+                    AbsSoldierUnit.ReadAttackDamage(packet.r);
+                    break;
+                case PacketType.DssSoldierDeath:
+                    var soldier = ObjectId.ReadSoldier(packet.r, out _);
+                    if (soldier != null)
+                    {
+                        soldier.DeleteMe(DeleteReason.Death, true);
+                    }
+                    break;
+
             }
 
             void readGroupStatus(bool bArmy)
             {
-                if (AbsArmy.NetReadMapObjId(packet.r, out Faction faction, bArmy, out AbsArmy mapObj, out bool needInit))
+                if (ObjectId.NetReadMapObjId(packet.r, out Faction faction, bArmy, out AbsArmy mapObj, out bool needInit))
                 {
                     if (mapObj != null)
                     {

@@ -883,15 +883,32 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (damageAmount > 0)
                 {
-                    lockedIncomingDamage -= damageAmount;
-
                     recievedProjectileAttackWhileIdle = state.idle;
 
-                    health -= damageAmount;
-
-                    if (health <= 0 && localMember)
+                    if (meleeAttacker.IsNetHosted)
                     {
-                        onDeath(fullUpdate, enemyFaction);
+                        if (IsNetHosted)
+                        {
+                            //lockedIncomingDamage -= damageAmount;
+                            //health -= damageAmount;
+
+                            //if (health <= 0)
+                            //{
+                            //    onDeath(fullUpdate, enemyFaction);
+                            //}
+                            reduceHealth(damageAmount, enemyFaction, fullUpdate);
+                        }
+                        else
+                        {
+                            //Send damage to client
+                            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssAttackDamage, Network.PacketReliability.Reliable, out var packet);
+                            {
+                                w.Write((ushort)damageAmount);
+                                w.Write(attackDir.ByteDir);
+                                Net.ObjectId.WriteSoldier(w, this);
+                            }
+                            packet.EndWrite_Asynch();
+                        }
                     }
 
                     if (fullUpdate)
@@ -906,6 +923,38 @@ namespace VikingEngine.DSSWars.GameObject
             if (meleeAttacker != null)
             {
                 battleData?.onTakeMeleeDamage(this, meleeAttacker);
+            }
+        }
+
+        public void reduceHealth(int damageAmount, Faction enemyFaction, bool fullUpdate)
+        {
+            lockedIncomingDamage -= damageAmount;
+            health -= damageAmount;
+
+            if (health <= 0)
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierDeath, Network.PacketReliability.Reliable, out var packet);
+                {
+                    Net.ObjectId.WriteSoldier(w, this);
+                } packet.EndWrite_Asynch();
+                onDeath(fullUpdate, enemyFaction);
+            }
+        }
+
+        public static void ReadAttackDamage(System.IO.BinaryReader r)
+        {
+            int damageAmount = r.ReadUInt16();
+            Rotation1D attackDir = new Rotation1D(r.ReadByte());
+            AbsSoldierUnit soldier = Net.ObjectId.ReadSoldier(r, out var mapObj);
+
+            if (soldier != null)
+            {
+                soldier.reduceHealth(damageAmount, null, true);
+
+                if (mapObj.inRender_detailLayer)
+                {
+                    GoreManager.ViewDamage(soldier, damageAmount, attackDir);
+                }
             }
         }
 
@@ -1254,12 +1303,11 @@ namespace VikingEngine.DSSWars.GameObject
             return health - lockedIncomingDamage <= 0;
         }
 
-        public bool localMember
+        public bool IsNetHosted
         {
             get
             {
-                var p = player();
-                return p != null && p.IsLocal;
+                return group.army.TryGetTarget(out var tArmy) && tArmy.IsNetHosted;
             }
         }
 

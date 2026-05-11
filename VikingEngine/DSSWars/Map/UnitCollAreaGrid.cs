@@ -217,11 +217,28 @@ namespace VikingEngine.DSSWars.Map
                         if (soldiers_sp != null)
                         {
                             var soldiersC = soldiers_sp.counter();
-                            while (soldiersC.Next())
+                            while (soldiersC.Next() && soldiersC.sel.tilePos == tilePos)
                             {
                                 soldiersC.sel.updateGroudY(true);
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        public void netTilesRecieved(IntVector2 tilePos)
+        {
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+
+            if (grid.TryGet(areaPos, out area))
+            {
+                lock (area.armies)
+                {
+                    foreach (AbsMapObject obj in area.armies)
+                    {
+                        obj.GetArmy().updateModelsPosition();
                     }
                 }
             }

@@ -503,6 +503,8 @@ namespace VikingEngine.DSSWars
 
                 previous = tile;
             }
+
+            unitCollAreaGrid.netTilesRecieved(tilePos);
         }
 
         public void writeNet_SubTile(System.IO.BinaryWriter w, IntVector2 tilePos)

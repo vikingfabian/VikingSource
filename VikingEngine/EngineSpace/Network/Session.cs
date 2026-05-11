@@ -393,15 +393,15 @@ namespace VikingEngine.Network
 
                     if (count >= 32)
                     {
-                        netUpdateRate = 300;
+                        netUpdateRate = 240;
                     }
                     else if (count >= 8)
                     {
-                        netUpdateRate = 200;
+                        netUpdateRate = 120;
                     }
                     else
                     {
-                        netUpdateRate = 120;
+                        netUpdateRate = 60;
                     }
                     Ref.gamestate.NetUpdate();
                 }
