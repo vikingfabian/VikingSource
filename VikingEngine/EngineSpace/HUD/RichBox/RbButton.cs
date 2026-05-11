@@ -138,7 +138,10 @@ namespace VikingEngine.HUD.RichBox
 
         public override void onClick(RichMenu.RichMenu menu)
         {
-            click?.actionTrigger();
+            if (enabled)
+            {
+                click?.actionTrigger();
+            }
         }
 
         virtual public void clickAnimation(bool keyDown)

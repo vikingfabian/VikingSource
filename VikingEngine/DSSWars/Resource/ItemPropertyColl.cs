@@ -1089,7 +1089,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelName = LootFest.VoxelModelName.wars_hammer;
                 soldier.modelScale *= 1.14f;
                 soldier.icon = SpriteName.WarsUnitIcon_Hammerknight;
-                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.6f;
 
                 soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.factionColoredModel = true;
