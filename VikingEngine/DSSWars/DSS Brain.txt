@@ -1,8 +1,7 @@
 
 ﻿UPDATE
 Change Log:
-* Fixed: disabled buttons were broken
-* Warhammer attack speed is reduced to 60% of default
+* 
 
 ##ICONS TODO
 * 
