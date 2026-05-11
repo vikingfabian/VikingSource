@@ -56,16 +56,16 @@ namespace VikingEngine.HUD.RichBox.Artistic
             switch (buttonStyle)
             { 
                 default:
-                    textureSett = group.settings.artPrimaryButtonTex.Enabled(enabled);
+                    textureSett = group.settings.artPrimaryButtonTex;
                     break;
                 case RbButtonStyle.CheckBox:
                     textureSett = group.settings.artCheckButtonTex;
                     break;
                 case RbButtonStyle.Secondary:
-                    textureSett = group.settings.artSecondaryButtonTex.Enabled(enabled);
+                    textureSett = group.settings.artSecondaryButtonTex;
                     break;
                 case RbButtonStyle.GodPower:
-                    textureSett = group.settings.artGodPowerButtonTex.Enabled(enabled);
+                    textureSett = group.settings.artGodPowerButtonTex;
                     break;
                 case RbButtonStyle.Outline:
                     textureSett = group.settings.artOutlineButtonTex;
@@ -104,7 +104,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     textureSett = group.settings.artHoverAreaTex;
                     break;
             }
-            texture = new HUD.NineSplitAreaTexture(textureSett, area, layer + 1);
+            texture = new HUD.NineSplitAreaTexture(textureSett.Enabled(enabled), area, layer + 1);
 
             group.images.AddRange(texture.images);
         }

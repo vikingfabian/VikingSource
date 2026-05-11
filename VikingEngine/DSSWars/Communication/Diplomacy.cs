@@ -50,8 +50,6 @@ namespace VikingEngine.DSSWars
 
         public Diplomacy(int factionCapacity = 64)
         {
-            //DssRef.diplomacy = this;
-
             this.factionCapacity = factionCapacity;
             diplomaticRelations = new DiplomaticRelation[length()];
             initRegister(factionCapacity - 1);

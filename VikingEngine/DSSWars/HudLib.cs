@@ -168,6 +168,7 @@ namespace VikingEngine.DSSWars
             RbSettings.artToggleButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, nineTextureEdge, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudRoundButtonNotSelected,
+                disableTexture = SpriteName.WarsHudSecondaryButtonDisabled,
             };
 
             RbSettings.artDropDownButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, nineTextureEdge, true, true)
