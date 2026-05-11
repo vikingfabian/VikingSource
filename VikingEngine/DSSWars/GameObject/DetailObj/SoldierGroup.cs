@@ -329,20 +329,29 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case GroupState.CityCapture:
                 case GroupState.FindArmyPlacement:
-                case GroupState.FollowCommand:
-                    WP.ReadPosXZPercentU16(r, out position, out tilePos);
-                    goalWp = position;
-                    if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
-                    { 
-                        goalWp = newGoalWp;
-                        var command_sp = command;
-                        if (command_sp == null)
+                    {
+                        if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
                         {
-                            command = new NetClientCommand(this, goalWp);
+                            goalWp = newGoalWp;
                         }
-                        else
+                    }
+                    break;
+                case GroupState.FollowCommand:
+                    {
+                        WP.ReadPosXZPercentU16(r, out position, out tilePos);
+                        goalWp = position;
+                        if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
                         {
-                            command_sp.refreshGoal(newGoalWp);
+                            goalWp = newGoalWp;
+                            var command_sp = command;
+                            if (command_sp == null)
+                            {
+                                command = new NetClientCommand(this, goalWp);
+                            }
+                            else
+                            {
+                                command_sp.refreshGoal(newGoalWp);
+                            }
                         }
                     }
                     break;
