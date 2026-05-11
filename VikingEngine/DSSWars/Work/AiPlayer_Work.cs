@@ -33,18 +33,18 @@ namespace VikingEngine.DSSWars.Players
 
                 if (city != null)
                 {
-                    bool prepareSettle = false;
-                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))
-                    {
-                        if (nCity.cityType == CityType.UnClaimed)
-                        {
-                            prepareSettle = true;
-                            break;
-                        }
-                    }
+                    //bool prepareSettle = false;
+                    //EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    //{
+                    //    if (nCity.cityType == CityType.UnClaimed)
+                    //    {
+                    //        prepareSettle = true;
+                    //        break;
+                    //    }
+                    //}
 
-                    city.autoAdjustResourcesToCitySize(prepareSettle);
+                    //city.autoAdjustResourcesToCitySize(prepareSettle);
 
                     //DOES NOT WORK - will reset in auto_updateWorkPrio()
 
@@ -55,10 +55,33 @@ namespace VikingEngine.DSSWars.Players
                     movePrio.set(lib.LargestValue(woodPrio.value, 3));
 
                     adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.stone));
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.Clay, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.collectClay), false);
-
+                   
                     adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.food, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFood));
-                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.ConservedFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftConservedFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt), false);
+
+                    if (city.cityType == CityType.Campsite)
+                    {
+                        city.workTemplate.GetRefWorkPriority(WorkPriorityType.collectClay).set(1);
+                        city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt).set(1);
+                        city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftConservedFood).set(1);
+
+                        if (city.GetGroupedResource(CityResoureIndex.stone).useStockLimit == false)
+                        {
+                            DssRef.world.setCityStockPile(city, 100);
+                            city.GetRefGroupedResource(CityResoureIndex.wood).setLimit(200);
+                            city.GetRefGroupedResource(CityResoureIndex.food).setLimit(int.MaxValue);
+                        }
+                    }
+                    else
+                    {
+                        if (city.GetGroupedResource(CityResoureIndex.stone).useStockLimit)
+                        {
+                            DssRef.world.setCityStockPile(city, int.MaxValue);
+                        }
+
+                        adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.Clay, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.collectClay), false);
+                        city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt).set(3);
+                        adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.ConservedFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftConservedFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt), false);
+                    }
 
                     adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.fuel, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFuel), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningCoal));
 

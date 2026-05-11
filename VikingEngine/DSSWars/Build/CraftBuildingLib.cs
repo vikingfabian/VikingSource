@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
            {
                 new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 80),
+                new UseResource(ItemResourceType.Brick, 60),
                 new UseResource(ItemResourceType.Iron_G, 10)
            },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 new UseResource(ItemResourceType.ServiceMen, 2),
                 new UseResource(ItemResourceType.Wood_Group, 100),
-                new UseResource(ItemResourceType.Stone_G, 20)
+                new UseResource(ItemResourceType.Brick, 20)
             },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Build
            {
                new UseResource(ItemResourceType.ServiceMen, 1),
                 new UseResource(ItemResourceType.Wood_Group, 60),
-                new UseResource(ItemResourceType.Stone_G, 40)
+                new UseResource(ItemResourceType.Brick, 40)
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
        );
@@ -1481,7 +1481,7 @@ namespace VikingEngine.DSSWars.Build
           new UseResource[]
           {
               new UseResource(ItemResourceType.Wood_Group, 40),
-                new UseResource(ItemResourceType.Stone_G, 120)
+                new UseResource(ItemResourceType.Brick, 80)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -1492,7 +1492,7 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
           {
               new UseResource(ItemResourceType.Wood_Group, 40),
-                new UseResource(ItemResourceType.Stone_G, 120)
+                new UseResource(ItemResourceType.Brick, 80)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -1503,7 +1503,7 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
           {
               new UseResource(ItemResourceType.Wood_Group, 40),
-                new UseResource(ItemResourceType.Stone_G, 120)
+                new UseResource(ItemResourceType.Brick, 80)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -1514,7 +1514,7 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
           {
               new UseResource(ItemResourceType.Wood_Group, 40),
-                new UseResource(ItemResourceType.Stone_G, 120)
+                new UseResource(ItemResourceType.Brick, 80)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -1891,7 +1891,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     new UseResource(ItemResourceType.Men, DssConst.HousingCount_ServiceHouse_Small),
                     new UseResource(ItemResourceType.Wood_Group, 200),
-                    new UseResource(ItemResourceType.Brick, 20)
+                    new UseResource(ItemResourceType.Stone_G, 40)
                 },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
             );
@@ -1916,7 +1916,7 @@ namespace VikingEngine.DSSWars.Build
             new UseResource[]
                 {
                     new UseResource(ItemResourceType.Wood_Group, 140),
-                    new UseResource(ItemResourceType.Brick, 30)
+                    new UseResource(ItemResourceType.Stone_G, 30)
                 },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
             );

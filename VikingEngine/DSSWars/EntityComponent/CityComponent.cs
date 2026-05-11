@@ -206,6 +206,15 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public void setCityStockPile(City city, int limit)
+        {
+            int ex_end = city.resourceComponentStartIndex + CityResoureIndex.COUNT;
+            for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
+            {
+                cityResouces[i].setLimit(limit);
+            }
+        }
+
         public const int DefaultBuffer_Wood = 300;
         public const int DefaultBuffer_SkinLinnen = 300;
 

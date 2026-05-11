@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (automateCity)
             {
-                autoAdjustResourcesToCitySize(false);
+                //autoAdjustResourcesToCitySize(false);
                 commit_automateCityBuilding();
             }
             else //Player default
@@ -172,7 +172,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var buildType = AutoBuildList[i];
 
 #if DEBUG
-                if (buildType == BuildAndExpandType.OrchardApple)
+                if (buildType == BuildAndExpandType.WorkerTent)
                 {
                     lib.DoNothing();
 
@@ -391,32 +391,32 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void autoAdjustResourcesToCitySize(bool prepareSettle)
-        {
-            int multi = automationFocus == AutomationFocus.Food ? 5 : 1;
+        //public void autoAdjustResourcesToCitySize(bool prepareSettle)
+        //{
+        //    int multi = automationFocus == AutomationFocus.Food ? 5 : 1;
 
-            ref var res_food = ref GetRefGroupedResource(CityResoureIndex.food);
-            ref var res_rawFood = ref GetRefGroupedResource(CityResoureIndex.rawFood);
-            ref var res_fuel = ref GetRefGroupedResource(CityResoureIndex.fuel);
+        //    ref var res_food = ref GetRefGroupedResource(CityResoureIndex.food);
+        //    ref var res_rawFood = ref GetRefGroupedResource(CityResoureIndex.rawFood);
+        //    ref var res_fuel = ref GetRefGroupedResource(CityResoureIndex.fuel);
 
-            res_food.stockPileLimit = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
-            res_rawFood.stockPileLimit = (workForce.amount / 300 * 100 + 100) * multi;
-            res_fuel.stockPileLimit = res_rawFood.stockPileLimit;
+        //    res_food.stockPileLimit = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
+        //    res_rawFood.stockPileLimit = (workForce.amount / 300 * 100 + 100) * multi;
+        //    //res_fuel.stockPileLimit = res_rawFood.stockPileLimit;
 
 
-            ref var res_wood = ref GetRefGroupedResource(CityResoureIndex.wood);
-            ref var res_skin = ref GetRefGroupedResource(CityResoureIndex.skinLinnen);
+        //    //ref var res_wood = ref GetRefGroupedResource(CityResoureIndex.wood);
+        //    //ref var res_skin = ref GetRefGroupedResource(CityResoureIndex.skinLinnen);
 
-            res_wood.stockPileLimit = WorldData.DefaultBuffer_Wood;
-            res_skin.stockPileLimit = WorldData.DefaultBuffer_SkinLinnen;
+        //    //res_wood.stockPileLimit = WorldData.DefaultBuffer_Wood;
+        //    //res_skin.stockPileLimit = WorldData.DefaultBuffer_SkinLinnen;
 
-            if (prepareSettle)
-            {
-                res_food.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerFood;
-                res_wood.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerWood;
-                res_skin.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerSkinLinen;
-            }
-        }
+        //    //if (prepareSettle)
+        //    //{
+        //    //    res_food.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerFood;
+        //    //    res_wood.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerWood;
+        //    //    res_skin.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerSkinLinen;
+        //    //}
+        //}
 
         private void auto_addBuildingType(BuildAndExpandType buildType)
         {
@@ -458,7 +458,6 @@ namespace VikingEngine.DSSWars.GameObject
                             availableHomes < 30 &&
                             GetGroupedResource(EntityComponent.CityResoureIndex.food).amount > foodRequirement &&
                             hasCopperRequirement(copperRequirement);
-                            //TryGetFaction(out var faction) && faction.hasMoney(new Money(copperRequirement), this);
                         maxCount = 500;
                         chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
                         repeat = 1;
