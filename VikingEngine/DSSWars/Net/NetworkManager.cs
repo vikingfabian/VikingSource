@@ -387,12 +387,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case PacketType.DssWorldDiplomacy:
-                    if (!factionHandOverComplete)
-                    {
-                        DssRef.world.diplomacy.readRelations(packet.r, int.MaxValue);
-                    }
-                    break;
+               
 
                 case PacketType.DssDiplomacyRelation:
                     Communication.DiplomaticRelation.NetReadRelation(packet.r);
@@ -443,7 +438,9 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssCityHandOver:
                     City.NetReadHandOver(packet.r);
                     break;
-
+                case PacketType.DssWorldDiplomacy:
+                    DssRef.world.diplomacy.readRelations(packet.r, int.MaxValue);                    
+                    break;
             }
         }
 

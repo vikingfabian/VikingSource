@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Net
         
         SpottedArrayCounter<Army> armyCounter;
         SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-        SteamLargePacketWriter cityWriter = null;
+        SteamLargePacketWriter largeWriter = null;
         public FactionHandover(AbsNetworkPeer peer, Faction faction) 
         {
             this.peer = peer;
@@ -53,13 +53,13 @@ namespace VikingEngine.DSSWars.Net
                 return true;
             }
 
-            if (cityWriter != null)
+            if (largeWriter != null)
             {
-                if (!cityWriter.Complete)
+                if (!largeWriter.Complete)
                 {
                     return true;
                 }
-                else if (cityWriter.TimeOut)
+                else if (largeWriter.TimeOut)
                 { //Cancel the handover
                     Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", peer, false);
                     part = HandoverPart.DONE;
@@ -96,13 +96,10 @@ namespace VikingEngine.DSSWars.Net
 
                             DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
                             var w = cityData.GetWriter();
-
-                            //w.Write((ushort)city.myIndex);
-                            //city.writeGameState(w);
                             City.NetWriteHandover(w, city);
 
-                            cityWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
-                            cityWriter.begin();
+                            largeWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
+                            largeWriter.begin();
                         }
                         else
                         {
@@ -129,11 +126,17 @@ namespace VikingEngine.DSSWars.Net
 
                 case HandoverPart.Diplomacy:
                     {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssWorldDiplomacy, PacketReliability.Reliable, out var packet);
-                        {
-                            DssRef.world.diplomacy.writeRelations(w);
-                        }
-                        packet.EndWrite_Asynch();
+                        DataStream.MemoryStreamHandler diplomacyData = new DataStream.MemoryStreamHandler();
+                        var w = diplomacyData.GetWriter();
+                        DssRef.world.diplomacy.writeRelations(w);
+
+                        largeWriter = new SteamLargePacketWriter(diplomacyData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssWorldDiplomacy);
+                        largeWriter.begin();
+                        //var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssWorldDiplomacy, PacketReliability.Reliable, out var packet);
+                        //{
+                        //    DssRef.world.diplomacy.writeRelations(w);
+                        //}
+                        //packet.EndWrite_Asynch();
                         part++;
                     }
                     break;
@@ -160,11 +163,11 @@ namespace VikingEngine.DSSWars.Net
         enum HandoverPart
         { 
             Cities,
-            Diplomacy,
+            
             CityStatus,
             //CityGuard,
             Armies,
-            
+            Diplomacy,
             HandOverComplete,
             DONE
         }
