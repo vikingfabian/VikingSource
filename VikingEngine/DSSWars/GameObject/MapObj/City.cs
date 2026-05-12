@@ -670,48 +670,76 @@ namespace VikingEngine.DSSWars.GameObject
 
                 writeWorkerStatuses(w, false, -1);
 
-                w.Write((ushort)conscriptBuildings.Count);
-                foreach (var barracks in conscriptBuildings)
+                lock (conscriptBuildings)
                 {
-                    barracks.writeGameState(w);
-                }
-
-                w.Write((ushort)deliveryServices.Count);
-                foreach (var delivery in deliveryServices)
-                {
-                    delivery.writeGameState(w);
-                }
-
-                w.Write((ushort)schoolBuildings.Count);
-                foreach (var school in schoolBuildings)
-                { school.writeGameState(w); }
-
-                if (arraylib.HasMembers(researchBuildings))
-                {
-                    w.Write((ushort)researchBuildings.Count);
-                    foreach (var research in researchBuildings)
+                    w.Write((ushort)conscriptBuildings.Count);
+                    foreach (var barracks in conscriptBuildings)
                     {
-                        research.writeGameState(w);
+                        barracks.writeGameState(w);
                     }
                 }
-                else
+
+                lock (deliveryServices)
                 {
-                    w.Write(ushort.MinValue);
+                    w.Write((ushort)deliveryServices.Count);
+                    foreach (var delivery in deliveryServices)
+                    {
+                        delivery.writeGameState(w);
+                    }
+                }
+
+                lock (schoolBuildings)
+                {
+                    w.Write((ushort)schoolBuildings.Count);
+                    foreach (var school in schoolBuildings)
+                    { school.writeGameState(w); }
+                }
+
+                if (researchBuildings != null)
+                {
+                    lock (researchBuildings)
+                    {
+                        if (arraylib.HasMembers(researchBuildings))
+                        {
+                            w.Write((ushort)researchBuildings.Count);
+                            foreach (var research in researchBuildings)
+                            {
+                                research.writeGameState(w);
+                            }
+                        }
+                        else
+                        {
+                            w.Write(ushort.MinValue);
+                        }
+                    }
                 }
                 w.Write((byte)experenceOrDistance);
 
                 writeSoldierGroups(w);
 
                 w.Write((ushort)defenceBuildings.Count);
-                for (int i = 0; i < defenceBuildings.Count; ++i)
+                if (defenceBuildings.Count > 0)
                 {
-                    defenceBuildings.array[i].writeGameState(w);
+                    lock (defenceBuildings.array)
+                    {
+                        for (int i = 0; i < defenceBuildings.Count; ++i)
+                        {
+                            defenceBuildings.array[i].writeGameState(w);
+                        }
+                    }
                 }
 
                 w.Write((ushort)cesspits.Count);
-                for (int i = 0; i < cesspits.Count; ++i)
+                if (cesspits.Count > 0)
                 {
-                    cesspits.array[i].writeGameState(w);
+                    lock (cesspits.array)
+                    {
+
+                        for (int i = 0; i < cesspits.Count; ++i)
+                        {
+                            cesspits.array[i].writeGameState(w);
+                        }
+                    }
                 }
 
                 w.Write(autoBuild_Work);
