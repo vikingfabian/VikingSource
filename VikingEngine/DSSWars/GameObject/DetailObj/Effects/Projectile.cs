@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.GameObject
     class Projectile : AbsUpdateable
     {
         public static void ProjectileAttack(bool fullUpdate, AbsSoldierUnit attacker,
-            AttackType type, AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount) /*int splashCount, float splashPercDamage)*/
+            AttackType type, AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount)
         {
             if (fullUpdate)
             {
@@ -243,9 +243,6 @@ namespace VikingEngine.DSSWars.GameObject
             WP.Rotation1DToQuaterion(model, dir.Radians);
 
             blankTarget = fromAttack.position + VectorExt.V2toV3XZ(dir.Direction(range));
-
-            //Vector3 diff = blankTarget - model.position;
-
         }
 
         public override void Time_Update(float time_ms)
@@ -326,14 +323,14 @@ namespace VikingEngine.DSSWars.GameObject
             target.takeDamage(damage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
             if (splashCount > 0 && target.IsSoldierUnit())
             {
-                int splashDamage = damage;//Convert.ToInt32(splashPercDamage * damage);
+                int splashDamage = damage;
 
                 for (int i = 0; i < splashCount; i++)
                 {
                     var target2 = target.group.soldiers?.GetRandomUnsafe(Ref.rnd);
                     if (target2 != null)
                     {
-                        target2.takeDamage(splashDamage, blockReduce_inv, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
+                        target2.takeDamage(splashDamage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
                     }
                 }
             }
@@ -343,8 +340,6 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            //model.DeleteMe();
-            //DssRef.models.recycle(ref model, true, true);
             model.preRemoveFromDrawBatch();
         }
     }
