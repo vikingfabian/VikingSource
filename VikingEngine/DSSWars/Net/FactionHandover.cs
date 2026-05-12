@@ -127,6 +127,17 @@ namespace VikingEngine.DSSWars.Net
                     }
                     break;
 
+                case HandoverPart.Diplomacy:
+                    {
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssWorldDiplomacy, PacketReliability.Reliable, out var packet);
+                        {
+                            DssRef.world.diplomacy.writeRelations(w);
+                        }
+                        packet.EndWrite_Asynch();
+                        part++;
+                    }
+                    break;
+
                 case HandoverPart.HandOverComplete:
                     {
                         citiesC.Reset();
@@ -149,9 +160,11 @@ namespace VikingEngine.DSSWars.Net
         enum HandoverPart
         { 
             Cities,
+            Diplomacy,
             CityStatus,
             //CityGuard,
             Armies,
+            
             HandOverComplete,
             DONE
         }

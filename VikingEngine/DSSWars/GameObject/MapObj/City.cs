@@ -695,47 +695,48 @@ namespace VikingEngine.DSSWars.GameObject
                     { school.writeGameState(w); }
                 }
 
-                if (researchBuildings != null)
+
+                if (arraylib.HasMembers(researchBuildings))
                 {
                     lock (researchBuildings)
                     {
-                        if (arraylib.HasMembers(researchBuildings))
+                        w.Write((ushort)researchBuildings.Count);
+                        foreach (var research in researchBuildings)
                         {
-                            w.Write((ushort)researchBuildings.Count);
-                            foreach (var research in researchBuildings)
-                            {
-                                research.writeGameState(w);
-                            }
+                            research.writeGameState(w);
                         }
-                        else
-                        {
-                            w.Write(ushort.MinValue);
-                        }
-                    }
+                    }   
                 }
+                else
+                {
+                    w.Write(ushort.MinValue);
+                }
+
                 w.Write((byte)experenceOrDistance);
 
                 writeSoldierGroups(w);
 
-                w.Write((ushort)defenceBuildings.Count);
-                if (defenceBuildings.Count > 0)
+                int defenceBuildingsCount = defenceBuildings.Count;
+                w.Write((ushort)defenceBuildingsCount);
+                if (defenceBuildingsCount > 0)
                 {
                     lock (defenceBuildings.array)
                     {
-                        for (int i = 0; i < defenceBuildings.Count; ++i)
+                        for (int i = 0; i < defenceBuildingsCount; ++i)
                         {
                             defenceBuildings.array[i].writeGameState(w);
                         }
                     }
                 }
 
-                w.Write((ushort)cesspits.Count);
-                if (cesspits.Count > 0)
+                int cesspitsCount = cesspits.Count;
+                w.Write((ushort)cesspitsCount);
+                if (cesspitsCount > 0)
                 {
                     lock (cesspits.array)
                     {
 
-                        for (int i = 0; i < cesspits.Count; ++i)
+                        for (int i = 0; i < cesspitsCount; ++i)
                         {
                             cesspits.array[i].writeGameState(w);
                         }

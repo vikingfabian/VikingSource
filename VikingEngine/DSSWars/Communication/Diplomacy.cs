@@ -212,7 +212,6 @@ namespace VikingEngine.DSSWars
         {            
             w.Write((ushort)indexRegister.Length);
             
-            /*int skips = 0*/;
             for (int currentIndex = 0; currentIndex < diplomaticRelations.Length; ++currentIndex)
             {
                 if (diplomaticRelations[currentIndex].HasValue())
@@ -222,26 +221,19 @@ namespace VikingEngine.DSSWars
                 }
             }
             w.Write(int.MaxValue);
-            //StreamLib.WriteGrowingAddValue(w, diplomaticRelations.Length);
-
+            
             Debug.WriteCheck(w);
         }
 
         public void readRelations(System.IO.BinaryReader r, int subVersion)
-        {
-            //if (subVersion >= 111)
-            //{ 
-                int indexRegisterLength = r.ReadUInt16();
-                initRegister(indexRegisterLength);
-            //}
-
-            
+        {            
+            int indexRegisterLength = r.ReadUInt16();
+            initRegister(indexRegisterLength);            
 
             while (true)
             {
                 int currentIndex = r.ReadInt32();
-                //int skips = StreamLib.ReadGrowingAddValue(r);
-                //currentIndex += skips;
+
                 if (currentIndex < diplomaticRelations.Length)
                 {                    
                     diplomaticRelations[currentIndex].read(r, subVersion);
@@ -259,20 +251,6 @@ namespace VikingEngine.DSSWars
             }
             Debug.ReadCheck(r);
         }
-
-        //public bool InWar(int faction1, int faction2)
-        //{
-        //    if (faction1 < 0 || faction2 < 0)
-        //    {
-        //        return false;
-        //    }
-
-        //    if (faction1 != faction2)
-        //    {
-        //        return InWar(DssRef.world.faction(faction1), DssRef.world.faction(faction2));
-        //    }
-        //    return false;
-        //}
 
         public void async_update()
         {

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
@@ -372,6 +373,7 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssSoldierGroupStatus_City:
                     readGroupStatus(false);
                     break;
+
                 case PacketType.TextChat:
                     {
                         string text = StreamLib.ReadString_safe(packet.r);
@@ -384,15 +386,30 @@ namespace VikingEngine.DSSWars
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
                     }
                     break;
+
+                case PacketType.DssWorldDiplomacy:
+                    if (!factionHandOverComplete)
+                    {
+                        DssRef.world.diplomacy.readRelations(packet.r, int.MaxValue);
+                    }
+                    break;
+
                 case PacketType.DssDiplomacyRelation:
                     Communication.DiplomaticRelation.NetReadRelation(packet.r);
                     break;
+
+                case PacketType.DssPlayerToPlayerRelation:
+                    new DiplomacyDisplay(LocalHost()).netReadP2pRelation(packet.r, GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex));
+                    break;
+
                 case PacketType.DssEnterBattle:
                     ObjectId.ReadSoldierGroup(packet.r, out _)?.enterBattleState(true, false);
                     break;
+
                 case PacketType.DssAttackDamage:
                     AbsSoldierUnit.ReadAttackDamage(packet.r);
                     break;
+
                 case PacketType.DssSoldierDeath:
                     var soldier = ObjectId.ReadSoldier(packet.r, out _);
                     if (soldier != null)

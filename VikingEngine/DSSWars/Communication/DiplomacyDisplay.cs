@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        public void netReadRelation(System.IO.BinaryReader r, RemotePlayer fromPlayer)
+        public void netReadP2pRelation(System.IO.BinaryReader r, AbsHumanPlayer fromPlayer)
         {
             PlayerToPlayerDiplomacy PtoP = player.GetOrCreateToPlayerDiplomacy(fromPlayer);
             PtoP.readGameState(r, int.MaxValue);
