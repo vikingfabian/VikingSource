@@ -779,7 +779,7 @@ namespace VikingEngine.DSSWars
                     if (defender.player.IsLocalPlayer())
                     {
                         var otherPlayer = defender.player.GetLocalPlayer();
-                        var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+                        var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);//toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
                         PtoP.suggestingNewRelation = false;
                     }
                 }

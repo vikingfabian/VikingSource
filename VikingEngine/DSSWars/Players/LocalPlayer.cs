@@ -65,7 +65,23 @@ namespace VikingEngine.DSSWars.Players
 
         public Data.Statistics statistics = new Data.Statistics();
 
-        public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
+        /// <summary>
+        /// Faction is key
+        /// </summary>
+        public Dictionary<int, PlayerToPlayerDiplomacy> toPlayerDiplomacies = new Dictionary<int, PlayerToPlayerDiplomacy>();
+
+        public PlayerToPlayerDiplomacy GetOrCreateToPlayerDiplomacy(AbsHumanPlayer player)
+        {
+            PlayerToPlayerDiplomacy result;
+            if (toPlayerDiplomacies.TryGetValue(player.faction.myIndex, out result) == false)
+            {
+                result = new PlayerToPlayerDiplomacy(player.faction.myIndex);
+                toPlayerDiplomacies.Add(result.factionIndex, result);
+            }
+
+            return result;
+        }
+
         public Automation automation;
 
         const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
@@ -246,10 +262,10 @@ namespace VikingEngine.DSSWars.Players
             InitTutorial(newGame);
 
             refreshNeihgborAggression();
-            if (numPlayers > 1)
-            {
-                toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
-            }
+            //if (numPlayers > 1)
+            //{
+            //    toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
+            //}
 
             menDeliveryCopy = new DeliveryStatus();
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
@@ -274,24 +290,24 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
-        public void initPlayerToPlayer(int playerindex, int numPlayers)
-        {
+        //public void initPlayerToPlayer(int playerindex, int numPlayers)
+        //{
 
-            for (int i = 0; i < numPlayers; i++)
-            {
-                if (i != playerindex)
-                {
-                    if (toPlayerDiplomacies[i] == null)
-                    {
-                        var PtoP = new PlayerToPlayerDiplomacy()
-                        { index = i, };
+        //    for (int i = 0; i < numPlayers; i++)
+        //    {
+        //        if (i != playerindex)
+        //        {
+        //            if (toPlayerDiplomacies[i] == null)
+        //            {
+        //                var PtoP = new PlayerToPlayerDiplomacy()
+        //                { index = i, };
 
-                        toPlayerDiplomacies[i] = PtoP;
-                        var otherP = DssRef.state.localPlayers[i].toPlayerDiplomacies[playerindex] = PtoP;
-                    }
-                }
-            }
-        }
+        //                toPlayerDiplomacies[i] = PtoP;
+        //                var otherP = DssRef.state.localPlayers[i].toPlayerDiplomacies[playerindex] = PtoP;
+        //            }
+        //        }
+        //    }
+        //}
 
         public void NetUpdate()
         {
@@ -312,24 +328,23 @@ namespace VikingEngine.DSSWars.Players
 
             statistics.writeGameState(w);
 
-            if (toPlayerDiplomacies == null)
-            {
-                w.Write(short.MinValue);
-            }
-            else
-            {
-                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
+            //if (toPlayerDiplomacies == null)
+            //{
+            //    w.Write(ushort.MinValue);
+            //}
+            //else
+            //{
+                foreach (var kv in toPlayerDiplomacies)//for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
                 {
-                    var tp = toPlayerDiplomacies[i];
-                    if (tp != null)
-                    {
-                        w.Write((short)i);
-                        tp.writeGameState(w);
-                    }
+                    //var tp = toPlayerDiplomacies[i];
+                    //if (kv.Value != null)
+                    //{
+                        w.Write((ushort)kv.Key);
+                        kv.Value.writeGameState(w);
+                    //}
                 }
-
-                w.Write(short.MinValue);
-            }
+                w.Write(ushort.MaxValue);
+            //}
 
             automation.writeGameState(w);
 
@@ -390,30 +405,25 @@ namespace VikingEngine.DSSWars.Players
             {
                 while (true)//if (toPlayerDiplomacies != null)
                 {
-                    int index = r.ReadInt16();
-                    if (index >= 0)
+
+                    int factionIndex;
+
+                    if (subversion >= 114)
                     {
-                        PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy();
+                        factionIndex = r.ReadUInt16();
+                    }
+                    else
+                    {
+                        int player = r.ReadInt16();
+                        factionIndex = DssRef.state.localPlayers[player].faction.myIndex;
+                    }
+
+                    if (factionIndex >= 0 && factionIndex < ushort.MaxValue)
+                    {
+                        PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy(factionIndex);
 
                         tp.readGameState(r, subversion);
-                        if (arraylib.InBound(toPlayerDiplomacies, index))
-                        {
-                            toPlayerDiplomacies[index] = tp;
-                        }
-                        //for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
-                        //{
-
-                        //    if (!DssRef.state.localPlayers[i].isDropInPlayer)
-                        //    {
-                        //        if (r.ReadBoolean())
-                        //        {
-                        //            PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy();
-
-                        //            tp.readGameState(r, subversion);
-                        //            toPlayerDiplomacies[i] = tp;
-                        //        }
-                        //    }
-                        //}
+                        toPlayerDiplomacies.Add(factionIndex, tp);                        
                     }
                     else
                     {

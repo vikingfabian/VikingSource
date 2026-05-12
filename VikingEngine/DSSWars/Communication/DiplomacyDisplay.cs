@@ -7,6 +7,7 @@ using System.Threading;
 
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
@@ -72,13 +73,13 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     playerToAi();
                 }
-                else if (otherfaction.player.IsLocalPlayer())
+                else if (otherfaction.player.IsHumanPlayer())
                 {
                     playerToPlayer(content);
                 }
                 else
                 {
-                    content.text("TODO: remote diplomacy");
+                    content.text(TextLib.Error);
                 }
             }
             //}
@@ -284,9 +285,9 @@ namespace VikingEngine.DSSWars.Interface
 
         void playerToPlayer(RichBoxContent content)
         {
-            var otherPlayer = otherfaction.player.GetLocalPlayer();
+            var otherPlayer = otherfaction.player.GetHumanPlayer();
 
-            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+            var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             if (PtoP.suggestingNewRelation)
             {
@@ -294,13 +295,13 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_NewRelationOffered, Diplomacy.RelationString(PtoP.suggestedRelation))));
                 content.newLine();
 
-                if (PtoP.suggestedBy == player.playerData.localPlayerIndex)
+                if (PtoP.suggestedBy == player.faction.myIndex)
                 {
                     content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             new RbText(Ref.langOpt.Hud_Cancel),
                         },
-                        new RbAction(cancelToPlayerRelation, RbSoundType.Buy)));
+                        new RbAction(cancelToPlayerRelation, RbSoundType.Stop)));
                 }
                 else
                 {
@@ -322,7 +323,7 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(SpriteName.WarsRelationPeace),
                             new RbText(DssRef.lang.Diplomacy_OfferPeace),
                         },
-                        new RbAction(offerToPlayerRelation, RbSoundType.Buy)));
+                        new RbAction(offerToPlayerGoodRelation, RbSoundType.Buy)));
                 }
                 else if (selectedRelation.Relation < RelationType.RelationType3_Ally)
                 {
@@ -333,15 +334,15 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(SpriteName.WarsRelationAlly),
                             new RbText(DssRef.lang.Diplomacy_OfferAlliance),
                         },
-                        new RbAction(offerToPlayerRelation, RbSoundType.Buy)));
+                        new RbAction(offerToPlayerGoodRelation, RbSoundType.Buy)));
                 }
             }
         }
 
-        void offerToPlayerRelation()
+        void offerToPlayerGoodRelation()
         {
-            var otherPlayer = otherfaction.player.GetLocalPlayer();
-            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+            var otherPlayer = otherfaction.player.GetHumanPlayer();
+            var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = true;
 
@@ -354,8 +355,49 @@ namespace VikingEngine.DSSWars.Interface
                 PtoP.suggestedRelation = RelationType.RelationType3_Ally;
             }
 
-            PtoP.suggestedBy = player.playerData.localPlayerIndex;
+            PtoP.suggestedBy = player.faction.myIndex;
 
+
+            if (otherPlayer.IsLocal)
+            {
+                //var message = new RichBoxContent();
+                //message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, player.Name));
+                //message.newLine();
+                //message.Add(new RbImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
+                //message.Add(new RbText(Diplomacy.RelationString(PtoP.suggestedRelation)));
+                //message.newLine();
+
+                //var acceptButtonContent = new List<AbsRichBoxMember>(7);
+                //MessageGroup_Ingame.ControllerInputIcons(player, acceptButtonContent);
+                //acceptButtonContent.Add(new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer));
+                //message.Add(new ArtButton(RbButtonStyle.Primary,
+                //    acceptButtonContent,
+                //    new RbAction(acceptToPlayerRelation)));
+
+                allianceOfferedDisplay(otherPlayer.GetLocalPlayer(), PtoP);
+                // otherPlayer.GetLocalPlayer().hud.messages.Add(message, SoundLib.netMessage);
+            }
+            else
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
+                     Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
+                PtoP.writeGameState(w);
+            }
+        }
+
+        public void netReadRelation(System.IO.BinaryReader r, RemotePlayer fromPlayer)
+        {
+            PlayerToPlayerDiplomacy PtoP = player.GetOrCreateToPlayerDiplomacy(fromPlayer);
+            PtoP.readGameState(r, int.MaxValue);
+
+            allianceOfferedDisplay(player, PtoP);
+        }
+
+
+
+        void allianceOfferedDisplay(LocalPlayer recievingPlayer, PlayerToPlayerDiplomacy PtoP)
+        {
+            
             var message = new RichBoxContent();
             message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, player.Name));
             message.newLine();
@@ -369,13 +411,16 @@ namespace VikingEngine.DSSWars.Interface
             message.Add(new ArtButton(RbButtonStyle.Primary,
                 acceptButtonContent,
                 new RbAction(acceptToPlayerRelation)));
-            otherPlayer.hud.messages.Add(message, SoundLib.netMessage);
+
+
+            recievingPlayer.hud.messages.Add(message, SoundLib.netMessage);
+            
         }
 
         void acceptToPlayerRelation()
         {
-            var otherPlayer = otherfaction.player.GetLocalPlayer();
-            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+            var otherPlayer = otherfaction.player.GetHumanPlayer();
+            var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             if (PtoP.suggestingNewRelation)
             { 
@@ -388,7 +433,7 @@ namespace VikingEngine.DSSWars.Interface
         void cancelToPlayerRelation()
         {
             var otherPlayer = otherfaction.player.GetLocalPlayer();
-            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+            var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = false;
         }

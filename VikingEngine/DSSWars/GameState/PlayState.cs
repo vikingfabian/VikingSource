@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars
                 var pdata = localPlayers[i].playerData;
                 Mouse.AddPlayer(pdata, playerCount, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
 
-                localPlayers[i].initPlayerToPlayer(i, playerCount);
+                //localPlayers[i].initPlayerToPlayer(i, playerCount);
             }
 
             postPlayerInit();
@@ -311,7 +311,7 @@ namespace VikingEngine.DSSWars
                 var pdata = localPlayers[i].playerData;
                 Mouse.AddPlayer(pdata, playerCount, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
 
-                localPlayers[i].initPlayerToPlayer(i, playerCount);
+                //localPlayers[i].initPlayerToPlayer(i, playerCount);
             }
 
             if (newGame && DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
