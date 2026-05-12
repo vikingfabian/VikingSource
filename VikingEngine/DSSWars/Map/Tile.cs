@@ -704,12 +704,13 @@ namespace VikingEngine.DSSWars.Map
         public const float UnitMinY = WaterSurfaceY; //+ 0.02f;
         public const float UnitQuadMinY = WaterSurfaceY + 0.02f;
         const float LayerHeight = 0.06f;
+        public const float LowWaterY = WaterSurfaceY - 0.07f;
 
         static readonly float[] TypeToHeight = new float[]
         {
             WaterSurfaceY - 0.3f,//Deep water
             WaterSurfaceY - 0.18f,//Deep water
-            WaterSurfaceY - 0.07f,//Water_0,
+            LowWaterY,//Water_0,
             0f,//OpenField_1,
             LayerHeight,//Plains_2,
             LayerHeight * 2f,//Vegetation_3,

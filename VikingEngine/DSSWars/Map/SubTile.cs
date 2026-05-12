@@ -6,6 +6,7 @@ using System.Text;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -367,6 +368,73 @@ namespace VikingEngine.DSSWars.Map
                             return WorldData.SubTileWidth * 1.3f;
 
                     }
+            }
+        }
+
+        public MoveCost GetMoveCost()
+        {
+            switch (mainTerrain)
+            {
+                default:
+                case TerrainMainType.DefaultLand:
+                    switch ((TerrainDefaultLandType)subTerrain)
+                    {
+                        case TerrainDefaultLandType.Mountain:
+                            return new MoveCost(20, 2000);
+
+                        default:
+                        case TerrainDefaultLandType.Flat:
+                            return new MoveCost(1, 100);
+                    }
+
+                case TerrainMainType.DefaultSea:
+                    if (groundY <= Tile.LowWaterY)
+                    {
+                        return new MoveCost(50, 1f);
+                    }
+                    else
+                    {
+                        return new MoveCost(10000, 1f);
+                    }
+
+                case TerrainMainType.Destroyed:
+                    return new MoveCost(0.9f, 90f);
+
+                case TerrainMainType.Resourses:
+                case TerrainMainType.Mine:
+                case TerrainMainType.Decor:
+                case TerrainMainType.Building:
+                    return new MoveCost(2f, 200);
+
+                case TerrainMainType.Foil:
+                    return new MoveCost(4f, 400);
+
+                case TerrainMainType.Wall:
+                    // Water cost for walls was originally cost.land * 100.
+                    // These values are pre-calculated below.
+                    switch ((TerrainWallType)subTerrain)
+                    {
+                        case TerrainWallType.Palisade:
+                            return new MoveCost(3f);
+
+                        case TerrainWallType.DirtWall:
+                        case TerrainWallType.DirtTower:
+                            return new MoveCost(4f);
+
+                        case TerrainWallType.WoodWall:
+                        case TerrainWallType.WoodTower:
+                            return new MoveCost(5f);
+
+                        default:
+                            return new MoveCost(8f);
+                    }
+
+                case TerrainMainType.Road:
+                    //switch ((TerrainRoadType)subTerrain)
+                    //{
+                    //    case TerrainRoadType.
+                    //}
+                    return new MoveCost(0.75f, 75f);
             }
         }
     }
