@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.Players
 
         public bool Net_SendCityTiles_async()
         {
-            if (faction.cities.Count > 0)
+            if (faction != null && faction.cities.Count > 0)
             {
                 int chunkSize = 4;
 

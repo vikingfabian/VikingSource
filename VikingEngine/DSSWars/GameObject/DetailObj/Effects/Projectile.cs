@@ -323,7 +323,7 @@ namespace VikingEngine.DSSWars.GameObject
         public static void ProjectileHit(bool fullUpdate, AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount, AbsSoldierUnit fromAttack)
         {
 
-            target.takeDamage(damage, blockReduce_inv, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
+            target.takeDamage(damage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
             if (splashCount > 0 && target.IsSoldierUnit())
             {
                 int splashDamage = damage;//Convert.ToInt32(splashPercDamage * damage);

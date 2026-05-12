@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.GameObject
                     var command_sp = command;
                     if (command_sp != null)
                     {
-                        if (command_sp.hasPathCommand(out bool towardsUnit))
+                        if (!command_sp.haltCommand && command_sp.hasPathCommand(out bool towardsUnit))
                         {
                             goal = towardsUnit ? command_sp.AttackTarget().position : command_sp.GoalPosition();                            
                         }
@@ -361,7 +361,7 @@ namespace VikingEngine.DSSWars.GameObject
                     SoldierGroup target = Net.ObjectId.ReadSoldierGroup(r, out _);
                     if (target != null)
                     {
-                        attackTarget_soldierGroupOrCity.SetTarget(target);
+                        attackTarget_soldierGroupOrCity?.SetTarget(target);
                     }
                     break;
             }
