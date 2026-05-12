@@ -736,9 +736,9 @@ namespace VikingEngine.DSSWars.Players
         //    mapControls.cameraFocus = battleGroup;
         //}
 
-        public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
+        public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
-            base.onNewRelation(otherFaction, rel, previousRelation);
+            base.onNewRelation(otherFaction, rel, previousRelation, localAction);
 
             //if (rel.Relation == RelationType.RelationType3_Ally)
             //{

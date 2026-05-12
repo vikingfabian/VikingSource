@@ -822,16 +822,16 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-        public AbsMapObject getUnit(System.IO.BinaryReader r)
-        {
-            return getFaction(r).GetUnit(r);
-        }
+        //public AbsMapObject getUnit(System.IO.BinaryReader r)
+        //{
+        //    return getFaction(r).GetUnit(r);
+        //}
 
-        public Faction getFaction(System.IO.BinaryReader r)
-        {
-            byte factionId = r.ReadByte();
-            return factions[factionId];
-        }
+        //public Faction getFaction(System.IO.BinaryReader r)
+        //{
+        //    byte factionId = r.ReadByte();
+        //    return factions[factionId];
+        //}
 
 
         public Tile tileFromSubTilePos(IntVector2 position)

@@ -12,6 +12,15 @@ namespace VikingEngine.DSSWars.Net
     /// </summary>
     static class ObjectId
     {
+        public static void WriteFaction(System.IO.BinaryWriter w, Faction faction)
+        {
+            w.Write((ushort)faction.myIndex);
+        }
+        public static Faction ReadFaction(System.IO.BinaryReader r)
+        { 
+            return DssRef.world.faction(r.ReadUInt16());
+        }
+
         public static void WriteSoldier(System.IO.BinaryWriter w, AbsSoldierUnit soldier)
         {
             if (soldier != null)
@@ -33,6 +42,28 @@ namespace VikingEngine.DSSWars.Net
                 var group = ReadSoldierGroup(r, out mapObj);
                 if (group != null)
                 {
+                    var soldiers_sp = group.soldiers;
+                    if (soldiers_sp != null)
+                    {
+                        var result = soldiers_sp.GetIndex_Safe(soldierIx);
+                        return result;
+                    }
+                }
+            }
+            mapObj = null;
+            return null;
+        }
+
+        public static AbsSoldierUnit ReadSoldier_ForBattle(System.IO.BinaryReader r, out AbsArmy mapObj)
+        {
+            int soldierIx = r.ReadByte();
+            if (soldierIx < byte.MaxValue)
+            {
+                var group = ReadSoldierGroup(r, out mapObj);
+                if (group != null)
+                {
+                    group.enterBattleState(true, false);
+
                     var soldiers_sp = group.soldiers;
                     if (soldiers_sp != null)
                     {

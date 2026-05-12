@@ -36,11 +36,12 @@ namespace VikingEngine.DSSWars.Communication
             return Relation >= RelationType.RelationType3_Ally;
         }
 
-        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, out RelationType previousRelation)
+        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, out RelationType previousRelation/*, bool localAction*/)
         {
             previousRelation = Relation;
 
-            if (Relation != newRelation)
+            if (Relation != newRelation &&
+                faction1 != null && faction2 != null)
             {   
                 Relation = newRelation;
                 if (Relation == RelationType.RelationTypeN4_TotalWar)
@@ -48,8 +49,34 @@ namespace VikingEngine.DSSWars.Communication
                     SpeakTerms = SpeakTerms.SpeakTermsN2_None;
                 }
 
-                faction1?.player?.onNewRelation(faction2, this, previousRelation);
-                faction2?.player?.onNewRelation(faction1, this, previousRelation);
+                faction1.player?.onNewRelation(faction2, this, previousRelation, true);
+                faction2.player?.onNewRelation(faction1, this, previousRelation, true);
+
+                //if (localAction)
+                //{
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        Net.ObjectId.WriteFaction(w, faction1);
+                        Net.ObjectId.WriteFaction(w, faction2);
+                        write(w);
+                    }
+                    packet.EndWrite_Asynch();
+                //}
+            }
+        }
+
+        public static void NetReadRelation(System.IO.BinaryReader r)
+        {
+            Faction faction1 = Net.ObjectId.ReadFaction(r);
+            Faction faction2 = Net.ObjectId.ReadFaction(r);
+            if (faction1 != null && faction2 != null)
+            {
+                ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
+                var previousRelation = rel.Relation;
+                rel.read(r, int.MaxValue);
+
+                faction1.player?.onNewRelation(faction2, rel, previousRelation, false);
+                faction2.player?.onNewRelation(faction1, rel, previousRelation, false);
             }
         }
 

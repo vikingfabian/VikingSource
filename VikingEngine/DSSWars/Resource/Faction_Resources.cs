@@ -475,7 +475,7 @@ namespace VikingEngine.DSSWars
         public bool payGold(int cost, bool allowDept, AbsArmy city)
         {
 #if DEBUG
-            if (player.IsLocalPlayer() && StartupSettings.EndlessResources)
+            if (player != null && player.IsLocalPlayer() && StartupSettings.EndlessResources)
             {
                 return true;
             }

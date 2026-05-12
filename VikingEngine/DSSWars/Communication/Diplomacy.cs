@@ -50,8 +50,6 @@ namespace VikingEngine.DSSWars
 
         public Diplomacy(int factionCapacity = 64)
         {
-            //DssRef.diplomacy = this;
-
             this.factionCapacity = factionCapacity;
             diplomaticRelations = new DiplomaticRelation[length()];
             initRegister(factionCapacity - 1);
@@ -191,10 +189,10 @@ namespace VikingEngine.DSSWars
             return diplomaticRelations[RelationIndex(faction1, faction2)];
         }
 
-        public void Set(int faction1, int faction2, DiplomaticRelation relation)
-        {
-            diplomaticRelations[RelationIndex(faction1, faction2)] = relation;
-        }
+        //public void Set(int faction1, int faction2, DiplomaticRelation relation)
+        //{
+        //    diplomaticRelations[RelationIndex(faction1, faction2)] = relation;
+        //}
 
         public ref DiplomaticRelation GetRefRelation(int faction1, int faction2)
         {
@@ -753,8 +751,8 @@ namespace VikingEngine.DSSWars
             {
                 ref var relation = ref GetRefRelation(attacker.myIndex, defender.myIndex);
                 relation.SetRelation(attacker, defender, RelationType.RelationTypeN3_War, out RelationType prevRelation);
-                //RelationType prevRelation = GetRelation(attacker, defender);
-                //var relation = SetRelationType(attacker, defender, RelationType.RelationTypeN3_War);
+                
+
 
                 if (attacker.player.IsLocalPlayer())
                 {

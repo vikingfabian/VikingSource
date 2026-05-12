@@ -2677,9 +2677,9 @@ namespace VikingEngine.DSSWars.Players
         //}
 
         
-        public override void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
+        public override void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
-            base.onNewRelation(otherFaction, rel, previousRelation);
+            base.onNewRelation(otherFaction, rel, previousRelation, localAction);
             if (rel.Relation == RelationType.RelationTypeN3_War)
             {
                 if (otherFaction.factiontype == FactionType.Player &&

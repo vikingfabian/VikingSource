@@ -59,7 +59,14 @@ namespace VikingEngine.DSSWars.Players
             if (newGame)
             {
                 createStartupBarracks();
-                faction.addGold_factionWide(DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox? 500 : 200);
+
+                int startGold = DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox ? 500 : 200;
+                if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                {
+                    startGold = 6000;
+                }
+
+                faction.addGold_factionWide(startGold);
             }
         }
 
@@ -131,7 +138,7 @@ namespace VikingEngine.DSSWars.Players
         virtual public void aiPlayerAsynchUpdate(float time)
         { }
 
-        virtual public void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
+        virtual public void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
             //On peace, stop all attacking armies
             bool fromWar = Diplomacy.IsWar(previousRelation);
@@ -141,7 +148,10 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (toWar)
                 {
-                    faction.tradeAllianceWars(otherFaction, rel);
+                    if (localAction)
+                    {
+                        faction.tradeAllianceWars(otherFaction, rel);
+                    }
                 }
                 else
                 {
@@ -152,7 +162,10 @@ namespace VikingEngine.DSSWars.Players
             if (rel.Relation == RelationType.RelationType3_Ally &&
                 !rel.secret)
             {
-                faction.tradeAllianceWars(otherFaction, rel);
+                if (localAction)
+                {
+                    faction.tradeAllianceWars(otherFaction, rel);
+                }
             }
         }
 

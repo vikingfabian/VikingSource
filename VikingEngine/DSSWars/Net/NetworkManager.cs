@@ -384,7 +384,12 @@ namespace VikingEngine.DSSWars
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
                     }
                     break;
-
+                case PacketType.DssDiplomacyRelation:
+                    Communication.DiplomaticRelation.NetReadRelation(packet.r);
+                    break;
+                case PacketType.DssEnterBattle:
+                    ObjectId.ReadSoldierGroup(packet.r, out _)?.enterBattleState(true, false);
+                    break;
                 case PacketType.DssAttackDamage:
                     AbsSoldierUnit.ReadAttackDamage(packet.r);
                     break;

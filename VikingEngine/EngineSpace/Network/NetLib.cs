@@ -177,6 +177,8 @@ namespace VikingEngine.Network
         DssArmyStatus,
         DssSoldierGroupStatus_Army,
         DssSoldierGroupStatus_City,
+        DssDiplomacyRelation,
+        DssEnterBattle,
         DssAttackDamage,
         DssSoldierDeath,
         //LF2_WorldOverview,
