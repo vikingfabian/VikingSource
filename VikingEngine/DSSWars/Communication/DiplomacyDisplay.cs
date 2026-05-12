@@ -432,7 +432,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void cancelToPlayerRelation()
         {
-            var otherPlayer = otherfaction.player.GetLocalPlayer();
+            var otherPlayer = otherfaction.player.GetHumanPlayer();
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = false;

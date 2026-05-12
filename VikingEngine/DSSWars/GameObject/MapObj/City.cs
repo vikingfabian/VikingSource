@@ -1648,7 +1648,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 createCampSite(subtile);
 
-                setFaction(faction, false, false);
+                setFaction(faction, false, false, true);
                 refreshCitySize();
 
                 if (!name.custom)
@@ -1992,7 +1992,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
                                 }
 
-                                setFaction(newOwner, false, false);
+                                setFaction(newOwner, false, false, true);
                             }
                         }));
                     }
@@ -4020,7 +4020,9 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
+       
+
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, bool netShare)
         {
             if (newFaction == null)
                 return;
@@ -4038,8 +4040,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 factionIndex = newFaction.myIndex;
-                //IsNetHosted = newFaction.IsNetHosted();
-                //TODO request city status
                 
                 if (!duringStartup)
                 {
@@ -4049,6 +4049,29 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 OnNewOwner(newFaction, convert || duringStartup);                
+            }
+
+            if (netShare)
+            { 
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSetCityFaction, Network.PacketReliability.Reliable, out var packet);
+                {
+                    Net.ObjectId.WriteCity(w, this);
+                    w.Write(convert);
+                    Net.ObjectId.WriteFaction(w, newFaction);
+                } packet.EndWrite_Asynch();
+            }
+        }
+
+        public static void NetReadSetFaction(System.IO.BinaryReader r)
+        {
+            var city = Net.ObjectId.ReadCity(r);
+            if (city != null)
+            {
+                bool convert = r.ReadBoolean();
+
+                var newFaction = Net.ObjectId.ReadFaction(r);
+
+                city.setFaction(newFaction, false, convert, false);
             }
         }
 

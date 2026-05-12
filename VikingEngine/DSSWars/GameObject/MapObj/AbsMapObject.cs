@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         //abstract public Faction Faction();
 
-        virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert)
+        virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert, bool netShare)
         {
             this.factionIndex = newFaction.myIndex;
             

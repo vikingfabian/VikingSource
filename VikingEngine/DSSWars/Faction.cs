@@ -304,7 +304,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                city.setFaction(this, true, false);
+                city.setFaction(this, true, false, false);
             }
 
             Debug.ReadCheck(r);
@@ -532,7 +532,7 @@ namespace VikingEngine.DSSWars
                     mainCity = city;
                 }
                 cities.Add(city.myIndex);
-                city.setFaction(this, duringStartUp, false);
+                city.setFaction(this, duringStartUp, false, false);
             }
             else
             {
@@ -540,7 +540,7 @@ namespace VikingEngine.DSSWars
                 if (!cities.Contains(city.myIndex))
                 {
                     cities.Add(city.myIndex);
-                    city.setFaction(this, duringStartUp, false);
+                    city.setFaction(this, duringStartUp, false, false);
                     if (!duringStartUp)
                     {
                         player?.OnCityCapture(city);
@@ -1215,7 +1215,7 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.setFaction(masterFaction, false, true);
+                armiesC.sel.setFaction(masterFaction, false, true, true);
             }
 
             armies.Clear();
@@ -1223,7 +1223,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                citySel.setFaction(masterFaction, false, true);                
+                citySel.setFaction(masterFaction, false, true, true);                
             }
 
             cities.Clear();

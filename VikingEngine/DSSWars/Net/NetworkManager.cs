@@ -316,7 +316,7 @@ namespace VikingEngine.DSSWars
                         SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                         while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
                         {
-                            city.setFaction(faction, false, true);
+                            city.setFaction(faction, false, true, false);
                         }
                     }
                     break;
@@ -361,6 +361,10 @@ namespace VikingEngine.DSSWars
                         int part = packet.r.ReadByte();
                         city.readNet_update(packet.r, part);
                     }
+                    break;
+
+                case PacketType.DssSetCityFaction:
+
                     break;
                 
                 case PacketType.DssArmyStatus:
