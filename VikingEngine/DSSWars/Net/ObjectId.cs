@@ -21,6 +21,15 @@ namespace VikingEngine.DSSWars.Net
             return DssRef.world.faction(r.ReadUInt16());
         }
 
+        public static void WriteCity(System.IO.BinaryWriter w, City city)
+        {
+            w.Write((ushort)city.myIndex);
+        }
+        public static City ReadCity(System.IO.BinaryReader r)
+        {
+            return DssRef.world.cities[r.ReadUInt16()];
+        }
+
         public static void WriteSoldier(System.IO.BinaryWriter w, AbsSoldierUnit soldier)
         {
             if (soldier != null)
@@ -155,7 +164,7 @@ namespace VikingEngine.DSSWars.Net
                 needInit = false;
                 //int unitIx = r.ReadUInt16();
                 mapObj = DssRef.world.cities[unitIx];
-                mapObj.setFaction(faction, false, true);
+                mapObj.setFaction(faction, false, true, false);
                 faction = mapObj.GetFaction();
             }
 

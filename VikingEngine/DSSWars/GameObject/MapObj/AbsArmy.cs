@@ -119,9 +119,9 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.CrashIfThreaded();
             groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
-        public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, bool netShare)
         {
-            base.setFaction(newFaction, duringStartup, convert);
+            base.setFaction(newFaction, duringStartup, convert, netShare);
 
             convertSoldiersToFaction(newFaction);
         }

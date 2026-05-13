@@ -18,8 +18,7 @@ using VikingEngine.ToGG.MoonFall;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Interface
-{
-    
+{   
 
     class DiplomacyDisplay
     {
@@ -46,7 +45,7 @@ namespace VikingEngine.DSSWars.Interface
         }
 
 
-        public void toHud(RichBoxContent content, Faction botFaction, bool selection)
+        public void toHud(RichBoxContent content, Faction botFaction)
         {
             otherfaction = botFaction;
 
@@ -433,7 +432,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void cancelToPlayerRelation()
         {
-            var otherPlayer = otherfaction.player.GetLocalPlayer();
+            var otherPlayer = otherfaction.player.GetHumanPlayer();
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = false;

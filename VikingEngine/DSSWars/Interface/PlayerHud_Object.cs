@@ -18,7 +18,8 @@ namespace VikingEngine.DSSWars.Interface
     class PlayerHud_Object : IPlayerHud_Menu
     {
         List<GameObject.AbsGameObject> selectHistory = new List<AbsGameObject>();
-        
+        NetSessionDisplay netSessionDisplay = new NetSessionDisplay();
+
         public DiplomacyDisplay diplomacy;
         public RichMenu menu;
         public AbsArmy otherArmy;
@@ -64,60 +65,68 @@ namespace VikingEngine.DSSWars.Interface
 
             var content = new RichBoxContent();
 
-            if (DssRef.world.tileGrid.TryGet(player.gameControls.map.tilePosition, out var tile))
+            if (netSessionDisplay.ClientInteractDisplay)
             {
-                var hoverCity = tile.City();
-                hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
-
-                if (hoverCity.factionIndex == player.faction.myIndex &&
-                    player.mapLayer() <= Map.MapDetailLayerType.TerrainOverview2)
+                netSessionDisplay.clientToHud(player, content);
+            }
+            else
+            {
+                if (DssRef.world.tileGrid.TryGet(player.gameControls.map.tilePosition, out var tile))
                 {
-                    content.newLine();
-                   
-                    player.gameControls.input.QuickSelect.ToRichContent(content);
-                    content.space();
-                    content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> {
+                    var hoverCity = tile.City();
+                    hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
+
+                    if (hoverCity.factionIndex == player.faction.myIndex &&
+                        player.mapLayer() <= Map.MapDetailLayerType.TerrainOverview2)
+                    {
+                        content.newLine();
+
+                        player.gameControls.input.QuickSelect.ToRichContent(content);
+                        content.space();
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                            new List<AbsRichBoxMember> {
                             new RbText(DssRef.lang.Hud_SelectCity)
-                        }, new RbAction(player.gameControls.selectAreaCity)));
+                            }, new RbAction(player.gameControls.selectAreaCity)));
+                    }
+                    content.Add(new RbSeperationLine());
                 }
-                content.Add(new RbSeperationLine());
-            }
 
-            if (DssRef.state.remotePlayers.Count > 0)
-            {
-                content.h2(".Net session", HudLib.TitleColor_Head);
-                var remoteC = DssRef.state.remotePlayers.counter();
-                while(remoteC.Next())
+                if (DssRef.state.remotePlayers.Count > 0)
                 {
-                    content.newLine();
-                    remoteC.sel.addNetGamerToHud(content, true);//RemoteToHud(content);
+                    netSessionDisplay.overviewToHud(player, content);
+                    //content.h2(".Net session", HudLib.TitleColor_Head);
+                    //var remoteC = DssRef.state.remotePlayers.counter();
+                    //while(remoteC.Next())
+                    //{
+                    //    content.newLine();
+                    //    remoteC.sel.addNetGamerToHud(content, true);//RemoteToHud(content);
+                    //}
+                    //content.Add(new RbSeperationLine());
                 }
-                content.Add(new RbSeperationLine());
-            }
 
-            content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
+                content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
 
-            for (int i = selectHistory.Count - 1; i >= 0; --i)
-            {
-                var obj = selectHistory[i];
-
-                if (obj.IsDeleted())
+                for (int i = selectHistory.Count - 1; i >= 0; --i)
                 {
-                    selectHistory.RemoveAt(i);
-                }
-                else
-                {
-                    content.newLine();
-                    RichBoxContent buttonContent = new RichBoxContent();
-                    obj.toButtonContent(buttonContent, false);
-                    content.Add(new ArtButton(RbButtonStyle.Outline,
-                        buttonContent,
-                    
-                        new RbAction1Arg<AbsGameObject>((AbsGameObject obj) =>
-                        {
-                            player.gameControls.selectObject(obj);
-                        }, obj)));
+                    var obj = selectHistory[i];
+
+                    if (obj.IsDeleted())
+                    {
+                        selectHistory.RemoveAt(i);
+                    }
+                    else
+                    {
+                        content.newLine();
+                        RichBoxContent buttonContent = new RichBoxContent();
+                        obj.toButtonContent(buttonContent, false);
+                        content.Add(new ArtButton(RbButtonStyle.Outline,
+                            buttonContent,
+
+                            new RbAction1Arg<AbsGameObject>((AbsGameObject obj) =>
+                            {
+                                player.gameControls.selectObject(obj);
+                            }, obj)));
+                    }
                 }
             }
 
@@ -149,7 +158,7 @@ namespace VikingEngine.DSSWars.Interface
             if (faction != null)
             {
                 var content = new RichBoxContent();
-                diplomacy.toHud(content, faction, selected);
+                diplomacy.toHud(content, faction);
                 menu.Refresh(content, player.gameControls.controllerPointer);
             }
             else if (player.factionPixelTexture.HeatMap())

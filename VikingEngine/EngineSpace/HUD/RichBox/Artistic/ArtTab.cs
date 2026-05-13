@@ -75,14 +75,6 @@ namespace VikingEngine.HUD.RichBox.Artistic
             {
                 this.click = new RbAction1Arg<int>(click, index, clickSound);
             }
-            //if (enter != null)
-            //{
-            //    this.enter = new RbAction1Arg<int>(enter, index, hoverSound);
-            //}
-            //else
-            //{
-            //    this.enter = new RbSoundAction(hoverSound);
-            //}
         }
 
         public override void Create(RichBoxGroup group)
@@ -91,7 +83,6 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
         }
 
-        //public override void onEnter(
         public override void onEnter(RichMenu.RichMenu menu)
         {
             enter?.actionTrigger();
