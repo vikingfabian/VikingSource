@@ -923,7 +923,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Comunicación diplomática. Qué tan bien puedes discutir términos. 0: Términos
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Términos: {0}";
+        public override string Diplomacy_SpeakTermIs => "Términos";
 
         /// <summary>
         /// Comunicación diplomática. Mejor de lo normal.

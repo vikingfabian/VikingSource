@@ -781,7 +781,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     RichBoxContent content = new RichBoxContent();
                     MessageGroup_Ingame.Title(content, title);
-                    DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
+                    DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content, true);
                     Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, SoundLib.message_loud, true));
                 }
 

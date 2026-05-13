@@ -961,7 +961,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic communication. How well you can discuss terms. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Speaking terms: {0}";
+        public override string Diplomacy_SpeakTermIs => "Speaking terms";
 
         /// <summary>
         /// Diplomatic communication. Better than normal.

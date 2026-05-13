@@ -82,8 +82,9 @@ namespace VikingEngine.DSSWars.Interface
 
             //var diplomacy = player.GetOrCreateToPlayerDiplomacy(selected);
             //diplomacy.
+            content.newParagraph();
             DiplomacyDisplay diplomacyDisplay = new DiplomacyDisplay(player);
-            diplomacyDisplay.toHud(content, selected.faction);
+            diplomacyDisplay.toHud(content, selected.faction, false);
 
 
 

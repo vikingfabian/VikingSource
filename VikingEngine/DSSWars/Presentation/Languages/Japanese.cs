@@ -933,7 +933,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 外交的コミュニケーション。交渉の状況。0: 用語
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "交渉の状況: {0}";
+        public override string Diplomacy_SpeakTermIs => "交渉の状況";
 
         /// <summary>
         /// 外交的コミュニケーション。通常よりも良好。

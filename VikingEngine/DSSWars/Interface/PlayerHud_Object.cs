@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars.Interface
             if (faction != null)
             {
                 var content = new RichBoxContent();
-                diplomacy.toHud(content, faction);
+                diplomacy.toHud(content, faction, true);
                 menu.Refresh(content, player.gameControls.controllerPointer);
             }
             else if (player.factionPixelTexture.HeatMap())

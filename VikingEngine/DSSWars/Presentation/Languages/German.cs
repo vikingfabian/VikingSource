@@ -807,7 +807,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatische Kommunikation. Wie gut die Verhandlungen laufen. 0: Gesprächsbedingungen
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Gesprächsbedingungen: {0}";
+        public override string Diplomacy_SpeakTermIs => "Gesprächsbedingungen";
 
         /// <summary>
         /// Diplomatische Kommunikation. Besser als normal.

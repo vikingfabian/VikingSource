@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Interface
         }
 
 
-        public void toHud(RichBoxContent content, Faction botFaction)
+        public void toHud(RichBoxContent content, Faction botFaction, bool viewFactionInfo)
         {
             otherfaction = botFaction;
 
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Interface
 
             //if (selectedRelation != null)
             //{
-                FactionRelationDisplay(botFaction, selectedRelation.Relation, content);
+                FactionRelationDisplay(botFaction, selectedRelation.Relation, content, viewFactionInfo);
 
                 content.newLine();
             if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
@@ -83,7 +83,8 @@ namespace VikingEngine.DSSWars.Interface
             }
             //}
             
-            if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
+            if (player.gameControls.diplomacy != null &&
+                player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
             {
                 content.newParagraph();
                 content.h2(DssRef.lang.Diplomacy_RelationWithOthers, HudLib.TitleColor_Label);
@@ -136,7 +137,8 @@ namespace VikingEngine.DSSWars.Interface
                     content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, sec));
                 }
 
-                content.text(string.Format(DssRef.lang.Diplomacy_SpeakTermIs, Diplomacy.SpeakTermsString(selectedRelation.SpeakTerms)));
+                HudLib.LabelAndText(content,SpriteName.NO_IMAGE, DssRef.lang.Diplomacy_SpeakTermIs, Diplomacy.SpeakTermsString(selectedRelation.SpeakTerms));
+                //content.text(string.Format(DssRef.lang.Diplomacy_SpeakTermIs, Diplomacy.SpeakTermsString(selectedRelation.SpeakTerms)));
                
                 for (int i = 0; i < options.Count; ++i)
                 {
@@ -202,47 +204,49 @@ namespace VikingEngine.DSSWars.Interface
             DssRef.world.diplomacy.SetRelationType(faction1, faction2, relation);
         }
 
-        public static void FactionRelationDisplay(Faction faction, RelationType relation, RichBoxContent content)
+        public static void FactionRelationDisplay(Faction faction, RelationType relation, RichBoxContent content, bool viewFactionInfo)
         {
-            content.Add(new RbBeginTitle(1));
-            content.Add(faction.FlagTextureToHud());
-            content.space(0.5f);
-            content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
-            content.space(0.5f);
-            content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
+            if (viewFactionInfo)
+            {
+                content.Add(new RbBeginTitle(1));
+                content.Add(faction.FlagTextureToHud());
+                content.space(0.5f);
+                content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
+                content.space(0.5f);
+                content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
 
-            content.space(1);
-            content.Add(new RbText(string.Format(DssRef.lang.UnitId, faction.myIndex), HudLib.SecondaryTextColor));
+                content.space(1);
+                content.Add(new RbText(string.Format(DssRef.lang.UnitId, faction.myIndex), HudLib.SecondaryTextColor));
 
-            content.Add(new RbSeperationLine());
+                content.Add(new RbSeperationLine());
 
-            content.newLine();
+                content.newLine();
 
-            content.Add(new RbImage(SpriteName.rtsMoney));
-            content.space();
-            content.Add(new RbText(TextLib.LargeNumber(faction.money.GetGold())));
+                content.Add(new RbImage(SpriteName.rtsMoney));
+                content.space();
+                content.Add(new RbText(TextLib.LargeNumber(faction.money.GetGold())));
 
-            content.space(2);
+                content.space(2);
 
 
-            content.Add(new RbImage(SpriteName.WarsWorker));
-            content.space();
-            content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
+                content.Add(new RbImage(SpriteName.WarsWorker));
+                content.space();
+                content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
 
-            content.space(2);
+                content.space(2);
 
-            content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-            content.space();
-            content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                content.space();
+                content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
 
-            content.newParagraph();
-
+                content.newParagraph();
+            }
             if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
             {
-                var relType = new RbText(DssRef.lang.Diplomacy_RelationType + ": ");
-                relType.overrideColor = HudLib.TitleColor_TypeName;
+                var relType = new RbText(DssRef.lang.Diplomacy_RelationType + ": ", HudLib.TitleColor_Label);
                 content.Add(relType);
                 content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                content.hspace();
                 content.Add(new RbText(Diplomacy.RelationString(relation)));
             }
         }
