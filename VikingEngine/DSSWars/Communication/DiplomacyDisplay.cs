@@ -18,8 +18,7 @@ using VikingEngine.ToGG.MoonFall;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Interface
-{
-    
+{   
 
     class DiplomacyDisplay
     {
@@ -46,7 +45,7 @@ namespace VikingEngine.DSSWars.Interface
         }
 
 
-        public void toHud(RichBoxContent content, Faction botFaction, bool selection)
+        public void toHud(RichBoxContent content, Faction botFaction)
         {
             otherfaction = botFaction;
 
