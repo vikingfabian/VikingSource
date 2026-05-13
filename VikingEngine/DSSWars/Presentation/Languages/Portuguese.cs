@@ -740,7 +740,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Diplomacy_RelationType_TotalWar => "Guerra total";
 
         /// <summary>Diplomatic communication. How well you can discuss terms. 0: SpeakTerms</summary>
-        public override string Diplomacy_SpeakTermIs => "Termos de conversa: {0}";
+        public override string Diplomacy_SpeakTermIs => "Termos de conversa";
 
         /// <summary>Diplomatic communication. Better than normal.</summary>
         public override string Diplomacy_SpeakTerms_Good => "Bom";

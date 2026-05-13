@@ -927,7 +927,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Дипломатическое общение. Насколько хорошо вы можете обсуждать условия. 0: Условия обсуждения
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Условия обсуждения: {0}";
+        public override string Diplomacy_SpeakTermIs => "Условия обсуждения";
 
         /// <summary>
         /// Дипломатическое общение. Лучше обычного.

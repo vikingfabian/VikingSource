@@ -946,7 +946,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Komunikacja dyplomatyczna. Jak dobrze możecie omawiać warunki. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Stosunki dyplomatyczne: {0}";
+        public override string Diplomacy_SpeakTermIs => "Stosunki dyplomatyczne";
 
         /// <summary>
         /// Komunikacja dyplomatyczna. Lepsza niż normalnie.

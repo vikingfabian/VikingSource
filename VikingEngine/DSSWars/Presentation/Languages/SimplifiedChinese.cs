@@ -925,7 +925,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 外交沟通。你能讨论条款的程度。0：条款
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "讨论条款：{0}";
+        public override string Diplomacy_SpeakTermIs => "讨论条款";
 
         /// <summary>
         /// 外交沟通。优于正常。
