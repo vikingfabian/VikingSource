@@ -496,10 +496,6 @@ namespace VikingEngine.DSSWars.Players
             {
                 tooPeacefulCheckTimer.read(r);
             }
-            //if (subversion >= 70)
-            //{
-            //    gameControls.build.buildPriority.readGameState(r, subversion, false);
-            //}
             Debug.ReadCheck(r);
         }
 
@@ -526,10 +522,6 @@ namespace VikingEngine.DSSWars.Players
 
         public void tutorial_writeGameState(BinaryWriter w)
         {
-            //w.Write(inTutorialMode);
-            //w.Write((int)tutorialMission);
-            //w.Write(tutorialMission_BuySoldier);
-            //w.Write(tutorialMission_MoveArmy);
             if (tutorial != null)
             {
                 w.Write(true);
@@ -558,10 +550,6 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
         }
-        //public void factionTabClick(int tab)
-        //{
-        //    factionTab = PlayerHud_Head.Tabs[tab];
-        //}
         public void cityTabClick(int tab)
         {
             cityTab = AvailableCityTabs()[tab];
@@ -640,9 +628,7 @@ namespace VikingEngine.DSSWars.Players
                 IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                 var mainArmy = faction.NewArmy(onTile);
                 mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_SpecializeTradition);
-                //mainArmy.tagBack = CityTagBack.Blue;
-                //mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
-
+                
                 for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
                 {
                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
@@ -652,9 +638,6 @@ namespace VikingEngine.DSSWars.Players
                 {
                     int guardCount = MathExt.MultiplyInt(12, unitCountMulti);
 
-                    //var citiesC = faction.cities.counter();
-                    //while (citiesC.Next())
-                    //{
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
@@ -686,17 +669,10 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-
-
-
-
         void refreshNeihgborAggression()
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                //var citiesC = faction.cities.counter();
-                //while (citiesC.Next())
-                //{
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                 {
@@ -714,51 +690,21 @@ namespace VikingEngine.DSSWars.Players
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
                 EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
+                while (neighbors.Next(DssRef.world.cities, out City nCity))
                 {
                     nCity.GetPlayer()?.onPlayerNeighborCapture(this);
                 }
             }
-
-            //if (faction.cities.Count >= DssRef.world.cities.Count - 5)
-            //{
-            //    DssRef.state.events.onWorldDomination();
-            //}
         }
-
-        //public void enterBattle(Battle.BattleGroup battleGroup, AbsMapObject playerUnit)
-        //{
-        //    battles.Add(battleGroup);
-        //    RichBoxContent content = new RichBoxContent();
-        //    hud.messages.Title(content, DssRef.lang.Hud_Battle);
-
-        //    var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-        //    hud.messages.ControllerInputIcons(gotoBattleButtonContent);
-        //    gotoBattleButtonContent.Add(new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()));
-
-        //    content.Add(new RichboxButton(gotoBattleButtonContent,
-        //        new RbAction1Arg<Battle.BattleGroup>(goToBattle, battleGroup)));
-        //    hud.messages.Add(content);
-        //}
-
-        //void goToBattle(Battle.BattleGroup battleGroup)
-        //{
-        //    mapControls.cameraFocus = battleGroup;
-        //}
 
         public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
             base.onNewRelation(otherFaction, rel, previousRelation, localAction);
 
-            //if (rel.Relation == RelationType.RelationType3_Ally)
-            //{
-            //    DssRef.achieve.onAlly(faction, otherFaction);
-            //}
-
             if ((rel.Relation <= RelationType.RelationTypeN3_War &&
                 otherFaction.factiontype != FactionType.SouthHara)
                 ||
-                otherFaction.player.IsLocalPlayer())
+                otherFaction.player.IsHumanPlayer())
             {
 
                 if (rel.Relation >= RelationType.RelationType2_Good)
@@ -788,25 +734,8 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        //public void loadedAndReady()
-        //{ }
-
-        //override public void Update()
-        //{
-        //    if (tutorial != null)
-        //    {
-        //        tutorial.update();
-        //    }
-        //}
-
-
         public void userUpdate(bool cityUpdate)
         {
-
-            //if (tutorial != null)
-            //{
-            //    tutorial.update();
-            //}
 
 #if DEBUG
             if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
