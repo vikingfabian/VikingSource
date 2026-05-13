@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.Communication
 {
@@ -33,6 +34,31 @@ namespace VikingEngine.DSSWars.Communication
             //factionIndex = r.ReadUInt16();
             suggestedRelation = (RelationType)r.ReadInt16();
             suggestedBy = r.ReadUInt16();
+        }
+
+        public void writeNet(BinaryWriter w)
+        {
+            w.Write(suggestingNewRelation);
+
+            if (suggestingNewRelation)
+            {
+                //w.Write((short)factionIndex);
+                w.Write((short)suggestedRelation);
+                //w.Write((ushort)suggestedBy);
+            }
+        }
+
+        public void readNet(BinaryReader r, AbsHumanPlayer fromPlayer)
+        {
+            suggestingNewRelation = r.ReadBoolean();
+
+            if (suggestingNewRelation)
+            {
+                //factionIndex = r.ReadUInt16();
+                suggestedRelation = (RelationType)r.ReadInt16();
+            }
+            //suggestedBy = r.ReadUInt16();
+            suggestedBy = fromPlayer.faction.myIndex;
         }
     }
 }

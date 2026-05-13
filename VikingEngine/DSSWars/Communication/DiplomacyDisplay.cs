@@ -63,9 +63,10 @@ namespace VikingEngine.DSSWars.Interface
 
             //if (selectedRelation != null)
             //{
-                FactionRelationDisplay(botFaction, selectedRelation.Relation, content, viewFactionInfo);
+            FactionRelationDisplay(botFaction, selectedRelation.Relation, content, viewFactionInfo);
 
-                content.newLine();
+            content.newLine();
+
             if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
             {
                 if (otherfaction.player.IsBot())
@@ -208,19 +209,22 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (viewFactionInfo)
             {
-                content.Add(new RbBeginTitle(1));
-                content.Add(faction.FlagTextureToHud());
-                content.space(0.5f);
-                content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
-                content.space(0.5f);
-                content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
+                if (faction.player != null)
+                {
+                    content.Add(new RbBeginTitle(1));
+                    content.Add(faction.FlagTextureToHud());
+                    content.space(0.5f);
+                    content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
+                    content.space(0.5f);
+                    content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
 
-                content.space(1);
-                content.Add(new RbText(string.Format(DssRef.lang.UnitId, faction.myIndex), HudLib.SecondaryTextColor));
+                    content.space(1);
+                    content.Add(new RbText(string.Format(DssRef.lang.UnitId, faction.myIndex), HudLib.SecondaryTextColor));
 
-                content.Add(new RbSeperationLine());
+                    content.Add(new RbSeperationLine());
 
-                content.newLine();
+                    content.newLine();
+                }
 
                 content.Add(new RbImage(SpriteName.rtsMoney));
                 content.space();
@@ -295,6 +299,7 @@ namespace VikingEngine.DSSWars.Interface
             if (PtoP.suggestingNewRelation)
             {
                 content.Add(new RbImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
+                content.hspace();
                 content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_NewRelationOffered, Diplomacy.RelationString(PtoP.suggestedRelation))));
                 content.newLine();
 
@@ -344,8 +349,8 @@ namespace VikingEngine.DSSWars.Interface
 
         void offerToPlayerGoodRelation()
         {
-            var otherPlayer = otherfaction.player.GetHumanPlayer();
-            var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
+            AbsHumanPlayer otherPlayer = otherfaction.player.GetHumanPlayer();
+            PlayerToPlayerDiplomacy PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = true;
 
@@ -377,32 +382,42 @@ namespace VikingEngine.DSSWars.Interface
                 //    acceptButtonContent,
                 //    new RbAction(acceptToPlayerRelation)));
 
-                allianceOfferedDisplay(otherPlayer.GetLocalPlayer(), PtoP);
+                allianceOfferedDisplay(player, otherPlayer.GetLocalPlayer(), PtoP);
                 // otherPlayer.GetLocalPlayer().hud.messages.Add(message, SoundLib.netMessage);
             }
             else
             {
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
-                     Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
-                PtoP.writeGameState(w);
+                //var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
+                //     Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
+                //PtoP.writeNet(w);
+                netSendP2p(PtoP, otherPlayer);
             }
+        }
+
+        void netSendP2p(PlayerToPlayerDiplomacy PtoP, AbsHumanPlayer otherPlayer)
+        {
+            var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
+                     Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
+            PtoP.writeNet(w);
         }
 
         public void netReadP2pRelation(System.IO.BinaryReader r, AbsHumanPlayer fromPlayer)
         {
             PlayerToPlayerDiplomacy PtoP = player.GetOrCreateToPlayerDiplomacy(fromPlayer);
-            PtoP.readGameState(r, int.MaxValue);
+            PtoP.readNet(r, fromPlayer);
 
-            allianceOfferedDisplay(player, PtoP);
+            if (PtoP.suggestingNewRelation)
+            {
+                allianceOfferedDisplay(fromPlayer, player, PtoP);
+            }
         }
 
 
 
-        void allianceOfferedDisplay(LocalPlayer recievingPlayer, PlayerToPlayerDiplomacy PtoP)
-        {
-            
+        void allianceOfferedDisplay(AbsHumanPlayer sending, LocalPlayer recieving, PlayerToPlayerDiplomacy PtoP)
+        {            
             var message = new RichBoxContent();
-            message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, player.Name));
+            message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, sending.Name));
             message.newLine();
             message.Add(new RbImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
             message.Add(new RbText(Diplomacy.RelationString(PtoP.suggestedRelation)));
@@ -415,9 +430,7 @@ namespace VikingEngine.DSSWars.Interface
                 acceptButtonContent,
                 new RbAction(acceptToPlayerRelation)));
 
-
-            recievingPlayer.hud.messages.Add(message, SoundLib.netMessage);
-            
+            recieving.hud.messages.Add(message, SoundLib.netMessage);            
         }
 
         void acceptToPlayerRelation()
@@ -439,6 +452,11 @@ namespace VikingEngine.DSSWars.Interface
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = false;
+
+            if (otherPlayer.IsRemotePlayer())
+            { 
+                netSendP2p(PtoP, otherPlayer);
+            }
         }
 
         void extendTruceAction()
