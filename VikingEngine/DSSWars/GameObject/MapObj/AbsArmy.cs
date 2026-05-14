@@ -76,6 +76,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             w.Write((ushort)group.myIndex);
             group.writeNet(w);
+
+            Debug.WriteCheck(w);
         }
 
         public static bool NetReadGroup(System.IO.BinaryReader r, AbsArmy army)
@@ -106,12 +108,16 @@ namespace VikingEngine.DSSWars.GameObject
 
                 group.readNet(army, r, needInit);
                 group.net_onUpdate();
+
+                Debug.ReadCheck(r);
                 return true;
             }
             else
             {
                 return false;
             }
+
+            
         }
 
         virtual public void remove(SoldierGroup group)
