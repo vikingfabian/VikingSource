@@ -403,6 +403,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void netReadP2pRelation(System.IO.BinaryReader r, AbsHumanPlayer fromPlayer)
         {
+            otherfaction = fromPlayer.faction;
             PlayerToPlayerDiplomacy PtoP = player.GetOrCreateToPlayerDiplomacy(fromPlayer);
             PtoP.readNet(r, fromPlayer);
 

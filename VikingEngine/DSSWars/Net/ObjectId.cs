@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.Net
                     army.init(faction, unitIx);
                     needInit = true;
                 }
-                army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
+                army.IsNetHosted = DssRef.state.host || (faction.player != null && faction.player.IsLocalPlayer());
                 mapObj = army;
 
 #if DEBUG
