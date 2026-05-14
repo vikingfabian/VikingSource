@@ -228,10 +228,10 @@ namespace VikingEngine.DSSWars.GameState
                     var factions = DssRef.world.factions.counter();
                     while (factions.Next())
                     {
-                        if (factions.sel.IsNetHosted())
-                        {
+                        //if (factions.sel.IsNetHosted())
+                        //{
                             factions.sel.asynchSleepObjectsUpdate(time);
-                        }
+                        //}
                     }
 
 

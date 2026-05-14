@@ -701,36 +701,39 @@ namespace VikingEngine.DSSWars.Players
         {
             base.onNewRelation(otherFaction, rel, previousRelation, localAction);
 
-            if ((rel.Relation <= RelationType.RelationTypeN3_War &&
-                otherFaction.factiontype != FactionType.SouthHara)
-                ||
-                otherFaction.player.IsHumanPlayer())
+            if (otherFaction.player != null)
             {
+                if ((rel.Relation <= RelationType.RelationTypeN3_War &&
+                    otherFaction.factiontype != FactionType.SouthHara)
+                    ||
+                    otherFaction.player.IsHumanPlayer())
+                {
 
-                if (rel.Relation >= RelationType.RelationType2_Good)
-                {
-                    message(DssRef.lang.Diplomacy_RelationType);
-                }
-                else if (rel.Relation <= RelationType.RelationTypeN3_War)
-                {
-                    if (previousRelation == RelationType.RelationTypeN2_Truce)
+                    if (rel.Relation >= RelationType.RelationType2_Good)
                     {
-                        message(DssRef.lang.Diplomacy_TruceEndTitle);
+                        message(DssRef.lang.Diplomacy_RelationType);
                     }
-                    else
+                    else if (rel.Relation <= RelationType.RelationTypeN3_War)
                     {
-                        message(DssRef.lang.Diplomacy_WarDeclarationTitle);
-                        Ref.music.OnGameEvent();
+                        if (previousRelation == RelationType.RelationTypeN2_Truce)
+                        {
+                            message(DssRef.lang.Diplomacy_TruceEndTitle);
+                        }
+                        else
+                        {
+                            message(DssRef.lang.Diplomacy_WarDeclarationTitle);
+                            Ref.music.OnGameEvent();
+                        }
                     }
-                }
-                void message(string title)
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    MessageGroup_Ingame.Title(content, title);
-                    DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content, true);
-                    Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, SoundLib.message_loud, true));
-                }
+                    void message(string title)
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        MessageGroup_Ingame.Title(content, title);
+                        DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content, true);
+                        Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, SoundLib.message_loud, true));
+                    }
 
+                }
             }
         }
 

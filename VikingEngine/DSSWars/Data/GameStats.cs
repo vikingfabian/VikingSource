@@ -148,6 +148,7 @@ namespace VikingEngine.DSSWars.Data
                     completeDemo,
             #else
                     startNewStory,
+                    startNewQuickBoss,
                     startQuickMatch,
                     startnew_casual,
                     startNewSandbox,

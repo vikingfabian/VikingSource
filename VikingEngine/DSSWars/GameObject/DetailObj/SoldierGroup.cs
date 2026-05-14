@@ -332,6 +332,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
                         {
                             goalWp = newGoalWp;
+                            armyPlacementWp = goalWp;
                         }
                     }
                     break;

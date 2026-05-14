@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars
                     var remoteC = remotePlayers.counter();
                     while (remoteC.Next())
                     {
-                        if (remoteC.sel.networkPeer.peer != handoverPlayer &&
+                        if ((remotePlayers.Count <= 2 || remoteC.sel.networkPeer.peer != handoverPlayer) &&
                             remoteC.sel.ready &&
                             remoteC.sel.networkPeer.peer.lowPotensialLoad(0.5f))
                         {

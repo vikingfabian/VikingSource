@@ -219,7 +219,8 @@ namespace VikingEngine.DSSWars.Map
                             var soldiersC = soldiers_sp.counter();
                             while (soldiersC.Next() && soldiersC.sel.tilePos == tilePos)
                             {
-                                soldiersC.sel.updateGroudY(true);
+                                new Timer.TimedAction1ArgTrigger<bool>(soldiersC.sel.updateGroudY, true, 3000); 
+                                //soldiersC.sel.updateGroudY(true);
                             }
                         }
                     }

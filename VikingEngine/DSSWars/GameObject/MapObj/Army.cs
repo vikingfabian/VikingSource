@@ -57,8 +57,6 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierUpkeep totalUpkeep = new SoldierUpkeep();
         public int missingUpkeepSeconds = 0;
         public float foodBuffer_minutes = 2f;
-        //public float friendlyAreaFoodBuffer_minutes = 3f;
-        //public float friendlyAreaConservedFoodBuffer_minutes = 6f;
 
         public MinuteStats foodCosts_import = new MinuteStats();
         public MinuteStats foodCosts_blackmarket = new MinuteStats();
@@ -759,6 +757,8 @@ namespace VikingEngine.DSSWars.GameObject
             //        setInRenderState();
             //    }
             //}
+            updateArmyMovement(Ref.DeltaGameTimeMs);
+
             updateDetailLevel();
             if (inRender_detailLayer)
             {
@@ -837,7 +837,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void updateArmyMembers(float time, bool fullUpdate)
         {
-            if (debugTagged || id == -1 || IsNetHosted)
+            if (fullUpdate)
             {
                 lib.DoNothing();
             }
@@ -1076,7 +1076,6 @@ namespace VikingEngine.DSSWars.GameObject
                 army_isIdle = allGropsAreIdle && IdleObjetive();
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
-                //this.strengthValue = count;
                 soldiersCount = count;
 
                 //Endbart ändra när arme är i rörelse, måste följa center person
@@ -1109,8 +1108,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchGameObjectsUpdate(float time, bool oneMinute)
         {
-            
-
             async_SoldiersUpdate(time, oneMinute);
 
             if (IsNetHosted)
@@ -1166,41 +1163,49 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (!inRender_detailLayer)
             {
-                if (objective == ArmyObjective.TeleportAttack)
+                if (IsNetHosted)
                 {
-                    //Wait to jump
-                    if (DssRef.state.culling.outsidePlayerAttension(tilePos))
+                    if (objective == ArmyObjective.TeleportAttack)
                     {
-                        if (Ref.TotalGameTimeSec >= teleportTime)
+                        //Wait to jump
+                        if (DssRef.state.culling.outsidePlayerAttension(tilePos))
                         {
-                            Ai_Finalize_Attack();
+                            if (Ref.TotalGameTimeSec >= teleportTime)
+                            {
+                                Ai_Finalize_Attack();
+                            }
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
 
-                        //Cancel
-                        Order_Attack(attackTarget);
+                            //Cancel
+                            Order_Attack(attackTarget);
+                        }
                     }
-                }
-                else if (objective == ArmyObjective.TeleportMove)
-                {
-                    //Wait to jump
-                    if (DssRef.state.culling.outsidePlayerAttension(tilePos))
+                    else if (objective == ArmyObjective.TeleportMove)
                     {
-                        if (Ref.TotalGameTimeSec >= teleportTime)
+                        //Wait to jump
+                        if (DssRef.state.culling.outsidePlayerAttension(tilePos))
                         {
-                            Ai_Finalize_Move();
+                            if (Ref.TotalGameTimeSec >= teleportTime)
+                            {
+                                Ai_Finalize_Move();
+                            }
+                        }
+                        else
+                        {
+                            //Cancel
+                            Order_MoveTo(walkGoal);
                         }
                     }
                     else
                     {
-                        //Cancel
-                        Order_MoveTo(walkGoal);
+                        updateArmyMembers(time * Ref.GameTimeSpeed, false);
                     }
                 }
                 else
                 {
+                    //Net client update
                     updateArmyMembers(time * Ref.GameTimeSpeed, false);
                 }
             }
@@ -1270,15 +1275,6 @@ namespace VikingEngine.DSSWars.GameObject
         public void setWalkNode(IntVector2 nextNodeTilePos, bool finalNode,
             bool nextIsFootTransform, bool nextIsShipTransform)
         {
-            //if (battleGroup != null)
-            //{
-            //    return;
-            //}
-
-            //if (id == 786)
-            //{ 
-            //    lib.DoNothing();
-            //}
             Vector2 diff = WP.ToWorldPosXZ(nextNodeTilePos);
             diff.X -= position.X;
             diff.Y -= position.Z;
@@ -1288,16 +1284,8 @@ namespace VikingEngine.DSSWars.GameObject
             nextNodePos = nextNodeTilePos;
 
             refreshGroupPlacements2(nextNodeTilePos, false, false, false);
-
-            
-            //var groupsC = groups.counter();
-            //while (groupsC.Next())
-            //{
-            //    groupsC.sel.setWalkNode(area, nextIsFootTransform, nextIsShipTransform);                
-            //}
         }
 
-        //public override void setFaction(Faction faction)
         public override void setFaction(Faction newFaction, bool duringStartup, bool convert, bool netShare)
         {
             base.setFaction(newFaction, duringStartup, false, netShare);

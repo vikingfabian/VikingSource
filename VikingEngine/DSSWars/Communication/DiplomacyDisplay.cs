@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
                             new RbText(Ref.langOpt.Hud_Cancel),
                         },
-                        new RbAction(cancelToPlayerRelation, RbSoundType.Stop)));
+                        new RbAction1Arg<AbsHumanPlayer>(cancelToPlayerRelation, otherPlayer, RbSoundType.Stop)));
                 }
                 else
                 {
@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
                             new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer),
                         },
-                       new RbAction(acceptToPlayerRelation, RbSoundType.Buy)));
+                       new RbAction1Arg<AbsHumanPlayer>(acceptToPlayerRelation, otherPlayer, RbSoundType.Buy)));
                 }
             }
             else
@@ -412,14 +412,13 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-
-
         void allianceOfferedDisplay(AbsHumanPlayer sending, LocalPlayer recieving, PlayerToPlayerDiplomacy PtoP)
         {            
             var message = new RichBoxContent();
             message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, sending.Name));
             message.newLine();
             message.Add(new RbImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
+            message.hspace();
             message.Add(new RbText(Diplomacy.RelationString(PtoP.suggestedRelation)));
             message.newLine();
 
@@ -428,27 +427,27 @@ namespace VikingEngine.DSSWars.Interface
             acceptButtonContent.Add(new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer));
             message.Add(new ArtButton(RbButtonStyle.Primary,
                 acceptButtonContent,
-                new RbAction(acceptToPlayerRelation)));
+                new RbAction1Arg<AbsHumanPlayer>(acceptToPlayerRelation, sending)));
 
             recieving.hud.messages.Add(message, SoundLib.netMessage);            
         }
 
-        void acceptToPlayerRelation()
+        void acceptToPlayerRelation(AbsHumanPlayer otherPlayer)
         {
-            var otherPlayer = otherfaction.player.GetHumanPlayer();
+            //var otherPlayer = otherPlayer.GetHumanPlayer();
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             if (PtoP.suggestingNewRelation)
             { 
-                DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, PtoP.suggestedRelation);
+                DssRef.world.diplomacy.SetRelationType(player.faction, otherPlayer.faction, PtoP.suggestedRelation);
             }
 
             PtoP.suggestingNewRelation = false;
         }
 
-        void cancelToPlayerRelation()
+        void cancelToPlayerRelation(AbsHumanPlayer otherPlayer)
         {
-            var otherPlayer = otherfaction.player.GetHumanPlayer();
+            //var otherPlayer = otherfaction.player.GetHumanPlayer();
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = false;
