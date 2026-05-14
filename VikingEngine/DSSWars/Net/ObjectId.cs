@@ -152,9 +152,16 @@ namespace VikingEngine.DSSWars.Net
                     army.init(faction, unitIx);
                     needInit = true;
                 }
-                army.IsNetHosted = DssRef.state.host || (faction.player != null && faction.player.IsLocalPlayer());
-                mapObj = army;
 
+                if (DssRef.state.host)
+                {
+                    army.IsNetHosted = faction.player.IsLocal;
+                }
+                else
+                {
+                    army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
+                }
+                mapObj = army;
 #if DEBUG
                 Debug.Log($"NET read army ({army.myIndex}), faction ({faction.PlayerName}), army count: {faction.armies.Count}");
 #endif
