@@ -27,7 +27,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 37;
+        const int Version = 38;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -50,7 +50,7 @@ namespace VikingEngine
         public bool customCursor = false;
         public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
-        public Network.BannedPeers bannedPeers = new Network.BannedPeers();
+        
         public bool graphicsHasChanged = false;
         public bool settingsHasChanged = false;
         public bool shaderHasChanged = false;
@@ -140,7 +140,7 @@ namespace VikingEngine
             controllerMap.write(w);
             keyboardMap.write(w);
             
-            bannedPeers.write(w);
+            //bannedPeers.write(w);
             w.Write(ModelLightShaderEffect);
 
             w.Write(MasterVolume);
@@ -226,8 +226,11 @@ namespace VikingEngine
             controllerMap.read(r);
             keyboardMap.read(r);
 
-
-            bannedPeers.read(r, version);
+            if (version < 38)
+            {
+                new BannedPeers().read(r, version);
+            }
+            //bannedPeers.read(r, version);
 
             ModelLightShaderEffect = r.ReadBoolean();
 

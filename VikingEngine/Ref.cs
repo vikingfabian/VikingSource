@@ -25,7 +25,7 @@ namespace VikingEngine
         public static MainGame main;
         public static Sound.SoundManager sound;
         public static GameSettings gamesett;
-        public static NetworkSettings netsett;
+        public static Network.NetworkSettings netsett;
         public static VikingEngine.SteamWrapping.SteamManager steam;
         //public static DataLib.Language language;
         public static AbsOptionsLanguage langOpt;                                                                                                                                                               

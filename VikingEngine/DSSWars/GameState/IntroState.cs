@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars
             part++;
             UserGeneratedContent.UGClib.GameContentInit();
             part++;
-            bgTex = LobbyState.LoadBg();
+            bgTex = MainMenuState.LoadBg();
             part++;
         }
 
@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars
 
         protected override void asyncLoading_OnRestart(ref int part)
         {
-            bgTex = LobbyState.LoadBg();
+            bgTex = MainMenuState.LoadBg();
             part++;
         }
 
@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars
                 //}
 #endif
 
-                new LobbyState(bgTex);
+                new MainMenuState(bgTex);
             }
         }
 

@@ -19,10 +19,13 @@ namespace VikingEngine.Network
         void NetEvent_PingReturned(Network.AbsNetworkPeer gamer);
         void NetEvent_ConnectionLost(string reason);
         void NetEvent_SessionsFound(
-            List<AbsAvailableSession> availableSessions, 
-            List<AbsAvailableSession> prevAvailableSessionsList);
+            List<AbsAvailableSession> availableSessions);
+            //, 
+            //List<AbsAvailableSession> prevAvailableSessionsList);
 
         void NetEvent_LargePacket(Network.ReceivedPacket packet);
+
+        AbsLobbyMetaData NetEvent_StartLobbyMetaData();
     }
 
     enum NetLobbyState
@@ -260,11 +263,12 @@ namespace VikingEngine.Network
             state = NetLobbyState.Offline;
         }
         virtual public void NetEvent_SessionsFound(
-            List<AbsAvailableSession> availableSessions, 
-            List<AbsAvailableSession> prevAvailableSessionsList)
+            List<AbsAvailableSession> availableSessions)
+            //, 
+            //List<AbsAvailableSession> prevAvailableSessionsList)
         {
             updateTimer.Seconds = SearchTimerSec;
-            Ref.gamestate.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
+            Ref.gamestate.NetEvent_SessionsFound(availableSessions/*, prevAvailableSessionsList*/);
         }
 
         protected void filterNewAndOldLobbies(
@@ -320,6 +324,11 @@ namespace VikingEngine.Network
         { }
 
         virtual protected void onEndedSession()
-        { }  
+        { }
+
+        virtual public AbsLobbyMetaData NetEvent_StartLobbyMetaData() 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

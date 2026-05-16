@@ -179,7 +179,7 @@ namespace VikingEngine
             mainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif
             var sett = new GameSettings();
-            new NetworkSettings();
+            new Network.NetworkSettings();
 
             if (PlatformSettings.PC_platform)
             {

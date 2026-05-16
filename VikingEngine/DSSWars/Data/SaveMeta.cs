@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value) 
         {
-            ((LobbyState)Ref.gamestate).continueFromSave(this);
+            ((MainMenuState)Ref.gamestate).continueFromSave(this);
         }
 
         public void readMetaOnly(System.IO.BinaryReader r)

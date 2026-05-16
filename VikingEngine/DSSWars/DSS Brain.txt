@@ -1,7 +1,10 @@
 
 ## MULTIPLAYER UPDATE ##
 * Remade the player join map algo
+
 x can send resources to allies
+x city handover on capture
+
 
 x new keys mapping
 x new steam input

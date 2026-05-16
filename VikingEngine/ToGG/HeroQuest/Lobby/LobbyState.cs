@@ -192,10 +192,10 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
 
         void removePlayerOk(AbsNetworkPeer peer, bool ban)
         {
-            if (ban)
-            {
-                Ref.gamesett.bannedPeers.add(peer);                
-            }
+            //if (ban)
+            //{
+            //    Ref.gamesett.bannedPeers.add(peer);                
+            //}
 
             Ref.netSession.kickFromNetwork(peer);
 

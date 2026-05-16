@@ -6,15 +6,22 @@ namespace VikingEngine.Network
 {
     abstract class AbsAvailableSession
     {
+        public bool IsAvailable = true;
+
         public ulong lobbyId;
         public ulong lobbyHost;
-        public string name;
+        //public string name;
         public bool friend = false;
-        public LobbyPublicity publicity;
+        //public LobbyPublicity publicity;
+        public AbsLobbyMetaData metaData;
 
         public AbsAvailableSession(ulong available)
         {
             this.lobbyId = available;
+
+#if DSS
+            metaData = new VikingEngine.DSSWars.Net.LobbyMetaData();
+#endif
         }
 
         abstract public bool refreshAvailable();
@@ -28,7 +35,7 @@ namespace VikingEngine.Network
 
         public string hostName
         {
-            get { return name; }
+            get { return metaData.name; }
         }
 
         public override bool Equals(object obj)

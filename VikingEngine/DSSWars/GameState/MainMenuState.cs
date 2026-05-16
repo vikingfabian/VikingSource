@@ -9,6 +9,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -42,7 +43,7 @@ using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars
 {
-    class LobbyState : AbsDssState
+    class MainMenuState : AbsDssState
     {
         static bool FirstTimeLoad = true;
         Interface.MenuSystem menuSystem;
@@ -65,7 +66,7 @@ namespace VikingEngine.DSSWars
         const float MenuBgOpacity = 0.9f;
         const float ButtonTextTabbing = 0.15f;
 
-        RichMenu topMenu, underMenu, reportsMenu;
+        RichMenu topMenu, underMenu, networkMenu, reportsMenu;
 
 
         const string UnderMenu_NewGame = "newgame";
@@ -88,7 +89,7 @@ namespace VikingEngine.DSSWars
         SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
         SaveStateMeta loadGame = null;
         MessageGroup_Editor messages;
-        public LobbyState(Texture2D bgTex, bool startLoadingMap = true)
+        public MainMenuState(Texture2D bgTex, bool startLoadingMap = true)
             : base()
         {
             DssRef.storage.profileStorage.refreshProfiles();
@@ -605,6 +606,48 @@ namespace VikingEngine.DSSWars
             underMenu.OpenMenu(menuName, stack);
         }
 
+        void openNetWorkMenu()
+        {
+            if (networkMenu == null)
+            {
+                var area = new VectorRect(Engine.Screen.SafeArea.Right, Engine.Screen.SafeArea.Y, Screen.IconSize * 6, Engine.Screen.SafeArea.Height);
+                area.X -= area.Width;
+                networkMenu = new RichMenu(HudLib.RbSettings, area, new Vector2(0), new Vector2(0), ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
+            }
+        }
+
+        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
+        {
+            base.NetEvent_SessionsFound(availableSessions);
+            openNetWorkMenu();
+
+            RichBoxContent content = new RichBoxContent();
+            foreach (var session in availableSessions)
+            {
+                content.newLine();
+
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbBeginTitle(1),
+                    new RbText(".Join game", HudLib.TitleColor_Head),
+
+                    new RbNewLine(),
+                    new RbText(session.hostName, HudLib.TitleColor_Name),
+                }, new RbAction1Arg<AbsAvailableSession>((AbsAvailableSession session) =>
+                {
+                    Ref.lobby.lockSession();
+                    new Net.ConnectState(session);
+                }, session)));
+                    //    if (m.Update())
+                    //    {
+                    //        //connect
+                    //        lockSession();
+                    //        new ConnectState(m.session);
+                    //        return;
+            }
+
+            networkMenu.Refresh(content);
+        }
+
 
         void collectReports()
         {
@@ -665,7 +708,7 @@ namespace VikingEngine.DSSWars
             if (Ref.gamesett.graphicsHasChanged)
             {
                 Ref.gamesett.graphicsHasChanged = false;
-                new LobbyState(bgTex);
+                new MainMenuState(bgTex);
             }
         }
 
@@ -2477,7 +2520,7 @@ namespace VikingEngine.DSSWars
         {
             base.OnResolutionChange();
             Ref.gamesett.Save();
-            new LobbyState(bgTex).openUnderMenu(UnderMenu_Options, StackOption.ClearStack);
+            new MainMenuState(bgTex).openUnderMenu(UnderMenu_Options, StackOption.ClearStack);
         }
         public override void LostFocus()
         {

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.EngineSpace;
 using VikingEngine.Network;
 
-namespace VikingEngine
+namespace VikingEngine.Network
 {
     class NetworkSettings
     {
@@ -26,6 +27,25 @@ namespace VikingEngine
         /// Distance between players
         /// </summary>
         public int PlayerSpacing = 0;
+
+        StructList<StoredNetworkGamer> storedGamers = new StructList<StoredNetworkGamer>(8);
+
+        public StoredNetworkGamer getStoredGamer(ulong id)
+        {
+            for (int i = 0; i < storedGamers.Count; i++)
+            {
+                if (storedGamers.array[i].id == id)
+                { 
+                    return storedGamers.array[i];
+                }
+            }
+
+            StoredNetworkGamer gamer = new StoredNetworkGamer(id);
+            gamer.index = storedGamers.Count;
+            storedGamers.Add(gamer);
+
+            return gamer;
+        }
 
         public NetworkSettings()
         {

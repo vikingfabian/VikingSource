@@ -180,9 +180,9 @@ namespace VikingEngine.ToGG.GameState
         //    }
         //}
 
-        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions, List<AbsAvailableSession> prevAvailableSessionsList)
+        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
         {
-            base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
+            base.NetEvent_SessionsFound(availableSessions);
 
             if (arraylib.HasMembers( availableSessions))
             {
