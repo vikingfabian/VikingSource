@@ -186,7 +186,7 @@ namespace VikingEngine.Network
         DssAttackDamage,
         DssSoldierDeath,
 
-        
+        DssDeleteArmy,
         //LF2_WorldOverview,
         //LF2_StartAttack,
         //LF2_MapFlag,

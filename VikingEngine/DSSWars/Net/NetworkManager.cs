@@ -364,7 +364,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssSetCityFaction:
-
+                    City.NetReadSetFaction(packet.r);
                     break;
                 
                 case PacketType.DssArmyStatus:
@@ -402,7 +402,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssEnterBattle:
-                    ObjectId.ReadSoldierGroup(packet.r, out _)?.enterBattleState(true, false);
+                    ObjectId.ReadSoldierGroup(packet.r, true, out _)?.enterBattleState(true, false);
                     break;
 
                 case PacketType.DssAttackDamage:
@@ -417,11 +417,18 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
+                case PacketType.DssDeleteArmy:
+                    if (ObjectId.NetReadMapObjId(packet.r, out _, true, false, out var army, out _))
+                    { 
+                        army.DeleteMe(DeleteReason.NetworkEvent, true);
+                    }
+                    break;
+
             }
 
             void readGroupStatus(bool bArmy)
             {
-                if (ObjectId.NetReadMapObjId(packet.r, out Faction faction, bArmy, out AbsArmy mapObj, out bool needInit))
+                if (ObjectId.NetReadMapObjId(packet.r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
                 {
                     if (mapObj != null)
                     {
@@ -477,8 +484,6 @@ namespace VikingEngine.DSSWars
         {
             //doesnt run
             base.NetEvent_GotNetworkId();
-
-
         }
 
         public override void NetworkStatusMessage(NetworkStatusMessage message)

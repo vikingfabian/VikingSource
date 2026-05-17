@@ -94,12 +94,13 @@ namespace VikingEngine.DSSWars.Net
                         {
                             //city.net_handover();
 
-                            DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
-                            var w = cityData.GetWriter();
-                            City.NetWriteHandover(w, city);
+                            //DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
+                            //var w = cityData.GetWriter();
+                            //City.NetWriteHandover(w, city);
 
-                            largeWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
-                            largeWriter.begin();
+                            //largeWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
+                            //largeWriter.begin();
+                            largeWriter = City.NetWriteHandoverPacket(peer, city);
                         }
                         else
                         {

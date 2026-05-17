@@ -281,6 +281,10 @@ namespace VikingEngine
         {
             return Convert.ToInt32(percent * 100).ToString() + "%";
         }
+        public static string PercentTextWithSymbol(int percent)
+        {
+            return percent.ToString() + "%";
+        }
         public static string PercentText(float percent)
         {
             return Convert.ToInt32(percent * 100).ToString();

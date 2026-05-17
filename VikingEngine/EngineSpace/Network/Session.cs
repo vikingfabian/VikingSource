@@ -499,9 +499,9 @@ namespace VikingEngine.Network
     enum PacketReliability
     {
         Reliable,
-        ReliableLasy,
+        //ReliableLasy,
         Unrelyable,
-        Chat,
+        //Chat,
         NUM
     }
 }

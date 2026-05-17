@@ -117,6 +117,28 @@ namespace VikingEngine.DSSWars
         {
             return player != null && ((Ref.netSession.IsHost && player.IsLocal) || player.IsLocalPlayer());
         }
+
+        public AbsNetworkPeer HostingPeer()
+        {
+            if (player == null)
+            {
+                return Ref.netSession.Host();
+            }
+
+            if (player.IsHumanPlayer())
+            {
+                return player.GetHumanPlayer().networkPeer.peer;
+            }
+
+            if (DssRef.state.host)
+            {
+                return Ref.netSession.LocalPeer();
+            }
+            else
+            {
+                return Ref.netSession.Host();
+            }
+        }
         //public void initClient(WorldData world)
         //{
         //    initDiplomacy(world);

@@ -1222,6 +1222,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
         {
+            if (IsNetHosted)
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssDeleteArmy, Network.PacketReliability.Reliable);
+                Net.ObjectId.NetWriteMapObjId(w, this);
+
+            }
+
             isDeleted = true;
             Debug.CrashIfThreaded();
 

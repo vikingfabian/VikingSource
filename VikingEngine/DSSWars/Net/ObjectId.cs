@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Net
             int soldierIx = r.ReadByte();
             if (soldierIx < byte.MaxValue)
             {
-                var group = ReadSoldierGroup(r, out mapObj);
+                var group = ReadSoldierGroup(r, true, out mapObj);
                 if (group != null)
                 {
                     var soldiers_sp = group.soldiers;
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Net
             int soldierIx = r.ReadByte();
             if (soldierIx < byte.MaxValue)
             {
-                var group = ReadSoldierGroup(r, out mapObj);
+                var group = ReadSoldierGroup(r, true, out mapObj);
                 if (group != null)
                 {
                     group.enterBattleState(true, false);
@@ -100,10 +100,10 @@ namespace VikingEngine.DSSWars.Net
             }
         }
 
-        public static SoldierGroup ReadSoldierGroup(System.IO.BinaryReader r, out AbsArmy mapObj)
+        public static SoldierGroup ReadSoldierGroup(System.IO.BinaryReader r, bool createIfMissing, out AbsArmy mapObj)
         { 
             bool isArmy = r.ReadBoolean();
-            if (NetReadMapObjId(r, out _, isArmy, out mapObj, out _))
+            if (NetReadMapObjId(r, out _, isArmy, createIfMissing, out mapObj, out _))
             {
                 var result = mapObj.groups.GetIndex_Safe(r.ReadUInt16());
                 return result;
@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.Net
             w.Write((ushort)army.myIndex);
         }
 
-        public static bool NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, out AbsArmy mapObj, out bool needInit)
+        public static bool NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, bool createIfMissing, out AbsArmy mapObj, out bool needInit)
         {
             int factionIx = r.ReadUInt16();
 
@@ -146,11 +146,21 @@ namespace VikingEngine.DSSWars.Net
                 needInit = false;
                 if (army == null)
                 {
-                    army = new Army();
-                    army.factionIndex = factionIx;
-                    //faction.armies.HardSet(army, armyIx);
-                    army.init(faction, unitIx);
-                    needInit = true;
+                    if (createIfMissing)
+                    {
+                        army = new Army();
+                        army.factionIndex = factionIx;
+                        //faction.armies.HardSet(army, armyIx);
+                        army.init(faction, unitIx);
+                        needInit = true;
+                    }
+                    else
+                    {
+                        mapObj = null;
+                        needInit = false;
+                        faction = null;
+                        return false;
+                    }
                 }
 
                 if (DssRef.state.host)

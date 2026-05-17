@@ -107,5 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
         Disband,
         Desert,
         CameraCulling,
+
+        NetworkEvent,
     }
 }

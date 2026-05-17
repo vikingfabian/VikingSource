@@ -23,6 +23,7 @@ using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Presentation;
@@ -36,7 +37,6 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
-using VikingEngine.PJ.SpaceWar.SpaceShip;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
 using VikingEngine.Timer;
@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars
 
             if (Ref.lobby == null)
             {
-                new NetLobby();
+                new Net.NetLobby();
             }
             else
             {
@@ -610,9 +610,10 @@ namespace VikingEngine.DSSWars
         {
             if (networkMenu == null)
             {
-                var area = new VectorRect(Engine.Screen.SafeArea.Right, Engine.Screen.SafeArea.Y, Screen.IconSize * 6, Engine.Screen.SafeArea.Height);
-                area.X -= area.Width;
-                networkMenu = new RichMenu(HudLib.RbSettings, area, new Vector2(0), new Vector2(0), ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
+                var area = new VectorRect(Engine.Screen.SafeArea.Right, Engine.Screen.SafeArea.Y + Engine.Screen.IconSize, Screen.IconSize * 6, Engine.Screen.SafeArea.Height - Engine.Screen.IconSize * 2);
+                
+                area.X -= area.Width + Engine.Screen.MinClickSize;
+                networkMenu = new RichMenu(HudLib.RbSettings, area, new Vector2(4), new Vector2(4), ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
             }
         }
 
@@ -626,17 +627,32 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                    new RbBeginTitle(1),
-                    new RbText(".Join game", HudLib.TitleColor_Head),
+                RichBoxContent buttonContent = new RichBoxContent();
+                buttonContent.Add(new RbBeginTitle(1));
+                buttonContent.Add(new RbImage(SpriteName.WarsMapFilterMinimap));
+                buttonContent.Add(new RbSpace());
+                buttonContent.Add(new RbText(DssRef.todoLang.Network_Join, HudLib.TitleColor_Head2, LoadedFont.Bold));
 
-                    new RbNewLine(),
-                    new RbText(session.hostName, HudLib.TitleColor_Name),
-                }, new RbAction1Arg<AbsAvailableSession>((AbsAvailableSession session) =>
-                {
-                    Ref.lobby.lockSession();
-                    new Net.ConnectState(session);
-                }, session)));
+                buttonContent.newLine();
+                HudLib.BulletPoint(buttonContent);
+                buttonContent.Add(new RbText(session.hostName, HudLib.TitleColor_Name_Dark));
+
+                var meta = session.metaData as LobbyMetaData;
+                buttonContent.newLine();
+                
+                HudLib.BulletSeperationPoint(buttonContent);
+                LangLib.GameModeText(meta.GameMode(), out string modeName, out _);
+                buttonContent.Add(new RbText(modeName, HudLib.InfoYellow_Dark));
+
+                HudLib.BulletSeperationPoint(buttonContent);
+                buttonContent.Add(new RbText(TextLib.PercentTextWithSymbol(meta.TotalDifficulty()), HudLib.InfoYellow_Dark));
+
+                content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent, 
+                    new RbAction1Arg<AbsAvailableSession>((AbsAvailableSession session) =>
+                    {
+                        Ref.lobby.lockSession();
+                        new Net.ConnectState(session);
+                    }, session)));
                     //    if (m.Update())
                     //    {
                     //        //connect
@@ -2612,6 +2628,11 @@ namespace VikingEngine.DSSWars
                 {
                     refreshUnderMenu();
                 }
+            }
+
+            if (networkMenu != null)
+            { 
+                networkMenu.updateMouseInput(ref mouseOver);
             }
 
             splitScreenDisplay.update();

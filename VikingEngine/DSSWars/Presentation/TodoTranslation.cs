@@ -15,5 +15,6 @@ namespace VikingEngine.DSSWars.Presentation
     {
         public string GameSettings_WideScrollbar => "Wide scrollbar";
 
+        public string Network_Join => "Join game";
     }
 }

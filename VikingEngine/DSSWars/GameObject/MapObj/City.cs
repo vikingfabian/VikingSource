@@ -22,13 +22,14 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Stockpile;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-
-using VikingEngine.DSSWars.Stockpile;
-using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.LootFest;
+using VikingEngine.Network;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -1089,6 +1090,18 @@ namespace VikingEngine.DSSWars.GameObject
 
                 netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount);                
             }           
+        }
+
+        public static SteamLargePacketWriter NetWriteHandoverPacket(AbsNetworkPeer peer, City city)
+        {
+            DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
+            var w = cityData.GetWriter();
+            City.NetWriteHandover(w, city);
+
+            SteamLargePacketWriter largeWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
+            largeWriter.begin();
+
+            return largeWriter;
         }
 
         public static void NetWriteHandover(System.IO.BinaryWriter w, City city)
@@ -4067,12 +4080,23 @@ namespace VikingEngine.DSSWars.GameObject
             var city = Net.ObjectId.ReadCity(r);
             if (city != null)
             {
+                bool hosted = city.IsNetHosted;
+                
                 bool convert = r.ReadBoolean();
 
                 var newFaction = Net.ObjectId.ReadFaction(r);
 
-                city.setFaction(newFaction, false, convert, false);
-            }
+                if (newFaction != null)
+                {
+                    city.setFaction(newFaction, false, convert, false);
+
+                    if (hosted && !newFaction.IsNetHosted())
+                    {
+                        //City handover
+                        NetWriteHandoverPacket(newFaction.HostingPeer(), city);
+                    }
+                }
+            }            
         }
 
         override public void OnNewOwner(Faction newFaction, bool convert)
