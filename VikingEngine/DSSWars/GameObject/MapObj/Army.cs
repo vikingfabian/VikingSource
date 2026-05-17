@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetReadArmy(System.IO.BinaryReader r)
         {
-            if (Net.ObjectId.NetReadMapObjId(r, out Faction faction, true, out AbsArmy mapObj, out bool needInit))
+            if (Net.ObjectId.NetReadMapObjId(r, out Faction faction, true, true, out AbsArmy mapObj, out bool needInit))
             {
                 Army army = mapObj.GetArmy();
                 army.readNet(r, needInit);

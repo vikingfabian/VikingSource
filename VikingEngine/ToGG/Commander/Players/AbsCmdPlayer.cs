@@ -35,7 +35,7 @@ namespace VikingEngine.ToGG.Commander.Players
 
         public void NetShareUnitSetup()
         {
-            var w = Ref.netSession.BeginWritingPacket(Network.PacketType.cmdShareUnitSetup, Network.PacketReliability.ReliableLasy);
+            var w = Ref.netSession.BeginWritingPacket(Network.PacketType.cmdShareUnitSetup, Network.PacketReliability.Reliable);
             pData.writeGlobalIndex(w);            
         }        
 

@@ -21,7 +21,7 @@
 //            IntVector2 pos = IntVector2.Zero;
             
 //            LfRef.gamestate.LocalHostingPlayer.Print("Map sending complete");
-//            Ref.netSession.BeginWritingPacket(Network.PacketType.SendMapComplete, Network.PacketReliability.ReliableLasy, LfLib.LocalHostIx);
+//            Ref.netSession.BeginWritingPacket(Network.PacketType.SendMapComplete, Network.PacketReliability.Reliable, LfLib.LocalHostIx);
 //        }
 //    }
 //}

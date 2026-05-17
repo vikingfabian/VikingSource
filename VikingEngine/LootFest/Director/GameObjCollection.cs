@@ -312,7 +312,7 @@ namespace VikingEngine.LootFest.Director
                         Debug.LogWarning("Requesting lost game obj");
                     }
                     System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.LostClientObj, 
-                         Network.PacketReliability.ReliableLasy, Network.SendPacketTo.OneSpecific, id.X,  null);
+                         Network.PacketReliability.Reliable, Network.SendPacketTo.OneSpecific, id.X,  null);
                     w.Write(id.Y);
                 }
             }

@@ -568,7 +568,7 @@ namespace VikingEngine.LootFest.Players
 
                 LockControls(false);
                 System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.PlayerDied, 
-                    Network.PacketReliability.ReliableLasy, PlayerIndex);
+                    Network.PacketReliability.Reliable, PlayerIndex);
 
                 hero.DeathAnimation(true);
             }

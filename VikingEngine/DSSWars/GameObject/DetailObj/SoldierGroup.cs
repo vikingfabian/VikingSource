@@ -361,7 +361,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case GroupState.Battle:
                     WP.ReadPosXZPercentU16(r, out position, out tilePos);
 
-                    SoldierGroup target = Net.ObjectId.ReadSoldierGroup(r, out _);
+                    SoldierGroup target = Net.ObjectId.ReadSoldierGroup(r, true, out _);
                     if (target != null)
                     {
                         attackTarget_soldierGroupOrCity?.SetTarget(target);

@@ -378,7 +378,7 @@ namespace VikingEngine.LootFest.Players
                 if (Ref.netSession.InMultiplayerSession)
                 {
                     System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.TextChat,
-                        Network.PacketReliability.Chat, PlayerIndex);
+                        Network.PacketReliability.Reliable, PlayerIndex);
                     w.Write(input);
                 }
 
@@ -409,7 +409,7 @@ namespace VikingEngine.LootFest.Players
                 if (Ref.netSession.HasInternet)
                 {
                     System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.TextChat,
-                        Network.PacketReliability.ReliableLasy, PlayerIndex);
+                        Network.PacketReliability.Reliable, PlayerIndex);
                     w.Write(result);
                 }
 

@@ -1360,7 +1360,7 @@ namespace VikingEngine.LootFest
             if (local)
             {
                 //net share
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.GameCompleted, Network.PacketReliability.ReliableLasy);
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.GameCompleted, Network.PacketReliability.Reliable);
                 Map.WorldPosition.WriteChunkGrindex_Static(chunk, w); //chunk.WriteChunkGrindex(w);
                 w.Write(noDeaths);
             }
