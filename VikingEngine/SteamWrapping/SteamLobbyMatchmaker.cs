@@ -62,7 +62,7 @@ namespace VikingEngine.SteamWrapping
         Callback<LobbyDataUpdate_t> callbackLobbyDataUpdate;
 
         List<string> unresponsiveLobbies = new List<string>();
-        public LobbyPublicity lobbyPublicity = LobbyPublicity.FriendsOnly;
+       
         
 
         /* Constructor */
@@ -131,7 +131,21 @@ namespace VikingEngine.SteamWrapping
                 LeaveCurrentLobby();
             }
 
-            ELobbyType type = IsPublicNetwork(lobbyPublicity) ? ELobbyType.k_ELobbyTypePublic : ELobbyType.k_ELobbyTypePrivate;
+            ELobbyType type;
+            switch (lobbyPublicity)
+            {
+                default:
+                case LobbyPublicity.Private:
+                    type = ELobbyType.k_ELobbyTypePrivate;
+                    break;
+                case LobbyPublicity.FriendsOnly:
+                    type = ELobbyType.k_ELobbyTypeFriendsOnly;
+                    break;
+                case LobbyPublicity.Public:
+                    type = ELobbyType.k_ELobbyTypePublic;
+                    break;
+            }
+            //ELobbyType type = IsPublicNetwork(lobbyPublicity) ? ELobbyType.k_ELobbyTypePublic : ELobbyType.k_ELobbyTypePrivate;
 
             Debug.Log("Creating lobby...");
             SteamAPICall_t result = SteamMatchmaking.CreateLobby(type, MAX_LOBBY_MEMBERS);

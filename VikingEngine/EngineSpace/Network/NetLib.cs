@@ -124,21 +124,23 @@ namespace VikingEngine.Network
         NUM
     }
 
-    enum NetworkCanJoinType
-    {
-        Offline,
-        Invites_only,
-        Friends,
-        Open_but_1private,
-        Open_for_all,
-        NUM,
-    }
+    //enum NetworkCanJoinType
+    //{
+    //    Offline,
+    //    Invites_only,
+    //    Friends,
+    //    //Open_but_1private,
+    //    Anyone,
+    //    NUM,
+    //}
 
     public enum LobbyPublicity
     {
         Private = 0,
         FriendsOnly,
         Public,
+        NUM,
+        Offline,
         ERROR,
     }
 

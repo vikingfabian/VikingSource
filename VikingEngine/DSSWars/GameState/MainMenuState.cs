@@ -17,6 +17,7 @@ using System.Xml.Linq;
 using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.GameState.MapEditor;
@@ -37,6 +38,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
+using VikingEngine.PJ;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
 using VikingEngine.Timer;
@@ -78,6 +80,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_ListSaves = "saves";
         const string UnderMenu_ListSavesForExport = "exportsaves";
         const string UnderMenu_Options = "options";
+        const string UnderMenu_MultiplayerSettings = "net sett";
         const string UnderMenu_DemoModes = "demo_modes";
         const string UnderMenu_Options_Language = "lang";
         const string UnderMenu_GameOverResults = "gameresults";
@@ -191,7 +194,10 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case UnderMenu_Options:
-                    optionsMenu2();
+                    optionsMenu();
+                    break;
+                case UnderMenu_MultiplayerSettings:
+                    multiplayerSettingsMenu();
                     break;
 
                 case GameMenuSystem.UnderMenu_Options_Mouse:
@@ -586,7 +592,7 @@ namespace VikingEngine.DSSWars
             topMenu = new RichMenu(HudLib.RbSettings, menuContentArea, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
 
             topMenu.Refresh(new RichBoxContent() { new RbNewLine() });
-            mainMenu2();
+            mainMenu();
 
             underMenuArea = new VectorRect(menuBgArea.Right + Screen.BorderWidth, menuContentArea.Y, Screen.IconSize * 6, menuContentArea.Height);            
         }
@@ -802,7 +808,7 @@ namespace VikingEngine.DSSWars
         }
 
         // new HUD.GuiTextButton(">>download crash reports", null, downloadCrashReports, false, layout);
-        void mainMenu2()
+        void mainMenu()
         {
            
             
@@ -994,6 +1000,11 @@ namespace VikingEngine.DSSWars
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
                      new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_Options, StackOption.ClearStack), new RbTooltip_Text(DssRef.lang.Lobby_Category_Options));
+                content.Add(btn);
+            }
+            {
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.birdNetworkIcon) },
+                     new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_MultiplayerSettings, StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_MultiplayerSettings));
                 content.Add(btn);
             }
             {
@@ -2504,10 +2515,13 @@ namespace VikingEngine.DSSWars
             }
             layout.End();
         }
-        void optionsMenu2()
+        void optionsMenu()
         { 
             RichBoxContent content = new RichBoxContent();
 
+            content.h1(DssRef.lang.Lobby_Category_Options, HudLib.TitleColor_Head);
+
+            content.newLine();
             var btn = new RbButton(new List<AbsRichBoxMember> { new RbImage(new Presentation.Translation().sprite(Ref.gamesett.language)) },
                 new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_Options_Language, StackOption.Stack));
             btn.overrideBgColor = ColorExt.VeryDarkGray;
@@ -2530,6 +2544,69 @@ namespace VikingEngine.DSSWars
                         new RbTooltip_Text(Ref.steam.steamInitErrorMsg)));
             }
             underMenu.Refresh(content);
+        }
+
+        void multiplayerSettingsMenu()
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(DssRef.todoLang.Lobby_Category_MultiplayerSettings, HudLib.TitleColor_Head);
+
+            content.h2("Host settings", HudLib.TitleColor_Head2);
+
+            var publicityOptions = new DropDownBuilder("lobby public");
+            {
+                //for (LobbyPublicity p = 0; p < LobbyPublicity.NUM; p++)
+                //{
+
+                //}
+                publicityOptions.AddOption("Private", Ref.netsett.lobbyPublicity == LobbyPublicity.Private, false,
+                    new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.Private), null);
+                publicityOptions.AddOption("Friends only", Ref.netsett.lobbyPublicity == LobbyPublicity.FriendsOnly, false,
+                                    new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.FriendsOnly), null);
+                var publicOpt = publicityOptions.AddOption("Public", Ref.netsett.lobbyPublicity == LobbyPublicity.Public, false,
+                                    new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.Public), null);
+                publicOpt.enabled = false;
+
+            }
+            //"Join Permissions"}
+            content.Add(new RbSeperationLine());
+            content.h2("Client settings", HudLib.TitleColor_Head2);
+
+            content.Add(new RbSeperationLine());
+            //x Unlock public games
+            //- Do not play with strangers
+            //- The game has zero protection against cheating or trolling
+            //- You will have a bad experience
+
+            //x Unlock PvP
+            //- DSS is not designed for competetive games
+            //- There is no balance, matches will be unfair
+            //- You will have a bad experience
+
+            //-Are you really, really sure?
+            //Will you be a big boy and not cry on the forum later?
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.birdUnLock),
+                    new RbSpace(),
+                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "public games")) 
+                },
+                null));
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.birdUnLock),
+                    new RbSpace(),
+                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "player versus player"))
+                },
+                null));
+
+            underMenu.Refresh(content);
+
+            void setLobbyPublicity(LobbyPublicity publicity)
+            { 
+                
+            }
         }
 
         public override void OnResolutionChange()

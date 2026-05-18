@@ -14,8 +14,9 @@ namespace VikingEngine.Network
         public bool hostNetwork = true;
         public bool findNetwork = true;
 
-        public Network.NetworkCanJoinType hostSessionJoinType = Network.NetworkCanJoinType.Friends;
-        public Network.NetworkCanJoinType findSessionJoinType = Network.NetworkCanJoinType.Open_for_all;
+        public Network.LobbyPublicity lobbyPublicity = Network.LobbyPublicity.FriendsOnly;
+        
+        //public Network.LobbyPublicity findSessionJoinType = Network.LobbyPublicity.FriendsOnly;
 
         float netVoiceVolume = 1f;
         public float NetVoiceVol() { return MathHelper.Clamp(netVoiceVolume * Ref.gamesett.MasterVolume, 0.0f, 1.0f); }
