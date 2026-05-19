@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.Event
 
         public EventManager()
         {
+            lib.DoNothing();
         }
 
         virtual public void onGameStarted()

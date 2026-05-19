@@ -3010,6 +3010,9 @@
 #begin VoxelModel/LfWars/godfire.vox
 /copy:VoxelModel/LfWars/godfire.vox
 
+#begin VoxelModel/LfWars/goo.vox
+/copy:VoxelModel/LfWars/goo.vox
+
 #begin VoxelModel/LfWars/Hen.vox
 /copy:VoxelModel/LfWars/Hen.vox
 
