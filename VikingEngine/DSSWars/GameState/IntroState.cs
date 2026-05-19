@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Players.Profile;
@@ -218,6 +219,8 @@ namespace VikingEngine.DSSWars
                 //        }
                 //    }
                 //}
+
+                
 #endif
 
                 new LobbyState(bgTex);
