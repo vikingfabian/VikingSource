@@ -22,7 +22,11 @@ x new steam input
 
 ﻿UPDATE
 Change Log:
-* 
+
+PERFORMANCE
+* Path finding is using 1D arrays
+
+
 
 ##ICONS TODO
 * 
