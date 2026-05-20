@@ -78,11 +78,13 @@ namespace VikingEngine.DSSWars.Map.Path
         Rectangle2 area;
         //IntVector2 gridOffset;
         IntVector2 nodeUseTopLeft, nodeUseBottomRight;
-        DetailPathNode[,] nodeGrid;
+        //DetailPathNode[,] nodeGrid;
+        Grid1D<DetailPathNode> nodeGrid;
+
         public DetailPathFinding()
         {
             Rectangle2 area = Rectangle2.FromCenterTileAndRadius(IntVector2.Zero, MaxTileRadius);
-            nodeGrid = new DetailPathNode[area.Width, area.Height];
+            nodeGrid = new Grid1D<DetailPathNode>(area.size);//new DetailPathNode[area.Width, area.Height];
         }
 
         public DetailWalkingPath FindPath(int pathThreadIndex, IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
@@ -128,7 +130,8 @@ namespace VikingEngine.DSSWars.Map.Path
                 {
 #endif
 
-                    nodeGrid[gridPos.X, gridPos.Y] = startNode;
+                    //nodeGrid[gridPos.X, gridPos.Y] = startNode;
+                    nodeGrid.Set(gridPos, startNode);
 #if DEBUG
                 }
                 catch (Exception ex)
@@ -151,14 +154,15 @@ namespace VikingEngine.DSSWars.Map.Path
                     {
                         IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
                         IntVector2 gridPos = pos - area.pos;
-                        if (area.IntersectTilePoint(pos) && !nodeGrid[gridPos.X, gridPos.Y].HasValue)
+                        if (area.IntersectTilePoint(pos) && !nodeGrid.Get(gridPos).HasValue/*nodeGrid[gridPos.X, gridPos.Y].HasValue*/)
                         {
 
                             //add a node to open list
                             DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
                             open.Add(node);
 
-                            nodeGrid[gridPos.X, gridPos.Y] = node;
+                            //nodeGrid[gridPos.X, gridPos.Y] = node;
+                            nodeGrid.Set(gridPos, node);
                             if (gridPos.X < nodeUseTopLeft.X)
                             {
                                 nodeUseTopLeft.X = gridPos.X;
@@ -197,7 +201,8 @@ namespace VikingEngine.DSSWars.Map.Path
                     }
 
                     currentNode.closed = true;
-                    nodeGrid[currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y] = currentNode;
+                    //nodeGrid[currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y] = currentNode;
+                    nodeGrid.Set(currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y, currentNode);
 
                     if (currentNode.Position == goal)
                     {
@@ -235,7 +240,7 @@ namespace VikingEngine.DSSWars.Map.Path
                     //}
 
                     IntVector2 pos = currentNode.PreviousPosition;
-                    currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
+                currentNode = nodeGrid.Get(pos.X - area.pos.X, pos.Y - area.pos.Y);//nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
                 }
 
                 path.init(goal, blocked);
@@ -253,14 +258,14 @@ namespace VikingEngine.DSSWars.Map.Path
         public void recycle()
         {
             open.Clear();
-
-            for (int y = nodeUseTopLeft.Y; y <= nodeUseBottomRight.Y; ++y)
-            {
-                for (int x = nodeUseTopLeft.X; x <= nodeUseBottomRight.X; ++x)
-                {
-                    nodeGrid[x, y] = DetailPathNode.Empty;
-                }
-            }
+            nodeGrid.Clear();
+            //for (int y = nodeUseTopLeft.Y; y <= nodeUseBottomRight.Y; ++y)
+            //{
+            //    for (int x = nodeUseTopLeft.X; x <= nodeUseBottomRight.X; ++x)
+            //    {
+            //        nodeGrid[x, y] = DetailPathNode.Empty;
+            //    }
+            //}
         }
     }
 
