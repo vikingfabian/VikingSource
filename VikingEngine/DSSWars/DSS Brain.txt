@@ -4,7 +4,7 @@ Change Log:
 
 PERFORMANCE
 * Path finding is using 1D arrays
-
+* Path finding is storing heuristic values
 
 
 ##ICONS TODO

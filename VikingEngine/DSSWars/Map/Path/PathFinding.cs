@@ -133,24 +133,35 @@ namespace VikingEngine.DSSWars.Map
                 for (int dir = 0; dir < 8; dir++)
                 {
                     IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue/*nodeGrid[pos.X, pos.Y].HasValue*/)
+                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
                     {
                         //add a node to open list
                         PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
                         open.Add(node);
-                        nodeGrid.Set(pos, node);//nodeGrid[pos.X, pos.Y] = node;
+                        nodeGrid.Set(pos, node);
                     }
                 }
 
                 var lowValue = float.MaxValue;
+                var lowHeuristic = float.MaxValue;
                 int lowIndex = -1;
                 for (int i = 0; i < open.Count; i++)
                 {
-                    if (open[i].Value < lowValue)
+                    if (Math.Abs(open[i].Value - lowValue) < 0.5f)
+                    {
+                        // Pick the node that is closer to the goal
+                        if (open[i].Heuristic < lowHeuristic)
+                        {
+                            lowHeuristic = open[i].Heuristic;
+                            lowIndex = i;
+                        }
+                    }
+                    else if (open[i].Value < lowValue)
                     {
                         lowValue = open[i].Value;
+                        lowHeuristic = open[i].Heuristic; // Store H
                         lowIndex = i;
-                    }
+                    } 
                 }
 
                 if (open.Count > 1)
@@ -160,7 +171,7 @@ namespace VikingEngine.DSSWars.Map
                 }
 
                 currentNode.closed = true;
-                nodeGrid.Set(currentNode.Position, currentNode);//nodeGrid[currentNode.Position.X, currentNode.Position.Y] = currentNode;
+                nodeGrid.Set(currentNode.Position, currentNode);
 
                 if (currentNode.Position == goal)
                 {
@@ -455,6 +466,11 @@ namespace VikingEngine.DSSWars.Map
         public static readonly PathNode Empty = new PathNode();
 
         public float Value;
+
+        /// <summary>
+        /// Distance to goal
+        /// </summary>
+        public float Heuristic;
         float moveCost;
 
         public IntVector2 Position;
@@ -514,7 +530,17 @@ namespace VikingEngine.DSSWars.Map
 
             moveCost += parent.moveCost;
 
-            Value = moveCost + (Math.Abs(pos.X - goalPos.X) + Math.Abs(pos.Y - goalPos.Y)) * MoveCostStraight;
+
+            //Value = moveCost + (Math.Abs(pos.X - goalPos.X) + Math.Abs(pos.Y - goalPos.Y)) * MoveCostStraight;
+            // Octile distance formula: 
+            // 10 * (dx + dy) + (14 - 2 * 10) * min(dx, dy)
+            int dx = Math.Abs(pos.X - goalPos.X);
+            int dy = Math.Abs(pos.Y - goalPos.Y);
+            Heuristic = (MoveCostStraight * (dx + dy)) + ((MoveCostDiagonal - 2 * MoveCostStraight) * Math.Min(dx, dy));
+
+            const float DistanceToGoalWeight = 1.5f;
+            Heuristic *= DistanceToGoalWeight;
+            this.Value = moveCost + Heuristic;
 
             HasValue = true;
         }
