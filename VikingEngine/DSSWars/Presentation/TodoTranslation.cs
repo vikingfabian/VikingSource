@@ -15,7 +15,17 @@ namespace VikingEngine.DSSWars.Presentation
     {
         public string GameSettings_WideScrollbar => "Wide scrollbar";
 
+        public string Network_PlayOffline = "Play offline";
+        public string JoinPermission_Title => "Join Permissions";
+        public string JoinPermission_Private=> "Private";
+        public string JoinPermission_FriendsOnly => "Friends only";
+        public string JoinPermission_Public => "Public";
+
+
+
         public string Network_Join => "Join game";
         public string Lobby_Category_MultiplayerSettings => "Multiplayer settings";
+
+        
     }
 }

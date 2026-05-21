@@ -81,6 +81,12 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_ListSavesForExport = "exportsaves";
         const string UnderMenu_Options = "options";
         const string UnderMenu_MultiplayerSettings = "net sett";
+        const string UnderMenu_MultiplayerSettings_UnlockPublic = "net sett unlock public";
+        const string UnderMenu_MultiplayerSettings_UnlockPublic_Sure = "net sett unlock public_sure";
+        const string UnderMenu_MultiplayerSettings_UnlockPvp = "net sett unlock pvp";
+        const string UnderMenu_MultiplayerSettings_UnlockPvp_Sure = "net sett unlock pvp_sure";
+
+
         const string UnderMenu_DemoModes = "demo_modes";
         const string UnderMenu_Options_Language = "lang";
         const string UnderMenu_GameOverResults = "gameresults";
@@ -199,6 +205,108 @@ namespace VikingEngine.DSSWars
                 case UnderMenu_MultiplayerSettings:
                     multiplayerSettingsMenu();
                     break;
+                case UnderMenu_MultiplayerSettings_UnlockPublic:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        //x Unlock public games
+                        //- Do not play with strangers
+                        //- The game has zero protection against cheating or trolling
+                        //- You will have a bad experience
+
+                        //x Unlock PvP
+                        //- DSS is not designed for competetive games
+                        //- There is no balance, matches will be unfair
+                        //- You will have a bad experience
+
+                        //-Are you really, really sure?
+                        //Will you be a big boy and not cry on the forum later?
+
+                        content.h1(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "public games"), HudLib.TitleColor_Head);
+                        content.h2(SpriteName.cmdWarningTriangle, "Warning!", HudLib.NotAvailableColor);
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText("Do not play with strangers"));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText("The game has zero protection against cheating or trolling"));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText("You will have a bad experience"));
+
+                        content.newParagraph();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbText("Accept")
+                        }, new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_MultiplayerSettings_UnlockPublic_Sure, StackOption.ReplaceLast))
+                        { fillWidth = true });
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                            new RbText(DssRef.lang.Hud_Cancel)
+                        }, new RbAction(underMenu.menuBack, RbSoundType.Back))
+                        { fillWidth = true });
+                        
+                        underMenu.Refresh(content);
+                    }
+                    break;
+                case UnderMenu_MultiplayerSettings_UnlockPublic_Sure:
+                    unlockMultiplayer_Sure(true);
+                    break;
+
+                case UnderMenu_MultiplayerSettings_UnlockPvp:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        //x Unlock public games
+                        //- Do not play with strangers
+                        //- The game has zero protection against cheating or trolling
+                        //- You will have a bad experience
+
+                        //x Unlock PvP
+                        //- DSS is not designed for competetive games
+                        //- There is no balance, matches will be unfair
+                        //- You will have a bad experience
+
+                        //-Are you really, really sure?
+                        //Will you be a big boy and not cry on the forum later?
+
+                        content.h1(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "player versus player"), HudLib.TitleColor_Head);
+                        content.h2(SpriteName.cmdWarningTriangle, "Warning!", HudLib.NotAvailableColor);
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText("DSS is not designed for competetive games"));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText("There is no balance, matches will be unfair"));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText("You will have a bad experience"));
+
+                        content.newParagraph();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbText("Accept")
+                        }, new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_MultiplayerSettings_UnlockPvp_Sure, StackOption.ReplaceLast))
+                        { fillWidth = true });
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                            new RbText(DssRef.lang.Hud_Cancel)
+                        }, new RbAction(underMenu.menuBack, RbSoundType.Back))
+                        { fillWidth = true });
+
+                        underMenu.Refresh(content);
+                    }
+                    break;
+                case UnderMenu_MultiplayerSettings_UnlockPvp_Sure:
+                    {
+                        unlockMultiplayer_Sure(false);
+                    }
+                    break;
+
 
                 case GameMenuSystem.UnderMenu_Options_Mouse:
                 case GameMenuSystem.UnderMenu_Options_Keyboard:
@@ -371,6 +479,14 @@ namespace VikingEngine.DSSWars
                                       new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
                                       new RbAction(startGame), null, startAvailable);
                                     content.Add(start);
+
+                                    content.newLine();
+                                    HudLib.Label(content, ".Multiplayer");
+                                    content.hspace();
+                                    content.Add(new RbText(Ref.netsett.JoinPermissionString()));
+                                    content.space();
+                                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
+                                        new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_MultiplayerSettings, StackOption.Stack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_MultiplayerSettings)));
                                 }
                                 break;
 
@@ -382,12 +498,7 @@ namespace VikingEngine.DSSWars
                                       new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Tutorial) },
                                       new RbAction(startTutorial), null, startAvailable);
                                     content.Add(startlong);
-                                    //content.newLine();
-                                    //var startshort = new ArtButton(RbButtonStyle.Secondary,
-                                    //  new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.LobbyDemoMode_ShortTutorial) },
-                                    //  new RbAction1Arg<bool>(startTutorial, true), null, startAvailable);
-                                    ////start.fillWidth = false;
-                                    //content.Add(startshort);
+                                    
                                 }
                                 break;
                             case StartGameMode.BattleTrials:
@@ -2549,28 +2660,48 @@ namespace VikingEngine.DSSWars
         void multiplayerSettingsMenu()
         {
             RichBoxContent content = new RichBoxContent();
+            if (underMenu.menuStack.Count > 1)
+            {
+                HudLib.returnButton(content, underMenu, true, null);
+                content.newLine();
+            }
 
             content.h1(DssRef.todoLang.Lobby_Category_MultiplayerSettings, HudLib.TitleColor_Head);
 
             content.h2("Host settings", HudLib.TitleColor_Head2);
 
-            var publicityOptions = new DropDownBuilder("lobby public");
-            {
-                //for (LobbyPublicity p = 0; p < LobbyPublicity.NUM; p++)
-                //{
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Network_PlayOffline) },
+                Ref.netsett.OfflineProperty));
 
-                //}
-                publicityOptions.AddOption("Private", Ref.netsett.lobbyPublicity == LobbyPublicity.Private, false,
-                    new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.Private), null);
-                publicityOptions.AddOption("Friends only", Ref.netsett.lobbyPublicity == LobbyPublicity.FriendsOnly, false,
-                                    new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.FriendsOnly), null);
-                var publicOpt = publicityOptions.AddOption("Public", Ref.netsett.lobbyPublicity == LobbyPublicity.Public, false,
-                                    new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.Public), null);
-                publicOpt.enabled = false;
+            if (Ref.netsett.hostNetwork)
+            {
+                var publicityOptions = new DropDownBuilder("lobby public");
+                {
+                    publicityOptions.AddOption(DssRef.todoLang.JoinPermission_Private, Ref.netsett.lobbyPublicity == LobbyPublicity.Private, false,
+                        new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.Private), null);
+                    publicityOptions.AddOption(DssRef.todoLang.JoinPermission_FriendsOnly, Ref.netsett.lobbyPublicity == LobbyPublicity.FriendsOnly, false,
+                                        new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.FriendsOnly), null);
+                    var publicOpt = publicityOptions.AddOption(DssRef.todoLang.JoinPermission_Public, Ref.netsett.lobbyPublicity == LobbyPublicity.Public, false,
+                                        new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.Public), null);
+                    publicOpt.enabled = Ref.netsett.unlockPublicGames;
+
+                }
+                publicityOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.JoinPermission_Title, underMenu);
+
+                content.newLine();
+                HudLib.Label(content, "Max player count");
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10, 64 },
+                    new DragButtonSettings(2, 64, 1), Ref.netsett.MaxPlayerCountProperty, false);
 
             }
+
+            
+
             //"Join Permissions"}
             content.Add(new RbSeperationLine());
+
+            content.newParagraph();
             content.h2("Client settings", HudLib.TitleColor_Head2);
 
             content.Add(new RbSeperationLine());
@@ -2587,26 +2718,61 @@ namespace VikingEngine.DSSWars
             //-Are you really, really sure?
             //Will you be a big boy and not cry on the forum later?
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+            if (Ref.netsett.unlockPublicGames == false)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.birdUnLock),
                     new RbSpace(),
-                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "public games")) 
+                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "public games"))
                 },
-                null));
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_MultiplayerSettings_UnlockPublic, StackOption.Stack)));
+                content.newLine();
+            }
+            if (Ref.netsett.unlockPvp == false)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.birdUnLock),
                     new RbSpace(),
                     new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "player versus player"))
                 },
-                null));
-
+                new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_MultiplayerSettings_UnlockPvp, StackOption.Stack)));
+            }
             underMenu.Refresh(content);
 
             void setLobbyPublicity(LobbyPublicity publicity)
             { 
-                
+                Ref.netsett.lobbyPublicity = publicity;
             }
+        }
+
+        void unlockMultiplayer_Sure(bool bPublicGames)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h1("Are you really, really sure?", HudLib.TitleColor_Head);
+            content.text("Will you be a big boy and not cry on the forum later?");
+
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbText("Accept")
+                        }, new RbAction(() => {
+                            if (bPublicGames)
+                            {
+                                Ref.netsett.unlockPublicGames = true;
+                            }
+                            else
+                            {
+                                Ref.netsett.unlockPvp = true;
+                                Ref.netsett.clientDiplomacy.warAllow = PlayerDiplomacyAllowType.Allow;
+                            }
+                            openUnderMenu(UnderMenu_MultiplayerSettings, StackOption.ClearStack);
+                        })) { fillWidth = true });
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                            new RbText(DssRef.lang.Hud_Cancel)
+                        }, new RbAction(underMenu.menuBack, RbSoundType.Back))
+            { fillWidth = true });
+            underMenu.Refresh(content);
         }
 
         public override void OnResolutionChange()

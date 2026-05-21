@@ -110,13 +110,13 @@ namespace VikingEngine.ToGG.GameState
                 new GuiSectionSeparator(layout);
                 new GuiLargeTextButton("Host a Quest", null, 
                     new GuiAction1Arg<bool>(hqLobby, true), false, layout);
-                new GuiOptionsList<LobbyPublicity>(SpriteName.NO_IMAGE, "Lobby Publicity ",
-                    new List<GuiOption<LobbyPublicity>>{
-                        new GuiOption<LobbyPublicity>("Invites only", LobbyPublicity.Private),
-                        new GuiOption<LobbyPublicity>("Friends", LobbyPublicity.FriendsOnly),
-                        new GuiOption<LobbyPublicity>("Public", LobbyPublicity.Public) 
-                    },
-                    publicityProperty, layout);
+                //new GuiOptionsList<LobbyPublicity>(SpriteName.NO_IMAGE, "Lobby Publicity ",
+                //    new List<GuiOption<LobbyPublicity>>{
+                //        new GuiOption<LobbyPublicity>("Invites only", LobbyPublicity.Private),
+                //        new GuiOption<LobbyPublicity>("Friends", LobbyPublicity.FriendsOnly),
+                //        new GuiOption<LobbyPublicity>("Public", LobbyPublicity.Public) 
+                //    },
+                //    publicityProperty, layout);
                 new GuiSectionSeparator(layout);
 
                 new GuiTextButton("Editor", null, startEditor, false, layout);
@@ -130,14 +130,14 @@ namespace VikingEngine.ToGG.GameState
             layout.End();
         }
 
-        LobbyPublicity publicityProperty(bool set, LobbyPublicity value)
-        {
-            if (set)
-            {
-                Ref.netSession.LobbyPublicity = value;
-            }
-            return Ref.netSession.LobbyPublicity;
-        }
+        //LobbyPublicity publicityProperty(bool set, LobbyPublicity value)
+        //{
+        //    if (set)
+        //    {
+        //        Ref.netSession.LobbyPublicity = value;
+        //    }
+        //    return Ref.netSession.LobbyPublicity;
+        //}
 
         void runTutorial()
         {

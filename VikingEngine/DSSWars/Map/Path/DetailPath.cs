@@ -558,9 +558,10 @@ namespace VikingEngine.DSSWars.Map.Path
             moveCost += parent.moveCost;
 
             //Value = moveCost + (Math.Abs(pos.X - goalPos.X) + Math.Abs(pos.Y - goalPos.Y)) * MoveCostStraight;
-            int dx = Math.Abs(pos.X - goalPos.X);
-            int dy = Math.Abs(pos.Y - goalPos.Y);
-            Heuristic = (MoveCostStraight * (dx + dy)) + ((MoveCostDiagonal - 2 * MoveCostStraight) * Math.Min(dx, dy));
+            //int dx = Math.Abs(pos.X - goalPos.X);
+            //int dy = Math.Abs(pos.Y - goalPos.Y);
+            //Heuristic = (MoveCostStraight * (dx + dy)) + ((MoveCostDiagonal - 2 * MoveCostStraight) * Math.Min(dx, dy));
+            Heuristic = (pos - goalPos).Length() * MoveCostStraight;
 
             const float DistanceToGoalWeight = 1.5f;
             Heuristic *= DistanceToGoalWeight;

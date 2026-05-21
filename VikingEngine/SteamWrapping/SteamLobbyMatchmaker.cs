@@ -31,16 +31,16 @@ namespace VikingEngine.SteamWrapping
     {
         
 
-        public const int MAX_LOBBY_MEMBERS =
-#if CCG
-            2;
-#elif DSS
-            64;//16;
-#elif PJ
-            9;
-#else
-            4;
-#endif
+//        public const int MAX_LOBBY_MEMBERS =
+//#if CCG
+//            2;
+//#elif DSS
+//            64;//16;
+//#elif PJ
+//            9;
+//#else
+//            4;
+//#endif
 
         
         /* Fields */
@@ -92,23 +92,23 @@ namespace VikingEngine.SteamWrapping
             SteamFriends.ActivateGameOverlay("LobbyInvite");
         }
 
-        public void SetLobbyPublicity(LobbyPublicity value)
-        {
-            var oldValue = lobbyPublicity;
-            lobbyPublicity = value;
+        //public void SetLobbyPublicity(LobbyPublicity value)
+        //{
+        //    var oldValue = lobbyPublicity;
+        //    lobbyPublicity = value;
 
-            if (value != oldValue)
-            {
-                if (IsPublicNetwork(value) != IsPublicNetwork(oldValue))
-                {
-                    Ref.netSession.Disconnect("Lobby Publicity reset");
-                }
-                else
-                {
-                    refreshMetaData();
-                }
-            }
-        }
+        //    if (value != oldValue)
+        //    {
+        //        if (IsPublicNetwork(value) != IsPublicNetwork(oldValue))
+        //        {
+        //            Ref.netSession.Disconnect("Lobby Publicity reset");
+        //        }
+        //        else
+        //        {
+        //            refreshMetaData();
+        //        }
+        //    }
+        //}
 
         static bool IsPublicNetwork(LobbyPublicity publicity)
         {
@@ -132,7 +132,7 @@ namespace VikingEngine.SteamWrapping
             }
 
             ELobbyType type;
-            switch (lobbyPublicity)
+            switch (Ref.netsett.lobbyPublicity)
             {
                 default:
                 case LobbyPublicity.Private:
@@ -148,7 +148,7 @@ namespace VikingEngine.SteamWrapping
             //ELobbyType type = IsPublicNetwork(lobbyPublicity) ? ELobbyType.k_ELobbyTypePublic : ELobbyType.k_ELobbyTypePrivate;
 
             Debug.Log("Creating lobby...");
-            SteamAPICall_t result = SteamMatchmaking.CreateLobby(type, MAX_LOBBY_MEMBERS);
+            SteamAPICall_t result = SteamMatchmaking.CreateLobby(type, Ref.netsett.maxPlayerCount);
             callResultLobbyCreated.Set(result, OnLobbyCreated);
         }
 

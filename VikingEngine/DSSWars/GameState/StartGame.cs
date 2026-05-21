@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars
 
                 if (loading == null)
                 {
-                    Ref.netSession.LobbyPublicity = Network.LobbyPublicity.Public;
+                    //Ref.netSession.LobbyPublicity = Network.LobbyPublicity.Public;
                     loading = new MapBackgroundLoading(null as SaveStateMeta);
                 }
 

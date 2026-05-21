@@ -52,7 +52,7 @@ namespace VikingEngine.LootFest.Players
         public byte HorseHoofColor = (byte)Data.MaterialType.gray_80;
 
 
-        public Network.NetworkCanJoinType SessionOpenType = Network.NetworkCanJoinType.Friends;
+        //public Network.NetworkCanJoinType SessionOpenType = Network.NetworkCanJoinType.Friends;
         public bool FPSview = false;
         public const byte StandardCameraSpeedSetting = 5;
         public bool CamInvertY = false;
@@ -138,7 +138,7 @@ namespace VikingEngine.LootFest.Players
             voxelDesignerSettings.WriteStream(w);
 
             //Game setting
-            w.Write((byte)SessionOpenType);
+            //w.Write((byte)SessionOpenType);
             w.Write(ViewPlayerNames);
             w.Write(FPSview);
             w.Write(CamSpeedX);
@@ -294,7 +294,7 @@ namespace VikingEngine.LootFest.Players
             voxelDesignerSettings.ReadStream(r, version);
 
             ////Game setting
-            SessionOpenType = (Network.NetworkCanJoinType)r.ReadByte();
+            //SessionOpenType = (Network.NetworkCanJoinType)r.ReadByte();
 
             ViewPlayerNames = r.ReadBoolean();
             ViewPlayerNames = false;

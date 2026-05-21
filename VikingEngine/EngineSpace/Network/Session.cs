@@ -244,29 +244,29 @@ namespace VikingEngine.Network
 
         }
 
-        public LobbyPublicity LobbyPublicity
-        {
-            get
-            {
-#if PCGAME
-                if (Ref.steam.isNetworkInitialized)
-                    return Ref.steam.LobbyMatchmaker.lobbyPublicity;
-                else
-                    return LobbyPublicity.ERROR;
-#else
-                return LobbyPublicity.ERROR;
-#endif
-            }
+//        public LobbyPublicity LobbyPublicity
+//        {
+//            get
+//            {
+//#if PCGAME
+//                if (Ref.steam.isNetworkInitialized)
+//                    return Ref.netsett.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity;
+//                else
+//                    return LobbyPublicity.ERROR;
+//#else
+//                return LobbyPublicity.ERROR;
+//#endif
+//            }
 
-            set
-            {
-#if PCGAME
-                Ref.steam.LobbyMatchmaker.SetLobbyPublicity(value);
-#else
-                throw new NotImplementedException();
-#endif
-            }
-        }
+//            set
+//            {
+//#if PCGAME
+//                Ref.steam.LobbyMatchmaker.SetLobbyPublicity(value);
+//#else
+//                throw new NotImplementedException();
+//#endif
+//            }
+//        }
 
         public bool joinableStatus = true;
 

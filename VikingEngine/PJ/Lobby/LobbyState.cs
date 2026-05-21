@@ -103,7 +103,7 @@ namespace VikingEngine.PJ
 
                     if (PjRef.hasAllContentDLC)
                     {
-                        Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity = PjRef.storage.lobbyPublicity;
+                        //Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity = PjRef.storage.lobbyPublicity;
 
 #if PCGAME
                         Ref.steam.LobbyMatchmaker.CreateLobbyIfNotInOne();
@@ -326,7 +326,7 @@ namespace VikingEngine.PJ
         {
             PjRef.storage.lobbyPublicity = (LobbyPublicity)index;
             refreshLobbyPublicity();
-            Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.SetLobbyPublicity(PjRef.storage.lobbyPublicity);
+            //Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.SetLobbyPublicity(PjRef.storage.lobbyPublicity);
             PjRef.PublicNetwork = PjRef.storage.lobbyPublicity == LobbyPublicity.Public;
 
             netwriteLobbyStatus();
