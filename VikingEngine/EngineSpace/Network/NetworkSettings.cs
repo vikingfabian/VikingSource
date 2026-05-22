@@ -15,6 +15,7 @@ namespace VikingEngine.Network
 {
     struct PlayerToPlayerDiplomacy
     {
+        
         public PlayerDiplomacyAllowType allianceAllow;
         public bool canBreakAlliance;
 
@@ -25,15 +26,15 @@ namespace VikingEngine.Network
         /// </summary>
         public bool allianceLimit;
         public bool mustAsk;
-        public bool usePreparationTime;
-        public TimeLength preparationTime;
+        public UseTimeLimit warDeclarePreparationTime;
+        public UseTimeLimit gameStartPreparationTime;
 
         public PlayerToPlayerDiplomacy(bool host)
         {
             if (host)
             {
                 allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
-                warAllow = PlayerDiplomacyAllowType.PlayersChoose;
+                warAllow = PlayerDiplomacyAllowType.Blocked;
             }
             else
             {
@@ -44,14 +45,19 @@ namespace VikingEngine.Network
 
             allianceLimit = false;
             mustAsk = false;
-            usePreparationTime = true;
-            preparationTime = TimeLength.FromMinutes(5);
+            //useWarDeclarePreparationTime = true;
+            //warPreparationTime = TimeLength.FromMinutes(5);
+            warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
+            gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
+
         }
 
-       
+
     }
     class NetworkSettings
     {
+        public bool settingsHasChanged = false;
+
         public bool hostNetwork = true;
         public bool findNetwork = true;
 
@@ -90,6 +96,7 @@ namespace VikingEngine.Network
             if (set)
             {
                 hostNetwork = !value;
+                settingsHasChanged = true;
             }
             return !hostNetwork;
         }
@@ -99,6 +106,7 @@ namespace VikingEngine.Network
             if (set)
             {
                 maxPlayerCount = value;
+                settingsHasChanged = true;
             }
             return maxPlayerCount;
         }
@@ -111,6 +119,7 @@ namespace VikingEngine.Network
             if (set)
             {
                 pd.canBreakAlliance = value;
+                settingsHasChanged = true;
             }
             return pd.canBreakAlliance;
         }
@@ -133,6 +142,7 @@ namespace VikingEngine.Network
             if (set)
             {
                 pd.mustAsk = value;
+                settingsHasChanged = true;
             }
             return pd.mustAsk;
         }
@@ -141,11 +151,14 @@ namespace VikingEngine.Network
             bool host = (bool)tag;
             ref var pd = ref ptpDiplomacy(host);
 
-            if (set)
-            {
-                pd.usePreparationTime = value;
-            }
-            return pd.usePreparationTime;
+            settingsHasChanged |= set;
+            
+            return pd.warDeclarePreparationTime.UseProperty(null, set, value);
+            //if (set)
+            //{
+            //    pd.useWarDeclarePreparationTime = value;
+            //}
+            //return pd.useWarDeclarePreparationTime;
         }
 
         ref PlayerToPlayerDiplomacy ptpDiplomacy(bool host)

@@ -855,46 +855,47 @@ namespace VikingEngine.DSSWars
             });
         }
 
-        public static string RelationString(RelationType relation)
-        {
-            switch (relation)
-            {
-                case RelationType.RelationType4_Servant: return DssRef.lang.Diplomacy_RelationType_Servant;
-                case RelationType.RelationType3_Ally: return DssRef.lang.Diplomacy_RelationType_Ally;
-                case RelationType.RelationType2_Good: return DssRef.lang.Diplomacy_RelationType_Good;
-                case RelationType.RelationType1_Peace: return DssRef.lang.Diplomacy_RelationType_Peace;
-                case RelationType.RelationType0_Neutral: return DssRef.lang.Diplomacy_RelationType_Neutral;
-                case RelationType.RelationTypeN1_Enemies: return DssRef.lang.Diplomacy_RelationType_Enemies;
-                case RelationType.RelationTypeN2_Truce: return DssRef.lang.Diplomacy_RelationType_Truce;
-                case RelationType.RelationTypeN3_War: return DssRef.lang.Diplomacy_RelationType_War;
-                case RelationType.RelationTypeN4_TotalWar: return DssRef.lang.Diplomacy_RelationType_TotalWar;
-                case RelationType.ExtendTruce: return DssRef.lang.Diplomacy_ExtendTruceAction;
+        //public static void Relation(RelationType relation, out SpriteName icon, out string name)
+        //public static string RelationString(RelationType relation)
+        //{
+        //    switch (relation)
+        //    {
+        //        case RelationType.RelationType4_Servant: return DssRef.lang.Diplomacy_RelationType_Servant;
+        //        case RelationType.RelationType3_Ally: return DssRef.lang.Diplomacy_RelationType_Ally;
+        //        case RelationType.RelationType2_Good: return DssRef.lang.Diplomacy_RelationType_Good;
+        //        case RelationType.RelationType1_Peace: return DssRef.lang.Diplomacy_RelationType_Peace;
+        //        case RelationType.RelationType0_Neutral: return DssRef.lang.Diplomacy_RelationType_Neutral;
+        //        case RelationType.RelationTypeN1_Enemies: return DssRef.lang.Diplomacy_RelationType_Enemies;
+        //        case RelationType.RelationTypeN2_Truce: return DssRef.lang.Diplomacy_RelationType_Truce;
+        //        case RelationType.RelationTypeN3_War: return DssRef.lang.Diplomacy_RelationType_War;
+        //        case RelationType.RelationTypeN4_TotalWar: return DssRef.lang.Diplomacy_RelationType_TotalWar;
+        //        case RelationType.ExtendTruce: return DssRef.lang.Diplomacy_ExtendTruceAction;
 
-                default:
-                    return TextLib.Error;
-                    //throw new NotImplementedException("RelationString " + relation.ToString());
-            }
-        }
-        public static SpriteName RelationSprite(RelationType relation)
-        {
-            switch (relation)
-            {
-                case RelationType.RelationType4_Servant: return SpriteName.WarsRelationServant;
-                case RelationType.RelationType3_Ally: return SpriteName.WarsRelationAlly;
-                case RelationType.RelationType2_Good: return SpriteName.WarsRelationGood;
-                case RelationType.RelationType1_Peace: return SpriteName.WarsRelationPeace;
-                case RelationType.RelationType0_Neutral: return SpriteName.WarsRelationNeutral;
-                case RelationType.RelationTypeN1_Enemies: return SpriteName.WarsRelationEnemy;
-                case RelationType.RelationTypeN2_Truce:
-                case RelationType.ExtendTruce: return SpriteName.WarsRelationTruce;
-                case RelationType.RelationTypeN3_War: return SpriteName.WarsRelationWar;
-                case RelationType.RelationTypeN4_TotalWar: return SpriteName.WarsRelationTotalWar;
+        //        default:
+        //            return TextLib.Error;
+        //            //throw new NotImplementedException("RelationString " + relation.ToString());
+        //    }
+        //}
+        //public static SpriteName RelationSprite(RelationType relation)
+        //{
+        //    switch (relation)
+        //    {
+        //        case RelationType.RelationType4_Servant: return SpriteName.WarsRelationServant;
+        //        case RelationType.RelationType3_Ally: return SpriteName.WarsRelationAlly;
+        //        case RelationType.RelationType2_Good: return SpriteName.WarsRelationGood;
+        //        case RelationType.RelationType1_Peace: return SpriteName.WarsRelationPeace;
+        //        case RelationType.RelationType0_Neutral: return SpriteName.WarsRelationNeutral;
+        //        case RelationType.RelationTypeN1_Enemies: return SpriteName.WarsRelationEnemy;
+        //        case RelationType.RelationTypeN2_Truce:
+        //        case RelationType.ExtendTruce: return SpriteName.WarsRelationTruce;
+        //        case RelationType.RelationTypeN3_War: return SpriteName.WarsRelationWar;
+        //        case RelationType.RelationTypeN4_TotalWar: return SpriteName.WarsRelationTotalWar;
 
-                default:
-                    return SpriteName.MissingImage;
-                    //throw new NotImplementedException("RelationString " + relation.ToString());
-            }
-        }
+        //        default:
+        //            return SpriteName.MissingImage;
+        //            //throw new NotImplementedException("RelationString " + relation.ToString());
+        //    }
+        //}
 
         public static string SpeakTermsString(SpeakTerms speak)
         {

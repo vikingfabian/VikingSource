@@ -107,8 +107,10 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbText(thirdPartFaction.PlayerName));
 
                     content.Add(new RbText(": "));
-                    content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-                    content.Add(new RbText(Diplomacy.RelationString(relation)));
+                    IconName.Relation(relation, out SpriteName relIcon, out string relName);
+                    content.Add(new RbImage(relIcon));
+                    content.hspace();
+                    content.Add(new RbText(relName));
 
                     create(player, content, false);
                 }

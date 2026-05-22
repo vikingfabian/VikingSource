@@ -141,7 +141,8 @@ namespace VikingEngine.DSSWars.Communication
                     }
 
                     rel.ImageGroup.ParentPosition = rel.position;
-                    rel.relationIcon.SetSpriteName(Diplomacy.RelationSprite(rel.relation));
+                    IconName.Relation(rel.relation, out SpriteName relIcon, out string relName);
+                    rel.relationIcon.SetSpriteName(relIcon);
 
                     bool visible = true;
 

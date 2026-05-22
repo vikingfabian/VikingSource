@@ -373,7 +373,7 @@ namespace VikingEngine.SteamWrapping
             if (hostSession)
             {
                 return Ref.netSession.joinableStatus &&
-                    remoteGamers.Count <= SteamLobbyMatchmaker.MAX_LOBBY_MEMBERS &&
+                    remoteGamers.Count <= Ref.netsett.maxPlayerCount &&
                     Ref.netsett.getStoredGamer(peer.fullId).ban < BanStatus.Banned;// .bannedPeers.isBanned(peer) == false;
             }
             else

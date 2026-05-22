@@ -1326,7 +1326,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (faction != args.player.faction)
             {
-                args.content.Add(new RbImage(Diplomacy.RelationSprite(DssRef.world.diplomacy.GetRelation(faction, args.player.faction).Relation)));
+                IconName.Relation(DssRef.world.diplomacy.GetRelation(faction, args.player.faction).Relation, out SpriteName relIcon, out string relName);
+                args.content.Add(new RbImage(relIcon));
                 args.content.space();
             }
 

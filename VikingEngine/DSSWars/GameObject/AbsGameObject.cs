@@ -249,7 +249,8 @@ namespace VikingEngine.DSSWars.GameObject
                 //args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
                 args.content.space(0.5f);
-                args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                IconName.Relation(relation, out SpriteName relIcon, out string relName);
+                args.content.Add(new RbImage(relIcon));
 
                 if (faction.player.IsRemotePlayer())
                 {
@@ -288,8 +289,10 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.newLine();
                     args.content.Add(new RbText(GetFaction().PlayerName, Color.LightYellow));
                     args.content.newLine();
-                    args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-                    args.content.Add(new RbText(Diplomacy.RelationString(relation), Color.LightBlue));
+                    IconName.Relation(relation, out SpriteName relIcon, out string relName);
+                    args.content.Add(new RbImage(relIcon));
+                    args.content.hspace();
+                    args.content.Add(new RbText(relName, Color.LightBlue));
 
                 }
                 args.content.Add(new RbSeperationLine());

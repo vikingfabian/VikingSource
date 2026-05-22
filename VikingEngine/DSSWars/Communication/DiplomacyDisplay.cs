@@ -100,19 +100,22 @@ namespace VikingEngine.DSSWars.Interface
                     content.hspace();
                     content.Add(new RbText(thirdPartFaction.PlayerName));
 
+                    IconName.Relation(relation, out SpriteName relIcon, out string relName);
                     content.Add(new RbText(": "));
-                    content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-                    content.Add(new RbText(Diplomacy.RelationString(relation)));
+                    content.Add(new RbImage(relIcon));
+                    content.hspace();
+                    content.Add(new RbText(relName));
 
                     if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
                     {
                         content.space();
                         foreach (var forceRelation in RelationOptionsAsGod)
                         {
+                            IconName.Relation(relation, out SpriteName frelIcon, out string frelName);
                             content.Add(new ArtButton( RbButtonStyle.GodPower,
-                                new List<AbsRichBoxMember> { new RbImage(Diplomacy.RelationSprite(forceRelation)) },
+                                new List<AbsRichBoxMember> { new RbImage(frelIcon) },
                                 new RbAction3Arg<RelationType, Faction, Faction>(setRelation_AsGod, forceRelation, otherfaction, thirdPartFaction),
-                                new RbTooltip_Text(Diplomacy.RelationString(forceRelation)), true));
+                                new RbTooltip_Text(frelName), true));
                     } }
                 }
 
@@ -156,6 +159,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     string forgeRelationString;
 
+                    IconName.Relation(opt.toRelation, out SpriteName relIcon, out string relName);
                     switch (opt.toRelation)
                     {
                         case RelationType.RelationTypeN3_War:
@@ -165,13 +169,13 @@ namespace VikingEngine.DSSWars.Interface
                             forgeRelationString = DssRef.lang.Diplomacy_EndRelations;
                             break;
                         default:
-                            forgeRelationString = string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(opt.toRelation));
+                            forgeRelationString = string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, relName);
                             break;
                     }
 
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                         {
-                            new RbImage( Diplomacy.RelationSprite(opt.toRelation)),
+                            new RbImage( relIcon),
                             new RbSpace(), 
                             new RbText(forgeRelationString),
                         },
@@ -247,11 +251,12 @@ namespace VikingEngine.DSSWars.Interface
             }
             if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
             {
+                IconName.Relation(relation, out SpriteName relIcon, out string relName);
                 var relType = new RbText(DssRef.lang.Diplomacy_RelationType + ": ", HudLib.TitleColor_Label);
                 content.Add(relType);
-                content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                content.Add(new RbImage(relIcon));
                 content.hspace();
-                content.Add(new RbText(Diplomacy.RelationString(relation)));
+                content.Add(new RbText(relName));
             }
         }
 
@@ -298,9 +303,10 @@ namespace VikingEngine.DSSWars.Interface
 
             if (PtoP.suggestingNewRelation)
             {
-                content.Add(new RbImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
+                IconName.Relation(PtoP.suggestedRelation, out SpriteName relIcon, out string relName);
+                content.Add(new RbImage(relIcon));
                 content.hspace();
-                content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_NewRelationOffered, Diplomacy.RelationString(PtoP.suggestedRelation))));
+                content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_NewRelationOffered, relName)));
                 content.newLine();
 
                 if (PtoP.suggestedBy == player.faction.myIndex)
@@ -414,13 +420,15 @@ namespace VikingEngine.DSSWars.Interface
         }
 
         void allianceOfferedDisplay(AbsHumanPlayer sending, LocalPlayer recieving, PlayerToPlayerDiplomacy PtoP)
-        {            
+        {
+            IconName.Relation(PtoP.suggestedRelation, out SpriteName relIcon, out string relName);
+
             var message = new RichBoxContent();
             message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, sending.Name));
             message.newLine();
-            message.Add(new RbImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
+            message.Add(new RbImage(relIcon));
             message.hspace();
-            message.Add(new RbText(Diplomacy.RelationString(PtoP.suggestedRelation)));
+            message.Add(new RbText(relName));
             message.newLine();
 
             var acceptButtonContent = new List<AbsRichBoxMember>(7);
@@ -598,11 +606,14 @@ namespace VikingEngine.DSSWars.Interface
 
             diplomacyCostToHud(cost, content, true);
 
+            
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
-            content.Add(new RbImage(Diplomacy.RelationSprite(RelationType.RelationType0_Neutral)));
-            content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(RelationType.RelationType0_Neutral))));
+
+            IconName.Relation(RelationType.RelationType0_Neutral, out SpriteName relIcon, out string relName);
+            content.Add(new RbImage(relIcon));
+            content.hspace();
+            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, relName)));
         }
 
         void declareWarTooltip(RichBoxContent content, object tag)
@@ -613,9 +624,10 @@ namespace VikingEngine.DSSWars.Interface
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
-            content.Add(new RbImage(Diplomacy.RelationSprite( RelationType.RelationTypeN3_War)));
-            content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString( RelationType.RelationTypeN3_War))));
+            IconName.Relation(RelationType.RelationTypeN3_War, out SpriteName relIcon, out string relName);
+            content.Add(new RbImage(relIcon));
+            content.hspace();
+            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, relName)));
         }
 
         void peaceTooltip(RichBoxContent content, object tag)
@@ -628,9 +640,10 @@ namespace VikingEngine.DSSWars.Interface
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
-            content.Add(new RbImage(Diplomacy.RelationSprite(toRelation)));
-            content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(toRelation))));
+            IconName.Relation(toRelation, out SpriteName relIcon, out string relName);
+            content.Add(new RbImage(relIcon));
+            content.hspace();
+            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, relName)));
 
             if (peace_notTruce == false)
             {
@@ -676,15 +689,16 @@ namespace VikingEngine.DSSWars.Interface
             bool ally_notFriend = (bool)tag;
             int cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out int allyCountCost);
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
-
+            IconName.Relation(toRelation, out SpriteName relIcon, out string relName);
+           
             diplomacyCostToHud(cost, content);
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbImage(Diplomacy.RelationSprite(toRelation)));
+            content.Add(new RbImage(relIcon));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(toRelation))));
+            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, relName)));
             
             if (ally_notFriend)
             {                
@@ -701,7 +715,8 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.BulletPoint(content);
                    
                     var relation = DssRef.world.diplomacy.GetRelation(otherfaction, m).Relation;
-                    content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                    IconName.Relation(toRelation, out SpriteName opprelIcon, out string opprelName);
+                    content.Add(new RbImage(opprelIcon));
                     content.space();
                     content.Add(m.FlagTextureToHud());
                     content.Add(new RbText(m.PlayerName));

@@ -149,6 +149,7 @@ namespace VikingEngine.Network
         PlayersChoose,
         Allow,
         Blocked,
+        NUM
     }
 
     enum PacketType : byte

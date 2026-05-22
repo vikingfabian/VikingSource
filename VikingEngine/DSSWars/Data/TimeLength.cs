@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.LootFest.Data;
@@ -61,6 +62,16 @@ namespace VikingEngine.DSSWars.Data
         public override string ToString()
         {
             return $"Time length: {seconds} seconds";
+        }
+
+        public void write_ushort(System.IO.BinaryWriter w)
+        {
+           w.Write(Bound.UShort(seconds));
+        }
+
+        public void read_ushort(System.IO.BinaryReader r)
+        {
+            seconds = r.ReadUInt16();
         }
     }
 
@@ -143,6 +154,45 @@ namespace VikingEngine.DSSWars.Data
         public override string ToString()
         {
             return $"Count down: {RemainingLength()}/{length.seconds} seconds";
+        }
+    }
+
+    struct UseTimeLimit
+    {
+        public bool use;
+        public TimeLength time;
+
+        public UseTimeLimit(bool use, TimeLength time)
+        { 
+            this.use = use;
+            this.time = time;
+        }
+
+        public void write_ushort(System.IO.BinaryWriter w, bool storeTime)
+        {
+            w.Write(use);
+            if (use || storeTime)
+            {
+                time.write_ushort(w);
+            }
+        }
+
+        public void read_ushort(System.IO.BinaryReader r, bool storeTime)
+        {
+            use = r.ReadBoolean();
+            if (use || storeTime)
+            {
+                time.read_ushort(r);
+            }
+        }
+
+        public bool UseProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                use = value;
+            }
+            return use;
         }
     }
 }

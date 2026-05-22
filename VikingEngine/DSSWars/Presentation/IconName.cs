@@ -25,6 +25,59 @@ namespace VikingEngine.DSSWars
 {
     static class IconName
     {
+        public static void Relation(RelationType relation, out SpriteName icon, out string name)
+        {
+            switch (relation)
+            {
+                case RelationType.RelationType4_Servant:
+                    icon = SpriteName.WarsRelationServant;
+                    name = DssRef.lang.Diplomacy_RelationType_Servant;
+                    break;
+                case RelationType.RelationType3_Ally:
+                    icon = SpriteName.WarsRelationAlly;
+                    name = DssRef.lang.Diplomacy_RelationType_Ally;
+                    break;
+                case RelationType.RelationType2_Good:
+                    icon = SpriteName.WarsRelationGood;
+                    name = DssRef.lang.Diplomacy_RelationType_Good;
+                    break;
+                case RelationType.RelationType1_Peace:
+                    icon = SpriteName.WarsRelationPeace;
+                    name = DssRef.lang.Diplomacy_RelationType_Peace;
+                    break;
+                case RelationType.RelationType0_Neutral:
+                    icon = SpriteName.WarsRelationNeutral;
+                    name = DssRef.lang.Diplomacy_RelationType_Neutral;
+                    break;
+                case RelationType.RelationTypeN1_Enemies:
+                    icon = SpriteName.WarsRelationEnemy;
+                    name = DssRef.lang.Diplomacy_RelationType_Enemies;
+                    break;
+                case RelationType.RelationTypeN2_Truce:
+                    icon = SpriteName.WarsRelationTruce;
+                    name = DssRef.lang.Diplomacy_RelationType_Truce;
+                    break;
+                case RelationType.RelationTypeN3_War:
+                    icon = SpriteName.WarsRelationWar;
+                    name = DssRef.lang.Diplomacy_RelationType_War;
+                    break;
+                case RelationType.RelationTypeN4_TotalWar:
+                    icon = SpriteName.WarsRelationTotalWar;
+                    name = DssRef.lang.Diplomacy_RelationType_TotalWar;
+                    break;
+                case RelationType.ExtendTruce:
+                    icon = SpriteName.WarsRelationTruce;
+                    name = DssRef.lang.Diplomacy_ExtendTruceAction;
+                    break;
+
+                default:
+                    icon = SpriteName.MissingImage;
+                    name = TextLib.Error;
+                    //throw new NotImplementedException("RelationString " + relation.ToString());
+                    break;
+            }
+        }
+
         public static void SpecializationTypeName(SpecializationType specialization, out SpriteName icon, out string name)
         {
             switch (specialization)
