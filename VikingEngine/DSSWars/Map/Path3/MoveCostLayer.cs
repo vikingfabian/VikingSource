@@ -9,58 +9,6 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars.Map.Path3
 {
-    //struct CheapestTile
-    //{
-    //    public byte land;
-    //    public byte water;
-    //}
-
-    //struct CostLayerTile
-    //{
-    //    public byte cheapestTile_land;
-    //    public byte cheapestTile_water;
-
-    //    public MoveCost cost_NorthToSouth;
-    //    public MoveCost cost_DiagonalNorthEast;
-    //    public MoveCost cost_WestToEast;
-    //    public MoveCost cost_DiagonalSouthEast;
-
-    //    public void CalculateCost(MoveCost topLeft, MoveCost topRight, MoveCost bottomLeft, MoveCost bottomRight,
-    //        float expensivePathAdd, float cheapPathAdd)
-    //    {
-    //        //MoveCost topLeft = DssRef.world.subTileGrid.array[pos.X, pos.Y].GetMoveCost();
-    //        //layer0.array[pos.X, pos.Y] = topLeft;
-    //        //MoveCost topRight = DssRef.world.subTileGrid.array[pos.X + 1, pos.Y].GetMoveCost();
-    //        //layer0.array[pos.X + 1, pos.Y] = topRight;
-    //        //MoveCost bottomLeft = DssRef.world.subTileGrid.array[pos.X, pos.Y + 1].GetMoveCost();
-    //        //layer0.array[pos.X, pos.Y + 1] = bottomLeft;
-    //        //MoveCost bottomRight = DssRef.world.subTileGrid.array[pos.X + 1, pos.Y + 1].GetMoveCost();
-    //        //layer0.array[pos.X + 1, pos.Y + 1] = bottomRight;
-    //        MoveCost path1;
-    //        MoveCost path2;
-
-
-    //        //Horizontal
-    //        path1 = MoveCost.Sum(topLeft, topRight);
-    //        path2 = MoveCost.Sum(bottomLeft, bottomRight);
-    //        cost_WestToEast = MoveCost.Total(ref path1, ref path2, cheapPathAdd, expensivePathAdd);
-
-    //        //Vertical
-    //        path1 = MoveCost.Sum(topLeft, bottomLeft);
-    //        path2 = MoveCost.Sum(topRight, bottomRight);
-    //        cost_NorthToSouth = MoveCost.Total(ref path1, ref path2, cheapPathAdd, expensivePathAdd);
-
-    //        //Diagonal NE
-    //        path1 = MoveCost.Sum(bottomLeft, topLeft, topRight);
-    //        path2 = MoveCost.Sum(bottomLeft, bottomRight, topRight);
-    //        cost_DiagonalNorthEast = MoveCost.Total(ref path1, ref path2, cheapPathAdd, expensivePathAdd);
-
-    //        //Diagonal SE
-    //        path1 = MoveCost.Sum(topLeft, bottomLeft, bottomRight);
-    //        path2 = MoveCost.Sum(topLeft, topRight, bottomRight);
-    //        cost_DiagonalSouthEast = MoveCost.Total(ref path1, ref path2, cheapPathAdd, expensivePathAdd);
-    //    }
-    //}
 
     class MoveCostLayer
     {
@@ -79,10 +27,19 @@ namespace VikingEngine.DSSWars.Map.Path3
         //public Grid2D<CostLayerTile> tiles;
 
         public MoveCostLayer(IntVector2 size)
-        { 
+        {
             this.size = size;
             cost_n_ne_e_se = new MoveCost[size.Area() * StoredDirections];
             //tiles = new Grid2D<CostLayerTile>(size);
+        }
+
+        public static int ConvertDir8(int dir8)
+        {
+            if (dir8 > Dir_DiagonalSouthEast)
+            {
+                return dir8 - 4;
+            }
+            return dir8;
         }
 
         public void Set(IntVector2 layerPos, int direction, MoveCost cost)
@@ -113,6 +70,12 @@ namespace VikingEngine.DSSWars.Map.Path3
         {
             return (layerPos.X + layerPos.Y * size.X) * StoredDirections;
         }
+
+        public bool InBounds(IntVector2 position)
+        {
+            return position.X >= 0 && position.X < size.X &&
+                position.Y >= 0 && position.Y < size.Y;
+        }
     }
 
     class MoveCostLayer4 : MoveCostLayer
@@ -123,11 +86,11 @@ namespace VikingEngine.DSSWars.Map.Path3
         public const byte TileStatus_Initialized = 3;
 
         
-        public Grid2D<byte> tileStatus;
+        public Grid1D<byte> tileStatus;
         public MoveCostLayer4(WorldData world)
             :base(world.subTileGrid.Size / Layer4TileWidth)
         {
-            tileStatus = new Grid2D<byte>(size);
+            tileStatus = new Grid1D<byte>(size);
         }
     }
 

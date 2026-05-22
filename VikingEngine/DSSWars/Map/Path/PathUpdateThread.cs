@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars.Map.Path
@@ -15,6 +16,7 @@ namespace VikingEngine.DSSWars.Map.Path
         int startFaction;
         int endFaction;
 
+        public LayerPathFindingPool layerPathFindingPool = new LayerPathFindingPool();
         public PathFindingPool pathFindingPool = new PathFindingPool();
         public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
 
