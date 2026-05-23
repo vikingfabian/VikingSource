@@ -291,13 +291,20 @@ namespace VikingEngine.DSSWars.Interface
                                 {
                                     Ref.netsett.clientDiplomacy.allianceAllow = allowType;
                                 }
+                                menu.CloseDropDown();
                             }, allowType), null);
                     }
                 }
             }
             allowAllianceOptions.Build(content, SpriteName.WarsRelationAlly, "Allow alliance", menu);
-            content.newLine();
-            //content.Add(new ArtCheckbox(content, Ref.netsett.canBreakAllianceProperty) { propertyTag = host });
+
+            if (toPlayerDiplomacy.allianceAllow == PlayerDiplomacyAllowType.Allow)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Can break alliance") },
+                    Ref.netsett.canBreakAllianceProperty)
+                { propertyTag = host });
+            }
 
             var allowWarOptions = new DropDownBuilder("allowWar" + host.ToString());
             {
@@ -316,6 +323,7 @@ namespace VikingEngine.DSSWars.Interface
                                 {
                                     Ref.netsett.clientDiplomacy.warAllow = allowType;
                                 }
+                                menu.CloseDropDown();
                             }, allowType), null);
 
                         if (!Ref.netsett.unlockPvp && allowType != PlayerDiplomacyAllowType.Blocked)
@@ -326,6 +334,51 @@ namespace VikingEngine.DSSWars.Interface
                 }
             }
             allowWarOptions.Build(content, SpriteName.WarsRelationWar, "Allow war", menu);
+
+            if (toPlayerDiplomacy.warAllow == PlayerDiplomacyAllowType.Allow)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Alliance limt") },
+                    Ref.netsett.warAllianceLimitProperty, new RbTooltip_Text("Can't be attacked by a larger player alliance"))
+                { propertyTag = host });
+
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Must ask") },
+                    Ref.netsett.warMustAskProperty, new RbTooltip_Text("War have to be requested"))
+                { propertyTag = host });
+
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Game start protection") },
+                    Ref.netsett.warUseGameStartTimeProperty)
+                { propertyTag = host });
+
+                if (toPlayerDiplomacy.gameStartPreparationTime.use)
+                {
+                    HudLib.Label(content, "Minutes");
+                    content.hspace();
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
+                        Ref.netsett.warStartTimeProperty, true, host);
+                }
+
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("War preparation time") },
+                    Ref.netsett.warUseGameStartTimeProperty, new RbTooltip_Text("A delay from war declaration until attacks are available"))
+                { propertyTag = host });
+
+                if (toPlayerDiplomacy.warDeclarePreparationTime.use)
+                {
+                    HudLib.Label(content, "Minutes");
+                    content.hspace();
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
+                        Ref.netsett.warStartTimeProperty, true, host);
+                }
+
+            }
+        }
+
+        public bool canBreakAllianceProperty2(object tag, bool set, bool value)
+        {
+            return value;
         }
 
         string allowTypeString(PlayerDiplomacyAllowType allowType)

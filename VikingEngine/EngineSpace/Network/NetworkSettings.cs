@@ -14,8 +14,7 @@ using VikingEngine.Timer;
 namespace VikingEngine.Network
 {
     struct PlayerToPlayerDiplomacy
-    {
-        
+    {        
         public PlayerDiplomacyAllowType allianceAllow;
         public bool canBreakAlliance;
 
@@ -123,6 +122,7 @@ namespace VikingEngine.Network
             }
             return pd.canBreakAlliance;
         }
+
         public bool warAllianceLimitProperty(object tag, bool set, bool value)
         {
             bool host = (bool)tag;
@@ -154,13 +154,38 @@ namespace VikingEngine.Network
             settingsHasChanged |= set;
             
             return pd.warDeclarePreparationTime.UseProperty(null, set, value);
-            //if (set)
-            //{
-            //    pd.useWarDeclarePreparationTime = value;
-            //}
-            //return pd.useWarDeclarePreparationTime;
+       
         }
+        public float warPreparationTimeProperty(object tag, bool set, float value)
+        {
+            bool host = (bool)tag;
+            ref var pd = ref ptpDiplomacy(host);
 
+            settingsHasChanged |= set;
+
+            return pd.warDeclarePreparationTime.MinuteProperty(null, set, value);
+
+        }
+        public bool warUseGameStartTimeProperty(object tag, bool set, bool value)
+        {
+            bool host = (bool)tag;
+            ref var pd = ref ptpDiplomacy(host);
+
+            settingsHasChanged |= set;
+
+            return pd.gameStartPreparationTime.UseProperty(null, set, value);
+
+        }
+        public float warStartTimeProperty(object tag, bool set, float value)
+        {
+            bool host = (bool)tag;
+            ref var pd = ref ptpDiplomacy(host);
+
+            settingsHasChanged |= set;
+
+            return pd.gameStartPreparationTime.MinuteProperty(null, set, value);
+
+        }
         ref PlayerToPlayerDiplomacy ptpDiplomacy(bool host)
         {
             if (host)

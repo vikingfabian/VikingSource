@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Data
         public float Minutes
         {
             get { return seconds / TimeExt.MinuteInSeconds; }
+            set { seconds = TimeExt.MinuteInSeconds * value; }
         }
 
         // Override ToString method to display seconds and milliseconds
@@ -193,6 +194,15 @@ namespace VikingEngine.DSSWars.Data
                 use = value;
             }
             return use;
+        }
+
+        public float MinuteProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                time.Minutes = value;
+            }
+            return time.Minutes;
         }
     }
 }
