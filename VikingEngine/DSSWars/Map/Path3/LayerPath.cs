@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Map.Path3
                     if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
                     {
                         //add a node to open list
-                        PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
+                        PathNode node = new PathNode(pos, dir, layer, currentNode, goal, endAsShip);
                         open.Add(node);
                         nodeGrid.Set(pos, node);
                     }
@@ -464,7 +464,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         /// Distance to goal
         /// </summary>
         public float Heuristic;
-        float moveCost;
+        MoveCost moveCost;
 
         public IntVector2 Position;
         public IntVector2 PreviousPosition;
@@ -484,7 +484,6 @@ namespace VikingEngine.DSSWars.Map.Path3
             HasValue = true;
             closed = true;
 
-            moveCost = 0;
             Value = 0;
             PreviousPosition = pos;
             waterTile = ship;
@@ -497,44 +496,47 @@ namespace VikingEngine.DSSWars.Map.Path3
             this.PreviousPosition = parent.Position;
             closed = false;
 
-            moveCost = lib.IsEven(dir8) ? MoveCostStraight : MoveCostDiagonal;
+            moveCost = layer.Get_dir8(pos, dir8);
+
+            float multiply = lib.IsEven(dir8) ? MoveCostStraight : MoveCostDiagonal;
             if (dir8 == parent.dir8)
             { //Bonus for keeping direction
-                moveCost -= 1f;
+                multiply -= 1f;
             }
+            moveCost.land *= multiply;
+            moveCost.water *= multiply;
+
 
             //Tile tile = world.tileGrid.Get(pos);
-            layer.Get(pos, 
-            waterTile = tile.IsWater();
+            ship = parent.ship;
+            waterTile = moveCost.water < moveCost.land;
 
-            if (waterTile != parent.waterTile)
+            Value = ship? moveCost.water : moveCost.land;
+            if (ship != waterTile && Value > layer.MaxMoveCost)
             {
+                //Must ship convert
+                ship = waterTile;
+                Value = ship ? moveCost.water : moveCost.land;
                 if (waterTile == endAsShip)
                 {//wanted convert
-                    moveCost -= 2;
+                    Value -= 2;
                 }
                 else
                 {
-                    moveCost += MoveCostStraight * 16;
+                    Value += MoveCostStraight * 4;
                 }
             }
-            ship = this.waterTile;
 
-            moveCost *= tile.TroupWalkingDistance(ship);
+            //moveCost += parent.moveCost;
+            moveCost.land += parent.moveCost.land;
+            moveCost.water += parent.moveCost.water;
 
-            moveCost += parent.moveCost;
-
-
-            //Value = moveCost + (Math.Abs(pos.X - goalPos.X) + Math.Abs(pos.Y - goalPos.Y)) * MoveCostStraight;
-            // Octile distance formula: 
-            // 10 * (dx + dy) + (14 - 2 * 10) * min(dx, dy)
-            int dx = Math.Abs(pos.X - goalPos.X);
-            int dy = Math.Abs(pos.Y - goalPos.Y);
-            Heuristic = (MoveCostStraight * (dx + dy)) + ((MoveCostDiagonal - 2 * MoveCostStraight) * Math.Min(dx, dy));
+            Heuristic = (pos - goalPos).Length();
 
             const float DistanceToGoalWeight = 1.5f;
             Heuristic *= DistanceToGoalWeight;
-            this.Value = moveCost + Heuristic;
+            //this.Value = moveCost + Heuristic;
+            Value += Heuristic;
 
             HasValue = true;
         }

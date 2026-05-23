@@ -23,11 +23,13 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         public const int StoredDirections = 4;
         public IntVector2 size;
+        public float MaxMoveCost;
         public MoveCost[] cost_n_ne_e_se;
         //public Grid2D<CostLayerTile> tiles;
 
-        public MoveCostLayer(IntVector2 size)
+        public MoveCostLayer(int tileWidth, IntVector2 size)
         {
+            MaxMoveCost = tileWidth * 10f;
             this.size = size;
             cost_n_ne_e_se = new MoveCost[size.Area() * StoredDirections];
             //tiles = new Grid2D<CostLayerTile>(size);
@@ -60,6 +62,16 @@ namespace VikingEngine.DSSWars.Map.Path3
             return cost_n_ne_e_se[ix];
         }
 
+        public MoveCost Get_dir8(IntVector2 layerPos, int dir8)
+        {
+            if (dir8 > Dir_DiagonalSouthEast)
+            {
+                dir8 -= 4;
+            }
+            int ix = (layerPos.X + layerPos.Y * size.X) * StoredDirections + dir8;
+            return cost_n_ne_e_se[ix];
+        }
+
         public MoveCost Get(int layerPos, int direction)
         {
             int ix = layerPos + direction;
@@ -88,7 +100,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         
         public Grid1D<byte> tileStatus;
         public MoveCostLayer4(WorldData world)
-            :base(world.subTileGrid.Size / Layer4TileWidth)
+            :base(Layer4TileWidth, world.subTileGrid.Size / Layer4TileWidth)
         {
             tileStatus = new Grid1D<byte>(size);
         }
@@ -101,8 +113,8 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         public Path3Thread()
         {
-            layer1_temp = new MoveCostLayer(new IntVector2(MoveCostLayer.Layer4TileWidth / 2));
-            layer3_temp = new MoveCostLayer(new IntVector2(2));
+            layer1_temp = new MoveCostLayer(2, new IntVector2(MoveCostLayer.Layer4TileWidth / 2));
+            layer3_temp = new MoveCostLayer(8, new IntVector2(2));
         }
     }
 
@@ -115,7 +127,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         public MoveCostLayers(WorldData world)
         {
             layer0 = new Grid2D<MoveCost>(world.subTileGrid.Size);
-            layer2 = new MoveCostLayer(world.subTileGrid.Size / MoveCostLayer.Layer2TileWidth);
+            layer2 = new MoveCostLayer(MoveCostLayer.Layer2TileWidth, world.subTileGrid.Size / MoveCostLayer.Layer2TileWidth);
             layer4 = new MoveCostLayer4(world);
         }
 
