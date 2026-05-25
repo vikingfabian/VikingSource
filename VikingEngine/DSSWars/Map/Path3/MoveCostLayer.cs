@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +26,9 @@ namespace VikingEngine.DSSWars.Map.Path3
         public IntVector2 size;
         public float MaxMoveCost;
         public MoveCost[] cost_n_ne_e_se;
+
+        public Vector3 tileToWp, tileToWpStart;
+
         //public Grid2D<CostLayerTile> tiles;
 
         public MoveCostLayer(int tileWidth, IntVector2 size)
@@ -32,7 +36,13 @@ namespace VikingEngine.DSSWars.Map.Path3
             MaxMoveCost = tileWidth * 10f;
             this.size = size;
             cost_n_ne_e_se = new MoveCost[size.Area() * StoredDirections];
-            //tiles = new Grid2D<CostLayerTile>(size);
+
+            tileToWpStart.X = tileWidth * 0.5f;
+            tileToWpStart.Z = tileWidth * 0.5f;
+
+            tileToWp.X = tileWidth;
+            tileToWp.Z = tileWidth;
+
         }
 
         public static int ConvertDir8(int dir8)
@@ -106,17 +116,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         }
     }
 
-    class Path3Thread
-    {
-        public MoveCostLayer layer1_temp;
-        public MoveCostLayer layer3_temp;
-
-        public Path3Thread()
-        {
-            layer1_temp = new MoveCostLayer(2, new IntVector2(MoveCostLayer.Layer4TileWidth / 2));
-            layer3_temp = new MoveCostLayer(8, new IntVector2(2));
-        }
-    }
+    
 
     class MoveCostLayers
     {

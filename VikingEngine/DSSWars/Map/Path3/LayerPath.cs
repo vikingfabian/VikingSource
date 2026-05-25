@@ -11,31 +11,31 @@ namespace VikingEngine.DSSWars.Map.Path3
     class LayerPathFindingPool
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
-        ConcurrentStack<PathFinding> poolPf = new ConcurrentStack<PathFinding>();
-        ConcurrentQueue<WalkingPath> poolRes = new ConcurrentQueue<WalkingPath>();
+        ConcurrentStack<LayerPathFinding> poolPf = new ConcurrentStack<LayerPathFinding>();
+        ConcurrentQueue<LayerWalkingPath> poolRes = new ConcurrentQueue<LayerWalkingPath>();
         //Stack<WalkingPath> poolResOut = new Stack<WalkingPath>();
 
 
-        public PathFinding GetPf(MoveCostLayer layer)
+        public LayerPathFinding GetPf(MoveCostLayer layer)
         {
-            if (poolPf.TryPop(out PathFinding path))
+            if (poolPf.TryPop(out LayerPathFinding path))
             {
                 return path;
             }
             else
             {
-                return new PathFinding(layer);
+                return new LayerPathFinding(layer);
             }
         }
 
-        public WalkingPath GetRes()
+        public LayerWalkingPath GetRes()
         {
-            if (poolRes.TryDequeue(out WalkingPath path))
+            if (poolRes.TryDequeue(out LayerWalkingPath path))
             {
                 if (path.timeStamp + 2 >= Ref.TotalFrameCount)
                 {
-                    poolRes.Enqueue(new WalkingPath());
-                    poolRes.Enqueue(new WalkingPath());
+                    poolRes.Enqueue(new LayerWalkingPath());
+                    poolRes.Enqueue(new LayerWalkingPath());
                     System.Threading.Thread.Sleep(32);
                 }
                 path.recycle();
@@ -43,11 +43,11 @@ namespace VikingEngine.DSSWars.Map.Path3
             }
             else
             {
-                return new WalkingPath();
+                return new LayerWalkingPath();
             }
         }
 
-        public void Return(PathFinding path)
+        public void Return(LayerPathFinding path)
         {
             // Reset the node to a default state
             if (path != null)
@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             }
         }
 
-        public void Return(WalkingPath pathresult)
+        public void Return(LayerWalkingPath pathresult)
         {
             // Reset the node to a default state
             if (pathresult != null)
@@ -71,23 +71,42 @@ namespace VikingEngine.DSSWars.Map.Path3
 
 
 
-    class PathFinding
+    class LayerPathFinding
     {
         public const int MaxNodeLength = 30000;
 
-        List<PathNode> open = new List<PathNode>();
+        List<LayerPathNode> open = new List<LayerPathNode>();
 
-        Grid1D<PathNode> nodeGrid;
+        Grid1D<LayerPathNode> nodeGrid;
 
 
-        public PathFinding(MoveCostLayer layer)
+        public LayerPathFinding(MoveCostLayer layer)
         {
-            nodeGrid = new Grid1D<PathNode>(layer.size);
+            nodeGrid = new Grid1D<LayerPathNode>(layer.size);
         }
 
 
         //conv.ToDir8_INT(startDir)
-        public WalkingPath FindPath(int pathThreadIndex, MoveCostLayer layer, IntVector2 center, int startDir, IntVector2 goal, bool startAsShip, bool endAsShip)
+
+        public void ApplyParentPath(LayerWalkingPath parentPath)
+        {
+            const int ParentTileScale = 4;
+
+            foreach (var node in parentPath.nodes)
+            {
+                IntVector2 pos = node.position * ParentTileScale;
+                IntVector2 end = pos + ParentTileScale;
+
+                for (int y = pos.Y; y < end.Y; y++)
+                {
+                    for (int x = pos.X; x < end.X; x++)
+                    {
+                        nodeGrid.Set(pos, LayerPathNode.Thunnel);
+                    }
+                }
+            }
+        }
+        public LayerWalkingPath FindPath(int pathThreadIndex, MoveCostLayer layer, IntVector2 center, int startDir, IntVector2 goal, bool startAsShip, bool endAsShip)
         {
             /*
             * Path finding algorithm
@@ -107,20 +126,15 @@ namespace VikingEngine.DSSWars.Map.Path3
             if (!layer.InBounds(center) ||
                 !layer.InBounds(goal))
             {
-                return new WalkingPath();
+                return new LayerWalkingPath();
             }
 
-            PathNode startNode = new PathNode(center, startDir, startAsShip);
+            LayerPathNode startNode = new LayerPathNode(center, startDir, startAsShip);
 
-            //nodeGrid[center.X, center.Y] = startNode;
             nodeGrid.Set(center, startNode);
-
             //bool endAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
-            PathNode currentNode = startNode;
-
+            LayerPathNode currentNode = startNode;
             int numLoops = 0;
-
-
             while (true)
             {
                 for (int dir = 0; dir < 8; dir++)
@@ -129,7 +143,7 @@ namespace VikingEngine.DSSWars.Map.Path3
                     if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
                     {
                         //add a node to open list
-                        PathNode node = new PathNode(pos, dir, layer, currentNode, goal, endAsShip);
+                        LayerPathNode node = new LayerPathNode(pos, dir, layer, currentNode, goal, endAsShip);
                         open.Add(node);
                         nodeGrid.Set(pos, node);
                     }
@@ -179,11 +193,11 @@ namespace VikingEngine.DSSWars.Map.Path3
             }
 
             //List<PathNodeResult> result = new List<PathNodeResult>();
-            WalkingPath path;
+            LayerWalkingPath path;
 
             if (pathThreadIndex < 0)
             {
-                path = new WalkingPath();
+                path = new LayerWalkingPath();
             }
             else
             {
@@ -192,7 +206,12 @@ namespace VikingEngine.DSSWars.Map.Path3
 
             while (currentNode.Position != startNode.Position)
             {
-                path.nodes.Add(new PathNodeResult(currentNode.Position, currentNode.ship));
+                path.nodes.Add(new PathNodeResult_v3(currentNode.Position, 
+                    new Vector3(
+                        currentNode.Position.X * layer.tileToWp.X + layer.tileToWpStart.X, 
+                        0, 
+                        currentNode.Position.Y * layer.tileToWp.Z + layer.tileToWpStart.Z),
+                    currentNode.ship));
                 IntVector2 pos = currentNode.PreviousPosition;
                 currentNode = nodeGrid.Get(pos);
 
@@ -220,14 +239,16 @@ namespace VikingEngine.DSSWars.Map.Path3
         }
     }
 
-    struct PathNodeResult
+    struct PathNodeResult_v3
     {
         public bool ship;
         public IntVector2 position;
+        public Vector3 wp;
 
-        public PathNodeResult(IntVector2 position, bool ship)
+        public PathNodeResult_v3(IntVector2 position, Vector3 wp, bool ship)
         {
             this.position = position;
+            this.wp = wp;
             this.ship = ship;
         }
 
@@ -242,7 +263,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         }
     }
 
-    class WalkingPath
+    class LayerWalkingPath
     {
 #if VISUAL_NODES
         List<Graphics.Mesh> nodeImages;
@@ -252,7 +273,7 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         public double timeStamp;
         public int currentNodeIx;
-        public List<PathNodeResult> nodes = new List<PathNodeResult>(64);
+        public List<PathNodeResult_v3> nodes = new List<PathNodeResult_v3>(64);
 
         public Vector2 DirToNextNode(Vector2 myPos, out bool complete, out bool ship)
         {
@@ -273,15 +294,6 @@ namespace VikingEngine.DSSWars.Map.Path3
             nodes.Clear();
         }
 
-        //        public WalkingPath(List<PathNodeResult> nodes)
-        //        {
-        //            this.nodes = nodes;
-        //            currentNodeIx = nodes.Count - 1;
-
-        //#if VISUAL_NODES
-        //            Ref.update.AddSyncAction(new SyncAction(createVisuals));
-        //#endif
-        //        }
 
         public void init(/*List<PathNodeResult> nodes*/)
         {
@@ -318,7 +330,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         }
 #endif
 
-        public bool TryGetCurrentNode(out PathNodeResult node)
+        public bool TryGetCurrentNode(out PathNodeResult_v3 node)
         {
             int ix = currentNodeIx;
 
@@ -327,7 +339,7 @@ namespace VikingEngine.DSSWars.Map.Path3
                 node = nodes[ix];
                 return true;
             }
-            node = new PathNodeResult(IntVector2.MinValue, false);
+            node = new PathNodeResult_v3(IntVector2.MinValue, VectorExt.V3NegOne, false);
             return false;
         }
 
@@ -451,14 +463,16 @@ namespace VikingEngine.DSSWars.Map.Path3
         }
     }
 
-    struct PathNode
+    struct LayerPathNode
     {
         const float MoveCostStraight = 10f;
         const float MoveCostDiagonal = 14f;
 
-        public static readonly PathNode Empty = new PathNode();
+        public static readonly LayerPathNode Empty = new LayerPathNode();
+        public static readonly LayerPathNode Thunnel = new LayerPathNode() { thunnelValue = -10 };
 
         public float Value;
+        public float thunnelValue;
 
         /// <summary>
         /// Distance to goal
@@ -476,7 +490,7 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         int dir8;
 
-        public PathNode(IntVector2 pos, int dir8, bool ship)
+        public LayerPathNode(IntVector2 pos, int dir8, bool ship)
         {
             this.Position = pos;
             this.dir8 = dir8;
@@ -489,7 +503,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             waterTile = ship;
         }
 
-        public PathNode(IntVector2 pos, int dir8, MoveCostLayer layer, PathNode parent, IntVector2 goalPos, bool endAsShip)
+        public LayerPathNode(IntVector2 pos, int dir8, MoveCostLayer layer, LayerPathNode parent, IntVector2 goalPos, bool endAsShip)
         {
             this.Position = pos;
             this.dir8 = dir8;
@@ -536,7 +550,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             const float DistanceToGoalWeight = 1.5f;
             Heuristic *= DistanceToGoalWeight;
             //this.Value = moveCost + Heuristic;
-            Value += Heuristic;
+            Value += Heuristic + thunnelValue;
 
             HasValue = true;
         }
