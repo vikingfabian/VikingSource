@@ -358,6 +358,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.hspace();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
                         Ref.netsett.warStartTimeProperty, true, host);
+                    content.newParagraph();
                 }
 
                 content.newLine();
@@ -371,6 +372,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.hspace();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
                         Ref.netsett.warStartTimeProperty, true, host);
+                    content.newParagraph();
                 }
 
             }
