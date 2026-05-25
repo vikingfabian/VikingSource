@@ -68,9 +68,7 @@ namespace VikingEngine.Network
         public int maxPlayerCount = 64;
         //public Network.LobbyPublicity findSessionJoinType = Network.LobbyPublicity.FriendsOnly;
 
-        float netVoiceVolume = 1f;
-        public float NetVoiceVol() { return MathHelper.Clamp(netVoiceVolume * Ref.gamesett.MasterVolume, 0.0f, 1.0f); }
-        public bool NetVoiceMuted() { return netVoiceVolume * Ref.gamesett.MasterVolume <= 0; }
+        
 
         public VoiceOption voiceOption = VoiceOption.ButtonHold;
 
@@ -229,7 +227,6 @@ namespace VikingEngine.Network
                         return DssRef.todoLang.JoinPermission_FriendsOnly;
                     case LobbyPublicity.Public:
                         return DssRef.todoLang.JoinPermission_Public;
-
                 }
             }
             else

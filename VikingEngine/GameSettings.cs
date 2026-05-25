@@ -83,6 +83,10 @@ namespace VikingEngine
         float SoundVolume = Engine.Sound.SoundStandardVolume;
         float AmbientVolume = Engine.Sound.SoundStandardVolume;
         float BattleMelodyVolume = 1f;
+        float netVoiceVolume = 1f;
+        public float NetVoiceVol() { return MathHelper.Clamp(netVoiceVolume * Ref.gamesett.MasterVolume, 0.0f, 1.0f); }
+        public bool NetVoiceMuted() { return netVoiceVolume * Ref.gamesett.MasterVolume <= 0; }
+
         bool lowLatencyGarbageCollecting = true;
         public float SoundVol() { return SoundVolume * MasterVolume; }
         public float AmbientVol() { return AmbientVolume * MasterVolume; }
@@ -655,6 +659,14 @@ namespace VikingEngine
                 content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty, true));
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+                content.space();
+                content.Add(new RbText(".Multiplayer voice", HudLib.TitleColor_Label));
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), netVoiceVolProperty, true));
             }
             else
             {
@@ -1172,6 +1184,16 @@ namespace VikingEngine
                 settingsHasChanged = true;
             }
             return AmbientVolume;
+        }
+
+        public float netVoiceVolProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                netVoiceVolume = value;
+                settingsHasChanged = true;
+            }
+            return netVoiceVolume;
         }
 
         public float BattleMelodyVolProperty(object tag, bool set, float value)

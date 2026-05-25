@@ -50,7 +50,7 @@ namespace VikingEngine.SteamWrapping
 
         public void readVoice(System.IO.BinaryReader r)
         {
-            if (!Ref.netsett.NetVoiceMuted())
+            if (!Ref.gamesett.NetVoiceMuted())
             {
                 //read here
                 ushort bytesWritten = r.ReadUInt16();
@@ -104,7 +104,7 @@ namespace VikingEngine.SteamWrapping
             // Clamp the value just to be safe, ensuring it stays between 0 and 1
             if (_audioPlayback != null)
             {
-                _audioPlayback.Volume = Ref.netsett.NetVoiceVol();
+                _audioPlayback.Volume = Ref.gamesett.NetVoiceVol();
             }
         }
 

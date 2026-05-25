@@ -3,20 +3,6 @@
 * Remade the player join map algo
 
 x can send resources to allies
-
-x Unlock public games
-- Do not play with strangers
-- The game has zero protection against cheating or trolling
-- You will have a bad experience
-
-x Unlock PvP
-- DSS is not designed for competetive games
-- There is no balance, matches will be unfair
-- You will have a bad experience
-
--Are you really, really sure?
-Will you be a big boy and not cry on the forum later?
-
 x new keys mapping
 x new steam input
 
