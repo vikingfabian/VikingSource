@@ -8,66 +8,10 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map.Path3
 {
-    class LayerPathFindingPool
-    {
-        //Represents a thread-safe last in-first out (LIFO) collection.
-        ConcurrentStack<LayerPathFinding> poolPf = new ConcurrentStack<LayerPathFinding>();
-        ConcurrentQueue<LayerWalkingPath> poolRes = new ConcurrentQueue<LayerWalkingPath>();
-        //Stack<WalkingPath> poolResOut = new Stack<WalkingPath>();
-
-
-        public LayerPathFinding GetPf(MoveCostLayer layer)
-        {
-            if (poolPf.TryPop(out LayerPathFinding path))
-            {
-                return path;
-            }
-            else
-            {
-                return new LayerPathFinding(layer);
-            }
-        }
-
-        public LayerWalkingPath GetRes()
-        {
-            if (poolRes.TryDequeue(out LayerWalkingPath path))
-            {
-                if (path.timeStamp + 2 >= Ref.TotalFrameCount)
-                {
-                    poolRes.Enqueue(new LayerWalkingPath());
-                    poolRes.Enqueue(new LayerWalkingPath());
-                    System.Threading.Thread.Sleep(32);
-                }
-                path.recycle();
-                return path;
-            }
-            else
-            {
-                return new LayerWalkingPath();
-            }
-        }
-
-        public void Return(LayerPathFinding path)
-        {
-            // Reset the node to a default state
-            if (path != null)
-            {
-                path.recycle();
-                poolPf.Push(path);
-            }
-        }
-
-        public void Return(LayerWalkingPath pathresult)
-        {
-            // Reset the node to a default state
-            if (pathresult != null)
-            {
-                //path.recycle();
-                pathresult.timeStamp = Ref.TotalFrameCount;
-                poolRes.Enqueue(pathresult);
-            }
-        }
-    }
+    //class LayerPathFindingPool
+    //{
+        
+    //}
 
 
 
@@ -79,9 +23,12 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         Grid1D<LayerPathNode> nodeGrid;
 
+        public int layer;
+
 
         public LayerPathFinding(MoveCostLayer layer)
         {
+            this.layer = layer.layer;
             nodeGrid = new Grid1D<LayerPathNode>(layer.size);
         }
 
@@ -106,7 +53,7 @@ namespace VikingEngine.DSSWars.Map.Path3
                 }
             }
         }
-        public LayerWalkingPath FindPath(int pathThreadIndex, MoveCostLayer layer, IntVector2 center, int startDir, IntVector2 goal, bool startAsShip, bool endAsShip)
+        public LayerWalkingPath FindPath(MoveCostLayer layer, IntVector2 center, int startDir, IntVector2 goal, bool startAsShip, bool endAsShip)
         {
             /*
             * Path finding algorithm
@@ -195,14 +142,15 @@ namespace VikingEngine.DSSWars.Map.Path3
             //List<PathNodeResult> result = new List<PathNodeResult>();
             LayerWalkingPath path;
 
-            if (pathThreadIndex < 0)
-            {
-                path = new LayerWalkingPath();
-            }
-            else
-            {
-                path = DssRef.state.pathUpdates[pathThreadIndex].layerPathFindingPool.GetRes();
-            }
+            //if (pathThreadIndex < 0)
+            //{
+            //    path = new LayerWalkingPath();
+            //}
+            //else
+            //{
+            //    path = DssRef.state.pathUpdates[pathThreadIndex].layerPathFindingPool.GetLayerResult();
+            //}
+            path = DssRef.world.GetLayerResult();
 
             while (currentNode.Position != startNode.Position)
             {
