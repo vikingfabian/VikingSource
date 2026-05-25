@@ -420,6 +420,7 @@ namespace VikingEngine.DSSWars.GameObject
                 else if (areaCulture.dryBiom <= 1)
                 {
                     cityCulture = CityCulture.DeepWell;
+                    waterAddPerSec += DssConst.WaterAdd_HeadCity;
                 }
                 else if (areaCulture.percForest >= 0.1)
                 {
@@ -1597,10 +1598,10 @@ namespace VikingEngine.DSSWars.GameObject
                 workForce.amount = (int)(HousingCount_Workers * 0.75);
                 waterAddPerSec += Ref.rnd.Float(DssConst.WaterAdd_RandomAdd);
 
-                if (cityCulture == CityCulture.DeepWell)
-                {
-                    waterAddPerSec += DssConst.WaterAdd_HeadCity;
-                }
+                //if (cityCulture == CityCulture.DeepWell)
+                //{
+                //    waterAddPerSec += DssConst.WaterAdd_HeadCity;
+                //}
 
                 waterAddPerSec *= DssRef.difficulty.setting_waterMulti;
                 maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.difficulty.setting_waterMulti);
