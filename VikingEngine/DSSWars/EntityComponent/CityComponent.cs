@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars
 {  
     partial class WorldData
     {
-        public EcsStaticArray neighborCities;
+        public EcsStaticIndexArray neighborCities;
         public GroupedResource[] cityResouces;
         public WorkPriority[] cityWork;
         public StorageSize[] cityStorage;
@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars
             initWorkerXp(cityCount);
 
             cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
-            neighborCities = new EcsStaticArray(16, cityCount);
+            neighborCities = new EcsStaticIndexArray(16, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
 
