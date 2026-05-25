@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using VikingEngine.Engine;
 using VikingEngine.HUD;
 using VikingEngine.ToGG.Commander.CommandCard;
 using VikingEngine.ToGG.ToggEngine;
@@ -32,6 +33,8 @@ namespace VikingEngine.ToGG.Commander.Players
 
             mapControls = new MapControls(this);
             mapControls.setMapselectionVisible(false);
+
+            Input.Mouse.AddPlayer((PlayerData)pData, 1);
         }
 
         protected override void closePhase()
