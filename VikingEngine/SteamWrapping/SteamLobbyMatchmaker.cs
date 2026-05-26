@@ -123,16 +123,10 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        public void CreateLobby()
+        ELobbyType lobbyType(LobbyPublicity lobbyPublicity)
         {
-            if (currentLobbyID != CSteamID.Nil)
-            {
-                Debug.LogWarning("Replacing already existing lobby");
-                LeaveCurrentLobby();
-            }
-
             ELobbyType type;
-            switch (Ref.netsett.lobbyPublicity)
+            switch (lobbyPublicity)//Ref.netsett.lobbyPublicity)
             {
                 default:
                 case LobbyPublicity.Private:
@@ -145,11 +139,60 @@ namespace VikingEngine.SteamWrapping
                     type = ELobbyType.k_ELobbyTypePublic;
                     break;
             }
-            //ELobbyType type = IsPublicNetwork(lobbyPublicity) ? ELobbyType.k_ELobbyTypePublic : ELobbyType.k_ELobbyTypePrivate;
+            return type;
+        }
 
-            Debug.Log("Creating lobby...");
-            SteamAPICall_t result = SteamMatchmaking.CreateLobby(type, Ref.netsett.maxPlayerCount);
-            callResultLobbyCreated.Set(result, OnLobbyCreated);
+        public void CreateLobby()
+        {
+            //if (Ref.netsett.hostNetwork && PlatformSettings.DebugLevel == BuildDebugLevel.Dev)
+            {
+                if (currentLobbyID != CSteamID.Nil)
+                {
+                    Debug.LogWarning("Replacing already existing lobby");
+                    LeaveCurrentLobby();
+                }
+
+                ELobbyType type= lobbyType(Ref.steam.P2PManager.SessionLobbyPublicity());
+                //switch ( LobbyPublicity.Public)//Ref.netsett.lobbyPublicity)
+                //{
+                //    default:
+                //    case LobbyPublicity.Private:
+                //        type = ELobbyType.k_ELobbyTypePrivate;
+                //        break;
+                //    case LobbyPublicity.FriendsOnly:
+                //        type = ELobbyType.k_ELobbyTypeFriendsOnly;
+                //        break;
+                //    case LobbyPublicity.Public:
+                //        type = ELobbyType.k_ELobbyTypePublic;
+                //        break;
+                //}
+                //ELobbyType type = IsPublicNetwork(lobbyPublicity) ? ELobbyType.k_ELobbyTypePublic : ELobbyType.k_ELobbyTypePrivate;
+
+                Debug.Log($"Creating lobby... ({type})");
+                SteamAPICall_t result = SteamMatchmaking.CreateLobby(type, Ref.netsett.maxPlayerCount);
+                callResultLobbyCreated.Set(result, OnLobbyCreated);
+            }
+        }
+        public void RefreshLobbyVisibility()
+        {
+            RefreshLobbyVisibility(Ref.steam.P2PManager.SessionLobbyPublicity());
+        }
+        public void RefreshLobbyVisibility(LobbyPublicity publicity)
+        {
+            // The lobby type can only be changed by the lobby owner
+            if (SteamMatchmaking.GetLobbyOwner(currentLobbyID) == SteamUser.GetSteamID())
+            {
+                bool success = SteamMatchmaking.SetLobbyType(currentLobbyID, lobbyType(publicity));
+
+                if (success)
+                {
+                    Debug.Log("Successfully updated the lobby type");
+                }
+                else
+                {
+                    Debug.Log("Failed to update lobby type (usually means the lobby ID is invalid or connection to Steam was lost)");
+                }
+            }
         }
 
         public void setJoinable(bool joinable)

@@ -20,12 +20,15 @@ namespace VikingEngine.Network
         void NetEvent_ConnectionLost(string reason);
         void NetEvent_SessionsFound(
             List<AbsAvailableSession> availableSessions);
-            //, 
-            //List<AbsAvailableSession> prevAvailableSessionsList);
 
         void NetEvent_LargePacket(Network.ReceivedPacket packet);
 
         AbsLobbyMetaData NetEvent_StartLobbyMetaData();
+
+        /// <summary>
+        /// Is hosting a lobby, only to search for others
+        /// </summary>
+        bool InLobbySearchState();
     }
 
     enum NetLobbyState
@@ -251,7 +254,10 @@ namespace VikingEngine.Network
             Ref.gamestate.NetEvent_LargePacket(packet);
         }
 
-
+        virtual public bool InLobbySearchState()
+        {
+            return searchLobbies;
+        }
 
         virtual public void NetEvent_PingReturned(Network.AbsNetworkPeer gamer)
         {
@@ -319,6 +325,8 @@ namespace VikingEngine.Network
         {
             searchLobbies = false;
         }
+
+
 
         virtual public void applyNewSettings()
         { }

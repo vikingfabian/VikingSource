@@ -178,6 +178,11 @@ namespace VikingEngine.Engine
         virtual public void GameCrashed()
         { }
 
+        virtual public bool InLobbySearchState()
+        {
+            return true;
+        }
+
         virtual public bool MayUseLowLatencyGC()
         {
             return false;

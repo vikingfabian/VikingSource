@@ -646,6 +646,8 @@ namespace VikingEngine.SteamWrapping
         {
             hostSession = true;
 
+            Ref.steam.LobbyMatchmaker.RefreshLobbyVisibility();
+
             if (Ref.steamlobby.InLobby)
             {
                 Ref.NetUpdateReciever().NetworkStatusMessage(NetworkStatusMessage.Created_session);
@@ -654,6 +656,11 @@ namespace VikingEngine.SteamWrapping
             {
                 Ref.steamlobby.CreateLobby();
             }
+        }
+
+        public LobbyPublicity SessionLobbyPublicity()
+        {
+            return hostSession ? Ref.netsett.lobbyPublicity : LobbyPublicity.Public;
         }
 
         public void disconnectSession()
@@ -675,6 +682,7 @@ namespace VikingEngine.SteamWrapping
         {
             remoteGamers.Clear();            
             hostSession = false;
+            Ref.steam.LobbyMatchmaker.RefreshLobbyVisibility();
         }
 
         public void OnSessionRequest(P2PSessionRequest_t sessionRequestInfo)
