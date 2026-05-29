@@ -217,13 +217,8 @@ namespace VikingEngine.SteamWrapping
             currentLobbyID = new CSteamID( lobbyCreated.m_ulSteamIDLobby);
             hostLobby = true;
 
-            //string userName = SteamFriends.GetPersonaName();
-
-            //SteamMatchmaking.SetLobbyData(currentLobbyID, LobbyDatas.LobbyName.ToString(), userName);
             SteamMatchmaking.SetLobbyOwner(currentLobbyID, SteamUser.GetSteamID());
 
-           
-            //SteamMatchmaking.SetLobbyData(currentLobbyID, LobbyDatas.LobbyGameVersion.ToString(), PlatformSettings.SteamNetworkVersion.ToString());
             refreshMetaData();
 
             setJoinable(Ref.netSession.joinableStatus);
@@ -232,10 +227,6 @@ namespace VikingEngine.SteamWrapping
             {
                 Ref.steamlobby.updateLobbyTime(true);
                 statusMessage(Network.NetworkStatusMessage.Created_session);
-
-                // --- ADD THIS (or call a method in your P2PManager that does this) ---
-                // Create the Listen Socket so clients can connect to you.
-                //Ref.p2p.StartListening();//TODO
             }
         }
 
@@ -250,14 +241,6 @@ namespace VikingEngine.SteamWrapping
             SteamMatchmaking.SetLobbyData(currentLobbyID, AbsLobbyMetaData.LobbyTimeDataKey, time.ToString());
         }
 
-        //public long lobbyTimeDelta()
-        //{
-        //    long lobbyTime = GetLobbyTimeStamp(currentLobbyID);
-        //    long serverTime = SteamUtils.GetServerRealTime();
-
-        //    return lobbyTime - serverTime;
-        //}
-
         void refreshMetaData()
         {
             var meta = Ref.NetUpdateReciever().NetEvent_StartLobbyMetaData();
@@ -267,30 +250,9 @@ namespace VikingEngine.SteamWrapping
             {
                 SteamMatchmaking.SetLobbyData(currentLobbyID, keys[i], meta.Values[i]);
             }
-
-            //    int publicType = (int)lobbyPublicity;
-
-            //    SteamMatchmaking.SetLobbyData(currentLobbyID, LobbyPublicityDataKey, publicType.ToString());
         }
 
-            //Key Length(k_nMaxLobbyKeyLength): Maximum of 255 characters.
-
-            //Value Length(k_cubChatMetadataMax): Maximum of 8,192 bytes.
-
-            //public void getMetaData(CSteamID lobbyID, out LobbyPublicity publicity)
-            //{
-            //    publicity = LobbyPublicity.ERROR;
-
-            //    string data = SteamMatchmaking.GetLobbyData(lobbyID, LobbyPublicityDataKey);
-
-            //    if (data != null && data.Length > 0)
-            //    {
-            //        int ptype = Convert.ToInt32(data);
-            //        publicity = (LobbyPublicity)ptype;
-            //    }
-            //}
-
-            void statusMessage(Network.NetworkStatusMessage message)
+        void statusMessage(Network.NetworkStatusMessage message)
         {
             if (PlatformSettings.DevBuild)
             {
@@ -332,8 +294,6 @@ namespace VikingEngine.SteamWrapping
         void sortFoundLobbies(LobbyMatchList_t lobbyMatchList)
         {
             SteamAvailableSession.RefreshServerTime();
-            //long serverTime = SteamUtils.GetServerRealTime();
-            //List<AbsAvailableSession> availableSessionsList = null;
 
             int count = (int)lobbyMatchList.m_nLobbiesMatching;
             if (count > 0)

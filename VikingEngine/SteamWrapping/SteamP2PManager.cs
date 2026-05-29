@@ -660,7 +660,21 @@ namespace VikingEngine.SteamWrapping
 
         public LobbyPublicity SessionLobbyPublicity()
         {
-            return hostSession ? Ref.netsett.lobbyPublicity : LobbyPublicity.Public;
+            if (hostSession)
+            {
+                if (Ref.netsett.lobbyPublicity == LobbyPublicity.Private)
+                {
+                    return LobbyPublicity.Private;
+                }
+                else
+                {
+                    return LobbyPublicity.Public;//hostSession ? Ref.netsett.lobbyPublicity : LobbyPublicity.Public;
+                }
+            }
+            else
+            {
+                return LobbyPublicity.Private;
+            }
         }
 
         public void disconnectSession()

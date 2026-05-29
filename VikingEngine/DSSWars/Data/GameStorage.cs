@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Data
             }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
-        public const int Version = 35;
+        public const int Version = 36;
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -200,6 +200,7 @@ namespace VikingEngine.DSSWars.Data
 
             Debug.WriteCheck(w);
             
+            Ref.netsett.write(w);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -290,6 +291,11 @@ namespace VikingEngine.DSSWars.Data
                 }
 
                 Debug.ReadCheck(r);
+
+                if (version >= 36)
+                { 
+                    Ref.netsett.read(r, version);
+                }
 
                 fileCheck.end();
 

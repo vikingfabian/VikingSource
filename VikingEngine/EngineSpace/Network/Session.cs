@@ -268,7 +268,7 @@ namespace VikingEngine.Network
 //            }
 //        }
 
-        public bool joinableStatus = true;
+        public bool joinableStatus = Ref.netsett.hostNetwork;
 
         public void setLobbyJoinable(bool canJoin)
         {

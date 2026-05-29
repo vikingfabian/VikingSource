@@ -113,6 +113,7 @@ namespace VikingEngine.Network
         ButtonHold,
         ButtonToggle,
         AlwaysOn,
+        NUM,
     }
 
     enum SendPacketTo
@@ -148,6 +149,14 @@ namespace VikingEngine.Network
     { 
         PlayersChoose,
         Allow,
+        Blocked,
+        NUM
+    }
+
+    enum GiftRecieveOption
+    { 
+        Allow,
+        FriendsOnly,
         Blocked,
         NUM
     }

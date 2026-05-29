@@ -184,6 +184,11 @@ namespace VikingEngine.DSSWars.Interface
                 RbDragButton.RbDragButtonGroup(content, new List<float> { 10 },
                     new DragButtonSettings(2, 64, 1), Ref.netsett.MaxPlayerCountProperty, false);
 
+                content.newLine();
+                HudLib.Label(content, "Distance between players");
+                content.hspace();
+                content.Add(new RbDragButton(new DragButtonSettings(0, 8, 1), Ref.netsett.PlayerSpacingProperty));
+
 
 
 
@@ -228,6 +233,81 @@ namespace VikingEngine.DSSWars.Interface
                 content.h2("Player interaction", HudLib.TitleColor_Label);
                 playerInteractSettings(content, false);
                 content.Add(new RbSeperationLine());
+
+
+                content.h2("General", HudLib.TitleColor_Head2);
+
+                var voiceOpt  = new DropDownBuilder("voice");
+                {
+                    SpriteName chatKey = Ref.gamesett.keyboardMap.VoiceChat.Icon;
+                    for (VoiceOption opt = 0; opt < VoiceOption.NUM; opt++)
+                    {
+                        SpriteName icon;
+                        string caption;
+                        switch (opt)
+                        {
+                            default:
+                            case VoiceOption.Off:
+                                icon = SpriteName.RedErrorCross;
+                                caption = "Off";
+                                break;
+                            case VoiceOption.ButtonHold:
+                                icon = chatKey;
+                                caption = "Button hold";
+                                break;
+                            case VoiceOption.ButtonToggle:
+                                icon = chatKey;
+                                caption = "Button toggle";
+                                break;
+                            case VoiceOption.AlwaysOn:
+                                icon = SpriteName.MenuPixelIconSoundVol;
+                                caption = "Always on";
+                                break;
+                        }
+
+                        voiceOpt.AddOption(icon, caption, opt == Ref.netsett.voiceOption, opt == VoiceOption.ButtonHold,
+                            new RbAction1Arg<VoiceOption>((VoiceOption vopt) =>
+                            {
+                                Ref.netsett.voiceOption = vopt;
+                                Ref.netsett.settingsHasChanged = true;
+                            }, opt), null);
+                    }
+                }
+                voiceOpt.Build(content, SpriteName.MenuPixelIconSoundVol, "Voice", menu);
+
+                var recieveGiftOpt = new DropDownBuilder("gift");
+                {
+                    for (GiftRecieveOption opt = 0; opt < GiftRecieveOption.NUM; opt++)
+                    {
+                       
+                        string caption;
+                        switch (opt)
+                        {
+                            default:
+                            case GiftRecieveOption.Allow:
+                                caption = "Allow";
+                                break;
+                            case GiftRecieveOption.FriendsOnly:
+                                caption = "Friends only";
+                                break;
+                            case GiftRecieveOption.Blocked:
+                                caption = "Blocked";
+                                break;
+                        }
+
+                        recieveGiftOpt.AddOption(caption, opt == Ref.netsett.recieveGifts, opt == GiftRecieveOption.Allow,
+                            new RbAction1Arg<GiftRecieveOption>((GiftRecieveOption select) =>
+                            {
+                                Ref.netsett.recieveGifts = select;
+                                Ref.netsett.settingsHasChanged = true;
+                            }, opt), null);
+                    }
+                }
+                recieveGiftOpt.Build(content, SpriteName.NO_IMAGE, "Recieve achievements", menu);
+                content.space();
+                RichBoxContent info = new RichBoxContent();
+                HudLib.InfoButton(content, new RbTooltip_Text("Warning! Gifted achievements can feel demeaning"));
+
                 //x Unlock public games
                 //- Do not play with strangers
                 //- The game has zero protection against cheating or trolling
@@ -271,7 +351,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void playerInteractSettings(RichBoxContent content, bool host)
         {
-            PlayerToPlayerDiplomacy toPlayerDiplomacy = host? Ref.netsett.hostDiplomacy : Ref.netsett.clientDiplomacy;
+            PlayerToPlayerDiplomacy toPlayerDiplomacy = host? Ref.netsett.hostPtoP : Ref.netsett.clientPtoP;
 
             
             var allowAllianceOptions = new DropDownBuilder("allowAlliance" + host.ToString());
@@ -285,11 +365,11 @@ namespace VikingEngine.DSSWars.Interface
                             {
                                 if (host)
                                 {
-                                    Ref.netsett.hostDiplomacy.allianceAllow = allowType;
+                                    Ref.netsett.hostPtoP.allianceAllow = allowType;
                                 }
                                 else
                                 {
-                                    Ref.netsett.clientDiplomacy.allianceAllow = allowType;
+                                    Ref.netsett.clientPtoP.allianceAllow = allowType;
                                 }
                                 menu.CloseDropDown();
                             }, allowType), null);
@@ -317,11 +397,11 @@ namespace VikingEngine.DSSWars.Interface
                             {
                                 if (host)
                                 {
-                                    Ref.netsett.hostDiplomacy.warAllow = allowType;
+                                    Ref.netsett.hostPtoP.warAllow = allowType;
                                 }
                                 else
                                 {
-                                    Ref.netsett.clientDiplomacy.warAllow = allowType;
+                                    Ref.netsett.clientPtoP.warAllow = allowType;
                                 }
                                 menu.CloseDropDown();
                             }, allowType), null);
@@ -416,8 +496,8 @@ namespace VikingEngine.DSSWars.Interface
                             else
                             {
                                 Ref.netsett.unlockPvp = true;
-                                Ref.netsett.hostDiplomacy.warAllow = PlayerDiplomacyAllowType.PlayersChoose;
-                                Ref.netsett.clientDiplomacy.warAllow = PlayerDiplomacyAllowType.Allow;
+                                Ref.netsett.hostPtoP.warAllow = PlayerDiplomacyAllowType.PlayersChoose;
+                                Ref.netsett.clientPtoP.warAllow = PlayerDiplomacyAllowType.Allow;
                             }
 
                             Ref.netsett.settingsHasChanged = true;

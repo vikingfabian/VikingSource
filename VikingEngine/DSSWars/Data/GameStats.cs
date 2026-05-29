@@ -114,7 +114,60 @@ namespace VikingEngine.DSSWars.Data
         StatsInt gameLength_passed30hour = new StatsInt("lenght_30h");
         StatsInt gameLength_passed100hour = new StatsInt("lenght_100h");
 
-
+        public StatsInt Gifted_WhiteKnight = new StatsInt("Gifted_WhiteKnight");
+        public StatsInt Gifted_HeroComplexSaviorComplex = new StatsInt("Gifted_HeroComplexSaviorComplex");
+        public StatsInt Gifted_CryBaby = new StatsInt("Gifted_CryBaby");
+        public StatsInt Gifted_KingMaker = new StatsInt("Gifted_KingMaker");
+        public StatsInt Gifted_Turtle = new StatsInt("Gifted_Turtle");
+        public StatsInt Gifted_MetaPlayer = new StatsInt("Gifted_MetaPlayer");
+        public StatsInt Gifted_Tryhard = new StatsInt("Gifted_Tryhard");
+        public StatsInt Gifted_DidPracticeInSecret = new StatsInt("Gifted_DidPracticeInSecret");
+        public StatsInt Gifted_TheEncyclopedia = new StatsInt("Gifted_TheEncyclopedia");
+        public StatsInt Gifted_WarCriminal = new StatsInt("Gifted_WarCriminal");
+        public StatsInt Gifted_FarmerRush = new StatsInt("Gifted_FarmerRush");
+        public StatsInt Gifted_Politian = new StatsInt("Gifted_Politian");
+        public StatsInt Gifted_Socializer = new StatsInt("Gifted_Socializer");
+        public StatsInt Gifted_OverAchiever = new StatsInt("Gifted_OverAchiever");
+        public StatsInt Gifted_Noob = new StatsInt("Gifted_Noob");
+        public StatsInt Gifted_SwedishNeutrality = new StatsInt("Gifted_SwedishNeutrality");
+        public StatsInt Gifted_TroubleMaker = new StatsInt("Gifted_TroubleMaker");
+        public StatsInt Gifted_ScorchedEarth = new StatsInt("Gifted_ScorchedEarth");
+        public StatsInt Gifted_WarMonger = new StatsInt("Gifted_WarMonger");
+        public StatsInt Gifted_LivingInABobble = new StatsInt("Gifted_LivingInABobble");
+        public StatsInt Gifted_Bullie = new StatsInt("Gifted_Bullie");
+        public StatsInt Gifted_ControlFreak = new StatsInt("Gifted_ControlFreak");
+        public StatsInt Gifted_RandomNothingMakesSense = new StatsInt("Gifted_RandomNothingMakesSense");
+        public StatsInt Gifted_Hoarder = new StatsInt("Gifted_Hoarder");
+        public StatsInt Gifted_Scatterbrained = new StatsInt("Gifted_Scatterbrained");
+        public StatsInt Gifted_NearSighted = new StatsInt("Gifted_NearSighted");//
+        public StatsInt Gifted_AutomationAbuser = new StatsInt("Gifted_AutomationAbuser");
+        public StatsInt Gifted_Troll = new StatsInt("Gifted_Troll");
+        public StatsInt Gifted_MemeLord = new StatsInt("Gifted_MemeLord");
+        public StatsInt Gifted_SupportSlave = new StatsInt("Gifted_SupportSlave");
+        public StatsInt Gifted_DarkSidePlayer = new StatsInt("Gifted_DarkSidePlayer");
+        public StatsInt Gifted_SlaughterHouse = new StatsInt("Gifted_SlaughterHouse");
+        public StatsInt Gifted_AnimalCruelty = new StatsInt("Gifted_AnimalCruelty");
+        public StatsInt Gifted_LuckyBastard = new StatsInt("Gifted_LuckyBastard");
+        public StatsInt Gifted_Cursed = new StatsInt("Gifted_Cursed");
+        public StatsInt Gifted_Backstabber = new StatsInt("Gifted_Backstabber");
+        public StatsInt Gifted_Oathbreaker = new StatsInt("Gifted_Oathbreaker");
+        public StatsInt Gifted_Wormtongue = new StatsInt("Gifted_Wormtongue");
+        public StatsInt Gifted_ArmchairGeneral = new StatsInt("Gifted_ArmchairGeneral");
+        public StatsInt Gifted_Salty = new StatsInt("Gifted_Salty");
+        public StatsInt Gifted_SaltMiner = new StatsInt("Gifted_SaltMiner");
+        public StatsInt Gifted_PuppetMaster = new StatsInt("Gifted_PuppetMaster");
+        public StatsInt Gifted_TheCarry = new StatsInt("Gifted_TheCarry");
+        public StatsInt Gifted_OneManArmy = new StatsInt("Gifted_OneManArmy");
+        public StatsInt Gifted__4DChessPlayer = new StatsInt("Gifted__4DChessPlayer");
+        public StatsInt Gifted_SpreadsheetWarrior = new StatsInt("Gifted_SpreadsheetWarrior");
+        public StatsInt Gifted_MeatShield = new StatsInt("Gifted_MeatShield");
+        public StatsInt Gifted_InDebt = new StatsInt("Gifted_InDebt");
+        public StatsInt Gifted_OnLifeSupport = new StatsInt("Gifted_OnLifeSupport");
+        public StatsInt Gifted_LoneWolf = new StatsInt("Gifted_LoneWolf");
+        public StatsInt Gifted_ShaggyTooDopeAlwaysChilling = new StatsInt("Gifted_ShaggyTooDopeAlwaysChilling");
+        public StatsInt Gifted_BadInfluence = new StatsInt("Gifted_BadInfluence");
+        public StatsInt Gifted_HindsightTactician = new StatsInt("Gifted_HindsightTactician");
+        public StatsInt Gifted_Houseplant = new StatsInt("Gifted_Houseplant");
 
         public GameStats()
         {
@@ -225,6 +278,61 @@ namespace VikingEngine.DSSWars.Data
                     language_brazilian_portuguese,
                     language_italian,
                     language_korean,
+
+                    Gifted_WhiteKnight,
+                    Gifted_HeroComplexSaviorComplex,
+                    Gifted_CryBaby,
+                    Gifted_KingMaker,
+                    Gifted_Turtle,
+                    Gifted_MetaPlayer,
+                    Gifted_Tryhard,
+                    Gifted_DidPracticeInSecret,
+                    Gifted_TheEncyclopedia,
+                    Gifted_WarCriminal,
+                    Gifted_FarmerRush,
+                    Gifted_Politian,
+                    Gifted_Socializer,
+                    Gifted_OverAchiever,
+                    Gifted_Noob,
+                    Gifted_SwedishNeutrality,
+                    Gifted_TroubleMaker,
+                    Gifted_ScorchedEarth,
+                    Gifted_WarMonger,
+                    Gifted_LivingInABobble,
+                    Gifted_Bullie,
+                    Gifted_ControlFreak,
+                    Gifted_RandomNothingMakesSense,
+                    Gifted_Hoarder,
+                    Gifted_Scatterbrained,
+                    Gifted_NearSighted,
+                    Gifted_AutomationAbuser,
+                    Gifted_Troll,
+                    Gifted_MemeLord,
+                    Gifted_SupportSlave,
+                    Gifted_DarkSidePlayer,
+                    Gifted_SlaughterHouse,
+                    Gifted_AnimalCruelty,
+                    Gifted_LuckyBastard,
+                    Gifted_Cursed,
+                    Gifted_Backstabber,
+                    Gifted_Oathbreaker,
+                    Gifted_Wormtongue,
+                    Gifted_ArmchairGeneral,
+                    Gifted_Salty,
+                    Gifted_SaltMiner,
+                    Gifted_PuppetMaster,
+                    Gifted_TheCarry,
+                    Gifted_OneManArmy,
+                    Gifted__4DChessPlayer,
+                    Gifted_SpreadsheetWarrior,
+                    Gifted_MeatShield,
+                    Gifted_InDebt,
+                    Gifted_OnLifeSupport,
+                    Gifted_LoneWolf,
+                    Gifted_ShaggyTooDopeAlwaysChilling,
+                    Gifted_BadInfluence,
+                    Gifted_HindsightTactician,
+                    Gifted_Houseplant,
             #endif
                 };
         }

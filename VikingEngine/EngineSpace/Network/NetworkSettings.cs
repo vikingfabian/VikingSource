@@ -44,14 +44,33 @@ namespace VikingEngine.Network
 
             allianceLimit = false;
             mustAsk = false;
-            //useWarDeclarePreparationTime = true;
-            //warPreparationTime = TimeLength.FromMinutes(5);
             warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
             gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
 
         }
 
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)allianceAllow);
+            w.Write(canBreakAlliance);
+            w.Write((byte)warAllow);
+            w.Write(allianceLimit);
+            w.Write(mustAsk);
+            warDeclarePreparationTime.write_ushort(w, true);
+            gameStartPreparationTime.write_ushort(w, true);
+        }
 
+        public void read(System.IO.BinaryReader r, int storageVersion)
+        { 
+            allianceAllow = (PlayerDiplomacyAllowType)r.ReadByte();
+            canBreakAlliance = r.ReadBoolean();
+            warAllow = (PlayerDiplomacyAllowType)r.ReadByte();
+            allianceLimit = r.ReadBoolean();
+            mustAsk = r.ReadBoolean();
+            warDeclarePreparationTime.read_ushort(r, true);
+            gameStartPreparationTime.read_ushort(r, true);
+
+        }
     }
     class NetworkSettings
     {
@@ -66,21 +85,20 @@ namespace VikingEngine.Network
         public Network.LobbyPublicity lobbyPublicity = Network.LobbyPublicity.FriendsOnly;
 
         public int maxPlayerCount = 64;
-        //public Network.LobbyPublicity findSessionJoinType = Network.LobbyPublicity.FriendsOnly;
-
         
-
         public VoiceOption voiceOption = VoiceOption.ButtonHold;
 
-        public PlayerToPlayerDiplomacy hostDiplomacy = new PlayerToPlayerDiplomacy(true);
+        public PlayerToPlayerDiplomacy hostPtoP = new PlayerToPlayerDiplomacy(true);
         public RelationType startDiplomacy = RelationType.RelationType0_Neutral;
-        public PlayerToPlayerDiplomacy clientDiplomacy = new PlayerToPlayerDiplomacy(false);
+        public PlayerToPlayerDiplomacy clientPtoP = new PlayerToPlayerDiplomacy(false);
        
 
         /// <summary>
         /// Distance between players
         /// </summary>
-        public int PlayerSpacing = 0;
+        public int PlayerSpacing = 1;
+
+        public GiftRecieveOption recieveGifts = GiftRecieveOption.FriendsOnly;
 
         StructList<StoredNetworkGamer> storedGamers = new StructList<StoredNetworkGamer>(8);
         
@@ -88,11 +106,57 @@ namespace VikingEngine.Network
         {
             Ref.netsett = this;
         }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(hostNetwork);
+            w.Write(findNetwork);
+
+            w.Write(unlockPublicGames);
+            w.Write(unlockPvp);
+
+            w.Write((byte)lobbyPublicity);
+            w.Write(maxPlayerCount);
+
+            w.Write((byte)voiceOption);
+
+            hostPtoP.write(w);
+            w.Write((int)startDiplomacy);
+            clientPtoP.write(w);
+
+            w.Write(PlayerSpacing);
+
+            Debug.WriteCheck(w);
+        }
+
+        public void read(System.IO.BinaryReader r, int storageVersion)
+        {
+            hostNetwork = r.ReadBoolean();
+            findNetwork = r.ReadBoolean();
+
+            unlockPublicGames = r.ReadBoolean();
+            unlockPvp = r.ReadBoolean();
+
+            lobbyPublicity = (LobbyPublicity)r.ReadByte();
+            maxPlayerCount = r.ReadInt32();
+
+            voiceOption = (VoiceOption)r.ReadByte();
+
+            hostPtoP.read(r, storageVersion);
+            startDiplomacy = (RelationType)r.ReadInt32();
+            clientPtoP.read(r, storageVersion);
+
+            PlayerSpacing = r.ReadInt32();
+
+            Debug.ReadCheck(r);
+        }
+
         public bool OfflineProperty(object tag, bool set, bool value)
         {
             if (set)
             {
                 hostNetwork = !value;
+                Ref.netSession.setLobbyJoinable(hostNetwork);
                 settingsHasChanged = true;
             }
             return !hostNetwork;
@@ -106,6 +170,16 @@ namespace VikingEngine.Network
                 settingsHasChanged = true;
             }
             return maxPlayerCount;
+        }
+
+        public int PlayerSpacingProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                PlayerSpacing = value;
+                settingsHasChanged = true;
+            }
+            return PlayerSpacing;
         }
 
         public bool canBreakAllianceProperty(object tag, bool set, bool value)
@@ -188,11 +262,11 @@ namespace VikingEngine.Network
         {
             if (host)
             {
-                return ref hostDiplomacy;
+                return ref hostPtoP;
             }
             else
             {
-                return ref clientDiplomacy;
+                return ref clientPtoP;
             }
         }
 

@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Players
 
         public AbsPlayer previousPlayer;
         public RemotePlayerPointer pointer;
+        public GamerCommunicationSetting communicationSetting; //not implemented
 
         public RemotePlayer(Network.NetworkInstancePeer peer)
             :base()
