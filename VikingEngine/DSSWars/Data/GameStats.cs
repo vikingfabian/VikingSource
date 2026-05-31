@@ -168,6 +168,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt Gifted_BadInfluence = new StatsInt("Gifted_BadInfluence");
         public StatsInt Gifted_HindsightTactician = new StatsInt("Gifted_HindsightTactician");
         public StatsInt Gifted_Houseplant = new StatsInt("Gifted_Houseplant");
+        public StatsInt Gifted_Sheep = new StatsInt("Gifted_Sheep");
 
         public GameStats()
         {

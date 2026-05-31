@@ -105,7 +105,7 @@ namespace VikingEngine.Network
             return Gamertag + (IsLocal ? "(L)" : "(R)") + ": Id(" + id.ToString() + "), Tag(" + TextLib.ToString_Safe(Tag) + ")";
         }
 
-        public string LoadString()
+        public string NetPingString()
         {
             return $"Ping {(int)roundTripTime}, Load {TextLib.OneDecimal(packetLoad)}(potensial {TextLib.OneDecimal(packetLoad + potensialLoad)}) / {maxPacketCount}";
         }

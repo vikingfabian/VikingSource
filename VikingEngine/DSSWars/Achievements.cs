@@ -816,7 +816,7 @@ namespace VikingEngine.DSSWars
         Gift_ScorchedEarth,
         Gift_WarMonger,
         Gift_LivingInABobble,
-        Gift_Bullie,
+        Gift_Bully,
         Gift_ControlFreak,
         Gift_RandomNothingMakesSense,
         Gift_Hoarder,
@@ -850,6 +850,7 @@ namespace VikingEngine.DSSWars
         Gift_BadInfluence,
         Gift_HindsightTactician,
         Gift_Houseplant,
+        Gift_Sheep,
 
         NUM_ACHIEVEMENTS
     }

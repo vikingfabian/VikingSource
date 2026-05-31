@@ -2,6 +2,11 @@
 ## MULTIPLAYER UPDATE ##
 * Remade the player join map algo
 
+GIFTED ACHIEVEMENTS
+* Players can send rewards to eachother in multiplayer
+* 63 new achievements
+* 63 new stats
+
 x can send resources to allies
 x new keys mapping
 x new steam input

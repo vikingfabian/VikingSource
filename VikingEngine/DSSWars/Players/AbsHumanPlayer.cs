@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
@@ -14,6 +15,7 @@ namespace VikingEngine.DSSWars.Players
     abstract class AbsHumanPlayer : AbsPlayer
     {
         public NetworkInstancePeer networkPeer;
+        public GiftedAchievementsPlayerCollection giftedAchievements = new GiftedAchievementsPlayerCollection();
 
         public AbsHumanPlayer(Faction faction, bool newGame)
             : base(faction, newGame)

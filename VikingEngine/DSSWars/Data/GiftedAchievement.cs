@@ -8,6 +8,10 @@ namespace VikingEngine.DSSWars.Data
 {
     struct GiftedAchievement
     {
+        public const SpriteName DefaultIcon = SpriteName.WarsUnitLevelLegend;
+        public const SpriteName EmptyIcon = SpriteName.WarsUnitLevelMinimal;
+
+
         public string name;
         public string description; //one quick sentence
 
@@ -27,7 +31,7 @@ namespace VikingEngine.DSSWars.Data
                 GiftedAchievementType.SlaughterHouse,
                 GiftedAchievementType.AnimalCruelty,
                 GiftedAchievementType.OneManArmy,
-                GiftedAchievementType.Bullie,
+                GiftedAchievementType.Bully,
                 GiftedAchievementType.ScorchedEarth,
             },
 
@@ -292,12 +296,12 @@ namespace VikingEngine.DSSWars.Data
                         stats = DssRef.stats.Gifted_LivingInABobble,
                     };
 
-                case GiftedAchievementType.Bullie:
+                case GiftedAchievementType.Bully:
                     return new GiftedAchievement()
                     {
                         name = DssRef.todoLang.GiftAchieve_Bullie_Name,
                         description = DssRef.todoLang.GiftAchieve_Bullie_Desc,
-                        achievement = AchievementIndex.Gift_Bullie,
+                        achievement = AchievementIndex.Gift_Bully,
                         stats = DssRef.stats.Gifted_Bullie,
                     };
 
@@ -597,6 +601,15 @@ namespace VikingEngine.DSSWars.Data
                         stats = DssRef.stats.Gifted_Houseplant,
                     };
 
+                case GiftedAchievementType.Sheep:
+                    return new GiftedAchievement()
+                    {
+                        name = DssRef.todoLang.GiftAchieve_Sheep_Name,
+                        description = DssRef.todoLang.GiftAchieve_Sheep_Desc,
+                        achievement = AchievementIndex.Gift_Sheep,
+                        stats = DssRef.stats.Gifted_Sheep,
+                    };
+
                 case GiftedAchievementType.NUM:
                 default:
 #if DEBUG
@@ -630,7 +643,7 @@ namespace VikingEngine.DSSWars.Data
         ScorchedEarth,
         WarMonger,
         LivingInABobble,
-        Bullie,
+        Bully,
         ControlFreak,
         RandomNothingMakesSense,
         Hoarder,
@@ -664,61 +677,10 @@ namespace VikingEngine.DSSWars.Data
         BadInfluence,
         HindsightTactician,
         Houseplant,
+        Sheep,
         NUM,
     }
 
-    //White Knight
-    //Hero complex/Savior Complex
-    //Cry baby
-    //King maker
-    //Turtle
-    //Meta player
-    //Tryhard
-    //Did practice in secret
-    //The Encyclopedia
-    //War criminal
-    //Farmer rush
-    //Politian
-    //Socializer
-    //Over achiever
-    //Noob
-    //Swedish neutrality
-    //Trouble maker
-    //War monger
-    //Living in a bobble
-    //Bullie
-    //Control freak
-    //Random - nothing makes sense
-    //Hoarder
-    //Control freak
-    //Scatterbrained
-    //Near sighted
-    //Automation abuser
-    //Troll
-    //Meme lord
-    //Support slave
-    //Dark side player
-    //Slaughter house
-    //Animal cruelty
-    //Lucky bastard
-    //Cursed
-    //Backstabber
-    //Oathbreaker: A more thematic version of "Backstabber."
-    //Wormtongue
-    //Armchair General
-    //Salt Miner
-    //Puppet Master
-    //The carry
-    //One-man army
-    //4D Chess Player
-    //Spreadsheet Warrior
-    //Meat shield
-    //In debt
-    //On life support
-    //Lone wolf
-    //Shaggy too-dope “always chilling”
-    //Bad influence
-
-
+    //Glitch abuser
 
 }

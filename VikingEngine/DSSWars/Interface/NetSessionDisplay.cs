@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Interface
     class NetSessionDisplay
     {
         RemotePlayer selected = null;
+        public bool sendGiftMenu = false;
 
         public bool ClientInteractDisplay => selected != null;
 
@@ -32,9 +33,13 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<RemotePlayer>(
                     (RemotePlayer select) => { selected = select; player.hud.needRefresh = true; }, remoteC.sel), 
                     new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput)));
+
+                remoteC.sel.addNetPingToHud(content);
             }
             content.Add(new RbSeperationLine());
         }
+
+
 
         public void clientToHud(LocalPlayer player, RichBoxContent content)
         {
@@ -79,6 +84,7 @@ namespace VikingEngine.DSSWars.Interface
 
             //TITLE
             selected.addNetGamerToHud(content, true);
+            selected.addNetPingToHud(content);
 
             //var diplomacy = player.GetOrCreateToPlayerDiplomacy(selected);
             //diplomacy.

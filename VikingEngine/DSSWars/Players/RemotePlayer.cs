@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Players
         public override void addNetGamerToHud(RichBoxContent content, bool addStatus)
         {
             base.addNetGamerToHud(content, addStatus);
-            if (addStatus && pointer.statusIcon !=  SpriteName.NO_IMAGE)
+            if (addStatus && pointer.statusIcon != SpriteName.NO_IMAGE)
             {
                 content.space();
                 if (pointer.itemIcon != SpriteName.NO_IMAGE)
@@ -60,12 +60,13 @@ namespace VikingEngine.DSSWars.Players
                     content.Add(new RbImage(pointer.statusIcon));
                 }
             }
-
-            if (addStatus)
-            {
-                content.text(networkPeer.peer.LoadString(), HudLib.SecondaryTextColor);
-            }
         }
+
+        public void addNetPingToHud(RichBoxContent content)
+        {
+            content.text(networkPeer.peer.NetPingString(), HudLib.SecondaryTextColor);
+        }
+
         public override void AssignFaction(Faction faction)
         {
             previousPlayer = faction.player;
