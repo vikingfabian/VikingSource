@@ -95,5 +95,16 @@ namespace VikingEngine.DSSWars.Data
                 
             }
         }
+
+        public HashSet<GiftedAchievementType> HasGiftsCollection()
+        {
+            HashSet<GiftedAchievementType> result = new HashSet<GiftedAchievementType>(recieved.Count);
+            foreach (var m in recieved)
+            {
+                result.Add(m.type);
+            }
+
+            return result;
+        }
     }
 }

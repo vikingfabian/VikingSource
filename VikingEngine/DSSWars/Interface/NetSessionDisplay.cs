@@ -70,6 +70,8 @@ namespace VikingEngine.DSSWars.Interface
 
         void giftMenu(LocalPlayer player, RichBoxContent content)
         {
+            var hasGifts = sendGiftTo.giftedAchievements.HasGiftsCollection();
+
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
                     new RbSpace(),
@@ -110,7 +112,7 @@ namespace VikingEngine.DSSWars.Interface
                             content.newParagraph();
                             content.text(info.description, HudLib.InfoYellow_Light);
 
-                        }, type)));
+                        }, type), !hasGifts.Contains(type)));
                 }
 
             }
