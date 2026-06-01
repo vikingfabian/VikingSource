@@ -48,8 +48,8 @@ namespace VikingEngine.DSSWars.Interface
         public void toHud(RichBoxContent content, Faction botFaction, bool viewFactionInfo)
         {
             otherfaction = botFaction;
-
-            if (player.faction == botFaction || botFaction.player == player)
+            
+            if (player.faction == botFaction || botFaction == null || botFaction.player == player)
             {
                 return;
             }

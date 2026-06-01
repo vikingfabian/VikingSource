@@ -624,7 +624,7 @@ namespace VikingEngine.DSSWars
         {
             AbsHumanPlayer toPlayer = NetReadPlayer(packet.r);
             GiftedAchievementType type = (GiftedAchievementType)packet.r.ReadByte();
-            giftMessage((RemotePlayer)packet.sender.Tag, toPlayer, type);
+            giftMessage((RemotePlayer)packet.sender.instancePeers[packet.senderLocalIndex].Tag, toPlayer, type);
 
             if (toPlayer.IsLocal)
             {
