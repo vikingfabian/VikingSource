@@ -26,6 +26,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.EngineSpace;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
@@ -50,6 +51,8 @@ namespace VikingEngine.DSSWars
         bool bResourceMinuteUpdate = true;
         bool slowMinuteUpdate = true;
         bool netMapUpdate = false;
+
+        public Dictionary<ulong, RemotePlayerHistory> previousRemotePlayers = new Dictionary<ulong, RemotePlayerHistory>();
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()

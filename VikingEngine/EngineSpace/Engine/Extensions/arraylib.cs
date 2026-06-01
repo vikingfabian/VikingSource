@@ -556,7 +556,17 @@ namespace VikingEngine
                 index2 >= 0 && index2 < array.Length;
         }
 
-
+        public static void AddOrReplace<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TKey key, TValue add)
+        {
+            if (dictionary.ContainsKey(key))
+            {
+                dictionary[key] = add;
+            }
+            else
+            { 
+                dictionary.Add(key, add);
+            }
+        }
         public static TKey DictionaryKeyFromValue<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TValue value)
         {
             foreach (var kv in dictionary)

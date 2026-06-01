@@ -107,7 +107,7 @@ namespace VikingEngine.Network
 
         public string NetPingString()
         {
-            return $"Ping {(int)roundTripTime}, Load {TextLib.OneDecimal(packetLoad)}(potensial {TextLib.OneDecimal(packetLoad + potensialLoad)}) / {maxPacketCount}";
+            return $"Ping {(int)roundTripTime}, Load {TextLib.OneDecimal(packetLoad)} (potensial {TextLib.OneDecimal(packetLoad + potensialLoad)}) / {maxPacketCount}";
         }
 
         public void initInstancePeers()

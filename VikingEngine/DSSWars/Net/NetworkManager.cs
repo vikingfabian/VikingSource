@@ -242,7 +242,25 @@ namespace VikingEngine.DSSWars
                                 {
                                     try
                                     {
-                                        Faction faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
+                                        Faction faction = null;
+
+                                        if (previousRemotePlayers.TryGetValue(packet.sender.FullId, out var history))
+                                        {
+                                            previousRemotePlayers.Remove(packet.sender.FullId);
+                                            Faction prevFaction = DssRef.world.faction(history.faction);
+                                            if (prevFaction != null &&
+                                                prevFaction.cities.Count > 0 &&
+                                                prevFaction.player.IsBot()
+                                                )
+                                            {
+                                                faction = prevFaction;
+                                            }
+                                        }
+
+                                        if (faction == null)
+                                        {
+                                            faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
+                                        }
 
                                         if (faction != null && faction.player.IsBot())
                                         {
@@ -481,6 +499,26 @@ namespace VikingEngine.DSSWars
             return packet.sender.instancePeers?[packet.senderLocalIndex].Tag as Players.RemotePlayer;
         }
 
+        public AbsHumanPlayer GetPlayer(ulong id)
+        {
+            if (Ref.netSession.LocalPeer().fullId == id)
+            {
+                return LocalHost();
+            }
+
+            var remotePlayerC = remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                if (remotePlayerC.sel.networkPeer.peer.fullId == id)
+                {
+                    //TODO return region to AI
+                    return remotePlayerC.sel;
+                }
+            }
+
+            return null;
+        }
+
         public override void NetEvent_GotNetworkId()
         {
             //doesnt run
@@ -570,6 +608,9 @@ namespace VikingEngine.DSSWars
             {
 
                 player.DeleteMe();
+
+                var history = player.GetHistory();
+                arraylib.AddOrReplace(previousRemotePlayers, history.id, history);
                 remotePlayers.Remove(player);
 
                 RichBoxContent content = new RichBoxContent();
@@ -624,7 +665,7 @@ namespace VikingEngine.DSSWars
         {
             AbsHumanPlayer toPlayer = NetReadPlayer(packet.r);
             GiftedAchievementType type = (GiftedAchievementType)packet.r.ReadByte();
-            giftMessage((RemotePlayer)packet.sender.Tag, toPlayer, type);
+            giftMessage(GetRemotePlayer(packet), toPlayer, type);
 
             if (toPlayer.IsLocal)
             {
@@ -635,13 +676,20 @@ namespace VikingEngine.DSSWars
 
         void giftMessage(AbsHumanPlayer from, AbsHumanPlayer to, GiftedAchievementType type)
         {
+            to.giftedAchievements.Add(type, from);
+
             RichBoxContent content = new RichBoxContent();
 
+            
+            from.addNetGamerToHud(content, false);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.cmdConvertArrow));
+            content.newLine();
+            to.addNetGamerToHud(content, false);
+
+            content.newParagraph();
             content.h1(NetworkIcon, "Gifted achievement", HudLib.TitleColor_Head2);
             content.newLine();
-            from.addNetGamerToHud(content, false);
-            content.Add(new RbImage(SpriteName.cmdConvertArrow));
-            to.addNetGamerToHud(content, false);
 
             var gift = GiftedAchievementCollection.Get(type);
             content.h1(GiftedAchievement.DefaultIcon, gift.name, HudLib.TitleColor_TypeName);

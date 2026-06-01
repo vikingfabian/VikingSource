@@ -9,35 +9,63 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Interface
 {
     class NetSessionDisplay
     {
         RemotePlayer selectedPlayer = null;
-        public bool sendGiftMenu = false;
+        public RemotePlayer sendGiftTo = null;
 
         public bool ClientInteractDisplay => selectedPlayer != null;
 
         public void overviewToHud(LocalPlayer player, RichBoxContent content)
         {
-            content.h2(".Net session", HudLib.TitleColor_Head);
-            var remoteC = DssRef.state.remotePlayers.counter();
-            while (remoteC.Next())
+            if (sendGiftTo != null)
+            {
+                giftMenu(player, content);
+            }
+            else
+            {
+                content.h2(".Net session", HudLib.TitleColor_Head);
+
+                gamerButton(player);
+                content.newLine();
+                content.Add(new RbSeperationLine());
+
+                var remoteC = DssRef.state.remotePlayers.counter();
+                while (remoteC.Next())
+                {
+                    gamerButton(remoteC.sel);
+                    //content.newLine();
+
+                    //RichBoxContent buttonContent = new RichBoxContent();
+                    //remoteC.sel.addNetGamerToHud(buttonContent, true);
+
+                    //content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<RemotePlayer>(
+                    //    (RemotePlayer select) => { selectedPlayer = select; player.hud.needRefresh = true; }, remoteC.sel),
+                    //    new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput)));
+
+                    //remoteC.sel.giftedAchievements.ToHud(content, player, remoteC.sel, this);
+
+                    remoteC.sel.addNetPingToHud(content);
+                }
+                content.Add(new RbSeperationLine());
+            }
+
+            void gamerButton(AbsHumanPlayer gamer)
             {
                 content.newLine();
 
                 RichBoxContent buttonContent = new RichBoxContent();
-                remoteC.sel.addNetGamerToHud(buttonContent, true);
+                gamer.addNetGamerToHud(buttonContent, true);
 
-                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<RemotePlayer>(
-                    (RemotePlayer select) => { selectedPlayer = select; player.hud.needRefresh = true; }, remoteC.sel), 
-                    new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput)));
+                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
+                    (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
+                    new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
 
-                remoteC.sel.addNetPingToHud(content);
+                gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
             }
-            content.Add(new RbSeperationLine());
         }
 
         void giftMenu(LocalPlayer player, RichBoxContent content)
@@ -46,9 +74,9 @@ namespace VikingEngine.DSSWars.Interface
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_ReturnToPrevious)
-                    }, new RbAction(()=>
+                    }, new RbAction(() =>
                     {
-                        sendGiftMenu = false;
+                        sendGiftTo = null;
                         player.hud.needRefresh = true;
                     }, RbSoundType.Back)));
 
@@ -62,19 +90,20 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     var gift = GiftedAchievementCollection.Get(type);
 
-                    content.newLine();
+                    //content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbImage(GiftedAchievement.DefaultIcon),
                         new RbSpace(0.5f),
                         new RbText(gift.name)
                         }, new RbAction1Arg<GiftedAchievementType>((GiftedAchievementType selected) =>
                         {
-                            sendGiftMenu = false;
+                            ((PlayState)DssRef.state).sendGiftedAchievement(selected, sendGiftTo);
+
+                            sendGiftTo = null;
                             player.hud.needRefresh = true;
 
-                            ((PlayState)DssRef.state).sendGiftedAchievement(selected, selectedPlayer);
-
-                        }, type), new RbTooltip((RichBoxContent content, object tag) => {
+                        }, type), new RbTooltip((RichBoxContent content, object tag) =>
+                        {
 
                             var info = GiftedAchievementCollection.Get((GiftedAchievementType)tag);
                             content.h2("Send", HudLib.TitleColor_Action);
@@ -83,73 +112,68 @@ namespace VikingEngine.DSSWars.Interface
 
                         }, type)));
                 }
-                
+
             }
         }
 
 
         public void clientToHud(LocalPlayer player, RichBoxContent content)
         {
-            if (sendGiftMenu)
-            {
-                giftMenu(player, content);
-            }
-            else
-            {
-                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+
+            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_ReturnToPrevious)
                     }, new RbAction(() =>
                     { selectedPlayer = null; player.hud.needRefresh = true; }, RbSoundType.Back)));
 
-                content.newLine();
+            content.newLine();
 
-                //TABS
-                var tabs = new List<ArtTabMember>(DssRef.state.remotePlayers.Count);
-                var remoteC = DssRef.state.remotePlayers.counter();
-                int index = 0;
-                int sel = 0;
-                while (remoteC.Next())
-                {
-                    tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
+            //TABS
+            var tabs = new List<ArtTabMember>(DssRef.state.remotePlayers.Count);
+            var remoteC = DssRef.state.remotePlayers.counter();
+            int index = 0;
+            int sel = 0;
+            while (remoteC.Next())
+            {
+                tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
                     {
                        new RbText(remoteC.sel.Name)
                     }));
-                    if (selectedPlayer == remoteC.sel)
-                    {
-                        sel = index;
-                    }
-                    index++;
-                }
-
-                var tabGroup = new ArtTabgroup(tabs, sel, (int select) =>
+                if (selectedPlayer == remoteC.sel)
                 {
-                    var gamer = DssRef.state.remotePlayers.GetIndex_Safe(select);
-                    if (gamer != null)
-                    {
-                        selectedPlayer = gamer;
-                    }
-                    player.hud.needRefresh = true;
-                });
-                content.Add(tabGroup);
-
-                content.newLine();
-
-                //TITLE
-                selectedPlayer.addNetGamerToHud(content, true);
-                selectedPlayer.giftedAchievements.ToHud(content, player, this);
-
-                selectedPlayer.addNetPingToHud(content);
-
-                //var diplomacy = player.GetOrCreateToPlayerDiplomacy(selected);
-                //diplomacy.
-                content.newParagraph();
-                DiplomacyDisplay diplomacyDisplay = new DiplomacyDisplay(player);
-                diplomacyDisplay.toHud(content, selectedPlayer.faction, false);
-
+                    sel = index;
+                }
+                index++;
             }
 
+            var tabGroup = new ArtTabgroup(tabs, sel, (int select) =>
+            {
+                var gamer = DssRef.state.remotePlayers.GetIndex_Safe(select);
+                if (gamer != null)
+                {
+                    selectedPlayer = gamer;
+                }
+                player.hud.needRefresh = true;
+            });
+            content.Add(tabGroup);
+
+            content.newLine();
+
+            //TITLE
+            selectedPlayer.addNetGamerToHud(content, true);
+            //selectedPlayer.giftedAchievements.ToHud(content, player, this);
+
+            selectedPlayer.addNetPingToHud(content);
+
+            //var diplomacy = player.GetOrCreateToPlayerDiplomacy(selected);
+            //diplomacy.
+            content.newParagraph();
+            DiplomacyDisplay diplomacyDisplay = new DiplomacyDisplay(player);
+            diplomacyDisplay.toHud(content, selectedPlayer.faction, false);
+
         }
+
+
     }
 }

@@ -9,6 +9,12 @@ using VikingEngine.DSSWars.Map;
 namespace VikingEngine.DSSWars.Players
 {
 
+    struct RemotePlayerHistory
+    {
+        public ulong id;
+        public int faction;
+    }
+
     partial class RemotePlayer
     {
         static List<Army> netCollArmies = new List<Army>(16);
@@ -29,6 +35,15 @@ namespace VikingEngine.DSSWars.Players
             fullMapSendPosition = new ForXYLoop(DssRef.world.Size);
             citiesRecieved = new bool[DssRef.world.cities.Count];
             factionsRecieved = new bool[DssRef.world.factions.Count];
+        }
+
+        public RemotePlayerHistory GetHistory()
+        {
+            return new RemotePlayerHistory()
+            {
+                id = networkPeer.peer.fullId,
+                faction = this.faction.myIndex,
+            };
         }
 
         public bool Net_HostMapUpdate_async()

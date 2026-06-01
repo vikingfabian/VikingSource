@@ -31,6 +31,8 @@ namespace VikingEngine.Network
         }
     }
 
+     
+
     enum BanStatus
     { 
         None,

@@ -928,6 +928,12 @@ namespace VikingEngine.DSSWars
 
             Rectangle2 centerArea = CenterArea();
 
+            HashSet<int> hadPlayerOwner = new HashSet<int>();
+            foreach (var kv in ((PlayState)DssRef.state).previousRemotePlayers)
+            {
+                hadPlayerOwner.Add(kv.Value.faction);
+            }
+
             //Calculate scores
             foreach (var f in factions.Array)
             {
@@ -987,7 +993,7 @@ namespace VikingEngine.DSSWars
 
                     if (!firstPlayer)
                     {
-                        if (f.HasPlayerNeighbor())
+                        if (f.HasPlayerNeighbor() && Ref.netsett.PlayerSpacing > 0)
                         {
                             f.availableForPlayerScore -= 200;
                         }
@@ -996,7 +1002,12 @@ namespace VikingEngine.DSSWars
                     if (dropIn)
                     {
                         int wars = f.CountWars(out int playerWars);
-                        f.availableForPlayerScore -= wars * 2000 + playerWars * 8000; 
+                        f.availableForPlayerScore -= wars * 2000 + playerWars * 8000;
+
+                        if (hadPlayerOwner.Contains(f.myIndex))
+                        {
+                            f.availableForPlayerScore -= 500;
+                        }
                     }
                 }
             }

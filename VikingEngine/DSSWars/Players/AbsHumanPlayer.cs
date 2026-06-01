@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void addNetGamerToHud(RichBoxContent content, bool addStatus)
         {
-            content.Add(new RbBeginTitle(2));
+            //content.Add(new RbBeginTitle(2));
 
             if (faction == null)
             {
