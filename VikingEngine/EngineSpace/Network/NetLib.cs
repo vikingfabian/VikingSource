@@ -19,26 +19,7 @@ namespace VikingEngine.Network
             w.Write(new HalfSingle(value.Y).PackedValue);
             w.Write(new HalfSingle(value.Z).PackedValue);
         }
-        //public static List<string> ListNetworkCanJoinTypes()
-        //{
-        //    List<string> result = new List<string>((int)NetworkCanJoinType.NUM);
-        //    for (NetworkCanJoinType type = (NetworkCanJoinType)0; type < NetworkCanJoinType.NUM; type++)
-        //    {
-        //        result.Add(TextLib.EnumName(type.ToString()));
-        //    }
-        //    return result;
-        //}
-        //public static List<string> ListNetworkCanJoinTypesDescriptions()
-        //{
-        //    return new List<string>{
-        //        "Disconnect from internet",//Offline,
-        //        "Hand pick the persons you wanna play with",//Invites_only,
-        //        "Anyone on your friends list can join",//Friends,
-        //        "Anyone can join, but one slot is reserved for a friend",//Open_but_1private,
-        //        "Open for both friends and strangers",//Open_for_all,
-        //     };
-        //}
-
+        
         public static Vector3 ReadHalfV3(System.IO.BinaryReader r)
         {
             Vector3 result = Vector3.Zero;
@@ -161,6 +142,14 @@ namespace VikingEngine.Network
         NUM
     }
 
+    enum HandicapLevel
+    { 
+        High,
+        Default,
+        Low,
+        None,
+    }
+
     enum PacketType : byte
     {
         NON,
@@ -206,6 +195,7 @@ namespace VikingEngine.Network
         DssSoldierDeath,
 
         DssDeleteArmy,
+        DssGiftAchievement,
         //LF2_WorldOverview,
         //LF2_StartAttack,
         //LF2_MapFlag,

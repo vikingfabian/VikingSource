@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt Gifted_ScorchedEarth = new StatsInt("Gifted_ScorchedEarth");
         public StatsInt Gifted_WarMonger = new StatsInt("Gifted_WarMonger");
         public StatsInt Gifted_LivingInABobble = new StatsInt("Gifted_LivingInABobble");
-        public StatsInt Gifted_Bullie = new StatsInt("Gifted_Bullie");
+        public StatsInt Gifted_Bully = new StatsInt("Gifted_Bully");
         public StatsInt Gifted_ControlFreak = new StatsInt("Gifted_ControlFreak");
         public StatsInt Gifted_RandomNothingMakesSense = new StatsInt("Gifted_RandomNothingMakesSense");
         public StatsInt Gifted_Hoarder = new StatsInt("Gifted_Hoarder");
@@ -181,6 +181,8 @@ namespace VikingEngine.DSSWars.Data
             {
             };
         }
+
+
 
         public override List<IStatsValue> listGlobalStats()
         {
@@ -300,7 +302,7 @@ namespace VikingEngine.DSSWars.Data
                     Gifted_ScorchedEarth,
                     Gifted_WarMonger,
                     Gifted_LivingInABobble,
-                    Gifted_Bullie,
+                    Gifted_Bully,
                     Gifted_ControlFreak,
                     Gifted_RandomNothingMakesSense,
                     Gifted_Hoarder,
@@ -402,5 +404,181 @@ namespace VikingEngine.DSSWars.Data
                 }
             }
         }
+
+        public void onSendGift(GiftedAchievementType type)
+        {
+            switch (type)
+            {
+                case GiftedAchievementType.WhiteKnight:
+                    Gifted_WhiteKnight.add(1);
+                    break;
+                case GiftedAchievementType.HeroComplexSaviorComplex:
+                    Gifted_HeroComplexSaviorComplex.add(1);
+                    break;
+                case GiftedAchievementType.CryBaby:
+                    Gifted_CryBaby.add(1);
+                    break;
+                case GiftedAchievementType.KingMaker:
+                    Gifted_KingMaker.add(1);
+                    break;
+                case GiftedAchievementType.Turtle:
+                    Gifted_Turtle.add(1);
+                    break;
+                case GiftedAchievementType.MetaPlayer:
+                    Gifted_MetaPlayer.add(1);
+                    break;
+                case GiftedAchievementType.Tryhard:
+                    Gifted_Tryhard.add(1);
+                    break;
+                case GiftedAchievementType.DidPracticeInSecret:
+                    Gifted_DidPracticeInSecret.add(1);
+                    break;
+                case GiftedAchievementType.TheEncyclopedia:
+                    Gifted_TheEncyclopedia.add(1);
+                    break;
+                case GiftedAchievementType.WarCriminal:
+                    Gifted_WarCriminal.add(1);
+                    break;
+                case GiftedAchievementType.FarmerRush:
+                    Gifted_FarmerRush.add(1);
+                    break;
+                case GiftedAchievementType.Politian:
+                    Gifted_Politian.add(1);
+                    break;
+                case GiftedAchievementType.Socializer:
+                    Gifted_Socializer.add(1);
+                    break;
+                case GiftedAchievementType.OverAchiever:
+                    Gifted_OverAchiever.add(1);
+                    break;
+                case GiftedAchievementType.Noob:
+                    Gifted_Noob.add(1);
+                    break;
+                case GiftedAchievementType.SwedishNeutrality:
+                    Gifted_SwedishNeutrality.add(1);
+                    break;
+                case GiftedAchievementType.TroubleMaker:
+                    Gifted_TroubleMaker.add(1);
+                    break;
+                case GiftedAchievementType.ScorchedEarth:
+                    Gifted_ScorchedEarth.add(1);
+                    break;
+                case GiftedAchievementType.WarMonger:
+                    Gifted_WarMonger.add(1);
+                    break;
+                case GiftedAchievementType.LivingInABobble:
+                    Gifted_LivingInABobble.add(1);
+                    break;
+                case GiftedAchievementType.Bully:
+                    Gifted_Bully.add(1);
+                    break;
+                case GiftedAchievementType.ControlFreak:
+                    Gifted_ControlFreak.add(1);
+                    break;
+                case GiftedAchievementType.RandomNothingMakesSense:
+                    Gifted_RandomNothingMakesSense.add(1);
+                    break;
+                case GiftedAchievementType.Hoarder:
+                    Gifted_Hoarder.add(1);
+                    break;
+                case GiftedAchievementType.Scatterbrained:
+                    Gifted_Scatterbrained.add(1);
+                    break;
+                case GiftedAchievementType.NearSighted:
+                    Gifted_NearSighted.add(1);
+                    break;
+                case GiftedAchievementType.AutomationAbuser:
+                    Gifted_AutomationAbuser.add(1);
+                    break;
+                case GiftedAchievementType.Troll:
+                    Gifted_Troll.add(1);
+                    break;
+                case GiftedAchievementType.MemeLord:
+                    Gifted_MemeLord.add(1);
+                    break;
+                case GiftedAchievementType.SupportSlave:
+                    Gifted_SupportSlave.add(1);
+                    break;
+                case GiftedAchievementType.DarkSidePlayer:
+                    Gifted_DarkSidePlayer.add(1);
+                    break;
+                case GiftedAchievementType.SlaughterHouse:
+                    Gifted_SlaughterHouse.add(1);
+                    break;
+                case GiftedAchievementType.AnimalCruelty:
+                    Gifted_AnimalCruelty.add(1);
+                    break;
+                case GiftedAchievementType.LuckyBastard:
+                    Gifted_LuckyBastard.add(1);
+                    break;
+                case GiftedAchievementType.Cursed:
+                    Gifted_Cursed.add(1);
+                    break;
+                case GiftedAchievementType.Backstabber:
+                    Gifted_Backstabber.add(1);
+                    break;
+                case GiftedAchievementType.Oathbreaker:
+                    Gifted_Oathbreaker.add(1);
+                    break;
+                case GiftedAchievementType.Wormtongue:
+                    Gifted_Wormtongue.add(1);
+                    break;
+                case GiftedAchievementType.ArmchairGeneral:
+                    Gifted_ArmchairGeneral.add(1);
+                    break;
+                case GiftedAchievementType.Salty:
+                    Gifted_Salty.add(1);
+                    break;
+                case GiftedAchievementType.SaltMiner:
+                    Gifted_SaltMiner.add(1);
+                    break;
+                case GiftedAchievementType.PuppetMaster:
+                    Gifted_PuppetMaster.add(1);
+                    break;
+                case GiftedAchievementType.TheCarry:
+                    Gifted_TheCarry.add(1);
+                    break;
+                case GiftedAchievementType.OneManArmy:
+                    Gifted_OneManArmy.add(1);
+                    break;
+                case GiftedAchievementType._4DChessPlayer:
+                    Gifted__4DChessPlayer.add(1);
+                    break;
+                case GiftedAchievementType.SpreadsheetWarrior:
+                    Gifted_SpreadsheetWarrior.add(1);
+                    break;
+                case GiftedAchievementType.MeatShield:
+                    Gifted_MeatShield.add(1);
+                    break;
+                case GiftedAchievementType.InDebt:
+                    Gifted_InDebt.add(1);
+                    break;
+                case GiftedAchievementType.OnLifeSupport:
+                    Gifted_OnLifeSupport.add(1);
+                    break;
+                case GiftedAchievementType.LoneWolf:
+                    Gifted_LoneWolf.add(1);
+                    break;
+                case GiftedAchievementType.ShaggyTooDopeAlwaysChilling:
+                    Gifted_ShaggyTooDopeAlwaysChilling.add(1);
+                    break;
+                case GiftedAchievementType.BadInfluence:
+                    Gifted_BadInfluence.add(1);
+                    break;
+                case GiftedAchievementType.HindsightTactician:
+                    Gifted_HindsightTactician.add(1);
+                    break;
+                case GiftedAchievementType.Houseplant:
+                    Gifted_Houseplant.add(1);
+                    break;
+                case GiftedAchievementType.Sheep:
+                    Gifted_Sheep.add(1);
+                    break;
+                case GiftedAchievementType.NUM:
+                default:
+                    break;
+            }
+        }
+
     }
 }

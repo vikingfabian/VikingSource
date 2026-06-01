@@ -922,7 +922,7 @@ namespace VikingEngine.DSSWars
 
         public Faction getPlayerAvailableFaction2(List<Players.LocalPlayer> players, bool firstPlayer, bool dropIn)
         {
-            int MultiPlayerDistance = MathExt.MultiplyInt( GenerateMap.HeadCityNeededFreeRadius, 2 * Ref.netsett.PlayerSpacing + 1);
+            int MultiPlayerDistance = MathExt.MultiplyInt( GenerateMap.HeadCityNeededFreeRadius, 1.75f * Ref.netsett.PlayerSpacing + 1);
 
             List<Faction> sortedList = new List<Faction>();
 

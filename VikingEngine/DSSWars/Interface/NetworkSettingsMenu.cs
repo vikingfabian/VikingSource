@@ -41,19 +41,7 @@ namespace VikingEngine.DSSWars.Interface
                 case UnlockPublic:
                     {
                         RichBoxContent content = new RichBoxContent();
-                        //x Unlock public games
-                        //- Do not play with strangers
-                        //- The game has zero protection against cheating or trolling
-                        //- You will have a bad experience
-
-                        //x Unlock PvP
-                        //- DSS is not designed for competetive games
-                        //- There is no balance, matches will be unfair
-                        //- You will have a bad experience
-
-                        //-Are you really, really sure?
-                        //Will you be a big boy and not cry on the forum later?
-
+                        
                         content.h1(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "public games"), HudLib.TitleColor_Head);
                         content.h2(SpriteName.cmdWarningTriangle, "Warning!", HudLib.NotAvailableColor);
 
@@ -91,19 +79,7 @@ namespace VikingEngine.DSSWars.Interface
                 case UnlockPvp:
                     {
                         RichBoxContent content = new RichBoxContent();
-                        //x Unlock public games
-                        //- Do not play with strangers
-                        //- The game has zero protection against cheating or trolling
-                        //- You will have a bad experience
-
-                        //x Unlock PvP
-                        //- DSS is not designed for competetive games
-                        //- There is no balance, matches will be unfair
-                        //- You will have a bad experience
-
-                        //-Are you really, really sure?
-                        //Will you be a big boy and not cry on the forum later?
-
+                        
                         content.h1(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, "player versus player"), HudLib.TitleColor_Head);
                         content.h2(SpriteName.cmdWarningTriangle, "Warning!", HudLib.NotAvailableColor);
 
@@ -190,6 +166,9 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbDragButton(new DragButtonSettings(0, 8, 1), Ref.netsett.PlayerSpacingProperty));
 
 
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Allow handicap") },
+                    Ref.netsett.allowHandicapProperty));
 
 
                 //PlayerToPlayerDiplomacy toPlayerDiplomacy = Ref.netsett.hostDiplomacy;
@@ -229,6 +208,88 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newParagraph();
                 content.h2("Client settings", HudLib.TitleColor_Head2);
+
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Use handicap") },
+                    Ref.netsett.useHandicapProperty));
+
+                if (Ref.netsett.useHandicap)
+                {
+                    var aggroOptions = new DropDownBuilder("handicap aggro");
+                    {
+                        for (HandicapLevel lvl = HandicapLevel.High; lvl <= HandicapLevel.None; lvl++)
+                        {
+                            string caption;
+                            switch (lvl)
+                            {
+                                case HandicapLevel.High:
+                                    caption = DssRef.lang.Hud_High;
+                                    break;
+                                default:
+                                case HandicapLevel.Default:
+                                    caption = DssRef.todoLang.Hud_Default;
+                                    break;
+                                case HandicapLevel.Low:
+                                    caption = DssRef.lang.Hud_Low;
+                                    break;
+                                case HandicapLevel.None:
+                                    caption = DssRef.lang.Settings_Mode_Peaceful;
+                                    break;
+
+                            }
+                            aggroOptions.AddOption(caption,
+                                lvl == Ref.netsett.handicap_botAggression,
+                                lvl == HandicapLevel.Default,
+                                new RbAction1Arg<HandicapLevel>((HandicapLevel selected) =>
+                                {
+                                    menu.CloseDropDown();
+                                    Ref.netsett.handicap_botAggression = selected;
+                                    Ref.netsett.settingsHasChanged = true;
+                                }, lvl), null);
+                        }
+                    }
+                    aggroOptions.Build(content, SpriteName.NO_IMAGE, "Bot aggression", menu);
+
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Extra honor guard") },
+                        Ref.netsett.handicap_extraHonorGuardsProperty));
+
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Resource boost") },
+                        Ref.netsett.handicap_resourceBoostProperty));
+
+                    var taxOptions = new DropDownBuilder("handicap tax");
+                    {
+                        for (HandicapLevel lvl = HandicapLevel.High; lvl <= HandicapLevel.Low; lvl++)
+                        {
+                            string caption;
+                            switch (lvl)
+                            {
+                                case HandicapLevel.High:
+                                    caption = DssRef.lang.Hud_High;
+                                    break;
+                                default:
+                                case HandicapLevel.Default:
+                                    caption = DssRef.todoLang.Hud_Default;
+                                    break;
+                                case HandicapLevel.Low:
+                                    caption = DssRef.lang.Hud_Low;
+                                    break;
+
+                            }
+                            taxOptions.AddOption(caption,
+                                lvl == Ref.netsett.handicap_taxIncome,
+                                lvl == HandicapLevel.Default,
+                                new RbAction1Arg<HandicapLevel>((HandicapLevel selected) =>
+                                {
+                                    menu.CloseDropDown();
+                                    Ref.netsett.handicap_taxIncome = selected;
+                                    Ref.netsett.settingsHasChanged = true;
+                                }, lvl), null);
+                        }
+                    }
+                    taxOptions.Build(content, SpriteName.NO_IMAGE, "Tax income", menu);
+                }
 
                 content.h2("Player interaction", HudLib.TitleColor_Label);
                 playerInteractSettings(content, false);

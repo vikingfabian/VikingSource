@@ -44,7 +44,8 @@ namespace VikingEngine.DSSWars.Data
                 }
             }
 
-            for (int i = 0; i < MaxRecieveCount - buttonContent.Count; i++)
+            int emptyCount = MaxRecieveCount - buttonContent.Count;
+            for (int i = 0; i < emptyCount; i++)
             {
                 buttonContent.Add(new RbImage(GiftedAchievement.EmptyIcon));
             }
@@ -57,8 +58,8 @@ namespace VikingEngine.DSSWars.Data
         }
 
         void toolTip(RichBoxContent content, object tag )
-        { 
-            
+        {
+            content.text("Gifted achievements");
         }
     }
 }

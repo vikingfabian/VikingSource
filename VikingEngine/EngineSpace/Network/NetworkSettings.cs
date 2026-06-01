@@ -92,13 +92,20 @@ namespace VikingEngine.Network
         public RelationType startDiplomacy = RelationType.RelationType0_Neutral;
         public PlayerToPlayerDiplomacy clientPtoP = new PlayerToPlayerDiplomacy(false);
        
-
         /// <summary>
         /// Distance between players
         /// </summary>
         public int PlayerSpacing = 1;
 
         public GiftRecieveOption recieveGifts = GiftRecieveOption.FriendsOnly;
+
+        public bool allowHandicap = true;
+        public bool useHandicap = false;
+        public HandicapLevel handicap_botAggression = HandicapLevel.Default;
+        public bool handicap_extraHonorGuards = false;
+        public bool handicap_resourceBoost = false;
+        public HandicapLevel handicap_taxIncome = HandicapLevel.Default;
+
 
         StructList<StoredNetworkGamer> storedGamers = new StructList<StoredNetworkGamer>(8);
         
@@ -126,6 +133,14 @@ namespace VikingEngine.Network
 
             w.Write(PlayerSpacing);
 
+            w.Write((byte)recieveGifts);
+            w.Write(allowHandicap);
+            w.Write(useHandicap);
+            w.Write((byte)handicap_botAggression);
+            w.Write(handicap_extraHonorGuards);
+            w.Write(handicap_resourceBoost);
+            w.Write((byte)handicap_taxIncome);
+
             Debug.WriteCheck(w);
         }
 
@@ -148,7 +163,58 @@ namespace VikingEngine.Network
 
             PlayerSpacing = r.ReadInt32();
 
+            recieveGifts = (GiftRecieveOption)r.ReadByte();
+            allowHandicap = r.ReadBoolean();
+            useHandicap = r.ReadBoolean();
+            handicap_botAggression = (HandicapLevel)r.ReadByte();
+            handicap_extraHonorGuards = r.ReadBoolean();
+            handicap_resourceBoost = r.ReadBoolean();
+            handicap_taxIncome = (HandicapLevel)r.ReadByte();
+
             Debug.ReadCheck(r);
+        }
+
+        //public bool allowHandicap = true;
+        //public bool useHandicap = false;
+        //public HandicapLevel handicap_botAggression = HandicapLevel.Default;
+        //public bool handicap_extraHonorGuards = false;
+        //public bool handicap_resourceBoost = false;
+        public bool allowHandicapProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                allowHandicap = value;
+                settingsHasChanged = true;
+            }
+            return allowHandicap;
+        }
+        public bool useHandicapProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                useHandicap = value;
+                settingsHasChanged = true;
+            }
+            return useHandicap;
+        }
+        public bool handicap_extraHonorGuardsProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                handicap_extraHonorGuards = value;
+                settingsHasChanged = true;
+            }
+            return handicap_extraHonorGuards;
+        }
+       
+        public bool handicap_resourceBoostProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                handicap_resourceBoost = value;
+                settingsHasChanged = true;
+            }
+            return handicap_resourceBoost;
         }
 
         public bool OfflineProperty(object tag, bool set, bool value)
@@ -181,6 +247,8 @@ namespace VikingEngine.Network
             }
             return PlayerSpacing;
         }
+
+
 
         public bool canBreakAllianceProperty(object tag, bool set, bool value)
         {

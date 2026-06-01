@@ -390,8 +390,9 @@ namespace VikingEngine.DSSWars
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
                     }
                     break;
-
-               
+                case PacketType.DssGiftAchievement:
+                    readGiftedAchievement(packet);
+                    break;
 
                 case PacketType.DssDiplomacyRelation:
                     Communication.DiplomaticRelation.NetReadRelation(packet.r);
@@ -606,6 +607,47 @@ namespace VikingEngine.DSSWars
             NetworkInstancePeer.ReadNetID(r, out var peer, out int index);
 
             return GetOrCreateRemotePlayer(peer, index);
+        }
+
+        public void sendGiftedAchievement(GiftedAchievementType type, RemotePlayer toPlayer)
+        {
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssGiftAchievement, PacketReliability.Reliable);
+            toPlayer.networkPeer.writeNetID(w);
+            w.Write((byte)type);
+
+            giftMessage(LocalHost(), toPlayer, type);
+
+            DssRef.stats.onSendGift(type);
+        }
+
+        void readGiftedAchievement(ReceivedPacket packet)
+        {
+            AbsHumanPlayer toPlayer = NetReadPlayer(packet.r);
+            GiftedAchievementType type = (GiftedAchievementType)packet.r.ReadByte();
+            giftMessage((RemotePlayer)packet.sender.Tag, toPlayer, type);
+
+            if (toPlayer.IsLocal)
+            {
+                var gift = GiftedAchievementCollection.Get(type);
+                DssRef.achieve.UnlockAchievement(gift.achievement);
+            }
+        }
+
+        void giftMessage(AbsHumanPlayer from, AbsHumanPlayer to, GiftedAchievementType type)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(NetworkIcon, "Gifted achievement", HudLib.TitleColor_Head2);
+            content.newLine();
+            from.addNetGamerToHud(content, false);
+            content.Add(new RbImage(SpriteName.cmdConvertArrow));
+            to.addNetGamerToHud(content, false);
+
+            var gift = GiftedAchievementCollection.Get(type);
+            content.h1(GiftedAchievement.DefaultIcon, gift.name, HudLib.TitleColor_TypeName);
+            content.text(gift.description, HudLib.InfoYellow_Light);
+
+            LocalHost().hud.messages.Add(content, SoundLib.netJoined);
         }
     }
 }

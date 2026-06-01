@@ -219,8 +219,8 @@ namespace VikingEngine.DSSWars.Data
                 case GiftedAchievementType.Politian:
                     return new GiftedAchievement()
                     {
-                        name = DssRef.todoLang.GiftAchieve_Politian_Name,
-                        description = DssRef.todoLang.GiftAchieve_Politian_Desc,
+                        name = DssRef.todoLang.GiftAchieve_Politician_Name,
+                        description = DssRef.todoLang.GiftAchieve_Politician_Desc,
                         achievement = AchievementIndex.Gift_Politian,
                         stats = DssRef.stats.Gifted_Politian,
                     };
@@ -290,8 +290,8 @@ namespace VikingEngine.DSSWars.Data
                 case GiftedAchievementType.LivingInABobble:
                     return new GiftedAchievement()
                     {
-                        name = DssRef.todoLang.GiftAchieve_LivingInABobble_Name,
-                        description = DssRef.todoLang.GiftAchieve_LivingInABobble_Desc,
+                        name = DssRef.todoLang.GiftAchieve_LivingInABubble_Name,
+                        description = DssRef.todoLang.GiftAchieve_LivingInABubble_Desc,
                         achievement = AchievementIndex.Gift_LivingInABobble,
                         stats = DssRef.stats.Gifted_LivingInABobble,
                     };
@@ -299,10 +299,10 @@ namespace VikingEngine.DSSWars.Data
                 case GiftedAchievementType.Bully:
                     return new GiftedAchievement()
                     {
-                        name = DssRef.todoLang.GiftAchieve_Bullie_Name,
-                        description = DssRef.todoLang.GiftAchieve_Bullie_Desc,
+                        name = DssRef.todoLang.GiftAchieve_Bully_Name,
+                        description = DssRef.todoLang.GiftAchieve_Bully_Desc,
                         achievement = AchievementIndex.Gift_Bully,
-                        stats = DssRef.stats.Gifted_Bullie,
+                        stats = DssRef.stats.Gifted_Bully,
                     };
 
                 case GiftedAchievementType.ControlFreak:
