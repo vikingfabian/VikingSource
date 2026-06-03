@@ -129,11 +129,15 @@ namespace VikingEngine.DSSWars.Interface
                             if (Ref.netsett.storedGamers.array[i].ban == BanStatus.Banned)
                             {
                                 count++;
+                                content.newLine();
                                 content.Add(new ArtButton(RbButtonStyle.Primary,
                                     new List<AbsRichBoxMember> { new RbText(Ref.netsett.storedGamers.array[i].name) },
                                     new RbAction1Arg<int>((int selected) =>
                                     {
-                                        Ref.netsett.storedGamers.array[i].ban = BanStatus.None;
+                                        var m = Ref.netsett.storedGamers.array[selected];
+                                        m.ban = BanStatus.None;
+                                        Ref.netsett.storedGamers.array[selected] = m;
+                                        DssRef.storage.Save(null);
                                     }, i), new RbTooltip_Text("Click: remove ban")));
                             }
                         }
@@ -199,7 +203,10 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Allow handicap") },
                     Ref.netsett.allowHandicapProperty));
 
-
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbText("Blocked players") },
+                    new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
                 //PlayerToPlayerDiplomacy toPlayerDiplomacy = Ref.netsett.hostDiplomacy;
                 //content.h2("Player interaction", HudLib.TitleColor_Label);
                 //var allowAllianceOptions = new DropDownBuilder("allowAlliance");
@@ -232,10 +239,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 playerInteractSettings(content, true);
 
-                content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
-                    new RbText("Blocked players") },
-                    new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
+                
 
                 //"Join Permissions"}
                 content.Add(new RbSeperationLine());

@@ -277,7 +277,6 @@ namespace VikingEngine.DSSWars
                                                     var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
                                                     w.Write((ushort)faction.myIndex);
                                                     faction.writeNet_Status(w);
-
                                                 }
                                                 {
                                                     var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
@@ -473,6 +472,8 @@ namespace VikingEngine.DSSWars
                                     LocalHost().hud.objMenu.netSessionDisplay.selectedPlayer = badActor.GetRemotePlayer();
                                     LocalHost().hud.objMenu.menu.OpenMenu(NetSessionDisplay.PAGE_BLOCK, HUD.RichMenu.StackOption.Stack);
                                 })));
+
+                            LocalHost().hud.messages.Add(content);
                         }
                     }
                     break;
@@ -669,6 +670,7 @@ namespace VikingEngine.DSSWars
                 }
 
                 LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+                Ref.netsett.settingsHasChanged = true;
             }
         }
 

@@ -84,6 +84,7 @@ namespace VikingEngine.DSSWars.Interface
         public void Kick(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             content.h1("Kick player", HudLib.TitleColor_Head);
+            content.newLine();
             selectedPlayer.addNetGamerToHud(content, false);
 
             content.newParagraph();
@@ -106,6 +107,7 @@ namespace VikingEngine.DSSWars.Interface
         public void Block(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             content.h1("Block player", HudLib.TitleColor_Head);
+            content.newLine();
             selectedPlayer.addNetGamerToHud(content, false);
 
             content.newParagraph();

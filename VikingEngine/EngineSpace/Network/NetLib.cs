@@ -285,7 +285,7 @@ namespace VikingEngine.Network
         DestroyLevel,
         LevelStatus,
         FoundHeroEffect,
-        KickPlayer,
+        //KickPlayer,
         BossDefeatedAnimation,
         Express,
         BombExplosion,

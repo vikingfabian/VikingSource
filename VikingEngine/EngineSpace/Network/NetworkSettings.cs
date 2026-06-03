@@ -190,7 +190,9 @@ namespace VikingEngine.Network
             storedGamers = new StructList<StoredNetworkGamer>(storedGamersCount + 8);
             for (int i = 0; i < storedGamersCount; i++)
             {
-                storedGamers.array[i].read(r, storageVersion);
+                StoredNetworkGamer gamer = new StoredNetworkGamer();
+                gamer.read(r, storageVersion);
+                storedGamers.Add(gamer);
             }
 
             Debug.ReadCheck(r);

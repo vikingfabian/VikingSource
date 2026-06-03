@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Players
         public bool newPlayer = true;
 
         public AbsPlayer previousPlayer;
+        public int assignedFaction = ushort.MaxValue;
         public FactionType previousFactionType;
         public RemotePlayerPointer pointer;
         public GamerCommunicationSetting communicationSetting; //not implemented
@@ -70,6 +71,7 @@ namespace VikingEngine.DSSWars.Players
 
         public override void AssignFaction(Faction faction)
         {
+            assignedFaction = faction.myIndex;
             previousPlayer = faction.player;
             previousFactionType = faction.factiontype;
             base.AssignFaction(faction);

@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Players
             return new PlayerMapHistory()
             {
                 id = networkPeer.peer.fullId,
-                faction = this.faction.myIndex,
+                faction = assignedFaction,
             };
         }
 

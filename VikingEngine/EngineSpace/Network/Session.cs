@@ -169,10 +169,10 @@ namespace VikingEngine.Network
 
         public void kickFromNetwork(AbsNetworkPeer peer)
         {
+            Ref.steam.P2PManager.RemovePeer(peer);
             writeKick(peer);
-            peer.approved = false;
 
-            Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
+            //Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
         }
 
         public void writeKick(AbsNetworkPeer kickPeer)
