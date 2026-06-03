@@ -12,6 +12,27 @@ namespace VikingEngine.Network
     struct GamerCommunicationSetting
     {
         public bool muteVoice, muteText, mutePins, muteInGameCommunications, muteCreations;
+        public float voiceVolume;
+
+        public GamerCommunicationSetting()
+        {
+            voiceVolume = 1;
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(voiceVolume);
+
+            new EightBit(muteVoice, muteText, mutePins, muteInGameCommunications, muteCreations).write(w);
+        }
+
+        public void read(System.IO.BinaryReader r, int storageVersion)
+        {
+            voiceVolume = r.ReadSingle();
+
+            var bits = EightBit.FromStream(r);
+            bits.Get(out muteVoice, out muteText, out mutePins, out muteInGameCommunications, out muteCreations);
+        }
     }
 
     struct StoredNetworkGamer
@@ -22,12 +43,34 @@ namespace VikingEngine.Network
 
         public BanStatus ban;
         public GamerCommunicationSetting communicationSetting;
-        public float voiceVolume;
+        
 
         public StoredNetworkGamer(ulong id)
         { 
             this.id = id;
-            voiceVolume = 1;
+            communicationSetting = new GamerCommunicationSetting();
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(id);
+
+            StreamLib.WriteString(w, name);
+
+            w.Write((byte)ban);
+            communicationSetting.write(w);
+
+            
+        }
+
+        public void read(System.IO.BinaryReader r, int storageVersion)
+        {
+            id = r.ReadUInt64();
+
+            name = StreamLib.ReadString(r);
+
+            ban = (BanStatus)r.ReadByte();
+            communicationSetting.read(r, storageVersion);
         }
     }
 

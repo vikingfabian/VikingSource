@@ -686,7 +686,7 @@ namespace VikingEngine.DSSWars
                     if (factions.Array[i] != null)
                     {
                         w.Write(true);
-                        w.Write((byte)factions.Array[i].factiontype);
+                        w.Write((byte)factions.Array[i].StoredFactionType());
                         factions.Array[i].writeMapFile(w);
                     }
                     else

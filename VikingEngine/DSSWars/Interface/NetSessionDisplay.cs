@@ -9,15 +9,122 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.Interface
 {
     class NetSessionDisplay
     {
-        RemotePlayer selectedPlayer = null;
+        public const string PAGE_BANWARNING = "ban warn";
+        public const string PAGE_REQUESTBLOCK = "request block";
+        public const string PAGE_KICK = "kick";
+        public const string PAGE_BLOCK = "block";
+        public RemotePlayer selectedPlayer = null;
         public RemotePlayer sendGiftTo = null;
 
         public bool ClientInteractDisplay => selectedPlayer != null;
+
+
+        public void BanWarning(LocalPlayer player, RichBoxContent content, RichMenu menu)
+        {
+            HudLib.returnButton(content, menu, true, null);
+            content.h1("Send ban warning", HudLib.TitleColor_Head);
+            content.newLine();
+            selectedPlayer.addNetGamerToHud(content, true);
+
+            content.newParagraph();
+            for (BadBehaviourType behaviourType = 0; behaviourType < BadBehaviourType.NUM; behaviourType++)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbText(behaviourType.ToString())
+                    }, new RbAction1Arg<BadBehaviourType>((BadBehaviourType selected)=>
+                    {
+                        var w = Ref.netSession.BeginWritingPacket(PacketType.WarnPlayer, PacketReliability.Reliable,  SendPacketTo.OneSpecific, selectedPlayer.networkPeer.peer.fullId, null);
+                        w.Write((byte)selected);
+
+                        ((PlayState)DssRef.state).BanWarning(DssRef.state.LocalHost(), selectedPlayer, selected);
+
+                        selectedPlayer.networkPeer.peer.storedData.ban = BanStatus.Warning;
+
+                    }, behaviourType)));
+                content.newLine();
+            }
+        }
+        public void RequestBlock(LocalPlayer player, RichBoxContent content, RichMenu menu)
+        {
+            HudLib.returnButton(content, menu, true, null);
+            content.h1("Request block", HudLib.TitleColor_Head);
+            content.newLine();
+            selectedPlayer.addNetGamerToHud(content, true);
+            content.text("Will be sent to the host", HudLib.InfoYellow_Light);
+
+            content.newParagraph();
+
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Add to your own block list") },
+                Ref.netsett.alsoBlockOnRequestProperty));
+
+            for (BadBehaviourType behaviourType = 0; behaviourType < BadBehaviourType.NUM; behaviourType++)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbText(behaviourType.ToString())
+                    }, new RbAction1Arg<BadBehaviourType>((BadBehaviourType selected) =>
+                    {
+                        var w = Ref.netSession.BeginWritingPacket(PacketType.RequestPlayerBan, PacketReliability.Reliable, SendPacketTo.Host, 0, null);
+                        selectedPlayer.networkPeer.writeNetID(w);
+                        w.Write((byte)selected);
+
+                        DssRef.state.LocalHost().hud.messages.Add(new RichBoxContent()
+                        {
+                            new RbText("Request sent")
+                        });
+                    }, behaviourType)));
+                content.newLine();
+            }
+        }
+        public void Kick(LocalPlayer player, RichBoxContent content, RichMenu menu)
+        {
+            content.h1("Kick player", HudLib.TitleColor_Head);
+            selectedPlayer.addNetGamerToHud(content, false);
+
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbText(Ref.langOpt.Hud_OK)
+            }, new RbAction(() =>
+            {
+                ((PlayState)DssRef.state).KickPlayer(selectedPlayer.networkPeer.peer);
+                menu.menuBack();
+            })));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                new RbText(Ref.langOpt.Hud_Cancel)
+            }, new RbAction(() =>
+            {
+                menu.menuBack();
+            })));
+        }
+        public void Block(LocalPlayer player, RichBoxContent content, RichMenu menu)
+        {
+            content.h1("Block player", HudLib.TitleColor_Head);
+            selectedPlayer.addNetGamerToHud(content, false);
+
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbText(Ref.langOpt.Hud_OK)
+            }, new RbAction(() =>
+            {
+                ((PlayState)DssRef.state).BlockPlayer(selectedPlayer.networkPeer.peer);
+                menu.menuBack();
+            })));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                new RbText(Ref.langOpt.Hud_Cancel)
+            }, new RbAction(() =>
+            {
+                menu.menuBack();
+            })));
+        }
 
         public void overviewToHud(LocalPlayer player, RichBoxContent content)
         {
@@ -119,7 +226,7 @@ namespace VikingEngine.DSSWars.Interface
         }
 
 
-        public void clientToHud(LocalPlayer player, RichBoxContent content)
+        public void clientToHud(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
 
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
@@ -164,15 +271,41 @@ namespace VikingEngine.DSSWars.Interface
 
             //TITLE
             selectedPlayer.addNetGamerToHud(content, true);
-            //selectedPlayer.giftedAchievements.ToHud(content, player, this);
 
             selectedPlayer.addNetPingToHud(content);
 
-            //var diplomacy = player.GetOrCreateToPlayerDiplomacy(selected);
-            //diplomacy.
             content.newParagraph();
             DiplomacyDisplay diplomacyDisplay = new DiplomacyDisplay(player);
             diplomacyDisplay.toHud(content, selectedPlayer.faction, false);
+
+            content.newParagraph();
+            if (Ref.netSession.IsHost)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Send ban warning") },
+                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BANWARNING, StackOption.Stack)));
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Kick player") },
+                    new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_KICK, StackOption.Stack)));
+
+                content.newLine();
+                content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("Block player") },
+                    new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BLOCK, StackOption.Stack)));
+
+                
+            }
+            else
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Request block") },
+                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_REQUESTBLOCK, StackOption.Stack)));
+
+                //content.newLine();
+                //content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("Block player") },
+                //    new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BLOCK, StackOption.Stack), new RbTooltip_Text("")));
+            }
+
+            
+
 
         }
 

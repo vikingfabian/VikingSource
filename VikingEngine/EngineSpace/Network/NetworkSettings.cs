@@ -91,6 +91,7 @@ namespace VikingEngine.Network
         public PlayerToPlayerDiplomacy hostPtoP = new PlayerToPlayerDiplomacy(true);
         public RelationType startDiplomacy = RelationType.RelationType0_Neutral;
         public PlayerToPlayerDiplomacy clientPtoP = new PlayerToPlayerDiplomacy(false);
+        public bool fairProtection = true;
        
         /// <summary>
         /// Distance between players
@@ -105,9 +106,9 @@ namespace VikingEngine.Network
         public bool handicap_extraHonorGuards = false;
         public bool handicap_resourceBoost = false;
         public HandicapLevel handicap_taxIncome = HandicapLevel.Default;
+        public bool alsoBlockOnRequest = true;
 
-
-        StructList<StoredNetworkGamer> storedGamers = new StructList<StoredNetworkGamer>(8);
+        public StructList<StoredNetworkGamer> storedGamers = new StructList<StoredNetworkGamer>(8);
         
         public NetworkSettings()
         {
@@ -130,6 +131,7 @@ namespace VikingEngine.Network
             hostPtoP.write(w);
             w.Write((int)startDiplomacy);
             clientPtoP.write(w);
+            w.Write(fairProtection);
 
             w.Write(PlayerSpacing);
 
@@ -140,6 +142,15 @@ namespace VikingEngine.Network
             w.Write(handicap_extraHonorGuards);
             w.Write(handicap_resourceBoost);
             w.Write((byte)handicap_taxIncome);
+
+            Debug.WriteCheck(w);
+
+            w.Write(alsoBlockOnRequest);
+            w.Write((ushort)storedGamers.Count);
+            for (int i = 0; i < storedGamers.Count; i++)
+            {
+                storedGamers.array[i].write(w);
+            }
 
             Debug.WriteCheck(w);
         }
@@ -160,6 +171,7 @@ namespace VikingEngine.Network
             hostPtoP.read(r, storageVersion);
             startDiplomacy = (RelationType)r.ReadInt32();
             clientPtoP.read(r, storageVersion);
+            fairProtection = r.ReadBoolean();
 
             PlayerSpacing = r.ReadInt32();
 
@@ -172,8 +184,26 @@ namespace VikingEngine.Network
             handicap_taxIncome = (HandicapLevel)r.ReadByte();
 
             Debug.ReadCheck(r);
-        }
 
+            alsoBlockOnRequest = r.ReadBoolean();
+            int storedGamersCount = r.ReadUInt16();
+            storedGamers = new StructList<StoredNetworkGamer>(storedGamersCount + 8);
+            for (int i = 0; i < storedGamersCount; i++)
+            {
+                storedGamers.array[i].read(r, storageVersion);
+            }
+
+            Debug.ReadCheck(r);
+        }
+        public bool alsoBlockOnRequestProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                alsoBlockOnRequest = value;
+                settingsHasChanged = true;
+            }
+            return alsoBlockOnRequest;
+        }
         //public bool allowHandicap = true;
         //public bool useHandicap = false;
         //public HandicapLevel handicap_botAggression = HandicapLevel.Default;
@@ -226,6 +256,16 @@ namespace VikingEngine.Network
                 settingsHasChanged = true;
             }
             return !hostNetwork;
+        }
+
+        public bool fairProtectionProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                fairProtection = value;
+                settingsHasChanged = true;
+            }
+            return fairProtection;
         }
 
         public int MaxPlayerCountProperty(object tag, bool set, int value)
@@ -353,6 +393,14 @@ namespace VikingEngine.Network
             storedGamers.Add(gamer);
 
             return gamer;
+        }
+
+        public void setUpdatedStoredGamer(StoredNetworkGamer gamer)
+        {
+            if (storedGamers.array[gamer.index].id == gamer.id)
+            {
+                storedGamers.array[gamer.index] = gamer;
+            }
         }
 
         public string JoinPermissionString()

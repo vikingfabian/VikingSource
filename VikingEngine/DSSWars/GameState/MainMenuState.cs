@@ -514,6 +514,12 @@ namespace VikingEngine.DSSWars
                     networkSettingsMenu.refresh();
                     break;
             }
+
+            if (Ref.netsett.settingsHasChanged)
+            {
+                Ref.netsett.settingsHasChanged = false;
+                DssRef.storage.Save(null);
+            }
         }
 
         void beginEditPlayerName()

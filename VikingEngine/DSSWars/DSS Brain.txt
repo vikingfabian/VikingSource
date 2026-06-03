@@ -20,7 +20,10 @@ PERFORMANCE
 
 
 ##ICONS TODO
-* 
+* gray rounded button
+* gold frames
+* network icon
+
 
 #MOUNTED TODO
 * 

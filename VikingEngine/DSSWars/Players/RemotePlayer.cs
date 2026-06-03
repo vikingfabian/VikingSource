@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Players
         public bool newPlayer = true;
 
         public AbsPlayer previousPlayer;
+        public FactionType previousFactionType;
         public RemotePlayerPointer pointer;
         public GamerCommunicationSetting communicationSetting; //not implemented
 
@@ -70,6 +71,7 @@ namespace VikingEngine.DSSWars.Players
         public override void AssignFaction(Faction faction)
         {
             previousPlayer = faction.player;
+            previousFactionType = faction.factiontype;
             base.AssignFaction(faction);
             
         }
@@ -107,6 +109,10 @@ namespace VikingEngine.DSSWars.Players
         public override bool IsRemotePlayer()
         {
             return true;
+        }
+        public override RemotePlayer GetRemotePlayer()
+        {
+            return this;
         }
         public RbTexture FlagTextureToHud()
         {

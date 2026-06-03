@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Interface
     class PlayerHud_Object : IPlayerHud_Menu
     {
         List<GameObject.AbsGameObject> selectHistory = new List<AbsGameObject>();
-        NetSessionDisplay netSessionDisplay = new NetSessionDisplay();
+        public NetSessionDisplay netSessionDisplay = new NetSessionDisplay();
 
         public DiplomacyDisplay diplomacy;
         public RichMenu menu;
@@ -65,9 +65,28 @@ namespace VikingEngine.DSSWars.Interface
 
             var content = new RichBoxContent();
 
-            if (netSessionDisplay.ClientInteractDisplay)
+            if (menu.menuStack.Count > 0)
             {
-                netSessionDisplay.clientToHud(player, content);
+                switch (menu.menuStack.Last())
+                {
+                    case NetSessionDisplay.PAGE_BANWARNING:
+                        netSessionDisplay.BanWarning(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_REQUESTBLOCK:
+                        netSessionDisplay.RequestBlock(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_KICK:
+                        netSessionDisplay.Kick(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_BLOCK:
+                        netSessionDisplay.Block(player, content, menu);
+                        break;
+
+                }
+            }
+            else if (netSessionDisplay.ClientInteractDisplay)
+            {
+                netSessionDisplay.clientToHud(player, content, menu);
             }
             else
             {

@@ -9,10 +9,41 @@ using VikingEngine.DSSWars.Map;
 namespace VikingEngine.DSSWars.Players
 {
 
-    struct RemotePlayerHistory
+    struct PlayerMapHistory
     {
+        public bool local;
+        public int localScreenIndex;
         public ulong id;
         public int faction;
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(local);
+            w.Write((byte)localScreenIndex);
+            w.Write(id);
+            w.Write((ushort)faction);
+        }
+        public void read(System.IO.BinaryReader r, int subVersion)
+        {
+            local = r.ReadBoolean();
+            localScreenIndex = r.ReadByte();
+            id = r.ReadUInt64();
+            faction = r.ReadUInt16();
+        }
+
+        public override int GetHashCode()
+        {
+            return GetGamerHash(local, id, localScreenIndex);
+        }
+
+        public static int GetGamerHash(bool local, ulong peerid, int localScreenIndex)
+        {
+            if (local)
+            {
+                return localScreenIndex;
+            }
+            return HashCode.Combine(peerid, localScreenIndex);
+        }
     }
 
     partial class RemotePlayer
@@ -37,9 +68,9 @@ namespace VikingEngine.DSSWars.Players
             factionsRecieved = new bool[DssRef.world.factions.Count];
         }
 
-        public RemotePlayerHistory GetHistory()
+        public PlayerMapHistory GetMapHistory()
         {
-            return new RemotePlayerHistory()
+            return new PlayerMapHistory()
             {
                 id = networkPeer.peer.fullId,
                 faction = this.faction.myIndex,

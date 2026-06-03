@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.PlayerCharacter;
 using VikingEngine.LootFest.Players;
@@ -244,9 +245,10 @@ namespace VikingEngine.DSSWars
                                     {
                                         Faction faction = null;
 
-                                        if (previousRemotePlayers.TryGetValue(packet.sender.FullId, out var history))
+                                        var hash = PlayerMapHistory.GetGamerHash(false, packet.sender.fullId, packet.senderLocalIndex);
+                                        if (previousRemotePlayers.TryGetValue(hash, out var history))
                                         {
-                                            previousRemotePlayers.Remove(packet.sender.FullId);
+                                            previousRemotePlayers.Remove(hash);
                                             Faction prevFaction = DssRef.world.faction(history.faction);
                                             if (prevFaction != null &&
                                                 prevFaction.cities.Count > 0 &&
@@ -443,7 +445,40 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
+                case PacketType.WarnPlayer:
+                    {
+                        BadBehaviourType behaviourType = (BadBehaviourType)packet.r.ReadByte();
+                        BanWarning(LocalHost(), GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex), behaviourType);
+                    }
+                    break;
+                case PacketType.RequestPlayerBan:
+                    {
+                        var badActor = NetReadPlayer(packet.r);
+                        BadBehaviourType behaviourType = (BadBehaviourType)packet.r.ReadByte();
+
+                        if (badActor != null)
+                        {
+                            RichBoxContent content = new RichBoxContent();
+                            GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex).addNetGamerToHud(content, false);
+                            content.h1("Ban request", HudLib.TitleColor_Head);
+                            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, "Reason", behaviourType.ToString());
+                            HudLib.Label(content, "Bad actor");
+                            badActor.addNetGamerToHud(content, false);
+
+                            content.newLine();
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Accept") },
+                                new RbAction(() =>
+                                {
+                                    LocalHost().gameControls.clearSelection();
+                                    LocalHost().hud.objMenu.netSessionDisplay.selectedPlayer = badActor.GetRemotePlayer();
+                                    LocalHost().hud.objMenu.menu.OpenMenu(NetSessionDisplay.PAGE_BLOCK, HUD.RichMenu.StackOption.Stack);
+                                })));
+                        }
+                    }
+                    break;
             }
+
+           
 
             void readGroupStatus(bool bArmy)
             {
@@ -484,7 +519,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable,SendPacketTo.OneSpecific, packet.sender.fullId,  null);
+                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId,  null);
             }
             w.Write((byte)localPlayers.Count);
             foreach (var local in localPlayers)
@@ -609,8 +644,8 @@ namespace VikingEngine.DSSWars
 
                 player.DeleteMe();
 
-                var history = player.GetHistory();
-                arraylib.AddOrReplace(previousRemotePlayers, history.id, history);
+                var history = player.GetMapHistory();
+                arraylib.AddOrReplace(previousRemotePlayers, history.GetHashCode(), history);
                 remotePlayers.Remove(player);
 
                 RichBoxContent content = new RichBoxContent();
@@ -624,6 +659,8 @@ namespace VikingEngine.DSSWars
                 if (player.faction != null)
                 {
                     var aiPlayer = player.previousPlayer;
+                    player.faction.factiontype = player.previousFactionType;
+
                     if (aiPlayer != null)
                     {
                         aiPlayer.AssignFaction(player.faction);
@@ -696,6 +733,38 @@ namespace VikingEngine.DSSWars
             content.text(gift.description, HudLib.InfoYellow_Light);
 
             LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+        }
+
+        public void BanWarning(AbsHumanPlayer from, AbsHumanPlayer to, BadBehaviourType behaviourType)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+
+            from.addNetGamerToHud(content, false);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.cmdConvertArrow));
+            content.newLine();
+            to.addNetGamerToHud(content, false);
+
+            content.newParagraph();
+            content.h1(NetworkIcon, "Ban warning!", HudLib.TitleColor_Head2);
+            content.newLine();
+
+            content.text("Reason: " + behaviourType.ToString(), HudLib.InfoYellow_Light);
+
+            LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+        }
+
+        public void KickPlayer(AbsNetworkPeer networkPeer)
+        { 
+            Ref.netSession.kickFromNetwork(networkPeer);
+        }
+
+        public void BlockPlayer(AbsNetworkPeer networkPeer)
+        {
+            networkPeer.storedData.ban = BanStatus.Banned;
+            Ref.netSession.kickFromNetwork(networkPeer);
+
         }
     }
 }

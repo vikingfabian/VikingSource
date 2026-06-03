@@ -68,6 +68,7 @@ namespace VikingEngine.Network
         /// player class object
         /// </summary>
         public object Tag = null;
+        public StoredNetworkGamer storedData;
 
         public bool lowLoad()
         {

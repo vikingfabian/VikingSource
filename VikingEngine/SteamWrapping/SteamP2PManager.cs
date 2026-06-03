@@ -372,9 +372,14 @@ namespace VikingEngine.SteamWrapping
         {
             if (hostSession)
             {
+                var stored = Ref.netsett.getStoredGamer(peer.fullId);
+                stored.name = peer.Gamertag;
+                Ref.netsett.setUpdatedStoredGamer(stored);
+                peer.storedData = stored;
+
                 return Ref.netSession.joinableStatus &&
                     remoteGamers.Count <= Ref.netsett.maxPlayerCount &&
-                    Ref.netsett.getStoredGamer(peer.fullId).ban < BanStatus.Banned;// .bannedPeers.isBanned(peer) == false;
+                    stored.ban < BanStatus.Banned;// .bannedPeers.isBanned(peer) == false;
             }
             else
             {
@@ -413,6 +418,7 @@ namespace VikingEngine.SteamWrapping
                 var peer = remoteGamers[i];
                 if (peer.SteamID == steamId)
                 {
+                    Ref.netsett.setUpdatedStoredGamer(peer.storedData);
                     remoteGamers.RemoveAt(i);
                     Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
                     break;
@@ -694,6 +700,10 @@ namespace VikingEngine.SteamWrapping
 
         public void endSession()
         {
+            foreach (var gamer in remoteGamers)
+            {
+                Ref.netsett.setUpdatedStoredGamer(gamer.storedData);
+            }
             remoteGamers.Clear();            
             hostSession = false;
             Ref.steam.LobbyMatchmaker.RefreshLobbyVisibility();

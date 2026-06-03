@@ -304,7 +304,10 @@ namespace VikingEngine.DSSWars.Players
         {
             return null;
         }
-
+        virtual public RemotePlayer GetRemotePlayer()
+        {
+            return null;
+        }
         virtual public AbsHumanPlayer GetHumanPlayer()
         {
             return null;

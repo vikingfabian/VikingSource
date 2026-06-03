@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace VikingEngine.DSSWars
         bool slowMinuteUpdate = true;
         bool netMapUpdate = false;
 
-        public Dictionary<ulong, RemotePlayerHistory> previousRemotePlayers = new Dictionary<ulong, RemotePlayerHistory>();
+        public Dictionary<int, PlayerMapHistory> previousRemotePlayers = new Dictionary<int, PlayerMapHistory>();
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()
@@ -184,6 +185,21 @@ namespace VikingEngine.DSSWars
             events.writeGameState(w);
             SaveGamestate.MainProgress++;
             w.Write(NextArmyId);
+            SaveGamestate.MainProgress++;
+
+            var remoteStores = previousRemotePlayers.Values.ToList();
+            remotePlayersCounter.Reset();
+            while (remotePlayersCounter.Next())
+            {
+                remoteStores.Add( remotePlayersCounter.sel.GetMapHistory());
+            }
+
+            w.Write((ushort)remoteStores.Count);
+            foreach (var m in remoteStores)
+            { 
+                m.write(w);
+            }
+
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -197,6 +213,16 @@ namespace VikingEngine.DSSWars
             if (subversion >= 105)
             { 
                 NextArmyId = r.ReadInt32();
+            }
+            if (subversion >= 115)
+            {
+                int remoteStoresCount = r.ReadUInt16();
+                for (int i = 0; i < remoteStoresCount; i++)
+                {
+                    PlayerMapHistory mapHistory = new PlayerMapHistory();
+                    mapHistory.read(r, subversion);
+                    previousRemotePlayers.Add(mapHistory.GetHashCode(), mapHistory);
+                }
             }
         }
 

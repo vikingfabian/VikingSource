@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.Interface
         const string UnlockPublic_Sure = "net sett unlock public_sure";
         const string UnlockPvp = "net sett unlock pvp";
         const string UnlockPvp_Sure = "net sett unlock pvp_sure";
+        const string BlockList = "blocklist";
 
         static readonly RelationType[] DefaultRelationsOptions = { RelationType.RelationType0_Neutral, RelationType.RelationType3_Ally, RelationType.RelationTypeN3_War };
 
@@ -115,6 +116,34 @@ namespace VikingEngine.DSSWars.Interface
                         unlockMultiplayer_Sure(false);
                     }
                     break;
+                case BlockList:
+                    {
+                        int count = 0;
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, null);
+
+                        content.h1("Blocked players", HudLib.TitleColor_Head);
+
+                        for (int i  = 0; i  < Ref.netsett.storedGamers.Count; i ++)
+                        {
+                            if (Ref.netsett.storedGamers.array[i].ban == BanStatus.Banned)
+                            {
+                                count++;
+                                content.Add(new ArtButton(RbButtonStyle.Primary,
+                                    new List<AbsRichBoxMember> { new RbText(Ref.netsett.storedGamers.array[i].name) },
+                                    new RbAction1Arg<int>((int selected) =>
+                                    {
+                                        Ref.netsett.storedGamers.array[i].ban = BanStatus.None;
+                                    }, i), new RbTooltip_Text("Click: remove ban")));
+                            }
+                        }
+                        if (count == 0)
+                        {
+                            content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
+                        }
+                        menu.Refresh(content);
+                    }
+                    break;
             }
         }
         public void openmenu(string menuName, StackOption stack)
@@ -202,6 +231,11 @@ namespace VikingEngine.DSSWars.Interface
                 defDiplomacyOptions.Build(content, SpriteName.WarsDiplomaticPoint, "Default diplomacy", menu);
 
                 playerInteractSettings(content, true);
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                    new RbText("Blocked players") },
+                    new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
 
                 //"Join Permissions"}
                 content.Add(new RbSeperationLine());
@@ -294,7 +328,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.h2("Player interaction", HudLib.TitleColor_Label);
                 playerInteractSettings(content, false);
                 content.Add(new RbSeperationLine());
-
+                content.newParagraph();
 
                 content.h2("General", HudLib.TitleColor_Head2);
 
@@ -478,6 +512,13 @@ namespace VikingEngine.DSSWars.Interface
 
             if (toPlayerDiplomacy.warAllow == PlayerDiplomacyAllowType.Allow)
             {
+                if (!host)
+                {
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Fair protection") },
+                        Ref.netsett.warAllianceLimitProperty, new RbTooltip_Text("Protected players must use their rules on you")));
+                }
+
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Alliance limt") },
                     Ref.netsett.warAllianceLimitProperty, new RbTooltip_Text("Can't be attacked by a larger player alliance"))

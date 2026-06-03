@@ -147,6 +147,11 @@ namespace VikingEngine.DSSWars.GameState
 
                 if (closeMenuInput_AnyPlayer())
                 {
+                    if (Ref.netsett.settingsHasChanged)
+                    {
+                        Ref.netsett.settingsHasChanged = false;
+                        DssRef.storage.Save(null);
+                    }
                     menuSystem.closeMenu();
                 }
 

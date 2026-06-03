@@ -88,6 +88,17 @@ namespace VikingEngine.Network
         }
     }
 
+    enum BadBehaviourType
+    { 
+        Other,
+        Annoying,
+        BadLanguage,
+        BadSportmansship,
+        Cheating,
+        Unresponsive,
+        BadConnection,
+        NUM
+    }
     enum VoiceOption
     { 
         Off,
@@ -156,6 +167,10 @@ namespace VikingEngine.Network
 
         VoiceChat,
         TextChat,
+        KickPlayer,
+        WarnPlayer,
+        BlockPlayer,
+        RequestPlayerBan,
 
         Steam_AssignClientId,
         Steam_SuccesfulJoinPing,

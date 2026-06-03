@@ -107,6 +107,11 @@ namespace VikingEngine.DSSWars
             cities = new SpottedPointerArray(8);
             armies = new SpottedArray<Army>(16);
         }
+
+        public FactionType StoredFactionType()
+        {
+            return player != null && player.IsRemotePlayer() ? player.GetRemotePlayer().previousFactionType : factiontype;
+        }
         
         public bool displayInFullOverview()
         {
@@ -226,9 +231,17 @@ namespace VikingEngine.DSSWars
         }
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
-        {            
-            w.Write((ushort)factiontype);
-            player.writeGameState(w);
+        {
+            if (player.IsRemotePlayer())
+            {
+                w.Write((ushort)player.GetRemotePlayer().previousFactionType);
+                player.GetRemotePlayer().previousPlayer.writeGameState(w);
+            }
+            else
+            {
+                w.Write((ushort)factiontype);
+                player.writeGameState(w);
+            }            
 
             w.Write(money.copper);
             Debug.WriteCheck(w);
