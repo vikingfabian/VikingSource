@@ -33,8 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool inBattle = false;
         InBattleWith inBattleWith = new InBattleWith();
-
-        public MapObjectTag Tag = new MapObjectTag();
+                
 
         public void AddSoldierGroup(SoldierGroup group)
         {

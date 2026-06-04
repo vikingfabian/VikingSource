@@ -78,6 +78,8 @@ namespace VikingEngine.HUD.RichBox
                     return DSSWars.SoundLib.menuStart;
                 case RbSoundType.Stop:
                     return DSSWars.SoundLib.menuStop;
+                case RbSoundType.Ping:
+                    return DSSWars.SoundLib.menuPing;
             }
         }
     }
@@ -95,6 +97,7 @@ namespace VikingEngine.HUD.RichBox
         Paste,
         Start,
         Stop,
+        Ping,
         NUM_NONE
     }
 }

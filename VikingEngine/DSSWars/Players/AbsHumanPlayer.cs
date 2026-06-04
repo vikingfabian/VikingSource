@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,8 @@ namespace VikingEngine.DSSWars.Players
     {
         public NetworkInstancePeer networkPeer;
         public GiftedAchievementsPlayerCollection giftedAchievements = new GiftedAchievementsPlayerCollection();
-        protected SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
+        public SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
+        
 
         public AbsHumanPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
@@ -71,6 +73,9 @@ namespace VikingEngine.DSSWars.Players
                 pinsC.sel.writeGameState(w);
             }
         }
+
+       
+
         public void readPins(BinaryReader r, int subversion)
         {
             int pinsCount = r.ReadUInt16();

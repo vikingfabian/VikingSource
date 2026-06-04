@@ -14,15 +14,21 @@ namespace VikingEngine.DSSWars.GameObject
         ObjectName name = new ObjectName();
         Graphics.AbsVoxelObj overviewModel;
         BoundingSphere bound;
-        PingMessage pingMessage = PingMessage.None;
-        NetInteractLevel netInteractLevel = NetInteractLevel.Hidden;
+        public PingMessage pingMessage = PingMessage.None;
+        public NetInteractLevel netInteractLevel = NetInteractLevel.Hidden;
+        
+
+        public LocationPin(RemotePlayer player)
+        {
+            IsNetHosted = false;
+            factionIndex = player.faction.myIndex;
+        }
 
         public LocationPin(AbsHumanPlayer player, Vector3 position)
         { 
             this.position = position;
-            this.position.Y = WP.GroundY(position);
-            tilePos = WP.ToTilePos(position);
-            factionIndex= player.faction.myIndex;
+            
+            factionIndex = player.faction.myIndex;
             createOverViewModel();
             inRender_overviewLayer = true;          
         }
@@ -33,8 +39,12 @@ namespace VikingEngine.DSSWars.GameObject
             readGameState(r, subVersion);
         }
 
+
         public void basicInit()
         {
+            this.position.Y = WP.GroundY(position);
+            tilePos = WP.ToTilePos(position);
+
             bound = new BoundingSphere(position, 0.3f);
             name.setDefault("Pin " + myIndex.ToString());
         }
@@ -42,6 +52,16 @@ namespace VikingEngine.DSSWars.GameObject
         public void update()
         {
             updateDetailLevel();
+        }
+
+        public void Hide()
+        {
+            netInteractLevel = NetInteractLevel.Hidden;
+            if (overviewModel != null)
+            {
+                overviewModel.DeleteMe();
+                overviewModel = null;
+            }
         }
 
         public override void toHud(ObjectHudArgs args)
@@ -85,9 +105,15 @@ namespace VikingEngine.DSSWars.GameObject
                         if (netInteractLevel > NetInteractLevel.Hidden)
                         {
                             var w = Ref.netSession.BeginWritingPacket(PacketType.DssPing, PacketReliability.Reliable);
-
+                            w.Write((ushort)myIndex);
+                            writeGameState(w);
                         }
-                    }, level)));
+                        else
+                        {
+                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinHide, PacketReliability.Reliable);
+                            w.Write((ushort)myIndex);
+                        }
+                    }, level, RbSoundType.Ping)));
                 }
                 //for (NetInteractLevel level = 0; level < NetInteractLevel.NUM; level++)
                 //{ 
@@ -95,10 +121,14 @@ namespace VikingEngine.DSSWars.GameObject
                 //}
             }
             args.content.Add(new RbSeperationLine());
-            args.content.newLine();
+            args.content.newParagraph();
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
                new RbText(  DssRef.lang.Hud_Delete) }, new RbAction1Arg<int>(args.player.deletePin, myIndex)));
-               
+
+            args.content.newLine();
+            args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
+               new RbText(  ".Delete all") }, new RbAction(args.player.deletePins)));
+
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -111,7 +141,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        void readGameState(System.IO.BinaryReader r, int subVersion)
+        public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
             name.read(r, subVersion);
             
@@ -128,13 +158,21 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createOverViewModel()
         {
-            overviewModel?.DeleteMe();
+            var f = GetFaction();
+            if (f != null && Net_IsVisible())
+            {
+                overviewModel?.DeleteMe();
 
-            overviewModel = GetFaction().AutoLoadModelInstance(
-               LootFest.VoxelModelName.wars_flag, 1f, false);
-            overviewModel.AddToRender(DrawGame.MidLayer);
-            overviewModel.position = position;
-            
+                overviewModel = f.AutoLoadModelInstance(
+                   LootFest.VoxelModelName.wars_flag, 1f, false);
+                overviewModel.AddToRender(DrawGame.MidLayer);
+                overviewModel.position = position;
+            }
+        }
+
+        public bool Net_IsVisible()
+        {
+            return IsNetHosted || netInteractLevel != NetInteractLevel.Hidden;
         }
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
@@ -174,6 +212,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe(reason, removeFromParent);
             overviewModel?.DeleteMe();
+
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinDelete, PacketReliability.Reliable);
+            w.Write((ushort)myIndex);
         }
 
         override public bool rayCollision(Ray ray)

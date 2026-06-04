@@ -211,6 +211,9 @@ namespace VikingEngine.Network
         DssSoldierGroupStatus_Army,
         DssSoldierGroupStatus_City,
         DssPing,
+        DssPinUpdate,
+        DssPinDelete,
+        DssPinHide,
 
         DssWorldDiplomacy,
         DssDiplomacyRelation,

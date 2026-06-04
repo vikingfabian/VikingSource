@@ -70,6 +70,8 @@ namespace VikingEngine.DSSWars.Players
         /// Faction is key
         /// </summary>
         public Dictionary<int, PlayerToPlayerDiplomacy> toPlayerDiplomacies = new Dictionary<int, PlayerToPlayerDiplomacy>();
+        SpottedArrayCounter<LocationPin> netSharePinCounter;
+        
 
         public PlayerToPlayerDiplomacy GetOrCreateToPlayerDiplomacy(AbsHumanPlayer player)
         {
@@ -187,6 +189,7 @@ namespace VikingEngine.DSSWars.Players
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
             faction.addGold_factionWide(10000);
+            netSharePinCounter = new SpottedArrayCounter<LocationPin>(pins);
         }
 
         public bool battleMessageCheck(IntVector2 tilepos)
@@ -312,13 +315,40 @@ namespace VikingEngine.DSSWars.Players
 
         public void NetUpdate()
         {
-            //if (Ref.netSession.IsClient)
-            //{
-            var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
-            DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
+                DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
 
-            RemotePlayerPointer.netWrite(w, this);
-            //}
+                RemotePlayerPointer.netWrite(w, this);
+            }
+
+            if (pins.Count > 0)
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPinUpdate, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
+
+                if (!netSharePinCounter.HasMore())
+                { 
+                    netSharePinCounter.Reset();
+                }
+
+                int maxPins = 5;
+                while (netSharePinCounter.Next())
+                {
+                    if (netSharePinCounter.sel.netInteractLevel != Network.NetInteractLevel.Hidden)
+                    {
+                        w.Write((ushort)netSharePinCounter.CurrentIndex);
+                        netSharePinCounter.sel.writeGameState(w);
+
+                        if (--maxPins <= 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                //Mark end
+                w.Write(ushort.MaxValue);
+            }
         }
 
         public override void writeGameState(BinaryWriter w)
@@ -565,11 +595,11 @@ namespace VikingEngine.DSSWars.Players
 
         public void createPin()
         {
-#if DEBUG
+
             LocationPin pin = new LocationPin(this, gameControls.map.pointerPosWP);
             pin.myIndex = pins.Add(pin);
             pin.basicInit();
-#endif
+
         }
         public void clearPins()
         {
@@ -595,6 +625,16 @@ namespace VikingEngine.DSSWars.Players
 
             return null;
         }
+        public void deletePins()
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                pinsC.sel.DeleteMe(DeleteReason.Disband, false);
+            }
+            pins.Clear();
+        }
+
         public void deletePin(int index)
         {
             var pin = pins.PullIndex_Safe(index);
