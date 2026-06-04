@@ -667,8 +667,11 @@ namespace VikingEngine.DSSWars
         public static void Label(RichBoxContent content, SpriteName icon, string text)
         {
             content.newLine();
-            content.Add(new RbImage(icon));
-            content.space();
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RbImage(icon));
+                content.space();
+            }
             content.Add(new RbText(text + ":", TitleColor_Label));
         }
 

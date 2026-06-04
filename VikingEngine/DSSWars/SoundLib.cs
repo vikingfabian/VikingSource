@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars
             ordermove = new SoundContainerSingle(SoundDir + "ordermove");
             orderstop = new SoundContainerSingle(SoundDir + "orderstop");
             message_loud = new SoundContainerSingle(SoundDir + "chat_message", 0.75f);
-            message_loud = new SoundContainerSingle(SoundDir + "ping", 0.75f);
+            ping = new SoundContainerSingle(SoundDir + "ping", 0.75f);
             trophy = new SoundContainerSingle(SoundDir + "trophy", 0.2f);
 
             woodcut = new SoundContainerSingle(SoundDir + "woodcut", 0.4f, 0.2f);
