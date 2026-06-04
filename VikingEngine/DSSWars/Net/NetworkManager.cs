@@ -232,7 +232,7 @@ namespace VikingEngine.DSSWars
 
                             content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
                             content.newLine();
-                            player.addNetGamerToHud(content, false);
+                            player.addNetGamerToHud(content, true, false);
                             LocalHost().hud.messages.Add(content, SoundLib.netJoined);
 
 
@@ -403,7 +403,7 @@ namespace VikingEngine.DSSWars
                         string text = StreamLib.ReadString_safe(packet.r);
                         RichBoxContent content = new RichBoxContent();
 
-                        player.addNetGamerToHud(content, false);
+                        player.addNetGamerToHud(content, true, false);
                         content.icontext(SpriteName.LfChatBobbleIcon, text);
 
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
@@ -458,11 +458,11 @@ namespace VikingEngine.DSSWars
                         if (badActor != null)
                         {
                             RichBoxContent content = new RichBoxContent();
-                            GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex).addNetGamerToHud(content, false);
+                            GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex).addNetGamerToHud(content, true, false);
                             content.h1("Ban request", HudLib.TitleColor_Head);
                             HudLib.LabelAndText(content, SpriteName.NO_IMAGE, "Reason", behaviourType.ToString());
                             HudLib.Label(content, "Bad actor");
-                            badActor.addNetGamerToHud(content, false);
+                            badActor.addNetGamerToHud(content, true, false);
 
                             content.newLine();
                             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Accept") },
@@ -482,10 +482,16 @@ namespace VikingEngine.DSSWars
                         var pin = player.netReadPin(pinIndex, packet.r);
                         if (pin != null && pin.Net_IsVisible())
                         {
-                            RichBoxContent content = new RichBoxContent();
-                            content.h1("Ping!");
-                            content.text(pin.pingMessage.ToString());
+                            pin.setInRenderState();
 
+                            RichBoxContent content = new RichBoxContent();
+                            content.h1("Ping!", HudLib.TitleColor_Head);
+                            if (pin.pingMessage != PingMessage.None)
+                            {
+                                content.text(pin.pingMessage.ToString(), HudLib.InfoYellow_Light);
+                            }
+
+                            content.newParagraph();
                             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(pin.Name(out _)) },
                                 new RbAction1Arg<AbsGameObject>(LocalHost().hud.messages.goToMapObject, pin, RbSoundType.Default))
                             { fillWidth = true });
@@ -631,7 +637,7 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 HudLib.Label(content, peerIsSender ? "Sender" : "Reciever");
                 content.newLine();
-                player.addNetGamerToHud(content, false);
+                player.addNetGamerToHud(content, true, false);
             }
         }
         public override void NetEvent_ConnectionLost(string reason)
@@ -696,7 +702,7 @@ namespace VikingEngine.DSSWars
                 
                 content.newLine();
 
-                player.addNetGamerToHud(content, false);
+                player.addNetGamerToHud(content, true, false);
 
                 if (player.faction != null)
                 {
@@ -760,11 +766,11 @@ namespace VikingEngine.DSSWars
             RichBoxContent content = new RichBoxContent();
 
             
-            from.addNetGamerToHud(content, false);
+            from.addNetGamerToHud(content, true, false);
             content.hspace();
             content.Add(new RbImage(SpriteName.cmdConvertArrow));
             content.newLine();
-            to.addNetGamerToHud(content, false);
+            to.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
             content.h1(NetworkIcon, "Gifted achievement", HudLib.TitleColor_Head2);
@@ -782,11 +788,11 @@ namespace VikingEngine.DSSWars
             RichBoxContent content = new RichBoxContent();
 
 
-            from.addNetGamerToHud(content, false);
+            from.addNetGamerToHud(content, true, false);
             content.hspace();
             content.Add(new RbImage(SpriteName.cmdConvertArrow));
             content.newLine();
-            to.addNetGamerToHud(content, false);
+            to.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
             content.h1(NetworkIcon, "Ban warning!", HudLib.TitleColor_Head2);

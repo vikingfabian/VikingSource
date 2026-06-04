@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        abstract protected void setInRenderState();
+        abstract public void setInRenderState();
 
         //virtual public void ExitBattleGroup()
         //{

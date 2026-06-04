@@ -45,11 +45,12 @@ namespace VikingEngine.DSSWars.Players
         {
             base.Update();
             pointer.Update(playerView);
+            updatePlayer();
         }
 
-        public override void addNetGamerToHud(RichBoxContent content, bool addStatus)
+        public override void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
         {
-            base.addNetGamerToHud(content, addStatus);
+            base.addNetGamerToHud(content, factionBanner, addStatus);
             if (addStatus && pointer.statusIcon != SpriteName.NO_IMAGE)
             {
                 content.space();
@@ -90,7 +91,7 @@ namespace VikingEngine.DSSWars.Players
 
         public LocationPin netReadPin(int index, BinaryReader r)
         {
-            if (index == ushort.MaxValue)
+            if (index == ushort.MaxValue || faction == null)
             {
                 return null;
             }
@@ -162,7 +163,8 @@ namespace VikingEngine.DSSWars.Players
         public override bool IsLocal => false;
 
         public void DeleteMe()
-        { 
+        {
+            clearPins(DeleteReason.LostHost);
             pointer.DeleteMe();
         }
     }

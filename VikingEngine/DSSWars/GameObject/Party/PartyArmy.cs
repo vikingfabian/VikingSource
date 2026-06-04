@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.Party
             restBarModel.position.Y += 1;
         }
 
-        protected override void setInRenderState()
+        public override void setInRenderState()
         {
             base.setInRenderState();
 

@@ -294,7 +294,10 @@ namespace VikingEngine.DSSWars.Interface
 
         public void goToMapObject(AbsGameObject obj)
         {
-            player.gameControls.map.selection.obj = obj;
+            if (obj.factionIndex == player.faction.myIndex)
+            {
+                player.gameControls.map.selection.obj = obj;
+            }
             player.gameControls.map.cameraFocus = obj;
             player.hud.needRefresh = true;
         }

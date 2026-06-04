@@ -270,9 +270,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void toHud(Interface.ObjectHudArgs args)
         {
+            var faction = GetFaction();
+
             nameToHud(args.content, true);
             args.content.Add(new RbBeginTitle());
-            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.Add(faction.FlagTextureToHud());
             TypeIcon(args.content);
             args.content.Add(new RbText(TypeName()));
 
@@ -280,14 +282,21 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (PlatformSettings.DevBuild)
                 {
-                    args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
+                    args.content.text("agg " + faction.player.aggressionLevel.ToString());
                 }
-                if (GetFaction() != args.player.faction)
+                if (faction != args.player.faction)
                 {
-                    var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, GetFaction()).Relation;
+                    var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
 
                     args.content.newLine();
-                    args.content.Add(new RbText(GetFaction().PlayerName, Color.LightYellow));
+                    if (faction.player.IsRemotePlayer())
+                    {
+                        faction.player.GetRemotePlayer().addNetGamerToHud(args.content, false, false);
+                    }
+                    else
+                    {
+                        args.content.Add(new RbText(faction.PlayerName, Color.LightYellow));
+                    }
                     args.content.newLine();
                     IconName.Relation(relation, out SpriteName relIcon, out string relName);
                     args.content.Add(new RbImage(relIcon));

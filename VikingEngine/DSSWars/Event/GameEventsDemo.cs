@@ -93,12 +93,12 @@ namespace VikingEngine.DSSWars.Event
 #if DEBUG
                         1);
 #else
-                15 * TimeExt.MinuteInSeconds);//2.
+                        15 * TimeExt.MinuteInSeconds);//2.
 #endif
                     }, 20);//1.
 
 
-                    DssRef.state.LocalHost().clearPins();
+                    DssRef.state.LocalHost().clearPins( DeleteReason.Disband);
 
 
                     var mission = new RichBoxContent();

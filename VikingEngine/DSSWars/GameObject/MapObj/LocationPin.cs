@@ -42,11 +42,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void basicInit()
         {
-            this.position.Y = WP.GroundY(position);
+            
             tilePos = WP.ToTilePos(position);
 
-            bound = new BoundingSphere(position, 0.3f);
+            
             name.setDefault("Pin " + myIndex.ToString());
+
+            inRender_overviewLayer = false;
         }
 
         public void update()
@@ -113,7 +115,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinHide, PacketReliability.Reliable);
                             w.Write((ushort)myIndex);
                         }
-                    }, level, RbSoundType.Ping)));
+                    }, level, level == NetInteractLevel.Hidden? RbSoundType.Back : RbSoundType.Ping)));
                 }
                 //for (NetInteractLevel level = 0; level < NetInteractLevel.NUM; level++)
                 //{ 
@@ -127,8 +129,24 @@ namespace VikingEngine.DSSWars.GameObject
 
             args.content.newLine();
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
-               new RbText(  ".Delete all") }, new RbAction(args.player.deletePins)));
+               new RbText(  ".Delete all") }, new RbAction1Arg<DeleteReason>(args.player.clearPins, DeleteReason.Disband)));
 
+        }
+
+        public override void toTooltip(ObjectHudArgs args)
+        {
+            base.toTooltip(args);
+            var remote = GetFaction()?.player.GetRemotePlayer();
+            if (remote != null)
+            {
+                args.content.newLine();
+                remote.addNetGamerToHud(args.content, true, false);
+            }
+
+            if (pingMessage != PingMessage.None)
+            {
+                args.content.text(pingMessage.ToString(), HudLib.InfoYellow_Light);
+            }
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -156,11 +174,15 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void createOverViewModel()
+        public void createOverViewModel()
         {
             var f = GetFaction();
             if (f != null && Net_IsVisible())
             {
+                tilePos = WP.ToTilePos(position);
+                this.position.Y = DssRef.world.tileGrid.Get(tilePos).ModelGroundY() + 0.05f;
+                bound = new BoundingSphere(position, 0.3f);
+
                 overviewModel?.DeleteMe();
 
                 overviewModel = f.AutoLoadModelInstance(
@@ -186,10 +208,10 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    lib.DoNothing();
             //}
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, GetPlayer().GetLocalPlayer().playerData.localPlayerIndex);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, IsNetHosted ? GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
         }
 
-        protected override void setInRenderState()
+        public override void setInRenderState()
         {
             if (inRender_overviewLayer)
             {
@@ -213,13 +235,16 @@ namespace VikingEngine.DSSWars.GameObject
             base.DeleteMe(reason, removeFromParent);
             overviewModel?.DeleteMe();
 
-            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinDelete, PacketReliability.Reliable);
-            w.Write((ushort)myIndex);
+            if (reason != DeleteReason.LostHost)
+            {
+                var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinDelete, PacketReliability.Reliable);
+                w.Write((ushort)myIndex);
+            }
         }
 
         override public bool rayCollision(Ray ray)
         {
-            if (inRender_overviewLayer)
+            if (overviewModel != null)
             {
                 float? distance = ray.Intersects(bound);
                 return distance.HasValue;
@@ -276,6 +301,7 @@ namespace VikingEngine.DSSWars.GameObject
         GoHere,
         Attack, 
         Defend, 
+        Help,
         Delivery, 
         
         NUM

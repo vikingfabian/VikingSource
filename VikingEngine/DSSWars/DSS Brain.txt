@@ -1,7 +1,7 @@
 
 ## MULTIPLAYER UPDATE ##
 * 64 player online multiplayer
-* press "P" to add location ping
+* press "P" to add a location pin
 * Remade the player join map algo
 
 GIFTED ACHIEVEMENTS
@@ -26,7 +26,9 @@ PERFORMANCE
 * gray rounded button
 * gold frames
 * network icon
+* pin
 
+* pin model
 
 #MOUNTED TODO
 * 

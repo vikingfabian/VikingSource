@@ -109,5 +109,6 @@ namespace VikingEngine.DSSWars.GameObject
         CameraCulling,
 
         NetworkEvent,
+        LostHost,
     }
 }

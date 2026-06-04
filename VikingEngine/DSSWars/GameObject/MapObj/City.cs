@@ -2287,7 +2287,7 @@ namespace VikingEngine.DSSWars.GameObject
             //detailObj.asynchNearObjectsUpdate();
         }
 
-        protected override void setInRenderState()
+        public override void setInRenderState()
         {
             if (inRender_overviewLayer)
             {
