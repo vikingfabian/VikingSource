@@ -1544,7 +1544,7 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
 
-            if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+            if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.gameRuleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));

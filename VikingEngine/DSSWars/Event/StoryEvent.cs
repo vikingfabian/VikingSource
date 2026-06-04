@@ -419,6 +419,12 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
+            IntervalF time = new IntervalF(1.2f, 2.4f) * TimeExt.HourInMinutes;
+            if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+            {
+                time += 1.5f * TimeExt.HourInMinutes;
+            }
+
             init(
                 triggerTimeSpan_Minutes: new IntervalF(1.2f, 2.4f) * TimeExt.HourInMinutes,
                 nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 1f, DssConst.HeadCityStartMaxWorkForce * 2f));

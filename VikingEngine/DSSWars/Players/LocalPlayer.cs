@@ -29,6 +29,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.Commander.LevelSetup;
@@ -499,7 +500,7 @@ namespace VikingEngine.DSSWars.Players
             if ((newGame || PlatformSettings.STEAM_DEMO) &&
                 DssRef.storage.runTutorial &&
                 DssRef.state.PlayType() == PlayStateType.Play &&
-                Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+                Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.gameRuleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
                 tutorial = new PlayerControls.Tutorial(this);
             }
@@ -1692,25 +1693,11 @@ namespace VikingEngine.DSSWars.Players
 
                 if (DssRef.difficulty.resourcesStartHelp)
                 {
-                    //Task.Factory.StartNew(() =>
-                    //{
-                    //    try
-                    //    {
-                            //var citiesC = faction.cities.counter();
-                            //while (citiesC.Next())
-                            //{
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
                         citySel.checkPlayerFuelAccess_OnGamestart_async();
                     }
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        BlueScreen.ThreadException = ex;
-                    //    }
-
-                    //});
                 }
             }
 
@@ -1719,14 +1706,20 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (newGame)
                 {
-
-                    //faction.mainCity.tagBack = CityTagBack.Carton;
-                    //faction.mainCity.tagArt = TagArt.IconFaction;
                     faction.mainCity.Tag = new MapObjectTag(CityTagBack.Carton, MapObjectTag.Tag_Faction);
 
                     if (profile.casualControls)
                     {
                         faction.mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
+                    }
+
+                    if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                    {   
+                        for (int i = 0; i < CityResoureIndex.COUNT; i++)
+                        {
+                            ref GroupedResource resources = ref faction.mainCity.GetRefGroupedResource(i);
+                            resources.hardSetLimit(100);
+                        }
                     }
                 }
 
