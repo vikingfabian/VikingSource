@@ -292,10 +292,10 @@ namespace VikingEngine.DSSWars.Interface
             add(content);
         }
 
-        public void goToMapObject(AbsGameObject city)
+        public void goToMapObject(AbsGameObject obj)
         {
-            player.gameControls.map.selection.obj = city;
-            player.gameControls.map.cameraFocus = city;
+            player.gameControls.map.selection.obj = obj;
+            player.gameControls.map.cameraFocus = obj;
             player.hud.needRefresh = true;
         }
 

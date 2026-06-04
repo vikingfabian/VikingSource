@@ -39,6 +39,8 @@ namespace VikingEngine.DSSWars.GameObject
         public Money money = new Money(0);
         public bool IsNetHosted = true;
 
+        public MapObjectTag Tag = new MapObjectTag();
+
         public AbsMapObject()
         {
             

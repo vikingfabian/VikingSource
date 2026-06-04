@@ -127,6 +127,15 @@ namespace VikingEngine.Network
     //    NUM,
     //}
 
+    enum NetInteractLevel
+    { 
+        Hidden,
+        OnePlayer,
+        Team,
+        Public,
+        NUM
+    }
+
     enum LobbyPublicity
     {
         Private = 0,
@@ -201,7 +210,11 @@ namespace VikingEngine.Network
         DssArmyStatus,
         DssSoldierGroupStatus_Army,
         DssSoldierGroupStatus_City,
-        
+        DssPing,
+        DssPinUpdate,
+        DssPinDelete,
+        DssPinHide,
+
         DssWorldDiplomacy,
         DssDiplomacyRelation,
         DssPlayerToPlayerRelation,

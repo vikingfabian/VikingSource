@@ -1711,6 +1711,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/pig.wav
 
+#begin DSS/Sound/ping.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ping.wav
+
 #begin DSS/Sound/player_enters.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

@@ -186,11 +186,13 @@ namespace VikingEngine.DSSWars
 
         public override void NetworkReadPacket(ReceivedPacket packet)
         {
+            var player = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex) as RemotePlayer;
+
             switch (packet.type)
             {
                 case PacketType.DssJoined_WantWorld:
                     {
-                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId,  null);
+                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
                         var meta = new SaveStateMeta();
                         meta.netSetup();
                         var saveGamestate = new SaveGamestate(meta);
@@ -200,7 +202,6 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssPlayerStatus:
                     {
-                        var player = GetRemotePlayer(packet);
                         if (player != null)
                         {
                             player.Net_readStatus(packet.r);
@@ -219,7 +220,6 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssPlayerEnterPresentation:
                     {
 
-                        var player = GetOrCreateRemotePlayer(packet.sender, 0);
                         int count = packet.r.ReadByte();
 
                         if (player.profile.flag == null)
@@ -307,10 +307,10 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssAssignFaction:
                     {
-                        var player = NetReadPlayer(packet.r);
+                        var tplayer = NetReadPlayer(packet.r);
                         int factionIx = packet.r.ReadUInt16();
                         var faction = DssRef.world.faction(factionIx);
-                        player.AssignFaction(faction);
+                        tplayer.AssignFaction(faction);
                     }
                     break;
                 case PacketType.DssAssignFactionCities:
@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssSetCityFaction:
                     City.NetReadSetFaction(packet.r);
                     break;
-                
+
                 case PacketType.DssArmyStatus:
                     Army.NetReadArmy(packet.r);
                     break;
@@ -401,8 +401,7 @@ namespace VikingEngine.DSSWars
                     {
                         string text = StreamLib.ReadString_safe(packet.r);
                         RichBoxContent content = new RichBoxContent();
-                        var player = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex);
-                        
+
                         player.addNetGamerToHud(content, false);
                         content.icontext(SpriteName.LfChatBobbleIcon, text);
 
@@ -439,7 +438,7 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssDeleteArmy:
                     if (ObjectId.NetReadMapObjId(packet.r, out _, true, false, out var army, out _))
-                    { 
+                    {
                         army.DeleteMe(DeleteReason.NetworkEvent, true);
                     }
                     break;
@@ -477,8 +476,51 @@ namespace VikingEngine.DSSWars
                         }
                     }
                     break;
-            }
 
+                case PacketType.DssPing:
+                    {
+                        int pinIndex = packet.r.ReadUInt16();
+                        var pin = player.netReadPin(pinIndex, packet.r);
+                        if (pin != null && pin.Net_IsVisible())
+                        {
+                            RichBoxContent content = new RichBoxContent();
+                            content.h1("Ping!");
+                            content.text(pin.pingMessage.ToString());
+
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(pin.Name(out _)) },
+                                new RbAction1Arg<AbsGameObject>(LocalHost().hud.messages.goToMapObject, pin, RbSoundType.Default))
+                            { fillWidth = true });
+
+                            LocalHost().hud.messages.Add(content, SoundLib.message_loud);
+                        }
+                    }
+                    break;
+
+                case PacketType.DssPinUpdate:
+                    {
+                        LocationPin pin;
+                        do
+                        {
+                            int pinIndex = packet.r.ReadUInt16();
+                            pin = player.netReadPin(pinIndex, packet.r);
+
+                        } while (pin != null);
+                    }
+                    break;
+
+                case PacketType.DssPinHide:
+                    {
+                        int pinIndex = packet.r.ReadUInt16();
+                        player.pins.GetIndex_Safe(pinIndex)?.Hide();
+                    }
+                    break;
+                case PacketType.DssPinDelete:
+                    {
+                        int pinIndex = packet.r.ReadUInt16();
+                        player.pins.GetIndex_Safe(pinIndex)?.DeleteMe(DeleteReason.NetworkEvent, true);
+                    }
+                    break;
+            }
            
 
             void readGroupStatus(bool bArmy)

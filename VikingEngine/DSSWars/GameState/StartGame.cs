@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars
             {
                 // new game
 
-                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode) == false)
+                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.gameRuleset.factionStartSize) == false)
                 {
                     DssRef.storage.runTutorial = false;
                 }

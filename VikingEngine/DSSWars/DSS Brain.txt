@@ -1,5 +1,7 @@
 
 ## MULTIPLAYER UPDATE ##
+* 64 player online multiplayer
+* press "P" to add location ping
 * Remade the player join map algo
 
 GIFTED ACHIEVEMENTS
@@ -13,6 +15,7 @@ x new steam input
 
 ﻿UPDATE
 Change Log:
+* 
 
 PERFORMANCE
 * Path finding is using 1D arrays

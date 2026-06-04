@@ -5,6 +5,7 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -13,24 +14,37 @@ namespace VikingEngine.DSSWars.GameObject
         ObjectName name = new ObjectName();
         Graphics.AbsVoxelObj overviewModel;
         BoundingSphere bound;
+        public PingMessage pingMessage = PingMessage.None;
+        public NetInteractLevel netInteractLevel = NetInteractLevel.Hidden;
+        
 
-        public LocationPin(LocalPlayer player, Vector3 position)
+        public LocationPin(RemotePlayer player)
+        {
+            IsNetHosted = false;
+            factionIndex = player.faction.myIndex;
+        }
+
+        public LocationPin(AbsHumanPlayer player, Vector3 position)
         { 
             this.position = position;
-            tilePos = WP.ToTilePos(position);
-            factionIndex= player.faction.myIndex;
+            
+            factionIndex = player.faction.myIndex;
             createOverViewModel();
             inRender_overviewLayer = true;          
         }
 
-        public LocationPin(LocalPlayer player, System.IO.BinaryReader r, int subVersion)
+        public LocationPin(AbsHumanPlayer player, System.IO.BinaryReader r, int subVersion)
         {
             factionIndex = player.faction.myIndex;
             readGameState(r, subVersion);
         }
 
+
         public void basicInit()
         {
+            this.position.Y = WP.GroundY(position);
+            tilePos = WP.ToTilePos(position);
+
             bound = new BoundingSphere(position, 0.3f);
             name.setDefault("Pin " + myIndex.ToString());
         }
@@ -40,50 +54,132 @@ namespace VikingEngine.DSSWars.GameObject
             updateDetailLevel();
         }
 
+        public void Hide()
+        {
+            netInteractLevel = NetInteractLevel.Hidden;
+            if (overviewModel != null)
+            {
+                overviewModel.DeleteMe();
+                overviewModel = null;
+            }
+        }
+
         public override void toHud(ObjectHudArgs args)
         {
             base.toHud(args);
-            
+
+            args.content.newParagraph();
+            HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Message");
             args.content.newLine();
+            for (PingMessage message = 0; message < PingMessage.NUM; message++)
+            {
+                args.content.Add(new ArtOption(message == pingMessage, new System.Collections.Generic.List<AbsRichBoxMember> { new RbText(message.ToString()) },
+                    new RbAction1Arg<PingMessage>((PingMessage selected) =>
+                    {
+                        pingMessage = selected;
+                    }, message)));
+            }
+
+            if (Ref.netSession.InMultiplayerSession)
+            {
+                args.content.newParagraph();
+                HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Share and ping");
+                args.content.newLine();
+
+                if (netInteractLevel == NetInteractLevel.Hidden)
+                {
+                    interactLevelButton("Team", NetInteractLevel.Team);
+                    interactLevelButton("Everyone", NetInteractLevel.Public);
+                }
+                else
+                {
+                    interactLevelButton("Hide", NetInteractLevel.Hidden);
+                }
+
+                void interactLevelButton(string label, NetInteractLevel level)
+                {
+                    args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>
+                    {  new RbText(label)}, new RbAction1Arg<NetInteractLevel>((NetInteractLevel selected) =>
+                    {
+                        netInteractLevel = selected;
+                        if (netInteractLevel > NetInteractLevel.Hidden)
+                        {
+                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPing, PacketReliability.Reliable);
+                            w.Write((ushort)myIndex);
+                            writeGameState(w);
+                        }
+                        else
+                        {
+                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinHide, PacketReliability.Reliable);
+                            w.Write((ushort)myIndex);
+                        }
+                    }, level, RbSoundType.Ping)));
+                }
+                //for (NetInteractLevel level = 0; level < NetInteractLevel.NUM; level++)
+                //{ 
+                    
+                //}
+            }
+            args.content.Add(new RbSeperationLine());
+            args.content.newParagraph();
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
                new RbText(  DssRef.lang.Hud_Delete) }, new RbAction1Arg<int>(args.player.deletePin, myIndex)));
-               
+
+            args.content.newLine();
+            args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
+               new RbText(  ".Delete all") }, new RbAction(args.player.deletePins)));
+
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
             name.write(w);
             WP.WritePosXZPercentU16(w, position);
+            //v115
+            new TwoHalfByte((byte)pingMessage, (byte)netInteractLevel).write(w);
+
         }
 
 
-        void readGameState(System.IO.BinaryReader r, int subVersion)
+        public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
             name.read(r, subVersion);
-            //if (!name.custom)
-            //{
-            //    name.name = Data.NameGenerator.ArmyName(id);
-            //}
+            
+            WP.ReadPosXZPercentU16(r, out position, out tilePos);
 
-            if (subVersion < 62)
+            if (subVersion >= 115)
             {
-                WP.readPosXZ_old(r, out position, out tilePos);
-            }
-            else
-            {
-                WP.ReadPosXZPercentU16(r, out position, out tilePos);
+                var hbytes = new TwoHalfByte();
+                hbytes.read(r);
+                pingMessage = (PingMessage) hbytes.Value1;
+                netInteractLevel = (NetInteractLevel)hbytes.Value2;
             }
         }
 
         void createOverViewModel()
         {
-            overviewModel?.DeleteMe();
+            var f = GetFaction();
+            if (f != null && Net_IsVisible())
+            {
+                overviewModel?.DeleteMe();
 
-            overviewModel = GetFaction().AutoLoadModelInstance(
-               LootFest.VoxelModelName.wars_flag, 1f, false);
-            overviewModel.AddToRender(DrawGame.MidLayer);
-            overviewModel.position = position;
+                overviewModel = f.AutoLoadModelInstance(
+                   LootFest.VoxelModelName.wars_flag, 1f, false);
+                overviewModel.AddToRender(DrawGame.MidLayer);
+                overviewModel.position = position;
+            }
         }
+
+        public bool Net_IsVisible()
+        {
+            return IsNetHosted || netInteractLevel != NetInteractLevel.Hidden;
+        }
+
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
+        {
+            selection.groupModels_terrian.OneFrameModel(position, new Vector3( 0.6f), hover, false);
+        }
+
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
             //if (inRender_detailLayer)
@@ -116,6 +212,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe(reason, removeFromParent);
             overviewModel?.DeleteMe();
+
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinDelete, PacketReliability.Reliable);
+            w.Write((ushort)myIndex);
         }
 
         override public bool rayCollision(Ray ray)
@@ -168,5 +267,17 @@ namespace VikingEngine.DSSWars.GameObject
             mayEdit = true;
             return name.name;
         }
+    }
+
+    enum PingMessage
+    {
+        None,
+        Look,
+        GoHere,
+        Attack, 
+        Defend, 
+        Delivery, 
+        
+        NUM
     }
 }

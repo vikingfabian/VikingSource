@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
             copy, paste, start, stop,
             select_army, select_city, select_faction,
-            ordermove, orderstop, message_loud, trophy,
+            ordermove, orderstop, message_loud, ping, trophy,
             woodcut, tree_falling, breaking, scythe, drop_item, pickaxe, 
             
             hen, pig,
@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars
         public static SoundContainerBase[] WalkSounds;
         public static SoundContainerBase[] AnimalNoises;
 
-        public static RbSoundProfile menu, menuHover, menuOption, menuOptionDeselect, menutab, menuExpand, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop;
+        public static RbSoundProfile menu, menuHover, menuOption, menuOptionDeselect, menutab, menuExpand, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop, menuPing;
 
         public static RbSoundAction buttonHoverAction, tabHoverAction;
 
@@ -79,6 +79,7 @@ namespace VikingEngine.DSSWars
             ordermove = new SoundContainerSingle(SoundDir + "ordermove");
             orderstop = new SoundContainerSingle(SoundDir + "orderstop");
             message_loud = new SoundContainerSingle(SoundDir + "chat_message", 0.75f);
+            message_loud = new SoundContainerSingle(SoundDir + "ping", 0.75f);
             trophy = new SoundContainerSingle(SoundDir + "trophy", 0.2f);
 
             woodcut = new SoundContainerSingle(SoundDir + "woodcut", 0.4f, 0.2f);
@@ -198,7 +199,7 @@ namespace VikingEngine.DSSWars
             menuPaste = new RbSoundProfile(paste);
             menuStart = new RbSoundProfile(start);
             menuStop = new RbSoundProfile(stop);
-
+            menuPing = new RbSoundProfile(ping);
 
             WalkSounds = new SoundContainerBase[] {
                 footstep,

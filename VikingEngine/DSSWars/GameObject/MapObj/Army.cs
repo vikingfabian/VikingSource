@@ -692,12 +692,6 @@ namespace VikingEngine.DSSWars.GameObject
             selectionFramePlacement(out var pos, out var scale);
 
             selection.groupModels_terrian.OneFrameModel(pos, scale, hover, false);
-
-            //selection.frameModel.Position = pos;
-            //selection.frameModel.Scale = scale;
-
-            //selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectCircleDotted : LoadedMesh.SelectCircleSolid;
-            //frameModel.SetSpriteName(hover ? SpriteName.LittleUnitSelectionDotted : SpriteName.WhiteCirkle);
         }
 
         public void selectionFramePlacement(out Vector3 pos, out Vector3 scale)
