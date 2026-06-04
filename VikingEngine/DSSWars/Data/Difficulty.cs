@@ -127,8 +127,13 @@ namespace VikingEngine.DSSWars.Data
             return setting_gameMode == GameModeMainType.Spectator;
         }
 
-        public static bool ModeSupportsTutorial(GameModeMainType gameMode)
+        public static bool ModeSupportsTutorial(GameModeMainType gameMode, FactionStartSize startSize)
         {
+            if (startSize == FactionStartSize.Settler)
+            {
+                return false;
+            }
+
             switch (gameMode)
             {
                 case GameModeMainType.Spectator:

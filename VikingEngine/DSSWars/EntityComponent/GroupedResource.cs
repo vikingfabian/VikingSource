@@ -69,6 +69,12 @@ namespace VikingEngine.DSSWars.EntityComponent
             }
         }
 
+        public void hardSetLimit(int limit)
+        {
+            useStockLimit = true;
+            stockPileLimit = limit;
+        }
+
         public void clearFactionOverView()
         {
             amount = 0;
