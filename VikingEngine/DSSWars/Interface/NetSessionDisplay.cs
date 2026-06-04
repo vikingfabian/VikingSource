@@ -63,6 +63,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Add to your own block list") },
                 Ref.netsett.alsoBlockOnRequestProperty));
 
+            content.newParagraph();
             for (BadBehaviourType behaviourType = 0; behaviourType < BadBehaviourType.NUM; behaviourType++)
             {
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -72,11 +73,19 @@ namespace VikingEngine.DSSWars.Interface
                         var w = Ref.netSession.BeginWritingPacket(PacketType.RequestPlayerBan, PacketReliability.Reliable, SendPacketTo.Host, 0, null);
                         selectedPlayer.networkPeer.writeNetID(w);
                         w.Write((byte)selected);
+                        if (Ref.netsett.alsoBlockOnRequest)
+                        {
+                            selectedPlayer.networkPeer.peer.storedData.ban = BanStatus.Banned;
+                            Ref.netsett.setUpdatedStoredGamer(selectedPlayer.networkPeer.peer.storedData);
+                        }
 
                         DssRef.state.LocalHost().hud.messages.Add(new RichBoxContent()
                         {
                             new RbText("Request sent")
                         });
+
+                        menu.menuBack();
+
                     }, behaviourType)));
                 content.newLine();
             }
@@ -278,6 +287,7 @@ namespace VikingEngine.DSSWars.Interface
             DiplomacyDisplay diplomacyDisplay = new DiplomacyDisplay(player);
             diplomacyDisplay.toHud(content, selectedPlayer.faction, false);
 
+            content.Add(new RbSeperationLine());
             content.newParagraph();
             if (Ref.netSession.IsHost)
             {

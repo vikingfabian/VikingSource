@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.Players
         public Vector3 ShaderThemeColor = ThemeMid_Yellow;
         public float opposingSizePerc = 0;
 
-        SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
+        
 
         List<MessagePosition> battleMessages = new List<MessagePosition>(8);
         public bool isDropInPlayer = false;
@@ -364,13 +364,8 @@ namespace VikingEngine.DSSWars.Players
             w.Write(barbarianKiller);
             w.Write((ushort)factionsTerminated);
 
-
-            w.Write((ushort)pins.Count);
-            var pinsC = pins.counter();
-            while (pinsC.Next())
-            {
-                pinsC.sel.writeGameState(w);
-            }
+            writePins(w);
+            
 
             storedCameraPos.writeGameState(w);
 
@@ -474,13 +469,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (subversion > 53)
             {
-                int pinsCount = r.ReadUInt16();
-                for (int i = 0; i < pinsCount; ++i)
-                {
-                    LocationPin pin = new LocationPin(this, r, subversion);
-                    pin.myIndex = pins.Add(pin);
-                    pin.basicInit();
-                }
+                readPins(r, subversion);
             }
 
             if (subversion >= 66)
