@@ -186,7 +186,7 @@ namespace VikingEngine.DSSWars
 
         public override void NetworkReadPacket(ReceivedPacket packet)
         {
-            var player = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex) as RemotePlayer;
+            var sender = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex) as RemotePlayer;
 
             switch (packet.type)
             {
@@ -202,15 +202,15 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssPlayerStatus:
                     {
-                        if (player != null)
+                        if (sender != null)
                         {
-                            player.Net_readStatus(packet.r);
-                            player.pointer.netRead(packet.r);
+                            sender.Net_readStatus(packet.r);
+                            sender.pointer.netRead(packet.r);
 
-                            if (player.newPlayer)
+                            if (sender.newPlayer)
                             {
                                 //Present yourself
-                                player.newPlayer = false;
+                                sender.newPlayer = false;
                                 netPresentYourself(packet);
                             }
                         }
@@ -222,17 +222,17 @@ namespace VikingEngine.DSSWars
 
                         int count = packet.r.ReadByte();
 
-                        if (player.profile.flag == null)
+                        if (sender.profile.flag == null)
                         {
-                            player.profile.flag = new FlagAndColor(packet.r);
-                            player.flagTexture = player.profile.flag.flagDesign.CreateTexture(player.profile.flag);
+                            sender.profile.flag = new FlagAndColor(packet.r);
+                            sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
                             //DssRef.world.BordersUpdated = true;
 
                             RichBoxContent content = new RichBoxContent();
 
                             content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
                             content.newLine();
-                            player.addNetGamerToHud(content, true, false);
+                            sender.addNetGamerToHud(content, true, false);
                             LocalHost().hud.messages.Add(content, SoundLib.netJoined);
 
 
@@ -244,6 +244,7 @@ namespace VikingEngine.DSSWars
                                     try
                                     {
                                         Faction faction = null;
+                                        bool firstEnterSetup = false; 
 
                                         var hash = PlayerMapHistory.GetGamerHash(false, packet.sender.fullId, packet.senderLocalIndex);
                                         if (previousRemotePlayers.TryGetValue(hash, out var history))
@@ -261,6 +262,7 @@ namespace VikingEngine.DSSWars
 
                                         if (faction == null)
                                         {
+                                            firstEnterSetup = true;
                                             faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
                                         }
 
@@ -268,8 +270,12 @@ namespace VikingEngine.DSSWars
                                         {
                                             Ref.update.AddSyncAction(new SyncAction(() =>
                                             {
-                                                AbsHumanPlayer remote = GetOrCreateRemotePlayer(packet.sender, 0);
-                                                remote.AssignFaction(faction);
+                                                //AbsHumanPlayer remote = GetOrCreateRemotePlayer(packet.sender, 0);
+                                                sender.AssignFaction(faction);
+                                                if (firstEnterSetup)
+                                                {
+                                                    sender.FirstEnterSetup();
+                                                }
 
                                                 Ref.steam.P2PManager.OnSendingLargeDataChunk();
 
@@ -280,7 +286,7 @@ namespace VikingEngine.DSSWars
                                                 }
                                                 {
                                                     var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
-                                                    NetWritePlayer(w, remote);
+                                                    NetWritePlayer(w, sender);
                                                     w.Write((ushort)faction.myIndex);
                                                 }
 
@@ -402,7 +408,7 @@ namespace VikingEngine.DSSWars
                         string text = StreamLib.ReadString_safe(packet.r);
                         RichBoxContent content = new RichBoxContent();
 
-                        player.addNetGamerToHud(content, true, false);
+                        sender.addNetGamerToHud(content, true, false);
                         content.icontext(SpriteName.LfChatBobbleIcon, text);
 
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
@@ -417,7 +423,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssPlayerToPlayerRelation:
-                    new DiplomacyDisplay(LocalHost()).netReadP2pRelation(packet.r, GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex));
+                    new DiplomacyDisplay(LocalHost()).netReadP2pRelation(packet.r, sender);
                     break;
 
                 case PacketType.DssEnterBattle:
@@ -446,7 +452,7 @@ namespace VikingEngine.DSSWars
                 case PacketType.WarnPlayer:
                     {
                         BadBehaviourType behaviourType = (BadBehaviourType)packet.r.ReadByte();
-                        BanWarning(LocalHost(), GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex), behaviourType);
+                        BanWarning(LocalHost(), sender, behaviourType);
                     }
                     break;
                 case PacketType.RequestPlayerBan:
@@ -457,7 +463,7 @@ namespace VikingEngine.DSSWars
                         if (badActor != null)
                         {
                             RichBoxContent content = new RichBoxContent();
-                            GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex).addNetGamerToHud(content, true, false);
+                            sender.addNetGamerToHud(content, true, false);
                             content.h1("Ban request", HudLib.TitleColor_Head);
                             HudLib.LabelAndText(content, SpriteName.NO_IMAGE, "Reason", behaviourType.ToString());
                             HudLib.Label(content, "Bad actor");
@@ -480,7 +486,7 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssPing:
                     {
                         int pinIndex = packet.r.ReadUInt16();
-                        var pin = player.netReadPin(pinIndex, packet.r);
+                        var pin = sender.netReadPin(pinIndex, packet.r);
                         if (pin != null && pin.Net_IsVisible())
                         {
                             pin.setInRenderState();
@@ -508,7 +514,7 @@ namespace VikingEngine.DSSWars
                         do
                         {
                             int pinIndex = packet.r.ReadUInt16();
-                            pin = player.netReadPin(pinIndex, packet.r);
+                            pin = sender.netReadPin(pinIndex, packet.r);
 
                         } while (pin != null);
                     }
@@ -517,13 +523,13 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssPinHide:
                     {
                         int pinIndex = packet.r.ReadUInt16();
-                        player.pins.GetIndex_Safe(pinIndex)?.Hide();
+                        sender.pins.GetIndex_Safe(pinIndex)?.Hide();
                     }
                     break;
                 case PacketType.DssPinDelete:
                     {
                         int pinIndex = packet.r.ReadUInt16();
-                        player.pins.GetIndex_Safe(pinIndex)?.DeleteMe(DeleteReason.NetworkEvent, true);
+                        sender.pins.GetIndex_Safe(pinIndex)?.DeleteMe(DeleteReason.NetworkEvent, true);
                     }
                     break;
             }

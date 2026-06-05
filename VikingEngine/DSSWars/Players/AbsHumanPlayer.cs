@@ -31,6 +31,11 @@ namespace VikingEngine.DSSWars.Players
             : base()
         { }
 
+        protected void startingResources()
+        {
+            faction.addGold_factionWide(DssRef.difficulty.PlayerBonusGold);
+        }
+
         virtual public void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
         {
             //content.Add(new RbBeginTitle(2));
@@ -158,6 +163,67 @@ namespace VikingEngine.DSSWars.Players
             //faction.displayInFullOverview = true;
             base.AssignFaction(faction);
            
+        }
+
+        protected void playerStartUnits(double unitCountMulti, bool settlerGuard)
+        {
+            if (faction.cities.Count > 0)
+            {
+                if (quickMatchUnits(false))
+                {
+                    return;
+                }
+                if (settlerGuard)
+                {
+                    settlerGuardUnits();
+                    return;
+                }
+
+                int startStrength = (int)faction.militaryStrength;
+
+
+                IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
+                var mainArmy = faction.NewArmy(onTile);
+                mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_SpecializeTradition);
+
+                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+                {
+                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+                }
+
+                if (DssRef.difficulty.honorGuard)
+                {
+                    int guardCount = MathExt.MultiplyInt(12, unitCountMulti) - startStrength;
+
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+                    {
+                        if (citySel != faction.mainCity)
+                        {
+                            onTile = citySel.ArmySpawnTilePos();
+                            var army = faction.NewArmy(onTile);
+                            for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
+                            {
+                                new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
+                                --guardCount;
+                            }
+
+                            army.setAsStartArmy();
+                            if (guardCount <= 3)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < guardCount; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+                    }
+                }
+
+                mainArmy.setAsStartArmy();
+            }
         }
 
         override public AbsHumanPlayer GetHumanPlayer()

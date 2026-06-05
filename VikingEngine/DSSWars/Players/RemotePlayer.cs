@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
+using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.ToggEngine.Display2D;
 
 namespace VikingEngine.DSSWars.Players
@@ -47,6 +48,21 @@ namespace VikingEngine.DSSWars.Players
             base.Update();
             pointer.Update(playerView);
             updatePlayer();
+        }
+
+        public void FirstEnterSetup()
+        {            
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            {
+                citySel.money.copper = Math.Max(citySel.money.copper, Resource.Money.GoldToCopper * 100);
+            }
+
+            startingResources();
+
+            ((PlayState)DssRef.state).startingArmySizes(out double unitCountMulti, out bool settlerGuard);
+
+            playerStartUnits(unitCountMulti, settlerGuard);
         }
 
         public override void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)

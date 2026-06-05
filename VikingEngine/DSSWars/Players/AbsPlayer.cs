@@ -272,7 +272,7 @@ namespace VikingEngine.DSSWars.Players
             IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
             Army mainArmy = faction.NewArmy(onTile);
 
-            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+            if (IsHumanPlayer() && DssRef.difficulty.honorGuard)
             {
                 new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
             }

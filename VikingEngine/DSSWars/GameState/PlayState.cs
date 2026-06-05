@@ -459,21 +459,7 @@ namespace VikingEngine.DSSWars
         {
             if (StartupSettings.SpawnStartingArmies)
             {
-                double unitCountMulti = 1;
-                bool settlerGuard = false;
-
-                switch (DssRef.storage.gameRuleset.factionStartSize)
-                {
-                    case FactionStartSize.OneCity:
-                        unitCountMulti = 0.4;
-                        settlerGuard = DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch;
-                        break;
-                    case FactionStartSize.Settler:
-                        unitCountMulti = 0.25;
-                        settlerGuard = true;
-                        break;
-
-                }
+                startingArmySizes(out double unitCountMulti, out bool settlerGuard);
 
                 var factionsCounter = DssRef.world.factions.counter();
                 while (factionsCounter.Next())
@@ -485,9 +471,29 @@ namespace VikingEngine.DSSWars
                     factionsCounter.sel.player.createStartUnits(unitCountMulti, settlerGuard);
                 }
             }
+
+           
         }
 
-        
+        public void startingArmySizes(out double unitCountMulti, out bool settlerGuard)
+        {
+            unitCountMulti = 1;
+            settlerGuard = false;
+            switch (DssRef.storage.gameRuleset.factionStartSize)
+            {
+                case FactionStartSize.OneCity:
+                    unitCountMulti = 0.4;
+                    settlerGuard = DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch;
+                    break;
+                case FactionStartSize.Settler:
+                    unitCountMulti = 0.25;
+                    settlerGuard = true;
+                    break;
+
+            }
+        }
+
+
         public override void Time_Update(float time)
         {
             base.Time_Update(time);

@@ -181,16 +181,21 @@ namespace VikingEngine.DSSWars.Players
            : base(faction, newGame)
         {
             baseInit();
-            faction.addGold_factionWide(DssRef.difficulty.PlayerBonusGold);
+            if (newGame)
+            {
+                startingResources();
 
+            }
             setPlayerFaction(faction);
 
             faction.technology = new XP.TechnologyTemplate();
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
-            faction.addGold_factionWide(10000);
+            //faction.addGold_factionWide(10000);
             netSharePinCounter = new SpottedArrayCounter<LocationPin>(pins);
         }
+
+        
 
         public bool battleMessageCheck(IntVector2 tilepos)
         {
@@ -599,70 +604,68 @@ namespace VikingEngine.DSSWars.Players
 
         public void createPin()
         {
-
             LocationPin pin = new LocationPin(this, gameControls.map.pointerPosWP);
             pin.myIndex = pins.Add(pin);
             pin.basicInit();
-
-        }
-        
+        }        
 
         public override void createStartUnits(double unitCountMulti, bool settlerGuard)
         {
-            if (faction.cities.Count > 0)
-            {
-                if (quickMatchUnits(false))
-                {
-                    return;
-                }
-                if (settlerGuard)
-                {
-                    settlerGuardUnits();
-                    return;
-                }
+            playerStartUnits(unitCountMulti, settlerGuard);
+            //if (faction.cities.Count > 0)
+            //{
+            //    if (quickMatchUnits(false))
+            //    {
+            //        return;
+            //    }
+            //    if (settlerGuard)
+            //    {
+            //        settlerGuardUnits();
+            //        return;
+            //    }
 
-                IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
-                var mainArmy = faction.NewArmy(onTile);
-                mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_SpecializeTradition);
+            //    IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
+            //    var mainArmy = faction.NewArmy(onTile);
+            //    mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_SpecializeTradition);
                 
-                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
-                {
-                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
-                }
+            //    for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+            //    {
+            //        new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+            //    }
 
-                if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
-                {
-                    int guardCount = MathExt.MultiplyInt(12, unitCountMulti);
+            //    if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+            //    {
+            //        int guardCount = MathExt.MultiplyInt(12, unitCountMulti);
 
-                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
-                    {
-                        if (citySel != faction.mainCity)
-                        {
-                            onTile = citySel.ArmySpawnTilePos();
-                            var army = faction.NewArmy(onTile);
-                            for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
-                            {
-                                new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
-                                --guardCount;
-                            }
+            //        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            //        while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            //        {
+            //            if (citySel != faction.mainCity)
+            //            {
+            //                onTile = citySel.ArmySpawnTilePos();
+            //                var army = faction.NewArmy(onTile);
+            //                for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
+            //                {
+            //                    new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
+            //                    --guardCount;
+            //                }
 
-                            army.setAsStartArmy();
-                            if (guardCount <= 3)
-                            {
-                                break;
-                            }
-                        }
-                    }
+            //                army.setAsStartArmy();
+            //                if (guardCount <= 3)
+            //                {
+            //                    break;
+            //                }
+            //            }
+            //        }
 
-                    for (int i = 0; i < guardCount; ++i)
-                    {
-                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
-                    }
-                }
+            //        for (int i = 0; i < guardCount; ++i)
+            //        {
+            //            new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+            //        }
+            //    }
 
-                mainArmy.setAsStartArmy();
-            }
+            //    mainArmy.setAsStartArmy();
+            //}
         }
 
         void refreshNeihgborAggression()
