@@ -359,6 +359,11 @@ namespace VikingEngine.DSSWars
                                 city.IsNetHosted = hosted;
                             }
                         }
+
+                        RichBoxContent content = new RichBoxContent();
+                        content.icontext(NetworkIcon, "Handover complete");
+                        Debug.Log("Read handover complete");
+                        LocalHost().hud.messages.Add(content);
                     }
                     break;
                 case PacketType.DssWorldTiles:
@@ -645,6 +650,8 @@ namespace VikingEngine.DSSWars
                 HudLib.Label(content, peerIsSender ? "Sender" : "Reciever");
                 content.newLine();
                 player.addNetGamerToHud(content, true, false);
+
+                LocalHost().hud.messages.Add(content);
             }
         }
         public override void NetEvent_ConnectionLost(string reason)

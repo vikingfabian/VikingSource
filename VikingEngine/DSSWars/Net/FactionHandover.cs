@@ -61,6 +61,7 @@ namespace VikingEngine.DSSWars.Net
                 }
                 else if (largeWriter.TimeOut)
                 { //Cancel the handover
+                    
                     Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", peer, false);
                     part = HandoverPart.DONE;
                     return false;
@@ -149,7 +150,7 @@ namespace VikingEngine.DSSWars.Net
                         {
                             city.IsNetHosted = false;
                         }
-
+                        Debug.Log("Write handover complete");
                         var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFactionComplete, PacketReliability.Reliable, out var packet);
                         w.Write((ushort)faction.myIndex);
                         packet.EndWrite_Asynch();

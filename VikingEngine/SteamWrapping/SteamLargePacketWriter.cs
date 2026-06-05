@@ -58,7 +58,7 @@ namespace VikingEngine.SteamWrapping
 
         public void sendNext()
         {
-            Debug.Log($"Send large {nextPacketIndex}/{packetCount}");
+            Debug.Log($"Send large {nextPacketIndex + 1}/{packetCount} {largePacketType}");
 
             Task.Factory.StartNew(() =>
             {
@@ -96,7 +96,7 @@ namespace VikingEngine.SteamWrapping
                 nextPacketIndex = packet.r.ReadUInt16();
                 packetCount = packet.r.ReadUInt16();
 
-                Debug.Log($"Recieve large {nextPacketIndex}/{packetCount}");
+                Debug.Log($"Recieve large {nextPacketIndex + 1}/{packetCount} {largePacketType}");
 
                 fileComplete = file.ReadPartialDataToMemory(packet.r);
 
