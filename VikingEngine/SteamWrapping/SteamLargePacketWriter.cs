@@ -31,8 +31,8 @@ namespace VikingEngine.SteamWrapping
         public bool TimeOut => sendTime.secPassed(2);
 
         public SteamLargePacketWriter(DataStream.MemoryStreamHandler file, SendPacketTo To, ulong SpecificGamerID, PacketType type)
-            :base(PacketReliability.Reliable, false, To, SpecificGamerID)
         {
+            init(PacketReliability.Reliable, false, To, SpecificGamerID);
             this.largePacketType = type;
             this.file = file;
             id = Ref.rnd.Int();
@@ -75,15 +75,15 @@ namespace VikingEngine.SteamWrapping
             });
         }
 
-        public override void Time_Update(float time)
-        {
-            //Not used
-            base.Time_Update(time);
-            if (writerPos >= file.memoryLength)
-            {
-                Ref.netSession.largePackets.Remove(id);
-            }
-        }
+        //public override void Time_Update(float time)
+        //{
+        //    //Not used
+        //    base.Time_Update(time);
+        //    if (writerPos >= file.memoryLength)
+        //    {
+        //        Ref.netSession.largePackets.Remove(id);
+        //    }
+        //}
 
         public void readNext(Network.ReceivedPacket packet)
         {

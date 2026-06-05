@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Interface
             HudLib.returnButton(content, menu, true, null);
             content.h1("Send ban warning", HudLib.TitleColor_Head);
             content.newLine();
-            selectedPlayer.addNetGamerToHud(content, true);
+            selectedPlayer.addNetGamerToHud(content, true, true);
 
             content.newParagraph();
             for (BadBehaviourType behaviourType = 0; behaviourType < BadBehaviourType.NUM; behaviourType++)
@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Interface
             HudLib.returnButton(content, menu, true, null);
             content.h1("Request block", HudLib.TitleColor_Head);
             content.newLine();
-            selectedPlayer.addNetGamerToHud(content, true);
+            selectedPlayer.addNetGamerToHud(content, true, true);
             content.text("Will be sent to the host", HudLib.InfoYellow_Light);
 
             content.newParagraph();
@@ -93,8 +93,7 @@ namespace VikingEngine.DSSWars.Interface
         public void Kick(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             content.h1("Kick player", HudLib.TitleColor_Head);
-            content.newLine();
-            selectedPlayer.addNetGamerToHud(content, false);
+            selectedPlayer.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -116,8 +115,7 @@ namespace VikingEngine.DSSWars.Interface
         public void Block(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             content.h1("Block player", HudLib.TitleColor_Head);
-            content.newLine();
-            selectedPlayer.addNetGamerToHud(content, false);
+            selectedPlayer.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -176,7 +174,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
 
                 RichBoxContent buttonContent = new RichBoxContent();
-                gamer.addNetGamerToHud(buttonContent, true);
+                gamer.addNetGamerToHud(buttonContent, true, true);
 
                 content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
                     (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
@@ -281,7 +279,7 @@ namespace VikingEngine.DSSWars.Interface
             content.newLine();
 
             //TITLE
-            selectedPlayer.addNetGamerToHud(content, true);
+            selectedPlayer.addNetGamerToHud(content, true, true);
 
             selectedPlayer.addNetPingToHud(content);
 

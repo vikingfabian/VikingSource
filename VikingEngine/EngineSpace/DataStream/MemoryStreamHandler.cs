@@ -24,6 +24,11 @@ namespace VikingEngine.DataStream
             SetByteArray(data);
         }
 
+        public void Clear()
+        { 
+            s.SetLength(0);
+        }
+
         public void readToMemory(System.IO.BinaryReader r)
         {
             int dataLength = (int)(r.BaseStream.Length - r.BaseStream.Position);
@@ -40,8 +45,21 @@ namespace VikingEngine.DataStream
 
         public System.IO.BinaryWriter GetWriter()
         {
-            s = new System.IO.MemoryStream();
-            w = new System.IO.BinaryWriter(s);
+            if (w == null)
+            {
+                s = new System.IO.MemoryStream();
+                w = new System.IO.BinaryWriter(s);
+            }
+            return w;
+        }
+
+        public System.IO.BinaryWriter GetWriter(int capacity)
+        {
+            if (w == null)
+            {
+                s = new System.IO.MemoryStream(capacity);
+                w = new System.IO.BinaryWriter(s);
+            }
             return w;
         }
 
@@ -72,12 +90,13 @@ namespace VikingEngine.DataStream
             w.Write(s.ToArray());
         }
 
-        public byte[] ByteArray()
+        public byte[] ByteArray(out long length)
         {
-            return s.ToArray();
+            length = s.Length;
+            return s.GetBuffer();//s.ToArray();
         }
 
-        public byte[] ByteArraySaveData { get { return ByteArray(); } set { SetByteArray(value); } }
+        public byte[] ByteArraySaveData { get { return s.ToArray(); } set { SetByteArray(value); } }
 
         public void SetByteArray(byte[] data)
         {

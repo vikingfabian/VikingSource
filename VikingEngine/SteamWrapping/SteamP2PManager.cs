@@ -1,5 +1,6 @@
 ﻿#if PCGAME
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,9 +42,8 @@ namespace VikingEngine.SteamWrapping
         public Time disconnectTime = 0;
 
         Time heavyTrafficPause = Time.Zero;
-        //HSteamListenSocket m_listenSocket;
-        //HSteamNetConnection connection;
 
+                
 
         public SteamP2PManager()
         {
@@ -61,6 +61,8 @@ namespace VikingEngine.SteamWrapping
             //    Debug.Log("P2P Listen Socket created successfully!");
             //}
         }
+
+        
 
         public void OnSendingLargeDataChunk()
         {
@@ -126,6 +128,8 @@ namespace VikingEngine.SteamWrapping
 
         public void update()
         {
+            
+
             if (disconnectTime.CountDown())
             {
                 heavyTrafficPause.CountDown();
@@ -555,10 +559,10 @@ namespace VikingEngine.SteamWrapping
         }
 
 
-        public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, CSteamID specificGamerID)
+        public void Send(byte[] data, uint dataLength, VikingEngine.Network.PacketReliability rely, SendPacketTo to, CSteamID specificGamerID)
         {
 #if DEBUG
-            if (data.Length > SteamPackageByteLimit)
+            if (dataLength > SteamPackageByteLimit)
             {
                 var packet = (PacketType)data[1];
                 throw new Exception("Passed steam package limit: " + packet);
@@ -603,7 +607,7 @@ namespace VikingEngine.SteamWrapping
             void send(AbsNetworkPeer peer)
             {
                 peer.packetLoad += load;
-                SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
+                SteamNetworking.SendP2PPacket(peer.SteamID, data, dataLength, sendType, 0);
             }
 
         }

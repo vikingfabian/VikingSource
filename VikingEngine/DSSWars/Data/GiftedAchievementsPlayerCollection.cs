@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Data
                 if (p != null)
                 {
                     content.newLine();
-                    p.addNetGamerToHud(content, false);
+                    p.addNetGamerToHud(content, true, false);
                     content.hspace();
                     content.Add(new RbImage(SpriteName.cmdConvertArrow));
                 }

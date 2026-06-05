@@ -173,7 +173,7 @@ namespace VikingEngine.DSSWars.Net
                 }
                 mapObj = army;
 #if DEBUG
-                Debug.Log($"NET read army ({army.myIndex}), faction ({faction.PlayerName}), army count: {faction.armies.Count}");
+                //Debug.Log($"NET read army ({army.myIndex}), faction ({faction.PlayerName}), army count: {faction.armies.Count}");
 #endif
             }
             else

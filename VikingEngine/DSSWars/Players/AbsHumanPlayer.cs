@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
@@ -30,7 +31,7 @@ namespace VikingEngine.DSSWars.Players
             : base()
         { }
 
-        virtual public void addNetGamerToHud(RichBoxContent content, bool addStatus)
+        virtual public void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
         {
             //content.Add(new RbBeginTitle(2));
 
@@ -43,7 +44,7 @@ namespace VikingEngine.DSSWars.Players
                     content.space();
                 }
             }
-            else
+            else if (factionBanner)
             {
                 content.Add(faction.FlagTextureToHud());
                 content.space();
@@ -62,6 +63,38 @@ namespace VikingEngine.DSSWars.Players
 
                 
             }
+        }
+
+        public void updatePlayer()
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                pinsC.sel.update();
+            }
+        }
+
+        virtual public void asynchCullingUpdate(float time, bool bStateA)
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                pinsC.sel.asynchCullingUpdate(time, bStateA);
+            }
+        }
+
+        public LocationPin rayCollisionWithPin(Ray ray)
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                if (pinsC.sel.rayCollision(ray))
+                {
+                    return pinsC.sel;
+                }
+            }
+
+            return null;
         }
 
         protected void writePins(BinaryWriter w)
@@ -86,6 +119,38 @@ namespace VikingEngine.DSSWars.Players
                 pin.basicInit();
             }
         }
+
+        public void clearPins(DeleteReason reason)
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                pinsC.sel.DeleteMe(reason, false);
+            }
+
+            pins.Clear();
+        }
+
+        public LocationPin getPin(string name)
+        {
+            var pinsC = pins.counter();
+            while (pinsC.Next())
+            {
+                if (pinsC.sel.Name(out _) == name)
+                {
+                    return pinsC.sel;
+                }
+            }
+
+            return null;
+        }
+
+        public void deletePin(int index)
+        {
+            var pin = pins.PullIndex_Safe(index);
+            pin?.DeleteMe(DeleteReason.Disband, false);
+        }
+
         override public void AssignFaction(Faction faction)
         {
             

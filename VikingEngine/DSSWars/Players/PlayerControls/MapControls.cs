@@ -595,6 +595,33 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        LocationPin intersectPin()
+        {
+            LocationPin result = null;
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                result = p.rayCollisionWithPin(ray);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            var remoteC = DssRef.state.remotePlayers.counter();
+            while (remoteC.Next())
+            {
+                result = remoteC.sel.rayCollisionWithPin(ray);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            
+
+            return result;
+        }
+
         void mouseHoverUpdate()
         {
 
@@ -602,7 +629,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 AbsMapObject intersectObj = null;
 
-                intersectObj = player.rayCollisionWithPin(ray);
+                intersectObj = intersectPin();//player.rayCollisionWithPin(ray);
 
                 if (intersectObj != null)
                 {

@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
+
         public void write(System.IO.BinaryWriter w)
         {
             StreamLib.WriteString(w, custom ? name : null);

@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                 StreamLib.WriteString(w, result);
 
                 RichBoxContent content = new RichBoxContent();
-                DssRef.state.LocalHost().addNetGamerToHud(content, false);
+                DssRef.state.LocalHost().addNetGamerToHud(content, true, false);
                 content.icontext(SpriteName.LfChatBobbleIcon, result);
                 DssRef.state.LocalHost().hud.messages.Add(content, null);
             }

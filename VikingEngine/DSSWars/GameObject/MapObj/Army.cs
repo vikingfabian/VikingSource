@@ -949,7 +949,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        protected override void setInRenderState()
+        public override void setInRenderState()
         {              
             if (inRender_overviewLayer)
             {
