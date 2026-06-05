@@ -13,7 +13,7 @@ namespace VikingEngine.SteamWrapping
 
         public SendPacketTo To;
         public ulong SpecificGamerID;
-
+        PacketType storedtype;
         public SteamWriter()
         { }
 
@@ -46,6 +46,7 @@ namespace VikingEngine.SteamWrapping
 
         public System.IO.BinaryWriter writeHead(PacketType type, int? sender)
         {
+            storedtype = type;
             byte senderout = sender == null ? byte.MinValue : (byte)sender.Value;
 
             System.IO.BinaryWriter w = this.GetWriter(SteamP2PManager.SteamPackageByteLimit);
@@ -68,9 +69,16 @@ namespace VikingEngine.SteamWrapping
         public void send()
         {
             if (Ref.steam.isNetworkInitialized)
-            {
+            {  
                 Ref.steam.P2PManager.Send(this.ByteArray(out long length), (uint)length, relyability, To, new Steamworks.CSteamID(SpecificGamerID));
+              
             }
+#if DEBUG
+            else if (memoryLength > SteamP2PManager.SteamPackageByteLimit)
+            {
+                throw new Exception("Passed steam package limit: " + storedtype.ToString());
+            }
+#endif
         }
 
         //public UpdateType UpdateType { get { return VikingEngine.UpdateType.OneTimeTrigger; } }
