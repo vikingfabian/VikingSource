@@ -4062,7 +4062,13 @@ namespace VikingEngine.DSSWars.GameObject
                     EditSubTile.OntileChange(tilePos);
                 }
 
-                OnNewOwner(newFaction, convert || duringStartup);                
+                OnNewOwner(newFaction, convert || duringStartup);
+
+                if (IsNetHosted && !newFaction.IsNetHosted())
+                {
+                    //City handover
+                    NetWriteHandoverPacket(newFaction.HostingPeer(), this);
+                }
             }
 
             if (netShare)
@@ -4074,6 +4080,8 @@ namespace VikingEngine.DSSWars.GameObject
                     Net.ObjectId.WriteFaction(w, newFaction);
                 } packet.EndWrite_Asynch();
             }
+
+
         }
 
         public static void NetReadSetFaction(System.IO.BinaryReader r)
@@ -4091,11 +4099,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     city.setFaction(newFaction, false, convert, false);
 
-                    if (hosted && !newFaction.IsNetHosted())
-                    {
-                        //City handover
-                        NetWriteHandoverPacket(newFaction.HostingPeer(), city);
-                    }
+                    
                 }
             }            
         }

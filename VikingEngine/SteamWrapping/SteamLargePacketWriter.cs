@@ -28,7 +28,7 @@ namespace VikingEngine.SteamWrapping
 
         public bool Complete => writerPos >= file.memoryLength;
 
-        public bool TimeOut => sendTime.secPassed(2);
+        public bool TimeOut => sendTime.secPassed(20);
 
         public SteamLargePacketWriter(DataStream.MemoryStreamHandler file, SendPacketTo To, ulong SpecificGamerID, PacketType type)
         {
