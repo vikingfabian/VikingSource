@@ -562,7 +562,7 @@ namespace VikingEngine.SteamWrapping
         public void Send(byte[] data, uint dataLength, VikingEngine.Network.PacketReliability rely, SendPacketTo to, CSteamID specificGamerID)
         {
 #if DEBUG
-            if (data.Length > SteamPackageByteLimit)
+            if (dataLength > SteamPackageByteLimit)
             {
                 var packet = (PacketType)data[1];
                 throw new Exception("Passed steam package limit: " + packet);
