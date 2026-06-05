@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars;
+using System.Collections.Concurrent;
+
 
 
 #if PCGAME
@@ -60,6 +62,8 @@ namespace VikingEngine.SteamWrapping
         public ESteamAPIInitResult steamInitResult;
         public string steamInitErrorMsg;
         public bool statsNeedUpdate = false;
+
+        
 
         static void SteamAPIDebugTextHook(int severity, StringBuilder builder)
         {

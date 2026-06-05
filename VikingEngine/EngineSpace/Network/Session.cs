@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Steamworks;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
+using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
-using System.Threading;
-using Steamworks;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.Network
 {
@@ -29,6 +32,9 @@ namespace VikingEngine.Network
         public int maxGamers = 5;
         public bool AllowVoiceChat = true;
         public int maxLocalGamers = 4;
+
+        public ConcurrentQueue<SteamWriter> packetsPool = new ConcurrentQueue<SteamWriter>();
+        public ConcurrentQueue<SteamWriter> packetsQueue = new ConcurrentQueue<SteamWriter>();
 
         public Dictionary<int, SteamWrapping.SteamLargePacketWriter> largePackets = new Dictionary<int, SteamWrapping.SteamLargePacketWriter>(2); 
 
@@ -167,6 +173,16 @@ namespace VikingEngine.Network
 #endif
         }
 
+        SteamWriter GetWriter()
+        {
+            if (packetsPool.TryDequeue(out SteamWriter result))
+            {
+                return result;
+            }
+
+            return new SteamWriter();
+        }
+
         public void kickFromNetwork(AbsNetworkPeer peer)
         {
             writeKick(peer);
@@ -298,13 +314,15 @@ namespace VikingEngine.Network
         
         public System.IO.BinaryWriter BeginWritingPacket_Asynch(PacketType type, PacketReliability relyability, out SteamWrapping.SteamWriter packet)
         {
-            packet = new SteamWrapping.SteamWriter(relyability, false, SendPacketTo.All, 0);
+            packet = GetWriter();
+            packet.init(relyability, false, SendPacketTo.All, 0);
             return packet.writeHead(type, null);
         }
 
         public System.IO.BinaryWriter BeginWritingPacket_Asynch(PacketType type, PacketReliability relyability, SendPacketTo sendPacketTo, ulong specificGamerID, out SteamWrapping.SteamWriter packet)
         {
-            packet = new SteamWrapping.SteamWriter(relyability, false, sendPacketTo, specificGamerID);
+            packet = GetWriter();
+            packet.init(relyability, false, sendPacketTo, specificGamerID);
             return packet.writeHead(type, null);
         }
 
@@ -346,8 +364,9 @@ namespace VikingEngine.Network
 #if DEBUG
             Debug.CrashIfThreaded();
 #endif
-            SteamWrapping.SteamWriter stream = new SteamWrapping.SteamWriter(relyability, true, to, specificGamerID);
-            return stream.writeHead(type, sender);
+            SteamWrapping.SteamWriter packet = GetWriter();
+            packet.init(relyability, true, to, specificGamerID);
+            return packet.writeHead(type, sender);
         }
 
         public System.IO.BinaryWriter BeginWritingPacketToHost(PacketType Type, PacketReliability relyability, int? player)
@@ -383,7 +402,7 @@ namespace VikingEngine.Network
 
         public void Time_Update(float time)
         {
-            if (Ref.netSession.InMultiplayerSession)
+            if (InMultiplayerSession)
             {
                 nextNetUpdateTime += Ref.DeltaTimeMs;
                 if (nextNetUpdateTime >= netUpdateRate)
@@ -405,6 +424,13 @@ namespace VikingEngine.Network
                     }
                     Ref.gamestate.NetUpdate();
                 }
+            }
+
+            while (Ref.netSession.packetsQueue.TryDequeue(out SteamWriter packet))
+            {
+                packet.send();
+                packet.Clear();
+                packetsPool.Enqueue(packet);
             }
         }
 

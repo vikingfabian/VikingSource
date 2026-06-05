@@ -432,7 +432,7 @@ namespace VikingEngine.DSSWars.Players
                 while (true)//if (toPlayerDiplomacies != null)
                 {
 
-                    int factionIndex;
+                    int factionIndex = -1;
 
                     if (subversion >= 114)
                     {
@@ -441,7 +441,11 @@ namespace VikingEngine.DSSWars.Players
                     else
                     {
                         int player = r.ReadInt16();
-                        factionIndex = DssRef.state.localPlayers[player].faction.myIndex;
+
+                        if (arraylib.InBound(DssRef.state.localPlayers, player))
+                        {
+                            factionIndex = DssRef.state.localPlayers[player].faction.myIndex;
+                        }
                     }
 
                     if (factionIndex >= 0 && factionIndex < ushort.MaxValue)
