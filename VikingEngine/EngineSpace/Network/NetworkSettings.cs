@@ -96,7 +96,7 @@ namespace VikingEngine.Network
         /// <summary>
         /// Distance between players
         /// </summary>
-        public int PlayerSpacing = 1;
+        public int PlayerSpacing = 2;
 
         public GiftRecieveOption recieveGifts = GiftRecieveOption.FriendsOnly;
 

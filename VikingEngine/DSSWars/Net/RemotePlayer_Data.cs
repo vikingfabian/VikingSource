@@ -209,6 +209,12 @@ namespace VikingEngine.DSSWars.Players
                     {
                         var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
                         {
+#if DEBUG
+                            if (w.BaseStream.Length > 6)
+                            {
+                                throw new Exception();
+                            }
+#endif
                             DssRef.world.writeNet_SubTile(w, loop.Position);
                         }
                         packet.EndWrite_Asynch();

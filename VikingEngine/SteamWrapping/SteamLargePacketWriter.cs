@@ -52,6 +52,7 @@ namespace VikingEngine.SteamWrapping
 
         public void begin()
         {
+            lockedFromPooling = true;
             sendNext();
         }
 
@@ -61,6 +62,8 @@ namespace VikingEngine.SteamWrapping
 
             Task.Factory.StartNew(() =>
             {
+                Clear();
+
                 var w = writeHead(PacketType.Steam_LargePacket, null);
                 w.Write(id);
                 w.Write((byte)largePacketType);

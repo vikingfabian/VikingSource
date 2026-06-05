@@ -177,6 +177,11 @@ namespace VikingEngine.Network
         {
             if (packetsPool.TryDequeue(out SteamWriter result))
             {
+                if (result.memoryLength > 0)
+                {
+                    lib.DoNothing();
+                    result.Clear();
+                }
                 return result;
             }
 
@@ -429,8 +434,11 @@ namespace VikingEngine.Network
             while (Ref.netSession.packetsQueue.TryDequeue(out SteamWriter packet))
             {
                 packet.send();
-                packet.Clear();
-                packetsPool.Enqueue(packet);
+                if (!packet.lockedFromPooling)
+                {
+                    packet.Clear();
+                    packetsPool.Enqueue(packet);
+                }
             }
         }
 

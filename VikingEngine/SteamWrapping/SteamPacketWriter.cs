@@ -14,6 +14,7 @@ namespace VikingEngine.SteamWrapping
         public SendPacketTo To;
         public ulong SpecificGamerID;
         PacketType storedtype;
+        public bool lockedFromPooling = false;
         public SteamWriter()
         { }
 
@@ -41,7 +42,6 @@ namespace VikingEngine.SteamWrapping
         public void EndWrite_Asynch()
         {
             Ref.netSession.packetsQueue.Enqueue(this);
-            //Ref.update.AddSyncAction(new SyncAction1Arg<float>(Time_Update, 0));
         }
 
         public System.IO.BinaryWriter writeHead(PacketType type, int? sender)

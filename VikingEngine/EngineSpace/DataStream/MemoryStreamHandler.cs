@@ -26,7 +26,7 @@ namespace VikingEngine.DataStream
 
         public void Clear()
         { 
-            s.SetLength(0);
+            s?.SetLength(0);
         }
 
         public void readToMemory(System.IO.BinaryReader r)
