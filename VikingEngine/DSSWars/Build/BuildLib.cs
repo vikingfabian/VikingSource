@@ -1375,7 +1375,7 @@ namespace VikingEngine.DSSWars.Build
                 if (CanAutoBuildHere(ref subTile))
                 {
                     subTile.SetType(mainType, terrainSubType, amount);
-                    EditSubTile edit = new EditSubTile(faction,subTilePos, subTile, true, true, false);
+                    EditSubTile edit = new EditSubTile(faction, true,subTilePos, subTile, true, true, false);
                     edit.Submit();
                     return true;
                 }
@@ -1430,7 +1430,7 @@ namespace VikingEngine.DSSWars.Build
                     subTile.subTerrain = 0;
                 }
             
-                EditSubTile edit = new EditSubTile(city.GetFaction(), subTilePos, subTile, true, true, true);
+                EditSubTile edit = new EditSubTile(city.GetFaction(), true, subTilePos, subTile, true, true, true);
                 edit.Submit();
             }
         }

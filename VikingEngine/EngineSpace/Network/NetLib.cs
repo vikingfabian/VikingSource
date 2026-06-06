@@ -201,6 +201,7 @@ namespace VikingEngine.Network
         DssAssignFactionComplete,
         DssWorldTiles,
         DssWorldSubTiles,
+        DssEditSubTile,
         DssFactions,
         DssCities,
         DssFactionStatus,

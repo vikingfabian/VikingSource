@@ -453,8 +453,6 @@ namespace VikingEngine.DSSWars
             events.onGameStarted();
         }
 
-       
-
         public void initStartUnits(bool barracks = false)
         {
             if (StartupSettings.SpawnStartingArmies)
@@ -471,8 +469,6 @@ namespace VikingEngine.DSSWars
                     factionsCounter.sel.player.createStartUnits(unitCountMulti, settlerGuard);
                 }
             }
-
-           
         }
 
         public void startingArmySizes(out double unitCountMulti, out bool settlerGuard)

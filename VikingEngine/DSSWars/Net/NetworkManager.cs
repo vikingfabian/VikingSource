@@ -10,6 +10,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
@@ -374,6 +375,13 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssWorldSubTiles:
                     DssRef.world.readNet_SubTile(packet.r);//l 522
+                    break;
+
+                case PacketType.DssEditSubTile:
+                    EditSubTile editSubTile = new EditSubTile();
+                    editSubTile.read(packet.r);
+
+                    editSubTile.Submit();
                     break;
 
                 case PacketType.DssFactions:

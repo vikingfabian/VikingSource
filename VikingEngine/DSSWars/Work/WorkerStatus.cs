@@ -852,7 +852,7 @@ namespace VikingEngine.DSSWars.Work
 
                             if (chunk.count <= 0)
                             {
-                                EditSubTile editTile = new EditSubTile(faction, subTileEnd, subTile, false, false, true);
+                                EditSubTile editTile = new EditSubTile(faction, true, subTileEnd, subTile, false, false, true);
                                 editTile.value.collectionPointer = -1;
 
                                 if (subTile.mainTerrain == TerrainMainType.Resourses)
@@ -1283,7 +1283,7 @@ namespace VikingEngine.DSSWars.Work
                         {
                             subTile.terrainAmount -= size.maxSize;
 
-                            EditSubTile editTile = new EditSubTile( faction, subTileEnd, subTile, false, true, false);
+                            EditSubTile editTile = new EditSubTile( faction, false, subTileEnd, subTile, false, true, false);
                             editTile.Submit();
                             
                             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -1544,7 +1544,7 @@ namespace VikingEngine.DSSWars.Work
                         if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
                         {
 
-                            EditSubTile edit = new EditSubTile(faction, subTileEnd, subTile, true, true, false);
+                            EditSubTile edit = new EditSubTile(faction, true, subTileEnd, subTile, true, true, false);
                             edit.Submit();
                         }
                         gainXp = build.experienceType();
@@ -1950,7 +1950,7 @@ namespace VikingEngine.DSSWars.Work
                 ref subTile.collectionPointer);
 
             subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
-            EditSubTile editSubTile = new EditSubTile(city.GetFaction(), subTileEnd, subTile, true, true, true);
+            EditSubTile editSubTile = new EditSubTile(city.GetFaction(), true, subTileEnd, subTile, true, true, true);
             editSubTile.Submit();
             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }

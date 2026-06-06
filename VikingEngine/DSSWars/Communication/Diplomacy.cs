@@ -225,6 +225,7 @@ namespace VikingEngine.DSSWars
             Debug.WriteCheck(w);
         }
 
+
         public void readRelations(System.IO.BinaryReader r, int subVersion)
         {            
             int indexRegisterLength = r.ReadUInt16();
@@ -237,6 +238,51 @@ namespace VikingEngine.DSSWars
                 if (currentIndex < diplomaticRelations.Length)
                 {                    
                     diplomaticRelations[currentIndex].read(r, subVersion);
+                }
+                else
+                {
+#if DEBUG
+                    if (currentIndex != int.MaxValue)
+                    {
+                        throw new Exception();
+                    }
+#endif
+                    break;
+                }
+            }
+            Debug.ReadCheck(r);
+        }
+
+        public void netWriteRelations(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)indexRegister.Length);
+
+            for (int currentIndex = 0; currentIndex < diplomaticRelations.Length; ++currentIndex)
+            {
+                if (diplomaticRelations[currentIndex].Relation != RelationType.RelationType0_Neutral)
+                {
+                    w.Write(currentIndex);
+                    diplomaticRelations[currentIndex].writeRelation(w);
+                }
+            }
+            w.Write(int.MaxValue);
+
+            Debug.WriteCheck(w);
+        }
+
+
+        public void netReadRelations(System.IO.BinaryReader r, int subVersion)
+        {
+            int indexRegisterLength = r.ReadUInt16();
+            initRegister(indexRegisterLength);
+
+            while (true)
+            {
+                int currentIndex = r.ReadInt32();
+
+                if (currentIndex < diplomaticRelations.Length)
+                {
+                    diplomaticRelations[currentIndex].readRelation(r);
                 }
                 else
                 {

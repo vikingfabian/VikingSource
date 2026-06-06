@@ -14,10 +14,12 @@ namespace VikingEngine.DSSWars.Map
         public bool editAmount;
         public bool editCollection;
         public bool hostedTile;
+        public bool netShare;
 
-        public EditSubTile(Faction faction, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
+        public EditSubTile(Faction faction, bool netShare, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
         {
             hostedTile = faction != null && faction.IsNetHosted();
+            this.netShare = netShare;
             this.position = position;
             this.value = value;
             this.editTerrain = editTerrain;
@@ -35,6 +37,41 @@ namespace VikingEngine.DSSWars.Map
             this.editCollection = editCollection;
         }
 
+        void write(System.IO.BinaryWriter w)
+        { 
+            position.writeUshort(w);
+            new EightBit(editTerrain, editAmount, editCollection).write(w);
+            if (editTerrain)
+            {
+                w.Write((byte)value.mainTerrain);
+                w.Write(Debug.Byte_OrCrash(value.subTerrain));
+            }
+            if (editAmount)
+            {
+                w.Write((byte)value.terrainAmount);
+            }
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            value = new SubTile();
+
+            position.readShort(r);
+            EightBit eightBit = new EightBit(r);
+            eightBit.Get(out editTerrain, out editAmount, out editCollection);
+            if (editTerrain)
+            {
+                value.mainTerrain = (TerrainMainType)r.ReadByte();
+                value.subTerrain = r.ReadByte();
+            }
+            if (editAmount)
+            {
+                value.terrainAmount = r.ReadByte();
+            }
+
+            hostedTile = true;
+        }
+
         public void SubmitOrExecute()
         {
             if (DssRef.state != null)
@@ -47,7 +84,6 @@ namespace VikingEngine.DSSWars.Map
                 ExecuteEdit();
             }
         }
-
 
         public void Submit()
         {
@@ -79,6 +115,13 @@ namespace VikingEngine.DSSWars.Map
             if (editCollection)
             {
                 subTile.collectionPointer = value.collectionPointer;
+            }
+
+            if (netShare && Ref.netSession.InMultiplayerSession)
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEditSubTile, Network.PacketReliability.Reliable, out var packet);
+                write(w);
+                packet.EndWrite_Asynch();
             }
         }
 

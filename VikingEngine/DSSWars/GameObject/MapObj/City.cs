@@ -4064,7 +4064,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 OnNewOwner(newFaction, convert || duringStartup);
 
-                if (IsNetHosted && !newFaction.IsNetHosted())
+                if (IsNetHosted && !duringStartup && !newFaction.IsNetHosted())
                 {
                     //City handover
                     NetWriteHandoverPacket(newFaction.HostingPeer(), this);
@@ -4304,7 +4304,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 SubTile subTile = new SubTile();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-                new EditSubTile(GetFaction(), cityHallSubtilePos, subTile, true, false, false).Submit();
+                new EditSubTile(GetFaction(), true, cityHallSubtilePos, subTile, true, false, false).Submit();
 
                 refreshCitySize();
             }
