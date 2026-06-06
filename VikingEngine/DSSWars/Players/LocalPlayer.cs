@@ -607,6 +607,9 @@ namespace VikingEngine.DSSWars.Players
             LocationPin pin = new LocationPin(this, gameControls.map.pointerPosWP);
             pin.myIndex = pins.Add(pin);
             pin.basicInit();
+
+            gameControls.map.selection.obj = pin;
+            hud.needRefresh = true;
         }        
 
         public override void createStartUnits(double unitCountMulti, bool settlerGuard)

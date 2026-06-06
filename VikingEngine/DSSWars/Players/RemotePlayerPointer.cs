@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.Players
             pointerIconPosDiff = pointer.Size * 0.4f;
 
             item = new Graphics.Image(SpriteName.MissingImage, Vector2.Zero,
-                Engine.Screen.IconSizeV2 * 0.8f, ImageLayers.AbsoluteBottomLayer, true);
+                Engine.Screen.IconSizeV2 * 0.6f, ImageLayers.AbsoluteBottomLayer, true);
             item.LayerBelow(pointer);
             item.Visible = false;
 

@@ -11,7 +11,7 @@ namespace VikingEngine.Network
     //}
     struct GamerCommunicationSetting
     {
-        public bool muteVoice, muteText, mutePins, muteInGameCommunications, muteCreations;
+        public bool muteVoice, muteText, mutePins, muteInGameCommunications, muteCreations, muteErrors;
         public float voiceVolume;
 
         public GamerCommunicationSetting()
@@ -23,7 +23,7 @@ namespace VikingEngine.Network
         {
             w.Write(voiceVolume);
 
-            new EightBit(muteVoice, muteText, mutePins, muteInGameCommunications, muteCreations).write(w);
+            new EightBit(muteVoice, muteText, mutePins, muteInGameCommunications, muteCreations, muteErrors).write(w);
         }
 
         public void read(System.IO.BinaryReader r, int storageVersion)
@@ -31,7 +31,7 @@ namespace VikingEngine.Network
             voiceVolume = r.ReadSingle();
 
             var bits = EightBit.FromStream(r);
-            bits.Get(out muteVoice, out muteText, out mutePins, out muteInGameCommunications, out muteCreations);
+            bits.Get(out muteVoice, out muteText, out mutePins, out muteInGameCommunications, out muteCreations, out muteErrors);
         }
     }
 

@@ -284,15 +284,13 @@ namespace VikingEngine.SteamWrapping
                     InitVoice();
                     P2PManager = new SteamP2PManager();
                     LobbyMatchmaker = new SteamLobbyMatchmaker();
-                    //VOIP = new SteamVOIP();
-
+                   
                     isNetworkInitialized = true;
                 }
             }
 
             DLC = new SteamDLC();
             
-            //RequestStats();
         }
 
         public void Update()
