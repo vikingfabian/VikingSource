@@ -1,6 +1,8 @@
 
 ## MULTIPLAYER UPDATE ##
-* 
+* optimized tags on map
+* pins models and tags
+
 
 KNOWN ISSUES
 X save doesn't work 
@@ -12,17 +14,12 @@ X old saved will have some bot flag color drifting
 
 
 
-
-
-
-
 ##ICONS TODO
 * gray rounded button
 * gold frames
 * network icon
 * pin
 
-* pin model
 
 #MOUNTED TODO
 * 

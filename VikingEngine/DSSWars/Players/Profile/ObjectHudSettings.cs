@@ -12,12 +12,23 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players.Profile
 {
-    class ObjectHudSettings
+    struct ObjectHudSettings
     {
+       
+
         public bool viewTagsOnMap = true;
         public bool viewLowFoodOnMap = false;
         public bool viewIdleWorkOnMap = false;
         public bool viewStuckBuildOrdersOnMap = false;
+
+
+        public ObjectHudSettings()
+        {
+            viewTagsOnMap = true;
+            viewLowFoodOnMap = false;
+            viewIdleWorkOnMap = false;
+            viewStuckBuildOrdersOnMap = false;
+        }
 
         public bool ViewAnyOnMap()
         {
@@ -97,8 +108,5 @@ namespace VikingEngine.DSSWars.Players.Profile
             }
         }
 
-        public ObjectHudSettings()
-        {             
-        }
     }
 }

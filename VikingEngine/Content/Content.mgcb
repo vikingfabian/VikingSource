@@ -2959,6 +2959,9 @@
 #begin VoxelModel/LfWars/cityicon.vox
 /copy:VoxelModel/LfWars/cityicon.vox
 
+#begin VoxelModel/LfWars/decor_netstatue.vox
+/copy:VoxelModel/LfWars/decor_netstatue.vox
+
 #begin VoxelModel/LfWars/decor_statue.vox
 /copy:VoxelModel/LfWars/decor_statue.vox
 
@@ -3123,6 +3126,9 @@
 
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
+
+#begin VoxelModel/LfWars/pin.vox
+/copy:VoxelModel/LfWars/pin.vox
 
 #begin VoxelModel/LfWars/pony_brown.vox
 /copy:VoxelModel/LfWars/pony_brown.vox

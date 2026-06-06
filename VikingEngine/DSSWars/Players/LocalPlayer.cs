@@ -95,6 +95,7 @@ namespace VikingEngine.DSSWars.Players
         public MenuTab factionTab = MenuTab.NUM_NONE;
         public MenuTab cityTab;
         public MenuTab armyTab = ArmyMenu.Tabs[0];
+        public MenuTab pinTab = MenuTab.Info;
         public ResourcesSubTab resourcesSubTab = new ResourcesSubTab();
 
         public ProgressSubTab progressSubTab = 0;
@@ -126,7 +127,8 @@ namespace VikingEngine.DSSWars.Players
         //public bool viewArmyTagsOnMap = true;
         public Profile.ObjectHudSettings cityHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings armyHudSettings = new Profile.ObjectHudSettings();
-
+        public Profile.ObjectHudSettings pinHudSettings = new Profile.ObjectHudSettings();
+        //public bool viewPinTags = true;
 
         public int firstAttacker = ushort.MaxValue;
         public int nextDominationSize;
@@ -586,6 +588,11 @@ namespace VikingEngine.DSSWars.Players
         public void armyTabClick(int tab)
         {
             armyTab = AvailableArmyTabs()[tab];
+        }
+
+        public void pinTabClick(int tab)
+        {
+            pinTab = tab == 0? MenuTab.Info : MenuTab.Tag;
         }
 
         public List<MenuTab> AvailableCityTabs()

@@ -33,7 +33,8 @@ namespace VikingEngine.DSSWars.Interface
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    if (citySel.Tag.backType != Data.CityTagBack.NONE)
+                    if (citySel.Tag.backType != Data.CityTagBack.NONE &&
+                        citySel.inRender_overviewLayer)
                     {
 
                         if (cityTags.Count <= tagIndex)
@@ -52,7 +53,8 @@ namespace VikingEngine.DSSWars.Interface
                 armiesC.Reset();
                 while (armiesC.Next())
                 {
-                    if (armiesC.sel.Tag.backType != Data.CityTagBack.NONE)
+                    if (armiesC.sel.Tag.backType != Data.CityTagBack.NONE &&
+                        armiesC.sel.inRender_overviewLayer)
                     {
 
                         if (cityTags.Count <= tagIndex)
@@ -62,6 +64,39 @@ namespace VikingEngine.DSSWars.Interface
 
                         cityTags[tagIndex].update(player, armiesC.sel, player.armyHudSettings);
                         tagIndex++;
+                    }
+                }
+            }
+
+            if (player.pinHudSettings.viewTagsOnMap)
+            {
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    playerPins(p);
+                }
+
+                var remoteC = DssRef.state.remotePlayers.counter();
+                while (remoteC.Next())
+                {
+                    playerPins(remoteC.sel);
+                }
+
+                void playerPins(AbsHumanPlayer p)
+                {
+                    var pinsC = p.pins.counter();
+                    while (pinsC.Next())
+                    {
+                        if (pinsC.sel.Tag.backType != Data.CityTagBack.NONE &&
+                            pinsC.sel.inRender_overviewLayer)
+                        {
+                            if (cityTags.Count <= tagIndex)
+                            {
+                                cityTags.Add(new CityTagMapMember());
+                            }
+
+                            cityTags[tagIndex].update(player, pinsC.sel, player.pinHudSettings);
+                            tagIndex++;
+                        }
                     }
                 }
             }
@@ -109,16 +144,6 @@ namespace VikingEngine.DSSWars.Interface
 
             Vector3 wp = mapObj.position;
             
-            
-            //if (mapObj.gameobjectType() == GameObjectType.Army)
-            //{
-                
-            //}
-            //else
-            //{
-            //    wp.X += 0.4f;
-            //    wp.Z += 0.4f;
-            //}
             wp.X += 0.02f;
             wp.Z += -0.2f;
 

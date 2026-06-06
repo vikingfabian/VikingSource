@@ -160,8 +160,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
         virtual public void tagSprites(out SpriteName back, out SpriteName art)
-        { 
-            throw new NotImplementedException();
+        {
+            back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);
+            art = Tag.TagArt();//Data.TagLib.ArtSprite(tagArt);
         }
         public bool tagToHud(RichBoxContent content)
         {
@@ -239,7 +240,8 @@ namespace VikingEngine.DSSWars.GameObject
             throw new NotImplementedException();
         }
 
-        
+        abstract public bool IsCity();
+        abstract public bool IsArmy();
     }
 
     

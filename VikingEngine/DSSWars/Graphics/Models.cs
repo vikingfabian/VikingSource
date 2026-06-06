@@ -70,6 +70,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.armystand_detail,
                 VoxelModelName.cityicon,
                 VoxelModelName.citybanner,
+                VoxelModelName.pin,
 
                 VoxelModelName.modsoldier_debug,
                 VoxelModelName.modsoldier_body1,
@@ -254,8 +255,9 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_water, false);
             loadVoxelModel(VoxelModelName.city_tent, false);
             loadVoxelModel(VoxelModelName.city_research, false);
-           
+
             loadVoxelModel(VoxelModelName.decor_statue, false);
+            loadVoxelModel(VoxelModelName.decor_netstatue, false);
             loadVoxelModel(VoxelModelName.city_flagpole, false);
             loadVoxelModel(VoxelModelName.city_pavement, false);
             loadVoxelModel(VoxelModelName.city_garden, false);

@@ -1,19 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     class LocationPin: AbsMapObject
     {
+        const int ModelVariants = 3;
+
         ObjectName name = new ObjectName();
         Graphics.AbsVoxelObj overviewModel;
         BoundingSphere bound;
+        int modelVariant = 0;
         public PingMessage pingMessage = PingMessage.None;
         public NetInteractLevel netInteractLevel = NetInteractLevel.Hidden;
         
@@ -66,9 +73,102 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        void PinPresentationHud(ObjectHudArgs args, bool tooltip)
+        {
+            nameToHud(args.content, !tooltip);
+
+            args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
+            if (!tagToHud(args.content))
+            {
+                var faction = GetFaction();
+                if (faction != null)
+                {
+                    args.content.Add(faction.FlagTextureToHud());
+                }
+            }
+            args.content.space(0.5f);
+            args.content.Add(new RbImage(SpriteName.WarsFlagType_Banner));
+            args.content.space(0.5f);
+            args.content.Add(new RbText(".Location pin", tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+
+            args.content.space(1);
+
+            IndexToHud(args.content);
+
+            args.content.newLine();
+            ownerToHud(args, !tooltip);
+        }
+
         public override void toHud(ObjectHudArgs args)
         {
-            base.toHud(args);
+            //base.toHud(args);
+            PinPresentationHud(args, false);
+
+            int tabSel = 0;
+
+            var tabs = new List<ArtTabMember>((int)MenuTab.NUM_NONE);
+
+            List<MenuTab> availableTabs = new List<MenuTab> { MenuTab.Info, MenuTab.Tag };
+            for (int i = 0; i < availableTabs.Count; ++i)
+            {
+                var text = new RbText(LangLib.Tab(availableTabs[i], out string description, out _));
+                text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+
+                //AbsRbAction enter = null;
+                //if (description != null)
+                //{
+                //    enter = new RbAction(() =>
+                //    {
+                //        RichBoxContent content = new RichBoxContent();
+                //        content.text(description).overrideColor = HudLib.InfoYellow_Light;
+
+                //        player.hud.tooltip.create(player, content, true);
+                //    });
+                //}
+
+                tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
+                            {
+                                text
+                            }, null));
+
+                if (availableTabs[i] == args.player.pinTab)
+                {
+                    tabSel = i;
+                }
+            }
+
+            bool viewControllerTabs = args.player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.ArmyMenu, out Color focusColor);
+            if (viewControllerTabs && args.player.gameControls.input.Controller_TabLeft.IsActive)
+            {
+                args.content.Add(new RbImage(args.player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                args.content.space(0.5f);
+            }
+            var tabGroup = new ArtTabgroup(tabs, tabSel, args.player.pinTabClick);
+            if (viewControllerTabs && args.player.gameControls.input.Controller_TabRight.IsActive)
+            {
+                tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(args.player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
+            }
+
+            args.content.Add(tabGroup);
+            //content.newParagraph();
+            //content.newLine();
+            switch (args.player.pinTab)
+            {
+                case MenuTab.Info:
+                    infoHud(args);
+                    break;
+               
+                case MenuTab.Tag:
+                    //tagsToMenu(content);
+                    TagLib.TagsToMenu(args.content, args.player, this);
+                    break;
+
+
+            }
+        }
+        public void infoHud(ObjectHudArgs args)
+        {
+            
 
             args.content.newParagraph();
             HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Message");
@@ -80,6 +180,25 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         pingMessage = selected;
                     }, message)));
+            }
+
+            if (true)
+            {
+                args.content.newParagraph();
+                HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Model");
+                args.content.newLine();
+                for (int i = 0; i < ModelVariants; i++)
+                {
+                    args.content.Add(new ArtOption(i == modelVariant, new System.Collections.Generic.List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(i)) },
+                        new RbAction1Arg<int>((int selected) =>
+                        {
+                            modelVariant = selected;
+                            if (overviewModel != null)
+                            {
+                                overviewModel.Frame = selected;
+                            }
+                        }, i)));
+                }
             }
 
             if (Ref.netSession.InMultiplayerSession)
@@ -155,7 +274,9 @@ namespace VikingEngine.DSSWars.GameObject
             WP.WritePosXZPercentU16(w, position);
             //v115
             new TwoHalfByte((byte)pingMessage, (byte)netInteractLevel).write(w);
-
+            //v116
+            w.Write((byte)modelVariant);
+            Tag.write(w);
         }
 
 
@@ -169,8 +290,13 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var hbytes = new TwoHalfByte();
                 hbytes.read(r);
-                pingMessage = (PingMessage) hbytes.Value1;
+                pingMessage = (PingMessage)hbytes.Value1;
                 netInteractLevel = (NetInteractLevel)hbytes.Value2;
+            }
+            if (subVersion >= 116)
+            {
+                modelVariant = r.ReadByte();
+                Tag.read(r, subVersion);
             }
         }
 
@@ -186,7 +312,8 @@ namespace VikingEngine.DSSWars.GameObject
                 overviewModel?.DeleteMe();
 
                 overviewModel = f.AutoLoadModelInstance(
-                   LootFest.VoxelModelName.wars_flag, 1f, false);
+                   LootFest.VoxelModelName.pin, 1f, false);
+                overviewModel.Frame = modelVariant;
                 overviewModel.AddToRender(DrawGame.MidLayer);
                 overviewModel.position = position;
             }
@@ -292,6 +419,16 @@ namespace VikingEngine.DSSWars.GameObject
             mayEdit = true;
             return name.name;
         }
+
+        public override bool IsArmy()
+        {
+            return false;
+        }
+        public override bool IsCity()
+        {
+            return false;
+        }
+
     }
 
     enum PingMessage

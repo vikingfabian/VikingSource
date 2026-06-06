@@ -292,16 +292,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        override public void tagSprites(out SpriteName back, out SpriteName art)
-        {
-            back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);
-            art = Tag.TagArt();//Data.TagLib.ArtSprite(tagArt);
-        }
+        
 
         abstract public bool IdleObjetive();
 
-        abstract public bool IsCity();
-        abstract public bool IsArmy();
+       
 
     }
 }

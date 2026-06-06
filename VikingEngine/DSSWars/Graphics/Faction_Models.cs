@@ -203,10 +203,10 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void OnRawModelLoaded_asynch(VoxelModelName name, VoxelObjGridDataAnimHD grid)
-        {
-            generateFromGrid_asynch(name, grid);
-        }
+        //public void OnRawModelLoaded_asynch(VoxelModelName name, VoxelObjGridDataAnimHD grid)
+        //{
+        //    generateFromGrid_asynch(name, grid);
+        //}
 
         void generateFromGrid_asynch(VoxelModelName name, VoxelObjGridDataAnimHD grid)
         {

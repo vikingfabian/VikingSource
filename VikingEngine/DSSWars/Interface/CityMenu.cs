@@ -1411,31 +1411,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 default:
                     TagLib.TagsToMenu(content, player, city);
-                    //for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
-                    //{
-                    //    var button = new ArtToggle(back == city.tagBack, new List<AbsRichBoxMember>
-                    //    {
-                    //new RbImage(Data.TagLib.BackSprite(back), 0.8f)
-                    //        }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back, back == CityTagBack.NONE ? RbSoundType.Deselect : RbSoundType.Option));
-                    //    content.Add(button);
-
-                    //    if (back == CityTagBack.NONE)
-                    //    {
-                    //        content.newLine();
-                    //    }
-                    //}
-
-                    //if (city.tagBack != CityTagBack.NONE)
-                    //{
-                    //    content.newParagraph();
-                    //    for (TagArt art = TagArt.None; art < TagArt.NUM; art++)
-                    //    {
-                    //        var button = new ArtToggle(art == city.tagArt, new List<AbsRichBoxMember> {
-                    //new RbImage(Data.TagLib.ArtSprite(art))
-                    //}, new RbAction1Arg<TagArt>((TagArt art) => { city.tagArt = art; }, art, art == TagArt.None ? RbSoundType.Deselect : RbSoundType.Option));
-                    //        content.Add(button);
-                    //    }
-                    //}
+                    
                     break;
 
                 case TagSubTab.HudPin:
