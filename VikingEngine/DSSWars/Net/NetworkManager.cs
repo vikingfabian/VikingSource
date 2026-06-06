@@ -700,7 +700,7 @@ namespace VikingEngine.DSSWars
                 Ref.steam.StartRecording();                
             }
 
-            NetEvent_ErrorMessage("test test", peer, true);
+            //NetEvent_ErrorMessage("test test", peer, true);
         }
 
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)

@@ -1,14 +1,6 @@
 
 ## MULTIPLAYER UPDATE ##
-* 64 player online multiplayer
-* key "P" to add a location pin
-* key "T" to text chat
-* Remade the player join map algo
-* Players can send rewards to eachother in multiplayer
-
-PERFORMANCE
-* Path finding is using 1D arrays
-* Path finding is storing heuristic values
+* 
 
 KNOWN ISSUES
 X save doesn't work 
@@ -18,7 +10,7 @@ X sending resources don't work
 X remote cities have wonky workers
 X old saved will have some bot flag color drifting
 
-How to multiplayer: The host just starts a game, and a join button should appear for their friends in the main menu.
+
 
 
 
