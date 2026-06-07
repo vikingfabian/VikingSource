@@ -2,7 +2,8 @@
 ## MULTIPLAYER UPDATE ##
 * optimized tags on map
 * pins models and tags
-
+* locked some content behind Supporter DLC
+* another Goo easter egg
 
 KNOWN ISSUES
 X save doesn't work 

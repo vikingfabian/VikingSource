@@ -2465,12 +2465,17 @@ namespace VikingEngine
         WarsHudBrownDot,
         WarsHudRoundButtonNotSelected,
         WarsHudRoundButtonSecondary,
+        WarsHudRoundButtonDisabled,
         WarsHudListArrowSelected,
         WarsHudListArrowDefault,
         WarsHudListArrowNotSelected,
+        WarsHudGoldOutline,
 
         WarsHudIconExit,
         WarsHudIconSettings,
+        WarsHudIconNetwork,
+        WarsHudIconNetworkSettings,
+
         WarsHudIconAdd,
         WarsHudIconOpen,
         WarsHudIconStart,
@@ -2496,6 +2501,8 @@ namespace VikingEngine
         WarsHudIconSpeed_Low,
         WarsHudIconSpeed_Medium,
         WarsHudIconSpeed_High,
+        WarsGiftedAward,
+        WarsGiftedAwardDisabled,
 
 
         DSS2MainMenu,
@@ -2563,7 +2570,7 @@ namespace VikingEngine
         warsArmyTag_Retreat,
         warsArmyTag_Return,
         warsArmyTag_Anchor,
-        HudPinIcon,
+        HudLocationPinIcon,
 
        
         HudPin_Falcon0,
@@ -2754,6 +2761,7 @@ namespace VikingEngine
         WarsUnitIcon_IronSiegeCannon,
         WarsUnitIcon_Slingshot,
         WarsUnitIcon_Spearman,
+        WarsIconPin,
 
         WarsSpecializeField,
         WarsSpecializeSea,
@@ -2825,6 +2833,12 @@ namespace VikingEngine
         WarsBuild_ElephantPen,
         WarsBuild_WarElephantPen,
         WarsBuild_OliphantPen,
+
+        WarsBuild_DiplomaticStatue_ThumbsUpWest,
+        WarsBuild_DiplomaticStatue_ThumbsUpEast,
+        WarsBuild_DiplomaticStatue_InsultWest,
+        WarsBuild_DiplomaticStatue_InsultEast,
+        WarsBuild_DiplomaticStatue_GoldenPoop,
 
         WarsBuild_Statue,
         WarsBuild_Carpenter,

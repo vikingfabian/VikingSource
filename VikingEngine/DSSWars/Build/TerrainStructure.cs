@@ -520,7 +520,11 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Statue_Lion:
                 case BuildAndExpandType.Statue_Horse:
                 case BuildAndExpandType.Statue_Pillar:
-
+                case BuildAndExpandType.DiplomaticStatue_ThumbsUpWest:
+                case BuildAndExpandType.DiplomaticStatue_ThumbsUpEast:
+                case BuildAndExpandType.DiplomaticStatue_InsultWest:
+                case BuildAndExpandType.DiplomaticStatue_InsultEast:
+                case BuildAndExpandType.DiplomaticStatue_GoldenPoop:
 
                 case BuildAndExpandType.FlagPole_LongBanner:
                 case BuildAndExpandType.FlagPole_Banner:

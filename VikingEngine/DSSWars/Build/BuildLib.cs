@@ -200,6 +200,12 @@ namespace VikingEngine.DSSWars.Build
         BoarPen,
         FowlPen,
         TrapperHut,
+        DiplomaticStatue_ThumbsUpWest,
+        DiplomaticStatue_ThumbsUpEast,
+        DiplomaticStatue_InsultWest,
+        DiplomaticStatue_InsultEast,
+        DiplomaticStatue_GoldenPoop,
+
 
         NUM_NONE,
         ALL,
@@ -602,7 +608,17 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.FlagPole_FlagLarge);
                 list.Add(BuildAndExpandType.FlagPole_Streamer);
                 list.Add(BuildAndExpandType.FlagPole_Triangle);
+
+                if (DssRef.DlcSupporter.owned)
+                {
+                    list.Add(BuildAndExpandType.DiplomaticStatue_ThumbsUpWest);
+                    list.Add(BuildAndExpandType.DiplomaticStatue_ThumbsUpEast);
+                    list.Add(BuildAndExpandType.DiplomaticStatue_InsultWest);
+                    list.Add(BuildAndExpandType.DiplomaticStatue_InsultEast);
+                    list.Add(BuildAndExpandType.DiplomaticStatue_GoldenPoop);
+                }
             }
+
 
             if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
             {
@@ -1039,6 +1055,30 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Statue_Pillar, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Pillar, SpriteName.WarsBuild_Statue_Pillar, CraftBuildingLib.Statue_Pillar, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                  MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+
+            //    DiplomaticStatue_ThumbsUpWest,
+
+            new BuildOption(BuildAndExpandType.DiplomaticStatue_ThumbsUpWest, TerrainMainType.Decor, (int)TerrainDecorType.DiplomaticStatue_ThumbsUpWest, SpriteName.WarsBuild_DiplomaticStatue_ThumbsUpWest, CraftBuildingLib.DiplomaticStatueUpW, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+            //DiplomaticStatue_ThumbsUpEast,
+            new BuildOption(BuildAndExpandType.DiplomaticStatue_ThumbsUpEast, TerrainMainType.Decor, (int)TerrainDecorType.DiplomaticStatue_ThumbsUpEast, SpriteName.WarsBuild_DiplomaticStatue_ThumbsUpEast, CraftBuildingLib.DiplomaticStatueUpE, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+            //DiplomaticStatue_InsultWest,
+            new BuildOption(BuildAndExpandType.DiplomaticStatue_InsultWest, TerrainMainType.Decor, (int)TerrainDecorType.DiplomaticStatue_InsultWest, SpriteName.WarsBuild_DiplomaticStatue_InsultWest, CraftBuildingLib.DiplomaticStatueInsultW, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+            //DiplomaticStatue_InsultEast,
+            new BuildOption(BuildAndExpandType.DiplomaticStatue_InsultEast, TerrainMainType.Decor, (int)TerrainDecorType.DiplomaticStatue_InsultEast, SpriteName.WarsBuild_DiplomaticStatue_InsultEast, CraftBuildingLib.DiplomaticStatueInsultE, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+            //DiplomaticStatue_GoldenPoop,
+            new BuildOption(BuildAndExpandType.DiplomaticStatue_GoldenPoop, TerrainMainType.Decor, (int)TerrainDecorType.DiplomaticStatue_GoldenPoop, SpriteName.WarsBuild_DiplomaticStatue_GoldenPoop, CraftBuildingLib.DiplomaticStatue_GoldenPoop, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
+
 
             new BuildOption(BuildAndExpandType.FlagPole_LongBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_LongBanner, SpriteName.WarsFlagType_LongBanner, CraftBuildingLib.FlagPole_LongBanner, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Flag, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,

@@ -1811,6 +1811,22 @@ namespace VikingEngine.DSSWars
                             name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Statue);
                             break;
 
+                        case TerrainDecorType.DiplomaticStatue_ThumbsUpWest:
+                            name = string.Format(DssRef.lang.VariantType_A, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            break;
+                        case TerrainDecorType.DiplomaticStatue_ThumbsUpEast:
+                            name = string.Format(DssRef.lang.VariantType_B, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            break;
+                        case TerrainDecorType.DiplomaticStatue_InsultWest:
+                            name = string.Format(DssRef.lang.VariantType_C, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            break;
+                        case TerrainDecorType.DiplomaticStatue_InsultEast:
+                            name = string.Format(DssRef.lang.VariantType_D, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            break;
+                        case TerrainDecorType.DiplomaticStatue_GoldenPoop:
+                            name = string.Format(DssRef.lang.VariantType_E, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            break;
+
                         case TerrainDecorType.FlagPole_LongBanner:
                             name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Banner);
                             break;

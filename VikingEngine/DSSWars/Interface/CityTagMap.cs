@@ -14,12 +14,10 @@ namespace VikingEngine.DSSWars.Interface
     {
         List<CityTagMapMember> cityTags;
         LocalPlayer player;
-        //SpottedArrayCounter<City> citiesC;
         SpottedArrayCounter<Army> armiesC;
         public CityTagMap(LocalPlayer player)
         {
             this.player = player;
-            //citiesC = player.faction.cities.counter();
             armiesC = player.faction.armies.counter();
             cityTags = new List<CityTagMapMember>(8);
         }
@@ -28,7 +26,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             int tagIndex = 0;
 
-            if (player.cityHudSettings.ViewAnyOnMap())//viewCityTagsOnMap)
+            if (player.cityHudSettings.ViewAnyOnMap())
             {
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
@@ -48,7 +46,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
             }
 
-            if (player.armyHudSettings.ViewAnyOnMap())//viewArmyTagsOnMap)
+            if (player.armyHudSettings.ViewAnyOnMap())
             {
                 armiesC.Reset();
                 while (armiesC.Next())
@@ -99,8 +97,7 @@ namespace VikingEngine.DSSWars.Interface
                         }
                     }
                 }
-            }
-            
+            }            
 
             while (cityTags.Count > tagIndex)
             {
@@ -252,29 +249,7 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             isVisible = visible;
-            //if (visible)
-            //{
-            //    mapObj.tagSprites(out SpriteName back, out SpriteName art);
-                    
-
-            //    bg.Visible = true;
-            //    bg.SetSpriteName(back);
-            //    if (art != Data.CityTag.NoBackSprite)
-            //    {
-            //        icon.position = bg.position;
-            //        icon.Visible = true;
-            //        icon.SetSpriteName(art);
-            //    }
-            //    else
-            //    {
-            //        icon.Visible = false;
-            //    }
-            //}
-            //else
-            //{
-            //    bg.Visible = false;
-            //    icon.Visible = false;
-            //}
+           
         }
 
 

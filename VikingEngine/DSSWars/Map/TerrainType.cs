@@ -239,6 +239,12 @@ namespace VikingEngine.DSSWars.Map
         FlagPole_FlagLarge,
         FlagPole_Streamer,
         FlagPole_Triangle,
+
+        DiplomaticStatue_ThumbsUpWest,
+        DiplomaticStatue_ThumbsUpEast,
+        DiplomaticStatue_InsultWest,
+        DiplomaticStatue_InsultEast,
+        DiplomaticStatue_GoldenPoop,
         NUM_NONE
     }
 

@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars
                     addFlagTexture(faction, copy, PinStart, true, replace, 0);
                     addFlagTexture(faction, copy, PinStart, true, replace, 1);
                     addFlagTexture(faction, copy, PinStart, true, replace, 2);
-
+                    addFlagTexture(faction, copy, VectorExt.AddZ(PinStart, -1), true, replace, 3);
                     break;
                 case VoxelModelName.armystand_detail:
                     addFlagTexture(faction, copy, ArmyStandStart, true, null, 0);

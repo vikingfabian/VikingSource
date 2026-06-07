@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             bool onHud = TryGet(pinId);
             content.Add(new ArtToggle(onHud, new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.HudPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { Set(pinId, !onHud); }),
+                    new RbImage(SpriteName.HudLocationPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { Set(pinId, !onHud); }),
                     new RbTooltip_Text(DssRef.lang.HudPins)));
         }
 

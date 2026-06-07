@@ -8,8 +8,8 @@ namespace VikingEngine.DSSWars.Data
 {
     struct GiftedAchievement
     {
-        public const SpriteName DefaultIcon = SpriteName.WarsUnitLevelLegend;
-        public const SpriteName EmptyIcon = SpriteName.WarsUnitLevelMinimal;
+        public const SpriteName DefaultIcon = SpriteName.WarsGiftedAward;
+        public const SpriteName EmptyIcon = SpriteName.WarsGiftedAwardDisabled;
 
 
         public string name;

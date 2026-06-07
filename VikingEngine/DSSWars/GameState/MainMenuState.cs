@@ -375,7 +375,7 @@ namespace VikingEngine.DSSWars
                                     content.Add(start);
 
                                     content.newLine();
-                                    HudLib.Label(content, ".Multiplayer");
+                                    HudLib.Label(content, SpriteName.WarsHudIconNetwork, ".Multiplayer");
                                     content.hspace();
                                     content.Add(new RbText(Ref.netsett.JoinPermissionString()));
                                     content.space();
@@ -1022,7 +1022,7 @@ namespace VikingEngine.DSSWars
                 content.Add(btn);
             }
             {
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.birdNetworkIcon) },
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconNetworkSettings) },
                      new RbAction2Arg<string, StackOption>(openUnderMenu, NetworkSettingsMenu.MultiplayerSettings, StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_MultiplayerSettings));
                 content.Add(btn);
             }

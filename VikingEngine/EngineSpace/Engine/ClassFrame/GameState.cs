@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -187,6 +188,9 @@ namespace VikingEngine.Engine
         {
             return false;
         }
+
+        virtual public void OnDlcInstalled(AppId_t dlcAppId)
+        { }
 
         public bool IsActiveGameState { get { return Ref.gamestate == this; } }
     }

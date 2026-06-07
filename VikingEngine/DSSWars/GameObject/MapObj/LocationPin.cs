@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
             args.content.space(0.5f);
-            args.content.Add(new RbImage(SpriteName.WarsFlagType_Banner));
+            args.content.Add(new RbImage(SpriteName.HudLocationPinIcon));
             args.content.space(0.5f);
             args.content.Add(new RbText(".Location pin", tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
@@ -101,7 +101,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void toHud(ObjectHudArgs args)
         {
-            //base.toHud(args);
             PinPresentationHud(args, false);
 
             int tabSel = 0;
@@ -113,18 +112,6 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var text = new RbText(LangLib.Tab(availableTabs[i], out string description, out _));
                 text.overrideColor = HudLib.RbSettings.tabSelected.Color;
-
-                //AbsRbAction enter = null;
-                //if (description != null)
-                //{
-                //    enter = new RbAction(() =>
-                //    {
-                //        RichBoxContent content = new RichBoxContent();
-                //        content.text(description).overrideColor = HudLib.InfoYellow_Light;
-
-                //        player.hud.tooltip.create(player, content, true);
-                //    });
-                //}
 
                 tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
                             {
@@ -168,8 +155,6 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void infoHud(ObjectHudArgs args)
         {
-            
-
             args.content.newParagraph();
             HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Message");
             args.content.newLine();
@@ -182,12 +167,19 @@ namespace VikingEngine.DSSWars.GameObject
                     }, message)));
             }
 
-            if (true)
+            if (DssRef.DlcSupporter.owned)
             {
                 args.content.newParagraph();
                 HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Model");
                 args.content.newLine();
-                for (int i = 0; i < ModelVariants; i++)
+
+                int exendModel = ModelVariants;
+                if (DssRef.FromGloryToGoo.owned)
+                {
+                    exendModel += 1;
+                }
+
+                for (int i = 0; i < exendModel; i++)
                 {
                     args.content.Add(new ArtOption(i == modelVariant, new System.Collections.Generic.List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(i)) },
                         new RbAction1Arg<int>((int selected) =>

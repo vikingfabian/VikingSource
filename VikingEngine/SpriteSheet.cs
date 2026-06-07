@@ -1963,6 +1963,14 @@ namespace VikingEngine
 
                     currentIndex += 9;
                     add(SpriteName.warsCannonphantPromo, 3, 3);
+
+                    add(SpriteName.WarsBuild_DiplomaticStatue_ThumbsUpWest, 3, 3);
+                    add(SpriteName.WarsBuild_DiplomaticStatue_InsultEast, 3, 3);
+                    add(SpriteName.WarsBuild_DiplomaticStatue_GoldenPoop, 3, 3);
+                    add(SpriteName.WarsBuild_DiplomaticStatue_ThumbsUpEast, 3, 3);
+                    add(SpriteName.WarsBuild_DiplomaticStatue_InsultWest, 3, 3);
+                    
+                    
                 }
             }
 
@@ -2109,6 +2117,11 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Cannon7);
                 add(SpriteName.HudPin_Cannon8);
                 add(SpriteName.HudPin_Cannon9);
+
+                currentIndex++;
+                add(SpriteName.WarsIconPin);
+                add(SpriteName.WarsHudRoundButtonDisabled);
+                add(SpriteName.WarsHudGoldOutline);
             }
 
 
@@ -2179,7 +2192,7 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_SilverCoin);
 
                 add(SpriteName.WarsWorkSmelting);
-                add(SpriteName.HudPinIcon);
+                add(SpriteName.HudLocationPinIcon);
                 add(SpriteName.warsBuildCategoryAdvanced);
                 add(SpriteName.warsBuildCategorySearch);
                 add(SpriteName.WarsHudGodPowerButton);
@@ -2274,6 +2287,10 @@ namespace VikingEngine
                 add(SpriteName.WarsOverviewCityHover);
                 add(SpriteName.WarsOverviewCitySelect);
 
+                add(SpriteName.WarsGiftedAwardDisabled);
+                add(SpriteName.WarsGiftedAward);
+                add(SpriteName.WarsHudIconNetwork);
+                add(SpriteName.WarsHudIconNetworkSettings);
             }
 
             currentIndex = numTilesWidth * 87;

@@ -26,6 +26,8 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Hud_Default = "Default";
 
+        public string DecorType_DiplomaticStatue => "Diplomatic statue";
+
         public string GiftAchieve_WhiteKnight_Name => "White Knight";
         public string GiftAchieve_WhiteKnight_Desc => "Looking good, protecting others.";
 
