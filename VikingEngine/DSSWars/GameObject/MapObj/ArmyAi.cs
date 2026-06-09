@@ -632,7 +632,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.text("Objective: " + objective.ToString());
             if (objective != ArmyObjective.None)
             {
-                if (objective == ArmyObjective.Attack)
+                if (objective == ArmyObjective.Attack && attackTarget != null)
                 {
                     content.text("Attack: " + attackTarget.TypeName());
                 }
