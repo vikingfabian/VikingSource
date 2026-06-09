@@ -405,6 +405,12 @@ namespace VikingEngine.DSSWars.Work
             if (!city.IsNetHosted) {
                 return;
             }
+
+            if (!DssRef.world.subTileGrid.InBounds(subTileEnd))
+            {
+                return;
+            }
+
             ref SubTile subTile = ref DssRef.world.subTileGrid.GetRef(subTileEnd);
 
             bool tryRepeatWork = false;

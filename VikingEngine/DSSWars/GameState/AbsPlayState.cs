@@ -338,9 +338,10 @@ namespace VikingEngine.DSSWars.GameState
 
         public Players.AbsHumanPlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
         {
-            if (peer.Tag != null)
+            Players.AbsHumanPlayer player = peer.instancePeers?[SplitScreenIndex].Tag as Players.AbsHumanPlayer;
+            if (player != null)
             {
-                return peer.Tag as Players.AbsHumanPlayer;
+                return player;
             }
 
             var remotePlayerC = remotePlayers.counter();
@@ -355,6 +356,11 @@ namespace VikingEngine.DSSWars.GameState
                     //TODO return region to AI
                     return remotePlayerC.sel;
                 }
+            }
+
+            if (peer.fullId == Ref.netSession.LocalPeer().fullId)
+            {
+                return LocalHost();
             }
 
             //No found
