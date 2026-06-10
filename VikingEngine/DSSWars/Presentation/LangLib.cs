@@ -783,6 +783,14 @@ namespace VikingEngine.DSSWars.Presentation
                 case InputActionType.ZoomOutKey:
                     return DssRef.lang.InputActionName_ZoomOutKey;
 
+                case InputActionType.PinAndPing:
+                    return DssRef.todoLang.ObjectType_LocationPin;
+                case InputActionType.TextChat:
+                    return DssRef.todoLang.InputActionName_TextChat;
+                case InputActionType.VoiceChat:
+                    return DssRef.todoLang.InputActionName_VoiceChat;
+
+
                 default:
                     throw new NotImplementedException($"InputActionName not implemented for {action}");
             }

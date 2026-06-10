@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap ToggleMinimap;
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
-        public IButtonMap WorkPriorityShortcut;
+        //public IButtonMap PinAndPing;
         public IButtonMap StockpileShortcut;
 
         public IButtonMap FlagDesign_ToggleColor_Prev;
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap FlagDesign_PaintBucket;
         public IButtonMap Controller_FlagDesign_Colorpicker;
         public IButtonMap Controller_TabLeft, Controller_TabRight;
-
+        
         public IButtonMap TextChat;
         public IButtonMap TeamTextChat;
         public IButtonMap VoiceChat;
@@ -186,7 +186,7 @@ namespace VikingEngine.DSSWars
             Copy = new KeyboardButtonMap(Keys.C);
             Paste = new KeyboardButtonMap(Keys.V);
             Build = new KeyboardButtonMap(Keys.B);
-            WorkPriorityShortcut = new KeyboardButtonMap(Keys.P);
+            PinAndPing = new KeyboardButtonMap(Keys.P);
             StockpileShortcut = new KeyboardButtonMap(Keys.L);
 
             Menu = new KeyboardButtonMap(Keys.Escape);
@@ -454,7 +454,7 @@ namespace VikingEngine.DSSWars
             Build = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true);
             Copy = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true);
             Paste = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex, true);
-            WorkPriorityShortcut = new NoButtonMap();//
+            PinAndPing = new NoButtonMap();//
             StockpileShortcut = new NoButtonMap();//
 
             GameSpeed = Controller_TabRight;
@@ -483,7 +483,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 8;
+            const int InputVersion = 9;
             w.Write(InputVersion);
 
 
@@ -515,8 +515,13 @@ namespace VikingEngine.DSSWars
                 Copy.write(w);
                 Paste.write(w);
                 Build.write(w);
-                WorkPriorityShortcut.write(w);
+                PinAndPing.write(w);
                 StockpileShortcut.write(w);
+
+                
+                TextChat.write(w);
+                //TeamTextChat.write(w);
+                VoiceChat.write(w);
             }
 
             if (inputSource.HasMouse)
@@ -582,8 +587,15 @@ namespace VikingEngine.DSSWars
 
                 if (inputVersion >= 8)
                 {
-                    WorkPriorityShortcut = MapRead.Button(r, inputSource.controllerIndex);
+                    PinAndPing = MapRead.Button(r, inputSource.controllerIndex);
                     StockpileShortcut = MapRead.Button(r, inputSource.controllerIndex);
+                }
+
+                if (inputVersion >= 9)
+                {
+                    TextChat = MapRead.Button(r, inputSource.controllerIndex);
+                    //TeamTextChat = MapRead.Button(r, inputSource.controllerIndex);
+                    VoiceChat = MapRead.Button(r, inputSource.controllerIndex);
                 }
 
                 refreshKeyBoardInput();
@@ -673,6 +685,11 @@ namespace VikingEngine.DSSWars
                 InputActionType.NextWar,
                 InputActionType.ToggleHudDetail,
                 InputActionType.ToggleMiniMap,
+
+                InputActionType.PinAndPing,
+                InputActionType.TextChat,
+                InputActionType.VoiceChat,
+
 
             });
 
@@ -907,6 +924,19 @@ namespace VikingEngine.DSSWars
                     else buttonMap = zoomOutKey;
                     break;
 
+                case InputActionType.PinAndPing:
+                    if (set) PinAndPing = buttonMap;
+                    else buttonMap = PinAndPing;
+                    break;
+                case InputActionType.TextChat:
+                    if (set) TextChat = buttonMap;
+                    else buttonMap = TextChat;
+                    break;
+                case InputActionType.VoiceChat:
+                    if (set) VoiceChat = buttonMap;
+                    else buttonMap = VoiceChat;
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -1006,6 +1036,11 @@ namespace VikingEngine.DSSWars
 
         ZoomInKey,
         ZoomOutKey,
+
+        PinAndPing,
+        TextChat,
+        TeamTextChat,
+        VoiceChat,
 
         NUM,
     }

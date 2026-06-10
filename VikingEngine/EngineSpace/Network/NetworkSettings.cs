@@ -101,6 +101,8 @@ namespace VikingEngine.Network
         public GiftRecieveOption recieveGifts = GiftRecieveOption.FriendsOnly;
 
         public bool allowHandicap = true;
+        public bool allowCasualControls = true;
+
         public bool useHandicap = false;
         public HandicapLevel handicap_botAggression = HandicapLevel.Default;
         public bool handicap_extraHonorGuards = false;
@@ -137,6 +139,7 @@ namespace VikingEngine.Network
 
             w.Write((byte)recieveGifts);
             w.Write(allowHandicap);
+            w.Write(allowCasualControls);
             w.Write(useHandicap);
             w.Write((byte)handicap_botAggression);
             w.Write(handicap_extraHonorGuards);
@@ -177,6 +180,7 @@ namespace VikingEngine.Network
 
             recieveGifts = (GiftRecieveOption)r.ReadByte();
             allowHandicap = r.ReadBoolean();
+            allowCasualControls = r.ReadBoolean();
             useHandicap = r.ReadBoolean();
             handicap_botAggression = (HandicapLevel)r.ReadByte();
             handicap_extraHonorGuards = r.ReadBoolean();
@@ -197,6 +201,96 @@ namespace VikingEngine.Network
 
             Debug.ReadCheck(r);
         }
+
+        public void resetPeaceful()
+        {
+            hostPtoP.allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
+            hostPtoP.canBreakAlliance = true;
+            hostPtoP.warAllow = PlayerDiplomacyAllowType.Blocked;
+
+            hostPtoP.allianceLimit = true;
+            hostPtoP.mustAsk = true;
+            hostPtoP.warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
+            hostPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
+
+            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
+            clientPtoP.canBreakAlliance = true;
+            clientPtoP.warAllow = PlayerDiplomacyAllowType.Blocked;
+
+            clientPtoP.allianceLimit = true;
+            clientPtoP.mustAsk = true;
+            clientPtoP.warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
+            clientPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
+
+            PlayerSpacing = 2;
+            allowHandicap = true;
+            allowCasualControls = true;
+            useHandicap = true;
+            handicap_botAggression = HandicapLevel.Low;
+            handicap_extraHonorGuards = true;
+            handicap_resourceBoost = false;
+            handicap_taxIncome = HandicapLevel.Default;
+        }
+        public void resetMixed()
+        {
+            hostPtoP.allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
+            hostPtoP.canBreakAlliance = true;
+            hostPtoP.warAllow = unlockPvp? PlayerDiplomacyAllowType.PlayersChoose : PlayerDiplomacyAllowType.Blocked;
+
+            hostPtoP.allianceLimit = true;
+            hostPtoP.mustAsk = false;
+            hostPtoP.warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
+            hostPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
+
+            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
+            clientPtoP.canBreakAlliance = true;
+            clientPtoP.warAllow = unlockPvp ? PlayerDiplomacyAllowType.Allow : PlayerDiplomacyAllowType.Blocked;
+
+            clientPtoP.allianceLimit = true;
+            clientPtoP.mustAsk = false;
+            clientPtoP.warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
+            clientPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
+
+            PlayerSpacing = 2;
+            allowHandicap = true;
+            allowCasualControls = true;
+            useHandicap = false;
+            handicap_botAggression = HandicapLevel.Default;
+            handicap_extraHonorGuards = false;
+            handicap_resourceBoost = false;
+            handicap_taxIncome = HandicapLevel.Default;
+        }
+        public void resetHardcore()
+        {
+            hostPtoP.allianceAllow = PlayerDiplomacyAllowType.Allow;
+            hostPtoP.canBreakAlliance = true;
+            hostPtoP.warAllow = PlayerDiplomacyAllowType.Allow;
+
+            hostPtoP.allianceLimit = false;
+            hostPtoP.mustAsk = false;
+            hostPtoP.warDeclarePreparationTime = new UseTimeLimit(false, TimeLength.FromMinutes(5));
+            hostPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
+
+            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.Allow;
+            clientPtoP.canBreakAlliance = true;
+            clientPtoP.warAllow = PlayerDiplomacyAllowType.Allow;
+
+            clientPtoP.allianceLimit = false;
+            clientPtoP.mustAsk = false;
+            clientPtoP.warDeclarePreparationTime = new UseTimeLimit(false, TimeLength.FromMinutes(5));
+            clientPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
+
+            PlayerSpacing = 3;
+            allowHandicap = false;
+            allowCasualControls = false;
+            useHandicap = false;
+            handicap_botAggression = HandicapLevel.High;
+            handicap_extraHonorGuards = false;
+            handicap_resourceBoost = false;
+            handicap_taxIncome = HandicapLevel.Default;
+        }
+
+
         public bool alsoBlockOnRequestProperty(object tag, bool set, bool value)
         {
             if (set)
@@ -219,6 +313,16 @@ namespace VikingEngine.Network
                 settingsHasChanged = true;
             }
             return allowHandicap;
+        }
+
+        public bool allowCasualControlsProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                allowCasualControls = value;
+                settingsHasChanged = true;
+            }
+            return allowCasualControls;
         }
         public bool useHandicapProperty(object tag, bool set, bool value)
         {

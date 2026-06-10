@@ -42,7 +42,8 @@ namespace VikingEngine.DSSWars.Net
         {
             name = Values[0];
             bool.TryParse(Values[1], out alive);
-            MatchingVersion = Engine.LoadContent.EngineVersion == Values[2];
+            Version = Values[2];
+            MatchingVersion = Engine.LoadContent.EngineVersion == Version;
 
             if (int.TryParse(Values[3], out int publicity))
             {

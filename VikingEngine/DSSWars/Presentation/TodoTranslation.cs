@@ -28,6 +28,11 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string DecorType_DiplomaticStatue => "Diplomatic statue";
 
+        public string ObjectType_LocationPin => "Location pin";
+        public string InputActionName_TextChat => "Text chat";
+        public string InputActionName_VoiceChat => "Voice chat";
+
+
         public string GiftAchieve_WhiteKnight_Name => "White Knight";
         public string GiftAchieve_WhiteKnight_Desc => "Looking good, protecting others.";
 

@@ -73,14 +73,14 @@ namespace VikingEngine.HUD.RichBox
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i], false, value <= settings.min));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], false, value > settings.min));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i], false, value >= settings.max));
+                content.Add(new RbDragOptionButton(dragButton, options[i], false, value < settings.max));
             }
         }
 

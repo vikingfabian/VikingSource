@@ -109,6 +109,8 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
 
+        
+
         public static readonly string EngineVersionString = "VikingEngine ver: {0}" + (PlatformSettings.LinuxBuild? " linux" : " windows");
         public static void Init()
         {

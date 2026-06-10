@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -204,20 +205,14 @@ namespace VikingEngine.DSSWars.Interface
                     Ref.netsett.allowHandicapProperty));
 
                 content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Allow casual controls") },
+                    Ref.netsett.allowCasualControlsProperty, new RbTooltip_Text(DssRef.lang.Settings_CasualControls_Description)));
+
+                content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbText("Blocked players") },
                     new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
-                //PlayerToPlayerDiplomacy toPlayerDiplomacy = Ref.netsett.hostDiplomacy;
-                //content.h2("Player interaction", HudLib.TitleColor_Label);
-                //var allowAllianceOptions = new DropDownBuilder("allowAlliance");
-                //{
-                //    for (PlayerDiplomacyAllowType allowType = 0; allowType < PlayerDiplomacyAllowType.NUM; allowType++)
-                //    {
-                //        allowAllianceOptions.AddOption(allowTypeString(allowType), allowType == toPlayerDiplomacy, false,
-                //            new RbAction1Arg<>)
-                //    }
-                //}
-                //allowAllianceOptions.Build(content, SpriteName.WarsRelationAlly, "Allow: aliance", menu);
+                
                 content.newParagraph();
 
                 content.h2("Player interaction", HudLib.TitleColor_Label);
@@ -331,6 +326,20 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.h2("Player interaction", HudLib.TitleColor_Label);
                 playerInteractSettings(content, false);
+                content.newParagraph();
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Default: Peaceful") }, new RbAction(Ref.netsett.resetPeaceful, RbSoundType.Paste))
+                { overrideBgColor = Color.DarkGray });
+                content.newLine();
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Default: Co-optional") }, new RbAction(Ref.netsett.resetMixed, RbSoundType.Paste))
+                { overrideBgColor = Color.DarkGray });
+
+                if (Ref.netsett.unlockPvp)
+                {   
+                    content.newLine();
+                    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Default: Hardcore") }, new RbAction(Ref.netsett.resetHardcore, RbSoundType.Paste))
+                    { overrideBgColor = Color.DarkGray });
+                }
+
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
 
@@ -493,6 +502,7 @@ namespace VikingEngine.DSSWars.Interface
                 { propertyTag = host });
             }
 
+            content.newParagraph();
             var allowWarOptions = new DropDownBuilder("allowWar" + host.ToString());
             {
                 for (PlayerDiplomacyAllowType allowType = 0; allowType < PlayerDiplomacyAllowType.NUM; allowType++)
@@ -557,7 +567,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("War preparation time") },
-                    Ref.netsett.warUseGameStartTimeProperty, new RbTooltip_Text("A delay from war declaration until attacks are available"))
+                    Ref.netsett.warUsePreparationTimeProperty, new RbTooltip_Text("A delay from war declaration until attacks are available"))
                 { propertyTag = host });
 
                 if (toPlayerDiplomacy.warDeclarePreparationTime.use)
@@ -565,11 +575,13 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.Label(content, "Minutes");
                     content.hspace();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
-                        Ref.netsett.warStartTimeProperty, true, host);
+                        Ref.netsett.warPreparationTimeProperty, true, host);
                     content.newParagraph();
                 }
 
             }
+
+            
         }
 
         public bool canBreakAllianceProperty2(object tag, bool set, bool value)
