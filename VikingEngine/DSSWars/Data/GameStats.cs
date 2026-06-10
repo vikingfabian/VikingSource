@@ -169,6 +169,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt Gifted_HindsightTactician = new StatsInt("Gifted_HindsightTactician");
         public StatsInt Gifted_Houseplant = new StatsInt("Gifted_Houseplant");
         public StatsInt Gifted_Sheep = new StatsInt("Gifted_Sheep");
+        public StatsInt Gifted_GlitchRider = new StatsInt("Gifted_GlitchRider");
 
         public GameStats()
         {
@@ -573,6 +574,9 @@ namespace VikingEngine.DSSWars.Data
                     break;
                 case GiftedAchievementType.Sheep:
                     Gifted_Sheep.add(1);
+                    break;
+                case GiftedAchievementType.GlichRider:
+                    Gifted_GlitchRider.add(1);
                     break;
                 case GiftedAchievementType.NUM:
                 default:

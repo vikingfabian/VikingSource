@@ -851,6 +851,8 @@ namespace VikingEngine.DSSWars
         Gift_HindsightTactician,
         Gift_Houseplant,
         Gift_Sheep,
+        Gift_GlichRider,
+
 
         NUM_ACHIEVEMENTS
     }

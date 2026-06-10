@@ -1,12 +1,11 @@
 
 ## MULTIPLAYER UPDATE ##
-* 
+* Fixed broken achievement ids
+* Fixed ulock PvP crash
+* Added GlichRider and Sheep achievement
 
-x crash on "big boy"
 x load map går över pack limit
-x swedish neutrality ach
-x render mouse opt ingame
-x join doesnt know achieve gifts
+
 
 KNOWN ISSUES
 X save doesn't work 

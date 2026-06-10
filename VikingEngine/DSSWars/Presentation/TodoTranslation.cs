@@ -193,5 +193,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string GiftAchieve_Sheep_Name => "Herd Mentality";
         public string GiftAchieve_Sheep_Desc => "You are allowed your own opinion.";
 
+        public string GiftAchieve_GlitchRider_Name => "Glitch Rider";
+        public string GiftAchieve_GlichRider_Desc => "Stop abusing every bug in the game!";
+
     }
 }

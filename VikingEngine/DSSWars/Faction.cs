@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars
 
         public bool IsNetHosted()
         {
-            return player != null && ((Ref.netSession.IsHost && player.IsLocal) || player.IsLocalPlayer());
+            return player != null && (!Ref.netSession.InMultiplayerSession || (Ref.netSession.IsHost && player.IsLocal) || player.IsLocalPlayer());
         }
 
         public AbsNetworkPeer HostingPeer()

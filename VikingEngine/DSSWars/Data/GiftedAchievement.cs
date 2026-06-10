@@ -81,6 +81,7 @@ namespace VikingEngine.DSSWars.Data
                 GiftedAchievementType.SupportSlave,
                 GiftedAchievementType.MeatShield,
                 GiftedAchievementType.TheCarry,
+                GiftedAchievementType.Sheep,
                 GiftedAchievementType.LoneWolf,
                 GiftedAchievementType.ArmchairGeneral,
                 GiftedAchievementType.HindsightTactician,
@@ -93,6 +94,7 @@ namespace VikingEngine.DSSWars.Data
                 GiftedAchievementType.TroubleMaker,
                 GiftedAchievementType.RandomNothingMakesSense,
                 GiftedAchievementType.Troll,
+                GiftedAchievementType.GlichRider,
                 GiftedAchievementType.MemeLord,
                 GiftedAchievementType.DarkSidePlayer
             },
@@ -610,6 +612,15 @@ namespace VikingEngine.DSSWars.Data
                         stats = DssRef.stats.Gifted_Sheep,
                     };
 
+                case GiftedAchievementType.GlichRider:
+                    return new GiftedAchievement()
+                    {
+                        name = DssRef.todoLang.GiftAchieve_GlitchRider_Name,
+                        description = DssRef.todoLang.GiftAchieve_GlichRider_Desc,
+                        achievement = AchievementIndex.Gift_GlichRider,
+                        stats = DssRef.stats.Gifted_GlitchRider,
+                    };
+
                 case GiftedAchievementType.NUM:
                 default:
 #if DEBUG
@@ -678,6 +689,7 @@ namespace VikingEngine.DSSWars.Data
         HindsightTactician,
         Houseplant,
         Sheep,
+        GlichRider,
         NUM,
     }
 

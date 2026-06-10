@@ -439,6 +439,14 @@ namespace VikingEngine.DSSWars.Interface
                 },
                     new RbAction2Arg<string, StackOption>(openmenu, UnlockPvp, StackOption.Stack)));
                 }
+
+                content.newParagraph();
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Full reset") }, new RbAction(() =>
+                {
+                    new NetworkSettings();
+                    menu.needRefresh = true;
+                })));
+
                 menu.Refresh(content);
 
                 void setLobbyPublicity(LobbyPublicity publicity)
@@ -520,7 +528,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Fair protection") },
-                        Ref.netsett.warAllianceLimitProperty, new RbTooltip_Text("Protected players must use their rules on you")));
+                        Ref.netsett.fairProtectionProperty, new RbTooltip_Text("Protected players must use their rules on you")));
                 }
 
                 content.newLine();

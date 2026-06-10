@@ -201,12 +201,21 @@ namespace VikingEngine.DSSWars.Interface
             content.h2("Gifted achievements", HudLib.TitleColor_Head);
             content.text("Reward your friends bad behaiviour", HudLib.InfoYellow_Light);
 
+#if DEBUG
+            bool[] included = new bool[(int)GiftedAchievementType.NUM];
+#endif
+
             foreach (var category in GiftedAchievementCollection.Categories)
             {
                 content.newParagraph();
                 foreach (var type in category)
                 {
                     var gift = GiftedAchievementCollection.Get(type);
+
+#if DEBUG
+                    included[(int)type] = true;
+                    
+#endif
 
                     //content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -232,6 +241,17 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
             }
+
+#if DEBUG
+            for (int i = 0; i < included.Length; i++)
+            {
+                if (!included[i])
+                {
+                    Debug.Log("missing " + ((GiftedAchievementType)i).ToString());
+                }
+            }
+
+#endif
         }
 
 
