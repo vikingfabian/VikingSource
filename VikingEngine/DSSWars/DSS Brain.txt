@@ -1,11 +1,9 @@
 
 ## MULTIPLAYER UPDATE ##
-* Fixed broken achievement ids
-* Fixed ulock PvP crash
-* Added GlichRider and Sheep achievement
+* 
 
-x load map går över pack limit
-
+x iterate steam version first
+x DssEditSubTile
 
 KNOWN ISSUES
 X save doesn't work 

@@ -187,7 +187,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //var dist = cityHallSubtilePos.SideLength(buildPos);
                 if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
                 {
-                    EditSubTile edit = new EditSubTile(true, buildPos, subTile, true, true, false);
+                    EditSubTile edit = new EditSubTile(true, TryGetPlayer(out var p) && p.IsLocalPlayer(), buildPos, subTile, true, true, false);
                     edit.ExecuteEdit();
                 }
             }

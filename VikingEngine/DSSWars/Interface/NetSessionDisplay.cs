@@ -24,7 +24,6 @@ namespace VikingEngine.DSSWars.Interface
 
         public bool ClientInteractDisplay => selectedPlayer != null;
 
-
         public void BanWarning(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             HudLib.returnButton(content, menu, true, null);

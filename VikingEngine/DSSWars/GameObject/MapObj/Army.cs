@@ -1216,6 +1216,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
         {
+            if (isDeleted)
+            {
+                return;
+            }
+
             if (IsNetHosted)
             {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssDeleteArmy, Network.PacketReliability.Reliable);

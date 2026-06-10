@@ -4069,17 +4069,20 @@ namespace VikingEngine.DSSWars.GameObject
                     //City handover
                     NetWriteHandoverPacket(newFaction.HostingPeer(), this);
                 }
+
+                if (netShare)
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSetCityFaction, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        Net.ObjectId.WriteCity(w, this);
+                        w.Write(convert);
+                        Net.ObjectId.WriteFaction(w, newFaction);
+                    }
+                    packet.EndWrite_Asynch();
+                }
             }
 
-            if (netShare)
-            { 
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSetCityFaction, Network.PacketReliability.Reliable, out var packet);
-                {
-                    Net.ObjectId.WriteCity(w, this);
-                    w.Write(convert);
-                    Net.ObjectId.WriteFaction(w, newFaction);
-                } packet.EndWrite_Asynch();
-            }
+            
 
 
         }
