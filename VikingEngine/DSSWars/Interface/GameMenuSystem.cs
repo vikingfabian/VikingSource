@@ -88,6 +88,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
                 menu.updateMouseInput(ref mouseOver);
+
                 
                 if (input.Menu.DownEvent)
                 {
@@ -255,7 +256,11 @@ namespace VikingEngine.DSSWars.Interface
 
             HudLib.WishListButton(content);
 
-            
+
+            if (Ref.netSession.IsHostingMultiplayer)
+            {
+                PlayerHud_HeadOptions.SpeedOptions(DssRef.state.LocalHost(), content, false);
+            }
 
             if (!PlatformSettings.STEAM_DEMO && 
                 DssRef.settings.playType == GameState.PlayStateType.Play)
@@ -263,14 +268,10 @@ namespace VikingEngine.DSSWars.Interface
                 if (DssRef.storage.runTutorial)
                 { //TODO yes no dialogue
                     endTutorialButton(content);
-                   
-                    
                 }
 
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                     //new RbImage(SpriteName.WarsHudIconSave),
-                     //   new RbSpace(),
                     new RbText(DssRef.lang.Hud_Save) }, new RbAction(saveGameState),
                     new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
                 {

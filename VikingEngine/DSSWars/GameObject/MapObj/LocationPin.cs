@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space(0.5f);
             args.content.Add(new RbImage(SpriteName.HudLocationPinIcon));
             args.content.space(0.5f);
-            args.content.Add(new RbText(".Location pin", tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+            args.content.Add(new RbText(DssRef.todoLang.ObjectType_LocationPin, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
 
@@ -246,7 +246,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void toTooltip(ObjectHudArgs args)
         {
-            base.toTooltip(args);
+            PinPresentationHud(args, true);
+            //base.toTooltip(args);
             var remote = GetFaction()?.player.GetRemotePlayer();
             if (remote != null)
             {

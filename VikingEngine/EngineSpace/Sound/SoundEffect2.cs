@@ -59,14 +59,18 @@ namespace VikingEngine.Sound
 
         abstract protected SoundEffect File();
 
+        //public void Play()
+        //{
+        //    Play(Pan.Center);
+        //}
         public void Play()
         {
-            Play(Pan.Center);
+            Play(Pan.Center, 0);
         }
 
         public void PlayDelayed(float milliseconds)
         {
-            new Timer.TimedAction1ArgTrigger<Pan>(Play, Pan.Center, milliseconds);
+            new Timer.TimedAction2ArgTrigger<Pan, float>(Play, Pan.Center, 0, milliseconds);
         }
 
         public void Play(Vector3 position, float instancePitch = 0)
@@ -112,11 +116,11 @@ namespace VikingEngine.Sound
             }
         }
         
-        public void Play(Pan pan)
+        public void Play(Pan pan, float instancePitch = 0)
         {
             if (SoundManager.SoundInitializeSuccess)
             {
-                float pitch = pitchAdd;
+                float pitch = pitchAdd + instancePitch;
                 if (randomPitch != 0)
                 {
                     pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);

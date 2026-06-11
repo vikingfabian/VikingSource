@@ -160,6 +160,45 @@ namespace VikingEngine.DSSWars.GameState
             return false;
         }
 
+        public void TogglePause()
+        {
+            Ref.TogglePause();
+            onSpeedChange();
+        }
+
+        public void GameSpeedClick(int toSpeed)
+        {            
+            Ref.SetPause(false);
+            Ref.SetGameSpeed(toSpeed);
+            onSpeedChange();
+        }
+
+        protected int gameSpeedValue()
+        {
+            int speed = Ref.isPaused ? 0 : (int)Ref.GameTimeSpeed;
+            return speed;
+        }
+
+        
+
+        public void onSpeedChange()
+        {
+            if (Ref.netSession.IsHostingMultiplayer)
+            {
+                var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Reliable);                
+                w.Write((byte)gameSpeedValue());
+            }
+
+            if (Ref.isPaused)
+            {
+                SoundLib.speed_down.Play(Pan.Right);
+            }
+            else
+            {
+                SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
+            }
+        }
+
         public bool closeMenuInput_AnyPlayer()
         {
             foreach (var local in localPlayers)
@@ -376,7 +415,7 @@ namespace VikingEngine.DSSWars.GameState
 
         public bool IsSinglePlayer_LocalAndOnline()
         { 
-            return DssRef.storage.playerCount == 1 && !Ref.netSession.InMultiplayerSession;
+            return DssRef.storage.playerCount == 1 && remotePlayers.Count == 0;
         }
         public bool IsSinglePlayer_Local()
         {

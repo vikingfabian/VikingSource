@@ -1,6 +1,7 @@
 
 ## MULTIPLAYER UPDATE ##
-* 
+* Pause icon is reversed
+* Shared play/pause
 
 x iterate steam version first
 x DssEditSubTile
@@ -14,7 +15,6 @@ X sending resources don't work
 X remote cities have wonky workers
 X old saved will have some bot flag color drifting
 
-X host button doublette 
 
 ##ICONS TODO
 * gray rounded button

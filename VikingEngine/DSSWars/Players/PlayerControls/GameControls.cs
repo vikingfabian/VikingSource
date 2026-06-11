@@ -1155,29 +1155,36 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         void gameSpeedInput()
         {
-            if (DssRef.state.IsSinglePlayer_Local())
+            if (DssRef.state.IsSinglePlayer_LocalAndOnline())
             {
                 if ((DssRef.difficulty.setting_allowPauseCommand || StartupSettings.PauseCheat) &&
                     input.PauseGame.DownEvent)
                 {
                     Ref.TogglePause();
+
+                    DssRef.state.onSpeedChange();
+
                 }
 
                 if (input.GameSpeed.DownEvent)
                 {
                     setNextGameSpeed();
+
+                    DssRef.state.onSpeedChange();
+
                 }
             }
         }
 
         void setNextGameSpeed()
         {
-            if (DssRef.state.IsSinglePlayer_Local())
+            if (DssRef.state.IsSinglePlayer_LocalAndOnline())
             {
                 if (Ref.isPaused)
                 {
                     Ref.SetPause(false);
                     player.hud.needRefresh = true;
+
                 }
                 else
                 {

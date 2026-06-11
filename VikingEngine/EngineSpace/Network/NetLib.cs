@@ -180,6 +180,7 @@ namespace VikingEngine.Network
         WarnPlayer,
         BlockPlayer,
         RequestPlayerBan,
+        PlayPause,
 
         Steam_AssignClientId,
         Steam_SuccesfulJoinPing,
