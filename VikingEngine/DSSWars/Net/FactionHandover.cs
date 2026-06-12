@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Net
         HandoverPart part = HandoverPart.Cities;
         
         SpottedArrayCounter<Army> armyCounter;
-        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+        SpottedPointerArrayCounter citiesC;
         SteamLargePacketWriter largeWriter = null;
 
         bool fullHandover;
@@ -26,6 +26,9 @@ namespace VikingEngine.DSSWars.Net
             this.fullHandover = fullHandover;
             this.peer = peer;
             this.faction = faction;
+
+            armyCounter = faction.armies.counter();
+            citiesC = new SpottedPointerArrayCounter();
 
             if (fullHandover)
             {
@@ -96,7 +99,7 @@ namespace VikingEngine.DSSWars.Net
                         centerCamera.writeUshort(w);
                         faction.cities.write_ushort_compressed(w);
                         part++;
-                        armyCounter = faction.armies.counter();
+                        
 
                         packet.EndWrite_Asynch();
                     }

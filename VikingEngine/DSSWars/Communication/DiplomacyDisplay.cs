@@ -404,7 +404,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
                      Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
-            PtoP.writeNet(w);
+            
+            //PtoP.writeNet(w);
         }
 
         public void netReadP2pRelation(System.IO.BinaryReader r, AbsHumanPlayer fromPlayer)

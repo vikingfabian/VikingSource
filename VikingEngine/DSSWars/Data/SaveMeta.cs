@@ -68,7 +68,8 @@ namespace VikingEngine.DSSWars.Data
         {
             foreach (var save in clientSaves.saves)
             {
-                if (save.host == Ref.netSession.Host().fullId &&
+                if (save != null &&
+                    save.host == Ref.netSession.Host().fullId &&
                     save.World.MapId() == DssRef.world.metaData.worldId.MapId() &&
                     save.faction == faction)
                 {
