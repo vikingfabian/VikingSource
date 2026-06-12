@@ -998,6 +998,7 @@ namespace VikingEngine.DSSWars
             WorldMetaId id = new WorldMetaId();
             id.read(r);
 
+            
             SaveClientStateMeta meta = new SaveClientStateMeta(playTime, id, LocalHost().faction.myIndex);
             ClientSaveState saveGamestate = new ClientSaveState(meta);
             saveGamestate.save();

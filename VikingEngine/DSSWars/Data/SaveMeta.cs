@@ -66,6 +66,8 @@ namespace VikingEngine.DSSWars.Data
 
         public bool LoadClient(int faction)
         {
+            SaveClientStateMeta latest = null;
+
             foreach (var save in clientSaves.saves)
             {
                 if (save != null &&
@@ -73,11 +75,18 @@ namespace VikingEngine.DSSWars.Data
                     save.World.MapId() == DssRef.world.metaData.worldId.MapId() &&
                     save.faction == faction)
                 {
-                    var saveGamestate = new ClientSaveState(save);
-                    saveGamestate.load();
-
-                    return true;
+                    if (latest == null || latest.saveDate < save.saveDate)
+                    {
+                        latest = save;
+                    }
                 }
+            }
+
+            if (latest != null)
+            {
+                var saveGamestate = new ClientSaveState(latest);
+                saveGamestate.load();
+                return true;
             }
 
             return false;
