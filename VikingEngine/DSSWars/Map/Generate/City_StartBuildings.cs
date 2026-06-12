@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (cityType == CityType.Campsite)
             {
-                PcgRandom rnd = new PcgRandom(world.metaData.seed * myIndex);
+                PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
                 var subtile = WP.ToSubTilePos_Centered(tilePos);
                 subtile.X += rnd.Plus_Minus(3);
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                PcgRandom rnd = new PcgRandom(world.metaData.seed * myIndex);
+                PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
                 List<IntVector2> emptyGeneral = new List<IntVector2>();
                 Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);

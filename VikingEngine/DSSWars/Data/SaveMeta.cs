@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,16 @@ namespace VikingEngine.DSSWars.Data
         public const string ImportSaveFolder = "Import Save";
         SaveIterations saves = new SaveIterations(SaveStateCount);
         SaveIterations autosaves = new SaveIterations(AutoSaveCount);
+       
 
         DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
         public GameOverResultCollection gameOverResultCollection = null;
+
+        const int SaveClientStateCount = 20;
+        SaveClientIterations clientSaves = new SaveClientIterations(SaveClientStateCount);
+
 
         public void CreateImportFolders()
         {
@@ -58,6 +64,25 @@ namespace VikingEngine.DSSWars.Data
             DataStream.FileToDiskManager.TryReadBinaryIO(path, read);
         }
 
+        public bool LoadClient(int faction)
+        {
+            foreach (var save in clientSaves.saves)
+            {
+                if (save.host == Ref.netSession.Host().fullId &&
+                    save.World.MapId() == DssRef.world.metaData.worldId.MapId() &&
+                    save.faction == faction)
+                {
+                    var saveGamestate = new ClientSaveState(save);
+                    saveGamestate.load();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
         public List<SaveStateMeta> listSaves()
         {
             List<SaveStateMeta> allSaves = new List<SaveStateMeta>();
@@ -87,10 +112,20 @@ namespace VikingEngine.DSSWars.Data
            return (auto ? autosaves : saves).nextIndex;
         }
 
+        public int NextClientSaveIndex()
+        {
+            return clientSaves.nextIndex;
+        }
+
         public void AddSave(SaveStateMeta save, IStreamIOCallback callback)
         {
             (save.autosave ? autosaves : saves).AddSave(save);
             Save(callback);
+        }
+        public void AddSave(SaveClientStateMeta save)
+        {
+            clientSaves.AddSave(save);
+            Save(null);
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -285,7 +320,7 @@ namespace VikingEngine.DSSWars.Data
 
         public string ExportString()
         {
-            return FilePath.SanitizeFileName( Path.FileName + "_" + string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + "_" + string.Format(DssRef.lang.Settings_DifficultyLevel, difficulty) + "_seed" + worldmeta.seed);
+            return FilePath.SanitizeFileName( Path.FileName + "_" + string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + "_" + string.Format(DssRef.lang.Settings_DifficultyLevel, difficulty) + "_seed" + worldmeta.worldId.seed);
         }
 
         public SaveStateMeta()

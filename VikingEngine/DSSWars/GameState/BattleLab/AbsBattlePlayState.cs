@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         public void initGameState()
         {
-            Ref.rnd.SetSeed(DssRef.world.metaData.seed);
+            Ref.rnd.SetSeed(DssRef.world.metaData.worldId.seed);
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();

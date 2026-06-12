@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Players
             gear = Bound.Set(gear, 1, MaxGear);
             this.gear = gear;                        
             
-            PcgRandom random = new PcgRandom(DssRef.world.metaData.seed + gear * 11);
+            PcgRandom random = new PcgRandom(DssRef.world.metaData.worldId.seed + gear * 11);
 
             switch (gear)
             {

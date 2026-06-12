@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Players
         public bool gotStatus = false;
         public bool ready = false;
         public bool newPlayer = true;
+        public bool waitingForHandover = false;
 
         public AbsPlayer previousPlayer;
         public int assignedFaction = ushort.MaxValue;

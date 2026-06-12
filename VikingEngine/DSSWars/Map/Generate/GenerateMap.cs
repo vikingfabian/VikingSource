@@ -331,8 +331,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void generateSubTiles(WorldData world)
         { 
             this.world = world;
-            world.rnd = new PcgRandom(world.metaData.seed);
-            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.seed);
+            world.rnd = new PcgRandom(world.metaData.worldId.seed);
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.worldId.seed);
 
             //Debug.Log("postLoadGenerate_Part1, " + world.metaData.seed);
             //partComplete = new bool[ProcessSubTileParts];
@@ -396,7 +396,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
-            world.rnd = new PcgRandom(world.metaData.seed);
+            world.rnd = new PcgRandom(world.metaData.worldId.seed);
 
             Task.Factory.StartNew(async () =>
             {

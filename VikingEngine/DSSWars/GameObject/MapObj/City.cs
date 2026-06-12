@@ -1109,7 +1109,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             w.Write((ushort)city.myIndex);
             city.writeGameState(w);
-            city.IsNetHosted = false;
+            
         }
 
         public static void NetReadHandOver(System.IO.BinaryReader r)

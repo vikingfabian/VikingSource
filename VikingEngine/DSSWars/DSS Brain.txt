@@ -15,13 +15,12 @@ X sending resources don't work
 X remote cities have wonky workers
 X old saved will have some bot flag color drifting
 
-
+ 
 ##ICONS TODO
 * gray rounded button
 * gold frames
-* network icon
-* pin
-
+X gold frame disabled 
+* DLC banners
 
 #MOUNTED TODO
 * 

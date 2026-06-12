@@ -200,6 +200,8 @@ namespace VikingEngine.Network
         DssAssignFaction,
         DssAssignFactionCities,
         DssAssignFactionComplete,
+        DssBeginSave,
+        DssClientHandoverComplete,
         DssWorldTiles,
         DssWorldSubTiles,
         DssEditSubTile,

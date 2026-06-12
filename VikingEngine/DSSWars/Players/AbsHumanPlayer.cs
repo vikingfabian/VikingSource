@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Players
             return null;
         }
 
-        protected void writePins(BinaryWriter w)
+        public void writePins(BinaryWriter w)
         {
             w.Write((ushort)pins.Count);
             var pinsC = pins.counter();

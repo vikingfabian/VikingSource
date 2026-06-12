@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)
         {
-            Ref.rnd.SetSeed(DssRef.world.metaData.seed);
+            Ref.rnd.SetSeed(DssRef.world.metaData.worldId.seed);
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
@@ -709,7 +709,14 @@ namespace VikingEngine.DSSWars
 
         public void AutoSave()
         {
-            if (!PlatformSettings.STEAM_DEMO)
+            if (Ref.netSession.InMultiplayerSession)
+            {
+                if (Ref.netSession.IsHost)
+                {
+                    RequestClientGamestates(true);
+                }
+            }
+            else if (!PlatformSettings.STEAM_DEMO)
             {
                 if (cutScene == null)
                 {

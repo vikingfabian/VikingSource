@@ -19,28 +19,42 @@ namespace VikingEngine.DSSWars.Net
         SpottedArrayCounter<Army> armyCounter;
         SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
         SteamLargePacketWriter largeWriter = null;
-        public FactionHandover(AbsNetworkPeer peer, Faction faction) 
+
+        bool fullHandover;
+        public FactionHandover(AbsNetworkPeer peer, Faction faction, bool fullHandover) 
         {
+            this.fullHandover = fullHandover;
             this.peer = peer;
             this.faction = faction;
 
-            var remote = DssRef.state.GetOrCreateRemotePlayer(peer, 0);
-            if (remote.faction != faction)
+            if (fullHandover)
             {
-                remote.AssignFaction(faction);
+                var remote = DssRef.state.GetOrCreateRemotePlayer(peer, 0);
+                if (remote.faction != faction)
+                {
+                    remote.AssignFaction(faction);
+                }
+
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFaction, PacketReliability.Reliable, out var packet);
+                    ((PlayState)DssRef.state).NetWritePlayer(w, remote);
+                    w.Write((ushort)faction.myIndex);
+
+                    w.Write(DssRef.time.TotalIngameTime().Ticks);
+                    DssRef.world.metaData.worldId.write(w);
+
+                    packet.EndWrite_Asynch();
+                }
+            }
+            else
+            {
+                part = HandoverPart.CityStatus;
             }
 
             {
                 var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionStatus, PacketReliability.Reliable, out var packet);
                 w.Write((ushort)faction.myIndex);
                 faction.writeNet_Status(w);
-
-                packet.EndWrite_Asynch();
-            }
-            {
-                var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFaction, PacketReliability.Reliable, out var packet);
-                ((PlayState)DssRef.state).NetWritePlayer(w, remote);
-                w.Write((ushort)faction.myIndex);
 
                 packet.EndWrite_Asynch();
             }
@@ -89,19 +103,13 @@ namespace VikingEngine.DSSWars.Net
                     break;
                 case HandoverPart.CityStatus:
                     {
-                        //TODO: write gamestate and stream over
-
                         if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
                         {
-                            //city.net_handover();
-
-                            //DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
-                            //var w = cityData.GetWriter();
-                            //City.NetWriteHandover(w, city);
-
-                            //largeWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
-                            //largeWriter.begin();
                             largeWriter = City.NetWriteHandoverPacket(peer, city);
+                            if (fullHandover)
+                            {
+                                city.IsNetHosted = false;
+                            }
                         }
                         else
                         {
@@ -115,14 +123,26 @@ namespace VikingEngine.DSSWars.Net
                     int maxArmies = 2;
                     while (--maxArmies > 0 && armyCounter.Next())
                     {
-                        armyCounter.sel.IsNetHosted = false;
+                        if (fullHandover)
+                        {
+                            armyCounter.sel.IsNetHosted = false;
+                        }
+                        
                         Army.NetFullArmyStatus(armyCounter.sel, PacketReliability.Reliable);
-
                     }
 
                     if (!armyCounter.HasMore())
                     {
-                        part++;
+                        if (fullHandover)
+                        {
+                            part++;
+                        }
+                        else
+                        {
+                            part = HandoverPart.DONE;
+                            Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssClientHandoverComplete, PacketReliability.Reliable, out var packet);
+                            packet.EndWrite_Asynch();
+                        }
                     }
                     break;
 
@@ -134,11 +154,6 @@ namespace VikingEngine.DSSWars.Net
 
                         largeWriter = new SteamLargePacketWriter(diplomacyData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssWorldDiplomacy);
                         largeWriter.begin();
-                        //var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssWorldDiplomacy, PacketReliability.Reliable, out var packet);
-                        //{
-                        //    DssRef.world.diplomacy.writeRelations(w);
-                        //}
-                        //packet.EndWrite_Asynch();
                         part++;
                     }
                     break;

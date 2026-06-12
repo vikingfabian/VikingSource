@@ -190,7 +190,17 @@ namespace VikingEngine.DSSWars.Interface
 
             if (DssRef.state.cutScene == null)
             {
-                new SaveScene(false);
+                if (Ref.netSession.InMultiplayerSession)
+                {
+                    if (Ref.netSession.IsHost)
+                    {
+                        ((PlayState)DssRef.state).RequestClientGamestates(false);
+                    }
+                }
+                else
+                {
+                    new SaveScene(false);
+                }
             }
         }
 
@@ -200,7 +210,18 @@ namespace VikingEngine.DSSWars.Interface
 
             if (DssRef.state.cutScene == null)
             {
-                new SaveScene(true).ExitGame = true;
+                if (Ref.netSession.InMultiplayerSession)
+                {
+                    if (Ref.netSession.IsHost)
+                    {
+                        ((PlayState)DssRef.state).RequestClientGamestates(true, true);
+                    }
+                }
+                else
+                {
+                    new SaveScene(true).ExitGame = true;
+                }
+                //new SaveScene(true).ExitGame = true;
             }
             else
             {

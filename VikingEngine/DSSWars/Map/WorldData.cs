@@ -105,15 +105,15 @@ namespace VikingEngine.DSSWars
             this.metaData = metaData;
             if (generateSettings.storage.customSeed)
             { 
-                metaData.seed = generateSettings.storage.seed;
-                metaData.objSeed = generateSettings.storage.seed;
+                metaData.worldId.seed = generateSettings.storage.seed;
+                metaData.worldId.objSeed = generateSettings.storage.seed;
                 metaData.objRnd = new PcgRandom(generateSettings.storage.seed);
             }
 
             //metaData.customEditorMap = customEditorMap;
             LoadingWorld = this;
 
-            rnd = new PcgRandom(metaData.seed);
+            rnd = new PcgRandom(metaData.worldId.seed);
 
             if (generateSettings.bCustomSize)
             {
@@ -642,7 +642,7 @@ namespace VikingEngine.DSSWars
             const int SaveMapVersion = 11;
             w.Write(SaveMapVersion);
 
-            w.Write(metaData.seed);
+            w.Write(metaData.worldId.seed);
             Size.write(w);
 
             if (abortLoad) return;
@@ -710,7 +710,7 @@ namespace VikingEngine.DSSWars
         {
             int version = r.ReadInt32();
 
-            metaData.seed = r.ReadUInt16();
+            metaData.worldId.seed = r.ReadUInt16();
 
             Size.read(r);
             refreshSize(Size);
@@ -1070,7 +1070,7 @@ namespace VikingEngine.DSSWars
 
         public int TileSeed(int x, int y)
         {
-            return metaData.seed + x * 11 + y * 13;
+            return metaData.worldId.seed + x * 11 + y * 13;
         }
 
         //public bool GetTileSafe(Vector3 pos, out Tile tile)
