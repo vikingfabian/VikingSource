@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Data
 {
     class SaveMeta
     {
-        const int Version = 2;
+        const int Version = 3;
 
         const int SaveStateCount = 10;
         const int AutoSaveCount = 10;
@@ -135,6 +135,10 @@ namespace VikingEngine.DSSWars.Data
             saves.write(w);
 
             autosaves.write(w); 
+
+            clientSaves.write(w);
+
+            Debug.WriteCheck(w);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -146,23 +150,29 @@ namespace VikingEngine.DSSWars.Data
                 fileCheck.start(version, Version);
                 if (version > Version) { return; }
 
-                if (version == 1)
-                {
-                    if (r.ReadBoolean())
-                    {
-                        var state = new SaveStateMeta(r);
-                        if (state.stateVersion == SaveGamestate.Version)
-                        {
-                            saves.saves[0] = state;
-                        }
-                    }
-                }
-                else
-                {
+                //if (version == 1)
+                //{
+                //    if (r.ReadBoolean())
+                //    {
+                //        var state = new SaveStateMeta(r);
+                //        if (state.stateVersion == SaveGamestate.Version)
+                //        {
+                //            saves.saves[0] = state;
+                //        }
+                //    }
+                //}
+                //else
+                //{
                     saves.read(r, version);
                     autosaves.read(r, version);
 
-                }
+                    if (version >= 3)
+                    { 
+                        clientSaves.read(r, version);
+
+                        Debug.ReadCheck(r);
+                    }
+                //}
                 fileCheck.end();
             }
             catch (Exception e)

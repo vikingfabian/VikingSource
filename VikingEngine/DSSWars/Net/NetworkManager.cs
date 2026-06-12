@@ -314,16 +314,16 @@ namespace VikingEngine.DSSWars
 
                                                 Ref.steam.P2PManager.OnSendingLargeDataChunk();
 
-                                                {
-                                                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
-                                                    w.Write((ushort)faction.myIndex);
-                                                    faction.writeNet_Status(w);
-                                                }
-                                                {
-                                                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
-                                                    NetWritePlayer(w, sender);
-                                                    w.Write((ushort)faction.myIndex);
-                                                }
+                                                //{
+                                                //    var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
+                                                //    w.Write((ushort)faction.myIndex);
+                                                //    faction.writeNet_Status(w);
+                                                //}
+                                                //{
+                                                //    var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
+                                                //    NetWritePlayer(w, sender);
+                                                //    w.Write((ushort)faction.myIndex);
+                                                //}
 
                                                 factionHandovers.Enqueue(new FactionHandover(packet.sender, faction, true));
                                             }));
@@ -416,7 +416,14 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssClientHandoverComplete:
-                    sender.waitingForHandover = false;
+                    {
+                        sender.waitingForHandover = false;
+                        RichBoxContent content = new RichBoxContent();
+                        content.icontext(NetworkIcon, "Client save complete");
+                        content.newLine();
+                        sender.addNetGamerToHud(content, true, false);
+                        LocalHost().hud.messages.Add(content);
+                    }
                     break;
 
                 case PacketType.DssWorldTiles:
