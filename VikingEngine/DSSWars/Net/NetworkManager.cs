@@ -49,6 +49,7 @@ namespace VikingEngine.DSSWars
             if (remotePlayers.Count > 0 && factionHandOverComplete && asyncRoundTrip)
             {
                 asyncRoundTrip = false;
+                async_updateHandover();
                 bool sentAnything = true;
 
                 for (int loop = 0; loop < MaxSendLoops && sentAnything; loop++)
@@ -78,19 +79,7 @@ namespace VikingEngine.DSSWars
                 if (asyncRoundTrip)
                 {
                     asyncRoundTrip = false;
-                    if (factionHandovers.Count > 0)
-                    {
-                        if (factionHandovers.TryPeek(out var factionHandover))
-                        {
-                            handoverPlayer = factionHandover.peer;
-
-                            if (factionHandover.Next() == false)
-                            {
-                                //remove
-                                factionHandovers.TryDequeue(out _);
-                            }
-                        }
-                    }
+                    handoverPlayer = async_updateHandover();
 
                     bool sentAnything = true;
 
@@ -156,6 +145,28 @@ namespace VikingEngine.DSSWars
             }
             return exitThreads;
         }
+
+        private AbsNetworkPeer async_updateHandover()
+        {
+            AbsNetworkPeer handoverPlayer = null;
+
+            if (factionHandovers.Count > 0)
+            {
+                if (factionHandovers.TryPeek(out var factionHandover))
+                {
+                    handoverPlayer = factionHandover.peer;
+
+                    if (factionHandover.Next() == false)
+                    {
+                        //remove
+                        factionHandovers.TryDequeue(out _);
+                    }
+                }
+            }
+
+            return handoverPlayer;
+        }
+
         bool sendMap(RemotePlayer player, ref bool sentAnything)
         {
             if (player.gotStatus)
