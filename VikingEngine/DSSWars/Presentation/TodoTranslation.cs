@@ -32,6 +32,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string InputActionName_TextChat => "Text chat";
         public string InputActionName_VoiceChat => "Voice chat";
 
+        public string Leaderboards_ArmySize => "Army size, in strength";
+        public string Leaderboards_MultiplayerPlayerCount => "Hosting player count";
 
         public string GiftAchieve_WhiteKnight_Name => "White Knight";
         public string GiftAchieve_WhiteKnight_Desc => "Looking good, protecting others.";

@@ -808,7 +808,15 @@ namespace VikingEngine.DSSWars
 
             menuSystem.OnMultiplayer();
 
-            //NetEvent_ErrorMessage("test test", peer, true);
+            int count = remotePlayers.Count + 1;
+            if (Ref.netSession.IsHost && count > MultiplayerCountLeaderBoard.CountUploaded)
+            {
+                MultiplayerCountLeaderBoard.CountUploaded = count;
+                Ref.update.AddSyncAction(new SyncAction(() =>
+                {
+                    new MultiplayerCountLeaderBoard(MultiplayerCountLeaderBoard.CountUploaded);
+                }));
+            }
         }
 
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)

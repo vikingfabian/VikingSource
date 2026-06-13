@@ -1,7 +1,11 @@
 
 ## MULTIPLAYER UPDATE ##
-* Pause icon is reversed
+
 * Shared play/pause
+* Client save fix
+
+* Two new leaderboards
+
 
 x iterate steam version first
 x DssEditSubTile

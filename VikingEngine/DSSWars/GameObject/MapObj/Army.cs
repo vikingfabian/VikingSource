@@ -1085,6 +1085,15 @@ namespace VikingEngine.DSSWars.GameObject
 
                 strengthValue = totalStrength; // AllUnits.AverageGroupStrength;
 
+                if (totalStrength > ArmySizeLeaderBoard.SizeUploaded)
+                {
+                    ArmySizeLeaderBoard.SizeUploaded = totalStrength;
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        new ArmySizeLeaderBoard(ArmySizeLeaderBoard.SizeUploaded, soldiersCount);
+                    }));
+                }
+
                 if (groups.Count < 2)
                 {
                     mobilityValue = totalMobility;
