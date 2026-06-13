@@ -761,8 +761,10 @@ namespace VikingEngine.SteamWrapping
             {
                 if (remoteGamers[i].SteamID == peerID)
                 {
-                    Ref.NetUpdateReciever().NetEvent_PeerLost(remoteGamers[i]);
+                    var gamer = remoteGamers[i];
                     remoteGamers.RemoveAt(i--);
+                    Ref.NetUpdateReciever().NetEvent_PeerLost(gamer);
+                    
                 }
             }
         }
