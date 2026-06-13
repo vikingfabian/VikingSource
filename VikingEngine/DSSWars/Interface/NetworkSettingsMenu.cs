@@ -456,13 +456,15 @@ namespace VikingEngine.DSSWars.Interface
                     menu.needRefresh = true;
                 })));
 
-                menu.Refresh(content);
+               
 
                 void setLobbyPublicity(LobbyPublicity publicity)
                 {
                     Ref.netsett.lobbyPublicity = publicity;
                 }
             }
+
+            menu.Refresh(content);
         }
 
         void playerInteractSettings(RichBoxContent content, bool host)

@@ -516,13 +516,10 @@ namespace VikingEngine.SteamWrapping
             {
                 if (hostLobby)
                 {
-                    //Ref.steamlobby.updateLobbyTime(false);
-                    //Ref.steamlobby.SetLobbyFilters
                     SteamMatchmaking.SetLobbyData(currentLobbyID, AbsLobbyMetaData.LobbyAliveDataKey, bool.FalseString);
                 }
                 Debug.Log("Leaving current lobby");
                 SteamMatchmaking.LeaveLobby(currentLobbyID);
-                //Ref.NetUpdateReciever().NetEvent_ConnectionLost();
                 currentLobbyID.Clear();
 
             }

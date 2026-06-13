@@ -3,6 +3,8 @@
 
 * Shared play/pause
 * Client save fix
+* Join invites
+X Join from closed game doesnt work
 
 * Two new leaderboards
 
@@ -12,7 +14,7 @@ x DssEditSubTile
 
 
 KNOWN ISSUES
-X save doesn't work 
+
 X most settings have no effect yet
 X lobbies can get stuck 
 X sending resources don't work 
