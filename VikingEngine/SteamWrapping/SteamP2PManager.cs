@@ -674,7 +674,7 @@ namespace VikingEngine.SteamWrapping
             {
                 if (Ref.netsett.lobbyPublicity == LobbyPublicity.Private)
                 {
-                    return LobbyPublicity.Private;
+                    return LobbyPublicity.FriendsOnly;
                 }
                 else
                 {
