@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars.Data
                 }
             }
         }
+
         public void read(System.IO.BinaryReader r, int version)
         {
             nextIndex = r.ReadByte();
