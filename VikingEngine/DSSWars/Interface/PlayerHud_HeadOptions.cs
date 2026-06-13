@@ -56,7 +56,16 @@ namespace VikingEngine.DSSWars.Interface
                 SpeedOptions(player, content, true);
                 content.space();
             }
-
+            else
+            {
+                content.space(2);
+                content.Add(new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon));
+                //if (!Ref.isPaused)
+                {
+                    content.Add(new RbText(string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed), HudLib.SecondaryTextColor));
+                }
+                content.space(4);
+            }
 
             if (player.gameControls.input.inputSource.IsXnaController)
             {
@@ -102,7 +111,7 @@ namespace VikingEngine.DSSWars.Interface
             if (DssRef.difficulty.setting_allowPauseCommand)
             {
                 content.Add(new ArtButton(RbButtonStyle.Primary,
-                    new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPlayIcon : SpriteName.WarsHudHeadBarPauseIcon) },
+                    new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
                     new RbAction(DssRef.state.TogglePause), new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         if (viewInput)

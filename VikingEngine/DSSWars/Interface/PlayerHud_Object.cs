@@ -121,6 +121,7 @@ namespace VikingEngine.DSSWars.Interface
                     //    remoteC.sel.addNetGamerToHud(content, true);//RemoteToHud(content);
                     //}
                     //content.Add(new RbSeperationLine());
+                    content.newParagraph();
                 }
 
                 content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);

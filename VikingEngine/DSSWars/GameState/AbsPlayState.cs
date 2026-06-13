@@ -161,8 +161,9 @@ namespace VikingEngine.DSSWars.GameState
         }
 
         public void TogglePause()
-        {
+        {   
             Ref.TogglePause();
+            menuSystem.gameWasPaused = Ref.isPaused;
             onSpeedChange();
         }
 

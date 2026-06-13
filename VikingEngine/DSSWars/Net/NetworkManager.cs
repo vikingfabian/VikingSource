@@ -806,6 +806,8 @@ namespace VikingEngine.DSSWars
                 Ref.steam.StartRecording();                
             }
 
+            menuSystem.OnMultiplayer();
+
             //NetEvent_ErrorMessage("test test", peer, true);
         }
 

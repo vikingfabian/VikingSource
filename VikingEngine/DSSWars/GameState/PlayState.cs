@@ -492,6 +492,8 @@ namespace VikingEngine.DSSWars
 
         public override void Time_Update(float time)
         {
+            bool bUserUpdate = true;
+
             base.Time_Update(time);
             Sound.SoundStackManager.Update();
 
@@ -521,7 +523,11 @@ namespace VikingEngine.DSSWars
             if (pauseMenuUpdate())
             {
                 setPlayerNetState(PlayerNetState.InMenu);
-                return;
+                bUserUpdate = false;
+                if (Ref.isPaused)
+                {
+                    return;
+                }
             }
 
             if (exitGameStateThreads != null)
@@ -549,8 +555,6 @@ namespace VikingEngine.DSSWars
                         }
                     }
 
-                    //if (host)
-                    //{
                     var factionsC = DssRef.world.factions.counter();
                     while (factionsC.Next())
                     {
@@ -569,23 +573,6 @@ namespace VikingEngine.DSSWars
 
                         }
                     }
-                    //}
-                    //else
-                    //{
-                    //    var factionsC = DssRef.world.factions.counter();
-                    //    while (factionsC.Next())
-                    //    {
-                    //        if (factionsC.sel.player != null)
-                    //        {
-                    //            factionsC.sel.update_client(culling.playerInDetailView);
-                    //        }
-                    //    }
-
-                    //    foreach (var m in DssRef.world.cities)
-                    //    {
-                    //        m.update_client();
-                    //    }
-                    //}
                 }
                 
             }
@@ -628,7 +615,10 @@ namespace VikingEngine.DSSWars
 
             overviewMap.update();
 
-            updatePauseInput();
+            if (bUserUpdate)
+            {
+                updateUserInput();
+            }
 
             Engine.ParticleHandler.Update(time);
         }
@@ -648,7 +638,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        protected void updatePauseInput()
+        protected void updateUserInput()
         {
             if (localPlayers != null)
             {

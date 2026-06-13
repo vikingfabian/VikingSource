@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Interface
         public const string UnderMenu_Options_Keyboard = "options_keyboard";
         public const string UnderMenu_Options_Keyboard_Key = "options_keyboard_key";
         public const string UnderMenu_ControllerDisconnected = "controller disconnected";
-        bool gameWasPaused;
+        public bool gameWasPaused;
         Graphics.Image blackFade;
         protected ImageLayers layer = ImageLayers.Foreground7;
         RichMenu menu;
@@ -50,8 +50,10 @@ namespace VikingEngine.DSSWars.Interface
             if (menu == null)
             {
                 gameWasPaused = Ref.isPaused;
-                Ref.SetPause(true);
-
+                if (!Ref.netSession.InMultiplayerSession)
+                {
+                    Ref.SetPause(true);
+                }
                 if (blackFade == null)
                 {
                     VectorRect area = Engine.Screen.Area;
@@ -178,7 +180,16 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        void watchEpilogue()
+        public void OnMultiplayer()
+        {
+            if (menu != null)
+            {
+                Ref.SetPause(gameWasPaused);
+
+            }
+        }
+
+            void watchEpilogue()
         {
             closeMenu();
             new CutScene.NightmarePrologue();
