@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string JoinPermission_Public => "Public";
 
         public string Network_Join => "Join game";
+        public string Network_ConnectingToGame => "Connecting...";
         public string Lobby_Category_MultiplayerSettings => "Multiplayer settings";
 
         public string Hud_Default = "Default";

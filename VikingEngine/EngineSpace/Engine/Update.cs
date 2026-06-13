@@ -108,7 +108,7 @@ namespace VikingEngine.Engine
         {
             CalcDeltaTime(gameTime);
 #if PCGAME
-            Ref.steam.Update();
+            Ref.steam?.Update();
 #endif
 #if XBOX
             Ref.xbox.update();

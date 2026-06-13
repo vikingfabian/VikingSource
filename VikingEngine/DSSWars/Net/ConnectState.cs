@@ -20,15 +20,22 @@ namespace VikingEngine.DSSWars.Net
         {
             Ref.lobby.searchLobbies = false;
             available.join();
-            init(available.hostName);
+            init();
             //warsRef.sound.gamejoin.PlayFlat(1f);
         }
 
-        void init(string name)
+        public ConnectState()
+            : base()
+        {
+            Ref.lobby.searchLobbies = false;
+            init();
+        }
+
+        void init()
         {
             Ref.music.stop(true);
 
-            Graphics.Text2 text = new Graphics.Text2("Connecting to " + Engine.LoadContent.CheckCharsSafety(name, LoadedFont.Bold),
+            Graphics.Text2 text = new Graphics.Text2(DssRef.todoLang.Network_ConnectingToGame,
                 LoadedFont.Bold, Engine.Screen.CenterScreen, Engine.Screen.TextTitleHeight,
                  Color.Yellow, ImageLayers.Lay1);
             text.OrigoAtCenter();
