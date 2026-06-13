@@ -49,7 +49,7 @@ namespace VikingEngine.Input
         
         public static void Update()
         {
-            if (Ref.steam.isInitialized)
+            if (Ref.steam != null && Ref.steam.isInitialized)
             {
                 Ref.steam.input.update();
             }

@@ -49,7 +49,7 @@ namespace VikingEngine
 
         const bool Debug_TravelEverywhere = true;
 
-        const bool Debug_BlueScreen = false;
+        const bool Debug_BlueScreen = true;
 
         const bool Debug_DebugWindow = false;
 

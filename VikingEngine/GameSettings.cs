@@ -101,7 +101,7 @@ namespace VikingEngine
             keyboardMap = new InputMap(true);
             keyboardMap.setInputSource(new Input.InputSource(Input.InputSourceType.KeyboardMouse, 0));
             Ref.gamesett = this;
-            if (Ref.steam.isDeck)
+            if (Ref.steam != null && Ref.steam.isDeck)
             {
                 SteamDeckSetup();
             }
