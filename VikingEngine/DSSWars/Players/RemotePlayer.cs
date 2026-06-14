@@ -54,7 +54,41 @@ namespace VikingEngine.DSSWars.Players
         }
 
         public void FirstEnterSetup()
-        {            
+        {
+            if (netClientSettings.clientSettings.useHandicap)
+            {
+                switch (netClientSettings.clientSettings.handicap_botAggression)
+                {
+                    case HandicapLevel.None:
+                        localAiAggressivity = AiAggressivity.Peaceful;
+                        break;
+                    case HandicapLevel.Low:
+                        if (DssRef.difficulty.aiAggressivity > AiAggressivity.Peaceful)
+                        {
+                            localAiAggressivity = DssRef.difficulty.aiAggressivity -1;
+                        }
+                        break;
+
+                    case HandicapLevel.Default:
+                        localAiAggressivity = AiAggressivity.UseDefault;
+                        break;
+
+                    case HandicapLevel.High:
+                        if (DssRef.difficulty.aiAggressivity < AiAggressivity.Extreme)
+                        {
+                            localAiAggressivity = DssRef.difficulty.aiAggressivity + 1;
+                        }
+                        break;
+                }
+            }
+
+            if (localAiAggressivity == AiAggressivity.UseDefault)
+            {
+                localAiAggressivity = DssRef.difficulty.aiAggressivity;
+            }
+
+            warManagerGear = new WarManagerGear(WarManagerGear.StartGear, localAiAggressivity);
+
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
             {
@@ -98,10 +132,6 @@ namespace VikingEngine.DSSWars.Players
             base.AssignFaction(faction);
             
         }
-        // public void AssignFaction(Faction faction)
-        //{
-            
-        //}
 
         public void Net_readStatus(System.IO.BinaryReader r)
         {
@@ -138,7 +168,6 @@ namespace VikingEngine.DSSWars.Players
             work = false;
             buildType = BuildAndExpandType.NUM_NONE;
             intelligent = false;
-
         }
 
         public override bool IsBot()
@@ -165,22 +194,6 @@ namespace VikingEngine.DSSWars.Players
             return new RbTexture(flagTexture, 1f, 0, 0.2f);
         }
 
-        //public void RemoteToHud(RichBoxContent content)
-        //{
-        //    if (flagTexture != null)
-        //    {
-        //        content.Add(new RbBeginTitle(2));
-        //        content.Add(FlagTextureToHud());
-
-        //        content.space();
-        //    }
-
-        //    if (networkPeer != null)
-        //    {
-        //        content.Add(new RbText(networkPeer.peer.Gamertag));
-        //    }
-        //}
-
         public override bool IsLocal => false;
 
         public void DeleteMe()
@@ -189,7 +202,5 @@ namespace VikingEngine.DSSWars.Players
             pointer.DeleteMe();
         }
     }
-
-
 }
     

@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Players
         public float allyChance;
         public Range maxPeacefulChecks;
 
-        public WarManagerGear(int gear)
+        public WarManagerGear(int gear, AiAggressivity aiAggressivity)
         {
 #if DEBUG
             if (!Bound.IsWithin(gear, 1, MaxGear))
@@ -94,16 +94,16 @@ namespace VikingEngine.DSSWars.Players
 
             }
 
-            if (DssRef.difficulty.aiAggressivity <= AiAggressivity.Low)
+            if (aiAggressivity <= AiAggressivity.Low)
             {
                 maxCityCount += 5;
             }
-            else if (DssRef.difficulty.aiAggressivity >= AiAggressivity.High)
+            else if (aiAggressivity >= AiAggressivity.High)
             {
                 maxCityCount -= 2;
                 maxPeacefulChecks += 4;
 
-                if (DssRef.difficulty.extremeAggression)
+                if (aiAggressivity >= AiAggressivity.Extreme)
                 {
                     allyChance += 0.1f;
                     maxPeacefulChecks += 2;
@@ -129,11 +129,16 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncUpdateTooPeaceful(float time)
         {
+            if (localAiAggressivity == AiAggressivity.Peaceful)
+            {
+                return;
+            }
+
             if (tooPeacefulCheckTimer.CountDown(time))
             {
                 if (faction.cities.Count > warManagerGear.maxCityCount)
                 {
-                    warManagerGear = new WarManagerGear(warManagerGear.gear + 1);
+                    warManagerGear = new WarManagerGear(warManagerGear.gear + 1, localAiAggressivity);
                 }
 
                 tooPeacefulCheckTimer = new Time(warManagerGear.checkTimeHours.GetRandom(), TimeUnit.Hours);
@@ -144,6 +149,8 @@ namespace VikingEngine.DSSWars.Players
 
         public void tooPeacefulCheck_asynch()
         {
+           
+
             float opposingSize = 0;
 
             if (faction.totalWorkForce > 0)

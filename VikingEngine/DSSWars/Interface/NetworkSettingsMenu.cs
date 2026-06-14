@@ -222,10 +222,10 @@ namespace VikingEngine.DSSWars.Interface
                     foreach (var relation in DefaultRelationsOptions)
                     {
                         IconName.Relation(relation, out var dipIcon, out var dipName);
-                        defDiplomacyOptions.AddOption(dipIcon, dipName, relation == Ref.netsett.startDiplomacy,
+                        defDiplomacyOptions.AddOption(dipIcon, dipName, relation == Ref.netsett.hostSettings.startDiplomacy,
                             relation == RelationType.RelationType0_Neutral,
                             new RbAction1Arg<RelationType>((RelationType rel) => {
-                                Ref.netsett.startDiplomacy = relation;
+                                Ref.netsett.hostSettings.startDiplomacy = relation;
                                 Ref.netsett.settingsHasChanged = true;
                             }, relation), null);
                     }
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Use handicap") },
                     Ref.netsett.useHandicapProperty));
 
-                if (Ref.netsett.useHandicap)
+                if (Ref.netsett.clientSettings.useHandicap)
                 {
                     var aggroOptions = new DropDownBuilder("handicap aggro");
                     {
@@ -271,12 +271,12 @@ namespace VikingEngine.DSSWars.Interface
 
                             }
                             aggroOptions.AddOption(caption,
-                                lvl == Ref.netsett.handicap_botAggression,
+                                lvl == Ref.netsett.clientSettings.handicap_botAggression,
                                 lvl == HandicapLevel.Default,
                                 new RbAction1Arg<HandicapLevel>((HandicapLevel selected) =>
                                 {
                                     menu.CloseDropDown();
-                                    Ref.netsett.handicap_botAggression = selected;
+                                    Ref.netsett.clientSettings.handicap_botAggression = selected;
                                     Ref.netsett.settingsHasChanged = true;
                                 }, lvl), null);
                         }
@@ -311,12 +311,12 @@ namespace VikingEngine.DSSWars.Interface
 
                             }
                             taxOptions.AddOption(caption,
-                                lvl == Ref.netsett.handicap_taxIncome,
+                                lvl == Ref.netsett.clientSettings.handicap_taxIncome,
                                 lvl == HandicapLevel.Default,
                                 new RbAction1Arg<HandicapLevel>((HandicapLevel selected) =>
                                 {
                                     menu.CloseDropDown();
-                                    Ref.netsett.handicap_taxIncome = selected;
+                                    Ref.netsett.clientSettings.handicap_taxIncome = selected;
                                     Ref.netsett.settingsHasChanged = true;
                                 }, lvl), null);
                         }
@@ -403,10 +403,10 @@ namespace VikingEngine.DSSWars.Interface
                                 break;
                         }
 
-                        recieveGiftOpt.AddOption(caption, opt == Ref.netsett.recieveGifts, opt == GiftRecieveOption.Allow,
+                        recieveGiftOpt.AddOption(caption, opt == Ref.netsett.clientSettings.recieveGifts, opt == GiftRecieveOption.Allow,
                             new RbAction1Arg<GiftRecieveOption>((GiftRecieveOption select) =>
                             {
-                                Ref.netsett.recieveGifts = select;
+                                Ref.netsett.clientSettings.recieveGifts = select;
                                 Ref.netsett.settingsHasChanged = true;
                             }, opt), null);
                     }

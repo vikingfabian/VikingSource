@@ -303,6 +303,8 @@ namespace VikingEngine.DSSWars
         /// </summary>
         High,
 
+        Extreme,
+
 
         NUM,
 

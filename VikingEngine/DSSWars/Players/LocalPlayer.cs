@@ -176,6 +176,11 @@ namespace VikingEngine.DSSWars.Players
             schoolCopy.defaulSetup();
 
             localAiAggressivity = DssRef.difficulty.aiAggressivity;
+            if (DssRef.difficulty.extremeAggression)
+            {
+                localAiAggressivity = AiAggressivity.Extreme;
+            }
+            warManagerGear = new WarManagerGear(WarManagerGear.StartGear, localAiAggressivity);
         }
 
         public LocalPlayer(Faction faction, bool newGame)
@@ -1665,7 +1670,7 @@ namespace VikingEngine.DSSWars.Players
 
             nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
 
-            warManagerGear = new WarManagerGear(WarManagerGear.StartGear);
+            
         }
 
         public double diplomacyAddPerSec()

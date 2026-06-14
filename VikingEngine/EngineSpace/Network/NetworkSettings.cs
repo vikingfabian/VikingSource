@@ -411,11 +411,7 @@ namespace VikingEngine.Network
             }
             return alsoBlockOnRequest;
         }
-        //public bool allowHandicap = true;
-        //public bool useHandicap = false;
-        //public HandicapLevel handicap_botAggression = HandicapLevel.Default;
-        //public bool handicap_extraHonorGuards = false;
-        //public bool handicap_resourceBoost = false;
+       
         public bool allowHandicapProperty(object tag, bool set, bool value)
         {
             if (set)
@@ -498,13 +494,7 @@ namespace VikingEngine.Network
         }
 
         public bool fairProtectionProperty(object tag, bool set, bool value)
-        {
-            //if (set)
-            //{
-            //    fairProtection = value;
-            //    settingsHasChanged = true;
-            //}
-            //return fairProtection;
+        {           
             bool host = (bool)tag;
             ref var pd = ref ptpDiplomacy(host);
 
