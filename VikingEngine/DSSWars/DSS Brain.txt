@@ -8,7 +8,6 @@ X Join from closed game doesnt work
 
 * Two new leaderboards
 
-
 x iterate steam version first
 x DssEditSubTile
 

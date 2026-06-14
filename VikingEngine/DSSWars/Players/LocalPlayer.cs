@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars.Players
         static readonly Vector3 ThemeSouth_Red = new Vector3(0.2f, 0.05f, 0f);
 
         public Vector3 ShaderThemeColor = ThemeMid_Yellow;
-        public float opposingSizePerc = 0;
+        
 
         
 
@@ -168,15 +168,14 @@ namespace VikingEngine.DSSWars.Players
             gameControls.map.selection.groupModels_terrian.Draw(cameraIndex);
         }
 
-
-        
-
         void baseInit()
         {
             orders = new Orders.Orders();
             automation = new Automation(this);
             schoolCopy = new SchoolStatus();
             schoolCopy.defaulSetup();
+
+            localAiAggressivity = DssRef.difficulty.aiAggressivity;
         }
 
         public LocalPlayer(Faction faction, bool newGame)

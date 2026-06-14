@@ -238,9 +238,13 @@ namespace VikingEngine.DSSWars
             {
                 case PacketType.DssJoined_WantWorld:
                     {
+                        /*
+                        Joining player wait in lobby for this package
+                        */
                         var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
                         var meta = new SaveStateMeta();
                         meta.netSetup();
+                        new NetSharedHostSettings().write(w);
                         var saveGamestate = new SaveGamestate(meta);
                         saveGamestate.writeNet(w);
                     }
@@ -265,88 +269,7 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssPlayerEnterPresentation:
                     {
-
-                        int count = packet.r.ReadByte();
-
-                        if (sender.profile.flag == null)
-                        {
-                            sender.profile.flag = new FlagAndColor(packet.r);
-                            sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
-                            //DssRef.world.BordersUpdated = true;
-
-                            RichBoxContent content = new RichBoxContent();
-
-                            content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
-                            content.newLine();
-                            sender.addNetGamerToHud(content, true, false);
-                            LocalHost().hud.messages.Add(content, SoundLib.netJoined);
-
-
-                            if (host)
-                            {
-                                //Assign faction
-                                Task.Run(() =>
-                                {
-                                    try
-                                    {
-                                        Faction faction = null;
-                                        bool firstEnterSetup = false;
-
-                                        var hash = PlayerMapHistory.GetGamerHash(false, packet.sender.fullId, packet.senderLocalIndex);
-                                        if (previousRemotePlayers.TryGetValue(hash, out var history))
-                                        {
-                                            previousRemotePlayers.Remove(hash);
-                                            Faction prevFaction = DssRef.world.faction(history.faction);
-                                            if (prevFaction != null &&
-                                                prevFaction.cities.Count > 0 &&
-                                                prevFaction.player.IsBot()
-                                                )
-                                            {
-                                                faction = prevFaction;
-                                            }
-                                        }
-
-                                        if (faction == null)
-                                        {
-                                            firstEnterSetup = true;
-                                            faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
-                                        }
-
-                                        if (faction != null && faction.player.IsBot())
-                                        {
-                                            Ref.update.AddSyncAction(new SyncAction(() =>
-                                            {
-                                                //AbsHumanPlayer remote = GetOrCreateRemotePlayer(packet.sender, 0);
-                                                sender.AssignFaction(faction);
-                                                if (firstEnterSetup)
-                                                {
-                                                    sender.FirstEnterSetup();
-                                                }
-
-                                                Ref.steam.P2PManager.OnSendingLargeDataChunk();
-
-                                                //{
-                                                //    var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
-                                                //    w.Write((ushort)faction.myIndex);
-                                                //    faction.writeNet_Status(w);
-                                                //}
-                                                //{
-                                                //    var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
-                                                //    NetWritePlayer(w, sender);
-                                                //    w.Write((ushort)faction.myIndex);
-                                                //}
-
-                                                factionHandovers.Enqueue(new FactionHandover(packet.sender, faction, true));
-                                            }));
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        BlueScreen.ThreadException = ex;
-                                    }
-                                });
-                            }
-                        }
+                        NetReadPresentation(packet, sender);
                     }
                     break;
 
@@ -673,6 +596,117 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        void netPresentYourself(ReceivedPacket packet)
+        {
+            System.IO.BinaryWriter w;
+
+            if (packet.sender == null)
+            {
+                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable);
+            }
+            else
+            {
+                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
+            }
+
+            var sett = new NetSharedClientSettings();
+            sett.ApplyHostSettings();
+            sett.write(w);
+
+            w.Write((byte)localPlayers.Count);
+            foreach (var local in localPlayers)
+            {
+                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
+                profile.flag.write(w);
+            }
+        }
+        void NetReadPresentation(ReceivedPacket packet, RemotePlayer sender)
+        {
+            sender.netClientSettings.read(packet.r);
+
+            int count = packet.r.ReadByte();
+
+            if (sender.profile.flag == null)
+            {
+                sender.profile.flag = new FlagAndColor(packet.r);
+                sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
+                //DssRef.world.BordersUpdated = true;
+
+                RichBoxContent content = new RichBoxContent();
+
+                content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
+                content.newLine();
+                sender.addNetGamerToHud(content, true, false);
+                LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+
+
+                if (host)
+                {
+                    //Assign faction
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            Faction faction = null;
+                            bool firstEnterSetup = false;
+
+                            var hash = PlayerMapHistory.GetGamerHash(false, packet.sender.fullId, packet.senderLocalIndex);
+                            if (previousRemotePlayers.TryGetValue(hash, out var history))
+                            {
+                                previousRemotePlayers.Remove(hash);
+                                Faction prevFaction = DssRef.world.faction(history.faction);
+                                if (prevFaction != null &&
+                                    prevFaction.cities.Count > 0 &&
+                                    prevFaction.player.IsBot()
+                                    )
+                                {
+                                    faction = prevFaction;
+                                }
+                            }
+
+                            if (faction == null)
+                            {
+                                firstEnterSetup = true;
+                                faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
+                            }
+
+                            if (faction != null && faction.player.IsBot())
+                            {
+                                Ref.update.AddSyncAction(new SyncAction(() =>
+                                {
+                                    //AbsHumanPlayer remote = GetOrCreateRemotePlayer(packet.sender, 0);
+                                    sender.AssignFaction(faction);
+                                    if (firstEnterSetup)
+                                    {
+                                        sender.FirstEnterSetup();
+                                    }
+
+                                    Ref.steam.P2PManager.OnSendingLargeDataChunk();
+
+                                    //{
+                                    //    var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
+                                    //    w.Write((ushort)faction.myIndex);
+                                    //    faction.writeNet_Status(w);
+                                    //}
+                                    //{
+                                    //    var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
+                                    //    NetWritePlayer(w, sender);
+                                    //    w.Write((ushort)faction.myIndex);
+                                    //}
+
+                                    factionHandovers.Enqueue(new FactionHandover(packet.sender, faction, true));
+                                }));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            BlueScreen.ThreadException = ex;
+                        }
+                    });
+                }
+            }
+        }
+
         public override void NetEvent_LargePacket(ReceivedPacket packet)
         {
             switch (packet.type)
@@ -686,25 +720,9 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void netPresentYourself(ReceivedPacket packet)
-        {
-            System.IO.BinaryWriter w;
+       
 
-            if (packet.sender == null)
-            {
-                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable);
-            }
-            else
-            {
-                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId,  null);
-            }
-            w.Write((byte)localPlayers.Count);
-            foreach (var local in localPlayers)
-            {
-                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
-                profile.flag.write(w);
-            }
-        }
+        
 
         public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)
         {

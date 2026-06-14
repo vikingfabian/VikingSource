@@ -16,7 +16,7 @@ using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.Players
 {
-    abstract class AbsHumanPlayer : AbsPlayer
+    abstract partial class AbsHumanPlayer : AbsPlayer
     {
         public NetworkInstancePeer networkPeer;
         public GiftedAchievementsPlayerCollection giftedAchievements = new GiftedAchievementsPlayerCollection();

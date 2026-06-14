@@ -189,10 +189,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         {
             var meta = new SaveStateMeta();
             saveGamestate = new SaveGamestate(meta);
+
+            Ref.netsett.remoteHostSettings.read(readWorld);
+
             saveGamestate.readNet(readWorld);
-
             saveGamestate.complete = true;
-
         }
 
         protected override string SaveString => DssRef.lang.Progressbar_LoadProgress;

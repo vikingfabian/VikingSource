@@ -113,11 +113,14 @@ namespace VikingEngine.DSSWars.Players
         }
     }
 
-    partial class LocalPlayer
+    partial class AbsHumanPlayer
     {
-        WarManagerGear warManagerGear;
-        Time tooPeacefulCheckTimer =
-        new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+        protected WarManagerGear warManagerGear;
+        public Time tooPeacefulCheckTimer =
+            new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+
+        public float opposingSizePerc = 0;
+        protected AiAggressivity localAiAggressivity = AiAggressivity.UseDefault;
 
         public void testTooPeacefulCheck()
         {
