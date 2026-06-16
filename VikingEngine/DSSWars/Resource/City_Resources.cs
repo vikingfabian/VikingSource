@@ -58,9 +58,18 @@ namespace VikingEngine.DSSWars.GameObject
             resource.amount = amount;
         }
 
+        public void resourceAmountSet_Minimum(int cityResourceIndex, int amount)
+        {
+            ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+            if (resource.amount < amount)
+            {
+                resource.amount = amount;
+            }
+        }
+
         override public bool lowFood()
         {
-            return resourceAmount(CityResoureIndex.food) <= workForce.amount;//DssConst.WorkSafeGuardAmount;
+            return resourceAmount(CityResourceIndex.food) <= workForce.amount;//DssConst.WorkSafeGuardAmount;
         }
 
 
@@ -175,7 +184,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 throw new Exception();
             }
-            if (itemIndex + factionIndex * CityResoureIndex.COUNT >= world.factionResourceOverviews.Length)
+            if (itemIndex + factionIndex * CityResourceIndex.COUNT >= world.factionResourceOverviews.Length)
             {
                 throw new Exception();
             }
@@ -202,7 +211,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 throw new Exception();
             }
-            if (itemIndex + factionIndex * CityResoureIndex.COUNT >= DssRef.world.factionResourceOverviews.Length)
+            if (itemIndex + factionIndex * CityResourceIndex.COUNT >= DssRef.world.factionResourceOverviews.Length)
             {
                 throw new Exception();
             }
@@ -218,7 +227,7 @@ namespace VikingEngine.DSSWars.GameObject
                     resource.amount -= remove;
                     if (Ref.peRnd.ChanceF(DssConst.CessPitConvertToFuelPercentage))
                     {
-                        AddGroupedResource(CityResoureIndex.fuel, remove, true);
+                        AddGroupedResource(CityResourceIndex.fuel, remove, true);
                     }
                 }
                 //else
@@ -338,13 +347,13 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.RawFood_Group:
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
-                    return needMore(CityResoureIndex.rawFood);
+                    return needMore(CityResourceIndex.rawFood);
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
-                    return needMore(CityResoureIndex.wood);
+                    return needMore(CityResourceIndex.wood);
 
                 case ItemResourceType.NONE:
                     return false;

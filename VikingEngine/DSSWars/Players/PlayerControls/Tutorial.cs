@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             EndAdvisor,
         }
 
-        static readonly int[] BaseTutorialResources = { CityResoureIndex.stone, CityResoureIndex.wood, CityResoureIndex.food, CityResoureIndex.ironore };
+        static readonly int[] BaseTutorialResources = { CityResourceIndex.stone, CityResourceIndex.wood, CityResourceIndex.food, CityResourceIndex.ironore };
             //ItemResourceType.Stone_G, ItemResourceType.Wood_Group, ItemResourceType.SkinLinen_Group, ItemResourceType.IronOre_G };
 
         int tutorialLength = -1;
@@ -394,10 +394,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
             {
-                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.wood, 0);
-                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.skinLinnen, 8);
-                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.sharpstick, CollectWeaponArmorAmount - 6);
-                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.paddedArmor, CollectWeaponArmorAmount - 6);
+                citySel.resourceAmountSet(EntityComponent.CityResourceIndex.wood, 0);
+                citySel.resourceAmountSet(EntityComponent.CityResourceIndex.skinLinnen, 8);
+                citySel.resourceAmountSet(EntityComponent.CityResourceIndex.sharpstick, CollectWeaponArmorAmount - 6);
+                citySel.resourceAmountSet(EntityComponent.CityResourceIndex.paddedArmor, CollectWeaponArmorAmount - 6);
 
                 //if (DssRef.storage.runTutorial_1short_2normal == 1)
                 //{
@@ -1361,7 +1361,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_produceWeapons)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.sharpstick)/*res_sharpstick.amount*/ >= CollectWeaponArmorAmount)
+                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResourceIndex.sharpstick)/*res_sharpstick.amount*/ >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceWeapons = true;
 
@@ -1372,7 +1372,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_produceArmor)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.paddedArmor)/*res_paddedArmor.amount*/ >= CollectWeaponArmorAmount)
+                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResourceIndex.paddedArmor)/*res_paddedArmor.amount*/ >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceArmor = true;
 

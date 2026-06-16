@@ -139,11 +139,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (Ref.peRnd.ChanceF(0.6f))
                         {
-                            orderMissingFood(food, bufferGoalFood, city.resourceAmount(EntityComponent.CityResoureIndex.food), DssConst.FoodGoldValue * goldCostMulti, ItemResourceType.Food_G);
+                            orderMissingFood(food, bufferGoalFood, city.resourceAmount(EntityComponent.CityResourceIndex.food), DssConst.FoodGoldValue * goldCostMulti, ItemResourceType.Food_G);
                         }
                         else
                         {
-                            orderMissingFood(conservedFood, bufferGoalConservedFood, city.resourceAmount(EntityComponent.CityResoureIndex.ConservedFood), DssConst.ConservedFoodGoldValue * goldCostMulti, ItemResourceType.ConservedFood);
+                            orderMissingFood(conservedFood, bufferGoalConservedFood, city.resourceAmount(EntityComponent.CityResourceIndex.ConservedFood), DssConst.ConservedFoodGoldValue * goldCostMulti, ItemResourceType.ConservedFood);
                         }
 
                         void orderMissingFood(float hasAmount, float goalAmount, int cityAmount, int goldValue, ItemResourceType foodType)

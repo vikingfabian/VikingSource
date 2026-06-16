@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.Resource
             int count = 5;
             if (faction.payGold(count * Cost_Wood, false, city))
             {
-                city.AddGroupedResource(EntityComponent.CityResoureIndex.wood, count);
+                city.AddGroupedResource(EntityComponent.CityResourceIndex.wood, count);
                 //city.res_wood.amount += count;
             }
         }
@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Resource
             int count = CraftBuildingLib.CraftSmith_IronUse;
             if (faction.payGold(count * Cost_Iron, false, city))
             {
-                city.AddGroupedResource(EntityComponent.CityResoureIndex.iron, count, false);
+                city.AddGroupedResource(EntityComponent.CityResourceIndex.iron, count, false);
                 //city.res_iron.amount += count;
                 return true;
             }

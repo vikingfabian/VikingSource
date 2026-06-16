@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players.Profile;
@@ -34,6 +35,7 @@ namespace VikingEngine.DSSWars.Players
         public GamerCommunicationSetting communicationSetting; //not implemented
 
         public NetSharedClientSettings netClientSettings;
+        public double incomeMultiplier = 1;
 
         public RemotePlayer(Network.NetworkInstancePeer peer)
             :base()
@@ -53,19 +55,37 @@ namespace VikingEngine.DSSWars.Players
             updatePlayer();
         }
 
+        public override NetSharedClientSettings NetClientSettings()
+        {
+            return netClientSettings;
+        }
+
+        override public bool IsFriend()
+        {
+            return networkPeer.peer.isFriend;
+        }
+
         public void FirstEnterSetup()
         {
+            //This happens after faction is assigned, but before the handover starts sending
+
+            localTooPeacefulPercentage = DssRef.difficulty.tooPeacefulPercentage;
+            int honorGuard = DssRef.difficulty.honorGuardCount();
+
             if (netClientSettings.clientSettings.useHandicap)
             {
                 switch (netClientSettings.clientSettings.handicap_botAggression)
                 {
                     case HandicapLevel.None:
                         localAiAggressivity = AiAggressivity.Peaceful;
+                        localTooPeacefulPercentage = 0;
                         break;
+
                     case HandicapLevel.Low:
                         if (DssRef.difficulty.aiAggressivity > AiAggressivity.Peaceful)
                         {
                             localAiAggressivity = DssRef.difficulty.aiAggressivity -1;
+                            localTooPeacefulPercentage *= 0.6f;
                         }
                         break;
 
@@ -77,8 +97,28 @@ namespace VikingEngine.DSSWars.Players
                         if (DssRef.difficulty.aiAggressivity < AiAggressivity.Extreme)
                         {
                             localAiAggressivity = DssRef.difficulty.aiAggressivity + 1;
+                            localTooPeacefulPercentage *= 2.5f;
                         }
                         break;
+                }
+
+                if (netClientSettings.clientSettings.handicap_extraHonorGuards)
+                {
+                    honorGuard += 4;
+                }
+
+                switch (netClientSettings.clientSettings.handicap_taxIncome)
+                {
+                    case HandicapLevel.Low:
+                        incomeMultiplier = 0.75;
+                        break;
+                    case HandicapLevel.Default:
+                        incomeMultiplier = 1;
+                        break;
+                    case HandicapLevel.High:
+                        incomeMultiplier = 1.25;
+                        break;
+
                 }
             }
 
@@ -93,13 +133,27 @@ namespace VikingEngine.DSSWars.Players
             while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
             {
                 citySel.money.copper = Math.Max(citySel.money.copper, Resource.Money.GoldToCopper * 100);
+
+                if (netClientSettings.clientSettings.useHandicap && 
+                    netClientSettings.clientSettings.handicap_resourceBoost)
+                {
+                    //BOOST RESOURCES
+                    citySel.resourceAmountSet(CityResourceIndex.food, 500);
+                    citySel.resourceAmountSet(CityResourceIndex.wood, 300);
+                    citySel.resourceAmountSet(CityResourceIndex.stone, 300);
+                    citySel.resourceAmountSet(CityResourceIndex.skinLinnen, 300);
+                    citySel.resourceAmountSet(CityResourceIndex.fuel, 200);
+                    citySel.resourceAmountSet(CityResourceIndex.Brick, 100);
+                    citySel.resourceAmountSet(CityResourceIndex.iron, 200);
+                }
             }
 
             startingResources();
 
             ((PlayState)DssRef.state).startingArmySizes(out double unitCountMulti, out bool settlerGuard);
 
-            playerStartUnits(unitCountMulti, settlerGuard);
+            
+            playerStartUnits(unitCountMulti, settlerGuard, honorGuard);
         }
 
         public override void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)

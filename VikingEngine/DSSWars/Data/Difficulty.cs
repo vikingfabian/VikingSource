@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Data
 
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
-        public float toPeacefulPercentage = 0;
+        public float tooPeacefulPercentage = 0;
 
         public double resourceMultiplyChance = 0;
         public bool resourceMultiplyDecrease;
@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.Data
                     resourcesStartHelp = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 20 * TimeExt.MinuteInSeconds;
-                    toPeacefulPercentage = 0.2f;
+                    tooPeacefulPercentage = 0.2f;
                     PlayerBonusGold = 2000;
                     break;
 
@@ -319,7 +319,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
-                    toPeacefulPercentage = 0.4f;
+                    tooPeacefulPercentage = 0.4f;
                     break;
 
                 case 4:
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 10;
-                    toPeacefulPercentage = 0.7f;
+                    tooPeacefulPercentage = 0.7f;
                     break;
 
                 case 5:
@@ -343,7 +343,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 1f;
+                    tooPeacefulPercentage = 1f;
                     break;
 
                 case 6:
@@ -358,7 +358,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 1.5f;
+                    tooPeacefulPercentage = 1.5f;
                     break;
 
                 case 7: //200%
@@ -372,7 +372,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     aiDelayTimeSec = 0;
-                    toPeacefulPercentage = 3f;
+                    tooPeacefulPercentage = 3f;
                     break;
 
                 case 8: // 300%
@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     aiDelayTimeSec = 0;
-                    toPeacefulPercentage = 10f;
+                    tooPeacefulPercentage = 10f;
                     extremeAggression = true;
                     break;
             }
@@ -402,7 +402,7 @@ namespace VikingEngine.DSSWars.Data
                 case GameModeMainType.QuickMatch:
                     runStory = false;
                     peaceful = false;
-                    toPeacefulPercentage = 0;
+                    tooPeacefulPercentage = 0;
                     break;
                 case GameModeMainType.Sandbox:
                 case GameModeMainType.Spectator:
@@ -412,7 +412,7 @@ namespace VikingEngine.DSSWars.Data
                 case GameModeMainType.Peaceful:
                     runStory = false;
                     peaceful = true;
-                    toPeacefulPercentage = 0;
+                    tooPeacefulPercentage = 0;
                     //toPeacefulCheck = false;
                     break;
             }
@@ -424,6 +424,25 @@ namespace VikingEngine.DSSWars.Data
 
             manFoodUpkeep = DssConst.ManDefaultEnergyCost / FoodEnergySett;
             mountFoodUpkeep = DssConst.MountDefaultEnergyCost / FoodEnergySett;
+        }
+
+        public int honorGuardCount()
+        {
+            if (honorGuard)
+            {
+                switch (DssRef.storage.gameRuleset.factionStartSize)
+                {
+                    case FactionStartSize.Full:
+                        return 12;
+                    case FactionStartSize.OneCity:
+                        return 4;
+                    case FactionStartSize.Settler:
+                        return 2;
+                }
+
+            }
+
+            return 0;
         }
 
         public void write(System.IO.BinaryWriter w)

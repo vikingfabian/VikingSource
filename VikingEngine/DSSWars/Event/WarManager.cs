@@ -21,14 +21,20 @@ namespace VikingEngine.DSSWars.Event
 
         void asyncUpdateTooPeaceful(float time)
         {
-            if (DssRef.difficulty.toPeacefulPercentage > 0)
+            mainStory.TryPeek(out var storyevent);
+            if (storyevent == null || storyevent.RunWarManager())
             {
-                mainStory.TryPeek(out var storyevent);
-                if (storyevent == null || storyevent.RunWarManager())
+                foreach (var p in DssRef.state.localPlayers)
                 {
-                    foreach (var p in DssRef.state.localPlayers)
-                    {
-                        p.asyncUpdateTooPeaceful(time);
+                    p.asyncUpdateTooPeaceful(time);
+                }
+
+                var remoteC = DssRef.state.remotePlayers.counter();
+                while (remoteC.Next())
+                {
+                    if (remoteC.sel.ready)
+                    { 
+                        remoteC.sel.asyncUpdateTooPeaceful(time);
                     }
                 }
             }
@@ -121,6 +127,7 @@ namespace VikingEngine.DSSWars.Players
 
         public float opposingSizePerc = 0;
         protected AiAggressivity localAiAggressivity = AiAggressivity.UseDefault;
+        protected float localTooPeacefulPercentage;
 
         public void testTooPeacefulCheck()
         {
@@ -129,7 +136,8 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncUpdateTooPeaceful(float time)
         {
-            if (localAiAggressivity == AiAggressivity.Peaceful)
+            if (localAiAggressivity == AiAggressivity.Peaceful ||
+                localTooPeacefulPercentage <= 0)
             {
                 return;
             }
@@ -177,7 +185,7 @@ namespace VikingEngine.DSSWars.Players
                 int attackersCount = 0;
                 Span<int> attackers = stackalloc int[maxChecks];
 
-                float minOpposingStrength = faction.PotensialMilitaryStrength() * DssRef.difficulty.toPeacefulPercentage * warManagerGear.tooPeacefulPercentageMulti;
+                float minOpposingStrength = faction.PotensialMilitaryStrength() * localTooPeacefulPercentage * warManagerGear.tooPeacefulPercentageMulti;
                 float maxOpposingStrength = minOpposingStrength * 2f;
 
 
@@ -245,10 +253,10 @@ namespace VikingEngine.DSSWars.Players
                             var otherFaction = DssRef.world.faction(attackers[otherIx]);
                             var relation = DssRef.world.diplomacy.GetRelation(firstAttacker, otherFaction).Relation;
 
-                            if (relation <= RelationType.RelationTypeN3_War)
+                            if (relation <= RelationType.RelationTypeN3_Mobilization)
                             {
                                 //Try declare peace
-                                if (relation > RelationType.RelationTypeN4_TotalWar)
+                                if (relation > RelationType.RelationTypeN5_TotalWar)
                                 {
                                     firstAttacker.player.GetAiPlayer().botToBotPeaceDeclaration(null, otherFaction);
                                 }

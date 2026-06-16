@@ -176,6 +176,7 @@ namespace VikingEngine.DSSWars.Players
             schoolCopy.defaulSetup();
 
             localAiAggressivity = DssRef.difficulty.aiAggressivity;
+            localTooPeacefulPercentage = DssRef.difficulty.tooPeacefulPercentage;
             if (DssRef.difficulty.extremeAggression)
             {
                 localAiAggressivity = AiAggressivity.Extreme;
@@ -625,7 +626,7 @@ namespace VikingEngine.DSSWars.Players
 
         public override void createStartUnits(double unitCountMulti, bool settlerGuard)
         {
-            playerStartUnits(unitCountMulti, settlerGuard);
+            playerStartUnits(unitCountMulti, settlerGuard, DssRef.difficulty.honorGuardCount());
             //if (faction.cities.Count > 0)
             //{
             //    if (quickMatchUnits(false))
@@ -716,7 +717,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (otherFaction.player != null)
             {
-                if ((rel.Relation <= RelationType.RelationTypeN3_War &&
+                if ((rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
                     otherFaction.factiontype != FactionType.SouthHara)
                     ||
                     otherFaction.player.IsHumanPlayer())
@@ -726,7 +727,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         message(DssRef.lang.Diplomacy_RelationType);
                     }
-                    else if (rel.Relation <= RelationType.RelationTypeN3_War)
+                    else if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
                     {
                         if (previousRelation == RelationType.RelationTypeN2_Truce)
                         {
@@ -1653,7 +1654,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
                     {   
-                        for (int i = 0; i < CityResoureIndex.COUNT; i++)
+                        for (int i = 0; i < CityResourceIndex.COUNT; i++)
                         {
                             ref GroupedResource resources = ref faction.mainCity.GetRefGroupedResource(i);
                             resources.hardSetLimit(100);

@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.Players
            
         }
 
-        protected void playerStartUnits(double unitCountMulti, bool settlerGuard)
+        protected void playerStartUnits(double unitCountMulti, bool settlerGuard, int honorguards)
         {
             if (faction.cities.Count > 0)
             {
@@ -191,9 +191,9 @@ namespace VikingEngine.DSSWars.Players
                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
                 }
 
-                if (DssRef.difficulty.honorGuard)
+                if (honorguards > 0)
                 {
-                    int guardCount = MathExt.MultiplyInt(12, unitCountMulti) - startStrength;
+                    int guardCount = MathExt.MultiplyInt(honorguards, unitCountMulti) - startStrength;
 
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
@@ -202,7 +202,8 @@ namespace VikingEngine.DSSWars.Players
                         {
                             onTile = citySel.ArmySpawnTilePos();
                             var army = faction.NewArmy(onTile);
-                            for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
+                            var cityGuardCount = MathExt.MultiplyInt(4, unitCountMulti);
+                            for (int i = 0; i < cityGuardCount; ++i)
                             {
                                 new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
                                 --guardCount;
@@ -240,6 +241,15 @@ namespace VikingEngine.DSSWars.Players
         {
             faction.factiontype = FactionType.Player;
             faction.availableForPlayer = false;
+        }
+
+        virtual public NetSharedClientSettings NetClientSettings()
+        {
+            return new NetSharedClientSettings();
+        }
+        virtual public bool IsFriend()
+        {
+            return true;
         }
     }
 }

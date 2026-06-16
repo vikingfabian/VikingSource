@@ -1023,7 +1023,7 @@ namespace VikingEngine.DSSWars.Event
                 foreach (var faction in attackers)
                 {
                     faction.player.setMinimumAggression(Players.AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.world.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN3_War);
+                    DssRef.world.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN4_War);
                 }
 
                 player.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_TheCohalition);
@@ -1424,7 +1424,7 @@ namespace VikingEngine.DSSWars.Event
                         for (var j = i + 1; j < matchFactions.Count; ++j)
                         {
                             var faction2 = matchFactions[j];
-                            if (faction2.isAlive && DssRef.world.diplomacy.GetRelation(faction1, faction2).Relation <= RelationType.RelationTypeN3_War)
+                            if (faction2.isAlive && DssRef.world.diplomacy.GetRelation(faction1, faction2).Relation <= RelationType.RelationTypeN4_War)
                             {
                                 return false;
                             }

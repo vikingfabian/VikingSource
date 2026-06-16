@@ -788,7 +788,7 @@ namespace VikingEngine.DSSWars
 
                 
 
-                int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
+                int end = resourceComponentStartIndex + CityResourceIndex.COUNT;
                 for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
                 {
                     DssRef.world.factionResourceOverviews[itemIx].clearFactionOverView();
@@ -797,9 +797,9 @@ namespace VikingEngine.DSSWars
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref cities))
                 {
-                    int start = citiesC.sel * CityResoureIndex.COUNT;
+                    int start = citiesC.sel * CityResourceIndex.COUNT;
 
-                    for (int index = 0; index < CityResoureIndex.COUNT; index++)
+                    for (int index = 0; index < CityResourceIndex.COUNT; index++)
                     {
                         ref var cityResource = ref DssRef.world.cityResouces[start + index];
                         cityResource.changeRate.oneSecondUpdate();
@@ -811,7 +811,7 @@ namespace VikingEngine.DSSWars
                     }
                 }
 
-                ResourceChangeRate foodChange = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + CityResoureIndex.food].changeRate;
+                ResourceChangeRate foodChange = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + CityResourceIndex.food].changeRate;
                 foodProduction.add(foodChange.prevProduced);
                 foodSpending.add(foodChange.prevConsumed);
             }

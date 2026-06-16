@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars
         
         public void InitCity(City city)
         {
-            city.resourceComponentStartIndex = CityResoureIndex.COUNT * city.myIndex;
+            city.resourceComponentStartIndex = CityResourceIndex.COUNT * city.myIndex;
            
         }
 
@@ -199,7 +199,7 @@ namespace VikingEngine.DSSWars
 
         public void clearCityResources(City city)
         {
-            int ex_end = city.resourceComponentStartIndex + CityResoureIndex.COUNT;
+            int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;
             for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
             {
                 cityResouces[i].amount = 0;
@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars
 
         public void setCityStockPile(City city, int limit)
         {
-            int ex_end = city.resourceComponentStartIndex + CityResoureIndex.COUNT;
+            int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;
             for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
             {
                 cityResouces[i].setLimit(limit);
@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars
         {
             initWorkerXp(cityCount);
 
-            cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
+            cityResouces = new GroupedResource[CityResourceIndex.COUNT * cityCount];
             neighborCities = new EcsStaticIndexArray(16, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
@@ -253,19 +253,19 @@ namespace VikingEngine.DSSWars
             int startIndex = 0;
             for (int cityIx = 0; cityIx < cityCount; cityIx++)
             {
-                for (int resourceIx = 0; resourceIx < CityResoureIndex.COUNT; ++resourceIx)
+                for (int resourceIx = 0; resourceIx < CityResourceIndex.COUNT; ++resourceIx)
                 {
                     cityResouces[resourceStart + resourceIx] = new GroupedResource();
                 }
 
-                cityResouces[resStartIndex + CityResoureIndex.wood].amount = startWood;
-                cityResouces[resStartIndex + CityResoureIndex.fuel].amount = 100;
-                cityResouces[resStartIndex + CityResoureIndex.stone].amount = 20;
-                cityResouces[resStartIndex + CityResoureIndex.food].amount = startFood;
-                cityResouces[resStartIndex + CityResoureIndex.skinLinnen].amount = startLinnen;                
-                cityResouces[resStartIndex + CityResoureIndex.iron].amount = 20;
+                cityResouces[resStartIndex + CityResourceIndex.wood].amount = startWood;
+                cityResouces[resStartIndex + CityResourceIndex.fuel].amount = 100;
+                cityResouces[resStartIndex + CityResourceIndex.stone].amount = 20;
+                cityResouces[resStartIndex + CityResourceIndex.food].amount = startFood;
+                cityResouces[resStartIndex + CityResourceIndex.skinLinnen].amount = startLinnen;                
+                cityResouces[resStartIndex + CityResourceIndex.iron].amount = 20;
 
-                resourceStart += CityResoureIndex.COUNT;
+                resourceStart += CityResourceIndex.COUNT;
 
                 WorkTemplate.InitComponents(cityWork, startIndex);
 

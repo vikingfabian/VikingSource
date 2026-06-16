@@ -70,6 +70,8 @@ namespace VikingEngine.Network
         public object Tag = null;
         public StoredNetworkGamer storedData;
 
+        public bool isFriend = false;
+
         public bool lowLoad()
         {
             return packetLoad + potensialLoad < maxPacketCount;

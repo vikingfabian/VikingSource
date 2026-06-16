@@ -152,17 +152,7 @@ namespace VikingEngine.DSSWars.Interface
                 while (remoteC.Next())
                 {
                     gamerButton(remoteC.sel);
-                    //content.newLine();
-
-                    //RichBoxContent buttonContent = new RichBoxContent();
-                    //remoteC.sel.addNetGamerToHud(buttonContent, true);
-
-                    //content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<RemotePlayer>(
-                    //    (RemotePlayer select) => { selectedPlayer = select; player.hud.needRefresh = true; }, remoteC.sel),
-                    //    new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput)));
-
-                    //remoteC.sel.giftedAchievements.ToHud(content, player, remoteC.sel, this);
-
+                    
                     remoteC.sel.addNetPingToHud(content);
                 }
                 content.Add(new RbSeperationLine());
@@ -171,6 +161,7 @@ namespace VikingEngine.DSSWars.Interface
             void gamerButton(AbsHumanPlayer gamer)
             {
                 content.newLine();
+                var settings = gamer.GetRemotePlayer().netClientSettings;
 
                 RichBoxContent buttonContent = new RichBoxContent();
                 gamer.addNetGamerToHud(buttonContent, true, true);
@@ -179,7 +170,11 @@ namespace VikingEngine.DSSWars.Interface
                     (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
                     new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
 
-                gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
+                if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
+                    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.networkPeer.peer.isFriend))
+                {
+                    gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
+                }
             }
         }
 

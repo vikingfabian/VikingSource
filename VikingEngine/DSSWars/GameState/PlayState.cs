@@ -74,6 +74,11 @@ namespace VikingEngine.DSSWars
             this.host = host;
             Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
 
+            if (host)
+            {
+                Ref.netsett.remoteHostSettings = new NetSharedHostSettings();
+            }
+
             if (readWorld != null)
             {   
                 new LoadScene(readWorld);
@@ -362,7 +367,7 @@ namespace VikingEngine.DSSWars
 
 
                     DssRef.world.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], 
-                        ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar, null, 
+                        ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN5_TotalWar, null, 
                         SpeakTerms.SpeakTermsN2_None);
 
                     //var relation = DssRef.world.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);

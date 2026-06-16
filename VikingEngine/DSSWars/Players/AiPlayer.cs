@@ -1597,9 +1597,9 @@ namespace VikingEngine.DSSWars.Players
             switch (profile.flag.factionFlavorType)
             {
                 case FactionFlavorType.Mountain:
-                    faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.iron, 100, false);
-                    faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.shortsword, 60, false);
-                    faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.heavyMailArmor, 60, false);
+                    faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.iron, 100, false);
+                    faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.shortsword, 60, false);
+                    faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.heavyMailArmor, 60, false);
                     break;
             }
         }
@@ -1847,7 +1847,7 @@ namespace VikingEngine.DSSWars.Players
                 if (enemyFaction != null && enemyFaction.player.IsBot())
                 {
                     var rel = DssRef.world.diplomacy.GetRelation(faction, enemyFaction);
-                    if (rel.Relation <= RelationType.RelationTypeN2_Truce && rel.Relation > RelationType.RelationTypeN4_TotalWar)
+                    if (rel.Relation <= RelationType.RelationTypeN2_Truce && rel.Relation > RelationType.RelationTypeN5_TotalWar)
                     {
                         botToBotPeaceDeclaration(null, enemyFaction);
                     }
@@ -2680,7 +2680,7 @@ namespace VikingEngine.DSSWars.Players
         public override void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
             base.onNewRelation(otherFaction, rel, previousRelation, localAction);
-            if (rel.Relation == RelationType.RelationTypeN3_War)
+            if (rel.Relation <= RelationType.RelationTypeN4_War)
             {
                 if (otherFaction.factiontype == FactionType.Player &&
                     DssRef.difficulty.aiAggressivity == AiAggressivity.High)

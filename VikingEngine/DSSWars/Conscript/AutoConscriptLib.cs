@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-                var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
+                var res_food = city.GetRefGroupedResource(EntityComponent.CityResourceIndex.food);
 
                 if (aggresive || res_food.changeRate.Change > -20)
                 {
