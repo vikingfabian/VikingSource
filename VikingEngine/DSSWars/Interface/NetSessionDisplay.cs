@@ -161,7 +161,7 @@ namespace VikingEngine.DSSWars.Interface
             void gamerButton(AbsHumanPlayer gamer)
             {
                 content.newLine();
-                var settings = gamer.GetRemotePlayer().netClientSettings;
+                var settings = gamer.NetClientSettings();
 
                 RichBoxContent buttonContent = new RichBoxContent();
                 gamer.addNetGamerToHud(buttonContent, true, true);
