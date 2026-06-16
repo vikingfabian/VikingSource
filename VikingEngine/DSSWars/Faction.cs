@@ -405,9 +405,9 @@ namespace VikingEngine.DSSWars
 
         void writeResources(System.IO.BinaryWriter w)
         {
-            BoolRegister boolRegister = new BoolRegister(CityResoureIndex.COUNT * 1);
+            BoolRegister boolRegister = new BoolRegister(CityResourceIndex.COUNT * 1);
             {
-                for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+                for (int i = 0; i < CityResourceIndex.COUNT; ++i)
                 {
                     DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].writeFaction( boolRegister);
                 }
@@ -417,7 +417,7 @@ namespace VikingEngine.DSSWars
         public void readResources(System.IO.BinaryReader r, int subversion)
         {
             BoolRegister boolRegister = new BoolRegister(r);
-            for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+            for (int i = 0; i < CityResourceIndex.COUNT; ++i)
             {
                 DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].readFaction(boolRegister,r, subversion);
             }
@@ -672,9 +672,9 @@ namespace VikingEngine.DSSWars
                         incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
                     }
                 }
-                else
+                else if (player.IsRemotePlayer())
                 {
-                    lib.DoNothing();
+                    incomeMultiplier = player.GetRemotePlayer().incomeMultiplier;
                 }
 
                 double income = 0;
@@ -1165,7 +1165,7 @@ namespace VikingEngine.DSSWars
                                         {
                                             //share worst relation
                                             RelationType worst = (RelationType)Math.Min((int)warRelation.Relation, (int)allyToEnemyRelation.Relation);
-                                            if (worst <= RelationType.RelationTypeN3_War)
+                                            if (worst <= RelationType.RelationTypeN3_Mobilization)
                                             {
                                                 DssRef.world.diplomacy.declareWar(enemyFaction, ally);
                                             }

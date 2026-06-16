@@ -117,12 +117,12 @@ namespace VikingEngine.Network
 
     struct ClientSettings
     {
-        public GiftRecieveOption recieveGifts = GiftRecieveOption.FriendsOnly;
-        public bool useHandicap = false;
-        public HandicapLevel handicap_botAggression = HandicapLevel.Default;
-        public bool handicap_extraHonorGuards = false;
-        public bool handicap_resourceBoost = false;
-        public HandicapLevel handicap_taxIncome = HandicapLevel.Default;
+        public GiftRecieveOption recieveGifts = GiftRecieveOption.FriendsOnly;//i
+        public bool useHandicap = false;//i
+        public HandicapLevel handicap_botAggression = HandicapLevel.Default;//i
+        public bool handicap_extraHonorGuards = false;//i
+        public bool handicap_resourceBoost = false;//i
+        public HandicapLevel handicap_taxIncome = HandicapLevel.Default;//i
 
         public ClientSettings()
         { }

@@ -461,7 +461,7 @@ namespace VikingEngine.DSSWars
                 var ally = DssRef.world.faction(fIx);
                 if (ally != null)
                 {
-                    if (GetRelation(ally, faction2).Relation <= RelationType.RelationTypeN3_War)
+                    if (GetRelation(ally, faction2).Relation <= RelationType.RelationTypeN3_Mobilization)
                     {
                         return false;
                     }
@@ -774,7 +774,7 @@ namespace VikingEngine.DSSWars
                 !GetRelation(attacker, defender).InWar())
             {
                 ref var relation = ref GetRefRelation(attacker.myIndex, defender.myIndex);
-                relation.SetRelation(attacker, defender, RelationType.RelationTypeN3_War, out RelationType prevRelation);
+                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, out RelationType prevRelation);
                 
 
 
@@ -1057,7 +1057,7 @@ namespace VikingEngine.DSSWars
 
         public static bool IsWar(RelationType relation)
         {
-            return relation <= RelationType.RelationTypeN3_War;
+            return relation <= RelationType.RelationTypeN3_Mobilization;
         }
 
     }
@@ -1073,8 +1073,9 @@ namespace VikingEngine.DSSWars
         RelationType0_Neutral = 0,
         RelationTypeN1_Enemies = -1,
         RelationTypeN2_Truce = -2,
-        RelationTypeN3_War = -3,
-        RelationTypeN4_TotalWar = -4,
+        RelationTypeN3_Mobilization = -3,
+        RelationTypeN4_War = -4,
+        RelationTypeN5_TotalWar = -5,
 
         ExtendTruce = 100,
     }

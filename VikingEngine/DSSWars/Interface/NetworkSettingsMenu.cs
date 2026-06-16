@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Interface
         const string UnlockPvp_Sure = "net sett unlock pvp_sure";
         const string BlockList = "blocklist";
 
-        static readonly RelationType[] DefaultRelationsOptions = { RelationType.RelationType0_Neutral, RelationType.RelationType3_Ally, RelationType.RelationTypeN3_War };
+        static readonly RelationType[] DefaultRelationsOptions = { RelationType.RelationType0_Neutral, RelationType.RelationType3_Ally, RelationType.RelationTypeN4_War };
 
         RichMenu menu;
         public NetworkSettingsMenu(RichMenu menu) 

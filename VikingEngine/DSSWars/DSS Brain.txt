@@ -7,6 +7,9 @@
 X Join from closed game doesnt work
 
 * Two new leaderboards
+* local ai aggression
+* fixed: Heavy padded Armor and Padded armor on the stockpile menu, their locations are switched
+
 
 x iterate steam version first
 x DssEditSubTile

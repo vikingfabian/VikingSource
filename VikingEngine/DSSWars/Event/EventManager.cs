@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Event
                                     hillFriends++;
                                 }
                             }
-                            else if (relation.Relation <= RelationType.RelationTypeN3_War)
+                            else if (relation.Relation <= RelationType.RelationTypeN3_Mobilization)
                             { 
                                 warCount++;
                                 warStrength += otherFaction.PotensialMilitaryStrength();
@@ -328,9 +328,9 @@ namespace VikingEngine.DSSWars.Event
                     var hate = DssRef.world.faction(DssRef.settings.Faction_DyingHate);
                     var destru = DssRef.world.faction(DssRef.settings.Faction_DyingDestru);
 
-                    DssRef.world.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
-                    DssRef.world.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
-                    DssRef.world.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN5_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN5_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN5_TotalWar);
 
                     //void secretAlliance(Faction faction1, Faction faction2)
                     //{

@@ -19,12 +19,10 @@ namespace VikingEngine.DSSWars.Communication
         public DiplomaticRelation()
         {   
         }
-
         public bool HasValue()
         { 
             return Relation != RelationType.RelationType0_Neutral || SpeakTerms != SpeakTerms.SpeakTerms0_Normal;
         }
-
         public bool InWar()
         {
             return Diplomacy.IsWar(Relation);
@@ -43,7 +41,7 @@ namespace VikingEngine.DSSWars.Communication
                 faction1 != null && faction2 != null)
             {
                 Relation = newRelation;
-                if (Relation == RelationType.RelationTypeN4_TotalWar)
+                if (Relation == RelationType.RelationTypeN5_TotalWar)
                 {
                     SpeakTerms = SpeakTerms.SpeakTermsN2_None;
                 }
@@ -81,8 +79,7 @@ namespace VikingEngine.DSSWars.Communication
         {
             Relation = RelationType.RelationType0_Neutral;
             SpeakTerms = SpeakTerms.SpeakTermsN2_None;
-        }
-      
+        }     
 
         public void write(System.IO.BinaryWriter w)
         {
@@ -111,10 +108,7 @@ namespace VikingEngine.DSSWars.Communication
             {
                 w.Write((ushort)allyAgainst);
             }
-
         }
-
-        
 
         public void read(System.IO.BinaryReader r, int subVersion)
         {
@@ -174,11 +168,12 @@ namespace VikingEngine.DSSWars.Communication
 
         public void truce_update()
         {
-            if (Relation == RelationType.RelationTypeN2_Truce)
+            if (Relation == RelationType.RelationTypeN2_Truce ||
+                Relation == RelationType.RelationTypeN3_Mobilization)
             {
                 if (RelationEnd_GameTimeSec.TimeOut())
                 {
-                    Relation = RelationType.RelationTypeN3_War;
+                    Relation = RelationType.RelationTypeN4_War;
                 }
             }
         }

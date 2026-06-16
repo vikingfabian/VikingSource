@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (toLevel == 1)
             {
-                return resourceAmount(CityResoureIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
+                return resourceAmount(CityResourceIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
             }
             else if (toLevel == 2)
             {
@@ -449,37 +449,37 @@ namespace VikingEngine.DSSWars.GameObject
                 case CityResurceSeed.HenOrPig:
                     if (cityBiome == CityBiome.Default_Fields && areaCulture.percPlains >= 0.25)
                     {
-                        AddGroupedResource(world,CityResoureIndex.Pig, DssConst.PenBreedingStockCount * 2);
+                        AddGroupedResource(world,CityResourceIndex.Pig, DssConst.PenBreedingStockCount * 2);
                     }
                     else
                     {
-                        AddGroupedResource(world, CityResoureIndex.Hen, DssConst.PenBreedingStockCount * 4);
+                        AddGroupedResource(world, CityResourceIndex.Hen, DssConst.PenBreedingStockCount * 4);
                     }
                     break;
                 case CityResurceSeed.Mount:
                     switch (cityBiome)
                     {
                         case CityBiome.Mountain:
-                            AddGroupedResource(world, CityResoureIndex.WildPig, DssConst.PenBreedingStockCount * 2);
+                            AddGroupedResource(world, CityResourceIndex.WildPig, DssConst.PenBreedingStockCount * 2);
                             break;
 
                         case CityBiome.Desert:
                             if (world.rnd.Chance(0.5))
                             {
-                                AddGroupedResource(world, CityResoureIndex.Elephant, DssConst.PenBreedingStockCount);
+                                AddGroupedResource(world, CityResourceIndex.Elephant, DssConst.PenBreedingStockCount);
                             }
                             else
                             {
-                                AddGroupedResource(world, CityResoureIndex.Horse, DssConst.PenBreedingStockCount);
+                                AddGroupedResource(world, CityResourceIndex.Horse, DssConst.PenBreedingStockCount);
                             }
                             break;
 
                         case CityBiome.Forest:
-                            AddGroupedResource(world, CityResoureIndex.WildCat, DssConst.PenBreedingStockCount);
+                            AddGroupedResource(world, CityResourceIndex.WildCat, DssConst.PenBreedingStockCount);
                             break;
 
                         default:
-                            AddGroupedResource(world, CityResoureIndex.Pony, DssConst.PenBreedingStockCount * 2);
+                            AddGroupedResource(world, CityResourceIndex.Pony, DssConst.PenBreedingStockCount * 2);
                             break;
 
                     }
@@ -487,31 +487,31 @@ namespace VikingEngine.DSSWars.GameObject
                 case CityResurceSeed.DogOrOxen:
                     if (areaCulture.percPlains >= 0.25)
                     {
-                        AddGroupedResource(world, CityResoureIndex.Oxen, DssConst.PenBreedingStockCount * 2);
+                        AddGroupedResource(world, CityResourceIndex.Oxen, DssConst.PenBreedingStockCount * 2);
                     }
                     else
                     {
-                        AddGroupedResource(world, CityResoureIndex.Dog, DssConst.PenBreedingStockCount * 2);
+                        AddGroupedResource(world, CityResourceIndex.Dog, DssConst.PenBreedingStockCount * 2);
                     }
                     break;
 
                 case CityResurceSeed.ConservedFood:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 800);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 800);
                     break;
                 case CityResurceSeed.Brick:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 2000);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 2000);
                     break;
                 case CityResurceSeed.Bronze:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 800);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 800);
                     break;
                 case CityResurceSeed.Iron:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 400);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 400);
                     break;
                 case CityResurceSeed.Storage:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 2000);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 2000);
                     break;
                 case CityResurceSeed.Linnen:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 1000);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 1000);
                     break;
 
                 default:
@@ -1015,9 +1015,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             w.Write((short)res_water.amount);
 
-            BoolRegister boolRegister = new BoolRegister(CityResoureIndex.COUNT * 2);
+            BoolRegister boolRegister = new BoolRegister(CityResourceIndex.COUNT * 2);
             {
-                for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+                for (int i = 0; i < CityResourceIndex.COUNT; ++i)
                 {
                     DssRef.world.cityResouces[resourceComponentStartIndex + i].writeCity(boolRegister);
                 }
@@ -1030,7 +1030,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_water.amount = r.ReadInt16();
 
             BoolRegister boolRegister = new BoolRegister(r);
-            for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+            for (int i = 0; i < CityResourceIndex.COUNT; ++i)
             {
                 DssRef.world.cityResouces[resourceComponentStartIndex + i].readCity(boolRegister, r, subversion);
             }
@@ -1860,7 +1860,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                requirements &= resourceAmount(CityResoureIndex.food) > DssConst.ChildFoodRequirement &&
+                requirements &= resourceAmount(CityResourceIndex.food) > DssConst.ChildFoodRequirement &&
                     homeUsers() < workersMax();
             }
 
@@ -1979,7 +1979,7 @@ namespace VikingEngine.DSSWars.GameObject
                 float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
                 freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
 
-                PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResoureIndex.rawFood, PenFoodUpkeep_minute, false);
+                PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResourceIndex.rawFood, PenFoodUpkeep_minute, false);
             }
         }
 
@@ -2472,17 +2472,17 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 HudLib.CityResource(args.content, this, ItemResourceType.Food_G);
 
-                if (resourceAmount(CityResoureIndex.food)/*res_food.amount*/ <= LowAmount)
+                if (resourceAmount(CityResourceIndex.food)/*res_food.amount*/ <= LowAmount)
                 {
                     if (res_water.amount <= 2)
                     {
                         HudLib.CityResource(args.content, this, ItemResourceType.Water_G);
                     }
-                    if (resourceAmount(CityResoureIndex.rawFood)/*res_rawFood.amount*/ <= LowAmount)
+                    if (resourceAmount(CityResourceIndex.rawFood)/*res_rawFood.amount*/ <= LowAmount)
                     {
                         HudLib.CityResource(args.content, this, ItemResourceType.RawFood_Group);
                     }
-                    if (resourceAmount(CityResoureIndex.fuel)/*res_fuel.amount*/ <= LowAmount)
+                    if (resourceAmount(CityResourceIndex.fuel)/*res_fuel.amount*/ <= LowAmount)
                     {
                         HudLib.CityResource(args.content, this, ItemResourceType.Fuel_G);
                     }
@@ -3321,7 +3321,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (!city.GetCasual())
             {
                 {
-                    bool available = city.resourceAmount(CityResoureIndex.food) > DssConst.ChildFoodRequirement;
+                    bool available = city.resourceAmount(CityResourceIndex.food) > DssConst.ChildFoodRequirement;
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));

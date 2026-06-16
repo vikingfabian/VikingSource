@@ -57,11 +57,15 @@ namespace VikingEngine.DSSWars
                     icon = SpriteName.WarsRelationTruce;
                     name = DssRef.lang.Diplomacy_RelationType_Truce;
                     break;
-                case RelationType.RelationTypeN3_War:
+                case RelationType.RelationTypeN3_Mobilization:
+                    icon = SpriteName.MissingImage;
+                    name = ".Mobilizing";
+                    break;
+                case RelationType.RelationTypeN4_War:
                     icon = SpriteName.WarsRelationWar;
                     name = DssRef.lang.Diplomacy_RelationType_War;
                     break;
-                case RelationType.RelationTypeN4_TotalWar:
+                case RelationType.RelationTypeN5_TotalWar:
                     icon = SpriteName.WarsRelationTotalWar;
                     name = DssRef.lang.Diplomacy_RelationType_TotalWar;
                     break;

@@ -128,12 +128,12 @@ namespace VikingEngine.DSSWars.Players
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    DssRef.world.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN5_TotalWar);
                 }
 
                 if (greenwood != null)
                 {
-                    DssRef.world.diplomacy.SetRelationType(greenwood, ally, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(greenwood, ally, RelationType.RelationTypeN5_TotalWar);
                 }                
             }
 

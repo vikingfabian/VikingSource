@@ -35,8 +35,8 @@ namespace VikingEngine.DSSWars.Event
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref DssRef.state.LocalHost().faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20, false);
-                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500, false);
+                    citySel.AddGroupedResource(EntityComponent.CityResourceIndex.Palisade, 20, false);
+                    citySel.AddGroupedResource(EntityComponent.CityResourceIndex.food, 500, false);
 
                     //citiesC.sel.res_Palisade.amount += 20;
                     //citiesC.sel.res_food.amount += 500;
