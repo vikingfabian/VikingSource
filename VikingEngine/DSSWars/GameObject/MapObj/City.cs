@@ -1731,7 +1731,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //faction.profile.modelColorReplace
             var faction = GetFaction_NoChecks();
-            if (faction == null)
+            if (faction == null || faction.player == null)
             {
                 setModel(new Graphics.VoxelModelInstance(DssRef.models.voxelModels[LootFest.VoxelModelName.unclaimed_icon], false) { scale = new Vector3(0.06f) });
             }
