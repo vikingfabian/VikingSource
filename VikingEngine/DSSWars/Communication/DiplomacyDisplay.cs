@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -130,7 +131,8 @@ namespace VikingEngine.DSSWars.Interface
                 DiplomacyActionManager diplomacyActionManager = new DiplomacyActionManager();
                 var options = diplomacyActionManager.diplomacyOptionsToBot(player, botFaction);
 
-                if (selectedRelation.Relation == RelationType.RelationTypeN2_Truce)
+                if (selectedRelation.Relation == RelationType.RelationTypeN2_Truce ||
+                    selectedRelation.Relation == RelationType.RelationTypeN3_Mobilization)
                 {
                     int sec = Convert.ToInt32(selectedRelation.RelationEnd_GameTimeSec.Seconds);
                     content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, sec));
@@ -201,9 +203,30 @@ namespace VikingEngine.DSSWars.Interface
                             new RbText(forgeRelationString),
                         },
                new RbAction1Arg<RelationType>(commitDiplomacyAction, opt.toRelation, RbSoundType.Buy),
-               new RbTooltip(relationTooltip, opt.toRelation), opt.available));
+               new RbTooltip(forgeRelationToolTip, opt), opt.available));
         }
 
+        void forgeRelationToolTip(RichBoxContent content, object tag)
+        {
+            DiplomacyOption opt = (DiplomacyOption)tag;
+            if (opt.toRelation <= RelationType.RelationTypeN3_Mobilization &&
+                !opt.available)
+            {
+                if (opt.tooLargeAlliance)
+                {
+                    content.icontext(HudLib.NotAvailableIcon, ".Alliance limt");
+                    content.text(".Can't be attacked by a larger player alliance", HudLib.InfoYellow_Light);
+                }
+                if (opt.startProtection)
+                {
+                    content.icontext(HudLib.NotAvailableIcon, ".Game start protection");
+                    content.text(HudLib.TimeSpan(opt.protectionTime), HudLib.InfoYellow_Light);
+                }
+                content.newParagraph();
+            }
+
+            relationTooltip(content, opt.toRelation);
+        }
         void setRelation_AsGod(RelationType relation, Faction faction1, Faction faction2)
         {
             DssRef.world.diplomacy.SetRelationType(faction1, faction2, relation);
@@ -329,83 +352,123 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                if (selectedRelation.Relation == RelationType.RelationType3_Ally &&
-                    settings.clientPtoP.canBreakAlliance)
-                {
-                    forgeRelationButton(content, new DiplomacyOption(RelationType.RelationType0_Neutral)); 
-                }
+               
 
                 if (selectedRelation.Relation <= RelationType.RelationTypeN2_Truce)
                 {
-                    content.newLine();
+                    offerToPlayerRelationButton(content, RelationType.RelationType1_Peace);
+                    //content.newLine();
 
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
-                        {
-                            new RbImage(SpriteName.WarsRelationPeace),
-                            new RbText(DssRef.lang.Diplomacy_OfferPeace),
-                        },
-                        new RbAction(offerToPlayerGoodRelation, RbSoundType.Buy)));
+                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
+                    //    {
+                    //        new RbImage(SpriteName.WarsRelationPeace),
+                    //        new RbText(DssRef.lang.Diplomacy_OfferPeace),
+                    //    },
+                    //    new RbAction1Arg<RelationType>(offerToPlayerRelation, RelationType.RelationType1_Peace, RbSoundType.Buy)));
                 }
                 else if (selectedRelation.Relation < RelationType.RelationType3_Ally)
                 {
                     if (settings.clientPtoP.allianceAllow == Network.PlayerDiplomacyAllowType.Allow)
                     {
-                        content.newLine();
+                        offerToPlayerRelationButton(content, RelationType.RelationType3_Ally);
+                        //content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
-                        {
-                            new RbImage(SpriteName.WarsRelationAlly),
-                            new RbText(DssRef.lang.Diplomacy_OfferAlliance),
-                        },
-                            new RbAction(offerToPlayerGoodRelation, RbSoundType.Buy)));
+                        //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
+                        //{
+                        //    new RbImage(SpriteName.WarsRelationAlly),
+                        //    new RbText(DssRef.lang.Diplomacy_OfferAlliance),
+                        //},
+                        //new RbAction1Arg<RelationType>(offerToPlayerRelation, RelationType.RelationType3_Ally, RbSoundType.Buy)));
+                    }
+                }
+
+               
+                if (selectedRelation.Relation == RelationType.RelationType3_Ally &&
+                   settings.clientPtoP.canBreakAlliance)
+                {
+                    forgeRelationButton(content, new DiplomacyOption(RelationType.RelationType0_Neutral));
+                }
+
+                if (selectedRelation.Relation >= RelationType.RelationTypeN1_Enemies &&
+                    (selectedRelation.Relation != RelationType.RelationType3_Ally || settings.clientPtoP.canBreakAlliance))
+                {
+
+                    RelationType warLevel = settings.clientPtoP.warDeclarePreparationTime.use ?
+                        RelationType.RelationTypeN3_Mobilization : RelationType.RelationTypeN4_War;
+                    var warOption = new DiplomacyOption(warLevel);
+
+                    warOption.tooLargeAlliance = false;
+
+                    if (settings.clientPtoP.allianceLimit)
+                    {
+                        warOption.tooLargeAlliance = player.AllianceCount_Humans() > otherPlayer.AllianceCount_Humans();
+                    }
+
+
+
+                    warOption.startProtection = false;
+                    warOption.protectionTime = TimeSpan.Zero;
+                    if (settings.clientPtoP.gameStartPreparationTime.use)
+                    {
+                        warOption.protectionTime = settings.clientPtoP.gameStartPreparationTime.time.TimeSpan - otherPlayer.timePlayed;
+                        warOption.startProtection = warOption.protectionTime.Ticks > 0;
+                    }
+
+
+                    warOption.available = !warOption.tooLargeAlliance && !warOption.startProtection;
+
+                    if (settings.clientPtoP.mustAsk)
+                    {
+                        offerToPlayerRelationButton(content, warLevel);
+                    }
+                    else
+                    {
+                        forgeRelationButton(content, warOption);
                     }
                 }
             }
         }
 
-        void offerToPlayerGoodRelation()
+        void offerToPlayerRelationButton(RichBoxContent content, RelationType relation)
+        {
+            IconName.Relation(relation, out SpriteName icon, out string name);
+
+            content.newLine();
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
+                {
+                    new RbImage(SpriteName.WarsRelationPeace),
+                    new RbSpace(0.5f),
+                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, ".Offer relation", name)),
+                },
+                new RbAction1Arg<RelationType>(offerToPlayerRelation, RelationType.RelationType1_Peace, RbSoundType.Buy)));
+        }
+
+        void offerToPlayerRelation(RelationType relation)
         {
             AbsHumanPlayer otherPlayer = otherfaction.player.GetHumanPlayer();
             PlayerToPlayerDiplomacy PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = true;
-
-            if (selectedRelation.Relation <= RelationType.RelationTypeN2_Truce)
-            {
-                PtoP.suggestedRelation = RelationType.RelationType1_Peace;
-            }
-            else
-            {
-                PtoP.suggestedRelation = RelationType.RelationType3_Ally;
-            }
+            PtoP.suggestedRelation = relation;
+            //if (selectedRelation.Relation <= RelationType.RelationTypeN2_Truce)
+            //{
+            //    PtoP.suggestedRelation = RelationType.RelationType1_Peace;
+            //}
+            //else
+            //{
+            //    PtoP.suggestedRelation = RelationType.RelationType3_Ally;
+            //}
 
             PtoP.suggestedBy = player.faction.myIndex;
 
 
             if (otherPlayer.IsLocal)
             {
-                //var message = new RichBoxContent();
-                //message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, player.Name));
-                //message.newLine();
-                //message.Add(new RbImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
-                //message.Add(new RbText(Diplomacy.RelationString(PtoP.suggestedRelation)));
-                //message.newLine();
-
-                //var acceptButtonContent = new List<AbsRichBoxMember>(7);
-                //MessageGroup_Ingame.ControllerInputIcons(player, acceptButtonContent);
-                //acceptButtonContent.Add(new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer));
-                //message.Add(new ArtButton(RbButtonStyle.Primary,
-                //    acceptButtonContent,
-                //    new RbAction(acceptToPlayerRelation)));
-
-                allianceOfferedDisplay(player, otherPlayer.GetLocalPlayer(), PtoP);
-                // otherPlayer.GetLocalPlayer().hud.messages.Add(message, SoundLib.netMessage);
+                playerOfferedRelationMessage(player, otherPlayer.GetLocalPlayer(), PtoP);
             }
             else
             {
-                //var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
-                //     Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
-                //PtoP.writeNet(w);
                 netSendP2p(PtoP, otherPlayer);
             }
         }
@@ -415,7 +478,7 @@ namespace VikingEngine.DSSWars.Interface
             var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
                      Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
             
-            //PtoP.writeNet(w);
+            PtoP.writeNet(w);
         }
 
         public void netReadP2pRelation(System.IO.BinaryReader r, AbsHumanPlayer fromPlayer)
@@ -426,11 +489,16 @@ namespace VikingEngine.DSSWars.Interface
 
             if (PtoP.suggestingNewRelation)
             {
-                allianceOfferedDisplay(fromPlayer, player, PtoP);
+                playerOfferedRelationMessage(fromPlayer, player, PtoP);
+            }
+            else
+            {
+                //Declined
+                playerDeclinedRelationMessage(fromPlayer, player, PtoP);    
             }
         }
 
-        void allianceOfferedDisplay(AbsHumanPlayer sending, LocalPlayer recieving, PlayerToPlayerDiplomacy PtoP)
+        void playerOfferedRelationMessage(AbsHumanPlayer sending, LocalPlayer recieving, PlayerToPlayerDiplomacy PtoP)
         {
             IconName.Relation(PtoP.suggestedRelation, out SpriteName relIcon, out string relName);
 
@@ -452,14 +520,32 @@ namespace VikingEngine.DSSWars.Interface
             recieving.hud.messages.Add(message, SoundLib.netMessage);            
         }
 
-        void acceptToPlayerRelation(AbsHumanPlayer otherPlayer)
+        void playerDeclinedRelationMessage(AbsHumanPlayer sending, LocalPlayer recieving, PlayerToPlayerDiplomacy PtoP)
         {
-            //var otherPlayer = otherPlayer.GetHumanPlayer();
+            var message = new RichBoxContent();
+            sending.addNetGamerToHud(message, true, false);
+            message.text(".Declined relation offer");
+            recieving.hud.messages.Add(message, SoundLib.stop);
+        }
+
+        void acceptToPlayerRelation(AbsHumanPlayer otherPlayer)
+        {            
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             if (PtoP.suggestingNewRelation)
-            { 
-                DssRef.world.diplomacy.SetRelationType(player.faction, otherPlayer.faction, PtoP.suggestedRelation);
+            {
+                var localSettings = player.NetClientSettings();
+                if (otherPlayer.NetClientSettings().clientPtoP.fairProtection)
+                {
+                    localSettings.clientPtoP.ApplyFairProtection(otherPlayer.NetClientSettings().clientPtoP);
+                }
+
+                float? secondsLength = null;
+                if (PtoP.suggestedRelation == RelationType.RelationTypeN3_Mobilization)
+                {
+                    secondsLength = localSettings.clientPtoP.gameStartPreparationTime.time.seconds;
+                }
+                DssRef.world.diplomacy.SetRelationType(player.faction, otherPlayer.faction, PtoP.suggestedRelation, secondsLength);
             }
 
             PtoP.suggestingNewRelation = false;
@@ -467,7 +553,6 @@ namespace VikingEngine.DSSWars.Interface
 
         void cancelToPlayerRelation(AbsHumanPlayer otherPlayer)
         {
-            //var otherPlayer = otherfaction.player.GetHumanPlayer();
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
 
             PtoP.suggestingNewRelation = false;

@@ -1377,7 +1377,7 @@ namespace VikingEngine.DSSWars.Interface
                             break;
 
                         case TagSubTab.HudPin:
-                            tabContent.Add(new RbImage(SpriteName.HudLocationPinIcon, 0.7f));
+                            tabContent.Add(new RbImage(SpriteName.HudPinIcon, 0.7f));
                             tabContent.space(0.6f);
                             tabContent.Add(new RbText(DssRef.lang.HudPins));
                             description = DssRef.lang.HudPins_Description;

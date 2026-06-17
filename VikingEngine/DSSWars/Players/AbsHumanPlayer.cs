@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Players
         public NetworkInstancePeer networkPeer;
         public GiftedAchievementsPlayerCollection giftedAchievements = new GiftedAchievementsPlayerCollection();
         public SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
-        
+        public TimeSpan timePlayed = TimeSpan.Zero;
 
         public AbsHumanPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
@@ -76,6 +76,11 @@ namespace VikingEngine.DSSWars.Players
             while (pinsC.Next())
             {
                 pinsC.sel.update();
+            }
+
+            if (DssRef.time.oneSecond)
+            {
+                timePlayed.Add(TimeSpan.FromSeconds(1));
             }
         }
 
@@ -237,6 +242,23 @@ namespace VikingEngine.DSSWars.Players
             return true;
         }
 
+        public int AllianceCount_Humans()
+        { 
+            int count = 0;
+
+            AllHumansLoop humansLoop = new AllHumansLoop();
+            while (humansLoop.Next())
+            {
+                if (humansLoop.sel != this &&
+                    DssRef.world.diplomacy.GetRelation(faction, humansLoop.sel.faction).Relation >=  RelationType.RelationType3_Ally)
+                { 
+                     count++;
+                }
+            }
+
+            return count;
+        }
+
         public void setPlayerFaction(Faction faction)
         {
             faction.factiontype = FactionType.Player;
@@ -245,8 +267,11 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public NetSharedClientSettings NetClientSettings()
         {
-            return new NetSharedClientSettings();
+            var result = new NetSharedClientSettings();
+            result.ApplyHostSettings();
+            return result;
         }
+
         virtual public bool IsFriend()
         {
             return true;

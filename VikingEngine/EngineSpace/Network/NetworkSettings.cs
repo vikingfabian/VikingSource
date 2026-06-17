@@ -15,19 +15,19 @@ namespace VikingEngine.Network
 {
     struct PlayerToPlayerDiplomacy
     {        
-        public PlayerDiplomacyAllowType allianceAllow;
-        public bool canBreakAlliance;
+        public PlayerDiplomacyAllowType allianceAllow;//i
+        public bool canBreakAlliance;//i
 
-        public PlayerDiplomacyAllowType warAllow;
+        public PlayerDiplomacyAllowType warAllow;//i
 
         /// <summary>
         /// Larger player group cant attack a smaller one
         /// </summary>
-        public bool allianceLimit;
-        public bool mustAsk;
-        public bool fairProtection;
-        public UseTimeLimit warDeclarePreparationTime;
-        public UseTimeLimit gameStartPreparationTime;
+        public bool allianceLimit;//i
+        public bool mustAsk;//i
+        public bool fairProtection;//i
+        public UseTimeLimit warDeclarePreparationTime;//i
+        public UseTimeLimit gameStartPreparationTime;//i
 
         public PlayerToPlayerDiplomacy(bool host)
         {
@@ -68,6 +68,39 @@ namespace VikingEngine.Network
                 warDeclarePreparationTime = hostSettings.warDeclarePreparationTime;
                 gameStartPreparationTime = hostSettings.gameStartPreparationTime;
             }
+        }
+
+        public void ApplyFairProtection()
+        {
+            if (fairProtection)
+            {
+                //canBreakAlliance |= Ref.netsett.clientPtoP.canBreakAlliance;
+                //allianceLimit |= Ref.netsett.clientPtoP.allianceLimit;
+                //mustAsk |= Ref.netsett.clientPtoP.mustAsk;
+
+                //warDeclarePreparationTime.use |= Ref.netsett.clientPtoP.warDeclarePreparationTime.use;
+                //warDeclarePreparationTime.time.seconds = Math.Max(warDeclarePreparationTime.time.seconds, Ref.netsett.clientPtoP.warDeclarePreparationTime.time.seconds);
+
+                //gameStartPreparationTime.use |= Ref.netsett.clientPtoP.gameStartPreparationTime.use;
+                //gameStartPreparationTime.time.seconds = Math.Max(gameStartPreparationTime.time.seconds, Ref.netsett.clientPtoP.gameStartPreparationTime.time.seconds);
+
+                ApplyFairProtection(Ref.netsett.clientPtoP);
+            }
+        }
+
+        public void ApplyFairProtection(PlayerToPlayerDiplomacy PtoP)
+        {
+            
+            canBreakAlliance |= PtoP.canBreakAlliance;
+            allianceLimit |= PtoP.allianceLimit;
+            mustAsk |= PtoP.mustAsk;
+
+            warDeclarePreparationTime.use |= PtoP.warDeclarePreparationTime.use;
+            warDeclarePreparationTime.time.seconds = Math.Max(warDeclarePreparationTime.time.seconds, PtoP.warDeclarePreparationTime.time.seconds);
+
+            gameStartPreparationTime.use |= PtoP.gameStartPreparationTime.use;
+            gameStartPreparationTime.time.seconds = Math.Max(gameStartPreparationTime.time.seconds, PtoP.gameStartPreparationTime.time.seconds);
+
         }
 
         public void write(System.IO.BinaryWriter w)

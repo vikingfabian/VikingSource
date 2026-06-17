@@ -42,8 +42,8 @@ namespace VikingEngine.DSSWars.Net
                     var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFaction, PacketReliability.Reliable, out var packet);
                     ((PlayState)DssRef.state).NetWritePlayer(w, remote);
                     w.Write((ushort)faction.myIndex);
-
                     w.Write(DssRef.time.TotalIngameTime().Ticks);
+                    w.Write(remote.timePlayed.Ticks);
                     DssRef.world.metaData.worldId.write(w);
 
                     packet.EndWrite_Asynch();

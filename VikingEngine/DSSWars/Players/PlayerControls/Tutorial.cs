@@ -778,7 +778,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_experienceTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Progress));
                         //TwoBools fletcherPracticeWait_progressToHud_sound = TwoBools.False;
                         LangLib.Technology(XP.TechnologyTreeType.catapult, out SpriteName catapultIcon, out string catapultCaption);
-                        content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_progressToHud_sound.Value1), SpriteName.HudLocationPinIcon, DssRef.lang.Tutorial_AddPin);
+                        content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_progressToHud_sound.Value1), SpriteName.HudPinIcon, DssRef.lang.Tutorial_AddPin);
                         content.space();
                         content.Add(new RbText(DssRef.lang.Technology_Title));
                         HudLib.BulletSeperationPoint(content);
@@ -787,7 +787,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         //TwoBools fletcherPracticeWait_skillToHud_sound = TwoBools.False;
 
                         LangLib.ExperienceType(XP.WorkExperienceType.Fletcher, out string fletcherCaption, out SpriteName fletcherIcon);
-                        content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_skillToHud_sound.Value1), SpriteName.HudLocationPinIcon, DssRef.lang.Tutorial_AddPin);
+                        content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_skillToHud_sound.Value1), SpriteName.HudPinIcon, DssRef.lang.Tutorial_AddPin);
                         content.space();
                         content.Add(new RbText(DssRef.lang.Experience_Title));
                         HudLib.BulletSeperationPoint(content);
@@ -932,7 +932,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.EducateBurner:
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.HudLocationPinIcon));
+                    content.Add(new RbImage(SpriteName.HudPinIcon));
                     content.Add(new RbImage(SpriteName.WarsResource_Iron));
                     content.Add(new RbText(DssRef.lang.UnitType_City));
                     ////EducateBurner,
@@ -963,7 +963,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.HudLocationPinIcon));
+                    content.Add(new RbImage(SpriteName.HudPinIcon));
                     content.Add(new RbImage(SpriteName.WarsResource_Iron));
                     content.Add(new RbText(DssRef.lang.UnitType_City));
 
@@ -999,7 +999,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.HudLocationPinIcon));
+                    content.Add(new RbImage(SpriteName.HudPinIcon));
                     content.Add(new RbImage(SpriteName.WarsResource_Iron));
                     content.Add(new RbText(DssRef.lang.UnitType_City));
 
@@ -1041,7 +1041,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 content.space();
                 content.Add(new RbText(DssRef.lang.Tutorial_AddPin));
                 content.space();
-                content.Add(new RbImage(SpriteName.HudLocationPinIcon));
+                content.Add(new RbImage(SpriteName.HudPinIcon));
                 content.hspace();
                 content.Add(new RbImage(itemIcon));
                 content.space();

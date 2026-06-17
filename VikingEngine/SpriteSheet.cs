@@ -2073,6 +2073,7 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Falcon7);
                 add(SpriteName.HudPin_Falcon8);
                 add(SpriteName.HudPin_Falcon9);
+                add(SpriteName.HudPin_Falcon_);
 
                 add(SpriteName.HudPin_Castle0);
                 add(SpriteName.HudPin_Castle1);
@@ -2084,6 +2085,7 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Castle7);
                 add(SpriteName.HudPin_Castle8);
                 add(SpriteName.HudPin_Castle9);
+                add(SpriteName.HudPin_Castle_);
 
                 add(SpriteName.HudPin_Horse0);
                 add(SpriteName.HudPin_Horse1);
@@ -2095,6 +2097,7 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Horse7);
                 add(SpriteName.HudPin_Horse8);
                 add(SpriteName.HudPin_Horse9);
+                add(SpriteName.HudPin_Horse_);
 
                 add(SpriteName.HudPin_Ship0);
                 add(SpriteName.HudPin_Ship1);
@@ -2106,6 +2109,7 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Ship7);
                 add(SpriteName.HudPin_Ship8);
                 add(SpriteName.HudPin_Ship9);
+                add(SpriteName.HudPin_Ship_);
 
                 add(SpriteName.HudPin_Cannon0);
                 add(SpriteName.HudPin_Cannon1);
@@ -2117,9 +2121,10 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Cannon7);
                 add(SpriteName.HudPin_Cannon8);
                 add(SpriteName.HudPin_Cannon9);
+                add(SpriteName.HudPin_Cannon_);
 
-                currentIndex++;
-                add(SpriteName.WarsIconPin);
+                //currentIndex++;
+                add(SpriteName.WarsLocationPin);
                 add(SpriteName.WarsHudRoundButtonDisabled);
                 add(SpriteName.WarsHudGoldOutline);
             }
@@ -2192,7 +2197,7 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_SilverCoin);
 
                 add(SpriteName.WarsWorkSmelting);
-                add(SpriteName.HudLocationPinIcon);
+                add(SpriteName.HudPinIcon);
                 add(SpriteName.warsBuildCategoryAdvanced);
                 add(SpriteName.warsBuildCategorySearch);
                 add(SpriteName.WarsHudGodPowerButton);

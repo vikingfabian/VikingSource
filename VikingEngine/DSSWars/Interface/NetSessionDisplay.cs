@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                content.h2(".Net session", HudLib.TitleColor_Head);
+                content.h2("Net session", HudLib.TitleColor_Head);
 
                 gamerButton(player);
                 content.newLine();
@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
 
                 if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
-                    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.networkPeer.peer.isFriend))
+                    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.IsFriend()))
                 {
                     gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
                 }

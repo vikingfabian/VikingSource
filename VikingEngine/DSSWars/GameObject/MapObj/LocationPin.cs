@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
             args.content.space(0.5f);
-            args.content.Add(new RbImage(SpriteName.HudLocationPinIcon));
+            args.content.Add(new RbImage(SpriteName.WarsLocationPin));
             args.content.space(0.5f);
             args.content.Add(new RbText(DssRef.todoLang.ObjectType_LocationPin, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 

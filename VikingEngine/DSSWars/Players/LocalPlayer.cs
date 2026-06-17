@@ -332,6 +332,8 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
 
                 RemotePlayerPointer.netWrite(w, this);
+
+                w.Write((int)timePlayed.TotalSeconds);
             }
 
             if (pins.Count > 0)
@@ -1671,7 +1673,10 @@ namespace VikingEngine.DSSWars.Players
 
             nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
 
-            
+            if (DssRef.state.host)
+            {
+                timePlayed = DssRef.time.TotalIngameTime();
+            }
         }
 
         public double diplomacyAddPerSec()

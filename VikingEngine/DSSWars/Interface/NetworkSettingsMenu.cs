@@ -536,35 +536,38 @@ namespace VikingEngine.DSSWars.Interface
 
             if (toPlayerDiplomacy.warAllow == PlayerDiplomacyAllowType.Allow)
             {
-                if (!host)
-                {
-                    content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Fair protection") },
-                        Ref.netsett.fairProtectionProperty, new RbTooltip_Text("Protected players must use their rules on you")));
-                }
-
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Alliance limt") },
-                    Ref.netsett.warAllianceLimitProperty, new RbTooltip_Text("Can't be attacked by a larger player alliance"))
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Fair protection") },
+                    Ref.netsett.fairProtectionProperty, new RbTooltip_Text("Protected players must use their rules on you"))
                 { propertyTag = host });
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Must ask") },
-                    Ref.netsett.warMustAskProperty, new RbTooltip_Text("War have to be requested"))
+                    Ref.netsett.warMustAskProperty, new RbTooltip_Text("Both players must agree to fight"))
                 { propertyTag = host });
-
-                content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Game start protection") },
-                    Ref.netsett.warUseGameStartTimeProperty)
-                { propertyTag = host });
-
-                if (toPlayerDiplomacy.gameStartPreparationTime.use)
+                //if (!host)
+                //{
+                if (!toPlayerDiplomacy.mustAsk)
                 {
-                    HudLib.Label(content, "Minutes");
-                    content.hspace();
-                    RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
-                        Ref.netsett.warStartTimeProperty, true, host);
-                    content.newParagraph();
+                    
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Alliance limt") },
+                        Ref.netsett.warAllianceLimitProperty, new RbTooltip_Text("Can't be attacked by a larger player alliance"))
+                    { propertyTag = host });
+
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Game start protection") },
+                        Ref.netsett.warUseGameStartTimeProperty)
+                    { propertyTag = host });
+
+                    if (toPlayerDiplomacy.gameStartPreparationTime.use)
+                    {
+                        HudLib.Label(content, "Minutes");
+                        content.hspace();
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
+                            Ref.netsett.warStartTimeProperty, true, host);
+                        content.newParagraph();
+                    }
                 }
 
                 content.newLine();

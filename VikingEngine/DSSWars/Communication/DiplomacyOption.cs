@@ -12,6 +12,11 @@ namespace VikingEngine.DSSWars.Communication
         public int cost;
         public bool available;
 
+        //Not available reasons
+        public bool tooLargeAlliance;
+        public bool startProtection;
+        public TimeSpan protectionTime;
+
         public DiplomacyOption()
         { }
 

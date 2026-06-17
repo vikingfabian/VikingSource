@@ -629,7 +629,8 @@ namespace VikingEngine.DSSWars
         //    return rel;
         //}
 
-        public void SetRelationType(Faction faction1, Faction faction2, RelationType? newRelation, float? relationEndTime = null, SpeakTerms? speakTerms = null, bool secret = false)
+
+        public void SetRelationType(Faction faction1, Faction faction2, RelationType? newRelation, float? relationSecondsLength = null, SpeakTerms? speakTerms = null, bool secret = false)
         {
             if (faction1 != null && faction2 != null && faction1 != faction2)
             {
@@ -642,9 +643,9 @@ namespace VikingEngine.DSSWars
                 {
                     relation.SpeakTerms = speakTerms.Value;
                 }
-                if (relationEndTime.HasValue)
+                if (relationSecondsLength.HasValue)
                 {
-                    relation.RelationEnd_GameTimeSec.setTimeFromNow(relationEndTime.Value);
+                    relation.RelationEnd_GameTimeSec.setTimeFromNow(relationSecondsLength.Value);
                 }
                 relation.secret = secret;
             }

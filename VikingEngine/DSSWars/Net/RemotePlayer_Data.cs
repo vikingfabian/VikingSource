@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Players
         public int localScreenIndex;
         public ulong id;
         public int faction;
+        public TimeSpan timePlayed;
 
         public void write(System.IO.BinaryWriter w)
         {
@@ -22,6 +23,7 @@ namespace VikingEngine.DSSWars.Players
             w.Write((byte)localScreenIndex);
             w.Write(id);
             w.Write((ushort)faction);
+            w.Write((int)timePlayed.TotalSeconds);
         }
         public void read(System.IO.BinaryReader r, int subVersion)
         {
@@ -29,6 +31,7 @@ namespace VikingEngine.DSSWars.Players
             localScreenIndex = r.ReadByte();
             id = r.ReadUInt64();
             faction = r.ReadUInt16();
+            timePlayed = TimeSpan.FromSeconds(r.ReadInt32());
         }
 
         public override int GetHashCode()
@@ -74,6 +77,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 id = networkPeer.peer.fullId,
                 faction = assignedFaction,
+                timePlayed = timePlayed,
             };
         }
 

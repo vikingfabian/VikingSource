@@ -60,6 +60,12 @@ namespace VikingEngine.DSSWars.Data
             return new TimeLength(hours * TimeExt.HourInSeconds);
         }
 
+        public TimeSpan TimeSpan
+        {
+            get { return TimeSpan.FromSeconds(seconds); }
+            set { seconds = (float)value.TotalSeconds; }
+        }
+
         public override string ToString()
         {
             return $"Time length: {seconds} seconds";

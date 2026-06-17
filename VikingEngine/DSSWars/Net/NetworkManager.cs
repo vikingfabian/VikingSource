@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars
                         {
                             sender.Net_readStatus(packet.r);
                             sender.pointer.netRead(packet.r);
-
+                            sender.timePlayed = TimeSpan.FromSeconds(packet.r.ReadInt32());
                             if (sender.newPlayer)
                             {
                                 //Present yourself
@@ -288,9 +288,11 @@ namespace VikingEngine.DSSWars
                         tplayer.AssignFaction(faction);
 
                         DssRef.time.setTotalTime(new TimeSpan(packet.r.ReadInt64()));
+                        tplayer.timePlayed = new TimeSpan(packet.r.ReadInt64());
                         DssRef.world.metaData.worldId.read(packet.r);
                     }
                     break;
+
                 case PacketType.DssAssignFactionCities:
                     {
                         int factionIx = packet.r.ReadUInt16();
@@ -317,6 +319,7 @@ namespace VikingEngine.DSSWars
                         }
                     }
                     break;
+
                 case PacketType.DssAssignFactionComplete:
                     {
                         factionHandOverComplete = true;
@@ -611,6 +614,8 @@ namespace VikingEngine.DSSWars
 
             var sett = new NetSharedClientSettings();
             sett.ApplyHostSettings();
+            sett.clientPtoP.ApplyFairProtection();
+
             sett.write(w);
 
             w.Write((byte)localPlayers.Count);
@@ -661,6 +666,7 @@ namespace VikingEngine.DSSWars
                                     )
                                 {
                                     faction = prevFaction;
+                                    sender.timePlayed = history.timePlayed;
                                 }
                             }
 
