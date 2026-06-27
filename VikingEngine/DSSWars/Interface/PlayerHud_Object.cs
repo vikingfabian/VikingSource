@@ -113,10 +113,7 @@ namespace VikingEngine.DSSWars.Interface
                 
                 if (DssRef.state.remotePlayers.Count > 0)
                 {
-                    if (DssRef.state.host || Ref.netsett.hostSettings.lobbyPublicity >= Network.LobbyPublicity.FriendsOnly)
-                    {
-                        netSessionDisplay.invite(content);
-                    }
+                   
 
                     netSessionDisplay.overviewToHud(player, content);
                     

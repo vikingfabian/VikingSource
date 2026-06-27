@@ -157,6 +157,7 @@ namespace VikingEngine.DSSWars.Interface
             else
             {
                 content.h2("Net session", HudLib.TitleColor_Head);
+                
 
                 gamerButton(player);
                 content.newLine();
@@ -169,6 +170,12 @@ namespace VikingEngine.DSSWars.Interface
                     
                     remoteC.sel.addNetPingToHud(content);
                 }
+
+                if (DssRef.state.host || Ref.netsett.hostSettings.lobbyPublicity >= Network.LobbyPublicity.FriendsOnly)
+                {
+                    invite(content);
+                }
+
                 content.Add(new RbSeperationLine());
             }
 
@@ -342,7 +349,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Request block") },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Request: Block player") },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_REQUESTBLOCK, StackOption.Stack)));
 
                 //content.newLine();

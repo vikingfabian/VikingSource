@@ -209,18 +209,19 @@ namespace VikingEngine.DSSWars.Interface
         void forgeRelationToolTip(RichBoxContent content, object tag)
         {
             DiplomacyOption opt = (DiplomacyOption)tag;
+
             if (opt.toRelation <= RelationType.RelationTypeN3_Mobilization &&
                 !opt.available)
             {
                 if (opt.tooLargeAlliance)
                 {
-                    content.icontext(HudLib.NotAvailableIcon, ".Alliance limt");
+                    content.icontext(HudLib.NotAvailableIcon, ".Alliance limt", HudLib.NotAvailableColor);
                     content.text(".Can't be attacked by a larger player alliance", HudLib.InfoYellow_Light);
                 }
                 if (opt.startProtection)
                 {
-                    content.icontext(HudLib.NotAvailableIcon, ".Game start protection");
-                    content.text(HudLib.TimeSpan(opt.protectionTime), HudLib.InfoYellow_Light);
+                    content.icontext(HudLib.NotAvailableIcon, ".Game start protection", HudLib.NotAvailableColor);
+                    content.text(HudLib.TimeSpan_LongText(opt.protectionTime), HudLib.InfoYellow_Light);
                 }
                 content.newParagraph();
             }

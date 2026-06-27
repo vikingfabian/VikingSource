@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (DssRef.time.oneSecond)
             {
-                timePlayed.Add(TimeSpan.FromSeconds(1));
+                timePlayed = timePlayed.Add(TimeSpan.FromSeconds(1));
             }
         }
 
