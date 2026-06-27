@@ -202,7 +202,16 @@ namespace VikingEngine.DSSWars.Presentation
         public string GiftAchieve_Sheep_Desc => "You are allowed your own opinion.";
 
         public string GiftAchieve_GlitchRider_Name => "Glitch Rider";
-        public string GiftAchieve_GlichRider_Desc => "Stop abusing every bug in the game!";
+        public string GiftAchieve_GlichRider_Desc => "Stop abusing the game!";
+
+        public string GiftAchieve_ChickenShit_Name => "Chicken Shit";
+        public string GiftAchieve_ChickenShit_Desc => "Are you afraid?";
+
+        public string GiftAchieve_TheLeakyCanteen_Name => "The Leaky Canteen";
+        public string GiftAchieve_TheLeakyCanteen_Desc => "So dry, not a drop of water!";
+
+
+
 
     }
 }

@@ -66,7 +66,8 @@ namespace VikingEngine.DSSWars.Data
 
         public bool LoadClient(int faction)
         {
-            SaveClientStateMeta latest = null;
+            double latestTimeDiff = double.MaxValue;
+            ClientSaveMeta latest = null;
 
             foreach (var save in clientSaves.saves)
             {
@@ -75,7 +76,13 @@ namespace VikingEngine.DSSWars.Data
                     save.World.MapId() == DssRef.world.metaData.worldId.MapId() &&
                     save.faction == faction)
                 {
-                    if (latest == null || latest.saveDate < save.saveDate)
+                    double timeDiff = DssRef.time.TotalIngameTime().TotalSeconds - save.playTime.TotalSeconds;
+                    if (timeDiff < 0)
+                    {
+                        timeDiff = Math.Abs(timeDiff) * 2f;
+                    }
+
+                    if (latest == null || timeDiff < latestTimeDiff)
                     {
                         latest = save;
                     }
@@ -132,7 +139,7 @@ namespace VikingEngine.DSSWars.Data
             (save.autosave ? autosaves : saves).AddSave(save);
             Save(callback);
         }
-        public void AddSave(SaveClientStateMeta save)
+        public void AddSave(ClientSaveMeta save)
         {
             clientSaves.AddSave(save);
             Save(null);

@@ -4,12 +4,15 @@
 * Shared play/pause
 * Client save fix
 * Join invites
-X Join from closed game doesnt work
+! Join from closed game doesnt work
+* Invite and profile buttons
 
 * Two new leaderboards
 * local ai aggression
 * fixed: Heavy padded Armor and Padded armor on the stockpile menu, their locations are switched
-
+* implemented all network settings
+* War manager for remotes
+* Removed game modes: Spectator, QuickMatch
 
 x iterate steam version first
 x DssEditSubTile
@@ -29,6 +32,7 @@ X old saved will have some bot flag color drifting
 * gold frames
 X gold frame disabled 
 * DLC banners
+x small steam icon
 
 #MOUNTED TODO
 * 

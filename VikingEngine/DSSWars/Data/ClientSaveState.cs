@@ -16,9 +16,9 @@ namespace VikingEngine.DSSWars.Data
 
         bool dataReady = false;
         public bool complete = false;
-        SaveClientStateMeta meta;
+        ClientSaveMeta meta;
 
-        public ClientSaveState(SaveClientStateMeta meta)
+        public ClientSaveState(ClientSaveMeta meta)
              : base(false)
         {
             this.meta = meta;

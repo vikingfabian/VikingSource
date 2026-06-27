@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars.Data
 {
     struct GameRuleset
     {
-        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickBoss, GameModeMainType.QuickMatch, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
+        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickBoss, /*GameModeMainType.QuickMatch,*/ GameModeMainType.Sandbox, GameModeMainType.Peaceful/*, GameModeMainType.Spectator*/];
         public static readonly TwoInts[] QuickBossOptions_Time_Difficulty = [new TwoInts(3, 100), new TwoInts(5, 50), new TwoInts(8, 25)];
 
 

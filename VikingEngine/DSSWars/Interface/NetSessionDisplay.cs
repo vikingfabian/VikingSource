@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -134,6 +135,19 @@ namespace VikingEngine.DSSWars.Interface
             })));
         }
 
+        public void invite(RichBoxContent content)
+        {
+            content.newLine();
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.SteamIcon),
+                new RbSpace(),
+                new RbImage(SpriteName.WarsHudIconNetwork),
+                new RbSpace(),
+                new RbText("Invite")
+            }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text("Open Steam overlay")));
+        }
+
         public void overviewToHud(LocalPlayer player, RichBoxContent content)
         {
             if (sendGiftTo != null)
@@ -165,6 +179,8 @@ namespace VikingEngine.DSSWars.Interface
 
                 RichBoxContent buttonContent = new RichBoxContent();
                 gamer.addNetGamerToHud(buttonContent, true, true);
+
+               
 
                 content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
                     (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
@@ -303,6 +319,14 @@ namespace VikingEngine.DSSWars.Interface
 
             content.Add(new RbSeperationLine());
             content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.SteamIcon),
+                    new RbSpace(),
+                    new RbText("User profile")
+                }, new RbAction2Arg<string, CSteamID>(Steamworks.SteamFriends.ActivateGameOverlayToUser, "steamid", selectedPlayer.networkPeer.peer.SteamID),
+               new RbTooltip_Text("Open Steam overlay")));
+
+            content.newLine();
             if (Ref.netSession.IsHost)
             {
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Send ban warning") },
@@ -315,8 +339,6 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("Block player") },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BLOCK, StackOption.Stack)));
-
-                
             }
             else
             {
@@ -329,10 +351,6 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             
-
-
         }
-
-
     }
 }

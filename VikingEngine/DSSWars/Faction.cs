@@ -810,11 +810,6 @@ namespace VikingEngine.DSSWars
             return nextUnitId;
         }
 
-        //public bool canBuyMercenay(int count)
-        //{
-        //    return (workForce.max + ExpandWorkForce * count) <= maxEpandWorkSize;
-        //}
-
         public void remove(Army army)
         {
             Debug.CrashIfThreaded();
@@ -843,15 +838,9 @@ namespace VikingEngine.DSSWars
                     {
                         MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
 
-                        //var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                        //MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
-                        //gotoBattleButtonContent.Add(new RbText(city.TypeName()));
-
-                        //content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                        //    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city)));
                         var gotoButtonContent = new RichBoxContent();
                         MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
-                        //gotoButtonContent.Add(new RbText(city.TypeName()));
+
                         city.toButtonContent(gotoButtonContent, true);
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
@@ -913,34 +902,6 @@ namespace VikingEngine.DSSWars
             return IntVector2.Zero;
         }
 
-        //void updateAreaCenter()
-        //{
-        //    if (mainCity != null)
-        //    {
-        //        landAreaCenter = mainCity.tilePos - IntVector2.One;
-        //    }
-        //    //IntVector2 center = IntVector2.Zero;
-        //    //SpottedArrayCounter<City> cityCounter = new SpottedArrayCounter<City>(cities);
-        //    //while (cityCounter.Next())
-        //    //{
-        //    //    center.Add(cityCounter.sel.tilePos);
-        //    //}
-
-        //    //int cityCount = cities.Count;
-        //    //if (cityCount > 0f)
-        //    //{
-        //    //    center.X = Convert.ToInt32((float)center.X / cityCount);
-        //    //    center.Y = Convert.ToInt32((float)center.Y / cityCount);
-        //    //    center.Y -= 2;
-
-        //    //    landAreaCenter = center;
-        //    //    //IntVector2 newlandSymbolStart = center - DssLib.UserHeraldicHalfWidth;
-        //    //    //newlandSymbolStart.X %= DssLib.UserHeraldicWidth;
-        //    //    //newlandSymbolStart.Y %= DssLib.UserHeraldicWidth;
-        //    //    //landSymbolStart = newlandSymbolStart;
-        //    //}
-        //}
-
         public Army ClosestFriendlyArmy(Vector3 position, float maxDist)
         {
             Army closestArmy = null;
@@ -963,204 +924,25 @@ namespace VikingEngine.DSSWars
 
             return closestArmy;
         }
-
-        //public GameObject.AbsArmyUnit selectObject(Vector3 screenCenterPos)
-        //{
-        //    GameObject.AbsArmyUnit closestObj = null;
-        //    float closestObjDistance = float.MaxValue;
-        //    //foreach (City c in cities)
-        //    cityCounter.Reset();
-
-        //    while (cityCounter.Next())
-        //    {
-        //        distanceCheck(cityCounter.sel, screenCenterPos, ref closestObj, ref closestObjDistance);
-        //    }
-
-        //    armyCounter.Reset();
-        //    while(armyCounter.Next())
-        //    {
-        //        distanceCheck(armyCounter.sel, screenCenterPos, ref closestObj, ref closestObjDistance);
-        //    }
-
-        //    return closestObj;
-        //}
-
-        void distanceCheck(GameObject.AbsMapObject obj, Vector3 screenCenterPos, 
-            ref GameObject.AbsMapObject closestObj, ref float closestObjDistance)
-        {
-            float l = (obj.position - screenCenterPos).Length();
-            if (l < closestObjDistance)
-            {
-                closestObj = obj;
-                closestObjDistance = l;
-            }
-        }
-
-//        public void WeeklyUpdate(UpdateArgs args)
-//        {
-//            //income = owner.ExtraIncome;
-//            //if (owner is AbsHumanPlayer)
-//            //    income += RTSlib.HumanPlayerExtaIncome;
-
-//            cityCounter.Reset();
-
-//            while (cityCounter.Next())
-//            {
-//                income += cityCounter.sel.GetWeekIncome();
-//                cityCounter.sel.WeeklyUpdate(args);
-//            }
-//            upkeep = 0;
-//            armyCounter.Reset();
-//            while (armyCounter.Next())
-//            {
-//#if PCGAME
-//                if (armyCounter.sel.faction != this)
-//                    throw new Exception();
-//#endif
-//                upkeep += armyCounter.sel.Upkeep();
-//                armyCounter.sel.WeeklyUpdate(args);
-//            }
-
-//            money += income - upkeep;
-
-//            if (money < DssLib.MaxDept)
-//            { 
-//                //A part of the army will quit
-//                armyCounter.Reset();
-//                while (armyCounter.Next())
-//                {
-//                    armyCounter.sel.QuitFromDept();
-//                }
-//                //owner.OnDeptDeserters();
-//            }
-
-//            updateBanner();
-//        }
-
-
-
-        //public void NetUpdate()
-        //{
-        //    armyCounter.Reset();
-        //    while (armyCounter.Next())
-        //    {
-        //        armyCounter.sel.NetUpdate();
-        //    }
-        //}
-
-        //public void AsynchUpdate(AsynchUpdateArgs args)
-        //{
-        //    localArmyAsynchCounter.Reset();
-        //    while (localArmyAsynchCounter.Next())
-        //    {
-        //        localArmyAsynchCounter.sel.AsynchUpdate(args);
-        //    }
-        //}
-
-        //public bool payMoney(int cost)
-        //{
-        //    if (money >= cost)
-        //    {
-        //        //if (owner is LocalPlayer)
-        //        //    LootFest.Music.SoundManager.PlayFlatSound(LoadedSound.buy);
-        //        //money -= cost;
-        //        //owner.MoneyChangeEvent();
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-        //public GameObject.Army BuySoldiers(TroopType type, City city, int chunkCount, LocalPlayer p)
-        //{
-        //    if (payMoney(city.ArmyUnitCost.Get(type) * chunkCount))
-        //    {
-        //        const float AutoMergeLenght = DssLib.ArmyAttackRadius + 0.2f;
-        //        Vector3 pos = city.SelectionCenter;
-
-        //        armyCounter.Reset();
-        //        while (armyCounter.Next())
-        //        {
-        //            float l = (pos - armyCounter.sel.SelectionCenter).Length();
-        //            if ((pos - armyCounter.sel.SelectionCenter).Length() <= AutoMergeLenght)
-        //            { //found a close by army to add soldiers to
-        //                armyCounter.sel.addSoldiers(type, chunkCount);
-        //                return armyCounter.sel;
-        //            }
-        //        }
-
-        //        if (p != null && p.CheckUnitCountLimit())
-        //        {
-        //            GameObject.Army newArmy = new GameObject.Army(DssLib.TileToDrawPos_centered(DssRef.world.GetFreeTile(city.position)), this, type);
-        //            return newArmy;
-        //        }
-        //    }
-        //    return null;
-        //}
-
-        public void shareAllHostedObjects(Network.AbsNetworkPeer sender)
-        {
-            //if (owner != null && owner.LocalMember)
-            //{
-            //    armyCounter.Reset();
-            //    while (armyCounter.Next())
-            //    {
-            //        armyCounter.sel.NetShare(sender.Id);
-            //    }
-            //}
-        }
-
-        //public void BattleEndResult(BattleCalculation2 battle, bool isWinner)
-        //{
-        //    //if (owner != null)
-        //    //    owner.BattleResult(battle);
-
-        //    if (isWinner)
-        //    {
-        //        bool human = battle.loser.faction.player is AbsHumanPlayer;
-        //        foreach (AbsArmyUnit enemy in battle.loser.group)
-        //        {
-        //            if (enemy.Type == ObjectType.City)
-        //            {
-        //                VictoryPoints += human ? DssLib.VP_DefeatPlayerCity : DssLib.VP_DefeatCity;
-        //            }
-        //            else
-        //            {
-        //                VictoryPoints += DssLib.VP_DefeatArmy;
-        //            }
-        //        }
-        //    }
-        //}
-
+               
         public void tradeAllianceWars(Faction enemyFaction, DiplomaticRelation warRelation)
         {
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        //foreach (var m in otherFaction.diplomaticRelations)
-                        //foreach (var m in otherFaction.diplomaticRelations)
-                        //{
-                        //    if (m != null)
-                        //    {
+                        
                         RelationsLoop loop = new RelationsLoop(myIndex);
                         while (loop.Next())
-                        //foreach (var m in diplomaticRelations)
                         {
                             var m = loop.Relation();
-                            //if (m != null)
                             {
                                 if (m.Relation >= RelationType.RelationType3_Ally)
                                 {
                                     if (loop.OtherFaction(out var ally))
                                     {
-                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(ally, enemyFaction);//ally.diplomaticRelations[enemyFaction.myIndex];
-                                                                                                                   //if (allyToEnemyRelation == null)
-                                                                                                                   //{
-                                                                                                                   //    //Gain bad relation
-                                                                                                                   //    DssRef.world.diplomacy.SetRelationType(ally, enemyFaction, warRelation.Relation);
-                                                                                                                   //}
-                                                                                                                   //else
-                                                                                                                   //{
+                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(ally, enemyFaction);
+
                                         if (allyToEnemyRelation.Relation < RelationType.RelationType3_Ally)
                                         {
                                             //share worst relation
@@ -1174,8 +956,6 @@ namespace VikingEngine.DSSWars
                                                 DssRef.world.diplomacy.SetRelationType(enemyFaction, ally, worst);
                                             }
                                         }
-                                        //}
-                                        //}
                                     }
                                 }
                             }
@@ -1198,17 +978,13 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.world.diplomacy.SetRelationType(this, relationTo, relationType);
 
-                    //for (int relIndex = 0; relIndex < diplomaticRelations.Length; relIndex++)//each (var m in diplomaticRelations)
-                    //{
                     RelationsLoop loop = new RelationsLoop(myIndex);
                     while (loop.Next())
                     {
                         
-                            if (loop.Relation().Relation >= RelationType.RelationType3_Ally)//diplomaticRelations[relIndex].Relation >= RelationType.RelationType3_Ally && relIndex != this.factionIndex)
+                            if (loop.Relation().Relation >= RelationType.RelationType3_Ally)
                             {
-                                //Faction ally = DssRef.world.faction(relIndex);
-
-                                if (loop.OtherFaction(out var ally))//ally != null)
+                                if (loop.OtherFaction(out var ally))
                                 {
                                     DssRef.world.diplomacy.SetRelationType(ally, relationTo, relationType);
                                 }

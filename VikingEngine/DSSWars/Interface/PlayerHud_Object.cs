@@ -110,18 +110,21 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbSeperationLine());
                 }
 
+                
                 if (DssRef.state.remotePlayers.Count > 0)
                 {
+                    if (DssRef.state.host || Ref.netsett.hostSettings.lobbyPublicity >= Network.LobbyPublicity.FriendsOnly)
+                    {
+                        netSessionDisplay.invite(content);
+                    }
+
                     netSessionDisplay.overviewToHud(player, content);
-                    //content.h2(".Net session", HudLib.TitleColor_Head);
-                    //var remoteC = DssRef.state.remotePlayers.counter();
-                    //while(remoteC.Next())
-                    //{
-                    //    content.newLine();
-                    //    remoteC.sel.addNetGamerToHud(content, true);//RemoteToHud(content);
-                    //}
-                    //content.Add(new RbSeperationLine());
+                    
                     content.newParagraph();
+                }
+                else if (DssRef.state.host && Ref.steam.isInitialized && Ref.netsett.hostNetwork)
+                {
+                    netSessionDisplay.invite(content);
                 }
 
                 content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);

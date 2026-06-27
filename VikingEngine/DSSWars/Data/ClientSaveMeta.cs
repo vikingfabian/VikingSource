@@ -8,21 +8,18 @@ using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars.Data
 {
-    //class ClientSaveMeta
-    //{
-    //}
-
+    
     class SaveClientIterations
     {
         public int nextIndex = 0;
-        public SaveClientStateMeta[] saves;
+        public ClientSaveMeta[] saves;
 
         public SaveClientIterations(int length)
         {
-            saves = new SaveClientStateMeta[length];
+            saves = new ClientSaveMeta[length];
         }
 
-        public void AddSave(SaveClientStateMeta save)
+        public void AddSave(ClientSaveMeta save)
         {
             saves[Bound.Set(save.index, 0, saves.Length - 1)] = save;
             nextIndex = save.index + 1;
@@ -56,7 +53,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 if (r.ReadBoolean())
                 {
-                    var state = new SaveClientStateMeta(r);
+                    var state = new ClientSaveMeta(r);
                     if (state.stateVersion == SaveGamestate.Version)
                     {
                         saves[i] = state;
@@ -67,7 +64,7 @@ namespace VikingEngine.DSSWars.Data
         }
     }
 
-    class SaveClientStateMeta : IStreamIOCallback
+    class ClientSaveMeta : IStreamIOCallback
     {
         const int Version = 1;
         public int stateVersion = SaveGamestate.Version;
@@ -88,7 +85,7 @@ namespace VikingEngine.DSSWars.Data
 
         public DataStream.FilePath Path => filepath(index);
 
-        public SaveClientStateMeta(TimeSpan playTime, WorldMetaId World, int faction)
+        public ClientSaveMeta(TimeSpan playTime, WorldMetaId World, int faction)
         {
             saveDate = DateTime.Now;
             this.World = World;
@@ -99,7 +96,7 @@ namespace VikingEngine.DSSWars.Data
             this.faction = faction;
         }
 
-        public SaveClientStateMeta(System.IO.BinaryReader r)
+        public ClientSaveMeta(System.IO.BinaryReader r)
         {
             read(r);
         }

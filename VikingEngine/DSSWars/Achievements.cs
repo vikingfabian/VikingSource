@@ -852,6 +852,8 @@ namespace VikingEngine.DSSWars
         Gift_Houseplant,
         Gift_Sheep,
         Gift_GlichRider,
+        Gift_ChickenShit,
+        Gift_TheLeakyCanteen,
 
 
         NUM_ACHIEVEMENTS

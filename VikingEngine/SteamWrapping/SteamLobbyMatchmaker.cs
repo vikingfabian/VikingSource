@@ -10,18 +10,7 @@ using VikingEngine.Network;
 
 namespace VikingEngine.SteamWrapping
 {
-    //enum LobbyDatas
-    //{
-    //    LobbyName,
-    //    LobbyDebugState,
-    //    LobbyGameVersion
-    //}
 
-    //enum LobbyDebugState
-    //{
-    //    DEBUG,
-    //    RELEASE
-    //}
     /*
         4. Users stay in a lobby until there are enough players ready to launch the game. Data is communicated between the lobby members about which character they want to play, or other per-user settings. If there are some rules that need to be enforced in the lobby (for example, only one user can play as a certain character), there is one and only one lobby owner who you can use to arbritrate that.
         5. There may or may not be a user interface associated with the lobby; if there is, the lobby data communications functions can be used to send chat messages between lobby members. Voice data can also be sent, but needs to sent using the peer-to-peer networking API.
@@ -29,21 +18,6 @@ namespace VikingEngine.SteamWrapping
     */
     class SteamLobbyMatchmaker
     {
-        
-
-//        public const int MAX_LOBBY_MEMBERS =
-//#if CCG
-//            2;
-//#elif DSS
-//            64;//16;
-//#elif PJ
-//            9;
-//#else
-//            4;
-//#endif
-
-        
-        /* Fields */
         public CSteamID currentLobbyID = CSteamID.Nil;
         public CSteamID inviteFromLobby = CSteamID.Nil;
         public bool hostLobby = false;
@@ -63,9 +37,6 @@ namespace VikingEngine.SteamWrapping
 
         List<string> unresponsiveLobbies = new List<string>();
        
-        
-
-        /* Constructor */
         public SteamLobbyMatchmaker()
         {
             callResultLobbyMatchList = new CallResult<LobbyMatchList_t>(OnLobbyMatchList);
@@ -389,7 +360,7 @@ namespace VikingEngine.SteamWrapping
             }
             Ref.NetUpdateReciever().NetEvent_SessionsFound(availableSessionsList);
 
-            this.availableSessionsList = availableSessionsList;
+            //this.availableSessionsList = availableSessionsList;
         }
 
         public bool lobbyIsFriend(CSteamID lobbyId, out CSteamID steamIDFriend)

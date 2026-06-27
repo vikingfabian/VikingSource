@@ -130,20 +130,25 @@ namespace VikingEngine.Network
 
     struct HostSettings
     {
-        public bool allowHandicap = true;
-        public RelationType startDiplomacy = RelationType.RelationType0_Neutral;
+        public LobbyPublicity lobbyPublicity;//i
+        public bool allowHandicap = true;//i
+        public RelationType startDiplomacy = RelationType.RelationType0_Neutral;//i
 
         public HostSettings()
-        { }
+        {
+            lobbyPublicity = Ref.netsett.lobbyPublicity;
+        }
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write((int)startDiplomacy);
+            w.Write((byte)lobbyPublicity);
+            w.Write((sbyte)startDiplomacy);
             w.Write(allowHandicap);
         }
         public void read(System.IO.BinaryReader r, int storageVersion)
         {
-            startDiplomacy = (RelationType)r.ReadInt32();
+            lobbyPublicity = (LobbyPublicity)r.ReadByte();
+            startDiplomacy = (RelationType)r.ReadSByte();
             allowHandicap = r.ReadBoolean();
         }
     }
@@ -256,7 +261,7 @@ namespace VikingEngine.Network
         public VoiceOption voiceOption = VoiceOption.ButtonHold;
 
         public PlayerToPlayerDiplomacy hostPtoP = new PlayerToPlayerDiplomacy(true);
-        public HostSettings hostSettings = new HostSettings();
+        public HostSettings hostSettings;
         public PlayerToPlayerDiplomacy clientPtoP = new PlayerToPlayerDiplomacy(false);
         
        
@@ -275,6 +280,7 @@ namespace VikingEngine.Network
         public NetworkSettings()
         {
             Ref.netsett = this;
+            hostSettings = new HostSettings();
         }
 
         public void write(System.IO.BinaryWriter w)

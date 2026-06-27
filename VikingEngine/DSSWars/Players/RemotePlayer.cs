@@ -154,6 +154,16 @@ namespace VikingEngine.DSSWars.Players
 
             
             playerStartUnits(unitCountMulti, settlerGuard, honorGuard);
+
+            
+            AllHumansLoop humans = new AllHumansLoop();
+            while (humans.Next(out _))
+            {
+                if (humans.sel != this)
+                {
+                    DssRef.world.diplomacy.SetRelationType(faction, humans.sel.faction, Ref.netsett.hostSettings.startDiplomacy);
+                }
+            }
         }
 
         public override void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)

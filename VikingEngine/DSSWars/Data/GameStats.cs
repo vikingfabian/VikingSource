@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.Data
@@ -33,6 +34,8 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt language_brazilian_portuguese = new StatsInt("language_brazilian_portuguese");
         public StatsInt language_italian = new StatsInt("language_italian");
         public StatsInt language_korean = new StatsInt("language_korean");
+        public StatsInt language_polish = new StatsInt("language_polish");
+        public StatsInt language_thai = new StatsInt("language_thai");
 
         public StatsInt blueScreen = new StatsInt("bluescreen");
         public StatsInt startTutorial = new StatsInt("start_tutorial");
@@ -170,6 +173,8 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt Gifted_Houseplant = new StatsInt("Gifted_Houseplant");
         public StatsInt Gifted_Sheep = new StatsInt("Gifted_Sheep");
         public StatsInt Gifted_GlitchRider = new StatsInt("Gifted_GlitchRider");
+        public StatsInt Gifted_ChickenShit = new StatsInt("Gifted_ChickenShit");
+        public StatsInt Gifted_TheLeakyCanteen = new StatsInt("Gifted_TheLeakyCanteen");
 
         public GameStats()
         {
@@ -282,6 +287,8 @@ namespace VikingEngine.DSSWars.Data
                     language_brazilian_portuguese,
                     language_italian,
                     language_korean,
+                    language_polish,
+                    language_thai,
 
                     Gifted_WhiteKnight,
                     Gifted_HeroComplexSaviorComplex,
@@ -577,6 +584,12 @@ namespace VikingEngine.DSSWars.Data
                     break;
                 case GiftedAchievementType.GlichRider:
                     Gifted_GlitchRider.add(1);
+                    break;
+                case GiftedAchievementType.ChickenShit:
+                    Gifted_ChickenShit.add(1);
+                    break;
+                case GiftedAchievementType.TheLeakyCanteen:
+                    Gifted_TheLeakyCanteen.add(1);
                     break;
                 case GiftedAchievementType.NUM:
                 default:

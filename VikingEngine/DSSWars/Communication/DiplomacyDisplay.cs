@@ -545,7 +545,9 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     secondsLength = localSettings.clientPtoP.gameStartPreparationTime.time.seconds;
                 }
+                
                 DssRef.world.diplomacy.SetRelationType(player.faction, otherPlayer.faction, PtoP.suggestedRelation, secondsLength);
+
             }
 
             PtoP.suggestingNewRelation = false;

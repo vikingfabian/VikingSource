@@ -247,9 +247,10 @@ namespace VikingEngine.DSSWars.Players
             int count = 0;
 
             AllHumansLoop humansLoop = new AllHumansLoop();
-            while (humansLoop.Next())
+            while (humansLoop.Next(out bool ready))
             {
-                if (humansLoop.sel != this &&
+                if (ready &&
+                    humansLoop.sel != this &&
                     DssRef.world.diplomacy.GetRelation(faction, humansLoop.sel.faction).Relation >=  RelationType.RelationType3_Ally)
                 { 
                      count++;

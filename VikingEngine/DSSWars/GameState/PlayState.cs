@@ -158,11 +158,7 @@ namespace VikingEngine.DSSWars
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             initPlayers(newGame, pointers);
 
-            //culling = new Culling();
-
-            //factionsMap = new MapLayer_Factions();
-            //overviewMap = new Map.MapLayer_Overview(factionsMap);
-            //detailMap = new Map.MapLayer_Detail();
+            
             postPlayerInit();
             technologyManager.initGame(newGame);
 
@@ -877,13 +873,6 @@ namespace VikingEngine.DSSWars
 
         bool asyncUserUpdate(int id, float time)
         {
-            //doubleTaskTest++;
-
-            //if (doubleTaskTest > 1)
-            //{
-            //    throw new Exception("Double task error");
-            //}
-
             DssRef.ambience.update_async();
 
             if (cutScene == null)
@@ -900,10 +889,6 @@ namespace VikingEngine.DSSWars
 
         }
 
-        
-
-
-        
 
         public override int PathThreadCount()
         {
