@@ -438,11 +438,11 @@ namespace VikingEngine.DSSWars.Interface
 
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                 {
-                    new RbImage(SpriteName.WarsRelationPeace),
+                    new RbImage(icon),
                     new RbSpace(0.5f),
                     new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, ".Offer relation", name)),
                 },
-                new RbAction1Arg<RelationType>(offerToPlayerRelation, RelationType.RelationType1_Peace, RbSoundType.Buy)));
+                new RbAction1Arg<RelationType>(offerToPlayerRelation, relation, RbSoundType.Buy)));
         }
 
         void offerToPlayerRelation(RelationType relation)
