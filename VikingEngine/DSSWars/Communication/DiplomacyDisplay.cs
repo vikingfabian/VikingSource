@@ -325,6 +325,7 @@ namespace VikingEngine.DSSWars.Interface
             var settings = otherPlayer.NetClientSettings();
 
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
+            PtoP.refresh(selectedRelation.Relation);
 
             if (PtoP.suggestingNewRelation)
             {

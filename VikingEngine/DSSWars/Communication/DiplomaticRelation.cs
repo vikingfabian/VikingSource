@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.Communication
         {
             Faction faction1 = Net.ObjectId.ReadFaction(r);
             Faction faction2 = Net.ObjectId.ReadFaction(r);
+
             if (faction1 != null && faction2 != null)
             {
                 ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
@@ -118,16 +119,25 @@ namespace VikingEngine.DSSWars.Communication
             {
                 Relation = (RelationType)r.ReadSByte();
             }
+            else
+            {
+                Relation = RelationType.RelationType0_Neutral;
+            }
+
             if (hasSpeakTerms)
             {
                 SpeakTerms = (SpeakTerms)r.ReadSByte();
             }
+            else
+            {
+                SpeakTerms = SpeakTerms.SpeakTerms0_Normal;
+            }
+
             if (hasEndTime)
             {
                 RelationEnd_GameTimeSec.read(r);
             }
-
-                    
+        
             if (hasCommonEnemy)
             {
                 allyAgainst = r.ReadUInt16();

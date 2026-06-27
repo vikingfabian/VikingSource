@@ -33,6 +33,14 @@ namespace VikingEngine.DSSWars.Communication
             suggestedBy = r.ReadUInt16();
         }
 
+        public void refresh(RelationType relation)
+        {
+            if (relation == suggestedRelation)
+            {
+                suggestingNewRelation = false;
+            }
+        }
+
         public void writeNet(BinaryWriter w)
         {
             w.Write(suggestingNewRelation);
