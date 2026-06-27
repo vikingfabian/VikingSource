@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.Communication
             {
                 DiplomacyOption declareWar = new DiplomacyOption()
                 {
-                    toRelation = RelationType.RelationTypeN3_Mobilization,
+                    toRelation = RelationType.RelationTypeN4_War,
                     available = true,
                     cost = Diplomacy.DeclareWarCost(selectedRelation.Relation)
                 };

@@ -725,7 +725,7 @@ namespace VikingEngine.DSSWars.Players
                     otherFaction.player.IsHumanPlayer())
                 {
 
-                    if (rel.Relation >= RelationType.RelationType2_Good)
+                    if (rel.Relation >= RelationType.RelationType0_Neutral)
                     {
                         message(DssRef.lang.Diplomacy_RelationType);
                     }

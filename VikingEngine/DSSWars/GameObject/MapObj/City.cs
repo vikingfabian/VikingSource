@@ -379,25 +379,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-            //if (areaCulture.worldPercY > 0.5f * storyPlacementScale &&
-            //    areaCulture.worldPercY < 0.9f * storyPlacementScale)
-            //{
-            //    if (areaCulture.worldPercX < 0.3f * storyPlacementScale)
-            //    {
-            //        if (areaCulture.worldPercX > 0.1f * storyPlacementScale)
-            //        {
-            //            cityCultureCollection.WestKingdom.Add(this);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (areaCulture.worldPercX < 0.7f * storyPlacementScale)
-            //        {
-            //            cityCultureCollection.DarkLands.Add(this);
-            //        }
-            //    }
-            //}
-
+            
             if (world.rnd.Chance(0.3))
             {
                 //Area specific culture
@@ -1048,11 +1030,14 @@ namespace VikingEngine.DSSWars.GameObject
         public void readNet_map(WorldData world, System.IO.BinaryReader r)
         {
             readMapFile(world, r, int.MaxValue);
-            //guardCount = r.ReadUInt16();
-            //maxGuardSize = r.ReadUInt16();
+            
+            int r_factionIndex = r.ReadUInt16();
 
-            factionIndex = r.ReadUInt16();
-            //faction = DssRef.world.factions[factionIx];
+            if (r_factionIndex != factionIndex)
+            {
+                factionIndex = r_factionIndex;
+                DssRef.world.faction(r_factionIndex)?.Net_AddCity(this);
+            }
 
             onGameStart(false);
             int height = r.ReadByte();

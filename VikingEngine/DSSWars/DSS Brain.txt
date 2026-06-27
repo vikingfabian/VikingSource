@@ -4,7 +4,7 @@
 * Shared play/pause
 * Client save fix
 * Join invites
-! Join from closed game doesnt work
+! Join from a closed game doesnt work
 * Invite and profile buttons
 
 * Two new leaderboards
@@ -13,6 +13,7 @@
 * implemented all network settings
 * War manager for remotes
 * Removed game modes: Spectator, QuickMatch
+* New relation type: mobilizing, is a countdown to war
 
 x iterate steam version first
 x DssEditSubTile

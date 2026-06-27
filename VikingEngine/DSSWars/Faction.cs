@@ -594,6 +594,11 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public void Net_AddCity(City city)
+        {
+            cities.AddIfNotExists(city.myIndex);
+        }
+
         public AbsMapObject GetUnit(System.IO.BinaryReader r)
         {
             ushort id = r.ReadUInt16();

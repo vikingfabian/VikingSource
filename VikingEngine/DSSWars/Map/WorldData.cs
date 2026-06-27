@@ -599,7 +599,7 @@ namespace VikingEngine.DSSWars
                 this.cities[city].writeNet_map(w);
                 Debug.WriteCheck(w);
 
-                Debug.WriteCheck(w);
+                //Debug.WriteCheck(w);
                 //
                 remotePlayerC.Reset();
                 while (remotePlayerC.Next())
@@ -627,7 +627,7 @@ namespace VikingEngine.DSSWars
                 this.cities[city].readNet_map(this, r);
                 Debug.ReadCheck(r);
 
-                Debug.ReadCheck(r);
+                //Debug.ReadCheck(r);
             }
 
             DssRef.world.BordersUpdated = true;
