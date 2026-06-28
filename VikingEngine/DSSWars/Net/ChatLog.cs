@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Net
         {
             if (Count > 50)
             {
-                arraylib.RemoveLast_Unsafe(this, 5);
+                arraylib.RemoveFirst_Unsafe(this, 5);
             }
             Add(message);
         }
@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Net
                 content.Add(new RbSeperationLine());
 
                 var message = this[i];
-                HudLib.LabelAndText(content, SpriteName.LfChatBobbleIcon, message.senderName, message.message);
+                HudLib.LabelAndText(content, SpriteName.NO_IMAGE, message.senderName, message.message);
             }
         }
     }

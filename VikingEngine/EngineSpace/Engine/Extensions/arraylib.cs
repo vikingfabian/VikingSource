@@ -410,6 +410,11 @@ namespace VikingEngine
             list.RemoveRange(list.Count - removeCount, removeCount);
         }
 
+        public static void RemoveFirst_Unsafe<T>(List<T> list, int removeCount)
+        {
+            list.RemoveRange(0, removeCount);
+        }
+
         public static void RemoveCurrentInForwardLoop<T>(List<T> list, ref int i)
         {
             list.RemoveAt(i);

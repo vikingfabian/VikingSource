@@ -4,21 +4,21 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Interface.Component;
-using VikingEngine.DSSWars.Presentation;
-using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
-using VikingEngine.PJ.Joust;
+using VikingEngine.Network;
 using VikingEngine.PJ.Bagatelle;
+using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -117,6 +117,13 @@ namespace VikingEngine.DSSWars.GameObject
                             if (status.countdown.TimeOut())
                             {
                                 City othercity = DssRef.world.cities[status.inProgress.ToCity()];
+
+                                if (othercity.factionIndex != factionIndex && !othercity.IsNetHosted)
+                                {
+                                    //Send over net
+                                    NetWriteDelivery(ref status.inProgress, othercity);
+                                }
+
                                 if (status.inProgress.type == ItemResourceType.Men)
                                 {
                                     othercity.addWorkers(status.inProgress.SendAmount);
@@ -195,6 +202,67 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
             }
+        }
+
+        void NetWriteDelivery(ref DeliveryProfile inProgress, City recievingCity)
+        {
+            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDeliver, Network.PacketReliability.Reliable,
+                Network.SendPacketTo.OneSpecific, recievingCity.NetHostingPeer().fullId, out var packet);
+
+            Net.ObjectId.WriteCity(w, this);
+            Net.ObjectId.WriteCity(w, recievingCity);
+            w.Write((byte)inProgress.type);
+
+            int amount = inProgress.SendAmount;
+            if (inProgress.type == ItemResourceType.Gold)
+            {
+                amount /= DssConst.GoldDeliveryChunkSize_Mini;
+            }
+            w.Write((byte)amount);
+        }
+
+        public static void NetReadDelivery(ReceivedPacket packet)
+        {
+            var sendingCity = Net.ObjectId.ReadCity(packet.r);
+            var recievingCity = Net.ObjectId.ReadCity(packet.r);
+            if (recievingCity != null)
+            { 
+                ItemResourceType resourceType = (ItemResourceType)packet.r.ReadByte();
+                int amount = packet.r.ReadByte();
+                if (resourceType == ItemResourceType.Gold)
+                {
+                    amount *= DssConst.GoldDeliveryChunkSize_Mini;
+                }
+
+                recievingCity.AddGroupedResource(resourceType, amount);
+
+                if (recievingCity.TryGetPlayer(out var p) && p.IsLocalPlayer() &&
+                    p.GetLocalPlayer().hud.messages.DeliveryMessageTime.minPassed(10) &&
+                    sendingCity != null && sendingCity.TryGetPlayer(out var r) && r.IsRemotePlayer())
+                {
+                    var lp = p.GetLocalPlayer();
+                    lp.hud.messages.DeliveryMessageTime.setNow();
+
+                    RichBoxContent content = new RichBoxContent();
+                    content.h1(SpriteName.WarsBuild_Postal, DssRef.lang.MenuTab_Delivery, HudLib.TitleColor_Head);
+                    
+                    r.GetRemotePlayer().addNetGamerToHud(content, true, false);
+                    content.hspace();
+                    content.Add(new RbImage(SpriteName.cmdConvertArrow));
+                    content.newLine();
+
+                    recievingCity.CityPresentationHud(new Interface.ObjectHudArgs(){ content = content }, false);
+                    content.newLine();
+
+                    IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
+                    content.Add(new RbText(TextLib.PlusMinus(amount)));
+                    content.space();
+                    content.Add(new RbImage(itemIcon));
+                    content.hspace();
+                    content.Add(new RbText(itemName));
+                }
+            }
+            
         }
 
         public ItemResourceType findAutoItem()
@@ -335,13 +403,10 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 default:
-                    //player.itemDeliveryCopy = currentStatus;
                     return ref player.itemDeliveryCopy;
                 case DeliveryStatus.DeliveryType_Men:
-                    //player.menDeliveryCopy = currentStatus;
                     return ref player.menDeliveryCopy;
                 case DeliveryStatus.DeliveryType_Gold:
-                    //player.goldDeliveryCopy = currentStatus;
                     return ref player.goldDeliveryCopy;
             }
         }

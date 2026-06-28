@@ -414,6 +414,10 @@ namespace VikingEngine.DSSWars
                     readGroupStatus(false);
                     break;
 
+                case PacketType.DssDeliver:
+                    City.NetReadDelivery(packet);
+                    break;
+
                 case PacketType.TextChat:
                     {
                         var message = new ChatLogMessage(sender.networkPeer.peer, StreamLib.ReadString_safe(packet.r));
@@ -423,8 +427,7 @@ namespace VikingEngine.DSSWars
                         sender.addNetGamerToHud(content, true, false);
                         content.icontext(SpriteName.LfChatBobbleIcon, message.message);
 
-                        LocalHost().hud.messages.Add(content, SoundLib.netMessage);
-                        
+                        LocalHost().hud.messages.Add(content, SoundLib.netMessage);                        
                     }
                     break;
                 case PacketType.DssGiftAchievement:

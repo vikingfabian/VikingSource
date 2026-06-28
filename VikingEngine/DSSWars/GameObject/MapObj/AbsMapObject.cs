@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.EngineSpace;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.Network;
 //
 
 
@@ -38,6 +39,22 @@ namespace VikingEngine.DSSWars.GameObject
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
         public bool IsNetHosted = true;
+
+        public AbsNetworkPeer NetHostingPeer()
+        {
+            if (IsNetHosted)
+            {
+                return Ref.netSession.LocalPeer();
+            }
+            else if (TryGetPlayer(out var p) && p.IsRemotePlayer())
+            {
+                return p.GetRemotePlayer().networkPeer.peer;
+            }
+            else
+            { 
+                return Ref.netSession.Host();
+            }
+        }
 
         public MapObjectTag Tag = new MapObjectTag();
 

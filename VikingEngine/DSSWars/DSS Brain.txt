@@ -1,33 +1,25 @@
 
 ## MULTIPLAYER UPDATE ##
+* fixed long chat logs
 
-* Shared play/pause
-* Client save fix
-* Join invites
+
+# KNOWN ISSUES #
+x PvP protection doesnt work on direct attacks.
+x Cant deny ally requests
+x lobbies can get stuck (should show timeout warning)
+x sending resources don't work 
+x remote cities have wonky workers
+! old saved will have some bot flag color drifting
 ! Join from a closed game doesnt work
-* Invite and profile buttons
 
-* Two new leaderboards
-* local ai aggression
-* fixed: Heavy padded Armor and Padded armor on the stockpile menu, their locations are switched
-* implemented all network settings
-* War manager for remotes
-* Removed game modes: Spectator, QuickMatch
-* New relation type: mobilizing, is a countdown to war
-* Pinned gamer tags with voice icons
+# HOW TO PLAY #
+* The host just starts a game, and a join button should appear for their friends in the main menu.
+* Press P for pins.
 
 x iterate steam version first
 x DssEditSubTile
 
 
-KNOWN ISSUES
-
-X lobbies can get stuck, show time out warning
-X sending resources don't work 
-X remote cities have wonky workers
-X old saved will have some bot flag color drifting
-
- 
 ##ICONS TODO
 * voice icons
 * gray rounded button

@@ -58,6 +58,10 @@ namespace VikingEngine
             return new TimeStamp(Ref.TotalTimeSec);
         }
 
+        public bool minPassed(float minutes)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec >= minutes * TimeExt.MinuteInSeconds;
+        }
         public bool secPassed(float seconds)
         {
             return Ref.TotalTimeSec - totalTimeStampSec >= seconds;

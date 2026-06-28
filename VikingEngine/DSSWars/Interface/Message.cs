@@ -121,6 +121,7 @@ namespace VikingEngine.DSSWars.Interface
         LocalPlayer player;
 
         static readonly TimeLength FoodWarningTimeout = new TimeLength(120);
+        public TimeStamp DeliveryMessageTime = TimeStamp.None;
 
         TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
         TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
