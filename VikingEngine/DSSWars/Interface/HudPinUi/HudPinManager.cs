@@ -74,11 +74,8 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                 { 
                     RichBoxContent buttoncontent = new RichBoxContent();
                     allHumans.sel.addNetGamerIconsToHud(buttoncontent, true);
-                    RbImage voiceIcon = new RbImage(allHumans.sel.voiceState);//SpriteName.MenuPixelIconSoundVol);
-                    //if (allHumans.sel.voiceIcon != null)
-                    //{
-                    //    voiceIcon.color = allHumans.sel.voiceIcon.color;
-                    //}
+                    RbImage voiceIcon = new RbImage(allHumans.sel.voiceState);
+                    
                     allHumans.sel.voiceIcon = voiceIcon;
                     buttoncontent.Add(voiceIcon);
 
@@ -101,7 +98,17 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                             player.hud.objMenu.netSessionDisplay.selectedPlayer = selected.GetRemotePlayer();
                             player.hud.needRefresh = true;
                         }, allHumans.sel), 
-                        new RbTooltip_Text(allHumans.sel.Name), enabled));
+                        new RbTooltip((RichBoxContent content, object tag) => {
+
+                            DssRef.state.LocalHost().gameControls.input.TextChat.ToRichContent(content);
+                            content.space();
+                            content.Add(new RbText(".Voice chat", HudLib.TitleColor_Action));
+
+                            content.newParagraph();
+                            AbsHumanPlayer player = (AbsHumanPlayer)tag;
+                            player.addNetGamerToHud(content, true, true);
+                            
+                            }, allHumans.sel), enabled));
                 }
             }
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState.VoxelEditor;
+using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
@@ -103,6 +104,9 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                 DssRef.state.LocalHost().addNetGamerToHud(content, true, false);
                 content.icontext(SpriteName.LfChatBobbleIcon, result);
                 DssRef.state.LocalHost().hud.messages.Add(content, null);
+
+                var message = new ChatLogMessage(Ref.steam.P2PManager.localPeer, result);
+                ((PlayState)DssRef.state).chatLog.Add(message);
             }
             base.textInput_complete(result, tag);
             Close();

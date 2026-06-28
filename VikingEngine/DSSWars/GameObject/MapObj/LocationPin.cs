@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (netInteractLevel == NetInteractLevel.Hidden)
                 {
-                    interactLevelButton("Team", NetInteractLevel.Team);
+                    //interactLevelButton("Team", NetInteractLevel.Team);
                     interactLevelButton("Everyone", NetInteractLevel.Public);
                 }
                 else

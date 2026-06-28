@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -65,6 +66,14 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbText(string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed), HudLib.SecondaryTextColor));
                 }
                 content.space(4);
+
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.LfChatBobbleIcon) },
+                    new RbAction(() =>
+                    {
+                        new TextChat();
+                    }),
+                    new RbTooltip(((PlayState)DssRef.state).chatLog.toolTip)));
             }
 
             if (player.gameControls.input.inputSource.IsXnaController)

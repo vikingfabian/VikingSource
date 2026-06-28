@@ -44,6 +44,7 @@ namespace VikingEngine.DSSWars
         bool waitingForClientHandover_exit;
         bool waitingForClientHandover = false;
         TimeStamp waitingForClientHandoverTime;
+        public ChatLog chatLog = new ChatLog();
         bool asynchClientNetUpdate(int id, float time)
         {
             if (remotePlayers.Count > 0 && factionHandOverComplete && asyncRoundTrip)
@@ -415,13 +416,15 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.TextChat:
                     {
-                        string text = StreamLib.ReadString_safe(packet.r);
+                        var message = new ChatLogMessage(sender.networkPeer.peer, StreamLib.ReadString_safe(packet.r));
+                        chatLog.Add(message);
                         RichBoxContent content = new RichBoxContent();
 
                         sender.addNetGamerToHud(content, true, false);
-                        content.icontext(SpriteName.LfChatBobbleIcon, text);
+                        content.icontext(SpriteName.LfChatBobbleIcon, message.message);
 
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+                        
                     }
                     break;
                 case PacketType.DssGiftAchievement:
