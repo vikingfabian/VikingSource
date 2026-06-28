@@ -186,6 +186,11 @@ namespace VikingEngine
                 
         }
 
+        public TimeSpan TimeSpan_Left()
+        {
+            return TimeSpan.FromSeconds(Bound.Min(totalTimeStampSec - Ref.TotalGameTimeSec, 0));
+        }
+
         public void setNow()
         {
             this.totalTimeStampSec = Ref.TotalGameTimeSec;

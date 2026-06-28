@@ -14,7 +14,14 @@ namespace VikingEngine.DSSWars.Net
     {
         public static void WriteFaction(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.myIndex);
+            if (faction == null)
+            {
+                w.Write(ushort.MaxValue);
+            }
+            else
+            {
+                w.Write((ushort)faction.myIndex);
+            }
         }
         public static Faction ReadFaction(System.IO.BinaryReader r)
         { 
@@ -181,7 +188,7 @@ namespace VikingEngine.DSSWars.Net
                 needInit = false;
                 //int unitIx = r.ReadUInt16();
                 mapObj = DssRef.world.cities[unitIx];
-                mapObj.setFaction(faction, false, true, false);
+                mapObj.setFaction(faction, false, true, ConvertReason.Assigned, false);
                 faction = mapObj.GetFaction();
             }
 

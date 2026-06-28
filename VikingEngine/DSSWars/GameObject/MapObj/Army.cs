@@ -1301,15 +1301,15 @@ namespace VikingEngine.DSSWars.GameObject
             refreshGroupPlacements2(nextNodeTilePos, false, false, false);
         }
 
-        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, bool netShare)
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
-            base.setFaction(newFaction, duringStartup, false, netShare);
+            base.setFaction(newFaction, duringStartup, false, convertReason, netShare);
             
             newFaction.AddArmy(this);
             
         }
 
-        public override void OnNewOwner(Faction newFaction, bool convert)
+        public override void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason)
         {
             if (inRender_detailLayer)
             {

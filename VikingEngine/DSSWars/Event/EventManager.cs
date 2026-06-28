@@ -107,8 +107,10 @@ namespace VikingEngine.DSSWars.Event
             
             foreach (var p in DssRef.state.localPlayers)
             {
+                
                 int hillFriends = 0;
-                int allyCount = 0;
+                //int allyCount = 0;
+                p.alliedFactions_build.Clear();
                 int warCount = 0;
                 bool worldPeace = true;
 
@@ -127,7 +129,8 @@ namespace VikingEngine.DSSWars.Event
 
                             if (relation.Relation >= RelationType.RelationType3_Ally)
                             {
-                                allyCount++;
+                                p.alliedFactions_build.Add(loop.otherFactionIx);
+                                //allyCount++;
                                 if (otherFaction.factiontype == FactionType.BramblebrookHill ||
                                     otherFaction.factiontype == FactionType.Tumblehill)
                                 {
@@ -153,10 +156,15 @@ namespace VikingEngine.DSSWars.Event
                 }
 
                 p.warCount = warCount;
-                if (allyCount != p.allyCount)
+                lock (p.alliedFactions)
+                {
+                    var store = p.alliedFactions;
+                    p.alliedFactions = p.alliedFactions_build;
+                    p.alliedFactions_build = store;
+                }
+                if (p.alliedFactions.Count != p.alliedFactions_build.Count)//allyCount != p.allyCount)
                 { 
-                    p.allyCount = allyCount;
-                    DssRef.achieve.onAllyCount(allyCount);
+                    DssRef.achieve.onAllyCount(p.alliedFactions.Count);
                 }
                 if (hillFriends >= 2)
                 {

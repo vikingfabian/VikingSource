@@ -1647,7 +1647,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 createCampSite(subtile);
 
-                setFaction(faction, false, false, true);
+                setFaction(faction, false, false, ConvertReason.Claim, true);
                 refreshCitySize();
 
                 if (!name.custom)
@@ -1991,7 +1991,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
                                 }
 
-                                setFaction(newOwner, false, false, true);
+                                setFaction(newOwner, false, false, ConvertReason.WarCapture, true);
                             }
                         }));
                     }
@@ -3077,7 +3077,8 @@ namespace VikingEngine.DSSWars.GameObject
                     //new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
                     new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
                 }
-                
+
+                tradeBetweenPlayers_toHud(player, content);
             }
 
 
@@ -4021,7 +4022,7 @@ namespace VikingEngine.DSSWars.GameObject
 
        
 
-        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, bool netShare)
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
             if (newFaction == null)
                 return;
@@ -4047,7 +4048,7 @@ namespace VikingEngine.DSSWars.GameObject
                     EditSubTile.OntileChange(tilePos);
                 }
 
-                OnNewOwner(newFaction, convert || duringStartup);
+                OnNewOwner(newFaction, convert || duringStartup, convertReason);
 
                 if (IsNetHosted && !duringStartup && !newFaction.IsNetHosted())
                 {
@@ -4061,6 +4062,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         Net.ObjectId.WriteCity(w, this);
                         w.Write(convert);
+                        w.Write((byte)convertReason);
                         Net.ObjectId.WriteFaction(w, newFaction);
                     }
                     packet.EndWrite_Asynch();
@@ -4080,19 +4082,20 @@ namespace VikingEngine.DSSWars.GameObject
                 bool hosted = city.IsNetHosted;
                 
                 bool convert = r.ReadBoolean();
+                ConvertReason convertReason = (ConvertReason)r.ReadByte();
 
                 var newFaction = Net.ObjectId.ReadFaction(r);
 
                 if (newFaction != null)
                 {
-                    city.setFaction(newFaction, false, convert, false);
+                    city.setFaction(newFaction, false, convert, convertReason, false);
 
                     
                 }
             }            
         }
 
-        override public void OnNewOwner(Faction newFaction, bool convert)
+        override public void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason)
         {
 
             if (DssRef.world != null)

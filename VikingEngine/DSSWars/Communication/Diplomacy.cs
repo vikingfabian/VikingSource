@@ -806,7 +806,7 @@ namespace VikingEngine.DSSWars
 
                 if (DssRef.difficulty.diplomacyDifficulty > 0)
                 {
-                    allyCountCost = (int)(player.allyCount * DssConst.DiplomacyExtraCostPerAlly);
+                    allyCountCost = (int)(player.alliedFactions.Count * DssConst.DiplomacyExtraCostPerAlly);
                 }
             }
             cost += allyCountCost;
@@ -871,6 +871,7 @@ namespace VikingEngine.DSSWars
         RelationTypeN4_War = -4,
         RelationTypeN5_TotalWar = -5,
 
+        NONE = -100,
         ExtendTruce = 100,
     }
 

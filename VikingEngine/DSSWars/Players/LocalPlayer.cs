@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace VikingEngine.DSSWars.Players
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
-        public int allyCount = 0;
+        //public int allyCount = 0;
         public int warCount = 0;
         public int diplomaticPoints_softMax;
 
@@ -72,7 +73,10 @@ namespace VikingEngine.DSSWars.Players
         /// </summary>
         public Dictionary<int, PlayerToPlayerDiplomacy> toPlayerDiplomacies = new Dictionary<int, PlayerToPlayerDiplomacy>();
         SpottedArrayCounter<LocationPin> netSharePinCounter;
-        
+
+        public List<int> alliedFactions = new List<int>();
+        public List<int> alliedFactions_build = new List<int>();
+
 
         public PlayerToPlayerDiplomacy GetOrCreateToPlayerDiplomacy(AbsHumanPlayer player)
         {

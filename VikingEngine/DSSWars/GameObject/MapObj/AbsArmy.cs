@@ -9,9 +9,11 @@ using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
+using VikingEngine.PJ;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -33,7 +35,48 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool inBattle = false;
         InBattleWith inBattleWith = new InBattleWith();
-                
+        public GameTimeStamp lastTimeTradedBetweenPlayers = GameTimeStamp.None;
+
+        public void tradeBetweenPlayers_toHud(LocalPlayer player, RichBoxContent content)
+        {
+            if (factionIndex == player.faction.myIndex && player.alliedFactions.Count > 0)
+            {   
+                content.Add(new RbSeperationLine());
+                HudLib.Label(content, "Gift to player");
+                content.hspace();
+
+                if (lastTimeTradedBetweenPlayers.TimeOut())
+                {
+                    lock (player.alliedFactions)
+                    {
+                        foreach (var m in player.alliedFactions)
+                        {
+                            var f = DssRef.world.faction(m);
+                            if (f != null && f.TryGetPlayer(out var p))
+                            {
+                                RichBoxContent buttonContent = new RichBoxContent();
+                                f.toHud(buttonContent, RelationType.NONE, true, true);
+
+                                content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent, new RbAction1Arg<Faction>(
+                                    (Faction selected) =>
+                                    {
+                                        lastTimeTradedBetweenPlayers.setTimeFromNow(TimeExt.MinuteInSeconds * 10);
+
+                                        setFaction(selected, false, true, ConvertReason.Gift, true);
+
+                                        player.gameControls.clearSelection();
+
+                                    }, f), null));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    content.Add(new RbText(HudLib.TimeSpan_LongText(lastTimeTradedBetweenPlayers.TimeSpan_Left()), HudLib.NotAvailableColor));
+                }
+            }
+        }
 
         public void AddSoldierGroup(SoldierGroup group)
         {
@@ -124,9 +167,9 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.CrashIfThreaded();
             groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
-        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, bool netShare)
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
-            base.setFaction(newFaction, duringStartup, convert, netShare);
+            base.setFaction(newFaction, duringStartup, convert, convertReason, netShare);
 
             convertSoldiersToFaction(newFaction);
         }

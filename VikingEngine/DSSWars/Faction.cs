@@ -339,7 +339,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                city.setFaction(this, true, false, false);
+                city.setFaction(this, true, false, ConvertReason.Assigned, false);
             }
 
             Debug.ReadCheck(r);
@@ -522,7 +522,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                city.OnNewOwner(newFaction, false);
+                city.OnNewOwner(newFaction, false, ConvertReason.Assigned);
             }
         }
         
@@ -567,7 +567,7 @@ namespace VikingEngine.DSSWars
                     mainCity = city;
                 }
                 cities.Add(city.myIndex);
-                city.setFaction(this, duringStartUp, false, false);
+                city.setFaction(this, duringStartUp, false, ConvertReason.Assigned, false);
             }
             else
             {
@@ -575,7 +575,7 @@ namespace VikingEngine.DSSWars
                 if (!cities.Contains(city.myIndex))
                 {
                     cities.Add(city.myIndex);
-                    city.setFaction(this, duringStartUp, false, false);
+                    city.setFaction(this, duringStartUp, false, ConvertReason.WarCapture, false);
                     if (!duringStartUp)
                     {
                         player?.OnCityCapture(city);
@@ -1027,6 +1027,34 @@ namespace VikingEngine.DSSWars
             });
         }
 
+       
+        public void toHud(RichBoxContent content, RelationType relation, bool flag, bool dark)
+        {
+            if (flag)
+            {
+                content.Add(FlagTextureToHud());
+                content.hspace();
+            }
+            else
+            {
+                content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
+                content.space(0.5f);
+            }
+            if (relation != RelationType.NONE)
+            {
+                IconName.Relation(relation, out SpriteName relIcon, out string relName);
+                content.Add(new RbImage(relIcon));
+            }
+            if (player.IsRemotePlayer())
+            {
+                content.space(0.5f);
+                content.Add(new RbGamerIcon(((RemotePlayer)player).networkPeer.peer, 0.8f));
+            }
+
+            content.space(0.5f);
+            content.Add(new RbText(PlayerName, dark ? HudLib.TitleColor_Name_Dark : HudLib.TitleColor_Name));
+        }
+
         public void mergeTo(Faction masterFaction)
         {
             DeleteMe();
@@ -1034,7 +1062,7 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.setFaction(masterFaction, false, true, true);
+                armiesC.sel.setFaction(masterFaction, false, true, ConvertReason.Diplomacy, true);
             }
 
             armies.Clear();
@@ -1042,7 +1070,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                citySel.setFaction(masterFaction, false, true, true);                
+                citySel.setFaction(masterFaction, false, true, ConvertReason.Diplomacy, true);                
             }
 
             cities.Clear();

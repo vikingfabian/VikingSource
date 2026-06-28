@@ -209,11 +209,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         //abstract public Faction Faction();
 
-        virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert, bool netShare)
+        virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
             this.factionIndex = newFaction.myIndex;
             
-            OnNewOwner(newFaction, convert);
+            OnNewOwner(newFaction, convert, convertReason);
         }
 
         //override public Faction GetFaction()
@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    return faction;
         //}
 
-        abstract public void OnNewOwner(Faction newFaction, bool convert);
+        abstract public void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason);
 
         public override AbsMapObject RelatedMapObject()
         {

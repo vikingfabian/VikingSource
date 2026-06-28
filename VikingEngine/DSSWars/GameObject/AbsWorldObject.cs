@@ -111,4 +111,13 @@ namespace VikingEngine.DSSWars.GameObject
         NetworkEvent,
         LostHost,
     }
+
+    enum ConvertReason
+    { 
+        Assigned,
+        Diplomacy,
+        Gift,
+        Claim,
+        WarCapture,
+    }
 }

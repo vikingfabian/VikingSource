@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Interface
             
             content.Add(haltButton);
 
-            
+            army.tradeBetweenPlayers_toHud(player, content);
         }
 
         public static void ColumnWidth(RichBoxContent content, AbsArmy army)

@@ -1,9 +1,11 @@
 
 ## MULTIPLAYER UPDATE ##
 * fixed long chat logs
-
+* send resources to allies
+* gift armies and cities to allies
 
 # KNOWN ISSUES #
+x need to instance game ruleset, like global gold
 x PvP protection doesnt work on direct attacks.
 x Cant deny ally requests
 x lobbies can get stuck (should show timeout warning)
@@ -18,7 +20,7 @@ x remote cities have wonky workers
 
 x iterate steam version first
 x DssEditSubTile
-
+? pins always visible
 
 ##ICONS TODO
 * voice icons

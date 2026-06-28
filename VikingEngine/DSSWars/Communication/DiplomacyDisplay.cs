@@ -444,6 +444,10 @@ namespace VikingEngine.DSSWars.Interface
         {
             otherfaction = fromPlayer.faction;
             PlayerToPlayerDiplomacy PtoP = player.GetOrCreateToPlayerDiplomacy(fromPlayer);
+            if (PtoP == null)
+            {
+                return;
+            }
             PtoP.readNet(r, fromPlayer);
 
             if (PtoP.suggestingNewRelation)
@@ -837,7 +841,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_CostPerAlly, DssConst.DiplomacyExtraCostPerAlly)));
 
                     content.newLine();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Diplomacy_AllyCount, player.allyCount), HudLib.InfoYellow_Light));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Diplomacy_AllyCount, player.alliedFactions.Count), HudLib.InfoYellow_Light));
                 }
             }
         }

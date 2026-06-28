@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars
                         SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                         while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
                         {
-                            city.setFaction(faction, false, true, false);
+                            city.setFaction(faction, false, true, ConvertReason.Assigned, false);
                         }
                     }
                     break;
@@ -630,6 +630,8 @@ namespace VikingEngine.DSSWars
             {
                 var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
                 profile.flag.write(w);
+
+                Net.ObjectId.WriteFaction(w, local.faction);
             }
         }
         void NetReadPresentation(ReceivedPacket packet, RemotePlayer sender)
@@ -642,7 +644,11 @@ namespace VikingEngine.DSSWars
             {
                 sender.profile.flag = new FlagAndColor(packet.r);
                 sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
-                //DssRef.world.BordersUpdated = true;
+                Faction faction = Net.ObjectId.ReadFaction(packet.r);
+                if (faction != null)
+                {
+                    sender.faction = faction;
+                }
 
                 RichBoxContent content = new RichBoxContent();
 

@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             throw new NotImplementedException();
         }
-        public override void OnNewOwner(Faction newFaction, bool convert)
+        public override void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason)
         {
             throw new NotImplementedException();
         }
