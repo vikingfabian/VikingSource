@@ -1,22 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
-using System.Threading;
 
 using VikingEngine.DSSWars.Communication;
-using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.GO.PickUp;
-using VikingEngine.ToGG.MoonFall;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace VikingEngine.DSSWars.Interface
 {   
@@ -291,6 +282,11 @@ namespace VikingEngine.DSSWars.Interface
             var settings = otherPlayer.NetClientSettings();
 
             var PtoP = player.GetOrCreateToPlayerDiplomacy(otherPlayer);
+            if (PtoP == null)
+            {
+                return;
+            }
+
             PtoP.refresh(selectedRelation.Relation);
 
             if (PtoP.suggestingNewRelation)
@@ -324,8 +320,9 @@ namespace VikingEngine.DSSWars.Interface
 
                 if (selectedRelation.Relation <= RelationType.RelationTypeN2_Truce)
                 {
+                    content.newLine();
                     offerToPlayerRelationButton(content, RelationType.RelationType1_Peace);
-                    //content.newLine();
+                    
 
                     //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                     //    {
@@ -338,8 +335,9 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     if (settings.clientPtoP.allianceAllow == Network.PlayerDiplomacyAllowType.Allow)
                     {
+                        content.newLine();
                         offerToPlayerRelationButton(content, RelationType.RelationType3_Ally);
-                        //content.newLine();
+                        
 
                         //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                         //{
@@ -354,6 +352,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (selectedRelation.Relation == RelationType.RelationType3_Ally &&
                    settings.clientPtoP.canBreakAlliance)
                 {
+                    content.newLine();
                     forgeRelationButton(content, new DiplomacyOption(RelationType.RelationType0_Neutral));
                 }
 
@@ -387,10 +386,12 @@ namespace VikingEngine.DSSWars.Interface
 
                     if (settings.clientPtoP.mustAsk)
                     {
+                        content.newLine();
                         offerToPlayerRelationButton(content, warLevel);
                     }
                     else
                     {
+                        content.newLine();
                         forgeRelationButton(content, warOption);
                     }
                 }
@@ -409,7 +410,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbSpace(0.5f),
                     new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, ".Offer relation", name)),
                 },
-                new RbAction1Arg<RelationType>(offerToPlayerRelation, relation, RbSoundType.Buy)));
+                new RbAction1Arg<RelationType>(offerToPlayerRelation, relation, RbSoundType.Buy), new RbTooltip(offerRelationTooltip, relation )));
         }
 
         void offerToPlayerRelation(RelationType relation)
@@ -626,6 +627,12 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
+        void offerRelationTooltip(RichBoxContent content, object tag)
+        {
+            content.h1(".If the other player accepts:", HudLib.TitleColor_Label2);
+            relationTooltip(content, tag);
+        }
+
         void relationTooltip( RichBoxContent content, object tag)
         {
             RelationType relationType = (RelationType)tag;
@@ -697,6 +704,12 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbImage(relIcon));
             content.hspace();
             content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, relName)));
+
+            if (rel == RelationType.RelationTypeN3_Mobilization)
+            {
+                var time = otherfaction.GetPlayer().GetHumanPlayer().NetClientSettings().clientPtoP.warDeclarePreparationTime.time.TimeSpan;
+                HudLib.LabelAndText(content, SpriteName.cmdIconTimeOut, ".War preparation time", HudLib.TimeSpan_LongText(time));
+            }
         }
 
         void peaceTooltip(RichBoxContent content, object tag)
@@ -756,13 +769,17 @@ namespace VikingEngine.DSSWars.Interface
         void allianceTooltip(RichBoxContent content, object tag)
         {
             bool ally_notFriend = (bool)tag;
-            int cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out int allyCountCost);
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
             IconName.Relation(toRelation, out SpriteName relIcon, out string relName);
-           
-            diplomacyCostToHud(cost, content);
 
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+            int cost = 0;
+            if (otherfaction.player.IsBot())
+            {
+                cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out int allyCountCost);
+                diplomacyCostToHud(cost, content);
+            }
+
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain, HudLib.TitleColor_Label);
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(relIcon));
@@ -771,8 +788,17 @@ namespace VikingEngine.DSSWars.Interface
             
             if (ally_notFriend)
             {                
-                content.text(DssRef.lang.Diplomacy_AllyDescription).overrideColor = HudLib.InfoYellow_Light;
+                content.text(DssRef.lang.Diplomacy_AllyDescription, HudLib.InfoYellow_Light);
                 var opponents = otherfaction.CollectWars();
+                for (int i = opponents.Count - 1; i >= 0; --i)
+                {
+                    var opprelation = DssRef.world.diplomacy.GetRelation(player.faction, opponents[i]).Relation;
+                    if (opprelation <= RelationType.RelationTypeN2_Truce)
+                    {
+                        opponents.RemoveAt(i);
+                    }
+                }
+
                 if (opponents.Count > 0)
                 {
                     content.newLine();
@@ -783,8 +809,8 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     HudLib.BulletPoint(content);
                    
-                    var relation = DssRef.world.diplomacy.GetRelation(otherfaction, m).Relation;
-                    IconName.Relation(toRelation, out SpriteName opprelIcon, out string opprelName);
+                    var opprelation = DssRef.world.diplomacy.GetRelation(player.faction, m).Relation;
+                    IconName.Relation(opprelation, out SpriteName opprelIcon, out string opprelName);
                     content.Add(new RbImage(opprelIcon));
                     content.space();
                     content.Add(m.FlagTextureToHud());
@@ -798,18 +824,21 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(DssRef.lang.Diplomacy_GoodRelationDescription));
             }
 
-            content.newLine();
-            HudLib.BulletPoint(content);
-            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
-
-            if (ally_notFriend && DssRef.difficulty.AllyCountCost())
+            if (otherfaction.player.IsBot())
             {
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_CostPerAlly, DssConst.DiplomacyExtraCostPerAlly)));
-                
-                content.newLine();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Diplomacy_AllyCount, player.allyCount), HudLib.InfoYellow_Light));
+                content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
+
+                if (ally_notFriend && DssRef.difficulty.AllyCountCost())
+                {
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_CostPerAlly, DssConst.DiplomacyExtraCostPerAlly)));
+
+                    content.newLine();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Diplomacy_AllyCount, player.allyCount), HudLib.InfoYellow_Light));
+                }
             }
         }
 

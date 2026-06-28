@@ -571,7 +571,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("War preparation time") },
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".War preparation time") },
                     Ref.netsett.warUsePreparationTimeProperty, new RbTooltip_Text("A delay from war declaration until attacks are available"))
                 { propertyTag = host });
 

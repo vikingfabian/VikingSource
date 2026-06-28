@@ -14,6 +14,7 @@ namespace VikingEngine.SteamWrapping
     {
         DynamicSoundEffectInstance _audioPlayback;
 
+        public const float VoiceDisplayTimeMs = 300;
         // Buffers to hold our audio data
         private const int MAX_PAYLOAD_SIZE = 1024;
         private byte[] _compressedVoiceBuffer = new byte[MAX_PAYLOAD_SIZE];
@@ -31,6 +32,7 @@ namespace VikingEngine.SteamWrapping
 
         public void UpdateVoice()
         {
+            
             EVoiceResult availableResult = SteamUser.GetAvailableVoice(out uint compressedBytesAvailable);
 
             if (availableResult == EVoiceResult.k_EVoiceResultOK && compressedBytesAvailable > 0)
@@ -39,6 +41,8 @@ namespace VikingEngine.SteamWrapping
                 
                 if (getVoiceResult == EVoiceResult.k_EVoiceResultOK && bytesWritten > 0)
                 {
+                    P2PManager.localPeer.lastvoice.setNow();
+
                     System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(PacketType.VoiceChat, PacketReliability.Unrelyable);
                     //Add to writer
                     // Add to writer: First the size of the payload, then the payload itself
@@ -48,11 +52,12 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        public void readVoice(System.IO.BinaryReader r)
+        public void readVoice(AbsNetworkPeer peer, System.IO.BinaryReader r)
         {
             if (!Ref.gamesett.NetVoiceMuted())
             {
                 //read here
+                peer.isRecording = true;
                 ushort bytesWritten = r.ReadUInt16();
 
                 // Read the actual compressed payload directly into our buffer
@@ -68,6 +73,7 @@ namespace VikingEngine.SteamWrapping
                     // 4. Submit the decompressed raw PCM audio to MonoGame for playback
                     if (decompressResult == EVoiceResult.k_EVoiceResultOK && nBytesWritten > 0)
                     {
+                        peer.lastvoice.setNow();
                         // SubmitBuffer expects standard little-endian PCM wave data, which Steam kindly provides
                         _audioPlayback.SubmitBuffer(_uncompressedVoiceBuffer, 0, (int)nBytesWritten);
                     }
@@ -78,12 +84,14 @@ namespace VikingEngine.SteamWrapping
         public void StartRecording()
         {
             recordingOn = true;
+            P2PManager.localPeer.isRecording = recordingOn;
             SteamUser.StartVoiceRecording();
         }
 
         public void StopRecording()
         {
             recordingOn = false;
+            P2PManager.localPeer.isRecording = recordingOn;
             SteamUser.StopVoiceRecording();
         }
 

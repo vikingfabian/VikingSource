@@ -17,7 +17,6 @@ namespace VikingEngine.DSSWars.Communication
         List<QuestFlag> questFlags = new List<QuestFlag>();
         RelationFlag[] relationFlags;
         LocalPlayer player;
-        //Graphics.Image hoverbox, seletionbox;
         DiplomacyMapSelection hoverGui, selectGui;
         RelationFlag selected = null, currentHover;
         public int relationArrowHover = -1;
@@ -49,13 +48,7 @@ namespace VikingEngine.DSSWars.Communication
 
             hoverGui = new DiplomacyMapSelection(false);
             selectGui = new DiplomacyMapSelection(true);
-            //hverbox = new Graphics.Image(SpriteName.WarsRelationFlagOutline, Vector2.Zero, Vector2.One, HudLib.DiplomacyDisplayLayer + 3);
-            //hoverbox.Visible = false;
-            //hoverbox.Color = ColorExt.FromAlpha(0.9f);
-
-            //seletionbox = new Graphics.Image(SpriteName.WarsRelationFlagOutline, Vector2.Zero, Vector2.One, HudLib.DiplomacyDisplayLayer + 2);
-            //seletionbox.Visible = false;
-
+           
             foreach (var factory in DssRef.state.events.factories)
             {
                 questFlags.Add(new QuestFlag()
@@ -106,10 +99,7 @@ namespace VikingEngine.DSSWars.Communication
             foreach (var rel in relationFlags)
             {
                 Faction faction = DssRef.world.faction(rel.faction);
-                //if (faction!= null && faction.myIndex == 18)
-                //{
-                //    lib.DoNothing();
-                //}
+                
                 if (faction != null &&
                     faction.player != null &&
                     faction.isAlive &&

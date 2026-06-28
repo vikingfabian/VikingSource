@@ -13,6 +13,7 @@ using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -22,6 +23,8 @@ namespace VikingEngine.DSSWars.Players
         public GiftedAchievementsPlayerCollection giftedAchievements = new GiftedAchievementsPlayerCollection();
         public SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
         public TimeSpan timePlayed = TimeSpan.Zero;
+        public SpriteName voiceState = SpriteName.cmdHudCross;
+        public RbImage voiceIcon = null;
 
         public AbsHumanPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
@@ -36,10 +39,8 @@ namespace VikingEngine.DSSWars.Players
             faction.addGold_factionWide(DssRef.difficulty.PlayerBonusGold);
         }
 
-        virtual public void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
+        public void addNetGamerIconsToHud(RichBoxContent content, bool factionBanner)
         {
-            //content.Add(new RbBeginTitle(2));
-
             if (faction == null)
             {
                 if (profile.flag != null)
@@ -63,10 +64,26 @@ namespace VikingEngine.DSSWars.Players
                     content.space();
                 }
                 content.Add(new RbGamerIcon(networkPeer.peer, 0.8f));
+            }
+        }
+
+        virtual public void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
+        {
+            //content.Add(new RbBeginTitle(2));
+
+            addNetGamerIconsToHud(content, factionBanner);
+
+            if (networkPeer != null)
+            {
+                //if (Ref.netSession.Host() == networkPeer.peer)
+                //{
+                //    content.Add(new RbImage(SpriteName.birdRotatingCrown1));
+                //    content.space();
+                //}
+                //content.Add(new RbGamerIcon(networkPeer.peer, 0.8f));
                 content.space();
                 content.Add(new RbText(networkPeer.peer.Gamertag, IsLocal? HudLib.TitleColor_Self : HudLib.TitleColor_Name));
-
-                
+                               
             }
         }
 
@@ -82,6 +99,20 @@ namespace VikingEngine.DSSWars.Players
             {
                 timePlayed = timePlayed.Add(TimeSpan.FromSeconds(1));
             }
+
+            if (!networkPeer.peer.lastvoice.msPassed(SteamManager.VoiceDisplayTimeMs))
+            { 
+                voiceState = SpriteName.pjNum1;
+            }
+            else if (networkPeer.peer.isRecording)
+            {
+                voiceState = SpriteName.pjNum0;
+            }
+            else
+            {
+                voiceState = SpriteName.cmdHudCross;
+            }
+            voiceIcon?.pointer?.SetSpriteName(voiceState);
         }
 
         virtual public void asynchCullingUpdate(float time, bool bStateA)

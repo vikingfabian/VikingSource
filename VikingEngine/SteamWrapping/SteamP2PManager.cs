@@ -305,7 +305,7 @@ namespace VikingEngine.SteamWrapping
                             //case PacketType.VoiceChat:
                             //    Ref.steam.readChat(packet.r);
                             case PacketType.VoiceChat:
-                                Ref.steam.readVoice(packet.r);
+                                Ref.steam.readVoice(packet.sender, packet.r);
                                 break;
                         }
                     }

@@ -32,6 +32,7 @@ using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Sound;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.HeroQuest.HeroStrategy;
@@ -75,8 +76,9 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerToPlayerDiplomacy GetOrCreateToPlayerDiplomacy(AbsHumanPlayer player)
         {
-            PlayerToPlayerDiplomacy result;
-            if (toPlayerDiplomacies.TryGetValue(player.faction.myIndex, out result) == false)
+            PlayerToPlayerDiplomacy result = null;
+            if (player.faction != null &&
+                toPlayerDiplomacies.TryGetValue(player.faction.myIndex, out result) == false)
             {
                 result = new PlayerToPlayerDiplomacy(player.faction.myIndex);
                 toPlayerDiplomacies.Add(result.factionIndex, result);
@@ -334,6 +336,8 @@ namespace VikingEngine.DSSWars.Players
                 RemotePlayerPointer.netWrite(w, this);
 
                 w.Write((int)timePlayed.TotalSeconds);
+
+                w.Write(Ref.steam.recordingOn);
             }
 
             if (pins.Count > 0)
@@ -847,6 +851,8 @@ namespace VikingEngine.DSSWars.Players
             //{
 
             //}
+            
+            
             updatePlayer();
         }
 

@@ -596,7 +596,10 @@ namespace VikingEngine.DSSWars
 
         public void Net_AddCity(City city)
         {
-            cities.AddIfNotExists(city.myIndex);
+            if (cities.AddIfNotExists(city.myIndex))
+            {
+                refreshMainCity();
+            }
         }
 
         public AbsMapObject GetUnit(System.IO.BinaryReader r)
@@ -930,7 +933,7 @@ namespace VikingEngine.DSSWars
             return closestArmy;
         }
                
-        public void tradeAllianceWars(Faction enemyFaction, DiplomaticRelation warRelation)
+        public void tradeAllianceWars(Faction alliedFaction)
         {
                 Task.Factory.StartNew(() =>
                 {
@@ -940,25 +943,25 @@ namespace VikingEngine.DSSWars
                         RelationsLoop loop = new RelationsLoop(myIndex);
                         while (loop.Next())
                         {
-                            var m = loop.Relation();
+                            var myRelation = loop.Relation();
                             {
-                                if (m.Relation >= RelationType.RelationType3_Ally)
+                                if (myRelation.Relation <= RelationType.RelationTypeN4_War)
                                 {
-                                    if (loop.OtherFaction(out var ally))
+                                    if (loop.OtherFaction(out var thirdParty))
                                     {
-                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(ally, enemyFaction);
+                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(alliedFaction, thirdParty);
 
                                         if (allyToEnemyRelation.Relation < RelationType.RelationType3_Ally)
                                         {
                                             //share worst relation
-                                            RelationType worst = (RelationType)Math.Min((int)warRelation.Relation, (int)allyToEnemyRelation.Relation);
+                                            RelationType worst = (RelationType)Math.Min((int)myRelation.Relation, (int)allyToEnemyRelation.Relation);
                                             if (worst <= RelationType.RelationTypeN3_Mobilization)
                                             {
-                                                DssRef.world.diplomacy.declareWar(enemyFaction, ally);
+                                                DssRef.world.diplomacy.declareWar(alliedFaction, thirdParty);
                                             }
                                             else
                                             {
-                                                DssRef.world.diplomacy.SetRelationType(enemyFaction, ally, worst);
+                                                DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, worst);
                                             }
                                         }
                                     }

@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (localAction)
                     {
-                        faction.tradeAllianceWars(otherFaction, rel);
+                        faction.tradeAllianceWars(otherFaction);
                     }
                 }
                 else
@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (localAction)
                 {
-                    faction.tradeAllianceWars(otherFaction, rel);
+                    faction.tradeAllianceWars(otherFaction);
                 }
             }
         }

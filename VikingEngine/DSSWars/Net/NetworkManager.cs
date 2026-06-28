@@ -257,6 +257,7 @@ namespace VikingEngine.DSSWars
                             sender.Net_readStatus(packet.r);
                             sender.pointer.netRead(packet.r);
                             sender.timePlayed = TimeSpan.FromSeconds(packet.r.ReadInt32());
+                            sender.networkPeer.peer.isRecording = packet.r.ReadBoolean();
                             if (sender.newPlayer)
                             {
                                 //Present yourself

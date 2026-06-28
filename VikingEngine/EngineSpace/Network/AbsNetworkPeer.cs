@@ -71,6 +71,8 @@ namespace VikingEngine.Network
         public StoredNetworkGamer storedData;
 
         public bool isFriend = false;
+        public bool isRecording = false;
+        public TimeStamp lastvoice;
 
         public bool lowLoad()
         {
