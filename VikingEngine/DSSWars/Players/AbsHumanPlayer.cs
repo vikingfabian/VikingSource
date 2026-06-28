@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Players
                     content.Add(new RbImage(SpriteName.birdRotatingCrown1));
                     content.space();
                 }
-                content.Add(new RbGamerIcon(networkPeer.peer, 0.8f));
+                content.Add(new RbGamerIcon(networkPeer.peer, 0.9f));
             }
         }
 

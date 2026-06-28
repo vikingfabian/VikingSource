@@ -29,6 +29,7 @@ X old saved will have some bot flag color drifting
 
  
 ##ICONS TODO
+* voice icons
 * gray rounded button
 * gold frames
 X gold frame disabled 

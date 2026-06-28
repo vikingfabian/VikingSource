@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                             player.hud.objMenu.netSessionDisplay.selectedPlayer = selected.GetRemotePlayer();
                             player.hud.needRefresh = true;
                         }, allHumans.sel), 
-                        new RbTooltip_Text(player.Name), enabled));
+                        new RbTooltip_Text(allHumans.sel.Name), enabled));
                 }
             }
 
