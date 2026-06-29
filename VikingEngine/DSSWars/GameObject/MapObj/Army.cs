@@ -1336,9 +1336,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                 var newFaction = Net.ObjectId.ReadFaction(r, out _);
 
-                if (newFaction != null)
+                //if (newFaction != null)
+                //{
+                //    army.setFaction(newFaction, false, convert, convertReason, false);
+                //}
+                if (convertReason == ConvertReason.Gift)
                 {
-                    army.setFaction(newFaction, false, convert, convertReason, false);
+                    army.GetFaction()?.remove(army.GetArmy());
                 }
             }
         }
