@@ -403,6 +403,10 @@ namespace VikingEngine.DSSWars
                     City.NetReadSetFaction(packet.r);
                     break;
 
+                case PacketType.DssSetArmyFaction:
+                    Army.NetReadSetFaction(packet.r);
+                    break;
+
                 case PacketType.DssArmyStatus:
                     Army.NetReadArmy(packet.r);
                     break;

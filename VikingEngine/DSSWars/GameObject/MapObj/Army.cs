@@ -1303,15 +1303,44 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
+            if (netShare)
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSetCityFaction, Network.PacketReliability.Reliable, out var packet);
+                {
+                    Net.ObjectId.NetWriteMapObjId(w, this);
+                    w.Write(convert);
+                    w.Write((byte)convertReason);
+                    Net.ObjectId.WriteFaction(w, newFaction);
+                }
+                packet.EndWrite_Asynch();
+            }
+
             if (convertReason == ConvertReason.Gift)
             {
                 GetFaction()?.remove(this);
             }
 
             base.setFaction(newFaction, duringStartup, false, convertReason, netShare);
-            
+
             newFaction.AddArmy(this);
-            
+        }
+
+        public static void NetReadSetFaction(System.IO.BinaryReader r)
+        {
+            if (Net.ObjectId.NetReadMapObjId(r, out _, true, false, out var army, out _))
+            {
+                bool hosted = army.IsNetHosted;
+
+                bool convert = r.ReadBoolean();
+                ConvertReason convertReason = (ConvertReason)r.ReadByte();
+
+                var newFaction = Net.ObjectId.ReadFaction(r, out _);
+
+                if (newFaction != null)
+                {
+                    army.setFaction(newFaction, false, convert, convertReason, false);
+                }
+            }
         }
 
         public override void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason)

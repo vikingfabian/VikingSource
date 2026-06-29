@@ -211,6 +211,7 @@ namespace VikingEngine.Network
         DssCityStatus,
         DssCityHandOver,
         DssSetCityFaction,
+        DssSetArmyFaction,
         DssArmyStatus,
         DssSoldierGroupStatus_Army,
         DssSoldierGroupStatus_City,

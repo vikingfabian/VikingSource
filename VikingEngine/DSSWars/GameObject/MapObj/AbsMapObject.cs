@@ -214,6 +214,8 @@ namespace VikingEngine.DSSWars.GameObject
             this.factionIndex = newFaction.myIndex;
             
             OnNewOwner(newFaction, convert, convertReason);
+
+            IsNetHosted = newFaction.IsNetHosted();
         }
 
         //override public Faction GetFaction()
