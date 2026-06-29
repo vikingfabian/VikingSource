@@ -2470,6 +2470,7 @@ namespace VikingEngine
         WarsHudListArrowDefault,
         WarsHudListArrowNotSelected,
         WarsHudGoldOutline,
+        WarsHudGoldOutline_Gray,
 
         WarsHudIconExit,
         WarsHudIconSettings,
@@ -2503,11 +2504,14 @@ namespace VikingEngine
         WarsHudIconSpeed_High,
         WarsGiftedAward,
         WarsGiftedAwardDisabled,
+        VoiceSoundOn,
+        VoiceSoundOff,
+        VoiceDisabled,
 
 
         DSS2MainMenu,
+        SteamIconAndName,
         SteamIcon,
-
         WarsTutorialArmy,
         WarsTutorialCity,
         WarsTutorialSoldiers,

@@ -2127,6 +2127,13 @@ namespace VikingEngine
                 add(SpriteName.WarsLocationPin);
                 add(SpriteName.WarsHudRoundButtonDisabled);
                 add(SpriteName.WarsHudGoldOutline);
+                add(SpriteName.WarsHudGoldOutline_Gray);
+                add(SpriteName.VoiceSoundOn);
+                add(SpriteName.VoiceSoundOff);
+                add(SpriteName.VoiceDisabled);
+
+
+
             }
 
 
@@ -2306,7 +2313,9 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_SmallServiceHouse, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_BigServiceHouse, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_Palisade, currentIndex, 3, 3);
-                add(SpriteName.SteamIcon, currentIndex, 8, 3);
+                var steamIx = currentIndex;
+                add(SpriteName.SteamIcon, steamIx, 3, 3);
+                add(SpriteName.SteamIconAndName, steamIx, 8, 3);
                 add(SpriteName.WarsBuild_Tent, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_Bookpress, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_ResearchCenter, currentIndex, 3, 3);

@@ -754,7 +754,7 @@ namespace VikingEngine.DSSWars
             if (PlatformSettings.STEAM_DEMO && Ref.steam.isInitialized)
             {
                 content.newLine();
-                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
+                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIconAndName) }, new RbAction(() =>
                 {
                     Steamworks.SteamFriends.ActivateGameOverlayToStore(
                     new Steamworks.AppId_t( 3585100),

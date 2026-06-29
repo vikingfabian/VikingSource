@@ -22,12 +22,10 @@ x DssEditSubTile
 ? pins always visible
 
 ##ICONS TODO
-* voice icons
+
 * gray rounded button
 * gold frames
-X gold frame disabled 
 * DLC banners
-x small steam icon
 
 #MOUNTED TODO
 * 

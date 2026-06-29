@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Players
         public GiftedAchievementsPlayerCollection giftedAchievements = new GiftedAchievementsPlayerCollection();
         public SpottedArray<LocationPin> pins = new SpottedArray<LocationPin>();
         public TimeSpan timePlayed = TimeSpan.Zero;
-        public SpriteName voiceState = SpriteName.cmdHudCross;
+        public SpriteName voiceState = SpriteName.VoiceDisabled;
         public RbImage voiceIcon = null;
 
         public AbsHumanPlayer(Faction faction, bool newGame)
@@ -107,15 +107,15 @@ namespace VikingEngine.DSSWars.Players
 
             if (!networkPeer.peer.lastvoice.msPassed(SteamManager.VoiceDisplayTimeMs))
             { 
-                voiceState = SpriteName.pjNum1;
+                voiceState = SpriteName.VoiceSoundOn;
             }
             else if (networkPeer.peer.isRecording)
             {
-                voiceState = SpriteName.pjNum0;
+                voiceState = SpriteName.VoiceSoundOff;
             }
             else
             {
-                voiceState = SpriteName.cmdHudCross;
+                voiceState = SpriteName.VoiceDisabled;
             }
             voiceIcon?.pointer?.SetSpriteName(voiceState);
         }
