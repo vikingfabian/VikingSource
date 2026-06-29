@@ -211,6 +211,14 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
+
+        public void giftMessage(AbsArmy mapObj, RemotePlayer fromPlayer)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h1("Recived gift", HudLib.TitleColor_Head);
+
+            Add(content, SoundLib.netMessage);
+        }
         public void armyLowFoodMessage(Army army)
         {
             if (!highEconomyWarningBlock() &&

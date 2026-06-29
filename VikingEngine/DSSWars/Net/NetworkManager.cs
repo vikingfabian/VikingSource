@@ -400,11 +400,11 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssSetCityFaction:
-                    City.NetReadSetFaction(packet.r);
+                    City.NetReadSetFaction(sender, packet.r);
                     break;
 
                 case PacketType.DssSetArmyFaction:
-                    Army.NetReadSetFaction(packet.r);
+                    Army.NetReadSetFaction(sender, packet.r);
                     break;
 
                 case PacketType.DssArmyStatus:
