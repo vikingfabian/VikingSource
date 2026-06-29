@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Characters;
 
 namespace VikingEngine.DSSWars.EntityComponent
 {
@@ -136,6 +137,17 @@ namespace VikingEngine.DSSWars.EntityComponent
             }
         }
 
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            w.Write(amount);
+            w.Write((ushort)stockPileLimit);
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+            amount = r.ReadInt32();
+            stockPileLimit = r.ReadUInt16();
+        }
+
         public void writeCity(BoolRegister boolRegister)//System.IO.BinaryWriter w)
         {
             if (boolRegister.SetNext(amount != 0))
@@ -143,13 +155,6 @@ namespace VikingEngine.DSSWars.EntityComponent
                 boolRegister.writer.Write(amount);
             }
             writeStockPile(boolRegister);
-            //if (boolRegister.SetNext(useStockLimit))
-            //{
-            //    boolRegister.writer.Write((ushort)stockPileLimit);
-            //}
-
-            //    w.Write(useStockLimit);
-            //w.Write((ushort)stockPileLimit);
         }
         public void readCity(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
         {
@@ -158,23 +163,14 @@ namespace VikingEngine.DSSWars.EntityComponent
                 amount = r.ReadInt32();
             }
             readStockPile(boolRegister, r, subversion);
-            //useStockLimit = boolRegister.GetNext();
-            //if (useStockLimit)
-            //{
-            //    stockPileLimit = r.ReadUInt16();
-            //}            
         }
 
         public void writeFaction(BoolRegister boolRegister)
         {
-            //w.Write(useStockLimit);
-            //w.Write((ushort)stockPileLimit);
             writeStockPile(boolRegister);
         }
         public void readFaction(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
         {
-            //useStockLimit = r.ReadBoolean();
-            //stockPileLimit = r.ReadUInt16();
             readStockPile(boolRegister, r, subversion);
         }
 

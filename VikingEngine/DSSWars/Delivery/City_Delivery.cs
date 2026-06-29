@@ -298,24 +298,41 @@ namespace VikingEngine.DSSWars.GameObject
             var city = Net.ObjectId.ReadCity(packet.r);
             ItemResourceType resourceType = (ItemResourceType)packet.r.ReadByte();
 
-            //Send reply
-            var w = Ref.netSession.BeginWritingPacket(PacketType.DssDeliverStatusReply, PacketReliability.Unrelyable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
-            Net.ObjectId.WriteCity(w, city);
+            if (city != null)
+            {            
+                //Send reply
+                var w = Ref.netSession.BeginWritingPacket(PacketType.DssDeliverStatusReply, PacketReliability.Unrelyable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
+                Net.ObjectId.WriteCity(w, city);
+                w.Write((byte)resourceType);
 
-            if (resourceType == ItemResourceType.AutomatedItem)
-            {
+                if (resourceType == ItemResourceType.AutomatedItem)
+                {
+                    city.writeResources(w);
+                }
+                else
+                {
 
-            }
-            else
-            { 
-                
+                    city.GetGroupedResource(resourceType).writeNet(w);
+                }
             }
         }
 
         public static void NetReadDeliveryStatusReply(ReceivedPacket packet)
         {
             var city = Net.ObjectId.ReadCity(packet.r);
+            ItemResourceType resourceType = (ItemResourceType)packet.r.ReadByte();
 
+            if (city != null)
+            {
+                if (resourceType == ItemResourceType.AutomatedItem)
+                {
+                    city.readResources(packet.r, int.MaxValue);
+                }
+                else
+                {
+                    city.GetRefGroupedResource(resourceType).readNet(packet.r);
+                }
+            }
         }
 
         public ItemResourceType findAutoItem()
