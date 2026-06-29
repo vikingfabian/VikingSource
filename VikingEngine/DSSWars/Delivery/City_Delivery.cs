@@ -232,7 +232,7 @@ namespace VikingEngine.DSSWars.GameObject
             var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDeliver, Network.PacketReliability.Reliable,
                 Network.SendPacketTo.OneSpecific, recievingCity.NetHostingPeer().fullId, out var packet);
             {
-                Net.ObjectId.WriteCity(w, this);
+                Net.ObjectId.WriteCityAndOwner(w, this);
                 Net.ObjectId.WriteCity(w, recievingCity);
                 w.Write((byte)status.inProgress.type);
 
@@ -250,7 +250,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetReadDelivery(ReceivedPacket packet)
         {
-            var sendingCity = Net.ObjectId.ReadCity(packet.r);
+            var sendingCity = Net.ObjectId.ReadCityAndOwner(packet.r);
             var recievingCity = Net.ObjectId.ReadCity(packet.r);
             if (recievingCity != null)
             { 
@@ -263,34 +263,36 @@ namespace VikingEngine.DSSWars.GameObject
 
                 recievingCity.AddGroupedResource(resourceType, amount);
 
-                if (recievingCity.TryGetPlayer(out var p) && p.IsLocalPlayer() &&
-                    p.GetLocalPlayer().hud.messages.DeliveryMessageTime.minPassed(10) &&
-                    sendingCity != null && sendingCity.TryGetPlayer(out var r) && r.IsRemotePlayer())
+                if (recievingCity.TryGetPlayer(out var p) && p.IsLocalPlayer())
                 {
                     var lp = p.GetLocalPlayer();
-                    lp.hud.messages.DeliveryMessageTime.setNow();
+                    if (lp.hud.messages.DeliveryMessageTime.minPassed(10) &&
+                        sendingCity != null && sendingCity.TryGetPlayer(out var r) && r.IsRemotePlayer())
+                    {
 
-                    RichBoxContent content = new RichBoxContent();
-                    content.h1(SpriteName.WarsBuild_Postal, DssRef.lang.MenuTab_Delivery, HudLib.TitleColor_Head);
-                    
-                    r.GetRemotePlayer().addNetGamerToHud(content, true, false);
-                    content.hspace();
-                    content.Add(new RbImage(SpriteName.cmdConvertArrow));
-                    content.newLine();
+                        lp.hud.messages.DeliveryMessageTime.setNow();
 
-                    recievingCity.CityPresentationHud(new Interface.ObjectHudArgs(){ content = content }, false);
-                    content.newLine();
+                        RichBoxContent content = new RichBoxContent();
+                        content.h1(SpriteName.WarsBuild_Postal, DssRef.lang.MenuTab_Delivery, HudLib.TitleColor_Head);
 
-                    IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
-                    content.Add(new RbText(TextLib.PlusMinus(amount)));
-                    content.space();
-                    content.Add(new RbImage(itemIcon));
-                    content.hspace();
-                    content.Add(new RbText(itemName));
+                        r.GetRemotePlayer().addNetGamerToHud(content, true, false);
+                        content.hspace();
+                        content.Add(new RbImage(SpriteName.cmdConvertArrow));
+                        content.newLine();
 
-                    lp.hud.messages.Add(content, SoundLib.netMessage);
+                        recievingCity.CityPresentationHud(new Interface.ObjectHudArgs() { content = content }, false);
+                        content.newLine();
+
+                        IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
+                        content.Add(new RbText(TextLib.PlusMinus(amount)));
+                        content.space();
+                        content.Add(new RbImage(itemIcon));
+                        content.hspace();
+                        content.Add(new RbText(itemName));
+
+                        lp.hud.messages.Add(content, SoundLib.netMessage);
+                    }
                 }
-
                 NetWriteDeliveryStatusReply(packet, recievingCity, resourceType);
             }
             

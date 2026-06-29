@@ -810,15 +810,18 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 foreach (var m in opponents)
                 {
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                   
-                    var opprelation = DssRef.world.diplomacy.GetRelation(player.faction, m).Relation;
-                    IconName.Relation(opprelation, out SpriteName opprelIcon, out string opprelName);
-                    content.Add(new RbImage(opprelIcon));
-                    content.space();
-                    content.Add(m.FlagTextureToHud());
-                    content.Add(new RbText(m.PlayerName));
+                    if (m.player != null)
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+
+                        var opprelation = DssRef.world.diplomacy.GetRelation(player.faction, m).Relation;
+                        IconName.Relation(opprelation, out SpriteName opprelIcon, out string opprelName);
+                        content.Add(new RbImage(opprelIcon));
+                        content.space();
+                        content.Add(m.FlagTextureToHud());
+                        content.Add(new RbText(m.PlayerName));
+                    }
                 }
             }
             else

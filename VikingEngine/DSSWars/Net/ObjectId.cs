@@ -38,6 +38,25 @@ namespace VikingEngine.DSSWars.Net
             return DssRef.world.cities[r.ReadUInt16()];
         }
 
+        public static void WriteCityAndOwner(System.IO.BinaryWriter w, City city)
+        {
+            w.Write((ushort)city.myIndex);
+            if (city.factionIndex < 0)
+            {
+                w.Write(ushort.MaxValue);
+            }
+            else
+            {
+                w.Write((ushort)city.factionIndex);
+            }
+        }
+        public static City ReadCityAndOwner(System.IO.BinaryReader r)
+        {
+            var city = DssRef.world.cities[r.ReadUInt16()];
+            city.setFaction(DssRef.world.faction(r.ReadUInt16()), false, false, ConvertReason.Assigned, false);
+            return city;
+        }
+
         public static void WriteSoldier(System.IO.BinaryWriter w, AbsSoldierUnit soldier)
         {
             if (soldier != null)
