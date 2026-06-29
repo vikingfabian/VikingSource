@@ -4070,7 +4070,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public static void NetReadSetFaction(System.IO.BinaryReader r)
+        public static void NetReadSetFaction(RemotePlayer remotePlayer, System.IO.BinaryReader r)
         {
             var city = Net.ObjectId.ReadCity(r);
             if (city != null)
@@ -4084,9 +4084,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (newFaction != null)
                 {
-                    city.setFaction(newFaction, false, convert, convertReason, false);
+                    city.setFaction(newFaction, false, convert, convertReason, false);                    
+                }
 
-                    
+                if (convertReason == ConvertReason.Gift && newFaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
+                {
+                    p.GetLocalPlayer().hud.messages.giftMessage(city, remotePlayer); 
                 }
             }            
         }

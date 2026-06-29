@@ -1334,7 +1334,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public static void NetReadSetFaction(System.IO.BinaryReader r)
+        public static void NetReadSetFaction(RemotePlayer remotePlayer, System.IO.BinaryReader r)
         {
             if (Net.ObjectId.NetReadMapObjId(r, out _, true, false, out var army, out _))
             {
@@ -1348,6 +1348,11 @@ namespace VikingEngine.DSSWars.GameObject
                 if (newFaction != null && newFaction.myIndex != army.factionIndex)
                 {
                     army.GetFaction()?.remove(army.GetArmy());
+
+                    if (convertReason == ConvertReason.Gift && newFaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
+                    {
+                        p.GetLocalPlayer().hud.messages.giftMessage(army, remotePlayer);
+                    }
                 }
             }
         }

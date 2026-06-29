@@ -61,11 +61,11 @@ namespace VikingEngine.DSSWars.Map.Path
 
         public void Return(DetailWalkingPath pathresult)
         {
-            // Reset the node to a default state
-
-            //pathresult.recycle();
-            pathresult.timeStamp = Ref.TotalFrameCount;
-            resultPool.Enqueue(pathresult);
+            if (pathresult != null)
+            {
+                pathresult.timeStamp = Ref.TotalFrameCount;
+                resultPool.Enqueue(pathresult);
+            }
         }
     }
 
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.Map.Path
 
         public Vector3 NextNodeWp(Vector3 myPos, out bool complete, out bool ship)
         {
-            complete = currentNodeIx < 0;
+            complete = currentNodeIx < 0 || currentNodeIx >= nodes.Count;
             if (complete)
             {
                 ship = false;
