@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars.Players
         virtual public void AssignFaction(Faction faction)
         {
             this.faction = faction;
+            //faction.player = this;
             faction.SetStartOwner(this);
             faction.onNewPlayerModels();
             DssRef.world.BordersUpdated = true;

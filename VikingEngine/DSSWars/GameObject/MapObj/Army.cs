@@ -1327,7 +1327,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             newFaction.AddArmy(this);
 
-            if (netShare && IsNetHosted && prevFaction != null && prevFaction.IsNetHosted() && !newFaction.IsNetHosted())
+            if (netShare && prevFaction != null && prevFaction.IsNetHosted() && !newFaction.IsNetHosted())
             {
                 IsNetHosted = false;
                 Army.NetFullArmyStatus(this, PacketReliability.Reliable);
