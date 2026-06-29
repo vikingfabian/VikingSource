@@ -214,17 +214,18 @@ namespace VikingEngine.DSSWars.GameObject
         {
             var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDeliver, Network.PacketReliability.Reliable,
                 Network.SendPacketTo.OneSpecific, recievingCity.NetHostingPeer().fullId, out var packet);
-
-            Net.ObjectId.WriteCity(w, this);
-            Net.ObjectId.WriteCity(w, recievingCity);
-            w.Write((byte)inProgress.type);
-
-            int amount = inProgress.SendAmount;
-            if (inProgress.type == ItemResourceType.Gold)
             {
-                amount /= DssConst.GoldDeliveryChunkSize_Mini;
-            }
-            w.Write((byte)amount);
+                Net.ObjectId.WriteCity(w, this);
+                Net.ObjectId.WriteCity(w, recievingCity);
+                w.Write((byte)inProgress.type);
+
+                int amount = inProgress.SendAmount;
+                if (inProgress.type == ItemResourceType.Gold)
+                {
+                    amount /= DssConst.GoldDeliveryChunkSize_Mini;
+                }
+                w.Write((byte)amount);
+            } packet.EndWrite_Asynch();
         }
 
         public static void NetReadDelivery(ReceivedPacket packet)
