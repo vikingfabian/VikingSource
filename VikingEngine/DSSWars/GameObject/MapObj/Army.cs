@@ -1303,6 +1303,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
+            if (convertReason == ConvertReason.Gift)
+            {
+                GetFaction()?.remove(this);
+            }
+
             base.setFaction(newFaction, duringStartup, false, convertReason, netShare);
             
             newFaction.AddArmy(this);
