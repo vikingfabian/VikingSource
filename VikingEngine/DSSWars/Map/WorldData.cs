@@ -755,12 +755,12 @@ namespace VikingEngine.DSSWars
 
                     for (int i = 0; i < factionLength; ++i)
                     {
-//#if DEBUG
-//                        if (i == 25)
-//                        {
-//                            lib.DoNothing();
-//                        }
-//#endif
+#if DEBUG
+                        if (i == 100)
+                        {
+                            lib.DoNothing();
+                        }
+#endif
                         if (r.ReadBoolean())
                         {
                             FactionType factionType = (FactionType)r.ReadByte();

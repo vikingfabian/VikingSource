@@ -155,8 +155,8 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Armor:
 
                     groupType = ResourceGroupType.Armor;
-                    stockpile(player, ItemResourceType.HeavyPaddedArmor);
                     stockpile(player, ItemResourceType.PaddedArmor);
+                    stockpile(player, ItemResourceType.HeavyPaddedArmor);                 
                     stockpile(player, ItemResourceType.BronzeArmor);
                     stockpile(player, ItemResourceType.IronArmor);
                     stockpile(player, ItemResourceType.HeavyIronArmor);
@@ -165,9 +165,8 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(player, ItemResourceType.MithrilArmor);
 
                     content.newParagraph();
-
-                    stockpile(player, ItemResourceType.MountHeavyPaddedArmor);
                     stockpile(player, ItemResourceType.MountPaddedArmor);
+                    stockpile(player, ItemResourceType.MountHeavyPaddedArmor);                    
                     stockpile(player, ItemResourceType.MountBronzeArmor);
                     stockpile(player, ItemResourceType.MountIronArmor);
                     stockpile(player, ItemResourceType.MountHeavyIronArmor);

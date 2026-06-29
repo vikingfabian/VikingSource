@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars
 
             try
             {
-                introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
+                introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.5f);
             }
             catch (Exception ex)
             {                

@@ -495,7 +495,7 @@ namespace VikingEngine
         //}
         public void write_ushort_compressed(System.IO.BinaryWriter w)
         {
-            w.Write((ushort)Count);
+            w.Write((ushort)Bound.UShort(Count));
 
             if (Count > 0)
             {
@@ -529,6 +529,12 @@ namespace VikingEngine
         public void read_ushort_compressed(System.IO.BinaryReader r)
         {
             int readCount = r.ReadUInt16();
+            if (readCount == ushort.MaxValue)
+            {
+                readCount = 0;
+            }
+
+
             if (readCount > Array.Length)
             {
                 Array = new int[readCount];
