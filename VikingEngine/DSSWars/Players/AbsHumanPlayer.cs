@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Players
                     content.space();
                 }
             }
-            else if (factionBanner)
+            else if (factionBanner && faction.player != null)
             {
                 content.Add(faction.FlagTextureToHud());
                 content.space();

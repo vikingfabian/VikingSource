@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             otherfaction = botFaction;
             
-            if (player.faction == botFaction || botFaction == null || botFaction.player == player)
+            if (player.faction == botFaction || botFaction == null || botFaction.player == player || otherfaction.player == null)
             {
                 return;
             }
