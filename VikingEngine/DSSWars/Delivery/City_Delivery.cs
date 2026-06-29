@@ -267,6 +267,8 @@ namespace VikingEngine.DSSWars.GameObject
                     content.Add(new RbImage(itemIcon));
                     content.hspace();
                     content.Add(new RbText(itemName));
+
+                    lp.hud.messages.Add(content, SoundLib.netMessage);
                 }
             }
             

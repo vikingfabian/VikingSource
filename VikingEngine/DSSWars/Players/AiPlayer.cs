@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Players
             base.AssignFaction(faction);
             faction.factiontype = FactionType.DefaultAi;
             faction.availableForPlayer = true;
+            faction.player = this;
            
             if (Ref.netSession.IsHost)
             {

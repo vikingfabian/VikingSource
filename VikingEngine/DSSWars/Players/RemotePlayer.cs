@@ -58,6 +58,10 @@ namespace VikingEngine.DSSWars.Players
             {
                 faction = DssRef.world.faction(assignedFaction);
             }
+            else if (faction.player == null)
+            {
+                faction.player = this;
+            }
         }
 
         public override NetSharedClientSettings NetClientSettings()
@@ -198,8 +202,7 @@ namespace VikingEngine.DSSWars.Players
             assignedFaction = faction.myIndex;
             previousPlayer = faction.player;
             previousFactionType = faction.factiontype;
-            base.AssignFaction(faction);
-            
+            base.AssignFaction(faction);            
         }
 
         public void Net_readStatus(System.IO.BinaryReader r)
