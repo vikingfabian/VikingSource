@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_deliveryUpdate()
         {
-            if (debugTagged || myIndex == 153)
+            if (debugTagged || myIndex == 1049)
             {
                 lib.DoNothing();
             }
@@ -43,6 +43,12 @@ namespace VikingEngine.DSSWars.GameObject
                 for (int i = 0; i < deliveryServices.Count; i++)
                 {
                     DeliveryStatus status = deliveryServices[i];
+
+                    if (status.inProgress.ToCity() == 253)
+                    {
+                        lib.DoNothing();
+                    }
+
                     switch (status.active)
                     {
                         case DeliveryActiveStatus.Idle:
@@ -68,7 +74,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     City othercity = findOtherCity(sendItem, ref status);
 
                                     if (othercity != null && 
-                                        othercity.factionIndex == this.factionIndex )
+                                        (othercity.factionIndex == this.factionIndex || DssRef.world.diplomacy.GetRelation_Safe(factionIndex, othercity.factionIndex).Relation >= RelationType.RelationType2_Good))
                                     {
                                         if (status.CountDownQue())
                                         {

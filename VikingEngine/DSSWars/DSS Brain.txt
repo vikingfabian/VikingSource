@@ -1,8 +1,12 @@
 
 ## MULTIPLAYER UPDATE ##
 * fixed long chat logs
+* fixed ally crash
 * send resources to allies
 * gift armies and cities to allies
+x gifting armies have a clone issue
+
+
 
 # KNOWN ISSUES #
 x need to instance game ruleset, like global gold

@@ -364,6 +364,11 @@ namespace VikingEngine.DSSWars.Delivery
         public int autoCity;
         public ItemResourceType type;
 
+        public override string ToString()
+        {
+            return $"Deliver {SendAmount} {type} to {toCity}";
+        }
+
         public bool fullSetup()
         {
             return type != ItemResourceType.NONE && type != ItemResourceType.RESOURCES &&
