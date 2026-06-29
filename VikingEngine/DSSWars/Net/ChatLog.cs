@@ -45,12 +45,19 @@ namespace VikingEngine.DSSWars.Net
             content.newParagraph();
             content.h2(".Chat log", HudLib.TitleColor_Head);
 
-            for (int i = Count - 1; i >= 0; --i)
+            if (Count == 0)
             {
-                content.Add(new RbSeperationLine());
 
-                var message = this[i];
-                HudLib.LabelAndText(content, SpriteName.NO_IMAGE, message.senderName, message.message);
+            }
+            else
+            {
+                for (int i = Count - 1; i >= 0; --i)
+                {
+                    content.Add(new RbSeperationLine());
+
+                    var message = this[i];
+                    HudLib.LabelAndText(content, SpriteName.NO_IMAGE, message.senderName, message.message);
+                }
             }
         }
     }

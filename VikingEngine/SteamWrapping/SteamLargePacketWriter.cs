@@ -58,7 +58,7 @@ namespace VikingEngine.SteamWrapping
 
         public void sendNext()
         {
-            Debug.Log($"Send large {nextPacketIndex + 1}/{packetCount} {largePacketType}");
+            //Debug.Log($"Send large {nextPacketIndex + 1}/{packetCount} {largePacketType}");
 
             Task.Factory.StartNew(() =>
             {

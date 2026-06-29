@@ -47,13 +47,13 @@ namespace VikingEngine.DSSWars.Players
                 {
                     var flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
                     content.Add(new RbTexture(flagTexture, 1f, 0, 0.2f));
-                    content.space();
+                    //content.space();
                 }
             }
             else if (factionBanner && faction.player != null)
             {
                 content.Add(faction.FlagTextureToHud());
-                content.space();
+                //content.space();
             }
 
             if (networkPeer != null)

@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon));
                 //if (!Ref.isPaused)
                 {
-                    content.Add(new RbText(string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed), HudLib.SecondaryTextColor));
+                    content.Add(new RbText(string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed), HudLib.HeadBarTextColor_Beige));
                 }
                 content.space(4);
 

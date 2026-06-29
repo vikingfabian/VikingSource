@@ -275,12 +275,13 @@ namespace VikingEngine.DSSWars.GameObject
                         RichBoxContent content = new RichBoxContent();
                         content.h1(SpriteName.WarsBuild_Postal, DssRef.lang.MenuTab_Delivery, HudLib.TitleColor_Head);
 
+                        content.newLine();
                         r.GetRemotePlayer().addNetGamerToHud(content, true, false);
                         content.hspace();
                         content.Add(new RbImage(SpriteName.cmdConvertArrow));
                         content.newLine();
 
-                        recievingCity.CityPresentationHud(new Interface.ObjectHudArgs() { content = content }, false);
+                        recievingCity.CityPresentationHud(new Interface.ObjectHudArgs() { content = content }, true);
                         content.newLine();
 
                         IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
