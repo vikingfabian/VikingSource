@@ -53,6 +53,11 @@ namespace VikingEngine.DSSWars.Players
             base.Update();
             pointer.Update(playerView);
             updatePlayer();
+
+            if (faction == null)
+            {
+                faction = DssRef.world.faction(assignedFaction);
+            }
         }
 
         public override NetSharedClientSettings NetClientSettings()

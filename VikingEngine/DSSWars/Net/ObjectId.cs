@@ -23,9 +23,10 @@ namespace VikingEngine.DSSWars.Net
                 w.Write((ushort)faction.myIndex);
             }
         }
-        public static Faction ReadFaction(System.IO.BinaryReader r)
-        { 
-            return DssRef.world.faction(r.ReadUInt16());
+        public static Faction ReadFaction(System.IO.BinaryReader r, out int index)
+        {
+            index = r.ReadUInt16();
+            return DssRef.world.faction(index);
         }
 
         public static void WriteCity(System.IO.BinaryWriter w, City city)

@@ -644,7 +644,7 @@ namespace VikingEngine.DSSWars
             {
                 sender.profile.flag = new FlagAndColor(packet.r);
                 sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
-                Faction faction = Net.ObjectId.ReadFaction(packet.r);
+                Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
                 if (faction != null)
                 {
                     sender.faction = faction;
