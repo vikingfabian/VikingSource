@@ -89,6 +89,11 @@ namespace VikingEngine.DSSWars.Players
 
         public void updatePlayer()
         {
+            if (networkPeer == null)
+            {
+                return;
+            }
+
             var pinsC = pins.counter();
             while (pinsC.Next())
             {

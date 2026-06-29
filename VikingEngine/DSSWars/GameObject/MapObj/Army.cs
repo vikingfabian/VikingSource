@@ -20,6 +20,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
+using VikingEngine.Network;
 using VikingEngine.ToGG.HeroQuest.Data;
 using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
@@ -1305,7 +1306,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (netShare)
             {
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSetCityFaction, Network.PacketReliability.Reliable, out var packet);
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSetArmyFaction, Network.PacketReliability.Reliable, out var packet);
                 {
                     Net.ObjectId.NetWriteMapObjId(w, this);
                     w.Write(convert);
@@ -1315,6 +1316,8 @@ namespace VikingEngine.DSSWars.GameObject
                 packet.EndWrite_Asynch();
             }
 
+            var prevFaction = GetFaction();
+            
             if (convertReason == ConvertReason.Gift)
             {
                 GetFaction()?.remove(this);
@@ -1323,6 +1326,12 @@ namespace VikingEngine.DSSWars.GameObject
             base.setFaction(newFaction, duringStartup, false, convertReason, netShare);
 
             newFaction.AddArmy(this);
+
+            if (netShare && IsNetHosted && prevFaction != null && prevFaction.IsNetHosted() && !newFaction.IsNetHosted())
+            {
+                IsNetHosted = false;
+                Army.NetFullArmyStatus(this, PacketReliability.Reliable);
+            }
         }
 
         public static void NetReadSetFaction(System.IO.BinaryReader r)
@@ -1336,7 +1345,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 var newFaction = Net.ObjectId.ReadFaction(r, out _);
 
-                if (newFaction != null)
+                if (newFaction != null && newFaction.myIndex != army.factionIndex)
                 {
                     army.setFaction(newFaction, false, convert, convertReason, false);
                 }
