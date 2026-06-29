@@ -4084,7 +4084,7 @@ namespace VikingEngine.DSSWars.GameObject
                 bool convert = r.ReadBoolean();
                 ConvertReason convertReason = (ConvertReason)r.ReadByte();
 
-                var newFaction = Net.ObjectId.ReadFaction(r);
+                var newFaction = Net.ObjectId.ReadFaction(r, out _);
 
                 if (newFaction != null)
                 {

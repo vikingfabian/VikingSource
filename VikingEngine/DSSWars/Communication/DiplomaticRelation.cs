@@ -62,8 +62,8 @@ namespace VikingEngine.DSSWars.Communication
 
         public static void NetReadRelation(System.IO.BinaryReader r)
         {
-            Faction faction1 = Net.ObjectId.ReadFaction(r);
-            Faction faction2 = Net.ObjectId.ReadFaction(r);
+            Faction faction1 = Net.ObjectId.ReadFaction(r, out _);
+            Faction faction2 = Net.ObjectId.ReadFaction(r, out _);
 
             if (faction1 != null && faction2 != null)
             {
