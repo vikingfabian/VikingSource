@@ -290,6 +290,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                     lp.hud.messages.Add(content, SoundLib.netMessage);
                 }
+
+                NetWriteDeliveryStatusReply(packet, recievingCity, resourceType);
             }
             
         }
@@ -299,21 +301,25 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType resourceType = (ItemResourceType)packet.r.ReadByte();
 
             if (city != null)
-            {            
+            {
                 //Send reply
-                var w = Ref.netSession.BeginWritingPacket(PacketType.DssDeliverStatusReply, PacketReliability.Unrelyable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
-                Net.ObjectId.WriteCity(w, city);
-                w.Write((byte)resourceType);
+                NetWriteDeliveryStatusReply(packet, city, resourceType);
+            }
+        }
 
-                if (resourceType == ItemResourceType.AutomatedItem)
-                {
-                    city.writeResources(w);
-                }
-                else
-                {
+        public static void NetWriteDeliveryStatusReply(ReceivedPacket packet, City city, ItemResourceType resourceType)
+        {
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssDeliverStatusReply, PacketReliability.Unrelyable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
+            Net.ObjectId.WriteCity(w, city);
+            w.Write((byte)resourceType);
 
-                    city.GetGroupedResource(resourceType).writeNet(w);
-                }
+            if (resourceType == ItemResourceType.AutomatedItem)
+            {
+                city.writeResources(w);
+            }
+            else
+            {
+                city.GetGroupedResource(resourceType).writeNet(w);
             }
         }
 
