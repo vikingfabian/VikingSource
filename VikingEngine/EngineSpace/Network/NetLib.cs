@@ -219,6 +219,8 @@ namespace VikingEngine.Network
         DssPinDelete,
         DssPinHide,
         DssDeliver,
+        DssDeliverStatusRequest,
+        DssDeliverStatusReply,
         DssGiftGold,
         DssGiftUnit,
 

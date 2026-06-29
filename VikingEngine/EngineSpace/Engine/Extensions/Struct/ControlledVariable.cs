@@ -165,7 +165,10 @@ namespace VikingEngine
         {
             return new GameTimeStamp(Ref.TotalGameTimeSec);
         }
-
+        public bool minPassed(float minutes)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec >= TimeExt.MinuteInSeconds * minutes;
+        }
         public bool secPassed(float seconds)
         {
             return Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;

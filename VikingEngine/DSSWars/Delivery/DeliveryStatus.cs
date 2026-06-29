@@ -36,6 +36,7 @@ namespace VikingEngine.DSSWars.Delivery
         public DeliveryProfile inProgress;
 
         public TimeInGameCountdown countdown;
+        public GameTimeStamp remoteDeliveryUpdateRequest;
 
         public void halt()
         {

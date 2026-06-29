@@ -989,11 +989,7 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.ReadCheck(r);
         }
 
-        
-
-
-        //TODO change on big update
-        void writeResources(System.IO.BinaryWriter w)
+        public void writeResources(System.IO.BinaryWriter w)
         {
             w.Write((short)res_water.amount);
 

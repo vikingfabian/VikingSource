@@ -416,6 +416,13 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssDeliver:
                     City.NetReadDelivery(packet);
+                    City.NetReadDeliveryStatusRequest(packet);
+                    break;
+                case PacketType.DssDeliverStatusRequest:
+                    City.NetReadDeliveryStatusRequest(packet);
+                    break;
+                case PacketType.DssDeliverStatusReply:
+                    City.NetReadDeliveryStatusReply(packet);
                     break;
 
                 case PacketType.TextChat:
