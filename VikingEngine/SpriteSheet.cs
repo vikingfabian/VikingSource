@@ -2131,9 +2131,11 @@ namespace VikingEngine
                 add(SpriteName.VoiceSoundOn);
                 add(SpriteName.VoiceSoundOff);
                 add(SpriteName.VoiceDisabled);
-
-
-
+                add(SpriteName.TextChatLetter);
+                add(SpriteName.WarsHudCasualMode);
+                add(SpriteName.WarsHudCasualModeDisabled);
+                add(SpriteName.WarsHudIconHandicap);
+                add(SpriteName.WarsHudIconDistanceOnMap);
             }
 
 

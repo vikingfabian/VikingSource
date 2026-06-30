@@ -195,17 +195,23 @@ namespace VikingEngine.DSSWars.Interface
                     new DragButtonSettings(2, 64, 1), Ref.netsett.MaxPlayerCountProperty, false);
 
                 content.newLine();
-                HudLib.Label(content, "Distance between players");
+                HudLib.Label(content, SpriteName.WarsHudIconDistanceOnMap, "Distance between players");
                 content.hspace();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 8, 1), Ref.netsett.PlayerSpacingProperty));
 
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Allow handicap") },
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconHandicap),
+                    new RbSpace(0.5f),
+                    new RbText("Allow handicap") },
                     Ref.netsett.allowHandicapProperty));
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Allow casual controls") },
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
+                    new RbImage(SpriteName.WarsHudCasualMode),  
+                    new RbSpace(0.5f),
+                    new RbText("Allow casual controls") },
                     Ref.netsett.allowCasualControlsProperty, new RbTooltip_Text(DssRef.lang.Settings_CasualControls_Description)));
 
                 content.newLine();
@@ -243,7 +249,10 @@ namespace VikingEngine.DSSWars.Interface
                 content.h2("Client settings", HudLib.TitleColor_Head2);
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Use handicap") },
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconHandicap),
+                    new RbSpace(0.5f),
+                    new RbText("Use handicap") },
                     Ref.netsett.useHandicapProperty));
 
                 if (Ref.netsett.clientSettings.useHandicap)
@@ -284,11 +293,17 @@ namespace VikingEngine.DSSWars.Interface
                     aggroOptions.Build(content, SpriteName.NO_IMAGE, "Bot aggression", menu);
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Extra honor guard") },
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsUnitIcon_Honorguard),
+                        new RbSpace(0.5f),
+                        new RbText("Extra honor guard") },
                         Ref.netsett.handicap_extraHonorGuardsProperty));
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Resource boost") },
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
+                        new RbImage(SpriteName.WarsIcon_Resources),
+                        new RbSpace(0.5f),
+                        new RbText("Resource boost") },
                         Ref.netsett.handicap_resourceBoostProperty));
 
                     var taxOptions = new DropDownBuilder("handicap tax");
@@ -321,7 +336,7 @@ namespace VikingEngine.DSSWars.Interface
                                 }, lvl), null);
                         }
                     }
-                    taxOptions.Build(content, SpriteName.NO_IMAGE, "Tax income", menu);
+                    taxOptions.Build(content, SpriteName.rtsIncome, "Tax income", menu);
                 }
 
                 content.h2("Player interaction", HudLib.TitleColor_Label);
@@ -381,7 +396,7 @@ namespace VikingEngine.DSSWars.Interface
                             }, opt), null);
                     }
                 }
-                voiceOpt.Build(content, SpriteName.MenuPixelIconSoundVol, "Voice", menu);
+                voiceOpt.Build(content, SpriteName.VoiceSoundOn, "Voice", menu);
 
                 var recieveGiftOpt = new DropDownBuilder("gift");
                 {

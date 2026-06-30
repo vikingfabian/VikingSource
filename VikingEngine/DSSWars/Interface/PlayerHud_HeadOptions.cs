@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space(4);
 
                 content.Add(new ArtButton(RbButtonStyle.Primary,
-                    new List<AbsRichBoxMember> { new RbImage(SpriteName.LfChatBobbleIcon) },
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.TextChatLetter) },
                     new RbAction(() =>
                     {
                         new TextChat();

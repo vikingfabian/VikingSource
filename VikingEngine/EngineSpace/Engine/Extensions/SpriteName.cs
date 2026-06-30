@@ -2444,7 +2444,10 @@ namespace VikingEngine
         WarsHudHeadBarTabSelected,
         WarsHudHeadBarTabNotSelected,
         WarsHudHeadBarOutlineButton,
-
+        WarsHudCasualMode,
+        WarsHudCasualModeDisabled,
+        WarsHudIconHandicap,
+        WarsHudIconDistanceOnMap,
 
         WarsHudHeadBarPlayIcon,
         WarsHudHeadBarPauseIcon,
@@ -2507,7 +2510,7 @@ namespace VikingEngine
         VoiceSoundOn,
         VoiceSoundOff,
         VoiceDisabled,
-
+        TextChatLetter,
 
         DSS2MainMenu,
         SteamIconAndName,

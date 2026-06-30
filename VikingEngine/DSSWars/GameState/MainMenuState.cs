@@ -1052,7 +1052,7 @@ namespace VikingEngine.DSSWars
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h1(DssRef.lang.Settings_AdvancedControls, HudLib.TitleColor_Head);
+            content.h1(SpriteName.WarsUnitLevelLegend, DssRef.lang.Settings_AdvancedControls, HudLib.TitleColor_Head);
             content.space();
             HudLib.InfoButton(content, new RbTooltip(tooltip, false));
             //content.text(DssRef.lang.Settings_AdvancedControls_Description, HudLib.InfoYellow_Light);
@@ -1060,7 +1060,7 @@ namespace VikingEngine.DSSWars
 
             content.Add(new RbSeperationLine());
 
-            content.h1(DssRef.lang.Settings_CasualControls, HudLib.TitleColor_Head);
+            content.h1(SpriteName.WarsHudCasualMode, DssRef.lang.Settings_CasualControls, HudLib.TitleColor_Head);
             content.space();
             HudLib.InfoButton(content, new RbTooltip(tooltip, true));
             //content.text(DssRef.lang.Settings_CasualControls_Description, HudLib.InfoYellow_Light);
@@ -1879,7 +1879,10 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 if (!PlatformSettings.STEAM_DEMO)
                 {
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_CasualControls) }, DssRef.storage.profileStorage.casualProperty, new RbTooltip_Text(DssRef.lang.Settings_CasualControls_Description))
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
+                        new RbImage( SpriteName.WarsHudCasualMode),
+                        new RbSpace(0.5f),
+                        new RbText(DssRef.lang.Settings_CasualControls) }, DssRef.storage.profileStorage.casualProperty, new RbTooltip_Text(DssRef.lang.Settings_CasualControls_Description))
                     { propertyTag = playerData.profileIndex, });
                 }
 

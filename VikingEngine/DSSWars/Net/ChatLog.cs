@@ -40,6 +40,8 @@ namespace VikingEngine.DSSWars.Net
         {
             DssRef.state.LocalHost().gameControls.input.TextChat.ToRichContent(content);
             content.space();
+            content.Add(new RbImage( SpriteName.TextChatLetter));
+            content.hspace();
             content.Add(new RbText(".Text chat", HudLib.TitleColor_Action));
 
             content.newParagraph();

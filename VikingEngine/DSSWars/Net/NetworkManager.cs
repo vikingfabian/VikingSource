@@ -436,7 +436,7 @@ namespace VikingEngine.DSSWars
                         RichBoxContent content = new RichBoxContent();
 
                         sender.addNetGamerToHud(content, true, false);
-                        content.icontext(SpriteName.LfChatBobbleIcon, message.message);
+                        content.icontext(SpriteName.TextChatLetter, message.message);
 
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);                        
                     }

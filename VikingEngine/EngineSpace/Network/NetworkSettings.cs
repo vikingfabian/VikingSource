@@ -74,16 +74,6 @@ namespace VikingEngine.Network
         {
             if (fairProtection)
             {
-                //canBreakAlliance |= Ref.netsett.clientPtoP.canBreakAlliance;
-                //allianceLimit |= Ref.netsett.clientPtoP.allianceLimit;
-                //mustAsk |= Ref.netsett.clientPtoP.mustAsk;
-
-                //warDeclarePreparationTime.use |= Ref.netsett.clientPtoP.warDeclarePreparationTime.use;
-                //warDeclarePreparationTime.time.seconds = Math.Max(warDeclarePreparationTime.time.seconds, Ref.netsett.clientPtoP.warDeclarePreparationTime.time.seconds);
-
-                //gameStartPreparationTime.use |= Ref.netsett.clientPtoP.gameStartPreparationTime.use;
-                //gameStartPreparationTime.time.seconds = Math.Max(gameStartPreparationTime.time.seconds, Ref.netsett.clientPtoP.gameStartPreparationTime.time.seconds);
-
                 ApplyFairProtection(Ref.netsett.clientPtoP);
             }
         }
@@ -132,6 +122,8 @@ namespace VikingEngine.Network
     {
         public LobbyPublicity lobbyPublicity;//i
         public bool allowHandicap = true;//i
+        public bool allowCasualControls = true;
+
         public RelationType startDiplomacy = RelationType.RelationType0_Neutral;//i
 
         public HostSettings()
@@ -144,12 +136,15 @@ namespace VikingEngine.Network
             w.Write((byte)lobbyPublicity);
             w.Write((sbyte)startDiplomacy);
             w.Write(allowHandicap);
+            w.Write(allowCasualControls);
+
         }
         public void read(System.IO.BinaryReader r, int storageVersion)
         {
             lobbyPublicity = (LobbyPublicity)r.ReadByte();
             startDiplomacy = (RelationType)r.ReadSByte();
             allowHandicap = r.ReadBoolean();
+            allowCasualControls = r.ReadBoolean();
         }
     }
 
@@ -270,7 +265,7 @@ namespace VikingEngine.Network
         /// </summary>
         public int PlayerSpacing = 2;
         
-        public bool allowCasualControls = true;
+        //public bool allowCasualControls = true;
 
         public ClientSettings clientSettings = new ClientSettings();
         public bool alsoBlockOnRequest = true;
@@ -303,7 +298,7 @@ namespace VikingEngine.Network
             w.Write(PlayerSpacing);
 
             
-            w.Write(allowCasualControls);
+            //w.Write(allowCasualControls);
             
             clientSettings.write(w);
             w.Write(alsoBlockOnRequest);
@@ -336,7 +331,7 @@ namespace VikingEngine.Network
             PlayerSpacing = r.ReadInt32();
 
             
-            allowCasualControls = r.ReadBoolean();
+            //allowCasualControls = r.ReadBoolean();
 
             clientSettings.read(r, storageVersion);
             alsoBlockOnRequest = r.ReadBoolean();
@@ -374,7 +369,8 @@ namespace VikingEngine.Network
 
             PlayerSpacing = 2;
             hostSettings.allowHandicap = true;
-            allowCasualControls = true;
+            hostSettings.allowCasualControls = true;
+            //allowCasualControls = true;
             clientSettings.useHandicap = true;
             clientSettings.handicap_botAggression = HandicapLevel.Low;
             clientSettings.handicap_extraHonorGuards = true;
@@ -403,7 +399,8 @@ namespace VikingEngine.Network
 
             PlayerSpacing = 2;
             hostSettings.allowHandicap = true;
-            allowCasualControls = true;
+            hostSettings.allowCasualControls = true;
+            //allowCasualControls = true;
             clientSettings.useHandicap = false;
             clientSettings.handicap_botAggression = HandicapLevel.Default;
             clientSettings.handicap_extraHonorGuards = false;
@@ -432,7 +429,8 @@ namespace VikingEngine.Network
 
             PlayerSpacing = 3;
             hostSettings.allowHandicap = false;
-            allowCasualControls = false;
+            hostSettings.allowCasualControls = false;
+            //allowCasualControls = false;
             clientSettings.useHandicap = false;
             clientSettings.handicap_botAggression = HandicapLevel.High;
             clientSettings.handicap_extraHonorGuards = false;
@@ -450,7 +448,7 @@ namespace VikingEngine.Network
             }
             return alsoBlockOnRequest;
         }
-       
+
         public bool allowHandicapProperty(object tag, bool set, bool value)
         {
             if (set)
@@ -460,16 +458,25 @@ namespace VikingEngine.Network
             }
             return hostSettings.allowHandicap;
         }
-
         public bool allowCasualControlsProperty(object tag, bool set, bool value)
         {
             if (set)
             {
-                allowCasualControls = value;
+                hostSettings.allowCasualControls = value;
                 settingsHasChanged = true;
             }
-            return allowCasualControls;
+            return hostSettings.allowCasualControls;
         }
+
+        //public bool allowCasualControlsProperty(object tag, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        allowCasualControls = value;
+        //        settingsHasChanged = true;
+        //    }
+        //    return allowCasualControls;
+        //}
         public bool useHandicapProperty(object tag, bool set, bool value)
         {
             if (set)
