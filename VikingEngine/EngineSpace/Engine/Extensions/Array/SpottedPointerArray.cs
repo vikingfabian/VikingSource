@@ -465,34 +465,6 @@ namespace VikingEngine
             return NullPointer;
         }
 
-        //public void write_ushort_compressed(System.IO.BinaryWriter w)
-        //{ 
-        //    w.Write((ushort)Count);
-
-        //    if (Count > 0)
-        //    {
-        //        int realcount = 0;
-        //        for (int i = 0; i < Array.Length; ++i)
-        //        {
-        //            int pointer = Array[i];
-        //            if (pointer != NullPointer)
-        //            {
-        //                w.Write((ushort)pointer);
-        //                realcount++;
-        //                if (realcount >= Count)
-        //                { 
-        //                    break;
-        //                }
-        //            }
-        //        }
-
-        //        realcount -= Count;
-        //        for (int i = 0; i < realcount; ++i)
-        //        {
-        //            w.Write(ushort.MaxValue);
-        //        }
-        //    }
-        //}
         public void write_ushort_compressed(System.IO.BinaryWriter w)
         {
             w.Write((ushort)Bound.UShort(Count));
@@ -550,28 +522,6 @@ namespace VikingEngine
                 }                
             }
         }
-
-        //public void read_ushort_compressed(System.IO.BinaryReader r, int adjustCount)
-        //{
-        //    int readCount = r.ReadUInt16();
-        //    readCount += adjustCount;
-        //    if (readCount > Array.Length)
-        //    {
-        //        Array = new int[readCount];
-        //        clearPointers();
-        //    }
-
-        //    for (int i = 0; i < readCount; ++i)
-        //    {
-        //        int pointer = r.ReadUInt16();
-        //        if (pointer != ushort.MaxValue)
-        //        {
-                    
-        //            Add(pointer);
-                    
-        //        }
-        //    }
-        //}
 
         public void read_ushort(System.IO.BinaryReader r)
         {
