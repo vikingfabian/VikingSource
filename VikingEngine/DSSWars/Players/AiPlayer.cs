@@ -947,17 +947,6 @@ namespace VikingEngine.DSSWars.Players
                 {
                     switch (profile.flag.factionFlavorType)
                     {
-                        //case FactionFlavorType.Mountain:
-
-                        //    //faction.mainCity.res_iron.amount += 100;
-                        //    //faction.mainCity.res_shortsword.amount += 60;
-                        //    //faction.mainCity.res_heavyMailArmor.amount += 60;
-
-                        //    faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.iron, 100, false);
-                        //    faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.shortsword, 60, false);
-                        //    faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.heavyMailArmor, 60, false);
-
-                        //    break;
 
                         case FactionFlavorType.Forest:
                             faction.diplomaticSide = DiplomaticSide.Light;
@@ -1598,9 +1587,12 @@ namespace VikingEngine.DSSWars.Players
             switch (profile.flag.factionFlavorType)
             {
                 case FactionFlavorType.Mountain:
-                    faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.iron, 100, false);
-                    faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.shortsword, 60, false);
-                    faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.heavyMailArmor, 60, false);
+                    if (faction.mainCity != null)
+                    {
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.iron, 100, false);
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.shortsword, 60, false);
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.heavyMailArmor, 60, false);
+                    }
                     break;
             }
         }

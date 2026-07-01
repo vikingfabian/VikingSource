@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Resource
             if (properties.storageType != StorageType.NUM_NONE)
             {
                 SpriteName stockIcon;
-                if (resources.amount >= resources.stockPileLimit)
+                if (resources.amount >= resources.MaxLimit())
                 {
                     stockIcon = SpriteName.WarsStockpileStop;
                 }
@@ -261,7 +261,7 @@ namespace VikingEngine.DSSWars.Resource
                 content.space();
                 content.Add(new RbImage(stockIcon));
                 content.space();
-                content.Add(new RbText(TextLib.LargeNumber(resources.stockPileLimit)));
+                content.Add(new RbText(TextLib.LargeNumber(resources.MaxLimit())));
 
 
                 content.newLine();

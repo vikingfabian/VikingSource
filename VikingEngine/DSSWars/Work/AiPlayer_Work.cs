@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Players
                         workPriority.addPrio_belowMax(1);
                     }
                 }
-                else if (resource.amount >= resource.stockPileLimit / 2)
+                else if (resource.amount >= resource.MaxLimit() / 2)
                 {
                     if (Ref.peRnd.Chance(0.3))
                     {
@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.Players
                         workPriority2.addPrio_belowMax(1);
                     }
                 }
-                else if (resource.amount >= resource.stockPileLimit / 2)
+                else if (resource.amount >= resource.MaxLimit() / 2)
                 {
                     if (Ref.peRnd.Chance(0.3))
                     {
@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Players
                 var res_iron = city.GetGroupedResource(CityResourceIndex.iron);
 
                 if (((city.buildingStructure.Smith_count == 0 && city.resourceAmount(CityResourceIndex.ironore)/*res_ironore.amount*/ > ResourceLowBuffer) ||
-                    (res_ironore.amount >= res_ironore.stockPileLimit)
+                    (res_ironore.amount >= res_ironore.MaxLimit())
                         && Ref.peRnd.Chance(0.02))
                     )
                 {

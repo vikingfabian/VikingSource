@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var group = groups.GetIndex_Safe(soldiers);
                             group?.completeTransform(SoldierTransformType.ExitGuard, 0);
                         }
-                        defenceBuildings.array[i] = DefenceStatus.Empty;
+                        defenceBuildings.RemoveAtSwapBack(i);//.array[i] = DefenceStatus.Empty;
                         return;
                     }
                 }

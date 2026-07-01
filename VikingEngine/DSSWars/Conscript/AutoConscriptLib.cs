@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Conscript
                         case WarAutoQuality.Medium:
                             return res_food.amount > 200;
                         case WarAutoQuality.High:
-                            return res_food.amount > res_food.stockPileLimit / 2;
+                            return res_food.amount > res_food.MaxLimit() / 2;
                     }
                 }
                 else
