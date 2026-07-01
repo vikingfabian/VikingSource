@@ -206,11 +206,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             resource.amount += add;
-            if (resource.amount >= resource.stockPileLimit)
+            if (resource.amount >= resource.MaxLimit())
             {
                 if (resource.hasCesspit)
                 {
-                    int remove = resource.amount - resource.stockPileLimit + 10;
+                    int remove = resource.amount - resource.MaxLimit() + 10;
                     resource.amount -= remove;
                     if (Ref.peRnd.ChanceF(DssConst.CessPitConvertToFuelPercentage))
                     {

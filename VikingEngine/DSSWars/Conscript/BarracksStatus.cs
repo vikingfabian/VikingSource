@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (requireMaxFood)
             {
                 var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
-                food = res_food.amount >= res_food.stockPileLimit - 50;
+                food = res_food.amount >= res_food.MaxLimit() - 50;
             }
             else
             {

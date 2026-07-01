@@ -1157,7 +1157,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         void gameSpeedInput()
         {
-            if (DssRef.state.IsSinglePlayer_Local())
+            if (DssRef.state.IsSinglePlayer_Local() && (input.inputSource.HasKeyBoard || tabFocus() == ControllerTabFocus.Pause_GamePlay))
             {
                 if ((DssRef.difficulty.setting_allowPauseCommand || StartupSettings.PauseCheat) &&
                     input.PauseGame.DownEvent)

@@ -326,110 +326,6 @@ namespace VikingEngine.DSSWars.Resource
             //GroupedResource res;
             IconName.Item(item, out SpriteName itemIcon, out string itemName);
 
-            //if (city != null)
-            //{
-            //    res = city.GetGroupedResource(item);
-            //}
-            //else
-            //{
-            //    res = faction.GetResourceOverview(item);
-            //}
-
-            //content.newLine();
-
-            //content.Add(new ArtButton(RbButtonStyle.HoverArea,
-            //    new List<AbsRichBoxMember>{
-            //            new RbImage(res.amount >= res.stockPileLimit ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
-            //            new RbImage(itemIcon)}, null,
-            //        new RbTooltip((RichBoxContent content, object tag) =>
-            //        {
-            //            ResourceLib.FullResourceInfo(player.faction, city, item, content);
-            //        }
-            //        )));
-
-
-            //for (StockpileLimitOption limit = 0; limit < StockpileLimitOption.NUM; limit++)
-            //{
-            //    int max = ResourceLib.Limit(limit);
-
-            //    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(2);
-            //    SpriteName storageIcon;
-
-            //    Color? numberCol = null;
-            //    if (ResourceLib.Limit(limit) > res.stockPileLimit)
-            //    {
-            //        numberCol = HudLib.SecondaryTextColor;
-            //    }
-
-            //    switch (limit)
-            //    {                    
-            //        case StockpileLimitOption.NoLimit:
-            //            //switch (ItemPropertyColl.Get(item).storageType)
-            //            //{ 
-            //            //    default:
-            //            //    case StorageType.MaterialStorage:
-            //            //        storage = SpriteName.WarsBuild_MaterialStorage;
-            //            //        break;
-            //            //    case StorageType.FoodStorage:
-            //            //        storage = SpriteName.WarsBuild_FoodStorage;
-            //            //        break;
-            //            //    case StorageType.WeaponStorage:
-            //            //        storage = SpriteName.WarsBuild_WeaponStorage;
-            //            //        break;
-            //            //    case StorageType.ArmorStorage:
-            //            //        storage = SpriteName.WarsBuild_ArmorStorage;
-            //            //        break;
-            //            //    case StorageType.AnimalStorage:
-            //            //        storage = SpriteName.WarsBuild_AnimalStorage;
-            //            //        break;
-
-            //            //}
-            //            IconName.Storage(ItemPropertyColl.Get(item).storageType, out storageIcon, out _);
-            //            buttonContent.Add(new RbImage(storageIcon));
-            //            buttonContent.Add(new RbSpace());
-            //            if (city == null)
-            //            {
-            //                buttonContent.Add(new RbText(".Max"));
-            //            }
-            //            else
-            //            {
-            //                buttonContent.Add(new RbText(res.stockPileLimit.ToString()));
-            //            }
-            //            break;
-            //        case StockpileLimitOption.Zero:
-            //            buttonContent.Add(new RbText("0", numberCol));
-            //            break;
-            //        //case StockpileLimitOption.Value200:
-            //        //    buttonContent.Add(new RbText(DssRef.lang.EngineHud_SymbolFor100, numberCol));
-            //        //    break;
-            //        case StockpileLimitOption.Value200:
-            //            buttonContent.Add(new RbText("2" + DssRef.lang.EngineHud_SymbolFor100, numberCol));
-            //            break;
-            //        case StockpileLimitOption.Value4000:
-            //            buttonContent.Add(new RbText("4" + DssRef.lang.EngineHud_SymbolFor1000, numberCol));
-            //            break;
-
-            //    }
-
-            //    content.Add(new ArtOption(limit == res.limitOption, buttonContent, 
-            //        new RbAction1Arg<StockpileLimitOption>((StockpileLimitOption limit) => {
-
-            //            if (city != null)
-            //            {
-            //                ref GroupedResource res = ref city.GetRefGroupedResource(item);
-            //                res.limitOption = limit;
-
-            //            }
-            //            else
-            //            {
-            //                ref GroupedResource res = ref faction.GetRefResourceOverview(item);
-            //                res.limitOption = limit;
-            //            }
-
-
-            //        }, limit), 
-            //        new RbTooltip(limitTooltip, new LimitTooltipArgs() { limit = limit, res = res })));
-            //}
             content.newLine();
 
             GroupedResource groupedResource;
@@ -444,6 +340,7 @@ namespace VikingEngine.DSSWars.Resource
                     if (set)
                     {
                         res.useStockLimit = !res.useStockLimit;
+                        
                         city.SetGroupedResource(item, res);
                     }
                     return res.useStockLimit;

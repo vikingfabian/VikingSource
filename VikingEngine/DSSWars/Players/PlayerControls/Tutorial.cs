@@ -827,14 +827,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                             content.Add(new RbImage(SpriteName.WarsResource_Slingshot));
                             content.space();
-                            content.Add(new RbImage(sligshot.amount >= sligshot.stockPileLimit ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd));
+                            content.Add(new RbImage(sligshot.amount >= sligshot.MaxLimit() ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd));
                             content.hspace();
                             content.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile + ":"));
                             content.space();
 
                            
                             
-                            content.Add(new RbText(string.Format("{0}/{1}", sligshot.amount, sligshot.stockPileLimit), reachedBuffer? HudLib.NotAvailableColor : HudLib.InfoYellow_VeryLight));
+                            content.Add(new RbText(string.Format("{0}/{1}", sligshot.amount, sligshot.MaxLimit()), reachedBuffer? HudLib.NotAvailableColor : HudLib.InfoYellow_VeryLight));
                             if (reachedBuffer)
                             {
                                 content.hspace();
