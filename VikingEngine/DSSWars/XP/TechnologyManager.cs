@@ -55,13 +55,14 @@ namespace VikingEngine.DSSWars.XP
                 {
                     if (city.IsNetHosted)
                     {
-                        //if (city.debugTagged)
-                        //{
-                        //    lib.DoNothing();
-                        //}
+                        if (city.debugTagged || city.myIndex == 192)
+                        {
+                            lib.DoNothing();
+                        }
                         EcsStaticArrayCounter neighbors = city.CityNeighbors();
                         while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var ni in city.neighborCities)
                         {
+                            
                             //var nCity = DssRef.world.cities[ni];
                             if (city.factionIndex == nCity.factionIndex)
                             {

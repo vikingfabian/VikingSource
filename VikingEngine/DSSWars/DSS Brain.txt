@@ -1,6 +1,6 @@
 
 ## MULTIPLAYER UPDATE ##
-* 
+* Fixed: tech spread didnt work between all cities
 
 
 # KNOWN ISSUES #
