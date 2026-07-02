@@ -400,13 +400,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 citySel.resourceAmountSet(EntityComponent.CityResourceIndex.sharpstick, CollectWeaponArmorAmount - 6);
                 citySel.resourceAmountSet(EntityComponent.CityResourceIndex.paddedArmor, CollectWeaponArmorAmount - 6);
 
-                //if (DssRef.storage.runTutorial_1short_2normal == 1)
-                //{
-                //    cityCounter.sel.res_Palisade.amount = 50;
-                //    cityCounter.sel.createStartupBarracks();
-                //}
-
-
                 CityStructure.WorkInstance.setupTutorialMap(citySel);
 
                 if (cityarea.X == 0)
@@ -426,7 +419,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.faction.refreshCityWork();
             
             refreshLimits();
-            //new TimedAction0ArgTrigger(song, 3000);
+
+            //cancel tutorial in local mp
+            if (DssRef.state.localPlayers.Count > 1)
+            {
+                EndCurrentAllTutorialModes();
+            }
         }
 
         //public void song()
@@ -2715,6 +2713,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             missions.SelectIndex(r.ReadInt32());
 
             refreshLimits();
+        }
+
+        public void EndCurrentAllTutorialModes()
+        {
+            while (player.tutorial != null)
+            {
+                EndCurrentTutorialMode();
+            }
         }
 
         public void EndCurrentTutorialMode()

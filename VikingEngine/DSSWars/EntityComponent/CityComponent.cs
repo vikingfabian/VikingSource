@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars
             //int workStart = 0;
 
             int startWood, startLinnen, startFood;
-            if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+            if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
             {
                 startWood = 120;
                 startLinnen = 120;

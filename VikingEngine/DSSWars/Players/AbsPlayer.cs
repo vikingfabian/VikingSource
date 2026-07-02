@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Players
                 createStartupBarracks();
 
                 int startGold = DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox ? 500 : 200;
-                if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
                 {
                     startGold = 6000;
                 }

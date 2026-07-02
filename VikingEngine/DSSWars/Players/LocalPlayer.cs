@@ -550,9 +550,10 @@ namespace VikingEngine.DSSWars.Players
             if ((newGame || PlatformSettings.STEAM_DEMO) &&
                 DssRef.storage.runTutorial &&
                 DssRef.state.PlayType() == PlayStateType.Play &&
-                Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.gameRuleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+                Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))
             {
                 tutorial = new PlayerControls.Tutorial(this);
+
             }
 
         }
@@ -563,7 +564,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 return tutorial.TutorialMode();
             }
-            return DssRef.storage.runTutorial;
+            return false;
         }
 
         public void tutorial_writeGameState(BinaryWriter w)
@@ -578,23 +579,16 @@ namespace VikingEngine.DSSWars.Players
         }
 
         public void tutorial_readGameState(BinaryReader r, int subversion)
-        {
-            if (subversion >= 7)
+        {   
+            bool inTutorialMode = r.ReadBoolean();
+            
+            if (inTutorialMode)
             {
-                bool inTutorialMode = r.ReadBoolean();
-                if (subversion < 15)
-                {
-                    bool non1 = r.ReadBoolean();
-                    bool non2 = r.ReadBoolean();
-                }
+                tutorial = new PlayerControls.Tutorial(this);
+                tutorial.readGameState(r, subversion);
 
-                if (inTutorialMode)
-                {
-                    tutorial = new PlayerControls.Tutorial(this);
-                    tutorial.readGameState(r, subversion);
-
-                }
             }
+            
         }
         public void cityTabClick(int tab)
         {
@@ -1664,7 +1658,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
                     }
 
-                    if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                    if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
                     {   
                         for (int i = 0; i < CityResourceIndex.COUNT; i++)
                         {

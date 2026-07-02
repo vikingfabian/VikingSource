@@ -366,10 +366,10 @@ namespace VikingEngine.DSSWars.Data
             difficulty = DssRef.difficulty.TotalDifficulty();
             gameMode = DssRef.difficulty.setting_gameMode;
 
-            setting_foodMulti = DssRef.difficulty.setting_foodMulti;
-            setting_waterMulti = DssRef.difficulty.setting_waterMulti;
-            setting_childMulti = DssRef.difficulty.setting_childMulti;
-            setting_craftMulti = DssRef.difficulty.setting_craftMulti;
+            setting_foodMulti = DssRef.storage.ruleset.setting_foodMulti;
+            setting_waterMulti = DssRef.storage.ruleset.setting_waterMulti;
+            setting_childMulti = DssRef.storage.ruleset.setting_childMulti;
+            setting_craftMulti = DssRef.storage.ruleset.setting_craftMulti;
             worldmeta = DssRef.world.metaData;
         }
 

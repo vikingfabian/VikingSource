@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         findCityTerrain(generateSettings);
 
                         factionStartAreas(worldMeta.mapSize, 
-                            DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full, 
+                            DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full, 
                             generateSettings);
                         break;
 
@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             findCityTerrain(generateSettings);
 
                             factionStartAreas(worldMeta.mapSize, 
-                                DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full, 
+                                DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full, 
                                 generateSettings);
                         }
                         break;
@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (generateSettings.factionsOnMap)
                 {
-                    factionStartAreas(worldMeta.mapSize, DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full, generateSettings);
+                    factionStartAreas(worldMeta.mapSize, DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full, generateSettings);
                 }
 
                 if (save)
@@ -982,7 +982,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             int numHeadCities = world.areaTileCount / 2000;
             world.cities = new List<City>(numHeadCities);
 
-            switch (DssRef.storage.gameRuleset.factionStartSize)
+            switch (DssRef.storage.ruleset.factionStartSize)
             { 
                 case FactionStartSize.Full:
                     generateSettings.percentageUnclaimed = 0.25f;
@@ -1293,7 +1293,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         {
                             if (world.cities[cityIx].terrainStructure.HasIndependantResources() == false)
                             {
-                                if (DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full || Ref.rnd.Chance(0.75))
+                                if (DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full || Ref.rnd.Chance(0.75))
                                 {
                                     world.cities[cityIx].cityType = CityType.UnClaimed;
                                     unclaimed++;

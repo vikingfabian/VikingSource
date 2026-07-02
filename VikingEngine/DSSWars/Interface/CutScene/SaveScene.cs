@@ -194,6 +194,8 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
             saveGamestate.readNet(readWorld);
             saveGamestate.complete = true;
+
+            DssRef.storage.ruleset_instance.read(readWorld, false);
         }
 
         protected override string SaveString => DssRef.lang.Progressbar_LoadProgress;
@@ -213,11 +215,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             }
             else
             {
-                if (InputLib.AnyKeyDownEvent() || Ref.netSession.IsClient)
-                {
+                //if (InputLib.AnyKeyDownEvent() || Ref.netSession.IsClient)
+                //{
                     Close();
-                    
-                }
+                    //DssRef.state.menuSystem.pauseMenu();
+                //}
             }
         }
     }

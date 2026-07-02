@@ -297,7 +297,7 @@ namespace VikingEngine.DSSWars.Interface
             if (!PlatformSettings.STEAM_DEMO && 
                 DssRef.settings.playType == GameState.PlayStateType.Play)
             {
-                if (DssRef.storage.runTutorial)
+                if (DssRef.state.LocalHost().tutorial != null)
                 { //TODO yes no dialogue
                     endTutorialButton(content);
                 }
@@ -306,17 +306,30 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                     new RbText(DssRef.lang.Hud_Save) }, new RbAction(saveGameState),
                     new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
-                {
-                    fillWidth = true
-                });
+                    {
+                        fillWidth = true
+                    });
+
+                content.newLine();
+
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.SteamIcon),
+                    new RbSpace(),
+                    new RbImage(SpriteName.WarsHudIconNetwork),
+                    new RbSpace(),
+                    new RbText(".Invite")
+                    }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text("Open Steam overlay"))
+                    {
+                        fillWidth = true
+                    });
 
 
 #if DEBUG
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
-                {
-                    fillWidth = true
-                });
+                    {
+                        fillWidth = true
+                    });
 #endif
             }
 
@@ -326,7 +339,7 @@ namespace VikingEngine.DSSWars.Interface
                 DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
             }
 
-
+            
             content.newLine();
             Ref.gamesett.volumeOptions(content);
 

@@ -100,7 +100,7 @@ namespace VikingEngine
 
         public void Reset()
         {
-            selIndex = SpottedPointerArray.NullPointer;
+            selIndex = -1;
             sel = SpottedPointerArray.NullPointer;
         }
 

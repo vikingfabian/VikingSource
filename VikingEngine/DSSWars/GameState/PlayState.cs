@@ -77,6 +77,8 @@ namespace VikingEngine.DSSWars
             if (host)
             {
                 Ref.netsett.remoteHostSettings = new NetSharedHostSettings();
+                DssRef.storage.ruleset_instance = DssRef.storage.ruleset;
+                DssRef.storage.ruleset_instance.refreshSettings();
             }
 
             if (readWorld != null)
@@ -452,6 +454,11 @@ namespace VikingEngine.DSSWars
             isReady = true;
             LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
             events.onGameStarted();
+
+            if ((newGame && LocalHost().IntutorialMode()) == false)
+            {
+                menuSystem.pauseMenu();
+            }
         }
 
         public void initStartUnits(bool barracks = false)
@@ -476,7 +483,7 @@ namespace VikingEngine.DSSWars
         {
             unitCountMulti = 1;
             settlerGuard = false;
-            switch (DssRef.storage.gameRuleset.factionStartSize)
+            switch (DssRef.storage.ruleset.factionStartSize)
             {
                 case FactionStartSize.OneCity:
                     unitCountMulti = 0.4;

@@ -17,12 +17,7 @@ namespace VikingEngine.DSSWars.Data
 {
     class Difficulty
     {
-        public static readonly IntervalF FoodMultiBound = new IntervalF(0.5f, 10f);
-        public static readonly IntervalF WaterMultiBound = new IntervalF(0.2f, 10f);
-        public static readonly IntervalF ChildMultiBound = new IntervalF(0.2f, 10f);
-        public static readonly IntervalF CraftMultiBound = new IntervalF(0.1f, 4f);
-        public static readonly Range TechMultiBound = new Range(1, 10);
-
+       
         public const int DefaultOption = 2;
 
         int difficulty = DefaultOption;
@@ -46,35 +41,13 @@ namespace VikingEngine.DSSWars.Data
         public bool resourcesStartHelp = false;
 
         public bool setting_allowPauseCommand = true;
-        public float setting_foodMulti = 1;
-        public float setting_waterMulti = 1;
-        public float setting_childMulti = 1;
-        public float setting_craftMulti = 1;
-        public int setting_techMulti = 1;
+        
 
-        public int setting_techMulti_QuickMatch = 2;
         public int setting_QuickMatch_PlayerCount = 4;
         public bool setting_QuickMatch_TwoTeams = false;
 
-        public float manFoodUpkeep;
-        public float mountFoodUpkeep;
-
-        public int TechMultiProperty(object tag, bool set, int value)
-        {
-            if (set)
-            {
-                if (setting_gameMode == GameModeMainType.QuickMatch)
-                {
-                    setting_techMulti_QuickMatch = value;
-                }
-                else
-                { 
-                    setting_techMulti = value;
-                }
-
-            }
-            return setting_gameMode == GameModeMainType.QuickMatch ? setting_techMulti_QuickMatch : setting_techMulti;
-        }
+       
+        
 
         public const GameModeMainType DefaultMode = GameModeMainType.FullStory;
         public GameModeMainType setting_gameMode = DefaultMode;
@@ -89,7 +62,7 @@ namespace VikingEngine.DSSWars.Data
 
         public double resourceMultiplyChance = 0;
         public bool resourceMultiplyDecrease;
-        public int FoodEnergySett;
+        
         public int PlayerBonusGold = 0;
 
         
@@ -222,7 +195,7 @@ namespace VikingEngine.DSSWars.Data
                 result += 50;
 
             }
-            if (!DssRef.storage.gameRuleset.centralGold)
+            if (!DssRef.storage.ruleset.centralGold)
             {
                 result += 25;
             }
@@ -230,7 +203,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 case GameModeMainType.QuickBoss:
                     //result += 25;
-                    result += GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.gameRuleset.QuickBossTimeOption].Value2;
+                    result += GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.ruleset.QuickBossTimeOption].Value2;
                     break;
                 case GameModeMainType.FullStory:
                     result += 50;
@@ -260,7 +233,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void refreshSettings()
         {
-            FoodEnergySett = Convert.ToInt32(DssConst.FoodEnergy * setting_foodMulti);
+            //FoodEnergySett = Convert.ToInt32(DssConst.FoodEnergy * setting_foodMulti);
 
             switch (difficulty)
             {
@@ -422,15 +395,14 @@ namespace VikingEngine.DSSWars.Data
 
             aiEconomyMultiplier = AiEconomyLevel[aiEconomyLevel] / 100.0;
 
-            manFoodUpkeep = DssConst.ManDefaultEnergyCost / FoodEnergySett;
-            mountFoodUpkeep = DssConst.MountDefaultEnergyCost / FoodEnergySett;
+           
         }
 
         public int honorGuardCount()
         {
             if (honorGuard)
             {
-                switch (DssRef.storage.gameRuleset.factionStartSize)
+                switch (DssRef.storage.ruleset.factionStartSize)
                 {
                     case FactionStartSize.Full:
                         return 12;
@@ -450,12 +422,12 @@ namespace VikingEngine.DSSWars.Data
             w.Write(setting_allowPauseCommand);
             //w.Write(boss);
             w.Write((byte)setting_gameMode);
-            w.Write(setting_foodMulti);
-            w.Write(setting_waterMulti);
-            w.Write(setting_childMulti);
-            w.Write(setting_craftMulti);
-            w.Write(setting_techMulti);
-            w.Write(setting_techMulti_QuickMatch);
+            //w.Write(setting_foodMulti);
+            //w.Write(setting_waterMulti);
+            //w.Write(setting_childMulti);
+            //w.Write(setting_craftMulti);
+            //w.Write(setting_techMulti);
+            //w.Write(setting_techMulti_QuickMatch);
             w.Write(setting_QuickMatch_PlayerCount);
             w.Write(setting_QuickMatch_TwoTeams);
             w.Write(difficulty);
@@ -478,20 +450,27 @@ namespace VikingEngine.DSSWars.Data
             {
                 //NEW
                 setting_gameMode = (GameModeMainType)r.ReadByte();
-                setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, FoodMultiBound);
-                if (storageversion >= 24)
+
+                if (storageversion < 37)
                 {
-                    setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, WaterMultiBound);
-                }
-                if (storageversion >= 25)
-                {
-                    setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, ChildMultiBound);
-                    setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, CraftMultiBound);
+                    DssRef.storage.ruleset.setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, GameRuleset.FoodMultiBound);
+                    if (storageversion >= 24)
+                    {
+                        DssRef.storage.ruleset.setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, GameRuleset.WaterMultiBound);
+                    }
+                    if (storageversion >= 25)
+                    {
+                        DssRef.storage.ruleset.setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, GameRuleset.ChildMultiBound);
+                        DssRef.storage.ruleset.setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, GameRuleset.CraftMultiBound);
+                    }
+                    if (storageversion >= 33)
+                    {
+                        DssRef.storage.ruleset.setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, GameRuleset.TechMultiBound);
+                        DssRef.storage.ruleset.setting_techMulti_QuickMatch = r.ReadInt32();
+                    }
                 }
                 if (storageversion >= 33)
                 {
-                    setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, TechMultiBound);
-                    setting_techMulti_QuickMatch = r.ReadInt32();
                     setting_QuickMatch_PlayerCount = r.ReadInt32();
                     setting_QuickMatch_TwoTeams = r.ReadBoolean();
                 }

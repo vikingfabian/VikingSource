@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             if (loadMeta != null)
             {
                 DssRef.storage.generateNewMaps = loadMeta.worldmeta.IsGenerated;
-                DssRef.storage.gameRuleset.mapSize = loadMeta.worldmeta.mapSize;
+                DssRef.storage.ruleset.mapSize = loadMeta.worldmeta.mapSize;
             }
 
             if (GenerateNewMap())
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (loadMeta == null)
                 {
-                    worldMeta = new WorldMetaData(0, DssRef.storage.gameRuleset.mapSize, loadingNumber);
+                    worldMeta = new WorldMetaData(0, DssRef.storage.ruleset.mapSize, loadingNumber);
                 }
                 else
                 {
@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (StartupSettings.SaveLoadSpecificMap.HasValue)
                 {
-                    DssRef.storage.gameRuleset.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
+                    DssRef.storage.ruleset.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
                     loadingNumber = 1;
                 }
                 storage.loadMap(worldMeta);
@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         }
                         else
                         {
-                            worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.gameRuleset.mapSize, -1);
+                            worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.ruleset.mapSize, -1);
                             worldmeta.customEditorMap = customEditorMap;
                             seed = Ref.rnd.Ushort();
                         }

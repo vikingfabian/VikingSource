@@ -1529,7 +1529,7 @@ namespace VikingEngine.DSSWars
                 {
                     for (MapSize sz = 0; sz < MapSize.Epic; ++sz)
                     {
-                       var dropOpt =  mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.gameRuleset.mapSize == sz, defaultOptions.gameRuleset.mapSize == sz,
+                       var dropOpt =  mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.ruleset.mapSize == sz, defaultOptions.ruleset.mapSize == sz,
                             new RbAction1Arg<MapSize>(setMapSize, sz), null);
                         switch (sz)
                         {
@@ -1568,10 +1568,10 @@ namespace VikingEngine.DSSWars
                     DropDownBuilder timeOptions = new DropDownBuilder("bosstime");
                     for (int i = 0; i < GameRuleset.QuickBossOptions_Time_Difficulty.Length; ++i)
                     {
-                        timeOptions.AddOption(GameRuleset.QuickBossOptions_Time_Difficulty[i].Value1.ToString(), i == DssRef.storage.gameRuleset.QuickBossTimeOption,
+                        timeOptions.AddOption(GameRuleset.QuickBossOptions_Time_Difficulty[i].Value1.ToString(), i == DssRef.storage.ruleset.QuickBossTimeOption,
                             i == 1, new RbAction1Arg<int>((int option) =>
                             {
-                                DssRef.storage.gameRuleset.QuickBossTimeOption = option;
+                                DssRef.storage.ruleset.QuickBossTimeOption = option;
                                 underMenu.CloseDropDown();
                             }, i), null);
                     }
@@ -1608,16 +1608,16 @@ namespace VikingEngine.DSSWars
             {
                 for (FactionStartSize sz = 0; sz < FactionStartSize.NUM; sz++)
                 {
-                    factionSizeOptions.AddOption(LangLib.FactionStartSizeName(sz), DssRef.storage.gameRuleset.factionStartSize == sz, FactionStartSize.Full == sz,
+                    factionSizeOptions.AddOption(LangLib.FactionStartSizeName(sz), DssRef.storage.ruleset.factionStartSize == sz, FactionStartSize.Full == sz,
                         new RbAction1Arg<FactionStartSize>((FactionStartSize size) =>
                         {
-                            if (DssRef.storage.gameRuleset.factionStartSize != size)
+                            if (DssRef.storage.ruleset.factionStartSize != size)
                             {
                                 if (size == FactionStartSize.Settler)
                                 {
                                     DssRef.storage.runTutorial = false;
                                 }
-                                DssRef.storage.gameRuleset.factionStartSize = size;
+                                DssRef.storage.ruleset.factionStartSize = size;
                                 DssRef.storage.Save(null);
                                 underMenu.CloseDropDown();
 
@@ -1632,7 +1632,7 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
 
-            if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.gameRuleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+            if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
@@ -1669,7 +1669,7 @@ namespace VikingEngine.DSSWars
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_TechMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.TechMultiBound, 1), DssRef.difficulty.TechMultiProperty));
+                content.Add(new RbDragButton(new DragButtonSettings(GameRuleset.TechMultiBound, 1), DssRef.storage.ruleset.TechMultiProperty));
 
             }
 
@@ -1680,14 +1680,14 @@ namespace VikingEngine.DSSWars
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_FoodMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.FoodMultiBound, 0.1f), FoodMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
+                content.Add(new RbDragButton(new DragButtonSettings(GameRuleset.FoodMultiBound, 0.1f), FoodMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
 
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_WaterMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.WaterMultiBound, 0.1f), WaterMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_WaterMultiplier_Description)));
+                content.Add(new RbDragButton(new DragButtonSettings(GameRuleset.WaterMultiBound, 0.1f), WaterMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_WaterMultiplier_Description)));
 
 
                 content.newLine();
@@ -1695,14 +1695,14 @@ namespace VikingEngine.DSSWars
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_ChildMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.ChildMultiBound, 0.1f), ChildMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_ChildMultiplier_Description)));
+                content.Add(new RbDragButton(new DragButtonSettings(GameRuleset.ChildMultiBound, 0.1f), ChildMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_ChildMultiplier_Description)));
 
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsHammer));
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.CraftMultiBound, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_CraftMultiplier_Description)));
+                content.Add(new RbDragButton(new DragButtonSettings(GameRuleset.CraftMultiBound, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_CraftMultiplier_Description)));
             }
 
             content.newParagraph();
@@ -1715,9 +1715,9 @@ namespace VikingEngine.DSSWars
                 if (set)
                 {
                     DssRef.storage.runTutorial = value;
-                    if (value && DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                    if (value && DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
                     {
-                        DssRef.storage.gameRuleset.factionStartSize = FactionStartSize.OneCity;
+                        DssRef.storage.ruleset.factionStartSize = FactionStartSize.OneCity;
                         restartBackgroundLoading();
                     }
 
@@ -2166,20 +2166,20 @@ namespace VikingEngine.DSSWars
 
         public float FoodMultiProperty(object tag, bool set, float value)
         {
-            return GetSet.Do<float>(set, ref DssRef.difficulty.setting_foodMulti, value);
+            return GetSet.Do<float>(set, ref DssRef.storage.ruleset.setting_foodMulti, value);
         }
         public float WaterMultiProperty(object tag, bool set, float value)
         {
-            return GetSet.Do<float>(set, ref DssRef.difficulty.setting_waterMulti, value);
+            return GetSet.Do<float>(set, ref DssRef.storage.ruleset.setting_waterMulti, value);
         }
 
         public float ChildMultiProperty(object tag, bool set, float value)
         {
-            return GetSet.Do<float>(set, ref DssRef.difficulty.setting_childMulti, value);
+            return GetSet.Do<float>(set, ref DssRef.storage.ruleset.setting_childMulti, value);
         }
         public float CraftMultiProperty(object tag, bool set, float value)
         {
-            return GetSet.Do<float>(set, ref DssRef.difficulty.setting_craftMulti, value);
+            return GetSet.Do<float>(set, ref DssRef.storage.ruleset.setting_craftMulti, value);
         }
 
        
@@ -2234,7 +2234,7 @@ namespace VikingEngine.DSSWars
         {
 
             DssRef.difficulty = new Difficulty();
-            DssRef.storage.gameRuleset.defaultGameSettings();
+            DssRef.storage.ruleset.defaultGameSettings();
             DssRef.storage.Save(null);
             //mainMenu();
             //newGameSettings();
@@ -2283,11 +2283,11 @@ namespace VikingEngine.DSSWars
         {
             if (set)
             {
-                DssRef.storage.gameRuleset.centralGold = value;
+                DssRef.storage.ruleset.centralGold = value;
                 DssRef.storage.Save(null);
                 //refreshDifficultyLevel();
             }
-            return DssRef.storage.gameRuleset.centralGold;
+            return DssRef.storage.ruleset.centralGold;
         }
 
         public bool bossProperty(object tag, bool set, bool value)
@@ -2303,19 +2303,19 @@ namespace VikingEngine.DSSWars
 
         public MapSize mapSizeProperty(bool set, MapSize value)
         {
-            if (set && DssRef.storage.gameRuleset.mapSize != value)
+            if (set && DssRef.storage.ruleset.mapSize != value)
             {
-                DssRef.storage.gameRuleset.mapSize = value;
+                DssRef.storage.ruleset.mapSize = value;
                 DssRef.storage.Save(null);
 
                 restartBackgroundLoading();
             }
-            return DssRef.storage.gameRuleset.mapSize;
+            return DssRef.storage.ruleset.mapSize;
         }
 
         public void setMapSize(MapSize value)
         {
-            DssRef.storage.gameRuleset.mapSize = value;
+            DssRef.storage.ruleset.mapSize = value;
             DssRef.storage.Save(null);
             underMenu.CloseDropDown();
 

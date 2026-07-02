@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (guard)
             {
-                if (DssRef.storage.gameRuleset.centralGold)
+                if (DssRef.storage.ruleset_instance.centralGold)
                 {
                     return faction.money.copper > 0 && (aggresive || faction.GoldSecDiff() > -(DssConst.UpkeepPerGuard_copp * Money.CopperToGold * 50));
                 }

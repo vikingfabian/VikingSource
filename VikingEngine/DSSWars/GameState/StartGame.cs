@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars
             {
                 // new game
 
-                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.gameRuleset.factionStartSize) == false)
+                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize) == false)
                 {
                     DssRef.storage.runTutorial = false;
                 }
@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars
                         break;
                 }
 
-                switch (DssRef.storage.gameRuleset.factionStartSize)
+                switch (DssRef.storage.ruleset.factionStartSize)
                 {
                     case FactionStartSize.Full:
                         DssRef.stats.startnewsize_full.addOne();
@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.keyboard_user.addOne();
                 }
 
-                switch (DssRef.storage.gameRuleset.mapSize)
+                switch (DssRef.storage.ruleset.mapSize)
                 {
                     case MapSize.Tiny:
                     case MapSize.Small:

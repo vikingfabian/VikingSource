@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap NextArmy;
         public IButtonMap NextCity;
+        public IButtonMap NextPin;
         public IButtonMap NextWar;
         public IButtonMap Options;
         public IButtonMap Menu;
@@ -200,7 +201,8 @@ namespace VikingEngine.DSSWars
 
             NextCity = new KeyboardButtonMap(Keys.D1);
             NextArmy = new KeyboardButtonMap(Keys.D2);
-            NextWar = new KeyboardButtonMap(Keys.D3);
+            NextPin = new KeyboardButtonMap(Keys.D3);
+            NextWar = new KeyboardButtonMap(Keys.D4);
 
             FlagDesign_ToggleColor_Prev = new TwoCombinedButtonsMap(new KeyboardButtonMap(Keys.LeftShift), new KeyboardButtonMap(Keys.Tab));
             FlagDesign_ToggleColor_Next = new KeyboardButtonMap(Keys.Tab);
@@ -483,7 +485,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 9;
+            const int InputVersion = 10;
             w.Write(InputVersion);
 
 
@@ -498,6 +500,7 @@ namespace VikingEngine.DSSWars
                 PauseGame.write(w);
                 NextCity.write(w);
                 NextArmy.write(w);
+                NextPin.write(w);
                 NextWar.write(w);
 
                 wasd_up.write(w);
@@ -567,6 +570,10 @@ namespace VikingEngine.DSSWars
                 PauseGame = MapRead.Button(r, inputSource.controllerIndex);
                 NextCity = MapRead.Button(r, inputSource.controllerIndex);
                 NextArmy = MapRead.Button(r, inputSource.controllerIndex);
+                if (inputVersion >= 10)
+                { 
+                    NextPin = MapRead.Button(r, inputSource.controllerIndex);
+                }
                 NextWar = MapRead.Button(r, inputSource.controllerIndex);
 
                 wasd_up = MapRead.Button(r, inputSource.controllerIndex);
@@ -682,6 +689,7 @@ namespace VikingEngine.DSSWars
                 InputActionType.PauseGame,
                 InputActionType.NextCity,
                 InputActionType.NextArmy,
+                InputActionType.NextPin,
                 InputActionType.NextWar,
                 InputActionType.ToggleHudDetail,
                 InputActionType.ToggleMiniMap,
@@ -793,6 +801,16 @@ namespace VikingEngine.DSSWars
                     else
                     {
                         buttonMap = NextCity;
+                    }
+                    break;
+                case InputActionType.NextPin:
+                    if (set)
+                    {
+                        NextPin = buttonMap;
+                    }
+                    else
+                    {
+                        buttonMap = NextPin;
                     }
                     break;
 
@@ -1010,6 +1028,7 @@ namespace VikingEngine.DSSWars
         PauseGame,
         NextCity,
         NextArmy,
+        NextPin,
         NextWar,
         Build,
         Copy,

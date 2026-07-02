@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars
 
         public long GetGold(City city)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return money.GetGold();
             }
@@ -437,7 +437,7 @@ namespace VikingEngine.DSSWars
                 return true;
             }
 
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return money.GetGold() >= cost;
             }
@@ -449,7 +449,7 @@ namespace VikingEngine.DSSWars
 
         public bool hasMoney(Money cost, AbsMapObject mapObj)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return money >= cost;
             }
@@ -461,7 +461,7 @@ namespace VikingEngine.DSSWars
 
         public ref Money GetRefMoney(AbsMapObject mapObj)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return ref money;
             }
@@ -481,7 +481,7 @@ namespace VikingEngine.DSSWars
             }
 #endif
 
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             { 
                 return money.PayGold(cost, allowDept);                
             }
@@ -492,7 +492,7 @@ namespace VikingEngine.DSSWars
         }
         public int payGold_MuchAsPossible(int cost, City city)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return (int)money.payGold_MuchAsPossible(cost);//pay(ref gold);
             }
@@ -516,7 +516,7 @@ namespace VikingEngine.DSSWars
 
         public void addGold(long value, City city)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 money.AddGold(value);
             }

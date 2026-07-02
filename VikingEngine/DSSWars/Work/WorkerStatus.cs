@@ -687,11 +687,11 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case WorkType.Eat:
-                    int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
+                    int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.storage.ruleset_instance.FoodEnergySett);
 
                     city.AddGroupedResource(CityResourceIndex.food, -eatAmount, false);
                     //city.foodSpending.add(eatAmount);
-                    energy += eatAmount * DssRef.difficulty.FoodEnergySett;
+                    energy += eatAmount * DssRef.storage.ruleset_instance.FoodEnergySett;
                     break;
 
 
@@ -2096,7 +2096,7 @@ namespace VikingEngine.DSSWars.Work
                     timeSec = DssConst.WorkTime_Mine;
                     break;
                 case WorkType.Craft:
-                    timeSec = DssConst.WorkTime_Craft * DssRef.difficulty.setting_craftMulti;
+                    timeSec = DssConst.WorkTime_Craft * DssRef.storage.ruleset_instance.setting_craftMulti;
                     break;
 
                 case WorkType.Build:

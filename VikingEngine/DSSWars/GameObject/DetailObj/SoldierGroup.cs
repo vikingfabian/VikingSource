@@ -2515,7 +2515,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             float upkeepCount = soldierData.upkeepMultiplier * soldierCount;
 
-            upkeep.food += upkeepCount * DssRef.difficulty.manFoodUpkeep +
+            upkeep.food += upkeepCount * DssRef.storage.ruleset_instance.manFoodUpkeep +
                  soldierData.animalFoodUpkeep(soldierCount);//soldierData.animalFoodMultiplier * DssRef.difficulty.mountFoodUpkeep;
 
             if (casual)

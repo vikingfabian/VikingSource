@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Interface
             this.player = player;
             this.army = army;
 
-            if (!DssRef.storage.gameRuleset.centralGold)
+            if (!DssRef.storage.ruleset_instance.centralGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));

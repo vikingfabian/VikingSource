@@ -248,6 +248,7 @@ namespace VikingEngine.DSSWars
                         new NetSharedHostSettings().write(w);
                         var saveGamestate = new SaveGamestate(meta);
                         saveGamestate.writeNet(w);
+                        DssRef.storage.ruleset.write(w, false);
                     }
                     break;
 

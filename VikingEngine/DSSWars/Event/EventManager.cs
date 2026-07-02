@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.Event
                 return;
             }
 
-            int dominationCount = DssRef.storage.gameRuleset.mapSize > MapSize.Small ? 5 : 3;
+            int dominationCount = DssRef.storage.ruleset_instance.mapSize > MapSize.Small ? 5 : 3;
             
             foreach (var p in DssRef.state.localPlayers)
             {

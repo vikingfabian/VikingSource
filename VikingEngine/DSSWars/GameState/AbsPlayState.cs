@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.GameState
 
         protected void prePlayerInit()
         {
-            XpLib.Unlock = new TechnologyUnlock(DssRef.difficulty.setting_techMulti);
+            XpLib.Unlock = new TechnologyUnlock(DssRef.storage.ruleset_instance.setting_techMulti);
             DssRef.storage.profileStorage.refreshProfiles();
             CityMenu.InitGame();
         }

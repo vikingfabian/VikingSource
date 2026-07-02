@@ -1584,8 +1584,8 @@ namespace VikingEngine.DSSWars.GameObject
                 //    waterAddPerSec += DssConst.WaterAdd_HeadCity;
                 //}
 
-                waterAddPerSec *= DssRef.difficulty.setting_waterMulti;
-                maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.difficulty.setting_waterMulti);
+                waterAddPerSec *= DssRef.storage.ruleset_instance.setting_waterMulti;
+                maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.storage.ruleset_instance.setting_waterMulti);
                 maxWaterTotal = maxWaterBase;
                 casualCityProfile.maxHuts = MathExt.MultiplyInt(maxWaterTotal, 0.66);
 
@@ -1852,7 +1852,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     result *= 2;
                 }
-                return result * DssRef.difficulty.setting_childMulti;
+                return result * DssRef.storage.ruleset_instance.setting_childMulti;
             }
             return 0;
         }

@@ -710,7 +710,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Head2);
                 float goldUpkeep = Money.ToGoldF( unitCount.TotalMen * currentStatus.profile.copperUpkeepPerSoldier());
                 HudLib.LabelAndText(content, SpriteName.rtsUpkeep, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold)), TextLib.TwoDecimal(goldUpkeep));
-                float foodUpkeep = unitCount.TotalMen * DssRef.difficulty.manFoodUpkeep;
+                float foodUpkeep = unitCount.TotalMen * DssRef.storage.ruleset_instance.manFoodUpkeep;
                 if (currentStatus.profile.animal != ItemResourceType.NONE)
                 {
                     foodUpkeep += ItemPropertyColl.Get(currentStatus.profile.animal).soldierData.animalFoodUpkeep(unitCount.groupUnitCount);
@@ -984,7 +984,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.PlusMinus(Money.ToGoldF(DssConst.NobleHouseMenCount * args.count)));
             }
-            HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(args.count * DssRef.difficulty.manFoodUpkeep));
+            HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(args.count * DssRef.storage.ruleset_instance.manFoodUpkeep));
             content.text(DssRef.lang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
 
             content.newParagraph();

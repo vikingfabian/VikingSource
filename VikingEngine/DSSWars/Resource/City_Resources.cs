@@ -271,7 +271,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case ItemResourceType.Gold:
                         int amount;
-                        if (DssRef.storage.gameRuleset.centralGold)
+                        if (DssRef.storage.ruleset_instance.centralGold)
                         {
                             var faction = GetFaction_NoChecks();
                             if (faction != null)

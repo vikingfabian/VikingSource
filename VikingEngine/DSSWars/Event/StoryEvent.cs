@@ -302,7 +302,7 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            bool settler = DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler;
+            bool settler = DssRef.storage.ruleset_instance.factionStartSize == FactionStartSize.Settler;
             TimeLength time;
             if (DssRef.difficulty.extremeAggression)
             {
@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars.Event
         public override void onStart()
         {
             IntervalF time = new IntervalF(1.2f, 2.4f) * TimeExt.HourInMinutes;
-            if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+            if (DssRef.storage.ruleset_instance.factionStartSize == FactionStartSize.Settler)
             {
                 time += 1.5f * TimeExt.HourInMinutes;
             }
@@ -1085,7 +1085,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 //1.5 hours passed in quick boss
                 //Warning is one hour before
-                float time = GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.gameRuleset.QuickBossTimeOption].Value1 - 2.5f;
+                float time = GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.ruleset_instance.QuickBossTimeOption].Value1 - 2.5f;
                 hours = new IntervalF(0.9f, 1.1f) * time;
             }
             else

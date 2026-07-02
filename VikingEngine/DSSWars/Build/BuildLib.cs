@@ -432,7 +432,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.RecruitmentLevel2);
                 list.Add(BuildAndExpandType.RecruitmentLevel3);
 
-                if (!DssRef.storage.gameRuleset.centralGold)
+                if (!DssRef.storage.ruleset_instance.centralGold)
                 {
                     list.Add(BuildAndExpandType.GoldDeliveryLvl1);
                     list.Add(BuildAndExpandType.GoldDeliveryLvl2);

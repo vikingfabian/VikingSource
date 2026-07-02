@@ -119,10 +119,10 @@ namespace VikingEngine.DSSWars.Interface
                     
                     content.newParagraph();
                 }
-                else if (DssRef.state.host && Ref.steam.isInitialized && Ref.netsett.hostNetwork)
-                {
-                    netSessionDisplay.invite(content);
-                }
+                //else if (DssRef.state.host && Ref.steam.isInitialized && Ref.netsett.hostNetwork)
+                //{
+                //    netSessionDisplay.invite(content);
+                //}
 
                 content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
 

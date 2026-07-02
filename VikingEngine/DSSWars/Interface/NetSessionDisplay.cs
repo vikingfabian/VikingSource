@@ -135,18 +135,18 @@ namespace VikingEngine.DSSWars.Interface
             })));
         }
 
-        public void invite(RichBoxContent content)
-        {
-            content.newLine();
+        //public void invite(RichBoxContent content)
+        //{
+        //    content.newLine();
 
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.SteamIcon),
-                new RbSpace(),
-                new RbImage(SpriteName.WarsHudIconNetwork),
-                new RbSpace(),
-                new RbText("Invite")
-            }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text("Open Steam overlay")));
-        }
+        //    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+        //        new RbImage(SpriteName.SteamIcon),
+        //        new RbSpace(),
+        //        new RbImage(SpriteName.WarsHudIconNetwork),
+        //        new RbSpace(),
+        //        new RbText("Invite")
+        //    }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text("Open Steam overlay")));
+        //}
 
         public void overviewToHud(LocalPlayer player, RichBoxContent content)
         {
@@ -171,10 +171,10 @@ namespace VikingEngine.DSSWars.Interface
                     remoteC.sel.addNetPingToHud(content);
                 }
 
-                if (DssRef.state.host || Ref.netsett.hostSettings.lobbyPublicity >= Network.LobbyPublicity.FriendsOnly)
-                {
-                    invite(content);
-                }
+                //if (DssRef.state.host || Ref.netsett.hostSettings.lobbyPublicity >= Network.LobbyPublicity.FriendsOnly)
+                //{
+                //    invite(content);
+                //}
 
                 content.Add(new RbSeperationLine());
             }

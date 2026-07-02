@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Interface
             this.player = player;
             this.city = city;
 
-            if (!DssRef.storage.gameRuleset.centralGold)
+            if (!DssRef.storage.ruleset_instance.centralGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));
@@ -1499,9 +1499,8 @@ namespace VikingEngine.DSSWars.Interface
                     var arrow = new RbImage(SpriteName.pjNumArrowR);
                     arrow.color = Color.CornflowerBlue;
                     content.Add(arrow);
-                    content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.storage.ruleset_instance.FoodEnergySett)));
                     
-
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(DssRef.lang.Work_BadValueDescription));
