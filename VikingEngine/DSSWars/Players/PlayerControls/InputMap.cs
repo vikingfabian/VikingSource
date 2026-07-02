@@ -389,7 +389,7 @@ namespace VikingEngine.DSSWars
             Controller_TabRight = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_right, idx);
 
             TextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TextChat, idx);
-            TeamTextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TeamTextChat, idx);
+            //TeamTextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TeamTextChat, idx);
             VoiceChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.VoiceChat, idx);
 
             // --- Strategy / RTS Actions ---
@@ -1058,7 +1058,6 @@ namespace VikingEngine.DSSWars
 
         PinAndPing,
         TextChat,
-        TeamTextChat,
         VoiceChat,
 
         NUM,

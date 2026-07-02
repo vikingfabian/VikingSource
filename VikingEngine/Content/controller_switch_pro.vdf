@@ -1,91 +1,20 @@
 "controller_mappings"
 {
 	"version"		"3"
-	"revision"		"146"
-	"title"		"DSS 2 Controller"
+	"revision"		"150"
+	"title"		"nintendo4"
 	"description"		"Official controller layout for controller without touch pad"
 	"creator"		"76561198046251956"
-	"progenitor"		"game://official_controller_xbox.vdf"
-	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-beta_test\\controller_switch_pro.vdf"
+	"progenitor"		""
+	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-next_patch\\controller_switch_pro.vdf"
 	"export_type"		"personal_local"
 	"controller_type"		"controller_switch_pro"
 	"controller_caps"		"613772287"
 	"major_revision"		"0"
 	"minor_revision"		"0"
-	"Timestamp"		"1771326766"
+	"Timestamp"		"1783026197"
 	"actions"
 	{
-		"InGameControls"
-		{
-			"title"		"#Set_Ingame"
-			"legacy_set"		"0"
-			"StickPadGyro"
-			{
-				"PanCamera"
-				{
-					"title"		"#Action_Pan"
-					"input_mode"		"joystick_move"
-				}
-				"CameraStick"
-				{
-					"title"		"#Action_CameraStick"
-					"input_mode"		"joystick_move"
-				}
-				"CameraTilt"
-				{
-					"title"		"#Action_CameraTilt"
-					"input_mode"		"joystick_move"
-				}
-				"MoveCursor"
-				{
-					"title"		"#Action_Cursor"
-					"input_mode"		"absolute_mouse"
-				}
-			}
-			"Button"
-			{
-				"select"		"#Action_select"
-				"order"		"#Action_order"
-				"quick_select"		"#Action_quick_select"
-				"cancel"		"#Action_cancel"
-				"stop_start"		"#Action_stop_start"
-				"open_menu"		"#Action_menu"
-				"toggle_hud_detail"		"#Action_toggle_hud"
-				"toggle_minimap"		"#Action_toggle_map"
-				"tab_left"		"#Action_tab_l"
-				"tab_right"		"#Action_tab_r"
-				"zoomInKey"		"#Action_zoomInKey"
-				"zoomOutKey"		"#Action_zoomOutKey"
-				"build"		"#Action_build"
-				"copy"		"#Action_copy"
-				"paste"		"#Action_paste"
-				"gamespeed"		"#Action_gamespeed"
-				"pause"		"#Action_pause"
-				"next_city"		"#Action_next_city"
-				"next_army"		"#Action_next_army"
-				"next_war"		"#Action_next_war"
-				"controller_focus"		"#Action_controller_focus"
-				"controller_faction"		"#Action_controller_faction"
-				"controller_message"		"#Action_controller_message"
-			}
-		}
-		"MenuControls"
-		{
-			"title"		"#Set_Menu"
-			"legacy_set"		"0"
-			"StickPadGyro"
-			{
-				"Scroll"
-				{
-					"title"		"#Action_ScrollMenu"
-					"input_mode"		"joystick_move"
-				}
-			}
-			"Button"
-			{
-				"close_menu"		"#Action_ReturnToGame"
-			}
-		}
 		"EditorControls"
 		{
 			"title"		"#Set_Editor"
@@ -120,32 +49,92 @@
 				"editor_tab_left"		"#Action_tab_l"
 				"editor_tab_right"		"#Action_tab_r"
 				"editor_YmovementToggle"		"#Action_YmovementToggle"
+				"editor_ToggleCameraMode"		"#Action_ToggleCameraMode"
+			}
+		}
+		"InGameControls"
+		{
+			"title"		"#Set_Ingame"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"PanCamera"
+				{
+					"title"		"#Action_Pan"
+					"input_mode"		"joystick_move"
+				}
+				"CameraStick"
+				{
+					"title"		"#Action_CameraStick"
+					"input_mode"		"joystick_move"
+				}
+				"CameraTilt"
+				{
+					"title"		"#Action_CameraTilt"
+					"input_mode"		"joystick_move"
+				}
+				"MoveCursor"
+				{
+					"title"		"#Action_Cursor"
+					"input_mode"		"absolute_mouse"
+				}
+				"GameScroll"
+				{
+					"title"		"#Action_ScrollMenu"
+					"input_mode"		"absolute_mouse"
+				}
+			}
+			"Button"
+			{
+				"SELECT"		"#Action_select"
+				"order"		"#Action_order"
+				"quick_select"		"#Action_quick_select"
+				"cancel"		"#Action_cancel"
+				"stop_start"		"#Action_stop_start"
+				"open_menu"		"#Action_menu"
+				"toggle_hud_detail"		"#Action_toggle_hud"
+				"toggle_minimap"		"#Action_toggle_map"
+				"tab_left"		"#Action_tab_l"
+				"tab_right"		"#Action_tab_r"
+				"zoomInKey"		"#Action_zoomInKey"
+				"zoomOutKey"		"#Action_zoomOutKey"
+				"build"		"#Action_build"
+				"copy"		"#Action_copy"
+				"paste"		"#Action_paste"
+				"gamespeed"		"#Action_gamespeed"
+				"pause"		"#Action_pause"
+				"PinAndPing"		"#Action_PinAndPing"
+				"TextChat"		"#Action_TextChat"
+				"VoiceChat"		"#Action_VoiceChat"
+				"next_city"		"#Action_next_city"
+				"next_army"		"#Action_next_army"
+				"next_pin"		"#Action_next_pin"
+				"next_war"		"#Action_next_war"
+				"controller_focus"		"#Action_controller_focus"
+				"controller_faction"		"#Action_controller_faction"
+				"controller_message"		"#Action_controller_message"
+			}
+		}
+		"MenuControls"
+		{
+			"title"		"#Set_Menu"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"Scroll"
+				{
+					"title"		"#Action_ScrollMenu"
+					"input_mode"		"joystick_move"
+				}
+			}
+			"Button"
+			{
+				"close_menu"		"#Action_ReturnToGame"
 			}
 		}
 	}
 	"action_layers"
 	{
-		"InGameAlt1"
-		{
-			"title"		"#Layer_InGame_Alt1"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
-		"InGameAlt2"
-		{
-			"title"		"#Layer_InGame_Alt2"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
-		"InGameAlt1And2"
-		{
-			"title"		"#Layer_InGame_Alt1And2"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
 		"editor_selection"
 		{
 			"title"		"#Layer_Editor_Selection"
@@ -159,6 +148,27 @@
 				"editor_selection_rotateCCW"		"#Action_rotateCCW"
 				"editor_selection_rotateCW"		"#Action_rotateCW"
 			}
+		}
+		"InGameAlt1"
+		{
+			"title"		"#Layer_InGame_Alt1"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
+		}
+		"InGameAlt1And2"
+		{
+			"title"		"#Layer_InGame_Alt1And2"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
+		}
+		"InGameAlt2"
+		{
+			"title"		"#Layer_InGame_Alt2"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
 		}
 	}
 	"localization"
@@ -177,10 +187,10 @@
 			"Action_CameraTilt"		"Camera Tilt"
 			"Action_Cursor"		"Move Cursor"
 			"Action_ScrollMenu"		"Scroll Menu"
-			"Action_select"		"Select"
+			"Action_Select"		"Select"
 			"Action_order"		"Order"
 			"Action_quick_select"		"Quick Select"
-			"Action_cancel"		"Cancel"
+			"Action_Cancel"		"Cancel"
 			"Action_stop_start"		"Stop/Start"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Toggle HUD Details"
@@ -213,6 +223,11 @@
 			"Action_YmovementToggle"		"Toggle Y-Axis"
 			"Action_rotateCCW"		"Rotate CCW"
 			"Action_rotateCW"		"Rotate CW"
+			"Action_ToggleCameraMode"		"Toggle camera mode"
+			"Action_PinAndPing"		"Pin"
+			"Action_TextChat"		"Text Chat"
+			"Action_VoiceChat"		"Voice Chat"
+			"Action_next_pin"		"Next Pin"
 		}
 		"french"
 		{
@@ -224,10 +239,10 @@
 			"Action_CameraTilt"		"Inclinaison caméra"
 			"Action_Cursor"		"Déplacer le curseur"
 			"Action_ScrollMenu"		"Filer le menu"
-			"Action_select"		"Sélectionner"
+			"Action_Select"		"Sélectionner"
 			"Action_order"		"Donner un ordre"
 			"Action_quick_select"		"Sélection rapide"
-			"Action_cancel"		"Annuler"
+			"Action_Cancel"		"Annuler"
 			"Action_stop_start"		"Arrêter/Démarrer"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Afficher/Masquer le HUD"
@@ -258,6 +273,10 @@
 			"Action_mirrorY"		"Miroir Y"
 			"Action_undo"		"Annuler l'action"
 			"Action_YmovementToggle"		"Activer/Désactiver l'axe Y"
+			"Action_PinAndPing"		"Marqueur"
+			"Action_TextChat"		"Chat textuel"
+			"Action_VoiceChat"		"Chat vocal"
+			"Action_next_pin"		"Marqueur suivant"
 		}
 		"schinese"
 		{
@@ -269,10 +288,10 @@
 			"Action_CameraTilt"		"镜头倾斜"
 			"Action_Cursor"		"移动光标"
 			"Action_ScrollMenu"		"滚动菜单"
-			"Action_select"		"选择"
+			"Action_Select"		"选择"
 			"Action_order"		"下令"
 			"Action_quick_select"		"快速选择"
-			"Action_cancel"		"取消"
+			"Action_Cancel"		"取消"
 			"Action_stop_start"		"停止/开始"
 			"Action_menu"		"菜单"
 			"Action_toggle_hud"		"切换HUD详情"
@@ -303,6 +322,10 @@
 			"Action_mirrorY"		"Y轴镜像"
 			"Action_undo"		"撤销"
 			"Action_YmovementToggle"		"切换Y轴"
+			"Action_PinAndPing"		"标记"
+			"Action_TextChat"		"文本聊天"
+			"Action_VoiceChat"		"语音聊天"
+			"Action_next_pin"		"下一个标记"
 		}
 		"japanese"
 		{
@@ -314,10 +337,10 @@
 			"Action_CameraTilt"		"カメラチルト"
 			"Action_Cursor"		"カーソル移動"
 			"Action_ScrollMenu"		"メニュースクロール"
-			"Action_select"		"選択"
+			"Action_Select"		"選択"
 			"Action_order"		"命令"
 			"Action_quick_select"		"クイック選択"
-			"Action_cancel"		"キャンセル"
+			"Action_Cancel"		"キャンセル"
 			"Action_stop_start"		"停止/開始"
 			"Action_menu"		"メニュー"
 			"Action_toggle_hud"		"HUD詳細切り替え"
@@ -348,6 +371,10 @@
 			"Action_mirrorY"		"Y軸反転"
 			"Action_undo"		"元に戻す"
 			"Action_YmovementToggle"		"Y軸切り替え"
+			"Action_PinAndPing"		"ピン"
+			"Action_TextChat"		"テキストチャット"
+			"Action_VoiceChat"		"ボイスチャット"
+			"Action_next_pin"		"次のピン"
 		}
 		"german"
 		{
@@ -359,10 +386,10 @@
 			"Action_CameraTilt"		"Kamera neigen"
 			"Action_Cursor"		"Cursor bewegen"
 			"Action_ScrollMenu"		"Menü scrollen"
-			"Action_select"		"Auswählen"
+			"Action_Select"		"Auswählen"
 			"Action_order"		"Befehl"
 			"Action_quick_select"		"Schnellauswahl"
-			"Action_cancel"		"Abbrechen"
+			"Action_Cancel"		"Abbrechen"
 			"Action_stop_start"		"Stopp/Start"
 			"Action_menu"		"Menü"
 			"Action_toggle_hud"		"HUD-Details umschalten"
@@ -393,6 +420,10 @@
 			"Action_mirrorY"		"Y spiegeln"
 			"Action_undo"		"Rückgängig"
 			"Action_YmovementToggle"		"Y-Achse umschalten"
+			"Action_PinAndPing"		"Pin"
+			"Action_TextChat"		"Textchat"
+			"Action_VoiceChat"		"Sprachchat"
+			"Action_next_pin"		"Nächster Pin"
 		}
 		"spanish"
 		{
@@ -404,10 +435,10 @@
 			"Action_CameraTilt"		"Inclinación de cámara"
 			"Action_Cursor"		"Mover cursor"
 			"Action_ScrollMenu"		"Desplazar menú"
-			"Action_select"		"Seleccionar"
+			"Action_Select"		"Seleccionar"
 			"Action_order"		"Dar orden"
 			"Action_quick_select"		"Selección rápida"
-			"Action_cancel"		"Cancelar"
+			"Action_Cancel"		"Cancelar"
 			"Action_stop_start"		"Detener/Iniciar"
 			"Action_menu"		"Menú"
 			"Action_toggle_hud"		"Alternar detalles del HUD"
@@ -438,6 +469,10 @@
 			"Action_mirrorY"		"Reflejar Y"
 			"Action_undo"		"Deshacer"
 			"Action_YmovementToggle"		"Alternar eje Y"
+			"Action_PinAndPing"		"Pin"
+			"Action_TextChat"		"Chat de texto"
+			"Action_VoiceChat"		"Chat de voz"
+			"Action_next_pin"		"Siguiente pin"
 		}
 		"thai"
 		{
@@ -449,10 +484,10 @@
 			"Action_CameraTilt"		"ปรับมุมเงยกล้อง"
 			"Action_Cursor"		"เลื่อนเคอร์เซอร์"
 			"Action_ScrollMenu"		"เลื่อนเมนู"
-			"Action_select"		"เลือก"
+			"Action_Select"		"เลือก"
 			"Action_order"		"ออกคำสั่ง"
 			"Action_quick_select"		"เลือกด่วน"
-			"Action_cancel"		"ยกเลิก"
+			"Action_Cancel"		"ยกเลิก"
 			"Action_stop_start"		"หยุด/เริ่ม"
 			"Action_menu"		"เมนู"
 			"Action_toggle_hud"		"เปิด/ปิด รายละเอียด HUD"
@@ -483,6 +518,10 @@
 			"Action_mirrorY"		"กลับด้านแกน Y"
 			"Action_undo"		"เลิกทำ"
 			"Action_YmovementToggle"		"เปิด/ปิด แกน Y"
+			"Action_PinAndPing"		"ปักหมุด"
+			"Action_TextChat"		"แชทข้อความ"
+			"Action_VoiceChat"		"แชทด้วยเสียง"
+			"Action_next_pin"		"ปักหมุดถัดไป"
 		}
 		"russian"
 		{
@@ -494,10 +533,10 @@
 			"Action_CameraTilt"		"Наклон камеры"
 			"Action_Cursor"		"Переместить курсор"
 			"Action_ScrollMenu"		"Прокрутка меню"
-			"Action_select"		"Выбрать"
+			"Action_Select"		"Выбрать"
 			"Action_order"		"Приказ"
 			"Action_quick_select"		"Быстрый выбор"
-			"Action_cancel"		"Отмена"
+			"Action_Cancel"		"Отмена"
 			"Action_stop_start"		"Стоп/Старт"
 			"Action_menu"		"Меню"
 			"Action_toggle_hud"		"Показать/скрыть интерфейс"
@@ -528,6 +567,10 @@
 			"Action_mirrorY"		"Отразить по Y"
 			"Action_undo"		"Отменить"
 			"Action_YmovementToggle"		"Ось Y (вкл/выкл)"
+			"Action_PinAndPing"		"Метка"
+			"Action_TextChat"		"Текстовый чат"
+			"Action_VoiceChat"		"Голосовой чат"
+			"Action_next_pin"		"Следующая метка"
 		}
 		"brazilian"
 		{
@@ -539,10 +582,10 @@
 			"Action_CameraTilt"		"Inclinar Câmera"
 			"Action_Cursor"		"Mover Cursor"
 			"Action_ScrollMenu"		"Rolar Menu"
-			"Action_select"		"Selecionar"
+			"Action_Select"		"Selecionar"
 			"Action_order"		"Dar Ordem"
 			"Action_quick_select"		"Seleção Rápida"
-			"Action_cancel"		"Cancelar"
+			"Action_Cancel"		"Cancelar"
 			"Action_stop_start"		"Parar/Iniciar"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Alternar Detalhes do HUD"
@@ -573,6 +616,10 @@
 			"Action_mirrorY"		"Espelhar Y"
 			"Action_undo"		"Desfazer"
 			"Action_YmovementToggle"		"Alternar Eixo Y"
+			"Action_PinAndPing"		"Marcador"
+			"Action_TextChat"		"Chat de texto"
+			"Action_VoiceChat"		"Chat de voz"
+			"Action_next_pin"		"Próximo marcador"
 		}
 		"turkish"
 		{
@@ -584,10 +631,10 @@
 			"Action_CameraTilt"		"Kamera Eğimi"
 			"Action_Cursor"		"İmleci Hareket Ettir"
 			"Action_ScrollMenu"		"Menüyü Kaydır"
-			"Action_select"		"Seç"
+			"Action_Select"		"Seç"
 			"Action_order"		"Emir Ver"
 			"Action_quick_select"		"Hızlı Seçim"
-			"Action_cancel"		"İptal"
+			"Action_Cancel"		"İptal"
 			"Action_stop_start"		"Durdur/Başlat"
 			"Action_menu"		"Menü"
 			"Action_toggle_hud"		"HUD Detaylarını Aç/Kapat"
@@ -618,6 +665,10 @@
 			"Action_mirrorY"		"Y Yansıtma"
 			"Action_undo"		"Geri Al"
 			"Action_YmovementToggle"		"Y Ekseni Aç/Kapat"
+			"Action_PinAndPing"		"İşaret"
+			"Action_TextChat"		"Metin Sohbeti"
+			"Action_VoiceChat"		"Sesli Sohbet"
+			"Action_next_pin"		"Sonraki İşaret"
 		}
 		"italian"
 		{
@@ -629,10 +680,10 @@
 			"Action_CameraTilt"		"Inclinazione visuale"
 			"Action_Cursor"		"Muovi cursore"
 			"Action_ScrollMenu"		"Scorri menu"
-			"Action_select"		"Seleziona"
+			"Action_Select"		"Seleziona"
 			"Action_order"		"Dai un ordine"
 			"Action_quick_select"		"Selezione rapida"
-			"Action_cancel"		"Annulla"
+			"Action_Cancel"		"Annulla"
 			"Action_stop_start"		"Ferma/Avvia"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Mostra/Nascondi HUD"
@@ -663,6 +714,10 @@
 			"Action_mirrorY"		"Specchia Y"
 			"Action_undo"		"Annulla azione"
 			"Action_YmovementToggle"		"Attiva/Disattiva asse Y"
+			"Action_PinAndPing"		"Segnalino"
+			"Action_TextChat"		"Chat di testo"
+			"Action_VoiceChat"		"Chat vocale"
+			"Action_next_pin"		"Segnalino successivo"
 		}
 		"polish"
 		{
@@ -674,10 +729,10 @@
 			"Action_CameraTilt"		"Nachylenie kamery"
 			"Action_Cursor"		"Ruch kursorem"
 			"Action_ScrollMenu"		"Przewijanie menu"
-			"Action_select"		"Wybierz"
+			"Action_Select"		"Wybierz"
 			"Action_order"		"Wydaj rozkaz"
 			"Action_quick_select"		"Szybki wybór"
-			"Action_cancel"		"Anuluj"
+			"Action_Cancel"		"Anuluj"
 			"Action_stop_start"		"Stop/Start"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Przełącz szczegóły HUD"
@@ -708,6 +763,10 @@
 			"Action_mirrorY"		"Odbicie lustrzane Y"
 			"Action_undo"		"Cofnij"
 			"Action_YmovementToggle"		"Przełącz oś Y"
+			"Action_PinAndPing"		"Znacznik"
+			"Action_TextChat"		"Czat tekstowy"
+			"Action_VoiceChat"		"Czat głosowy"
+			"Action_next_pin"		"Następny znacznik"
 		}
 	}
 	"group"
@@ -1506,7 +1565,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action InGameControls select, Select, , "
+							"binding"		"game_action InGameControls SELECT, Select, , "
 						}
 					}
 				}
@@ -2065,6 +2124,54 @@
 		"description"		""
 		"inputs"
 		{
+			"button_a"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls PinAndPing, Pin, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls VoiceChat, Voice Chat, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_x"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls TextChat, Text Chat, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2225,10 +2332,44 @@
 				{
 				}
 			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls next_pin, Next Pin, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
 			"layer"		"1"
+		}
+	}
+	"group"
+	{
+		"id"		"73"
+		"mode"		"joystick_move"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"MenuControls"		"Scroll"
 		}
 	}
 	"group"
@@ -2671,24 +2812,6 @@
 		"settings"
 		{
 			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"73"
-		"mode"		"joystick_move"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"virtual_mode"		"1"
-		}
-		"gameactions"
-		{
-			"MenuControls"		"Scroll"
 		}
 	}
 	"preset"

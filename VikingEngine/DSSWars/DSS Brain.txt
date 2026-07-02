@@ -5,6 +5,7 @@
 * instanced the game ruleset, like global gold
 
 # KNOWN ISSUES #
+x missing steam deck layout
 x PvP protection doesnt work on direct attacks.
 x Cant deny ally requests
 x lobbies can get stuck (should show timeout warning)
