@@ -1589,9 +1589,9 @@ namespace VikingEngine.DSSWars.Players
                 case FactionFlavorType.Mountain:
                     if (faction.mainCity != null)
                     {
-                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.iron, 100, false);
-                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.shortsword, 60, false);
-                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.heavyMailArmor, 60, false);
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.iron, 100, false);
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.shortsword, 60, false);
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.heavyMailArmor, 60, false);
                     }
                     break;
             }
