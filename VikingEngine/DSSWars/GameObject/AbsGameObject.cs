@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
@@ -20,7 +21,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsGameObject
     {
-        public int factionIndex = -1;
+        public PFaction pfaction = PFaction.Empty;//int factionIndex = -1;
         public int myIndex = -1;
         public bool isDeleted = false;
         
@@ -58,67 +59,67 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        virtual public Faction GetFaction_NoChecks()
-        {
-            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Count)
-            {
-                return null;
-            }
+        //virtual public Faction GetFaction_NoChecks()
+        //{
+        //    if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Count)
+        //    {
+        //        return null;
+        //    }
 
-            return DssRef.world.factions.Array[factionIndex];
-        }
+        //    return DssRef.world.factions.Array[factionIndex];
+        //}
 
-        virtual public Faction GetFaction()
-        {
+        //virtual public Faction GetFaction()
+        //{
 
-            if (factionIndex < 0)
-            {
-                return null;
-            }
+        //    if (factionIndex < 0)
+        //    {
+        //        return null;
+        //    }
 
-            return DssRef.world.faction(factionIndex);
-        }
+        //    return DssRef.world.faction(factionIndex);
+        //}
 
-        public bool TryGetFaction(out Faction faction)
-        {
-            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
-            {
-                faction = DssRef.world.factions.Array[factionIndex];
-                return true;
-            }
-            faction = null;
-            return false;
-        }
+        //public bool TryGetFaction(out Faction faction)
+        //{
+        //    if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+        //    {
+        //        faction = DssRef.world.factions.Array[factionIndex];
+        //        return true;
+        //    }
+        //    faction = null;
+        //    return false;
+        //}
 
-        virtual public Faction GetFaction_Safe()
-        {
-            return DssRef.world?.faction(factionIndex);
-        }
+        //virtual public Faction GetFaction_Safe()
+        //{
+        //    return DssRef.world?.faction(factionIndex);
+        //}
 
-        public Players.AbsPlayer GetPlayer()
-        {
+        //public Players.AbsPlayer GetPlayer()
+        //{
 
-            if (factionIndex < 0)
-            {
-                return null;
-            }
+        //    if (factionIndex < 0)
+        //    {
+        //        return null;
+        //    }
 
-            return DssRef.world.factions.Array[factionIndex]?.player;
-        }
+        //    return DssRef.world.factions.Array[factionIndex]?.player;
+        //}
 
-        public bool TryGetPlayer(out Players.AbsPlayer player)
-        {
+        //public bool TryGetPlayer(out Players.AbsPlayer player)
+        //{
 
-            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Array.Length)
-            {
-                player = null;
-            }
-            else
-            {
-                player = DssRef.world.factions.Array[factionIndex]?.player;
-            }
-            return player != null;
-        }
+        //    if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Array.Length)
+        //    {
+        //        player = null;
+        //    }
+        //    else
+        //    {
+        //        player = DssRef.world.factions.Array[factionIndex]?.player;
+        //    }
+        //    return player != null;
+        //}
 
         public bool GetCasual()
         {
