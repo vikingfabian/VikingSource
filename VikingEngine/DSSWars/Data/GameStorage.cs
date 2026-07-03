@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.Data
             }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
-        public const int Version = 37;
+        public const int Version = 38;
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write(speed5x);
 
-            ruleset.write(w, true);
+            //ruleset.write(w, true);
             
             mapSettings.write(w);
 
@@ -274,8 +274,11 @@ namespace VikingEngine.DSSWars.Data
 
                 speed5x = r.ReadBoolean();
 
-                ruleset.read(r, true);
-                ruleset_instance = ruleset;
+                if (version < 38)
+                {
+                    ruleset.read(r, true);
+                    ruleset_instance = ruleset;
+                }
                 mapSettings.read(r, version);
 
                 generateNewMaps = true;

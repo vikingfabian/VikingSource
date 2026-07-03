@@ -783,6 +783,8 @@ namespace VikingEngine.DSSWars.Presentation
                 case InputActionType.ZoomOutKey:
                     return DssRef.lang.InputActionName_ZoomOutKey;
 
+                case InputActionType.NextPin:
+                    return DssRef.todoLang.InputActionName_NextPin;
                 case InputActionType.PinAndPing:
                     return DssRef.todoLang.ObjectType_LocationPin;
                 case InputActionType.TextChat:
@@ -792,7 +794,12 @@ namespace VikingEngine.DSSWars.Presentation
 
 
                 default:
+
+#if DEBUG
                     throw new NotImplementedException($"InputActionName not implemented for {action}");
+#else
+        return TextLib.Error;
+#endif       
             }
         }
         //public string Name(InputActionType type)
@@ -800,46 +807,46 @@ namespace VikingEngine.DSSWars.Presentation
         //    switch (type)
         //    {
 
-        //        case InputActionType.StopStart:
-        //            return DssRef.lang.ArmyOption_Halt;
-        //        //case InputButtonType.AutomationSetting:
-        //        //    return DssRef.lang.Automation_Title;
-        //        //case InputButtonType.Home:
-        //        //    return;
-        //        case InputActionType.ToggleHudDetail:
-        //            return DssRef.lang.Input_ToggleHudDetail;
-        //        case InputActionType.GameSpeed:
-        //            return DssRef.lang.Input_GameSpeed;
-        //        case InputActionType.PauseGame:
-        //            return DssRef.lang.Input_Pause;
-        //        case InputActionType.NextCity:
-        //            return DssRef.lang.Input_NextCity;
-        //        case InputActionType.NextArmy:
-        //            return DssRef.lang.Input_NextArmy;
-        //        case InputActionType.NextBattle:
-        //            return DssRef.lang.Input_NextBattle;
+            //        case InputActionType.StopStart:
+            //            return DssRef.lang.ArmyOption_Halt;
+            //        //case InputButtonType.AutomationSetting:
+            //        //    return DssRef.lang.Automation_Title;
+            //        //case InputButtonType.Home:
+            //        //    return;
+            //        case InputActionType.ToggleHudDetail:
+            //            return DssRef.lang.Input_ToggleHudDetail;
+            //        case InputActionType.GameSpeed:
+            //            return DssRef.lang.Input_GameSpeed;
+            //        case InputActionType.PauseGame:
+            //            return DssRef.lang.Input_Pause;
+            //        case InputActionType.NextCity:
+            //            return DssRef.lang.Input_NextCity;
+            //        case InputActionType.NextArmy:
+            //            return DssRef.lang.Input_NextArmy;
+            //        case InputActionType.NextBattle:
+            //            return DssRef.lang.Input_NextBattle;
 
-        //        case InputActionType.ControllerFocus:
-        //            return DssRef.lang.Input_ToggleHudFocus;
-        //        case InputActionType.ControllerCancel:
-        //            return Ref.langOpt.Hud_Cancel;
-        //        case InputActionType.ControllerMessageClick:
-        //            return DssRef.lang.Input_ClickMessage;
+            //        case InputActionType.ControllerFocus:
+            //            return DssRef.lang.Input_ToggleHudFocus;
+            //        case InputActionType.ControllerCancel:
+            //            return Ref.langOpt.Hud_Cancel;
+            //        case InputActionType.ControllerMessageClick:
+            //            return DssRef.lang.Input_ClickMessage;
 
-        //        case InputActionType.WASD_UP:
-        //            return DssRef.lang.Input_Up;
-        //        case InputActionType.WASD_DOWN:
-        //            return DssRef.lang.Input_Down;
-        //        case InputActionType.WASD_LEFT:
-        //            return DssRef.lang.Input_Left;
-        //        case InputActionType.WASD_RIGHT:
-        //            return DssRef.lang.Input_Right;
+            //        case InputActionType.WASD_UP:
+            //            return DssRef.lang.Input_Up;
+            //        case InputActionType.WASD_DOWN:
+            //            return DssRef.lang.Input_Down;
+            //        case InputActionType.WASD_LEFT:
+            //            return DssRef.lang.Input_Left;
+            //        case InputActionType.WASD_RIGHT:
+            //            return DssRef.lang.Input_Right;
 
-        //        default:
-        //            return "ERR";
+            //        default:
+            //            return "ERR";
 
-        //    }
-        //}
+            //    }
+            //}
         public static SpriteName Training_Icon(TrainingLevel training)
         {
             return (SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)training);

@@ -700,6 +700,7 @@ namespace VikingEngine.SteamWrapping
         pause,
         next_city,
         next_army,
+        next_pin,
         next_war,
         controller_focus,
         controller_faction,

@@ -212,21 +212,7 @@ namespace VikingEngine.DSSWars.GameObject
                 void interactLevelButton(string label, NetInteractLevel level)
                 {
                     args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>
-                    {  new RbText(label)}, new RbAction1Arg<NetInteractLevel>((NetInteractLevel selected) =>
-                    {
-                        netInteractLevel = selected;
-                        if (netInteractLevel > NetInteractLevel.Hidden)
-                        {
-                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPing, PacketReliability.Reliable);
-                            w.Write((ushort)myIndex);
-                            writeGameState(w);
-                        }
-                        else
-                        {
-                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinHide, PacketReliability.Reliable);
-                            w.Write((ushort)myIndex);
-                        }
-                    }, level, level == NetInteractLevel.Hidden? RbSoundType.Back : RbSoundType.Ping)));
+                    {  new RbText(label)}, new RbAction1Arg<NetInteractLevel>(setInteractLevel, level, level == NetInteractLevel.Hidden? RbSoundType.Back : RbSoundType.Ping)));
                 }
                 //for (NetInteractLevel level = 0; level < NetInteractLevel.NUM; level++)
                 //{ 
@@ -242,6 +228,23 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
                new RbText(  ".Delete all") }, new RbAction1Arg<DeleteReason>(args.player.clearPins, DeleteReason.Disband)));
 
+        }
+
+        public void setInteractLevel(NetInteractLevel selected)
+        {
+            netInteractLevel = selected;
+
+            if (netInteractLevel > NetInteractLevel.Hidden)
+            {
+                var w = Ref.netSession.BeginWritingPacket(PacketType.DssPing, PacketReliability.Reliable);
+                w.Write((ushort)myIndex);
+                writeGameState(w);
+            }
+            else
+            {
+                var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinHide, PacketReliability.Reliable);
+                w.Write((ushort)myIndex);
+            }
         }
 
         public override void toTooltip(ObjectHudArgs args)

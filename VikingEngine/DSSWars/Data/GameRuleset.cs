@@ -108,6 +108,8 @@ namespace VikingEngine.DSSWars.Data
                 setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, TechMultiBound);
                 setting_techMulti_QuickMatch = r.ReadInt32();                   
             }
+
+            refreshSettings();
         }
         public void defaultGameSettings()
         {

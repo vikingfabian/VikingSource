@@ -272,6 +272,8 @@ namespace VikingEngine.Network
 
         public StructList<StoredNetworkGamer> storedGamers = new StructList<StoredNetworkGamer>(8);
         
+        public bool HasPvp => hostPtoP.warAllow == PlayerDiplomacyAllowType.Allow;
+
         public NetworkSettings()
         {
             Ref.netsett = this;

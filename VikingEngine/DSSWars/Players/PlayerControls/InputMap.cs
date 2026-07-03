@@ -403,6 +403,7 @@ namespace VikingEngine.DSSWars
             // --- Cycling / Focus ---
             NextCity = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_city, idx);
             NextArmy = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_army, idx);
+            NextPin = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_pin, idx);
             NextWar = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_war, idx);
 
             Controller_ObjectMenuToggle = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_focus, idx);
@@ -420,6 +421,9 @@ namespace VikingEngine.DSSWars
             // Make sure your MenuControls set is handled in the sub-set setups
             menuInput?.steamSetup(idx);
             editorInput?.steamSetup(idx, move, cameraStick);
+
+            TextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TextChat, idx);
+            VoiceChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.VoiceChat, idx);
 
             refreshMouseInput();
         }
@@ -570,11 +574,11 @@ namespace VikingEngine.DSSWars
                 PauseGame = MapRead.Button(r, inputSource.controllerIndex);
                 NextCity = MapRead.Button(r, inputSource.controllerIndex);
                 NextArmy = MapRead.Button(r, inputSource.controllerIndex);
+                NextPin = MapRead.Button(r, inputSource.controllerIndex);
                 if (inputVersion >= 10)
                 { 
-                    NextPin = MapRead.Button(r, inputSource.controllerIndex);
-                }
-                NextWar = MapRead.Button(r, inputSource.controllerIndex);
+                    NextWar = MapRead.Button(r, inputSource.controllerIndex);
+                }                
 
                 wasd_up = MapRead.Button(r, inputSource.controllerIndex);
                 wasd_down = MapRead.Button(r, inputSource.controllerIndex);

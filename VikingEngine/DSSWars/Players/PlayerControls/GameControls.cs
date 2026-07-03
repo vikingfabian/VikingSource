@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool cityUpdate;
         int tabCity = -1;
         SpottedArrayCounter<Army> tabArmy;
+        SpottedArrayCounter<LocationPin> tabPin;
         int tabWarFaction = -1;
         public int[] GameSpeedOptions;
         public InputHelpState inputHelpState = InputHelpState.Map;
@@ -53,6 +54,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             cityUpdate = DssRef.state.PlayType() == GameState.PlayStateType.Play;
 
             tabArmy = player.faction.armies.counter();            
+            tabPin = player.pins.counter();
 
             map = new Players.MapControls(player);
             if (player.faction.mainCity != null)
@@ -923,13 +925,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //ARMY
             if (input.NextArmy.DownEvent)
             {
-                nextArmy(!Input.Keyboard.Shift);
-         
+                nextArmy(!input.Shift());         
+            }
+
+            if (input.NextArmy.DownEvent)
+            {
+                nextPin(!input.Shift());
+
             }
 
             if (input.NextWar.DownEvent)
             {
-                nextWar(!Input.Keyboard.Shift);
+                nextWar(!input.Shift());
             }
         }
 
@@ -945,7 +952,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.needRefresh = true;
 
             int dir = 1;
-            if (Input.Keyboard.Shift &&
+            if (input.Shift() &&
                 player.gameControls.input.inputSource.HasKeyBoard)
             {
                 dir = -1;
@@ -964,7 +971,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (city.automateCity &&
                             player.gameControls.input.inputSource.HasKeyBoard &&
-                            Input.Keyboard.Alt)
+                            input.Alt())
                         {
                             continue;
                         }
@@ -1024,8 +1031,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     map.cameraFocus = tabArmy.sel;
                     mapSelect(tabArmy.sel);
-
-                    return;
                 }
             }
             else
@@ -1034,11 +1039,31 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     map.cameraFocus = tabArmy.sel;
                     mapSelect(tabArmy.sel);
-
-                    return;
                 }
             }
             
+        }
+        public void nextPin(bool forward)
+        {
+            //xx
+            player.hud.needRefresh = true;
+            if (forward)
+            {
+                if (tabPin.Next_Rollover())
+                {
+                    map.cameraFocus = tabPin.sel;
+                    mapSelect(tabPin.sel);
+                }
+            }
+            else
+            {
+                if (tabPin.Prev_Rollover())
+                {
+                    map.cameraFocus = tabPin.sel;
+                    mapSelect(tabPin.sel);
+                }
+            }
+
         }
 
         public void nextWar(bool forward)

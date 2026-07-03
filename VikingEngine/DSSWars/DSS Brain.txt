@@ -3,6 +3,8 @@
 * The game will start in pause menu
 * Blocks tutorial in local multiplayer
 * instanced the game ruleset, like global gold
+* Pins head bar ui
+* Updated steam input layout
 
 # KNOWN ISSUES #
 x missing steam deck layout
@@ -12,10 +14,6 @@ x lobbies can get stuck (should show timeout warning)
 x remote cities have wonky workers
 ! old saved will have some bot flag color drifting
 ! Join from a closed game doesnt work
-
-# HOW TO PLAY #
-* The host just starts a game, and a join button should appear for their friends in the main menu.
-* Press P for pins.
 
 x iterate steam version first
 x DssEditSubTile

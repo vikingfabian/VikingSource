@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Interface
                 publicityOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.JoinPermission_Title, menu);
 
                 content.newLine();
-                HudLib.Label(content, "Max player count");
+                HudLib.Label(content, SpriteName.birdPlayerCount, "Max player count");
                 content.hspace();
                 RbDragButton.RbDragButtonGroup(content, new List<float> { 10 },
                     new DragButtonSettings(2, 64, 1), Ref.netsett.MaxPlayerCountProperty, false);

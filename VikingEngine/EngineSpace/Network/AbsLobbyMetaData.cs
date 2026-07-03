@@ -21,6 +21,7 @@ namespace VikingEngine.Network
         public const string LobbyAliveDataKey = "ALIVE";
         protected const string LobbyPublicityDataKey = "PUBLIC";
         protected const string VersionDataKey = "VER";
+        
 
         abstract public string[] GetKeys();
         public string[] Values;

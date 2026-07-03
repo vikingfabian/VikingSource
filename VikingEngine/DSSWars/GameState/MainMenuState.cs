@@ -672,9 +672,14 @@ namespace VikingEngine.DSSWars
                 HudLib.BulletSeperationPoint(buttonContent);
                 buttonContent.Add(new RbText(TextLib.PercentTextWithSymbol(meta.TotalDifficulty()), HudLib.InfoYellow_Dark));
 
-                if (!session.metaData.MatchingVersion)
+                if (!meta.MatchingVersion)
                 {
-                    buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, ".Version", session.metaData.Version)).overrideColor = HudLib.NotAvailableColor_Dark;
+                    buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, ".Version", session.metaData.Version), HudLib.NotAvailableColor_Dark);
+                }
+
+                if (!meta.allowCasual && DssRef.storage.profileStorage.Selected().casualControls)
+                {
+                    
                 }
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent, 

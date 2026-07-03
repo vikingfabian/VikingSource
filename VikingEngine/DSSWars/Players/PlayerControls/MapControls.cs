@@ -185,7 +185,12 @@ namespace VikingEngine.DSSWars.Players
 
             if (player.gameControls.input.PinAndPing.DownEvent)
             {
-                player.createPin();
+                var pin = player.createPin();
+
+                if (player.gameControls.input.inputSource.HasKeyBoard && Input.Keyboard.Ctrl)
+                {
+                    pin.setInteractLevel(Network.NetInteractLevel.Public);
+                }
             }
 
         }

@@ -255,6 +255,32 @@ namespace VikingEngine.DSSWars.Interface
                     new RbTooltip(nextArmyTip)));
             }
             {
+                RichBoxContent nextButton = new RichBoxContent();
+                if (player.gameControls.input.inputSource.HasControllerInput)
+                {
+                    if (player.gameControls.input.inputSource.IsXnaController &&
+                    player.gameControls.input.NextPin.IsActive)
+                    {
+                        nextButton.Add(new RbImage(player.gameControls.input.NextArmy.Icon));
+                        nextButton.space(0.5f);
+                    }
+                    //nextButton.Add(new RbImage(SpriteName.WarsLocationPin));
+                }
+                else
+                {
+                    //nextButton.Add(new RbImage(SpriteName.WarsHudIconNext));
+
+                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsLocationPin) }, 
+                    //    new RbAction(player.beginCreatePin),
+                    //new RbTooltip(addPinTip)));
+                }
+                nextButton.Add(new RbImage(SpriteName.WarsLocationPin));
+                nextButton.space(0.5f);
+                nextButton.Add(new RbText(player.pins.Count.ToString()));
+                content.Add(new ArtButton(RbButtonStyle.Outline, nextButton, new RbAction1Arg<bool>(player.gameControls.nextPin, true),
+                    new RbTooltip(nextPinTip)));
+            }
+            {
 
                 RichBoxContent buttonContent = new RichBoxContent();
                 string toolTip;
@@ -403,6 +429,21 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbText(string.Format(DssRef.lang.Hud_ArmyCount, player.faction.armies.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.InputActionName_NextArmy);
+        }
+
+        void nextPinTip(RichBoxContent content, object tag)
+        {
+            //var player = this.player.GetLocalPlayer();
+            content.Add(new RbText(DssRef.todoLang.ObjectType_LocationPin, HudLib.InfoYellow_Light));
+            content.newParagraph();
+            content.ButtonDescription(player.gameControls.input.NextPin, DssRef.todoLang.InputActionName_NextPin);
+            content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.todoLang.InputActionName_PinAndPing);
+            content.ButtonDescription(SpriteName.KeyCtrl, ".Share and ping");
+        }
+
+        void addPinTip(RichBoxContent content, object tag)
+        {
+            content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.todoLang.InputActionName_PinAndPing);
         }
 
         void factionGoldTip(RichBoxContent content, object tag)

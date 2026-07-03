@@ -618,7 +618,11 @@ namespace VikingEngine.DSSWars.Players
             return ArmyMenu.Tabs;
         }
 
-        public void createPin()
+        public void beginCreatePin()
+        { 
+            
+        }
+        public LocationPin createPin()
         {
             LocationPin pin = new LocationPin(this, gameControls.map.pointerPosWP);
             pin.myIndex = pins.Add(pin);
@@ -626,6 +630,8 @@ namespace VikingEngine.DSSWars.Players
 
             gameControls.map.selection.obj = pin;
             hud.needRefresh = true;
+
+            return pin;
         }        
 
         public override void createStartUnits(double unitCountMulti, bool settlerGuard)
