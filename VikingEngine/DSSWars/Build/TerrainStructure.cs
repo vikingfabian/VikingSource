@@ -561,10 +561,15 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.StoneWallGreen:
                 case BuildAndExpandType.StoneWallWoodHouse:
                 //case BuildAndExpandType.Logistics:
-                case BuildAndExpandType.ManorLord:
-                case BuildAndExpandType.GreatHall:
+               
                 case BuildAndExpandType.Palisade:
                     return wallCount;
+
+                case BuildAndExpandType.ManorLord:
+                    return lib.BoolToInt01(manorLord);
+
+                case BuildAndExpandType.GreatHall:
+                    return lib.BoolToInt01(greatHall);
 
                 case BuildAndExpandType.Logistics:
                     return buildingLevel_logistics;

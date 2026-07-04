@@ -47,6 +47,7 @@ namespace VikingEngine
         public bool wideScrollbars = false;
         public float MinimapScale = 1f;
         public float IngameMenuWidth = 1f;
+        public bool displayInputHelp = true;
         public bool customCursor = false;
         public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
@@ -431,6 +432,9 @@ namespace VikingEngine
         //    }
         //    return Engine.Screen.PcTargetFullScreen;
         //}
+
+       
+
         public bool CustomCursorProperty(object tag, bool set, bool value)
         {
             if (set)

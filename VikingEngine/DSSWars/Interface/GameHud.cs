@@ -301,7 +301,7 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        void updateMenuDisplays(bool refresh)
+        public void updateMenuDisplays(bool refresh)
         {
 
             if (player.gameControls.diplomacy != null)

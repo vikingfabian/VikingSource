@@ -62,6 +62,12 @@ with.
 
       </CharacterRegion>
 
+		<!-- General Punctuation (Right Single Quotation Mark) -->
+		<CharacterRegion>
+			<Start>&#x2019;</Start>
+			<End>&#x2019;</End>
+		</CharacterRegion>
+
       <!-- Thai -->
       <CharacterRegion>
 

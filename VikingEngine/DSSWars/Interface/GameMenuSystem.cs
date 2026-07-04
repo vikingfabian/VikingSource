@@ -366,7 +366,11 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
                     p.hud.minimapProperty));
+                
             }
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.GameSettings_DisplayInputHelp) },
+                DisplayInputHelpProperty));
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -432,6 +436,20 @@ namespace VikingEngine.DSSWars.Interface
             });
         }
 
+        bool DisplayInputHelpProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                Ref.gamesett.displayInputHelp = value;
+                Ref.gamesett.settingsHasChanged = true;
+
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.hud.inputHelp.refreshUpdate(p);
+                }
+            }
+            return Ref.gamesett.displayInputHelp;
+        }
 
         public static void SettingsToMenu(RichBoxContent content, RichMenu menu, bool lobby)
         {

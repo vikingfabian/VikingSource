@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.Presentation
     class TodoTranslation
     {
         public string GameSettings_WideScrollbar => "Wide scrollbar";
-
+        public string GameSettings_DisplayInputHelp => "Input help";
         public string Network_PlayOffline = "Play offline";
         public string JoinPermission_Title => "Join Permissions";
         public string JoinPermission_Private=> "Private";
