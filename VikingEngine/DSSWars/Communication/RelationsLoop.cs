@@ -45,8 +45,9 @@ namespace VikingEngine.DSSWars.Communication
         }
 
         public int RelationIndex()
-        { 
-            return DssRef.world.diplomacy.RelationIndex(faction, otherFactionIx);
+        {
+            DssRef.world.diplomacy.RelationIndex(faction, otherFactionIx, out var result);
+            return result;
         }
 
         public DiplomaticRelation Relation()
