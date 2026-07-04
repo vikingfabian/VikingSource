@@ -679,7 +679,7 @@ namespace VikingEngine.DSSWars
 
                 if (!meta.allowCasual && DssRef.storage.profileStorage.Selected().casualControls)
                 {
-                    
+                    buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), ".Allow casual controls").overrideColor = HudLib.NotAvailableColor_Dark;
                 }
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent, 

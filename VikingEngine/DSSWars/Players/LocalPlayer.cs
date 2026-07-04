@@ -30,6 +30,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Sound;
@@ -241,6 +242,10 @@ namespace VikingEngine.DSSWars.Players
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
             SetProfile(DssRef.storage.profileStorage.profiles[pStorage.profileIndex]);
+            if (!DssRef.state.host)
+            {
+                profile.casualControls &= Ref.netsett.remoteHostSettings.hostSettings.allowCasualControls;
+            }
             faction.diplomaticSide = DiplomaticSide.Light;
 
             InputMap input = new InputMap(playerindex);

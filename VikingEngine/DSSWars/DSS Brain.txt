@@ -7,6 +7,7 @@
 * Updated steam input layout
 
 # KNOWN ISSUES #
+x recolor not implemented
 x missing steam deck layout
 x PvP protection doesnt work on direct attacks.
 x Cant deny ally requests

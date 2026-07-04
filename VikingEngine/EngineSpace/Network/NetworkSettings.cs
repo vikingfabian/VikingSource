@@ -122,7 +122,8 @@ namespace VikingEngine.Network
     {
         public LobbyPublicity lobbyPublicity;//i
         public bool allowHandicap = true;//i
-        public bool allowCasualControls = true;
+        public bool allowCasualControls = true;//i
+        public bool autoReColorFlags = false;
 
         public RelationType startDiplomacy = RelationType.RelationType0_Neutral;//i
 
@@ -135,16 +136,20 @@ namespace VikingEngine.Network
         {
             w.Write((byte)lobbyPublicity);
             w.Write((sbyte)startDiplomacy);
-            w.Write(allowHandicap);
-            w.Write(allowCasualControls);
+            //w.Write(allowHandicap);
+            //w.Write(allowCasualControls);
+            EightBit bits = new EightBit(allowHandicap, allowCasualControls, autoReColorFlags);
+            bits.write(w);
 
         }
         public void read(System.IO.BinaryReader r, int storageVersion)
         {
             lobbyPublicity = (LobbyPublicity)r.ReadByte();
             startDiplomacy = (RelationType)r.ReadSByte();
-            allowHandicap = r.ReadBoolean();
-            allowCasualControls = r.ReadBoolean();
+            //allowHandicap = r.ReadBoolean();
+            //allowCasualControls = r.ReadBoolean();
+            EightBit bits = new EightBit(r);
+            bits.Get(out allowHandicap, out allowCasualControls, out autoReColorFlags);
         }
     }
 
@@ -468,6 +473,16 @@ namespace VikingEngine.Network
                 settingsHasChanged = true;
             }
             return hostSettings.allowCasualControls;
+        }
+
+        public bool autoRecolorFlagsProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                hostSettings.autoReColorFlags = value;
+                settingsHasChanged = true;
+            }
+            return hostSettings.autoReColorFlags;
         }
 
         //public bool allowCasualControlsProperty(object tag, bool set, bool value)

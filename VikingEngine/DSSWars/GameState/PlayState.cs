@@ -178,6 +178,11 @@ namespace VikingEngine.DSSWars
 
         public override void OnLoadComplete()
         {
+            //if (!host)
+            //{ 
+            //    DssRef.storage.profileStorage.Selected().casualControls &= Ref.netsett.remoteHostSettings.hostSettings.allowCasualControls;
+            //}
+
             onGameStart(false);
         }
 

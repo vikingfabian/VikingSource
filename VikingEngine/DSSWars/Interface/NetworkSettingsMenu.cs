@@ -215,6 +215,13 @@ namespace VikingEngine.DSSWars.Interface
                     Ref.netsett.allowCasualControlsProperty, new RbTooltip_Text(DssRef.lang.Settings_CasualControls_Description)));
 
                 content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.VoxelEditorBucket),
+                    new RbSpace(0.5f),
+                    new RbText("Auto recolor player flags") },
+                    Ref.netsett.autoRecolorFlagsProperty, null));
+
+                content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbText("Blocked players") },
                     new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
