@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void refreshUpdate(LocalPlayer player)
         {
-            if (!player.hud.maximizedHud)
+            if (!player.hud.maximizedHud || !Ref.gamesett.displayInputHelp)
             {
                 deleteMenu();
                 return;

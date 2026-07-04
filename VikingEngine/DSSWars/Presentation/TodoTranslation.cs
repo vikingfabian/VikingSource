@@ -14,6 +14,6 @@ namespace VikingEngine.DSSWars.Presentation
     class TodoTranslation
     {
         public string GameSettings_WideScrollbar => "Wide scrollbar";
-
+        public string GameSettings_DisplayInputHelp => "Input help";
     }
 }

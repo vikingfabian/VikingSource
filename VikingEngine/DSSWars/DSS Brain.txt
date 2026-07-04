@@ -2,6 +2,8 @@
 ﻿UPDATE
 Change Log:
 * Fixed: French letter ' crashed the font
+* Fixed: Manor lord and Great hall were showing the wrong count
+* setting to hide input help
 
 ##ICONS TODO
 * 
@@ -18,7 +20,7 @@ Change Log:
 - Bot peace time: 30 min
 - The first attack: 35min
 - War manager start: 40min
-- Barbarians: 1.5 hours
+- Barbarians: 1.5 hours 
 - Mercenaries: 4 hours (total 7 hours by now)
 - The cohalition: 6 hours (or when the player grabs 5 to 7 cities)
 - Boss warning: 12 hours
