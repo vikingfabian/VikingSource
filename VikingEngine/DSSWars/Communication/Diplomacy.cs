@@ -116,7 +116,9 @@ namespace VikingEngine.DSSWars
             return MathExt.GaussSum(factionCapacity - 1);
         }
 
-        public int RelationIndex(int faction1, int faction2)
+        //public bool tryGetRelationIndex(int faction1, int faction2)
+
+        public bool RelationIndex(int faction1, int faction2, out int result)
         {
             int lowIndex, highIndex;
             if (faction1 < faction2)
@@ -131,7 +133,8 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                return -1;
+                result = -1;
+                return false;
             }
 
 #if DEBUG
@@ -142,16 +145,16 @@ namespace VikingEngine.DSSWars
             }
 #endif
 
-            int index = indexRegister[lowIndex] + highIndex - lowIndex;
+            result = indexRegister[lowIndex] + highIndex - lowIndex;
 
 #if DEBUG
-            if (index < 0 || index >= diplomaticRelations.Length)
+            if (result < 0 || result >= diplomaticRelations.Length)
             {
                 throw new Exception();
             }
 #endif
 
-            return index;
+            return true;
         }
 
         public DiplomaticRelation GetRelation(Faction faction1, Faction faction2)
@@ -161,7 +164,14 @@ namespace VikingEngine.DSSWars
                 return DiplomaticRelation.Empty;
             }
 
-            return diplomaticRelations[RelationIndex(faction1.myIndex, faction2.myIndex)];
+            if (RelationIndex(faction1.myIndex, faction2.myIndex, out int relIndex))
+            {
+                return diplomaticRelations[relIndex];
+            }
+            else
+            {
+                return DiplomaticRelation.Empty;
+            }
         }
 
         public DiplomaticRelation GetRelation_Safe(int faction1, int faction2)
@@ -172,7 +182,16 @@ namespace VikingEngine.DSSWars
             {
                 return DiplomaticRelation.Empty;
             }
-            return diplomaticRelations[RelationIndex(faction1, faction2)];
+            //return diplomaticRelations[RelationIndex(faction1, faction2)];
+
+            if (RelationIndex(faction1, faction2, out int relIndex))
+            {
+                return diplomaticRelations[relIndex];
+            }
+            else
+            {
+                return DiplomaticRelation.Empty;
+            }
         }
 
         public DiplomaticRelation GetRelation(int faction1, int faction2)
@@ -181,26 +200,39 @@ namespace VikingEngine.DSSWars
             {
                 return DiplomaticRelation.Empty;
             }
-            return diplomaticRelations[RelationIndex(faction1, faction2)];
+            //return diplomaticRelations[RelationIndex(faction1, faction2)];
+            if (RelationIndex(faction1, faction2, out int relIndex))
+            {
+                return diplomaticRelations[relIndex];
+            }
+            else
+            {
+                return DiplomaticRelation.Empty;
+            }
         }
 
         public void Set(int faction1, int faction2, DiplomaticRelation relation)
         {
-            diplomaticRelations[RelationIndex(faction1, faction2)] = relation;
+            if (RelationIndex(faction1, faction2, out int relIndex))
+            {
+                diplomaticRelations[relIndex] = relation;
+            }
         }
 
         public ref DiplomaticRelation GetRefRelation(int faction1, int faction2)
         {
-            return ref diplomaticRelations[RelationIndex(faction1, faction2)];
+            RelationIndex(faction1, faction2, out int relIndex);
+            return ref diplomaticRelations[relIndex];
         }
 
         public ref DiplomaticRelation GetRefRelation_Safe(int faction1, int faction2)
         {
-            if (faction1 < 0 || faction2 < 0 || faction1 == faction2)
+            if (faction1 < 0 || faction2 < 0 || faction1 == faction2 ||
+                !RelationIndex(faction1, faction2, out int relIndex))
             {
                 return ref empty;
             }
-            return ref diplomaticRelations[RelationIndex(faction1, faction2)];
+            return ref diplomaticRelations[relIndex];
         }
 
         public void writeRelations(System.IO.BinaryWriter w)
@@ -617,7 +649,7 @@ namespace VikingEngine.DSSWars
         {
             if (faction1 != null && faction2 != null && faction1 != faction2)
             {
-                ref var relation = ref GetRefRelation(faction1.myIndex, faction2.myIndex);
+                ref var relation = ref GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
                 if (newRelation.HasValue)
                 {
                     relation.SetRelation(faction1, faction2, newRelation.Value, out RelationType previous);     

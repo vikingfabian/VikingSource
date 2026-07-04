@@ -1,9 +1,7 @@
 
 ﻿UPDATE
 Change Log:
-* Fixed: French letter ' crashed the font
-* Fixed: Manor lord and Great hall were showing the wrong count
-* setting to hide input help
+* 
 
 ##ICONS TODO
 * 
