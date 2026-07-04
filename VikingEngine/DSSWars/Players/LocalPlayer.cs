@@ -163,7 +163,11 @@ namespace VikingEngine.DSSWars.Players
         {
             baseInit();
         }
-
+        public override void refreshFlag()
+        {
+            base.refreshFlag();
+            hud.head.RefreshFlag(this);
+        }
         public void DrawDetalLayer_Mesh(int cameraIndex)
         {
             gameControls.map.hover.groupModels_detail.Draw(cameraIndex);

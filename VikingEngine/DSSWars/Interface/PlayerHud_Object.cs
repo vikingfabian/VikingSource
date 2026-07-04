@@ -81,7 +81,9 @@ namespace VikingEngine.DSSWars.Interface
                     case NetSessionDisplay.PAGE_BLOCK:
                         netSessionDisplay.Block(player, content, menu);
                         break;
-
+                    case NetSessionDisplay.PAGE_RECOLOR:
+                        netSessionDisplay.recolor(player, content);
+                        break;
                 }
             }
             else if (netSessionDisplay.ClientInteractDisplay)
@@ -119,6 +121,7 @@ namespace VikingEngine.DSSWars.Interface
                     
                     content.newParagraph();
                 }
+                
                 //else if (DssRef.state.host && Ref.steam.isInitialized && Ref.netsett.hostNetwork)
                 //{
                 //    netSessionDisplay.invite(content);

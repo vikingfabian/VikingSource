@@ -592,6 +592,22 @@ namespace VikingEngine.DSSWars
                         sender.pins.GetIndex_Safe(pinIndex)?.DeleteMe(DeleteReason.NetworkEvent, true);
                     }
                     break;
+
+                case PacketType.DssReColor:
+                    {
+                        var faction = ObjectId.ReadFaction(packet.r, out _);
+                        if (faction != null && faction.player != null)
+                        {
+                            Color color = StreamLib.ReadColorStream_3B(packet.r);
+                            faction.player.SetColor(color, false);
+
+                            RichBoxContent content = new RichBoxContent();
+                            content.h1("Recolor", HudLib.TitleColor_Head);
+                            faction.player.GetHumanPlayer().addNetGamerToHud(content, true, false);
+                            LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+                        }
+                    }
+                    break;
             }
 #if !DEBUG
             }

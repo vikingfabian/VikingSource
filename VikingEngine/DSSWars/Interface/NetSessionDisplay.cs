@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,10 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -20,9 +24,11 @@ namespace VikingEngine.DSSWars.Interface
         public const string PAGE_REQUESTBLOCK = "request block";
         public const string PAGE_KICK = "kick";
         public const string PAGE_BLOCK = "block";
+        public const string PAGE_RECOLOR = "recolor";
         public RemotePlayer selectedPlayer = null;
         public RemotePlayer sendGiftTo = null;
 
+        
         public bool ClientInteractDisplay => selectedPlayer != null;
 
         public void BanWarning(LocalPlayer player, RichBoxContent content, RichMenu menu)
@@ -158,7 +164,6 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.h2("Net session", HudLib.TitleColor_Head);
                 
-
                 gamerButton(player);
                 content.newLine();
                 content.Add(new RbSeperationLine());
@@ -198,6 +203,43 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
                 }
+            }
+        }
+
+        public void recolor(LocalPlayer player, RichBoxContent content, RichMenu menu)
+        {
+            content.h1("Recolor", HudLib.TitleColor_Head);
+            selectedPlayer.addNetGamerToHud(content, true, false);
+
+            content.newParagraph();
+            const int HueSteps = 20;
+            const double StartHue = 0;
+
+            double[] lightOptions = [0.2, 0.5, 0.8];
+            double[] saturationOptions = [0.7];//0.4, 0.9];
+
+            foreach (var lightness in lightOptions)
+            {
+                foreach (var saturation in saturationOptions)
+                {
+                    double hue = StartHue;
+                    for (int i = 0; i < HueSteps; i++)
+                    {
+                        hue += 1.0 / HueSteps;
+                        Color col = lib.HSL2RGB(hue, saturation, lightness);
+
+                        content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 1, col) },
+                            new RbAction1Arg<Color>(setColor, col))
+                        { SpaceAfter = 0, });
+                    }
+                    content.newLine();
+                }
+            }
+
+            void setColor(Color selected)
+            {
+                player.SetColor(selected, true);
+                menu.menuBack();
             }
         }
 
@@ -336,6 +378,12 @@ namespace VikingEngine.DSSWars.Interface
             content.newLine();
             if (Ref.netSession.IsHost)
             {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.VoxelEditorBucket),
+                    new RbSpace(0.5f),
+                    new RbText("Recolor") },
+                    new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_RECOLOR, StackOption.Stack)));
+                content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Send ban warning") },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BANWARNING, StackOption.Stack)));
 

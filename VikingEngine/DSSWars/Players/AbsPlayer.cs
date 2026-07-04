@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,6 +50,32 @@ namespace VikingEngine.DSSWars.Players
             //faction.player = this;
             faction.SetStartOwner(this);
             faction.onNewPlayerModels();
+            DssRef.world.BordersUpdated = true;
+        }
+
+        public void SetColor(Color selected, bool netShare)
+        {
+            if (IsLocalPlayer())
+            {
+                var clone = profile.flag.Clone();
+                profile.flag = clone;
+            }
+            profile.flag.col0_Main = selected;
+            refreshFlag();
+
+            if (netShare)
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssReColor, Network.PacketReliability.Reliable);
+                Net.ObjectId.WriteFaction(w, faction);
+                StreamLib.WriteColorStream_3B(w, selected);
+            }
+        }
+
+        virtual public void refreshFlag()
+        {
+            flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+            faction.onNewPlayerModels();
+            
             DssRef.world.BordersUpdated = true;
         }
 

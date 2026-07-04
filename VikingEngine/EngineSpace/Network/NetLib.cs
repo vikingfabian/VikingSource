@@ -234,6 +234,7 @@ namespace VikingEngine.Network
 
         DssDeleteArmy,
         DssGiftAchievement,
+        DssReColor,
         //LF2_WorldOverview,
         //LF2_StartAttack,
         //LF2_MapFlag,

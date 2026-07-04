@@ -52,8 +52,7 @@ namespace VikingEngine.DSSWars.Interface
                 menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
                 flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 6));
                 flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
-                flag.Texture = player.flagTexture;
-                flag.SetFullTextureSource();
+                RefreshFlag(player);
 
                 var headBgTex = menu.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);
                 headBgTex.SetOpacity(0.95f);
@@ -63,13 +62,20 @@ namespace VikingEngine.DSSWars.Interface
                     player.hud.MessageStart.Y = Math.Max(menu.backgroundArea.Bottom + Engine.Screen.IconSize * 0.5f, player.hud.MessageStart.Y);
                 }
             }
-                       
+
 
             Bottom = menu.backgroundArea.Bottom;
             Right = menu.backgroundArea.Right;
 
             factionMenuStart = new Vector2(menu.backgroundArea.X, Bottom);
         }
+
+        public void RefreshFlag(LocalPlayer player)
+        {
+            flag.Texture = player.flagTexture;
+            flag.SetFullTextureSource();
+        }
+
         public void refreshFaction(Players.LocalPlayer player, bool prepareLayout)
         {
             var content = new RichBoxContent();
