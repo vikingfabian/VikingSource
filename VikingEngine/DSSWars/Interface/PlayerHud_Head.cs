@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                return DssRef.storage.runTutorial ? TutorialTabs : Tabs;
+                return player.tutorial == null ?  Tabs : TutorialTabs;
             }
         }
 
