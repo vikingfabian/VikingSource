@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void setRelation_AsGod(RelationType relation, Faction faction1, Faction faction2)
         {
-            DssRef.world.diplomacy.SetRelationType(faction1, faction2, relation);
+            DssRef.world.diplomacy.SetRelationType(faction1, faction2, null, relation);
         }
 
         public static void FactionRelationDisplay(Faction faction, RelationType relation, RichBoxContent content)
@@ -376,7 +376,7 @@ namespace VikingEngine.DSSWars.Interface
 
             if (PtoP.suggestingNewRelation)
             { 
-                DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, PtoP.suggestedRelation);
+                DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, player.faction, PtoP.suggestedRelation);
             }
 
             PtoP.suggestingNewRelation = false;
@@ -455,7 +455,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (peace_notTruce)
                 {
-                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType1_Peace, DssConst.PeaceSafeTimeSec.GetRandom());
+                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, player.faction, RelationType.RelationType1_Peace, DssConst.PeaceSafeTimeSec.GetRandom());
 
                     //selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
                 }
@@ -472,7 +472,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     if (success)
                     {
-                        DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce, DssConst.TruceTimeSec);
+                        DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, player.faction, RelationType.RelationTypeN2_Truce, DssConst.TruceTimeSec);
 
                     }
                     else
@@ -589,11 +589,11 @@ namespace VikingEngine.DSSWars.Interface
                 if (ally_notFriend)
                 {
                     ++player.statistics.AlliedFactions;
-                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType3_Ally);
+                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, player.faction, RelationType.RelationType3_Ally);
                 }
                 else
                 {
-                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType2_Good, DssConst.PeaceSafeTimeSec.GetRandom());
+                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, player.faction, RelationType.RelationType2_Good, DssConst.PeaceSafeTimeSec.GetRandom());
 
                     //selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
                 }
@@ -711,23 +711,32 @@ namespace VikingEngine.DSSWars.Interface
             
             HudLib.BulletPoint(content);
             {
+                bool available = player.faction.militaryStrength >= otherfaction.militaryStrength * Diplomacy.MiltitaryStrengthXServant;
+
                 content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ServantRequirement_XStrongerMilitary, Diplomacy.MiltitaryStrengthXServant)));
                 content.newLine();
+                HudLib.AvailableIconToHud(content, available);
                 content.Add(new RbText(string.Format(DssRef.lang.Hud_CompareMilitaryStrength_YourToOther, Convert.ToInt32(player.faction.militaryStrength), Convert.ToInt32(otherfaction.militaryStrength)), 
-                    HudLib.ResourceCostColor(player.faction.militaryStrength >= otherfaction.militaryStrength * Diplomacy.MiltitaryStrengthXServant)));
+                    HudLib.ResourceCostColor(available)));
                 
                 content.newLine();
             }
             HudLib.BulletPoint(content);
             {
+                bool available = hasStrongerFoe();
+
                 string militaryStrength = DssRef.lang.Diplomacy_ServantRequirement_HopelessWar;
-                content.Add(new RbText(militaryStrength, HudLib.ResourceCostColor(hasStrongerFoe())));
+                HudLib.AvailableIconToHud(content, available);
+                content.Add(new RbText(militaryStrength, HudLib.ResourceCostColor(available)));
                 content.newLine();
             }
             HudLib.BulletPoint(content);
             {
+                bool available = otherfaction.cities.Count <= DssRef.world.diplomacy.ServantMaxCities;
+
                 string militaryStrength = DssRef.lang.Diplomacy_ServantRequirement_MaxCities;
-                content.Add(new RbText(string.Format(militaryStrength, DssRef.world.diplomacy.ServantMaxCities), HudLib.ResourceCostColor(otherfaction.cities.Count <= DssRef.world.diplomacy.ServantMaxCities)));
+                HudLib.AvailableIconToHud(content, available);
+                content.Add(new RbText(string.Format(militaryStrength, DssRef.world.diplomacy.ServantMaxCities), HudLib.ResourceCostColor(available)));
                 content.newLine();
             }
 

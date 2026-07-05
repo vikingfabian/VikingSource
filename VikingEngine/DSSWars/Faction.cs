@@ -1073,17 +1073,14 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-        public void tradeAllianceWars(Faction enemyFaction, DiplomaticRelation warRelation)
+        public void tradeAllianceWars(bool isActuator, Faction enemyFaction, DiplomaticRelation warRelation)
         {
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        //foreach (var m in otherFaction.diplomaticRelations)
-                        //foreach (var m in otherFaction.diplomaticRelations)
-                        //{
-                        //    if (m != null)
-                        //    {
+                        bool protectedFromWars = player.IsLocalPlayer() && DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful && !isActuator;
+                        
                         RelationsLoop loop = new RelationsLoop(myIndex);
                         while (loop.Next())
                         //foreach (var m in diplomaticRelations)
@@ -1095,29 +1092,25 @@ namespace VikingEngine.DSSWars
                                 {
                                     if (loop.OtherFaction(out var ally))
                                     {
-                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(ally, enemyFaction);//ally.diplomaticRelations[enemyFaction.myIndex];
-                                                                                                                   //if (allyToEnemyRelation == null)
-                                                                                                                   //{
-                                                                                                                   //    //Gain bad relation
-                                                                                                                   //    DssRef.world.diplomacy.SetRelationType(ally, enemyFaction, warRelation.Relation);
-                                                                                                                   //}
-                                                                                                                   //else
-                                                                                                                   //{
+                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(ally, enemyFaction);
+
                                         if (allyToEnemyRelation.Relation < RelationType.RelationType3_Ally)
                                         {
                                             //share worst relation
                                             RelationType worst = (RelationType)Math.Min((int)warRelation.Relation, (int)allyToEnemyRelation.Relation);
+
                                             if (worst <= RelationType.RelationTypeN3_War)
                                             {
-                                                DssRef.world.diplomacy.declareWar(enemyFaction, ally);
+                                                if (!protectedFromWars)
+                                                {
+                                                    DssRef.world.diplomacy.declareWar(enemyFaction, ally);
+                                                }
                                             }
                                             else
                                             {
-                                                DssRef.world.diplomacy.SetRelationType(enemyFaction, ally, worst);
+                                                DssRef.world.diplomacy.SetRelationType(enemyFaction, ally, enemyFaction, worst);
                                             }
                                         }
-                                        //}
-                                        //}
                                     }
                                 }
                             }
@@ -1138,7 +1131,7 @@ namespace VikingEngine.DSSWars
             {
                 try
                 {
-                    DssRef.world.diplomacy.SetRelationType(this, relationTo, relationType);
+                    DssRef.world.diplomacy.SetRelationType(this, relationTo, this, relationType);
 
                     //for (int relIndex = 0; relIndex < diplomaticRelations.Length; relIndex++)//each (var m in diplomaticRelations)
                     //{
@@ -1152,7 +1145,7 @@ namespace VikingEngine.DSSWars
 
                                 if (loop.OtherFaction(out var ally))//ally != null)
                                 {
-                                    DssRef.world.diplomacy.SetRelationType(ally, relationTo, relationType);
+                                    DssRef.world.diplomacy.SetRelationType(ally, relationTo, this, relationType);
                                 }
                             }
                         

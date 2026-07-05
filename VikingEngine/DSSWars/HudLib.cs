@@ -495,7 +495,11 @@ namespace VikingEngine.DSSWars
         { 
             return value? SpriteName.warsCheckYes : SpriteName.warsCheckNo;
         }
-
+        public static void AvailableIconToHud(RichBoxContent content, bool available)
+        {
+            content.Add(new RbImage( available ? AvailableIcon : NotAvailableIcon));
+            content.hspace();
+        }
         public static string Date(DateTime date)
         { 
             return string.Format(DssRef.lang.Hud_Date, date.Year, date.Month, date.Day);

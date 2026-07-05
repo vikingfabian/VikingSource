@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Event
 
         void asyncUpdateTooPeaceful(float time)
         {
-            if (DssRef.difficulty.toPeacefulPercentage > 0)
+            if (DssRef.difficulty.toPeacefulPercentage > 0 )
             {
                 mainStory.TryPeek(out var storyevent);
                 if (storyevent == null || storyevent.RunWarManager())

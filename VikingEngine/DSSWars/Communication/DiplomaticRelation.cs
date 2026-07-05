@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Communication
             return Relation >= RelationType.RelationType3_Ally;
         }
 
-        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, out RelationType previousRelation)
+        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, Faction actuator, out RelationType previousRelation)
         {
             previousRelation = Relation;
 
@@ -48,8 +48,8 @@ namespace VikingEngine.DSSWars.Communication
                     SpeakTerms = SpeakTerms.SpeakTermsN2_None;
                 }
 
-                faction1?.player?.onNewRelation(faction2, this, previousRelation);
-                faction2?.player?.onNewRelation(faction1, this, previousRelation);
+                faction1?.player?.onNewRelation(actuator == faction2, faction2, this, previousRelation);
+                faction2?.player?.onNewRelation(actuator == faction1, faction1, this, previousRelation);
             }
         }
 

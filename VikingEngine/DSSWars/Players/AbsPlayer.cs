@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Players
         virtual public void aiPlayerAsynchUpdate(float time)
         { }
 
-        virtual public void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
+        virtual public void onNewRelation(bool isActuator, Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
         {
             //On peace, stop all attacking armies
             bool fromWar = Diplomacy.IsWar(previousRelation);
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (toWar)
                 {
-                    faction.tradeAllianceWars(otherFaction, rel);
+                    faction.tradeAllianceWars(isActuator, otherFaction, rel);
                 }
                 else
                 {
@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.Players
             if (rel.Relation == RelationType.RelationType3_Ally &&
                 !rel.secret)
             {
-                faction.tradeAllianceWars(otherFaction, rel);
+                faction.tradeAllianceWars(isActuator, otherFaction, rel);
             }
         }
 
