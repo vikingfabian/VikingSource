@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Interface
                         netSessionDisplay.Block(player, content, menu);
                         break;
                     case NetSessionDisplay.PAGE_RECOLOR:
-                        netSessionDisplay.recolor(player, content);
+                        netSessionDisplay.recolor(player, content, menu);
                         break;
                 }
             }

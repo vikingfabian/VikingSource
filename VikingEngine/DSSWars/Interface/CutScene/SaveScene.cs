@@ -187,15 +187,16 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         public LoadScene(System.IO.BinaryReader readWorld)
             : base()
         {
-            var meta = new SaveStateMeta();
-            saveGamestate = new SaveGamestate(meta);
+            //var meta = new SaveStateMeta();
+            //saveGamestate = new SaveGamestate(meta);
 
-            Ref.netsett.remoteHostSettings.read(readWorld);
+            //Ref.netsett.remoteHostSettings.read(readWorld);
 
-            saveGamestate.readNet(readWorld);
-            saveGamestate.complete = true;
+            //saveGamestate.readNet(readWorld);
+            //saveGamestate.complete = true;
 
-            DssRef.storage.ruleset_instance.read(readWorld, false);
+            //DssRef.storage.ruleset_instance.read(readWorld, false);
+            saveGamestate = PlayState.NetReadSendWorld(readWorld);
         }
 
         protected override string SaveString => DssRef.lang.Progressbar_LoadProgress;

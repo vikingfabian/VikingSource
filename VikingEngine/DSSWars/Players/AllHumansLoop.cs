@@ -13,6 +13,11 @@ namespace VikingEngine.DSSWars.Players
         SpottedArrayCounter<RemotePlayer> remote;
         public AllHumansLoop() 
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
             lpIndex = -1;
             remote = DssRef.state.remotePlayers.counter();
         }

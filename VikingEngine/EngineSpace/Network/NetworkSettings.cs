@@ -123,7 +123,7 @@ namespace VikingEngine.Network
         public LobbyPublicity lobbyPublicity;//i
         public bool allowHandicap = true;//i
         public bool allowCasualControls = true;//i
-        public bool autoReColorFlags = false;
+        public bool autoReColorFlags = false;//i
 
         public RelationType startDiplomacy = RelationType.RelationType0_Neutral;//i
 
@@ -269,9 +269,7 @@ namespace VikingEngine.Network
         /// Distance between players
         /// </summary>
         public int PlayerSpacing = 2;
-        
-        //public bool allowCasualControls = true;
-
+      
         public ClientSettings clientSettings = new ClientSettings();
         public bool alsoBlockOnRequest = true;
 

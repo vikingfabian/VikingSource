@@ -227,6 +227,55 @@ namespace VikingEngine.DSSWars
             return exitThreads;
         }
 
+        Color? autoRecolor(RemotePlayer player, Color flagColor)
+        {
+            if (alreadyInUse(flagColor))
+            {
+                const int HueSteps = 20;
+                const double StartHue = 0;
+
+                double[] lightOptions = [0.5, 0.2, 0.8];
+                double[] saturationOptions = [0.7, 0.9, 0.4];//0.4, 0.9];
+
+                foreach (var lightness in lightOptions)
+                {
+                    foreach (var saturation in saturationOptions)
+                    {
+                        double hue = StartHue;
+                        for (int i = 0; i < HueSteps; i++)
+                        {
+                            hue += 1.0 / HueSteps;
+                            Color col = lib.HSL2RGB(hue, saturation, lightness);
+
+                            if (!alreadyInUse(col))
+                            { 
+                                return col;
+                            }
+                        }                        
+                    }
+                }
+            }
+
+            return null;
+
+            bool alreadyInUse(Color color)
+            {
+                AllHumansLoop allHumans = new AllHumansLoop();
+                while (allHumans.Next(out var ready))
+                {
+                    if (player != allHumans.sel )
+                    {
+                        if (ColorExt.ValueDifference(color, allHumans.sel.profile.flag.col0_Main) < 20)
+                        {
+                            return true;
+                        }
+                    }
+                    
+                }
+                return false;
+            }
+        }
+
         public override void NetworkReadPacket(ReceivedPacket packet)
         {
             var sender = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex) as RemotePlayer;
@@ -239,16 +288,7 @@ namespace VikingEngine.DSSWars
             {
                 case PacketType.DssJoined_WantWorld:
                     {
-                        /*
-                        Joining player wait in lobby for this package
-                        */
-                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
-                        var meta = new SaveStateMeta();
-                        meta.netSetup();
-                        new NetSharedHostSettings().write(w);
-                        var saveGamestate = new SaveGamestate(meta);
-                        saveGamestate.writeNet(w);
-                        DssRef.storage.ruleset.write(w, false);
+                        netWriteSendWorld(packet, sender);
                     }
                     break;
 
@@ -632,6 +672,57 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
+        }
+
+        void netWriteSendWorld(ReceivedPacket requestPacket, RemotePlayer sender)
+        {
+            Color? recolor = null;
+
+            if (Ref.netsett.hostSettings.autoReColorFlags)
+            {
+                Color flagColor = StreamLib.ReadColorStream_3B(requestPacket.r);
+
+                recolor = autoRecolor(sender, flagColor);
+            }
+
+            /*
+            Joining player wait in lobby for this package
+            */
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, PacketReliability.Reliable, SendPacketTo.OneSpecific, requestPacket.sender.fullId, null);
+            var meta = new SaveStateMeta();
+            meta.netSetup();
+            new NetSharedHostSettings().write(w);
+            var saveGamestate = new SaveGamestate(meta);
+            saveGamestate.writeNet(w);
+            DssRef.storage.ruleset.write(w, false);
+
+            w.Write(recolor.HasValue);
+            if (recolor.HasValue)
+            {
+                StreamLib.WriteColorStream_3B(w, recolor.Value);
+            }
+        }
+
+        public static SaveGamestate NetReadSendWorld(System.IO.BinaryReader r)
+        {
+            var meta = new SaveStateMeta();
+            var saveGamestate = new SaveGamestate(meta);
+
+            Ref.netsett.remoteHostSettings.read(r);
+
+            saveGamestate.readNet(r);
+            saveGamestate.complete = true;
+
+            DssRef.storage.ruleset_instance.read(r, false);
+
+            if (r.ReadBoolean())
+            { 
+                Color recolor = StreamLib.ReadColorStream_3B(r);
+                DssRef.state.LocalHost().SetColor(recolor, false);
+            }
+
+
+            return saveGamestate;
         }
 
         void netPresentYourself(ReceivedPacket packet)

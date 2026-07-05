@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Players
         virtual public void refreshFlag()
         {
             flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
-            faction.onNewPlayerModels();
+            faction?.onNewPlayerModels();
             
             DssRef.world.BordersUpdated = true;
         }

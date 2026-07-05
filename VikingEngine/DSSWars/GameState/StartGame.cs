@@ -241,6 +241,7 @@ namespace VikingEngine.DSSWars
             {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
                     Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
+                StreamLib.WriteColorStream_3B(w, DssRef.storage.profileStorage.Selected().flag.col0_Main);
             }
         }
 
