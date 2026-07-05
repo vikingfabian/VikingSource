@@ -1882,7 +1882,7 @@ namespace VikingEngine.DSSWars.Players
                 else
                 {
                     ref var alliance = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction.myIndex, allyFaction.myIndex);
-                    alliance.SetRelation(null, null, RelationType.RelationType3_Ally, out _);
+                    alliance.SetRelation(null, null, RelationType.RelationType3_Ally, null, out _);
                     //var alliance = DssRef.world.diplomacy.SetRelationType(faction, allyFaction, RelationType.RelationType3_Ally);
                     //if (alliance != null)
                     //{
@@ -2670,9 +2670,9 @@ namespace VikingEngine.DSSWars.Players
         //}
 
         
-        public override void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
+        public override void onNewRelation(bool isActuator, Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
-            base.onNewRelation(otherFaction, rel, previousRelation, localAction);
+            base.onNewRelation( isActuator, otherFaction, rel, previousRelation, localAction);
             if (rel.Relation <= RelationType.RelationTypeN4_War)
             {
                 if (otherFaction.factiontype == FactionType.Player &&

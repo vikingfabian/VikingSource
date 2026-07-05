@@ -322,12 +322,12 @@ namespace VikingEngine.DSSWars.Event
                         var UnitedKingdom = DssRef.world.faction(DssRef.settings.Faction_UnitedKingdom);
 
 
-                        DssRef.world.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType2_Good, null, null, true);
-                        DssRef.world.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally, null, null, true);
-                        DssRef.world.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType2_Good, null, null, true);
+                        DssRef.world.diplomacy.SetRelationType(DarkFollower, SouthHara, null, RelationType.RelationType2_Good, null, null, true);
+                        DssRef.world.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, null, RelationType.RelationType3_Ally, null, null, true);
+                        DssRef.world.diplomacy.SetRelationType(UnitedKingdom, SouthHara, null, RelationType.RelationType2_Good, null, null, true);
                     }
 
-                    DssRef.world.diplomacy.SetRelationType(null, null, RelationType.RelationType2_Good, null, null, true); //test
+                    DssRef.world.diplomacy.SetRelationType(null, null, null, RelationType.RelationType2_Good, null, null, true); //test
 
                     //Setup dying war
                     dyingFactionsTimer = new Time(5, TimeUnit.Minutes);
@@ -336,9 +336,9 @@ namespace VikingEngine.DSSWars.Event
                     var hate = DssRef.world.faction(DssRef.settings.Faction_DyingHate);
                     var destru = DssRef.world.faction(DssRef.settings.Faction_DyingDestru);
 
-                    DssRef.world.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN5_TotalWar);
-                    DssRef.world.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN5_TotalWar);
-                    DssRef.world.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN5_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, hate, null, RelationType.RelationTypeN5_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, destru, null, RelationType.RelationTypeN5_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(hate, destru, null, RelationType.RelationTypeN5_TotalWar);
 
                     //void secretAlliance(Faction faction1, Faction faction2)
                     //{

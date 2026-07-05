@@ -369,7 +369,7 @@ namespace VikingEngine.DSSWars
                     bool ally = DssRef.difficulty.setting_QuickMatch_TwoTeams && (i < team1Count == j < team1Count);
 
 
-                    DssRef.world.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], 
+                    DssRef.world.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], null, 
                         ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN5_TotalWar, null, 
                         SpeakTerms.SpeakTermsN2_None);
 

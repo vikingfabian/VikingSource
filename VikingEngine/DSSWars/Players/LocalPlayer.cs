@@ -730,9 +730,9 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation, bool localAction)
+        public override void onNewRelation(bool isActuator, Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
-            base.onNewRelation(otherFaction, rel, previousRelation, localAction);
+            base.onNewRelation(isActuator, otherFaction, rel, previousRelation, localAction);
 
             if (otherFaction.player != null)
             {

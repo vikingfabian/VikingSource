@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars
 
         public int ServantMaxCities = 2;
         public int DefaultMaxDiplomacy = 4;
-        public double DefaultDiplomacyPerSecond = 1.0 / 240.0;
+        public double DefaultDiplomacyPerSecond/* = 1.0 / 240.0*/;
         public double EmbassyAddDiplomacy = 1.0 / 480.0;
         public double EmbassyAddMaxDiplomacy = 0.25;
 
@@ -69,6 +69,7 @@ namespace VikingEngine.DSSWars
                     SpeakTermsOnNeigbor_NoneChance = 0;
                     break;
 
+                default:
                 case 1:
                     DefaultMaxDiplomacy = 3;
                     DefaultDiplomacyPerSecond = 1.0 / 90.0;
@@ -529,7 +530,7 @@ namespace VikingEngine.DSSWars
         }
 
 
-        public void SetRelationType(Faction faction1, Faction faction2, RelationType? newRelation, float? relationSecondsLength = null, SpeakTerms? speakTerms = null, bool secret = false)
+        public void SetRelationType(Faction faction1, Faction faction2, Faction actuator, RelationType? newRelation, float? relationSecondsLength = null, SpeakTerms? speakTerms = null, bool secret = false)
         {
             if (faction1 != null && faction2 != null && faction1 != faction2)
             {
@@ -547,7 +548,7 @@ namespace VikingEngine.DSSWars
 
                 if (newRelation.HasValue)
                 {
-                    relation.SetRelation(faction1, faction2, newRelation.Value, out RelationType previous);
+                    relation.SetRelation(faction1, faction2, newRelation.Value, actuator, out RelationType previous);
                 }
             }
         }
@@ -653,8 +654,8 @@ namespace VikingEngine.DSSWars
                 
                 if (relation.Relation > RelationType.RelationType0_Neutral)
                 {
-                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, out RelationType prev);
-                    //SetRelationType(actingFaction, otherFaction, RelationType.RelationType0_Neutral);
+                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, actingFaction, out RelationType prev);
+                    
                     if (actingFaction.player.IsLocalPlayer())
                     {
                         int cost = EndRelationCost(prev);
@@ -676,9 +677,8 @@ namespace VikingEngine.DSSWars
                 !GetRelation(attacker, defender).InWar())
             {
                 ref var relation = ref GetRefRelation(attacker.myIndex, defender.myIndex);
-                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, out RelationType prevRelation);
+                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, attacker, out RelationType prevRelation);
                 
-
 
                 if (attacker.player.IsLocalPlayer())
                 {

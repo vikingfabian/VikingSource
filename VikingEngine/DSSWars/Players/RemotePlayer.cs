@@ -160,17 +160,15 @@ namespace VikingEngine.DSSWars.Players
             startingResources();
 
             ((PlayState)DssRef.state).startingArmySizes(out double unitCountMulti, out bool settlerGuard);
-
-            
+                        
             playerStartUnits(unitCountMulti, settlerGuard, honorGuard);
-
-            
+                        
             AllHumansLoop humans = new AllHumansLoop();
             while (humans.Next(out _))
             {
                 if (humans.sel != this)
                 {
-                    DssRef.world.diplomacy.SetRelationType(faction, humans.sel.faction, Ref.netsett.hostSettings.startDiplomacy);
+                    DssRef.world.diplomacy.SetRelationType(faction, humans.sel.faction, null, Ref.netsett.hostSettings.startDiplomacy);
                 }
             }
         }

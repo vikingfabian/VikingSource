@@ -933,13 +933,14 @@ namespace VikingEngine.DSSWars
             return closestArmy;
         }
                
-        public void tradeAllianceWars(Faction alliedFaction)
+        public void tradeAllianceWars(bool isActuator, Faction alliedFaction)
         {
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        
+                        bool protectedFromWars = player.IsLocalPlayer() && DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful && !isActuator;
+
                         RelationsLoop loop = new RelationsLoop(myIndex);
                         while (loop.Next())
                         {
@@ -957,11 +958,18 @@ namespace VikingEngine.DSSWars
                                             RelationType worst = (RelationType)Math.Min((int)myRelation.Relation, (int)allyToEnemyRelation.Relation);
                                             if (worst <= RelationType.RelationTypeN3_Mobilization)
                                             {
-                                                DssRef.world.diplomacy.declareWar(alliedFaction, thirdParty);
+                                                if (protectedFromWars)
+                                                {
+                                                    DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, RelationType.RelationTypeN1_Enemies);
+                                                }
+                                                else
+                                                {
+                                                    DssRef.world.diplomacy.declareWar(alliedFaction, thirdParty);
+                                                }
                                             }
                                             else
                                             {
-                                                DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, worst);
+                                                DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, worst);
                                             }
                                         }
                                     }
@@ -984,7 +992,7 @@ namespace VikingEngine.DSSWars
             {
                 try
                 {
-                    DssRef.world.diplomacy.SetRelationType(this, relationTo, relationType);
+                    DssRef.world.diplomacy.SetRelationType(this, relationTo, this, relationType);
 
                     RelationsLoop loop = new RelationsLoop(myIndex);
                     while (loop.Next())
@@ -994,7 +1002,7 @@ namespace VikingEngine.DSSWars
                             {
                                 if (loop.OtherFaction(out var ally))
                                 {
-                                    DssRef.world.diplomacy.SetRelationType(ally, relationTo, relationType);
+                                    DssRef.world.diplomacy.SetRelationType(ally, relationTo, ally, relationType);
                                 }
                             }
                         

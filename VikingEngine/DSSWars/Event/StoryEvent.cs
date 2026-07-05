@@ -964,11 +964,11 @@ namespace VikingEngine.DSSWars.Event
                 {
                     if (other != faction)
                     {
-                        DssRef.world.diplomacy.SetRelationType(faction, other, RelationType.RelationType3_Ally);
+                        DssRef.world.diplomacy.SetRelationType(faction, other, attackLeader, RelationType.RelationType3_Ally);
                     }
                 }
 
-                DssRef.world.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN1_Enemies);
+                DssRef.world.diplomacy.SetRelationType(faction, player.faction, attackLeader, RelationType.RelationTypeN1_Enemies);
 
                 if (attackLeader == null || faction.militaryStrength > attackLeader.militaryStrength)
                 {
@@ -979,7 +979,7 @@ namespace VikingEngine.DSSWars.Event
             //Prepare leader
             attackers.Remove(attackLeader);
             attackers.Insert(0, attackLeader);
-            DssRef.world.diplomacy.SetRelationType(attackLeader, player.faction, null, null, SpeakTerms.SpeakTermsN2_None);
+            DssRef.world.diplomacy.SetRelationType(attackLeader, player.faction, attackLeader, null, null, SpeakTerms.SpeakTermsN2_None);
             attackLeader.player.setAggression(Players.AbsPlayer.AggressionLevel1_RevengeOnly);
 
             Ref.update.AddSyncAction(new SyncAction(() =>
@@ -1023,7 +1023,7 @@ namespace VikingEngine.DSSWars.Event
                 foreach (var faction in attackers)
                 {
                     faction.player.setMinimumAggression(Players.AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.world.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN4_War);
+                    DssRef.world.diplomacy.SetRelationType(faction, player.faction, attackLeader, RelationType.RelationTypeN4_War);
                 }
 
                 player.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_TheCohalition);
@@ -1277,7 +1277,7 @@ namespace VikingEngine.DSSWars.Event
 
                         if (greenwood != null && !DssRef.world.diplomacy.GetRelation(p.faction, greenwood).InWar())
                         {
-                            DssRef.world.diplomacy.SetRelationType(p.faction, greenwood, null, null, SpeakTerms.SpeakTerms1_Good);
+                            DssRef.world.diplomacy.SetRelationType(p.faction, greenwood, greenwood, null, null, SpeakTerms.SpeakTerms1_Good);
                         }
                     }
                 //}

@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Communication
             return Relation >= RelationType.RelationType3_Ally;
         }
 
-        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, out RelationType previousRelation/*, bool localAction*/)
+        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, Faction actuator, out RelationType previousRelation)
         {
             previousRelation = Relation;
 
@@ -46,11 +46,15 @@ namespace VikingEngine.DSSWars.Communication
                     SpeakTerms = SpeakTerms.SpeakTermsN2_None;
                 }
 
-                faction1.player?.onNewRelation(faction2, this, previousRelation, true);
-                faction2.player?.onNewRelation(faction1, this, previousRelation, true);
+                //faction1?.player?.onNewRelation(actuator == faction2, faction2, this, previousRelation);
+                //faction2?.player?.onNewRelation(actuator == faction1, faction1, this, previousRelation);
+                faction1.player?.onNewRelation(actuator == faction2,faction2, this, previousRelation, true);
+                faction2.player?.onNewRelation(actuator == faction1,faction1, this, previousRelation, true);
 
                 var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
                 {
+                    EightBit actuators = new EightBit(actuator == faction1, actuator == faction2);
+                    actuators.write(w);
                     Net.ObjectId.WriteFaction(w, faction1);
                     Net.ObjectId.WriteFaction(w, faction2);
                     write(w);
@@ -67,12 +71,14 @@ namespace VikingEngine.DSSWars.Communication
 
             if (faction1 != null && faction2 != null)
             {
+                EightBit actuators = new EightBit(r);
+
                 ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
                 var previousRelation = rel.Relation;
                 rel.read(r, int.MaxValue);
 
-                faction1.player?.onNewRelation(faction2, rel, previousRelation, false);
-                faction2.player?.onNewRelation(faction1, rel, previousRelation, false);
+                faction1.player?.onNewRelation(actuators.Get(1), faction2, rel, previousRelation, false);
+                faction2.player?.onNewRelation(actuators.Get(0), faction1, rel, previousRelation, false);
             }
         }
 

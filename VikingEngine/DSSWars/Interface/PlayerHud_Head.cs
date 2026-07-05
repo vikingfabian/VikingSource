@@ -484,7 +484,7 @@ namespace VikingEngine.DSSWars.Interface
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec_CapIncluded()))));
+            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond))));
 
             content.newLine();
             content.Add(new RbSeperationLine());
