@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Network;
 
 
 namespace VikingEngine.DSSWars.Interface
@@ -108,6 +108,23 @@ namespace VikingEngine.DSSWars.Interface
 
             }
 
+            if (DssRef.storage.ruleset_instance.centralGold)
+            {
+                content.Add(new RbSeperationLine());
+                content.newParagraph();
+
+                var bounds = new IntervalF(10, Bound.Min(player.faction.money.GetGold(), 10));
+                player.sendGold = (int)bounds.SetBounds(player.sendGold);
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 100, 1000, 10_000, 1_000_000 },
+                    new DragButtonSettings(bounds, 10),
+                    sendGoldProperty, true);
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.rtsMoney),
+                    new RbSpace(0.5f),
+                    new RbText(".Send gold") },
+                        new RbAction(SendGold), null, player.faction.money.GetGold() >= 10));
+            }
+
             void CostDisplay(RichBoxContent content, int cost)
             {
                 
@@ -166,6 +183,49 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbText(DssRef.lang.Diplomacy_LightSide));
                 }
             }
+        }
+
+        public int sendGoldProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+               player.sendGold = value;
+            }
+            return player.sendGold;
+        }
+
+        public void SendGold()
+        {
+            player.faction.money.PayGold(player.sendGold, true);
+            otherfaction.money.AddGold(player.sendGold);
+
+            if (otherfaction.player.IsRemotePlayer())
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssGiftGold,
+                    Network.PacketReliability.Reliable,
+                    Network.SendPacketTo.OneSpecific,
+                     otherfaction.player.GetRemotePlayer().networkPeer.peer.fullId, player.playerData.localPlayerIndex);
+                w.Write(player.sendGold);
+            }
+            
+        }
+
+        public static void NetReadSendGold(ReceivedPacket packet, RemotePlayer sender)
+        {
+            int gold = packet.r.ReadInt32();
+            DssRef.state.LocalHost().faction.money.AddGold(gold);
+
+            RichBoxContent content = new RichBoxContent();
+            content.h1("Send gold", HudLib.TitleColor_Head);
+
+            content.newLine();
+            sender.addNetGamerToHud(content, true, false);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.cmdConvertArrow));
+            content.newLine();
+            content.icontext(SpriteName.rtsMoney, TextLib.LargeNumber(gold));
+
+            DssRef.state.LocalHost().hud.messages.Add(content, SoundLib.netJoined);
         }
 
         private void forgeRelationButton(RichBoxContent content, DiplomacyOption opt)
@@ -371,8 +431,6 @@ namespace VikingEngine.DSSWars.Interface
                         warOption.tooLargeAlliance = player.AllianceCount_Humans() > otherPlayer.AllianceCount_Humans();
                     }
 
-
-
                     warOption.startProtection = false;
                     warOption.protectionTime = TimeSpan.Zero;
                     if (settings.clientPtoP.gameStartPreparationTime.use)
@@ -380,7 +438,6 @@ namespace VikingEngine.DSSWars.Interface
                         warOption.protectionTime = settings.clientPtoP.gameStartPreparationTime.time.TimeSpan - otherPlayer.timePlayed;
                         warOption.startProtection = warOption.protectionTime.Ticks > 0;
                     }
-
 
                     warOption.available = !warOption.tooLargeAlliance && !warOption.startProtection;
 

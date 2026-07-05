@@ -662,8 +662,11 @@ namespace VikingEngine.DSSWars.Presentation
                 case 1000:
                     result = DssRef.lang.EngineHud_SymbolFor1000;
                     break;
-                case 10000:
+                case 10_000:
                     result = DssRef.lang.EngineHud_SymbolFor10000;
+                    break;
+                case 1_000_000:
+                    result = DssRef.todoLang.EngineHud_SymbolForMillion;
                     break;
                 default:
                     result = abs.ToString();

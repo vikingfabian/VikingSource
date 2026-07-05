@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Lobby_Category_MultiplayerSettings => "Multiplayer settings";
 
         public string Hud_Default = "Default";
+        public string EngineHud_SymbolForMillion => "M";
 
         public string DecorType_DiplomaticStatue => "Diplomatic statue";
 

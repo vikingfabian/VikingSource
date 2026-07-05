@@ -648,6 +648,9 @@ namespace VikingEngine.DSSWars
                         }
                     }
                     break;
+                case PacketType.DssGiftGold:
+                    DiplomacyDisplay.NetReadSendGold(packet, sender);
+                    break;
             }
 #if !DEBUG
             }

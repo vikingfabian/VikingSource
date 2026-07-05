@@ -6,6 +6,7 @@
 * Pins head bar ui
 * Updated steam input layout
 * Recoloring of flags
+* Send gold to other factions
 
 # KNOWN ISSUES #
 x missing steam deck layout

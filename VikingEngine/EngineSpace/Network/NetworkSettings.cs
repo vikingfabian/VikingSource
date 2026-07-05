@@ -13,7 +13,7 @@ using VikingEngine.Timer;
 
 namespace VikingEngine.Network
 {
-    struct PlayerToPlayerDiplomacy
+    struct PlayerToPlayerDiplomacyData
     {        
         public PlayerDiplomacyAllowType allianceAllow;//i
         public bool canBreakAlliance;//i
@@ -29,7 +29,7 @@ namespace VikingEngine.Network
         public UseTimeLimit warDeclarePreparationTime;//i
         public UseTimeLimit gameStartPreparationTime;//i
 
-        public PlayerToPlayerDiplomacy(bool host)
+        public PlayerToPlayerDiplomacyData(bool host)
         {
             if (host)
             {
@@ -51,7 +51,7 @@ namespace VikingEngine.Network
             gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
         }
 
-        public void ApplyHostSettings(PlayerToPlayerDiplomacy hostSettings)
+        public void ApplyHostSettings(PlayerToPlayerDiplomacyData hostSettings)
         {
             if (hostSettings.allianceAllow != PlayerDiplomacyAllowType.PlayersChoose)
             {
@@ -78,7 +78,7 @@ namespace VikingEngine.Network
             }
         }
 
-        public void ApplyFairProtection(PlayerToPlayerDiplomacy PtoP)
+        public void ApplyFairProtection(PlayerToPlayerDiplomacyData PtoP)
         {
             
             canBreakAlliance |= PtoP.canBreakAlliance;
@@ -192,7 +192,7 @@ namespace VikingEngine.Network
 
     struct NetSharedClientSettings
     {        
-        public PlayerToPlayerDiplomacy clientPtoP;
+        public PlayerToPlayerDiplomacyData clientPtoP;
         public ClientSettings clientSettings;
 
         public NetSharedClientSettings()
@@ -221,7 +221,7 @@ namespace VikingEngine.Network
 
     struct NetSharedHostSettings
     {       
-        public PlayerToPlayerDiplomacy hostPtoP;
+        public PlayerToPlayerDiplomacyData hostPtoP;
         public HostSettings hostSettings;
 
         public NetSharedHostSettings()
@@ -260,9 +260,9 @@ namespace VikingEngine.Network
         
         public VoiceOption voiceOption = VoiceOption.ButtonHold;
 
-        public PlayerToPlayerDiplomacy hostPtoP = new PlayerToPlayerDiplomacy(true);
+        public PlayerToPlayerDiplomacyData hostPtoP = new PlayerToPlayerDiplomacyData(true);
         public HostSettings hostSettings;
-        public PlayerToPlayerDiplomacy clientPtoP = new PlayerToPlayerDiplomacy(false);
+        public PlayerToPlayerDiplomacyData clientPtoP = new PlayerToPlayerDiplomacyData(false);
         
        
         /// <summary>
@@ -643,7 +643,7 @@ namespace VikingEngine.Network
             return pd.gameStartPreparationTime.MinuteProperty(null, set, value);
 
         }
-        ref PlayerToPlayerDiplomacy ptpDiplomacy(bool host)
+        ref PlayerToPlayerDiplomacyData ptpDiplomacy(bool host)
         {
             if (host)
             {

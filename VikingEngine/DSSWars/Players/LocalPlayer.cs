@@ -159,7 +159,10 @@ namespace VikingEngine.DSSWars.Players
         public StoredCameraPos storedCameraPos;
         public PlayerNetState playerNetState = PlayerNetState.InMenu;
 
-        public LocalPlayer()
+        public int sendGold = 1000;
+       
+
+    public LocalPlayer()
         {
             baseInit();
         }

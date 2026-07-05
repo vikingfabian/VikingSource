@@ -491,7 +491,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void playerInteractSettings(RichBoxContent content, bool host)
         {
-            PlayerToPlayerDiplomacy toPlayerDiplomacy = host? Ref.netsett.hostPtoP : Ref.netsett.clientPtoP;
+            PlayerToPlayerDiplomacyData toPlayerDiplomacy = host? Ref.netsett.hostPtoP : Ref.netsett.clientPtoP;
 
             
             var allowAllianceOptions = new DropDownBuilder("allowAlliance" + host.ToString());

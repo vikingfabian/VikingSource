@@ -375,6 +375,16 @@ namespace VikingEngine.DSSWars.Interface
                 }, new RbAction2Arg<string, CSteamID>(Steamworks.SteamFriends.ActivateGameOverlayToUser, "steamid", selectedPlayer.networkPeer.peer.SteamID),
                new RbTooltip_Text("Open Steam overlay")));
 
+            //content.newLine();
+            //RbDragButton.RbDragButtonGroup(content, new List<float> { 100, 1000, 10_000, 1_000_000 },
+            //    new DragButtonSettings(new IntervalF(10, (float)player.faction.money.GetGold()), 10),
+            //    player.sendGoldProperty, true);
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+            //        new RbImage(SpriteName.rtsIncome),
+            //        new RbSpace(0.5f),
+            //        new RbText("Send gold") },
+            //        new RbAction(player.SendGold)));
+
             content.newLine();
             if (Ref.netSession.IsHost)
             {
