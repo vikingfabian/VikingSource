@@ -24,9 +24,6 @@ namespace VikingEngine.DSSWars.XP
                         var factionsCounter = DssRef.world.factions.counter();
                         while (factionsCounter.Next())
                         {
-                            //var citiesC = factionsCounter.sel.cities.counter();
-                            //while (citiesC.Next())
-                            //{
                             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                             while (citiesC.Next(ref factionsCounter.sel.cities, DssRef.world.cities, out City citySel))
                             {
@@ -104,9 +101,6 @@ namespace VikingEngine.DSSWars.XP
 #if DEBUG
                     if (StartupSettings.UnlockAllProgress && factionsC.sel.player.IsLocalPlayer())
                     {
-                        //var citiesCounter = factionsC.sel.cities.counter();
-                        //while (citiesCounter.Next())
-                        //{
                         SpottedPointerArrayCounter unlockCities = new SpottedPointerArrayCounter();
                         while (unlockCities.Next(ref factionsC.sel.cities, DssRef.world.cities, out City citySel))
                         {
@@ -115,9 +109,6 @@ namespace VikingEngine.DSSWars.XP
                     }
 #endif
 
-                    //var citiesC = factionsC.sel.cities.counter();
-                    //while (citiesC.Next())
-                    //{
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref factionsC.sel.cities, DssRef.world.cities, out City citySel))
                     {

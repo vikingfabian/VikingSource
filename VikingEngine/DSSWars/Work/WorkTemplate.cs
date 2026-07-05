@@ -26,77 +26,12 @@ namespace VikingEngine.DSSWars.Work
         public const byte MaxPrio = 5;
         public const int SafeGuardPrio = MaxPrio + 1;
 
-        //public WorkPriority move = new WorkPriority(3);
-        //public WorkPriority wood = new WorkPriority(2);
-        //public WorkPriority stone = new WorkPriority(2);
-        //public WorkPriority craft_fuel = new WorkPriority(1);
-        //public WorkPriority craft_food = new WorkPriority(0);
-        //public WorkPriority craft_beer = new WorkPriority(0);
-        //public WorkPriority craft_coolingfluid = new WorkPriority(0);
         public static readonly int COUNT = (int)WorkPriorityType.NUM_NONE;
 
-        //public WorkPriority move = new WorkPriority(3);
-        //public WorkPriority wood = new WorkPriority(2);
-        //public WorkPriority stone = new WorkPriority(2);
-        //public WorkPriority craft_fuel = new WorkPriority(4);
-        //public WorkPriority craft_food = new WorkPriority(4);
-        //public WorkPriority craft_beer = new WorkPriority(1);
-
-        //public WorkPriority craft_iron = new WorkPriority(3);
-
-        //public WorkPriority craft_sharpstick = new WorkPriority(1);
-
-        //public WorkPriority craft_paddedarmor = new WorkPriority(1);        
-
-        //public WorkPriority farm_food = new WorkPriority(2);
-        //public WorkPriority farm_fuel = new WorkPriority(2);
-        //public WorkPriority farm_linen = new WorkPriority(1);
-        //public WorkPriority bogiron = new WorkPriority(1);
-        //public WorkPriority mining_iron = new WorkPriority(3);
-        //public WorkPriority trading = new WorkPriority(2);
-        //public WorkPriority autoBuild = new WorkPriority(1);
-        //public WorkPriority buildOrder = new WorkPriority(2);
-        //public WorkPriority smeltgold = new WorkPriority(3);
-
-
-        //public bool coinmaker_copper_fullStock = true;
-        //public bool coinmaker_bronze_fullStock = true;
-        //public bool coinmaker_silver_fullStock = true;
-        //public bool coinmaker_mithril_fullStock = true;
 
         bool isCity;
         public int workComponentStartIndex;
-        //public void initComponents(bool isCity, WorkPriority[] work, int startIndex)
-        //{
-        //    this.isCity = isCity;
-        //    workComponentStartIndex = startIndex;
-        //    //int exEnd = workComponentStartIndex + COUNT;
-
-        //    //for (int i = workComponentStartIndex; i < exEnd; i++)
-        //    //{
-        //    //     work[i] = new WorkPriority(0);
-        //    //}
-
-        //    //work[startIndex + (int)WorkPriorityType.move].value = 3;
-        //    //work[startIndex + (int)WorkPriorityType.wood].value = 2;
-        //    //work[startIndex + (int)WorkPriorityType.stone].value = 2;
-        //    //work[startIndex + (int)WorkPriorityType.craftFuel].value = 1;
-        //    //work[startIndex + (int)WorkPriorityType.farmFood].value = 4;
-        //    //work[startIndex + (int)WorkPriorityType.farmRawFood].value = 1;
-        //    //work[startIndex + (int)WorkPriorityType.craftBeer].value = 1;
-
-        //    //work[startIndex + (int)WorkPriorityType.smeltIron].value = 3;
-        //    //work[startIndex + (int)WorkPriorityType.craftSharpStick].value = 1;
-        //    //work[startIndex + (int)WorkPriorityType.craftPaddedArmor].value = 1;
-        //    //work[startIndex + (int)WorkPriorityType.farmfuel].value = 2;
-        //    //work[startIndex + (int)WorkPriorityType.farmlinen].value = 1;
-        //    //work[startIndex + (int)WorkPriorityType.bogiron].value = 1;
-        //    //work[startIndex + (int)WorkPriorityType.miningIron].value = 3;
-        //    //work[startIndex + (int)WorkPriorityType.trading].value = 2;
-        //    //work[startIndex + (int)WorkPriorityType.autoBuild].value = 1;
-        //    //work[startIndex + (int)WorkPriorityType.buildOrders].value = 2;
-        //    //work[startIndex + (int)WorkPriorityType.smeltGold].value = 3;
-        //}
+      
         public static void InitComponents(WorkPriority[] work, int startIndex)
         {
             work[startIndex + (int)WorkPriorityType.move].value = 3;
@@ -1767,7 +1702,7 @@ namespace VikingEngine.DSSWars.Work
 
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)
         {
-            EightBit eightBit = new EightBit(followFaction, waitForStockpile);
+            EightBit eightBit = new EightBit(followFaction, waitForStockpile, unlocked);
             eightBit.write(w);
 
             if (!isCity || !followFaction)
@@ -1780,6 +1715,10 @@ namespace VikingEngine.DSSWars.Work
             EightBit eightBit = new EightBit(r);
             followFaction = eightBit.Get(0);
             waitForStockpile = eightBit.Get(1);
+            if (subversion >= 117)
+            {
+                unlocked = eightBit.Get(2);
+            }
 
             if (!isCity || !followFaction)
             {

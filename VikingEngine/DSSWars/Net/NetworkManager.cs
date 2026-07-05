@@ -643,6 +643,7 @@ namespace VikingEngine.DSSWars
 
                             RichBoxContent content = new RichBoxContent();
                             content.h1("Recolor", HudLib.TitleColor_Head);
+                            content.newLine();
                             faction.player.GetHumanPlayer().addNetGamerToHud(content, true, false);
                             LocalHost().hud.messages.Add(content, SoundLib.netMessage);
                         }

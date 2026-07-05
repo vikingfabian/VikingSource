@@ -208,7 +208,9 @@ namespace VikingEngine.DSSWars.Interface
 
         public void recolor(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            HudLib.returnButton(content, menu, true, null);
             content.h1("Recolor", HudLib.TitleColor_Head);
+            content.newLine();
             selectedPlayer.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
@@ -238,7 +240,7 @@ namespace VikingEngine.DSSWars.Interface
 
             void setColor(Color selected)
             {
-                player.SetColor(selected, true);
+                selectedPlayer.SetColor(selected, true);
                 menu.menuBack();
             }
         }
@@ -367,13 +369,7 @@ namespace VikingEngine.DSSWars.Interface
             diplomacyDisplay.toHud(content, selectedPlayer.faction, false);
 
             content.Add(new RbSeperationLine());
-            content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.SteamIcon),
-                    new RbSpace(),
-                    new RbText("User profile")
-                }, new RbAction2Arg<string, CSteamID>(Steamworks.SteamFriends.ActivateGameOverlayToUser, "steamid", selectedPlayer.networkPeer.peer.SteamID),
-               new RbTooltip_Text("Open Steam overlay")));
+           
 
             //content.newLine();
             //RbDragButton.RbDragButtonGroup(content, new List<float> { 100, 1000, 10_000, 1_000_000 },
@@ -410,12 +406,15 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Request: Block player") },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_REQUESTBLOCK, StackOption.Stack)));
 
-                //content.newLine();
-                //content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("Block player") },
-                //    new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BLOCK, StackOption.Stack), new RbTooltip_Text("")));
             }
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.SteamIcon),
+                    new RbSpace(),
+                    new RbText("User profile")
+                }, new RbAction2Arg<string, CSteamID>(Steamworks.SteamFriends.ActivateGameOverlayToUser, "steamid", selectedPlayer.networkPeer.peer.SteamID),
+               new RbTooltip_Text("Open Steam overlay")));
 
-            
         }
     }
 }
