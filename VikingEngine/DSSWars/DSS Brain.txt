@@ -1,9 +1,6 @@
 
 ﻿UPDATE
 Change Log:
-* Fixed printing of large negative number crash
-* Fixed: Allies can't drag you into wars in peaceful mode
-* Diplomacy Ui improvements
 * 
 
 ##ICONS TODO
