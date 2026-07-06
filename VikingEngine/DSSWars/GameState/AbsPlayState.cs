@@ -430,7 +430,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             return localPlayers[0];
         }
-        virtual public PlayState Game()
+        virtual public PlayState playstate()
         {
             throw new NotImplementedException();
         }

@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                         }, allHumans.sel), 
                         new RbTooltip((RichBoxContent content, object tag) => {
 
-                            DssRef.state.LocalHost().gameControls.input.TextChat.ToRichContent(content);
+                            DssRef.state.LocalHost().gameControls.input.VoiceChat.ToRichContent(content);
                             content.space();
                             content.Add(new RbText(".Voice chat", HudLib.TitleColor_Action));
 

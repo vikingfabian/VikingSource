@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Players
 
         public List<int> alliedFactions = new List<int>();
         public List<int> alliedFactions_build = new List<int>();
-
+        public bool netFirstTimeEnter;
 
         public PlayerToPlayerDiplomacy GetOrCreateToPlayerDiplomacy(AbsHumanPlayer player)
         {
@@ -248,11 +248,18 @@ namespace VikingEngine.DSSWars.Players
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
-            SetProfile(DssRef.storage.profileStorage.profiles[pStorage.profileIndex]);
+            var profile = DssRef.storage.profileStorage.profiles[pStorage.profileIndex];
+            if (DssRef.state.playstate().recolor.HasValue)
+            {
+                profile.flag = profile.flag.Clone();
+                profile.flag.col0_Main = DssRef.state.playstate().recolor.Value;
+            }
+            SetProfile(profile);
             if (!DssRef.state.host)
             {
                 profile.casualControls &= Ref.netsett.remoteHostSettings.hostSettings.allowCasualControls;
             }
+            
             faction.diplomaticSide = DiplomaticSide.Light;
 
             InputMap input = new InputMap(playerindex);

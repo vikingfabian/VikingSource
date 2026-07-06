@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars
         bool waitingForClientHandover = false;
         TimeStamp waitingForClientHandoverTime;
         public ChatLog chatLog = new ChatLog();
+        public Color? recolor = null;
         bool asynchClientNetUpdate(int id, float time)
         {
             if (remotePlayers.Count > 0 && factionHandOverComplete && asyncRoundTrip)
@@ -329,10 +330,13 @@ namespace VikingEngine.DSSWars
                         int factionIx = packet.r.ReadUInt16();
                         var faction = DssRef.world.faction(factionIx);
                         tplayer.AssignFaction(faction);
-
+                        
                         DssRef.time.setTotalTime(new TimeSpan(packet.r.ReadInt64()));
                         tplayer.timePlayed = new TimeSpan(packet.r.ReadInt64());
                         DssRef.world.metaData.worldId.read(packet.r);
+                        
+                        LocalHost().netFirstTimeEnter = packet.r.ReadBoolean();
+                        
                     }
                     break;
 
@@ -722,7 +726,7 @@ namespace VikingEngine.DSSWars
             if (r.ReadBoolean())
             { 
                 Color recolor = StreamLib.ReadColorStream_3B(r);
-                DssRef.state.LocalHost().SetColor(recolor, false);
+                ((PlayState)DssRef.state).recolor = recolor;
             }
 
 
@@ -825,18 +829,7 @@ namespace VikingEngine.DSSWars
 
                                     Ref.steam.P2PManager.OnSendingLargeDataChunk();
 
-                                    //{
-                                    //    var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
-                                    //    w.Write((ushort)faction.myIndex);
-                                    //    faction.writeNet_Status(w);
-                                    //}
-                                    //{
-                                    //    var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
-                                    //    NetWritePlayer(w, sender);
-                                    //    w.Write((ushort)faction.myIndex);
-                                    //}
-
-                                    factionHandovers.Enqueue(new FactionHandover(packet.sender, faction, true));
+                                    factionHandovers.Enqueue(new FactionHandover(packet.sender, faction, firstEnterSetup, true));
                                 }));
                             }
                         }
@@ -854,17 +847,17 @@ namespace VikingEngine.DSSWars
             switch (packet.type)
             {
                 case PacketType.DssCityHandOver:
-                    City.NetReadHandOver(packet.r);
+                    var city = City.NetReadHandOver(packet.r);
+                    if (LocalHost().netFirstTimeEnter && !factionHandOverComplete)
+                    {
+                        city.workTemplate.setAllToFollowFaction();
+                    }
                     break;
                 case PacketType.DssWorldDiplomacy:
                     DssRef.world.diplomacy.readRelations(packet.r, int.MaxValue);                    
                     break;
             }
         }
-
-       
-
-        
 
         public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)
         {
@@ -1162,7 +1155,7 @@ namespace VikingEngine.DSSWars
             content.icontext(NetworkIcon, DssRef.lang.Hud_Save);
             LocalHost().hud.messages.Add(content, SoundLib.netMessage);
 
-            factionHandovers.Enqueue(new FactionHandover(Ref.netSession.Host(), LocalHost().faction, false));
+            factionHandovers.Enqueue(new FactionHandover(Ref.netSession.Host(), LocalHost().faction, false, false));
 
             var playTime = new TimeSpan(r.ReadInt64());
             WorldMetaId id = new WorldMetaId();

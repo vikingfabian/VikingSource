@@ -448,15 +448,15 @@ namespace VikingEngine.DSSWars
 
             int factionCount = r.ReadInt32();
             factions = new SpottedArray<Faction>(factionCount);
-            init_FactionComponents();
+            
             for (int i = 0; i < factionCount; ++i)
             {
                 var faction = new Faction(i);
                 //faction.initClient(this);
                 factions.Add(faction);
             }
+            init_FactionComponents();
 
-            
         }
 
         public void writeNet_Tile(System.IO.BinaryWriter w, IntVector2 tilePos)

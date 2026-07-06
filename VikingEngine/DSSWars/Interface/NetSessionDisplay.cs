@@ -389,7 +389,9 @@ namespace VikingEngine.DSSWars.Interface
                     new RbSpace(0.5f),
                     new RbText("Recolor") },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_RECOLOR, StackOption.Stack)));
-                content.newLine();
+                
+                
+                content.newParagraph();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Send ban warning") },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BANWARNING, StackOption.Stack)));
 

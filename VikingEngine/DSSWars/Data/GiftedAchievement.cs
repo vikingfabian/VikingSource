@@ -67,6 +67,7 @@ namespace VikingEngine.DSSWars.Data
                 GiftedAchievementType.Turtle,
                 GiftedAchievementType.FarmerRush,
                 GiftedAchievementType.Hoarder,
+                GiftedAchievementType.TheLeakyCanteen,
                 GiftedAchievementType.SwedishNeutrality,
                 GiftedAchievementType.LivingInABobble,
                 GiftedAchievementType.ShaggyTooDopeAlwaysChilling,
@@ -103,6 +104,7 @@ namespace VikingEngine.DSSWars.Data
             new GiftedAchievementType[]
             {
                 GiftedAchievementType.CryBaby,
+                 GiftedAchievementType.ChickenShit,
                 GiftedAchievementType.Noob,
                 GiftedAchievementType.Scatterbrained,
                 GiftedAchievementType.NearSighted,

@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Net
         SteamLargePacketWriter largeWriter = null;
 
         bool fullHandover;
-        public FactionHandover(AbsNetworkPeer peer, Faction faction, bool fullHandover) 
+        public FactionHandover(AbsNetworkPeer peer, Faction faction, bool firstEnterSetup, bool fullHandover) 
         {
             this.fullHandover = fullHandover;
             this.peer = peer;
@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars.Net
                     w.Write(DssRef.time.TotalIngameTime().Ticks);
                     w.Write(remote.timePlayed.Ticks);
                     DssRef.world.metaData.worldId.write(w);
+                    w.Write(firstEnterSetup);
 
                     packet.EndWrite_Asynch();
                 }
@@ -78,8 +79,10 @@ namespace VikingEngine.DSSWars.Net
                 }
                 else if (largeWriter.TimeOut)
                 { //Cancel the handover
-                    
-                    Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", peer, false);
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", peer, false);
+                    }));
                     part = HandoverPart.DONE;
                     return false;
                 }

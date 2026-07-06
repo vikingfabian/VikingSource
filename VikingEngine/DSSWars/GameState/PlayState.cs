@@ -906,7 +906,7 @@ namespace VikingEngine.DSSWars
         {
             return 4;
         }
-        public override PlayState Game()
+        public override PlayState playstate()
         {
             return this;
         }

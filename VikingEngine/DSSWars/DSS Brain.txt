@@ -1,14 +1,11 @@
 
 ## MULTIPLAYER UPDATE ##
-* The game will start in pause menu
-* Blocks tutorial in local multiplayer
-* instanced the game ruleset, like global gold
-* Pins head bar ui
-* Updated steam input layout
-* Recoloring of flags
-* Send gold to other factions
+* 
 
 # KNOWN ISSUES #
+* The client child growth doesnt work
+* Gaining servicemen is unrelyable
+* Honor guards, or maybe all client soldiers, are weaker
 x missing steam deck layout
 x PvP protection doesnt work on direct attacks.
 x Cant deny ally requests

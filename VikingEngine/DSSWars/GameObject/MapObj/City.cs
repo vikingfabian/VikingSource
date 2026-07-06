@@ -1093,13 +1093,15 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public static void NetReadHandOver(System.IO.BinaryReader r)
+        public static City NetReadHandOver(System.IO.BinaryReader r)
         { 
             int cityIx = r.ReadUInt16();
             var city = DssRef.world.cities[cityIx];
 
             city.readGameState(r, int.MaxValue, null);
             city.IsNetHosted = true;
+
+            return city;
         }
         //public void net_handover()
         //{

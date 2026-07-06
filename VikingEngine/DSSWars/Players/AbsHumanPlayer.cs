@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.Players
         {
             
             setPlayerFaction(faction);
-            //faction.displayInFullOverview = true;
+
             base.AssignFaction(faction);
            
         }

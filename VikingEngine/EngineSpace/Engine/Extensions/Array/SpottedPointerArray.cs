@@ -238,16 +238,18 @@ namespace VikingEngine
             Array[arrayIndex] = value;
         }
 
-        public void Remove(int value)
+        public bool Remove(int value)
         {
             for (int i = 0; i < SpottedLength; ++i)
             {
                 if (Array[i] == value)
                 {
                     RemoveAt(i);
-                    return;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public void RemoveAt(int index)
