@@ -244,13 +244,13 @@ namespace VikingEngine.DSSWars.Work
             XpEntityIndex = -1;
         }
 
-        int farmGrowthMultiplier(int terrainAmount, City city, bool upgraded)
+        int farmGrowthMultiplier(int terrainAmount, City city/*, bool upgraded*/)
         {
             //terrainAmount *= 5;
-            if (upgraded)
-            {
-                terrainAmount *= 2;
-            }
+            //if (upgraded)
+            //{
+            //    terrainAmount *= 2;
+            //}
 
             if (city.cityCulture == CityCulture.FertileGround)
             {
@@ -722,7 +722,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Food_G,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.OrchidFoodAmount, city, false));
+                                        farmGrowthMultiplier(DssConst.OrchidFoodAmount, city/*, false*/));
 
                                 subTile.terrainAmount = TerrainContent.OrchardPlucked;
 
@@ -735,7 +735,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Wheat,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.WheatFoodAmount, city, foilType == TerrainSubFoilType.WheatFarmUpgraded));
+                                        farmGrowthMultiplier(DssConst.WheatFoodAmount, city/*, foilType == TerrainSubFoilType.WheatFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
 
@@ -749,7 +749,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Linen,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.LinenHarvestAmount, city, foilType == TerrainSubFoilType.LinenFarmUpgraded));
+                                        farmGrowthMultiplier(DssConst.LinenHarvestAmount, city/*, foilType == TerrainSubFoilType.LinenFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -763,7 +763,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Rapeseed,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city, foilType == TerrainSubFoilType.RapeSeedFarmUpgraded));
+                                        farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city/*, foilType == TerrainSubFoilType.RapeSeedFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -778,7 +778,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Hemp,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city, foilType == TerrainSubFoilType.HempFarmUpgraded));
+                                        farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city/*, foilType == TerrainSubFoilType.HempFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -1270,6 +1270,8 @@ namespace VikingEngine.DSSWars.Work
                                 }
                                 size = TerrainContent.OliphantGrowth;
                                 break;
+
+                            
                         }
 
                         //if (building == TerrainBuildingType.PigPen)
