@@ -156,10 +156,10 @@ namespace VikingEngine.Network
     struct ClientSettings
     {
         public GiftRecieveOption recieveGifts = GiftRecieveOption.FriendsOnly;//i
-        public bool useHandicap = false;//i
+        public bool useHandicap = true;//i
         public HandicapLevel handicap_botAggression = HandicapLevel.Default;//i
-        public bool handicap_extraHonorGuards = false;//i
-        public bool handicap_resourceBoost = false;//i
+        public bool handicap_extraHonorGuards = true;//i
+        public bool handicap_resourceBoost = true;//i
         public HandicapLevel handicap_taxIncome = HandicapLevel.Default;//i
 
         public ClientSettings()

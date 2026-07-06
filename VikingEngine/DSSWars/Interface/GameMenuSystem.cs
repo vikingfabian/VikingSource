@@ -302,14 +302,16 @@ namespace VikingEngine.DSSWars.Interface
                     endTutorialButton(content);
                 }
 
-                content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                if (DssRef.state.host)
+                {
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                     new RbText(DssRef.lang.Hud_Save) }, new RbAction(saveGameState),
-                    new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
+                        new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
                     {
                         fillWidth = true
                     });
-
+                }
                 content.newLine();
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -403,7 +405,8 @@ namespace VikingEngine.DSSWars.Interface
             });
 
             if (!PlatformSettings.STEAM_DEMO && 
-                DssRef.settings.playType == GameState.PlayStateType.Play)
+                DssRef.settings.playType == GameState.PlayStateType.Play &&
+                DssRef.state.host)
             {
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_SaveAndExit) }, new RbAction(saveAndExit, RbSoundType.Back))

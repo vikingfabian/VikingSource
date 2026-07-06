@@ -850,7 +850,7 @@ namespace VikingEngine.DSSWars
                     var city = City.NetReadHandOver(packet.r);
                     if (LocalHost().netFirstTimeEnter && !factionHandOverComplete)
                     {
-                        city.workTemplate.setAllToFollowFaction();
+                        city.workTemplate.setAllToFollowFactionAndUpdate(city, LocalHost().faction.workTemplate);
                     }
                     break;
                 case PacketType.DssWorldDiplomacy:

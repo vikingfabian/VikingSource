@@ -369,9 +369,19 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
+                            new RbImage(HudLib.AvailableIcon),
+                            new RbSpace(0.5f),
                             new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer),
                         },
                        new RbAction1Arg<AbsHumanPlayer>(acceptToPlayerRelation, otherPlayer, RbSoundType.Buy)));
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
+                        {
+                            new RbImage(HudLib.NotAvailableIcon),
+                            new RbSpace(0.5f),
+                            new RbText(".Deny"),
+                        },
+                        new RbAction1Arg<AbsHumanPlayer>(cancelToPlayerRelation, otherPlayer, RbSoundType.Stop)));
                 }
             }
             else
@@ -511,10 +521,11 @@ namespace VikingEngine.DSSWars.Interface
             {
                 playerOfferedRelationMessage(fromPlayer, player, PtoP);
             }
-            else
+            else if (PtoP.suggestedBy == player.faction.myIndex)
             {
+                
                 //Cancelled offer
-                //playerDeclinedRelationMessage(fromPlayer, player, PtoP);    
+                playerDeclinedRelationMessage(fromPlayer, player, PtoP);    
             }
         }
 
