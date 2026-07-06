@@ -2,7 +2,7 @@
 ## MULTIPLAYER UPDATE ##
 * 
 
-# KNOWN ISSUES #
+KNOWN ISSUES
 x rejoining can give an endless "city lost" message
 x Honor guards, or maybe all client soldiers, are weaker
 x missing steam deck layout
