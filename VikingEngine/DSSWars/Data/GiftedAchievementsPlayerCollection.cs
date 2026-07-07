@@ -126,17 +126,19 @@ namespace VikingEngine.DSSWars.Data
         }
 
         public void writeNetStatus(System.IO.BinaryWriter w)
-        {            
-            foreach (var m in recieved)
+        {
+            if (recieved != null)
             {
-                if (!m.time.TimeOut())
+                foreach (var m in recieved)
                 {
-                    w.Write(true);
+                    if (!m.time.TimeOut())
+                    {
+                        w.Write(true);
 
-                    m.write(w);
+                        m.write(w);
+                    }
                 }
             }
-
             w.Write(false);
         }
 
