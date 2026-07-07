@@ -1,6 +1,10 @@
 
-## MULTIPLAYER UPDATE ##
-* 
+Change log:
+* Fixed unclaimed city missing models
+* Share of gifted achivements to joining players
+* Color frame on client pointer
+
++ merge with patches
 
 KNOWN ISSUES
 x rejoining can give an endless "city lost" message

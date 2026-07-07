@@ -149,12 +149,17 @@ namespace VikingEngine.DSSWars.Data
             w.Write((ushort)Bound.Min(RemainingLength().seconds, 0));
         }
 
-        public void readGameState(System.IO.BinaryReader r)
+        public void readGameState(System.IO.BinaryReader r, bool bStart = false)
         {
             float remaining = r.ReadUInt16();
             if (remaining > 0)
             {
                 length = new TimeLength(remaining);
+            }
+
+            if (bStart)
+            {
+                start();
             }
         }
 

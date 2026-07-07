@@ -934,6 +934,7 @@ namespace VikingEngine
         cmdPointer,
         cmdPointerAttack,
         cmdClientPointer,
+        cmdClientPointerMetallic,
         defaultGamerIcon,
 
         cmdCard3by2,
@@ -988,6 +989,12 @@ namespace VikingEngine
         DoomBarFrame,
         QuestBanner,
         QuestBannerHighlight,
+
+        SupportDlcBanner,
+        SupportDlcBannerHighlight,
+        GooBanner,
+        GooBannerHighlight,
+
 
         BronzeChestClosed,
         BronzeChestOpen,

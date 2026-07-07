@@ -300,7 +300,16 @@ namespace VikingEngine.DSSWars
                             sender.Net_readStatus(packet.r);
                             sender.pointer.netRead(packet.r);
                             sender.timePlayed = TimeSpan.FromSeconds(packet.r.ReadInt32());
-                            sender.networkPeer.peer.isRecording = packet.r.ReadBoolean();
+
+                            EightBit bits = new EightBit(packet.r);
+                            sender.networkPeer.peer.isRecording = bits.Get(0);
+                            bool dlc = bits.Get(1);
+                            if (dlc != sender.supporterDLC)
+                            { 
+                                sender.supporterDLC = dlc;
+                                sender.pointer.refreshDlc(dlc);
+                            }
+
                             if (sender.newPlayer)
                             {
                                 //Present yourself
@@ -759,6 +768,8 @@ namespace VikingEngine.DSSWars
                 profile.flag.write(w);
 
                 Net.ObjectId.WriteFaction(w, local.faction);
+
+                local.giftedAchievements.writeNetStatus(w);
             }
         }
         void NetReadPresentation(ReceivedPacket packet, RemotePlayer sender)
@@ -770,12 +781,15 @@ namespace VikingEngine.DSSWars
             if (sender.profile.flag == null)
             {
                 sender.profile.flag = new FlagAndColor(packet.r);
+                sender.pointer.colorFrame.Color = sender.profile.flag.col0_Main;
                 sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
                 Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
                 if (faction != null)
                 {
                     sender.faction = faction;
                 }
+                sender.giftedAchievements.readNetStatus(packet.r);
+
 
                 RichBoxContent content = new RichBoxContent();
 

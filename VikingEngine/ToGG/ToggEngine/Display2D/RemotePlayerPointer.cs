@@ -37,6 +37,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
             new SteamWrapping.LoadGamerIcon(pointerGamerIcon, peer, false);
         }
 
+
         public void Update()
         {
             pointer.Position += pointerSpeed;

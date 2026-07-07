@@ -1700,7 +1700,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool canEverGetNobelHouse()
         {
-            return true;//maxEpandWorkSize >= DssLib.NobelHouseWorkForceReqiurement;
+            return true;
         }
 
      
@@ -1712,7 +1712,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createOverViewModel()
         {
-            //faction.profile.modelColorReplace
             var faction = GetFaction_NoChecks();
             if (faction == null || faction.player == null)
             {
@@ -1724,13 +1723,6 @@ namespace VikingEngine.DSSWars.GameObject
                    LootFest.VoxelModelName.cityicon, IconScale()));
                 
             }
-            //if (faction.player?.profile.flag != null)
-            //{
-                //overviewModel = faction.AutoLoadModelInstance(
-                //   LootFest.VoxelModelName.cityicon, IconScale());
-                //overviewModel.AddToRender(DrawGame.MidLayer);
-                //overviewModel.position = position;
-            //}
 
             void setModel(Graphics.AbsVoxelObj model)
             {
@@ -1761,16 +1753,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public void updateIncome_asynch()
-        //{
-        //    totalIncome = Convert.ToInt32(Math.Floor(workForce.value * TaxPerWorker - upkeep - blackMarketCosts.displayValue_sec));
-        //}
-
-        
-
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
-            //detailObj.model?.onNewModel(name, master, detailObj);
             DSSWars.Faction.SetNewMaster(name, VoxelModelName.cityicon, overviewModel, master);
         }
 
@@ -1780,9 +1764,10 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    lib.DoNothing();
             //}
+            updateDetailLevel();
             if (HasPlayer())
             {
-                updateDetailLevel();
+                
 
                 //detailObj.update(Ref.DeltaGameTimeMs, true);
 
@@ -1797,9 +1782,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update_client()
         {
+            updateDetailLevel();
             if (HasPlayer())
             {
-                updateDetailLevel();
+                
             }
         }
 

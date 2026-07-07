@@ -1969,8 +1969,11 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_DiplomaticStatue_GoldenPoop, 3, 3);
                     add(SpriteName.WarsBuild_DiplomaticStatue_ThumbsUpEast, 3, 3);
                     add(SpriteName.WarsBuild_DiplomaticStatue_InsultWest, 3, 3);
-                    
-                    
+
+                    addWithSizeDef(SpriteName.GooBannerHighlight, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.GooBanner, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.SupportDlcBanner, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.SupportDlcBannerHighlight, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
                 }
             }
 
@@ -2136,6 +2139,7 @@ namespace VikingEngine
                 add(SpriteName.WarsHudCasualModeDisabled);
                 add(SpriteName.WarsHudIconHandicap);
                 add(SpriteName.WarsHudIconDistanceOnMap);
+                add(SpriteName.cmdClientPointerMetallic);
             }
 
 

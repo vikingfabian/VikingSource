@@ -53,13 +53,13 @@ namespace VikingEngine.DSSWars.Players
             DssRef.world.BordersUpdated = true;
         }
 
-        public void SetColor(Color selected, bool netShare)
+        virtual public void SetColor(Color selected, bool netShare)
         {
-            if (IsLocalPlayer())
-            {
-                var clone = profile.flag.Clone();
-                profile.flag = clone;
-            }
+            //if (IsLocalPlayer())
+            //{
+            //    var clone = profile.flag.Clone();
+            //    profile.flag = clone;
+            //}
             profile.flag.col0_Main = selected;
             refreshFlag();
 

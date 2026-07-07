@@ -216,7 +216,12 @@ namespace VikingEngine.DSSWars.Players
             netSharePinCounter = new SpottedArrayCounter<LocationPin>(pins);
         }
 
-        
+        public override void SetColor(Color selected, bool netShare)
+        {
+            var clone = profile.flag.Clone();
+            profile.flag = clone;
+            base.SetColor(selected, netShare);
+        }
 
         public bool battleMessageCheck(IntVector2 tilepos)
         {
@@ -360,7 +365,9 @@ namespace VikingEngine.DSSWars.Players
 
                 w.Write((int)timePlayed.TotalSeconds);
 
-                w.Write(Ref.steam.recordingOn);
+                EightBit bits = new EightBit(Ref.steam.recordingOn, DssRef.DlcSupporter.owned);
+                bits.write(w);
+                //w.Write(Ref.steam.recordingOn);
             }
 
             if (pins.Count > 0)

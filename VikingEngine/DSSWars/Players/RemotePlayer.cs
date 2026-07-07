@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Players
         public bool gotStatus = false;
         public bool ready = false;
         public bool newPlayer = true;
+        public bool supporterDLC = false;
         public bool waitingForHandover = false;
 
         public AbsPlayer previousPlayer;
@@ -202,7 +203,12 @@ namespace VikingEngine.DSSWars.Players
             previousFactionType = faction.factiontype;
             base.AssignFaction(faction);            
         }
+        public override void SetColor(Color selected, bool netShare)
+        {
+            base.SetColor(selected, netShare);
 
+            pointer.colorFrame.Color = selected;
+        }
         public void Net_readStatus(System.IO.BinaryReader r)
         {
             playerCulling.readNet(r);

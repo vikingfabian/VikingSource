@@ -1338,6 +1338,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space();
             args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
+
             if (args.selected && IsArmyGroup() && faction == args.player.faction && army.TryGetTarget(out var tArmy))
             {
                 RichBoxContent armyContent = new RichBoxContent();
@@ -1346,6 +1347,7 @@ namespace VikingEngine.DSSWars.GameObject
                     new RbAction1Arg<AbsArmy>(args.player.gameControls.mapSelect, tArmy), new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput)));
             }
 
+            args.content.newLine();
             soldierConscript.conscript.toHud(args.content, compact);
             args.content.newLine();
             

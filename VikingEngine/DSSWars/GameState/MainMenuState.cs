@@ -805,15 +805,44 @@ namespace VikingEngine.DSSWars
             bgimage2.Color = ColorExt.GrayScale(0.9f);
 
             createUpdateBackground(area);
+            createBanners(area);
         }
 
         void createUpdateBackground(VectorRect bgArea)
         { 
             Graphics.Image snowflake = new Image( SpriteName.WarsHudIconNetwork, bgArea.PercentToPosition(new Vector2(0.03f)),
-                Screen.IconSizeV2 * 1.6f, ImageLayers.Background4 );
+                Screen.IconSizeV2 * 1.0f, ImageLayers.Background4 );
             snowflake.Rotation = 0.05f;
             snowflake.Color = Color.Gray;
             snowflake.Opacity = 0.6f;
+        }
+
+        void createBanners(VectorRect bgArea)
+        {
+            float rightPos = bgArea.PercentToPosition(new Vector2(0.12f)).X;
+            banner(SpriteName.SupportDlcBanner, DssRef.DlcSupporter.owned);
+            banner(SpriteName.GooBanner, DssRef.FromGloryToGoo.owned);
+
+
+            void banner(SpriteName sprite, bool owns)
+            {
+                float width = Engine.Screen.IconSize;
+                Vector2 sz = new Vector2(width, width / SpriteSheet.DoomBannerSize.X * SpriteSheet.DoomBannerSize.Y);
+
+                VectorRect area = new VectorRect(new Vector2(rightPos - sz.X, 0), sz);
+
+                var img = new Graphics.Image(sprite, area.Position, area.Size, ImageLayers.Background3, false);
+                if (owns)
+                {
+                    img.Opacity = 0.8f;
+                }
+                else
+                {
+                    img.ColorAndAlpha(Color.Black, 0.1f);
+                }
+
+                rightPos += width * 1.4f;
+            }
         }
 
         void playMusic()
