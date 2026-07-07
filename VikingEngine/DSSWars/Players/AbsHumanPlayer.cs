@@ -319,7 +319,8 @@ namespace VikingEngine.DSSWars.Players
                 if (pin == null)
                 {
                     pin = new LocationPin(this.GetRemotePlayer());
-                    pin.myIndex = pins.Add(pin);
+                    pin.myIndex = index;
+                    pins.HardSet(pin, index);
                     pin.readGameState(r, int.MaxValue);
                     pin.basicInit();
                 }
