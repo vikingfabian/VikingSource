@@ -5,6 +5,7 @@ Change log:
 * Color frame on client pointer
 * DLC banner and gold frame
 * Doesnt move client pointer when over UI
+* More secure share of pins
 
 + merge with patches
 
@@ -28,6 +29,7 @@ x DssEditSubTile
 * gray rounded button
 * gold frames
 * DLC banners
+* mobilizing
 
 #MOUNTED TODO
 * 

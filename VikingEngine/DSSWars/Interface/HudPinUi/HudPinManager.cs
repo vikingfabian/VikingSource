@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                     else
                     { 
                         enabled = true;
-                        style = RbButtonStyle.Outline;
+                        style = allHumans.sel.HasSupportDLC() ? RbButtonStyle.GoldOutline : RbButtonStyle.Outline;
                     }
                     content.Add(new ArtButton(style, buttoncontent, 
                         new RbAction1Arg<AbsHumanPlayer>((AbsHumanPlayer selected)=>

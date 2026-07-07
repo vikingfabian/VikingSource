@@ -25,7 +25,8 @@ namespace VikingEngine.DSSWars.Players
         public TimeSpan timePlayed = TimeSpan.Zero;
         public SpriteName voiceState = SpriteName.VoiceDisabled;
         public RbImage voiceIcon = null;
-
+        //protected SpottedArrayCounter<LocationPin> netSharePinCounter;
+        int netSharePinIndex = 0;
         public AbsHumanPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
         { }
@@ -69,18 +70,10 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
         {
-            //content.Add(new RbBeginTitle(2));
-
             addNetGamerIconsToHud(content, factionBanner);
 
             if (networkPeer != null)
             {
-                //if (Ref.netSession.Host() == networkPeer.peer)
-                //{
-                //    content.Add(new RbImage(SpriteName.birdRotatingCrown1));
-                //    content.space();
-                //}
-                //content.Add(new RbGamerIcon(networkPeer.peer, 0.8f));
                 content.space();
                 content.Add(new RbText(networkPeer.peer.Gamertag, IsLocal? HudLib.TitleColor_Self : HudLib.TitleColor_Name));
                                
@@ -153,8 +146,6 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-       
-
         public void readPins(BinaryReader r, int subversion)
         {
             int pinsCount = r.ReadUInt16();
@@ -163,6 +154,179 @@ namespace VikingEngine.DSSWars.Players
                 LocationPin pin = new LocationPin(this, r, subversion);
                 pin.myIndex = pins.Add(pin);
                 pin.basicInit();
+            }
+        }
+
+
+        const int NetWriteMaxPins = 5;
+        public void netWritePinUpdate()
+        {
+            var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPinUpdate, Network.PacketReliability.Unrelyable, 
+                GetLocalPlayer().playerData.localPlayerIndex);
+            int pinsArrayLength = pins.Array.Length;
+            w.Write((ushort)pinsArrayLength);
+            w.Write((ushort)netSharePinIndex);
+            for (int i = 0; i < NetWriteMaxPins; ++i)
+            {
+                int index = netSharePinIndex + i;
+
+                if (index >= pinsArrayLength)
+                {
+                    break;
+                }
+                else
+                {
+                    var pin = pins.GetIndex_Safe(index);
+                    if (pin == null)
+                    {
+                        w.Write(false);
+                    }
+                    else
+                    {
+                        w.Write(true);
+                        pin.writeGameState(w);
+                    }
+                }
+            }
+
+            netSharePinIndex += NetWriteMaxPins;
+            if (netSharePinIndex >= pins.Array.Length)
+            {
+                netSharePinIndex = 0;
+            }
+            /*
+            if (pins.Count > 0)
+            {
+                w.Write(true);
+
+                if (!netSharePinCounter.HasMore())
+                {
+                    netSharePinCounter.Reset();
+                }
+
+                int startIndex = netSharePinCounter.CurrentIndex + 1;
+                int end = startIndex + NetWriteMaxPins -1;
+                EightBit used = new EightBit();
+                while (netSharePinCounter.Next())
+                {
+                    if (netSharePinCounter.sel.netInteractLevel != Network.NetInteractLevel.Hidden)
+                    {
+                        used.Set(netSharePinCounter.CurrentIndex - startIndex, true);
+                        w.Write((ushort)netSharePinCounter.CurrentIndex);
+                        netSharePinCounter.sel.writeGameState(w);
+
+                        if (netSharePinCounter.CurrentIndex >= end)//--maxPins <= 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                //Mark end
+                w.Write(ushort.MaxValue);
+
+                //Write empty pins
+                w.Write((ushort)startIndex);
+                used.write(w);
+            }
+            else
+            {
+                w.Write(false);
+            }
+            */
+        }
+
+        public void netReadPinUpdate(BinaryReader r)
+        {
+            int pinsArrayLength = r.ReadUInt16();
+            int netSharePinIndex = r.ReadUInt16();
+
+            for (int i = 0; i < NetWriteMaxPins; ++i)
+            {
+                int index = netSharePinIndex + i;
+
+                if (index >= pinsArrayLength)
+                {
+                    break;
+                }
+                else
+                {
+                    if (r.ReadBoolean())
+                    {
+                        var delPin = pins.PullIndex_Safe(index);
+                        delPin?.DeleteMe(DeleteReason.NetworkEvent, false);
+                    }
+                    else
+                    {
+                        netReadPin(index, r);
+                    }
+                    //var pin = pins.GetIndex_Safe(index);
+                    //if (pin == null)
+                    //{
+                    //    w.Write(false);
+                    //}
+                    //else
+                    //{
+                    //    w.Write(true);
+                    //    pin.writeGameState(w);
+                    //}
+                }
+            }
+            /*
+            if (r.ReadBoolean())
+            {
+                LocationPin pin;
+                do
+                {
+                    int pinIndex = r.ReadUInt16();
+                    pin = netReadPin(pinIndex, r);
+
+                } while (pin != null);
+
+                int startIndex = r.ReadUInt16();
+                EightBit used = new EightBit(r);
+
+                for (int i = 0; i < NetWriteMaxPins; ++i)
+                { 
+                    int index = i + startIndex;
+                    if (index >= pins.Array.Length)
+                    {
+                        break;
+                    }
+                    else if (!used.Get(i))
+                    {
+                        var delPin = pins.PullIndex_Safe(index);
+                        delPin?.DeleteMe(DeleteReason.NetworkEvent, false);
+                    }
+                }
+            }
+            else
+            {
+                clearPins(DeleteReason.NetworkEvent);
+            }
+            */
+        }
+        public LocationPin netReadPin(int index, BinaryReader r)
+        {
+            if (index == ushort.MaxValue || faction == null)
+            {
+                return null;
+            }
+            else
+            {
+                var pin = pins.GetIndex_Safe(index);
+                if (pin == null)
+                {
+                    pin = new LocationPin(this.GetRemotePlayer());
+                    pin.myIndex = pins.Add(pin);
+                    pin.readGameState(r, int.MaxValue);
+                    pin.basicInit();
+                }
+                else
+                {
+                    pin.readGameState(r, int.MaxValue);
+                }
+                return pin;
             }
         }
 

@@ -623,13 +623,7 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssPinUpdate:
                     {
-                        LocationPin pin;
-                        do
-                        {
-                            int pinIndex = packet.r.ReadUInt16();
-                            pin = sender.netReadPin(pinIndex, packet.r);
-
-                        } while (pin != null);
+                        sender.netReadPinUpdate(packet.r);
                     }
                     break;
 
@@ -690,6 +684,8 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
+
+        
 
         void netWriteSendWorld(ReceivedPacket requestPacket, RemotePlayer sender)
         {

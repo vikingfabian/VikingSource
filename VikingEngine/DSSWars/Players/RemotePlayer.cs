@@ -216,29 +216,7 @@ namespace VikingEngine.DSSWars.Players
             ready = true;
         }
 
-        public LocationPin netReadPin(int index, BinaryReader r)
-        {
-            if (index == ushort.MaxValue || faction == null)
-            {
-                return null;
-            }
-            else
-            {
-                var pin = pins.GetIndex_Safe(index);
-                if (pin == null)
-                {
-                    pin = new LocationPin(this);
-                    pin.myIndex = pins.Add(pin);
-                    pin.readGameState(r, int.MaxValue);
-                    pin.basicInit();
-                }
-                else
-                {
-                    pin.readGameState(r, int.MaxValue);
-                }
-                return pin;
-            }
-        }
+       
         public override void AutoExpandType(City city, out bool work, out BuildAndExpandType buildType, out bool intelligent)
         {
             work = false;

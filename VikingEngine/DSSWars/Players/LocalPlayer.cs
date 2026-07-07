@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Players
         /// Faction is key
         /// </summary>
         public Dictionary<int, PlayerToPlayerDiplomacy> toPlayerDiplomacies = new Dictionary<int, PlayerToPlayerDiplomacy>();
-        SpottedArrayCounter<LocationPin> netSharePinCounter;
+        
 
         public List<int> alliedFactions = new List<int>();
         public List<int> alliedFactions_build = new List<int>();
@@ -370,33 +370,33 @@ namespace VikingEngine.DSSWars.Players
                 //w.Write(Ref.steam.recordingOn);
             }
 
-            if (pins.Count > 0)
-            {
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPinUpdate, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
+            
+                netWritePinUpdate();
+                //var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPinUpdate, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
 
-                if (!netSharePinCounter.HasMore())
-                { 
-                    netSharePinCounter.Reset();
-                }
+                //if (!netSharePinCounter.HasMore())
+                //{ 
+                //    netSharePinCounter.Reset();
+                //}
 
-                int maxPins = 5;
-                while (netSharePinCounter.Next())
-                {
-                    if (netSharePinCounter.sel.netInteractLevel != Network.NetInteractLevel.Hidden)
-                    {
-                        w.Write((ushort)netSharePinCounter.CurrentIndex);
-                        netSharePinCounter.sel.writeGameState(w);
+                //int maxPins = 5;
+                //while (netSharePinCounter.Next())
+                //{
+                //    if (netSharePinCounter.sel.netInteractLevel != Network.NetInteractLevel.Hidden)
+                //    {
+                //        w.Write((ushort)netSharePinCounter.CurrentIndex);
+                //        netSharePinCounter.sel.writeGameState(w);
 
-                        if (--maxPins <= 0)
-                        {
-                            break;
-                        }
-                    }
-                }
+                //        if (--maxPins <= 0)
+                //        {
+                //            break;
+                //        }
+                //    }
+                //}
 
-                //Mark end
-                w.Write(ushort.MaxValue);
-            }
+                ////Mark end
+                //w.Write(ushort.MaxValue);
+            
         }
 
         public override void writeGameState(BinaryWriter w)
