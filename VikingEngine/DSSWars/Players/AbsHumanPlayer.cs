@@ -163,6 +163,7 @@ namespace VikingEngine.DSSWars.Players
         {
             var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPinUpdate, Network.PacketReliability.Unrelyable, 
                 GetLocalPlayer().playerData.localPlayerIndex);
+
             int pinsArrayLength = pins.Array.Length;
             w.Write((ushort)pinsArrayLength);
             w.Write((ushort)netSharePinIndex);
@@ -177,14 +178,14 @@ namespace VikingEngine.DSSWars.Players
                 else
                 {
                     var pin = pins.GetIndex_Safe(index);
-                    if (pin == null)
-                    {
-                        w.Write(false);
-                    }
-                    else
+                    if (pin != null)
                     {
                         w.Write(true);
                         pin.writeGameState(w);
+                    }
+                    else
+                    {
+                        w.Write(false);
                     }
                 }
             }
@@ -253,12 +254,12 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (r.ReadBoolean())
                     {
-                        var delPin = pins.PullIndex_Safe(index);
-                        delPin?.DeleteMe(DeleteReason.NetworkEvent, false);
+                        netReadPin(index, r);                        
                     }
                     else
                     {
-                        netReadPin(index, r);
+                        var delPin = pins.PullIndex_Safe(index);
+                        delPin?.DeleteMe(DeleteReason.NetworkEvent, false);
                     }
                     //var pin = pins.GetIndex_Safe(index);
                     //if (pin == null)

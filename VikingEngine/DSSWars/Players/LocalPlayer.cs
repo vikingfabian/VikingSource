@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Players
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
 
             //faction.addGold_factionWide(10000);
-            netSharePinCounter = new SpottedArrayCounter<LocationPin>(pins);
+            //netSharePinCounter = new SpottedArrayCounter<LocationPin>(pins);
         }
 
         public override void SetColor(Color selected, bool netShare)
