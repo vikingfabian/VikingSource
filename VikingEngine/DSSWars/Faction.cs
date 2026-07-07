@@ -825,39 +825,41 @@ namespace VikingEngine.DSSWars
         }
 
         public void remove(City city)
-        {   
-            cities.Remove(city.myIndex);
-            if (city == mainCity ||
-               mainCity == null || mainCity.factionIndex != myIndex)
+        {
+            if (cities.Remove(city.myIndex))
             {
-                refreshMainCity();                     
-            }
-
-            if (player != null && player.IsLocalPlayer())
-            {  
-
-                Ref.update.AddSyncAction(new SyncAction(() =>
+                if (city == mainCity ||
+                   mainCity == null || mainCity.factionIndex != myIndex)
                 {
-                    player.orders.refreshAvailable(this);
+                    refreshMainCity();
+                }
 
-                    RichBoxContent content = new RichBoxContent();
-                    var localplayer = player.GetLocalPlayer();
-                    if (localplayer.battleMessageCheck(city.tilePos))
+                if (player != null && player.IsLocalPlayer())
+                {
+
+                    Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
+                        player.orders.refreshAvailable(this);
 
-                        var gotoButtonContent = new RichBoxContent();
-                        MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
+                        RichBoxContent content = new RichBoxContent();
+                        var localplayer = player.GetLocalPlayer();
+                        if (localplayer.battleMessageCheck(city.tilePos))
+                        {
+                            MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
 
-                        city.toButtonContent(gotoButtonContent, true);
+                            var gotoButtonContent = new RichBoxContent();
+                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
-                            new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city, RbSoundType.Default))
-                        { fillWidth = true });
+                            city.toButtonContent(gotoButtonContent, true);
 
-                        localplayer.hud.messages.Add(content);
-                    }
-                }));
+                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city, RbSoundType.Default))
+                            { fillWidth = true });
+
+                            localplayer.hud.messages.Add(content);
+                        }
+                    }));
+                }
             }
         }
 

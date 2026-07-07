@@ -95,6 +95,9 @@ namespace VikingEngine.DSSWars
         SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
         SaveStateMeta loadGame = null;
         MessageGroup_Editor messages;
+
+        bool viewLobbyTutorial = false;
+
         public MainMenuState(Texture2D bgTex, bool startLoadingMap = true)
             : base()
         {
@@ -102,14 +105,8 @@ namespace VikingEngine.DSSWars
             HudLib.Init();
             
             if (FirstTimeLoad)
-            {
-                FirstTimeLoad = false;
+            {                
                 TagLib.Init();
-                //Task.Run(() =>
-                //{
-
-                //    TagLib.Init();
-                //});
             }
             Ref.isPaused = false;
             loadPreviousInput();
@@ -157,11 +154,18 @@ namespace VikingEngine.DSSWars
             {
                 openUnderMenu(UnderMenu_leaderboards, StackOption.Stack);
             }
+            else if (Ref.steam.isInitialized && FirstTimeLoad)
+            {
+                viewLobbyTutorial = true;//networkTutorial();
+                
+            }
 
 #if DEBUG
             //new TimedAction0ArgTrigger(collectReports, 600);
 
 #endif
+
+            FirstTimeLoad = false;
         }
 
         void loadPreviousInput()
@@ -248,10 +252,6 @@ namespace VikingEngine.DSSWars
                 case UnderMenu_ListEditors:
                     {
                         var playerData = DssRef.storage.localPlayers.First();
-                        //DssRef.storage.profileStorage.selectedIx = playerData.profileIndex;
-
-                        //var profile = DssRef.storage.profileStorage.Selected();
-                        //DssRef.storage.flagStorage.selectedIx = playerData.Profile().flag.StorageIndex;//profile.flag.StorageIndex;
 
                         RichBoxContent content = new RichBoxContent();
 
@@ -273,14 +273,9 @@ namespace VikingEngine.DSSWars
 
                         content.newParagraph();
 
-                        
-                        //listAndEditProfile(content, 1, playerData, true);
-                                                
-                        //content.newLine();
                         listAndEditFlag(content, playerData, true);
 
                         content.newLine();
-                        //DssRef.storage.profileStorage.SetSelected(
                         listAndEditCharacter(content, DssRef.storage.profileStorage.selectedIx, true);
 
                         underMenu.Refresh(content);
@@ -642,55 +637,82 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
+        void networkTutorial()
         {
-            base.NetEvent_SessionsFound(availableSessions);
             openNetWorkMenu();
 
             RichBoxContent content = new RichBoxContent();
-            foreach (var session in availableSessions)
-            {
-                content.newLine();
+            content.h1(".Multiplayer lobby", HudLib.TitleColor_Head);
 
-                RichBoxContent buttonContent = new RichBoxContent();
-                buttonContent.Add(new RbBeginTitle(1));
-                buttonContent.Add(new RbImage(SpriteName.WarsMapFilterMinimap));
-                buttonContent.Add(new RbSpace());
-                buttonContent.Add(new RbText(DssRef.todoLang.Network_Join, HudLib.TitleColor_Head2, LoadedFont.Bold));
-
-                buttonContent.newLine();
-                HudLib.BulletPoint(buttonContent);
-                buttonContent.Add(new RbText(session.hostName, HudLib.TitleColor_Name_Dark));
-
-                var meta = session.metaData as LobbyMetaData;
-                buttonContent.newLine();
-                
-                HudLib.BulletSeperationPoint(buttonContent);
-                LangLib.GameModeText(meta.GameMode(), out string modeName, out _);
-                buttonContent.Add(new RbText(modeName, HudLib.InfoYellow_Dark));
-
-                HudLib.BulletSeperationPoint(buttonContent);
-                buttonContent.Add(new RbText(TextLib.PercentTextWithSymbol(meta.TotalDifficulty()), HudLib.InfoYellow_Dark));
-
-                if (!meta.MatchingVersion)
-                {
-                    buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, ".Version", session.metaData.Version), HudLib.NotAvailableColor_Dark);
-                }
-
-                if (!meta.allowCasual && DssRef.storage.profileStorage.Selected().casualControls)
-                {
-                    buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), ".Allow casual controls").overrideColor = HudLib.NotAvailableColor_Dark;
-                }
-
-                content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent, 
-                    new RbAction1Arg<AbsAvailableSession>((AbsAvailableSession session) =>
-                    {
-                        Ref.lobby.lockSession();
-                        new Net.ConnectState(session);
-                    }, session)));
-            }
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbText("1. The host starts a game"));
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbText("2. A join button will appear here"));
 
             networkMenu.Refresh(content);
+        }
+
+        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
+        {
+            base.NetEvent_SessionsFound(availableSessions);
+           
+
+            if (availableSessions.Count == 0 && viewLobbyTutorial)
+            {
+                networkTutorial();
+            }
+            else
+            {
+                viewLobbyTutorial = false;
+                openNetWorkMenu();
+
+                RichBoxContent content = new RichBoxContent();
+                foreach (var session in availableSessions)
+                {
+                    content.newLine();
+
+                    RichBoxContent buttonContent = new RichBoxContent();
+                    buttonContent.Add(new RbBeginTitle(1));
+                    buttonContent.Add(new RbImage(SpriteName.WarsMapFilterMinimap));
+                    buttonContent.Add(new RbSpace());
+                    buttonContent.Add(new RbText(DssRef.todoLang.Network_Join, HudLib.TitleColor_Head2, LoadedFont.Bold));
+
+                    buttonContent.newLine();
+                    HudLib.BulletPoint(buttonContent);
+                    buttonContent.Add(new RbText(session.hostName, HudLib.TitleColor_Name_Dark));
+
+                    var meta = session.metaData as LobbyMetaData;
+                    buttonContent.newLine();
+
+                    HudLib.BulletSeperationPoint(buttonContent);
+                    LangLib.GameModeText(meta.GameMode(), out string modeName, out _);
+                    buttonContent.Add(new RbText(modeName, HudLib.InfoYellow_Dark));
+
+                    HudLib.BulletSeperationPoint(buttonContent);
+                    buttonContent.Add(new RbText(TextLib.PercentTextWithSymbol(meta.TotalDifficulty()), HudLib.InfoYellow_Dark));
+
+                    if (!meta.MatchingVersion)
+                    {
+                        buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, ".Version", session.metaData.Version), HudLib.NotAvailableColor_Dark);
+                    }
+
+                    if (!meta.allowCasual && DssRef.storage.profileStorage.Selected().casualControls)
+                    {
+                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), ".Allow casual controls").overrideColor = HudLib.NotAvailableColor_Dark;
+                    }
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,
+                        new RbAction1Arg<AbsAvailableSession>((AbsAvailableSession session) =>
+                        {
+                            Ref.lobby.lockSession();
+                            new Net.ConnectState(session);
+                        }, session)));
+                }
+
+                networkMenu.Refresh(content);
+            }
         }
 
 

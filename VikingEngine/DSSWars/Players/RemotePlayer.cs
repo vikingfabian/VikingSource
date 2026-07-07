@@ -269,7 +269,10 @@ namespace VikingEngine.DSSWars.Players
         {
             return new RbTexture(flagTexture, 1f, 0, 0.2f);
         }
-
+        public override bool HasSupportDLC()
+        {
+            return supporterDLC;
+        }
         public override bool IsLocal => false;
 
         public void DeleteMe()

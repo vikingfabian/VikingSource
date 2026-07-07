@@ -3,10 +3,13 @@ Change log:
 * Fixed unclaimed city missing models
 * Share of gifted achivements to joining players
 * Color frame on client pointer
+* DLC banner and gold frame
+* Doesnt move client pointer when over UI
 
 + merge with patches
 
 KNOWN ISSUES
+* The pings are half broken, share for everyone then delete, i delete mine but he see some of them while i see none
 x rejoining can give an endless "city lost" message
 x Honor guards, or maybe all client soldiers, are weaker
 x missing steam deck layout

@@ -194,7 +194,7 @@ namespace VikingEngine.DSSWars.Interface
 
                
 
-                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
+                content.Add(new ArtButton(gamer.HasSupportDLC()? RbButtonStyle.GoldOutline : RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
                     (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
                     new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
 

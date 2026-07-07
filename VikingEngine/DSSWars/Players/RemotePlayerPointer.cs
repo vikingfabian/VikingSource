@@ -21,6 +21,8 @@ namespace VikingEngine.DSSWars.Players
         Vector3 pointerSpeed = Vector3.Zero;
         Vector2 pointerIconPosDiff, edgePosDiff;
 
+        bool mouseOverHud;
+
         public Graphics.Image pointer;
         Graphics.ImageAdvanced pointerGamerIcon;
         public Graphics.Image colorFrame;
@@ -69,16 +71,22 @@ namespace VikingEngine.DSSWars.Players
                 {
                     viewLayer = MapDetailLayerType.FactionColors3;
                 }
-                Vector3 diff = pointerGoalWp - pointerWp;
 
-                if (diff.Length() > 0.1f)
+                if (!mouseOverHud)
                 {
-                    float expectedUpdates = (Ref.netSession.netUpdateRate / Ref.main.TargetElapsedTime.Milliseconds) * 1.5f;
-                    pointerSpeed = diff / expectedUpdates;
-                }
-                else
-                {
-                    pointerSpeed = Vector3.Zero;
+                    Vector3 diff = pointerGoalWp - pointerWp;
+
+                    if (diff.Length() > 0.1f)
+                    {
+                        float expectedUpdates = (Ref.netSession.netUpdateRate / Ref.main.TargetElapsedTime.Milliseconds) * 1.5f;
+                        pointerSpeed = diff / expectedUpdates;
+                    }
+                    else
+                    {
+                        pointerSpeed = Vector3.Zero;
+                    }
+
+                    pointerWp += pointerSpeed;
                 }
 
 
@@ -90,8 +98,7 @@ namespace VikingEngine.DSSWars.Players
                 pointerGamerIcon.Opacity = transparent;
                 colorFrame.Visible = true;
                 colorFrame.Opacity = transparent;
-
-                pointerWp += pointerSpeed;
+                               
 
                 pointer.Position = Ref.draw.Camera.From3DToScreenPos(
                     pointerWp, playerView.playerData.view.Viewport);
@@ -128,15 +135,19 @@ namespace VikingEngine.DSSWars.Players
 
         public static void netWrite(System.IO.BinaryWriter w, LocalPlayer player)
         {
+            
             w.Write((byte)player.playerNetState);
             if (player.playerNetState > PlayerNetState.InMenu)
             {
+
                 if (player.playerNetState == PlayerNetState.Building)
                 {
                     w.Write((byte)player.gameControls.build.CompressedBuildMode());
                 }
 
                 w.Write((byte)player.mapLayer());
+                w.Write(player.hud.hudMouseOver());
+
 
                 StreamLib.WriteVector(w, VectorExt.V3XZtoV2(player.gameControls.map.pointerPosWP));
             }
@@ -195,6 +206,7 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 mapLayer = (Map.MapDetailLayerType)r.ReadByte();
+                mouseOverHud = r.ReadBoolean();
                 if (mapLayer >= MapDetailLayerType.FullOverview4)
                 {
                     mapLayer = MapDetailLayerType.FactionColors3;

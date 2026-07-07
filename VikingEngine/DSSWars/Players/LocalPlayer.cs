@@ -1819,6 +1819,10 @@ namespace VikingEngine.DSSWars.Players
         {
             return this;
         }
+        public override bool HasSupportDLC()
+        {
+            return DssRef.DlcSupporter.owned;
+        }
         public override string Name
         {
 

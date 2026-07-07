@@ -162,6 +162,10 @@ namespace VikingEngine.DSSWars
             {
                 disableTexture = SpriteName.WarsHudHoverArea
             };
+            RbSettings.artGoldOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudGoldOutline, 1, 8, 1f, true, true)
+            {
+                disableTexture = SpriteName.WarsHudGoldOutline_Gray
+            };
             RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
 
             RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.WarsHudDragButton, 1, 15);

@@ -313,5 +313,7 @@ namespace VikingEngine.DSSWars.Players
         {
             return true;
         }
+
+        abstract public bool HasSupportDLC();
     }
 }
