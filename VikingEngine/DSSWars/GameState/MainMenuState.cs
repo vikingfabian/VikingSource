@@ -701,7 +701,7 @@ namespace VikingEngine.DSSWars
                     buttonContent.Add(new RbText(TextLib.PercentTextWithSymbol(meta.TotalDifficulty()), HudLib.InfoYellow_Dark));
 
                     HudLib.BulletSeperationPoint(buttonContent);
-                    buttonContent.Add(new RbImage(SpriteName.birdPlayerCount));
+                    buttonContent.Add(new RbImage(SpriteName.WarsHudIconPlayerCount));
                     buttonContent.Add(new RbSpace(0.5f));
                     buttonContent.Add(new RbText(meta.playerCount.ToString(), HudLib.InfoYellow_Dark));
 
@@ -1653,7 +1653,7 @@ namespace VikingEngine.DSSWars
 
                 case GameModeMainType.QuickMatch:
                     content.newLine();
-                    content.Add(new RbImage(SpriteName.birdPlayerCount));
+                    content.Add(new RbImage(SpriteName.WarsHudIconPlayerCount));
                     content.space();
                     content.Add(new RbText(DssRef.lang.Lobby_PlayerCount, HudLib.TitleColor_Label));
                     content.space();

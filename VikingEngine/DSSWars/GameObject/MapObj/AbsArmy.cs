@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.GameObject
                 group.readNet(army, r, needInit);
                 group.net_onUpdate();
 
-                Debug.ReadCheck(r);
+                //Debug.ReadCheck(r);
                 //return true;
             //}
             //else
