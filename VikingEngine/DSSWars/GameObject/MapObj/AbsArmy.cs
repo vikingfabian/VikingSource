@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -85,12 +88,45 @@ namespace VikingEngine.DSSWars.GameObject
             group.army = new WeakReference<AbsArmy>(this);
             group.factionIndex = factionIndex;
         }
-        
+
+        const int GroupsPerPacket = 8;
         public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount)
         {
-            const int GroupsPerPacket = 8;
+            
+
+            int groupIndex = 0;
+            int packetIndex = 0;
+            while (groupIndex < groups.Array.Length)
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
+                {
+                    Net.ObjectId.NetWriteMapObjId(w, this);
+
+                    w.Write((byte)packetIndex);
+
+                    for (int i = 0; i < GroupsPerPacket; i++)
+                    {
+                        var group = groups.GetIndex_Safe(groupIndex);
+                        if (group != null)
+                        {
+                            w.Write(true);
+                            NetWriteGroup(w, group);
+                        }
+                        else
+                        {
+                            w.Write(false);
+                        }
+                        groupIndex++;
+                    }
+                } packet.EndWrite_Asynch();
+                packetIndex++;
+            }
+
+            lastNetUpdate.setNow();
+            /*
             if (groups.Count > 0)
             {
+
                 var groupC = groups.counter();
 
                 while (groupC.HasMore())
@@ -113,6 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
                     packet.EndWrite_Asynch();
                 }
             }
+            */
         }
         public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
         {
@@ -121,12 +158,40 @@ namespace VikingEngine.DSSWars.GameObject
 
             Debug.WriteCheck(w);
         }
-
-        public static bool NetReadGroup(System.IO.BinaryReader r, AbsArmy army)
+        public static void NetReadGroups(bool bArmy, System.IO.BinaryReader r)
         {
-            int index = r.ReadUInt16();
-            if (index != ushort.MaxValue)
+            if (ObjectId.NetReadMapObjId(r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
             {
+                if (mapObj != null)
+                {
+                    int packetIndex = r.ReadByte();
+
+                    for (int i = 0; i < GroupsPerPacket; i++)
+                    {
+                        int groupIndex = packetIndex * GroupsPerPacket + i;
+                        if (r.ReadBoolean())
+                        {
+                            NetReadGroup(r, groupIndex, mapObj);
+                        }
+                        else
+                        {
+                            mapObj.groups.PullIndex_Safe(groupIndex)?.DeleteMe(DeleteReason.NetworkEvent, false);
+                        }
+                    }
+                        //bool more = false;
+                        //do
+                        //{
+                        //    more = AbsArmy.NetReadGroup(packet.r, mapObj);
+                        //} while (more);
+                }
+            }
+        }
+        public static void NetReadGroup(System.IO.BinaryReader r, int index, AbsArmy army)
+        {
+            
+            //int index = r.ReadUInt16();
+            //if (index != ushort.MaxValue)
+            //{
                 var group = army.groups.GetIndex_Safe(index);
                 bool needInit = false;
                 if (group == null)
@@ -152,13 +217,13 @@ namespace VikingEngine.DSSWars.GameObject
                 group.net_onUpdate();
 
                 Debug.ReadCheck(r);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
+                //return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            
             
         }
 

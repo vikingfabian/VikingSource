@@ -198,6 +198,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             player.faction.money.PayGold(player.sendGold, true);
             otherfaction.money.AddGold(player.sendGold);
+            SoundLib.buy.Play();
 
             if (otherfaction.player.IsRemotePlayer())
             {

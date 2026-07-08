@@ -4,6 +4,7 @@ Change log:
 * Fixed the logistics level 2 upgrade
 * New icons
 * Translations prepared
+* More secure soldier net share
 
 KNOWN ISSUES
 x rejoining can give an endless "city lost" message

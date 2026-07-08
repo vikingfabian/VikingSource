@@ -467,10 +467,12 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssSoldierGroupStatus_Army:
-                    readGroupStatus(true);
+                    //readGroupStatus(true);
+                    AbsArmy.NetReadGroups(true, packet.r);
                     break;
                 case PacketType.DssSoldierGroupStatus_City:
-                    readGroupStatus(false);
+                    //readGroupStatus(false);
+                    AbsArmy.NetReadGroups(false, packet.r);
                     break;
 
                 case PacketType.DssDeliver:
@@ -670,20 +672,21 @@ namespace VikingEngine.DSSWars
 #endif
 
 
-            void readGroupStatus(bool bArmy)
-            {
-                if (ObjectId.NetReadMapObjId(packet.r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
-                {
-                    if (mapObj != null)
-                    {
-                        bool more = false;
-                        do
-                        {
-                            more = AbsArmy.NetReadGroup(packet.r, mapObj);
-                        } while (more);
-                    }
-                }
-            }
+            //void readGroupStatus(bool bArmy)
+            //{
+            //    if (ObjectId.NetReadMapObjId(packet.r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
+            //    {
+            //        if (mapObj != null)
+            //        {
+
+            //            //bool more = false;
+            //            //do
+            //            //{
+            //            //    more = AbsArmy.NetReadGroup(packet.r, mapObj);
+            //            //} while (more);
+            //        }
+            //    }
+            //}
         }
 
         
