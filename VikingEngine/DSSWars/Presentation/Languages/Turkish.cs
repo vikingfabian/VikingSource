@@ -1322,7 +1322,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => "Şunu gönder: {0}";
+        public override string Hud_SendX => "Şunu gönder: {0}";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1481,7 +1481,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "Firariler!";
         public override string EventMessage_DesertersText_Money => "Parası ödenmemiş askerler, ordundan firar ediyorlar";
 
-        public override string DifficultyDescription_AiAggression => "YZ agresifliği: {0}.";
+        //public override string DifficultyDescription_AiAggression => "YZ agresifliği: {0}.";
         public override string DifficultyDescription_BossSize => "Baş düşman gücü: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Baş düşmanın gelişine kalan süre: {0}.";
         public override string DifficultyDescription_AiEconomy => "YZ ekonomisi: %{0}.";
@@ -2061,8 +2061,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "Açık";
         public override string Hud_Off => "Kapalı";
 
-        public override string Hud_Time_Seconds => "{0} saniye";
-        public override string Hud_Time_Minutes => "{0} dakika";
+        public override string Hud_Time_XSeconds => "{0} saniye";
+        public override string Hud_Time_XMinutes => "{0} dakika";
         public override string Hud_Undo => "Geri al";
         public override string Hud_Redo => "Yinele";
 

@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -35,7 +36,7 @@ namespace VikingEngine.DSSWars
     {
         bool factionHandOverComplete = false;
 
-        public const SpriteName NetworkIcon = SpriteName.birdPlayerCount;
+        public const SpriteName NetworkIcon = SpriteName.WarsHudIconMultiplayer;
         ConcurrentQueue<FactionHandover> factionHandovers = new ConcurrentQueue<FactionHandover>();
 
         const int MaxSendLoops = 8;
@@ -395,10 +396,10 @@ namespace VikingEngine.DSSWars
                         bool hasSave = DssRef.storage.meta.LoadClient(factionIx);
 
                         RichBoxContent content = new RichBoxContent();
-                        content.icontext(NetworkIcon, "Handover complete");
+                        content.icontext(NetworkIcon, DssRef.todoLang.Multiplayer_HandoverComplete);
                         if (hasSave)
                         {
-                            content.icontext(SpriteName.WarsHudIconOpen, "Loading client save");
+                            content.icontext(SpriteName.WarsHudIconOpen, DssRef.todoLang.Multiplayer_LoadingClientSave);
                         }
                         LocalHost().hud.messages.Add(content);
                     }
@@ -412,7 +413,7 @@ namespace VikingEngine.DSSWars
                     {
                         sender.waitingForHandover = false;
                         RichBoxContent content = new RichBoxContent();
-                        content.icontext(NetworkIcon, "Client save complete");
+                        content.icontext(NetworkIcon, DssRef.todoLang.Multiplayer_ClientSaveComplete);
                         content.newLine();
                         sender.addNetGamerToHud(content, true, false);
                         LocalHost().hud.messages.Add(content);
@@ -545,13 +546,13 @@ namespace VikingEngine.DSSWars
                         {
                             RichBoxContent content = new RichBoxContent();
                             sender.addNetGamerToHud(content, true, false);
-                            content.h1("Ban request", HudLib.TitleColor_Head);
-                            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, "Reason", behaviourType.ToString());
-                            HudLib.Label(content, "Bad actor");
+                            content.h1(DssRef.todoLang.Multiplayer_RequestBlockPlayer, HudLib.TitleColor_Head);
+                            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.todoLang.Hud_Reason, behaviourType.ToString());
+                            HudLib.Label(content, DssRef.todoLang.Multiplayer_BadActor);
                             badActor.addNetGamerToHud(content, true, false);
 
                             content.newLine();
-                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Accept") },
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Hud_Accept) },
                                 new RbAction(() =>
                                 {
                                     LocalHost().gameControls.clearSelection();
@@ -649,7 +650,7 @@ namespace VikingEngine.DSSWars
                             faction.player.SetColor(color, false);
 
                             RichBoxContent content = new RichBoxContent();
-                            content.h1("Recolor", HudLib.TitleColor_Head);
+                            content.h1(DssRef.lang.Editor_Color_Recolor, HudLib.TitleColor_Head);
                             content.newLine();
                             faction.player.GetHumanPlayer().addNetGamerToHud(content, true, false);
                             LocalHost().hud.messages.Add(content, SoundLib.netMessage);
@@ -789,7 +790,7 @@ namespace VikingEngine.DSSWars
 
                 RichBoxContent content = new RichBoxContent();
 
-                content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
+                content.h2(NetworkIcon, DssRef.todoLang.Multiplayer_PlayerJoined, HudLib.TitleColor_Head);
                 content.newLine();
                 sender.addNetGamerToHud(content, true, false);
                 LocalHost().hud.messages.Add(content, SoundLib.netJoined);
@@ -919,7 +920,7 @@ namespace VikingEngine.DSSWars
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h1(SpriteName.RedErrorCross, "Network error", HudLib.NotAvailableColor);
+            content.h1(SpriteName.RedErrorCross, DssRef.todoLang.Multiplayer_NetworkError, HudLib.NotAvailableColor);
             content.text(message);
 
             var player = GetPlayer(peer.fullId) as RemotePlayer;
@@ -927,7 +928,7 @@ namespace VikingEngine.DSSWars
             if (player != null)
             {
                 content.newLine();
-                HudLib.Label(content, peerIsSender ? "Sender" : "Reciever");
+                HudLib.Label(content, peerIsSender ? DssRef.todoLang.Multiplayer_Sender : DssRef.todoLang.Multiplayer_Reciever);
                 content.newLine();
                 player.addNetGamerToHud(content, true, false);
 
@@ -1017,7 +1018,7 @@ namespace VikingEngine.DSSWars
 
                 RichBoxContent content = new RichBoxContent();
 
-                content.h2(NetworkIcon, ".Player left", HudLib.TitleColor_Head);
+                content.h2(NetworkIcon, DssRef.todoLang.Multiplayer_PlayerLeft, HudLib.TitleColor_Head);
 
                 content.newLine();
 
@@ -1095,7 +1096,7 @@ namespace VikingEngine.DSSWars
             to.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
-            content.h1(NetworkIcon, "Gifted achievement", HudLib.TitleColor_Head2);
+            content.h1(NetworkIcon, DssRef.todoLang.GiftedAchievements, HudLib.TitleColor_Head2);
             content.newLine();
 
             var gift = GiftedAchievementCollection.Get(type);
@@ -1117,10 +1118,10 @@ namespace VikingEngine.DSSWars
             to.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
-            content.h1(NetworkIcon, "Ban warning!", HudLib.TitleColor_Head2);
+            content.h1(NetworkIcon, TextLib.LargeFirstLetter(DssRef.todoLang.Multiplayer_BanWarning), HudLib.TitleColor_Head2);
             content.newLine();
 
-            content.text("Reason: " + behaviourType.ToString(), HudLib.InfoYellow_Light);
+            content.text(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.Hud_Reason, behaviourType.ToString()), HudLib.InfoYellow_Light);
 
             LocalHost().hud.messages.Add(content, SoundLib.netJoined);
         }
@@ -1157,7 +1158,7 @@ namespace VikingEngine.DSSWars
                 DssRef.world.metaData.worldId.write(w);
 
                 RichBoxContent content = new RichBoxContent();
-                content.icontext(NetworkIcon, "Requesting client gamestates...");
+                content.icontext(NetworkIcon, DssRef.todoLang.Multiplayer_RequestingClientGamestates);
                 LocalHost().hud.messages.Add(content, SoundLib.netMessage);
             }
         }
@@ -1173,8 +1174,7 @@ namespace VikingEngine.DSSWars
             var playTime = new TimeSpan(r.ReadInt64());
             WorldMetaId id = new WorldMetaId();
             id.read(r);
-
-            
+                        
             ClientSaveMeta meta = new ClientSaveMeta(playTime, id, LocalHost().faction.myIndex);
             ClientSaveState saveGamestate = new ClientSaveState(meta);
             saveGamestate.save();

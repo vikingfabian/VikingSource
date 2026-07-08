@@ -2,6 +2,8 @@
 Change log:
 * Shows player count on lobby
 * Fixed the logistics level 2 upgrade
+* New icons
+* Translations prepared
 
 KNOWN ISSUES
 x rejoining can give an endless "city lost" message

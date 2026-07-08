@@ -1013,7 +1013,7 @@ namespace VikingEngine.DSSWars.Build
             //content.newLine();
             content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_Seconds, build.buildTimeSec)));
+            content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec)));
 
             content.Add(new RbSeperationLine());
             HudLib.Description(content, build.Description());
@@ -1467,7 +1467,7 @@ namespace VikingEngine.DSSWars.Build
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(DssConst.BankTaxIncreasePercUnits_copp * Money.CopperToGold))));
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(DssConst.BankTaxIncreasePercUnits_copp * Money.CopperToGold))));
                     content.text(DssRef.lang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
                     break;
 
@@ -1558,11 +1558,11 @@ namespace VikingEngine.DSSWars.Build
                 content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, plantToReadyTime))));
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_XMinutes, plantToReadyTime))));
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                var workTimeText = new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + gatherTime)));
+                var workTimeText = new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_XSeconds, plantTime + gatherTime)));
                 if (upgrade)
                 {
                     workTimeText.overrideColor = HudLib.AvailableColor;
@@ -1620,11 +1620,11 @@ namespace VikingEngine.DSSWars.Build
                 content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, penGrowth.maxSize))));
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_XMinutes, penGrowth.maxSize))));
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_XSeconds, DssConst.WorkTime_PickUpProduce))));
 
                 content.newLine();
                 HudLib.BulletPoint(content);

@@ -42,10 +42,10 @@ namespace VikingEngine.DSSWars.Net
             content.space();
             content.Add(new RbImage( SpriteName.TextChatLetter));
             content.hspace();
-            content.Add(new RbText(".Text chat", HudLib.TitleColor_Action));
+            content.Add(new RbText(DssRef.todoLang.InputActionName_TextChat, HudLib.TitleColor_Action));
 
             content.newParagraph();
-            content.h2(".Chat log", HudLib.TitleColor_Head);
+            content.h2(DssRef.todoLang.InputActionName_TextChatLog, HudLib.TitleColor_Head);
 
             if (Count == 0)
             {

@@ -444,7 +444,7 @@ namespace VikingEngine.DSSWars.Interface
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextPin, DssRef.todoLang.InputActionName_NextPin);
             content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.todoLang.InputActionName_PinAndPing);
-            content.ButtonDescription(SpriteName.KeyCtrl, ".Share and ping");
+            content.ButtonDescription(SpriteName.KeyCtrl, DssRef.todoLang.ObjectType_LocationPin_Share);
         }
 
         void addPinTip(RichBoxContent content, object tag)
@@ -473,14 +473,14 @@ namespace VikingEngine.DSSWars.Interface
 
             
             content.newLine();
-            HudLib.Label(content, "Below soft cap");
+            HudLib.Label(content, DssRef.todoLang.Diplomacy_BelowSoftCap);
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec()))));
 
             content.newLine();
-            HudLib.Label(content, "Above soft cap");
+            HudLib.Label(content, DssRef.todoLang.Diplomacy_AboveSoftCap);
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
             content.space();

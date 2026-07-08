@@ -1335,7 +1335,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => TextLib.ThaiConv("ส่ง| {0}");
+        public override string Hud_SendX => TextLib.ThaiConv("ส่ง| {0}");
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1494,7 +1494,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => TextLib.ThaiConv("ทหาร|หนี|ทัพ!");
         public override string EventMessage_DesertersText_Money => TextLib.ThaiConv("ทหาร|ที่|ไม่|ได้|รับ|ค่า|จ้าง|กำลัง|หนี|ทัพ|ไป|จาก|กอง|ทัพ|ของ|คุณ");
 
-        public override string DifficultyDescription_AiAggression => TextLib.ThaiConv("ความ|ดุดัน|ของ| AI: {0}");
+        //public override string DifficultyDescription_AiAggression => TextLib.ThaiConv("ความ|ดุดัน|ของ| AI: {0}");
         public override string DifficultyDescription_BossSize => TextLib.ThaiConv("ขนาด|ของ|บอส: {0}");
         public override string DifficultyDescription_BossEnterTime => TextLib.ThaiConv("เวลา|ปรากฏ|ตัว|ของ|บอส: {0}");
         public override string DifficultyDescription_AiEconomy => TextLib.ThaiConv("เศรษฐกิจ|ของ| AI: {0}%");
@@ -2080,8 +2080,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => TextLib.ThaiConv("เปิด");
         public override string Hud_Off => TextLib.ThaiConv("ปิด");
 
-        public override string Hud_Time_Seconds => TextLib.ThaiConv("{0} | วินาที");
-        public override string Hud_Time_Minutes => TextLib.ThaiConv("{0} | นาที");
+        public override string Hud_Time_XSeconds => TextLib.ThaiConv("{0} | วินาที");
+        public override string Hud_Time_XMinutes => TextLib.ThaiConv("{0} | นาที");
         public override string Hud_Undo => TextLib.ThaiConv("ย้อน|กลับ");
         public override string Hud_Redo => TextLib.ThaiConv("ทำ|ซ้ำ");
 

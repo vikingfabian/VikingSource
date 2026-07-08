@@ -370,7 +370,7 @@ namespace VikingEngine.DSSWars
                                     content.Add(start);
 
                                     content.newLine();
-                                    HudLib.Label(content, SpriteName.WarsHudIconNetwork, ".Multiplayer");
+                                    HudLib.Label(content, SpriteName.WarsHudIconNetwork, DssRef.todoLang.Multiplayer_Title);
                                     content.hspace();
                                     content.Add(new RbText(Ref.netsett.JoinPermissionString()));
                                     content.space();
@@ -642,7 +642,7 @@ namespace VikingEngine.DSSWars
             openNetWorkMenu();
 
             RichBoxContent content = new RichBoxContent();
-            content.h1(".Multiplayer lobby", HudLib.TitleColor_Head2);
+            content.h1(DssRef.todoLang.Multiplayer_Lobby, HudLib.TitleColor_Head2);
             content.space();
             HudLib.InfoButton(content, new RbTooltip(networkTutorialTip));
 
@@ -652,13 +652,13 @@ namespace VikingEngine.DSSWars
         void networkTutorialTip(RichBoxContent content, object tag)
         {
             HudLib.BulletPoint(content);
-            content.Add(new RbText("1. The host starts a game"));
+            content.Add(new RbText(DssRef.todoLang.Multiplayer_Tutorial_HostStart));
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText("2. A join button will appear here"));
+            content.Add(new RbText(DssRef.todoLang.Multiplayer_Tutorial_JoinButton));
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText("The host must have a visible Steam profile"));
+            content.Add(new RbText(DssRef.todoLang.Multiplayer_Tutorial_Visible));
         }
 
         public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
@@ -707,17 +707,17 @@ namespace VikingEngine.DSSWars
 
                     if (!meta.MatchingVersion)
                     {
-                        buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, ".Version", session.metaData.Version), HudLib.NotAvailableColor_Dark);
+                        buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.Hud_Version, session.metaData.Version), HudLib.NotAvailableColor_Dark);
                     }
 
                     if (!meta.allowCasual && DssRef.storage.profileStorage.Selected().casualControls)
                     {
-                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), ".Allow casual controls").overrideColor = HudLib.NotAvailableColor_Dark;
+                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), string.Format( DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.Hud_Allow,  DssRef.lang.Settings_CasualControls)).overrideColor = HudLib.NotAvailableColor_Dark;
                     }
 
                     if (meta.playerCount >= meta.maxPlayerCount && meta.maxPlayerCount != 0)
                     {
-                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), ".Full").overrideColor = HudLib.NotAvailableColor_Dark;
+                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), DssRef.todoLang.Hud_Full).overrideColor = HudLib.NotAvailableColor_Dark;
                     }
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,

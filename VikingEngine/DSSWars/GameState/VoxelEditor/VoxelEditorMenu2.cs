@@ -1062,7 +1062,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.newLine();
             allLayersChkBox(content);
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Replace all") }, new RbAction(designer.replaceAllMaterials)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText( ".Replace all") }, new RbAction(designer.replaceAllMaterials)));
 
             Refresh(content);
         }

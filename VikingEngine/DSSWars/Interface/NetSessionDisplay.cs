@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Interface
         public void BanWarning(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             HudLib.returnButton(content, menu, true, null);
-            content.h1("Send ban warning", HudLib.TitleColor_Head);
+            content.h1(string.Format(DssRef.lang.Hud_SendX, DssRef.todoLang.Multiplayer_BanWarning), HudLib.TitleColor_Head);
             content.newLine();
             selectedPlayer.addNetGamerToHud(content, true, true);
 
@@ -59,14 +59,14 @@ namespace VikingEngine.DSSWars.Interface
         public void RequestBlock(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             HudLib.returnButton(content, menu, true, null);
-            content.h1("Request block", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Multiplayer_RequestBlockPlayer, HudLib.TitleColor_Head);
             content.newLine();
             selectedPlayer.addNetGamerToHud(content, true, true);
-            content.text("Will be sent to the host", HudLib.InfoYellow_Light);
+            content.text(DssRef.todoLang.Multiplayer_SentToHost, HudLib.InfoYellow_Light);
 
             content.newParagraph();
 
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Add to your own block list") },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Multiplayer_AddToOwnBlocks) },
                 Ref.netsett.alsoBlockOnRequestProperty));
 
             content.newParagraph();
@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Interface
 
                         DssRef.state.LocalHost().hud.messages.Add(new RichBoxContent()
                         {
-                            new RbText("Request sent")
+                            new RbText(DssRef.todoLang.Multiplayer_Message_RequestSent)
                         });
 
                         menu.menuBack();
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void Kick(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
-            content.h1("Kick player", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Multiplayer_KickPlayer, HudLib.TitleColor_Head);
             selectedPlayer.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void Block(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
-            content.h1("Block player", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Multiplayer_BlockPlayer, HudLib.TitleColor_Head);
             selectedPlayer.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
@@ -141,19 +141,6 @@ namespace VikingEngine.DSSWars.Interface
             })));
         }
 
-        //public void invite(RichBoxContent content)
-        //{
-        //    content.newLine();
-
-        //    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-        //        new RbImage(SpriteName.SteamIcon),
-        //        new RbSpace(),
-        //        new RbImage(SpriteName.WarsHudIconNetwork),
-        //        new RbSpace(),
-        //        new RbText("Invite")
-        //    }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text("Open Steam overlay")));
-        //}
-
         public void overviewToHud(LocalPlayer player, RichBoxContent content)
         {
             if (sendGiftTo != null)
@@ -162,7 +149,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                content.h2("Net session", HudLib.TitleColor_Head);
+                content.h2(DssRef.todoLang.Multiplayer_NetSession, HudLib.TitleColor_Head);
                 
                 gamerButton(player);
                 content.newLine();
@@ -259,8 +246,8 @@ namespace VikingEngine.DSSWars.Interface
                         player.hud.needRefresh = true;
                     }, RbSoundType.Back)));
 
-            content.h2("Gifted achievements", HudLib.TitleColor_Head);
-            content.text("Reward your friends bad behaiviour", HudLib.InfoYellow_Light);
+            content.h2(DssRef.todoLang.GiftedAchievements, HudLib.TitleColor_Head);
+            content.text(DssRef.todoLang.GiftedAchievements_Description, HudLib.InfoYellow_Light);
 
 #if DEBUG
             bool[] included = new bool[(int)GiftedAchievementType.NUM];
@@ -294,7 +281,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
 
                             var info = GiftedAchievementCollection.Get((GiftedAchievementType)tag);
-                            content.h2("Send", HudLib.TitleColor_Action);
+                            content.h2(string.Format( DssRef.lang.Hud_SendX, string.Empty), HudLib.TitleColor_Action);
                             content.newParagraph();
                             content.text(info.description, HudLib.InfoYellow_Light);
 
@@ -370,42 +357,35 @@ namespace VikingEngine.DSSWars.Interface
 
             content.Add(new RbSeperationLine());
            
-
-            //content.newLine();
-            //RbDragButton.RbDragButtonGroup(content, new List<float> { 100, 1000, 10_000, 1_000_000 },
-            //    new DragButtonSettings(new IntervalF(10, (float)player.faction.money.GetGold()), 10),
-            //    player.sendGoldProperty, true);
-            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-            //        new RbImage(SpriteName.rtsIncome),
-            //        new RbSpace(0.5f),
-            //        new RbText("Send gold") },
-            //        new RbAction(player.SendGold)));
-
             content.newLine();
             if (Ref.netSession.IsHost)
             {
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.VoxelEditorBucket),
                     new RbSpace(0.5f),
-                    new RbText("Recolor") },
+                    new RbText(DssRef.lang.Editor_Color_Recolor) },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_RECOLOR, StackOption.Stack)));
                 
                 
                 content.newParagraph();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Send ban warning") },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                    new RbText(string.Format(DssRef.lang.Hud_SendX, DssRef.todoLang.Multiplayer_BanWarning)) },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BANWARNING, StackOption.Stack)));
 
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Kick player") },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                    new RbText(DssRef.todoLang.Multiplayer_KickPlayer) },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_KICK, StackOption.Stack)));
 
                 content.newLine();
-                content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("Block player") },
+                content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
+                    new RbText(DssRef.todoLang.Multiplayer_BlockPlayer) },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BLOCK, StackOption.Stack)));
             }
             else
             {
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Request: Block player") },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                    new RbText(DssRef.todoLang.Multiplayer_RequestBlockPlayer) },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_REQUESTBLOCK, StackOption.Stack)));
 
             }
@@ -413,9 +393,9 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.SteamIcon),
                     new RbSpace(),
-                    new RbText("User profile")
+                    new RbText(DssRef.todoLang.Steam_UserProfile)
                 }, new RbAction2Arg<string, CSteamID>(Steamworks.SteamFriends.ActivateGameOverlayToUser, "steamid", selectedPlayer.networkPeer.peer.SteamID),
-               new RbTooltip_Text("Open Steam overlay")));
+               new RbTooltip_Text(DssRef.todoLang.Steam_OpenSteamOverlay)));
 
         }
     }

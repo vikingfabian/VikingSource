@@ -1321,7 +1321,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 軍隊を制御するためのメニューオプション。兵士を軍隊間で送るオプション。
         /// </summary>
-        public override string ArmyOption_SendX => "{0} を送る";
+        public override string Hud_SendX => "{0} を送る";
 
         /// <summary>
         /// 軍隊を制御するためのメニューオプション。兵士を軍隊間で送るオプション。
@@ -1476,7 +1476,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "脱走者！";
         public override string EventMessage_DesertersText_Money => "未払いの兵士たちがあなたの軍隊から脱走しています";
 
-        public override string DifficultyDescription_AiAggression => "AIの攻撃性: {0}。";
+        //public override string DifficultyDescription_AiAggression => "AIの攻撃性: {0}。";
         public override string DifficultyDescription_BossSize => "ボスのサイズ: {0}。";
         public override string DifficultyDescription_BossEnterTime => "ボス登場時間: {0}。";
         public override string DifficultyDescription_AiEconomy => "AIの経済: {0}%。";
@@ -2048,8 +2048,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "オン";
         public override string Hud_Off => "オフ";
 
-        public override string Hud_Time_Seconds => "{0}秒";
-        public override string Hud_Time_Minutes => "{0}分";
+        public override string Hud_Time_XSeconds => "{0}秒";
+        public override string Hud_Time_XMinutes => "{0}分";
         public override string Hud_Undo => "元に戻す";
         public override string Hud_Redo => "やり直し";
 

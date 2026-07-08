@@ -1310,7 +1310,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Opción de menú para controlar un ejército. Opciones para enviar soldados entre ejércitos.
         /// </summary>
-        public override string ArmyOption_SendX => "Enviar {0}";
+        public override string Hud_SendX => "Enviar {0}";
 
         /// <summary>
         /// Opción de menú para controlar un ejército. Opciones para enviar soldados entre ejércitos.
@@ -1466,7 +1466,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Money => "Los soldados no pagados están desertando de tus ejércitos";
 
 
-        public override string DifficultyDescription_AiAggression => "Agresividad de la IA: {0}.";
+        //public override string DifficultyDescription_AiAggression => "Agresividad de la IA: {0}.";
         public override string DifficultyDescription_BossSize => "Tamaño del jefe: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Tiempo de aparición del jefe: {0}.";
         public override string DifficultyDescription_AiEconomy => "Economía de la IA: {0}%.";
@@ -2035,8 +2035,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "Activado";
         public override string Hud_Off => "Desactivado";
 
-        public override string Hud_Time_Seconds => "{0} segundos";
-        public override string Hud_Time_Minutes => "{0} minutos";
+        public override string Hud_Time_XSeconds => "{0} segundos";
+        public override string Hud_Time_XMinutes => "{0} minutos";
         public override string Hud_Undo => "Deshacer";
         public override string Hud_Redo => "Rehacer";
 

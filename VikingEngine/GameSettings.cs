@@ -668,7 +668,7 @@ namespace VikingEngine
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
                 content.space();
-                content.Add(new RbText(".Multiplayer voice", HudLib.TitleColor_Label));
+                content.Add(new RbText(DssRef.todoLang.Multiplayer_VoiceChat, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), netVoiceVolProperty, true));
             }

@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars
                     break;
                 case RelationType.RelationTypeN3_Mobilization:
                     icon = SpriteName.MissingImage;
-                    name = ".Mobilizing";
+                    name = DssRef.todoLang.Diplomacy_RelationType_Mobilizing;
                     break;
                 case RelationType.RelationTypeN4_War:
                     icon = SpriteName.WarsRelationWar;

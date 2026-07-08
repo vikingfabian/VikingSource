@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.rtsMoney),
                     new RbSpace(0.5f),
-                    new RbText(".Send gold") },
+                    new RbText(DssRef.todoLang.Diplomacy_SendGold) },
                         new RbAction(SendGold), null, player.faction.money.GetGold() >= 10));
             }
 
@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars.Interface
             DssRef.state.LocalHost().faction.money.AddGold(gold);
 
             RichBoxContent content = new RichBoxContent();
-            content.h1("Send gold", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Diplomacy_SendGold, HudLib.TitleColor_Head);
 
             content.newLine();
             sender.addNetGamerToHud(content, true, false);
@@ -266,12 +266,12 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (opt.tooLargeAlliance)
                 {
-                    content.icontext(HudLib.NotAvailableIcon, ".Alliance limt", HudLib.NotAvailableColor);
-                    content.text(".Can't be attacked by a larger player alliance", HudLib.InfoYellow_Light);
+                    content.icontext(HudLib.NotAvailableIcon, DssRef.todoLang.AllianceLimit, HudLib.NotAvailableColor);
+                    content.text(DssRef.todoLang.AllianceLimitTooltip, HudLib.InfoYellow_Light);
                 }
                 if (opt.startProtection)
                 {
-                    content.icontext(HudLib.NotAvailableIcon, ".Game start protection", HudLib.NotAvailableColor);
+                    content.icontext(HudLib.NotAvailableIcon, DssRef.todoLang.GameStartProtection, HudLib.NotAvailableColor);
                     content.text(HudLib.TimeSpan_LongText(opt.protectionTime), HudLib.InfoYellow_Light);
                 }
                 content.newParagraph();
@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
                             new RbImage(HudLib.NotAvailableIcon),
                             new RbSpace(0.5f),
-                            new RbText(".Deny"),
+                            new RbText(DssRef.todoLang.Hud_Deny),
                         },
                         new RbAction1Arg<AbsHumanPlayer>(cancelToPlayerRelation, otherPlayer, RbSoundType.Stop)));
                 }
@@ -475,7 +475,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     new RbImage(icon),
                     new RbSpace(0.5f),
-                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, ".Offer relation", name)),
+                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.Diplomacy_OfferRelation, name)),
                 },
                 new RbAction1Arg<RelationType>(offerToPlayerRelation, relation, RbSoundType.Buy), new RbTooltip(offerRelationTooltip, relation )));
         }
@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             var message = new RichBoxContent();
             sending.addNetGamerToHud(message, true, false);
-            message.text(".Declined relation offer");
+            message.text(DssRef.todoLang.Diplomacy_OfferRelation_Declined);
             recieving.hud.messages.Add(message, SoundLib.stop);
         }
 
@@ -701,7 +701,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void offerRelationTooltip(RichBoxContent content, object tag)
         {
-            content.h1(".If the other player accepts:", HudLib.TitleColor_Label2);
+            content.h1(DssRef.todoLang.Diplomacy_OnAccept, HudLib.TitleColor_Label2);
             relationTooltip(content, tag);
         }
 
@@ -780,7 +780,7 @@ namespace VikingEngine.DSSWars.Interface
             if (rel == RelationType.RelationTypeN3_Mobilization)
             {
                 var time = otherfaction.GetPlayer().GetHumanPlayer().NetClientSettings().clientPtoP.warDeclarePreparationTime.time.TimeSpan;
-                HudLib.LabelAndText(content, SpriteName.cmdIconTimeOut, ".War preparation time", HudLib.TimeSpan_LongText(time));
+                HudLib.LabelAndText(content, SpriteName.cmdIconTimeOut, DssRef.todoLang.WarPreparationTime, HudLib.TimeSpan_LongText(time));
             }
         }
 

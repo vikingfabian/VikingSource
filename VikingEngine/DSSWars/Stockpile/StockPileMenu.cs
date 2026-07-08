@@ -418,21 +418,6 @@ namespace VikingEngine.DSSWars.Resource
             public GroupedResource res;
         }
 
-        //void limitTooltip(RichBoxContent content, object tag)
-        //{
-        //    LimitTooltipArgs args = (LimitTooltipArgs)tag;
-        //    if (args.limit == StockpileLimitOption.NoLimit)
-        //    {
-        //        content.h1(".No limit", HudLib.TitleColor_Head);
-        //        content.text(".Will stockpile up to the storage size");
-        //    }
-        //    else
-        //    {
-        //        content.h1(string.Format( ".Limit stockpile to {0}", ResourceLib.Limit(args.limit)), HudLib.TitleColor_Head);
-        //        content.text(DssRef.lang.Resource_StockPile_Info);
-        //    }
-        //}
-
         void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)
         {
             IntGetSetTag property;

@@ -1312,7 +1312,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 控制军队的菜单选项。发送士兵到不同的军队。
         /// </summary>
-        public override string ArmyOption_SendX => "发送 {0}";
+        public override string Hud_SendX => "发送 {0}";
 
         /// <summary>
         /// 控制军队的菜单选项。发送士兵到不同的军队。
@@ -1470,7 +1470,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Money => "未支付薪水的士兵正在逃离你的军队";
 
 
-        public override string DifficultyDescription_AiAggression => "AI攻击性: {0}。";
+        //public override string DifficultyDescription_AiAggression => "AI攻击性: {0}。";
         public override string DifficultyDescription_BossSize => "Boss规模: {0}。";
         public override string DifficultyDescription_BossEnterTime => "Boss进入时间: {0}。";
         public override string DifficultyDescription_AiEconomy => "AI经济: {0}%。";
@@ -2038,8 +2038,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "开";
         public override string Hud_Off => "关";
 
-        public override string Hud_Time_Seconds => "{0} 秒";
-        public override string Hud_Time_Minutes => "{0} 分钟";
+        public override string Hud_Time_XSeconds => "{0} 秒";
+        public override string Hud_Time_XMinutes => "{0} 分钟";
         public override string Hud_Undo => "撤销";
         public override string Hud_Redo => "重做";
 

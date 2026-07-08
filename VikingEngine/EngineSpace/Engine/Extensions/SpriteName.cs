@@ -2459,7 +2459,7 @@ namespace VikingEngine
         WarsHudIconClient,
         WarsHudIconHost,
         WarsHudIconPlayerCount,
-
+        WarsHudIconBlockedPlayer,
 
         WarsHudHeadBarPlayIcon,
         WarsHudHeadBarPauseIcon,
@@ -2663,6 +2663,7 @@ namespace VikingEngine
         WarsRelationNeutral,
         WarsRelationTruce,
         WarsRelationEnemy,
+        WarsRelationMobilizing,
         WarsRelationWar,
         WarsRelationTotalWar,
         WarsRelationServant,

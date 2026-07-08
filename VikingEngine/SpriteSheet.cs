@@ -2146,6 +2146,8 @@ namespace VikingEngine
                 add(SpriteName.WarsHudIconHost);
                 add(SpriteName.WarsHudIconPlayerCount);
 
+                add(SpriteName.WarsHudIconBlockedPlayer);
+                add(SpriteName.WarsRelationMobilizing);
             }
 
 

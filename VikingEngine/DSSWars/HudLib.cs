@@ -528,10 +528,10 @@ namespace VikingEngine.DSSWars
 
         public static string TimeSpan_LongText(TimeSpan time)
         {
-            string result = string.Format(DssRef.lang.Hud_Time_Seconds, time.Seconds);
+            string result = string.Format(DssRef.lang.Hud_Time_XSeconds, time.Seconds);
             if (time.TotalMinutes >= 1)
             {
-                result = string.Format(DssRef.lang.Hud_Time_Minutes, time.Minutes) + ", " + result;
+                result = string.Format(DssRef.lang.Hud_Time_XMinutes, time.Minutes) + ", " + result;
             }
             if (time.TotalHours >= 1)
             {
