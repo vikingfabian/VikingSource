@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars.Data
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsBattleIcon));
                 content.hspace();
-                content.Add(new RbText(string.Format(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.DifficultyDescription_BotAggression), TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM))));
+                content.Add(new RbText(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.DifficultyDescription_BotAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM))));
             }
             {
                 content.newLine();
