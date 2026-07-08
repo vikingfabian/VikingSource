@@ -110,7 +110,8 @@ namespace VikingEngine.DSSWars.GameObject
                         if (group != null)
                         {
                             w.Write(true);
-                            NetWriteGroup(w, group);
+                            group.writeNet(w);
+                            //NetWriteGroup(w, group);
                         }
                         else
                         {
@@ -118,6 +119,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         groupIndex++;
                     }
+                    Debug.WriteCheck(w);
+
                 } packet.EndWrite_Asynch();
                 packetIndex++;
             }
@@ -151,13 +154,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
             */
         }
-        public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
-        {
-            w.Write((ushort)group.myIndex);
-            group.writeNet(w);
+        //public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
+        //{
+        //    //w.Write((ushort)group.myIndex);
+        //    group.writeNet(w);
 
-            Debug.WriteCheck(w);
-        }
+        //    Debug.WriteCheck(w);
+        //}
         public static void NetReadGroups(bool bArmy, System.IO.BinaryReader r)
         {
             if (ObjectId.NetReadMapObjId(r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
@@ -178,11 +181,12 @@ namespace VikingEngine.DSSWars.GameObject
                             mapObj.groups.PullIndex_Safe(groupIndex)?.DeleteMe(DeleteReason.NetworkEvent, false);
                         }
                     }
-                        //bool more = false;
-                        //do
-                        //{
-                        //    more = AbsArmy.NetReadGroup(packet.r, mapObj);
-                        //} while (more);
+                    Debug.ReadCheck(r);
+                    //bool more = false;
+                    //do
+                    //{
+                    //    more = AbsArmy.NetReadGroup(packet.r, mapObj);
+                    //} while (more);
                 }
             }
         }
