@@ -980,6 +980,8 @@ namespace VikingEngine.DSSWars
                     new MultiplayerCountLeaderBoard(MultiplayerCountLeaderBoard.CountUploaded);
                 }));
             }
+
+            Ref.steamlobby.refreshMetaData();
         }
 
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)
@@ -1037,6 +1039,7 @@ namespace VikingEngine.DSSWars
                 Ref.netsett.settingsHasChanged = true;
             }
             
+            Ref.steamlobby.refreshMetaData();
         }
 
         

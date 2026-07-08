@@ -25,7 +25,6 @@ namespace VikingEngine.DSSWars.Players
         public TimeSpan timePlayed = TimeSpan.Zero;
         public SpriteName voiceState = SpriteName.VoiceDisabled;
         public RbImage voiceIcon = null;
-        //protected SpottedArrayCounter<LocationPin> netSharePinCounter;
         int netSharePinIndex = 0;
         public AbsHumanPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
@@ -59,11 +58,10 @@ namespace VikingEngine.DSSWars.Players
 
             if (networkPeer != null)
             {
-                if (Ref.netSession.Host() == networkPeer.peer)
-                {
-                    content.Add(new RbImage(SpriteName.birdRotatingCrown1));
-                    content.space();
-                }
+                content.Add(new RbImage(Ref.netSession.Host() == networkPeer.peer? 
+                    SpriteName.WarsHudIconHost : SpriteName.WarsHudIconClient));
+                content.space();
+                
                 content.Add(new RbGamerIcon(networkPeer.peer, 0.9f));
             }
         }
@@ -194,47 +192,7 @@ namespace VikingEngine.DSSWars.Players
             if (netSharePinIndex >= pins.Array.Length)
             {
                 netSharePinIndex = 0;
-            }
-            /*
-            if (pins.Count > 0)
-            {
-                w.Write(true);
-
-                if (!netSharePinCounter.HasMore())
-                {
-                    netSharePinCounter.Reset();
-                }
-
-                int startIndex = netSharePinCounter.CurrentIndex + 1;
-                int end = startIndex + NetWriteMaxPins -1;
-                EightBit used = new EightBit();
-                while (netSharePinCounter.Next())
-                {
-                    if (netSharePinCounter.sel.netInteractLevel != Network.NetInteractLevel.Hidden)
-                    {
-                        used.Set(netSharePinCounter.CurrentIndex - startIndex, true);
-                        w.Write((ushort)netSharePinCounter.CurrentIndex);
-                        netSharePinCounter.sel.writeGameState(w);
-
-                        if (netSharePinCounter.CurrentIndex >= end)//--maxPins <= 0)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                //Mark end
-                w.Write(ushort.MaxValue);
-
-                //Write empty pins
-                w.Write((ushort)startIndex);
-                used.write(w);
-            }
-            else
-            {
-                w.Write(false);
-            }
-            */
+            }           
         }
 
         public void netReadPinUpdate(BinaryReader r)
@@ -261,51 +219,9 @@ namespace VikingEngine.DSSWars.Players
                         var delPin = pins.PullIndex_Safe(index);
                         delPin?.DeleteMe(DeleteReason.NetworkEvent, false);
                     }
-                    //var pin = pins.GetIndex_Safe(index);
-                    //if (pin == null)
-                    //{
-                    //    w.Write(false);
-                    //}
-                    //else
-                    //{
-                    //    w.Write(true);
-                    //    pin.writeGameState(w);
-                    //}
                 }
             }
-            /*
-            if (r.ReadBoolean())
-            {
-                LocationPin pin;
-                do
-                {
-                    int pinIndex = r.ReadUInt16();
-                    pin = netReadPin(pinIndex, r);
-
-                } while (pin != null);
-
-                int startIndex = r.ReadUInt16();
-                EightBit used = new EightBit(r);
-
-                for (int i = 0; i < NetWriteMaxPins; ++i)
-                { 
-                    int index = i + startIndex;
-                    if (index >= pins.Array.Length)
-                    {
-                        break;
-                    }
-                    else if (!used.Get(i))
-                    {
-                        var delPin = pins.PullIndex_Safe(index);
-                        delPin?.DeleteMe(DeleteReason.NetworkEvent, false);
-                    }
-                }
-            }
-            else
-            {
-                clearPins(DeleteReason.NetworkEvent);
-            }
-            */
+            
         }
         public LocationPin netReadPin(int index, BinaryReader r)
         {

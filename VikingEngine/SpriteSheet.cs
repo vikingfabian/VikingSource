@@ -31,7 +31,7 @@ namespace VikingEngine
         public static readonly IntVector2 CballGoalTextSz = new IntVector2(2, 5);
 
         public static readonly IntVector2 CballGoliePaddleSz = new IntVector2(10, 46);
-
+        
         public static readonly IntVector2 DSSCardSz = new IntVector2(6, 8);
 
         public static readonly IntVector2 PjModeSz = new IntVector2(112, 64);
@@ -2140,6 +2140,12 @@ namespace VikingEngine
                 add(SpriteName.WarsHudIconHandicap);
                 add(SpriteName.WarsHudIconDistanceOnMap);
                 add(SpriteName.cmdClientPointerMetallic);
+
+                add(SpriteName.WarsHudIconMultiplayer);
+                add(SpriteName.WarsHudIconClient);
+                add(SpriteName.WarsHudIconHost);
+                add(SpriteName.WarsHudIconPlayerCount);
+
             }
 
 

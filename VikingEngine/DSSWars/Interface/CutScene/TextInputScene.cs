@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
                 RichBoxContent content = new RichBoxContent();
                 DssRef.state.LocalHost().addNetGamerToHud(content, true, false);
-                content.icontext(SpriteName.LfChatBobbleIcon, result);
+                content.icontext(SpriteName.TextChatLetter, result);
                 DssRef.state.LocalHost().hud.messages.Add(content, null);
 
                 var message = new ChatLogMessage(Ref.steam.P2PManager.localPeer, result);

@@ -212,7 +212,7 @@ namespace VikingEngine.SteamWrapping
             SteamMatchmaking.SetLobbyData(currentLobbyID, AbsLobbyMetaData.LobbyTimeDataKey, time.ToString());
         }
 
-        void refreshMetaData()
+        public void refreshMetaData()
         {
             var meta = Ref.NetUpdateReciever().NetEvent_StartLobbyMetaData();
             meta.CollectValues();

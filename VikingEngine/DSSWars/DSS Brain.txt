@@ -1,16 +1,9 @@
 
 Change log:
-* Fixed unclaimed city missing models
-* Share of gifted achivements to joining players
-* Color frame on client pointer
-* DLC banner and gold frame
-* Doesnt move client pointer when over UI
-* More secure share of pins
-
-+ merge with patches
+* Shows player count on lobby
+* Fixed the logistics level 2 upgrade
 
 KNOWN ISSUES
-* The pings are half broken, share for everyone then delete, i delete mine but he see some of them while i see none
 x rejoining can give an endless "city lost" message
 x Honor guards, or maybe all client soldiers, are weaker
 x missing steam deck layout
@@ -25,11 +18,9 @@ x DssEditSubTile
 ? pins always visible
 
 ##ICONS TODO
-
 * gray rounded button
-* gold frames
-* DLC banners
 * mobilizing
+* join game icon
 
 #MOUNTED TODO
 * 

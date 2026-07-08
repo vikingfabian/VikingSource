@@ -2455,6 +2455,11 @@ namespace VikingEngine
         WarsHudCasualModeDisabled,
         WarsHudIconHandicap,
         WarsHudIconDistanceOnMap,
+        WarsHudIconMultiplayer,
+        WarsHudIconClient,
+        WarsHudIconHost,
+        WarsHudIconPlayerCount,
+
 
         WarsHudHeadBarPlayIcon,
         WarsHudHeadBarPauseIcon,

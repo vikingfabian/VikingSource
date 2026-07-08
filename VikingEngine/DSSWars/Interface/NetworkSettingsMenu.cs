@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.Interface
 
             content.h1(DssRef.todoLang.Lobby_Category_MultiplayerSettings, HudLib.TitleColor_Head);
 
-            content.h2("Host settings", HudLib.TitleColor_Head2);
+            content.h2(SpriteName.WarsHudIconHost, "Host settings", HudLib.TitleColor_Head2);
 
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Network_PlayOffline) },
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Interface
                 publicityOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.JoinPermission_Title, menu);
 
                 content.newLine();
-                HudLib.Label(content, SpriteName.birdPlayerCount, "Max player count");
+                HudLib.Label(content, SpriteName.WarsHudIconPlayerCount, "Max player count");
                 content.hspace();
                 RbDragButton.RbDragButtonGroup(content, new List<float> { 10 },
                     new DragButtonSettings(2, 64, 1), Ref.netsett.MaxPlayerCountProperty, false);
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbSeperationLine());
 
                 content.newParagraph();
-                content.h2("Client settings", HudLib.TitleColor_Head2);
+                content.h2( SpriteName.WarsHudIconClient, "Client settings", HudLib.TitleColor_Head2);
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {

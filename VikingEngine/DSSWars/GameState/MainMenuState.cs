@@ -642,16 +642,23 @@ namespace VikingEngine.DSSWars
             openNetWorkMenu();
 
             RichBoxContent content = new RichBoxContent();
-            content.h1(".Multiplayer lobby", HudLib.TitleColor_Head);
+            content.h1(".Multiplayer lobby", HudLib.TitleColor_Head2);
+            content.space();
+            HudLib.InfoButton(content, new RbTooltip(networkTutorialTip));
 
-            content.newLine();
+            networkMenu.Refresh(content);
+        }
+
+        void networkTutorialTip(RichBoxContent content, object tag)
+        {
             HudLib.BulletPoint(content);
             content.Add(new RbText("1. The host starts a game"));
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbText("2. A join button will appear here"));
-
-            networkMenu.Refresh(content);
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbText("The host must have a visible Steam profile"));
         }
 
         public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
@@ -693,6 +700,11 @@ namespace VikingEngine.DSSWars
                     HudLib.BulletSeperationPoint(buttonContent);
                     buttonContent.Add(new RbText(TextLib.PercentTextWithSymbol(meta.TotalDifficulty()), HudLib.InfoYellow_Dark));
 
+                    HudLib.BulletSeperationPoint(buttonContent);
+                    buttonContent.Add(new RbImage(SpriteName.birdPlayerCount));
+                    buttonContent.Add(new RbSpace(0.5f));
+                    buttonContent.Add(new RbText(meta.playerCount.ToString(), HudLib.InfoYellow_Dark));
+
                     if (!meta.MatchingVersion)
                     {
                         buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, ".Version", session.metaData.Version), HudLib.NotAvailableColor_Dark);
@@ -703,7 +715,12 @@ namespace VikingEngine.DSSWars
                         buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), ".Allow casual controls").overrideColor = HudLib.NotAvailableColor_Dark;
                     }
 
-                    content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,
+                    if (meta.playerCount >= meta.maxPlayerCount && meta.maxPlayerCount != 0)
+                    {
+                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), ".Full").overrideColor = HudLib.NotAvailableColor_Dark;
+                    }
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,
                         new RbAction1Arg<AbsAvailableSession>((AbsAvailableSession session) =>
                         {
                             Ref.lobby.lockSession();

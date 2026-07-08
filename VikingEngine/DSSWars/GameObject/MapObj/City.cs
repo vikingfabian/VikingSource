@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
 
-                        EditSubTile edit = new EditSubTile();
+                        EditSubTile edit = new EditSubTile() { hostedTile = true, netShare = true };
                         edit.position = position;
                         edit.value.terrainAmount = 2;
                         edit.editAmount = true;

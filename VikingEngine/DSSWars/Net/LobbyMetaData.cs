@@ -20,15 +20,17 @@ namespace VikingEngine.DSSWars.Net
             "mode",//4
             "difficulty",//5
             "allow_casual",//6
-            "pvp"//7
+            "pvp",//7
+            "playerCount",
+            "maxPlayerCount",
         };
 
         public GameModeMainType mode;
         public int difficulty;
         public bool allowCasual;
         public bool hasPvp;
-        
-
+        public int playerCount;
+        public int maxPlayerCount;
         public override string[] GetKeys()
         {
             return KEYS;
@@ -46,7 +48,8 @@ namespace VikingEngine.DSSWars.Net
                 DssRef.difficulty.TotalDifficulty().ToString(),
                 Ref.netsett.hostSettings.allowCasualControls.ToString(),
                 Ref.netsett.HasPvp.ToString(),
-
+                (Ref.netSession.RemoteGamersCount +1).ToString(),
+                Ref.netsett.maxPlayerCount.ToString(),
             };
         }
         public override void OnDataRecieved()
@@ -69,6 +72,8 @@ namespace VikingEngine.DSSWars.Net
             bool.TryParse(Values[6], out allowCasual);
             bool.TryParse(Values[7], out hasPvp);
 
+            int.TryParse(Values[8], out playerCount);
+            int.TryParse(Values[9], out maxPlayerCount);
         }
 
         public GameModeMainType GameMode()
