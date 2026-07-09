@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Interface
         public void recolor(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             HudLib.returnButton(content, menu, true, null);
-            content.h1("Recolor", HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Editor_Color_Recolor, HudLib.TitleColor_Head);
             content.newLine();
             selectedPlayer.addNetGamerToHud(content, true, false);
 
@@ -368,23 +368,31 @@ namespace VikingEngine.DSSWars.Interface
                 
                 
                 content.newParagraph();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.cmdWarningTriangle),
+                    new RbSpace(0.5f),
                     new RbText(string.Format(DssRef.lang.Hud_SendX, DssRef.todoLang.Multiplayer_BanWarning)) },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BANWARNING, StackOption.Stack)));
 
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconExit),
+                    new RbSpace(0.5f),
                     new RbText(DssRef.todoLang.Multiplayer_KickPlayer) },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_KICK, StackOption.Stack)));
 
                 content.newLine();
-                content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
+                content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconBlockedPlayer),
+                    new RbSpace(0.5f),
                     new RbText(DssRef.todoLang.Multiplayer_BlockPlayer) },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BLOCK, StackOption.Stack)));
             }
             else
             {
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconBlockedPlayer),
+                    new RbSpace(0.5f),
                     new RbText(DssRef.todoLang.Multiplayer_RequestBlockPlayer) },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_REQUESTBLOCK, StackOption.Stack)));
 

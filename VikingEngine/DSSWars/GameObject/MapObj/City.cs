@@ -1768,9 +1768,6 @@ namespace VikingEngine.DSSWars.GameObject
             if (HasPlayer())
             {
                 
-
-                //detailObj.update(Ref.DeltaGameTimeMs, true);
-
                 if (inRender_detailLayer)
                 {
                     updateArmyMembers(Ref.DeltaGameTimeMs, true);
@@ -1785,7 +1782,10 @@ namespace VikingEngine.DSSWars.GameObject
             updateDetailLevel();
             if (HasPlayer())
             {
-                
+                if (inRender_detailLayer)
+                {
+                    updateArmyMembers(Ref.DeltaGameTimeMs, true);
+                }
             }
         }
 

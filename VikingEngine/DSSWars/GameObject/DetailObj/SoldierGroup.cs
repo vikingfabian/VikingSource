@@ -1042,6 +1042,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                  lib.DoNothing();
             }
+            if (fullUpdate)
+            {
+                lib.DoNothing();
+            }
 
             if (inShipOrGuardTransform)
             {

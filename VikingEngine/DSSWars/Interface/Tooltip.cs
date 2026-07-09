@@ -505,8 +505,9 @@ namespace VikingEngine.DSSWars.Interface
 
                     if (tFaction.player.IsRemotePlayer())
                     {
-                        content.h2(DssRef.lang.Battle_DeclarWarReminder);
+                        content.h2(DssRef.lang.Battle_DeclarWarReminder, HudLib.InfoYellow_Light);
                         content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.todoLang.Diplomacy_OpenPlayerToPlayer, HudLib.TitleColor_Action);
+                        content.Add(new RbSeperationLine());
                     }
                     else
                     {
@@ -524,6 +525,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (attacker != null && 
                     defender != null)
                 {
+                    
                     content.Add(new RbBeginTitle(2));
                     content.Add(new RbImage(SpriteName.WarsStrengthIcon));
                     content.Add(new RbText(DssRef.lang.Hud_StrengthRating));//"Strength ratings:"));

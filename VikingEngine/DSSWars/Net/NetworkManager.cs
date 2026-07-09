@@ -554,7 +554,11 @@ namespace VikingEngine.DSSWars
                             badActor.addNetGamerToHud(content, true, false);
 
                             content.newLine();
-                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Hud_Accept) },
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+
+                                 new RbImage(SpriteName.WarsHudIconBlockedPlayer),
+                                 new RbSpace(0.5f),
+                                new RbText(DssRef.todoLang.Hud_Accept) },
                                 new RbAction(() =>
                                 {
                                     LocalHost().gameControls.clearSelection();
