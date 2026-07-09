@@ -1,19 +1,10 @@
 
 Change log:
-* Shows player count on lobby
-* Fixed the logistics level 2 upgrade
-* New icons
-* Language translations prepared
-* More secure soldier net share
-* fixed: PvP protection doesnt work on direct attacks.
-* more active client soldiers (prediction algo)
-* fixed: client map doesnt update when paused
-* fixed: client city capture 
-
+* 
 
 KNOWN ISSUES
+x client soldiers are below ground
 x client soldiers rotate in place
-x need to store recolor
 x client soldiers are too passive
 x dropping out during battle made the army gave the army client status (maybe delay a check)
 x rejoining can give an endless "city lost" message
