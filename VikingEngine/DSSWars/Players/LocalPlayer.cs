@@ -130,12 +130,10 @@ namespace VikingEngine.DSSWars.Players
 
         public UnitsPixelTexture unitsPixelTexture;
 
-        //public bool viewCityTagsOnMap = true;
-        //public bool viewArmyTagsOnMap = true;
         public Profile.ObjectHudSettings cityHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings armyHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings pinHudSettings = new Profile.ObjectHudSettings();
-        //public bool viewPinTags = true;
+     
 
         public int firstAttacker = ushort.MaxValue;
         public int nextDominationSize;
@@ -150,9 +148,6 @@ namespace VikingEngine.DSSWars.Players
 
         public Vector3 ShaderThemeColor = ThemeMid_Yellow;
         
-
-        
-
         List<MessagePosition> battleMessages = new List<MessagePosition>(8);
         public bool isDropInPlayer = false;
 
@@ -161,11 +156,26 @@ namespace VikingEngine.DSSWars.Players
 
         public int sendGold = 1000;
        
-
-    public LocalPlayer()
+        public LocalPlayer()
         {
             baseInit();
         }
+
+        public void openPlayerToPlayerDisplay(AbsHumanPlayer selected)
+        { 
+            gameControls.clearSelection();
+
+            if (selected.IsLocal)
+            {
+
+            }
+            else
+            {
+                hud.objMenu.netSessionDisplay.selectedPlayer = selected.GetRemotePlayer();
+            }
+            hud.needRefresh = true;
+        }
+
         public override void refreshFlag()
         {
             base.refreshFlag();
@@ -211,9 +221,6 @@ namespace VikingEngine.DSSWars.Players
 
             faction.technology = new XP.TechnologyTemplate();
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
-
-            //faction.addGold_factionWide(10000);
-            //netSharePinCounter = new SpottedArrayCounter<LocationPin>(pins);
         }
 
         public override void SetColor(Color selected, bool netShare)

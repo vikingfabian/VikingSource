@@ -474,13 +474,13 @@ namespace VikingEngine.DSSWars.Interface
             if (StartupSettings.BlockTooltip) return;
 
             RichBoxContent content = new RichBoxContent();
-            var faction = obj.GetFaction();
+            var tFaction = obj.GetFaction();
             bool attackTarget = false;
 
-            if (faction != null)
+            if (tFaction != null)
             {
                 attackTarget = player.gameControls.army != null &&
-                    faction != player.faction;
+                    tFaction != player.faction;
 
                 if (attackTarget)
                 {
@@ -493,21 +493,29 @@ namespace VikingEngine.DSSWars.Interface
             
             if (attackTarget)
             {
-                if (!DssRef.world.diplomacy.GetRelation(player.faction, obj.GetFaction()).InWar())
+                if (DssRef.world.diplomacy.GetRelation(player.faction, tFaction).InWar())
                 {
-                    content.Add(new RbSeperationLine());
-
-                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.faction, obj.GetFaction()).Relation;
-                    
-                    content.h1(DssRef.lang.Hud_WardeclarationTitle);
-                    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-                    content.newLine();
-                    HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
-                    content.Add(new RbSeperationLine());
+                    content.newParagraph();
                 }
                 else
                 {
-                    content.newParagraph();
+                    content.Add(new RbSeperationLine());
+
+                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.faction, tFaction).Relation;
+
+                    if (tFaction.player.IsRemotePlayer())
+                    {
+                        content.h2(DssRef.lang.Battle_DeclarWarReminder);
+                        content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.todoLang.Diplomacy_OpenPlayerToPlayer, HudLib.TitleColor_Action);
+                    }
+                    else
+                    {
+                        content.h1(DssRef.lang.Hud_WardeclarationTitle);
+                        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+                        content.newLine();
+                        HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
+                        content.Add(new RbSeperationLine());
+                    }
                 }
 
                 var attacker = player.gameControls.map.selection.obj as Army;
@@ -527,7 +535,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     content.text(DssRef.lang.Hud_Versus);
                     content.newLine();
-                    content.Add(new RbTexture(faction.player.flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbTexture(tFaction.player.flagTexture, 1f, 0, 0.2f));
                     content.Add(new RbText(": " + TextLib.OneDecimal(defender.strengthValue)));
                     content.newLine();
                 }

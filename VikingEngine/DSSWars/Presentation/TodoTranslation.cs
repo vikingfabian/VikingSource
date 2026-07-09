@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Diplomacy_AboveSoftCap => "Above soft cap";
         public string Diplomacy_BelowSoftCap => "Below soft cap";
-
+        public string Diplomacy_OpenPlayerToPlayer => "Open player diplomacy";
         //--
 
         public string GiftAchieve_WhiteKnight_Name => "White Knight";

@@ -3,15 +3,18 @@ Change log:
 * Shows player count on lobby
 * Fixed the logistics level 2 upgrade
 * New icons
-* Translations prepared
+* Language translations prepared
 * More secure soldier net share
 
 KNOWN ISSUES
+x client soldiers are too passive
+x dropping out during battle made the army gave the army client status (maybe delay a check)
 x rejoining can give an endless "city lost" message
 x Honor guards, or maybe all client soldiers, are weaker
 x missing steam deck layout
+
 x PvP protection doesnt work on direct attacks.
-x lobbies can get stuck (should show timeout warning)
+
 x remote cities have wonky workers
 ! old saved will have some bot flag color drifting
 ! Join from a closed game doesnt work
