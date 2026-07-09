@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,7 @@ namespace VikingEngine.DSSWars.Players
         public ulong id;
         public int faction;
         public TimeSpan timePlayed;
+        public Color? recolor;
 
         public void write(System.IO.BinaryWriter w)
         {
@@ -24,6 +26,12 @@ namespace VikingEngine.DSSWars.Players
             w.Write(id);
             w.Write((ushort)faction);
             w.Write((int)timePlayed.TotalSeconds);
+
+            w.Write(recolor.HasValue);
+            if (recolor.HasValue) 
+            { 
+                StreamLib.WriteColorStream_3B(w, recolor.Value);
+            }
         }
         public void read(System.IO.BinaryReader r, int subVersion)
         {
@@ -32,6 +40,18 @@ namespace VikingEngine.DSSWars.Players
             id = r.ReadUInt64();
             faction = r.ReadUInt16();
             timePlayed = TimeSpan.FromSeconds(r.ReadInt32());
+
+            if (subVersion >= 118)
+            {
+                if (r.ReadBoolean())
+                {
+                    recolor = StreamLib.ReadColorStream_3B(r);
+                }
+                else
+                {
+                    recolor = null;
+                }
+            }
         }
 
         public override int GetHashCode()
@@ -78,6 +98,7 @@ namespace VikingEngine.DSSWars.Players
                 id = networkPeer.peer.fullId,
                 faction = assignedFaction,
                 timePlayed = timePlayed,
+                recolor = profile.flag.col0_Main,
             };
         }
 

@@ -40,7 +40,8 @@ namespace VikingEngine.DSSWars.GameState
         public ConcurrentStack<VoxelModelInstance_Pooled> voxelModelInstancesPooled = new ConcurrentStack<VoxelModelInstance_Pooled>();
 
         public bool exitThreads = false;
-        protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
+        //protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
+        protected ProcessTime processTime = new ProcessTime();
 
         public AbsCutScene cutScene = null;
         public bool host = true;

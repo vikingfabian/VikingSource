@@ -319,8 +319,6 @@ namespace VikingEngine.DSSWars.GameObject
             setGroundY();
             state = (GroupState)r.ReadByte();
             
-            
-
             switch (state)
             {
                 default:
@@ -1278,7 +1276,20 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        
+        public void clientPauseUpdate()
+        {
+            var soldiers_sp = soldiers;
+            if (soldiers_sp != null)
+            {
+                var soldiersC = soldiers_sp.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.clientPauseUpdate();
+                }
+            }
+        }
+
+
 
         public override void OnBecomeAttackTarget()
         {

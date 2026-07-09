@@ -252,6 +252,26 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        override public void clientPauseUpdate()
+        {
+            base.clientPauseUpdate();
+
+            if (inRender_detailLayer)
+            {
+
+                if (groups.Count > 0)
+                {
+
+                    var groupsC = groups.counter();
+
+                    while (groupsC.Next())
+                    {
+                        groupsC.sel.clientPauseUpdate();
+                    }
+                }
+            }
+        }
+
         public void asyncBattleUpdate()
         {
             int mostCenter = -1;

@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars
             new GameObject.AllUnits();
             //new Diplomacy();
             new Achievements();
-            new GameTime();
+            new Event.GameTime();
             HudLib.Init();
 
             prePlayerInit();
@@ -153,7 +153,7 @@ namespace VikingEngine.DSSWars
             new GameObject.AllUnits();
             //new Diplomacy();
             
-            new GameTime();
+            new Event.GameTime();
             HudLib.Init();
 
             prePlayerInit();
@@ -584,6 +584,11 @@ namespace VikingEngine.DSSWars
                         {
                             factionsC.sel.update_client(culling.playerInDetailView);
 
+                            if (DssRef.time.oneSecond)
+                            {
+                                factionsC.sel.client_oneSecUpdate(DssRef.time.oneMinute);
+                            }
+
                         }
                     }
                 }
@@ -591,7 +596,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                if (host)
+                //if (host)
                 {
                     if (isReady)
                     {
@@ -608,23 +613,40 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
-            
-            if (DssRef.time.halfSecond)
+
+            switch (processTime.update())
             {
-                overviewMap.HalfSecondUpdate();
+                case ProcessEvent.OverviewMap:
+                    overviewMap.HalfSecondUpdate();
+                    break;
+                case ProcessEvent.SubTileReload:
+                    if (detailMap != null)
+                    {
+                        detailMap.oneSecondUpdate = true;
+                    }
+
+                    if (overviewMap != null)
+                    {
+                        overviewMap.bRefreshTimer = true;
+                    }
+                    break;
             }
-            if (subTileReloadTimer.Update())
-            {
-                if (detailMap != null)
-                {
-                    detailMap.oneSecondUpdate = true;
-                }
+            //if (DssRef.time.halfSecond)
+            //{
+            //    overviewMap.HalfSecondUpdate();
+            //}
+            //if (subTileReloadTimer.Update())
+            //{
+            //    if (detailMap != null)
+            //    {
+            //        detailMap.oneSecondUpdate = true;
+            //    }
              
-                if (overviewMap != null)
-                {
-                    overviewMap.bRefreshTimer = true;
-                }
-            }
+            //    if (overviewMap != null)
+            //    {
+            //        overviewMap.bRefreshTimer = true;
+            //    }
+            //}
 
             overviewMap.update();
 

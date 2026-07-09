@@ -699,7 +699,12 @@ namespace VikingEngine.DSSWars
         {
             Color? recolor = null;
 
-            if (Ref.netsett.hostSettings.autoReColorFlags)
+            var hash = PlayerMapHistory.GetGamerHash(false, sender.networkPeer.peer.fullId, sender.networkPeer.SplitScreenIndex);
+            if (previousRemotePlayers.TryGetValue(hash, out var history))
+            {
+                recolor = history.recolor;
+            }
+            else if (Ref.netsett.hostSettings.autoReColorFlags)
             {
                 Color flagColor = StreamLib.ReadColorStream_3B(requestPacket.r);
 
@@ -838,7 +843,7 @@ namespace VikingEngine.DSSWars
                             {
                                 Ref.update.AddSyncAction(new SyncAction(() =>
                                 {
-                                    //AbsHumanPlayer remote = GetOrCreateRemotePlayer(packet.sender, 0);
+                                    
                                     sender.AssignFaction(faction);
                                     if (firstEnterSetup)
                                     {

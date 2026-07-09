@@ -650,14 +650,41 @@ namespace VikingEngine.DSSWars
         public void PauseUpdate()
         {
             var armiesCounter = armies.counter();
-            
-            while (armiesCounter.Next())
+
+            if (IsNetHosted())
             {
-                armiesCounter.sel.PauseUpdate();
+                while (armiesCounter.Next())
+                {
+                    armiesCounter.sel.PauseUpdate();
+                }
+            }
+            else
+            {
+                while (armiesCounter.Next())
+                {
+                    armiesCounter.sel.clientPauseUpdate();
+                }
             }
         }
-
-        
+        public void client_oneSecUpdate(bool minute)
+        {
+            if (isAlive)
+            {
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
+                {
+                    if (city.factionIndex == myIndex)
+                    {
+                        city.oneSecondCaptureCheck();
+                    }
+                    else
+                    {
+                        citiesC.RemoveAtCurrent(ref cities);
+                        refreshMainCity();
+                    }
+                }
+            }
+        }
         public void oneSecUpdate(bool minute)
         {
             if (isAlive)

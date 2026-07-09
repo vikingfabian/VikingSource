@@ -452,6 +452,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void clientPauseUpdate()
+        {
+            updateGroupPosition();
+            updateGroudY(true);
+            
+            model?.update(this);
+        }
+
         public void setReGroupState()
         {
             state.walkingOrderComplete = false;

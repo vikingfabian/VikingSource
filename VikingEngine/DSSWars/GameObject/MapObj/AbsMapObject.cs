@@ -123,7 +123,14 @@ namespace VikingEngine.DSSWars.GameObject
         }
         
 
-        public void PauseUpdate()
+        virtual public void PauseUpdate()
+        {
+            updateDetailLevel();
+
+            
+        }
+
+        virtual public void clientPauseUpdate()
         {
             updateDetailLevel();
         }

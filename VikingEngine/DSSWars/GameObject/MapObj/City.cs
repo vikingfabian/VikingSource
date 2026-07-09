@@ -1881,7 +1881,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 addWorkers = childrenAge1;
                 childrenAge1 = childrenAge0.pull();
-                
+
                 if (workForce.amount < MinWorkforce)
                 {
                     addWorkers += MinWorkforce - workForce.amount;
@@ -1903,7 +1903,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
-                                    
+
             nextWater.value += waterAddPerSec;
             maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
@@ -1911,7 +1911,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (starving)
             {
                 starvingTimeSeconds++;
-                
+
                 if (starvingTimeSeconds > 15)
                 {
                     starvingTimeSeconds = -30;
@@ -1929,6 +1929,21 @@ namespace VikingEngine.DSSWars.GameObject
                 starvingTimeSeconds = 0;
             }
 
+            oneSecondCaptureCheck();
+
+            casualProgress?.oneSecondUpdate(this);
+
+            if (minute)
+            {
+                float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
+                freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
+
+                PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResourceIndex.rawFood, PenFoodUpkeep_minute, false);
+            }
+        }
+
+        public void oneSecondCaptureCheck()
+        {
             if (strengthValue == 0 || capturePoints < 0)
             {
                 capturePoints += 10;
@@ -1938,17 +1953,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //Power check
                 cityCaptureCheck();
-                capturePoints = -100;                
-            }
-
-            casualProgress?.oneSecondUpdate(this);
-
-            if (minute)
-            { 
-                float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
-                freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
-
-                PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResourceIndex.rawFood, PenFoodUpkeep_minute, false);
+                capturePoints = -100;
             }
         }
 
