@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Players
                 id = networkPeer.peer.fullId,
                 faction = assignedFaction,
                 timePlayed = timePlayed,
-                recolor = profile.flag.col0_Main,
+                recolor = profile.flag == null ? null : profile.flag.col0_Main,
             };
         }
 

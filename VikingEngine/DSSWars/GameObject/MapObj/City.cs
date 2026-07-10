@@ -1137,8 +1137,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case 0:
                     writeHousing(w);
-                    workTemplate.writeGameState(w);
-                    writeResources(w);
+                    //workTemplate.writeGameState(w);
+                    //writeResources(w);
                     break;
 
                 default:

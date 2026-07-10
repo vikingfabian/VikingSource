@@ -550,7 +550,7 @@ namespace VikingEngine.DSSWars
 
             DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
 
-            unitCollAreaGrid.netSubTilesRecieved(tilePos);
+            //unitCollAreaGrid.netSubTilesRecieved(tilePos);
         }
 
         public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)
@@ -929,9 +929,12 @@ namespace VikingEngine.DSSWars
             Rectangle2 centerArea = CenterArea();
 
             HashSet<int> hadPlayerOwner = new HashSet<int>();
-            foreach (var kv in ((PlayState)DssRef.state).previousRemotePlayers)
-            {
-                hadPlayerOwner.Add(kv.Value.faction);
+            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            {   
+                foreach (var kv in DssRef.state.playstate().previousRemotePlayers)
+                {
+                    hadPlayerOwner.Add(kv.Value.faction);
+                }
             }
 
             //Calculate scores

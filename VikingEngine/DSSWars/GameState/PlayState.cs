@@ -783,9 +783,12 @@ namespace VikingEngine.DSSWars
                 {
                     foreach (var m in DssRef.world.cities)
                     {
-                        m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
-                        m.async_conscriptUpdate(time);
-                        m.async_deliveryUpdate();
+                        if (m.IsNetHosted)
+                        {
+                            m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
+                            m.async_conscriptUpdate(time);
+                            m.async_deliveryUpdate();
+                        }
                     }
 
                     var factions = DssRef.world.factions.counter();

@@ -784,11 +784,14 @@ namespace VikingEngine.DSSWars
                 foodSpending.minuteUpdate();
             }
 
+            bool netHosted = IsNetHosted();
+
             float armiesStrength = 0;
 
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
+                armiesC.sel.IsNetHosted = netHosted;
                 armiesC.sel.asynchGameObjectsUpdate(time, oneMinute);
                 armiesStrength += armiesC.sel.strengthValue;
             }

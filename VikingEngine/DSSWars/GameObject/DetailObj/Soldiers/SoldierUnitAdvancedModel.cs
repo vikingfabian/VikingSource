@@ -29,6 +29,11 @@ namespace VikingEngine.DSSWars.GameObject
         
         }
 
+        virtual public void SetPosition(Vector3 position)
+        { 
+            model.position = position;
+        }
+
         virtual public void RotateVector(Vector3 forward, ref Vector3 pos)
         {
             pos = model.Rotation.TranslateAlongAxis(forward, model.position);

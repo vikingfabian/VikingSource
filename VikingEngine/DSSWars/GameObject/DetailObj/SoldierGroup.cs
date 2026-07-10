@@ -329,21 +329,35 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
                         {
-                            goalWp = newGoalWp;
-                            armyPlacementWp = goalWp;
+                            //if (VectorExt.PlaneXZDistance(ref goalWp, ref newGoalWp) > WorldData.SubTileWidth)
+                            //{
+                                goalWp = newGoalWp;
+                            //}
+
+                            //if (VectorExt.PlaneXZDistance(ref armyPlacementWp, ref goalWp) > WorldData.SubTileWidth)
+                            //{
+                                armyPlacementWp = goalWp;
+                            //}
                         }
                     }
                     break;
                 case GroupState.FollowCommand:
                     {
                         WP.ReadPosXZPercentU16(r, out position, out tilePos);
-                        goalWp = position;
+                        if (VectorExt.PlaneXZDistance(ref position, ref goalWp) > WorldData.SubTileWidth)
+                        {
+                            goalWp = position;
+                        }
+                        
                         if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
                         {
                             var command_sp = command;
                             if (command_sp == null)
                             {
-                                command = new NetClientCommand(this, newGoalWp);
+                                if (VectorExt.PlaneXZDistance(ref position, ref newGoalWp) > WorldData.SubTileWidth)
+                                {
+                                    command = new NetClientCommand(this, newGoalWp);
+                                }
                             }
                             else
                             {
@@ -357,7 +371,13 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case GroupState.Battle:
-                    WP.ReadPosXZPercentU16(r, out position, out tilePos);
+                    
+                    WP.ReadPosXZPercentU16(r, out var rPosition, out tilePos);
+
+                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth)
+                    {
+                        position = rPosition;
+                    }
 
                     SoldierGroup target = Net.ObjectId.ReadSoldierGroup(r, true, out _);
                     if (target != null)
@@ -1040,7 +1060,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                  lib.DoNothing();
             }
-            if (fullUpdate)
+            if (fullUpdate && IsGuardGroup())
             {
                 lib.DoNothing();
             }
@@ -1251,6 +1271,20 @@ namespace VikingEngine.DSSWars.GameObject
                 if (state == GroupState.Idle)
                 {
                     //Passive check of souroundings
+                    if (Ref.peRnd.ChanceF(0.2f))
+                    {
+                        var soldiers_sp = soldiers;
+                        if (soldiers_sp != null)
+                        {
+                            var soldiersC = soldiers_sp.counter();
+                            while (soldiersC.Next())
+                            {
+                                soldiersC.sel.updateGroudY(true);
+
+                                soldiersC.sel.model?.update(soldiersC.sel);
+                            }
+                        }
+                    }
                 }
                 else
                 {

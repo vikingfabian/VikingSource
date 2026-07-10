@@ -261,7 +261,7 @@ namespace VikingEngine.DSSWars.Players
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
             var profile = DssRef.storage.profileStorage.profiles[pStorage.profileIndex];
-            if (DssRef.state.playstate().recolor.HasValue)
+            if (DssRef.state.PlayType() == PlayStateType.Play && DssRef.state.playstate().recolor.HasValue)
             {
                 profile.flag = profile.flag.Clone();
                 profile.flag.col0_Main = DssRef.state.playstate().recolor.Value;
