@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.Net
 {
@@ -41,14 +42,15 @@ namespace VikingEngine.DSSWars.Net
         public static void WriteCityAndOwner(System.IO.BinaryWriter w, City city)
         {
             w.Write((ushort)city.myIndex);
-            if (city.factionIndex < 0)
-            {
-                w.Write(ushort.MaxValue);
-            }
-            else
-            {
-                w.Write((ushort)city.factionIndex);
-            }
+            city.pfaction.NetWrite(w);
+            //if (city.factionIndex < 0)
+            //{
+            //    w.Write(ushort.MaxValue);
+            //}
+            //else
+            //{
+            //    w.Write((ushort)city.factionIndex);
+            //}
         }
         public static City ReadCityAndOwner(System.IO.BinaryReader r)
         {
@@ -140,30 +142,31 @@ namespace VikingEngine.DSSWars.Net
 
         public static void NetWriteMapObjId(System.IO.BinaryWriter w, AbsArmy army)
         {
-            w.Write((ushort)army.factionIndex);
+            //w.Write((ushort)army.factionIndex);
+            army.pfaction.NetWrite(w);
             w.Write((ushort)army.myIndex);
         }
 
         public static bool NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, bool createIfMissing, out AbsArmy mapObj, out bool needInit)
         {
-            int factionIx = r.ReadUInt16();
-
-            if (factionIx == ushort.MaxValue)
-            {
-                mapObj = null;
-                needInit = false;
-                faction = null;
-                return false;
-            }
-
-            faction = DssRef.world.faction(factionIx);
-
+            //int factionIx = r.ReadUInt16();
+            PFaction pfaction = new PFaction(r);
+            faction = pfaction.GetFaction();
             if (faction == null)
             {
                 mapObj = null;
                 needInit = false;
                 return false;
             }
+
+            //faction = DssRef.world.faction(factionIx);
+
+            //if (faction == null)
+            //{
+            //    mapObj = null;
+            //    needInit = false;
+            //    return false;
+            //}
 
             int unitIx = r.ReadUInt16();
 
@@ -176,7 +179,7 @@ namespace VikingEngine.DSSWars.Net
                     if (createIfMissing)
                     {
                         army = new Army();
-                        army.factionIndex = factionIx;
+                        army.pfaction = pfaction;
                         //faction.armies.HardSet(army, armyIx);
                         army.init(faction, unitIx);
                         needInit = true;
@@ -209,7 +212,7 @@ namespace VikingEngine.DSSWars.Net
                 //int unitIx = r.ReadUInt16();
                 mapObj = DssRef.world.cities[unitIx];
                 mapObj.setFaction(faction, false, true, ConvertReason.Assigned, false);
-                faction = mapObj.GetFaction();
+                faction = mapObj.pfaction.GetFaction();
             }
 
             return true;

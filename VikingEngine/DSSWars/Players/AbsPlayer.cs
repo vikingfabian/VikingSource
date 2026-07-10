@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.Profile;
@@ -21,7 +22,8 @@ namespace VikingEngine.DSSWars.Players
         public const int AggressionLevel3_FocusedAttacks = 3;
 
         public bool IsPlayerNeighbor = false;
-        public Faction faction;
+        //public Faction faction;
+        public PFaction pfaction;
         public int aggressionLevel = AggressionLevel0_Passive;
         public bool protectedFromBotAttacks = false;
         protected bool ignorePlayerCapture = false;
@@ -46,7 +48,7 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void AssignFaction(Faction faction)
         {
-            this.faction = faction;
+            this.pfaction = faction.Pointer();
             //faction.player = this;
             faction.SetStartOwner(this);
             faction.onNewPlayerModels();
@@ -66,7 +68,7 @@ namespace VikingEngine.DSSWars.Players
             if (netShare)
             {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssReColor, Network.PacketReliability.Reliable);
-                Net.ObjectId.WriteFaction(w, faction);
+                pfaction.NetWrite(w);//Net.ObjectId.WriteFaction(w, faction);
                 StreamLib.WriteColorStream_3B(w, selected);
             }
         }
@@ -74,14 +76,14 @@ namespace VikingEngine.DSSWars.Players
         virtual public void refreshFlag()
         {
             flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
-            faction?.onNewPlayerModels();
+            pfaction.GetFaction()?.onNewPlayerModels();
             
             DssRef.world.BordersUpdated = true;
         }
 
         public AbsPlayer(Faction faction, bool newGame)
         {
-            this.faction = faction;
+            this.pfaction = faction.Pointer();
             faction.SetStartOwner(this);
 
             if (newGame)
@@ -116,7 +118,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void createStartupBarracks()
         { 
-            faction.mainCity?.createStartupBarracks();
+            pfaction.GetFaction().mainCity?.createStartupBarracks();
         }
 
         virtual public void Update()
@@ -167,11 +169,13 @@ namespace VikingEngine.DSSWars.Players
         { }
 
         //virtual public void onNewRelation(bool isActuator, Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
-        virtual public void onNewRelation(bool isActuator, Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
+        virtual public void onNewRelation(bool isActuator, PFaction otherPFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
             //On peace, stop all attacking armies
             bool fromWar = Diplomacy.IsWar(previousRelation);
             bool toWar = Diplomacy.IsWar(rel.Relation);
+            var faction = pfaction.GetFaction();
+            var otherFaction = otherPFaction.GetFaction();
 
             if (fromWar != toWar)
             {
@@ -179,7 +183,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (localAction)
                     {
-                        faction.tradeAllianceWars(isActuator,otherFaction);
+                        faction.tradeAllianceWars(isActuator, otherPFaction);
                     }
                 }
                 else
@@ -193,7 +197,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (localAction)
                 {
-                    faction.tradeAllianceWars(isActuator, otherFaction);
+                    faction.tradeAllianceWars(isActuator, otherPFaction);
                 }
             }
         }
@@ -252,10 +256,10 @@ namespace VikingEngine.DSSWars.Players
 
                 //player.GetAiPlayer().refreshAggression();
 
-                ref var relation = ref DssRef.world.diplomacy.GetRefRelation(faction.myIndex, player.faction.myIndex);
+                ref var relation = ref DssRef.world.diplomacy.GetRefRelation(pfaction, player.pfaction);
                 relation.SetWorseSpeakTerms(DssRef.world.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.world.diplomacy.SpeakTermsOnNeigbor_NoneChance);
 
-                if (faction.Size() >= FactionSize.Big)
+                if (pfaction.TryGetFaction(out var faction) && faction.Size() >= FactionSize.Big)
                 {
                     protectedFromBotAttacks = true;
                 }
@@ -266,8 +270,9 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
             {
-                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
+                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(pfaction))
                 {
+                    var faction = pfaction.GetFaction();
                     IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                     Army mainArmy = faction.NewArmy(onTile);
 
@@ -298,6 +303,7 @@ namespace VikingEngine.DSSWars.Players
 
         protected void settlerGuardUnits()
         {
+            var faction = pfaction.GetFaction();
             IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
             Army mainArmy = faction.NewArmy(onTile);
 

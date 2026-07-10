@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.Communication
 {
@@ -33,12 +35,13 @@ namespace VikingEngine.DSSWars.Communication
             return Relation >= RelationType.RelationType3_Ally;
         }
 
-        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, Faction actuator, out RelationType previousRelation)
+        public void SetRelation(PFaction faction1, PFaction faction2, RelationType newRelation, PFaction actuator, out RelationType previousRelation)
         {
             previousRelation = Relation;
 
-            if (Relation != newRelation &&
-                faction1 != null && faction2 != null)
+            if (Relation != newRelation )
+                //&&
+                //faction1 != null && faction2 != null)
             {
                 Relation = newRelation;
                 if (Relation == RelationType.RelationTypeN5_TotalWar)
@@ -48,15 +51,18 @@ namespace VikingEngine.DSSWars.Communication
 
                 //faction1?.player?.onNewRelation(actuator == faction2, faction2, this, previousRelation);
                 //faction2?.player?.onNewRelation(actuator == faction1, faction1, this, previousRelation);
-                faction1.player?.onNewRelation(actuator == faction2,faction2, this, previousRelation, true);
-                faction2.player?.onNewRelation(actuator == faction1,faction1, this, previousRelation, true);
+                faction1.GetPlayer()?.onNewRelation(actuator == faction2,faction2, this, previousRelation, true);
+                faction2.GetPlayer()?.onNewRelation(actuator == faction1,faction1, this, previousRelation, true);
 
                 var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
                 {
                     EightBit actuators = new EightBit(actuator == faction1, actuator == faction2);
                     actuators.write(w);
-                    Net.ObjectId.WriteFaction(w, faction1);
-                    Net.ObjectId.WriteFaction(w, faction2);
+                    //Net.ObjectId.WriteFaction(w, faction1);
+                    //Net.ObjectId.WriteFaction(w, faction2);
+                    faction1.NetWrite(w);
+                    faction2.NetWrite(w);
+
                     write(w);
                 }
                 packet.EndWrite_Asynch();
@@ -66,19 +72,21 @@ namespace VikingEngine.DSSWars.Communication
 
         public static void NetReadRelation(System.IO.BinaryReader r)
         {
-            Faction faction1 = Net.ObjectId.ReadFaction(r, out _);
-            Faction faction2 = Net.ObjectId.ReadFaction(r, out _);
+            //Faction faction1 = Net.ObjectId.ReadFaction(r, out _);
+            //Faction faction2 = Net.ObjectId.ReadFaction(r, out _);
+            PFaction faction1 = new PFaction(r);
+            PFaction faction2 = new PFaction(r);
 
-            if (faction1 != null && faction2 != null)
+            //if (faction1 != null && faction2 != null)
             {
                 EightBit actuators = new EightBit(r);
 
-                ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
+                ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1, faction2);
                 var previousRelation = rel.Relation;
                 rel.read(r, int.MaxValue);
 
-                faction1.player?.onNewRelation(actuators.Get(1), faction2, rel, previousRelation, false);
-                faction2.player?.onNewRelation(actuators.Get(0), faction1, rel, previousRelation, false);
+                faction1.GetPlayer()?.onNewRelation(actuators.Get(1), faction2, rel, previousRelation, false);
+                faction2.GetPlayer()?.onNewRelation(actuators.Get(0), faction1, rel, previousRelation, false);
             }
         }
 

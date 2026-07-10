@@ -36,11 +36,12 @@ namespace VikingEngine.DSSWars.Players
 
         protected void startingResources()
         {
-            faction.addGold_factionWide(DssRef.difficulty.PlayerBonusGold);
+            pfaction.GetFaction().addGold_factionWide(DssRef.difficulty.PlayerBonusGold);
         }
 
         public void addNetGamerIconsToHud(RichBoxContent content, bool factionBanner)
         {
+            var faction = pfaction.GetFaction();
             if (faction == null)
             {
                 if (profile.flag != null)
@@ -225,7 +226,7 @@ namespace VikingEngine.DSSWars.Players
         }
         public LocationPin netReadPin(int index, BinaryReader r)
         {
-            if (index == ushort.MaxValue || faction == null)
+            if (index == ushort.MaxValue || pfaction.GetFaction() == null)
             {
                 return null;
             }
@@ -290,6 +291,7 @@ namespace VikingEngine.DSSWars.Players
 
         protected void playerStartUnits(double unitCountMulti, bool settlerGuard, int honorguards)
         {
+            var faction = pfaction.GetFaction();
             if (faction.cities.Count > 0)
             {
                 if (quickMatchUnits(false))
@@ -369,7 +371,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (ready &&
                     humansLoop.sel != this &&
-                    DssRef.world.diplomacy.GetRelation(faction, humansLoop.sel.faction).Relation >=  RelationType.RelationType3_Ally)
+                    DssRef.world.diplomacy.GetRelation(pfaction, humansLoop.sel.pfaction).Relation >=  RelationType.RelationType3_Ally)
                 { 
                      count++;
                 }

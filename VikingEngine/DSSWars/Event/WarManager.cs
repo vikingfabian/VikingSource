@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.Event
 {
@@ -144,7 +145,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (tooPeacefulCheckTimer.CountDown(time))
             {
-                if (faction.cities.Count > warManagerGear.maxCityCount)
+                if (pfaction.GetFaction().cities.Count > warManagerGear.maxCityCount)
                 {
                     warManagerGear = new WarManagerGear(warManagerGear.gear + 1, localAiAggressivity);
                 }
@@ -157,7 +158,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void tooPeacefulCheck_asynch()
         {
-           
+           var faction = pfaction.GetFaction();
 
             float opposingSize = 0;
 
@@ -166,7 +167,7 @@ namespace VikingEngine.DSSWars.Players
                 int warCount = 0;
                 
 
-                RelationsLoop loop = new RelationsLoop(faction.myIndex);
+                RelationsLoop loop = new RelationsLoop(pfaction);
                 while (loop.Next())
                 {
                 
@@ -183,7 +184,7 @@ namespace VikingEngine.DSSWars.Players
                 int maxChecks = warManagerGear.maxPeacefulChecks.GetRandom();
 
                 int attackersCount = 0;
-                Span<int> attackers = stackalloc int[maxChecks];
+                Span<PFaction> attackers = stackalloc PFaction[maxChecks];
 
                 float minOpposingStrength = faction.PotensialMilitaryStrength() * localTooPeacefulPercentage * warManagerGear.tooPeacefulPercentageMulti;
                 float maxOpposingStrength = minOpposingStrength * 2f;
@@ -205,10 +206,10 @@ namespace VikingEngine.DSSWars.Players
                             attacker = DssRef.state.events.findAttackingNeighborFaction_keepExpanding(faction);
 
                             //See if can gank any of the players friendlies, since they are not neihbor to the player
-                            var friend = DssRef.state.events.findFriendsToDefender(attacker, this.faction);
+                            var friend = DssRef.state.events.findFriendsToDefender(attacker, faction);
                             if (friend != null)
                             {
-                                DssRef.world.diplomacy.declareWar(attacker, friend);
+                                DssRef.world.diplomacy.declareWar(attacker.pfaction, friend.pfaction);
                             }
                         }
 
@@ -220,9 +221,9 @@ namespace VikingEngine.DSSWars.Players
                                 opposingSize += strenght;
 
                                 attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                                DssRef.world.diplomacy.declareWar(attacker, faction);
+                                DssRef.world.diplomacy.declareWar(attacker.pfaction, faction.pfaction);
 
-                                attackers[attackersCount] = attacker.myIndex;
+                                attackers[attackersCount] = attacker.pfaction;
                                 attackersCount++;
                             }
                             else
@@ -243,28 +244,29 @@ namespace VikingEngine.DSSWars.Players
 
                 if (attackersCount >= 2 && Ref.rnd.Chance(warManagerGear.allyChance))
                 {
-                    Faction firstAttacker = DssRef.world.faction(attackers[0]);
+                     attackers[0].TryGetFaction(out Faction firstAttacker);
+                    
 
                     if (firstAttacker != null )
                     {
                         //Try ally the attackers
                         for (int otherIx = 1; otherIx < attackersCount; otherIx++)
                         {
-                            var otherFaction = DssRef.world.faction(attackers[otherIx]);
-                            var relation = DssRef.world.diplomacy.GetRelation(firstAttacker, otherFaction).Relation;
+                            var otherPFaction = attackers[otherIx];
+                            var relation = DssRef.world.diplomacy.GetRelation(firstAttacker.pfaction, otherPFaction).Relation;
 
                             if (relation <= RelationType.RelationTypeN3_Mobilization)
                             {
                                 //Try declare peace
                                 if (relation > RelationType.RelationTypeN5_TotalWar)
                                 {
-                                    firstAttacker.player.GetAiPlayer().botToBotPeaceDeclaration(null, otherFaction);
+                                    firstAttacker.player.GetAiPlayer().botToBotPeaceDeclaration(null, otherPFaction.GetFaction());
                                 }
                             }
                             else if (relation < RelationType.RelationType3_Ally)
                             { 
                                 //Try ally
-                                firstAttacker.player.GetAiPlayer().botToBotAllyDeclaration(this.faction, otherFaction, true);
+                                firstAttacker.player.GetAiPlayer().botToBotAllyDeclaration(faction, otherPFaction.GetFaction(), true);
                             }
                         }
                     }

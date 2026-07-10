@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
@@ -71,11 +72,16 @@ namespace VikingEngine.DSSWars
         public Faction(int index)
         {
             this.myIndex = index;
-            factionIndex = index;
+            pfaction = new PFaction(myIndex);
             workTemplate = new Work.WorkTemplate(false, index);
 
             cities = new SpottedPointerArray(8);
             armies = new SpottedArray<Army>(16);
+        }
+
+        public PFaction Pointer()
+        { 
+            return pfaction;
         }
 
         public Faction(WorldData world, FactionType factiontype, int arrayIndex = -1)
@@ -99,7 +105,7 @@ namespace VikingEngine.DSSWars
             {
                 this.myIndex = world.factions.Add(this);
             }
-            factionIndex = myIndex;
+            pfaction = new PFaction(myIndex);
             workTemplate = new Work.WorkTemplate(false, myIndex);
             world.factionComponentsAdd(this);
             initVisuals(world.metaData);
@@ -157,7 +163,7 @@ namespace VikingEngine.DSSWars
             if (speakTerms != SpeakTerms.SpeakTerms0_Normal)
             {
 
-                DssRef.world.diplomacy.SetDefaultSpeakTerms(this, speakTerms);
+                DssRef.world.diplomacy.SetDefaultSpeakTerms(this.pfaction, speakTerms);
             }
         }
 
@@ -462,7 +468,7 @@ namespace VikingEngine.DSSWars
                 Network.NetworkInstancePeer.ReadNetID(r, out AbsNetworkPeer peer, out int SplitScreenIndex);
                 var player = DssRef.state.GetOrCreateRemotePlayer(peer, SplitScreenIndex);
                 this.player = player;
-                player.faction = this;
+                player.pfaction = this.pfaction;
             }
             else
             {
@@ -551,7 +557,7 @@ namespace VikingEngine.DSSWars
                 army.myIndex = overrideIx;
                 armies.HardSet(army, overrideIx);
             }
-            army.factionIndex = myIndex;
+            army.pfaction = pfaction;
         }
 
         public void AddCity(City city, bool duringStartUp)
@@ -584,7 +590,7 @@ namespace VikingEngine.DSSWars
                         city.workTemplate.onFactionChange(city, workTemplate, duringStartUp);
                         city.defaultResourceBuffer(DssRef.world);
 
-                        if (mainCity == null || mainCity.factionIndex != myIndex)
+                        if (mainCity == null || mainCity.pfaction != pfaction)
                         {
                             refreshMainCity();
 
@@ -673,7 +679,7 @@ namespace VikingEngine.DSSWars
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
                 {
-                    if (city.factionIndex == myIndex)
+                    if (city.pfaction == pfaction)
                     {
                         city.oneSecondCaptureCheck();
                     }
@@ -723,7 +729,7 @@ namespace VikingEngine.DSSWars
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
                 {
-                    if (city.factionIndex == myIndex)
+                    if (city.pfaction.factionIndex == myIndex)
                     {
                         city.oneSecUpdate(minute);
                         embassyCount += city.buildingStructure.Embassy_count;
@@ -859,7 +865,7 @@ namespace VikingEngine.DSSWars
             if (cities.Remove(city.myIndex))
             {
                 if (city == mainCity ||
-                   mainCity == null || mainCity.factionIndex != myIndex)
+                   mainCity == null || mainCity.pfaction.factionIndex != myIndex)
                 {
                     refreshMainCity();
                 }
@@ -895,7 +901,7 @@ namespace VikingEngine.DSSWars
 
         public void refreshMainCity()
         {
-            if (mainCity != null && mainCity.factionIndex != myIndex)
+            if (mainCity != null && mainCity.pfaction.factionIndex != myIndex)
             {
                 mainCity = null;
             }
@@ -965,7 +971,7 @@ namespace VikingEngine.DSSWars
             return closestArmy;
         }
                
-        public void tradeAllianceWars(bool isActuator, Faction alliedFaction)
+        public void tradeAllianceWars(bool isActuator, PFaction alliedFaction)
         {
                 Task.Factory.StartNew(() =>
                 {
@@ -973,15 +979,16 @@ namespace VikingEngine.DSSWars
                     {
                         bool protectedFromWars = player.IsLocalPlayer() && DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful && !isActuator;
 
-                        RelationsLoop loop = new RelationsLoop(myIndex);
+                        RelationsLoop loop = new RelationsLoop(pfaction);
                         while (loop.Next())
                         {
                             var myRelation = loop.Relation();
                             {
                                 if (myRelation.Relation <= RelationType.RelationTypeN4_War)
                                 {
-                                    if (loop.OtherFaction(out var thirdParty))
-                                    {
+                                    //if (loop.OtherFaction(out var thirdParty))
+                                    //{
+                                    var thirdParty = loop.OtherFaction_P();
                                         var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(alliedFaction, thirdParty);
 
                                         if (allyToEnemyRelation.Relation < RelationType.RelationType3_Ally)
@@ -1004,7 +1011,7 @@ namespace VikingEngine.DSSWars
                                                 DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, worst);
                                             }
                                         }
-                                    }
+                                    //}
                                 }
                             }
                         }
@@ -1018,24 +1025,25 @@ namespace VikingEngine.DSSWars
             );
         }
 
-        public void shareRelationWithAllAllies(Faction relationTo, RelationType relationType)
+        public void shareRelationWithAllAllies(PFaction relationTo, RelationType relationType)
         {
             Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    DssRef.world.diplomacy.SetRelationType(this, relationTo, this, relationType);
+                    DssRef.world.diplomacy.SetRelationType(this.pfaction, relationTo, this.pfaction, relationType);
 
-                    RelationsLoop loop = new RelationsLoop(myIndex);
+                    RelationsLoop loop = new RelationsLoop(pfaction);
                     while (loop.Next())
                     {
                         
                             if (loop.Relation().Relation >= RelationType.RelationType3_Ally)
                             {
-                                if (loop.OtherFaction(out var ally))
-                                {
-                                    DssRef.world.diplomacy.SetRelationType(ally, relationTo, ally, relationType);
-                                }
+                            //if (loop.OtherFaction(out var ally))
+                            //{
+                                var ally = loop.OtherFaction_P();
+                                DssRef.world.diplomacy.SetRelationType(ally, relationTo, ally, relationType);
+                                //}
                             }
                         
                     }
@@ -1129,7 +1137,7 @@ namespace VikingEngine.DSSWars
                 EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
                 while (neighbors.Next(DssRef.world.cities, out City nCity))
                 {
-                    var nCityFaction = nCity.GetFaction();
+                    var nCityFaction = nCity.pfaction.GetFaction();
 
                     if (nCityFaction != null &&
                         nCityFaction != this &&
@@ -1173,7 +1181,7 @@ namespace VikingEngine.DSSWars
             {
                 isAlive = false;
                 DssRef.state.events.onFactionDestroyed(this);
-                DssRef.world.diplomacy.onFactionDeath(this);
+                DssRef.world.diplomacy.onFactionDeath(this.pfaction);
 
                 if (factiontype == FactionType.Player)
                 {
@@ -1273,7 +1281,7 @@ namespace VikingEngine.DSSWars
             List<Faction> opponents = new List<Faction>();
             //for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
             //{
-            RelationsLoop loop = new RelationsLoop(myIndex);
+            RelationsLoop loop = new RelationsLoop(pfaction);
             while (loop.Next())
             {   
                 if (loop.Relation().InWar() && loop.OtherFaction(out var opponent))
@@ -1290,7 +1298,7 @@ namespace VikingEngine.DSSWars
             int count = 0;
             playerWars = 0;
             
-            RelationsLoop loop = new RelationsLoop(myIndex);
+            RelationsLoop loop = new RelationsLoop(pfaction);
             while (loop.Next())
             {
                 if (loop.Relation().InWar())
@@ -1312,7 +1320,7 @@ namespace VikingEngine.DSSWars
         {
             float result = 0;
 
-            RelationsLoop loop = new RelationsLoop(myIndex);
+            RelationsLoop loop = new RelationsLoop(pfaction);
             while (loop.Next())
             {
                 if (loop.Relation().InAlliance() && loop.OtherFaction(out var ally))
