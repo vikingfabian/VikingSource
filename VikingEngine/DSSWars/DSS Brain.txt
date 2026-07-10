@@ -4,7 +4,8 @@ Change log:
 * Client soldiers move sligtly better (will do a big rework patch after the update)
 * Improved soldier height placement
 * More secure net host status on armies
-
+* Removed city work predictions
+* Optimize city packet size
 
 KNOWN ISSUES
 x rejoining can give an endless "city lost" message

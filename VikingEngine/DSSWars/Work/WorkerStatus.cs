@@ -90,12 +90,6 @@ namespace VikingEngine.DSSWars.Work
 
         public void writeGameState(City city, System.IO.BinaryWriter w, bool netPacket)
         {
-            //w.Write((byte)xpType1);
-            //w.Write((byte)xpType2);
-            //w.Write((byte)xpType3);
-            //w.Write(xp1);
-            //w.Write(xp2);
-            //w.Write(xp3);
             DssRef.world.writeWorkXp(XpEntityIndex, w);
 
             byte saveEnergy = EnergyBounds.GetValueBytePercentPos_WithBound(energy);
@@ -111,24 +105,11 @@ namespace VikingEngine.DSSWars.Work
                 w.Write(Bound.Byte(secondsPassed / TimeNetShareDiv));
                 w.Write(Bound.Byte((int)processTimeLengthSec / TimeNetShareDiv));
                 (subTileEnd - city.cityHallSubtilePos).writeShort(w);
+                (subTileStart - city.cityHallSubtilePos).writeShort(w);
             }
         }
         public void readGameState(City city, System.IO.BinaryReader r, bool netPacket, int subversion)
         {
-            //xpType1 = (WorkExperienceType)r.ReadByte();
-            //xpType2 = (WorkExperienceType)r.ReadByte();
-            //xpType3 = (WorkExperienceType)r.ReadByte();
-
-            //if (subversion < 80)
-            //{
-            //    XpLib.AdjustVersion80Skill(ref xpType1);
-            //    XpLib.AdjustVersion80Skill(ref xpType2);
-            //    XpLib.AdjustVersion80Skill(ref xpType3);
-            //}
-
-            //xp1 = r.ReadByte();
-            //xp2 = r.ReadByte();
-            //xp3 = r.ReadByte();
             DssRef.world.readWorkXp(XpEntityIndex, r, subversion);
 
             energy = EnergyBounds.GetFromBytePercent(r.ReadByte());
@@ -143,7 +124,7 @@ namespace VikingEngine.DSSWars.Work
                 processTimeStartStampSec = Ref.TotalGameTimeSec - secondsPassed;
                 processTimeLengthSec = r.ReadByte() * TimeNetShareDiv;
                 subTileEnd = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
-                subTileStart = subTileEnd;
+                subTileStart = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
             }
         }
 

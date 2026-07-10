@@ -558,14 +558,14 @@ namespace VikingEngine.DSSWars
                 {
                     foreach (var m in DssRef.world.cities)
                     {
-                        if (m.IsNetHosted)
-                        {
+                        //if (m.IsNetHosted)
+                        //{
                             m.update();
-                        }
-                        else
-                        {
-                            m.update_client();
-                        }
+                        //}
+                        //else
+                        //{
+                        //    m.update_client();
+                        //}
                     }
 
                     var factionsC = DssRef.world.factions.counter();
@@ -788,6 +788,13 @@ namespace VikingEngine.DSSWars
                             m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
                             m.async_conscriptUpdate(time);
                             m.async_deliveryUpdate();
+                        }
+                        else
+                        {
+                            if (arraylib.HasMembers(m.workerUnits))
+                            {
+                                m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
+                            }
                         }
                     }
 

@@ -75,19 +75,14 @@ namespace VikingEngine.DSSWars.GameObject
                 bool hostUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
 
                 CityStructure.WorkInstance.newCity = true;
-                //WaitingHighSkillJobs.Clear();
-
+               
                 async_blackMarketUpdate();
 
                 int workTeamsTotalCount = workerStatuses.Count;
                 int deletedCount = 0;
                 int idleCount = 0;
                 int mayExitCount = 0;
-                //IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
-                //IntVector2 maxpos = minpos;
-                //Intvector2MinMax minMax_workerCulling = new Intvector2MinMax(WP.ToSubTilePos_Centered(tilePos));
-                //cityHallSubtilePos
-
+             
                 for (int i = 0; i < workerStatuses.Count; i++)
                 {
                     var status = workerStatuses[i];
@@ -119,10 +114,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 cityExperienceLevels = SkillCollector.ExportData();
-                //cullingTopLeft = WP.SubtileToTilePos(minMax.min);
-                //cullingBottomRight = WP.SubtileToTilePos(minMax.max);
-                //workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax_workerCulling.min), WP.SubtileToTilePos(minMax_workerCulling.max));
-
+                
                 int workTeamGoalCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
                 int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount/* + 1*/);
 
@@ -135,8 +127,8 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     
                     int deletedIx = 0;
-                    int newWorkers = /*Bound.Max(*/workTeamGoalCount - workTeamsTotalCount;/*, 2);*/
-                    IntVector2 startPos = citySquareSubtilePos;//WP.ToSubTilePos_Centered(tilePos);
+                    int newWorkers = workTeamGoalCount - workTeamsTotalCount;
+                    IntVector2 startPos = citySquareSubtilePos;
                     for (int i = 0; i < newWorkers; i++)
                     {
                         var newWorker = new WorkerStatus(true)
@@ -157,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
                             for (int xpIx = 0; xpIx <= 1; ++xpIx)
                             {
                                 var exp = arraylib.RandomListMember(XpLib.ExperienceTypes);
-                                var lvl = (ExperienceLevel)cityExperienceLevels.Get(exp).maxLevel;//XpLib.ToLevel(MaxSkill[(int)exp]);
+                                var lvl = (ExperienceLevel)cityExperienceLevels.Get(exp).maxLevel;
                                 if (lvl >= ExperienceLevel.Expert_3)
                                 {
                                     newWorker.setXpFor(exp, DssConst.WorkXpToLevel);
@@ -197,14 +189,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
               
 
-                if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
+                if (idleCount > 0 && IsNetHosted && previousWorkQueUpdate.secPassed(10))
                 {
-                    if (myIndex == 54 || debugTagged)
-                    {
-                        lib.DoNothing();
-                        
-                    }
-
                     CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
                     //Last position = highest priority
@@ -212,7 +198,6 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
                     }
-                    //WorkerStats_WorkQueueLength = workQue.Count;
                     previousWorkQueUpdate.setNow();
                 }
 

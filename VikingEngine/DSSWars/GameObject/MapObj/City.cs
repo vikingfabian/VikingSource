@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : AbsArmy
     {
-        const int MaxWorkerWriteCount = 32;
+        const int MaxWorkerWriteCount = 24;
 
         public int areaSize = 0;
         public CityType cityType;
@@ -1153,8 +1153,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case 0:
                     readHousing(r, int.MaxValue);
-                    workTemplate.readGameState(r, int.MaxValue, true);
-                    readResources(r, int.MaxValue);
+                    //workTemplate.readGameState(r, int.MaxValue, true);
+                    //readResources(r, int.MaxValue);
                     break;
 
                 default:
@@ -1777,17 +1777,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void update_client()
-        {
-            updateDetailLevel();
-            if (HasPlayer())
-            {
-                if (inRender_detailLayer)
-                {
-                    updateArmyMembers(Ref.DeltaGameTimeMs, true);
-                }
-            }
-        }
+        //public void update_client()
+        //{
+        //    updateDetailLevel();
+        //    if (HasPlayer())
+        //    {
+        //        if (inRender_detailLayer)
+        //        {
+        //            updateArmyMembers(Ref.DeltaGameTimeMs, true);
+        //        }
+        //    }
+        //}
 
         public int income_oneSecUpdate(double incomeMultiplier)
         {
