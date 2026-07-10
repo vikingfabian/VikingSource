@@ -355,28 +355,35 @@ namespace VikingEngine.DSSWars.Interface
             for (FactionMapFilter filter = 0; filter < FactionMapFilter.NUM; filter++)
             {
                 SpriteName icon;
+                string filterName;
 
                 switch (filter)
                 {
-                    default: icon = SpriteName.MissingImage; break;
+                    default: icon = SpriteName.MissingImage; filterName = TextLib.Error; break;
 
                     case FactionMapFilter.FactionCols:
                         icon = SpriteName.WarsMapFilterFactions;
+                        filterName = DssRef.todoLang.UnitType_Faction;
                         break;
                     case FactionMapFilter.Terrain:
                         icon = SpriteName.WarsMapFilterTerrain;
+                        filterName = DssRef.lang.ItemSource_Terrain;
                         break;
                     case FactionMapFilter.Minimap:
                         icon = SpriteName.WarsMapFilterMinimap;
+                        filterName = DssRef.lang.InputActionName_MiniMap;
                         break;
                     case FactionMapFilter.PopulationHeatmap:
                         icon = SpriteName.WarsMapFilterWorkers;
+                        filterName = DssRef.lang.ResourceType_Workers;
                         break;
                     case FactionMapFilter.StrengthHeatmap:
                         icon = SpriteName.WarsMapFilterStrength;
+                        filterName = DssRef.lang.Hud_StrengthRating;
                         break;
                     case FactionMapFilter.ResourceHeatmap:
                         icon = SpriteName.WarsIcon_Resources;
+                        filterName = DssRef.lang.MenuTab_Resources;
                         break;
                 }
 
@@ -389,7 +396,7 @@ namespace VikingEngine.DSSWars.Interface
                             player.factionPixelTexture.filter = filter;
                             DssRef.world.BordersUpdated = true;
                        }
-                   , filter, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.MapFilter)));
+                   , filter, RbSoundType.Option), new RbTooltip_Text(string.Format(DssRef.todoLang.Language_CathergoryDashUndercathegory, DssRef.lang.MapFilter, filterName))));
             }
             
         }

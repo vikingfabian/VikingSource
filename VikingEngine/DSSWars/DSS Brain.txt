@@ -1,15 +1,8 @@
 
 Change log:
-* steam deck layout
+* Animal habitats on heatmap, and tab names
+* Rebalanced animal placement
 
-KNOWN ISSUES
-
-! old saved will have some bot flag color drifting
-! Join from a closed game doesnt work
-
-
-x DssEditSubTile
-? pins always visible
 
 ##ICONS TODO
 * gray rounded button

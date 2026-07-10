@@ -156,9 +156,25 @@ namespace VikingEngine.DSSWars.Map
                 {
                     IconName.Item(res, out SpriteName itemIcon, out string itemName);
 
+                    SpriteName collectIcon;
+                    switch (res)
+                    { 
+                        case ItemResourceType.Wood_Group:
+                        case ItemResourceType.Stone_G:
+                        case ItemResourceType.BogIron:
+                        case ItemResourceType.Clay:
+                            collectIcon = SpriteName.WarsWorkCollect;
+                            break;
+
+                        default:
+                            collectIcon = ItemPropertyColl.Get(res).storageType == StorageType.AnimalStorage ? SpriteName.WarsBuild_Trapper : SpriteName.WarsWorkMine;
+                            break;
+
+                    }
+
                     content.Add(new ArtOption(res == resourceFilter,
                         new List<AbsRichBoxMember> {
-                            new RbImage((res == ItemResourceType.Wood_Group || res == ItemResourceType.Stone_G)? SpriteName.WarsWorkCollect : SpriteName.WarsWorkMine),
+                            new RbImage(collectIcon),
                             new RbImage(itemIcon),
                             new RbSpace(0.5f),
                             new RbText(itemName),

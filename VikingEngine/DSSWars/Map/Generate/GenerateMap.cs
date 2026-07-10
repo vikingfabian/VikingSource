@@ -1874,12 +1874,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 foreach (var pos in animalSpawns)
                 {
-                    Tile tile =  world.tileGrid.Get(WP.SubtileToTilePos(pos));
+                    Tile tile = world.tileGrid.Get(WP.SubtileToTilePos(pos));
                     var biome = world.cities[tile.CityIndex].cityBiome;
 
                     double rnd = world.rnd.Double();
 
-                    TerrainBuildingType animal;
+                    TerrainBuildingType animal = TerrainBuildingType.NUM_NONE;
 
                     switch (biome)
                     {
@@ -1894,11 +1894,11 @@ namespace VikingEngine.DSSWars.Map.Generate
                             }
                             break;
                         case CityBiome.Forest:
-                            if (rnd < 0.5)
+                            if (rnd < 0.1)
                             {
                                 animal = TerrainBuildingType.CatHabitat;
                             }
-                            else
+                            else if (rnd < 0.8)
                             {
                                 animal = TerrainBuildingType.BoarHabitat;
                             }
@@ -1947,9 +1947,12 @@ namespace VikingEngine.DSSWars.Map.Generate
                             break;
                     }
 
-                    var subTile = world.subTileGrid.Get(pos);
-                    subTile.SetType(TerrainMainType.Building, (int)animal, 1);
-                    world.subTileGrid.Set(pos, subTile);
+                    if (animal != TerrainBuildingType.NUM_NONE)
+                    {
+                        var subTile = world.subTileGrid.Get(pos);
+                        subTile.SetType(TerrainMainType.Building, (int)animal, 1);
+                        world.subTileGrid.Set(pos, subTile);
+                    }
                 }
             }
 

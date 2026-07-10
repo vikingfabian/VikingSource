@@ -25,10 +25,11 @@ namespace VikingEngine.DSSWars.Build
         public static readonly ItemResourceType[] AllTerrainResources = {
         ItemResourceType.Wood_Group,
         ItemResourceType.Stone_G,
-        ItemResourceType.Brick,
-        ItemResourceType.Coal,
-
         ItemResourceType.Clay,
+        ItemResourceType.Brick,
+        ItemResourceType.Salt,
+        ItemResourceType.Coal,
+                
         ItemResourceType.BogIron,
         ItemResourceType.IronOre_G,
         ItemResourceType.TinOre,
@@ -37,8 +38,17 @@ namespace VikingEngine.DSSWars.Build
         ItemResourceType.SilverOre,
         ItemResourceType.GoldOre,
         ItemResourceType.RawMithril,
-        ItemResourceType.Salt,
+        
         ItemResourceType.Sulfur,
+
+        ItemResourceType.Fowl,
+        ItemResourceType.Boar,
+        ItemResourceType.Dog,
+        ItemResourceType.Oxen,
+        ItemResourceType.Pony,
+        ItemResourceType.Wolf,
+        ItemResourceType.WildCat,
+        ItemResourceType.Elephant,
     };
 
         public int mineCount_bogIron;
@@ -186,13 +196,22 @@ namespace VikingEngine.DSSWars.Build
                 case ItemResourceType.Wood_Group:
                     return resourceCount_wood;
 
-                // --- New Get Cases ---
                 case ItemResourceType.Salt:
                     return mineCount_salt;
                 case ItemResourceType.Clay:
                     return resourceCount_clay;
                 case ItemResourceType.Brick:
                     return mineCount_stoneblock;
+
+
+                case ItemResourceType.Fowl: return wildAnimalCount_Fowl;
+        case ItemResourceType.Boar: return wildAnimalCount_Boar;
+        case ItemResourceType.Dog: return wildAnimalCount_Dog;
+        case ItemResourceType.Oxen: return wildAnimalCount_Ox;
+        case ItemResourceType.Pony: return wildAnimalCount_Pony;
+        case ItemResourceType.Wolf: return wildAnimalCount_Wolf;
+        case ItemResourceType.WildCat: return wildAnimalCount_Cat;
+        case ItemResourceType.Elephant: return wildAnimalCount_Elephant;
 
                 default:
                     return 0;
