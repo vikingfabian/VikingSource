@@ -48,6 +48,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Label: Text text
         /// </summary>
         public string Language_LabelAndText_Colon => "{0}: {1}";
+        public string Language_CathergoryDashUndercathegory => "{0} - {1}";
 
         public string ResourceBoost => "Resource boost";
         //public string TaxIncome => "Tax income";
@@ -99,6 +100,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string Lobby_Category_MultiplayerSettings => "Multiplayer settings";
 
         public string Hud_Default = "Default";
+        public string Group_Team = "team";
+        public string Group_Everyone = "everyone";
+
         public string EngineHud_SymbolForMillion => "M";
 
         public string DecorType_DiplomaticStatue => "Diplomatic statue";

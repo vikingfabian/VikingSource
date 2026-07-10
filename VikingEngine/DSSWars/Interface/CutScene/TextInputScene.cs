@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
        
         public TextChat()
         {
-            init(".Text chat - everyone", null);
+            init(string.Format( DssRef.todoLang.Language_CathergoryDashUndercathegory, DssRef.todoLang.InputActionName_TextChat, DssRef.todoLang.Group_Everyone), null);
         }
 
         override public void textInput_complete(string result, object tag)
