@@ -192,10 +192,10 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
 
         void removePlayerOk(AbsNetworkPeer peer, bool ban)
         {
-            if (ban)
-            {
-                Ref.gamesett.bannedPeers.add(peer);                
-            }
+            //if (ban)
+            //{
+            //    Ref.gamesett.bannedPeers.add(peer);                
+            //}
 
             Ref.netSession.kickFromNetwork(peer);
 
@@ -244,7 +244,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
         {
             if (host && !filemanager.lockedInSaving)
             {
-                var w = Ref.netSession.BeginWritingPacket(PacketType.hqQuestSetup, PacketReliability.ReliableLasy);
+                var w = Ref.netSession.BeginWritingPacket(PacketType.hqQuestSetup, PacketReliability.Reliable);
                 hqRef.setup.netWrite(w);
 
                 if (hqRef.setup.quest == QuestName.Custom)

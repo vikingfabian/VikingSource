@@ -10,9 +10,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
     class BaseWarship : AbsSoldierUnit
     {
         const float ShipAttackCooldownMulti = 1;
-        int crewCount;
-        int multiAttackCount;
-        float multiAttackTimeCooldown;
+        int shipCrewCount;
+        int shipMultiAttackCount;
+        float shipMultiAttackTimeCooldown;
 
         public BaseWarship()
             : base()
@@ -27,18 +27,16 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         }
         override public void refreshShipCarryCount()
         {
-            //var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
-            //var data = group.typeCurrentData;//.SoldierData();
-            crewCount = MathExt.Div_Ceiling(this.health, group.soldierData_soldier.basehealth);
-            if (crewCount > 0)
+            shipCrewCount = MathExt.Div_Ceiling(this.health, group.soldierData_soldier.basehealth);
+            if (shipCrewCount > 0)
             {
-                multiAttackCount = Math.Min(crewCount, group.soldierData_soldier.rowWidth);
-                multiAttackTimeCooldown = group.soldierData_soldier.attackTimePlusCoolDown / (crewCount / multiAttackCount);
-                multiAttackTimeCooldown *= ShipAttackCooldownMulti; 
+                shipMultiAttackCount = Math.Min(shipCrewCount, group.soldierData_soldier.rowWidth);
+                shipMultiAttackTimeCooldown = group.soldierData_soldier.attackTimePlusCoolDown / (shipCrewCount / shipMultiAttackCount);
+                shipMultiAttackTimeCooldown *= ShipAttackCooldownMulti; 
             }
         }
 
-        public override void takeDamage(int damageAmount, float blockReduce, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate, out bool blocked)
+        public override void takeDamage(int damageAmount, float blockReduce, AbsSoldierUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate, out bool blocked)
         {
             base.takeDamage(damageAmount, blockReduce, meleeAttacker, attackDir, damageFaction, fullUpdate, out blocked);
 
@@ -71,9 +69,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         }
         protected override void commitAttack(bool fullUpdate)
         {
-
-            startMultiAttack(fullUpdate, attackTarget, true, multiAttackCount, true);
-            attackCooldownTime.MilliSeconds = multiAttackTimeCooldown;
+            startMultiAttack(fullUpdate, attackTarget, true, shipMultiAttackCount, true);
+            attackCooldownTime.MilliSeconds = shipMultiAttackTimeCooldown;
         }
 
         public override bool IsSingleTarget()
@@ -82,7 +79,6 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         }
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
         {
-            //base.DeleteMe(reason, removeFromParent);
             isDeleted = true;
             health = 0;
 

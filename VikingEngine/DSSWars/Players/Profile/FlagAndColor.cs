@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.Players.Profile
             }
         }
 
-        public FlagAndColor(FactionType factiontype, int index, WorldMetaData worldMeta)
+        public FlagAndColor(FactionType factiontype, int index, WorldMetaData worldMeta, int factionIndex = -1)
         {
             this.StorageIndex = index;
             
@@ -91,6 +91,8 @@ namespace VikingEngine.DSSWars.Players.Profile
             {
                 case FactionType.DefaultAi:
                     {
+                        worldMeta.objRnd.SetSeed(factionIndex);
+
                         var color1 = AiColorRange.GetRandom(worldMeta.objRnd);
                         var color2 = AiColorRange.GetRandom(worldMeta.objRnd);
 

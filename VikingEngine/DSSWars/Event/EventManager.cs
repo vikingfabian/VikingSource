@@ -103,12 +103,14 @@ namespace VikingEngine.DSSWars.Event
                 return;
             }
 
-            int dominationCount = DssRef.storage.gameRuleset.mapSize > MapSize.Small ? 5 : 3;
+            int dominationCount = DssRef.storage.ruleset_instance.mapSize > MapSize.Small ? 5 : 3;
             
             foreach (var p in DssRef.state.localPlayers)
             {
+                
                 int hillFriends = 0;
-                int allyCount = 0;
+                //int allyCount = 0;
+                p.alliedFactions_build.Clear();
                 int warCount = 0;
                 bool worldPeace = true;
 
@@ -127,14 +129,15 @@ namespace VikingEngine.DSSWars.Event
 
                             if (relation.Relation >= RelationType.RelationType3_Ally)
                             {
-                                allyCount++;
+                                p.alliedFactions_build.Add(loop.otherFactionIx);
+                                //allyCount++;
                                 if (otherFaction.factiontype == FactionType.BramblebrookHill ||
                                     otherFaction.factiontype == FactionType.Tumblehill)
                                 {
                                     hillFriends++;
                                 }
                             }
-                            else if (relation.Relation <= RelationType.RelationTypeN3_War)
+                            else if (relation.Relation <= RelationType.RelationTypeN3_Mobilization)
                             { 
                                 warCount++;
                                 warStrength += otherFaction.PotensialMilitaryStrength();
@@ -153,10 +156,15 @@ namespace VikingEngine.DSSWars.Event
                 }
 
                 p.warCount = warCount;
-                if (allyCount != p.allyCount)
+                lock (p.alliedFactions)
+                {
+                    var store = p.alliedFactions;
+                    p.alliedFactions = p.alliedFactions_build;
+                    p.alliedFactions_build = store;
+                }
+                if (p.alliedFactions.Count != p.alliedFactions_build.Count)//allyCount != p.allyCount)
                 { 
-                    p.allyCount = allyCount;
-                    DssRef.achieve.onAllyCount(allyCount);
+                    DssRef.achieve.onAllyCount(p.alliedFactions.Count);
                 }
                 if (hillFriends >= 2)
                 {
@@ -314,12 +322,12 @@ namespace VikingEngine.DSSWars.Event
                         var UnitedKingdom = DssRef.world.faction(DssRef.settings.Faction_UnitedKingdom);
 
 
-                        DssRef.world.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType2_Good, null, null, true);
-                        DssRef.world.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally, null, null, true);
-                        DssRef.world.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType2_Good, null, null, true);
+                        DssRef.world.diplomacy.SetRelationType(DarkFollower, SouthHara, null, RelationType.RelationType2_Good, null, null, true);
+                        DssRef.world.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, null, RelationType.RelationType3_Ally, null, null, true);
+                        DssRef.world.diplomacy.SetRelationType(UnitedKingdom, SouthHara, null, RelationType.RelationType2_Good, null, null, true);
                     }
 
-                    DssRef.world.diplomacy.SetRelationType(null, null, RelationType.RelationType2_Good, null, null, true); //test
+                    DssRef.world.diplomacy.SetRelationType(null, null, null, RelationType.RelationType2_Good, null, null, true); //test
 
                     //Setup dying war
                     dyingFactionsTimer = new Time(5, TimeUnit.Minutes);
@@ -328,9 +336,9 @@ namespace VikingEngine.DSSWars.Event
                     var hate = DssRef.world.faction(DssRef.settings.Faction_DyingHate);
                     var destru = DssRef.world.faction(DssRef.settings.Faction_DyingDestru);
 
-                    DssRef.world.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
-                    DssRef.world.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
-                    DssRef.world.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, hate, null, RelationType.RelationTypeN5_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, destru, null, RelationType.RelationTypeN5_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(hate, destru, null, RelationType.RelationTypeN5_TotalWar);
 
                     //void secretAlliance(Faction faction1, Faction faction2)
                     //{
@@ -1093,7 +1101,7 @@ namespace VikingEngine.DSSWars.Event
             //{
                 Task.Run(() =>
                 {
-                    int wars = player.faction.CountWars();
+                    int wars = player.faction.CountWars(out _);
                     maxWarsJuggles = Math.Max(maxWarsJuggles, wars);
                 });
             //}

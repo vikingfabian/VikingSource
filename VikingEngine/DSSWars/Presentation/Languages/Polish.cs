@@ -946,7 +946,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Komunikacja dyplomatyczna. Jak dobrze możecie omawiać warunki. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Stosunki dyplomatyczne: {0}";
+        public override string Diplomacy_SpeakTermIs => "Stosunki dyplomatyczne";
 
         /// <summary>
         /// Komunikacja dyplomatyczna. Lepsza niż normalnie.
@@ -1334,7 +1334,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Opcja menu do sterowania armią. Przesyłanie żołnierzy między armiami.
         /// </summary>
-        public override string ArmyOption_SendX => "Wyślij {0}";
+        public override string Hud_SendX => "Wyślij {0}";
 
         /// <summary>
         /// Opcja menu do sterowania armią. Przesyłanie żołnierzy między armiami.
@@ -1493,7 +1493,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "Dezercja!";
         public override string EventMessage_DesertersText_Money => "Nieopłaceni żołnierze uciekają z Twoich armii";
 
-        public override string DifficultyDescription_AiAggression => "Agresja AI: {0}.";
+        //public override string DifficultyDescription_AiAggression => "Agresja AI: {0}.";
         public override string DifficultyDescription_BossSize => "Wielkość bossa: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Czas przybycia bossa: {0}.";
         public override string DifficultyDescription_AiEconomy => "Ekonomia AI: {0}%.";
@@ -2083,8 +2083,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "Wł.";
         public override string Hud_Off => "Wył.";
 
-        public override string Hud_Time_Seconds => "{0} sekund";
-        public override string Hud_Time_Minutes => "{0} minut";
+        public override string Hud_Time_XSeconds => "{0} sekund";
+        public override string Hud_Time_XMinutes => "{0} minut";
         public override string Hud_Undo => "Cofnij (Undo)";
         public override string Hud_Redo => "Ponów (Redo)";
 

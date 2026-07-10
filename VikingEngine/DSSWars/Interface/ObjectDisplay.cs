@@ -3,43 +3,43 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    class ObjectDisplay : RichboxGuiPart
-    {
-        public ObjectDisplay(RichboxGui gui)
-            : base(gui)
-        { }
+    //class ObjectDisplay : RichboxGuiPart
+    //{
+    //    public ObjectDisplay(RichboxGui gui)
+    //        : base(gui)
+    //    { }
 
-        public void refresh(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected, Vector2 pos)
-        {
-            interaction?.DeleteMe();
-            interaction = null;
+    //    public void refresh(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected, Vector2 pos)
+    //    {
+    //        interaction?.DeleteMe();
+    //        interaction = null;
 
-            setVisible(obj != null);
+    //        setVisible(obj != null);
 
-            if (obj != null)
-            {
-                beginRefresh();
-                if (obj.CanMenuFocus() && player.gameControls.input.inputSource.IsXnaController &&
-                    player.gameControls.input.Controller_ObjectMenuToggle.IsActive)
-                {
-                    content.Add(new HUD.RichBox.RbImage(player.gameControls.input.Controller_ObjectMenuToggle.Icon));
-                    content.Add(new HUD.RichBox.RbText(":"));
-                    content.newLine();
-                }
+    //        if (obj != null)
+    //        {
+    //            beginRefresh();
+    //            if (obj.CanMenuFocus() && player.gameControls.input.inputSource.IsXnaController &&
+    //                player.gameControls.input.Controller_ObjectMenuToggle.IsActive)
+    //            {
+    //                content.Add(new HUD.RichBox.RbImage(player.gameControls.input.Controller_ObjectMenuToggle.Icon));
+    //                content.Add(new HUD.RichBox.RbText(":"));
+    //                content.newLine();
+    //            }
 
-                obj.toHud(new ObjectHudArgs(content, player, selected));
-                if (gui.menuState.Count > 0) 
-                {
-                    content.newLine();
-                    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, RbSoundType.Back), 
-                        null, true);
-                }
-                endRefresh(pos, selected);
-                viewOutLine(player.gameControls.map.focusedObjectMenuState());
-            }
-        }
+    //            obj.toHud(new ObjectHudArgs(content, player, selected));
+    //            if (gui.menuState.Count > 0) 
+    //            {
+    //                content.newLine();
+    //                content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, RbSoundType.Back), 
+    //                    null, true);
+    //            }
+    //            endRefresh(pos, selected);
+    //            viewOutLine(player.gameControls.map.focusedObjectMenuState());
+    //        }
+    //    }
 
-    }
+    //}
 
     struct ObjectHudArgs
     {

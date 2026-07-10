@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Players;
@@ -24,7 +25,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         public void initGameState()
         {
-            Ref.rnd.SetSeed(DssRef.world.metaData.seed);
+            Ref.rnd.SetSeed(DssRef.world.metaData.worldId.seed);
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
@@ -65,7 +66,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             Engine.Screen.SetupSplitScreen(playerCount);
             for (var i = 0; i < playerCount; ++i)
             {
-                var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                var startFaction = DssRef.world.getPlayerAvailableFaction2(localPlayers, i == 0, false);
                 var local = createLocalPlayer(startFaction);
                 local.assignPlayer(i, playerCount, true);
                 localPlayers.Add(local);
@@ -195,10 +196,12 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             {
                 overviewMap.HalfSecondUpdate();
             }
-            if (subTileReloadTimer.Update())
+            switch (processTime.update())
             {
-                detailMap.oneSecondUpdate = true;
-                overviewMap.bRefreshTimer = true;
+                case ProcessEvent.SubTileReload:                    
+                    detailMap.oneSecondUpdate = true;
+                    overviewMap.bRefreshTimer = true;
+                    break;
             }
 
             //detailMap.update();

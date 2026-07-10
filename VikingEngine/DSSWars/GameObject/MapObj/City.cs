@@ -22,19 +22,20 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Stockpile;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-
-using VikingEngine.DSSWars.Stockpile;
-using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.LootFest;
+using VikingEngine.Network;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : AbsArmy
     {
-        const int MaxWorkerWriteCount = 64;
+        const int MaxWorkerWriteCount = 24;
 
         public int areaSize = 0;
         public CityType cityType;
@@ -111,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (toLevel == 1)
             {
-                return resourceAmount(CityResoureIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
+                return resourceAmount(CityResourceIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
             }
             else if (toLevel == 2)
             {
@@ -176,7 +177,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
 
-                        EditSubTile edit = new EditSubTile();
+                        EditSubTile edit = new EditSubTile() { hostedTile = true, netShare = true };
                         edit.position = position;
                         edit.value.terrainAmount = 2;
                         edit.editAmount = true;
@@ -299,11 +300,11 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public City(int index)
+        public City(int index, WorldData world)
         {
             this.myIndex = index;
             workTemplate = new WorkTemplate(true, index);
-            DssRef.world.InitCity(this);
+            world.InitCity(this);
         }
 
         public City(WorldData world, int index, System.IO.BinaryReader r, int version)
@@ -378,25 +379,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-            //if (areaCulture.worldPercY > 0.5f * storyPlacementScale &&
-            //    areaCulture.worldPercY < 0.9f * storyPlacementScale)
-            //{
-            //    if (areaCulture.worldPercX < 0.3f * storyPlacementScale)
-            //    {
-            //        if (areaCulture.worldPercX > 0.1f * storyPlacementScale)
-            //        {
-            //            cityCultureCollection.WestKingdom.Add(this);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (areaCulture.worldPercX < 0.7f * storyPlacementScale)
-            //        {
-            //            cityCultureCollection.DarkLands.Add(this);
-            //        }
-            //    }
-            //}
-
+            
             if (world.rnd.Chance(0.3))
             {
                 //Area specific culture
@@ -448,37 +431,37 @@ namespace VikingEngine.DSSWars.GameObject
                 case CityResurceSeed.HenOrPig:
                     if (cityBiome == CityBiome.Default_Fields && areaCulture.percPlains >= 0.25)
                     {
-                        AddGroupedResource(world,CityResoureIndex.Pig, DssConst.PenBreedingStockCount * 2);
+                        AddGroupedResource(world,CityResourceIndex.Pig, DssConst.PenBreedingStockCount * 2);
                     }
                     else
                     {
-                        AddGroupedResource(world, CityResoureIndex.Hen, DssConst.PenBreedingStockCount * 4);
+                        AddGroupedResource(world, CityResourceIndex.Hen, DssConst.PenBreedingStockCount * 4);
                     }
                     break;
                 case CityResurceSeed.Mount:
                     switch (cityBiome)
                     {
                         case CityBiome.Mountain:
-                            AddGroupedResource(world, CityResoureIndex.WildPig, DssConst.PenBreedingStockCount * 2);
+                            AddGroupedResource(world, CityResourceIndex.WildPig, DssConst.PenBreedingStockCount * 2);
                             break;
 
                         case CityBiome.Desert:
                             if (world.rnd.Chance(0.5))
                             {
-                                AddGroupedResource(world, CityResoureIndex.Elephant, DssConst.PenBreedingStockCount);
+                                AddGroupedResource(world, CityResourceIndex.Elephant, DssConst.PenBreedingStockCount);
                             }
                             else
                             {
-                                AddGroupedResource(world, CityResoureIndex.Horse, DssConst.PenBreedingStockCount);
+                                AddGroupedResource(world, CityResourceIndex.Horse, DssConst.PenBreedingStockCount);
                             }
                             break;
 
                         case CityBiome.Forest:
-                            AddGroupedResource(world, CityResoureIndex.WildCat, DssConst.PenBreedingStockCount);
+                            AddGroupedResource(world, CityResourceIndex.WildCat, DssConst.PenBreedingStockCount);
                             break;
 
                         default:
-                            AddGroupedResource(world, CityResoureIndex.Pony, DssConst.PenBreedingStockCount * 2);
+                            AddGroupedResource(world, CityResourceIndex.Pony, DssConst.PenBreedingStockCount * 2);
                             break;
 
                     }
@@ -486,31 +469,31 @@ namespace VikingEngine.DSSWars.GameObject
                 case CityResurceSeed.DogOrOxen:
                     if (areaCulture.percPlains >= 0.25)
                     {
-                        AddGroupedResource(world, CityResoureIndex.Oxen, DssConst.PenBreedingStockCount * 2);
+                        AddGroupedResource(world, CityResourceIndex.Oxen, DssConst.PenBreedingStockCount * 2);
                     }
                     else
                     {
-                        AddGroupedResource(world, CityResoureIndex.Dog, DssConst.PenBreedingStockCount * 2);
+                        AddGroupedResource(world, CityResourceIndex.Dog, DssConst.PenBreedingStockCount * 2);
                     }
                     break;
 
                 case CityResurceSeed.ConservedFood:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 800);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 800);
                     break;
                 case CityResurceSeed.Brick:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 2000);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 2000);
                     break;
                 case CityResurceSeed.Bronze:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 800);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 800);
                     break;
                 case CityResurceSeed.Iron:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 400);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 400);
                     break;
                 case CityResurceSeed.Storage:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 2000);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 2000);
                     break;
                 case CityResurceSeed.Linnen:
-                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 1000);
+                    AddGroupedResource(world, CityResourceIndex.skinLinnen, 1000);
                     break;
 
                 default:
@@ -588,6 +571,70 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
+        void writeHousing(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)cityType);
+
+            w.Write(workForce.amount);
+            w.Write(HousingCount_Workers);
+            w.Write(Bound.UShort(HousingCount_Guard));
+            w.Write(Bound.Short(freeServiceMen.amount));
+            w.Write(Bound.Short(workingAndFreeServiceMen));
+
+            w.Write(Bound.UShort(HousingCount_NobelMen));
+            w.Write(Bound.Short(freeNobelMen.amount));
+            w.Write(Bound.UShort(PenFoodUpkeep_minute));
+
+            cityHallSubtilePos.writeUshort(w);
+            citySquareSubtilePos.writeUshort(w);
+
+            Debug.WriteCheck(w);
+
+            childrenAge0.write16bit(w);
+            w.Write(Bound.UShort(childrenAge1));
+
+            immigrants.write16bit(w);
+
+            w.Write(Bound.Byte(maxWaterBase));
+            w.Write(waterAddPerSec);
+
+            Debug.WriteCheck(w);
+        }
+
+        void readHousing(System.IO.BinaryReader r, int subversion)
+        {
+            cityType = (CityType)r.ReadByte();
+
+            workForce.amount = r.ReadInt32();
+            HousingCount_Workers = r.ReadInt32();
+
+            HousingCount_Guard = r.ReadUInt16();
+            freeServiceMen.amount = r.ReadInt16();
+
+            workingAndFreeServiceMen = r.ReadInt16();
+
+            HousingCount_NobelMen = r.ReadUInt16();
+            freeNobelMen.amount = r.ReadInt16();
+            PenFoodUpkeep_minute = r.ReadUInt16();
+
+            cityHallSubtilePos.readUshort(r);
+            citySquareSubtilePos.readUshort(r);
+
+
+            Debug.ReadCheck(r);
+
+            childrenAge0.read16bit(r);
+            childrenAge1 = r.ReadUInt16();
+
+            immigrants.read16bit(r);
+
+            maxWaterBase = r.ReadByte();
+            maxWaterTotal = maxWaterBase;
+            waterAddPerSec = r.ReadSingle();
+
+            Debug.ReadCheck(r);
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
             try
@@ -597,32 +644,7 @@ namespace VikingEngine.DSSWars.GameObject
                     lib.DoNothing();
                 }
 
-                w.Write((byte)cityType);
-
-                w.Write(workForce.amount);
-                w.Write(HousingCount_Workers);
-                w.Write(Bound.UShort(HousingCount_Guard));
-                w.Write(Bound.Short(freeServiceMen.amount));
-                w.Write(Bound.Short(workingAndFreeServiceMen));
-
-                w.Write(Bound.UShort(HousingCount_NobelMen));
-                w.Write(Bound.Short(freeNobelMen.amount));
-                w.Write(Bound.UShort(PenFoodUpkeep_minute));
-                
-                cityHallSubtilePos.writeUshort(w);
-                citySquareSubtilePos.writeUshort(w);
-
-                Debug.WriteCheck(w);
-
-                childrenAge0.write16bit(w);
-                w.Write(Bound.UShort(childrenAge1));
-
-                immigrants.write16bit(w);
-
-                w.Write(Bound.Byte(maxWaterBase));
-                w.Write(waterAddPerSec);
-
-                Debug.WriteCheck(w);
+                writeHousing(w);
 
                 workTemplate.writeGameState(w);
 
@@ -632,48 +654,77 @@ namespace VikingEngine.DSSWars.GameObject
 
                 writeWorkerStatuses(w, false, -1);
 
-                w.Write((ushort)conscriptBuildings.Count);
-                foreach (var barracks in conscriptBuildings)
+                lock (conscriptBuildings)
                 {
-                    barracks.writeGameState(w);
+                    w.Write((ushort)conscriptBuildings.Count);
+                    foreach (var barracks in conscriptBuildings)
+                    {
+                        barracks.writeGameState(w);
+                    }
                 }
 
-                w.Write((ushort)deliveryServices.Count);
-                foreach (var delivery in deliveryServices)
+                lock (deliveryServices)
                 {
-                    delivery.writeGameState(w);
+                    w.Write((ushort)deliveryServices.Count);
+                    foreach (var delivery in deliveryServices)
+                    {
+                        delivery.writeGameState(w);
+                    }
                 }
 
-                w.Write((ushort)schoolBuildings.Count);
-                foreach (var school in schoolBuildings)
-                { school.writeGameState(w); }
+                lock (schoolBuildings)
+                {
+                    w.Write((ushort)schoolBuildings.Count);
+                    foreach (var school in schoolBuildings)
+                    { school.writeGameState(w); }
+                }
+
 
                 if (arraylib.HasMembers(researchBuildings))
                 {
-                    w.Write((ushort)researchBuildings.Count);
-                    foreach (var research in researchBuildings)
+                    lock (researchBuildings)
                     {
-                        research.writeGameState(w);
-                    }
+                        w.Write((ushort)researchBuildings.Count);
+                        foreach (var research in researchBuildings)
+                        {
+                            research.writeGameState(w);
+                        }
+                    }   
                 }
                 else
                 {
                     w.Write(ushort.MinValue);
                 }
+
                 w.Write((byte)experenceOrDistance);
 
                 writeSoldierGroups(w);
 
-                w.Write((ushort)defenceBuildings.Count);
-                for (int i = 0; i < defenceBuildings.Count; ++i)
+                int defenceBuildingsCount = defenceBuildings.Count;
+                w.Write((ushort)defenceBuildingsCount);
+                if (defenceBuildingsCount > 0)
                 {
-                    defenceBuildings.array[i].writeGameState(w);
+                    lock (defenceBuildings.array)
+                    {
+                        for (int i = 0; i < defenceBuildingsCount; ++i)
+                        {
+                            defenceBuildings.array[i].writeGameState(w);
+                        }
+                    }
                 }
 
-                w.Write((ushort)cesspits.Count);
-                for (int i = 0; i < cesspits.Count; ++i)
+                int cesspitsCount = cesspits.Count;
+                w.Write((ushort)cesspitsCount);
+                if (cesspitsCount > 0)
                 {
-                    cesspits.array[i].writeGameState(w);
+                    lock (cesspits.array)
+                    {
+
+                        for (int i = 0; i < cesspitsCount; ++i)
+                        {
+                            cesspits.array[i].writeGameState(w);
+                        }
+                    }
                 }
 
                 w.Write(autoBuild_Work);
@@ -681,12 +732,7 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write((byte)autoExpandFarmType);
 
                 Tag.write(w);
-                //w.Write((byte)tagBack);
-                //if (tagBack != CityTagBack.NONE)
-                //{
-                //    w.Write((ushort)tagArt);
-                //}
-
+                
                 w.Write(res_food_safeguard);
 
                 technology.writeGameState(w, false);
@@ -724,36 +770,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            cityType = (CityType)r.ReadByte();
-            
-            workForce.amount = r.ReadInt32();
-            HousingCount_Workers = r.ReadInt32();
-            
-            HousingCount_Guard = r.ReadUInt16();
-            freeServiceMen.amount = r.ReadInt16();
-            
-            workingAndFreeServiceMen = r.ReadInt16();
-
-            HousingCount_NobelMen = r.ReadUInt16();
-            freeNobelMen.amount = r.ReadInt16();
-            PenFoodUpkeep_minute = r.ReadUInt16();
-
-            cityHallSubtilePos.readUshort(r);
-            citySquareSubtilePos.readUshort(r);
-            
-
-            Debug.ReadCheck(r);
-
-            childrenAge0.read16bit(r);
-            childrenAge1 = r.ReadUInt16();
-
-            immigrants.read16bit(r);
-
-            maxWaterBase = r.ReadByte();
-            maxWaterTotal = maxWaterBase;
-            waterAddPerSec = r.ReadSingle();
-
-            Debug.ReadCheck(r);
+            readHousing(r, subversion);
 
             workTemplate.readGameState(r, subversion, true);
 
@@ -972,14 +989,13 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.ReadCheck(r);
         }
 
-        //TODO change on big update
-        void writeResources(System.IO.BinaryWriter w)
+        public void writeResources(System.IO.BinaryWriter w)
         {
             w.Write((short)res_water.amount);
 
-            BoolRegister boolRegister = new BoolRegister(CityResoureIndex.COUNT * 2);
+            BoolRegister boolRegister = new BoolRegister(CityResourceIndex.COUNT * 2);
             {
-                for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+                for (int i = 0; i < CityResourceIndex.COUNT; ++i)
                 {
                     DssRef.world.cityResouces[resourceComponentStartIndex + i].writeCity(boolRegister);
                 }
@@ -992,7 +1008,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_water.amount = r.ReadInt16();
 
             BoolRegister boolRegister = new BoolRegister(r);
-            for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+            for (int i = 0; i < CityResourceIndex.COUNT; ++i)
             {
                 DssRef.world.cityResouces[resourceComponentStartIndex + i].readCity(boolRegister, r, subversion);
             }
@@ -1006,14 +1022,18 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write((byte)Tile().heightLevel);
         }
+
         public void readNet_map(WorldData world, System.IO.BinaryReader r)
         {
             readMapFile(world, r, int.MaxValue);
-            //guardCount = r.ReadUInt16();
-            //maxGuardSize = r.ReadUInt16();
+            
+            int r_factionIndex = r.ReadUInt16();
 
-            factionIndex = r.ReadUInt16();
-            //faction = DssRef.world.factions[factionIx];
+            if (r_factionIndex != factionIndex)
+            {
+                factionIndex = r_factionIndex;
+                DssRef.world.faction(r_factionIndex)?.Net_AddCity(this);
+            }
 
             onGameStart(false);
             int height = r.ReadByte();
@@ -1028,19 +1048,19 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.world.unitCollAreaGrid.add(this);
         }
 
-        
-
-        public bool net_roundtrip_asyncupdate()
+        public void net_roundtrip_asyncupdate(out int packetCount)
         {
-            if (lastNetUpdate.secPassed(10))
+            packetCount = 0;
+            if (IsNetHosted && lastNetUpdate.secPassed(10))
             {
+                packetCount++;
                 lastNetUpdate.setNow();
 
                 int count = MathExt.Div_Ceiling(workerStatuses.Count, MaxWorkerWriteCount) + 1;
 
                 for (int part = 0; part < count; ++part)
                 {
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Reliable, out var packet);
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Unrelyable, out var packet);
                     {
                         w.Write((ushort)myIndex);
                         w.Write((byte)part);
@@ -1049,56 +1069,104 @@ namespace VikingEngine.DSSWars.GameObject
                     packet.CheckPacketLength();
                     packet.EndWrite_Asynch();
                 }
-                return true;
-            }
 
-            return false;
+                netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount);                
+            }           
         }
+
+        public static SteamLargePacketWriter NetWriteHandoverPacket(AbsNetworkPeer peer, City city)
+        {
+            DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
+            var w = cityData.GetWriter();
+            City.NetWriteHandover(w, city);
+
+            SteamLargePacketWriter largeWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
+            largeWriter.begin();
+
+            return largeWriter;
+        }
+
+        public static void NetWriteHandover(System.IO.BinaryWriter w, City city)
+        {
+            w.Write((ushort)city.myIndex);
+            city.writeGameState(w);
+            
+        }
+
+        public static City NetReadHandOver(System.IO.BinaryReader r)
+        { 
+            int cityIx = r.ReadUInt16();
+            var city = DssRef.world.cities[cityIx];
+
+            city.readGameState(r, int.MaxValue, null);
+            city.IsNetHosted = true;
+
+            return city;
+        }
+        //public void net_handover()
+        //{
+        //    int count = MathExt.Div_Ceiling(workerStatuses.Count, MaxWorkerWriteCount) + 1;
+
+        //    for (int part = 0; part < count; ++part)
+        //    {
+        //        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityHandOver, Network.PacketReliability.Reliable, out var packet);
+        //        {
+        //            w.Write((ushort)myIndex);
+        //            w.Write((byte)part);
+        //            writeNet_update(w, part);
+
+        //            packet.CheckPacketLength();
+        //            packet.EndWrite_Asynch();
+        //        }
+        //    }
+
+            
+        //}
+
+        //public void net_handover2(System.IO.BinaryWriter w)
+        //{
+            
+        //            w.Write((ushort)myIndex);
+            
+            
+        //}
 
         public void writeNet_update(System.IO.BinaryWriter w, int part)
         {
             switch (part)
             {
                 case 0:
-                    workTemplate.writeGameState(w);
-                    writeResources(w);
+                    writeHousing(w);
+                    //workTemplate.writeGameState(w);
+                    //writeResources(w);
                     break;
 
                 default:
                     writeWorkerStatuses(w, true, part -1);
                     break;
             }
-            
-
-           
         }
+       
         public void readNet_update(System.IO.BinaryReader r, int part)
         {
             switch (part)
             {
                 case 0:
-                    workTemplate.readGameState(r, int.MaxValue, true);
-
-                    readResources(r, int.MaxValue);
+                    readHousing(r, int.MaxValue);
+                    //workTemplate.readGameState(r, int.MaxValue, true);
+                    //readResources(r, int.MaxValue);
                     break;
 
                 default:
                     readWorkerStatuses(r, true, part - 1, int.MaxValue);
                     break;
             }
-            
-
-           
         }
-
-        
-
 
         public int expandWorkForceCost()
         {
             return 40000 + HousingCount_Workers * 10;
         }
-
       
         const int WorkerHutsPerTile = 4;
         const int WorkerHutsPerTile_MaxLevel = WorkerHutsPerTile * HutMaxLevel;
@@ -1138,7 +1206,9 @@ namespace VikingEngine.DSSWars.GameObject
                                         subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
 
 
-                                        if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
+                                        var faction = GetFaction();
+
+                                        if (Build.BuildLib.TryAutoBuild(faction, subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
                                         {
                                             ++totalWorkerHutAndLevelCount;
 
@@ -1198,7 +1268,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                     //    }
                                                     //}
 
-                                                    if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
+                                                    if (Build.BuildLib.TryAutoBuild(faction, farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
                                                     {
                                                         ++cultureCount;
                                                         if (cultureCount >= CulturesPerFarm)
@@ -1516,8 +1586,8 @@ namespace VikingEngine.DSSWars.GameObject
                 //    waterAddPerSec += DssConst.WaterAdd_HeadCity;
                 //}
 
-                waterAddPerSec *= DssRef.difficulty.setting_waterMulti;
-                maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.difficulty.setting_waterMulti);
+                waterAddPerSec *= DssRef.storage.ruleset_instance.setting_waterMulti;
+                maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.storage.ruleset_instance.setting_waterMulti);
                 maxWaterTotal = maxWaterBase;
                 casualCityProfile.maxHuts = MathExt.MultiplyInt(maxWaterTotal, 0.66);
 
@@ -1575,7 +1645,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 createCampSite(subtile);
 
-                setFaction(faction, false, false);
+                setFaction(faction, false, false, ConvertReason.Claim, true);
                 refreshCitySize();
 
                 if (!name.custom)
@@ -1630,7 +1700,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool canEverGetNobelHouse()
         {
-            return true;//maxEpandWorkSize >= DssLib.NobelHouseWorkForceReqiurement;
+            return true;
         }
 
      
@@ -1642,9 +1712,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createOverViewModel()
         {
-            //faction.profile.modelColorReplace
             var faction = GetFaction_NoChecks();
-            if (faction == null)
+            if (faction == null || faction.player == null)
             {
                 setModel(new Graphics.VoxelModelInstance(DssRef.models.voxelModels[LootFest.VoxelModelName.unclaimed_icon], false) { scale = new Vector3(0.06f) });
             }
@@ -1652,15 +1721,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 setModel(faction.AutoLoadModelInstance(
                    LootFest.VoxelModelName.cityicon, IconScale()));
-                //overviewModel?.DeleteMe();
+                
             }
-            //if (faction.player?.profile.flag != null)
-            //{
-                //overviewModel = faction.AutoLoadModelInstance(
-                //   LootFest.VoxelModelName.cityicon, IconScale());
-                //overviewModel.AddToRender(DrawGame.MidLayer);
-                //overviewModel.position = position;
-            //}
 
             void setModel(Graphics.AbsVoxelObj model)
             {
@@ -1691,41 +1753,41 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public void updateIncome_asynch()
-        //{
-        //    totalIncome = Convert.ToInt32(Math.Floor(workForce.value * TaxPerWorker - upkeep - blackMarketCosts.displayValue_sec));
-        //}
-
-        
-
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
-            //detailObj.model?.onNewModel(name, master, detailObj);
             DSSWars.Faction.SetNewMaster(name, VoxelModelName.cityicon, overviewModel, master);
         }
 
         public void update()
         {
-            if (myIndex == 441)
-            {
-                lib.DoNothing();
-            }
+            //if (myIndex == 441)
+            //{
+            //    lib.DoNothing();
+            //}
             updateDetailLevel();
-
-            //detailObj.update(Ref.DeltaGameTimeMs, true);
-
-            if (inRender_detailLayer)
+            if (HasPlayer())
             {
-                updateArmyMembers(Ref.DeltaGameTimeMs, true);
-            }
+                
+                if (inRender_detailLayer)
+                {
+                    updateArmyMembers(Ref.DeltaGameTimeMs, true);
+                }
 
-            updateWorkerUnits();
+                updateWorkerUnits();
+            }
         }
 
-        public void update_client()
-        {
-            updateDetailLevel();
-        }
+        //public void update_client()
+        //{
+        //    updateDetailLevel();
+        //    if (HasPlayer())
+        //    {
+        //        if (inRender_detailLayer)
+        //        {
+        //            updateArmyMembers(Ref.DeltaGameTimeMs, true);
+        //        }
+        //    }
+        //}
 
         public int income_oneSecUpdate(double incomeMultiplier)
         {
@@ -1767,7 +1829,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                requirements &= resourceAmount(CityResoureIndex.food) > DssConst.ChildFoodRequirement &&
+                requirements &= resourceAmount(CityResourceIndex.food) > DssConst.ChildFoodRequirement &&
                     homeUsers() < workersMax();
             }
 
@@ -1778,7 +1840,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     result *= 2;
                 }
-                return result * DssRef.difficulty.setting_childMulti;
+                return result * DssRef.storage.ruleset_instance.setting_childMulti;
             }
             return 0;
         }
@@ -1819,7 +1881,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 addWorkers = childrenAge1;
                 childrenAge1 = childrenAge0.pull();
-                
+
                 if (workForce.amount < MinWorkforce)
                 {
                     addWorkers += MinWorkforce - workForce.amount;
@@ -1841,7 +1903,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
-                                    
+
             nextWater.value += waterAddPerSec;
             maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
@@ -1849,7 +1911,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (starving)
             {
                 starvingTimeSeconds++;
-                
+
                 if (starvingTimeSeconds > 15)
                 {
                     starvingTimeSeconds = -30;
@@ -1867,6 +1929,21 @@ namespace VikingEngine.DSSWars.GameObject
                 starvingTimeSeconds = 0;
             }
 
+            oneSecondCaptureCheck();
+
+            casualProgress?.oneSecondUpdate(this);
+
+            if (minute)
+            {
+                float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
+                freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
+
+                PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResourceIndex.rawFood, PenFoodUpkeep_minute, false);
+            }
+        }
+
+        public void oneSecondCaptureCheck()
+        {
             if (strengthValue == 0 || capturePoints < 0)
             {
                 capturePoints += 10;
@@ -1876,17 +1953,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //Power check
                 cityCaptureCheck();
-                capturePoints = -100;                
-            }
-
-            casualProgress?.oneSecondUpdate(this);
-
-            if (minute)
-            { 
-                float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
-                freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
-
-                PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResoureIndex.rawFood, PenFoodUpkeep_minute, false);
+                capturePoints = -100;
             }
         }
 
@@ -1913,7 +1980,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
                                 }
 
-                                setFaction(newOwner, false, false);
+                                setFaction(newOwner, false, false, ConvertReason.WarCapture, true);
                             }
                         }));
                     }
@@ -2027,17 +2094,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchGameObjectsUpdate(bool minute)
         {
-            //collectBattles_asynch();
-            //detailObj.asynchUpdate();
-            //strength
-            //strengthValue = 2.5f * guardCount / DssConst.SoldierGroup_DefaultCount;
             async_SoldiersUpdate(minute);
 
             if (minute)
             {
                 blackMarketCosts_food.minuteUpdate();
-                //foodProduction.minuteUpdate();
-                //foodSpending.minuteUpdate();
                 soldResources.minuteUpdate();
             }
         }
@@ -2200,7 +2261,7 @@ namespace VikingEngine.DSSWars.GameObject
             //detailObj.asynchNearObjectsUpdate();
         }
 
-        protected override void setInRenderState()
+        public override void setInRenderState()
         {
             if (inRender_overviewLayer)
             {
@@ -2337,9 +2398,10 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbText(DssRef.lang.UnitType_UnclaimedLand, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
                 args.content.space(1);
-                args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
+                IndexToHud(args.content);
+                //args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
             }
-            else
+            else if (faction.player != null)
             {
                 nameToHud(args.content, !tooltip);
 
@@ -2354,8 +2416,10 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
                 args.content.space(1);
-                args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
+                IndexToHud(args.content);
+                //args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
+                args.content.newLine();  
                 ownerToHud(args, !tooltip);
             }
         }
@@ -2382,17 +2446,17 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 HudLib.CityResource(args.content, this, ItemResourceType.Food_G);
 
-                if (resourceAmount(CityResoureIndex.food)/*res_food.amount*/ <= LowAmount)
+                if (resourceAmount(CityResourceIndex.food)/*res_food.amount*/ <= LowAmount)
                 {
                     if (res_water.amount <= 2)
                     {
                         HudLib.CityResource(args.content, this, ItemResourceType.Water_G);
                     }
-                    if (resourceAmount(CityResoureIndex.rawFood)/*res_rawFood.amount*/ <= LowAmount)
+                    if (resourceAmount(CityResourceIndex.rawFood)/*res_rawFood.amount*/ <= LowAmount)
                     {
                         HudLib.CityResource(args.content, this, ItemResourceType.RawFood_Group);
                     }
-                    if (resourceAmount(CityResoureIndex.fuel)/*res_fuel.amount*/ <= LowAmount)
+                    if (resourceAmount(CityResourceIndex.fuel)/*res_fuel.amount*/ <= LowAmount)
                     {
                         HudLib.CityResource(args.content, this, ItemResourceType.Fuel_G);
                     }
@@ -2902,7 +2966,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsWorker));
                     content.space();
-                    var textCont = new RbText(string.Format(DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
+                    var textCont = new RbText(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
                     content.Add(textCont);
                     if (interactive)
                     {
@@ -3002,7 +3066,8 @@ namespace VikingEngine.DSSWars.GameObject
                     //new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
                     new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
                 }
-                
+
+                tradeBetweenPlayers_toHud(player, content);
             }
 
 
@@ -3231,7 +3296,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (!city.GetCasual())
             {
                 {
-                    bool available = city.resourceAmount(CityResoureIndex.food) > DssConst.ChildFoodRequirement;
+                    bool available = city.resourceAmount(CityResourceIndex.food) > DssConst.ChildFoodRequirement;
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
@@ -3944,7 +4009,9 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
+       
+
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
             if (newFaction == null)
                 return;
@@ -3963,8 +4030,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                 factionIndex = newFaction.myIndex;
                 
-                
-
                 if (!duringStartup)
                 {
                     
@@ -3972,11 +4037,57 @@ namespace VikingEngine.DSSWars.GameObject
                     EditSubTile.OntileChange(tilePos);
                 }
 
-                OnNewOwner(newFaction, convert || duringStartup);                
+                OnNewOwner(newFaction, convert || duringStartup, convertReason);
+
+                if (IsNetHosted && !duringStartup && !newFaction.IsNetHosted())
+                {
+                    //City handover
+                    NetWriteHandoverPacket(newFaction.HostingPeer(), this);
+                }
+
+                if (netShare)
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSetCityFaction, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        Net.ObjectId.WriteCity(w, this);
+                        w.Write(convert);
+                        w.Write((byte)convertReason);
+                        Net.ObjectId.WriteFaction(w, newFaction);
+                    }
+                    packet.EndWrite_Asynch();
+                }
             }
+
+            
+
+
         }
 
-        override public void OnNewOwner(Faction newFaction, bool convert)
+        public static void NetReadSetFaction(RemotePlayer remotePlayer, System.IO.BinaryReader r)
+        {
+            var city = Net.ObjectId.ReadCity(r);
+            if (city != null)
+            {
+                bool hosted = city.IsNetHosted;
+                
+                bool convert = r.ReadBoolean();
+                ConvertReason convertReason = (ConvertReason)r.ReadByte();
+
+                var newFaction = Net.ObjectId.ReadFaction(r, out _);
+
+                if (newFaction != null)
+                {
+                    city.setFaction(newFaction, false, convert, convertReason, false);                    
+                }
+
+                if (convertReason == ConvertReason.Gift && newFaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
+                {
+                    p.GetLocalPlayer().hud.messages.giftMessage(city, remotePlayer); 
+                }
+            }            
+        }
+
+        override public void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason)
         {
 
             if (DssRef.world != null)
@@ -4176,7 +4287,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 SubTile subTile = new SubTile();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-                new EditSubTile(cityHallSubtilePos, subTile, true, false, false).Submit();
+                new EditSubTile(GetFaction(), true, cityHallSubtilePos, subTile, true, false, false).Submit();
 
                 refreshCitySize();
             }

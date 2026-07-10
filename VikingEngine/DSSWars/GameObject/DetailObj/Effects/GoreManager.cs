@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject
         static float BloodRadius = DssConst.Men_StandardModelScale * 0.1f;
         static float BloodRadiusShip = DssConst.Men_StandardModelScale * 0.8f;
 
-        public static void ViewDamage(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
+        public static void ViewDamage(AbsSoldierUnit reciever, int damageAmount, Rotation1D attackDir)
         {
             if (Ref.gamesett.Blood > 0)
             {
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public static void ViewBlock(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
+        public static void ViewBlock(AbsSoldierUnit reciever, int damageAmount, Rotation1D attackDir)
         {
             if (Ref.peRnd.ChanceF(0.1f))
             {

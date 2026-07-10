@@ -21,14 +21,20 @@ namespace VikingEngine.DSSWars.Event
 
         void asyncUpdateTooPeaceful(float time)
         {
-            if (DssRef.difficulty.toPeacefulPercentage > 0)
+            mainStory.TryPeek(out var storyevent);
+            if (storyevent == null || storyevent.RunWarManager())
             {
-                mainStory.TryPeek(out var storyevent);
-                if (storyevent == null || storyevent.RunWarManager())
+                foreach (var p in DssRef.state.localPlayers)
                 {
-                    foreach (var p in DssRef.state.localPlayers)
-                    {
-                        p.asyncUpdateTooPeaceful(time);
+                    p.asyncUpdateTooPeaceful(time);
+                }
+
+                var remoteC = DssRef.state.remotePlayers.counter();
+                while (remoteC.Next())
+                {
+                    if (remoteC.sel.ready)
+                    { 
+                        remoteC.sel.asyncUpdateTooPeaceful(time);
                     }
                 }
             }
@@ -50,7 +56,7 @@ namespace VikingEngine.DSSWars.Players
         public float allyChance;
         public Range maxPeacefulChecks;
 
-        public WarManagerGear(int gear)
+        public WarManagerGear(int gear, AiAggressivity aiAggressivity)
         {
 #if DEBUG
             if (!Bound.IsWithin(gear, 1, MaxGear))
@@ -61,7 +67,7 @@ namespace VikingEngine.DSSWars.Players
             gear = Bound.Set(gear, 1, MaxGear);
             this.gear = gear;                        
             
-            PcgRandom random = new PcgRandom(DssRef.world.metaData.seed + gear * 11);
+            PcgRandom random = new PcgRandom(DssRef.world.metaData.worldId.seed + gear * 11);
 
             switch (gear)
             {
@@ -94,16 +100,16 @@ namespace VikingEngine.DSSWars.Players
 
             }
 
-            if (DssRef.difficulty.aiAggressivity <= AiAggressivity.Low)
+            if (aiAggressivity <= AiAggressivity.Low)
             {
                 maxCityCount += 5;
             }
-            else if (DssRef.difficulty.aiAggressivity >= AiAggressivity.High)
+            else if (aiAggressivity >= AiAggressivity.High)
             {
                 maxCityCount -= 2;
                 maxPeacefulChecks += 4;
 
-                if (DssRef.difficulty.extremeAggression)
+                if (aiAggressivity >= AiAggressivity.Extreme)
                 {
                     allyChance += 0.1f;
                     maxPeacefulChecks += 2;
@@ -113,11 +119,15 @@ namespace VikingEngine.DSSWars.Players
         }
     }
 
-    partial class LocalPlayer
+    partial class AbsHumanPlayer
     {
-        WarManagerGear warManagerGear;
-        Time tooPeacefulCheckTimer =
-        new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+        protected WarManagerGear warManagerGear;
+        public Time tooPeacefulCheckTimer =
+            new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+
+        public float opposingSizePerc = 0;
+        protected AiAggressivity localAiAggressivity = AiAggressivity.UseDefault;
+        protected float localTooPeacefulPercentage;
 
         public void testTooPeacefulCheck()
         {
@@ -126,11 +136,17 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncUpdateTooPeaceful(float time)
         {
+            if (localAiAggressivity == AiAggressivity.Peaceful ||
+                localTooPeacefulPercentage <= 0)
+            {
+                return;
+            }
+
             if (tooPeacefulCheckTimer.CountDown(time))
             {
                 if (faction.cities.Count > warManagerGear.maxCityCount)
                 {
-                    warManagerGear = new WarManagerGear(warManagerGear.gear + 1);
+                    warManagerGear = new WarManagerGear(warManagerGear.gear + 1, localAiAggressivity);
                 }
 
                 tooPeacefulCheckTimer = new Time(warManagerGear.checkTimeHours.GetRandom(), TimeUnit.Hours);
@@ -141,6 +157,8 @@ namespace VikingEngine.DSSWars.Players
 
         public void tooPeacefulCheck_asynch()
         {
+           
+
             float opposingSize = 0;
 
             if (faction.totalWorkForce > 0)
@@ -167,7 +185,7 @@ namespace VikingEngine.DSSWars.Players
                 int attackersCount = 0;
                 Span<int> attackers = stackalloc int[maxChecks];
 
-                float minOpposingStrength = faction.PotensialMilitaryStrength() * DssRef.difficulty.toPeacefulPercentage * warManagerGear.tooPeacefulPercentageMulti;
+                float minOpposingStrength = faction.PotensialMilitaryStrength() * localTooPeacefulPercentage * warManagerGear.tooPeacefulPercentageMulti;
                 float maxOpposingStrength = minOpposingStrength * 2f;
 
 
@@ -235,10 +253,10 @@ namespace VikingEngine.DSSWars.Players
                             var otherFaction = DssRef.world.faction(attackers[otherIx]);
                             var relation = DssRef.world.diplomacy.GetRelation(firstAttacker, otherFaction).Relation;
 
-                            if (relation <= RelationType.RelationTypeN3_War)
+                            if (relation <= RelationType.RelationTypeN3_Mobilization)
                             {
                                 //Try declare peace
-                                if (relation > RelationType.RelationTypeN4_TotalWar)
+                                if (relation > RelationType.RelationTypeN5_TotalWar)
                                 {
                                     firstAttacker.player.GetAiPlayer().botToBotPeaceDeclaration(null, otherFaction);
                                 }

@@ -14,12 +14,10 @@ namespace VikingEngine.DSSWars.Interface
     {
         List<CityTagMapMember> cityTags;
         LocalPlayer player;
-        //SpottedArrayCounter<City> citiesC;
         SpottedArrayCounter<Army> armiesC;
         public CityTagMap(LocalPlayer player)
         {
             this.player = player;
-            //citiesC = player.faction.cities.counter();
             armiesC = player.faction.armies.counter();
             cityTags = new List<CityTagMapMember>(8);
         }
@@ -28,12 +26,13 @@ namespace VikingEngine.DSSWars.Interface
         {
             int tagIndex = 0;
 
-            if (player.cityHudSettings.ViewAnyOnMap())//viewCityTagsOnMap)
+            if (player.cityHudSettings.ViewAnyOnMap())
             {
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    if (citySel.Tag.backType != Data.CityTagBack.NONE)
+                    if (citySel.Tag.backType != Data.CityTagBack.NONE &&
+                        citySel.inRender_overviewLayer)
                     {
 
                         if (cityTags.Count <= tagIndex)
@@ -47,12 +46,13 @@ namespace VikingEngine.DSSWars.Interface
                 }
             }
 
-            if (player.armyHudSettings.ViewAnyOnMap())//viewArmyTagsOnMap)
+            if (player.armyHudSettings.ViewAnyOnMap())
             {
                 armiesC.Reset();
                 while (armiesC.Next())
                 {
-                    if (armiesC.sel.Tag.backType != Data.CityTagBack.NONE)
+                    if (armiesC.sel.Tag.backType != Data.CityTagBack.NONE &&
+                        armiesC.sel.inRender_overviewLayer)
                     {
 
                         if (cityTags.Count <= tagIndex)
@@ -65,7 +65,39 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
             }
-            
+
+            if (player.pinHudSettings.viewTagsOnMap)
+            {
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    playerPins(p);
+                }
+
+                var remoteC = DssRef.state.remotePlayers.counter();
+                while (remoteC.Next())
+                {
+                    playerPins(remoteC.sel);
+                }
+
+                void playerPins(AbsHumanPlayer p)
+                {
+                    var pinsC = p.pins.counter();
+                    while (pinsC.Next())
+                    {
+                        if (pinsC.sel.Tag.backType != Data.CityTagBack.NONE &&
+                            pinsC.sel.inRender_overviewLayer)
+                        {
+                            if (cityTags.Count <= tagIndex)
+                            {
+                                cityTags.Add(new CityTagMapMember());
+                            }
+
+                            cityTags[tagIndex].update(player, pinsC.sel, player.pinHudSettings);
+                            tagIndex++;
+                        }
+                    }
+                }
+            }            
 
             while (cityTags.Count > tagIndex)
             {
@@ -109,16 +141,6 @@ namespace VikingEngine.DSSWars.Interface
 
             Vector3 wp = mapObj.position;
             
-            
-            //if (mapObj.gameobjectType() == GameObjectType.Army)
-            //{
-                
-            //}
-            //else
-            //{
-            //    wp.X += 0.4f;
-            //    wp.Z += 0.4f;
-            //}
             wp.X += 0.02f;
             wp.Z += -0.2f;
 
@@ -227,29 +249,7 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             isVisible = visible;
-            //if (visible)
-            //{
-            //    mapObj.tagSprites(out SpriteName back, out SpriteName art);
-                    
-
-            //    bg.Visible = true;
-            //    bg.SetSpriteName(back);
-            //    if (art != Data.CityTag.NoBackSprite)
-            //    {
-            //        icon.position = bg.position;
-            //        icon.Visible = true;
-            //        icon.SetSpriteName(art);
-            //    }
-            //    else
-            //    {
-            //        icon.Visible = false;
-            //    }
-            //}
-            //else
-            //{
-            //    bg.Visible = false;
-            //    icon.Visible = false;
-            //}
+           
         }
 
 

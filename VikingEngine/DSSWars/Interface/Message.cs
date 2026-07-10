@@ -15,6 +15,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
+using VikingEngine.Sound;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Interface
@@ -120,6 +121,7 @@ namespace VikingEngine.DSSWars.Interface
         LocalPlayer player;
 
         static readonly TimeLength FoodWarningTimeout = new TimeLength(120);
+        public TimeStamp DeliveryMessageTime = TimeStamp.None;
 
         TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
         TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
@@ -132,7 +134,7 @@ namespace VikingEngine.DSSWars.Interface
 
         bool highEconomyWarningBlock()
         { 
-            return DssRef.storage.gameRuleset.centralGold && player.faction.money.GetGold() > DssConst.Gold_RichStatus;
+            return DssRef.storage.ruleset_instance.centralGold && player.faction.money.GetGold() > DssConst.Gold_RichStatus;
         }
 
         public void blockFoodWarning(bool block)
@@ -205,10 +207,18 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default))
                 { fillWidth = true });
 
-                Add(content);
+                Add(content, SoundLib.message_loud);
             }
         }
 
+
+        public void giftMessage(AbsArmy mapObj, RemotePlayer fromPlayer)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h1("Recived gift", HudLib.TitleColor_Head);
+
+            Add(content, SoundLib.netMessage);
+        }
         public void armyLowFoodMessage(Army army)
         {
             if (!highEconomyWarningBlock() &&
@@ -232,7 +242,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default))
                 { fillWidth = true });
 
-                Add(content);
+                Add(content, SoundLib.message_loud);
             }
         }
 
@@ -243,7 +253,7 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             content.Add(new RbText(onOff ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off, HudLib.InfoYellow_Light));
 
-            Add(content);
+            Add(content, null);
         }
 
         public void Add(string title, string text)
@@ -252,15 +262,19 @@ namespace VikingEngine.DSSWars.Interface
             Title(content, title);
             content.text(text);
 
-            Add(content);
+            Add(content, SoundLib.message_loud);
+        }
+        public void Add(RichBoxContent content)
+        {
+            Add(content, SoundLib.message_loud);
         }
 
-        public void Add(RichBoxContent content, bool vibrate = true)
+        public void Add(RichBoxContent content, SoundContainerBase sound, bool vibrate = true)
         {
             if (StartupSettings.BlockMessages)
                 return;
 
-            SoundLib.message.Play(Pan.Right);
+            sound?.Play(Pan.Right);
             if (vibrate)
             {
                 player.gameControls.input.Vibrate(300, 0, 1);
@@ -287,10 +301,13 @@ namespace VikingEngine.DSSWars.Interface
             add(content);
         }
 
-        public void goToMapObject(AbsGameObject city)
+        public void goToMapObject(AbsGameObject obj)
         {
-            player.gameControls.map.selection.obj = city;
-            player.gameControls.map.cameraFocus = city;
+            if (obj.factionIndex == player.faction.myIndex)
+            {
+                player.gameControls.map.selection.obj = obj;
+            }
+            player.gameControls.map.cameraFocus = obj;
             player.hud.needRefresh = true;
         }
 

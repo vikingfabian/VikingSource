@@ -29,7 +29,7 @@ namespace VikingEngine.LootFest.Players
         
         public void NetShareAppearance()
         {
-            System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ChangedApperance, Network.PacketReliability.ReliableLasy, PlayerIndex);
+            System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ChangedApperance, Network.PacketReliability.Reliable, PlayerIndex);
             Storage.netWrite(w);
 
             appearanceChanged = false;
@@ -49,7 +49,7 @@ namespace VikingEngine.LootFest.Players
                    
 
                 //        System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ChangeClientPermissions,
-                //             Network.SendPacketTo.OneSpecific,id, Network.PacketReliability.ReliableLasy, Index);
+                //             Network.SendPacketTo.OneSpecific,id, Network.PacketReliability.Reliable, Index);
                 //        w.Write((byte)permission);
                     
                 //    if (save)

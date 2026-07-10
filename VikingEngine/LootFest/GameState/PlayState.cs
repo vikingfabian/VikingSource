@@ -362,8 +362,7 @@ namespace VikingEngine.LootFest
         public override void BeginInputDialogueEvent(KeyboardInputValues keyInputValues)
         {
             localPlayers[keyInputValues.PlayerIndex].BeginInputDialogueEvent(keyInputValues);
-        }
-        
+        }        
         
         public void QuitToMenu()
         {
@@ -1009,7 +1008,7 @@ namespace VikingEngine.LootFest
                 //    }
                 //    break;
 
-                case Network.PacketType.Chat:
+                case Network.PacketType.TextChat:
                     string text = TextLib.EmptyString;
 
                     try
@@ -1361,7 +1360,7 @@ namespace VikingEngine.LootFest
             if (local)
             {
                 //net share
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.GameCompleted, Network.PacketReliability.ReliableLasy);
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.GameCompleted, Network.PacketReliability.Reliable);
                 Map.WorldPosition.WriteChunkGrindex_Static(chunk, w); //chunk.WriteChunkGrindex(w);
                 w.Write(noDeaths);
             }

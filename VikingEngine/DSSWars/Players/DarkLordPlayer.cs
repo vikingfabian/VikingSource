@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Players
 
         public int factoriesLeft;
 
-        public AbsDetailUnit darkLordUnit = null;
+        public AbsSoldierUnit darkLordUnit = null;
 
         int servantCountdown = 20;
 
@@ -124,16 +124,16 @@ namespace VikingEngine.DSSWars.Players
            
             foreach (var ally in darkLordAllies)
             {
-                DssRef.world.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
+                DssRef.world.diplomacy.SetRelationType(faction, ally, faction, RelationType.RelationType3_Ally);
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    DssRef.world.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(p.faction, ally, ally, RelationType.RelationTypeN5_TotalWar);
                 }
 
                 if (greenwood != null)
                 {
-                    DssRef.world.diplomacy.SetRelationType(greenwood, ally, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(greenwood, ally, ally, RelationType.RelationTypeN5_TotalWar);
                 }                
             }
 

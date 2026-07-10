@@ -520,7 +520,11 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Statue_Lion:
                 case BuildAndExpandType.Statue_Horse:
                 case BuildAndExpandType.Statue_Pillar:
-
+                case BuildAndExpandType.DiplomaticStatue_ThumbsUpWest:
+                case BuildAndExpandType.DiplomaticStatue_ThumbsUpEast:
+                case BuildAndExpandType.DiplomaticStatue_InsultWest:
+                case BuildAndExpandType.DiplomaticStatue_InsultEast:
+                case BuildAndExpandType.DiplomaticStatue_GoldenPoop:
 
                 case BuildAndExpandType.FlagPole_LongBanner:
                 case BuildAndExpandType.FlagPole_Banner:
@@ -557,10 +561,15 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.StoneWallGreen:
                 case BuildAndExpandType.StoneWallWoodHouse:
                 //case BuildAndExpandType.Logistics:
-                case BuildAndExpandType.ManorLord:
-                case BuildAndExpandType.GreatHall:
+               
                 case BuildAndExpandType.Palisade:
                     return wallCount;
+
+                case BuildAndExpandType.ManorLord:
+                    return lib.BoolToInt01(manorLord);
+
+                case BuildAndExpandType.GreatHall:
+                    return lib.BoolToInt01(greatHall);
 
                 case BuildAndExpandType.Logistics:
                     return buildingLevel_logistics;

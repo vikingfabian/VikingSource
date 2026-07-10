@@ -107,5 +107,17 @@ namespace VikingEngine.DSSWars.GameObject
         Disband,
         Desert,
         CameraCulling,
+
+        NetworkEvent,
+        LostHost,
+    }
+
+    enum ConvertReason
+    { 
+        Assigned,
+        Diplomacy,
+        Gift,
+        Claim,
+        WarCapture,
     }
 }

@@ -113,15 +113,25 @@ namespace VikingEngine.DSSWars.Players
             if (player.gameControls.map.armyMayAttackHoverObj())
             {
                 var target = player.gameControls.map.hover.obj.RelatedMapObject();
+               
                 if (target != null)
                 {
-                    if (DssRef.world.diplomacy.GetRelation(player.faction, target.GetFaction()).InWar())
+                    var tFaction = target.GetFaction();
+
+                    if (DssRef.world.diplomacy.GetRelation(player.faction, tFaction).InWar())
                     {
                         mapExecuteAttack(target);
                     }
                     else
                     {
-                        new PopMenu(player, new HUD.RichBox.RbAction1Arg<AbsMapObject>(mapExecuteAttack, target));
+                        if (tFaction.player.IsRemotePlayer())
+                        {
+                            player.openPlayerToPlayerDisplay(tFaction.player.GetHumanPlayer());
+                        }
+                        else
+                        { 
+                            new PopMenu(player, new HUD.RichBox.RbAction1Arg<AbsMapObject>(mapExecuteAttack, target));
+                        }
                     }
                     
                 }

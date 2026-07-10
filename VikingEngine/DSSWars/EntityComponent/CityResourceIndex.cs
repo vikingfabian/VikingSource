@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.EntityComponent
 {
-    static class CityResoureIndex
+    static class CityResourceIndex
     {
         // Indices for per-city resources
         public const int wood = 0;

@@ -49,14 +49,14 @@ namespace VikingEngine.DSSWars.Players
                     //DOES NOT WORK - will reset in auto_updateWorkPrio()
 
                     ref var woodPrio = ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.wood);
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.wood, ref woodPrio);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResourceIndex.wood, ref woodPrio);
 
                     ref var movePrio = ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.move);
                     movePrio.set(lib.LargestValue(woodPrio.value, 3));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.stone));
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResourceIndex.stone, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.stone));
                    
-                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.food, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFood));
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResourceIndex.food, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFood));
 
                     if (city.cityType == CityType.Campsite)
                     {
@@ -64,34 +64,34 @@ namespace VikingEngine.DSSWars.Players
                         city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt).set(1);
                         city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftConservedFood).set(1);
 
-                        if (city.GetGroupedResource(CityResoureIndex.stone).useStockLimit == false)
+                        if (city.GetGroupedResource(CityResourceIndex.stone).useStockLimit == false)
                         {
                             DssRef.world.setCityStockPile(city, 100);
-                            city.GetRefGroupedResource(CityResoureIndex.wood).setLimit(200);
-                            city.GetRefGroupedResource(CityResoureIndex.food).setLimit(int.MaxValue);
+                            city.GetRefGroupedResource(CityResourceIndex.wood).setLimit(200);
+                            city.GetRefGroupedResource(CityResourceIndex.food).setLimit(int.MaxValue);
                         }
                     }
                     else
                     {
-                        if (city.GetGroupedResource(CityResoureIndex.stone).useStockLimit)
+                        if (city.GetGroupedResource(CityResourceIndex.stone).useStockLimit)
                         {
                             DssRef.world.setCityStockPile(city, int.MaxValue);
                         }
 
-                        adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.Clay, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.collectClay), false);
+                        adjustWorkToBuffer(city.resourceComponentStartIndex + CityResourceIndex.Clay, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.collectClay), false);
                         city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt).set(3);
-                        adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.ConservedFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftConservedFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt), false);
+                        adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResourceIndex.ConservedFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftConservedFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt), false);
                     }
 
-                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.fuel, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFuel), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningCoal));
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResourceIndex.fuel, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFuel), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningCoal));
 
-                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.ironore, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.bogiron), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningIron));
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.smeltIron));
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResourceIndex.ironore, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.bogiron), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningIron));
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResourceIndex.iron, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.smeltIron));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmRawFood));
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResourceIndex.rawFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmRawFood));
 
 
-                    if (city.resourceAmount(CityResoureIndex.food) <= 0)
+                    if (city.resourceAmount(CityResourceIndex.food) <= 0)
                     {
                         city.workTemplate.setWorkPrio(WorkPriorityType.craftFood, 5);
                         city.workTemplate.setWorkPrio(WorkPriorityType.farmFood, 5);
@@ -218,15 +218,15 @@ namespace VikingEngine.DSSWars.Players
             intelligent = false;
             work = false;
 
-            if (city.needMore(CityResoureIndex.rawFood) && Ref.peRnd.Chance(0.6))
+            if (city.needMore(CityResourceIndex.rawFood) && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.WheatFarm;
             }
-            else if (city.resourceAmount(CityResoureIndex.fuel) < ResourceLowBuffer && city.resourceAmount(CityResoureIndex.wood)/*res_wood.amount*/ > ResourceLowBuffer && Ref.rnd.Chance(0.6))
+            else if (city.resourceAmount(CityResourceIndex.fuel) < ResourceLowBuffer && city.resourceAmount(CityResourceIndex.wood)/*res_wood.amount*/ > ResourceLowBuffer && Ref.rnd.Chance(0.6))
             {
                 building = BuildAndExpandType.CoalPit;
             }
-            else if (city.needMore(CityResoureIndex.skinLinnen) && Ref.peRnd.Chance(0.6))
+            else if (city.needMore(CityResourceIndex.skinLinnen) && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.LinenFarm;
             }
@@ -236,10 +236,10 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                var res_ironore = city.GetGroupedResource(CityResoureIndex.ironore);
-                var res_iron = city.GetGroupedResource(CityResoureIndex.iron);
+                var res_ironore = city.GetGroupedResource(CityResourceIndex.ironore);
+                var res_iron = city.GetGroupedResource(CityResourceIndex.iron);
 
-                if (((city.buildingStructure.Smith_count == 0 && city.resourceAmount(CityResoureIndex.ironore)/*res_ironore.amount*/ > ResourceLowBuffer) ||
+                if (((city.buildingStructure.Smith_count == 0 && city.resourceAmount(CityResourceIndex.ironore)/*res_ironore.amount*/ > ResourceLowBuffer) ||
                     (res_ironore.amount >= res_ironore.MaxLimit())
                         && Ref.peRnd.Chance(0.02))
                     )

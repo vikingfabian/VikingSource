@@ -79,7 +79,7 @@ namespace VikingEngine
 
         const bool Debug_DebugOptions = true;
 
-        public const int SteamNetworkVersion = 101; //fungerar som nätverks spärr mellan versioner
+        //public const int SteamNetworkVersion = 101; //fungerar som nätverks spärr mellan versioner
 
         
 
@@ -172,12 +172,8 @@ namespace VikingEngine
         public static readonly bool ViewCollisionBounds =
           DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_ViewCollisionBounds;
 
-        public static readonly bool OnlineMultiplayer = false;
-        //public static readonly bool Demo =
-        //    DebugLevel == BuildDebugLevel.DebugDemo ||
-        //    DebugLevel == BuildDebugLevel.PublicDemo || 
-        //    DebugLevel == BuildDebugLevel.ShowDemo;
-
+        public static readonly bool OnlineMultiplayer = true;
+        
         /// <summary>
         /// Will make a delay when accessing files on the computer
         /// </summary>

@@ -14,21 +14,29 @@ namespace VikingEngine.DSSWars.Net
     class ConnectState : AbsDssState
     {
         Time failTimer = new Time(8, TimeUnit.Seconds);
-
+        //LobbyMetaData meta;
         public ConnectState(Network.AbsAvailableSession available)
             : base()
         {
             Ref.lobby.searchLobbies = false;
             available.join();
-            init(available.hostName);
+            //meta = available.metaData as LobbyMetaData;
+            init();
             //warsRef.sound.gamejoin.PlayFlat(1f);
         }
 
-        void init(string name)
+        public ConnectState()
+            : base()
+        {
+            Ref.lobby.searchLobbies = false;
+            init();
+        }
+
+        void init()
         {
             Ref.music.stop(true);
 
-            Graphics.Text2 text = new Graphics.Text2("Connecting to " + Engine.LoadContent.CheckCharsSafety(name, LoadedFont.Bold),
+            Graphics.Text2 text = new Graphics.Text2(DssRef.todoLang.Network_ConnectingToGame,
                 LoadedFont.Bold, Engine.Screen.CenterScreen, Engine.Screen.TextTitleHeight,
                  Color.Yellow, ImageLayers.Lay1);
             text.OrigoAtCenter();
@@ -59,8 +67,9 @@ namespace VikingEngine.DSSWars.Net
         {
             base.NetEvent_PingReturned(gamer);
 
+            //Will wait for meta data in "startGame" state, packet type "DssSendWorld"
             new StartGame(false, null, null, null);
-            //new Lobby.LobbyState(false, null);
+            
         }
         public override void NetworkReadPacket(ReceivedPacket packet)
         {

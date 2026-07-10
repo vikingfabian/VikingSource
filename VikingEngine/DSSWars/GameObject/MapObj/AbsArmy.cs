@@ -3,15 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Net;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
+using VikingEngine.PJ;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -33,8 +38,48 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool inBattle = false;
         InBattleWith inBattleWith = new InBattleWith();
+        public GameTimeStamp lastTimeTradedBetweenPlayers = GameTimeStamp.None;
 
-        public MapObjectTag Tag = new MapObjectTag();
+        public void tradeBetweenPlayers_toHud(LocalPlayer player, RichBoxContent content)
+        {
+            if (factionIndex == player.faction.myIndex && player.alliedFactions.Count > 0)
+            {   
+                content.Add(new RbSeperationLine());
+                HudLib.Label(content, "Gift to player");
+                content.hspace();
+
+                if (lastTimeTradedBetweenPlayers.TimeOut())
+                {
+                    lock (player.alliedFactions)
+                    {
+                        foreach (var m in player.alliedFactions)
+                        {
+                            var f = DssRef.world.faction(m);
+                            if (f != null && f.TryGetPlayer(out var p))
+                            {
+                                RichBoxContent buttonContent = new RichBoxContent();
+                                f.toHud(buttonContent, RelationType.NONE, true, true);
+
+                                content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent, new RbAction1Arg<Faction>(
+                                    (Faction selected) =>
+                                    {
+                                        lastTimeTradedBetweenPlayers.setTimeFromNow(TimeExt.MinuteInSeconds * 10);
+
+                                        setFaction(selected, false, true, ConvertReason.Gift, true);
+
+                                        player.gameControls.clearSelection();
+
+                                    }, f), null));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    content.Add(new RbText(HudLib.TimeSpan_LongText(lastTimeTradedBetweenPlayers.TimeSpan_Left()), HudLib.NotAvailableColor));
+                }
+            }
+        }
 
         public void AddSoldierGroup(SoldierGroup group)
         {
@@ -43,14 +88,157 @@ namespace VikingEngine.DSSWars.GameObject
             group.army = new WeakReference<AbsArmy>(this);
             group.factionIndex = factionIndex;
         }
+
+        const int GroupsPerPacket = 8;
+        public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount)
+        {
+            
+
+            int groupIndex = 0;
+            int packetIndex = 0;
+            while (groupIndex < groups.Array.Length)
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
+                {
+                    Net.ObjectId.NetWriteMapObjId(w, this);
+
+                    w.Write((byte)packetIndex);
+
+                    for (int i = 0; i < GroupsPerPacket; i++)
+                    {
+                        var group = groups.GetIndex_Safe(groupIndex);
+                        if (group != null)
+                        {
+                            w.Write(true);
+                            group.writeNet(w);
+                            //NetWriteGroup(w, group);
+                        }
+                        else
+                        {
+                            w.Write(false);
+                        }
+                        groupIndex++;
+                    }
+                    Debug.WriteCheck(w);
+
+                } packet.EndWrite_Asynch();
+                packetIndex++;
+            }
+
+            lastNetUpdate.setNow();
+            /*
+            if (groups.Count > 0)
+            {
+
+                var groupC = groups.counter();
+
+                while (groupC.HasMore())
+                {
+                    int packetGroupCount = GroupsPerPacket;
+
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
+                    {
+                        packetCount++;
+                        Net.ObjectId.NetWriteMapObjId(w, this);
+
+                        while (--packetGroupCount >= 0 && groupC.Next())
+                        {
+                            NetWriteGroup(w, groupC.sel);
+                            lastNetUpdate.setNow();
+                        }
+
+                        w.Write(ushort.MaxValue);
+                    }
+                    packet.EndWrite_Asynch();
+                }
+            }
+            */
+        }
+        //public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
+        //{
+        //    //w.Write((ushort)group.myIndex);
+        //    group.writeNet(w);
+
+        //    Debug.WriteCheck(w);
+        //}
+        public static void NetReadGroups(bool bArmy, System.IO.BinaryReader r)
+        {
+            if (ObjectId.NetReadMapObjId(r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
+            {
+                if (mapObj != null)
+                {
+                    int packetIndex = r.ReadByte();
+
+                    for (int i = 0; i < GroupsPerPacket; i++)
+                    {
+                        int groupIndex = packetIndex * GroupsPerPacket + i;
+                        if (r.ReadBoolean())
+                        {
+                            NetReadGroup(r, groupIndex, mapObj);
+                        }
+                        else
+                        {
+                            mapObj.groups.PullIndex_Safe(groupIndex)?.DeleteMe(DeleteReason.NetworkEvent, false);
+                        }
+                    }
+                    Debug.ReadCheck(r);
+                    //bool more = false;
+                    //do
+                    //{
+                    //    more = AbsArmy.NetReadGroup(packet.r, mapObj);
+                    //} while (more);
+                }
+            }
+        }
+        public static void NetReadGroup(System.IO.BinaryReader r, int index, AbsArmy army)
+        {
+            
+            //int index = r.ReadUInt16();
+            //if (index != ushort.MaxValue)
+            //{
+                var group = army.groups.GetIndex_Safe(index);
+                bool needInit = false;
+                if (group == null)
+                {
+                    needInit = true;
+                    if (army.IsCity())
+                    {
+                        group = new GuardGroup(army);
+                    }
+                    else
+                    {
+                        group = new SoldierGroup(army);
+                    }
+                    army.groups.HardSet(group, index);
+                    group.myIndex = index;
+                    if (group.factionIndex < 0)
+                    {
+                        throw new Exception();
+                    }
+                }
+
+                group.readNet(army, r, needInit);
+                group.net_onUpdate();
+
+                //Debug.ReadCheck(r);
+                //return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            
+            
+        }
+
         virtual public void remove(SoldierGroup group)
         {
             Debug.CrashIfThreaded();
             groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
-        public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
+        public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
-            base.setFaction(newFaction, duringStartup, convert);
+            base.setFaction(newFaction, duringStartup, convert, convertReason, netShare);
 
             convertSoldiersToFaction(newFaction);
         }
@@ -61,6 +249,26 @@ namespace VikingEngine.DSSWars.GameObject
             while (groupsC.Next())
             {
                 groupsC.sel.factionIndex = newFaction.myIndex;
+            }
+        }
+
+        override public void clientPauseUpdate()
+        {
+            base.clientPauseUpdate();
+
+            if (inRender_detailLayer)
+            {
+
+                if (groups.Count > 0)
+                {
+
+                    var groupsC = groups.counter();
+
+                    while (groupsC.Next())
+                    {
+                        groupsC.sel.clientPauseUpdate();
+                    }
+                }
             }
         }
 
@@ -216,16 +424,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        override public void tagSprites(out SpriteName back, out SpriteName art)
-        {
-            back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);
-            art = Tag.TagArt();//Data.TagLib.ArtSprite(tagArt);
-        }
+        
 
         abstract public bool IdleObjetive();
 
-        abstract public bool IsCity();
-        abstract public bool IsArmy();
+       
 
     }
 }

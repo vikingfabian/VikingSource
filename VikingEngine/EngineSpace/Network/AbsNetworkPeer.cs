@@ -53,6 +53,9 @@ namespace VikingEngine.Network
 
         public float roundTripTime = 0;
         public int maxPacketCount = 1;
+        public float packetLoad = 0;
+        public float potensialLoad = 0;
+        //public int usedPacketCount = 0;
         public int localGamersCount = 1;
         public float lastHeardFrom;// = Ref.TotalTimeSec;
 
@@ -65,7 +68,33 @@ namespace VikingEngine.Network
         /// player class object
         /// </summary>
         public object Tag = null;
+        public StoredNetworkGamer storedData;
 
+        public bool isFriend = false;
+        public bool isRecording = false;
+        public TimeStamp lastvoice;
+
+        public bool lowLoad()
+        {
+            return packetLoad + potensialLoad < maxPacketCount;
+        }
+
+        public bool lowPotensialLoad(float add)
+        {
+            bool result = packetLoad + potensialLoad < maxPacketCount;
+            potensialLoad += add;
+            return result;
+        }
+
+        public bool highLoad()
+        {
+            return packetLoad + potensialLoad >= maxPacketCount;
+        }
+
+        public int packetsLeft()
+        {
+           return Bound.Min((int)(maxPacketCount - packetLoad - potensialLoad), 0);
+        }
         //abstract public void kickFromNetwork();
 
         public override bool Equals(object obj)
@@ -79,6 +108,11 @@ namespace VikingEngine.Network
         public override string ToString()
         {
             return Gamertag + (IsLocal ? "(L)" : "(R)") + ": Id(" + id.ToString() + "), Tag(" + TextLib.ToString_Safe(Tag) + ")";
+        }
+
+        public string NetPingString()
+        {
+            return $"Ping {(int)roundTripTime}, Load {TextLib.OneDecimal(packetLoad)} (potensial {TextLib.OneDecimal(packetLoad + potensialLoad)}) / {maxPacketCount}";
         }
 
         public void initInstancePeers()

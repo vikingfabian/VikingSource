@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars
             {
                 // new game
 
-                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.gameRuleset.factionStartSize) == false)
+                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize) == false)
                 {
                     DssRef.storage.runTutorial = false;
                 }
@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars
                         break;
                 }
 
-                switch (DssRef.storage.gameRuleset.factionStartSize)
+                switch (DssRef.storage.ruleset.factionStartSize)
                 {
                     case FactionStartSize.Full:
                         DssRef.stats.startnewsize_full.addOne();
@@ -167,25 +167,6 @@ namespace VikingEngine.DSSWars
 
                 if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
-                    //switch (DssRef.storage.runTutorial_1short_2normal)
-                    //{
-                    //    case 0:
-                    //        if (PlatformSettings.STEAM_DEMO)
-                    //        {
-                    //            DssRef.stats.startNewDemo.addOne();
-                    //        }
-                    //        break;
-
-                    //    case 1:
-                    //        //DssRef.stats.startShortTutorial.addOne();
-                    //        break;
-
-                    //    case 2:
-                    //        DssRef.stats.startTutorial.addOne();
-                    //        break;
-
-                    //}
-
                     if (DssRef.storage.runTutorial)
                     { 
                         DssRef.stats.startTutorial.addOne();
@@ -210,7 +191,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.keyboard_user.addOne();
                 }
 
-                switch (DssRef.storage.gameRuleset.mapSize)
+                switch (DssRef.storage.ruleset.mapSize)
                 {
                     case MapSize.Tiny:
                     case MapSize.Small:
@@ -233,7 +214,7 @@ namespace VikingEngine.DSSWars
 
                 if (loading == null)
                 {
-                    Ref.netSession.LobbyPublicity = Network.LobbyPublicity.Public;
+                    //Ref.netSession.LobbyPublicity = Network.LobbyPublicity.Public;
                     loading = new MapBackgroundLoading(null as SaveStateMeta);
                 }
 
@@ -260,6 +241,7 @@ namespace VikingEngine.DSSWars
             {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
                     Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
+                StreamLib.WriteColorStream_3B(w, DssRef.storage.profileStorage.Selected().flag.col0_Main);
             }
         }
 

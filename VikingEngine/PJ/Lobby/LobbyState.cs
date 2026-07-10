@@ -103,7 +103,7 @@ namespace VikingEngine.PJ
 
                     if (PjRef.hasAllContentDLC)
                     {
-                        Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity = PjRef.storage.lobbyPublicity;
+                        //Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity = PjRef.storage.lobbyPublicity;
 
 #if PCGAME
                         Ref.steam.LobbyMatchmaker.CreateLobbyIfNotInOne();
@@ -326,7 +326,7 @@ namespace VikingEngine.PJ
         {
             PjRef.storage.lobbyPublicity = (LobbyPublicity)index;
             refreshLobbyPublicity();
-            Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.SetLobbyPublicity(PjRef.storage.lobbyPublicity);
+            //Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.SetLobbyPublicity(PjRef.storage.lobbyPublicity);
             PjRef.PublicNetwork = PjRef.storage.lobbyPublicity == LobbyPublicity.Public;
 
             netwriteLobbyStatus();
@@ -1249,9 +1249,9 @@ namespace VikingEngine.PJ
             }
         }
 
-        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions, List<AbsAvailableSession> prevAvailableSessionsList)
+        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
         {           
-            base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
+            base.NetEvent_SessionsFound(availableSessions);
 
             if (PjRef.hasAllContentDLC == false)
             {

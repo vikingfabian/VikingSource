@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.GameObject
                 safeGuardBuild = BuildAndExpandType.OrchardApple;
                 safeGuardBuildCount = 2;
             }
-            else if (terrainStructure.resourceCount_wood <= 2 && GetGroupedResource(CityResoureIndex.wood).amount <= 10)
+            else if (terrainStructure.resourceCount_wood <= 2 && GetGroupedResource(CityResourceIndex.wood).amount <= 10)
             {
                 safeGuardBuild = BuildAndExpandType.TreeSeedlingHard;
             }
@@ -84,12 +84,12 @@ namespace VikingEngine.DSSWars.GameObject
                 safeGuardBuild = BuildAndExpandType.Pottery;
             }
             else if (buildingStructure.Smelter_count < 1 &&
-                GetGroupedResource(EntityComponent.CityResoureIndex.ironore).amount >= 5)
+                GetGroupedResource(EntityComponent.CityResourceIndex.ironore).amount >= 5)
             {
                 safeGuardBuild = BuildAndExpandType.Smelter;
             }
             else if (buildingStructure.WorkBench_count < 1 &&
-                GetGroupedResource(EntityComponent.CityResoureIndex.iron).amount >= Build.CraftBuildingLib.WorkBenchIronCount)
+                GetGroupedResource(EntityComponent.CityResourceIndex.iron).amount >= Build.CraftBuildingLib.WorkBenchIronCount)
             {
                 safeGuardBuild = BuildAndExpandType.WorkBench;
             }            
@@ -100,8 +100,8 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     safeGuardBuild = BuildAndExpandType.ServiceHouse_Small;
                 }
-                else if (GetGroupedResource(EntityComponent.CityResoureIndex.sharpstick).amount >
-                    GetGroupedResource(EntityComponent.CityResoureIndex.ThrowingSpear).amount)
+                else if (GetGroupedResource(EntityComponent.CityResourceIndex.sharpstick).amount >
+                    GetGroupedResource(EntityComponent.CityResourceIndex.ThrowingSpear).amount)
                 {
                     safeGuardBuild = BuildAndExpandType.SoldierBarracks;
                 }
@@ -456,7 +456,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         bBuild = WorkersMaxLimit > HousingCount_Workers &&
                             availableHomes < 30 &&
-                            GetGroupedResource(EntityComponent.CityResoureIndex.food).amount > foodRequirement &&
+                            GetGroupedResource(EntityComponent.CityResourceIndex.food).amount > foodRequirement &&
                             hasCopperRequirement(copperRequirement);
                         maxCount = 500;
                         chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
@@ -501,7 +501,7 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
 
                     case BuildAndExpandType.Cook:
-                        bBuild = GetGroupedResource(CityResoureIndex.rawFood).amount > 50 &&
+                        bBuild = GetGroupedResource(CityResourceIndex.rawFood).amount > 50 &&
                             workTemplate.Get(WorkPriorityType.craftFood).value > WorkTemplate.NoPrio;
                         maxCount = 8;
                         break;
@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 bool hasCopperRequirement(int copperRequirement)
                 {
-                    if (!DssRef.storage.gameRuleset.centralGold)
+                    if (!DssRef.storage.ruleset_instance.centralGold)
                     {
                         copperRequirement /= 4;
                     }

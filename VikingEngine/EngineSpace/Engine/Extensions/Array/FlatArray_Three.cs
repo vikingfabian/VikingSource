@@ -11,7 +11,7 @@ namespace VikingEngine
     /// <summary>
     /// A complete garbage-free fixed array of up to 3 items.
     /// </summary>
-    public struct FlatArray_Three<T> where T : struct, IEquatable<T>
+    public struct FlatArray_Three<T> where T : struct/*, IEquatable<T>*/
     {
         public const int Capacity = 3;
         public int count;

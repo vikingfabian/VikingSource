@@ -927,7 +927,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Дипломатическое общение. Насколько хорошо вы можете обсуждать условия. 0: Условия обсуждения
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Условия обсуждения: {0}";
+        public override string Diplomacy_SpeakTermIs => "Условия обсуждения";
 
         /// <summary>
         /// Дипломатическое общение. Лучше обычного.
@@ -1314,7 +1314,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Опция меню для управления армией. Опции отправки солдат между армиями.
         /// </summary>
-        public override string ArmyOption_SendX => "Отправить {0}";
+        public override string Hud_SendX => "Отправить {0}";
 
         /// <summary>
         /// Опция меню для управления армией. Опции отправки солдат между армиями.
@@ -1468,7 +1468,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string EventMessage_DesertersTitle => "Дезертиры!";
 
-        public override string DifficultyDescription_AiAggression => "Агрессивность ИИ: {0}.";
+        //public override string DifficultyDescription_AiAggression => "Агрессивность ИИ: {0}.";
         public override string DifficultyDescription_BossSize => "Размер босса: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Время появления босса: {0}.";
         public override string DifficultyDescription_AiEconomy => "Экономика ИИ: {0}%.";
@@ -2034,8 +2034,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "Включено";
         public override string Hud_Off => "Выключено";
 
-        public override string Hud_Time_Seconds => "{0} секунд";
-        public override string Hud_Time_Minutes => "{0} минут";
+        public override string Hud_Time_XSeconds => "{0} секунд";
+        public override string Hud_Time_XMinutes => "{0} минут";
         public override string Hud_Undo => "Отменить";
         public override string Hud_Redo => "Повторить";
 

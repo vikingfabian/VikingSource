@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.Interface.CutScene
 {
@@ -24,5 +25,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         }
 
         abstract public void Time_Update(float time);
+
+        virtual public PlayerNetState NetState() { return PlayerNetState.InMenu; }
     }
 }

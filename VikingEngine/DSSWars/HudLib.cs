@@ -35,15 +35,19 @@ namespace VikingEngine.DSSWars
 
         public const float WarHudIcons_DefaultScale = 0.8f;
 
+        public static readonly Color HeadBarTextColor_Beige = new Color(205,142,56);
+
         public static readonly Color TitleColor_Head = new Color(104, 149, 219);
         public static readonly Color TitleColor_Head2 = ColorExt.ChangeBrighness(TitleColor_Head, -20);
         public static readonly Color TitleColor_Action = Color.LightBlue;
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;
+        public static readonly Color TitleColor_Self = Color.CornflowerBlue;
         public static readonly Color TitleColor_Name_Dark = Color.Brown;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
         public static readonly Color TitleColor_TypeName_Dark = new Color(50, 50, 50);
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
+        public static readonly Color TitleColor_Label2 = new Color(60, 108, 133);
         public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
         public static readonly Color AvailableColor = Color.LightGreen;
         public static readonly Color AvailableColor_Dark = Color.DarkGreen;
@@ -107,6 +111,8 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
 
+        
+
         public static readonly string EngineVersionString = "VikingEngine ver: {0}" + (PlatformSettings.LinuxBuild? " linux" : " windows");
         public static void Init()
         {
@@ -152,7 +158,14 @@ namespace VikingEngine.DSSWars
             {
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
-            RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudOutlineButton, 1, 8, 1f, true, true);
+            RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudOutlineButton, 1, 8, 1f, true, true)
+            {
+                disableTexture = SpriteName.WarsHudHoverArea
+            };
+            RbSettings.artGoldOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudGoldOutline, 1, 8, 1f, true, true)
+            {
+                disableTexture = SpriteName.WarsHudGoldOutline_Gray
+            };
             RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
 
             RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.WarsHudDragButton, 1, 15);
@@ -240,7 +253,10 @@ namespace VikingEngine.DSSWars
                 RbSettings = RbSettings,
             };
         }
-
+        public static void IndexToHud(RichBoxContent content, int myIndex, bool IsNetHosted)
+        {
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex) + (IsNetHosted ? "H" : "C"), HudLib.SecondaryTextColor));
+        }
         public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool copyAvailable = true, bool pasteAvailable = true)
         {
             player.gameControls.input.Copy.ToRichContent(content);
@@ -495,7 +511,11 @@ namespace VikingEngine.DSSWars
         { 
             return value? SpriteName.warsCheckYes : SpriteName.warsCheckNo;
         }
-
+        public static void AvailableIconToHud(RichBoxContent content, bool available)
+        {
+            content.Add(new RbImage( available ? AvailableIcon : NotAvailableIcon));
+            content.hspace();
+        }
         public static string Date(DateTime date)
         { 
             return string.Format(DssRef.lang.Hud_Date, date.Year, date.Month, date.Day);
@@ -508,10 +528,10 @@ namespace VikingEngine.DSSWars
 
         public static string TimeSpan_LongText(TimeSpan time)
         {
-            string result = string.Format(DssRef.lang.Hud_Time_Seconds, time.Seconds);
+            string result = string.Format(DssRef.lang.Hud_Time_XSeconds, time.Seconds);
             if (time.TotalMinutes >= 1)
             {
-                result = string.Format(DssRef.lang.Hud_Time_Minutes, time.Minutes) + ", " + result;
+                result = string.Format(DssRef.lang.Hud_Time_XMinutes, time.Minutes) + ", " + result;
             }
             if (time.TotalHours >= 1)
             {
@@ -659,8 +679,11 @@ namespace VikingEngine.DSSWars
         public static void Label(RichBoxContent content, SpriteName icon, string text)
         {
             content.newLine();
-            content.Add(new RbImage(icon));
-            content.space();
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RbImage(icon));
+                content.space();
+            }
             content.Add(new RbText(text + ":", TitleColor_Label));
         }
 
@@ -739,7 +762,7 @@ namespace VikingEngine.DSSWars
             if (PlatformSettings.STEAM_DEMO && Ref.steam.isInitialized)
             {
                 content.newLine();
-                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
+                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIconAndName) }, new RbAction(() =>
                 {
                     Steamworks.SteamFriends.ActivateGameOverlayToStore(
                     new Steamworks.AppId_t( 3585100),

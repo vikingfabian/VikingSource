@@ -931,7 +931,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic communication. How well you can discuss terms. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "협상 상태: {0}";
+        public override string Diplomacy_SpeakTermIs => "협상 상태";
 
         /// <summary>
         /// Diplomatic communication. Better than normal.
@@ -1325,7 +1325,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => "{0} 파견";
+        public override string Hud_SendX => "{0} 파견";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1484,7 +1484,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Money => "급여를 받지 못한 병사들이 군대를 이탈하고 있습니다.";
 
 
-        public override string DifficultyDescription_AiAggression => "AI 공격성: {0}";
+        //public override string DifficultyDescription_AiAggression => "AI 공격성: {0}";
         public override string DifficultyDescription_BossSize => "보스 규모: {0}";
         public override string DifficultyDescription_BossEnterTime => "보스 등장 시간: {0}";
         public override string DifficultyDescription_AiEconomy => "AI 경제력: {0}%";
@@ -2054,8 +2054,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "켜짐";
         public override string Hud_Off => "꺼짐";
 
-        public override string Hud_Time_Seconds => "{0}초";
-        public override string Hud_Time_Minutes => "{0}분";
+        public override string Hud_Time_XSeconds => "{0}초";
+        public override string Hud_Time_XMinutes => "{0}분";
         public override string Hud_Undo => "되돌리기";
         public override string Hud_Redo => "다시 실행";
 

@@ -807,7 +807,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatische Kommunikation. Wie gut die Verhandlungen laufen. 0: Gesprächsbedingungen
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Gesprächsbedingungen: {0}";
+        public override string Diplomacy_SpeakTermIs => "Gesprächsbedingungen";
 
         /// <summary>
         /// Diplomatische Kommunikation. Besser als normal.
@@ -1188,7 +1188,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menüoption zur Steuerung einer Armee. Soldaten zwischen Armeen versenden.
         /// </summary>
-        public override string ArmyOption_SendX => "{0} senden";
+        public override string Hud_SendX => "{0} senden";
 
         /// <summary>
         /// Menüoption zur Steuerung einer Armee. Alle Soldaten versenden.
@@ -1344,7 +1344,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "Deserteure!";
         public override string EventMessage_DesertersText_Money => "Unbezahlte Soldaten desertieren aus deinen Armeen.";
 
-        public override string DifficultyDescription_AiAggression => "KI-Aggressivität: {0}.";
+        //public override string DifficultyDescription_AiAggression => "KI-Aggressivität: {0}.";
         public override string DifficultyDescription_BossSize => "Boss-Größe: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Boss-Eintrittszeit: {0}.";
         public override string DifficultyDescription_AiEconomy => "KI-Wirtschaft: {0}%.";
@@ -1914,8 +1914,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "An";
         public override string Hud_Off => "Aus";
 
-        public override string Hud_Time_Seconds => "{0} Sekunden";
-        public override string Hud_Time_Minutes => "{0} Minuten";
+        public override string Hud_Time_XSeconds => "{0} Sekunden";
+        public override string Hud_Time_XMinutes => "{0} Minuten";
         public override string Hud_Undo => "Rückgängig";
         public override string Hud_Redo => "Wiederholen";
 

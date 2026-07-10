@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,6 +44,41 @@ namespace VikingEngine.DSSWars.Players
             flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
         }
 
+        virtual public void AssignFaction(Faction faction)
+        {
+            this.faction = faction;
+            //faction.player = this;
+            faction.SetStartOwner(this);
+            faction.onNewPlayerModels();
+            DssRef.world.BordersUpdated = true;
+        }
+
+        virtual public void SetColor(Color selected, bool netShare)
+        {
+            //if (IsLocalPlayer())
+            //{
+            //    var clone = profile.flag.Clone();
+            //    profile.flag = clone;
+            //}
+            profile.flag.col0_Main = selected;
+            refreshFlag();
+
+            if (netShare)
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssReColor, Network.PacketReliability.Reliable);
+                Net.ObjectId.WriteFaction(w, faction);
+                StreamLib.WriteColorStream_3B(w, selected);
+            }
+        }
+
+        virtual public void refreshFlag()
+        {
+            flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+            faction?.onNewPlayerModels();
+            
+            DssRef.world.BordersUpdated = true;
+        }
+
         public AbsPlayer(Faction faction, bool newGame)
         {
             this.faction = faction;
@@ -53,7 +89,7 @@ namespace VikingEngine.DSSWars.Players
                 createStartupBarracks();
 
                 int startGold = DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox ? 500 : 200;
-                if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
                 {
                     startGold = 6000;
                 }
@@ -130,7 +166,8 @@ namespace VikingEngine.DSSWars.Players
         virtual public void aiPlayerAsynchUpdate(float time)
         { }
 
-        virtual public void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
+        //virtual public void onNewRelation(bool isActuator, Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
+        virtual public void onNewRelation(bool isActuator, Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
             //On peace, stop all attacking armies
             bool fromWar = Diplomacy.IsWar(previousRelation);
@@ -140,7 +177,10 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (toWar)
                 {
-                    faction.tradeAllianceWars(otherFaction, rel);
+                    if (localAction)
+                    {
+                        faction.tradeAllianceWars(isActuator,otherFaction);
+                    }
                 }
                 else
                 {
@@ -151,7 +191,10 @@ namespace VikingEngine.DSSWars.Players
             if (rel.Relation == RelationType.RelationType3_Ally &&
                 !rel.secret)
             {
-                faction.tradeAllianceWars(otherFaction, rel);
+                if (localAction)
+                {
+                    faction.tradeAllianceWars(isActuator, otherFaction);
+                }
             }
         }
 
@@ -258,7 +301,7 @@ namespace VikingEngine.DSSWars.Players
             IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
             Army mainArmy = faction.NewArmy(onTile);
 
-            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+            if (IsHumanPlayer() && DssRef.difficulty.honorGuard)
             {
                 new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
             }
@@ -282,12 +325,18 @@ namespace VikingEngine.DSSWars.Players
         abstract public bool IsBot();
 
         abstract public bool IsLocalPlayer();
+        abstract public bool IsHumanPlayer();
+
+        virtual public bool IsRemotePlayer() { return false; }
 
         virtual public LocalPlayer GetLocalPlayer()
         {
             return null;
         }
-
+        virtual public RemotePlayer GetRemotePlayer()
+        {
+            return null;
+        }
         virtual public AbsHumanPlayer GetHumanPlayer()
         {
             return null;

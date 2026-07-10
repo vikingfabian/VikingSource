@@ -58,6 +58,10 @@ namespace VikingEngine
             return new TimeStamp(Ref.TotalTimeSec);
         }
 
+        public bool minPassed(float minutes)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec >= minutes * TimeExt.MinuteInSeconds;
+        }
         public bool secPassed(float seconds)
         {
             return Ref.TotalTimeSec - totalTimeStampSec >= seconds;
@@ -67,6 +71,10 @@ namespace VikingEngine
             return Ref.TotalTimeSec - totalTimeStampSec >= TimeExt.MsToSec * ms;
         }
 
+        public bool belowTime_sec(float seconds)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec < seconds;
+        }
         public bool belowTime_ms(float ms)
         {
             return Ref.TotalTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;
@@ -157,7 +165,10 @@ namespace VikingEngine
         {
             return new GameTimeStamp(Ref.TotalGameTimeSec);
         }
-
+        public bool minPassed(float minutes)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec >= TimeExt.MinuteInSeconds * minutes;
+        }
         public bool secPassed(float seconds)
         {
             return Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
@@ -176,6 +187,11 @@ namespace VikingEngine
         {
             return Ref.TotalGameTimeSec >= totalTimeStampSec;
                 
+        }
+
+        public TimeSpan TimeSpan_Left()
+        {
+            return TimeSpan.FromSeconds(Bound.Min(totalTimeStampSec - Ref.TotalGameTimeSec, 0));
         }
 
         public void setNow()

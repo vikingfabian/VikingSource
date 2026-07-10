@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -22,15 +23,19 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.EngineSpace;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
+using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.ToGG.ToggEngine;
 using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 //
@@ -38,22 +43,17 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace VikingEngine.DSSWars
 {
 
-    //class DropInPlayer
-    //{ 
-    //    public DropInPlayer(lo
-    //}
-
-    class PlayState : AbsPlayState
+    partial class PlayState : AbsPlayState
     {
         public int nextGroupId = 0;
-       
-        
         public bool PartyMode = false;   
         
         TechnologyManager technologyManager = new TechnologyManager();
         bool bResourceMinuteUpdate = true;
         bool slowMinuteUpdate = true;
         bool netMapUpdate = false;
+
+        public Dictionary<int, PlayerMapHistory> previousRemotePlayers = new Dictionary<int, PlayerMapHistory>();
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()
@@ -73,6 +73,13 @@ namespace VikingEngine.DSSWars
             
             this.host = host;
             Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
+
+            if (host)
+            {
+                Ref.netsett.remoteHostSettings = new NetSharedHostSettings();
+                DssRef.storage.ruleset_instance = DssRef.storage.ruleset;
+                DssRef.storage.ruleset_instance.refreshSettings();
+            }
 
             if (readWorld != null)
             {   
@@ -105,7 +112,7 @@ namespace VikingEngine.DSSWars
             new GameObject.AllUnits();
             //new Diplomacy();
             new Achievements();
-            new GameTime();
+            new Event.GameTime();
             HudLib.Init();
 
             prePlayerInit();
@@ -118,34 +125,42 @@ namespace VikingEngine.DSSWars
             localPlayers.Add(local);
             local.assignPlayer(0, 1, false);
 
+            int playerCount = 1;
+            for (var i = 0; i < playerCount; ++i)
+            {
+                var pdata = localPlayers[i].playerData;
+                Mouse.AddPlayer(pdata, playerCount, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
+
+                //localPlayers[i].initPlayerToPlayer(i, playerCount);
+            }
+
             postPlayerInit();
             technologyManager.initGame(false);
 
             events = new Event.EventManager();
 
             local.onGameStart(false);
+
+            Ref.p2p.localPeer.Tag = LocalHost();
+            //netPresentYourself(ReceivedPacket.Empty);
         }
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)
         {
-            Ref.rnd.SetSeed(DssRef.world.metaData.seed);
+            Ref.rnd.SetSeed(DssRef.world.metaData.worldId.seed);
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
             //new Diplomacy();
             
-            new GameTime();
+            new Event.GameTime();
             HudLib.Init();
 
             prePlayerInit();
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             initPlayers(newGame, pointers);
 
-            //culling = new Culling();
-
-            //factionsMap = new MapLayer_Factions();
-            //overviewMap = new Map.MapLayer_Overview(factionsMap);
-            //detailMap = new Map.MapLayer_Detail();
+            
             postPlayerInit();
             technologyManager.initGame(newGame);
 
@@ -163,6 +178,11 @@ namespace VikingEngine.DSSWars
 
         public override void OnLoadComplete()
         {
+            //if (!host)
+            //{ 
+            //    DssRef.storage.profileStorage.Selected().casualControls &= Ref.netsett.remoteHostSettings.hostSettings.allowCasualControls;
+            //}
+
             onGameStart(false);
         }
 
@@ -173,6 +193,21 @@ namespace VikingEngine.DSSWars
             events.writeGameState(w);
             SaveGamestate.MainProgress++;
             w.Write(NextArmyId);
+            SaveGamestate.MainProgress++;
+
+            var remoteStores = previousRemotePlayers.Values.ToList();
+            remotePlayersCounter.Reset();
+            while (remotePlayersCounter.Next())
+            {
+                remoteStores.Add( remotePlayersCounter.sel.GetMapHistory());
+            }
+
+            w.Write((ushort)remoteStores.Count);
+            foreach (var m in remoteStores)
+            { 
+                m.write(w);
+            }
+
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -186,6 +221,16 @@ namespace VikingEngine.DSSWars
             if (subversion >= 105)
             { 
                 NextArmyId = r.ReadInt32();
+            }
+            if (subversion >= 115)
+            {
+                int remoteStoresCount = r.ReadUInt16();
+                for (int i = 0; i < remoteStoresCount; i++)
+                {
+                    PlayerMapHistory mapHistory = new PlayerMapHistory();
+                    mapHistory.read(r, subversion);
+                    previousRemotePlayers.Add(mapHistory.GetHashCode(), mapHistory);
+                }
             }
         }
 
@@ -269,7 +314,7 @@ namespace VikingEngine.DSSWars
                     }
                     else
                     {
-                        startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                        startFaction = DssRef.world.getPlayerAvailableFaction2(localPlayers, i == 0, false);
                         local = new Players.LocalPlayer(startFaction, newGame);
                         localPlayers.Add(local);
                     }
@@ -286,7 +331,7 @@ namespace VikingEngine.DSSWars
                     if (localPlayers.Count <= i)
                     {
                         //Drop in support
-                        Faction startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                        Faction startFaction = DssRef.world.getPlayerAvailableFaction2(localPlayers, i == 0, false);
                         Players.LocalPlayer local = new Players.LocalPlayer(startFaction, newGame) { isDropInPlayer = true };
                         
                         localPlayers.Add(local);
@@ -303,7 +348,7 @@ namespace VikingEngine.DSSWars
                 var pdata = localPlayers[i].playerData;
                 Mouse.AddPlayer(pdata, playerCount, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
 
-                localPlayers[i].initPlayerToPlayer(i, playerCount);
+                //localPlayers[i].initPlayerToPlayer(i, playerCount);
             }
 
             if (newGame && DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
@@ -324,8 +369,8 @@ namespace VikingEngine.DSSWars
                     bool ally = DssRef.difficulty.setting_QuickMatch_TwoTeams && (i < team1Count == j < team1Count);
 
 
-                    DssRef.world.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], 
-                        ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar, null, 
+                    DssRef.world.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], null, 
+                        ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN5_TotalWar, null, 
                         SpeakTerms.SpeakTermsN2_None);
 
                     //var relation = DssRef.world.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);
@@ -369,64 +414,63 @@ namespace VikingEngine.DSSWars
                 {
                     initStartUnits();
                 }
-
-                new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
-                new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);
-                new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
-                new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
-                new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
+                
+                new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);                
             }
 
-            startMapThreads();            
-            
-            if (host)
-            {
-                new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
+            new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
 
-                new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
-                
-                new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);
-                new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
-                
-                new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
-                new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
-                
+            new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
+
+            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
+
+            new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
+
+            startMapThreads();
+
+            new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
+
+            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
+
+            new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);//only truce timers
+
+            new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
+
+            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
+
+            new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
+
+            if (host)
+            { 
                 new AsynchUpdateable_TryCatch(asynchHostNetUpdate, "DSS host net update", 62, System.Threading.ThreadPriority.Lowest);
 
                 if (localPlayers.Count > 1)
                 {
                     Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
                 }
-
-                initPathFindingThreads();
             }
+            else
+            {
+                new AsynchUpdateable_TryCatch(asynchClientNetUpdate, "DSS client net update", 65, System.Threading.ThreadPriority.Lowest);
+            }
+
+            initPathFindingThreads();
 
             isReady = true;
             LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
             events.onGameStarted();
-        }
 
-       
+            if ((newGame && LocalHost().IntutorialMode()) == false)
+            {
+                menuSystem.pauseMenu();
+            }
+        }
 
         public void initStartUnits(bool barracks = false)
         {
             if (StartupSettings.SpawnStartingArmies)
             {
-                double unitCountMulti = 1;
-                bool settlerGuard = false;
-
-                switch (DssRef.storage.gameRuleset.factionStartSize)
-                {
-                    case FactionStartSize.OneCity:
-                        unitCountMulti = 0.4;
-                        settlerGuard = DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch;
-                        break;
-                    case FactionStartSize.Settler:
-                        unitCountMulti = 0.25;
-                        settlerGuard = true;
-                        break;
-
-                }
+                startingArmySizes(out double unitCountMulti, out bool settlerGuard);
 
                 var factionsCounter = DssRef.world.factions.counter();
                 while (factionsCounter.Next())
@@ -440,9 +484,29 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        
+        public void startingArmySizes(out double unitCountMulti, out bool settlerGuard)
+        {
+            unitCountMulti = 1;
+            settlerGuard = false;
+            switch (DssRef.storage.ruleset.factionStartSize)
+            {
+                case FactionStartSize.OneCity:
+                    unitCountMulti = 0.4;
+                    settlerGuard = DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch;
+                    break;
+                case FactionStartSize.Settler:
+                    unitCountMulti = 0.25;
+                    settlerGuard = true;
+                    break;
+
+            }
+        }
+
+
         public override void Time_Update(float time)
         {
+            bool bUserUpdate = true;
+
             base.Time_Update(time);
             Sound.SoundStackManager.Update();
 
@@ -457,23 +521,32 @@ namespace VikingEngine.DSSWars
                 {
                     menuSystem.pauseMenu();
                 }
+                setPlayerNetState(PlayerNetState.InMenu);
                 return;
             }
 
             if (cutScene != null)
             {
+                setPlayerNetState(cutScene.NetState());
                 cutScene.Time_Update(time);
+                
                 return;
             }
 
             if (pauseMenuUpdate())
             {
-                return;
+                setPlayerNetState(PlayerNetState.InMenu);
+                bUserUpdate = false;
+                if (Ref.isPaused)
+                {
+                    return;
+                }
             }
 
             if (exitGameStateThreads != null)
             {
                 new ExitScene(exitGameStateThreads);
+                setPlayerNetState(PlayerNetState.InMenu);
                 return;
             }
             
@@ -485,13 +558,20 @@ namespace VikingEngine.DSSWars
                 {
                     foreach (var m in DssRef.world.cities)
                     {
-                        m.update();
+                        //if (m.IsNetHosted)
+                        //{
+                            m.update();
+                        //}
+                        //else
+                        //{
+                        //    m.update_client();
+                        //}
                     }
 
-                    if (host)
+                    var factionsC = DssRef.world.factions.counter();
+                    while (factionsC.Next())
                     {
-                        var factionsC = DssRef.world.factions.counter();
-                        while (factionsC.Next())
+                        if (factionsC.sel.IsNetHosted())
                         {
                             factionsC.sel.update();
 
@@ -500,18 +580,15 @@ namespace VikingEngine.DSSWars
                                 factionsC.sel.oneSecUpdate(DssRef.time.oneMinute);
                             }
                         }
-                    }
-                    else
-                    {
-                        var factionsC = DssRef.world.factions.counter();
-                        while (factionsC.Next())
+                        else if (factionsC.sel.HasPlayer())
                         {
                             factionsC.sel.update_client(culling.playerInDetailView);
-                        }
 
-                        foreach (var m in DssRef.world.cities)
-                        {
-                            m.update_client();
+                            if (DssRef.time.oneSecond)
+                            {
+                                factionsC.sel.client_oneSecUpdate(DssRef.time.oneMinute);
+                            }
+
                         }
                     }
                 }
@@ -519,7 +596,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                if (host)
+                //if (host)
                 {
                     if (isReady)
                     {
@@ -536,27 +613,47 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
-            
-            if (DssRef.time.halfSecond)
+
+            switch (processTime.update())
             {
-                overviewMap.HalfSecondUpdate();
+                case ProcessEvent.OverviewMap:
+                    overviewMap.HalfSecondUpdate();
+                    break;
+                case ProcessEvent.SubTileReload:
+                    if (detailMap != null)
+                    {
+                        detailMap.oneSecondUpdate = true;
+                    }
+
+                    if (overviewMap != null)
+                    {
+                        overviewMap.bRefreshTimer = true;
+                    }
+                    break;
             }
-            if (subTileReloadTimer.Update())
-            {
-                if (detailMap != null)
-                {
-                    detailMap.oneSecondUpdate = true;
-                }
+            //if (DssRef.time.halfSecond)
+            //{
+            //    overviewMap.HalfSecondUpdate();
+            //}
+            //if (subTileReloadTimer.Update())
+            //{
+            //    if (detailMap != null)
+            //    {
+            //        detailMap.oneSecondUpdate = true;
+            //    }
              
-                if (overviewMap != null)
-                {
-                    overviewMap.bRefreshTimer = true;
-                }
-            }
+            //    if (overviewMap != null)
+            //    {
+            //        overviewMap.bRefreshTimer = true;
+            //    }
+            //}
 
             overviewMap.update();
 
-            updatePauseInput();
+            if (bUserUpdate)
+            {
+                updateUserInput();
+            }
 
             Engine.ParticleHandler.Update(time);
         }
@@ -565,7 +662,18 @@ namespace VikingEngine.DSSWars
         float LastAutoSaveTime_TotalSec = 0;
 
 
-        protected void updatePauseInput()
+        void setPlayerNetState(PlayerNetState netState)
+        {
+            if (localPlayers != null)
+            {
+                foreach (var local in localPlayers)
+                {
+                    local.playerNetState = netState;
+                }
+            }
+        }
+
+        protected void updateUserInput()
         {
             if (localPlayers != null)
             {
@@ -583,13 +691,18 @@ namespace VikingEngine.DSSWars
                         local.playerData.IgnoreLostController = true;
                         menuSystem.controllerDisconnectMenu(); //todo lost menu
                     }
+
+                    remotePlayersCounter.Reset();
+                    while (remotePlayersCounter.Next())
+                    {
+                        remotePlayersCounter.sel.UpdateClient(local);
+                    }
+
+                    local.gameControls.map.camera.prevLookTarget = local.gameControls.map.camera.LookTarget;
                 }
             }
 
-            //if (Ref.steam.isInitialized && Ref.steam.inOverlay && !menuSystem.IsOpen())
-            //{
-            //    menuSystem.pauseMenu();
-            //}
+           
 
             if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.IsOpen())
             {
@@ -621,7 +734,14 @@ namespace VikingEngine.DSSWars
 
         public void AutoSave()
         {
-            if (!PlatformSettings.STEAM_DEMO)
+            if (Ref.netSession.InMultiplayerSession)
+            {
+                if (Ref.netSession.IsHost)
+                {
+                    RequestClientGamestates(true);
+                }
+            }
+            else if (!PlatformSettings.STEAM_DEMO)
             {
                 if (cutScene == null)
                 {
@@ -635,40 +755,12 @@ namespace VikingEngine.DSSWars
         public override void OnDestroy()
         {
             exitThreads = true;
+            
             base.OnDestroy();
         }
 
         
 
-        public override void NetEvent_GotNetworkId()
-        {
-            //doesnt run
-            base.NetEvent_GotNetworkId();
-            
-        }
-
-        public override void NetworkStatusMessage(NetworkStatusMessage message)
-        {
-            //base.NetworkStatusMessage(message);
-
-            switch (message)
-            {
-                case Network.NetworkStatusMessage.Created_session:
-                    foreach (var p in localPlayers)
-                    {
-                        p.initNetwork();
-                    }
-                    break;
-            }
-        }
-        public override void NetEvent_ConnectionLost(string reason)
-        {
-            base.NetEvent_ConnectionLost(reason);
-            if (!this.host)
-            {
-                new GameState.ExitToLobby(false);
-            }
-        }
         
         //void shareAllHostedObjects(Network.AbsNetworkPeer sender)
         //{
@@ -691,9 +783,19 @@ namespace VikingEngine.DSSWars
                 {
                     foreach (var m in DssRef.world.cities)
                     {
-                        m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
-                        m.async_conscriptUpdate(time);
-                        m.async_deliveryUpdate();
+                        if (m.IsNetHosted)
+                        {
+                            m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
+                            m.async_conscriptUpdate(time);
+                            m.async_deliveryUpdate();
+                        }
+                        else
+                        {
+                            if (arraylib.HasMembers(m.workerUnits))
+                            {
+                                m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
+                            }
+                        }
                     }
 
                     var factions = DssRef.world.factions.counter();
@@ -721,13 +823,22 @@ namespace VikingEngine.DSSWars
 
                 foreach (var m in DssRef.world.cities)
                 {
-                    m.asynchGameObjectsUpdate(minute);
+                    //if (m.IsNetHosted)
+                    //{
+                        m.asynchGameObjectsUpdate(minute);
+                    //}
                 }
 
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
+                    //if (factions.sel.IsNetHosted())
+                    //{
+                    if (factions.sel.player != null)
+                    {
+                        factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
+                    }
+                    //}
                 }
 
             }
@@ -794,7 +905,10 @@ namespace VikingEngine.DSSWars
             if (cutScene == null)
             {
                 DssRef.world.diplomacy.async_update();
-                events.asyncUpdate(time);
+                if (host)
+                {
+                    events.asyncUpdate(time);
+                }
             }
             return exitThreads;
         }
@@ -803,13 +917,6 @@ namespace VikingEngine.DSSWars
 
         bool asyncUserUpdate(int id, float time)
         {
-            //doubleTaskTest++;
-
-            //if (doubleTaskTest > 1)
-            //{
-            //    throw new Exception("Double task error");
-            //}
-
             DssRef.ambience.update_async();
 
             if (cutScene == null)
@@ -826,218 +933,12 @@ namespace VikingEngine.DSSWars
 
         }
 
-        
-
-        bool asynchHostNetUpdate(int id, float time)
-        {
-            if (remotePlayers.Count > 0)
-            {
-                if (!sendMap())
-                {
-                    //TODO, rotate user update
-                    //Map sent, start updating units
-                    var remoteC = remotePlayers.counter();
-                    while (remoteC.Next())
-                    {
-                        if (remoteC.sel.gotStatus)
-                        {
-                            remoteC.sel.gotStatus = false;
-                            int maxPackets = remoteC.sel.networkPeer.peer.maxPacketCount;
-
-                            var cities = remoteC.sel.GetAllCitiesInView();
-                            foreach (var c in cities)
-                            {
-                                if (DssRef.world.cities[c].net_roundtrip_asyncupdate())
-                                {
-                                    if (--maxPackets <= 0)
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-
-                            remoteC.sel.Net_UpdateArmies(ref maxPackets);
-                        }
-                    }
-                }
-
-                bool sendMap()
-                {
-                    var remoteC = remotePlayers.counter();
-                    while (remoteC.Next())
-                    {
-                        var netPeer_sp = remoteC.sel.networkPeer;
-                        if (remoteC.sel.gotStatus && netPeer_sp != null)
-                        {
-                            int sendPacketCount = remoteC.sel.networkPeer.peer.maxPacketCount;
-
-                            while (remoteC.sel.Net_HostMapUpdate_async())
-                            {
-                                if (--sendPacketCount <= 0)
-                                {
-                                    remoteC.sel.gotStatus = false;
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-
-                    return false;
-                }
-            }
-            return exitThreads;
-        }
-
-        bool asynchAiPlayersUpdate(int id, float time)
-        {
-            if (cutScene == null)
-            {
-                var factions = DssRef.world.factions.counter();
-                while (factions.Next())
-                {
-                    factions.sel.asynchAiPlayersUpdate(time);
-                }
-            }
-            
-            return exitThreads;
-        }
-
-        
-
-        public override void NetworkReadPacket(ReceivedPacket packet)
-        {
-            switch (packet.type)
-            {
-                case PacketType.DssJoined_WantWorld:
-                    {
-                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
-                        var meta = new SaveStateMeta();
-                        meta.netSetup();
-                        var saveGamestate = new SaveGamestate(meta);
-                        saveGamestate.writeNet(w);
-                    }
-                    //new SteamLargePacketWriter(file, SendPacketTo.OneSpecific, packet.sender.fullId, PacketType.DssSendWorld).begin();
-                    break;
-
-                case PacketType.DssPlayerStatus:
-                    {
-                        var player = GetRemotePlayer(packet);
-                        player.Net_readStatus(packet.r);
-
-                        if (player.newPlayer)
-                        {
-                            //Present yourself
-                            player.newPlayer = false;
-                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
-                            w.Write((byte)localPlayers.Count);
-                            foreach (var local in localPlayers)
-                            {
-                                //TODO
-                                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
-                                /*DssRef.storage.flagStorage.flagDesigns[flag]*/profile.flag.write(w);
-                            }
-                        }
-                    }
-                    break;
-
-                case PacketType.DssPlayerEnterPresentation:
-                    {
-                        var player = GetOrCreateRemotePlayer(packet.sender, 0);
-                        int count = packet.r.ReadByte();
-                        player.profile = new FlagAndColor(packet.r);
-                        player.flagTexture = player.profile.flagDesign.CreateTexture(player.profile);
-                    }
-                    break;
-
-                case PacketType.DssWorldTiles:                    
-                    DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
-                    overviewMap.bRefreshDataRecieved = true;
-                    DssRef.world.BordersUpdated = true;
-                    break;
-
-                case PacketType.DssWorldSubTiles:
-                    DssRef.world.readNet_SubTile(packet.r);//l 522
-                    break;
-
-                case PacketType.DssFactions:
-                    DssRef.world.readNet_Factions(packet.r);
-                    break;
-
-                case PacketType.DssCities:
-                    DssRef.world.readNet_Cities(packet.r);
-                    break;
-
-                case PacketType.DssCityStatus:
-                    int cityIx = packet.r.ReadUInt16();
-                    var city = DssRef.world.cities[cityIx];
-                    int part = packet.r.ReadByte();
-                    city.readNet_update(packet.r, part);
-                    break;
-                case PacketType.DssArmyStatus:
-                    Army.NetReadArmy(packet.r); 
-                    break;
-                case PacketType.DssSoldierGroupStatus:
-                    int factionIx = packet.r.ReadUInt16();
-                    int armyIx = packet.r.ReadUInt16();
-
-                    var faction = DssRef.world.factions.GetIndex_Safe(factionIx);
-                    if (faction != null)
-                    {
-                        var army = faction.armies.GetIndex_Safe(armyIx);
-                        if (army != null)
-                        {
-                            bool more = false;
-                            do
-                            {
-                                more = Army.NetReadGroup(packet.r, army);
-                            } while (more);
-                        }
-                    }
-                    break;
-            }
-        }
-
-        
-        public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)
-        {
-            return packet.sender.instancePeers?[packet.senderLocalIndex].Tag as Players.RemotePlayer;
-        }
-
-        public override void NetUpdate()
-        {
-            foreach (var player in localPlayers)
-            {
-                player.NetUpdate();
-            }
-        }
-
-        public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
-        {
-            base.NetEvent_PeerJoined(peer);
-            GetOrCreateRemotePlayer(peer, 0);
-        }
-
-        public override void NetEvent_PeerLost(AbsNetworkPeer peer)
-        {
-            var remotePlayerC = remotePlayers.counter();
-            while (remotePlayerC.Next())
-            {
-                if (remotePlayerC.sel.networkPeer != null && 
-                    remotePlayerC.sel.networkPeer.peer == peer)
-                {
-                    //TODO return region to AI
-                    remotePlayerC.RemoveAtCurrent();
-                }
-            }
-        }
-
-        
 
         public override int PathThreadCount()
         {
             return 4;
         }
-        public override PlayState Game()
+        public override PlayState playstate()
         {
             return this;
         }

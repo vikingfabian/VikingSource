@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (attackTarget_sp.gameobjectType() == GameObjectType.City)
                     {
-                        attackTarget_sp.GetCity().setFaction(GetFaction(), false, false);
+                        attackTarget_sp.GetCity().setFaction(GetFaction(), false, false, ConvertReason.WarCapture, true);
                     }
                     else
                     {
@@ -632,7 +632,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.text("Objective: " + objective.ToString());
             if (objective != ArmyObjective.None)
             {
-                if (objective == ArmyObjective.Attack)
+                if (objective == ArmyObjective.Attack && attackTarget != null)
                 {
                     content.text("Attack: " + attackTarget.TypeName());
                 }
@@ -671,17 +671,41 @@ namespace VikingEngine.DSSWars.GameObject
             switch (objective)
             {
                 case ArmyObjective.Attack:
-                    pointers.pointers.Add(new ArmyAttackObjectPointer(r, this, false));
+                    {
+                        var targetPointer = new ArmyAttackObjectPointer(r, this, false);
+
+                        if (pointers == null)
+                        {
+                            targetPointer.SetPointer();
+                        }
+                        else
+                        {
+                            pointers.pointers.Add(targetPointer);
+                        }
+                    }
                     break;
+
                 case ArmyObjective.TeleportAttack:
-                    pointers.pointers.Add(new ArmyAttackObjectPointer(r, this, true));
-                    teleportTime = r.ReadSingle();
+                    {
+                        var targetPointer = new ArmyAttackObjectPointer(r, this, true);
+
+                        if (pointers == null)
+                        {
+                            targetPointer.SetPointer();
+                        }
+                        else
+                        {
+                            pointers.pointers.Add(targetPointer);
+                        }
+                        teleportTime = r.ReadSingle();
+                    }
                     break;
+
                 case ArmyObjective.MoveTo:
                     walkGoal = WP.readTilePos(r);
-                    Order_MoveTo(walkGoal);
-                    
+                    Order_MoveTo(walkGoal);                    
                     break;
+
                 case ArmyObjective.TeleportMove:
                     walkGoal = WP.readTilePos(r);
                     Order_MoveTo_Setup(walkGoal);

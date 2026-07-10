@@ -20,11 +20,12 @@ namespace VikingEngine.DSSWars
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
         public static SoundContainerBase click, ui_expand, option_select, option_deselect, hover_disabled, clicktab,back, 
+            speed_down, speed_up,
             scroll_back, scroll_forward,
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
             copy, paste, start, stop,
             select_army, select_city, select_faction,
-            ordermove, orderstop, message, trophy,
+            ordermove, orderstop, message_loud, ping, trophy,
             woodcut, tree_falling, breaking, scythe, drop_item, pickaxe, 
             
             hen, pig,
@@ -37,12 +38,14 @@ namespace VikingEngine.DSSWars
            blade_light, blade_medium, blade_heavy, spear_whoosh,
            musket, cannon, block_attack, wood_bonk,
             
-           painvoice, fleshgore;
+           painvoice, fleshgore,
+            
+            netMessage, netJoined;
 
         public static SoundContainerBase[] WalkSounds;
         public static SoundContainerBase[] AnimalNoises;
 
-        public static RbSoundProfile menu, menuHover, menuOption, menuOptionDeselect, menutab, menuExpand, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop;
+        public static RbSoundProfile menu, menuHover, menuOption, menuOptionDeselect, menutab, menuExpand, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop, menuPing;
 
         public static RbSoundAction buttonHoverAction, tabHoverAction;
 
@@ -59,6 +62,10 @@ namespace VikingEngine.DSSWars
             scroll_forward = new SoundContainerSingle(SoundDir + "scroll_forward", 0.8f);
             //hovertab = new SoundContainerSingle(SoundDir + "tab_hover", 0.7f);
             back = new SoundContainerSingle(SoundDir + "back", 0.05f);
+
+            speed_up = new SoundContainerSingle(SoundDir + "up", 0.2f);
+            speed_down = new SoundContainerSingle(SoundDir + "down", 0.25f);
+
             buy = new SoundContainerSingle(SoundDir + "buy");
             wrong = new SoundContainerSingle(SoundDir + "wrong", 0.6f);
             soft_buzz_error = new SoundContainerSingle(SoundDir + "soft_buzz_error", 0.1f);
@@ -76,7 +83,8 @@ namespace VikingEngine.DSSWars
 
             ordermove = new SoundContainerSingle(SoundDir + "ordermove");
             orderstop = new SoundContainerSingle(SoundDir + "orderstop");
-            message = new SoundContainerSingle(SoundDir + "chat_message", 0.75f);
+            message_loud = new SoundContainerSingle(SoundDir + "chat_message", 0.75f);
+            ping = new SoundContainerSingle(SoundDir + "ping", 0.75f);
             trophy = new SoundContainerSingle(SoundDir + "trophy", 0.2f);
 
             woodcut = new SoundContainerSingle(SoundDir + "woodcut", 0.4f, 0.2f);
@@ -90,6 +98,11 @@ namespace VikingEngine.DSSWars
             pig = new SoundContainerSingle(SoundDir + "pig", 0.6f, 0.8f);
 
             hog = new SoundContainerMultiple([SoundDir + "hog1", SoundDir + "hog2"], 0.6f, 0.4f);
+
+            netMessage = new SoundContainerSingle(SoundDir + "TalkingShort");
+            netJoined = new SoundContainerSingle(SoundDir + "player_enters");
+            //Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
+            //Engine.LoadContent.LoadSound(LoadedSound.player_enters, SoundDir + "player_enters");
 
             SoundContainerMultiple dogGrowl = new SoundContainerMultiple([SoundDir + "dog_growl1", SoundDir + "dog_growl2"]);
             SoundContainerBuilder dogBuilder = new SoundContainerBuilder(0.6f, 0.4f);
@@ -191,7 +204,7 @@ namespace VikingEngine.DSSWars
             menuPaste = new RbSoundProfile(paste);
             menuStart = new RbSoundProfile(start);
             menuStop = new RbSoundProfile(stop);
-
+            menuPing = new RbSoundProfile(ping);
 
             WalkSounds = new SoundContainerBase[] {
                 footstep,
@@ -216,6 +229,18 @@ namespace VikingEngine.DSSWars
             
             //Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
         }
+
+        //public static void speedInputSound()
+        //{
+        //    if (Ref.isPaused)
+        //    {
+        //        SoundLib.speed_down.Play(Pan.Right);
+        //    }
+        //    else
+        //    {
+        //        SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
+        //    }
+        //}
     }
 
     enum WalkSoundType

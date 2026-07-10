@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Players
         SafeCollectAsynchList<AbsMapObject> nearMapObjects = new SafeCollectAsynchList<AbsMapObject>(8);
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
 
-        public Vector3 playerPointerPos = Vector3.Zero, pointerPosWP = Vector3.Zero;
+        public Vector3 playerPointerPos = Vector3.Zero, pointerPosWP = Vector3.Zero, prevPointerPosWP = Vector3.Zero;
         ScreenToSpaceRectangleBound rectangleBound;
         Graphics.RectangleLines rectangleLines = null;
         float multiSelectMoveLenght = 0;
@@ -185,7 +185,12 @@ namespace VikingEngine.DSSWars.Players
 
             if (player.gameControls.input.PinAndPing.DownEvent)
             {
-                player.createPin();
+                var pin = player.createPin();
+
+                if (player.gameControls.input.inputSource.HasKeyBoard && Input.Keyboard.Ctrl)
+                {
+                    pin.setInteractLevel(Network.NetInteractLevel.Public);
+                }
             }
 
         }
@@ -211,6 +216,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void updatePointer()
         {
+            prevPointerPosWP = pointerPosWP;
             pointerPosWP = screenPosToWorldPos(pointerPos());
             IntVector2 prevTile = tilePosition;
             tilePosition = DssRef.world.tileBounds.KeepTilePointInArea(WP.ToTilePos(pointerPosWP));
@@ -594,6 +600,33 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        LocationPin intersectPin()
+        {
+            LocationPin result = null;
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                result = p.rayCollisionWithPin(ray);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            var remoteC = DssRef.state.remotePlayers.counter();
+            while (remoteC.Next())
+            {
+                result = remoteC.sel.rayCollisionWithPin(ray);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            
+
+            return result;
+        }
+
         void mouseHoverUpdate()
         {
 
@@ -601,7 +634,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 AbsMapObject intersectObj = null;
 
-                intersectObj = player.rayCollisionWithPin(ray);
+                intersectObj = intersectPin();//player.rayCollisionWithPin(ray);
 
                 if (intersectObj != null)
                 {
@@ -1304,6 +1337,8 @@ namespace VikingEngine.DSSWars.Players
             controllerPointer.Visible = focus;
         }
 
+
+
         void panCamera(Vector2 pan, bool followCamRotation)
         {
             //pan.Y = 0;
@@ -1364,6 +1399,8 @@ namespace VikingEngine.DSSWars.Players
 
         private void updateCamera()
         {
+
+
             Vector3 camTarget = playerPointerPos;
             camTarget.Y = 0.1f;
 
@@ -1375,8 +1412,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 camera.GoalLookTarget = camTarget;
             }
-
             camera.Time_Update(Ref.DeltaTimeMs);
+
+            
         }
 
         public GameObjectType SelectionType

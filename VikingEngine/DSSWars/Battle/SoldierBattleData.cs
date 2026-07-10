@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.Battle
             
         }
 
-        public void onTakeMeleeDamage(AbsSoldierUnit parent, AbsDetailUnit meleeAttacker)
+        public void onTakeMeleeDamage(AbsSoldierUnit parent, AbsSoldierUnit meleeAttacker)
         {
             if (parent.group.debugTagged && parent.myIndex == 3)
             {
@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Battle
             {
                 lib.DoNothing();
             }
-            AbsDetailUnit closestOpponent = null;
+            AbsSoldierUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
 
             bool collectCollisions = !parent.group.InGuardPost();

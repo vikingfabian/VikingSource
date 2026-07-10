@@ -33,6 +33,11 @@ namespace VikingEngine.DSSWars.Communication
         public RelationFlag(int faction)
         {
             this.faction = faction;
+            //if (faction == 75)
+            //{
+            //    lib.DoNothing();
+            //}
+            //DssRef.world.faction(faction)?.refreshMainCity();
         }
 
         public void updatePos(LocalPlayer player, Faction faction)

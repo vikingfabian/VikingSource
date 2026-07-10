@@ -86,11 +86,16 @@ namespace VikingEngine.DSSWars
                 lp.asynchCullingUpdate(time, cullingStateA);
             }
 
-            
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    p.unitsPixelTexture.complete();
-                }
+            var remoteC = DssRef.state.remotePlayers.counter();
+            while (remoteC.Next())
+            {
+                remoteC.sel.asynchCullingUpdate(time, cullingStateA);
+            }
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.complete();
+            }
             
         }
 

@@ -13,14 +13,66 @@ namespace VikingEngine.DSSWars.Map
         public bool editTerrain;
         public bool editAmount;
         public bool editCollection;
+        public bool hostedTile;
+        public bool isPlayer;
+        public bool netShare;
 
-        public EditSubTile(IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
-        { 
+        public EditSubTile(Faction faction, bool netShare, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
+        {
+            hostedTile = faction != null && faction.IsNetHosted();
+            isPlayer = faction.player != null && faction.player.IsLocalPlayer();
+            this.netShare = netShare;
             this.position = position;
             this.value = value;
             this.editTerrain = editTerrain;
             this.editAmount = editAmount;
             this.editCollection = editCollection;
+        }
+
+        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
+        {
+            hostedTile = hosted;
+            this.isPlayer = isPlayer;
+            this.position = position;
+            this.value = value;
+            this.editTerrain = editTerrain;
+            this.editAmount = editAmount;
+            this.editCollection = editCollection;
+        }
+
+        void write(System.IO.BinaryWriter w)
+        { 
+            position.writeUshort(w);
+            new EightBit(editTerrain, editAmount, editCollection).write(w);
+            if (editTerrain)
+            {
+                w.Write((byte)value.mainTerrain);
+                w.Write(Debug.Byte_OrCrash(value.subTerrain));
+            }
+            if (editAmount)
+            {
+                w.Write((byte)value.terrainAmount);
+            }
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            value = new SubTile();
+
+            position.readShort(r);
+            EightBit eightBit = new EightBit(r);
+            eightBit.Get(out editTerrain, out editAmount, out editCollection);
+            if (editTerrain)
+            {
+                value.mainTerrain = (TerrainMainType)r.ReadByte();
+                value.subTerrain = r.ReadByte();
+            }
+            if (editAmount)
+            {
+                value.terrainAmount = r.ReadByte();
+            }
+
+            hostedTile = true;
         }
 
         public void SubmitOrExecute()
@@ -36,10 +88,12 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-
         public void Submit()
-        { 
-            DssRef.state.resources.editSubTiles.Enqueue(this);
+        {
+            if (hostedTile)
+            {
+                DssRef.state.resources.editSubTiles.Enqueue(this);
+            }
         }
 
         public void ExecuteEdit()
@@ -64,6 +118,13 @@ namespace VikingEngine.DSSWars.Map
             if (editCollection)
             {
                 subTile.collectionPointer = value.collectionPointer;
+            }
+
+            if (netShare && Ref.netSession.InMultiplayerSession)
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEditSubTile, isPlayer ? Network.PacketReliability.Reliable : Network.PacketReliability.Unrelyable, out var packet);
+                write(w);
+                packet.EndWrite_Asynch();
             }
         }
 

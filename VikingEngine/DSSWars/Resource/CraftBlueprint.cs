@@ -48,6 +48,11 @@ namespace VikingEngine.DSSWars.Resource
             this.requirement = requirement;
         }
 
+        public CraftBlueprint Clone(CraftResultType resultType, int resultSubType)
+        {
+            return new CraftBlueprint(resultType, resultSubType, resultAmount1, resources, experienceType, levelRequirement, requirement);
+        }
+
         public void craftItemResult(out int amount1, out ItemResourceType item1, out int amount2, out ItemResourceType item2)
         {
             amount1 = resultAmount1;

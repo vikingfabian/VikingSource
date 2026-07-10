@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Interface
             this.player = player;
             this.army = army;
 
-            if (!DssRef.storage.gameRuleset.centralGold)
+            if (!DssRef.storage.ruleset_instance.centralGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));
@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Interface
             
             content.Add(haltButton);
 
-            
+            army.tradeBetweenPlayers_toHud(player, content);
         }
 
         public static void ColumnWidth(RichBoxContent content, AbsArmy army)
@@ -335,13 +335,13 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbImage(AllUnits.UnitFilterIcon(kv.Key)));
                 content.Add(new RbText(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, LangLib.UnitFilterName(kv.Key))));//kv.Key.ToString() + " groups: " + kv.Value);
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.ArmyOption_SendX, 1)) },//"Send 1",
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_SendX, 1)) },//"Send 1",
                     new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, 1, RbSoundType.Default),
                     null, true));
 
                 content.space();
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.ArmyOption_SendX, 5)) },//"Send 5",
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_SendX, 5)) },//"Send 5",
                     new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, 5, RbSoundType.Default),
                     null,
                     kv.Value >= 5));

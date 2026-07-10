@@ -1,10 +1,20 @@
 
-﻿UPDATE
-Change Log:
-* Fixed: tech spread dont work between all cities
+Change log:
+* steam deck layout
+
+KNOWN ISSUES
+
+! old saved will have some bot flag color drifting
+! Join from a closed game doesnt work
+
+
+x DssEditSubTile
+? pins always visible
 
 ##ICONS TODO
-* 
+* gray rounded button
+* mobilizing
+* join game icon
 
 #MOUNTED TODO
 * 

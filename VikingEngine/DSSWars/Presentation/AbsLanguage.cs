@@ -733,7 +733,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string ArmyOption_SendToX { get; }
         public abstract string ArmyOption_SendToNewArmy { get; }
-        public abstract string ArmyOption_SendX { get; }
+        public abstract string Hud_SendX { get; }
         public abstract string ArmyOption_SendAll { get; }
         public abstract string ArmyOption_DivideHalf { get; }
         public abstract string ArmyOption_MergeArmies { get; }
@@ -787,7 +787,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string EventMessage_DesertersTitle { get; }
         public abstract string EventMessage_DesertersText_Money { get; }
 
-        public abstract string DifficultyDescription_AiAggression { get; }
+        //public abstract string DifficultyDescription_AiAggression { get; }
         public abstract string DifficultyDescription_BossSize { get; }
         public abstract string DifficultyDescription_BossEnterTime { get; }
         public abstract string DifficultyDescription_AiEconomy { get; }
@@ -1260,8 +1260,8 @@ namespace VikingEngine.DSSWars.Presentation
         //public abstract string Hud_NoLimit { get; }
         public abstract string Hud_On { get; }
         public abstract string Hud_Off { get; }
-        public abstract string Hud_Time_Seconds { get; }
-        public abstract string Hud_Time_Minutes { get; }
+        public abstract string Hud_Time_XSeconds { get; }
+        public abstract string Hud_Time_XMinutes { get; }
         public abstract string Hud_Undo { get; }
         public abstract string Hud_Redo { get; }
 

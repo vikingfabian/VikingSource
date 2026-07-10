@@ -8,12 +8,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Communication
 {
-    struct DiplomacyOption
-    {
-        public RelationType toRelation;
-        public int cost;
-        public bool available;
-    }
+   
     class DiplomacyActionManager
     {
         LocalPlayer player;
@@ -43,7 +38,7 @@ namespace VikingEngine.DSSWars.Communication
 
             if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None)
             {
-                if (selectedRelation.Relation <= RelationType.RelationTypeN3_War)
+                if (selectedRelation.Relation <= RelationType.RelationTypeN4_War)
                 {
                     bool available = canForgePeace(false, out int cost);
                     DiplomacyOption truce = new DiplomacyOption()
@@ -129,11 +124,11 @@ namespace VikingEngine.DSSWars.Communication
                 };
                 result.Add(endRelation);
             }
-            if (selectedRelation.Relation > RelationType.RelationTypeN3_War)
+            if (selectedRelation.Relation > RelationType.RelationTypeN3_Mobilization)
             {
                 DiplomacyOption declareWar = new DiplomacyOption()
                 {
-                    toRelation = RelationType.RelationTypeN3_War,
+                    toRelation = RelationType.RelationTypeN4_War,
                     available = true,
                     cost = Diplomacy.DeclareWarCost(selectedRelation.Relation)
                 };

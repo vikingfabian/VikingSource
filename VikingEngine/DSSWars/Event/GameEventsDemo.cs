@@ -35,8 +35,8 @@ namespace VikingEngine.DSSWars.Event
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref DssRef.state.LocalHost().faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20, false);
-                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500, false);
+                    citySel.AddGroupedResource(EntityComponent.CityResourceIndex.Palisade, 20, false);
+                    citySel.AddGroupedResource(EntityComponent.CityResourceIndex.food, 500, false);
 
                     //citiesC.sel.res_Palisade.amount += 20;
                     //citiesC.sel.res_food.amount += 500;
@@ -93,18 +93,18 @@ namespace VikingEngine.DSSWars.Event
 #if DEBUG
                         1);
 #else
-                15 * TimeExt.MinuteInSeconds);//2.
+                        15 * TimeExt.MinuteInSeconds);//2.
 #endif
                     }, 20);//1.
 
 
-                    DssRef.state.LocalHost().clearPins();
+                    DssRef.state.LocalHost().clearPins( DeleteReason.Disband);
 
 
                     var mission = new RichBoxContent();
                     mission.h1(DssRef.lang.Demo_MissionObjective_Title, HudLib.TitleColor_Head);
                     mission.text(DssRef.lang.Demo_MissionObjective_Description);
-                    DssRef.state.LocalHost().hud.messages.Add(mission);
+                    DssRef.state.LocalHost().hud.messages.Add(mission, SoundLib.message_loud);
                 }
             }
         }

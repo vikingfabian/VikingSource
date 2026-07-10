@@ -155,7 +155,6 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Armor:
 
                     groupType = ResourceGroupType.Armor;
-                    stockpile(player, ItemResourceType.PaddedArmor);
                     stockpile(player, ItemResourceType.HeavyPaddedArmor);                 
                     stockpile(player, ItemResourceType.BronzeArmor);
                     stockpile(player, ItemResourceType.IronArmor);
@@ -418,21 +417,6 @@ namespace VikingEngine.DSSWars.Resource
             public StockpileLimitOption limit;
             public GroupedResource res;
         }
-
-        //void limitTooltip(RichBoxContent content, object tag)
-        //{
-        //    LimitTooltipArgs args = (LimitTooltipArgs)tag;
-        //    if (args.limit == StockpileLimitOption.NoLimit)
-        //    {
-        //        content.h1(".No limit", HudLib.TitleColor_Head);
-        //        content.text(".Will stockpile up to the storage size");
-        //    }
-        //    else
-        //    {
-        //        content.h1(string.Format( ".Limit stockpile to {0}", ResourceLib.Limit(args.limit)), HudLib.TitleColor_Head);
-        //        content.text(DssRef.lang.Resource_StockPile_Info);
-        //    }
-        //}
 
         void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)
         {

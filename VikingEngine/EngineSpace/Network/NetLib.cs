@@ -19,26 +19,7 @@ namespace VikingEngine.Network
             w.Write(new HalfSingle(value.Y).PackedValue);
             w.Write(new HalfSingle(value.Z).PackedValue);
         }
-        public static List<string> ListNetworkCanJoinTypes()
-        {
-            List<string> result = new List<string>((int)NetworkCanJoinType.NUM);
-            for (NetworkCanJoinType type = (NetworkCanJoinType)0; type < NetworkCanJoinType.NUM; type++)
-            {
-                result.Add(TextLib.EnumName(type.ToString()));
-            }
-            return result;
-        }
-        public static List<string> ListNetworkCanJoinTypesDescriptions()
-        {
-            return new List<string>{
-                "Disconnect from internet",//Offline,
-                "Hand pick the persons you wanna play with",//Invites_only,
-                "Anyone on your friends list can join",//Friends,
-                "Anyone can join, but one slot is reserved for a friend",//Open_but_1private,
-                "Open for both friends and strangers",//Open_for_all,
-             };
-        }
-
+        
         public static Vector3 ReadHalfV3(System.IO.BinaryReader r)
         {
             Vector3 result = Vector3.Zero;
@@ -84,6 +65,8 @@ namespace VikingEngine.Network
 
     struct ReceivedPacket
     {
+        public static readonly ReceivedPacket Empty = new ReceivedPacket();
+
         public System.IO.BinaryReader r;
         public AbsNetworkPeer sender;
         public int senderLocalIndex;
@@ -105,6 +88,26 @@ namespace VikingEngine.Network
         }
     }
 
+    enum BadBehaviourType
+    { 
+        Other,
+        Annoying,
+        BadLanguage,
+        BadSportmansship,
+        Cheating,
+        Unresponsive,
+        BadConnection,
+        NUM
+    }
+    enum VoiceOption
+    { 
+        Off,
+        ButtonHold,
+        ButtonToggle,
+        AlwaysOn,
+        NUM,
+    }
+
     enum SendPacketTo
     {
         All,
@@ -114,30 +117,71 @@ namespace VikingEngine.Network
         NUM
     }
 
-    enum NetworkCanJoinType
-    {
-        Offline,
-        Invites_only,
-        Friends,
-        Open_but_1private,
-        Open_for_all,
-        NUM,
+    //enum NetworkCanJoinType
+    //{
+    //    Offline,
+    //    Invites_only,
+    //    Friends,
+    //    //Open_but_1private,
+    //    Anyone,
+    //    NUM,
+    //}
+
+    enum NetInteractLevel
+    { 
+        Hidden,
+        OnePlayer,
+        Team,
+        Public,
+        NUM
     }
 
-    public enum LobbyPublicity
+    enum LobbyPublicity
     {
         Private = 0,
         FriendsOnly,
         Public,
+        NUM,
+        Offline,
         ERROR,
+    }
+
+    enum PlayerDiplomacyAllowType
+    { 
+        PlayersChoose,
+        Allow,
+        Blocked,
+        NUM
+    }
+
+    enum GiftRecieveOption
+    { 
+        Allow,
+        FriendsOnly,
+        Blocked,
+        NUM
+    }
+
+    enum HandicapLevel
+    { 
+        High,
+        Default,
+        Low,
+        None,
     }
 
     enum PacketType : byte
     {
         NON,
 
-
         VoiceChat,
+        TextChat,
+        KickPlayer,
+        WarnPlayer,
+        BlockPlayer,
+        RequestPlayerBan,
+        PlayPause,
+
         Steam_AssignClientId,
         Steam_SuccesfulJoinPing,
         Steam_SendRoundtrip,
@@ -145,7 +189,7 @@ namespace VikingEngine.Network
         Steam_InviteAccepted,
         Steam_LargePacket,
         Steam_LargePacket_Recieved,
-        Chat,
+        
         WorldSeed,
         AddGameObject,
 
@@ -153,62 +197,92 @@ namespace VikingEngine.Network
         DssSendWorld,
         DssPlayerStatus,
         DssPlayerEnterPresentation,
+        DssAssignFaction,
+        DssAssignFactionCities,
+        DssAssignFactionComplete,
+        DssBeginSave,
+        DssClientHandoverComplete,
         DssWorldTiles,
         DssWorldSubTiles,
+        DssEditSubTile,
         DssFactions,
         DssCities,
+        DssFactionStatus,
         DssCityStatus,
+        DssCityHandOver,
+        DssSetCityFaction,
+        DssSetArmyFaction,
         DssArmyStatus,
-        DssSoldierGroupStatus,
+        DssSoldierGroupStatus_Army,
+        DssSoldierGroupStatus_City,
+        DssPing,
+        DssPinUpdate,
+        DssPinDelete,
+        DssPinHide,
+        DssDeliver,
+        DssDeliverStatusRequest,
+        DssDeliverStatusReply,
+        DssGiftGold,
+        DssGiftUnit,
 
-        LF2_WorldOverview,
-        LF2_StartAttack,
-        LF2_MapFlag,
-        LF2_GameObjUpdate,
-        LF2_PlayerVisualMode,
-        LF2_ToSpecificPlayer,
-        LF2_TakeDamage,
-        LF2_HostShareDamageVisuals,
-        LF2_AddGameObject,
-        LF2_LostClientObj,
-        LF2_CreateEffect,
-        LF2_MapCreation,
-        LF2_NewPlayer,
-        LF2_Chat,
-        LF2_QuickMessage,
-        LF2_Express,
-        LF2_GameObjectState,
-        LF2_NewPlayerDoneLoadingMap,
-        LF2_RequestChunk,
-        LF2_RequestChunkGroup,
-        LF2_SendChunk,
-        LF2_GotChunk,
-        LF2_RemoveGameObject,
-        LF2_ChangedApperance,
-        LF2_OpenCloseDoor,
-        LF2_RemoveChunkObject,
-        LF2_Explosion,
-        LF2_PlayerDied,
-        LF2_ChangeClientPermissions,
-        LF2_InviteReady,
-        LF2_RequestGeneratingEnvObj,
-        LF2_PermitGeneratingEnvObj,
-        LF2_ClosingChunk,
-        LF2_RequestPickChestItem,
-        LF2_PickChestItemPermit,
-        LF2_DropItemToChest,
-        LF2_BombExplosion,
-        LF2_OutdatedChunk,
-        LF2_NewEquipSetup,
-        LF2_QuestDialogue,
-        LF2_GameCompleted,
-        LF2_GameProgress,
-        LF2_EggnestDestroyedEvent,
-        LF2_BossKey,
-        LF2_RequestMapDenied,
-        LF2_RequestMap,
-        LF2_RequestBuildPermission,
-        LF2_SetVisitedArea,
+        DssWorldDiplomacy,
+        DssDiplomacyRelation,
+        DssPlayerToPlayerRelation,
+        DssEnterBattle,
+        DssAttackDamage,
+        DssSoldierDeath,
+
+        DssDeleteArmy,
+        DssGiftAchievement,
+        DssReColor,
+        //LF2_WorldOverview,
+        //LF2_StartAttack,
+        //LF2_MapFlag,
+        //LF2_GameObjUpdate,
+        //LF2_PlayerVisualMode,
+        //LF2_ToSpecificPlayer,
+        //LF2_TakeDamage,
+        //LF2_HostShareDamageVisuals,
+        //LF2_AddGameObject,
+        //LF2_LostClientObj,
+        //LF2_CreateEffect,
+        //LF2_MapCreation,
+        //LF2_NewPlayer,
+        //LF2_Chat,
+        //LF2_QuickMessage,
+        //LF2_Express,
+        //LF2_GameObjectState,
+        //LF2_NewPlayerDoneLoadingMap,
+        //LF2_RequestChunk,
+        //LF2_RequestChunkGroup,
+        //LF2_SendChunk,
+        //LF2_GotChunk,
+        //LF2_RemoveGameObject,
+        //LF2_ChangedApperance,
+        //LF2_OpenCloseDoor,
+        //LF2_RemoveChunkObject,
+        //LF2_Explosion,
+        //LF2_PlayerDied,
+        //LF2_ChangeClientPermissions,
+        //LF2_InviteReady,
+        //LF2_RequestGeneratingEnvObj,
+        //LF2_PermitGeneratingEnvObj,
+        //LF2_ClosingChunk,
+        //LF2_RequestPickChestItem,
+        //LF2_PickChestItemPermit,
+        //LF2_DropItemToChest,
+        //LF2_BombExplosion,
+        //LF2_OutdatedChunk,
+        //LF2_NewEquipSetup,
+        //LF2_QuestDialogue,
+        //LF2_GameCompleted,
+        //LF2_GameProgress,
+        //LF2_EggnestDestroyedEvent,
+        //LF2_BossKey,
+        //LF2_RequestMapDenied,
+        //LF2_RequestMap,
+        //LF2_RequestBuildPermission,
+        //LF2_SetVisitedArea,
 
         GameObjUpdate,
         GameObjDamageAndRemoval,
@@ -235,7 +309,7 @@ namespace VikingEngine.Network
         DestroyLevel,
         LevelStatus,
         FoundHeroEffect,
-        KickPlayer,
+        //KickPlayer,
         BossDefeatedAnimation,
         Express,
         BombExplosion,

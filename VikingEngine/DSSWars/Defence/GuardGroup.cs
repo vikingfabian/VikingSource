@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Defence
             {
                 //refreshSoldierDefence();
                 onEnterGuard(GetCity(), assignedToPost_IdAndPosition);
-                refreshGuardPosition();
+                refreshGuardPosition(false);
             }
 
             goalWp = position;
@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Defence
         {
             city.defence_assignGuard_toIndex(this, defenceIndex);
 
-            refreshGuardPosition();
+            refreshGuardPosition(true);
 
 
         }
@@ -96,14 +96,14 @@ namespace VikingEngine.DSSWars.Defence
         {
             return WorldData.SubTileHalfWidth;
         }
-        void refreshGuardPosition()
+        void refreshGuardPosition(bool hostedAction)
         {
             IntVector2 subPos = conv.IntToIntVector2(assignedToPost_IdAndPosition);
             Vector3 center = WP.SubtileToWorldPosXZgroundY_Centered(subPos);
             if (DssRef.world.subTileGrid.TryGet(subPos, out var tile))
             {
                 postYPos = center.Y + tile.BuildingHeight();
-                setArmyPlacement2(center, false, true);
+                setArmyPlacement2(center, false, true, hostedAction);
             }
         }
 

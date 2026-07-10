@@ -524,6 +524,10 @@ namespace VikingEngine.DSSWars.Map
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
             City city = City();
+            //if (city.IsNetHosted)
+            //{
+            //    lib.DoNothing();
+            //}
             int faction = city.factionIndex;
             float red = 0;
             float green = 0;
@@ -583,7 +587,7 @@ namespace VikingEngine.DSSWars.Map
             int faction = city.factionIndex;
 
             Color factionCol;
-            if (faction < 0)
+            if (faction < 0 || faction >= DssRef.world.factions.Array.Length)
             {
                 factionCol = Color.Gray;
             }

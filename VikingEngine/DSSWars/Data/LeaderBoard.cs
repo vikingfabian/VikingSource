@@ -154,11 +154,17 @@ namespace VikingEngine.DSSWars.Data
                 case LeaderBoardType.city_size:
                     title = DssRef.lang.Leaderboards_CitySize;
                     break;
+                case LeaderBoardType.army_size:
+                    title = DssRef.todoLang.Leaderboards_ArmySize;
+                    break;
                 case LeaderBoardType.survive300_time:
                     title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty300);
                     break;
                 case LeaderBoardType.survive400_time:
                     title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty400);
+                    break;
+                case LeaderBoardType.multiplayer_playercount:
+                    title = DssRef.todoLang.Leaderboards_MultiplayerPlayerCount;
                     break;
             }
 
@@ -195,11 +201,16 @@ namespace VikingEngine.DSSWars.Data
                     case LeaderBoardType.city_size:
                         leaderBoard = new CitySizeLeaderBoard();
                         break;
+                    case LeaderBoardType.army_size:
+                        leaderBoard = new ArmySizeLeaderBoard();
+                        break;
                     case LeaderBoardType.survive300_time:
                     case LeaderBoardType.survive400_time:
                         leaderBoard = new SurviveLeaderBoard(type);
                         break;
-
+                    case LeaderBoardType.multiplayer_playercount:
+                        leaderBoard = new MultiplayerCountLeaderBoard();
+                        break;
                     default:
                         throw new NotImplementedException($"leaderboard {type}");
                 }
@@ -215,8 +226,8 @@ namespace VikingEngine.DSSWars.Data
     {
         public static void CreateLeaderBoards()
         {
-            LeaderBoardType type = LeaderBoardType.survive400_time;
-            //for (LeaderBoardType type = 0; type < LeaderBoardType.NUM; type++)
+            //LeaderBoardType type = LeaderBoardType.survive400_time;
+            for (LeaderBoardType type = 0; type < LeaderBoardType.NUM_NONE; type++)
             {
                 ELeaderboardSortMethod sort;
                 ELeaderboardDisplayType display;
@@ -224,6 +235,8 @@ namespace VikingEngine.DSSWars.Data
                 {
                     case LeaderBoardType.story_difficulty:
                     case LeaderBoardType.city_size:
+                    case LeaderBoardType.army_size:
+                    case LeaderBoardType.multiplayer_playercount:
                         display = ELeaderboardDisplayType.k_ELeaderboardDisplayTypeNumeric;
                         sort = ELeaderboardSortMethod.k_ELeaderboardSortMethodDescending;
                         break;
@@ -324,6 +337,55 @@ namespace VikingEngine.DSSWars.Data
             content.Add(new RbText(TextLib.LargeNumber(entry.score)));
         }
     }
+    class ArmySizeLeaderBoard : AbsLeaderBoard
+    {
+        public static float SizeUploaded = 25;
+        public ArmySizeLeaderBoard()
+        {
+            this.type = LeaderBoardType.army_size;
+        }
+
+        public ArmySizeLeaderBoard(float armyStrength, int soldiersCount)
+        {
+            var difficulty = DssRef.difficulty.TotalDifficulty();
+
+            setup(LeaderBoardType.army_size, Convert.ToInt32(armyStrength));
+            scoreDetails.Add(difficulty);
+            scoreDetails.Add(soldiersCount);
+            BeginUpload();
+        }
+
+        public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
+        {
+            wideContent = false;
+            content.Add(new RbText(TextLib.LargeNumber(entry.score)));
+        }
+    }
+
+    class MultiplayerCountLeaderBoard : AbsLeaderBoard
+    {
+        public static int CountUploaded = 2;
+        public MultiplayerCountLeaderBoard()
+        {
+            this.type = LeaderBoardType.multiplayer_playercount;
+        }
+
+        public MultiplayerCountLeaderBoard(int count)
+        {
+            var difficulty = DssRef.difficulty.TotalDifficulty();
+
+            setup(LeaderBoardType.multiplayer_playercount, count);
+            scoreDetails.Add(difficulty);
+            BeginUpload();
+        }
+
+        public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
+        {
+            wideContent = false;
+            content.Add(new RbText(entry.score.ToString()));
+        }
+    }
+
     class SurviveLeaderBoard : AbsLeaderBoard
     {
         public const int Difficulty300 = 350;
@@ -420,8 +482,10 @@ namespace VikingEngine.DSSWars.Data
         domination_speed100,
         domination_speed150,
         city_size,
+        army_size,
         survive300_time,
         survive400_time,
+        multiplayer_playercount,
         NUM_NONE
     }
 }

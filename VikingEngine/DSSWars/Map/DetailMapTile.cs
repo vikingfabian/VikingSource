@@ -1166,6 +1166,26 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.decor_statue, 4, wp, WorldData.SubTileWidth * 1f));
                     break;
 
+                case TerrainDecorType.DiplomaticStatue_ThumbsUpWest:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.decor_netstatue, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainDecorType.DiplomaticStatue_ThumbsUpEast:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.decor_netstatue, 1, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainDecorType.DiplomaticStatue_InsultWest:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.decor_netstatue, 2, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainDecorType.DiplomaticStatue_InsultEast:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.decor_netstatue, 3, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainDecorType.DiplomaticStatue_GoldenPoop:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.decor_netstatue, 4, wp, WorldData.SubTileWidth * 1f));
+                    break;
 
                 case TerrainDecorType.FlagPole_LongBanner:
                     {

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
 using VikingEngine.Sound;
 
 namespace VikingEngine
@@ -179,6 +180,8 @@ namespace VikingEngine
             mainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif
             var sett = new GameSettings();
+            new Network.NetworkSettings();
+
             if (PlatformSettings.PC_platform)
             {
                 targetFrameRate = sett.FrameRate;
@@ -256,7 +259,9 @@ namespace VikingEngine
                 try
                 {
                     //System.ExecutionEngineException
+#if !DEBUG
                     Environment.FailFast("Forces shutdown on threads");
+#endif
 
                 }
                 catch
@@ -276,6 +281,7 @@ namespace VikingEngine
 #if PJ
             new PJ.StartScreen(isReset);
 #elif DSS
+            //new DeadState();
             new DSSWars.IntroState(isReset);
 #elif TOGG
             new ToGG.IntroState(isReset);

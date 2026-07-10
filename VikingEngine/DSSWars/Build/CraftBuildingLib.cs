@@ -1735,7 +1735,42 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Expert_3
        );
 
+        public static readonly CraftBlueprint DiplomaticStatueUpW = new CraftBlueprint(
+             CraftResultType.Building,
+             (int)Build.BuildAndExpandType.DiplomaticStatue_ThumbsUpWest,
+            1,
+             new UseResource[]
+               {
+                   new UseResource(ItemResourceType.Stone_G, 300),
+                   new UseResource(ItemResourceType.Iron_G, 10),
+               },
+                XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Expert_3
+           );
 
+        public static readonly CraftBlueprint DiplomaticStatueUpE = DiplomaticStatueUpW.Clone(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.DiplomaticStatue_ThumbsUpEast);
+
+        public static readonly CraftBlueprint DiplomaticStatueInsultW = DiplomaticStatueUpW.Clone(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.DiplomaticStatue_InsultWest);
+
+        public static readonly CraftBlueprint DiplomaticStatueInsultE = DiplomaticStatueUpW.Clone(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.DiplomaticStatue_InsultEast);
+
+
+        public static readonly CraftBlueprint DiplomaticStatue_GoldenPoop = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.DiplomaticStatue_GoldenPoop,
+           1,
+            new UseResource[]
+              {
+                   new UseResource(ItemResourceType.Stone_G, 100),
+                   new UseResource(ItemResourceType.Gold, 200),
+              },
+               XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Practitioner_2
+          );
 
         public static readonly CraftBlueprint FlagPole_LongBanner = new CraftBlueprint(
          CraftResultType.Building,

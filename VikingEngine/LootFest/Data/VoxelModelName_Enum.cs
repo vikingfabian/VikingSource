@@ -228,6 +228,7 @@ namespace VikingEngine.LootFest
         armystand_detail,
         cityicon,
         unclaimed_icon,
+        pin,
         buildarea,
         godfire,
         wars_borderstick,
@@ -439,6 +440,7 @@ namespace VikingEngine.LootFest
         resource_rubble,
 
         decor_statue,
+        decor_netstatue,
         city_pavement,
         city_garden,
         #endregion

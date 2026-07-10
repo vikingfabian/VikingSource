@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
         {
         }
 
-        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsSoldierUnit unit)
         {
             base.onNewModel(name, master, unit);
 

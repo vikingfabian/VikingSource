@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string StockPile_ItemsAreNotLost => "Items will not be destroyed if you exceed the stockpile!";
 
         public override string SlaughterResult_PerAnimal => "Slaughter output, per animal";
-
+        
         public override string Settings_Mode_QuickBoss => "Quick boss";
         public override string Settings_Mode_QuickBoss_Description => "Prepare for a few hours, then meet a final boss";
 
@@ -961,7 +961,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic communication. How well you can discuss terms. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Speaking terms: {0}";
+        public override string Diplomacy_SpeakTermIs => "Speaking terms";
 
         /// <summary>
         /// Diplomatic communication. Better than normal.
@@ -1349,7 +1349,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => "Send {0}";
+        public override string Hud_SendX => "Send {0}";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1508,7 +1508,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "Deserters!";
         public override string EventMessage_DesertersText_Money => "Unpaid soldiers are deserting from your armies";
 
-        public override string DifficultyDescription_AiAggression => "Ai aggressivity: {0}.";
+        //public override string DifficultyDescription_AiAggression => "Ai aggressivity: {0}.";
         public override string DifficultyDescription_BossSize => "Boss size: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Boss enter time: {0}.";
         public override string DifficultyDescription_AiEconomy => "Ai Economy: {0}%.";
@@ -1921,7 +1921,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Peace";
         public override string WorkForce_ChildToManTime => "Grown up age: {0} minutes";
 
-        public override string Economy_TaxIncome => "Tax income: {0}";
+        public override string Economy_TaxIncome => "Tax income";
         public override string Economy_ImportCostsForResource => "Import costs for {0}: {1}";
         public override string Economy_BlackMarketCostsForResource => "Black market costs for {0}: {1}";
         public override string Economy_GuardUpkeep => "Guard upkeep: {0}";
@@ -2100,8 +2100,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_On => "On";
         public override string Hud_Off => "Off";
 
-        public override string Hud_Time_Seconds => "{0} seconds";
-        public override string Hud_Time_Minutes => "{0} minutes";
+        public override string Hud_Time_XSeconds => "{0} seconds";
+        public override string Hud_Time_XMinutes => "{0} minutes";
         public override string Hud_Undo => "Undo";
         public override string Hud_Redo => "Redo";
 

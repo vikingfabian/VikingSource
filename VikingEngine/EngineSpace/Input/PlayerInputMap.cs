@@ -127,5 +127,30 @@ namespace VikingEngine.Input
         {
             return null;
         }
+
+        public bool Ctrl()
+        {
+            if (inputSource.HasKeyBoard)
+            {
+                return Input.Keyboard.Ctrl;
+            }
+            return false;
+        }
+        public bool Alt()
+        {
+            if (inputSource.HasKeyBoard)
+            {
+                return Input.Keyboard.Alt;
+            }
+            return false;
+        }
+        public bool Shift()
+        {
+            if (inputSource.HasKeyBoard)
+            {
+                return Input.Keyboard.Shift;
+            }
+            return false;
+        }
     }
 }

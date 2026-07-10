@@ -44,6 +44,20 @@ namespace VikingEngine
             return sel != null;
         }
 
+        /// <summary>
+        /// To be used in a while-loop
+        /// </summary>
+        public bool Next_MaxLoops(ref int maxLoops)
+        {
+            if (maxLoops <= 0)
+            {
+                return false;
+            }
+            maxLoops--;
+            sel = array.NextIteration(ref selIndex);
+            return sel != null;
+        }
+
         public bool HasMore()
         {
             return selIndex < 0 || sel != null;
@@ -409,7 +423,7 @@ namespace VikingEngine
 
         public void RemoveAt_EqualSafeCheck(T obj, int index)
         {
-            if (index < Array.Length && obj.Equals(Array[index]))
+            if (index>= 0 && index < Array.Length && obj.Equals(Array[index]))
             {
                 --Count;
                 Array[index] = default(T);

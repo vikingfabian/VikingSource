@@ -60,40 +60,42 @@ namespace VikingEngine.DSSWars.Work
             switch (work)
             {
                 case WorkType.GatherFoil:
-                    {
-                        SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
-
-                        switch (subTile.GetFoilType())
+                    
+                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out SubTile subTile))
                         {
-                            case TerrainSubFoilType.TreeSoft:
-                            case TerrainSubFoilType.TreeHard:
-                            case TerrainSubFoilType.DryWood:
-                                gainXpType = WorkExperienceType.WoodWork;
-                                break;
 
-                            case TerrainSubFoilType.TreeApple:
-                            case TerrainSubFoilType.TreeBanana:
-                            case TerrainSubFoilType.WheatFarm:
-                            case TerrainSubFoilType.LinenFarm:
-                            case TerrainSubFoilType.RapeSeedFarm:
-                            case TerrainSubFoilType.HempFarm:
-                                gainXpType = WorkExperienceType.Farm;
-                                break;
+                            switch (subTile.GetFoilType())
+                            {
+                                case TerrainSubFoilType.TreeSoft:
+                                case TerrainSubFoilType.TreeHard:
+                                case TerrainSubFoilType.DryWood:
+                                    gainXpType = WorkExperienceType.WoodWork;
+                                    break;
+
+                                case TerrainSubFoilType.TreeApple:
+                                case TerrainSubFoilType.TreeBanana:
+                                case TerrainSubFoilType.WheatFarm:
+                                case TerrainSubFoilType.LinenFarm:
+                                case TerrainSubFoilType.RapeSeedFarm:
+                                case TerrainSubFoilType.HempFarm:
+                                    gainXpType = WorkExperienceType.Farm;
+                                    break;
 
 
-                            case TerrainSubFoilType.StoneBlock:
-                            case TerrainSubFoilType.Stones:
-                            case TerrainSubFoilType.ClayPit:
-                                gainXpType = WorkExperienceType.StoneCutter;
-                                break;
+                                case TerrainSubFoilType.StoneBlock:
+                                case TerrainSubFoilType.Stones:
+                                case TerrainSubFoilType.ClayPit:
+                                    gainXpType = WorkExperienceType.StoneCutter;
+                                    break;
 
-                            case TerrainSubFoilType.BogIron:
-                                gainXpType = WorkExperienceType.Mining;
-                                break;
+                                case TerrainSubFoilType.BogIron:
+                                    gainXpType = WorkExperienceType.Mining;
+                                    break;
 
-                            
-                        }                      
-                    }
+
+                            }
+                        }                    
+                    
                     break;
 
                 //case WorkType.Till:

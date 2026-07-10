@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void fromCity(WorldData world, City city)
         {
             DssRef.world = world;
-            PcgRandom rnd = new PcgRandom(world.metaData.seed * city.myIndex);
+            PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * city.myIndex);
 
             EcsStaticArrayCounter neighbors = city.CityNeighbors();
             while (neighbors.Next(out int n))//foreach (var n in city.neighborCities)

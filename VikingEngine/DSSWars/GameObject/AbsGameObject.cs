@@ -50,6 +50,16 @@ namespace VikingEngine.DSSWars.GameObject
             return factionIndex >= 0 && factionIndex < DssRef.world.factions.Count;
         }
 
+        public bool HasPlayer()
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            {
+                var f = DssRef.world.factions.Array[factionIndex];
+                return f != null && f.player != null;
+            }
+            return false;
+        }
+
         public bool HasAliveFaction()
         {
             if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
@@ -126,7 +136,7 @@ namespace VikingEngine.DSSWars.GameObject
             //if (factionIndex > 0)
             //{
             var f = DssRef.world.faction(factionIndex);
-            return f != null && f.player.profile.casualControls;
+            return f != null && f.player != null && f.player.profile.casualControls;
             //}
             //return false;
         }
@@ -230,19 +240,27 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        protected void ownerToHud(Interface.ObjectHudArgs args, bool divider)
+        public void ownerToHud(Interface.ObjectHudArgs args, bool divider)
         {
             var faction = GetFaction();
             if (args.player != null && faction != null && faction != args.player.faction)
             {
-                var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
+                RelationType relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
 
-                args.content.newLine();
-                args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
-                args.content.space(0.5f);
-                args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-                args.content.space(0.5f);
-                args.content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
+                faction.toHud(args.content, relation, false, false);
+                //args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
+                //args.content.space(0.5f);
+                //IconName.Relation(relation, out SpriteName relIcon, out string relName);
+                //args.content.Add(new RbImage(relIcon));
+
+                //if (faction.player.IsRemotePlayer())
+                //{
+                //    args.content.space(0.5f);
+                //    args.content.Add(new RbGamerIcon(((RemotePlayer)faction.player).networkPeer.peer, 0.8f));
+                //}
+
+                //args.content.space(0.5f);
+                //args.content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
 
                 if (divider)
                 {
@@ -253,9 +271,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void toHud(Interface.ObjectHudArgs args)
         {
+            var faction = GetFaction();
+
             nameToHud(args.content, true);
             args.content.Add(new RbBeginTitle());
-            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.Add(faction.FlagTextureToHud());
             TypeIcon(args.content);
             args.content.Add(new RbText(TypeName()));
 
@@ -263,17 +283,26 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (PlatformSettings.DevBuild)
                 {
-                    args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
+                    args.content.text("agg " + faction.player.aggressionLevel.ToString());
                 }
-                if (GetFaction() != args.player.faction)
+                if (faction != args.player.faction)
                 {
-                    var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, GetFaction()).Relation;
+                    var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
 
                     args.content.newLine();
-                    args.content.Add(new RbText(GetFaction().PlayerName, Color.LightYellow));
+                    if (faction.player.IsRemotePlayer())
+                    {
+                        faction.player.GetRemotePlayer().addNetGamerToHud(args.content, false, false);
+                    }
+                    else
+                    {
+                        args.content.Add(new RbText(faction.PlayerName, Color.LightYellow));
+                    }
                     args.content.newLine();
-                    args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-                    args.content.Add(new RbText(Diplomacy.RelationString(relation), Color.LightBlue));
+                    IconName.Relation(relation, out SpriteName relIcon, out string relName);
+                    args.content.Add(new RbImage(relIcon));
+                    args.content.hspace();
+                    args.content.Add(new RbText(relName, Color.LightBlue));
 
                 }
                 args.content.Add(new RbSeperationLine());

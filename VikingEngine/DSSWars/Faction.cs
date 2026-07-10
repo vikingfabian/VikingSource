@@ -39,6 +39,7 @@ namespace VikingEngine.DSSWars
 
         public int previousWarAgainstFaction = -1;
         //public DiplomaticRelation[] diplomaticRelations = null;
+        public bool storyFaction = false;
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;
@@ -52,9 +53,10 @@ namespace VikingEngine.DSSWars
 
         public bool isAlive = true;
         public bool availableForPlayer = false;
+        public int availableForPlayerScore = -1;
         public FactionType factiontype;
         public FactionGroupType grouptype = FactionGroupType.Other;
-        public bool displayInFullOverview = false;
+        
         public float growthMultiplier = 1f;
 
         public float militaryStrength = 0;
@@ -69,6 +71,7 @@ namespace VikingEngine.DSSWars
         public Faction(int index)
         {
             this.myIndex = index;
+            factionIndex = index;
             workTemplate = new Work.WorkTemplate(false, index);
 
             cities = new SpottedPointerArray(8);
@@ -105,6 +108,42 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
         }
 
+        public FactionType StoredFactionType()
+        {
+            return player != null && player.IsRemotePlayer() ? player.GetRemotePlayer().previousFactionType : factiontype;
+        }
+        
+        public bool displayInFullOverview()
+        {
+            return storyFaction || player.IsHumanPlayer() || quickMatchFaction;
+        }
+
+        public bool IsNetHosted()
+        {
+            return player != null && (!Ref.netSession.InMultiplayerSession || (Ref.netSession.IsHost && player.IsLocal) || player.IsLocalPlayer());
+        }
+
+        public AbsNetworkPeer HostingPeer()
+        {
+            if (player == null)
+            {
+                return Ref.netSession.Host();
+            }
+
+            if (player.IsHumanPlayer())
+            {
+                return player.GetHumanPlayer().networkPeer.peer;
+            }
+
+            if (DssRef.state.host)
+            {
+                return Ref.netSession.LocalPeer();
+            }
+            else
+            {
+                return Ref.netSession.Host();
+            }
+        }
         //public void initClient(WorldData world)
         //{
         //    initDiplomacy(world);
@@ -159,10 +198,50 @@ namespace VikingEngine.DSSWars
             worldMeta.setObjSeed(myIndex);
         }
 
+        public void writeNet_Status(System.IO.BinaryWriter w)
+        {
+            w.Write(money.copper);
+            Debug.WriteCheck(w);
+
+            if (mainCity == null)
+            {
+                w.Write(ushort.MaxValue);
+            }
+            else
+            {
+                w.Write((ushort)mainCity.myIndex);
+            }
+        }
+
+        public void readNet_Status(System.IO.BinaryReader r)
+        {
+            money.copper = r.ReadInt64();
+
+            Debug.ReadCheck(r);
+
+            int mainIndex = r.ReadUInt16();
+            if (mainIndex == ushort.MaxValue)
+            {
+                refreshMainCity();
+            }
+            else
+            {
+                mainCity = DssRef.world.cities[mainIndex];
+            }
+        }
+
         virtual public void writeGameState(System.IO.BinaryWriter w)
-        {            
-            w.Write((ushort)factiontype);
-            player.writeGameState(w);
+        {
+            if (player.IsRemotePlayer())
+            {
+                w.Write((ushort)player.GetRemotePlayer().previousFactionType);
+                player.GetRemotePlayer().previousPlayer.writeGameState(w);
+            }
+            else
+            {
+                w.Write((ushort)factiontype);
+                player.writeGameState(w);
+            }            
 
             w.Write(money.copper);
             Debug.WriteCheck(w);
@@ -175,13 +254,7 @@ namespace VikingEngine.DSSWars
             {
                 w.Write((ushort)mainCity.myIndex);
             }
-            //cities.write_ushort_compressed(w);
-            //var cityList = cities.toList(DssRef.world.cities);
-            //w.Write((ushort)cityList.Count);
-            //foreach(var city in cityList)
-            //{
-            //    w.Write((ushort)city.myIndex);
-            //}
+            
             Debug.WriteCheck(w);
 
             var armyList = armies.toList();
@@ -191,8 +264,6 @@ namespace VikingEngine.DSSWars
                 army.writeGameState(w);
                 Debug.WriteCheck(w);
             }
-
-            //writeRelations(w);
 
             workTemplate.writeGameState(w);
 
@@ -238,12 +309,7 @@ namespace VikingEngine.DSSWars
                 Debug.ReadCheck(r);
             
 
-            if (subVersion < 106)
-            {
-                refreshMainCity();
-            }
-            else
-            {
+            
                 int mainIndex = r.ReadUInt16();
                 if (mainIndex == ushort.MaxValue)
                 {
@@ -253,7 +319,7 @@ namespace VikingEngine.DSSWars
                 {
                     mainCity = DssRef.world.cities[mainIndex];
                 }
-            }
+            
 
             //int citiesCount = r.ReadUInt16();
             //for (int i = 0; i < citiesCount; i++)
@@ -265,22 +331,15 @@ namespace VikingEngine.DSSWars
 
             //}
 
-            if (subVersion < 105)
-            {
-                cities.read_ushort_compressed(r);
-            }
+            //if (subVersion < 105)
+            //{
+            //    cities.read_ushort_compressed(r);
+            //}
             
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                //int cityIx = r.ReadUInt16();
-                //if (arraylib.InBound(DssRef.world.cities, cityIx))
-                //{
-                //    //var city = DssRef.world.cities[cityIx];
-                //    //cities.Add(city);
-                //    city.setFaction(this, true, false);
-                //}
-                city.setFaction(this, true, false);
+                city.setFaction(this, true, false, ConvertReason.Assigned, false);
             }
 
             Debug.ReadCheck(r);
@@ -346,9 +405,9 @@ namespace VikingEngine.DSSWars
 
         void writeResources(System.IO.BinaryWriter w)
         {
-            BoolRegister boolRegister = new BoolRegister(CityResoureIndex.COUNT * 1);
+            BoolRegister boolRegister = new BoolRegister(CityResourceIndex.COUNT * 1);
             {
-                for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+                for (int i = 0; i < CityResourceIndex.COUNT; ++i)
                 {
                     DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].writeFaction( boolRegister);
                 }
@@ -358,19 +417,17 @@ namespace VikingEngine.DSSWars
         public void readResources(System.IO.BinaryReader r, int subversion)
         {
             BoolRegister boolRegister = new BoolRegister(r);
-            for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+            for (int i = 0; i < CityResourceIndex.COUNT; ++i)
             {
                 DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].readFaction(boolRegister,r, subversion);
             }
         }
 
-        virtual public void writeNet(System.IO.BinaryWriter w)
+        public void writeNet(System.IO.BinaryWriter w)
         {
-            w.Write((ushort)factiontype);
-            //player.profile.flag.write(w);
-            player.profile.write(w, true);
 
-            //writeRelations(w);
+            w.Write((ushort)factiontype);
+            player.profile.writeNet(w);
 
             if (factiontype == FactionType.Player)
             {
@@ -378,7 +435,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        virtual public void readNet(System.IO.BinaryReader r)
+        public void readNet(System.IO.BinaryReader r)
         {            
 
             factiontype = (FactionType)r.ReadUInt16();
@@ -394,7 +451,7 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
-            player.profile.read(r);
+            player.profile.readNet(r);
             //FlagAndColor profile = new FlagAndColor(r);
             //SetProfile(profile);
 
@@ -465,7 +522,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                city.OnNewOwner(newFaction, false);
+                city.OnNewOwner(newFaction, false, ConvertReason.Assigned);
             }
         }
         
@@ -491,6 +548,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                army.myIndex = overrideIx;
                 armies.HardSet(army, overrideIx);
             }
             army.factionIndex = myIndex;
@@ -509,7 +567,7 @@ namespace VikingEngine.DSSWars
                     mainCity = city;
                 }
                 cities.Add(city.myIndex);
-                city.setFaction(this, duringStartUp, false);
+                city.setFaction(this, duringStartUp, false, ConvertReason.Assigned, false);
             }
             else
             {
@@ -517,10 +575,10 @@ namespace VikingEngine.DSSWars
                 if (!cities.Contains(city.myIndex))
                 {
                     cities.Add(city.myIndex);
-                    city.setFaction(this, duringStartUp, false);
+                    city.setFaction(this, duringStartUp, false, ConvertReason.WarCapture, false);
                     if (!duringStartUp)
                     {
-                        player.OnCityCapture(city);
+                        player?.OnCityCapture(city);
 
                         city.workTemplate.setAllToFollowFaction();
                         city.workTemplate.onFactionChange(city, workTemplate, duringStartUp);
@@ -533,6 +591,14 @@ namespace VikingEngine.DSSWars
                         }
                     }
                 }
+            }
+        }
+
+        public void Net_AddCity(City city)
+        {
+            if (cities.AddIfNotExists(city.myIndex))
+            {
+                refreshMainCity();
             }
         }
 
@@ -584,14 +650,41 @@ namespace VikingEngine.DSSWars
         public void PauseUpdate()
         {
             var armiesCounter = armies.counter();
-            
-            while (armiesCounter.Next())
+
+            if (IsNetHosted())
             {
-                armiesCounter.sel.PauseUpdate();
+                while (armiesCounter.Next())
+                {
+                    armiesCounter.sel.PauseUpdate();
+                }
+            }
+            else
+            {
+                while (armiesCounter.Next())
+                {
+                    armiesCounter.sel.clientPauseUpdate();
+                }
             }
         }
-
-        
+        public void client_oneSecUpdate(bool minute)
+        {
+            if (isAlive)
+            {
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
+                {
+                    if (city.factionIndex == myIndex)
+                    {
+                        city.oneSecondCaptureCheck();
+                    }
+                    else
+                    {
+                        citiesC.RemoveAtCurrent(ref cities);
+                        refreshMainCity();
+                    }
+                }
+            }
+        }
         public void oneSecUpdate(bool minute)
         {
             if (isAlive)
@@ -614,9 +707,9 @@ namespace VikingEngine.DSSWars
                         incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
                     }
                 }
-                else
+                else if (player.IsRemotePlayer())
                 {
-                    lib.DoNothing();
+                    incomeMultiplier = player.GetRemotePlayer().incomeMultiplier;
                 }
 
                 double income = 0;
@@ -646,7 +739,7 @@ namespace VikingEngine.DSSWars
                 }
 
 
-                if (DssRef.storage.gameRuleset.centralGold)
+                if (DssRef.storage.ruleset_instance.centralGold)
                 {
                     money.copper += Convert.ToInt32(income);
                 }
@@ -658,7 +751,7 @@ namespace VikingEngine.DSSWars
                 previuosMoney = storeMoney;
                 storeMoney = money;
 
-                if (cities.Count == 0 && !player.protectedFromDelete)
+                if (cities.Count == 0 && !player.protectedFromDelete && Ref.netSession.IsHost)
                 {
                     if (armies.Count == 0)
                     {
@@ -691,11 +784,14 @@ namespace VikingEngine.DSSWars
                 foodSpending.minuteUpdate();
             }
 
+            bool netHosted = IsNetHosted();
+
             float armiesStrength = 0;
 
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
+                armiesC.sel.IsNetHosted = netHosted;
                 armiesC.sel.asynchGameObjectsUpdate(time, oneMinute);
                 armiesStrength += armiesC.sel.strengthValue;
             }
@@ -752,11 +848,6 @@ namespace VikingEngine.DSSWars
             return nextUnitId;
         }
 
-        //public bool canBuyMercenay(int count)
-        //{
-        //    return (workForce.max + ExpandWorkForce * count) <= maxEpandWorkSize;
-        //}
-
         public void remove(Army army)
         {
             Debug.CrashIfThreaded();
@@ -764,45 +855,41 @@ namespace VikingEngine.DSSWars
         }
 
         public void remove(City city)
-        {   
-            cities.Remove(city.myIndex);
-            if (city == mainCity ||
-               mainCity == null || mainCity.factionIndex != myIndex)
+        {
+            if (cities.Remove(city.myIndex))
             {
-                refreshMainCity();                     
-            }
-
-            if (player != null && player.IsLocalPlayer())
-            {  
-
-                Ref.update.AddSyncAction(new SyncAction(() =>
+                if (city == mainCity ||
+                   mainCity == null || mainCity.factionIndex != myIndex)
                 {
-                    player.orders.refreshAvailable(this);
+                    refreshMainCity();
+                }
 
-                    RichBoxContent content = new RichBoxContent();
-                    var localplayer = player.GetLocalPlayer();
-                    if (localplayer.battleMessageCheck(city.tilePos))
+                if (player != null && player.IsLocalPlayer())
+                {
+
+                    Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
+                        player.orders.refreshAvailable(this);
 
-                        //var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                        //MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
-                        //gotoBattleButtonContent.Add(new RbText(city.TypeName()));
+                        RichBoxContent content = new RichBoxContent();
+                        var localplayer = player.GetLocalPlayer();
+                        if (localplayer.battleMessageCheck(city.tilePos))
+                        {
+                            MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
 
-                        //content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                        //    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city)));
-                        var gotoButtonContent = new RichBoxContent();
-                        MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
-                        //gotoButtonContent.Add(new RbText(city.TypeName()));
-                        city.toButtonContent(gotoButtonContent, true);
+                            var gotoButtonContent = new RichBoxContent();
+                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
-                            new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city, RbSoundType.Default))
-                        { fillWidth = true });
+                            city.toButtonContent(gotoButtonContent, true);
 
-                        localplayer.hud.messages.Add(content);
-                    }
-                }));
+                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city, RbSoundType.Default))
+                            { fillWidth = true });
+
+                            localplayer.hud.messages.Add(content);
+                        }
+                    }));
+                }
             }
         }
 
@@ -855,34 +942,6 @@ namespace VikingEngine.DSSWars
             return IntVector2.Zero;
         }
 
-        //void updateAreaCenter()
-        //{
-        //    if (mainCity != null)
-        //    {
-        //        landAreaCenter = mainCity.tilePos - IntVector2.One;
-        //    }
-        //    //IntVector2 center = IntVector2.Zero;
-        //    //SpottedArrayCounter<City> cityCounter = new SpottedArrayCounter<City>(cities);
-        //    //while (cityCounter.Next())
-        //    //{
-        //    //    center.Add(cityCounter.sel.tilePos);
-        //    //}
-
-        //    //int cityCount = cities.Count;
-        //    //if (cityCount > 0f)
-        //    //{
-        //    //    center.X = Convert.ToInt32((float)center.X / cityCount);
-        //    //    center.Y = Convert.ToInt32((float)center.Y / cityCount);
-        //    //    center.Y -= 2;
-
-        //    //    landAreaCenter = center;
-        //    //    //IntVector2 newlandSymbolStart = center - DssLib.UserHeraldicHalfWidth;
-        //    //    //newlandSymbolStart.X %= DssLib.UserHeraldicWidth;
-        //    //    //newlandSymbolStart.Y %= DssLib.UserHeraldicWidth;
-        //    //    //landSymbolStart = newlandSymbolStart;
-        //    //}
-        //}
-
         public Army ClosestFriendlyArmy(Vector3 position, float maxDist)
         {
             Army closestArmy = null;
@@ -905,219 +964,46 @@ namespace VikingEngine.DSSWars
 
             return closestArmy;
         }
-
-        //public GameObject.AbsArmyUnit selectObject(Vector3 screenCenterPos)
-        //{
-        //    GameObject.AbsArmyUnit closestObj = null;
-        //    float closestObjDistance = float.MaxValue;
-        //    //foreach (City c in cities)
-        //    cityCounter.Reset();
-
-        //    while (cityCounter.Next())
-        //    {
-        //        distanceCheck(cityCounter.sel, screenCenterPos, ref closestObj, ref closestObjDistance);
-        //    }
-
-        //    armyCounter.Reset();
-        //    while(armyCounter.Next())
-        //    {
-        //        distanceCheck(armyCounter.sel, screenCenterPos, ref closestObj, ref closestObjDistance);
-        //    }
-
-        //    return closestObj;
-        //}
-
-        void distanceCheck(GameObject.AbsMapObject obj, Vector3 screenCenterPos, 
-            ref GameObject.AbsMapObject closestObj, ref float closestObjDistance)
-        {
-            float l = (obj.position - screenCenterPos).Length();
-            if (l < closestObjDistance)
-            {
-                closestObj = obj;
-                closestObjDistance = l;
-            }
-        }
-
-//        public void WeeklyUpdate(UpdateArgs args)
-//        {
-//            //income = owner.ExtraIncome;
-//            //if (owner is AbsHumanPlayer)
-//            //    income += RTSlib.HumanPlayerExtaIncome;
-
-//            cityCounter.Reset();
-
-//            while (cityCounter.Next())
-//            {
-//                income += cityCounter.sel.GetWeekIncome();
-//                cityCounter.sel.WeeklyUpdate(args);
-//            }
-//            upkeep = 0;
-//            armyCounter.Reset();
-//            while (armyCounter.Next())
-//            {
-//#if PCGAME
-//                if (armyCounter.sel.faction != this)
-//                    throw new Exception();
-//#endif
-//                upkeep += armyCounter.sel.Upkeep();
-//                armyCounter.sel.WeeklyUpdate(args);
-//            }
-
-//            money += income - upkeep;
-
-//            if (money < DssLib.MaxDept)
-//            { 
-//                //A part of the army will quit
-//                armyCounter.Reset();
-//                while (armyCounter.Next())
-//                {
-//                    armyCounter.sel.QuitFromDept();
-//                }
-//                //owner.OnDeptDeserters();
-//            }
-
-//            updateBanner();
-//        }
-
-
-
-        //public void NetUpdate()
-        //{
-        //    armyCounter.Reset();
-        //    while (armyCounter.Next())
-        //    {
-        //        armyCounter.sel.NetUpdate();
-        //    }
-        //}
-
-        //public void AsynchUpdate(AsynchUpdateArgs args)
-        //{
-        //    localArmyAsynchCounter.Reset();
-        //    while (localArmyAsynchCounter.Next())
-        //    {
-        //        localArmyAsynchCounter.sel.AsynchUpdate(args);
-        //    }
-        //}
-
-        //public bool payMoney(int cost)
-        //{
-        //    if (money >= cost)
-        //    {
-        //        //if (owner is LocalPlayer)
-        //        //    LootFest.Music.SoundManager.PlayFlatSound(LoadedSound.buy);
-        //        //money -= cost;
-        //        //owner.MoneyChangeEvent();
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-        //public GameObject.Army BuySoldiers(TroopType type, City city, int chunkCount, LocalPlayer p)
-        //{
-        //    if (payMoney(city.ArmyUnitCost.Get(type) * chunkCount))
-        //    {
-        //        const float AutoMergeLenght = DssLib.ArmyAttackRadius + 0.2f;
-        //        Vector3 pos = city.SelectionCenter;
-
-        //        armyCounter.Reset();
-        //        while (armyCounter.Next())
-        //        {
-        //            float l = (pos - armyCounter.sel.SelectionCenter).Length();
-        //            if ((pos - armyCounter.sel.SelectionCenter).Length() <= AutoMergeLenght)
-        //            { //found a close by army to add soldiers to
-        //                armyCounter.sel.addSoldiers(type, chunkCount);
-        //                return armyCounter.sel;
-        //            }
-        //        }
-
-        //        if (p != null && p.CheckUnitCountLimit())
-        //        {
-        //            GameObject.Army newArmy = new GameObject.Army(DssLib.TileToDrawPos_centered(DssRef.world.GetFreeTile(city.position)), this, type);
-        //            return newArmy;
-        //        }
-        //    }
-        //    return null;
-        //}
-
-        public void shareAllHostedObjects(Network.AbsNetworkPeer sender)
-        {
-            //if (owner != null && owner.LocalMember)
-            //{
-            //    armyCounter.Reset();
-            //    while (armyCounter.Next())
-            //    {
-            //        armyCounter.sel.NetShare(sender.Id);
-            //    }
-            //}
-        }
-
-        //public void BattleEndResult(BattleCalculation2 battle, bool isWinner)
-        //{
-        //    //if (owner != null)
-        //    //    owner.BattleResult(battle);
-
-        //    if (isWinner)
-        //    {
-        //        bool human = battle.loser.faction.player is AbsHumanPlayer;
-        //        foreach (AbsArmyUnit enemy in battle.loser.group)
-        //        {
-        //            if (enemy.Type == ObjectType.City)
-        //            {
-        //                VictoryPoints += human ? DssLib.VP_DefeatPlayerCity : DssLib.VP_DefeatCity;
-        //            }
-        //            else
-        //            {
-        //                VictoryPoints += DssLib.VP_DefeatArmy;
-        //            }
-        //        }
-        //    }
-        //}
-
-        public void tradeAllianceWars(Faction enemyFaction, DiplomaticRelation warRelation)
+               
+        public void tradeAllianceWars(bool isActuator, Faction alliedFaction)
         {
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        //foreach (var m in otherFaction.diplomaticRelations)
-                        //foreach (var m in otherFaction.diplomaticRelations)
-                        //{
-                        //    if (m != null)
-                        //    {
+                        bool protectedFromWars = player.IsLocalPlayer() && DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful && !isActuator;
+
                         RelationsLoop loop = new RelationsLoop(myIndex);
                         while (loop.Next())
-                        //foreach (var m in diplomaticRelations)
                         {
-                            var m = loop.Relation();
-                            //if (m != null)
+                            var myRelation = loop.Relation();
                             {
-                                if (m.Relation >= RelationType.RelationType3_Ally)
+                                if (myRelation.Relation <= RelationType.RelationTypeN4_War)
                                 {
-                                    if (loop.OtherFaction(out var ally))
+                                    if (loop.OtherFaction(out var thirdParty))
                                     {
-                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(ally, enemyFaction);//ally.diplomaticRelations[enemyFaction.myIndex];
-                                                                                                                   //if (allyToEnemyRelation == null)
-                                                                                                                   //{
-                                                                                                                   //    //Gain bad relation
-                                                                                                                   //    DssRef.world.diplomacy.SetRelationType(ally, enemyFaction, warRelation.Relation);
-                                                                                                                   //}
-                                                                                                                   //else
-                                                                                                                   //{
+                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(alliedFaction, thirdParty);
+
                                         if (allyToEnemyRelation.Relation < RelationType.RelationType3_Ally)
                                         {
                                             //share worst relation
-                                            RelationType worst = (RelationType)Math.Min((int)warRelation.Relation, (int)allyToEnemyRelation.Relation);
-                                            if (worst <= RelationType.RelationTypeN3_War)
+                                            RelationType worst = (RelationType)Math.Min((int)myRelation.Relation, (int)allyToEnemyRelation.Relation);
+                                            if (worst <= RelationType.RelationTypeN3_Mobilization)
                                             {
-                                                DssRef.world.diplomacy.declareWar(enemyFaction, ally);
+                                                if (protectedFromWars)
+                                                {
+                                                    DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, RelationType.RelationTypeN1_Enemies);
+                                                }
+                                                else
+                                                {
+                                                    DssRef.world.diplomacy.declareWar(alliedFaction, thirdParty);
+                                                }
                                             }
                                             else
                                             {
-                                                DssRef.world.diplomacy.SetRelationType(enemyFaction, ally, worst);
+                                                DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, worst);
                                             }
                                         }
-                                        //}
-                                        //}
                                     }
                                 }
                             }
@@ -1138,21 +1024,17 @@ namespace VikingEngine.DSSWars
             {
                 try
                 {
-                    DssRef.world.diplomacy.SetRelationType(this, relationTo, relationType);
+                    DssRef.world.diplomacy.SetRelationType(this, relationTo, this, relationType);
 
-                    //for (int relIndex = 0; relIndex < diplomaticRelations.Length; relIndex++)//each (var m in diplomaticRelations)
-                    //{
                     RelationsLoop loop = new RelationsLoop(myIndex);
                     while (loop.Next())
                     {
                         
-                            if (loop.Relation().Relation >= RelationType.RelationType3_Ally)//diplomaticRelations[relIndex].Relation >= RelationType.RelationType3_Ally && relIndex != this.factionIndex)
+                            if (loop.Relation().Relation >= RelationType.RelationType3_Ally)
                             {
-                                //Faction ally = DssRef.world.faction(relIndex);
-
-                                if (loop.OtherFaction(out var ally))//ally != null)
+                                if (loop.OtherFaction(out var ally))
                                 {
-                                    DssRef.world.diplomacy.SetRelationType(ally, relationTo, relationType);
+                                    DssRef.world.diplomacy.SetRelationType(ally, relationTo, ally, relationType);
                                 }
                             }
                         
@@ -1185,6 +1067,34 @@ namespace VikingEngine.DSSWars
             });
         }
 
+       
+        public void toHud(RichBoxContent content, RelationType relation, bool flag, bool dark)
+        {
+            if (flag)
+            {
+                content.Add(FlagTextureToHud());
+                content.hspace();
+            }
+            else
+            {
+                content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
+                content.space(0.5f);
+            }
+            if (relation != RelationType.NONE)
+            {
+                IconName.Relation(relation, out SpriteName relIcon, out string relName);
+                content.Add(new RbImage(relIcon));
+            }
+            if (player.IsRemotePlayer())
+            {
+                content.space(0.5f);
+                content.Add(new RbGamerIcon(((RemotePlayer)player).networkPeer.peer, 0.8f));
+            }
+
+            content.space(0.5f);
+            content.Add(new RbText(PlayerName, dark ? HudLib.TitleColor_Name_Dark : HudLib.TitleColor_Name));
+        }
+
         public void mergeTo(Faction masterFaction)
         {
             DeleteMe();
@@ -1192,7 +1102,7 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.setFaction(masterFaction, false, true);
+                armiesC.sel.setFaction(masterFaction, false, true, ConvertReason.Diplomacy, true);
             }
 
             armies.Clear();
@@ -1200,7 +1110,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                citySel.setFaction(masterFaction, false, true);                
+                citySel.setFaction(masterFaction, false, true, ConvertReason.Diplomacy, true);                
             }
 
             cities.Clear();
@@ -1291,7 +1201,11 @@ namespace VikingEngine.DSSWars
         {
             get
             {
-                return player.Name;
+                if (player == null)
+                {
+                    return "NONE";
+                }
+                return  player.Name;
             }
         }
 
@@ -1351,11 +1265,8 @@ namespace VikingEngine.DSSWars
         {
                 if (player == null || player.profile.flag == null)
                     return tempColor;
-                return player.profile.flag.col0_Main;
-            
+                return player.profile.flag.col0_Main;            
         }
-
-        
 
         public List<Faction> CollectWars()
         {
@@ -1374,19 +1285,20 @@ namespace VikingEngine.DSSWars
             return opponents;
         }
 
-        public int CountWars()
+        public int CountWars(out int playerWars)
         {
             int count = 0;
-            //for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
-            //{
+            playerWars = 0;
+            
             RelationsLoop loop = new RelationsLoop(myIndex);
             while (loop.Next())
             {
-                //if (diplomaticRelations[relIx] != null &&
-                //    relIx != myIndex &&
-                //   diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN3_War)
                 if (loop.Relation().InWar())
                 {
+                    if (loop.OtherFaction(out var opponent) && opponent.player.IsHumanPlayer())
+                    {
+                        ++playerWars;
+                    }
                     ++count;
                 }
             }

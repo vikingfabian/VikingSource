@@ -50,9 +50,9 @@ namespace VikingEngine.DSSWars
         MouseButtonAction X1MouseAction = MouseButtonAction.None;
         MouseButtonAction X2MouseAction = MouseButtonAction.None;
 
-
         public IButtonMap NextArmy;
         public IButtonMap NextCity;
+        public IButtonMap NextPin;
         public IButtonMap NextWar;
         public IButtonMap Options;
         public IButtonMap Menu;
@@ -61,19 +61,20 @@ namespace VikingEngine.DSSWars
         public IButtonMap ToggleMinimap;
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
-        public IButtonMap WorkPriorityShortcut;
+        //public IButtonMap PinAndPing;
         public IButtonMap StockpileShortcut;
-
 
         public IButtonMap FlagDesign_ToggleColor_Prev;
         public IButtonMap FlagDesign_ToggleColor_Next;
         public IButtonMap FlagDesign_PaintBucket;
         public IButtonMap Controller_FlagDesign_Colorpicker;
         public IButtonMap Controller_TabLeft, Controller_TabRight;
-        //public IButtonMap Controller_SubTabLeft, Controller_SubTabRight;
+        
+        public IButtonMap TextChat;
+        public IButtonMap TeamTextChat;
+        public IButtonMap VoiceChat;
 
         public Voxels.EditorInputMap editorInput = new Voxels.EditorInputMap();
-
         override public IButtonMap RbClick() { return Input.Mouse.MenuMode? mouseSelect_InMenuMode : mouseSelect; }
         override public IDirectionalMap RbScroll() { return Input.Mouse.MenuMode? menuInput.scroll : guiScroll; }
         override public IntVector2 RbMoveSteps() { return move.stepping + dpadMove.stepping; }
@@ -186,7 +187,7 @@ namespace VikingEngine.DSSWars
             Copy = new KeyboardButtonMap(Keys.C);
             Paste = new KeyboardButtonMap(Keys.V);
             Build = new KeyboardButtonMap(Keys.B);
-            WorkPriorityShortcut = new KeyboardButtonMap(Keys.P);
+            PinAndPing = new KeyboardButtonMap(Keys.P);
             StockpileShortcut = new KeyboardButtonMap(Keys.L);
 
             Menu = new KeyboardButtonMap(Keys.Escape);
@@ -200,7 +201,8 @@ namespace VikingEngine.DSSWars
 
             NextCity = new KeyboardButtonMap(Keys.D1);
             NextArmy = new KeyboardButtonMap(Keys.D2);
-            NextWar = new KeyboardButtonMap(Keys.D3);
+            NextPin = new KeyboardButtonMap(Keys.D3);
+            NextWar = new KeyboardButtonMap(Keys.D4);
 
             FlagDesign_ToggleColor_Prev = new TwoCombinedButtonsMap(new KeyboardButtonMap(Keys.LeftShift), new KeyboardButtonMap(Keys.Tab));
             FlagDesign_ToggleColor_Next = new KeyboardButtonMap(Keys.Tab);
@@ -216,6 +218,10 @@ namespace VikingEngine.DSSWars
 
             Controller_TabLeft = new NoButtonMap();
             Controller_TabRight = new NoButtonMap();
+
+            TextChat = new KeyboardButtonMap(Keys.T);
+            VoiceChat = new KeyboardButtonMap(Keys.Space);
+
         }
         void refreshKeyBoardInput()
         {
@@ -382,6 +388,10 @@ namespace VikingEngine.DSSWars
             Controller_TabLeft = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_left, idx);
             Controller_TabRight = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_right, idx);
 
+            TextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TextChat, idx);
+            //TeamTextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TeamTextChat, idx);
+            VoiceChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.VoiceChat, idx);
+
             // --- Strategy / RTS Actions ---
             Build = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.build, idx);
             Copy = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.copy, idx);
@@ -393,6 +403,7 @@ namespace VikingEngine.DSSWars
             // --- Cycling / Focus ---
             NextCity = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_city, idx);
             NextArmy = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_army, idx);
+            NextPin = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_pin, idx);
             NextWar = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_war, idx);
 
             Controller_ObjectMenuToggle = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_focus, idx);
@@ -410,6 +421,9 @@ namespace VikingEngine.DSSWars
             // Make sure your MenuControls set is handled in the sub-set setups
             menuInput?.steamSetup(idx);
             editorInput?.steamSetup(idx, move, cameraStick);
+
+            TextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TextChat, idx);
+            VoiceChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.VoiceChat, idx);
 
             refreshMouseInput();
         }
@@ -446,11 +460,13 @@ namespace VikingEngine.DSSWars
             Build = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true);
             Copy = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true);
             Paste = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex, true);
-            WorkPriorityShortcut = new NoButtonMap();//
+            PinAndPing = new NoButtonMap();//
             StockpileShortcut = new NoButtonMap();//
 
-            GameSpeed = Controller_TabRight;//
-            PauseGame = Controller_TabLeft;//
+            GameSpeed = Controller_TabRight;
+            PauseGame = Controller_TabLeft;
+            TextChat = Controller_TabRight;
+            VoiceChat = Controller_TabLeft;
 
             menuInput?.xboxSetup(inputSource.controllerIndex);
 
@@ -473,7 +489,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 8;
+            const int InputVersion = 10;
             w.Write(InputVersion);
 
 
@@ -488,6 +504,7 @@ namespace VikingEngine.DSSWars
                 PauseGame.write(w);
                 NextCity.write(w);
                 NextArmy.write(w);
+                NextPin.write(w);
                 NextWar.write(w);
 
                 wasd_up.write(w);
@@ -505,8 +522,13 @@ namespace VikingEngine.DSSWars
                 Copy.write(w);
                 Paste.write(w);
                 Build.write(w);
-                WorkPriorityShortcut.write(w);
+                PinAndPing.write(w);
                 StockpileShortcut.write(w);
+
+                
+                TextChat.write(w);
+                //TeamTextChat.write(w);
+                VoiceChat.write(w);
             }
 
             if (inputSource.HasMouse)
@@ -552,7 +574,11 @@ namespace VikingEngine.DSSWars
                 PauseGame = MapRead.Button(r, inputSource.controllerIndex);
                 NextCity = MapRead.Button(r, inputSource.controllerIndex);
                 NextArmy = MapRead.Button(r, inputSource.controllerIndex);
-                NextWar = MapRead.Button(r, inputSource.controllerIndex);
+                NextPin = MapRead.Button(r, inputSource.controllerIndex);
+                if (inputVersion >= 10)
+                { 
+                    NextWar = MapRead.Button(r, inputSource.controllerIndex);
+                }                
 
                 wasd_up = MapRead.Button(r, inputSource.controllerIndex);
                 wasd_down = MapRead.Button(r, inputSource.controllerIndex);
@@ -572,8 +598,15 @@ namespace VikingEngine.DSSWars
 
                 if (inputVersion >= 8)
                 {
-                    WorkPriorityShortcut = MapRead.Button(r, inputSource.controllerIndex);
+                    PinAndPing = MapRead.Button(r, inputSource.controllerIndex);
                     StockpileShortcut = MapRead.Button(r, inputSource.controllerIndex);
+                }
+
+                if (inputVersion >= 9)
+                {
+                    TextChat = MapRead.Button(r, inputSource.controllerIndex);
+                    //TeamTextChat = MapRead.Button(r, inputSource.controllerIndex);
+                    VoiceChat = MapRead.Button(r, inputSource.controllerIndex);
                 }
 
                 refreshKeyBoardInput();
@@ -660,9 +693,15 @@ namespace VikingEngine.DSSWars
                 InputActionType.PauseGame,
                 InputActionType.NextCity,
                 InputActionType.NextArmy,
+                InputActionType.NextPin,
                 InputActionType.NextWar,
                 InputActionType.ToggleHudDetail,
                 InputActionType.ToggleMiniMap,
+
+                InputActionType.PinAndPing,
+                InputActionType.TextChat,
+                InputActionType.VoiceChat,
+
 
             });
 
@@ -766,6 +805,16 @@ namespace VikingEngine.DSSWars
                     else
                     {
                         buttonMap = NextCity;
+                    }
+                    break;
+                case InputActionType.NextPin:
+                    if (set)
+                    {
+                        NextPin = buttonMap;
+                    }
+                    else
+                    {
+                        buttonMap = NextPin;
                     }
                     break;
 
@@ -897,6 +946,19 @@ namespace VikingEngine.DSSWars
                     else buttonMap = zoomOutKey;
                     break;
 
+                case InputActionType.PinAndPing:
+                    if (set) PinAndPing = buttonMap;
+                    else buttonMap = PinAndPing;
+                    break;
+                case InputActionType.TextChat:
+                    if (set) TextChat = buttonMap;
+                    else buttonMap = TextChat;
+                    break;
+                case InputActionType.VoiceChat:
+                    if (set) VoiceChat = buttonMap;
+                    else buttonMap = VoiceChat;
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -970,6 +1032,7 @@ namespace VikingEngine.DSSWars
         PauseGame,
         NextCity,
         NextArmy,
+        NextPin,
         NextWar,
         Build,
         Copy,
@@ -996,6 +1059,10 @@ namespace VikingEngine.DSSWars
 
         ZoomInKey,
         ZoomOutKey,
+
+        PinAndPing,
+        TextChat,
+        VoiceChat,
 
         NUM,
     }

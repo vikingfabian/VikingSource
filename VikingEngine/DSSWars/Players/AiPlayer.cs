@@ -37,6 +37,23 @@ namespace VikingEngine.DSSWars.Players
         public bool armyAi_enabled = true;
         protected int diplomacyPoints = 0;
 
+        public override void AssignFaction(Faction faction)
+        {
+            base.AssignFaction(faction);
+            faction.factiontype = FactionType.DefaultAi;
+            faction.availableForPlayer = true;
+            faction.player = this;
+           
+            if (Ref.netSession.IsHost)
+            {
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+                {
+                    citySel.IsNetHosted = true;
+                }
+            }
+        }
+
         public override void writeGameState(BinaryWriter w)
         {
             base.writeGameState(w);
@@ -115,7 +132,7 @@ namespace VikingEngine.DSSWars.Players
         public AiPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
         {
-            SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData));
+            SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData, faction.myIndex));
        
             switch (faction.factiontype)
             {
@@ -637,7 +654,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkLord;
-                    faction.displayInFullOverview = true;
+                    faction.storyFaction = true;
                     protectedFromDelete = true;
 
                     techSetup();
@@ -660,7 +677,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.diplomaticSide = DiplomaticSide.Dark;
                         aggressionLevel = AggressionLevel3_FocusedAttacks;
                         faction.growthMultiplier = 1.5f;
-                        faction.displayInFullOverview = true;
+                        faction.storyFaction = true;
                         faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
                         techSetup();
                         faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
@@ -678,7 +695,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_Barbarian;
-                    faction.displayInFullOverview = false;
+                    faction.storyFaction = false;
                     faction.hasDeserters = false;
 
                     techSetup();
@@ -693,7 +710,7 @@ namespace VikingEngine.DSSWars.Players
                         DssRef.settings.Faction_UnitedKingdom = faction.myIndex;
                         aggressionLevel = AggressionLevel1_RevengeOnly;
                         
-                        faction.displayInFullOverview = true;
+                        faction.storyFaction = true;
                         personality_loner = true;
 
                         techSetup();
@@ -803,7 +820,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.1f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_SouthHara;
-                    faction.displayInFullOverview = true;
+                    faction.storyFaction = true;
                     faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();
@@ -1572,9 +1589,9 @@ namespace VikingEngine.DSSWars.Players
                 case FactionFlavorType.Mountain:
                     if (faction.mainCity != null)
                     {
-                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.iron, 100, false);
-                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.shortsword, 60, false);
-                        faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.heavyMailArmor, 60, false);
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.iron, 100, false);
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.shortsword, 60, false);
+                        faction.mainCity.AddGroupedResource(EntityComponent.CityResourceIndex.heavyMailArmor, 60, false);
                     }
                     break;
             }
@@ -1823,7 +1840,7 @@ namespace VikingEngine.DSSWars.Players
                 if (enemyFaction != null && enemyFaction.player.IsBot())
                 {
                     var rel = DssRef.world.diplomacy.GetRelation(faction, enemyFaction);
-                    if (rel.Relation <= RelationType.RelationTypeN2_Truce && rel.Relation > RelationType.RelationTypeN4_TotalWar)
+                    if (rel.Relation <= RelationType.RelationTypeN2_Truce && rel.Relation > RelationType.RelationTypeN5_TotalWar)
                     {
                         botToBotPeaceDeclaration(null, enemyFaction);
                     }
@@ -1865,7 +1882,7 @@ namespace VikingEngine.DSSWars.Players
                 else
                 {
                     ref var alliance = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction.myIndex, allyFaction.myIndex);
-                    alliance.SetRelation(null, null, RelationType.RelationType3_Ally, out _);
+                    alliance.SetRelation(null, null, RelationType.RelationType3_Ally, null, out _);
                     //var alliance = DssRef.world.diplomacy.SetRelationType(faction, allyFaction, RelationType.RelationType3_Ally);
                     //if (alliance != null)
                     //{
@@ -2653,10 +2670,10 @@ namespace VikingEngine.DSSWars.Players
         //}
 
         
-        public override void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
+        public override void onNewRelation(bool isActuator, Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
-            base.onNewRelation(otherFaction, rel, previousRelation);
-            if (rel.Relation == RelationType.RelationTypeN3_War)
+            base.onNewRelation( isActuator, otherFaction, rel, previousRelation, localAction);
+            if (rel.Relation <= RelationType.RelationTypeN4_War)
             {
                 if (otherFaction.factiontype == FactionType.Player &&
                     DssRef.difficulty.aiAggressivity == AiAggressivity.High)
@@ -2677,6 +2694,10 @@ namespace VikingEngine.DSSWars.Players
             return true;
         }
         public override bool IsLocalPlayer()
+        {
+            return false;
+        }
+        public override bool IsHumanPlayer()
         {
             return false;
         }

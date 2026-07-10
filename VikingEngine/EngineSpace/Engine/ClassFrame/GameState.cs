@@ -4,15 +4,17 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime;
+using VikingEngine.Network;
 //xna
 
 namespace VikingEngine.Engine
 {
-    abstract class GameState : VikingEngine.AbsInput, VikingEngine.Network.INetworkUpdateReviever
+    abstract class GameState : VikingEngine.AbsInput, VikingEngine.Network.INetworkUpdateReciever
     {
         /// <summary>
         /// Overriding another gamestate
@@ -146,10 +148,19 @@ namespace VikingEngine.Engine
         { }
         virtual public void NetEvent_ConnectionLost(string reason)
         { }
-        virtual public void NetEvent_SessionsFound(
-            List<Network.AbsAvailableSession> availableSessions, 
-            List<Network.AbsAvailableSession> prevAvailableSessionsList)
+
+        virtual public void NetEvent_ErrorMessage(string message, Network.AbsNetworkPeer peer, bool peerIsSender)
         { }
+        virtual public void NetEvent_SessionsFound(
+            List<Network.AbsAvailableSession> availableSessions)
+            //, 
+            //List<Network.AbsAvailableSession> prevAvailableSessionsList)
+        { }
+
+        virtual public AbsLobbyMetaData NetEvent_StartLobbyMetaData()
+        {
+            throw new NotImplementedException();
+        }
 
         virtual public void OnAppSuspend(bool fullExit)
         { }
@@ -168,10 +179,18 @@ namespace VikingEngine.Engine
         virtual public void GameCrashed()
         { }
 
+        virtual public bool InLobbySearchState()
+        {
+            return true;
+        }
+
         virtual public bool MayUseLowLatencyGC()
         {
             return false;
         }
+
+        virtual public void OnDlcInstalled(AppId_t dlcAppId)
+        { }
 
         public bool IsActiveGameState { get { return Ref.gamestate == this; } }
     }

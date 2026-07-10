@@ -104,50 +104,50 @@ namespace VikingEngine.ToGG.HeroQuest.Net
             lobbies.Clear();
         }
 
-        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions, List<AbsAvailableSession> prevAvailableSessionsList)
+        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
         {
-            base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
+            //base.NetEvent_SessionsFound(availableSessions);
 
-            if (Ref.gamestate is GameState.MainMenuState)
-            {
+            //if (Ref.gamestate is GameState.MainMenuState)
+            //{
 
-                List<AbsAvailableSession> newLobbies, lostLobbies;
+            //    List<AbsAvailableSession> newLobbies, lostLobbies;
 
-                prevAvailableSessionsList = new List<AbsAvailableSession>(lobbies.Count);
-                foreach (var m in lobbies)
-                {
-                    prevAvailableSessionsList.Add(m.session);
-                }
+            //    prevAvailableSessionsList = new List<AbsAvailableSession>(lobbies.Count);
+            //    foreach (var m in lobbies)
+            //    {
+            //        prevAvailableSessionsList.Add(m.session);
+            //    }
 
-                filterNewAndOldLobbies(availableSessions, prevAvailableSessionsList, out newLobbies, out lostLobbies);
+            //    filterNewAndOldLobbies(availableSessions, prevAvailableSessionsList, out newLobbies, out lostLobbies);
 
-                if (lostLobbies.Count > 0)
-                {
-                    for (int i = lobbies.Count - 1; i >= 0; --i)
-                    {
-                        if (lostLobbies.Contains(lobbies[i].session))
-                        {
-                            lobbies[i].DeleteMe();
-                            lobbies.RemoveAt(i);
-                        }
-                    }
+            //    if (lostLobbies.Count > 0)
+            //    {
+            //        for (int i = lobbies.Count - 1; i >= 0; --i)
+            //        {
+            //            if (lostLobbies.Contains(lobbies[i].session))
+            //            {
+            //                lobbies[i].DeleteMe();
+            //                lobbies.RemoveAt(i);
+            //            }
+            //        }
 
-                    for (int i = 0; i < lobbies.Count; ++i)
-                    {
-                        lobbies[i].refreshPosition(i);
-                    }
-                }
+            //        for (int i = 0; i < lobbies.Count; ++i)
+            //        {
+            //            lobbies[i].refreshPosition(i);
+            //        }
+            //    }
 
-                if (newLobbies.Count > 0)
-                {
-                    //warsRef.sound.lobbyAppears.PlayFlat();
-                    foreach (var m in newLobbies)
-                    {
-                        var lb = new LobbyButton(m, lobbies.Count);
-                        lobbies.Add(lb);
-                    }
-                }
-            }
+            //    if (newLobbies.Count > 0)
+            //    {
+            //        //warsRef.sound.lobbyAppears.PlayFlat();
+            //        foreach (var m in newLobbies)
+            //        {
+            //            var lb = new LobbyButton(m, lobbies.Count);
+            //            lobbies.Add(lb);
+            //        }
+            //    }
+            //}
         }
 
         //public override void NetEvent_PeerJoined(AbsNetworkPeer gamer)
@@ -182,7 +182,7 @@ namespace VikingEngine.ToGG.HeroQuest.Net
                 joinText.SetHeight(Engine.Screen.IconSize * 0.7f);
 
                 Graphics.TextG nameText = new Graphics.TextG(LoadedFont.Console, VectorExt.V2FromY(sz.Y * 0.5f),
-                    Vector2.One, Graphics.Align.Zero, session.name, Color.Yellow, ImageLayers.AbsoluteBottomLayer);
+                    Vector2.One, Graphics.Align.Zero, session.hostName, Color.Yellow, ImageLayers.AbsoluteBottomLayer);
                 nameText.LayerAbove(bg);
                 nameText.SetHeight(Engine.Screen.IconSize * 0.5f);
 

@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 13;
-        public const int SubVersion = 113; 
+        public const int SubVersion = 118; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Data
             Debug.WriteCheck(w);
             DssRef.world.writeGameState(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.state.Game().writeGameState(w); MainProgress++;
+            DssRef.state.playstate().writeGameState(w); MainProgress++;
         }        
 
         public void readGameState(System.IO.BinaryReader r)
@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.world = worldData;
             
 
-            DssRef.state.Game().initGameState(false, pointers);
+            DssRef.state.playstate().initGameState(false, pointers);
             
 
             //STATE
@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
             DssRef.time.setTotalTime(meta.playTime);
-            DssRef.state.Game().readGameState(r, version.sub, pointers);
+            DssRef.state.playstate().readGameState(r, version.sub, pointers);
 
             //Clean up
             DssRef.state.events.loadCleanup();

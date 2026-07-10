@@ -1,9 +1,9 @@
 "controller_mappings"
 {
 	"version"		"3"
-	"revision"		"184"
-	"title"		"deck5"
-	"description"		"."
+	"revision"		"191"
+	"title"		"deck6"
+	"description"		"Your modified layout for this game."
 	"creator"		"76561198046251956"
 	"progenitor"		""
 	"url"		"autosave:///home/deck/.local/share/Steam/steamapps/common/Steam Controller Configs/85986228/config/3582440-beta_test/controller_neptune.vdf"
@@ -12,9 +12,46 @@
 	"controller_caps"		"23117823"
 	"major_revision"		"0"
 	"minor_revision"		"0"
-	"Timestamp"		"1771507047"
+	"Timestamp"		"0"
 	"actions"
 	{
+		"EditorControls"
+		{
+			"title"		"#Set_Editor"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"editor_moveXZ"
+				{
+					"title"		"#Action_moveXZ"
+					"input_mode"		"joystick_move"
+				}
+				"editor_cameraXMoveY"
+				{
+					"title"		"#Action_cameraXMoveY"
+					"input_mode"		"joystick_move"
+				}
+				"editor_cameraZoom"
+				{
+					"title"		"#Action_cameraZoom"
+					"input_mode"		"joystick_move"
+				}
+			}
+			"Button"
+			{
+				"editor_open_menu"		"#Action_menu"
+				"editor_draw"		"#Action_draw"
+				"editor_erase"		"#Action_erase"
+				"editor_select"		"#Action_select"
+				"editor_colorPick"		"#Action_colorPick"
+				"editor_cancel"		"#Action_cancel"
+				"editor_undo"		"#Action_undo"
+				"editor_tab_left"		"#Action_tab_l"
+				"editor_tab_right"		"#Action_tab_r"
+				"editor_YmovementToggle"		"#Action_YmovementToggle"
+				"editor_ToggleCameraMode"		"#Action_ToggleCameraMode"
+			}
+		}
 		"InGameControls"
 		{
 			"title"		"#Set_Ingame"
@@ -66,8 +103,12 @@
 				"paste"		"#Action_paste"
 				"gamespeed"		"#Action_gamespeed"
 				"pause"		"#Action_pause"
+				"PinAndPing"		"#Action_PinAndPing"
+				"TextChat"		"#Action_TextChat"
+				"VoiceChat"		"#Action_VoiceChat"
 				"next_city"		"#Action_next_city"
 				"next_army"		"#Action_next_army"
+				"next_pin"		"#Action_next_pin"
 				"next_war"		"#Action_next_war"
 				"controller_focus"		"#Action_controller_focus"
 				"controller_faction"		"#Action_controller_faction"
@@ -91,67 +132,9 @@
 				"close_menu"		"#Action_ReturnToGame"
 			}
 		}
-		"EditorControls"
-		{
-			"title"		"#Set_Editor"
-			"legacy_set"		"0"
-			"StickPadGyro"
-			{
-				"editor_moveXZ"
-				{
-					"title"		"#Action_moveXZ"
-					"input_mode"		"joystick_move"
-				}
-				"editor_cameraXMoveY"
-				{
-					"title"		"#Action_cameraXMoveY"
-					"input_mode"		"joystick_move"
-				}
-				"editor_cameraZoom"
-				{
-					"title"		"#Action_cameraZoom"
-					"input_mode"		"joystick_move"
-				}
-			}
-			"Button"
-			{
-				"editor_open_menu"		"#Action_menu"
-				"editor_draw"		"#Action_draw"
-				"editor_erase"		"#Action_erase"
-				"editor_select"		"#Action_select"
-				"editor_colorPick"		"#Action_colorPick"
-				"editor_cancel"		"#Action_cancel"
-				"editor_undo"		"#Action_undo"
-				"editor_tab_left"		"#Action_tab_l"
-				"editor_tab_right"		"#Action_tab_r"
-				"editor_YmovementToggle"		"#Action_YmovementToggle"
-				"editor_ToggleCameraMode"		"#Action_ToggleCameraMode"
-			}
-		}
 	}
 	"action_layers"
 	{
-		"InGameAlt1"
-		{
-			"title"		"#Layer_InGame_Alt1"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
-		"InGameAlt2"
-		{
-			"title"		"#Layer_InGame_Alt2"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
-		"InGameAlt1And2"
-		{
-			"title"		"#Layer_InGame_Alt1And2"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
 		"editor_selection"
 		{
 			"title"		"#Layer_Editor_Selection"
@@ -165,6 +148,27 @@
 				"editor_selection_rotateCCW"		"#Action_rotateCCW"
 				"editor_selection_rotateCW"		"#Action_rotateCW"
 			}
+		}
+		"InGameAlt1"
+		{
+			"title"		"#Layer_InGame_Alt1"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
+		}
+		"InGameAlt1And2"
+		{
+			"title"		"#Layer_InGame_Alt1And2"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
+		}
+		"InGameAlt2"
+		{
+			"title"		"#Layer_InGame_Alt2"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
 		}
 	}
 	"localization"
@@ -220,6 +224,10 @@
 			"Action_rotateCCW"		"Rotate CCW"
 			"Action_rotateCW"		"Rotate CW"
 			"Action_ToggleCameraMode"		"Toggle camera mode"
+			"Action_PinAndPing"		"Pin"
+			"Action_TextChat"		"Text Chat"
+			"Action_VoiceChat"		"Voice Chat"
+			"Action_next_pin"		"Next Pin"
 		}
 		"french"
 		{
@@ -2266,6 +2274,54 @@
 		"description"		""
 		"inputs"
 		{
+			"button_a"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls PinAndPing, Pin, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_x"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls VoiceChat, Voice Chat, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls TextChat, Text Chat, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2611,6 +2667,68 @@
 		"description"		""
 		"inputs"
 		{
+		}
+	}
+	"group"
+	{
+		"id"		"93"
+		"mode"		"dpad"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls toggle_minimap, Toggle Minimap, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls next_war, Next War, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls next_pin, Next Pin, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+		"settings"
+		{
+			"layer"		"1"
 		}
 	}
 	"group"
@@ -3048,6 +3166,7 @@
 			"66"		"button_diamond active"
 			"67"		"left_trigger active"
 			"68"		"right_trigger active"
+			"93"		"dpad active"
 		}
 	}
 	"preset"

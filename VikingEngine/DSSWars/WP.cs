@@ -199,5 +199,17 @@ namespace VikingEngine.DSSWars
 
             tilePos = new IntVector2(position.X, position.Z);
         }
+
+        public static bool ReadPosXZPercentU16_ZeroCheck(BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        {
+            position = Vector3.Zero;
+            position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
+            position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
+
+            tilePos = new IntVector2(position.X, position.Z);
+
+            return position.X > 0;
+        }
+
     }
 }

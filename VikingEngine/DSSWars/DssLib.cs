@@ -286,6 +286,8 @@ namespace VikingEngine.DSSWars
     }
     enum AiAggressivity
     { 
+        Peaceful,
+
         /// <summary>
         /// Just randomized
         /// </summary>
@@ -301,8 +303,12 @@ namespace VikingEngine.DSSWars
         /// </summary>
         High,
 
+        Extreme,
 
-        NUM
+
+        NUM,
+
+        UseDefault,
     }
 
     enum AiConscript

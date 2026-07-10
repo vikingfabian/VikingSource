@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         virtual public void onNewModel(LootFest.VoxelModelName name,
-            Graphics.VoxelModel master, AbsDetailUnit unit)
+            Graphics.VoxelModel master, AbsSoldierUnit unit)
         {
             DSSWars.Faction.SetNewMaster(name, unit.soldierData.modelName, model, master);
         }
@@ -27,6 +27,11 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void update(AbsSoldierUnit soldier)
         {
         
+        }
+
+        virtual public void SetPosition(Vector3 position)
+        { 
+            model.position = position;
         }
 
         virtual public void RotateVector(Vector3 forward, ref Vector3 pos)

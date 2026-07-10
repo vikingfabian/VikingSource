@@ -32,9 +32,22 @@ namespace VikingEngine.DSSWars.Communication
             return true;
         }
 
+        public bool nextAlly()
+        {
+            while (Next())
+            {
+                if (Relation().Relation >= RelationType.RelationType3_Ally)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public int RelationIndex()
-        { 
-            return DssRef.world.diplomacy.RelationIndex(faction, otherFactionIx);
+        {
+            DssRef.world.diplomacy.RelationIndex(faction, otherFactionIx, out var result);
+            return result;
         }
 
         public DiplomaticRelation Relation()

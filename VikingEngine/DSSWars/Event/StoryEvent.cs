@@ -302,7 +302,7 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            bool settler = DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler;
+            bool settler = DssRef.storage.ruleset_instance.factionStartSize == FactionStartSize.Settler;
             TimeLength time;
             if (DssRef.difficulty.extremeAggression)
             {
@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars.Event
         public override void onStart()
         {
             IntervalF time = new IntervalF(1.2f, 2.4f) * TimeExt.HourInMinutes;
-            if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+            if (DssRef.storage.ruleset_instance.factionStartSize == FactionStartSize.Settler)
             {
                 time += 1.5f * TimeExt.HourInMinutes;
             }
@@ -964,11 +964,11 @@ namespace VikingEngine.DSSWars.Event
                 {
                     if (other != faction)
                     {
-                        DssRef.world.diplomacy.SetRelationType(faction, other, RelationType.RelationType3_Ally);
+                        DssRef.world.diplomacy.SetRelationType(faction, other, attackLeader, RelationType.RelationType3_Ally);
                     }
                 }
 
-                DssRef.world.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN1_Enemies);
+                DssRef.world.diplomacy.SetRelationType(faction, player.faction, attackLeader, RelationType.RelationTypeN1_Enemies);
 
                 if (attackLeader == null || faction.militaryStrength > attackLeader.militaryStrength)
                 {
@@ -979,7 +979,7 @@ namespace VikingEngine.DSSWars.Event
             //Prepare leader
             attackers.Remove(attackLeader);
             attackers.Insert(0, attackLeader);
-            DssRef.world.diplomacy.SetRelationType(attackLeader, player.faction, null, null, SpeakTerms.SpeakTermsN2_None);
+            DssRef.world.diplomacy.SetRelationType(attackLeader, player.faction, attackLeader, null, null, SpeakTerms.SpeakTermsN2_None);
             attackLeader.player.setAggression(Players.AbsPlayer.AggressionLevel1_RevengeOnly);
 
             Ref.update.AddSyncAction(new SyncAction(() =>
@@ -1023,7 +1023,7 @@ namespace VikingEngine.DSSWars.Event
                 foreach (var faction in attackers)
                 {
                     faction.player.setMinimumAggression(Players.AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.world.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN3_War);
+                    DssRef.world.diplomacy.SetRelationType(faction, player.faction, attackLeader, RelationType.RelationTypeN4_War);
                 }
 
                 player.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_TheCohalition);
@@ -1085,7 +1085,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 //1.5 hours passed in quick boss
                 //Warning is one hour before
-                float time = GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.gameRuleset.QuickBossTimeOption].Value1 - 2.5f;
+                float time = GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.ruleset_instance.QuickBossTimeOption].Value1 - 2.5f;
                 hours = new IntervalF(0.9f, 1.1f) * time;
             }
             else
@@ -1277,7 +1277,7 @@ namespace VikingEngine.DSSWars.Event
 
                         if (greenwood != null && !DssRef.world.diplomacy.GetRelation(p.faction, greenwood).InWar())
                         {
-                            DssRef.world.diplomacy.SetRelationType(p.faction, greenwood, null, null, SpeakTerms.SpeakTerms1_Good);
+                            DssRef.world.diplomacy.SetRelationType(p.faction, greenwood, greenwood, null, null, SpeakTerms.SpeakTerms1_Good);
                         }
                     }
                 //}
@@ -1424,7 +1424,7 @@ namespace VikingEngine.DSSWars.Event
                         for (var j = i + 1; j < matchFactions.Count; ++j)
                         {
                             var faction2 = matchFactions[j];
-                            if (faction2.isAlive && DssRef.world.diplomacy.GetRelation(faction1, faction2).Relation <= RelationType.RelationTypeN3_War)
+                            if (faction2.isAlive && DssRef.world.diplomacy.GetRelation(faction1, faction2).Relation <= RelationType.RelationTypeN4_War)
                             {
                                 return false;
                             }
