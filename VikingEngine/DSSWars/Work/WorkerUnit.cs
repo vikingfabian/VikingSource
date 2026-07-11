@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -37,14 +38,15 @@ namespace VikingEngine.DSSWars.Work
         int prevX, prevZ;
         float walkDist_beforeRefresh = 0f;
         AbsWorkEffect workEffect = null;
+        PFaction pFaction;
 
         public WorkerUnit(AbsArmy mapObject, WorkerStatus status, int statusIndex)
         {
             parentMapObject = mapObject;
-            factionIndex = mapObject.factionIndex;
+            pfaction = mapObject.pfaction;//factionIndex = mapObject.factionIndex;
             //this.status = status;
             myIndex = statusIndex;
-            model = mapObject.GetFaction_NoChecks().AutoLoadModelInstance_batched(
+            model = mapObject.pfaction.GetFaction().AutoLoadModelInstance_batched(
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
@@ -571,7 +573,7 @@ namespace VikingEngine.DSSWars.Work
         void WorkerPresentationHud(ObjectHudArgs args, bool tooltip)
         {
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.Add(pfaction.GetFaction().FlagTextureToHud());
             args.content.space(0.5f);
             args.content.Add(new RbImage(SpriteName.WarsWorker));
             args.content.space(0.5f);
@@ -695,10 +697,10 @@ namespace VikingEngine.DSSWars.Work
         {
             return GameObjectType.Worker;
         }
-        public override Faction GetFaction()
-        {
-            return parentMapObject.GetFaction();
-        }
+        //public override Faction GetFaction()
+        //{
+        //    return parentMapObject.GetFaction();
+        //}
         public override City GetCity()
         {
             return parentMapObject.GetCity();
@@ -713,10 +715,10 @@ namespace VikingEngine.DSSWars.Work
             return model.position;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
-        {
-            return faction == parentMapObject.GetFaction();
-        }
+        //public override bool aliveAndBelongTo(Faction faction)
+        //{
+        //    return faction == parentMapObject.GetFaction();
+        //}
 
         public override WorkerUnit GetWorker()
         {

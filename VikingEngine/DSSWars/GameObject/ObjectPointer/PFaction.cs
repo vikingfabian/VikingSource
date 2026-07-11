@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 {
@@ -23,10 +24,10 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 
         public PFaction(System.IO.BinaryReader r)
         {
-            NetRead(r);
+            read(r);
         }
 
-        public void NetWrite(System.IO.BinaryWriter w)
+        public void write(System.IO.BinaryWriter w)
         {
             if (factionIndex < 0)
             {
@@ -37,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                 w.Write((ushort)factionIndex);
             }
         }
-        public void NetRead(System.IO.BinaryReader r)
+        public void read(System.IO.BinaryReader r)
         {
             factionIndex = r.ReadUInt16();
             if (factionIndex == ushort.MaxValue)
@@ -68,6 +69,19 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             return false;
         }
 
+        public bool TryGetFactionAndPlayer(out Faction faction, out AbsPlayer player)
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            {
+                faction = DssRef.world.factions.Array[factionIndex];
+                player = faction.player;
+                return player != null;
+            }
+            faction = null;
+            player = null;
+            return false;
+        }
+
         public Faction GetFaction_Safe()
         {
             return DssRef.world?.faction(factionIndex);
@@ -94,6 +108,11 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         public override int GetHashCode()
         {
             return factionIndex;
+        }
+
+        public bool HasValue()
+        {
+            return factionIndex >= 0;
         }
 
         public Players.AbsPlayer GetPlayer()

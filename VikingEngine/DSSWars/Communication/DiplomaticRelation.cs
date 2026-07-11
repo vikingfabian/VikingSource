@@ -60,8 +60,8 @@ namespace VikingEngine.DSSWars.Communication
                     actuators.write(w);
                     //Net.ObjectId.WriteFaction(w, faction1);
                     //Net.ObjectId.WriteFaction(w, faction2);
-                    faction1.NetWrite(w);
-                    faction2.NetWrite(w);
+                    faction1.write(w);
+                    faction2.write(w);
 
                     write(w);
                 }

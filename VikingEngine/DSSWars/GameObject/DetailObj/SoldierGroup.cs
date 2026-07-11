@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
 
             this.army =new WeakReference<AbsArmy>( tArmy);
-            this.factionIndex = tArmy.factionIndex;
+            this.pfaction = tArmy.pfaction;
             soldierConscript = conscript;
             initPart1(tArmy);
 
@@ -136,8 +136,7 @@ namespace VikingEngine.DSSWars.GameObject
                 setDetailLevel(true);
             }
 
-            var player = tArmy.GetPlayer();
-            if (player != null && player.IsLocalPlayer())
+            if (pfaction.TryGetPlayer(out var player) && player.IsLocalPlayer())
             {
                 player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
             }
@@ -184,12 +183,12 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierGroup(AbsArmy army)
         {
             this.army = new WeakReference<AbsArmy>( army);
-            factionIndex = army.factionIndex;
+            pfaction = army.pfaction;
         }
         public SoldierGroup(AbsArmy tArmy, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             this.army = new WeakReference<AbsArmy>( tArmy);
-            this.factionIndex = tArmy.factionIndex;
+            this.pfaction = tArmy.pfaction;
             readGameState(tArmy, r, version, true, pointers);
         }
 
@@ -764,7 +763,7 @@ namespace VikingEngine.DSSWars.GameObject
                 AbsSoldierUnit s;
 
                 s = typeProfile.CreateUnit(bBannerPos);
-                s.factionIndex = this.factionIndex;
+                s.pfaction = this.pfaction;
                 s.unitBuildType = typeProfile.unitBuildType;
 
                 s.isBannerMan = bBannerPos;
@@ -1162,7 +1161,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
                                     var city = tile.City();
-                                    if (DssRef.world.diplomacy.GetRelation_Safe(tArmy.factionIndex, city.factionIndex).InWar())
+                                    if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                     {
                                         if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
                                         {
@@ -1187,7 +1186,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
                                     var city = tile.City();
-                                    if (DssRef.world.diplomacy.GetRelation_Safe(tArmy.factionIndex, city.factionIndex).InWar())
+                                    if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                     {
                                         goalWp = WP.ToWorldPos(city.tilePos);
 
@@ -1354,14 +1353,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         void SoldiersPresentationHud(ObjectHudArgs args, bool tooltipOrGroup, bool compact)
         {
-            var faction = GetFaction();
-            if (faction == null)
-            { return; }
+            //var faction =  GetFaction();
+            //if (faction == null)
+            //{ return; }
 
-            if (faction != args.player.faction &&
+            if (pfaction != args.player.pfaction &&
                 args.player.gameControls.map.selection.obj != null &&
                 args.player.gameControls.map.selection.obj.IsSoldiers() &&
-                !DssRef.world.diplomacy.GetRelation(faction, args.player.faction).InWar())
+                !DssRef.world.diplomacy.GetRelation(pfaction, args.player.pfaction).InWar())
             {
                 args.content.Add(new RbImage(SpriteName.RedErrorCross));
                 args.content.hspace();

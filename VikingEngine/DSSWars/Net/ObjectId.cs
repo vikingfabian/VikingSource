@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Net
         public static void WriteCityAndOwner(System.IO.BinaryWriter w, City city)
         {
             w.Write((ushort)city.myIndex);
-            city.pfaction.NetWrite(w);
+            city.pfaction.write(w);
             //if (city.factionIndex < 0)
             //{
             //    w.Write(ushort.MaxValue);
@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Net
         public static void NetWriteMapObjId(System.IO.BinaryWriter w, AbsArmy army)
         {
             //w.Write((ushort)army.factionIndex);
-            army.pfaction.NetWrite(w);
+            army.pfaction.write(w);
             w.Write((ushort)army.myIndex);
         }
 

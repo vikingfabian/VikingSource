@@ -327,7 +327,7 @@ namespace VikingEngine.DSSWars
                 foreach (var m in quickMatchFactions)
                 {
                     //w.Write((ushort)m);
-                    m.NetWrite(w);
+                    m.write(w);
                 }
             }
             else

@@ -15,6 +15,8 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Interface;
@@ -72,18 +74,17 @@ namespace VikingEngine.DSSWars.Players
         /// <summary>
         /// Faction is key
         /// </summary>
-        public Dictionary<int, PlayerToPlayerDiplomacy> toPlayerDiplomacies = new Dictionary<int, PlayerToPlayerDiplomacy>();
+        public Dictionary<PFaction, PlayerToPlayerDiplomacy> toPlayerDiplomacies = new Dictionary<PFaction, PlayerToPlayerDiplomacy>();
         
 
-        public List<int> alliedFactions = new List<int>();
-        public List<int> alliedFactions_build = new List<int>();
+        public List<PFaction> alliedFactions = new List<PFaction>();
+        public List<PFaction> alliedFactions_build = new List<PFaction>();
         public bool netFirstTimeEnter;
 
         public PlayerToPlayerDiplomacy GetOrCreateToPlayerDiplomacy(AbsHumanPlayer player)
         {
             PlayerToPlayerDiplomacy result = null;
-            if (player.faction != null &&
-                toPlayerDiplomacies.TryGetValue(player.faction.myIndex, out result) == false)
+            if (toPlayerDiplomacies.TryGetValue(player.pfaction, out result) == false)
             {
                 result = new PlayerToPlayerDiplomacy(player.faction.myIndex);
                 toPlayerDiplomacies.Add(result.factionIndex, result);
@@ -754,11 +755,11 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void onNewRelation(bool isActuator, Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation, bool localAction)
+        public override void onNewRelation(bool isActuator, PFaction otherPFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
         {
-            base.onNewRelation(isActuator, otherFaction, rel, previousRelation, localAction);
+            base.onNewRelation(isActuator, otherPFaction, rel, previousRelation, localAction);
 
-            if (otherFaction.player != null)
+            if (otherPFaction.TryGetFaction())
             {
                 if ((rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
                     otherFaction.factiontype != FactionType.SouthHara)

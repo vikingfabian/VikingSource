@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Players
             if (netShare)
             {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssReColor, Network.PacketReliability.Reliable);
-                pfaction.NetWrite(w);//Net.ObjectId.WriteFaction(w, faction);
+                pfaction.write(w);//Net.ObjectId.WriteFaction(w, faction);
                 StreamLib.WriteColorStream_3B(w, selected);
             }
         }
