@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Players;
 
@@ -29,12 +30,12 @@ namespace VikingEngine.DSSWars.Communication
             this.player = player;
             this.botFaction = botFaction;
 
-            selectedRelation = DssRef.world.diplomacy.GetRelation(player.faction.myIndex, botFaction.myIndex);//player.faction.diplomaticRelations[botFaction.myIndex];
+            selectedRelation = DssRef.world.diplomacy.GetRelation(player.pfaction, botFaction.pfaction);//player.faction.diplomaticRelations[botFaction.myIndex];
             //if (selectedRelation == null)
             //{
             //    return result;
             //}
-            againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
+            againstDark = botFaction.WantToAllyAgainstDark() && player.pfaction.GetFaction().diplomaticSide == DiplomaticSide.Light;
 
             if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None)
             {
@@ -86,7 +87,7 @@ namespace VikingEngine.DSSWars.Communication
                     result.Add(friendly);
                 }
 
-                if (!player.faction.quickMatchFaction)
+                if (!player.pfaction.GetFaction().quickMatchFaction)
                 {
                     if (selectedRelation.Relation == RelationType.RelationType2_Good)
                     {
@@ -158,19 +159,19 @@ namespace VikingEngine.DSSWars.Communication
             cost = Diplomacy.MakeServantCost(player, againstDark);
 
             return selectedRelation.Relation == RelationType.RelationType3_Ally &&
-                player.faction.militaryStrength >= Diplomacy.MiltitaryStrengthXServant * botFaction.militaryStrength &&
+                player.pfaction.GetFaction().militaryStrength >= Diplomacy.MiltitaryStrengthXServant * botFaction.militaryStrength &&
                 player.diplomaticPoints.Int() >= cost &&
                 botFaction.cities.Count <= DssRef.world.diplomacy.ServantMaxCities &&
                 hasStrongerFoe();
         }
         bool hasStrongerFoe()
         {
-            List<int> wars = new List<int>(8);
-            DssRef.world.diplomacy.collectWars(botFaction, wars);
+            List<PFaction> wars = new List<PFaction>(8);
+            DssRef.world.diplomacy.collectWars(botFaction.pfaction, wars);
 
             foreach (var w in wars)
             {
-                if (DssRef.world.factions[w].militaryStrength > botFaction.militaryStrength * 1.2f)
+                if (w.GetFaction().militaryStrength > botFaction.militaryStrength * 1.2f)
                 {
                     return true;
                 }

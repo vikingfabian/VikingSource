@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Communication
 {
     class PlayerToPlayerDiplomacy
     {
-        public PFaction factionIndex;
+        public PFaction pfaction;
 
         public bool suggestingNewRelation = false;
         public RelationType suggestedRelation;
@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Communication
 
         public PlayerToPlayerDiplomacy(PFaction factionIndex)
         {
-            this.factionIndex = factionIndex;
+            this.pfaction = factionIndex;
         }
 
         public void writeGameState(BinaryWriter w)

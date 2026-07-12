@@ -1380,9 +1380,9 @@ namespace VikingEngine.DSSWars
             return null;    
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
+        public override bool aliveAndBelongTo(PFaction faction)
         {
-            return faction == this;
+            return faction == this.pfaction;
         }
 
         public override GameObjectType gameobjectType()

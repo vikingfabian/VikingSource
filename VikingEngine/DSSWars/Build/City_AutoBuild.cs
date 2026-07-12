@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void workAutoBuild()
         {
-            var player = GetPlayer();
+            var player = pfaction.GetPlayer();
 
             AutoBuildList.Clear();
             int safeGuardBuildCount = 1;
@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 safeGuardBuild = BuildAndExpandType.WorkBench;
             }            
-            else if (cityType == CityType.Campsite && TryGetFaction(out var faction) && faction.cities.Count == 1 &&
+            else if (cityType == CityType.Campsite && pfaction.TryGetFaction(out var faction) && faction.cities.Count == 1 &&
                 buildingStructure.SoldierBarracks_count + buildingStructure.ArcherBarracks_count < 1)
             {
                 if (freeServiceMen.amount < 1)
@@ -731,7 +731,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         copperRequirement /= 4;
                     }
-                    return TryGetFaction(out var faction) && faction.hasMoney(new Money(copperRequirement), this);
+                    return pfaction.TryGetFaction(out var faction) && faction.hasMoney(new Money(copperRequirement), this);
                 }
             }
 
@@ -947,11 +947,11 @@ namespace VikingEngine.DSSWars.GameObject
                 if (automateCity == false)
                 {
                     //Pull faction settings
-                    var player = GetPlayer().GetLocalPlayer();
+                    var player = pfaction.GetPlayer().GetLocalPlayer();
                     if (player != null)
                     {
-                        DssRef.world.copyStockPile(player, player.faction, this, CopyPasteOption.FactionToCity, ResourceGroupType.NUM);
-                        workTemplate.setAllToFollowFactionAndUpdate(this, player.faction.workTemplate);
+                        DssRef.world.copyStockPile(player, player.pfaction.GetFaction(), this, CopyPasteOption.FactionToCity, ResourceGroupType.NUM);
+                        workTemplate.setAllToFollowFactionAndUpdate(this, player.pfaction.GetFaction().workTemplate);
                     }
                 }
                 (value ? SoundLib.click : SoundLib.back).Play();

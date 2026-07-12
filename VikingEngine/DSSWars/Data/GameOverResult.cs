@@ -356,7 +356,7 @@ namespace VikingEngine.DSSWars.Data
                 {
                     foreach (var f in matchResult.winner)
                     {
-                        if (f == player.faction)
+                        if (f == player.pfaction.GetFaction())
                         {
                             matchWinner = true;
                         }

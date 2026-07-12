@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static void AiPurchaseUpdate(City city, Faction faction)
         {
-            if (city != null && city.GetFaction().GetGold(city) > 1000000) 
+            if (city != null && city.pfaction.GetFaction().GetGold(city) > 1000000) 
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Resource
                         new RbText(TextLib.LargeFirstLetter( itemName)),
                     },
                 new RbAction3Arg<ItemResourceType, int, Money>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
-                tooltip(count), player.faction.hasMoney(cost, city));
+                tooltip(count), player.pfaction.GetFaction().hasMoney(cost, city));
 
                 content.Add(button);
                 content.Add(new RbTab(0.5f));
@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars.Resource
                             new RbText(string.Format(DssRef.lang.Hud_XTimes, count)),
                         },
                     new RbAction3Arg<ItemResourceType, int, Money>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
-                    tooltip(count), player.faction.hasMoney(cost * count, city));
+                    tooltip(count), player.pfaction.GetFaction().hasMoney(cost * count, city));
                     content.Add(xbutton);
                     //content.space();
                 }
@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars.Resource
                         //RichBoxContent content = new RichBoxContent();
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
-                        HudLib.ResourceCost(content, ResourceType.Gold, cost.GetGold32() * count, (int)player.faction.GetGold(city));
+                        HudLib.ResourceCost(content, ResourceType.Gold, cost.GetGold32() * count, (int)player.pfaction.GetFaction().GetGold(city));
 
                         content.newParagraph();
 

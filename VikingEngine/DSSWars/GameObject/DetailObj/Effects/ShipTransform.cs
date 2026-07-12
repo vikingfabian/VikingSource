@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (group.soldierCount > 0 &&
                 city.cityType == CityType.UnClaimed)
             {
-                if (city.claimCity(group.GetFaction(), subTile))
+                if (city.claimCity(group.pfaction.GetFaction(), subTile))
                 {
                     group.DeleteMe(DeleteReason.Transform, true);
                 }

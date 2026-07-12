@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return; 
             }
 
-            var faction = GetFaction();
+            var faction = pfaction.GetFaction();
             if (faction == null || faction.player == null)
             {
                 return;
@@ -1077,7 +1077,7 @@ namespace VikingEngine.DSSWars.GameObject
                     newWorker.setXpFor(arraylib.RandomListMember(XpLib.ExperienceTypes), DssConst.WorkXpToLevel);
                 }
             }
-            else if (workerStatuses.Count == 3 && TryGetFaction(out var f) && f.mainCity == this)
+            else if (workerStatuses.Count == 3 && pfaction.TryGetFaction(out var f) && f.mainCity == this)
             {
                 //newWorker.xpType2 = WorkExperienceType.HouseBuilding;
                 //newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
@@ -1181,7 +1181,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (structure.NextEmptyLand(this, Ref.peRnd.Int(64), out var freeSubTilePos))
                     {
-                        BuildLib.TryAutoBuild(GetFaction(), freeSubTilePos, TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
+                        BuildLib.TryAutoBuild(pfaction.GetFaction(), freeSubTilePos, TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
                     }
                 }
             }
@@ -1257,7 +1257,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void async_blackMarketUpdate()
         {
-            if (GetFaction() == null)
+            if (pfaction.GetFaction() == null)
             { return; }
 
             ref var food = ref GetRefGroupedResource(CityResourceIndex.food);
@@ -1278,7 +1278,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int buyFood = -food.amount;
 
                 int cost = (int)(buyFood * DssConst.FoodGoldValue_BlackMarket);
-                GetFaction().payGold(cost, true, this);
+                pfaction.GetFaction().payGold(cost, true, this);
                 blackMarketCosts_food.add(cost);
                 food.amount += buyFood;
 

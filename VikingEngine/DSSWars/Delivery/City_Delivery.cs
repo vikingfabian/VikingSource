@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
                 lib.DoNothing();
             }
 
-            var f = GetFaction();
+            var f = pfaction.GetFaction();
             if (f == null)
                 return;
 
@@ -75,8 +75,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     if (othercity != null)
                                     {
-                                        bool correctOwner = othercity.factionIndex == this.factionIndex;
-                                        if (!correctOwner && DssRef.world.diplomacy.GetRelation_Safe(factionIndex, othercity.factionIndex).Relation >= RelationType.RelationType2_Good)
+                                        bool correctOwner = othercity.pfaction == this.pfaction;
+                                        if (!correctOwner && DssRef.world.diplomacy.GetRelation_Safe(factionIndex, othercity.pfaction).Relation >= RelationType.RelationType2_Good)
                                         {
                                             correctOwner = true;
                                             if (!othercity.IsNetHosted && status.remoteDeliveryUpdateRequest.minPassed(5))
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 City othercity = DssRef.world.cities[status.inProgress.ToCity()];
 
-                                if (othercity.factionIndex != factionIndex && !othercity.IsNetHosted)
+                                if (othercity.pfaction != factionIndex && !othercity.IsNetHosted)
                                 {
                                     //Send over net
                                     NetWriteDelivery(ref status, othercity);
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     var resource = othercity.GetGroupedResource(status.inProgress.type);
 
                                     if (status.IsGold() &&
-                                        GetPlayer().IsLocalPlayer())
+                                        pfaction.GetPlayer().IsLocalPlayer())
                                     {
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.gold_deliver);
                                     }
@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //while (citiesC.Next())
                     //{
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref GetFaction().cities, DssRef.world.cities, out City citySel))
+                    while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
                         if (citySel != this && tilePos.SideLength(citySel.tilePos) <= DssConst.DeliveryMaxDistance)
                         {
@@ -263,11 +263,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                 recievingCity.AddGroupedResource(resourceType, amount);
 
-                if (recievingCity.TryGetPlayer(out var p) && p.IsLocalPlayer())
+                if (recievingCity.pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
                 {
                     var lp = p.GetLocalPlayer();
                     if (lp.hud.messages.DeliveryMessageTime.minPassed(10) &&
-                        sendingCity != null && sendingCity.TryGetPlayer(out var r) && r.IsRemotePlayer())
+                        sendingCity != null && sendingCity.pfaction.TryGetPlayer(out var r) && r.IsRemotePlayer())
                     {
 
                         lp.hud.messages.DeliveryMessageTime.setNow();

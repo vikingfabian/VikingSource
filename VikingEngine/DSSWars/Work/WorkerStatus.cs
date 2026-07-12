@@ -1316,7 +1316,7 @@ namespace VikingEngine.DSSWars.Work
                     if (city.factionIndex != toCity.factionIndex)
                     {
                         faction.CityTradeImportCounting += payment;
-                        toCity.GetFaction().CityTradeExportCounting += payment;
+                        toCity.pfaction.GetFaction().CityTradeExportCounting += payment;
                     }
 
                     carry = recieved;
@@ -1886,9 +1886,9 @@ namespace VikingEngine.DSSWars.Work
         {
             if (orderId >= 0)
             {
-                if (city.GetPlayer().orders != null)
+                if (city.pfaction.GetPlayer().orders != null)
                 {
-                    return city.GetPlayer().orders.GetFromId(orderId) != null;
+                    return city.pfaction.GetPlayer().orders.GetFromId(orderId) != null;
                 }
             }
 
@@ -1939,7 +1939,7 @@ namespace VikingEngine.DSSWars.Work
                 ref subTile.collectionPointer);
 
             subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
-            EditSubTile editSubTile = new EditSubTile(city.GetFaction(), true, subTileEnd, subTile, true, true, true);
+            EditSubTile editSubTile = new EditSubTile(city.pfaction.GetFaction(), true, subTileEnd, subTile, true, true, true);
             editSubTile.Submit();
             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }

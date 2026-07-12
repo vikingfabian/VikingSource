@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (message)
                     {
-                        var player = GetPlayer().GetLocalPlayer();
+                        var player = pfaction.GetPlayer().GetLocalPlayer();
                         if (player != null)
                         {
                             Ref.update.AddSyncAction(new SyncAction2Arg<bool, int>(player.hud.messages.changedAllBuildings, toValue, count));

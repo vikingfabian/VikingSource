@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Interface
 
         bool highEconomyWarningBlock()
         { 
-            return DssRef.storage.ruleset_instance.centralGold && player.faction.money.GetGold() > DssConst.Gold_RichStatus;
+            return DssRef.storage.ruleset_instance.centralGold && player.pfaction.GetFaction().money.GetGold() > DssConst.Gold_RichStatus;
         }
 
         public void blockFoodWarning(bool block)
@@ -303,7 +303,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void goToMapObject(AbsGameObject obj)
         {
-            if (obj.factionIndex == player.faction.myIndex)
+            if (obj.pfaction == player.pfaction)
             {
                 player.gameControls.map.selection.obj = obj;
             }

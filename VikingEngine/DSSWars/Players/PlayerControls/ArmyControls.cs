@@ -116,9 +116,9 @@ namespace VikingEngine.DSSWars.Players
                
                 if (target != null)
                 {
-                    var tFaction = target.GetFaction();
+                    var tFaction = target.pfaction.GetFaction();
 
-                    if (DssRef.world.diplomacy.GetRelation(player.faction, tFaction).InWar())
+                    if (DssRef.world.diplomacy.GetRelation(player.pfaction.GetFaction(), tFaction).InWar())
                     {
                         mapExecuteAttack(target);
                     }

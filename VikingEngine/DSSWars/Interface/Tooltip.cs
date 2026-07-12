@@ -474,13 +474,13 @@ namespace VikingEngine.DSSWars.Interface
             if (StartupSettings.BlockTooltip) return;
 
             RichBoxContent content = new RichBoxContent();
-            var tFaction = obj.GetFaction();
+            var tFaction = obj.pfaction.GetFaction();
             bool attackTarget = false;
 
             if (tFaction != null)
             {
                 attackTarget = player.gameControls.army != null &&
-                    tFaction != player.faction;
+                    tFaction != player.pfaction.GetFaction();
 
                 if (attackTarget)
                 {
@@ -493,7 +493,7 @@ namespace VikingEngine.DSSWars.Interface
             
             if (attackTarget)
             {
-                if (DssRef.world.diplomacy.GetRelation(player.faction, tFaction).InWar())
+                if (DssRef.world.diplomacy.GetRelation(player.pfaction.GetFaction(), tFaction).InWar())
                 {
                     content.newParagraph();
                 }
@@ -501,7 +501,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.Add(new RbSeperationLine());
 
-                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.faction, tFaction).Relation;
+                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.pfaction.GetFaction(), tFaction).Relation;
 
                     if (tFaction.player.IsRemotePlayer())
                     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -17,9 +18,9 @@ namespace VikingEngine.DSSWars.Map
         public bool isPlayer;
         public bool netShare;
 
-        public EditSubTile(Faction faction, bool netShare, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
+        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
         {
-            hostedTile = faction != null && faction.IsNetHosted();
+            hostedTile = pfaction.TryGetFaction(out var faction) && faction.IsNetHosted();
             isPlayer = faction.player != null && faction.player.IsLocalPlayer();
             this.netShare = netShare;
             this.position = position;

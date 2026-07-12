@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         public BalkongBannerModel(AbsSoldierUnit soldier)
             : base(soldier, false)
         {
-            banner = new HorseBanner(soldier.GetFaction(), soldier.soldierData.modelScale, riderY);
+            banner = new HorseBanner(soldier.pfaction.GetFaction(), soldier.soldierData.modelScale, riderY);
             update(soldier);
         }
 

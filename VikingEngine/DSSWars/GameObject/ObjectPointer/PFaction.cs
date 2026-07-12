@@ -114,6 +114,10 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         {
             return factionIndex >= 0;
         }
+        public bool IsEmpty()
+        {
+            return factionIndex < 0;
+        }
 
         public Players.AbsPlayer GetPlayer()
         {
@@ -138,6 +142,28 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                 player = DssRef.world.factions.Array[factionIndex]?.player;
             }
             return player != null;
+        }
+
+        public bool TryGetLocalPlayer(out Players.LocalPlayer player)
+        {
+            if (TryGetPlayer(out var aplayer))
+            {
+                player = aplayer.GetLocalPlayer();
+                return player != null;
+            }
+            player = null;
+            return false;
+        }
+
+        public bool TryGetAiPlayer(out Players.AiPlayer player)
+        {
+            if (TryGetPlayer(out var aplayer))
+            {
+                player = aplayer.GetAiPlayer();
+                return player != null;
+            }
+            player = null;
+            return false;
         }
     }
 

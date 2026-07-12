@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Net
             if (fullHandover)
             {
                 var remote = DssRef.state.GetOrCreateRemotePlayer(peer, 0);
-                if (remote.faction != faction)
+                if (remote.pfaction.GetFaction() != faction)
                 {
                     remote.AssignFaction(faction);
                 }

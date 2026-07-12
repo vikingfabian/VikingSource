@@ -247,7 +247,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 automationAction = AutomationAction.WaitForUpdate;
 
-                if (player.faction.GoldSecDiff() > 0)
+                if (player.pfaction.GetFaction().GoldSecDiff() > 0)
                 {
                     //var citiesC = player.faction.cities.counter();
                     for (CityType type = CityType.Capital; type >= CityType.Village; type--)
@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars.Players
                         //while (citiesC.Next())
                         //{
                         SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                        while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+                        while (citiesC.Next(ref player.pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                         {
                             if (citySel.cityType == type &&
                                 citySel.isMaxHomeUsers() )

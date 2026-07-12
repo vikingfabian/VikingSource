@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.Players
         public PlayerProfile profile;
         public Texture2D flagTexture;
 
+        //public Faction pfaction.GetFaction();
         public AbsPlayer()
         { }
 

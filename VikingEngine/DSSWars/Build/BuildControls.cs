@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Build
                             SubTile subTile = DssRef.world.subTileGrid.Get(subTilePos);
                             if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
                             {
-                                EditSubTile edit = new EditSubTile(player.faction, true, subTilePos, subTile, true, true, false);
+                                EditSubTile edit = new EditSubTile(player.pfaction.GetFaction(), true, subTilePos, subTile, true, true, false);
                                 edit.Submit();
                             }
 
@@ -690,7 +690,7 @@ namespace VikingEngine.DSSWars.Build
 
                     content.newParagraph();
 
-                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city, ItemResourceType.NONE);
+                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.pfaction.GetFaction(), city, ItemResourceType.NONE);
                     
                 }
             }
@@ -774,7 +774,7 @@ namespace VikingEngine.DSSWars.Build
                     HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
                     content.newLine();
                     city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
-                        player.faction, city, ItemResourceType.NONE);
+                        player.pfaction.GetFaction(), city, ItemResourceType.NONE);
 
 
                 }
@@ -799,7 +799,7 @@ namespace VikingEngine.DSSWars.Build
                             upgradeText },
                         new RbAction(city.upgradeLogistics, RbSoundType.Buy), new RbTooltip((RichBoxContent content, object tag) =>
                         {
-                            var cityFaction = city.GetFaction();
+                            var cityFaction = city.pfaction.GetFaction();
 
                             HudLib.Label(content, DssRef.lang.XP_Upgrade);
                             content.newLine();

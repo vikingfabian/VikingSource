@@ -18,18 +18,18 @@ namespace VikingEngine.DSSWars.Players
 
         protected void refreshWorkPriority_async(bool inWar)
         {
-            ref var autoBuild = ref faction.workTemplate.GetRefWorkPriority(WorkPriorityType.autoBuild);
+            ref var autoBuild = ref pfaction.GetFaction().workTemplate.GetRefWorkPriority(WorkPriorityType.autoBuild);
             autoBuild.value = (byte)(4 - aggressionLevel);
             if (inWar && autoBuild.value > 1)
             {
                 autoBuild.value -= 1;
             }
-            faction.refreshCityWork();
+            pfaction.GetFaction().refreshCityWork();
 
-            int count = Bound.Min(faction.cities.Count / 4, 1);
+            int count = Bound.Min(pfaction.GetFaction().cities.Count / 4, 1);
             for (int i = 0; i < count; i++)
             {
-                City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
+                City city = pfaction.GetFaction().cities.GetRandom(Ref.rnd, DssRef.world.cities);
 
                 if (city != null)
                 {
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
                     {
-                        if (!BlackMarketResources.AiPurchaseIron(city, faction))
+                        if (!BlackMarketResources.AiPurchaseIron(city, pfaction.GetFaction()))
                         {
 
                             intelligent = true;

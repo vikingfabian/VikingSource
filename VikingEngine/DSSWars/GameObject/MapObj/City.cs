@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.EntityComponent;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
@@ -39,7 +41,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int areaSize = 0;
         public CityType cityType;
-        //public List<int> neighborCities = new List<int>();
         public int neighborCitiesCount = 0;
 
         Graphics.AbsVoxelObj overviewModel;
@@ -54,7 +55,6 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource workForce = new GroupedResource();
         bool needServiceMenRefresh = true;
         public GroupedResource freeServiceMen = new GroupedResource();
-        //public int totalServiceMen = 0;
         public int workingAndFreeServiceMen = 0;
 
         public int HousingCount_Workers = 0;
@@ -76,20 +76,14 @@ namespace VikingEngine.DSSWars.GameObject
         
         public int workHutStyle = 0;
         public int mercenaries = 0;
-
-        //public CityDetail detailObj;
         public float ai_armyDefenceValue = 0;
 
         public BuildingStructure buildingStructure = new BuildingStructure();
         public TerrainStructure terrainStructure = new TerrainStructure();
 
-        //bool customName = false;
         ObjectName name = new ObjectName();
 
-
-        Intvector2MinMax/* workerCullingMinMax,*/ guardCullingMinMax;
-        //IntVector2 cullingTopLeft, cullingBottomRight;
-        //public int cityTileRadius = 0;
+        Intvector2MinMax guardCullingMinMax;
         public Rectangle2 cityTileArea;
         public CityCulture cityCulture = CityCulture.NUM_NONE;
         public CityBiome cityBiome = CityBiome.Default_Fields;
@@ -97,9 +91,6 @@ namespace VikingEngine.DSSWars.GameObject
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;
-
-        //public CityTagBack tagBack = CityTagBack.NONE;
-        //public TagArt tagArt = TagArt.None;
 
         int starvingTimeSeconds = 0;
 
@@ -116,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (toLevel == 2)
             {
-                return GetFaction().totalWorkForce > DssConst.Logistics2_PopulationRequirement;
+                return pfaction.GetFaction().totalWorkForce > DssConst.Logistics2_PopulationRequirement;
             }
 
             return false;
@@ -207,8 +198,8 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (commit)
                         {
-                            var player = GetFaction().player.GetLocalPlayer();
-                            if (player != null)
+                            //var player =  GetFaction().player.GetLocalPlayer();
+                            if (pfaction.TryGetLocalPlayer(out var player))
                             {
                                 player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
                             }
@@ -1018,7 +1009,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             writeMapFile(w);
 
-            w.Write((ushort)factionIndex);
+            pfaction.write(w);
+            //w.Write((ushort)pfaction);
 
             w.Write((byte)Tile().heightLevel);
         }
@@ -1027,12 +1019,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             readMapFile(world, r, int.MaxValue);
             
-            int r_factionIndex = r.ReadUInt16();
+            //int r_pfaction = r.ReadUInt16();
+            var r_pfaction = new PFaction(r);
 
-            if (r_factionIndex != factionIndex)
+            if (r_pfaction != pfaction)
             {
-                factionIndex = r_factionIndex;
-                DssRef.world.faction(r_factionIndex)?.Net_AddCity(this);
+                pfaction = r_pfaction;
+                pfaction.GetFaction()?.Net_AddCity(this);
             }
 
             onGameStart(false);
@@ -1206,9 +1199,9 @@ namespace VikingEngine.DSSWars.GameObject
                                         subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
 
 
-                                        var faction = GetFaction();
+                                        //var faction = GetFaction();
 
-                                        if (Build.BuildLib.TryAutoBuild(faction, subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
+                                        if (Build.BuildLib.TryAutoBuild(pfaction, subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
                                         {
                                             ++totalWorkerHutAndLevelCount;
 
@@ -1268,7 +1261,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                     //    }
                                                     //}
 
-                                                    if (Build.BuildLib.TryAutoBuild(faction, farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
+                                                    if (Build.BuildLib.TryAutoBuild(pfaction, farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
                                                     {
                                                         ++cultureCount;
                                                         if (cultureCount >= CulturesPerFarm)
@@ -1712,7 +1705,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void createOverViewModel()
         {
-            var faction = GetFaction_NoChecks();
+            var faction = pfaction.GetFaction();
             if (faction == null || faction.player == null)
             {
                 setModel(new Graphics.VoxelModelInstance(DssRef.models.voxelModels[LootFest.VoxelModelName.unclaimed_icon], false) { scale = new Vector3(0.06f) });
@@ -1765,7 +1758,7 @@ namespace VikingEngine.DSSWars.GameObject
             //    lib.DoNothing();
             //}
             updateDetailLevel();
-            if (HasPlayer())
+            if (pfaction.TryGetPlayer(out _))
             {
                 
                 if (inRender_detailLayer)
@@ -1835,7 +1828,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (requirements)
             {
-                var result = Bound.Min( workForce.amount / 600.0 * GetFaction().growthMultiplier, 0.1);
+                var result = Bound.Min( workForce.amount / 600.0 * pfaction.GetFaction().growthMultiplier, 0.1);
                 if (cityCulture == CityCulture.LargeFamilies)
                 {
                     result *= 2;
@@ -1917,7 +1910,7 @@ namespace VikingEngine.DSSWars.GameObject
                     starvingTimeSeconds = -30;
                     starving = false;
 
-                    var faction = GetFaction();
+                    var faction = pfaction.GetFaction();
                     if (faction.player.IsLocalPlayer())
                     {
                         faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
@@ -1963,14 +1956,16 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 try
                 {
-                    Faction faction = GetFaction();
-                    Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
-                    if (newOwner != faction && newOwner != null)                    
+                    
+                    PFaction newPOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
+                    if (newPOwner != pfaction && newPOwner.TryGetFaction(out var newOwner))                    
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
                             if (newOwner.isAlive)
                             {
+                                Faction faction = pfaction.GetFaction();
+
                                 if (faction != null && faction.player.IsLocalPlayer())
                                 {
                                     ++faction.player.GetLocalPlayer().statistics.CitiesLost;
@@ -2113,8 +2108,8 @@ namespace VikingEngine.DSSWars.GameObject
             float armyDefence = 0;
             const int DominanceTileRadius = 4;
 
-            Faction faction = GetFaction();
-            DssRef.world.unitCollAreaGrid.collectArmies(factionIndex, tilePos, 2,
+            //Faction faction = GetFaction();
+            DssRef.world.unitCollAreaGrid.collectArmies(pfaction, tilePos, 2,
                 DssRef.world.unitCollAreaGrid.armies_nearUpdate);
 
             foreach (var m in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
@@ -2127,7 +2122,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             ai_armyDefenceValue = armyDefence;
 
-            //DssRef.world.unitCollAreaGrid.collectOpponentGroups(factionIndex, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
+            //DssRef.world.unitCollAreaGrid.collectOpponentGroups(pfaction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
             //detailObj.asynchFindBattleTarget(groups);
 
             //if (guardCount <= 0 && armyDefence == 0)
@@ -2356,7 +2351,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name(out bool mayEdit)
         {
-            Faction faction = GetFaction();
+            Faction faction = pfaction.GetFaction();
             if (faction == null)
             {
                 mayEdit = false;
@@ -2388,7 +2383,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void CityPresentationHud(ObjectHudArgs args, bool tooltip)
         {
-            Faction faction = GetFaction_Safe();
+            Faction faction = pfaction.GetFaction();
 
             if (faction == null)
             {
@@ -2434,7 +2429,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             CityPresentationHud(args, true);
 
-            if (HasFaction())
+            if (pfaction.TryGetFaction(out _))//HasFaction())
             {
                 const int LowAmount = 10;
 
@@ -2476,7 +2471,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 //if (args.ShowFull)
                 {
-                    if (GetFaction() == args.player.faction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+                    if (pfaction== args.player.pfaction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                     {
                         CityDetailsHud(true, args.player, args.content);
                         new Interface.CityMenu(args.player, this, args.content);
@@ -2541,7 +2536,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool ToPinHud(ObjectHudArgs args)
         {
-            if (GetFaction() == args.player.faction)
+            if (pfaction == args.player.pfaction)
             {
                 RichBoxContent buttonContent = new RichBoxContent();
                 TypeIcon(buttonContent);
@@ -2561,8 +2556,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
         {
-            Faction faction = GetFaction();
-            bool interactive = player.faction == faction;
+            Faction faction = pfaction.GetFaction();
+            bool interactive = player.pfaction == pfaction;
 
             if (faction == null)
             {
@@ -3022,7 +3017,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 content.text(DssRef.lang.Animals_ProductionStop);
 
                                 content.Add(new RbSeperationLine() { thick = true });
-                                ResourceLib.FullResourceInfo(GetFaction(), this, ItemResourceType.RawFood_Group, content);
+                                ResourceLib.FullResourceInfo(pfaction.GetFaction(), this, ItemResourceType.RawFood_Group, content);
                             })));
                     }
                 }
@@ -3346,7 +3341,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
 
-            Resource.ResourceLib.FullResourceInfo(GetFaction(), this, ItemResourceType.Men, content);
+            Resource.ResourceLib.FullResourceInfo(pfaction.GetFaction(), this, ItemResourceType.Men, content);
         }
         //        public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
         //        {
@@ -3974,15 +3969,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void SetNeighborToPlayer()
         {
-            Faction faction = GetFaction();
+            //Faction faction = pfaction.GetFaction();
 
             EcsStaticArrayCounter neighbors = CityNeighbors();
             while (neighbors.Next(DssRef.world.cities, out City nCity))//
             {
-                var cFaction = nCity.GetFaction();
-                if (cFaction != faction && cFaction.player is Players.AiPlayer)
+                //var cFaction = nCity.GetFaction();
+                if (pfaction != nCity.pfaction && nCity.pfaction.TryGetAiPlayer(out var ncPlayer))// cFaction.player is Players.AiPlayer)
                 {
-                    cFaction.player.IsPlayerNeighbor = true;
+                    ncPlayer.IsPlayerNeighbor = true;
                 }
             }
         }
@@ -3994,13 +3989,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool HasPlayerNeighbor()
         {
-            Faction faction = GetFaction();
+            Faction faction = pfaction.GetFaction();
 
             EcsStaticArrayCounter neighbors = CityNeighbors();
 
             while(neighbors.Next(DssRef.world.cities, out City nCity))
             {
-                var cFaction = nCity.GetFaction();
+                var cFaction = nCity.pfaction.GetFaction();
                 if (cFaction != null && cFaction != faction && cFaction.player.IsPlayerNeighbor)
                 {
                     return true;
@@ -4016,7 +4011,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (newFaction == null)
                 return;
 
-            Faction owner = GetFaction_Safe();
+            Faction owner = pfaction.GetFaction();
             if (owner != newFaction)
             {
                 if (owner != null)
@@ -4028,7 +4023,7 @@ namespace VikingEngine.DSSWars.GameObject
                     technology.destroyTechOnTakeOver();
                 }
 
-                factionIndex = newFaction.myIndex;
+                pfaction = newFaction.pfaction;
                 
                 if (!duringStartup)
                 {
@@ -4073,14 +4068,15 @@ namespace VikingEngine.DSSWars.GameObject
                 bool convert = r.ReadBoolean();
                 ConvertReason convertReason = (ConvertReason)r.ReadByte();
 
-                var newFaction = Net.ObjectId.ReadFaction(r, out _);
+                //var newFaction = Net.ObjectId.ReadFaction(r, out _);
+                var newPFaction = new PFaction(r); 
 
-                if (newFaction != null)
+                if (newPFaction.TryGetFaction(out var newFaction))
                 {
                     city.setFaction(newFaction, false, convert, convertReason, false);                    
                 }
 
-                if (convertReason == ConvertReason.Gift && newFaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
+                if (convertReason == ConvertReason.Gift && newPFaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
                 {
                     p.GetLocalPlayer().hud.messages.giftMessage(city, remotePlayer); 
                 }
@@ -4109,12 +4105,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (convert)
                     {
-                        convertSoldiersToFaction(newFaction);
+                        convertSoldiersToFaction(newFaction.pfaction);
                     }
                     else
                     {
                         var first = groups.First();
-                        if (first != null && first.factionIndex != newFaction.myIndex)
+                        if (first != null && first.pfaction != newFaction.pfaction)
                         {
                             var counter = groups.counter();
 
@@ -4287,7 +4283,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 SubTile subTile = new SubTile();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-                new EditSubTile(GetFaction(), true, cityHallSubtilePos, subTile, true, false, false).Submit();
+                new EditSubTile(pfaction, true, cityHallSubtilePos, subTile, true, false, false).Submit();
 
                 refreshCitySize();
             }
@@ -4295,7 +4291,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army recruitToClosestArmy()
         {
-            return GetFaction().ClosestFriendlyArmy(position, 3.6f);
+            return pfaction.GetFaction().ClosestFriendlyArmy(position, 3.6f);
         }
 
         public override City GetCity()
@@ -4303,9 +4299,9 @@ namespace VikingEngine.DSSWars.GameObject
             return this;
         }
 
-        public override bool defeatedBy(int attackerFaction)
+        public override bool defeatedBy(PFaction attackerFaction)
         {
-            return factionIndex == attackerFaction;
+            return pfaction == attackerFaction;
         }
 
         //public override bool defeated()
@@ -4318,9 +4314,9 @@ namespace VikingEngine.DSSWars.GameObject
             return true;
         }
 
-        public override bool aliveAndBelongTo(int faction)
+        public override bool aliveAndBelongTo(PFaction pfaction)
         {
-            return this.factionIndex == faction;
+           return this.pfaction == pfaction;
         }
 
         public override GameObjectType gameobjectType()

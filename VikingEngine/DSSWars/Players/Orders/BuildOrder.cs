@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override bool refreshAvailable(Faction faction)
         {
-            return city.factionIndex == faction.myIndex;
+            return city.pfaction == faction.myIndex;
         }
 
         override public OrderType GetWorkType(City city)

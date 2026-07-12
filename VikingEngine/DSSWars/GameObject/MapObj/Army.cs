@@ -12,6 +12,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.EntityComponent;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -227,7 +228,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(Faction faction, System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
-            this.factionIndex = faction.myIndex;
+            this.pfaction = faction.pfaction;
 
             if (subVersion < 105)
             {
@@ -257,12 +258,7 @@ namespace VikingEngine.DSSWars.GameObject
             readResources(r);
 
             Tag.read(r, subVersion);
-            //tagBack = (CityTagBack)r.ReadByte();
-
-            //if (tagBack != CityTagBack.NONE)
-            //{
-            //    tagArt = (TagArt)r.ReadUInt16();
-            //}
+            
 
             armyColumnWidth = r.ReadByte();
             
@@ -293,7 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name(out bool mayEdit)
         {
-            var faction = GetFaction();
+            var faction = pfaction.GetFaction();
             mayEdit = faction != null && faction.player.IsLocalPlayer();
             return name.name;
         }
@@ -311,7 +307,7 @@ namespace VikingEngine.DSSWars.GameObject
             tagToHud(args.content);
             //if (!)
             //{
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
                 if (faction != null)
                 {
                     args.content.Add(faction.FlagTextureToHud());
@@ -361,7 +357,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space(1);
 
 
-            var typeCounts = Status().getTypeCounts_Sorted(GetFaction());
+            var typeCounts = Status().getTypeCounts_Sorted(pfaction);
 
             foreach (var kv in typeCounts)
             {
@@ -377,14 +373,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             ArmyPresentationHud(args, false);
 
-            if (factionIndex == args.player.faction.myIndex)
-                    {
-                        new Interface.ArmyMenu(args.player, this, args.content);
-                    }
-                    else
-                    {
-                        basicInfoHud(args);
-                    }
+            if (pfaction == args.player.pfaction)
+            {
+                new Interface.ArmyMenu(args.player, this, args.content);
+            }
+            else
+            {
+                basicInfoHud(args);
+            }
         }
 
         public void basicInfoHud(ObjectHudArgs args)
@@ -415,7 +411,9 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space();
             HudLib.PerSecondInfo(args.player, args.content, false);
 
-            if (!GetPlayer().profile.casualControls)
+            var player = pfaction.GetPlayer();
+
+            if (!player.profile.casualControls)
             {
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
@@ -476,7 +474,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             RichBoxContent buttonContent = new RichBoxContent();
 
-            buttonContent.Add(GetFaction().FlagTextureToHud());
+            buttonContent.Add(pfaction.GetFaction().FlagTextureToHud());
             buttonContent.space(0.5f);
             buttonContent.Add(new RbText(DssRef.lang.UnitType_Army, HudLib.TitleColor_TypeName));
 
@@ -527,7 +525,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (otherArmy != null && otherArmy != this)
             {
-                var status = Status().getTypeCounts(GetFaction());
+                var status = Status().getTypeCounts(pfaction);
                 foreach (var kv in status)
                 {
                     tradeSoldiersAction(ref otherArmy, kv.Key, kv.Value);
@@ -549,7 +547,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (toArmy == null)
             {
                 IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
-                toArmy = GetFaction().NewArmy(onTile);
+                toArmy = pfaction.GetFaction().NewArmy(onTile);
             }
 
             tradeSoldiersTo(type, count, toArmy);
@@ -672,7 +670,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void selectionGui(Players.LocalPlayer player, ImageGroup guiModels)
         {
-            if (player.faction.myIndex == factionIndex)
+            if (player.pfaction == pfaction)
             {
                 hoverAndSelectInfo(player, guiModels);
             }
@@ -955,15 +953,15 @@ namespace VikingEngine.DSSWars.GameObject
         {              
             if (inRender_overviewLayer)
             {
-                if (overviewBanner == null && HasPlayer())
+                if (overviewBanner == null && pfaction.TryGetPlayer(out _))//HasPlayer())
                 {
-                    overviewBanner = GetFaction_NoChecks().AutoLoadModelInstance(
+                    overviewBanner = pfaction.GetFaction().AutoLoadModelInstance(
                         OverviewBannerModelName, 1f);
                     overviewBanner.AddToRender(DrawGame.MidLayer);
 
                     updateModelsPosition();
                 }
-            }
+            } 
             else
             {
                 if (overviewBanner != null)
@@ -1118,10 +1116,9 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     var onCity = DssRef.world.tileGrid.Get(tilePos).City();
 
-                    if (onCity.factionIndex == factionIndex)
+                    if (onCity.pfaction == pfaction)
                     {
-                        var faction = GetFaction();
-                        if (faction != null)
+                        if (pfaction.TryGetFaction(out var faction))
                         {
                             if (money.GetGold() < goldCarryCapacity)
                             {
@@ -1213,7 +1210,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool targetsFaction(AbsMapObject otherObj)
         {
             return attackTarget != null &&
-                attackTarget.factionIndex == otherObj.factionIndex;
+                attackTarget.pfaction == otherObj.pfaction;
         }
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
@@ -1235,7 +1232,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (reason == DeleteReason.EmptyGroup &&
                 isShip &&
-                GetFaction().factiontype == FactionType.SouthHara &&
+                pfaction.GetFaction().factiontype == FactionType.SouthHara &&
                 myIndex == 0)
             {
                 DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_hara_any, AchievementIndex.early_hara_100);
@@ -1251,7 +1248,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (removeFromParent)
             {
-                GetFaction()?.remove(this);
+                pfaction.GetFaction()?.remove(this);
             }
 
             if (workerUnits != null)
@@ -1308,11 +1305,11 @@ namespace VikingEngine.DSSWars.GameObject
                 packet.EndWrite_Asynch();
             }
 
-            var prevFaction = GetFaction();
+            var prevFaction = pfaction.GetFaction();
             
             if (convertReason == ConvertReason.Gift)
             {
-                GetFaction()?.remove(this);
+                prevFaction?.remove(this);
             }
 
             base.setFaction(newFaction, duringStartup, false, convertReason, netShare);
@@ -1335,13 +1332,14 @@ namespace VikingEngine.DSSWars.GameObject
                 bool convert = r.ReadBoolean();
                 ConvertReason convertReason = (ConvertReason)r.ReadByte();
 
-                var newFaction = Net.ObjectId.ReadFaction(r, out _);
+                //var newFaction = Net.ObjectId.ReadFaction(r, out _);
+                var newPFaction = new PFaction(r);
 
-                if (newFaction != null && newFaction.myIndex != army.factionIndex)
+                if (newPFaction != army.pfaction)
                 {
-                    army.GetFaction()?.remove(army.GetArmy());
+                    army.pfaction.GetFaction()?.remove(army.GetArmy());
 
-                    if (convertReason == ConvertReason.Gift && newFaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
+                    if (convertReason == ConvertReason.Gift && newPFaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
                     {
                         p.GetLocalPlayer().hud.messages.giftMessage(army, remotePlayer);
                     }
@@ -1368,12 +1366,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override bool defeatedBy(int attackerFaction)
+        public override bool defeatedBy(PFaction attackerFaction)
         {
             return isDeleted;
         }
 
-        public override bool aliveAndBelongTo(int faction)
+        public override bool aliveAndBelongTo(PFaction faction)
         {
             return !isDeleted;
         }
@@ -1431,11 +1429,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (totalDeserters > 0)
             {
-                var faction = GetFaction();
+                //var faction = GetFaction();
 
-                if (faction != null && faction.player.IsLocalPlayer())
+                if (pfaction.TryGetLocalPlayer(out var player))//faction != null && faction.player.IsLocalPlayer())
                 {
-                    var player = faction.player.GetLocalPlayer();
+                    //var player = faction.player.GetLocalPlayer();
                     if (player.hud.messages.freeSpace())
                     {
                         player.hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, player.profile.casualControls? 
@@ -1457,13 +1455,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            return DssRef.lang.UnitType_Army + myIndex.ToString() + ", " + GetFaction().ToString();
+            return DssRef.lang.UnitType_Army + myIndex.ToString() + ", " + pfaction.GetFaction().ToString();
         }
 
-        public bool Is(int index, int faction)
-        {
-            return this.myIndex == index && factionIndex == faction;
-        }
+        //public bool Is(int index, PFaction faction)
+        //{
+        //    return this.myIndex == index && pfaction == faction;
+        //}
 
         public override bool CanMenuFocus()
         {

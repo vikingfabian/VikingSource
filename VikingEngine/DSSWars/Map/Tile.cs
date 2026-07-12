@@ -370,7 +370,7 @@ namespace VikingEngine.DSSWars.Map
 
         public Faction Faction()
         {
-           return DssRef.world.cities[CityIndex].GetFaction();
+           return DssRef.world.cities[CityIndex].pfaction.GetFaction();
         }
         public Faction Faction_Safe()
         {
@@ -380,7 +380,7 @@ namespace VikingEngine.DSSWars.Map
         public Color FactionColor()
         {
             var c = DssRef.world.cities[CityIndex];
-            var p = c.GetPlayer();
+            var p = c.pfaction.GetPlayer();
             if (p != null && p.profile.flag != null)
             {
                 return p.profile.flag.col0_Main;

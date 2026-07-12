@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Communication
 
                     rel.ImageGroup.SetVisible(visible);
 
-                    if (faction == player.faction)
+                    if (faction == player.pfaction.GetFaction())
                     {
                         rel.relationIcon.Visible = false;
                     }
@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars.Communication
                     rel.tilePos = faction.landAreaCenter(out cityPos);
 
                     rel.inCullingView = tileBound.IntersectTilePoint(rel.tilePos);
-                    rel.relation = DssRef.world.diplomacy.GetRelation_Safe(player.faction.myIndex, rel.faction).Relation; 
+                    rel.relation = DssRef.world.diplomacy.GetRelation_Safe(player.pfaction, rel.faction).Relation; 
                 }
             }
 

@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsGameObject
     {
-        public PFaction pfaction = PFaction.Empty;//int factionIndex = -1;
+        public PFaction pfaction = PFaction.Empty;//int pfaction = -1;
         public int myIndex = -1;
         public bool isDeleted = false;
         
@@ -45,29 +45,29 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public bool HasFaction()
-        { 
-            return factionIndex >= 0 && factionIndex < DssRef.world.factions.Count;
-        }
+        //public bool pfaction.TryGetFaction(out _)
+        //{ 
+        //    return pfaction >= 0 && factionIndex < DssRef.world.factions.Count;
+        //}
 
-        public bool HasPlayer()
-        {
-            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
-            {
-                var f = DssRef.world.factions.Array[factionIndex];
-                return f != null && f.player != null;
-            }
-            return false;
-        }
+        //public bool HasPlayer()
+        //{
+        //    if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+        //    {
+        //        var f = DssRef.world.factions.Array[factionIndex];
+        //        return f != null && f.player != null;
+        //    }
+        //    return false;
+        //}
 
-        public bool HasAliveFaction()
-        {
-            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
-            { 
-                return DssRef.world.factions.Array[factionIndex] != null && DssRef.world.factions.Array[factionIndex].isAlive; 
-            }
-            return false;
-        }
+        //public bool HasAliveFaction()
+        //{
+        //    if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+        //    { 
+        //        return DssRef.world.factions.Array[factionIndex] != null && DssRef.world.factions.Array[factionIndex].isAlive; 
+        //    }
+        //    return false;
+        //}
 
         //virtual public Faction GetFaction_NoChecks()
         //{
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    return DssRef.world.factions.Array[factionIndex];
         //}
 
-        //virtual public Faction GetFaction()
+        //virtual public Faction pfaction.GetFaction()
         //{
 
         //    if (factionIndex < 0)
@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    return DssRef.world.faction(factionIndex);
         //}
 
-        //public bool TryGetFaction(out Faction faction)
+        //public bool pfaction.TryGetFaction(out Faction faction)
         //{
         //    if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
         //    {
@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    return DssRef.world?.faction(factionIndex);
         //}
 
-        //public Players.AbsPlayer GetPlayer()
+        //public Players.AbsPlayer pfaction.GetPlayer()
         //{
 
         //    if (factionIndex < 0)
@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    return DssRef.world.factions.Array[factionIndex]?.player;
         //}
 
-        //public bool TryGetPlayer(out Players.AbsPlayer player)
+        //public bool pfaction.TryGetPlayer(out Players.AbsPlayer player)
         //{
 
         //    if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Array.Length)
@@ -135,8 +135,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //if (factionIndex > 0)
             //{
-            var f = DssRef.world.faction(factionIndex);
-            return f != null && f.player != null && f.player.profile.casualControls;
+            //var f = DssRef.world.faction(factionIndex);
+            return pfaction.TryGetPlayer(out var player) && player.profile.casualControls;
             //}
             //return false;
         }
@@ -242,26 +242,13 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void ownerToHud(Interface.ObjectHudArgs args, bool divider)
         {
-            var faction = GetFaction();
-            if (args.player != null && faction != null && faction != args.player.faction)
+            //var faction = GetFaction();
+            if (args.player != null && pfaction != args.player.pfaction && pfaction.TryGetFaction(out var faction))
             {
-                RelationType relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
+                RelationType relation = DssRef.world.diplomacy.GetRelation(args.player.pfaction, pfaction).Relation;
 
                 faction.toHud(args.content, relation, false, false);
-                //args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
-                //args.content.space(0.5f);
-                //IconName.Relation(relation, out SpriteName relIcon, out string relName);
-                //args.content.Add(new RbImage(relIcon));
-
-                //if (faction.player.IsRemotePlayer())
-                //{
-                //    args.content.space(0.5f);
-                //    args.content.Add(new RbGamerIcon(((RemotePlayer)faction.player).networkPeer.peer, 0.8f));
-                //}
-
-                //args.content.space(0.5f);
-                //args.content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
-
+                
                 if (divider)
                 {
                     args.content.Add(new RbSeperationLine());
@@ -271,7 +258,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void toHud(Interface.ObjectHudArgs args)
         {
-            var faction = GetFaction();
+            var faction = pfaction.GetFaction();
 
             nameToHud(args.content, true);
             args.content.Add(new RbBeginTitle());
@@ -285,9 +272,9 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     args.content.text("agg " + faction.player.aggressionLevel.ToString());
                 }
-                if (faction != args.player.faction)
+                if (pfaction != args.player.pfaction)
                 {
-                    var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
+                    var relation = DssRef.world.diplomacy.GetRelation(args.player.pfaction, pfaction).Relation;
 
                     args.content.newLine();
                     if (faction.player.IsRemotePlayer())
@@ -309,7 +296,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
         virtual public bool CanMenuFocus() { return false; }
-        virtual public bool aliveAndBelongTo(Faction faction) { return true; }
+        virtual public bool aliveAndBelongTo(PFaction pfaction) { return true; }
 
         virtual public bool IsCollection() { return false; }
         virtual public int CollectionCount() { return 0; }

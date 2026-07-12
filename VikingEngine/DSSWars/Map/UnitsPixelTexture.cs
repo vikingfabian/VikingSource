@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void updateColorProfile(Faction faction)
         {
-            var playerFaction = DssRef.state.localPlayers[playerIx].faction;
+            var playerFaction = DssRef.state.localPlayers[playerIx].pfaction.GetFaction();
 
             if (faction == playerFaction)
             {

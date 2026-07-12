@@ -339,7 +339,7 @@ namespace VikingEngine.DSSWars
 
                     localPlayers[i].assignPlayer(i, playerCount, newGame);
 
-                    Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].faction.ToString());
+                    Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].pfaction.GetFaction().ToString());
                 }
             }
 
@@ -400,7 +400,7 @@ namespace VikingEngine.DSSWars
                     factionsCounter.sel.onGameStart(newGame);
                 }
 
-                if (LocalHost().faction.player.IsBot())
+                if (LocalHost().pfaction.GetFaction().player.IsBot())
                 {
                     LocalHost().baseOnGameStart();
                 }

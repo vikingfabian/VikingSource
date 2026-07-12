@@ -360,7 +360,7 @@ namespace VikingEngine.DSSWars
                         {
                             foreach (var lp in localPlayers)
                             {
-                                if (lp.faction == faction)
+                                if (lp.pfaction.GetFaction() == faction)
                                 {
                                     lp.gameControls.map.setCameraPos(centerCamera);
                                 }
@@ -776,7 +776,7 @@ namespace VikingEngine.DSSWars
                 var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
                 profile.flag.write(w);
 
-                Net.ObjectId.WriteFaction(w, local.faction);
+                Net.ObjectId.WriteFaction(w, local.pfaction.GetFaction());
 
                 local.giftedAchievements.writeNetStatus(w);
             }
@@ -795,7 +795,7 @@ namespace VikingEngine.DSSWars
                 Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
                 if (faction != null)
                 {
-                    sender.faction = faction;
+                    sender.pfaction.GetFaction() = faction;
                 }
                 sender.giftedAchievements.readNetStatus(packet.r);
 
@@ -873,7 +873,7 @@ namespace VikingEngine.DSSWars
                     var city = City.NetReadHandOver(packet.r);
                     if (LocalHost().netFirstTimeEnter && !factionHandOverComplete)
                     {
-                        city.workTemplate.setAllToFollowFactionAndUpdate(city, LocalHost().faction.workTemplate);
+                        city.workTemplate.setAllToFollowFactionAndUpdate(city, LocalHost().pfaction.GetFaction().workTemplate);
                     }
                     break;
                 case PacketType.DssWorldDiplomacy:
@@ -1036,14 +1036,14 @@ namespace VikingEngine.DSSWars
 
                 player.addNetGamerToHud(content, true, false);
 
-                if (player.faction != null)
+                if (player.pfaction.GetFaction() != null)
                 {
                     var aiPlayer = player.previousPlayer;
-                    player.faction.factiontype = player.previousFactionType;
+                    player.pfaction.GetFaction().factiontype = player.previousFactionType;
 
                     if (aiPlayer != null)
                     {
-                        aiPlayer.AssignFaction(player.faction);
+                        aiPlayer.AssignFaction(player.pfaction.GetFaction());
                         DssRef.world.BordersUpdated = true;
                     }
                 }
@@ -1181,13 +1181,13 @@ namespace VikingEngine.DSSWars
             content.icontext(NetworkIcon, DssRef.lang.Hud_Save);
             LocalHost().hud.messages.Add(content, SoundLib.netMessage);
 
-            factionHandovers.Enqueue(new FactionHandover(Ref.netSession.Host(), LocalHost().faction, false, false));
+            factionHandovers.Enqueue(new FactionHandover(Ref.netSession.Host(), LocalHost().pfaction.GetFaction(), false, false));
 
             var playTime = new TimeSpan(r.ReadInt64());
             WorldMetaId id = new WorldMetaId();
             id.read(r);
                         
-            ClientSaveMeta meta = new ClientSaveMeta(playTime, id, LocalHost().faction.myIndex);
+            ClientSaveMeta meta = new ClientSaveMeta(playTime, id, LocalHost().pfaction);
             ClientSaveState saveGamestate = new ClientSaveState(meta);
             saveGamestate.save();
 

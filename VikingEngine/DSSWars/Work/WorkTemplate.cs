@@ -1578,7 +1578,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 infoContent.Add(new RbImage(sprite2));
             }
-            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip(workTooltip, new WorkTooltipArgs() { Faction = player.faction, City = city, Name = name, resourceInfo = resourceInfo, mineCount = mineCount, viewMode = viewMode, secondaryResourceInfo = secondResourceType }));
+            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip(workTooltip, new WorkTooltipArgs() { Faction = player.pfaction.GetFaction(), City = city, Name = name, resourceInfo = resourceInfo, mineCount = mineCount, viewMode = viewMode, secondaryResourceInfo = secondResourceType }));
 
             content.Add(infoButton);
             content.Add(new RbTab(0.2f));

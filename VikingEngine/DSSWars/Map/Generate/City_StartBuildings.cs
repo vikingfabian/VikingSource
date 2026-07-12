@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void createCampSite(IntVector2 subtilepos)
         {
             cityHallSubtilePos = subtilepos;
-            var localPlayer = TryGetPlayer(out var p) && p.IsLocalPlayer();
+            var localPlayer = pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer();
             EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false);
            
             edit.SubmitOrExecute();

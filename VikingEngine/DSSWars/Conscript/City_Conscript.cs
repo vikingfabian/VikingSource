@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     resetActive(ref status);
 
-                                    if (GetPlayer().IsLocalPlayer())
+                                    if (pfaction.TryGetLocalPlayer(out _))//.GetPlayer().IsLocalPlayer())
                                     {
                                         if (status.inProgress.specialization == SpecializationType.CityGuard)
                                         {
@@ -432,7 +432,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (army == null)
                 {
-                    army = GetFaction().NewArmy(recruitToTile);
+                    army = pfaction.GetFaction().NewArmy(recruitToTile);
                 }
             }
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
@@ -514,7 +514,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (army == null)
             {
-                army = GetFaction().NewArmy(recruitToTile);
+                army = pfaction.GetFaction().NewArmy(recruitToTile);
             }
 
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()

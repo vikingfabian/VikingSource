@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
 
                     if (rnd.Chance(chance) &&
-                       (nCity.factionIndex == city.factionIndex || rnd.Chance(0.1)))
+                       (nCity.pfaction == city.pfaction || rnd.Chance(0.1)))
                     {
 
                         if (city.myIndex == 139 || n == 139)

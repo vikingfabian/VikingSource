@@ -86,8 +86,8 @@ namespace VikingEngine.DSSWars.Players
             PlayerToPlayerDiplomacy result = null;
             if (toPlayerDiplomacies.TryGetValue(player.pfaction, out result) == false)
             {
-                result = new PlayerToPlayerDiplomacy(player.faction.myIndex);
-                toPlayerDiplomacies.Add(result.factionIndex, result);
+                result = new PlayerToPlayerDiplomacy(player.pfaction);
+                toPlayerDiplomacies.Add(result.pfaction, result);
             }
 
             return result;
@@ -273,7 +273,7 @@ namespace VikingEngine.DSSWars.Players
                 profile.casualControls &= Ref.netsett.remoteHostSettings.hostSettings.allowCasualControls;
             }
             
-            faction.diplomaticSide = DiplomaticSide.Light;
+            pfaction.GetFaction().diplomaticSide = DiplomaticSide.Light;
 
             InputMap input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource);
@@ -426,8 +426,9 @@ namespace VikingEngine.DSSWars.Players
                     //var tp = toPlayerDiplomacies[i];
                     //if (kv.Value != null)
                     //{
-                        w.Write((ushort)kv.Key);
-                        kv.Value.writeGameState(w);
+                        //w.Write((ushort)kv.Key);
+                kv.Key.write(w);        
+                kv.Value.writeGameState(w);
                     //}
                 }
                 w.Write(ushort.MaxValue);
@@ -488,11 +489,13 @@ namespace VikingEngine.DSSWars.Players
                 while (true)//if (toPlayerDiplomacies != null)
                 {
 
-                    int factionIndex = -1;
+                    var rpfaction = PFaction.Empty;
+                    //int factionIndex = -1;
 
                     if (subversion >= 114)
                     {
-                        factionIndex = r.ReadUInt16();
+                        rpfaction.read(r);
+                        //factionIndex = r.ReadUInt16();
                     }
                     else
                     {
@@ -500,16 +503,16 @@ namespace VikingEngine.DSSWars.Players
 
                         if (arraylib.InBound(DssRef.state.localPlayers, player))
                         {
-                            factionIndex = DssRef.state.localPlayers[player].faction.myIndex;
+                            rpfaction = DssRef.state.localPlayers[player].pfaction;
                         }
                     }
 
-                    if (factionIndex >= 0 && factionIndex < ushort.MaxValue)
+                    if (rpfaction.HasValue())
                     {
-                        PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy(factionIndex);
+                        PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy(rpfaction);
 
                         tp.readGameState(r, subversion);
-                        toPlayerDiplomacies.Add(factionIndex, tp);                        
+                        toPlayerDiplomacies.Add(rpfaction, tp);                        
                     }
                     else
                     {
@@ -732,12 +735,12 @@ namespace VikingEngine.DSSWars.Players
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+                while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                 {
                     EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
                     while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
                     {
-                        nCity.GetPlayer()?.onPlayerNeighborCapture(this);
+                        nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
                     }
                 }
             }
@@ -750,7 +753,7 @@ namespace VikingEngine.DSSWars.Players
                 EcsStaticArrayCounter neighbors = city.CityNeighbors();
                 while (neighbors.Next(DssRef.world.cities, out City nCity))
                 {
-                    nCity.GetPlayer()?.onPlayerNeighborCapture(this);
+                    nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
                 }
             }
         }
@@ -759,7 +762,9 @@ namespace VikingEngine.DSSWars.Players
         {
             base.onNewRelation(isActuator, otherPFaction, rel, previousRelation, localAction);
 
-            if (otherPFaction.TryGetFaction())
+            //Faction otherFaction = otherPFaction.GetFaction();
+
+            if (otherPFaction.TryGetFaction(out var otherFaction))
             {
                 if ((rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
                     otherFaction.factiontype != FactionType.SouthHara)
@@ -988,7 +993,7 @@ namespace VikingEngine.DSSWars.Players
 
             automation.asyncUpdate();
 
-            var city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
+            var city = pfaction.GetFaction().cities.GetRandom(Ref.rnd, DssRef.world.cities);
             if (city != null &&
                 city.automateCity &&
                 city.automationFocus == AutomationFocus.Military)
@@ -1002,7 +1007,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            faction.updateResourceOverview_async();
+            pfaction.GetFaction().updateResourceOverview_async();
 
             float z = gameControls.map.camera.LookTarget.Z / DssRef.world.Size.Y;
             if (z < 0.5)
@@ -1020,7 +1025,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
             {
                 citySel.WorkerStats_StuckBuildings_Process = 0;
             }
@@ -1038,7 +1043,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             citiesC.Reset();
-            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
             {
                 citySel.WorkerStats_StuckBuildings = citySel.WorkerStats_StuckBuildings_Process;
             }
@@ -1087,9 +1092,9 @@ namespace VikingEngine.DSSWars.Players
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
-            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.world.diplomacy.declareWar(faction, enemyFac);
+            Faction enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
+            DssRef.settings.darkLordPlayer.pfaction.GetFaction().hasDeserters = false;
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1099,7 +1104,7 @@ namespace VikingEngine.DSSWars.Players
 
             //if (friendly)
             {
-                var army = faction.NewArmy(position);
+                var army = pfaction.GetFaction().NewArmy(position);
                 friendlyArmy = army;
                 army.rotation = playerRot;
 
@@ -1167,8 +1172,8 @@ namespace VikingEngine.DSSWars.Players
             Rotation1D enemyRot = Rotation1D.FromDegrees(180 + Ref.rnd.Plus_Minus(10));
             Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
-            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
+            Faction enemyFac = DssRef.settings.Faction_DarkFollower.GetFaction();//DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
+            enemyFac.hasDeserters = false;
             //DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
@@ -1179,7 +1184,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (friendly)
             {
-                var army = faction.NewArmy(position);
+                var army = pfaction.GetFaction().NewArmy(position);
                 friendlyArmy = army;
                 army.rotation = playerRot;
                 army.armyColumnWidth = 6;
@@ -1389,11 +1394,11 @@ namespace VikingEngine.DSSWars.Players
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.world.findOrCreate( FactionType.Barbarians, DssRef.settings.Faction_Barbarian);
+            Faction enemyFac = DssRef.settings.Faction_Barbarian.GetFaction();
             enemyFac.money.copper = -10000;
             enemyFac.hasDeserters = true;
             enemyFac.player.protectedFromDelete = false;
-            DssRef.world.diplomacy.declareWar(faction, enemyFac);
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1403,7 +1408,7 @@ namespace VikingEngine.DSSWars.Players
 
             //if (friendly)
             {
-                var army = faction.NewArmy(position);
+                var army = pfaction.GetFaction().NewArmy(position);
                 friendlyArmy = army;
                 army.rotation = playerRot;
 
@@ -1482,9 +1487,9 @@ namespace VikingEngine.DSSWars.Players
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
-            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.world.diplomacy.declareWar(faction, enemyFac);
+            Faction enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
+            enemyFac.hasDeserters = false;
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1494,7 +1499,7 @@ namespace VikingEngine.DSSWars.Players
 
             //if (friendly)
             {
-                var army = faction.NewArmy(position);
+                var army = pfaction.GetFaction().NewArmy(position);
                 friendlyArmy = army;
                 army.rotation = playerRot;
 
@@ -1679,43 +1684,43 @@ namespace VikingEngine.DSSWars.Players
                 if (DssRef.difficulty.resourcesStartHelp)
                 {
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+                    while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
                         citySel.checkPlayerFuelAccess_OnGamestart_async();
                     }
                 }
             }
 
-            faction.refreshMainCity();
-            if (faction.mainCity != null)
+            pfaction.GetFaction().refreshMainCity();
+            if (pfaction.GetFaction().mainCity != null)
             {
                 if (newGame)
                 {
-                    faction.mainCity.Tag = new MapObjectTag(CityTagBack.Carton, MapObjectTag.Tag_Faction);
+                    pfaction.GetFaction().mainCity.Tag = new MapObjectTag(CityTagBack.Carton, MapObjectTag.Tag_Faction);
 
                     if (profile.casualControls)
                     {
-                        faction.mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
+                        pfaction.GetFaction().mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
                     }
 
                     if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
                     {   
                         for (int i = 0; i < CityResourceIndex.COUNT; i++)
                         {
-                            ref GroupedResource resources = ref faction.mainCity.GetRefGroupedResource(i);
+                            ref GroupedResource resources = ref pfaction.GetFaction().mainCity.GetRefGroupedResource(i);
                             resources.hardSetLimit(100);
                         }
                     }
                 }
 
-                gameControls.map.setCameraPos(faction.mainCity.tilePos);
+                gameControls.map.setCameraPos(pfaction.GetFaction().mainCity.tilePos);
             }
             else
             {
                 gameControls.map.setCameraPos(DssRef.world.Size / 2);
             }
 
-            nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+            nextDominationSize = pfaction.GetFaction().cities.Count + DssConst.DominationSizeIncrease.GetRandom();
 
             if (DssRef.state.host)
             {
@@ -1725,7 +1730,7 @@ namespace VikingEngine.DSSWars.Players
 
         public double diplomacyAddPerSec()
         {
-            return DssRef.world.diplomacy.DefaultDiplomacyPerSecond + DssRef.world.diplomacy.EmbassyAddDiplomacy * faction.embassyCount;
+            return DssRef.world.diplomacy.DefaultDiplomacyPerSecond + DssRef.world.diplomacy.EmbassyAddDiplomacy * pfaction.GetFaction().embassyCount;
         }
 
         public MapDetailLayerType mapLayer()
@@ -1754,9 +1759,9 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
 
-            faction.resourceOverviewOneSecondUpdate();
+            pfaction.GetFaction().resourceOverviewOneSecondUpdate();
 
-            double max = DssRef.world.diplomacy.DefaultMaxDiplomacy + DssRef.world.diplomacy.EmbassyAddMaxDiplomacy * faction.embassyCount;
+            double max = DssRef.world.diplomacy.DefaultMaxDiplomacy + DssRef.world.diplomacy.EmbassyAddMaxDiplomacy * pfaction.GetFaction().embassyCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);
             diplomaticPoints.setMax(max + DssRef.world.diplomacy.Diplomacy_HardMax_Add);
 
@@ -1780,7 +1785,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (StartupSettings.EndlessResources)
             {
-                faction.addGold_factionWide(1000);
+                pfaction.GetFaction().addGold_factionWide(1000);
             }
 
             if (StartupSettings.EndlessDiplomacy)

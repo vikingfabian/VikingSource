@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars.GameObject
             void execute()
             {
                 
-                if ( TryGetPlayer(out var player) && player.IsBot())
+                if ( pfaction.TryGetPlayer(out var player) && player.IsBot())
                 {
                     autoColumnWidth();
                 }

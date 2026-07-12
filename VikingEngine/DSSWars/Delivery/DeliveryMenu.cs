@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars.Delivery
                 content.newLine();
 
                 int none = 0;
-                listCities(city.GetFaction(), false, ref none);
+                listCities(city.pfaction.GetFaction(), false, ref none);
 
                 //AUTO CITY
                 {
@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Delivery
                 content.Add(new RbText(DssRef.lang.Diplomacy_RelationType_Ally + ":", HudLib.TitleColor_Label2));
                 content.newLine();
                 int alliedCities = 0;
-                RelationsLoop allies = new RelationsLoop(city.factionIndex);
+                RelationsLoop allies = new RelationsLoop(city.pfaction);
                 while (allies.nextAlly())
                 {
                     if (allies.OtherFaction(out Faction ally))

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -28,21 +29,20 @@ namespace VikingEngine.DSSWars.GameObject
         public LocationPin(RemotePlayer player)
         {
             IsNetHosted = false;
-            factionIndex = player.faction.myIndex;
+            pfaction = player.pfaction;
         }
 
         public LocationPin(AbsHumanPlayer player, Vector3 position)
         { 
             this.position = position;
-            
-            factionIndex = player.faction.myIndex;
+            pfaction = player.pfaction; 
             createOverViewModel();
             inRender_overviewLayer = true;          
         }
 
         public LocationPin(AbsHumanPlayer player, System.IO.BinaryReader r, int subVersion)
         {
-            factionIndex = player.faction.myIndex;
+            pfaction = player.pfaction;
             readGameState(r, subVersion);
         }
 
@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
             if (!tagToHud(args.content))
             {
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
                 if (faction != null)
                 {
                     args.content.Add(faction.FlagTextureToHud());
@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             PinPresentationHud(args, true);
             //base.toTooltip(args);
-            var remote = GetFaction()?.player.GetRemotePlayer();
+            var remote = pfaction.GetFaction()?.player.GetRemotePlayer();
             if (remote != null)
             {
                 args.content.newLine();
@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void createOverViewModel()
         {
-            var f = GetFaction();
+            var f = pfaction.GetFaction();
             if (f != null && Net_IsVisible())
             {
                 tilePos = WP.ToTilePos(position);
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    lib.DoNothing();
             //}
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, IsNetHosted ? GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, IsNetHosted ? pfaction.GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
         }
 
         public override void setInRenderState()
@@ -376,20 +376,20 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
+        public override bool aliveAndBelongTo(PFaction faction)
         {
             return base.aliveAndBelongTo(faction);
         }
 
-        public override bool defeatedBy(int attackerFaction)
+        public override bool defeatedBy(PFaction attackerFaction)
         {
             throw new NotImplementedException();
         }
 
-        public override bool aliveAndBelongTo(int faction)
-        {
-            throw new NotImplementedException();
-        }
+        //public override bool aliveAndBelongTo(int faction)
+        //{
+        //    throw new NotImplementedException();
+        //}
         public override void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason)
         {
             throw new NotImplementedException();

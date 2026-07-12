@@ -2351,9 +2351,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 //var nCity = DssRef.world.cities[nIx];
                 if (nCity.pfaction != pfaction
-                    && nCity.HasFaction())
+                    && nCity.pfaction.TryGetFaction(out _))
                 {
-                    //if (nCity.factionIndex != faction.myIndex)
+                    //if (nCity.pfaction != faction.myIndex)
                     //{
                         var relation = DssRef.world.diplomacy.GetRelation(nCity.pfaction, pfaction);
                     if (relation.Relation <= RelationType.RelationTypeN1_Enemies)

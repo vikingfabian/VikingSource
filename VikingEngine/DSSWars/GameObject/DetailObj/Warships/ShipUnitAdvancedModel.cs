@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             float crewScale = DssConst.Men_StandardModelScale * 1.6f;
 
-            var faction = soldier.GetFaction();
+            var faction = soldier.pfaction.GetFaction();
 
             if (faction == null)
             {

@@ -1210,7 +1210,7 @@ namespace VikingEngine.DSSWars.Map
         {
             if (!city.PenUpkeep_IsPayed)
             {
-                Faction faction = city.GetFaction();
+                Faction faction = city.pfaction.GetFaction();
 
                 foreach (var pos in AnimalPens)
                 {

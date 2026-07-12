@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.XP
                             }
                             else
                             {
-                                switch (DssRef.world.diplomacy.GetRelation(city.GetFaction(), nCity.GetFaction()).Relation)
+                                switch (DssRef.world.diplomacy.GetRelation(city.pfaction.GetFaction(), nCity.pfaction.GetFaction()).Relation)
                                 {
                                     case RelationType.RelationType2_Good:
                                         TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);

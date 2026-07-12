@@ -345,7 +345,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 tutorialLength = missions.Count;
 
-                if (player.faction.cities.Count <= 1)
+                if (player.pfaction.GetFaction().cities.Count <= 1)
                 {
                     missions.Add(TutorialMission.SecondCity);
                 }
@@ -393,7 +393,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //while (cityCounter.Next())
             //{
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+            while (citiesC.Next(ref player.pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
             {
                 citySel.resourceAmountSet(EntityComponent.CityResourceIndex.wood, 0);
                 citySel.resourceAmountSet(EntityComponent.CityResourceIndex.skinLinnen, 8);
@@ -413,10 +413,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
             }
 
-            player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.craftSharpStick,0);
-            player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.craftBow,0);//craft_bow.value = 0;
-            player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.craftPaddedArmor,0);//craft_paddedarmor.value = 0;
-            player.faction.refreshCityWork();
+            player.pfaction.GetFaction().workTemplate.setWorkPrio(Work.WorkPriorityType.craftSharpStick,0);
+            player.pfaction.GetFaction().workTemplate.setWorkPrio(Work.WorkPriorityType.craftBow,0);//craft_bow.value = 0;
+            player.pfaction.GetFaction().workTemplate.setWorkPrio(Work.WorkPriorityType.craftPaddedArmor,0);//craft_paddedarmor.value = 0;
+            player.pfaction.GetFaction().refreshCityWork();
             
             refreshLimits();
 
@@ -1146,7 +1146,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
 
-                    if (!casualRecruit_recruit && player.faction.armies.Count > 0)
+                    if (!casualRecruit_recruit && player.pfaction.GetFaction().armies.Count > 0)
                     {
                         casualRecruit_recruit = true;
                         onPartSuccess(true);
@@ -1224,12 +1224,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 //player.faction.workTemplate.wood.value = 2;
                                 //player.faction.workTemplate.stone.value = 4;
 
-                                player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.move, 2);
-                                player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.wood, 2);
-                                player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.stone, 4);
+                                player.pfaction.GetFaction().workTemplate.setWorkPrio(Work.WorkPriorityType.move, 2);
+                                player.pfaction.GetFaction().workTemplate.setWorkPrio(Work.WorkPriorityType.wood, 2);
+                                player.pfaction.GetFaction().workTemplate.setWorkPrio(Work.WorkPriorityType.stone, 4);
 
 
-                                player.faction.refreshCityWork();
+                                player.pfaction.GetFaction().refreshCityWork();
 
 
                                 collectResources_collectwood = true;
@@ -1408,7 +1408,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!conscriptArmy_createArmy)
                     {
-                        var armyC = player.faction.armies.counter();
+                        var armyC = player.pfaction.GetFaction().armies.counter();
 
                         while (armyC.Next())
                         {
@@ -1447,7 +1447,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!moveArmy_SelectMove)
                     {
-                        var armyC = player.faction.armies.counter();
+                        var armyC = player.pfaction.GetFaction().armies.counter();
 
                         while (armyC.Next())
                         {
@@ -1500,7 +1500,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         //{
                         //    if (rel != null)
                         //    {
-                        RelationsLoop loop = new RelationsLoop(player.faction.myIndex);
+                        RelationsLoop loop = new RelationsLoop(player.pfaction);
                         while (loop.Next())
                         {
                             if (loop.Relation().Relation >= RelationType.RelationType2_Good)
@@ -1541,7 +1541,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                         if (!secondCity_buySettler.Value1)
                         {
-                            var armiesC = player.faction.armies.counter();
+                            var armiesC = player.pfaction.GetFaction().armies.counter();
                             while (armiesC.Next())
                             {
                                 if (armiesC.sel.HasSettler(out _))
@@ -1555,7 +1555,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                         if (!secondCity_getCity.Value1)
                         {
-                            if (player.faction.cities.Count >= 2)
+                            if (player.pfaction.GetFaction().cities.Count >= 2)
                             {
                                 secondCity_getCity.Value1 = true;
                                 onPartSuccess();
@@ -1569,7 +1569,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //TwoBools tagCity_selectCity_sound = TwoBools.False;
 
                     if (player.gameControls.map.selection.obj is City &&
-                        player.gameControls.map.selection.obj != player.faction.mainCity)
+                        player.gameControls.map.selection.obj != player.pfaction.GetFaction().mainCity)
                     {
                         if (!tagCity_selectCity_sound.Value1)
                         {
@@ -1663,7 +1663,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         City city = player.gameControls.map.selection.obj?.GetCity();
 
-                        if (city != null && city != player.faction.mainCity)
+                        if (city != null && city != player.pfaction.GetFaction().mainCity)
                         {
                             if (!logisticsUpgrade_wasTent && city.cityType == CityType.Campsite)
                             {
@@ -1814,7 +1814,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             //while (citiesC.Next())
                             //{
                             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+                            while (citiesC.Next(ref player.pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                             {
                                 if (citySel.terrainStructure.resourceCount_wood > mostWood)
                                 {
@@ -2123,7 +2123,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         //while (citiesC.Next())
                         //{
                         SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                        while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City city))
+                        while (citiesC.Next(ref player.pfaction.GetFaction().cities, DssRef.world.cities, out City city))
                         {
                             var soldierGroupsC = city.groups.counter();
                             while (soldierGroupsC.Next())
@@ -2684,7 +2684,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         void setBaseResources(int amount)
         {
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+            while (citiesC.Next(ref player.pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
             {
                 foreach (var res in BaseTutorialResources)
                 {
@@ -2695,7 +2695,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         
         void spawnBarbarians()
         {
-            var city = player.faction.mainCity;
+            var city = player.pfaction.GetFaction().mainCity;
 
             barbarianArmy = StoryEvent_Barbarians.spawnBarbarians(city, true);
             player.gameControls.map.cameraFocus = barbarianArmy;

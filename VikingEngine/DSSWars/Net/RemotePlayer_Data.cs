@@ -210,11 +210,11 @@ namespace VikingEngine.DSSWars.Players
 
         public bool Net_SendCityTiles_async()
         {
-            if (faction != null && faction.cities.Count > 0)
+            if (pfaction.GetFaction() != null && pfaction.GetFaction().cities.Count > 0)
             {
                 int chunkSize = 4;
 
-                int cityIx = faction.cities.GetRandom(Ref.rnd);
+                int cityIx = pfaction.GetFaction().cities.GetRandom(Ref.rnd);
                 var city = DssRef.world.cities[cityIx];
                 ForXYLoop loop = new ForXYLoop(city.cityTileArea);
                 while (loop.Next() && chunkSize > 0)

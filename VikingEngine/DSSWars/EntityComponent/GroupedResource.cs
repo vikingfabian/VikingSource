@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.EntityComponent
                     new RbText(TextLib.LargeFirstLetter(itemName) + ": ", HudLib.TitleColor_TypeName),
                     new RbText(TextLib.LargeNumber(amount)),
 
-                }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.faction, city, item))));
+                }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.pfaction.GetFaction(), city, item))));
 
                 if (item != ItemResourceType.Water_G &&
                     item != ItemResourceType.Gold &&

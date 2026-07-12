@@ -55,13 +55,13 @@ namespace VikingEngine.DSSWars.Players
             pointer.Update(playerView);
             updatePlayer();
 
-            if (faction == null)
+            if (pfaction.GetFaction() == null)
             {
-                faction = DssRef.world.faction(assignedFaction);
+                pfaction.GetFaction() = DssRef.world.faction(assignedFaction);
             }
-            else if (faction.player == null)
+            else if (pfaction.GetFaction().player == null)
             {
-                faction.player = this;
+                pfaction.GetFaction().player = this;
             }
         }
 
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Players
             warManagerGear = new WarManagerGear(WarManagerGear.StartGear, localAiAggressivity);
 
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
             {
                 citySel.money.copper = Math.Max(citySel.money.copper, Resource.Money.GoldToCopper * 100);
 
@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (humans.sel != this)
                 {
-                    DssRef.world.diplomacy.SetRelationType(faction, humans.sel.faction, null, Ref.netsett.hostSettings.startDiplomacy);
+                    DssRef.world.diplomacy.SetRelationType(pfaction.GetFaction(), humans.sel.pfaction.GetFaction(), null, Ref.netsett.hostSettings.startDiplomacy);
                 }
             }
         }

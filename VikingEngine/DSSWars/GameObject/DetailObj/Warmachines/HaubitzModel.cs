@@ -26,12 +26,12 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
             float scale = soldier.soldierData.modelScale;
             diff = new Vector3(0, 0.11f, 0.18f) * scale;
 
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * Xdiff, scale * Zdiff);
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * -Xdiff, scale * Zdiff);
 
-            barrel = soldier.GetFaction().AutoLoadModelInstance_batched(
+            barrel = soldier.pfaction.GetFaction().AutoLoadModelInstance_batched(
                  VoxelModelName.wars_ironsiegecannon, scale);
             barrel.Frame = 1;
             //barrel.AddToRender(DrawGame.UnitDetailLayer);
