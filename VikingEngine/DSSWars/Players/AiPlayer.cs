@@ -100,34 +100,34 @@ namespace VikingEngine.DSSWars.Players
             switch (faction.factiontype)
             {
                 case FactionType.DarkFollower:
-                    DssRef.settings.Faction_DarkFollower = faction.myIndex;
+                    DssRef.settings.Faction_DarkFollower = faction.pfaction;
                     break;
 
                 case FactionType.Barbarians:
-                    DssRef.settings.Faction_Barbarian = faction.myIndex;
+                    DssRef.settings.Faction_Barbarian = faction.pfaction;
                     break;
 
                 case FactionType.UnitedKingdom:
-                    DssRef.settings.Faction_UnitedKingdom = faction.myIndex;
+                    DssRef.settings.Faction_UnitedKingdom = faction.pfaction;
                     break;
 
                 case FactionType.GreenWood:
-                    DssRef.settings.Faction_GreenWood = faction.myIndex;
+                    DssRef.settings.Faction_GreenWood = faction.pfaction;
                     break;
                 case FactionType.SouthHara:
-                    DssRef.settings.Faction_SouthHara = faction.myIndex;
+                    DssRef.settings.Faction_SouthHara = faction.pfaction;
                     break;
 
                 case FactionType.DyingMonger:
-                    DssRef.settings.Faction_DyingMonger = faction.myIndex;
+                    DssRef.settings.Faction_DyingMonger = faction.pfaction;
                     break;
 
                 case FactionType.DyingHate:
-                    DssRef.settings.Faction_DyingHate = faction.myIndex;
+                    DssRef.settings.Faction_DyingHate = faction.pfaction;
                     break;
 
                 case FactionType.DyingDestru:
-                    DssRef.settings.Faction_DyingDestru = faction.myIndex;
+                    DssRef.settings.Faction_DyingDestru = faction.pfaction;
                     break;
             }
         }
@@ -648,7 +648,7 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.DefaultAi:
                     defaultSetup();
                     techSetup();
-                    name = string.Format(DssRef.lang.FactionName_GenericAi, faction.myIndex);
+                    name = string.Format(DssRef.lang.FactionName_GenericAi, faction.pfaction);
                     break;
 
                 case FactionType.DarkLord:
@@ -672,7 +672,7 @@ namespace VikingEngine.DSSWars.Players
 
                 case FactionType.DarkFollower:
                     aiConscript = AiConscript.Orcs;
-                    DssRef.settings.Faction_DarkFollower = faction.myIndex;
+                    DssRef.settings.Faction_DarkFollower = faction.pfaction;
                     name = DssRef.lang.FactionName_DarkFollower;
 
                     if (!quickMatchSetup())
@@ -693,7 +693,7 @@ namespace VikingEngine.DSSWars.Players
                     aiConscript = AiConscript.Orcs;
                     faction.diplomaticSide = DiplomaticSide.Dark;
 
-                    DssRef.settings.Faction_Barbarian = faction.myIndex;
+                    DssRef.settings.Faction_Barbarian = faction.pfaction;
                     protectedFromDelete = true;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
@@ -710,7 +710,7 @@ namespace VikingEngine.DSSWars.Players
                     if (!quickMatchSetup())
                     {
                         faction.diplomaticSide = DiplomaticSide.Dark;
-                        DssRef.settings.Faction_UnitedKingdom = faction.myIndex;
+                        DssRef.settings.Faction_UnitedKingdom = faction.pfaction;
                         aggressionLevel = AggressionLevel1_RevengeOnly;
                         
                         faction.storyFaction = true;
@@ -725,7 +725,7 @@ namespace VikingEngine.DSSWars.Players
 
                 case FactionType.GreenWood:
                     aiConscript = AiConscript.Green;
-                    DssRef.settings.Faction_GreenWood = faction.myIndex;
+                    DssRef.settings.Faction_GreenWood = faction.pfaction;
                     name = DssRef.lang.FactionName_Greenwood;
 
                     if (!quickMatchSetup())
@@ -816,7 +816,7 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.SouthHara:
                     aiConscript = AiConscript.Orcs;
                     faction.diplomaticSide = DiplomaticSide.Dark;
-                    DssRef.settings.Faction_SouthHara = faction.myIndex;
+                    DssRef.settings.Faction_SouthHara = faction.pfaction;
                     protectedFromDelete = true;
 
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
@@ -837,7 +837,7 @@ namespace VikingEngine.DSSWars.Players
                     if (!quickMatchSetup())
                     {
                         faction.diplomaticSide = DiplomaticSide.Dark;
-                        DssRef.settings.Faction_DyingMonger = faction.myIndex;
+                        DssRef.settings.Faction_DyingMonger = faction.pfaction;
 
                         aggressionLevel = AggressionLevel1_RevengeOnly;
                         faction.growthMultiplier = 4f;
@@ -851,7 +851,7 @@ namespace VikingEngine.DSSWars.Players
 
                 case FactionType.DyingHate:
                     faction.diplomaticSide = DiplomaticSide.Dark;
-                    DssRef.settings.Faction_DyingHate = faction.myIndex;
+                    DssRef.settings.Faction_DyingHate = faction.pfaction;
 
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 4f;
@@ -867,7 +867,7 @@ namespace VikingEngine.DSSWars.Players
                     if (!quickMatchSetup())
                     {
                         faction.diplomaticSide = DiplomaticSide.Dark;
-                        DssRef.settings.Faction_DyingDestru = faction.myIndex;
+                        DssRef.settings.Faction_DyingDestru = faction.pfaction;
 
                         aggressionLevel = AggressionLevel1_RevengeOnly;
                         faction.growthMultiplier = 4f;

@@ -8,7 +8,7 @@ using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 {
-    struct PFaction : IEquatable<PFaction>
+    struct PFaction : IEquatable<PFaction>, IBinaryIOobj
     {
         public int factionIndex;
         public static readonly PFaction Empty = new PFaction();

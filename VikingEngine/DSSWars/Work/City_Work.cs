@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_workUpdate(int updateSpeed)
         {
-            if (factionIndex < 0 || cityType == CityType.UnClaimed)
+            if (pfaction.IsEmpty() || cityType == CityType.UnClaimed)
             {
                 CityStructure.WorkInstance.update(DssRef.world, this, 0);
                 return; 

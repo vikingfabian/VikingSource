@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars.Data
@@ -76,7 +77,7 @@ namespace VikingEngine.DSSWars.Data
         public int metaVersion = Version;
         public ulong host;
         public WorldMetaId World;
-        public int faction;
+        public PFaction faction;
 
         DataStream.FilePath filepath(int index)
         {
@@ -85,7 +86,7 @@ namespace VikingEngine.DSSWars.Data
 
         public DataStream.FilePath Path => filepath(index);
 
-        public ClientSaveMeta(TimeSpan playTime, WorldMetaId World, int faction)
+        public ClientSaveMeta(TimeSpan playTime, WorldMetaId World, PFaction faction)
         {
             saveDate = DateTime.Now;
             this.World = World;
@@ -112,8 +113,8 @@ namespace VikingEngine.DSSWars.Data
           
             w.Write(host);
             World.write(w);
-            w.Write((ushort)faction);
-
+            //w.Write((ushort)faction);
+            faction.write(w);
             Debug.WriteCheck(w);
         }
 
@@ -130,7 +131,7 @@ namespace VikingEngine.DSSWars.Data
             
             host = r.ReadUInt64();
             World.read(r);
-            faction = r.ReadUInt16();
+            faction.read(r); //r.ReadUInt16();
 
             Debug.ReadCheck(r);            
         }

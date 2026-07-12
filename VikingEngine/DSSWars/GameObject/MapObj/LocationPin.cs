@@ -376,10 +376,10 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override bool aliveAndBelongTo(PFaction faction)
-        {
-            return base.aliveAndBelongTo(faction);
-        }
+        //public override bool aliveAndBelongTo(PFaction pfaction)
+        //{
+        //    return base.aliveAndBelongTo(faction);
+        //}
 
         public override bool defeatedBy(PFaction attackerFaction)
         {

@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
             DssRef.settings.darkLordPlayer.pfaction.GetFaction().hasDeserters = false;
-            DssRef.world.diplomacy.declareWar(player.pfaction.GetFaction(), enemyFac);
+            DssRef.world.diplomacy.declareWar(player.pfaction, enemyFac.pfaction);
 
             //IntVector2 position = WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter);//mapConttilePosition;
 

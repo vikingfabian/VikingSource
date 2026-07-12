@@ -795,7 +795,7 @@ namespace VikingEngine.DSSWars
                 Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
                 if (faction != null)
                 {
-                    sender.pfaction.GetFaction() = faction;
+                    sender.pfaction = faction.pfaction;
                 }
                 sender.giftedAchievements.readNetStatus(packet.r);
 

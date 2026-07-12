@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -163,9 +164,9 @@ namespace VikingEngine.DSSWars.Players.Orders
 
       
 
-        public override bool refreshAvailable(Faction faction)
+        public override bool refreshAvailable(PFaction faction)
         {
-            return city.pfaction == faction.myIndex;
+            return city.pfaction == faction;
         }
 
         override public OrderType GetWorkType(City city)

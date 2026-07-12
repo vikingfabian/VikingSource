@@ -59,8 +59,8 @@ namespace VikingEngine.DSSWars.Map
                                 int borderRegion = t.GetBorder(dir);
                                 if (borderRegion >= 0)
                                 {
-                                    var factionIx = GameObject.City.Get(borderRegion).pfaction;
-                                    bool differentFactions = factionIx < 0 || GameObject.City.Get(borderRegion).pfaction != t.City().pfaction;
+                                    var pfaction = GameObject.City.Get(borderRegion).pfaction;
+                                    bool differentFactions = pfaction.IsEmpty() || GameObject.City.Get(borderRegion).pfaction != t.City().pfaction;
                                     //if (factionIx < 0 || GameObject.City.Get(borderRegion).pfaction != t.City().pfaction)
                                     {
 

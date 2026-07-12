@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.HUD.RichBox;
@@ -30,7 +31,7 @@ namespace VikingEngine.DSSWars.Players
         public bool waitingForHandover = false;
 
         public AbsPlayer previousPlayer;
-        public int assignedFaction = ushort.MaxValue;
+        public PFaction assignedFaction = PFaction.Empty;//ushort.MaxValue;
         public FactionType previousFactionType;
         public RemotePlayerPointer pointer;
         public GamerCommunicationSetting communicationSetting; //not implemented
@@ -57,7 +58,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (pfaction.GetFaction() == null)
             {
-                pfaction.GetFaction() = DssRef.world.faction(assignedFaction);
+                pfaction= assignedFaction;
             }
             else if (pfaction.GetFaction().player == null)
             {
@@ -169,7 +170,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (humans.sel != this)
                 {
-                    DssRef.world.diplomacy.SetRelationType(pfaction.GetFaction(), humans.sel.pfaction.GetFaction(), null, Ref.netsett.hostSettings.startDiplomacy);
+                    DssRef.world.diplomacy.SetRelationType(pfaction, humans.sel.pfaction, PFaction.Empty, Ref.netsett.hostSettings.startDiplomacy);
                 }
             }
         }
@@ -198,7 +199,7 @@ namespace VikingEngine.DSSWars.Players
 
         public override void AssignFaction(Faction faction)
         {
-            assignedFaction = faction.myIndex;
+            assignedFaction = faction.pfaction;
             previousPlayer = faction.player;
             previousFactionType = faction.factiontype;
             base.AssignFaction(faction);            

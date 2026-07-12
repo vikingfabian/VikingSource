@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.Event
@@ -1130,8 +1131,8 @@ namespace VikingEngine.DSSWars.Event
 
     class StoryEvent_DarkLord : AbsStoryEvent
     {
-        List<Faction> darkLordAvailableFactions = null;
-        List<Faction> darkLordAllies = null;
+        List<PFaction> darkLordAvailableFactions = null;
+        List<PFaction> darkLordAllies = null;
 
         public override EventType StoryEventType()
         {
@@ -1202,10 +1203,10 @@ namespace VikingEngine.DSSWars.Event
             Rectangle2 mapCenter = new Rectangle2(IntVector2.Zero, DssRef.world.Size);
             mapCenter.AddRadius(-mapCenter.Height / 8);
 
-            List<Faction> perfectPosition = new List<Faction>();
-            List<Faction> available = new List<Faction>();
-            darkLordAllies = new List<Faction>(16);
-            var secondaryChoise = new List<Faction>(16);
+            List<PFaction> perfectPosition = new List<PFaction>();
+            List<PFaction> available = new List<PFaction>();
+            darkLordAllies = new List<PFaction>(16);
+            var secondaryChoise = new List<PFaction>(16);
 
             var factionC = DssRef.world.factions.counter();
 
@@ -1221,7 +1222,7 @@ namespace VikingEngine.DSSWars.Event
                     factionC.sel.cities.Count >= 2 &&
                     !DssRef.world.diplomacy.PositiveRelationWithPlayer(factionC.sel))
                 {
-                    available.Add(factionC.sel);
+                    available.Add(factionC.sel.pfaction);
 
                     //if (factionC.sel.cities.Count >= 4 &&
                     //    factionC.sel.mainCity != null &&
@@ -1229,18 +1230,18 @@ namespace VikingEngine.DSSWars.Event
                     //    !factionC.sel.HasPlayerNeighbor())
                     if (factionInGoodDistanceFromPlayer(factionC.sel))
                     {
-                        perfectPosition.Add(factionC.sel);
+                        perfectPosition.Add(factionC.sel.pfaction);
                     }
                 }
 
                 if (DssRef.world.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
                     factionC.sel.diplomaticSide == DiplomaticSide.Dark)
                 {
-                    darkLordAllies.Add(factionC.sel);
+                    darkLordAllies.Add(factionC.sel.pfaction);
                 }
                 else if (!DssRef.world.diplomacy.PositiveRelationWithPlayer(factionC.sel, RelationType.RelationType3_Ally))
                 {
-                    secondaryChoise.Add(factionC.sel);
+                    secondaryChoise.Add(factionC.sel.pfaction);
                 }
             }
 
@@ -1288,15 +1289,35 @@ namespace VikingEngine.DSSWars.Event
         public override void writeGameState(BinaryWriter w)
         {
             base.writeGameState(w);
-            IOLib.WriteObjectList(w, darkLordAvailableFactions);
-            IOLib.WriteObjectList(w, darkLordAllies);
+            IOLib.WriteBinaryList(w, darkLordAvailableFactions);
+            IOLib.WriteBinaryList(w, darkLordAllies);
         }
 
         public override void readGameState(BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             base.readGameState(r, subVersion, pointers);
-            darkLordAvailableFactions = IOLib.ReadObjectList<Faction>(r);
-            darkLordAllies = IOLib.ReadObjectList<Faction>(r);
+            if (subVersion < 130)
+            {
+                var old_darkLordAvailableFactions = IOLib.ReadObjectList<Faction>(r);
+                var old_darkLordAllies = IOLib.ReadObjectList<Faction>(r);
+
+                darkLordAvailableFactions = new List<PFaction>(old_darkLordAvailableFactions.Count);
+                foreach (var f in old_darkLordAvailableFactions)
+                {
+                    darkLordAvailableFactions.Add(f.pfaction);
+                }
+
+                darkLordAllies = new List<PFaction>(old_darkLordAllies.Count);
+                foreach (var f in old_darkLordAllies)
+                {
+                    darkLordAllies.Add(f.pfaction);
+                }
+            }
+            else
+            {
+                darkLordAvailableFactions = IOLib.ReadBinaryList<PFaction>(r);
+                darkLordAllies = IOLib.ReadBinaryList<PFaction>(r);
+            }
         }
         public override int OrderIndex()
         {

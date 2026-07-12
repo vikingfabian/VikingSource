@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     if (othercity != null)
                                     {
                                         bool correctOwner = othercity.pfaction == this.pfaction;
-                                        if (!correctOwner && DssRef.world.diplomacy.GetRelation_Safe(factionIndex, othercity.pfaction).Relation >= RelationType.RelationType2_Good)
+                                        if (!correctOwner && DssRef.world.diplomacy.GetRelation(pfaction, othercity.pfaction).Relation >= RelationType.RelationType2_Good)
                                         {
                                             correctOwner = true;
                                             if (!othercity.IsNetHosted && status.remoteDeliveryUpdateRequest.minPassed(5))
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 City othercity = DssRef.world.cities[status.inProgress.ToCity()];
 
-                                if (othercity.pfaction != factionIndex && !othercity.IsNetHosted)
+                                if (othercity.pfaction != pfaction && !othercity.IsNetHosted)
                                 {
                                     //Send over net
                                     NetWriteDelivery(ref status, othercity);

@@ -320,7 +320,7 @@ namespace VikingEngine.DSSWars.GameObject
         public static void ProjectileHit(bool fullUpdate, AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount, AbsSoldierUnit fromAttack)
         {
 
-            target.takeDamage(damage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.pfaction.GetFaction(), fullUpdate, out _);
+            target.takeDamage(damage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.pfaction, fullUpdate, out _);
             if (splashCount > 0 && target.IsSoldierUnit())
             {
                 int splashDamage = damage;
@@ -330,7 +330,7 @@ namespace VikingEngine.DSSWars.GameObject
                     var target2 = target.group.soldiers?.GetRandomUnsafe(Ref.rnd);
                     if (target2 != null)
                     {
-                        target2.takeDamage(splashDamage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.pfaction.GetFaction(), fullUpdate, out _);
+                        target2.takeDamage(splashDamage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.pfaction, fullUpdate, out _);
                     }
                 }
             }
