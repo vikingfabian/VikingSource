@@ -85,6 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
             id = ++DssRef.state.NextArmyId;
         }
 
+
         public void init(Faction faction, int overrideIx = -1)
         {
 #if DEBUG

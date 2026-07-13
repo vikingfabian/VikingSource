@@ -4,9 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
 
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
@@ -25,14 +22,6 @@ using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.LootFest.Players;
-using VikingEngine.PJ.CarBall;
-using VikingEngine.ToGG.HeroQuest;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.ToGG.MoonFall.GO;
-using VikingEngine.ToGG.MoonFall.Players;
-using VikingEngine.ToGG.ToggEngine.Map;
-using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -143,7 +132,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-
+        public PSoldierGroup pointer()
+        {
+            if (army.TryGetTarget(out var target))
+            {
+                return new PSoldierGroup(target.pointer(), myIndex);
+            }
+            return PSoldierGroup.Empty;
+        }
 
         private void initPart1(AbsArmy tArmy)
         {
@@ -1917,6 +1913,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchNearObjectsUpdate()
         {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
+
             if (!army.TryGetTarget(out var tArmy))
             { return; }
 
@@ -1940,7 +1941,8 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (var opponent in groups)
             {
                 var group = opponent?.GetGroup();
-                if (group.soldierCount > 0 && 
+                if (group != null &&
+                    group.soldierCount > 0 && 
                     opponent.army.TryGetTarget(out var tOpponentArmy))
                 {
                     var dist = distanceValueTo(group, aggroRange(tOpponentArmy));
@@ -2059,7 +2061,7 @@ namespace VikingEngine.DSSWars.GameObject
                 collisionModel.Color = Color.HotPink;
                 collisionModel.position = VectorExt.V2toV3XZ(WalkDirBound.center, position.Y);
 #endif
-                List<GameObject.AbsArmy> ArmiesColl_asyncupdate = DssRef.state.pathUpdates[pathThreadIndex].ArmiesColl_asyncupdate;
+                List<AbsArmy> ArmiesColl_asyncupdate = DssRef.state.pathUpdates[pathThreadIndex].ArmiesColl_asyncupdate;
                 DssRef.world.unitCollAreaGrid.collectArmies(tilePos, ArmiesColl_asyncupdate);
                 foreach (var army in ArmiesColl_asyncupdate)
                 {
@@ -2104,7 +2106,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var target_sp = attackTarget_soldierGroupOrCity;
                 if (target_sp != null && target_sp.TryGetTarget(out var tMapObj))
                 {
-                    battles.factions.Add(tMapObj.pfaction);
+                    battles.factions.TryAddIfNotContains(tMapObj.pfaction);
                     battles.attackingCity |= tMapObj.IsGuardGroup();
                 }
             }

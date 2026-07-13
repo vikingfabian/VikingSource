@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Players
 
     partial class RemotePlayer
     {
-        static List<Army> netCollArmies = new List<Army>(16);
+        static List<AbsArmy> netCollArmies = new List<AbsArmy>(16);
 
         public const int OverviewSendChunkSize = 8;
         static HashSet<int> CitiesInView = new HashSet<int>();

@@ -30,8 +30,6 @@ namespace VikingEngine.DSSWars.Map
         static readonly IntervalF GrassTuftCenterRange =
                     IntervalF.FromCenter(0.4f * WorldData.SubTileWidth, 0.35f * WorldData.SubTileWidth);
 
-        //static ConcurrentStack<FoliageModel> foliagePool = new ConcurrentStack<FoliageModel>();
-
         public static List<LootFest.VoxelModelName> LoadModel()
         {
             return new List<LootFest.VoxelModelName>

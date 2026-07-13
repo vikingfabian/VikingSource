@@ -2474,7 +2474,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 //if (armyC.sel.ai.objective == ArmyObjective.None)
                 //{
-                var otherArmy = DssRef.world.unitCollAreaGrid.AdjacenToArmy(pfaction, armyC.sel, armyC.sel.tilePos, Army.MaxTradeDistance +1);
+                var otherArmy = DssRef.world.unitCollAreaGrid.AdjacenToArmy(pfaction, armyC.sel.pointer(), armyC.sel.tilePos, Army.MaxTradeDistance +1);
                 if (otherArmy != null)
                 {
                     Army army1, army2;

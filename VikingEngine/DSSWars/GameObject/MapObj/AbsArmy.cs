@@ -23,8 +23,12 @@ namespace VikingEngine.DSSWars.GameObject
 {
     
 
-    abstract partial class AbsArmy : AbsMapObject
+    abstract partial class AbsArmy : AbsMapObject, IEquatable<PArmy>
     {
+        public bool Equals(PArmy other)
+        {
+            return pfaction == other.pfaction && other.armyIndex == myIndex;
+        }
         protected bool army_isIdle = true;
 
         public SpottedArray<SoldierGroup> groups = new SpottedArray<SoldierGroup>(32);
@@ -82,6 +86,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public PArmy pointer()
+        {
+            return new PArmy(pfaction, myIndex);
+        }
         public void AddSoldierGroup(SoldierGroup group)
         {
             //Hitta en plats bland alla grupper

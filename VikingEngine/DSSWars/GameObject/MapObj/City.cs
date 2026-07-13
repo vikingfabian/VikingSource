@@ -2112,8 +2112,9 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.world.unitCollAreaGrid.collectArmies(pfaction, tilePos, 2,
                 DssRef.world.unitCollAreaGrid.armies_nearUpdate);
 
-            foreach (var m in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
+            foreach (var p in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
             {
+                var m = p.GetArmy();
                 if (m.tilePos.SideLength(tilePos) <= DominanceTileRadius)
                 {
                     armyDefence += m.strengthValue;

@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Presentation;
@@ -252,7 +253,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void divideTab(RichBoxContent content)
         {
-            List<GameObject.AbsArmy> tradeAbleArmies = new List<GameObject.AbsArmy>();
+            List<AbsArmy> tradeAbleArmies = new List<AbsArmy>();
             DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.tilePos, 1,
                 tradeAbleArmies);
 
@@ -371,6 +372,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
             {
+
+
                 if (tradeAbleArmies[i] == army ||
                     WP.birdDistance(army, tradeAbleArmies[i]) > Army.MaxTradeDistance)
                 {
