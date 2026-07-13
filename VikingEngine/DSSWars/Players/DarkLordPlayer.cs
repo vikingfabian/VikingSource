@@ -153,7 +153,7 @@ namespace VikingEngine.DSSWars.Players
                 diplomacyPoints > 0)
             {
                 var f = arraylib.RandomListMemberPop(servantFactions);
-                makeServant(f, false);
+                makeServant(f.GetFaction(), false);
             }
             this.servantFactions = servantFactions;
 

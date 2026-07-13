@@ -424,7 +424,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return false;
         }
-
+        public override bool aliveAndBelongTo(PFaction faction)
+        {
+            throw new NotImplementedException();
+        }
+        
     }
 
     enum PingMessage

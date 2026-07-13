@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars.Players
             bool fromWar = Diplomacy.IsWar(previousRelation);
             bool toWar = Diplomacy.IsWar(rel.Relation);
             var faction = pfaction.GetFaction();
-            var otherFaction = otherPFaction.GetFaction();
+            //var otherFaction = otherPFaction.GetFaction();
 
             if (fromWar != toWar)
             {
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else
                 {
-                    faction.stopAllAttacksAgainst(otherFaction);
+                    faction.stopAllAttacksAgainst(otherPFaction);
                 }
             }
 

@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Build
                             SubTile subTile = DssRef.world.subTileGrid.Get(subTilePos);
                             if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
                             {
-                                EditSubTile edit = new EditSubTile(player.pfaction.GetFaction(), true, subTilePos, subTile, true, true, false);
+                                EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true, true, false);
                                 edit.Submit();
                             }
 

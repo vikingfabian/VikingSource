@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.Communication
@@ -18,7 +19,7 @@ namespace VikingEngine.DSSWars.Communication
     class RelationFlag : AbsFlag
     {
         public bool cityPos;
-        public int faction;
+        public PFaction pfaction;
 
         public RelationType relation;
         //Vector2 screenCenter;
@@ -30,9 +31,9 @@ namespace VikingEngine.DSSWars.Communication
         long positionUpdate = 0;
         public Vector2 position;
 
-        public RelationFlag(int faction)
+        public RelationFlag(PFaction faction)
         {
-            this.faction = faction;
+            this.pfaction = faction;
             //if (faction == 75)
             //{
             //    lib.DoNothing();

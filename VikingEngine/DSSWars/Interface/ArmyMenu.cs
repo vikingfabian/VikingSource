@@ -271,7 +271,7 @@ namespace VikingEngine.DSSWars.Interface
                 player.hud.objMenu.otherArmy = null;
             }
 
-            var status = army.Status().getTypeCounts(army.pfaction.GetFaction());
+            var status = army.Status().getTypeCounts(army.pfaction);
             bool splitable = false;
 
             foreach (var kv in status)
@@ -418,7 +418,7 @@ namespace VikingEngine.DSSWars.Interface
         void disbandTab(RichBoxContent content)
         {
             content.h2(DssRef.lang.ArmyOption_Disband).overrideColor = HudLib.TitleColor_Label;
-            var status = army.Status().getTypeCounts(army.pfaction.GetFaction());
+            var status = army.Status().getTypeCounts(army.pfaction);
 
             foreach (var kv in status)
             {
@@ -494,7 +494,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             player.hud.objMenu.otherArmy = null;
 
-            var status = army.Status().getTypeCounts(army.pfaction.GetFaction());
+            var status = army.Status().getTypeCounts(army.pfaction);
             foreach (var kv in status)
             {
                 if (kv.Value > 1)

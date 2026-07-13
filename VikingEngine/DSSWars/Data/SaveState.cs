@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Data
                 switch (type)
                 {
                     case GameObjectType.Army:
-                        writeFaction(w, gameObject.GetFaction_NoChecks());
+                        writeFaction(w, gameObject.pfaction.GetFaction());
                         w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:

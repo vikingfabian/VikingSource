@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
@@ -380,9 +381,10 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssAssignFactionComplete:
                     {
                         factionHandOverComplete = true;
-                        int factionIx = packet.r.ReadUInt16();
-                        var faction = DssRef.world.faction(factionIx);
-                        if (faction != null)
+                        //int factionIx = packet.r.ReadUInt16();
+                        var pfaction = new PFaction(packet.r);
+                        //var faction = DssRef.world.faction(factionIx);
+                        if (pfaction.TryGetFaction(out var faction))//faction != null)
                         {
                             bool hosted = faction.IsNetHosted();
 
@@ -393,7 +395,7 @@ namespace VikingEngine.DSSWars
                             }
                         }
 
-                        bool hasSave = DssRef.storage.meta.LoadClient(factionIx);
+                        bool hasSave = DssRef.storage.meta.LoadClient(pfaction);
 
                         RichBoxContent content = new RichBoxContent();
                         content.icontext(NetworkIcon, DssRef.todoLang.Multiplayer_HandoverComplete);
@@ -792,10 +794,11 @@ namespace VikingEngine.DSSWars
                 sender.profile.flag = new FlagAndColor(packet.r);
                 sender.pointer.colorFrame.Color = sender.profile.flag.col0_Main;
                 sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
-                Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
-                if (faction != null)
+                //Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
+                var pfaction = new PFaction(packet.r);
+                if (pfaction.HasValue())
                 {
-                    sender.pfaction = faction.pfaction;
+                    sender.pfaction = pfaction;
                 }
                 sender.giftedAchievements.readNetStatus(packet.r);
 
@@ -822,7 +825,7 @@ namespace VikingEngine.DSSWars
                             if (previousRemotePlayers.TryGetValue(hash, out var history))
                             {
                                 previousRemotePlayers.Remove(hash);
-                                Faction prevFaction = DssRef.world.faction(history.faction);
+                                Faction prevFaction = history.pfaction.GetFaction();
                                 if (prevFaction != null &&
                                     prevFaction.cities.Count > 0 &&
                                     prevFaction.player.IsBot()

@@ -1112,7 +1112,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             bool checkRelation(int i)
             {
-                var rel = DssRef.world.diplomacy.GetRelation(player.pfaction, i);//player.faction.diplomaticRelations[i];
+                var rel = DssRef.world.diplomacy.GetRelation(player.pfaction, new GameObject.ObjectPointer.PFaction(i));//player.faction.diplomaticRelations[i];
                 if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
                 {
                     var enemy = DssRef.world.faction(i);

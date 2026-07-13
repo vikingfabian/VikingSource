@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Interface
             else
             {
                 //Relation arrow
-                if (player.gameControls.diplomacy.relationArrowHover >= 0)
+                if (player.gameControls.diplomacy.relationArrowHover.HasValue())
                 {
                     RichBoxContent content = new RichBoxContent();
 
@@ -99,8 +99,8 @@ namespace VikingEngine.DSSWars.Interface
                     content.h2(DssRef.lang.Diplomacy_RelationWithOthers, HudLib.TitleColor_Label);
                     content.newLine();
 
-                    Faction thirdPartFaction = DssRef.world.faction(player.gameControls.diplomacy.relationArrowHover);
-                    var relation = DssRef.world.diplomacy.GetRelation(player.gameControls.diplomacy.mainSelection(out _), thirdPartFaction).Relation;
+                    Faction thirdPartFaction = player.gameControls.diplomacy.relationArrowHover.GetFaction();
+                    var relation = DssRef.world.diplomacy.GetRelation(player.gameControls.diplomacy.mainSelection(out _).pfaction, thirdPartFaction.pfaction).Relation;
 
                     content.Add(thirdPartFaction.FlagTextureToHud());
                     content.hspace();
@@ -493,7 +493,7 @@ namespace VikingEngine.DSSWars.Interface
             
             if (attackTarget)
             {
-                if (DssRef.world.diplomacy.GetRelation(player.pfaction.GetFaction(), tFaction).InWar())
+                if (DssRef.world.diplomacy.GetRelation(player.pfaction, obj.pfaction).InWar())
                 {
                     content.newParagraph();
                 }
@@ -501,7 +501,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.Add(new RbSeperationLine());
 
-                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.pfaction.GetFaction(), tFaction).Relation;
+                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.pfaction, obj.pfaction).Relation;
 
                     if (tFaction.player.IsRemotePlayer())
                     {

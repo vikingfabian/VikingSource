@@ -2757,7 +2757,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 DssRef.storage.Save(null);
             }
 
-            Faction enemyFac = DssRef.world.factions.GetIndex_Safe(DssRef.settings.Faction_Barbarian);
+            Faction enemyFac = DssRef.settings.Faction_Barbarian.GetFaction();
             if (enemyFac != null)
             {
                 enemyFac.player.GetAiPlayer().armyAi_enabled = true;

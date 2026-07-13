@@ -875,7 +875,7 @@ namespace VikingEngine.DSSWars
 
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        player.orders.refreshAvailable(this);
+                        player.orders.refreshAvailable(this.pfaction);
 
                         RichBoxContent content = new RichBoxContent();
                         var localplayer = player.GetLocalPlayer();
@@ -1055,7 +1055,7 @@ namespace VikingEngine.DSSWars
             });
         }
 
-        public void stopAllAttacksAgainst(Faction otherFaction)
+        public void stopAllAttacksAgainst(PFaction otherFaction)
         {
             Task task = Task.Factory.StartNew(() =>
             {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Players
@@ -15,7 +16,7 @@ namespace VikingEngine.DSSWars.Players
         public bool local;
         public int localScreenIndex;
         public ulong id;
-        public int faction;
+        public PFaction pfaction;
         public TimeSpan timePlayed;
         public Color? recolor;
 
@@ -24,7 +25,8 @@ namespace VikingEngine.DSSWars.Players
             w.Write(local);
             w.Write((byte)localScreenIndex);
             w.Write(id);
-            w.Write((ushort)faction);
+            //w.Write((ushort)faction);
+            pfaction.write(w);
             w.Write((int)timePlayed.TotalSeconds);
 
             w.Write(recolor.HasValue);
@@ -38,7 +40,7 @@ namespace VikingEngine.DSSWars.Players
             local = r.ReadBoolean();
             localScreenIndex = r.ReadByte();
             id = r.ReadUInt64();
-            faction = r.ReadUInt16();
+            pfaction.read(r); //= r.ReadUInt16();
             timePlayed = TimeSpan.FromSeconds(r.ReadInt32());
 
             if (subVersion >= 118)
@@ -96,7 +98,7 @@ namespace VikingEngine.DSSWars.Players
             return new PlayerMapHistory()
             {
                 id = networkPeer.peer.fullId,
-                faction = assignedFaction,
+                pfaction = assignedFaction,
                 timePlayed = timePlayed,
                 recolor = profile.flag == null ? null : profile.flag.col0_Main,
             };
@@ -191,12 +193,12 @@ namespace VikingEngine.DSSWars.Players
                                 CitiesInView.Add(tile.CityIndex);
                             }
 
-                            int faction = tile.City().factionIndex;
-                            if (faction >= 0 && DssRef.world.factions.Array[faction].player.IsLocal)
+                            PFaction pfaction = tile.City().pfaction;
+                            if (pfaction.TryGetFaction(out var faction) && faction.player.IsLocal)
                             {
-                                if (!factionsRecieved[faction])
+                                if (!factionsRecieved[pfaction.factionIndex])
                                 {
-                                    FactionsInView.Add(faction);
+                                    FactionsInView.Add(pfaction.factionIndex);
                                 }
                             }
                         }

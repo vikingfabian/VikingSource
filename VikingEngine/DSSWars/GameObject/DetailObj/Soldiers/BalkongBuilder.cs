@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
             resetAnimalNoise();
 
-            var faction = soldier.GetFaction_NoChecks();
+            var faction = soldier.pfaction.GetFaction();
 
             Soldier1PosDiff = new Vector3(0.02f, 0, -0.04f) * modelData.scale;
             Soldier1PosDiff.Y += modelData.riderY;
