@@ -525,6 +525,14 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4, 0.1f), Ref.gamesett.panSpeedProperty, true));
 
+            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.GameSettings_InputSmoothing, Ref.langOpt.MouseButtonAction_Pan));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.0f, 0.9f, 0.1f), Ref.gamesett.panSmoothingProperty, true));
+
+            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.GameSettings_InputSmoothing, DssRef.lang.ButtonAction_Zoom));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.0f, 0.9f, 0.1f), Ref.gamesett.zoomSmoothingProperty, true));
+
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbSpace(), new RbText(Ref.langOpt.MouseSettings_Title) },
                 new RbAction2Arg<string, StackOption>(menu.OpenMenu, UnderMenu_Options_Mouse, StackOption.Stack)));

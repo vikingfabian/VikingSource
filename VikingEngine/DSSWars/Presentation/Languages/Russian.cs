@@ -1930,7 +1930,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "Выберите вкладку: {0}";
         public override string Tutorial_IncreasePriorityOnX => "Увеличьте приоритет на: {0}";
         public override string Tutorial_PlaceBuildOrder => "Разместите заказ на строительство: {0}";
-        public override string Tutorial_ZoomInput => "Масштабирование";
+        public override string ButtonAction_Zoom => "Масштабирование";
 
         public override string Tutorial_SelectACity => "Выберите город";
         public override string Tutorial_ZoomInWorkers => "Увеличьте масштаб, чтобы увидеть рабочих";

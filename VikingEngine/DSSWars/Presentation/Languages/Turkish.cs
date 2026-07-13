@@ -1952,7 +1952,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "Sekme seç: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0} için önceliği arttır";
         public override string Tutorial_PlaceBuildOrder => "{0} için inşa emri ver";
-        public override string Tutorial_ZoomInput => "Yakınlaştır";
+        public override string ButtonAction_Zoom => "Yakınlaştır";
 
         public override string Tutorial_SelectACity => "Bir şehir seç";
         public override string Tutorial_ZoomInWorkers => "İşçileri görmek için yakınlaştır";

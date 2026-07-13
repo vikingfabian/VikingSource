@@ -27,7 +27,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 38;
+        const int Version = 39;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -76,6 +76,10 @@ namespace VikingEngine
         public bool lockMouseToWindow = true;
         public float scrollWheelSensitivity_menu = 1;
         public float scrollWheelSensitivity_game = 1;
+
+        public float zoomSmoothing = 0.6f;
+        public float panSmoothing = 0.0f;
+
         public float keyPanSpeed = 1f;
 
 
@@ -157,6 +161,8 @@ namespace VikingEngine
             w.Write(controlLayout);
             w.Write(scrollWheelSensitivity_menu);
             w.Write(scrollWheelSensitivity_game);
+            w.Write(panSmoothing);
+            w.Write(zoomSmoothing);
             w.Write(keyPanSpeed);
             w.Write(BattleMelodyVolume);
             w.Write(ParticlesEffect);
@@ -249,6 +255,11 @@ namespace VikingEngine
             controlLayout = r.ReadInt32();
             scrollWheelSensitivity_menu = r.ReadSingle();
             scrollWheelSensitivity_game = r.ReadSingle();
+            if (version >= 39)
+            {
+                panSmoothing = r.ReadSingle();
+                zoomSmoothing = r.ReadSingle();
+            }
             if (version >= 22)
             {
                 keyPanSpeed = r.ReadSingle();
@@ -1149,6 +1160,25 @@ namespace VikingEngine
                 settingsHasChanged = true;
             }
             return keyPanSpeed;
+        }
+
+        public float panSmoothingProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                panSmoothing = value;
+                settingsHasChanged = true;
+            }
+            return panSmoothing;
+        }
+        public float zoomSmoothingProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                zoomSmoothing = value;
+                settingsHasChanged = true;
+            }
+            return zoomSmoothing;
         }
 
         public float musicVolProperty(object tag, bool set, float value)

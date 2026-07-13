@@ -99,6 +99,8 @@ namespace VikingEngine.Graphics
             positionFromRotation();
         }
 
+
+
         public override void instantMoveToTarget()
         {
             base.instantMoveToTarget();

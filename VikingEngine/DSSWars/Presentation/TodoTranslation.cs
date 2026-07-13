@@ -16,7 +16,8 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string GameSettings_WideScrollbar => "Wide scrollbar";
         public string GameSettings_DisplayInputHelp => "Input help";
-
+        public string GameSettings_InputSmoothing => "Input smoothing";
+        
         //--
         public string Unlock_PublicGames => "public games";
         public string UnlockPublic_Warning1 => "Do not play with strangers";

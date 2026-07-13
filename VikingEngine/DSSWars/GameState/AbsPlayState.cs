@@ -304,24 +304,15 @@ namespace VikingEngine.DSSWars.GameState
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    if (factions.sel.IsNetHosted())
-                    {
+                    //if (factions.sel.IsNetHosted())
+                    //{
                         var armiesC = factions.sel.armies.counter();
                         while (armiesC.Next())
                         {
                             armiesC.sel.asyncBattleUpdate();
                         }
-                    }
-                }
-
-                foreach (var m in DssRef.world.cities)
-                {
-                    if (m.IsNetHosted)
-                    {
-                        m.asyncBattleUpdate();
-                    }
-                }
-               
+                    //}
+                }              
             }
             return exitThreads;
         }

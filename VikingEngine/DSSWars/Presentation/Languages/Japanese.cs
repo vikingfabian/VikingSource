@@ -1943,7 +1943,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "タブを選択: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0}の優先度を上げる";
         public override string Tutorial_PlaceBuildOrder => "{0}の建設指示を出す";
-        public override string Tutorial_ZoomInput => "ズーム";
+        public override string ButtonAction_Zoom => "ズーム";
 
         public override string Tutorial_SelectACity => "都市を選択";
         public override string Tutorial_ZoomInWorkers => "労働者にズームイン";

@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Players
                 new Vector2(MathHelper.PiOver2, Map.MapLayerManager.NormalCamAngle),
                 player.playerData.view.DrawAreaF.Width, player.playerData.view.DrawAreaF.Height);
             camera.FarPlane = 800;
-            camera.positionChaseLengthPercentage = 0.9f;
+            
             camera.FieldOfView = 20;
             camera.UseTerrainCollisions = false;
             camera.zoomChaseLengthPercentage = 0.5f;
@@ -94,11 +94,19 @@ namespace VikingEngine.DSSWars.Players
 
             rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.Height.DeepWaterHeight-1, Map.Settings.Height.MaxHeight +1);
 
+            refreshSetting();
+
             if (controllerMode)
             {
                 //controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
                 controllerPointer = new Image(SpriteName.cmdPointer, CursorCenterPos(), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
             }
+        }
+
+
+        public void refreshSetting()
+        {
+            camera.positionChaseLengthPercentage = 1f - Ref.gamesett.panSmoothing;
         }
 
         public Vector2 CursorCenterPos()
@@ -1074,7 +1082,7 @@ namespace VikingEngine.DSSWars.Players
                 float zdiff = targetZoom - camera.CurrentZoom;
                 if (Math.Abs(zdiff) > 2)
                 {
-                    camera.CurrentZoom += zdiff * 0.4f / Ref.UpdateTimes60FPS;
+                    camera.CurrentZoom += zdiff * (1f - Ref.gamesett.zoomSmoothing)/*0.4f*/ / Ref.UpdateTimes60FPS;
                 }
                 else
                 {

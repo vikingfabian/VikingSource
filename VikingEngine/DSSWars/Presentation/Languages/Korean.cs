@@ -1954,7 +1954,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "탭 선택: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0}의 우선순위 높이기";
         public override string Tutorial_PlaceBuildOrder => "건설 명령 배치: {0}";
-        public override string Tutorial_ZoomInput => "줌 조작";
+        public override string ButtonAction_Zoom => "줌 조작";
 
         public override string Tutorial_SelectACity => "도시 선택";
         public override string Tutorial_ZoomInWorkers => "확대하여 일꾼을 확인하세요";

@@ -87,6 +87,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
+            map.refreshSetting();
         }
 
         public void update()

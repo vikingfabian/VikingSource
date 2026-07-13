@@ -1974,7 +1974,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => TextLib.ThaiConv("เลือก|แท็บ: {0}");
         public override string Tutorial_IncreasePriorityOnX => TextLib.ThaiConv("เพิ่ม|ลำดับ|ความ|สำคัญ|ของ: {0}");
         public override string Tutorial_PlaceBuildOrder => TextLib.ThaiConv("สั่ง|ก่อ|สร้าง: {0}");
-        public override string Tutorial_ZoomInput => TextLib.ThaiConv("ซูม");
+        public override string ButtonAction_Zoom => TextLib.ThaiConv("ซูม");
 
         public override string Tutorial_SelectACity => TextLib.ThaiConv("เลือก|เมือง");
         public override string Tutorial_ZoomInWorkers => TextLib.ThaiConv("ซูม|เข้าไป|เพื่อ|ดู|คน|งาน");
