@@ -952,7 +952,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
-            ResourceLib.FullResourceInfo(player.faction, city, weapon, content); 
+            ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, weapon, content); 
             //var res = city.GetGroupedResource(weapon);
 
             //content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
@@ -990,7 +990,7 @@ namespace VikingEngine.DSSWars.Conscript
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
 
-            ResourceLib.FullResourceInfo(player.faction, city, args.item, content);
+            ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, args.item, content);
         }
 
         void shieldTooltip(RichBoxContent content, object tag)
@@ -1006,7 +1006,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newParagraph();
                 content.Add(new RbSeperationLine() { thick = true });
             }
-            ResourceLib.FullResourceInfo(player.faction, city, item, content);
+            ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, item, content);
         }
         void animalTooltip(RichBoxContent content, object tag)
         {
@@ -1032,7 +1032,7 @@ namespace VikingEngine.DSSWars.Conscript
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
 
-            ResourceLib.FullResourceInfo(player.faction, city, args.item, content);
+            ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, args.item, content);
         }
         //void mountArmorTooltip(RichBoxContent content, object tag)
         //{
@@ -1055,7 +1055,7 @@ namespace VikingEngine.DSSWars.Conscript
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
 
-            ResourceLib.FullResourceInfo(player.faction, city, item, content);
+            ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, item, content);
         }
 
         void armorClick(ItemResourceType armor)
@@ -1080,7 +1080,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 content.newParagraph();
                 content.Add(new RbSeperationLine() { thick = true });
-                ResourceLib.FullResourceInfo(player.faction, city, armor, content);
+                ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, armor, content);
                 //content.newParagraph();
                 //content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
 

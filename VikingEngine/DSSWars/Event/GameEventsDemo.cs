@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Event
                 //while (citiesC.Next())
                 //{
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref DssRef.state.LocalHost().faction.cities, DssRef.world.cities, out City citySel))
+                while (citiesC.Next(ref DssRef.state.LocalHost().pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                 {
                     citySel.AddGroupedResource(EntityComponent.CityResourceIndex.Palisade, 20, false);
                     citySel.AddGroupedResource(EntityComponent.CityResourceIndex.food, 500, false);
@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Event
                     //1. Send one army
                     new Timer.TimedAction0ArgTrigger_InGame(() =>
                     {
-                        DssRef.world.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
+                        DssRef.world.diplomacy.declareWar(attacker.pfaction, DssRef.state.LocalHost().pfaction);
                         attacker.player.GetAiPlayer().armyAi_enabled = false;
 
                         const int FirstAttackerId = 4;
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Event
 
             if (demoState_1start_2end == 1)
             {
-                bool lostCity = defendingCity.GetPlayer().IsBot();
+                bool lostCity = defendingCity.pfaction.GetPlayer().IsBot();
 
                 if (lostCity)
                 {

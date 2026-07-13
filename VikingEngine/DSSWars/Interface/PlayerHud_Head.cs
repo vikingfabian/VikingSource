@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Interface
             int armyCount;
             int cityCount;
 
-            var faction = player.faction;
+            var faction = player.pfaction.GetFaction();
             gold = faction.money.GetGold();
             income = faction.GoldSecDiff();
             workForce = faction.totalWorkForce;
@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.Interface
         void nextCityTip(RichBoxContent content, object tag)
         {
             //var player = this.player.GetLocalPlayer();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.faction.cities.Count), HudLib.InfoYellow_Light));
+            content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.pfaction.GetFaction().cities.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.InputActionName_NextCity);
             content.ButtonDescription(SpriteName.KeyShift, DssRef.lang.Hud_Previous);
@@ -449,7 +449,7 @@ namespace VikingEngine.DSSWars.Interface
         void nextArmyTip(RichBoxContent content, object tag)
         {
             //var player = this.player.GetLocalPlayer();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_ArmyCount, player.faction.armies.Count), HudLib.InfoYellow_Light));
+            content.Add(new RbText(string.Format(DssRef.lang.Hud_ArmyCount, player.pfaction.GetFaction().armies.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.InputActionName_NextArmy);
         }
@@ -471,9 +471,9 @@ namespace VikingEngine.DSSWars.Interface
 
         void factionGoldTip(RichBoxContent content, object tag)
         {
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.faction.money.GetGold()))));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.pfaction.GetFaction().money.GetGold()))));
             content.newLine();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(player.faction.GoldSecDiff()))));
+            content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(player.pfaction.GetFaction().GoldSecDiff()))));
         }
 
         void diplomacyTip(RichBoxContent content, object tag)
@@ -508,7 +508,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbBeginTitle());
             content.Add(new RbImage(SpriteName.WarsBuild_Embassy));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.faction.embassyCount), HudLib.TitleColor_Head));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.pfaction.GetFaction().embassyCount), HudLib.TitleColor_Head));
 
             content.newLine();
             int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
@@ -527,14 +527,14 @@ namespace VikingEngine.DSSWars.Interface
         {
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodProduction, Convert.ToInt32( player.faction.foodProduction.displayValue_gold_sec)),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodProduction, Convert.ToInt32( player.pfaction.GetFaction().foodProduction.displayValue_gold_sec)),
                 HudLib.AvailableColor));
 
             content.newLine();
 
             content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodSpending, Convert.ToInt32(player.faction.foodSpending.displayValue_gold_sec)),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodSpending, Convert.ToInt32(player.pfaction.GetFaction().foodSpending.displayValue_gold_sec)),
                 HudLib.NotAvailableColor));
 
             content.newLine();

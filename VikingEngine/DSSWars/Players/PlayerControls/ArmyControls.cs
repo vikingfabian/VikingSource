@@ -116,14 +116,15 @@ namespace VikingEngine.DSSWars.Players
                
                 if (target != null)
                 {
-                    var tFaction = target.GetFaction();
+                    
 
-                    if (DssRef.world.diplomacy.GetRelation(player.faction, tFaction).InWar())
+                    if (DssRef.world.diplomacy.GetRelation(player.pfaction, target.pfaction).InWar())
                     {
                         mapExecuteAttack(target);
                     }
                     else
                     {
+                        var tFaction = target.pfaction.GetFaction();
                         if (tFaction.player.IsRemotePlayer())
                         {
                             player.openPlayerToPlayerDisplay(tFaction.player.GetHumanPlayer());

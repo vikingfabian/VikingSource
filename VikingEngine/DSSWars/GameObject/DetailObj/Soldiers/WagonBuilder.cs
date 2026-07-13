@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             wagonPos = VectorExt.AddXZ(soldier.position, -soldier.rotation.Direction(wagonGoalDistance));
             wagonY = 0.02f * wagonScale;
 
-            var faction = soldier.GetFaction_NoChecks();
+            var faction = soldier.pfaction.GetFaction();
            
             switch (manType)
             {

@@ -47,14 +47,14 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
-            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.world.diplomacy.declareWar(player.faction, enemyFac);
+            Faction enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
+            DssRef.settings.darkLordPlayer.pfaction.GetFaction().hasDeserters = false;
+            DssRef.world.diplomacy.declareWar(player.pfaction, enemyFac.pfaction);
 
             //IntVector2 position = WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter);//mapConttilePosition;
 
             {
-                var army = player.faction.NewArmy(VectorExt.AddX(center, -2));
+                var army = player.pfaction.GetFaction().NewArmy(VectorExt.AddX(center, -2));
                 friendlyArmy = army;
                 army.rotation = playerRot;
                 army.food = float.MaxValue / 8;

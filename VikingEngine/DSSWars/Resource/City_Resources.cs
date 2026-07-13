@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (itemIndex < 0) 
             {
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
 
                 if (faction == null)
                 {
@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 throw new Exception();
             }
-            if (itemIndex + factionIndex * CityResourceIndex.COUNT >= world.factionResourceOverviews.Length)
+            if (itemIndex + pfaction.factionIndex * CityResourceIndex.COUNT >= world.factionResourceOverviews.Length)
             {
                 throw new Exception();
             }
@@ -198,12 +198,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void AddGroupedResource(int itemIndex, int add, bool respectLimit)
         {
-            if (factionIndex < 0)
+            if (pfaction.factionIndex < 0)
             {
                 return;
             }
 #if DEBUG
-            if (factionIndex < 0)
+            if (pfaction.factionIndex < 0)
             {
                 throw new Exception();
             }
@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 throw new Exception();
             }
-            if (itemIndex + factionIndex * CityResourceIndex.COUNT >= DssRef.world.factionResourceOverviews.Length)
+            if (itemIndex + pfaction.factionIndex * CityResourceIndex.COUNT >= DssRef.world.factionResourceOverviews.Length)
             {
                 throw new Exception();
             }
@@ -273,7 +273,7 @@ namespace VikingEngine.DSSWars.GameObject
                         int amount;
                         if (DssRef.storage.ruleset_instance.centralGold)
                         {
-                            var faction = GetFaction_NoChecks();
+                            var faction = pfaction.GetFaction();
                             if (faction != null)
                             {
                                 amount = faction.money.GetGold32();
@@ -446,7 +446,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             if (Ref.peRnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
-                GetPlayer().IsBot())
+                pfaction.GetPlayer().IsBot())
             {
                 if (DssRef.difficulty.resourceMultiplyDecrease)
                 {
@@ -481,7 +481,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, Money cost)
         {
-            var faction = GetFaction();
+            var faction = pfaction.GetFaction();
             ref Money money = ref faction.GetRefMoney(this);
             if (money.pay(cost * count, false, faction.player))
             {

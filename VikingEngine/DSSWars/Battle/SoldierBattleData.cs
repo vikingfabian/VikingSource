@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Battle
                             if (intersection.IsCollision)
                             {
                                
-                                if (parent.factionIndex == unit.factionIndex)
+                                if (parent.pfaction == unit.pfaction)
                                 {
                                     if (Rotation1D.AngleDifference_Absolute(parent.rotation.radians, lib.V2ToAngle_PreNorm_Unsafe(-intersection.direction)) < MathExt.TauOver8)
                                     {
@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Battle
                 {
                     foreach (var unit in nearBodyCollisionUnits)
                     {
-                        if (parent.GetFaction() == unit.GetFaction())
+                        if (parent.pfaction.GetFaction() == unit.pfaction.GetFaction())
                         {   
                             if (QueBound.Intersect2_IsCollision(unit.Bound2D(OtherBound)))
                             {
@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars.Battle
 
             foreach (var group in GroupBuffer)
             {
-                bool opponent = DssRef.world.diplomacy.GetRelation(parent.GetFaction(), group.GetFaction()).InWar();
+                bool opponent = DssRef.world.diplomacy.GetRelation(parent.pfaction, group.pfaction).InWar();
 
                 if (VectorExt.Length(group.position.X - parent.position.X, group.position.Z - parent.position.Z) < 5)
                 {

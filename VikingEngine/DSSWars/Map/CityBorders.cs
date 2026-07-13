@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Map
 
             int regionToFrame(int region)
             {
-                if (DssRef.world.cities[region].factionIndex == player.faction.myIndex)
+                if (DssRef.world.cities[region].pfaction == player.pfaction)
                 {
                     return 0;
                 }

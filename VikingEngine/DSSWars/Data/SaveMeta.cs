@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
@@ -64,7 +65,7 @@ namespace VikingEngine.DSSWars.Data
             DataStream.FileToDiskManager.TryReadBinaryIO(path, read);
         }
 
-        public bool LoadClient(int faction)
+        public bool LoadClient(PFaction faction)
         {
             double latestTimeDiff = double.MaxValue;
             ClientSaveMeta latest = null;

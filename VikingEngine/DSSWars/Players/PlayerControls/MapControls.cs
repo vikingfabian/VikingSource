@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Players
             if (onNewTile)
             {
                 var newCity = DssRef.world.tileGrid.Get(tilePosition).City();
-                if (newCity != selection.obj && newCity.factionIndex == player.faction.myIndex)
+                if (newCity != selection.obj && newCity.pfaction == player.pfaction)
                 {
                     selection.obj = newCity;
                     player.hud.needRefresh = true;
@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars.Players
 
                                 if (rectangleBound.vectorRect.SideLength() > 1f)
                                 {
-                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction.myIndex);
+                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.pfaction);
 
                                     if (Input.Keyboard.Ctrl)
                                     {
@@ -357,7 +357,7 @@ namespace VikingEngine.DSSWars.Players
 
                                     if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
                                     {
-                                        hover.obj = new ArmyCollection(player.faction);
+                                        hover.obj = new ArmyCollection(player.pfaction);
                                     }
 
                                     for (int i = nearMapObjects.Count - 1; i >= 0; i--)
@@ -381,11 +381,11 @@ namespace VikingEngine.DSSWars.Players
                         case MapDetailLayerType.UnitDetail1:
                             {
                                 var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearGroups_Rectangle(
-                                    WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction, rectangleBound);
+                                    WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.pfaction, rectangleBound);
 
                                 if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.DetailCollection)
                                 {
-                                    hover.obj = new DetailObjectCollection(player.faction);
+                                    hover.obj = new DetailObjectCollection(player.pfaction);
                                 }
 
                                 hover.obj.GetDetailCollection().set(nearDetailUnits);
@@ -462,7 +462,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void selectCollection(List<SoldierGroup> coll)
         {
-            var collObj = new DetailObjectCollection(player.faction); //TODO if (coll.objects.Count == 1)
+            var collObj = new DetailObjectCollection(player.pfaction); //TODO if (coll.objects.Count == 1)
             collObj.set(coll);
             selection.obj = collObj;
             player.gameControls.soldier = new SoldierControls(coll);
@@ -650,7 +650,7 @@ namespace VikingEngine.DSSWars.Players
                         intersectObj = m;
 
                         if (
-                            (m.factionIndex == player.faction.myIndex && m.gameobjectType() == GameObjectType.Army) ||
+                            (m.pfaction == player.pfaction && m.gameobjectType() == GameObjectType.Army) ||
                             lookingForAttackTarget()
                             )
                         {
@@ -700,14 +700,14 @@ namespace VikingEngine.DSSWars.Players
             foreach (AbsMapObject m in nearMapObjects)
             {
                 var dist = VectorExt.PlaneXZLength(m.position - pointerPosWP);
-                bool enemy = m.factionIndex != player.faction.myIndex;
+                bool enemy = m.pfaction != player.pfaction;
                 float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
                 if (dist <= maxDistance)
                 {
                     if (dist < closest ||
                         (
-                            closestObj.factionIndex != player.faction.myIndex &&
+                            closestObj.pfaction != player.pfaction &&
                             dist < closest + FriendlyPriorityDistAdd &&
                             !lookingForAttackTarget()
                         )
@@ -750,14 +750,14 @@ namespace VikingEngine.DSSWars.Players
                 foreach (var m in nearMapObjects)
                 {
                     var dist= VectorExt.PlaneXZLength(m.position - pointerPosWP);
-                    bool enemy = m.factionIndex != player.faction.myIndex;
+                    bool enemy = m.pfaction != player.pfaction;
                     float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
                     if (dist <= maxDistance)
                     {
                         if (dist < closest || 
                             (
-                                closestObj.factionIndex != player.faction.myIndex && 
+                                closestObj.pfaction != player.pfaction  && 
                                 dist < closest + FriendlyPriorityDistAdd && 
                                 !lookingForAttackTarget()
                             )
@@ -794,7 +794,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     return false;
                 }
-                return hover.obj.GetFaction() != player.faction;
+                return hover.obj.pfaction.GetFaction() != player.pfaction.GetFaction();
 
             }
 
@@ -821,7 +821,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bound.Radius = DssVar.Worker_StandardBoundRadius;
-            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_Workers(tilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
+            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_PlusWorkers(tilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
             foreach (var m in nearMapObjects)
             {
                 switch (m.gameobjectType())
@@ -1007,7 +1007,7 @@ namespace VikingEngine.DSSWars.Players
 
         void checkSelectionAlive()
         {
-            if (selection.obj != null && selection.obj.aliveAndBelongTo(player.faction) == false && !DssRef.difficulty.GodPowers())
+            if (selection.obj != null && selection.obj.aliveAndBelongTo(player.pfaction) == false && !DssRef.difficulty.GodPowers())
             { 
                 player.gameControls.clearSelection();
             }

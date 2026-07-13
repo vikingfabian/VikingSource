@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
@@ -42,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public IntVector2 nextNodePos;
         public AbsMapObject attackTarget = null;
-        public int attackTargetFaction;
+        public PFaction attackTargetFaction;
         //bool nextPathNode = false;
             
         //public ArmyAi(Army army)
@@ -394,7 +395,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (attackTarget_sp.gameobjectType() == GameObjectType.City)
                     {
-                        attackTarget_sp.GetCity().setFaction(GetFaction(), false, false, ConvertReason.WarCapture, true);
+                        attackTarget_sp.GetCity().setFaction(pfaction.GetFaction(), false, false, ConvertReason.WarCapture, true);
                     }
                     else
                     {
@@ -423,7 +424,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         bool orderOutsidePlayerAttension(AbsMapObject target)
         {            
-            return target.GetPlayer().IsBot() &&
+            return target.pfaction.TryGetAiPlayer(out _) &&
                 orderOutsidePlayerAttension(target.tilePos);
         }
 
@@ -472,10 +473,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Order_Attack_Setup(AbsMapObject attackTarget)
         {
-            DssRef.world.diplomacy.declareWar(GetFaction(), attackTarget.GetFaction());
+            DssRef.world.diplomacy.declareWar(pfaction, attackTarget.pfaction);
             clearObjective();
             this.attackTarget = attackTarget;
-            this.attackTargetFaction = attackTarget.factionIndex;
+            this.attackTargetFaction = attackTarget.pfaction;
             //objective = ArmyObjective.Attack;
         }
 
@@ -561,11 +562,11 @@ namespace VikingEngine.DSSWars.GameObject
             attackTarget = null;
         }
 
-        public void stopAllAttacksAgainst(Faction otherFaction)
+        public void stopAllAttacksAgainst(PFaction otherFaction)
         {
             var attackTarget_sp = attackTarget;
             if (attackTarget_sp != null && 
-                attackTarget_sp.factionIndex == otherFaction.myIndex)
+                attackTarget_sp.pfaction == otherFaction)
             {
                 haltMovement();
             }

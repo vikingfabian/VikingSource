@@ -61,14 +61,14 @@ namespace VikingEngine.DSSWars.XP
                         {
                             
                             //var nCity = DssRef.world.cities[ni];
-                            if (city.factionIndex == nCity.factionIndex)
+                            if (city.pfaction == nCity.pfaction)
                             {
                                 TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
                                 //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
                             }
                             else
                             {
-                                switch (DssRef.world.diplomacy.GetRelation(city.GetFaction(), nCity.GetFaction()).Relation)
+                                switch (DssRef.world.diplomacy.GetRelation(city.pfaction, nCity.pfaction).Relation)
                                 {
                                     case RelationType.RelationType2_Good:
                                         TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
@@ -251,7 +252,7 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city, bool autoBuild)
         {
-            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || (StartupSettings.UnlockAllProgress && city.GetPlayer().IsLocalPlayer())) && !autoBuild;
+            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || (StartupSettings.UnlockAllProgress && city.pfaction.TryGetLocalPlayer(out _))) && !autoBuild;
 
             bool devUnlockAll = StartupSettings.UnlockAllProgress;
 
@@ -1407,7 +1408,7 @@ namespace VikingEngine.DSSWars.Build
             return false;
         }
 
-        public static bool TryAutoBuild(Faction faction, IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
+        public static bool TryAutoBuild(PFaction pfaction, IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
         {
             SubTile subTile;
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out subTile))
@@ -1415,7 +1416,7 @@ namespace VikingEngine.DSSWars.Build
                 if (CanAutoBuildHere(ref subTile))
                 {
                     subTile.SetType(mainType, terrainSubType, amount);
-                    EditSubTile edit = new EditSubTile(faction, true,subTilePos, subTile, true, true, false);
+                    EditSubTile edit = new EditSubTile(pfaction, true,subTilePos, subTile, true, true, false);
                     edit.Submit();
                     return true;
                 }
@@ -1470,7 +1471,7 @@ namespace VikingEngine.DSSWars.Build
                     subTile.subTerrain = 0;
                 }
             
-                EditSubTile edit = new EditSubTile(city.GetFaction(), true, subTilePos, subTile, true, true, true);
+                EditSubTile edit = new EditSubTile(city.pfaction, true, subTilePos, subTile, true, true, true);
                 edit.Submit();
             }
         }

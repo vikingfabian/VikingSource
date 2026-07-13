@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Players
             barracksCount = 0;
             barracksType = BuildAndExpandType.NUM_NONE;
 
-            if (AutoConscriptLib.HasEnoughFoodAndGold(faction, city, guard, aggresive) &&
+            if (AutoConscriptLib.HasEnoughFoodAndGold(pfaction.GetFaction(), city, guard, aggresive) &&
                 city.conscriptBuildings.Count > 0)
             {
                 AutoWeaponOption weapon = new AutoWeaponOption(ItemResourceType.NONE, false, BuildAndExpandType.SoldierBarracks);
@@ -325,7 +325,7 @@ namespace VikingEngine.DSSWars.Players
 
                     int maxCount = Convert.ToInt32(city.workForce.amount * multiply);
 
-                    var armiesC = faction.armies.counter();
+                    var armiesC = pfaction.GetFaction().armies.counter();
                     while (armiesC.Next())
                     {
                         if (DssRef.world.tileGrid.Get(armiesC.sel.tilePos).CityIndex == city.myIndex)
@@ -351,7 +351,7 @@ namespace VikingEngine.DSSWars.Players
                 return false;
             }
 
-            if (city.factionIndex != faction.myIndex)
+            if (city.pfaction != pfaction)
             {
                 return false;
             }
@@ -382,7 +382,7 @@ namespace VikingEngine.DSSWars.Players
                 city.AddGroupedResource(profile.armorLevel, -get * unitCount);
                 city.workForce.amount -= get * manCount;
 
-                var aiPlayer = city.GetPlayer().GetAiPlayer();
+                var aiPlayer = city.pfaction.GetPlayer().GetAiPlayer();
 
                 if (aiPlayer != null)
                 {

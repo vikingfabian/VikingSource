@@ -4,6 +4,13 @@ Change log:
 * Rebalanced animal placement
 * compressed headbar Ui
 
+Performance
+* Removed all unessesary faction references
+* Removed refences from the aria unit grid
+
+
+
+KNOWN ISSUES
 
 ##ICONS TODO
 * gray rounded button

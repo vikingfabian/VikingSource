@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Map
                     }
                     break;
                 case FactionMapFilter.Minimap:
-                    Faction playerFaction = DssRef.state.localPlayers[playerIx].faction;
+                    Faction playerFaction = DssRef.state.localPlayers[playerIx].pfaction.GetFaction();
                     while (loop.Next())
                     {
                         t = DssRef.world.tileGrid.Get(loop.Position);
@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.Map
                         else
                         {
                             City city = t.City();
-                            Faction faction = city.GetFaction();
+                            Faction faction = city.pfaction.GetFaction();
 
                             if (faction != null)
                             {

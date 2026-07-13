@@ -112,14 +112,14 @@
 //            }
 //            var attackTarget_sp = attackTarget;
 
-//            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(factionIndex))
+//            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(pfaction))
 //            {
 //                attackTarget = null;
 //            }
 
 //            var nextAttackTarget_sp= nextAttackTarget;
 //            nextAttackTarget = null;
-//            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(factionIndex))
+//            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(pfaction))
 //            {
 //                attackTarget = nextAttackTarget_sp;
 //            }

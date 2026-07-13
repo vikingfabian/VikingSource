@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Players.Orders
@@ -44,7 +45,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             throw new NotImplementedException();
         }
 
-        virtual public bool refreshAvailable(Faction faction) { return true; }
+        virtual public bool refreshAvailable(PFaction faction) { return true; }
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {

@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Interface
 
             void addSoldier(int count)
             {
-                if (city != null && city.HasFaction())
+                if (city != null && city.pfaction.TryGetFaction(out _))
                 {
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     if (army == null)
                     {
-                        army = city.GetFaction().NewArmy(city.recruitToTile);
+                        army = city.pfaction.GetFaction().NewArmy(city.recruitToTile);
                     }
 
                     for (int i = 0; i < count; ++i)
@@ -299,7 +299,7 @@ namespace VikingEngine.DSSWars.Interface
                         new RbText(caption),
                         new RbSpace(2),
                         new RbImage(SpriteName.rtsMoney),
-                        new RbText(option.FullPrice.ToString(), player.faction.hasGold(option.FullPrice, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
+                        new RbText(option.FullPrice.ToString(), player.pfaction.GetFaction().hasGold(option.FullPrice, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
                     }, new RbAction1Arg<CasualRecruitQueueItem>(casualRecruitGroup, recruitOption), new RbTooltip(casualRecruitTooltip, recruitOption)));
 
                     content.Add(new RbTab(0.4f));
@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.Interface
                         recruitOption.count = counts;
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {                       
-                            new RbText(string.Format(DssRef.lang.Hud_XTimes, counts), player.faction.hasGold(option.FullPrice * counts, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
+                            new RbText(string.Format(DssRef.lang.Hud_XTimes, counts), player.pfaction.GetFaction().hasGold(option.FullPrice * counts, city)? HudLib.AvailableColor_Dark : HudLib.NotAvailableColor_Dark),
                             },
                             new RbAction1Arg<CasualRecruitQueueItem>(casualRecruitGroup, recruitOption), new RbTooltip(casualRecruitTooltip, recruitOption)));
                     }                    
@@ -337,7 +337,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                HudLib.ResourceCost(content, ResourceType.Gold, recruitOption.purchaseOption.FullPrice * recruitOption.count, (int)player.faction.GetGold(city));
+                HudLib.ResourceCost(content, ResourceType.Gold, recruitOption.purchaseOption.FullPrice * recruitOption.count, (int)player.pfaction.GetFaction().GetGold(city));
 
                 content.newLine();
                 HudLib.BulletPoint(content);
@@ -518,7 +518,7 @@ namespace VikingEngine.DSSWars.Interface
             switch (player.progressSubTab)
             {
                 default:
-                    new TechnologyHud(player, city).technologyHud(content, city.GetFaction());
+                    new TechnologyHud(player, city).technologyHud(content, city.pfaction.GetFaction());
                     break;
 
                 case ProgressSubTab.Experience:
@@ -1578,12 +1578,12 @@ namespace VikingEngine.DSSWars.Interface
 
                 case ResourceManagementType.Work:
                     content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
-                    city.workTemplate.toHud(player, content, player.resourcesSubTab.resourceGroup, city.GetFaction(), city);
+                    city.workTemplate.toHud(player, content, player.resourcesSubTab.resourceGroup, city.pfaction.GetFaction(), city);
                     break;
 
                 case ResourceManagementType.Stockpile:
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                    new StockPileMenu(content, city, city.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
+                    new StockPileMenu(content, city, city.pfaction.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
                     break;
             }
 

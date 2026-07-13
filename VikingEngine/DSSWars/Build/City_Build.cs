@@ -355,7 +355,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case TerrainMainType.Decor:
                     if (build)
                     {
-                        var cityPlayer = GetPlayer();
+                        var cityPlayer = pfaction.GetPlayer();
                         if (cityPlayer.IsLocalPlayer())
                         {
                             cityPlayer.GetLocalPlayer().statistics.onDecorBuild_async((TerrainDecorType)subType);

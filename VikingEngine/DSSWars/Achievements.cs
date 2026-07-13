@@ -62,29 +62,29 @@ namespace VikingEngine.DSSWars
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    if (p.faction.militaryStrength > 200)
+                    if (p.pfaction.GetFaction().militaryStrength > 200)
                     {
                         UnlockAchievement_async(AchievementIndex.military_might_tier1);
 
-                        if (p.faction.militaryStrength > 500)
+                        if (p.pfaction.GetFaction().militaryStrength > 500)
                         {
                             UnlockAchievement_async(AchievementIndex.military_might_tier2);
 
-                            if (p.faction.militaryStrength > 1500)
+                            if (p.pfaction.GetFaction().militaryStrength > 1500)
                             {
                                 UnlockAchievement_async(AchievementIndex.military_might_tier3);
                             }
                         }
                     }
 
-                    if (p.faction.money.copper > int.MaxValue)
+                    if (p.pfaction.GetFaction().money.copper > int.MaxValue)
                     {
                         UnlockAchievement_async(AchievementIndex.gold_64bit);
                     }
 
                     bool uploadLeaderBoard = false;
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City city))
+                    while (citiesC.Next(ref p.pfaction.GetFaction().cities, DssRef.world.cities, out City city))
                     {
                         if (city.workForce.amount > LargePopulationCount_Tier1)
                         {
@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars
                     }
 
 
-                    var armiesC = p.faction.armies.counter();
+                    var armiesC = p.pfaction.GetFaction().armies.counter();
                     while (armiesC.Next())
                     {
                         int vikings = 0;
@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars
 
             void findHonorGuard(Players.LocalPlayer p)
             {
-                var armiesC = p.faction.armies.counter();
+                var armiesC = p.pfaction.GetFaction().armies.counter();
                 while (armiesC.Next())
                 {
                     var groupsC = armiesC.sel.groups.counter();

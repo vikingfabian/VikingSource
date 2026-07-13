@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
@@ -22,8 +23,12 @@ namespace VikingEngine.DSSWars.GameObject
 {
     
 
-    abstract partial class AbsArmy : AbsMapObject
+    abstract partial class AbsArmy : AbsMapObject, IEquatable<PArmy>
     {
+        public bool Equals(PArmy other)
+        {
+            return pfaction == other.pfaction && other.armyIndex == myIndex;
+        }
         protected bool army_isIdle = true;
 
         public SpottedArray<SoldierGroup> groups = new SpottedArray<SoldierGroup>(32);
@@ -42,7 +47,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void tradeBetweenPlayers_toHud(LocalPlayer player, RichBoxContent content)
         {
-            if (factionIndex == player.faction.myIndex && player.alliedFactions.Count > 0)
+            if (pfaction == player.pfaction && player.alliedFactions.Count > 0)
             {   
                 content.Add(new RbSeperationLine());
                 HudLib.Label(content, "Gift to player");
@@ -54,8 +59,8 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         foreach (var m in player.alliedFactions)
                         {
-                            var f = DssRef.world.faction(m);
-                            if (f != null && f.TryGetPlayer(out var p))
+                            //var f = DssRef.world.faction(m);
+                            if (pfaction.TryGetFaction(out var f))
                             {
                                 RichBoxContent buttonContent = new RichBoxContent();
                                 f.toHud(buttonContent, RelationType.NONE, true, true);
@@ -81,12 +86,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public PArmy pointer()
+        {
+            return new PArmy(pfaction, myIndex);
+        }
         public void AddSoldierGroup(SoldierGroup group)
         {
             //Hitta en plats bland alla grupper
             group.myIndex = groups.Add(group);
             group.army = new WeakReference<AbsArmy>(this);
-            group.factionIndex = factionIndex;
+            group.pfaction = pfaction;
         }
 
         const int GroupsPerPacket = 8;
@@ -182,20 +191,11 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
                     Debug.ReadCheck(r);
-                    //bool more = false;
-                    //do
-                    //{
-                    //    more = AbsArmy.NetReadGroup(packet.r, mapObj);
-                    //} while (more);
                 }
             }
         }
         public static void NetReadGroup(System.IO.BinaryReader r, int index, AbsArmy army)
         {
-            
-            //int index = r.ReadUInt16();
-            //if (index != ushort.MaxValue)
-            //{
                 var group = army.groups.GetIndex_Safe(index);
                 bool needInit = false;
                 if (group == null)
@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     army.groups.HardSet(group, index);
                     group.myIndex = index;
-                    if (group.factionIndex < 0)
+                    if (!group.pfaction.HasValue())
                     {
                         throw new Exception();
                     }
@@ -220,14 +220,6 @@ namespace VikingEngine.DSSWars.GameObject
                 group.readNet(army, r, needInit);
                 group.net_onUpdate();
 
-                //Debug.ReadCheck(r);
-                //return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
-            
             
         }
 
@@ -240,15 +232,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.setFaction(newFaction, duringStartup, convert, convertReason, netShare);
 
-            convertSoldiersToFaction(newFaction);
+            convertSoldiersToFaction(newFaction.pfaction);
         }
 
-        public void convertSoldiersToFaction(Faction newFaction)
+        public void convertSoldiersToFaction(PFaction newFaction)
         {
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
-                groupsC.sel.factionIndex = newFaction.myIndex;
+                groupsC.sel.pfaction = pfaction;
             }
         }
 
@@ -308,7 +300,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     DssRef.state.events?.onBattleEnd_async(this, inBattleWith);
                     inBattle = false;
-                    if (GetPlayer().IsLocalPlayer() && !DssRef.achieve.achivementsAreModeBlocked())
+                    if (pfaction.TryGetLocalPlayer(out var lp) && !DssRef.achieve.achivementsAreModeBlocked())
                     {
                         float strengthLost = strengthBeforeBattle - strengthValue;
                         if (strengthLost >= Achievements.Defeating_victory_strengthLost && groups.Count > 0)
@@ -342,11 +334,11 @@ namespace VikingEngine.DSSWars.GameObject
                 inBattle = true;
                 strengthBeforeBattle = strengthValue;
                 soldierCountBeforeBattle = soldiersCount;
-                if (GetPlayer().IsLocalPlayer())
+                if (pfaction.TryGetLocalPlayer(out var localplayer))
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        var localplayer = GetPlayer().GetLocalPlayer();
+                        //var localplayer = GetPlayer().GetLocalPlayer();
                         if (localplayer.battleMessageCheck(tilePos))
                         {
                             RichBoxContent content = new RichBoxContent();

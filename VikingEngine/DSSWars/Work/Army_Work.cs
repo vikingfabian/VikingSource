@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_workUpdate(Faction faction, float seconds)
         {
-            if ( factionIndex >= 0)
+            if ( pfaction.HasValue())
             {
                 bool casual = GetCasual();
 
@@ -116,16 +116,16 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //Order new food
                 City city = DssRef.world.tileGrid.Get(tilePos).City();
-                if (city != null && city.HasFaction())
+                if (city != null && city.pfaction.TryGetFaction(out _))
                 {
                     float bufferGoal_percentage = -1;
                     int goldCostMulti = 1;
-                    if (city.factionIndex == factionIndex)
+                    if (city.pfaction == pfaction)
                     {
                         bufferGoal_percentage = 1f;
                         goldCostMulti = 0;
                     }
-                    else if (!DssRef.world.diplomacy.GetRelation(city.factionIndex, factionIndex).InWar())
+                    else if (!DssRef.world.diplomacy.GetRelation(city.pfaction, pfaction).InWar())
                     {
                         bufferGoal_percentage = 0.5f;
                     }
@@ -203,12 +203,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 bool allowDept = false;
 
-                if (GetPlayer().IsLocalPlayer())
+                if (pfaction.TryGetLocalPlayer(out var lp))
                 {
                     //goNegative = false;
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        GetPlayer().GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
+                        lp.hud.messages.armyLowFoodMessage(this);
                     }));
                 }
                 else if (!DssRef.storage.ruleset_instance.centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)

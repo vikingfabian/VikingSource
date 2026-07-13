@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Delivery
             //while (citiesC.Next())
             //{
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            while (citiesC.Next(ref player.faction.cities))
+            while (citiesC.Next(ref player.pfaction.GetFaction().cities))
             {
                 if (citiesC.sel == profile.toCity)
                 {

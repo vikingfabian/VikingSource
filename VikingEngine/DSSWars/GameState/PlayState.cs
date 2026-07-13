@@ -17,6 +17,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Interface;
@@ -339,7 +340,7 @@ namespace VikingEngine.DSSWars
 
                     localPlayers[i].assignPlayer(i, playerCount, newGame);
 
-                    Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].faction.ToString());
+                    Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].pfaction.GetFaction().ToString());
                 }
             }
 
@@ -369,7 +370,7 @@ namespace VikingEngine.DSSWars
                     bool ally = DssRef.difficulty.setting_QuickMatch_TwoTeams && (i < team1Count == j < team1Count);
 
 
-                    DssRef.world.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], null, 
+                    DssRef.world.diplomacy.SetRelationType(matchFactions[i].pfaction, matchFactions[j].pfaction, PFaction.Empty, 
                         ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN5_TotalWar, null, 
                         SpeakTerms.SpeakTermsN2_None);
 
@@ -400,7 +401,7 @@ namespace VikingEngine.DSSWars
                     factionsCounter.sel.onGameStart(newGame);
                 }
 
-                if (LocalHost().faction.player.IsBot())
+                if (LocalHost().pfaction.GetFaction().player.IsBot())
                 {
                     LocalHost().baseOnGameStart();
                 }
@@ -580,7 +581,7 @@ namespace VikingEngine.DSSWars
                                 factionsC.sel.oneSecUpdate(DssRef.time.oneMinute);
                             }
                         }
-                        else if (factionsC.sel.HasPlayer())
+                        else if (factionsC.sel.pfaction.TryGetPlayer(out _))
                         {
                             factionsC.sel.update_client(culling.playerInDetailView);
 

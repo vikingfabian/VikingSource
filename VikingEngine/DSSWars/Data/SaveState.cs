@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 13;
-        public const int SubVersion = 118; 
+        public const int SubVersion = 130; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Data
                 switch (type)
                 {
                     case GameObjectType.Army:
-                        writeFaction(w, gameObject.GetFaction_NoChecks());
+                        writeFaction(w, gameObject.pfaction.GetFaction());
                         w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:

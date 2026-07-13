@@ -10,6 +10,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Network;
 using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
@@ -1371,7 +1372,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             foreach (City c in world.cities)
             {
-                if (c.factionIndex < 0 && c.cityType > CityType.UnClaimed)
+                if (c.pfaction.IsEmpty() && c.cityType > CityType.UnClaimed)
                 {
                     int size = goalWorkForce;
                     bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
@@ -1415,7 +1416,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             };
 
             int count = DssRef.difficulty.setting_QuickMatch_PlayerCount - DssRef.storage.playerCount;
-            world.quickMatchFactions = new List<int>(count);
+            world.quickMatchFactions = new List<PFaction>(count);
             //DssRef.settings.Faction_QuickMatch_Start = -1;
             //DssRef.settings.Faction_QuickMatch_End = -1;
 
@@ -1426,7 +1427,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //faction.displayInFullOverview = true;
                 region.GetStartFactionRegion(nationWorkForce, oneCity, randomCity_inMapCenter(), world, faction);
 
-                world.quickMatchFactions.Add(faction.myIndex);
+                world.quickMatchFactions.Add(faction.pfaction);
                 //if (i == 0)
                 //{
                 //    DssRef.settings.Faction_QuickMatch_Start = faction.myIndex;
@@ -1579,7 +1580,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             while (collection.Count > 0)
             {
                 var city = arraylib.RandomListMemberPop(collection, world.rnd);
-                if (city.factionIndex < 0 && city.cityType > CityType.UnClaimed)
+                if (city.pfaction.IsEmpty() && city.cityType > CityType.UnClaimed)
                 {
                     return city;
                 }
@@ -1656,7 +1657,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             int ix = world.rnd.Int(world.cities.Count);
 
-            while (world.cities[ix].factionIndex >= 0 || world.cities[ix].cityType == CityType.UnClaimed)
+            while (world.cities[ix].pfaction.HasValue()|| world.cities[ix].cityType == CityType.UnClaimed)
             {
                 ix++;
                 if (ix >= world.cities.Count)

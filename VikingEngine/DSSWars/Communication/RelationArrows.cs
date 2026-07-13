@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Players;
@@ -45,7 +46,7 @@ namespace VikingEngine.DSSWars.Communication
                 //{
                 //    if (selected.diplomaticRelations[i] != null && i != selected.myIndex)
                 //    {
-                RelationsLoop loop = new RelationsLoop(selected.myIndex);
+                RelationsLoop loop = new RelationsLoop(selected.pfaction);
                 while (loop.Next())
                 {
                     var relationType = loop.Relation().Relation;//selected.diplomaticRelations[i].Relation;
@@ -95,7 +96,7 @@ namespace VikingEngine.DSSWars.Communication
 
         }
 
-        public bool factionArrowHover(LocalPlayer player, out int factionIndex)
+        public bool factionArrowHover(LocalPlayer player, out PFaction factionIndex)
         {
             Vector2 pointer = player.gameControls.map.pointerPos();
             float pointerRadius = iconScale.X * 0.5f;
@@ -103,7 +104,7 @@ namespace VikingEngine.DSSWars.Communication
             {
                 if ((img.position - pointer).Length() <= pointerRadius)
                 {
-                    factionIndex = img.idOrIndex;
+                    factionIndex = new PFaction(img.idOrIndex);
 
                     selectHighlight.position = img.position;
                     selectHighlight.Visible = true;
@@ -112,7 +113,7 @@ namespace VikingEngine.DSSWars.Communication
                 }
             }
 
-            factionIndex = -1;
+            factionIndex = PFaction.Empty;
             return false;
         } 
 

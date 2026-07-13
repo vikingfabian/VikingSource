@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Presentation;
@@ -252,8 +253,8 @@ namespace VikingEngine.DSSWars.Interface
 
         void divideTab(RichBoxContent content)
         {
-            List<GameObject.AbsArmy> tradeAbleArmies = new List<GameObject.AbsArmy>();
-            DssRef.world.unitCollAreaGrid.collectArmies(player.faction.myIndex, army.tilePos, 1,
+            List<AbsArmy> tradeAbleArmies = new List<AbsArmy>();
+            DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.tilePos, 1,
                 tradeAbleArmies);
 
             //for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
@@ -271,7 +272,7 @@ namespace VikingEngine.DSSWars.Interface
                 player.hud.objMenu.otherArmy = null;
             }
 
-            var status = army.Status().getTypeCounts(army.GetFaction());
+            var status = army.Status().getTypeCounts(army.pfaction);
             bool splitable = false;
 
             foreach (var kv in status)
@@ -371,6 +372,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
             {
+
+
                 if (tradeAbleArmies[i] == army ||
                     WP.birdDistance(army, tradeAbleArmies[i]) > Army.MaxTradeDistance)
                 {
@@ -418,7 +421,7 @@ namespace VikingEngine.DSSWars.Interface
         void disbandTab(RichBoxContent content)
         {
             content.h2(DssRef.lang.ArmyOption_Disband).overrideColor = HudLib.TitleColor_Label;
-            var status = army.Status().getTypeCounts(army.GetFaction());
+            var status = army.Status().getTypeCounts(army.pfaction);
 
             foreach (var kv in status)
             {
@@ -494,7 +497,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             player.hud.objMenu.otherArmy = null;
 
-            var status = army.Status().getTypeCounts(army.GetFaction());
+            var status = army.Status().getTypeCounts(army.pfaction);
             foreach (var kv in status)
             {
                 if (kv.Value > 1)

@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.Resource
                 return true;
             }
 #endif
-            //if (player.faction.myIndex == 72)
+            //if (player.pfaction == 72)
             //{
             //    lib.DoNothing();
             //}

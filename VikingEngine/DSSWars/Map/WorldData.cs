@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Players;
@@ -92,7 +93,7 @@ namespace VikingEngine.DSSWars
 
         public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
 
-        public List<int> quickMatchFactions = null;
+        public List<PFaction> quickMatchFactions = null;
 
         public WorldData()
         {
@@ -325,7 +326,8 @@ namespace VikingEngine.DSSWars
                 w.Write((byte)quickMatchFactions.Count);
                 foreach (var m in quickMatchFactions)
                 {
-                    w.Write((ushort)m);
+                    //w.Write((ushort)m);
+                    m.write(w);
                 }
             }
             else
@@ -401,16 +403,16 @@ namespace VikingEngine.DSSWars
             int quickMatchFactionsCount = r.ReadByte();
             if (quickMatchFactionsCount > 0)
             {
-                quickMatchFactions = new List<int>(quickMatchFactionsCount);
+                quickMatchFactions = new List<PFaction>(quickMatchFactionsCount);
                 for (int i = 0; i < quickMatchFactionsCount; i++)
                 {
-                    int fIx = r.ReadUInt16();
-                    var f = faction(fIx);
-                    if (f != null)
+                    //int fIx = r.ReadUInt16();
+                    var pf = new PFaction(r);
+                    if (pf.TryGetFaction(out var f))
                     {
                         f.quickMatchFaction = true;
                         //f.displayInFullOverview = true;
-                        quickMatchFactions.Add(fIx);
+                        quickMatchFactions.Add(pf);
                     }
                 }
             }
@@ -928,12 +930,12 @@ namespace VikingEngine.DSSWars
 
             Rectangle2 centerArea = CenterArea();
 
-            HashSet<int> hadPlayerOwner = new HashSet<int>();
+            HashSet<PFaction> hadPlayerOwner = new HashSet<PFaction>();
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
             {   
                 foreach (var kv in DssRef.state.playstate().previousRemotePlayers)
                 {
-                    hadPlayerOwner.Add(kv.Value.faction);
+                    hadPlayerOwner.Add(kv.Value.pfaction);
                 }
             }
 
@@ -989,7 +991,7 @@ namespace VikingEngine.DSSWars
 
                         if (!firstPlayer)
                         {
-                            float offsetToFirstPlayer = Math.Abs( players[0].faction.mainCity.distanceTo(f.mainCity) - MultiPlayerDistance);
+                            float offsetToFirstPlayer = Math.Abs( players[0].pfaction.GetFaction().mainCity.distanceTo(f.mainCity) - MultiPlayerDistance);
                             f.availableForPlayerScore += 200 - Convert.ToInt32(offsetToFirstPlayer * 4);
                         }
                     }
@@ -1007,7 +1009,7 @@ namespace VikingEngine.DSSWars
                         int wars = f.CountWars(out int playerWars);
                         f.availableForPlayerScore -= wars * 2000 + playerWars * 8000;
 
-                        if (hadPlayerOwner.Contains(f.myIndex))
+                        if (hadPlayerOwner.Contains(f.pfaction))
                         {
                             f.availableForPlayerScore -= 500;
                         }

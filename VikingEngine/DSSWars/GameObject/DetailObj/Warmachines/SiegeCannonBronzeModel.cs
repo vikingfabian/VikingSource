@@ -22,19 +22,19 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
 
             float scale = soldier.soldierData.modelScale;
 
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * Xdiff, scale * ZdiffFront);
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * -Xdiff, scale * ZdiffFront);
 
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                scale * Xdiff, scale * ZdiffCenter);
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * -Xdiff, scale * ZdiffCenter);
 
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * Xdiff, scale * ZdiffBack);
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * -Xdiff, scale * ZdiffBack);
         }
 

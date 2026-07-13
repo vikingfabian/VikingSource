@@ -4,33 +4,35 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.Communication
 {
     class PlayerToPlayerDiplomacy
     {
-        public int factionIndex;
+        public PFaction pfaction;
 
         public bool suggestingNewRelation = false;
         public RelationType suggestedRelation;
-        public int suggestedBy;
+        public PFaction suggestedBy;
 
-        public PlayerToPlayerDiplomacy(int factionIndex)
+        public PlayerToPlayerDiplomacy(PFaction factionIndex)
         {
-            this.factionIndex = factionIndex;
+            this.pfaction = factionIndex;
         }
 
         public void writeGameState(BinaryWriter w)
         {
             w.Write((short)suggestedRelation);
-            w.Write((ushort)suggestedBy);
+            //w.Write((ushort)suggestedBy);
+            suggestedBy.write(w);
         }
 
         public void readGameState(BinaryReader r, int subversion)
         {
             suggestedRelation = (RelationType)r.ReadInt16();
-            suggestedBy = r.ReadUInt16();
+            suggestedBy = new PFaction(r);//r.ReadUInt16();
         }
 
         public void refresh(RelationType relation)
@@ -59,7 +61,7 @@ namespace VikingEngine.DSSWars.Communication
             {
                 suggestedRelation = (RelationType)r.ReadInt16();
             }
-            suggestedBy = fromPlayer.faction.myIndex;
+            suggestedBy = fromPlayer.pfaction;
         }
     }
 }

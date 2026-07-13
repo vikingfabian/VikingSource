@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Interface
                     var hoverCity = tile.City();
                     hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
 
-                    if (hoverCity.factionIndex == player.faction.myIndex &&
+                    if (hoverCity.pfaction == player.pfaction &&
                         player.mapLayer() <= Map.MapDetailLayerType.TerrainOverview2)
                     {
                         content.newLine();

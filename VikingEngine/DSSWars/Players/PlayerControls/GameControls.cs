@@ -53,13 +53,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             cityUpdate = DssRef.state.PlayType() == GameState.PlayStateType.Play;
 
-            tabArmy = player.faction.armies.counter();            
+            tabArmy = player.pfaction.GetFaction().armies.counter();            
             tabPin = player.pins.counter();
 
             map = new Players.MapControls(player);
-            if (player.faction.mainCity != null)
+            if (player.pfaction.GetFaction().mainCity != null)
             {
-                map.setCameraPos(player.faction.mainCity.tilePos);
+                map.setCameraPos(player.pfaction.GetFaction().mainCity.tilePos);
             }
 
             refreshGameSpeedOptions(true);
@@ -603,7 +603,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.mapLayersManager.current.DrawDetailLayer)
             {
-                if (input.Build.DownEvent && map.hover.subTile.city.factionIndex == player.faction.myIndex)
+                if (input.Build.DownEvent && map.hover.subTile.city.pfaction == player.pfaction)
                 {
                     if (player.profile.casualControls)
                     {
@@ -837,7 +837,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             if (map.hover.obj != null &&
-                (map.hover.obj.GetFaction() == player.faction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
+                (map.hover.obj.pfaction.GetFaction() == player.pfaction.GetFaction() || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
             {
                 SoundLib.click.Play();
                 map.onSelect();
@@ -903,7 +903,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
             {
                 var city = tile.City();
-                if (city.factionIndex == player.faction.myIndex)
+                if (city.pfaction == player.pfaction)
                 {
                     mapSelect(city);
                 }
@@ -913,7 +913,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         void updateObjectTabbing()
         {
             //CITY
-            if (input.NextCity.DownEvent && player.faction.cities.Count > 0)
+            if (input.NextCity.DownEvent && player.pfaction.GetFaction().cities.Count > 0)
             {
                 nextCity();
                 if (input.inputSource.ControllerMode)
@@ -961,13 +961,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             int loops = 0;
             do
             {
-                tabCity = Bound.SetRollover(tabCity + dir, 0, player.faction.cities.Array.Length-1);
+                tabCity = Bound.SetRollover(tabCity + dir, 0, player.pfaction.GetFaction().cities.Array.Length-1);
 
-                var cIx = player.faction.cities.Array[tabCity];
+                var cIx = player.pfaction.GetFaction().cities.Array[tabCity];
                 if (cIx >= 0)
                 {
                     var city = DssRef.world.cities[cIx];
-                    if (city.factionIndex == player.faction.myIndex)
+                    if (city.pfaction == player.pfaction)
                     {
                         if (city.automateCity &&
                             player.gameControls.input.inputSource.HasKeyBoard &&
@@ -985,7 +985,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                 }
 
-            } while (++loops < player.faction.cities.Array.Length);
+            } while (++loops < player.pfaction.GetFaction().cities.Array.Length);
 
             //if (forward)
             //{
@@ -1112,7 +1112,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             bool checkRelation(int i)
             {
-                var rel = DssRef.world.diplomacy.GetRelation(player.faction.myIndex, i);//player.faction.diplomaticRelations[i];
+                var rel = DssRef.world.diplomacy.GetRelation(player.pfaction, new GameObject.ObjectPointer.PFaction(i));//player.faction.diplomaticRelations[i];
                 if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
                 {
                     var enemy = DssRef.world.faction(i);

@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 return Ref.netSession.LocalPeer();
             }
-            else if (TryGetPlayer(out var p) && p.IsRemotePlayer())
+            else if (pfaction.TryGetPlayer(out var p) && p.IsRemotePlayer())
             {
                 return p.GetRemotePlayer().networkPeer.peer;
             }
@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (DssRef.storage.ruleset_instance.centralGold)
             {
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
                 if (faction == null)
                 {
                     return false;
@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (DssRef.storage.ruleset_instance.centralGold)
             {
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
                 if (faction == null)
                 {
                     return false;
@@ -211,14 +211,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool LocalMember
         {
-            get { return GetPlayer().IsLocal; }
+            get { return pfaction.GetPlayer().IsLocal; }
         }
 
         //abstract public Faction Faction();
 
         virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
-            this.factionIndex = newFaction.myIndex;
+            this.pfaction = newFaction.pfaction;
             
             OnNewOwner(newFaction, convert, convertReason);
 

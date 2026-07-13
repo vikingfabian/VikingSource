@@ -353,7 +353,7 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newParagraph();
             DiplomacyDisplay diplomacyDisplay = new DiplomacyDisplay(player);
-            diplomacyDisplay.toHud(content, selectedPlayer.faction, false);
+            diplomacyDisplay.toHud(content, selectedPlayer.pfaction.GetFaction(), false);
 
             content.Add(new RbSeperationLine());
            

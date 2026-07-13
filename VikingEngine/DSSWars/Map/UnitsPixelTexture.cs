@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void updateColorProfile(Faction faction)
         {
-            var playerFaction = DssRef.state.localPlayers[playerIx].faction;
+            var playerFaction = DssRef.state.localPlayers[playerIx].pfaction.GetFaction();
 
             if (faction == playerFaction)
             {
@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                var relation = DssRef.world.diplomacy.GetRefRelation_Safe(playerFaction.myIndex, faction.myIndex).Relation;
+                var relation = DssRef.world.diplomacy.GetRefRelation_Safe(playerFaction.pfaction, faction.pfaction).Relation;
                 if (relation <= RelationType.RelationTypeN1_Enemies)
                 {
                     colorProfile1 = Color.Red;
