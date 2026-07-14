@@ -90,6 +90,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return new PArmy(pfaction, myIndex);
         }
+        public PMapObject mapObjPointer()
+        {
+            return new PMapObject(IsCity(), pfaction, myIndex);
+        }
         public void AddSoldierGroup(SoldierGroup group)
         {
             //Hitta en plats bland alla grupper

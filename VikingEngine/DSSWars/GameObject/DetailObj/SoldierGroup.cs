@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (army.TryGetTarget(out var target))
             {
-                return new PSoldierGroup(target.pointer(), myIndex);
+                return new PSoldierGroup(target.mapObjPointer(), myIndex);
             }
             return PSoldierGroup.Empty;
         }

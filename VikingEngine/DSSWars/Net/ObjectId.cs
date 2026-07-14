@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Net
 {
@@ -116,42 +117,67 @@ namespace VikingEngine.DSSWars.Net
 
         public static void WriteSoldierGroup(System.IO.BinaryWriter w, SoldierGroup soldierGroup)
         {
-            if (soldierGroup != null && soldierGroup.army.TryGetTarget(out var tArmy))
+            //if (soldierGroup != null && soldierGroup.army.TryGetTarget(out var tArmy))
+            //{
+            //    w.Write(tArmy.IsArmy());
+            //    NetWriteMapObjId(w, tArmy);
+            //    w.Write((ushort)soldierGroup.myIndex);
+            //}
+            //else
+            //{
+            //    w.Write(false);
+            //    w.Write(ushort.MaxValue);
+            //}
+            PSoldierGroup pSoldierGroup = PSoldierGroup.Empty;
+            if (soldierGroup != null)
             {
-                w.Write(tArmy.IsArmy());
-                NetWriteMapObjId(w, tArmy);
-                w.Write((ushort)soldierGroup.myIndex);
+                pSoldierGroup = soldierGroup.pointer();
             }
-            else
-            {
-                w.Write(false);
-                w.Write(ushort.MaxValue);
-            }
+            pSoldierGroup.write(w);
         }
 
-        public static SoldierGroup ReadSoldierGroup(System.IO.BinaryReader r, bool createIfMissing, out AbsArmy mapObj)
-        { 
-            bool isArmy = r.ReadBoolean();
-            if (NetReadMapObjId(r, out _, isArmy, createIfMissing, out mapObj, out _))
+        public static SoldierGroup ReadSoldierGroup(System.IO.BinaryReader r, bool createIfMissing, out AbsArmy army)
+        {
+            //bool isArmy = r.ReadBoolean();
+            //if (NetReadMapObjId(r, out _, isArmy, createIfMissing, out mapObj, out _))
+            //{
+            //    var result = mapObj.groups.GetIndex_Safe(r.ReadUInt16());
+            //    return result;
+            //}
+            //return null;
+            PSoldierGroup pSoldierGroup = new PSoldierGroup(r);
+            if (pSoldierGroup.HasValue())
             {
-                var result = mapObj.groups.GetIndex_Safe(r.ReadUInt16());
+                var result = pSoldierGroup.GetSoldierGroup(out army);
+                if (army == null && createIfMissing && !pSoldierGroup.isCityGuard &&
+                    pSoldierGroup.pabsarmy.pfaction.TryGetFaction(out var faction))
+                {
+                    var armyarmy = new Army();
+                    army.pfaction = pSoldierGroup.pabsarmy.pfaction;
+                    armyarmy.init(faction, pSoldierGroup.pabsarmy.objectIndex);
+                    //needInit = true;
+                }
                 return result;
             }
+            army = null;
             return null;
+
         }
 
         public static void NetWriteMapObjId(System.IO.BinaryWriter w, AbsArmy army)
         {
             //w.Write((ushort)army.factionIndex);
-            army.pfaction.write(w);
-            w.Write((ushort)army.myIndex);
+            //army.pfaction.write(w);
+            //w.Write((ushort)army.myIndex);
+             army.mapObjPointer().write(w);
         }
 
         public static bool NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, bool createIfMissing, out AbsArmy mapObj, out bool needInit)
         {
             //int factionIx = r.ReadUInt16();
-            PFaction pfaction = new PFaction(r);
-            faction = pfaction.GetFaction();
+            //PFaction pfaction = new PFaction(r);
+            PMapObject pMapObject = new PMapObject(r);
+            faction = pMapObject.pfaction.GetFaction();
             if (faction == null)
             {
                 mapObj = null;
@@ -168,20 +194,20 @@ namespace VikingEngine.DSSWars.Net
             //    return false;
             //}
 
-            int unitIx = r.ReadUInt16();
+            //int unitIx = r.ReadUInt16();
 
             if (bArmy)
             {
-                Army army = faction.armies.GetIndex_Safe(unitIx);
+                Army army = faction.armies.GetIndex_Safe(pMapObject.objectIndex);
                 needInit = false;
                 if (army == null)
                 {
                     if (createIfMissing)
                     {
                         army = new Army();
-                        army.pfaction = pfaction;
+                        army.pfaction = pMapObject.pfaction;
                         //faction.armies.HardSet(army, armyIx);
-                        army.init(faction, unitIx);
+                        army.init(faction, pMapObject.objectIndex);
                         needInit = true;
                     }
                     else
@@ -210,7 +236,7 @@ namespace VikingEngine.DSSWars.Net
             {
                 needInit = false;
                 //int unitIx = r.ReadUInt16();
-                mapObj = DssRef.world.cities[unitIx];
+                mapObj = DssRef.world.cities[pMapObject.objectIndex];
                 mapObj.setFaction(faction, false, true, ConvertReason.Assigned, false);
                 faction = mapObj.pfaction.GetFaction();
             }

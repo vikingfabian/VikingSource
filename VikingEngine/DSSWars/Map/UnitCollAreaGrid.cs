@@ -692,10 +692,10 @@ namespace VikingEngine.DSSWars.Map
                             
                                 foreach (var pgroup in area.groups)
                                 {
-                                    if (pgroup.parmy.pfaction != faction && prevPArmy != pgroup.parmy)
+                                    if (pgroup.parmy.pfaction != faction && prevPArmy != pgroup.pabsarmy)
                                         /*prevArmy != m.army*/
                                     {
-                                        prevPArmy = pgroup.parmy;
+                                        prevPArmy = pgroup.pabsarmy;
                                         if (prevPArmy.TryGetArmy(out var prevArmy) && 
                                         
                                             !armies.Contains(prevArmy))
