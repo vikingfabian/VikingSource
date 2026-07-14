@@ -89,6 +89,10 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                 }
             }
         }
+        public PGameObject(System.IO.BinaryReader r)
+        {
+            read(r);
+        }
         public void read(System.IO.BinaryReader r)
         {
             objectType = (GameObjectType)r.ReadByte();

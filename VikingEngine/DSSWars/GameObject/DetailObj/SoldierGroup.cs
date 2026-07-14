@@ -1100,11 +1100,6 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (attackTarget_soldierGroupOrCity.TryGetGroup(out var attack_sp))
             {
-
-
-                
-
-
                 if (state != GroupState.Battle)
                 {
                     enterBattleState(true, true);
