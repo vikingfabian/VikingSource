@@ -380,7 +380,7 @@ namespace VikingEngine.DSSWars.GameObject
                     
                     WP.ReadPosXZPercentU16(r, out var rPosition, out tilePos);
 
-                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth)
+                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth * 3)
                     {
                         position = rPosition;
                     }
