@@ -50,6 +50,12 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             return null;
         }
 
+        public bool TryGetAbsArmy(out AbsArmy army)
+        {
+            army = Get() as AbsArmy;
+            return army != null;
+        }
+
         public bool TryGetGroup(out AbsGroup group)
         {
             group = Get() as AbsGroup;
