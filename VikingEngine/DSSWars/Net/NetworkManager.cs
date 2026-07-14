@@ -517,8 +517,11 @@ namespace VikingEngine.DSSWars
                     {
                         var target = new PGameObject(packet.r);
                         var group = ObjectId.ReadSoldierGroup(packet.r, true, out _);
-                        group.attackTarget_soldierGroupOrCity = target;
-                        group.enterBattleState(true, false);
+                        if (group != null)
+                        {
+                            group.attackTarget_soldierGroupOrCity = target;
+                            group.enterBattleState(true, false);
+                        }
                     }
                     break;
 

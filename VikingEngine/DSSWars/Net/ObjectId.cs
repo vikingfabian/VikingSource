@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Net
             pSoldierGroup.write(w);
         }
 
-        public static SoldierGroup ReadSoldierGroup(System.IO.BinaryReader r, bool createIfMissing, out AbsArmy army)
+        public static SoldierGroup ReadSoldierGroup(System.IO.BinaryReader r, bool createIfMissing, out AbsArmy absArmy)
         {
             //bool isArmy = r.ReadBoolean();
             //if (NetReadMapObjId(r, out _, isArmy, createIfMissing, out mapObj, out _))
@@ -148,18 +148,18 @@ namespace VikingEngine.DSSWars.Net
             PSoldierGroup pSoldierGroup = new PSoldierGroup(r);
             if (pSoldierGroup.HasValue())
             {
-                var result = pSoldierGroup.GetSoldierGroup(out army);
-                if (army == null && createIfMissing && !pSoldierGroup.isCityGuard &&
+                var result = pSoldierGroup.GetSoldierGroup(out absArmy);
+                if (absArmy == null && createIfMissing && !pSoldierGroup.isCityGuard &&
                     pSoldierGroup.pabsarmy.pfaction.TryGetFaction(out var faction))
                 {
                     var armyarmy = new Army();
-                    army.pfaction = pSoldierGroup.pabsarmy.pfaction;
+                    armyarmy.pfaction = pSoldierGroup.pabsarmy.pfaction;
                     armyarmy.init(faction, pSoldierGroup.pabsarmy.objectIndex);
                     //needInit = true;
                 }
                 return result;
             }
-            army = null;
+            absArmy = null;
             return null;
 
         }
