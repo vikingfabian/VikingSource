@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(pabsarmy.isCity, pabsarmy.pfaction.factionIndex, pabsarmy.objectIndex, groupIndex);
+            return HashCode.Combine(pabsarmy.objectType, pabsarmy.pfaction.factionIndex, pabsarmy.objectIndex, groupIndex);
         }
 
         public bool HasValue()

@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public PMapObject mapObjPointer()
         {
-            return new PMapObject(IsCity(), pfaction, myIndex);
+            return new PMapObject(gameobjectType(), pfaction, myIndex);
         }
         public void AddSoldierGroup(SoldierGroup group)
         {
