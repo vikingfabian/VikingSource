@@ -277,6 +277,35 @@ namespace VikingEngine.Network
         
         public bool HasPvp => hostPtoP.warAllow == PlayerDiplomacyAllowType.Allow;
 
+
+        public void SendStats(bool host)
+        {
+            bool allowPvp = true;
+            if (host)
+            {
+                allowPvp &= HasPvp;
+            }
+
+            allowPvp &= clientPtoP.warAllow == PlayerDiplomacyAllowType.Allow;
+
+            if (allowPvp)
+            {
+                DssRef.stats.startMultiplayer_AllowPvp.addOne();
+            }
+            else
+            {
+                DssRef.stats.startMultiplayer_BlockPvp.addOne();
+            }
+
+            if (unlockPublicGames && lobbyPublicity == LobbyPublicity.Public)
+            {
+                DssRef.stats.startMultiplayer_AllowPublic.addOne();
+            }
+            else
+            {
+                DssRef.stats.startMultiplayer_BlockPublic.addOne();
+            }
+        }
         public NetworkSettings()
         {
             Ref.netsett = this;

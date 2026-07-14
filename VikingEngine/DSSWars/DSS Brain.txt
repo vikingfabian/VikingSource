@@ -1,6 +1,12 @@
 
 Change log:
 * steam deck layout
+* 11 new stats
+* client soldier collisions
+* Smoothing options for pan and zoom
+* Added battle lab to debug menu
+
+
 
 Performance
 * Removed all unessesary faction references

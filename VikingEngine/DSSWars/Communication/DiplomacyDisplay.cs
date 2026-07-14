@@ -503,6 +503,20 @@ namespace VikingEngine.DSSWars.Interface
 
         void netSendP2p(PlayerToPlayerDiplomacy PtoP, AbsHumanPlayer otherPlayer)
         {
+            if (PtoP.suggestedBy == otherPlayer.pfaction)
+            {
+                switch (PtoP.suggestedRelation)
+                {
+                    case RelationType.RelationTypeN4_War:
+                    case RelationType.RelationTypeN3_Mobilization:
+                        DssRef.stats.playerToPlayerWar.addOne();
+                        break;
+                    case RelationType.RelationType3_Ally:
+                        DssRef.stats.playerToPlayerAlly.addOne();
+                        break;
+                }
+            }
+
             var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
                      Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
             

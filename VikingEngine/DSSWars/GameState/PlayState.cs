@@ -96,6 +96,7 @@ namespace VikingEngine.DSSWars
             else
             {
                 new LoadScene(loadMeta);
+                Ref.netsett.SendStats(false);
             }
 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)

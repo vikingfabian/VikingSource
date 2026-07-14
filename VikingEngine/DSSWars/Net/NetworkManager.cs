@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
@@ -512,7 +513,7 @@ namespace VikingEngine.DSSWars
                     new DiplomacyDisplay(LocalHost()).netReadP2pRelation(packet.r, sender);
                     break;
 
-                case PacketType.DssEnterBattle:
+                case PacketType.DssGroupTarget:
                     ObjectId.ReadSoldierGroup(packet.r, true, out _)?.enterBattleState(true, false);
                     break;
 
@@ -665,8 +666,15 @@ namespace VikingEngine.DSSWars
                         }
                     }
                     break;
+
                 case PacketType.DssGiftGold:
                     DiplomacyDisplay.NetReadSendGold(packet, sender);
+                    break;
+                case PacketType.DssBattleLabStartNew:
+                    BattleSetupManager.NetStartBattleLab(packet.r);
+                    break;
+                case PacketType.DssBattleLabAddSoldiers:
+                    BattleSetupManager.NetAddSoldiers(packet.r);
                     break;
             }
 #if !DEBUG
@@ -975,6 +983,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        int maxPlayerCount = 1;
         public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
         {
             base.NetEvent_PeerJoined(peer);
@@ -988,16 +997,30 @@ namespace VikingEngine.DSSWars
             menuSystem.OnMultiplayer();
 
             int count = remotePlayers.Count + 1;
-            if (Ref.netSession.IsHost && count > MultiplayerCountLeaderBoard.CountUploaded)
+            if (count > maxPlayerCount && Ref.netSession.IsHost)
             {
-                MultiplayerCountLeaderBoard.CountUploaded = count;
-                Ref.update.AddSyncAction(new SyncAction(() =>
+                maxPlayerCount = count;
+                if (maxPlayerCount >= 3)
                 {
-                    new MultiplayerCountLeaderBoard(MultiplayerCountLeaderBoard.CountUploaded);
-                }));
-            }
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        new MultiplayerCountLeaderBoard(maxPlayerCount);
+                    }));
+                }
 
-            Ref.steamlobby.refreshMetaData();
+                switch (maxPlayerCount)
+                {
+                    case 2: 
+                        DssRef.stats.startHostingMultiplayer_2.addOne();
+                        Ref.netsett.SendStats(true);
+                        break;
+                    case 3: DssRef.stats.startHostingMultiplayer_3.addOne(); break;
+                    case 4: DssRef.stats.startHostingMultiplayer_4.addOne(); break;
+                    case 10: DssRef.stats.startHostingMultiplayer_10.addOne(); break;
+                }
+
+                Ref.steamlobby.refreshMetaData();
+            }
         }
 
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)

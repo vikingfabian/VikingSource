@@ -300,6 +300,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public bool IsCollection() { return false; }
         virtual public int CollectionCount() { return 0; }
+
+        virtual public PGameObject goPointer() { return PGameObject.Empty; }
         //abstract public bool IsDeleted();
     }
     enum GameObjectType

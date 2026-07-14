@@ -1162,7 +1162,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Tutorial_SelectTabX { get; }
         public abstract string Tutorial_IncreasePriorityOnX { get; }
         public abstract string Tutorial_PlaceBuildOrder { get; }
-        public abstract string Tutorial_ZoomInput { get; }
+        public abstract string ButtonAction_Zoom { get; }
 
         public abstract string Tutorial_SelectACity { get; }
         public abstract string Tutorial_ZoomInWorkers { get; }

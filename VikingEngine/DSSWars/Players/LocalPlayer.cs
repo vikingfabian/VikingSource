@@ -5,9 +5,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
-using VikingEngine.DebugExtensions;
-using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
@@ -17,8 +14,8 @@ using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
-//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
@@ -31,31 +28,19 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
-using VikingEngine.Input;
-using VikingEngine.LootFest.GO.Characters.CastleEnemy;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.Players;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Sound;
-using VikingEngine.SteamWrapping;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.Commander.LevelSetup;
-using VikingEngine.ToGG.HeroQuest.HeroStrategy;
-using VikingEngine.ToGG.HeroQuest.Net;
-using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players
 {
     partial class LocalPlayer : AbsHumanPlayer
     {
-
         public Engine.PlayerData playerData;
 
         public GameHud hud;
 
-        bool inputConnected;
-
         public GameControls gameControls;
-
+        protected BattleSetupManager setupManager = null;
 
         public MapLayerManager mapLayersManager;
 
@@ -160,6 +145,22 @@ namespace VikingEngine.DSSWars.Players
         public LocalPlayer()
         {
             baseInit();
+        }
+        public void EnterBattleLab()
+        {
+            BattleLabStorage.Singleton = new BattleLabStorage();
+            setupManager = new BattleSetupManager();
+        }
+
+        public bool DisplayBattleLab(RichBoxContent content, RichMenu menu)
+        {
+            if (setupManager != null)
+            {
+                setupManager.updateObjectDisplay(content, menu);
+                return true;
+            }
+
+            return false;
         }
 
         public void openPlayerToPlayerDisplay(AbsHumanPlayer selected)
@@ -287,7 +288,7 @@ namespace VikingEngine.DSSWars.Players
                 input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
 
-            inputConnected = input.Connected;
+            //inputConnected = input.Connected;
 
             //faction.displayInFullOverview = true;
 

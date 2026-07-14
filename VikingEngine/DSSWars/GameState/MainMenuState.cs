@@ -688,7 +688,7 @@ namespace VikingEngine.DSSWars
 
                     buttonContent.newLine();
                     HudLib.BulletPoint(buttonContent);
-                    buttonContent.Add(new RbText(session.hostName, HudLib.TitleColor_Name_Dark));
+                    buttonContent.Add(new RbText(LoadContent.CheckCharsSafety(session.hostName, LoadedFont.Regular), HudLib.TitleColor_Name_Dark));
 
                     var meta = session.metaData as LobbyMetaData;
                     buttonContent.newLine();

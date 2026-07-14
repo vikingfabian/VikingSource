@@ -1932,7 +1932,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "选择标签: {0}";
         public override string Tutorial_IncreasePriorityOnX => "提高{0}的优先级";
         public override string Tutorial_PlaceBuildOrder => "下达建筑指令: {0}";
-        public override string Tutorial_ZoomInput => "缩放";
+        public override string ButtonAction_Zoom => "缩放";
 
         public override string Tutorial_SelectACity => "选择一座城市";
         public override string Tutorial_ZoomInWorkers => "放大查看工人";

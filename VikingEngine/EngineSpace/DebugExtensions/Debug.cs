@@ -26,6 +26,11 @@ namespace VikingEngine
             return CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z);
         }
 
+        public static bool CorruptValue(Vector2 value)
+        {
+            return CorruptValue(value.X) || CorruptValue(value.Y);
+        }
+
         public static void CrashCorruptValue(Vector3 value)
         {
             if (CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z))

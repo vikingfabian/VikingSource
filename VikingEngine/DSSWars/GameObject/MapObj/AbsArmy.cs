@@ -135,41 +135,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             lastNetUpdate.setNow();
-            /*
-            if (groups.Count > 0)
-            {
-
-                var groupC = groups.counter();
-
-                while (groupC.HasMore())
-                {
-                    int packetGroupCount = GroupsPerPacket;
-
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
-                    {
-                        packetCount++;
-                        Net.ObjectId.NetWriteMapObjId(w, this);
-
-                        while (--packetGroupCount >= 0 && groupC.Next())
-                        {
-                            NetWriteGroup(w, groupC.sel);
-                            lastNetUpdate.setNow();
-                        }
-
-                        w.Write(ushort.MaxValue);
-                    }
-                    packet.EndWrite_Asynch();
-                }
-            }
-            */
+          
         }
-        //public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
-        //{
-        //    //w.Write((ushort)group.myIndex);
-        //    group.writeNet(w);
-
-        //    Debug.WriteCheck(w);
-        //}
+       
         public static void NetReadGroups(bool bArmy, System.IO.BinaryReader r)
         {
             if (ObjectId.NetReadMapObjId(r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
@@ -294,73 +262,70 @@ namespace VikingEngine.DSSWars.GameObject
             inBattleWith = battles;
             mostCenterGroup = mostCenter;
 
-            if (inBattle)
+            if (IsNetHosted)
             {
-                if (battles.groupsInBattle == 0)
+                if (inBattle)
                 {
-                    DssRef.state.events?.onBattleEnd_async(this, inBattleWith);
-                    inBattle = false;
-                    if (pfaction.TryGetLocalPlayer(out var lp) && !DssRef.achieve.achivementsAreModeBlocked())
+                    if (battles.groupsInBattle == 0)
                     {
-                        float strengthLost = strengthBeforeBattle - strengthValue;
-                        if (strengthLost >= Achievements.Defeating_victory_strengthLost && groups.Count > 0)
+                        DssRef.state.events?.onBattleEnd_async(this, inBattleWith);
+                        inBattle = false;
+                        if (pfaction.GetPlayer().IsLocalPlayer() && !DssRef.achieve.achivementsAreModeBlocked())
                         {
-                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.defeating_victory);
-                        }
-
-                        int menLost = soldierCountBeforeBattle - soldiersCount;
-                        if (menLost >= Achievements.SlaughteredCount)
-                        {
-                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.slaughtered);
-                        }
-
-                        if (battles.attackingCity)
-                        {
-                            groupsC.Reset();
-                            while (groupsC.Next())
+                            float strengthLost = strengthBeforeBattle - strengthValue;
+                            if (strengthLost >= Achievements.Defeating_victory_strengthLost && groups.Count > 0)
                             {
-                                if (groupsC.sel.soldierConscript.conscript.weapon == Resource.ItemResourceType.SiegeCannonBronze)
+                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.defeating_victory);
+                            }
+
+                            int menLost = soldierCountBeforeBattle - soldiersCount;
+                            if (menLost >= Achievements.SlaughteredCount)
+                            {
+                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.slaughtered);
+                            }
+
+                            if (battles.attackingCity)
+                            {
+                                groupsC.Reset();
+                                while (groupsC.Next())
                                 {
-                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.ottoman);
-                                    break;
+                                    if (groupsC.sel.soldierConscript.conscript.weapon == Resource.ItemResourceType.SiegeCannonBronze)
+                                    {
+                                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.ottoman);
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            else if (battles.groupsInBattle >= 2)
-            {
-                inBattle = true;
-                strengthBeforeBattle = strengthValue;
-                soldierCountBeforeBattle = soldiersCount;
-                if (pfaction.TryGetLocalPlayer(out var localplayer))
+                else if (battles.groupsInBattle >= 2)
                 {
-                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    inBattle = true;
+                    strengthBeforeBattle = strengthValue;
+                    soldierCountBeforeBattle = soldiersCount;
+                    if (pfaction.GetPlayer().IsLocalPlayer())
                     {
-                        //var localplayer = GetPlayer().GetLocalPlayer();
-                        if (localplayer.battleMessageCheck(tilePos))
+                        Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            RichBoxContent content = new RichBoxContent();
-                            MessageGroup_Ingame.Title(content, DssRef.lang.Hud_Battle);
+                            var localplayer = pfaction.GetPlayer().GetLocalPlayer();
+                            if (localplayer.battleMessageCheck(tilePos))
+                            {
+                                RichBoxContent content = new RichBoxContent();
+                                MessageGroup_Ingame.Title(content, DssRef.lang.Hud_Battle);
 
-                            //var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                            //MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
-                            //gotoBattleButtonContent.Add(new RbText(TypeName()));
+                                var gotoButtonContent = new RichBoxContent();
+                                MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
+                                this.toButtonContent(gotoButtonContent, true);
 
-                            //content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                            //    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this)));
-                            var gotoButtonContent = new RichBoxContent();
-                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
-                            this.toButtonContent(gotoButtonContent, true);
+                                content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                                    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this, RbSoundType.Default))
+                                { fillWidth = true });
 
-                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
-                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this, RbSoundType.Default))
-                            { fillWidth = true });
-
-                            localplayer.hud.messages.Add(content);
-                        }
-                    }));
+                                localplayer.hud.messages.Add(content);
+                            }
+                        }));
+                    }
                 }
             }
         }

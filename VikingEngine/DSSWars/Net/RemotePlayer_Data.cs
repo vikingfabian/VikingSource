@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.Players
 
                 foreach (Army army in netCollArmies)
                 {
-                    if (army.IsNetHosted && army.lastNetUpdate.secPassed(waitSeconds))
+                    if (army.IsNetHosted &&  army.lastNetUpdate.secPassed(army.inBattle? 1 : waitSeconds))
                     {
                         Army.NetFullArmyStatus(army, Network.PacketReliability.Unrelyable);
                     }

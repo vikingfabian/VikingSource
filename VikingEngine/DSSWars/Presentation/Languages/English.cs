@@ -1990,7 +1990,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "Select tab: {0}";
         public override string Tutorial_IncreasePriorityOnX => "Increase the priority on: {0}";
         public override string Tutorial_PlaceBuildOrder => "Place build order: {0}";
-        public override string Tutorial_ZoomInput => "Zoom";
+        public override string ButtonAction_Zoom => "Zoom";
 
         public override string Tutorial_SelectACity => "Select a city";
         public override string Tutorial_ZoomInWorkers => "Zoom in to see the workers";

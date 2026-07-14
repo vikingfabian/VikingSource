@@ -364,7 +364,7 @@ namespace VikingEngine.DSSWars.Data
 
     class MultiplayerCountLeaderBoard : AbsLeaderBoard
     {
-        public static int CountUploaded = 2;
+        //public static int CountUploaded = 2;
         public MultiplayerCountLeaderBoard()
         {
             this.type = LeaderBoardType.multiplayer_playercount;
