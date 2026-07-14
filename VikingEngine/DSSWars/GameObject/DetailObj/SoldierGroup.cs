@@ -283,6 +283,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeNet(System.IO.BinaryWriter w)
         {
+            if (pfaction.TryGetLocalPlayer(out _))
+            {
+                lib.DoNothing();
+            }
             writeGameState(w);
             w.Write((byte)state);
             switch (state)
