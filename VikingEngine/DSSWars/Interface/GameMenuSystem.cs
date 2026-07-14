@@ -803,7 +803,11 @@ namespace VikingEngine.DSSWars.Interface
             });
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Enter battle lab") }, 
-                new RbAction(DssRef.state.LocalHost().EnterBattleLab))
+                new RbAction(()=>
+                {
+                    DssRef.state.LocalHost().EnterBattleLab();
+                    closeMenu();
+                }))
             {
                 fillWidth = true
             });

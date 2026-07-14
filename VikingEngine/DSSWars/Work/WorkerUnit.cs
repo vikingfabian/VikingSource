@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -48,7 +49,12 @@ namespace VikingEngine.DSSWars.Work
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
-
+#if DEBUG
+            if (Debug.CorruptValue(model.position))
+            {
+                throw new Exception();      
+            }
+#endif
             checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
@@ -409,6 +415,12 @@ namespace VikingEngine.DSSWars.Work
                     //remove hidden status
                     model.Visible = true;
                     model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+#if DEBUG
+                    if (Debug.CorruptValue(model.position))
+                    {
+                        throw new Exception();
+                    }
+#endif
                 }
 
                 if (status.subTileEnd == status.subTileStart)

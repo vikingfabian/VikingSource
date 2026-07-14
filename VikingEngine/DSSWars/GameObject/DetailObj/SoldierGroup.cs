@@ -914,13 +914,13 @@ namespace VikingEngine.DSSWars.GameObject
                     state = GroupState.Battle;
                     createSoldierObjects(enter, false);
 
-                    if (localAction)
-                    { 
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEnterBattle, Network.PacketReliability.Reliable, out var packet);
-                        {
-                            Net.ObjectId.WriteSoldierGroup(w, this);
-                        } packet.EndWrite_Asynch();
-                    }
+                    //if (localAction)
+                    //{ 
+                    //    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssGroupTarget, Network.PacketReliability.Reliable, out var packet);
+                    //    {
+                    //        Net.ObjectId.WriteSoldierGroup(w, this);
+                    //    } packet.EndWrite_Asynch();
+                    //}
                 }
                 else
                 {
@@ -1091,6 +1091,17 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (attack_sp != null)
             {
+                /*
+                if (localAction)
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssGroupTarget, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        Net.ObjectId.WriteSoldierGroup(w, this);
+                    }
+                    packet.EndWrite_Asynch();
+                }
+
+                */
                 if (state != GroupState.Battle)
                 {
                     enterBattleState(true, true);

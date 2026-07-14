@@ -511,7 +511,7 @@ namespace VikingEngine.DSSWars
                     new DiplomacyDisplay(LocalHost()).netReadP2pRelation(packet.r, sender);
                     break;
 
-                case PacketType.DssEnterBattle:
+                case PacketType.DssGroupTarget:
                     ObjectId.ReadSoldierGroup(packet.r, true, out _)?.enterBattleState(true, false);
                     break;
 

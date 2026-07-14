@@ -228,7 +228,7 @@ namespace VikingEngine.Network
         DssWorldDiplomacy,
         DssDiplomacyRelation,
         DssPlayerToPlayerRelation,
-        DssEnterBattle,
+        DssGroupTarget,
         DssAttackDamage,
         DssSoldierDeath,
 

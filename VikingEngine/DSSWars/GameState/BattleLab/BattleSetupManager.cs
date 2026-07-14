@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             else
             {
                 enemyArmy = null;
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssArmyStatus, Network.PacketReliability.Reliable, Network.SendPacketTo.OneSpecific, enemyFac.player.GetRemotePlayer().networkPeer.peer.fullId, null);
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssBattleLabStartNew, Network.PacketReliability.Reliable, Network.SendPacketTo.OneSpecific, enemyFac.player.GetRemotePlayer().networkPeer.peer.fullId, null);
                 enemyTile.write(w);
                 w.Write(enemyRot.radians);
             }
