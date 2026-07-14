@@ -1064,14 +1064,14 @@ namespace VikingEngine.DSSWars.GameObject
         
         virtual public void update(float time, bool fullUpdate)
         {
-            if (debugTagged)
+            if (pfaction.TryGetLocalPlayer(out _))
             {
                  lib.DoNothing();
             }
-            if (fullUpdate && IsGuardGroup())
-            {
-                lib.DoNothing();
-            }
+            //if (fullUpdate && IsGuardGroup())
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (inShipOrGuardTransform)
             {
