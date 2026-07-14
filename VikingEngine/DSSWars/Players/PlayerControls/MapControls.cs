@@ -653,7 +653,7 @@ namespace VikingEngine.DSSWars.Players
                 var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
                 foreach (var m in nearMapObjects)
                 {
-                    if (m.rayCollision(ray))
+                    if (m != null && m.rayCollision(ray))
                     {
                         intersectObj = m;
 
