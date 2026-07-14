@@ -65,7 +65,11 @@ namespace VikingEngine.DSSWars.Interface
 
             var content = new RichBoxContent();
 
-            if (menu.menuStack.Count > 0)
+            if (player.DisplayBattleLab(content, menu))
+            { 
+            
+            }
+            else if (menu.menuStack.Count > 0)
             {
                 switch (menu.menuStack.Last())
                 {
@@ -153,6 +157,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
             }
 
+            
             menu.Refresh(content, player.gameControls.controllerPointer);
         }
 

@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
@@ -29,6 +30,7 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.LootFest.GO.Gadgets;
@@ -45,7 +47,6 @@ namespace VikingEngine.DSSWars.Players
 {
     partial class LocalPlayer : AbsHumanPlayer
     {
-
         public Engine.PlayerData playerData;
 
         public GameHud hud;
@@ -53,7 +54,7 @@ namespace VikingEngine.DSSWars.Players
         bool inputConnected;
 
         public GameControls gameControls;
-
+        protected BattleSetupManager setupManager = null;
 
         public MapLayerManager mapLayersManager;
 
@@ -159,6 +160,22 @@ namespace VikingEngine.DSSWars.Players
         public LocalPlayer()
         {
             baseInit();
+        }
+        public void EnterBattleLab()
+        {
+            BattleLabStorage.Singleton = new BattleLabStorage();
+            setupManager = new BattleSetupManager();
+        }
+
+        public bool DisplayBattleLab(RichBoxContent content, RichMenu menu)
+        {
+            if (setupManager != null)
+            {
+                setupManager.updateObjectDisplay(content, menu);
+                return true;
+            }
+
+            return false;
         }
 
         public void openPlayerToPlayerDisplay(AbsHumanPlayer selected)

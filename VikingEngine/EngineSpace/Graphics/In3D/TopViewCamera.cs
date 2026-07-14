@@ -56,7 +56,6 @@ namespace VikingEngine.Graphics
             return clone;
         }
 
-        /* Methods */
         public override void Time_Update(float time_ms)
         {
             base.Time_Update(time_ms);
@@ -75,7 +74,7 @@ namespace VikingEngine.Graphics
             Vector3 diff = goal - lookTarget;
             float l = diff.Length();
 
-            const float MinChaseSpeed = 0.05f;
+            const float MinChaseSpeed = 0.0001f;
             if (l > MinChaseSpeed)
             {
                 for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)

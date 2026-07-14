@@ -535,11 +535,6 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-
-                //HudLib.BulletSeperationPoint(content);
-
-                //content.Add(new RbImage(LangLib.Training_Icon(training)));
-                //content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
                 label(DssRef.lang.Conscript_TrainingTitle, LangLib.Training_Icon(training), LangLib.Training(training));
 
                 if (animal != ItemResourceType.NONE)
@@ -548,53 +543,17 @@ namespace VikingEngine.DSSWars.Conscript
                     labelItem(DssRef.lang.Resource_TypeName_MountArmorTitle, mountArmor);
                     labelItem(DssRef.lang.Resource_TypeName_Vehicle, vehicle);
                 }
-                //    IconName.Item(animal, out SpriteName animalIcon, out string animalName);
-                //    HudLib.BulletSeperationPoint(content);
-                //    content.Add(new RbImage(animalIcon));
-                //    content.Add(new RbText(animalName, HudLib.TitleColor_TypeName));
-                //    if (mountArmor != ItemResourceType.NONE)
-                //    {
-                //        IconName.Item(mountArmor, out SpriteName mountArmorIcon, out string mountArmorName);
-                //        HudLib.BulletSeperationPoint(content);
-                //        content.Add(new RbImage(mountArmorIcon));
-                //        content.Add(new RbText(mountArmorName, HudLib.TitleColor_TypeName));
-                //    }
+               
 
-                //    if (vehicle != ItemResourceType.NONE)
-                //    {
-                //        IconName.Item(vehicle, out SpriteName vehicleIcon, out string vehicleName);
-                //        HudLib.BulletSeperationPoint(content);
-                //        content.Add(new RbImage(vehicleIcon));
-                //        content.Add(new RbText(vehicleName, HudLib.TitleColor_TypeName));
-                //    }
-                //}
-
-
-                //HudLib.BulletSeperationPoint(content);
                 labelItem(DssRef.lang.Conscript_WeaponTitle, weapon);
                 labelItem(DssRef.lang.Resource_TypeName_Shield, shield);
                 labelItem(DssRef.lang.Conscript_ArmorTitle, armorLevel);
 
 
-                //content.Add(new RbImage(weaponIcon));
-                //content.Add(new RbText(weaponName, HudLib.TitleColor_TypeName));
-
-                //if (armorLevel != ItemResourceType.NONE)
-                //{
-                //    HudLib.BulletSeperationPoint(content);
-
-                //    content.Add(new RbImage(armorIcon));
-                //    content.Add(new RbText(armorName, HudLib.TitleColor_TypeName));
-                //}
-
                 if (specialization != SpecializationType.None)
                 {
                     IconName.SpecializationTypeName(specialization, out var specIcon, out string specName);
                     label(DssRef.lang.Conscript_SpecializationTitle, specIcon, specName);
-                    //    content.newLine();
-                    //    HudLib.BulletSeperationPoint(content);
-                    //    content.space();
-                    //    content.Add(new RbText(LangLib.SpecializationTypeName(specialization, out var specIcon), HudLib.TitleColor_TypeName));
                 }
 
                 void label(string label, SpriteName icon, string name)
@@ -616,27 +575,11 @@ namespace VikingEngine.DSSWars.Conscript
                         content.Add(new RbText(TextLib.LargeFirstLetter(name), HudLib.TitleColor_TypeName));
                     }
                 }
-
             }
-
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            //if ((byte)weapon > 200)
-            //{
-            //    lib.DoNothing();
-            //}
-
-            //    public ItemResourceType man;
-            //public ItemResourceType weapon;
-            //public ItemResourceType armorLevel;
-            //public ItemResourceType animal;
-            //public ItemResourceType mountArmor;
-            //public ItemResourceType vehicle;
-            //public TrainingLevel training;
-            //public SpecializationType specialization;
-
             bool special_man = man != ItemResourceType.Men;
             bool special_shield = shield != ItemResourceType.NONE;
             bool special_animal = animal != ItemResourceType.NONE;

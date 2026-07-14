@@ -527,7 +527,7 @@ namespace VikingEngine.DSSWars.Interface
 
             HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.GameSettings_InputSmoothing, Ref.langOpt.MouseButtonAction_Pan));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.0f, 0.9f, 0.1f), Ref.gamesett.panSmoothingProperty, true));
+            content.Add(new RbDragButton(new DragButtonSettings(0.0f, 1f, 0.1f), Ref.gamesett.panSmoothingProperty, true));
 
             HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.GameSettings_InputSmoothing, DssRef.lang.ButtonAction_Zoom));
             content.space();
@@ -797,7 +797,13 @@ namespace VikingEngine.DSSWars.Interface
                 closeMenu();
             })));
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Find city from id") }, new RbAction(beginFindCityId))
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Find city from id (broken)") }, new RbAction(beginFindCityId))
+            {
+                fillWidth = true
+            });
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Enter battle lab") }, 
+                new RbAction(DssRef.state.LocalHost().EnterBattleLab))
             {
                 fillWidth = true
             });

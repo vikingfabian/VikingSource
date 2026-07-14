@@ -3,6 +3,8 @@ Change log:
 * steam deck layout
 * 11 new stats
 * client soldier collisions
+* Smoothing options for pan and zoom
+
 
 KNOWN ISSUES
 
