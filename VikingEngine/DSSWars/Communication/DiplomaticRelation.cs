@@ -74,12 +74,15 @@ namespace VikingEngine.DSSWars.Communication
         {
             //Faction faction1 = Net.ObjectId.ReadFaction(r, out _);
             //Faction faction2 = Net.ObjectId.ReadFaction(r, out _);
-            PFaction faction1 = new PFaction(r);
-            PFaction faction2 = new PFaction(r);
+
+            
 
             //if (faction1 != null && faction2 != null)
             {
                 EightBit actuators = new EightBit(r);
+
+                PFaction faction1 = new PFaction(r);
+                PFaction faction2 = new PFaction(r);
 
                 ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1, faction2);
                 var previousRelation = rel.Relation;
