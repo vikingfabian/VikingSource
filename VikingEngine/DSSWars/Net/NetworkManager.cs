@@ -513,16 +513,8 @@ namespace VikingEngine.DSSWars
                     new DiplomacyDisplay(LocalHost()).netReadP2pRelation(packet.r, sender);
                     break;
 
-                case PacketType.DssGroupTarget:
-                    {
-                        var target = new PGameObject(packet.r);
-                        var group = ObjectId.ReadSoldierGroup(packet.r, true, out _);
-                        if (group != null)
-                        {
-                            group.attackTarget_soldierGroupOrCity = target;
-                            group.enterBattleState(true, false);
-                        }
-                    }
+                case PacketType.DssEnterBattle:
+                    SoldierGroup.NetReadEnterBattle(packet.r);
                     break;
 
                 //case PacketType.DssAttackDamage:

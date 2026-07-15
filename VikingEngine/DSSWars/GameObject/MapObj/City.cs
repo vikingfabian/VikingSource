@@ -4327,7 +4327,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override PGameObject goPointer()
         {
-            return new PGameObject(GameObjectType.City, pfaction, myIndex);
+            return new PGameObject(GameObjectType.NONE, GameObjectType.City, pfaction, myIndex);
         }
 
         public override bool IsArmy()

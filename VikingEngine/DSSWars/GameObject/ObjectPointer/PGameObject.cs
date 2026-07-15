@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
     struct PGameObject
     {
         public static readonly PGameObject Empty = new PGameObject();
-
+        public GameObjectType parentType;
         public GameObjectType objectType;
         public PFaction pfaction;
         public int objectIndex;
@@ -20,15 +20,19 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         public PGameObject()
         {
             objectType = GameObjectType.NONE;
+            parentType = GameObjectType.NONE;
             objectIndex = -1;
         }
 
-        public PGameObject(GameObjectType objectType, 
+        public PGameObject(
+            GameObjectType parentType,
+            GameObjectType objectType, 
             PFaction pfaction, 
             int objectIndex, 
             int groupIndex = -1, 
             int groupMemberIndex = -1)
         {
+            this.parentType = parentType;
             this.objectType = objectType;
             this.pfaction = pfaction;
             this.objectIndex = objectIndex;
@@ -41,9 +45,16 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             switch (objectType)
             {
                 case GameObjectType.SoldierGroup:
-                    if (pfaction.TryGetFaction(out var gf))
-                    { 
-                       return gf.armies.GetIndex_Safe(objectIndex)?.groups.GetIndex_Safe(groupIndex);
+                    if (parentType == GameObjectType.Army)
+                    {
+                        if (pfaction.TryGetFaction(out var gf))
+                        {
+                            return gf.armies.GetIndex_Safe(objectIndex)?.groups.GetIndex_Safe(groupIndex);
+                        }
+                    }
+                    else
+                    {
+                        DssRef.world.cities[objectIndex].groups.GetIndex_Safe(groupIndex);
                     }
                     break;
                 case GameObjectType.Soldier:
@@ -70,16 +81,29 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         {
             soldier = null;
             group = null;
-
-            if (pfaction.TryGetFaction(out var gf))
+            AbsArmy parent = null;
+            if (parentType == GameObjectType.Army)
             {
-                group = gf.armies.GetIndex_Safe(objectIndex)?.groups.GetIndex_Safe(groupIndex);
-                if (group != null)
+                if (pfaction.TryGetFaction(out var gf))
                 {
-                    soldier = group.soldiers?.GetIndex_Safe(groupMemberIndex);
+                    parent = gf.armies.GetIndex_Safe(objectIndex);
                 }
             }
+            else
+            {
+                parent = DssRef.world.cities[objectIndex];
+            }
+            group = parent?.groups.GetIndex_Safe(groupIndex);
+            if (group != null)
+            {
+                soldier = group.soldiers?.GetIndex_Safe(groupMemberIndex);
+            }
             return soldier != null;
+        }
+
+        public PSoldierGroup GetSoldierGroupPointer()
+        {
+            return new PSoldierGroup(new PMapObject(objectType, pfaction, objectIndex), groupIndex);
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -99,6 +123,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                     switch (objectType)
                     {
                         case GameObjectType.SoldierGroup:
+                            w.Write((byte)parentType);
                             if (groupIndex < 0)
                             {
                                 w.Write(ushort.MaxValue);
@@ -132,6 +157,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                     switch (objectType)
                     {
                         case GameObjectType.SoldierGroup:
+                            parentType = (GameObjectType)r.ReadByte();
                             groupIndex = r.ReadUInt16();
                             if (groupIndex == ushort.MaxValue)
                             {
@@ -147,6 +173,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         public bool Equals(PGameObject other)
         {
             return objectType == other.objectType &&
+                    parentType == other.parentType &&
                    pfaction == other.pfaction &&
                    objectIndex == other.objectIndex &&
                    groupIndex == other.groupIndex &&
@@ -179,7 +206,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         // 5. ToString override for easy debugging
         public override string ToString()
         {
-            return $"PGameObject [Type: {objectType}, Faction: {pfaction}, ObjIndex: {objectIndex}, GrpIndex: {groupIndex}, MemIndex: {groupMemberIndex}]";
+            return $"PGameObject [Type: {objectType}, Parent: {parentType}, Faction: {pfaction}, ObjIndex: {objectIndex}, GrpIndex: {groupIndex}, MemIndex: {groupMemberIndex}]";
         }
 
         public bool HasValue()

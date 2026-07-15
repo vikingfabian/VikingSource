@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Map
                             foreach (var pgroup in area.groups)
                             {
                                 var group = pgroup.GetSoldierGroup(out _);
-                                if ( group.attackTarget_soldierGroupOrCity != null && group.pfaction == playerFaction)
+                                if (group != null && group.attackTarget_soldierGroupOrCity.HasValue() && group.pfaction == playerFaction)
                                 {
                                     return true;
                                 }
