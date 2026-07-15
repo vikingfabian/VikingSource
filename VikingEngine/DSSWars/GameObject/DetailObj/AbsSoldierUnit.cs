@@ -380,12 +380,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update2_battle_attack(float time, bool fullUpate, float groupWalkSpeed)
         {
-            if (group.debugTagged)
-            {
-                lib.DoNothing();
-                var attack = attackTarget;
-                var attack2 = nextAttackTarget;
-            }
+            //if (group.debugTagged)
+            //{
+            //    lib.DoNothing();
+            //    var attack = attackTarget;
+            //    var attack2 = nextAttackTarget;
+            //}
 
             updateMoveAttackPrio(time, fullUpate, freeToMove(time), groupWalkSpeed);
 
