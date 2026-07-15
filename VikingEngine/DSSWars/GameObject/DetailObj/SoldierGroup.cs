@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject
         //public WeakReference<AbsGroup> attackTarget_soldierGroupOrCity = null;
 
         public PGameObject attackTarget_soldierGroupOrCity = PGameObject.Empty;
-        float attackTargetTimeLock = 0;
+        GameTimeStamp attackTargetTimeLock = GameTimeStamp.None;
         
         public GroupState state = GroupState.Idle;
         
@@ -317,6 +317,7 @@ namespace VikingEngine.DSSWars.GameObject
                     WP.WritePosXZPercentU16(w, position);
 
                     attackTarget_soldierGroupOrCity.write(w);
+                    attackTargetTimeLock.write_byte(w);
                     break;
             }
 
@@ -384,6 +385,7 @@ namespace VikingEngine.DSSWars.GameObject
                         position = rPosition;
                     }
                     attackTarget_soldierGroupOrCity.read(r);
+                    attackTargetTimeLock.read_byte(r);
                     break;
             }
 
@@ -924,6 +926,7 @@ namespace VikingEngine.DSSWars.GameObject
                             Net.ObjectId.WriteSoldierGroup(w, this);
 
                             attackTarget_soldierGroupOrCity.write(w);
+                            attackTargetTimeLock.write_byte(w);
                             if (attackTarget_soldierGroupOrCity.objectType == GameObjectType.SoldierGroup)
                             {
                                 var tsoldiers = (SoldierGroup)targetObject;
@@ -968,6 +971,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (group != null)
             {
                 group.attackTarget_soldierGroupOrCity = new PGameObject(r);
+                group.attackTargetTimeLock.read_byte(r);
 
                 if (group.attackTarget_soldierGroupOrCity.objectType == GameObjectType.SoldierGroup)
                 {
@@ -1948,7 +1952,7 @@ namespace VikingEngine.DSSWars.GameObject
                 distance(target) > 4)
             )
             {
-                attackTargetTimeLock = 0;
+                attackTargetTimeLock = GameTimeStamp.None;
                 attackTarget_soldierGroupOrCity = PGameObject.Empty;
 
                 if (pfaction.TryGetLocalPlayer(out _))
@@ -1980,7 +1984,7 @@ namespace VikingEngine.DSSWars.GameObject
                         
             refreshAttackTarget();
 
-            if (attackTarget_soldierGroupOrCity.HasValue() && attackTargetTimeLock > Ref.TotalGameTimeSec)
+            if (attackTarget_soldierGroupOrCity.HasValue() && attackTargetTimeLock.HasTime())//attackTargetTimeLock > Ref.TotalGameTimeSec)
             {
                 return;
             }
@@ -2040,7 +2044,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    attackTargetTimeLock = Ref.TotalGameTimeSec + 2f + distanceValue;
+                    attackTargetTimeLock.setTimeFromNow(2f + distanceValue);//Ref.TotalGameTimeSec + 2f + distanceValue;
                     attackTarget_soldierGroupOrCity =pNearest;
                     nearest.OnBecomeAttackTarget(this);
                 }
