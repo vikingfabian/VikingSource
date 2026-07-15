@@ -1144,6 +1144,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     enterBattleState(true, true, attack_sp);
                 }
+                enterBattleStateTime.setNow();
 
                 if (command_sp != null)
                 {
@@ -1212,7 +1213,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 Debug.Log($"Exit battle, time {enterBattleStateTime.Seconds}");
                             }
-                            if (fullUpdate || enterBattleStateTime.secPassed(5))
+                            if (enterBattleStateTime.secPassed(fullUpdate? 5 :30))
                             {
                                 //Capture city here
                                 if (tArmy.IsArmy())
