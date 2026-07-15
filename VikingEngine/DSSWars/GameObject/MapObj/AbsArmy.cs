@@ -153,7 +153,7 @@ namespace VikingEngine.DSSWars.GameObject
                         int groupIndex = packetIndex * GroupsPerPacket + i;
                         if (r.ReadBoolean())
                         {
-                            NetReadGroup(r, groupIndex, mapObj);
+                            mapObj.NetReadGroup(r, groupIndex);
                         }
                         else
                         {
