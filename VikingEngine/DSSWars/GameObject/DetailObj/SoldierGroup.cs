@@ -330,8 +330,8 @@ namespace VikingEngine.DSSWars.GameObject
             setGroundY();
             
 
-            Debug.Log("## Soldiergroup read Net, state: " + state.ToString());
-            Debug.Log($"goal: {goalWp}, pos: {position}" );
+            //Debug.Log("## Soldiergroup read Net, state: " + state.ToString());
+            //Debug.Log($"goal: {goalWp}, pos: {position}" );
 
 
             switch (state)
@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            Debug.Log($"new goal: {goalWp}");
+            //Debug.Log($"new goal: {goalWp}");
 
         }
 
@@ -947,7 +947,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    
+                    if (pfaction.TryGetLocalPlayer(out _))
+                    {
+                        Debug.Log($">End battle state, time {enterBattleStateTime.Seconds}");
+                    }
                     if (!enterBattleStateTime.secPassed(5))
                     {
                         return;
@@ -1198,11 +1201,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else //No attack target is found
             {
-                if (pfaction.TryGetLocalPlayer(out _))
-                {
-                    bool hadTarget = attackTarget_soldierGroupOrCity.HasValue();
-                    lib.DoNothing();
-                }
+                
                 
 
                 switch (state)
@@ -1211,7 +1210,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             if (pfaction.TryGetLocalPlayer(out _))
                             {
-                                lib.DoNothing();
+                                Debug.Log($"Exit battle, time {enterBattleStateTime.Seconds}");
                             }
                             if (fullUpdate || enterBattleStateTime.secPassed(5))
                             {
