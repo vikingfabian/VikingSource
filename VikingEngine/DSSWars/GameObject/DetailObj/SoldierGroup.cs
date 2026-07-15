@@ -948,10 +948,10 @@ namespace VikingEngine.DSSWars.GameObject
                 else
                 {
                     
-                    if (!enterBattleStateTime.secPassed(5))
-                    {
-                        return;
-                    }
+                    //if (!enterBattleStateTime.secPassed(5))
+                    //{
+                    //    return;
+                    //}
 
                     highTargetValueToOpponent = float.MaxValue;
                     state = GroupState.FindArmyPlacement;      
@@ -1209,11 +1209,11 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case GroupState.Battle:
                         {
-                            if (pfaction.TryGetLocalPlayer(out _))
-                            {
-                                lib.DoNothing();
-                            }
-                            if (fullUpdate || enterBattleStateTime.secPassed(5))
+                            //if (pfaction.TryGetLocalPlayer(out _))
+                            //{
+                            //    lib.DoNothing();
+                            //}
+                            if (enterBattleStateTime.secPassed(fullUpdate? 3 : 20))
                             {
                                 //Capture city here
                                 if (tArmy.IsArmy())
