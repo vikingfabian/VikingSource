@@ -105,8 +105,6 @@ namespace VikingEngine.DSSWars.GameObject
         const int GroupsPerPacket = 8;
         public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount)
         {
-            
-
             int groupIndex = 0;
             int packetIndex = 0;
             while (groupIndex < groups.Array.Length)
@@ -168,31 +166,29 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public static void NetReadGroup(System.IO.BinaryReader r, int index, AbsArmy army)
         {
-                var group = army.groups.GetIndex_Safe(index);
-                bool needInit = false;
-                if (group == null)
+            var group = army.groups.GetIndex_Safe(index);
+            bool needInit = false;
+            if (group == null)
+            {
+                needInit = true;
+                if (army.IsCity())
                 {
-                    needInit = true;
-                    if (army.IsCity())
-                    {
-                        group = new GuardGroup(army);
-                    }
-                    else
-                    {
-                        group = new SoldierGroup(army);
-                    }
-                    army.groups.HardSet(group, index);
-                    group.myIndex = index;
-                    if (!group.pfaction.HasValue())
-                    {
-                        throw new Exception();
-                    }
+                    group = new GuardGroup(army);
                 }
+                else
+                {
+                    group = new SoldierGroup(army);
+                }
+                army.groups.HardSet(group, index);
+                group.myIndex = index;
+                if (!group.pfaction.HasValue())
+                {
+                    throw new Exception();
+                }
+            }
 
-                group.readNet(army, r, needInit);
-                group.net_onUpdate();
-
-            
+            group.readNet(army, r, needInit);
+            group.net_onUpdate();
         }
 
         virtual public void remove(SoldierGroup group)

@@ -894,11 +894,11 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     recievedProjectileAttackWhileIdle = state.idle;
 
-                    if (meleeAttacker.IsNetHosted)
-                    {
+                    //if (meleeAttacker.IsNetHosted)
+                    //{
                         //if (IsNetHosted)
                         //{
-                            reduceHealth(damageAmount, enemyFaction, fullUpdate);
+                    reduceHealth(damageAmount, enemyFaction, fullUpdate);
                         //}
                         //else
                         //{
@@ -911,7 +911,7 @@ namespace VikingEngine.DSSWars.GameObject
                         //    }
                         //    packet.EndWrite_Asynch();
                         //}
-                    }
+                    //}
 
                     if (fullUpdate)
                     {
