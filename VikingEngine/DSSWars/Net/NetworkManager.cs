@@ -67,6 +67,7 @@ namespace VikingEngine.DSSWars
                         if (remoteC.sel.networkPeer.peer.lowLoad())
                         {
                             netSendMapObjectsInView(remoteC.sel, ref sentAnything);
+                            sendHostedWars();
                         }
                     }
                 }
@@ -104,6 +105,7 @@ namespace VikingEngine.DSSWars
                                 if (!sendMap(remoteC.sel, ref sentAnythingToPlayer))
                                 {
                                     netSendMapObjectsInView(remoteC.sel, ref sentAnythingToPlayer);
+                                    sendHostedWars();
 
                                     if (!sentAnythingToPlayer)
                                     {
@@ -192,30 +194,57 @@ namespace VikingEngine.DSSWars
             return false;
         }
         private void netSendMapObjectsInView(RemotePlayer player, ref bool sentAnything)
-        {
-            //var remoteC = remotePlayers.counter();
-            //while (remoteC.Next())
-            //{
-                if (player.gotStatus)
-                {
-                    player.gotStatus = false;
-                    int maxPackets = player.networkPeer.peer.maxPacketCount;
+        {            
+            if (player.gotStatus)
+            {
+                player.gotStatus = false;
+                int maxPackets = player.networkPeer.peer.maxPacketCount;
 
-                    var cities = player.GetAllCitiesInView();
-                    foreach (var c in cities)
+                var cities = player.GetAllCitiesInView();
+                foreach (var c in cities)
+                {
+                    DssRef.world.cities[c].net_roundtrip_asyncupdate(out int packetCount);
+                    sentAnything |= packetCount > 0;
+                    maxPackets -= packetCount;
+                    if (maxPackets <= 0)
                     {
-                        DssRef.world.cities[c].net_roundtrip_asyncupdate(out int packetCount);
-                        sentAnything |= packetCount > 0;
-                        maxPackets -= packetCount;
-                        if (maxPackets <= 0)
+                        break;
+                    }
+                }
+                player.Net_UpdateArmies(ref maxPackets);
+            }
+        }
+
+        void sendHostedWars()
+        {
+            var factions = DssRef.world.factions.counter();
+            while (factions.Next())
+            {
+                if (factions.sel.IsNetHosted())
+                {
+                    var armiesC = factions.sel.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        if (armiesC.sel.inBattle)
                         {
-                            break;
+                            for (int i = 0; i < armiesC.sel.inBattleWith.factions.count; ++i)
+                            {
+                                if (armiesC.sel.inBattleWith.factions[i].TryGetPlayer(out var p) && p.IsRemotePlayer())
+                                {
+                                    //share army
+                                    if (armiesC.sel.lastNetUpdate.secPassed(15))
+                                    {
+                                        Army.NetFullArmyStatus(armiesC.sel, Network.PacketReliability.Unrelyable);
+                                    }
+                                }
+                            }
                         }
                     }
-                    player.Net_UpdateArmies(ref maxPackets);
                 }
-            //}
+            }
         }
+
+
 
         bool asynchAiPlayersUpdate(int id, float time)
         {

@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         protected float strengthBeforeBattle = -1;
 
         public bool inBattle = false;
-        InBattleWith inBattleWith = new InBattleWith();
+        public InBattleWith inBattleWith = new InBattleWith();
         public GameTimeStamp lastTimeTradedBetweenPlayers = GameTimeStamp.None;
 
         public void tradeBetweenPlayers_toHud(LocalPlayer player, RichBoxContent content)

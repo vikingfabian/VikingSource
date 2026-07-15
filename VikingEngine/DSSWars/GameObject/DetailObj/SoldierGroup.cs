@@ -976,7 +976,7 @@ namespace VikingEngine.DSSWars.GameObject
         {            
             var group = ObjectId.ReadSoldierGroup(r, true, out _);
             
-            if (group != null)
+            if (group != null && group.state != GroupState.Battle)
             {
                 group.attackTarget_soldierGroupOrCity = new PGameObject(r);
                 group.attackTargetTimeLock.read_byte(r);
