@@ -525,15 +525,21 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case PacketType.DssAttackDamage:
-                    AbsSoldierUnit.ReadAttackDamage(packet.r);
-                    break;
+                //case PacketType.DssAttackDamage:
+                //    AbsSoldierUnit.ReadAttackDamage(packet.r);
+                //    break;
 
                 case PacketType.DssSoldierDeath:
-                    var soldier = ObjectId.ReadSoldier(packet.r, out _);
-                    if (soldier != null)
                     {
-                        soldier.DeleteMe(DeleteReason.Death, true);
+                        var psoldier = new PGameObject(packet.r);//ObjectId.ReadSoldier(packet.r, out _);
+                        if (psoldier.TryGetSoldier(out var group, out var soldier))//soldier != null)
+                        {
+                            soldier.DeleteMe(DeleteReason.Death, true);
+                        }
+                        else if (group != null)
+                        {
+                            group.removeOneSoldier();
+                        }
                     }
                     break;
 

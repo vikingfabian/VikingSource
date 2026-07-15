@@ -229,7 +229,7 @@ namespace VikingEngine.Network
         DssDiplomacyRelation,
         DssPlayerToPlayerRelation,
         DssGroupTarget,
-        DssAttackDamage,
+        //DssAttackDamage,
         DssSoldierDeath,
 
         DssDeleteArmy,

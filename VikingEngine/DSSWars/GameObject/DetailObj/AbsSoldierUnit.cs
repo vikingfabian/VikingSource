@@ -896,28 +896,21 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (meleeAttacker.IsNetHosted)
                     {
-                        if (IsNetHosted)
-                        {
-                            //lockedIncomingDamage -= damageAmount;
-                            //health -= damageAmount;
-
-                            //if (health <= 0)
-                            //{
-                            //    onDeath(fullUpdate, enemyFaction);
-                            //}
+                        //if (IsNetHosted)
+                        //{
                             reduceHealth(damageAmount, enemyFaction, fullUpdate);
-                        }
-                        else
-                        {
-                            //Send damage to client
-                            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssAttackDamage, Network.PacketReliability.Reliable, out var packet);
-                            {
-                                w.Write((ushort)damageAmount);
-                                w.Write(attackDir.ByteDir);
-                                Net.ObjectId.WriteSoldier(w, this);
-                            }
-                            packet.EndWrite_Asynch();
-                        }
+                        //}
+                        //else
+                        //{
+                        //    //Send damage to client
+                        //    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssAttackDamage, Network.PacketReliability.Reliable, out var packet);
+                        //    {
+                        //        w.Write((ushort)damageAmount);
+                        //        w.Write(attackDir.ByteDir);
+                        //        Net.ObjectId.WriteSoldier(w, this);
+                        //    }
+                        //    packet.EndWrite_Asynch();
+                        //}
                     }
 
                     if (fullUpdate)
@@ -944,7 +937,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierDeath, Network.PacketReliability.Reliable, out var packet);
                 {
-                    Net.ObjectId.WriteSoldier(w, this);
+                    goPointer().write(w);
+                    //Net.ObjectId.WriteSoldier(w, this);
                 } packet.EndWrite_Asynch();
                 onDeath(fullUpdate, enemyFaction);
             }
