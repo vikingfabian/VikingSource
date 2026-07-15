@@ -181,5 +181,14 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         {
             return $"PGameObject [Type: {objectType}, Faction: {pfaction}, ObjIndex: {objectIndex}, GrpIndex: {groupIndex}, MemIndex: {groupMemberIndex}]";
         }
+
+        public bool HasValue()
+        {
+            return objectType != GameObjectType.NONE;
+        }
+        public bool IsEmpty()
+        {
+            return objectType == GameObjectType.NONE;
+        }
     }
 }

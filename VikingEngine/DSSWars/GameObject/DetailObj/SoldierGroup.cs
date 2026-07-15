@@ -22,6 +22,7 @@ using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.PJ.MiniGolf;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -927,6 +928,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
+                    if (pfaction.TryGetLocalPlayer(out _))
+                    {
+                        lib.DoNothing();
+                    }
                     if (!enterBattleStateTime.secPassed(5))
                     {
                         return;
@@ -1177,7 +1182,11 @@ namespace VikingEngine.DSSWars.GameObject
                                     }
                                 }
                             }
-                            enterBattleState(false, true);
+
+                            if (attackTarget_soldierGroupOrCity.IsEmpty())
+                            {
+                                enterBattleState(false, true);
+                            }
                         }
                         break;
 
@@ -1906,15 +1915,20 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshAttackTarget()
         {
-                if (attackTarget_soldierGroupOrCity.TryGetGroup(out var target) &&                    
+            if (attackTarget_soldierGroupOrCity.TryGetGroup(out var target) &&                    
 
-                    (target.defeated() || 
-                    !DssRef.world.diplomacy.GetRelation(pfaction, target.pfaction).InWar() ||
-                    distance(target) > 4)
-               )
+                (target.defeated() || 
+                !DssRef.world.diplomacy.GetRelation(pfaction, target.pfaction).InWar() ||
+                distance(target) > 4)
+            )
             {
                 attackTargetTimeLock = 0;
                 attackTarget_soldierGroupOrCity = PGameObject.Empty;
+
+                if (pfaction.TryGetLocalPlayer(out _))
+                {
+                    lib.DoNothing();
+                }
             }
         }
 
@@ -1936,7 +1950,7 @@ namespace VikingEngine.DSSWars.GameObject
                         
             refreshAttackTarget();
 
-            if (attackTarget_soldierGroupOrCity != null && attackTargetTimeLock > Ref.TotalGameTimeSec)
+            if (attackTarget_soldierGroupOrCity.HasValue() && attackTargetTimeLock > Ref.TotalGameTimeSec)
             {
                 return;
             }
