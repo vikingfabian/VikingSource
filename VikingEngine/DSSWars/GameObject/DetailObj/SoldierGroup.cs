@@ -1965,6 +1965,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 lib.DoNothing();
             }
+            if (pfaction.TryGetLocalPlayer(out _))
+            {
+                lib.DoNothing();
+            }
 
             if (!army.TryGetTarget(out var tArmy))
             { return; }
