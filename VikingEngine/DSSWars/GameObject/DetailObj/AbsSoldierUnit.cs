@@ -1024,6 +1024,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void toHud(ObjectHudArgs args)
         {
             group.toHud(args);
+
             if (args.ShowFull)
             {
                 stateDebugText(args.content);
@@ -1033,7 +1034,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void stateDebugText(RichBoxContent content)
         {
             content.newLine();
-            content.text("SoldierAiState: " + state2.ToString());
+            
 
             content.Add(new RbNewLine(true));
             content.text(group.TypeName());

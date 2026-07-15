@@ -427,7 +427,7 @@ namespace VikingEngine.DSSWars
             {
                 var otherFaction = aiPlayerAsynchUpdate_threats[i];
                 if (GetRelation(aifaction.pfaction, otherFaction).Relation >= RelationType.RelationType2_Good ||
-                    aifaction.MyPlusAllianceStrengthValue() * threatFactor >= otherFaction.GetFaction().MyPlusAllianceStrengthValue())
+                    (otherFaction.TryGetFaction(out var of) && aifaction.MyPlusAllianceStrengthValue() * threatFactor >= of.MyPlusAllianceStrengthValue()))
                 {
                     aiPlayerAsynchUpdate_threats.RemoveAt(i);
                 }

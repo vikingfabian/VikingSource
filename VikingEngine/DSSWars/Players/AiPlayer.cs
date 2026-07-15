@@ -1789,6 +1789,11 @@ namespace VikingEngine.DSSWars.Players
 
             void findAlliances(Faction enemyFaction, bool reasonWar)
             {
+                if (enemyFaction == null)
+                {
+                    return;
+                }
+
                 DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Clear();
 
                 var factions = DssRef.world.factions.counter();

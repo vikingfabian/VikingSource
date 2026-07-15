@@ -1955,7 +1955,7 @@ namespace VikingEngine.DSSWars.GameObject
                 attackTargetTimeLock = GameTimeStamp.None;
                 attackTarget_soldierGroupOrCity = PGameObject.Empty;
 
-                if (pfaction.TryGetLocalPlayer(out _))
+                if (pfaction.TryGetPlayer(out var player) && player.IsRemotePlayer())
                 {
                     lib.DoNothing();
                 }
@@ -2720,15 +2720,12 @@ namespace VikingEngine.DSSWars.GameObject
                 { return; }
 
             content.newLine();
-            //content.text("Objective: " + groupObjective.ToString());
-
+            content.text("Group State: " + state.ToString());
+            content.text("target string: " + attackTarget_soldierGroupOrCity.ToString());
             if (attackTarget_soldierGroupOrCity.TryGetGroup(out var target))
             {
-                //var c = attacking.counter();
-                //while (c.Next())
-                //{
-                    content.text("attacking: " + target.TypeName());
-                //}
+                content.text("attacking: " + target.TypeName());
+                
             }
             else
             {
