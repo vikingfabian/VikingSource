@@ -338,7 +338,7 @@ namespace VikingEngine.DSSWars.GameObject
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
-                groupsC.sel.writeGameState(w);               
+                groupsC.sel.writeGameState(w, true);               
             }
 
             Debug.WriteCheck(w);

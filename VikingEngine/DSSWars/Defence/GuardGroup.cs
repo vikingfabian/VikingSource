@@ -31,16 +31,17 @@ namespace VikingEngine.DSSWars.Defence
             : base(army)
         { }
 
-        public override void writeGameState(BinaryWriter w)
+        //public override void writeGameState(BinaryWriter w)
+        public override void writeGameState(BinaryWriter w, bool includePosition)
         {
-            base.writeGameState(w);
+            base.writeGameState(w, includePosition);
+       
             w.Write(assignedToPost_IdAndPosition);
         }
-
-        public override void readGameState(AbsArmy tArmy, BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
+        public override void readGameState(AbsArmy tArmy, BinaryReader r, int subVersion, bool needInit, bool includePosition, ObjectPointerCollection pointers)
         {
-            base.readGameState(tArmy, r, subVersion, needInit, pointers);
-
+            base.readGameState(tArmy, r, subVersion, needInit, includePosition, pointers);
+        
             assignedToPost_IdAndPosition = r.ReadInt32();
             if (assignedToPost_IdAndPosition >= 0)
             {

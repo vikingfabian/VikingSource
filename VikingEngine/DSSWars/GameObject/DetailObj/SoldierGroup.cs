@@ -197,7 +197,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.army = new WeakReference<AbsArmy>( tArmy);
             this.pfaction = tArmy.pfaction;
-            readGameState(tArmy, r, version, true, pointers);
+            readGameState(tArmy, r, version, true, true, pointers);
         }
 
         public void setDetailLevel(bool unitDetailView)
@@ -289,8 +289,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 lib.DoNothing();
             }
-            writeGameState(w);
-            w.Write((byte)state);
+w.Write((byte)state);
+            writeGameState(w, state <= GroupState.GoingIdle);
+
+
+
+            
             switch (state)
             {
                 case GroupState.CityCapture:
@@ -307,7 +311,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (!command_sp.haltCommand && command_sp.hasPathCommand(out bool towardsUnit))
                         {
-                            goal = towardsUnit ? command_sp.AttackTarget().position : command_sp.GoalPosition();                            
+                            goal = towardsUnit ? command_sp.AttackTarget().position : command_sp.GoalPosition();
                         }
                     }
 
@@ -324,9 +328,10 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void readNet(AbsArmy tArmy, System.IO.BinaryReader r, bool needInit)
         {
-            readGameState(tArmy, r, int.MaxValue, needInit, null);
-            setGroundY();
             state = (GroupState)r.ReadByte();
+            readGameState(tArmy, r, int.MaxValue, needInit, state <= GroupState.GoingIdle, null);
+            setGroundY();
+            
 
             Debug.Log("## Soldiergroup read Net, state: " + state.ToString());
             Debug.Log($"goal: {goalWp}, pos: {position}" );
@@ -380,7 +385,7 @@ namespace VikingEngine.DSSWars.GameObject
                     
                     WP.ReadPosXZPercentU16(r, out var rPosition, out tilePos);
 
-                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth)
+                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth * 8)
                     {
                         position = rPosition;
                     }
@@ -414,20 +419,23 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        virtual public void writeGameState(System.IO.BinaryWriter w)
+        virtual public void writeGameState(System.IO.BinaryWriter w, bool includePosition)
         {
             soldierConscript.writeGameState(w);
             w.Write(isShip);
 
-            armyGridPlacement2.writeShort(w);
-            WP.WritePosXZPercentU16(w, position);
-            w.Write(rotation.ByteDir);
+            if (includePosition)
+            {
+                armyGridPlacement2.writeShort(w);
+                WP.WritePosXZPercentU16(w, position);
+                w.Write(rotation.ByteDir);
+            }
 
             w.Write((byte)soldierCount);
             w.Write(shipHealth);
         }
 
-        virtual public void readGameState(AbsArmy tArmy, System.IO.BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
+        virtual public void readGameState(AbsArmy tArmy, System.IO.BinaryReader r, int subVersion, bool needInit, bool includePosition, ObjectPointerCollection pointers)
         {
             soldierConscript.readGameState(r);
 
@@ -443,17 +451,20 @@ namespace VikingEngine.DSSWars.GameObject
             }
             currentBuilder = isShip ? shipBuilder : landBuilder;
 
-            armyGridPlacement2.readShort(r);
-
-            if (subVersion < 62)
+            if (includePosition)
             {
-                WP.readPosXZ_old(r, out position, out tilePos);
+                armyGridPlacement2.readShort(r);
+
+                if (subVersion < 62)
+                {
+                    WP.readPosXZ_old(r, out position, out tilePos);
+                }
+                else
+                {
+                    WP.ReadPosXZPercentU16(r, out position, out tilePos);
+                }
+                rotation.ByteDir = r.ReadByte();
             }
-            else
-            { 
-                WP.ReadPosXZPercentU16(r, out position, out tilePos);
-            }
-            rotation.ByteDir = r.ReadByte();
 
             soldierCount = r.ReadByte();
             shipHealth = Bound.Min( r.ReadInt32(), 1);
@@ -1301,7 +1312,6 @@ namespace VikingEngine.DSSWars.GameObject
                                     wakeupSoldiers();
                                 }
                             }
-
                             break;
 
                         case GroupState.FindArmyPlacement:
@@ -1311,8 +1321,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 state = GroupState.GoingIdle;
                                 waitTime = 0;
                             }
-
                             break;
+
                         case GroupState.GoingIdle:
                             waitTime += time;
                             break;
