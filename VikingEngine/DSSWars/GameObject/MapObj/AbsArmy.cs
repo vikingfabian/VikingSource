@@ -164,31 +164,58 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        public static void NetReadGroup(System.IO.BinaryReader r, int index, AbsArmy army)
+        public void NetReadGroup(System.IO.BinaryReader r, int index)
         {
-            var group = army.groups.GetIndex_Safe(index);
-            bool needInit = false;
+            //var group = army.groups.GetIndex_Safe(index);
+            //bool needInit = false;
+            //if (group == null)
+            //{
+            //    needInit = true;
+            //    if (army.IsCity())
+            //    {
+            //        group = new GuardGroup(army);
+            //    }
+            //    else
+            //    {
+            //        group = new SoldierGroup(army);
+            //    }
+            //    army.groups.HardSet(group, index);
+            //    group.myIndex = index;
+            //    if (!group.pfaction.HasValue())
+            //    {
+            //        throw new Exception();
+            //    }
+            //}
+            var group = NetGetGroup(index, true, out var needInit);
+            group.readNet(this, r, needInit);
+            group.net_onUpdate();
+        }
+
+        public SoldierGroup NetGetGroup(int index, bool createIfMissing, out bool needInit)
+        {
+            var group = groups.GetIndex_Safe(index);
+            needInit = false;
+            
             if (group == null)
             {
                 needInit = true;
-                if (army.IsCity())
+                if (IsCity())
                 {
-                    group = new GuardGroup(army);
+                    group = new GuardGroup(this);
                 }
                 else
                 {
-                    group = new SoldierGroup(army);
+                    group = new SoldierGroup(this);
                 }
-                army.groups.HardSet(group, index);
+                groups.HardSet(group, index);
                 group.myIndex = index;
-                if (!group.pfaction.HasValue())
-                {
-                    throw new Exception();
-                }
+                //if (!group.pfaction.HasValue())
+                //{
+                //    throw new Exception();
+                //}
             }
 
-            group.readNet(army, r, needInit);
-            group.net_onUpdate();
+            return group;
         }
 
         virtual public void remove(SoldierGroup group)

@@ -151,7 +151,8 @@ namespace VikingEngine.DSSWars.Net
         {   
             if (pSoldierGroup.HasValue())
             {
-                var result = pSoldierGroup.GetSoldierGroup(out absArmy);
+                absArmy = pSoldierGroup.pabsarmy.Get() as AbsArmy;
+                //var result = pSoldierGroup.GetSoldierGroup(out absArmy);
                 if (absArmy == null && createIfMissing && !pSoldierGroup.isCityGuard &&
                     pSoldierGroup.pabsarmy.pfaction.TryGetFaction(out var faction))
                 {
@@ -159,7 +160,9 @@ namespace VikingEngine.DSSWars.Net
                     armyarmy.pfaction = pSoldierGroup.pabsarmy.pfaction;
                     armyarmy.init(faction, pSoldierGroup.pabsarmy.objectIndex);
                 }
-                return result;
+
+                return absArmy?.NetGetGroup(pSoldierGroup.groupIndex, createIfMissing, out _);
+
             }
             absArmy = null;
             return null;
