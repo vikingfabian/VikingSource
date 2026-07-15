@@ -133,6 +133,19 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                                 w.Write((ushort)groupIndex);
                             }
                             break;
+                        case GameObjectType.Soldier:
+                            w.Write((byte)parentType);
+                            if (groupIndex < 0)
+                            {
+                                w.Write(ushort.MaxValue);
+                            }
+                            else
+                            {
+                                w.Write((ushort)groupIndex);
+
+                                w.Write((ushort)groupMemberIndex);
+                            }
+                            break;
                     }
                 }
             }
@@ -162,6 +175,18 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                             if (groupIndex == ushort.MaxValue)
                             {
                                 groupIndex = -1;
+                            }
+                            break;
+                        case GameObjectType.Soldier:
+                            parentType = (GameObjectType)r.ReadByte();
+                            groupIndex = r.ReadUInt16();
+                            if (groupIndex == ushort.MaxValue)
+                            {
+                                groupIndex = -1;
+                            }
+                            else
+                            {
+                                groupMemberIndex = r.ReadUInt16();
                             }
                             break;
                     }
