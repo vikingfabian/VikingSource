@@ -289,12 +289,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 lib.DoNothing();
             }
-w.Write((byte)state);
-            writeGameState(w, state <= GroupState.GoingIdle);
+            w.Write((byte)state);
+            writeGameState(w, state <= GroupState.FindArmyPlacement);
 
-
-
-            
             switch (state)
             {
                 case GroupState.CityCapture:
@@ -329,7 +326,7 @@ w.Write((byte)state);
         public void readNet(AbsArmy tArmy, System.IO.BinaryReader r, bool needInit)
         {
             state = (GroupState)r.ReadByte();
-            readGameState(tArmy, r, int.MaxValue, needInit, state <= GroupState.GoingIdle, null);
+            readGameState(tArmy, r, int.MaxValue, needInit, state <= GroupState.FindArmyPlacement, null);
             setGroundY();
             
 
