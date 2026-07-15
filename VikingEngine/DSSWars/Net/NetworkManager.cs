@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars
                         if (remoteC.sel.networkPeer.peer.lowLoad())
                         {
                             netSendMapObjectsInView(remoteC.sel, ref sentAnything);
-                            sendHostedWars();
+                            //sendHostedWars();
                         }
                     }
                 }
@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars
                                 if (!sendMap(remoteC.sel, ref sentAnythingToPlayer))
                                 {
                                     netSendMapObjectsInView(remoteC.sel, ref sentAnythingToPlayer);
-                                    sendHostedWars();
+                                    //sendHostedWars();
 
                                     if (!sentAnythingToPlayer)
                                     {

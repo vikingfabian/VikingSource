@@ -1213,7 +1213,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 Debug.Log($"Exit battle, time {enterBattleStateTime.Seconds}");
                             }
-                            if (enterBattleStateTime.secPassed(fullUpdate? 5 :30))
+                            if (enterBattleStateTime.secPassed(fullUpdate? 5 :20))
                             {
                                 //Capture city here
                                 if (tArmy.IsArmy())
