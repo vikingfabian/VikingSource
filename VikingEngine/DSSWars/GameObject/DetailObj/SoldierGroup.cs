@@ -324,7 +324,11 @@ namespace VikingEngine.DSSWars.GameObject
             readGameState(tArmy, r, int.MaxValue, needInit, null);
             setGroundY();
             state = (GroupState)r.ReadByte();
-            
+
+            Debug.Log("## Soldiergroup read Net, state: " + state.ToString());
+            Debug.Log($"goal: {goalWp}, pos: {position}" );
+
+
             switch (state)
             {
                 default:
@@ -335,15 +339,8 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
                         {
-                            //if (VectorExt.PlaneXZDistance(ref goalWp, ref newGoalWp) > WorldData.SubTileWidth)
-                            //{
-                                goalWp = newGoalWp;
-                            //}
-
-                            //if (VectorExt.PlaneXZDistance(ref armyPlacementWp, ref goalWp) > WorldData.SubTileWidth)
-                            //{
-                                armyPlacementWp = goalWp;
-                            //}
+                           goalWp = newGoalWp;
+                           armyPlacementWp = goalWp;
                         }
                     }
                     break;
@@ -380,18 +377,16 @@ namespace VikingEngine.DSSWars.GameObject
                     
                     WP.ReadPosXZPercentU16(r, out var rPosition, out tilePos);
 
-                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth * 3)
+                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth)
                     {
                         position = rPosition;
                     }
                     attackTarget_soldierGroupOrCity.read(r);
-                    //SoldierGroup target = Net.ObjectId.ReadSoldierGroup(r, true, out _);
-                    //if (target != null)
-                    //{
-                    //    attackTarget_soldierGroupOrCity?.SetTarget(target);
-                    //}
                     break;
             }
+
+            Debug.Log($"new goal: {goalWp}");
+
         }
 
         public void net_onUpdate()
@@ -2422,7 +2417,15 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-       
+        public void removeOneSoldier()
+        {
+            if (--soldierCount <= 0)
+            {
+                DeleteMe(DeleteReason.EmptyGroup, true);
+            }            
+        }
+
+
 
         public void onDisband(bool deserter)
         {

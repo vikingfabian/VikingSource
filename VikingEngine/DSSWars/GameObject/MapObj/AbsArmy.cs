@@ -374,8 +374,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        
 
+        public override AbsArmy GetAbsArmy()
+        {
+            return this;
+        }
         virtual public void asyncNearObjectsUpdate()
         {
             var groupsC = groups.counter();

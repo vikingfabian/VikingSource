@@ -41,11 +41,18 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             switch (objectType)
             {
                 case GameObjectType.SoldierGroup:
-                    if (pfaction.TryGetFaction(out var f))
+                    if (pfaction.TryGetFaction(out var gf))
                     { 
-                       return f.armies.GetIndex_Safe(objectIndex)?.groups.GetIndex_Safe(groupIndex);
+                       return gf.armies.GetIndex_Safe(objectIndex)?.groups.GetIndex_Safe(groupIndex);
                     }
                     break;
+                case GameObjectType.Soldier:
+                    if (pfaction.TryGetFaction(out var sf))
+                    {
+                        return sf.armies.GetIndex_Safe(objectIndex)?.groups.GetIndex_Safe(groupIndex).soldiers?.GetIndex_Safe(groupMemberIndex);                      
+                    }
+                    break;
+
                 case GameObjectType.City:
                     return DssRef.world.cities[objectIndex];
             }
@@ -57,6 +64,22 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         {
             group = Get() as AbsGroup;
             return group != null;
+        }
+
+        public bool TryGetSoldier(out SoldierGroup group, out AbsSoldierUnit soldier)
+        {
+            soldier = null;
+            group = null;
+
+            if (pfaction.TryGetFaction(out var gf))
+            {
+                group = gf.armies.GetIndex_Safe(objectIndex)?.groups.GetIndex_Safe(groupIndex);
+                if (group != null)
+                {
+                    soldier = group.soldiers?.GetIndex_Safe(groupMemberIndex);
+                }
+            }
+            return soldier != null;
         }
 
         public void write(System.IO.BinaryWriter w)
