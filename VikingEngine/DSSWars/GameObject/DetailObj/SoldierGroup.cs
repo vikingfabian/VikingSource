@@ -939,10 +939,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    if (pfaction.TryGetLocalPlayer(out _))
-                    {
-                        lib.DoNothing();
-                    }
+                    
                     if (!enterBattleStateTime.secPassed(5))
                     {
                         return;
@@ -1096,10 +1093,10 @@ namespace VikingEngine.DSSWars.GameObject
         
         virtual public void update(float time, bool fullUpdate)
         {
-            if (pfaction.TryGetLocalPlayer(out _))
-            {
-                 lib.DoNothing();
-            }
+            //if (pfaction.TryGetLocalPlayer(out _))
+            //{
+            //     lib.DoNothing();
+            //}
             //if (fullUpdate && IsGuardGroup())
             //{
             //    lib.DoNothing();
@@ -1193,29 +1190,44 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else //No attack target is found
             {
+                if (pfaction.TryGetLocalPlayer(out _))
+                {
+                    bool hadTarget = attackTarget_soldierGroupOrCity.HasValue();
+                    lib.DoNothing();
+                }
+                
+
                 switch (state)
                 {
                     case GroupState.Battle:
                         {
-                            //Capture city here
-                            if (tArmy.IsArmy())
+                            if (pfaction.TryGetLocalPlayer(out _))
                             {
-                                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+                                lib.DoNothing();
+                            }
+                            if (fullUpdate || enterBattleStateTime.secPassed(5))
+                            {
+                                //Capture city here
+                                if (tArmy.IsArmy())
                                 {
-                                    var city = tile.City();
-                                    if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
+                                    if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                     {
-                                        if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
+                                        var city = tile.City();
+                                        if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                         {
-                                            goalWp = WP.ToWorldPos(city.tilePos);
-                                            state = GroupState.CityCapture;
-                                            return;
+                                            if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
+                                            {
+                                                goalWp = WP.ToWorldPos(city.tilePos);
+                                                state = GroupState.CityCapture;
+                                                return;
+                                            }
                                         }
                                     }
                                 }
-                            }
 
-                            enterBattleState(false, true, null);
+                            
+                                enterBattleState(false, true, null);
+                            }
                             
                         }
                         break;
@@ -1595,11 +1607,15 @@ namespace VikingEngine.DSSWars.GameObject
         //    return groupObjective == GroupObjective_FollowArmyObjective;//hasWalkingOrder && attacking.Count == 0;
         //}
 
-        public void EnterPeaceEvent()
-        {
-            attackTarget_soldierGroupOrCity =  PGameObject.Empty;
-            //groupObjective = GroupObjective_IsSplit;
-        }
+        //public void EnterPeaceEvent()
+        //{
+        //    if (pfaction.TryGetLocalPlayer(out _))
+        //    {
+        //        lib.DoNothing();
+        //    }
+        //    attackTarget_soldierGroupOrCity =  PGameObject.Empty;
+        //    //groupObjective = GroupObjective_IsSplit;
+        //}
 
         //void refreshGroupPositions()
         //{
