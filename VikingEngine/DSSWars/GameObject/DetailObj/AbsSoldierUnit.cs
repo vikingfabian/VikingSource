@@ -944,6 +944,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public override PGameObject goPointer()
+        {
+            var p = group.goPointer();
+            p.objectType = GameObjectType.Soldier;
+            p.groupMemberIndex = myIndex;
+            return p;
+        }
+
         public static void ReadAttackDamage(System.IO.BinaryReader r)
         {
             int damageAmount = r.ReadUInt16();
