@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             objectType = GameObjectType.NONE;
             parentType = GameObjectType.NONE;
             objectIndex = -1;
+            groupMemberIndex = -1;
         }
 
         public PGameObject(
@@ -106,6 +107,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             return new PSoldierGroup(new PMapObject(objectType, pfaction, objectIndex), groupIndex);
         }
         public PGameObject(System.IO.BinaryReader r)
+            : this()
         {
             read(r);
         }
@@ -155,6 +157,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         }
         
         public void read(System.IO.BinaryReader r)
+            
         {
             objectType = (GameObjectType)r.ReadByte();
             if (objectType != GameObjectType.NONE)

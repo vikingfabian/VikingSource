@@ -958,12 +958,12 @@ namespace VikingEngine.DSSWars.GameObject
                             Net.ObjectId.WriteSoldierGroup(w, this);
 
                             attackTarget_soldierGroupOrCity.write(w);
-                            attackTargetTimeLock.write_byte(w);
-                            if (attackTarget_soldierGroupOrCity.objectType == GameObjectType.SoldierGroup)
-                            {
-                                var tsoldiers = (SoldierGroup)targetObject;
-                                tsoldiers.writeNet(w);
-                            }
+                            //attackTargetTimeLock.write_byte(w);
+                            //if (attackTarget_soldierGroupOrCity.objectType == GameObjectType.SoldierGroup)
+                            //{
+                            //    var tsoldiers = (SoldierGroup)targetObject;
+                            //    tsoldiers.writeNet(w);
+                            //}
                             
                         }
                         packet.EndWrite_Asynch();
@@ -1001,23 +1001,23 @@ namespace VikingEngine.DSSWars.GameObject
             //var group = ObjectId.ReadSoldierGroup(r, true, out _);
             PSoldierGroup pSoldierGroup = new PSoldierGroup(r);
             var target = new PGameObject(r);
-            GameTimeStamp time = GameTimeStamp.None;
-            time.read_byte(r);
+            //GameTimeStamp time = GameTimeStamp.None;
+            //time.read_byte(r);
 
-            if (target.objectType == GameObjectType.SoldierGroup)
-            {
-                SoldierGroup targetObject = ObjectId.GetSoldierGroup(
-                    target.GetSoldierGroupPointer(),
-                    true, out var tarmy);
-                targetObject?.readNet(tarmy, r, false);
-            }
+            //if (target.objectType == GameObjectType.SoldierGroup)
+            //{
+            //    SoldierGroup targetObject = ObjectId.GetSoldierGroup(
+            //        target.GetSoldierGroupPointer(),
+            //        true, out var tarmy);
+            //    targetObject?.readNet(tarmy, r, false);
+            //}
 
             var group = ObjectId.GetSoldierGroup(pSoldierGroup, false, out var absArmy);
 
             if (group != null && group.state != GroupState.Battle)
             {
                 group.attackTarget_soldierGroupOrCity = target;
-                group.attackTargetTimeLock = time;
+                //group.attackTargetTimeLock = time;
                 group.enterBattleState(true, false, null);
             }
         }

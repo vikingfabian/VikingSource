@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             return group != null;
         }
         public PMapObject(System.IO.BinaryReader r)
+            : this()
         {
             read(r);
         }

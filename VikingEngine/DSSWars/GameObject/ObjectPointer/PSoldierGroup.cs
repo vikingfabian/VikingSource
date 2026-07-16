@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         }
 
         public PSoldierGroup(System.IO.BinaryReader r)
+            : this()
         {
             read(r);
         }
