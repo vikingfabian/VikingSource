@@ -251,7 +251,7 @@ namespace VikingEngine.LootFest.Director
             {
                 if (hosted)
                 {
-                    Debug.Log("--List hosted gameobjects--");
+                    //Debug.Log("--List hosted gameobjects--");
 
                     localMembersPrivateUpdateCounter.Reset();
 
@@ -266,7 +266,7 @@ namespace VikingEngine.LootFest.Director
                 }
                 else
                 {
-                    Debug.Log("--List client gameobjects--");
+                    //Debug.Log("--List client gameobjects--");
 
                     clientMembersUpdateCounter.Reset();
 

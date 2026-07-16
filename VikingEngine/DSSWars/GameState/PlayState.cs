@@ -341,7 +341,7 @@ namespace VikingEngine.DSSWars
 
                     localPlayers[i].assignPlayer(i, playerCount, newGame);
 
-                    Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].pfaction.GetFaction().ToString());
+                    //Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].pfaction.GetFaction().ToString());
                 }
             }
 

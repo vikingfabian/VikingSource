@@ -50,11 +50,11 @@ namespace VikingEngine.DSSWars.Map.Generate
                        (nCity.pfaction == city.pfaction || rnd.Chance(0.1)))
                     {
 
-                        if (city.myIndex == 139 || n == 139)
-                        {
-                            lib.DoNothing();
-                            Debug.Log($"From {city.myIndex} to {n}");
-                        }
+                        //if (city.myIndex == 139 || n == 139)
+                        //{
+                        //    lib.DoNothing();
+                        //    Debug.Log($"From {city.myIndex} to {n}");
+                        //}
 
                         PathFinding largePath = new PathFinding();
                         var largePathResult = largePath.FindPath(-1, city.tilePos, (int)conv.ToDir8(nCity.tilePos - city.tilePos), nCity.tilePos, false);

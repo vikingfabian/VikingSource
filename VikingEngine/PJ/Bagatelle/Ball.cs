@@ -103,7 +103,7 @@ namespace VikingEngine.PJ.Bagatelle
                 gamer.fireBallEffects(this);
             }
 
-            Debug.Log("Remote Ball, id" + networkId.ToString());
+            //Debug.Log("Remote Ball, id" + networkId.ToString());
         }
 
         public Ball(Ball parent, BagatellePlayState state) //Init as shadow ball, only for network predict
@@ -563,7 +563,7 @@ namespace VikingEngine.PJ.Bagatelle
 
             if (image.Ypos > state.activeScreenArea.Bottom + image.Height)
             {
-                Debug.Log("LIFE " + ((int)lifeTimeSec).ToString());
+                //Debug.Log("LIFE " + ((int)lifeTimeSec).ToString());
 
                 if (alive && lifeTimeSec >= PJ.PjEngine.Achievements.BagatelleLongLiveTimeSec)
                 {
