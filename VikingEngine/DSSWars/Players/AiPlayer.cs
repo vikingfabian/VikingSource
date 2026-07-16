@@ -1623,7 +1623,10 @@ namespace VikingEngine.DSSWars.Players
 
             if (StartupSettings.RunAI && nextDecisionTimer.CountDownGameTime(time))
             {
-                var faction = pfaction.GetFaction();
+                if (!pfaction.TryGetFaction(out var faction))
+                {
+                    return;
+                }
 
                 if (faction.factiontype == FactionType.Barbarians)
                 {
