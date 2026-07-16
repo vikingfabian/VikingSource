@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
@@ -29,6 +29,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.HeroQuest.Display;
+using VikingEngine.ToGG.HeroQuest.Gadgets;
 using VikingEngine.ToGG.MoonFall;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -543,6 +544,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssEnterBattle:
+                    
                     SoldierGroup.NetReadEnterBattle(packet.r);
                     break;
 

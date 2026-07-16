@@ -24,6 +24,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.PJ.MiniGolf;
+using VikingEngine.ToGG.HeroQuest.Gadgets;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -54,7 +55,18 @@ namespace VikingEngine.DSSWars.GameObject
         public int soldierAttackDamageBonus = 0;
         public float halfColDepth;
 
-        public int soldierCount = 0;
+        int soldierCountValue = 1;
+        public int soldierCount
+        {
+            get { return soldierCountValue; }
+            set { 
+                soldierCountValue = value;
+                if (soldierCountValue == 0)
+                {
+                    lib.DoNothing();
+                }
+            }
+        }
         int shipHealth;
         public SpottedArray<AbsSoldierUnit> soldiers = null;
 
@@ -985,22 +997,27 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public static void NetReadEnterBattle(System.IO.BinaryReader r)
-        {            
-            var group = ObjectId.ReadSoldierGroup(r, true, out _);
-            
+        {
+            //var group = ObjectId.ReadSoldierGroup(r, true, out _);
+            PSoldierGroup pSoldierGroup = new PSoldierGroup(r);
+            var target = new PGameObject(r);
+            GameTimeStamp time = GameTimeStamp.None;
+            time.read_byte(r);
+
+            if (target.objectType == GameObjectType.SoldierGroup)
+            {
+                SoldierGroup targetObject = ObjectId.GetSoldierGroup(
+                    target.GetSoldierGroupPointer(),
+                    true, out var tarmy);
+                targetObject?.readNet(tarmy, r, false);
+            }
+
+            var group = ObjectId.GetSoldierGroup(pSoldierGroup, false, out var absArmy);
+
             if (group != null && group.state != GroupState.Battle)
             {
-                group.attackTarget_soldierGroupOrCity = new PGameObject(r);
-                group.attackTargetTimeLock.read_byte(r);
-
-                if (group.attackTarget_soldierGroupOrCity.objectType == GameObjectType.SoldierGroup)
-                {
-                    SoldierGroup targetObject = ObjectId.GetSoldierGroup(
-                        group.attackTarget_soldierGroupOrCity.GetSoldierGroupPointer(), 
-                        true, out var tarmy);
-                    targetObject?.readNet(tarmy, r, false);
-                }
-
+                group.attackTarget_soldierGroupOrCity = target;
+                group.attackTargetTimeLock = time;
                 group.enterBattleState(true, false, null);
             }
         }
