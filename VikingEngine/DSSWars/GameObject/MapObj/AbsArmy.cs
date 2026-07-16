@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.GameObject
                     Net.ObjectId.NetWriteMapObjId(w, this);
 
                     w.Write((byte)packetIndex);
-
+                    Debug.WriteCheck(w);
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
                         var group = groups.GetIndex_Safe(groupIndex);
@@ -154,10 +154,9 @@ namespace VikingEngine.DSSWars.GameObject
             if (ObjectId.NetReadMapObjId(r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
             {
                 if (mapObj != null && (!mapObj.IsNetHosted || isHandOver))
-                {                   
-
+                {  
                     int packetIndex = r.ReadByte();
-
+                    Debug.ReadCheck(r);
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
                         int groupIndex = packetIndex * GroupsPerPacket + i;
