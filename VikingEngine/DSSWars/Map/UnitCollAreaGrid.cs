@@ -895,8 +895,7 @@ namespace VikingEngine.DSSWars.Map
                         
                             foreach (var parmy in area.armies)
                             {
-                                var army = parmy.GetArmy();
-                                if (army.strengthValue <= maxStrengthValue)
+                                if (parmy.TryGetArmy(out var army) && army.strengthValue <= maxStrengthValue)
                                 {
                                     if (factionFilter.HasValue())
                                     {

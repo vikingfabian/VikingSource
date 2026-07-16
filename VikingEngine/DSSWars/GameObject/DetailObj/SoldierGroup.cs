@@ -334,7 +334,7 @@ namespace VikingEngine.DSSWars.GameObject
                     WP.WritePosXZPercentU16(w, position);
 
                     attackTarget_soldierGroupOrCity.write(w);
-                    attackTargetTimeLock.write_byte(w);
+                    //attackTargetTimeLock.write_byte(w);
                     break;
             }
 
@@ -403,7 +403,7 @@ namespace VikingEngine.DSSWars.GameObject
                         position = rPosition;
                     }
                     attackTarget_soldierGroupOrCity.read(r);
-                    attackTargetTimeLock.read_byte(r);
+                    //attackTargetTimeLock.read_byte(r);
                     break;
             }
 
@@ -977,10 +977,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    if (pfaction.TryGetLocalPlayer(out _))
-                    {
-                        Debug.Log($">End battle state, time {enterBattleStateTime.Seconds}");
-                    }
+                    //if (pfaction.TryGetLocalPlayer(out _))
+                    //{
+                    //    Debug.Log($">End battle state, time {enterBattleStateTime.Seconds}");
+                    //}
                     if (!enterBattleStateTime.secPassed(5))
                     {
                         return;
@@ -1244,10 +1244,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case GroupState.Battle:
                         {
-                            if (pfaction.TryGetLocalPlayer(out _))
-                            {
-                                Debug.Log($"Exit battle, time {enterBattleStateTime.Seconds}");
-                            }
+                            //if (pfaction.TryGetLocalPlayer(out _))
+                            //{
+                            //    Debug.Log($"Exit battle, time {enterBattleStateTime.Seconds}");
+                            //}
                             if (enterBattleStateTime.secPassed(fullUpdate? 5 :20))
                             {
                                 //Capture city here
