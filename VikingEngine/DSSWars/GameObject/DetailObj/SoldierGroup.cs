@@ -301,10 +301,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeNet(System.IO.BinaryWriter w)
         {
-            if (pfaction.TryGetLocalPlayer(out _))
-            {
-                lib.DoNothing();
-            }
+            //if (pfaction.TryGetLocalPlayer(out _))
+            //{
+            //    lib.DoNothing();
+            //}
             w.Write((byte)state);
             writeGameState(w, state <= GroupState.FindArmyPlacement);
 

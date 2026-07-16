@@ -127,6 +127,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (group != null)
                         {
                             w.Write(true);
+
                             group.writeNet(w);
                             Debug.WriteCheck(w);
                             //NetWriteGroup(w, group);
