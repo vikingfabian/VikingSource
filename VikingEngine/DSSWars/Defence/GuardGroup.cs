@@ -162,41 +162,41 @@ namespace VikingEngine.DSSWars.Defence
             damageBlockChance_fromTerrain = 0;
         }
 
-        void setRestingMode(bool set)
-        {
-            if (set != restingGuardMode)
-            {
-                restingGuardMode = set;
+        //void setRestingMode(bool set)
+        //{
+        //    if (set != restingGuardMode)
+        //    {
+        //        restingGuardMode = set;
 
-                if (set)
-                {
-                    int count = 0;
-                    var soldiersC = soldiers.counter();
-                    while (soldiersC.Next())
-                    {
-                        count++;
-                        if (count == 1)
-                        {
-                            soldiersC.sel.groupOffset = Vector2.Zero;
-                        }
-                        else
-                        {
-                            soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
-                            soldiersC.RemoveAtCurrent();
-                        }
-                    }
-                    soldierCount = count;
-                }
-                else
-                {
-                    var first = FirstSoldier();
-                    if (first != null)
-                    {
-                        refillGuardUnits(first.SoldierProfile(), soldierCount - 1, first.model != null);
-                    }
-                }
-            }
-        }
+        //        if (set)
+        //        {
+        //            int count = 0;
+        //            var soldiersC = soldiers.counter();
+        //            while (soldiersC.Next())
+        //            {
+        //                count++;
+        //                if (count == 1)
+        //                {
+        //                    soldiersC.sel.groupOffset = Vector2.Zero;
+        //                }
+        //                else
+        //                {
+        //                    soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
+        //                    soldiersC.RemoveAtCurrent();
+        //                }
+        //            }
+        //            soldierCount = count;
+        //        }
+        //        else
+        //        {
+        //            var first = FirstSoldier();
+        //            if (first != null)
+        //            {
+        //                refillGuardUnits(first.SoldierProfile(), soldierCount - 1, first.model != null);
+        //            }
+        //        }
+        //    }
+        //}
 
         //public override void update(float time, bool fullUpdate)
         //{

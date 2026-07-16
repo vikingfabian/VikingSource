@@ -1063,6 +1063,10 @@ namespace VikingEngine.DSSWars.GameObject
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 soldiersCount = count;
+                if (soldiersCount == 0)
+                {
+                    lib.DoNothing();
+                }
 
                 //Endbart ändra när arme är i rörelse, måste följa center person
                 //tilePos = WP.ToTilePos(position);
@@ -1226,6 +1230,11 @@ namespace VikingEngine.DSSWars.GameObject
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssDeleteArmy, Network.PacketReliability.Reliable);
                 Net.ObjectId.NetWriteMapObjId(w, this);
 
+            }
+
+            if (debugTagged)
+            {
+                lib.DoNothing();
             }
 
             isDeleted = true;

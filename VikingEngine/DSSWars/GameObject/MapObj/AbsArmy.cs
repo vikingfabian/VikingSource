@@ -98,6 +98,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //Hitta en plats bland alla grupper
             group.myIndex = groups.Add(group);
+            soldiersCount += group.soldierCount;
+            if (soldiersCount <= 0)
+            {
+                lib.DoNothing();
+            }
             group.army = new WeakReference<AbsArmy>(this);
             group.pfaction = pfaction;
         }
@@ -146,6 +151,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (mapObj != null)
                 {
+                    if (mapObj.pfaction == DssRef.state.LocalHost().pfaction && DssRef.state.playstate().factionHandOverComplete)
+                    {
+                        lib.DoNothing();
+                    }
+
                     int packetIndex = r.ReadByte();
 
                     for (int i = 0; i < GroupsPerPacket; i++)
@@ -220,7 +230,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void remove(SoldierGroup group)
         {
-            Debug.CrashIfThreaded();
+            //Debug.CrashIfThreaded();
+            if (IsNetHosted)//pfaction == DssRef.state.LocalHost().pfaction)
+            {
+                lib.DoNothing();
+            }
             groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
         public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
@@ -331,7 +345,7 @@ namespace VikingEngine.DSSWars.GameObject
                     inBattle = true;
                     strengthBeforeBattle = strengthValue;
                     soldierCountBeforeBattle = soldiersCount;
-                    if (pfaction.GetPlayer().IsLocalPlayer())
+                    if (pfaction.TryGetLocalPlayer(out _))
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {

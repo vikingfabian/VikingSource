@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars
 {
     partial class PlayState
     {
-        bool factionHandOverComplete = false;
+        public bool factionHandOverComplete = false;
 
         public const SpriteName NetworkIcon = SpriteName.WarsHudIconMultiplayer;
         ConcurrentQueue<FactionHandover> factionHandovers = new ConcurrentQueue<FactionHandover>();
@@ -553,6 +553,12 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssSoldierDeath:
                     {
                         var psoldier = new PGameObject(packet.r);//ObjectId.ReadSoldier(packet.r, out _);
+
+                        if (psoldier.pfaction == LocalHost().pfaction)
+                        {
+                            lib.DoNothing();
+                        }
+
                         if (psoldier.TryGetSoldier(out var group, out var soldier))//soldier != null)
                         {
                             soldier.DeleteMe(DeleteReason.Death, true);
