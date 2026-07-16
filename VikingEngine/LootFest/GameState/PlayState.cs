@@ -56,7 +56,7 @@ namespace VikingEngine.LootFest
         
         public void LoadGame(Map.World map, Data.WorldData worldData)
         {
-            Debug.Log("Load world, seed:" + worldData.seed.ToString() + ", Hosting world:" + worldData.hostingWorld.ToString());
+            //Debug.Log("Load world, seed:" + worldData.seed.ToString() + ", Hosting world:" + worldData.hostingWorld.ToString());
             LfRef.LocalHeroes = new StaticList<GO.PlayerCharacter.AbsHero>(LfLib.MaxLocalGamers);
             LfRef.AllHeroes = new StaticList<GO.PlayerCharacter.AbsHero>(LfLib.MaxGamers);
             LfRef.world = map;
@@ -415,7 +415,7 @@ namespace VikingEngine.LootFest
                 {
                     if (!Engine.XGuide.GetPlayer(nextAvailablePlayerIx).IsActive)
                     {
-                        Debug.Log("Join player: " + nextAvailablePlayerIx.ToString());
+                        //Debug.Log("Join player: " + nextAvailablePlayerIx.ToString());
                         joinPlayer(nextAvailablePlayerIx);
 
                         return;
@@ -854,7 +854,7 @@ namespace VikingEngine.LootFest
                     //Recieve start info about the world to join it
                     if (LfRef.WorldHost)
                     {
-                        Debug.Log("recieve world seed");
+                        //Debug.Log("recieve world seed");
                         VikingEngine.LootFest.Data.WorldData worldData = new Data.WorldData(false);
                         worldData.seed = packet.r.ReadInt32();
                         new GameState.LoadingMap(worldData);

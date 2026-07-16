@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.Net
             //int factionIx = r.ReadUInt16();
             //PFaction pfaction = new PFaction(r);
             PMapObject pMapObject = new PMapObject(r);
-            Debug.Log($"pMapObject read {pMapObject}");
+            //Debug.Log($"pMapObject read {pMapObject}");
             faction = pMapObject.pfaction.GetFaction();
             if (faction == null)
             {

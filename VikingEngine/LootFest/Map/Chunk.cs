@@ -549,7 +549,7 @@ namespace VikingEngine.LootFest.Map
 
         public void netRead(System.IO.BinaryReader r)
         {
-            Debug.Log(">Receives chunk from host " + Index.ToString());
+            //Debug.Log(">Receives chunk from host " + Index.ToString());
             try
             {
                 ReadChunk(r);

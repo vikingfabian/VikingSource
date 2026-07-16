@@ -134,8 +134,8 @@ namespace VikingEngine.ToGG.HeroQuest.Data.LevelConditions
         public override void OnObjective(Unit unit, AttackTargetGroup targetGroup, 
             AiObjectiveType objectiveType, bool local)
         {
-            Debug.Log("Condition, OnObjective " + unit.ToString() + unit.squarePos.ToString() + 
-                ", " + objectiveType.ToString());
+            //Debug.Log("Condition, OnObjective " + unit.ToString() + unit.squarePos.ToString() + 
+            //    ", " + objectiveType.ToString());
 
             if (objectiveType == AiObjectiveType.CollectItem)
             {

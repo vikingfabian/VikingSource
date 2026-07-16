@@ -411,7 +411,7 @@ namespace VikingEngine.PJ.SmashBirds
                 {
                     if (buttonHoldTime.HasTime)
                     {
-                        Debug.Log("hold " + buttonHoldTime.ToString());
+                        //Debug.Log("hold " + buttonHoldTime.ToString());
                         buttonHoldTime.setZero();
                     }
                 }
@@ -562,7 +562,7 @@ namespace VikingEngine.PJ.SmashBirds
                         wallCollision = true;
                         wallSlidingDir = coll.direction.X;
                         facing = coll.direction.X;
-                        Debug.Log("wall slide");
+                        ////Debug.Log("wall slide");
                     }
                 }
             }

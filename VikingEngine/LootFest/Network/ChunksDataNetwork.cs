@@ -124,7 +124,7 @@ namespace VikingEngine.LootFest
                         else
                         {
                             //put chunk data on storage
-                            Debug.Log("-Save chunk");
+                            //Debug.Log("-Save chunk");
                             Map.Chunk.NetworkSaveChunk(packet.r, chunkIndex);
                             //LfRef.worldOverView.ChangedChunk(chunk2);
                         }

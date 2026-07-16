@@ -389,7 +389,7 @@ namespace VikingEngine.LootFest.BlockMap
 
         void saveSegment()
         {
-            Debug.Log("SAVE SEGMENT: " + segment.header.ToString());
+            //Debug.Log("SAVE SEGMENT: " + segment.header.ToString());
             new Timer.AsynchActionTrigger(saveAsynch, true);
             closeMenu();
         }
