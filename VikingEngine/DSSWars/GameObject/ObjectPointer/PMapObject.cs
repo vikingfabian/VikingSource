@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.PJ.MiniGolf;
 
 namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 {
@@ -16,6 +17,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 
         public PMapObject()
         {
+            objectType = GameObjectType.NONE;
             objectIndex = -1;
         }
 
@@ -61,21 +63,27 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             group = Get() as AbsGroup;
             return group != null;
         }
-
+        public PMapObject(System.IO.BinaryReader r)
+        {
+            read(r);
+        }
         public void write(System.IO.BinaryWriter w)
         {
             w.Write((byte)objectType);
             if (objectType != GameObjectType.NONE)
             {
                 pfaction.write(w);
-                w.Write((ushort)objectIndex);                
-            }
-            
+                if (objectIndex < 0)
+                {
+                    w.Write(ushort.MaxValue);
+                }
+                else
+                {
+                    w.Write((ushort)objectIndex);
+                }
+            }            
         }
-        public PMapObject(System.IO.BinaryReader r)
-        {
-            read(r);
-        }
+        
         public void read(System.IO.BinaryReader r)
         {
             objectType = (GameObjectType)r.ReadByte();

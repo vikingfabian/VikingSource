@@ -314,6 +314,8 @@ namespace VikingEngine.DSSWars
         {
             var sender = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex) as RemotePlayer;
 
+            Debug.Log(packet.type.ToString());
+
 #if !DEBUG
             try
             {
@@ -714,6 +716,7 @@ namespace VikingEngine.DSSWars
                     DiplomacyDisplay.NetReadSendGold(packet, sender);
                     break;
                 case PacketType.DssBattleLabStartNew:
+                    Debug.Log("####### battle lab ######");
                     BattleSetupManager.NetStartBattleLab(packet.r);
                     break;
                 case PacketType.DssBattleLabAddSoldiers:

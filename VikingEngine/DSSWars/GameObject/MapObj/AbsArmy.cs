@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (ObjectId.NetReadMapObjId(r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
             {
-                if (mapObj != null && mapObj.IsNetHosted || isHandOver)
+                if (mapObj != null && (!mapObj.IsNetHosted || isHandOver))
                 {                   
 
                     int packetIndex = r.ReadByte();

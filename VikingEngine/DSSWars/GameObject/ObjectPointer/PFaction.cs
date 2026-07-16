@@ -165,6 +165,15 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             player = null;
             return false;
         }
+
+        public override string ToString()
+        {
+            if (TryGetFaction(out var faction))
+            { 
+                return faction.ToString();
+            }
+            return $"faction ({factionIndex})";
+        }
     }
 
 }

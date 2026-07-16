@@ -105,7 +105,10 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         {
             return new PSoldierGroup(new PMapObject(objectType, pfaction, objectIndex), groupIndex);
         }
-
+        public PGameObject(System.IO.BinaryReader r)
+        {
+            read(r);
+        }
         public void write(System.IO.BinaryWriter w)
         {
             w.Write((byte)objectType);
@@ -150,10 +153,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                 }
             }
         }
-        public PGameObject(System.IO.BinaryReader r)
-        {
-            read(r);
-        }
+        
         public void read(System.IO.BinaryReader r)
         {
             objectType = (GameObjectType)r.ReadByte();
