@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.Map
                                 foreach (var pSoldierGroup in area.groups)
                                 {
                                     var m = pSoldierGroup.GetSoldierGroup(out _);
-                                    if (m.tilePos.SideLength(city.tilePos) <= radius)
+                                    if (m != null && m.tilePos.SideLength(city.tilePos) <= radius)
                                     {
                                         if (city.pfaction == m.pfaction ||
                                             DssRef.world.diplomacy.GetRelation(city.pfaction, m.pfaction).InWar())
