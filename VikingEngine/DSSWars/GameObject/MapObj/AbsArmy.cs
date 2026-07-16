@@ -128,6 +128,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             w.Write(true);
                             group.writeNet(w);
+                            Debug.WriteCheck(w);
                             //NetWriteGroup(w, group);
                         }
                         else
@@ -163,6 +164,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (r.ReadBoolean())
                         {
                             mapObj.NetReadGroup(r, groupIndex);
+                            Debug.ReadCheck(r);
                         }
                         else
                         {

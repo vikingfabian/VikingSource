@@ -977,9 +977,12 @@ namespace VikingEngine.DSSWars
             switch (message)
             {
                 case Network.NetworkStatusMessage.Created_session:
-                    foreach (var p in localPlayers)
+                    if (localPlayers != null)
                     {
-                        p.initNetwork();
+                        foreach (var p in localPlayers)
+                        {
+                            p.initNetwork();
+                        }
                     }
                     break;
             }
