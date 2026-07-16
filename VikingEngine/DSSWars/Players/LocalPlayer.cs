@@ -774,7 +774,7 @@ namespace VikingEngine.DSSWars.Players
                 if ((rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
                     otherFaction.factiontype != FactionType.SouthHara)
                     ||
-                    otherFaction.player.IsHumanPlayer())
+                    (otherFaction.player != null && otherFaction.player.IsHumanPlayer()))
                 {
 
                     if (rel.Relation >= RelationType.RelationType0_Neutral)

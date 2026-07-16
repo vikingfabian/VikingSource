@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.GameObject
             return food + conservedFood <= 10;
         }
 
-        public static void NetFullArmyStatus(Army army, Network.PacketReliability reliability )
+        public static void NetFullArmyStatus(Army army, Network.PacketReliability reliability, bool isHandOver)
         {
             var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, reliability, out var packet);
             {
@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
             packet.EndWrite_Asynch();
 
             int packetCount = 1;
-            army.netWriteGroups(reliability, ref packetCount);
+            army.netWriteGroups(reliability, ref packetCount, isHandOver);
         }
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
@@ -1063,7 +1063,7 @@ namespace VikingEngine.DSSWars.GameObject
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 soldiersCount = count;
-                if (soldiersCount == 0)
+                if (soldiersCount <= 0)
                 {
                     lib.DoNothing();
                 }
@@ -1329,7 +1329,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (netShare && prevFaction != null && prevFaction.IsNetHosted() && !newFaction.IsNetHosted())
             {
                 IsNetHosted = false;
-                Army.NetFullArmyStatus(this, PacketReliability.Reliable);
+                Army.NetFullArmyStatus(this, PacketReliability.Reliable, true);
             }
         }
 

@@ -648,7 +648,7 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.DefaultAi:
                     defaultSetup();
                     techSetup();
-                    name = string.Format(DssRef.lang.FactionName_GenericAi, faction.pfaction);
+                    name = string.Format(DssRef.lang.FactionName_GenericAi, faction.pfaction.factionIndex);
                     break;
 
                 case FactionType.DarkLord:

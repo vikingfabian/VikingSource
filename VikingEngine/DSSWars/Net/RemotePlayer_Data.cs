@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (army.IsNetHosted &&  army.lastNetUpdate.secPassed(army.inBattle? 1 : waitSeconds))
                     {
-                        Army.NetFullArmyStatus(army, Network.PacketReliability.Unrelyable);
+                        Army.NetFullArmyStatus(army, Network.PacketReliability.Unrelyable, false);
                     }
                 }
             }

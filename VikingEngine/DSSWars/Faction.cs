@@ -872,13 +872,14 @@ namespace VikingEngine.DSSWars
 
                 if (player != null && player.IsLocalPlayer())
                 {
+                    var localplayer = player.GetLocalPlayer();
 
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        player.orders.refreshAvailable(this.pfaction);
+                        player.orders?.refreshAvailable(this.pfaction);
 
                         RichBoxContent content = new RichBoxContent();
-                        var localplayer = player.GetLocalPlayer();
+                        
                         if (localplayer.battleMessageCheck(city.tilePos))
                         {
                             MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);

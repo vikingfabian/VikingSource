@@ -218,31 +218,31 @@ namespace VikingEngine.DSSWars
 
         void sendHostedWars()
         {
-            var factions = DssRef.world.factions.counter();
-            while (factions.Next())
-            {
-                if (factions.sel.IsNetHosted())
-                {
-                    var armiesC = factions.sel.armies.counter();
-                    while (armiesC.Next())
-                    {
-                        if (armiesC.sel.inBattle)
-                        {
-                            for (int i = 0; i < armiesC.sel.inBattleWith.factions.count; ++i)
-                            {
-                                if (armiesC.sel.inBattleWith.factions[i].TryGetPlayer(out var p) && p.IsRemotePlayer())
-                                {
-                                    //share army
-                                    if (armiesC.sel.lastNetUpdate.secPassed(15))
-                                    {
-                                        Army.NetFullArmyStatus(armiesC.sel, Network.PacketReliability.Unrelyable);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //var factions = DssRef.world.factions.counter();
+            //while (factions.Next())
+            //{
+            //    if (factions.sel.IsNetHosted())
+            //    {
+            //        var armiesC = factions.sel.armies.counter();
+            //        while (armiesC.Next())
+            //        {
+            //            if (armiesC.sel.inBattle)
+            //            {
+            //                for (int i = 0; i < armiesC.sel.inBattleWith.factions.count; ++i)
+            //                {
+            //                    if (armiesC.sel.inBattleWith.factions[i].TryGetPlayer(out var p) && p.IsRemotePlayer())
+            //                    {
+            //                        //share army
+            //                        if (armiesC.sel.lastNetUpdate.secPassed(15))
+            //                        {
+            //                            Army.NetFullArmyStatus(armiesC.sel, Network.PacketReliability.Unrelyable);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
 
 

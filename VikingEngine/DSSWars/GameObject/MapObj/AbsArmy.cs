@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         const int GroupsPerPacket = 8;
-        public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount)
+        public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount, bool isHandOver)
         {
             int groupIndex = 0;
             int packetIndex = 0;
@@ -116,6 +116,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
                 {
+                    w.Write(isHandOver);
                     Net.ObjectId.NetWriteMapObjId(w, this);
 
                     w.Write((byte)packetIndex);
@@ -147,14 +148,12 @@ namespace VikingEngine.DSSWars.GameObject
        
         public static void NetReadGroups(bool bArmy, System.IO.BinaryReader r)
         {
+            bool isHandOver = r.ReadBoolean();
+
             if (ObjectId.NetReadMapObjId(r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
             {
-                if (mapObj != null)
-                {
-                    if (mapObj.pfaction == DssRef.state.LocalHost().pfaction && DssRef.state.playstate().factionHandOverComplete)
-                    {
-                        lib.DoNothing();
-                    }
+                if (mapObj != null && mapObj.IsNetHosted || isHandOver)
+                {                   
 
                     int packetIndex = r.ReadByte();
 
@@ -167,7 +166,16 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else
                         {
-                            mapObj.groups.PullIndex_Safe(groupIndex)?.DeleteMe(DeleteReason.NetworkEvent, false);
+                            var group = mapObj.groups.PullIndex_Safe(groupIndex);
+                            if (group != null)
+                            {
+                                //if (mapObj.IsArmy() || mapObj.IsNetHosted)
+                                //{
+                                //    lib.DoNothing();
+                                //}
+
+                                group.DeleteMe(DeleteReason.NetworkEvent, false);
+                            }
                         }
                     }
                     Debug.ReadCheck(r);
@@ -231,7 +239,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void remove(SoldierGroup group)
         {
             //Debug.CrashIfThreaded();
-            if (IsNetHosted)//pfaction == DssRef.state.LocalHost().pfaction)
+            if (IsNetHosted || debugTagged)//pfaction == DssRef.state.LocalHost().pfaction)
             {
                 lib.DoNothing();
             }

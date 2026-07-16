@@ -2719,7 +2719,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             if (army.TryGetTarget(out var tArmy2) && tArmy2.IsNetHosted)
             {
-               
+                lib.DoNothing();
             }
 
             if (reason == DeleteReason.Disband)

@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Net
                             armyCounter.sel.IsNetHosted = false;
                         }
                         
-                        Army.NetFullArmyStatus(armyCounter.sel, PacketReliability.Reliable);
+                        Army.NetFullArmyStatus(armyCounter.sel, PacketReliability.Reliable, true);
                     }
 
                     if (!armyCounter.HasMore())

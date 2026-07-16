@@ -1063,7 +1063,7 @@ namespace VikingEngine.DSSWars.GameObject
                     packet.EndWrite_Asynch();
                 }
 
-                netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount);                
+                netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount, false);                
             }           
         }
 
