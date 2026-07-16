@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             armyIndex = index;
         }
 
-        public PArmy(System.IO.BinaryReader r)
+        public PArmy(System.IO.BinaryReader r) : this()
         {            
             read(r);
         }

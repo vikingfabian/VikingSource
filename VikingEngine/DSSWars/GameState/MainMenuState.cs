@@ -18,6 +18,7 @@ using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Animal;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.GameState.MapEditor;
@@ -162,6 +163,74 @@ namespace VikingEngine.DSSWars
 
 #if DEBUG
             //new TimedAction0ArgTrigger(collectReports, 600);
+
+            //MemoryStreamHandler memory = new MemoryStreamHandler();
+
+            //for (int i = 0; i < 20; ++i)
+            //{
+            //    {
+            //        var test = new PArmy(new PFaction(Ref.rnd.Int(100)), Ref.rnd.Int(100));
+            //        var w = memory.GetWriter();
+            //        test.write(w);
+
+            //        var test1res = new PArmy(memory.GetReader());
+            //        if (test != test1res)
+            //        {
+            //            throw new Exception();
+            //        }
+            //        memory.Clear();
+            //    }
+            //    {
+            //        var test = new PGameObject( GameObject.GameObjectType.Army, GameObject.GameObjectType.SoldierGroup ,new PFaction(Ref.rnd.Int(100)), Ref.rnd.Int(100), Ref.rnd.Int(100));
+            //        var w = memory.GetWriter();
+            //        test.write(w);
+
+            //        var test1res = new PGameObject(memory.GetReader());
+            //        if (test != test1res)
+            //        {
+            //            throw new Exception();
+            //        }
+            //        memory.Clear();
+            //    }
+            //    {
+            //        var test = new PGameObject(GameObject.GameObjectType.Army, GameObject.GameObjectType.Soldier, new PFaction(Ref.rnd.Int(100)), Ref.rnd.Int(100), Ref.rnd.Int(100), Ref.rnd.Int(100));
+            //        var w = memory.GetWriter();
+            //        test.write(w);
+
+            //        var test1res = new PGameObject(memory.GetReader());
+            //        if (test != test1res)
+            //        {
+            //            throw new Exception();
+            //        }
+            //        memory.Clear();
+            //    }
+            //    {
+            //        var test = new PMapObject((GameObject.GameObjectType)Ref.rnd.Int(6), new PFaction(Ref.rnd.Int(100)), Ref.rnd.Int(100));
+            //        var w = memory.GetWriter();
+            //        test.write(w);
+
+            //        var test1res = new PMapObject(memory.GetReader());
+            //        if (test != test1res)
+            //        {
+            //            throw new Exception();
+            //        }
+            //        memory.Clear();
+            //    }
+
+            //    {
+            //        var mapobj = new PMapObject( GameObject.GameObjectType.Army, new PFaction(Ref.rnd.Int(100)), Ref.rnd.Int(100));
+            //        var test = new PSoldierGroup(mapobj, Ref.rnd.Int(100));
+            //        var w = memory.GetWriter();
+            //        test.write(w);
+
+            //        var test1res = new PSoldierGroup(memory.GetReader());
+            //        if (test != test1res)
+            //        {
+            //            throw new Exception();
+            //        }
+            //        memory.Clear();
+            //    }
+            //}
 
 #endif
 
