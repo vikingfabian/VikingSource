@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.GameObject
             get { return soldierCountValue; }
             set { 
                 soldierCountValue = value;
-                if (soldierCountValue == 0)
+                if (soldierCountValue <= 0)
                 {
                     lib.DoNothing();
                 }

@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.GameObject
             var group = groups.GetIndex_Safe(index);
             needInit = false;
             
-            if (group == null)
+            if (group == null && createIfMissing)
             {
                 needInit = true;
                 if (IsCity())
