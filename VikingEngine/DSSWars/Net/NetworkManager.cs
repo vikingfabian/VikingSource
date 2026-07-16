@@ -546,7 +546,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssEnterBattle:
-                    
+                    //return;
                     SoldierGroup.NetReadEnterBattle(packet.r);
                     break;
 
