@@ -1623,7 +1623,10 @@ namespace VikingEngine.DSSWars.Players
 
             if (StartupSettings.RunAI && nextDecisionTimer.CountDownGameTime(time))
             {
-                var faction = pfaction.GetFaction();
+                if (!pfaction.TryGetFaction(out var faction))
+                {
+                    return;
+                }
 
                 if (faction.factiontype == FactionType.Barbarians)
                 {
@@ -2321,26 +2324,29 @@ namespace VikingEngine.DSSWars.Players
 
 
                 foreach (var army in DssRef.world.unitCollAreaGrid.armies_aiUpdate)
-                { 
-                    float dist = city.distanceTo(army);
-
-                    if (dist <= 4)
+                {
+                    if (army.IsArmy())
                     {
-                        return true;
-                    }
+                        float dist = city.distanceTo(army);
 
-                    if (DssRef.world.diplomacy.GetRelation(pfaction, army.pfaction).InWar())
-                    {
-                        if (dist <= 8)
+                        if (dist <= 4)
                         {
                             return true;
                         }
 
-                        var armyarmy = army as Army;
-                        if (armyarmy.attackTarget == city ||
-                            city.distanceTo(armyarmy.walkGoal) <= 4)
+                        if (DssRef.world.diplomacy.GetRelation(pfaction, army.pfaction).InWar())
                         {
-                            return true;
+                            if (dist <= 8)
+                            {
+                                return true;
+                            }
+
+                            var armyarmy = army as Army;
+                            if (armyarmy.attackTarget == city ||
+                                city.distanceTo(armyarmy.walkGoal) <= 4)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
