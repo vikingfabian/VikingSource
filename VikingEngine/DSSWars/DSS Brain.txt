@@ -5,7 +5,7 @@ Change log:
 * client soldier collisions
 * Smoothing options for pan and zoom
 * Added battle lab to debug menu
-
+x fixed client player unit tabbing
 
 
 Performance

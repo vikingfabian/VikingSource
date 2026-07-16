@@ -121,6 +121,10 @@ namespace VikingEngine.DSSWars.GameObject
             initPart2();
 
             soldierCount = soldierData.UnitCount();
+            if (soldierCount <= 0)
+            {
+                lib.DoNothing();
+            }
             soldierData = soldierConscript.createSoldierData();
 
             initPart3(tArmy);
@@ -466,10 +470,10 @@ namespace VikingEngine.DSSWars.GameObject
             soldierCount = r.ReadByte();
             shipHealth = Bound.Min( r.ReadInt32(), 1);
 
-            //if (shipHealth == 0)
-            //{
-            //    lib.DoNothing();
-            //}
+            if (soldierCount <= 0)
+            {
+                lib.DoNothing();
+            }
 
             if (needInit)
             {
@@ -507,6 +511,10 @@ namespace VikingEngine.DSSWars.GameObject
             var groupObjective = r.ReadByte();
 
             soldierCount = r.ReadByte();
+            if (soldierCount <= 0)
+            {
+                lib.DoNothing();
+            }
             bool soldiersLockedInGroup = groupObjective == 0;//GroupObjective_FollowArmyObjective;
 
             initPart2();
@@ -720,6 +728,10 @@ namespace VikingEngine.DSSWars.GameObject
                 else
                 {
                     soldierCount = shipHealth / soldierData_soldier.basehealth;
+                    if (soldierCount <= 0)
+                    {
+                        lib.DoNothing();
+                    }
                     currentBuilder = landBuilder;
                     soldierData = soldierConscript.createSoldierData();
                 }
@@ -1118,7 +1130,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
-            if (!army.TryGetTarget(out var tArmy) || soldierCount == 0)
+            if (!army.TryGetTarget(out var tArmy) || (soldierCount == 0 && tArmy.IsNetHosted))
             {
                 if (fullUpdate)
                 {
@@ -2684,6 +2696,14 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
         {
             isDeleted = true;
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
+            if (army.TryGetTarget(out var tArmy2) && tArmy2.IsNetHosted)
+            {
+               
+            }
 
             if (reason == DeleteReason.Disband)
             {

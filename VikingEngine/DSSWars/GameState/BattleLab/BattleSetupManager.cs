@@ -116,6 +116,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             army.rotation = rotation;
             army.food = float.MaxValue / 8;
             army.armyColumnWidth = 6;
+
+            army.debugTagged = true;
         }
         public void startBattle(bool paused)
         {
@@ -275,7 +277,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             for (int i = 0; i < count; ++i)
             {
-                new SoldierGroup(toArmy, SoldierProfile, toArmy.position);
+                var group = new SoldierGroup(toArmy, SoldierProfile, toArmy.position);
+                group.debugTagged = true;
             }
 
             toArmy.setAsStartArmy();

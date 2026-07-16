@@ -224,7 +224,11 @@ namespace VikingEngine.DSSWars.Players
             faction.technology = new XP.TechnologyTemplate();
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
         }
-
+        public override void AssignFaction(Faction faction)
+        {
+            base.AssignFaction(faction);
+            gameControls.refreshFaction();
+        }
         public override void SetColor(Color selected, bool netShare)
         {
             var clone = profile.flag.Clone();
