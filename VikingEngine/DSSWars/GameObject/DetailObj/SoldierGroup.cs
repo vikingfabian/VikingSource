@@ -953,6 +953,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (localAction && targetObject != null)
                     {
+                        if (army.TryGetTarget(out var tarmy) && tarmy.IsNetHosted && tarmy.IsArmy() && tarmy.lastNetUpdate.secPassed(15) && 
+                            attackTarget_soldierGroupOrCity.pfaction.TryGetRemotePlayer(out _))
+                        {
+                            Army.NetFullArmyStatus(tarmy.GetArmy(), Network.PacketReliability.Unrelyable, false);
+                        }
+
                         var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEnterBattle, Network.PacketReliability.Reliable, out var packet);
                         {
                             Net.ObjectId.WriteSoldierGroup(w, this);
