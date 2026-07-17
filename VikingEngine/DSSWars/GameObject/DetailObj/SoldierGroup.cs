@@ -306,7 +306,10 @@ namespace VikingEngine.DSSWars.GameObject
             //    lib.DoNothing();
             //}
             w.Write((byte)state);
+            Debug.WriteCheck(w);
+ 
             writeGameState(w, state <= GroupState.FindArmyPlacement);
+            Debug.WriteCheck(w);
 
             switch (state)
             {
@@ -337,12 +340,15 @@ namespace VikingEngine.DSSWars.GameObject
                     //attackTargetTimeLock.write_byte(w);
                     break;
             }
-
+            Debug.WriteCheck(w);
         }
         public void readNet(AbsArmy tArmy, System.IO.BinaryReader r, bool needInit)
         {
             state = (GroupState)r.ReadByte();
+            Debug.ReadCheck(r);
+
             readGameState(tArmy, r, int.MaxValue, needInit, state <= GroupState.FindArmyPlacement, null);
+            Debug.ReadCheck(r);
             setGroundY();
             
 
@@ -406,7 +412,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //attackTargetTimeLock.read_byte(r);
                     break;
             }
-
+            Debug.ReadCheck(r);
             //Debug.Log($"new goal: {goalWp}");
 
         }

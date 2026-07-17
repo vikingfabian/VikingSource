@@ -121,6 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     w.Write((byte)packetIndex);
                     Debug.WriteCheck(w);
+
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
                         var group = groups.GetIndex_Safe(groupIndex);
@@ -158,12 +159,13 @@ namespace VikingEngine.DSSWars.GameObject
                 {  
                     int packetIndex = r.ReadByte();
                     Debug.ReadCheck(r);
-                    var rpos = r.BaseStream.Position;
+                    
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
                         int groupIndex = packetIndex * GroupsPerPacket + i;
                         if (r.ReadBoolean())
                         {
+                            var rpos = r.BaseStream.Position;
                             mapObj.NetReadGroup(r, groupIndex);
                             if (Debug.ReadCheck_returnIfError(r))
                             {
@@ -191,26 +193,6 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void NetReadGroup(System.IO.BinaryReader r, int index)
         {
-            //var group = army.groups.GetIndex_Safe(index);
-            //bool needInit = false;
-            //if (group == null)
-            //{
-            //    needInit = true;
-            //    if (army.IsCity())
-            //    {
-            //        group = new GuardGroup(army);
-            //    }
-            //    else
-            //    {
-            //        group = new SoldierGroup(army);
-            //    }
-            //    army.groups.HardSet(group, index);
-            //    group.myIndex = index;
-            //    if (!group.pfaction.HasValue())
-            //    {
-            //        throw new Exception();
-            //    }
-            //}
             var group = NetGetGroup(index, true, out var needInit);
             group.readNet(this, r, needInit);
             group.net_onUpdate();
