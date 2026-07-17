@@ -4148,6 +4148,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
 
+            if (blueprint == null)
+            {
+                content.text(TextLib.Error);
+                return;
+            }
+
             content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
             blueprint.toMenu(content, this);
 
@@ -4238,20 +4244,6 @@ namespace VikingEngine.DSSWars.GameObject
                 default:
                     throw new ArgumentOutOfRangeException("canUpgradeCityHall " + toSize);
             }
-            //if (toSize == CityType.Town)
-            //{
-            //    blueprint = CraftBuildingLib.CityHall_Town;
-            //    serviceHouses_required = DssConst.TownHall_RequiredStaff  - DssConst.VillageHall_RequiredStaff;
-            //    currentStaff = DssConst.VillageHall_RequiredStaff;
-                
-            //}
-            //else
-            //{
-            //    blueprint = CraftBuildingLib.CityHall_Capital;
-            //    serviceHouses_required = DssConst.CapitalHall_RequiredStaff - DssConst.TownHall_RequiredStaff;
-            //    currentStaff = DssConst.TownHall_RequiredStaff;
-            //}
-
             serviceHouses_available = freeServiceMen.amount + currentStaff;
 
             return serviceHouses_available >= serviceHouses_required &&
