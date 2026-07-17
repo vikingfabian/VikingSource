@@ -305,13 +305,14 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    lib.DoNothing();
             //}
-            w.Write((byte)state);
+            var wState = state;
+            w.Write((byte)wState);
             Debug.WriteCheck(w);
  
-            writeGameState(w, state <= GroupState.FindArmyPlacement);
+            writeGameState(w, wState <= GroupState.FindArmyPlacement);
             Debug.WriteCheck(w);
 
-            switch (state)
+            switch (wState)
             {
                 case GroupState.CityCapture:
                 case GroupState.FindArmyPlacement:
@@ -344,10 +345,11 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void readNet(AbsArmy tArmy, System.IO.BinaryReader r, bool needInit)
         {
-            state = (GroupState)r.ReadByte();
+            GroupState rState = (GroupState)r.ReadByte();
+            state = rState;
             Debug.ReadCheck(r);
 
-            readGameState(tArmy, r, int.MaxValue, needInit, state <= GroupState.FindArmyPlacement, null);
+            readGameState(tArmy, r, int.MaxValue, needInit, rState <= GroupState.FindArmyPlacement, null);
             Debug.ReadCheck(r);
             setGroundY();
             
@@ -356,7 +358,7 @@ namespace VikingEngine.DSSWars.GameObject
             //Debug.Log($"goal: {goalWp}, pos: {position}" );
 
 
-            switch (state)
+            switch (rState)
             {
                 default:
                     goalWp = position;
