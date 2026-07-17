@@ -81,17 +81,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.soldierData.factionColoredModel)
             {
-                var faction = soldier.pfaction.GetFaction();
+                if (soldier.pfaction.TryGetFactionAndPlayer(out var faction, out var player))
+                {
 
-                if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
-                {
-                    model = faction.AutoLoadModelInstance_character(
-                        soldier.soldierData.modelData, soldier.soldierData.modelScale * faction.player.profile.character.soldierScale);
-                }
-                else
-                {
-                    model = faction.AutoLoadModelInstance_batched(
-                        soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
+                    if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
+                    {
+                        model = faction.AutoLoadModelInstance_character(
+                            soldier.soldierData.modelData, soldier.soldierData.modelScale * player.profile.character.soldierScale);
+                    }
+                    else
+                    {
+                        model = faction.AutoLoadModelInstance_batched(
+                            soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
+                    }
                 }
             }
             else
