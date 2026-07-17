@@ -3,10 +3,12 @@ Change log:
 * steam deck layout
 * 11 new stats
 * client soldier collisions
+* remade the client battles to be more fair
+* A bit better synch in battles
 * Smoothing options for pan and zoom
 * Added battle lab to debug menu
-x fixed client player unit tabbing
-
+* fixed client player unit tabbing
+* made the ai decision timer more dynamic to the faction size 
 
 Performance
 * Removed all unessesary faction references

@@ -1627,28 +1627,12 @@ namespace VikingEngine.DSSWars.Players
                 {
                     return;
                 }
-
-                if (faction.factiontype == FactionType.Barbarians)
-                {
-                    lib.DoNothing();
-                }
-
-                nextDecisionTimer.MilliSeconds = Ref.peRnd.Float(2000, 5000);
-
-                if (faction.cities.Count == 0)
-                {
-                    mainArmy = null;
-                    if (faction.armies.Count == 0)
-                    {
-                        nextDecisionTimer.MilliSeconds = 10000;
-                        return;
-                    }
-                    else
-                    {
-                        nextDecisionTimer.MilliSeconds *= 0.5f;
-                    }
-                }
                 
+                if (updateDecitionTimer(faction))
+                {
+                    return;
+                }
+
                 bool protect = Ref.peRnd.Chance(0.6);
 
                 List<PFaction> wars = DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectWars(faction);
@@ -1662,21 +1646,14 @@ namespace VikingEngine.DSSWars.Players
                 {
                     mainArmy_AsyncUpdate(wars);
                 }
-                else if (protect && faction.cities.Count > 0) 
+                else if (protect && faction.cities.Count > 0)
                 {
                     City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
 
                     if (city != null && buySoldiersBalanceCheck_asynch(city, inWar, 0.02, out bool guardOnly))
                     {
-                        //int maxPurchaseCount = 30;
-                        //if (inWar)
-                        //{
-                        //    maxPurchaseCount = MathExt.MultiplyInt(DssRef.difficulty.aiEconomyMultiplier, maxPurchaseCount);
-                        //}
-
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            //createPurchaseOrder(city, maxPurchaseCount);
                             buySoldiers(city, inWar, guardOnly, true);
                         }));
                     }
@@ -1685,7 +1662,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     searchAttackTarget(wars);
                 }
-                
+
                 MergeArmiesCheck();
 
                 decisionTimerSizeCheck();
@@ -1698,6 +1675,35 @@ namespace VikingEngine.DSSWars.Players
 
                 BlackMarketResources.AiPurchaseUpdate(faction.cities.GetRandom(Ref.rnd, DssRef.world.cities), faction);
             }
+        }
+
+        // <returns>Empty faction</returns>
+        private bool updateDecitionTimer(Faction faction)
+        {
+            float timeMulti = 1;
+            if (faction.cities.Count == 0)
+            {
+                mainArmy = null;
+                if (faction.armies.Count == 0)
+                {
+                    timeMulti = 20;
+                    return true;
+                }
+                else
+                {
+                    timeMulti = 0.75f;
+                }
+            }
+            else if (faction.cities.Count <= 2)
+            {
+                timeMulti = 4;
+            }
+            else if (faction.cities.Count <= 6)
+            {
+                timeMulti = 2;
+            }
+            nextDecisionTimer.MilliSeconds = Ref.peRnd.Float(5000, 10000) * timeMulti;
+            return false;
         }
 
         void settlerCheck()
