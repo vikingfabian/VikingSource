@@ -144,6 +144,13 @@ namespace VikingEngine.DSSWars.Interface
                         menu.Refresh(content);
                     }
                     break;
+                case NetworkSettingsMenu.BlockList:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        new NetworkSettingsMenu(menu, false).blockList(content);
+                        menu.Refresh(content);
+                    }
+                    break;
             }
 
             return true;
@@ -609,16 +616,10 @@ namespace VikingEngine.DSSWars.Interface
                 return DssRef.storage.blockImportAchievements;
             }
 
-            //bool longerBuildQueueProperty(object tag, bool set, bool value)
-            //{
-            //    if (set)
-            //    {
-            //        DssRef.storage.longerBuildQueue = value;
-
-            //        DssRef.storage.Save(null);
-            //    }
-            //    return DssRef.storage.longerBuildQueue;
-            //}
+            content.newParagraph();
+            content.h2(DssRef.todoLang.Multiplayer_Title, HudLib.TitleColor_Head);
+            content.newLine();
+            new NetworkSettingsMenu(menu, false).multiplayerSettingsMenuContent(content);
         }
 
         static void muteDisconnect(RichBoxContent content)

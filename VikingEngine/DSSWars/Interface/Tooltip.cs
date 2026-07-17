@@ -479,8 +479,10 @@ namespace VikingEngine.DSSWars.Interface
 
             if (tFaction != null)
             {
-                attackTarget = player.gameControls.army != null &&
-                    tFaction != player.pfaction.GetFaction();
+                //attackTarget = player.gameControls.army != null &&
+                //    tFaction != player.pfaction.GetFaction();
+
+                attackTarget = player.armyMayAttackObj(obj as AbsMapObject);
 
                 if (attackTarget)
                 {

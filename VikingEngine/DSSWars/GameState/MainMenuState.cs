@@ -683,7 +683,7 @@ namespace VikingEngine.DSSWars
                 underMenu = new RichMenu(HudLib.RbSettings, underMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
                 underMenu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), ImageLayers.Lay9).SetOpacity(MenuBgOpacity);
 
-                networkSettingsMenu = new NetworkSettingsMenu(underMenu);
+                networkSettingsMenu = new NetworkSettingsMenu(underMenu, true);
             }
             else
             {

@@ -879,10 +879,11 @@ namespace VikingEngine.DSSWars.Players
                     obj?.AddDebugTag();
                 }
 
-                if (Input.Keyboard.KeyDownEvent(Keys.B) && Input.Keyboard.Ctrl)
-                {
-                    DssRef.state.menuSystem.debugMenu();
-                }
+               
+            }
+            if (Input.Keyboard.KeyDownEvent(Keys.B) && Input.Keyboard.Ctrl)
+            {
+                DssRef.state.menuSystem.debugMenu();
             }
 
             mapLayersManager.Update();
@@ -904,17 +905,42 @@ namespace VikingEngine.DSSWars.Players
             updatePlayer();
         }
 
-        
 
+        public bool armyMayAttackObj(AbsMapObject obj)
+        {
+            if (obj != null)
+            {
+                switch (obj.gameobjectType())
+                {
+                    case GameObjectType.City:
+                        if (obj.GetCity().cityType == CityType.UnClaimed)
+                        {
+                            return false;
+                        }
+                        break;
+                    case GameObjectType.LocationPin:
+                        return false;
+                }
+                //if (hover.obj.gameobjectType() == GameObjectType.City &&
+                //    hover.obj.GetCity().cityType == CityType.UnClaimed)
+                //{
+                //    return false;
+                //}
+                return obj.pfaction.GetFaction() != pfaction.GetFaction();
+
+            }
+
+            return false;
+        }
 
 
         //public void debugMenu(GuiLayout layout)
         //{
         //    new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
         //    new GuiTextButton("1000 resources", "add 1000 of all resources to all cities", new GuiAction(new Action(debugAddResources) + DssRef.state.menuSystem.closeMenu), false, layout);
-            
-            
-            
+
+
+
         //    //new GuiTextButton("Enemy alliance", "when the player grow to fast", new GuiAction(new Action(()=> { DssRef.state.events.collectAllianceAgainstPlayerDomination(this); }) + DssRef.state.menuSystem.closeMenu), false, layout);
 
         //    //UnitType[] unitTypes = DssLib.AvailableUnitTypes;

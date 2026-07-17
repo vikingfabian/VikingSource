@@ -251,12 +251,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             PinPresentationHud(args, true);
             //base.toTooltip(args);
-            var remote = pfaction.GetFaction()?.player.GetRemotePlayer();
-            if (remote != null)
-            {
-                args.content.newLine();
-                remote.addNetGamerToHud(args.content, true, false);
-            }
+            //var remote = pfaction.GetFaction()?.player.GetRemotePlayer();
+            //if (remote != null)
+            //{
+            //    args.content.newLine();
+            //    remote.addNetGamerToHud(args.content, true, false);
+            //}
 
             if (pingMessage != PingMessage.None)
             {

@@ -50,17 +50,17 @@ namespace VikingEngine.DSSWars.GameObject
             if (pfaction == player.pfaction && player.alliedFactions.Count > 0)
             {   
                 content.Add(new RbSeperationLine());
-                HudLib.Label(content, "Gift to player");
+                HudLib.Label(content, DssRef.todoLang.Diplomacy_GiftToPlayer);
                 content.hspace();
 
                 if (lastTimeTradedBetweenPlayers.TimeOut())
                 {
                     lock (player.alliedFactions)
                     {
-                        foreach (var m in player.alliedFactions)
+                        foreach (var pAlly in player.alliedFactions)
                         {
                             //var f = DssRef.world.faction(m);
-                            if (pfaction.TryGetFaction(out var f))
+                            if (pAlly.TryGetFaction(out var f))
                             {
                                 RichBoxContent buttonContent = new RichBoxContent();
                                 f.toHud(buttonContent, RelationType.NONE, true, true);

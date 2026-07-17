@@ -795,18 +795,30 @@ namespace VikingEngine.DSSWars.Players
         }
         public bool armyMayAttackHoverObj()
         {
-            if (hover.obj != null)
-            {
-                if (hover.obj.gameobjectType() == GameObjectType.City &&
-                    hover.obj.GetCity().cityType == CityType.UnClaimed)
-                {
-                    return false;
-                }
-                return hover.obj.pfaction.GetFaction() != player.pfaction.GetFaction();
+            return player.armyMayAttackObj(hover.obj as AbsMapObject);
+            //if (hover.obj != null)
+            //{
+            //    switch (hover.obj.gameobjectType())
+            //    {
+            //        case GameObjectType.City:
+            //            if (hover.obj.GetCity().cityType == CityType.UnClaimed)
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        case GameObjectType.LocationPin:
+            //            return false;
+            //    }
+            //    //if (hover.obj.gameobjectType() == GameObjectType.City &&
+            //    //    hover.obj.GetCity().cityType == CityType.UnClaimed)
+            //    //{
+            //    //    return false;
+            //    //}
+            //    return hover.obj.pfaction.GetFaction() != player.pfaction.GetFaction();
 
-            }
+            //}
 
-            return false;
+            //return false;
         }
 
 

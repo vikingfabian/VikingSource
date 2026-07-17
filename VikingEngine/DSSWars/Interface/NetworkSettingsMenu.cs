@@ -23,14 +23,16 @@ namespace VikingEngine.DSSWars.Interface
         const string UnlockPublic_Sure = "net sett unlock public_sure";
         const string UnlockPvp = "net sett unlock pvp";
         const string UnlockPvp_Sure = "net sett unlock pvp_sure";
-        const string BlockList = "blocklist";
+        public const string BlockList = "blocklist";
 
         static readonly RelationType[] DefaultRelationsOptions = { RelationType.RelationType0_Neutral, RelationType.RelationType3_Ally, RelationType.RelationTypeN4_War };
 
         RichMenu menu;
-        public NetworkSettingsMenu(RichMenu menu)
+        bool bMainMenu;
+        public NetworkSettingsMenu(RichMenu menu, bool mainMenu)
         {
             this.menu = menu;
+            this.bMainMenu = mainMenu;
         }
 
         public void refresh()
@@ -119,62 +121,82 @@ namespace VikingEngine.DSSWars.Interface
                     break;
                 case BlockList:
                     {
-                        int count = 0;
+                        
                         RichBoxContent content = new RichBoxContent();
-                        HudLib.returnButton(content, menu, true, null);
-
-                        content.h1(DssRef.todoLang.BlockedPlayersTitle, HudLib.TitleColor_Head);
-
-                        for (int i = 0; i < Ref.netsett.storedGamers.Count; i++)
-                        {
-                            if (Ref.netsett.storedGamers.array[i].ban == BanStatus.Banned)
-                            {
-                                count++;
-                                content.newLine();
-                                content.Add(new ArtButton(RbButtonStyle.Primary,
-                                    new List<AbsRichBoxMember> { new RbText(Ref.netsett.storedGamers.array[i].name) },
-                                    new RbAction1Arg<int>((int selected) =>
-                                    {
-                                        var m = Ref.netsett.storedGamers.array[selected];
-                                        m.ban = BanStatus.None;
-                                        Ref.netsett.storedGamers.array[selected] = m;
-                                        DssRef.storage.Save(null);
-                                    }, i), new RbTooltip_Text(DssRef.todoLang.ClickToRemoveBan)));
-                            }
-                        }
-                        if (count == 0)
-                        {
-                            content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
-                        }
+                        blockList(content);
                         menu.Refresh(content);
                     }
                     break;
             }
         }
+
+        public int blockList(RichBoxContent content)
+        {
+            int count = 0;
+            HudLib.returnButton(content, menu, true, null);
+
+            content.h1(DssRef.todoLang.BlockedPlayersTitle, HudLib.TitleColor_Head);
+
+            for (int i = 0; i < Ref.netsett.storedGamers.Count; i++)
+            {
+                if (Ref.netsett.storedGamers.array[i].ban == BanStatus.Banned)
+                {
+                    count++;
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                        new List<AbsRichBoxMember> { new RbText(Ref.netsett.storedGamers.array[i].name) },
+                        new RbAction1Arg<int>((int selected) =>
+                        {
+                            var m = Ref.netsett.storedGamers.array[selected];
+                            m.ban = BanStatus.None;
+                            Ref.netsett.storedGamers.array[selected] = m;
+                            DssRef.storage.Save(null);
+                        }, i), new RbTooltip_Text(DssRef.todoLang.ClickToRemoveBan)));
+                }
+            }
+            if (count == 0)
+            {
+                content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
+            }
+
+            return count;
+        }
+
         public void openmenu(string menuName, StackOption stack)
         {
-
             menu.OpenMenu(menuName, stack);
         }
+
         void multiplayerSettingsMenu()
         {
             RichBoxContent content = new RichBoxContent();
-            if (menu.menuStack.Count > 1)
+            multiplayerSettingsMenuContent(content);
+            menu.Refresh(content);
+        }
+        public void multiplayerSettingsMenuContent(RichBoxContent content)
+        {
+            
+
+            if (bMainMenu)
             {
-                HudLib.returnButton(content, menu, true, null);
+                if (menu.menuStack.Count > 1)
+                {
+                    HudLib.returnButton(content, menu, true, null);
+                    content.newLine();
+                }
+
+                content.h1(DssRef.todoLang.Lobby_Category_MultiplayerSettings, HudLib.TitleColor_Head);
+
+                content.h2(SpriteName.WarsHudIconHost, DssRef.todoLang.HostSettingsTitle, HudLib.TitleColor_Head2);
+
                 content.newLine();
-            }
-
-            content.h1(DssRef.todoLang.Lobby_Category_MultiplayerSettings, HudLib.TitleColor_Head);
-
-            content.h2(SpriteName.WarsHudIconHost, DssRef.todoLang.HostSettingsTitle, HudLib.TitleColor_Head2);
-
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Network_PlayOffline) },
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Network_PlayOffline) },
                 Ref.netsett.OfflineProperty));
 
-            if (Ref.netsett.hostNetwork)
-            {
+                if (!Ref.netsett.hostNetwork)
+                {
+                    return;
+                }
                 var publicityOptions = new DropDownBuilder("lobby public");
                 {
                     publicityOptions.AddOption(DssRef.todoLang.JoinPermission_Private, Ref.netsett.lobbyPublicity == LobbyPublicity.Private, false,
@@ -222,14 +244,17 @@ namespace VikingEngine.DSSWars.Interface
                     Ref.netsett.autoRecolorFlagsProperty, null));
 
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+
+            }
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconBlockedPlayer),
                     new RbSpace(0.5f),
                     new RbText(DssRef.todoLang.BlockedPlayersTitle) },
-                    new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
+                new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
 
-                content.newParagraph();
-
+            content.newParagraph();
+            if (bMainMenu)
+            {
                 content.h2(DssRef.todoLang.PlayerInteractionTitle, HudLib.TitleColor_Label);
 
                 var defDiplomacyOptions = new DropDownBuilder("def diplomacy");
@@ -239,7 +264,8 @@ namespace VikingEngine.DSSWars.Interface
                         IconName.Relation(relation, out var dipIcon, out var dipName);
                         defDiplomacyOptions.AddOption(dipIcon, dipName, relation == Ref.netsett.hostSettings.startDiplomacy,
                             relation == RelationType.RelationType0_Neutral,
-                            new RbAction1Arg<RelationType>((RelationType rel) => {
+                            new RbAction1Arg<RelationType>((RelationType rel) =>
+                            {
                                 Ref.netsett.hostSettings.startDiplomacy = relation;
                                 Ref.netsett.settingsHasChanged = true;
                             }, relation), null);
@@ -368,45 +394,47 @@ namespace VikingEngine.DSSWars.Interface
                 content.newParagraph();
 
                 content.h2(DssRef.todoLang.GeneralTitle, HudLib.TitleColor_Head2);
-
-                var voiceOpt = new DropDownBuilder("voice");
+            }
+            var voiceOpt = new DropDownBuilder("voice");
+            {
+                SpriteName chatKey = Ref.gamesett.keyboardMap.VoiceChat.Icon;
+                for (VoiceOption opt = 0; opt < VoiceOption.NUM; opt++)
                 {
-                    SpriteName chatKey = Ref.gamesett.keyboardMap.VoiceChat.Icon;
-                    for (VoiceOption opt = 0; opt < VoiceOption.NUM; opt++)
+                    SpriteName icon;
+                    string caption;
+                    switch (opt)
                     {
-                        SpriteName icon;
-                        string caption;
-                        switch (opt)
-                        {
-                            default:
-                            case VoiceOption.Off:
-                                icon = SpriteName.RedErrorCross;
-                                caption = DssRef.lang.Hud_Off;
-                                break;
-                            case VoiceOption.ButtonHold:
-                                icon = chatKey;
-                                caption = DssRef.todoLang.InputButton_Hold;
-                                break;
-                            case VoiceOption.ButtonToggle:
-                                icon = chatKey;
-                                caption = DssRef.todoLang.InputButton_Toggle;
-                                break;
-                            case VoiceOption.AlwaysOn:
-                                icon = SpriteName.MenuPixelIconSoundVol;
-                                caption = DssRef.todoLang.VoiceOptAlwaysOn;
-                                break;
-                        }
-
-                        voiceOpt.AddOption(icon, caption, opt == Ref.netsett.voiceOption, opt == VoiceOption.ButtonHold,
-                            new RbAction1Arg<VoiceOption>((VoiceOption vopt) =>
-                            {
-                                Ref.netsett.voiceOption = vopt;
-                                Ref.netsett.settingsHasChanged = true;
-                            }, opt), null);
+                        default:
+                        case VoiceOption.Off:
+                            icon = SpriteName.RedErrorCross;
+                            caption = DssRef.lang.Hud_Off;
+                            break;
+                        case VoiceOption.ButtonHold:
+                            icon = chatKey;
+                            caption = DssRef.todoLang.InputButton_Hold;
+                            break;
+                        case VoiceOption.ButtonToggle:
+                            icon = chatKey;
+                            caption = DssRef.todoLang.InputButton_Toggle;
+                            break;
+                        case VoiceOption.AlwaysOn:
+                            icon = SpriteName.MenuPixelIconSoundVol;
+                            caption = DssRef.todoLang.VoiceOptAlwaysOn;
+                            break;
                     }
-                }
-                voiceOpt.Build(content, SpriteName.VoiceSoundOn, DssRef.todoLang.VoiceTitle, menu);
 
+                    voiceOpt.AddOption(icon, caption, opt == Ref.netsett.voiceOption, opt == VoiceOption.ButtonHold,
+                        new RbAction1Arg<VoiceOption>((VoiceOption vopt) =>
+                        {
+                            Ref.netsett.voiceOption = vopt;
+                            Ref.netsett.settingsHasChanged = true;
+                            menu.CloseDropDown();
+                        }, opt), null);
+                }
+            }
+            voiceOpt.Build(content, SpriteName.VoiceSoundOn, DssRef.todoLang.VoiceTitle, menu);
+            if (bMainMenu)
+            {
                 var recieveGiftOpt = new DropDownBuilder("gift");
                 {
                     for (GiftRecieveOption opt = 0; opt < GiftRecieveOption.NUM; opt++)
@@ -469,13 +497,16 @@ namespace VikingEngine.DSSWars.Interface
 
 
 
-                void setLobbyPublicity(LobbyPublicity publicity)
-                {
-                    Ref.netsett.lobbyPublicity = publicity;
-                }
+                
             }
 
-            menu.Refresh(content);
+           
+
+            void setLobbyPublicity(LobbyPublicity publicity)
+            {
+                Ref.netsett.lobbyPublicity = publicity;
+                menu.CloseDropDown();
+            }
         }
 
         void playerInteractSettings(RichBoxContent content, bool host)

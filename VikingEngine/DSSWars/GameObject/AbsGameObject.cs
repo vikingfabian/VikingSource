@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.SteamWrapping;
 
 //
@@ -302,6 +303,8 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public int CollectionCount() { return 0; }
 
         virtual public PGameObject goPointer() { return PGameObject.Empty; }
+
+        
         //abstract public bool IsDeleted();
     }
     enum GameObjectType
