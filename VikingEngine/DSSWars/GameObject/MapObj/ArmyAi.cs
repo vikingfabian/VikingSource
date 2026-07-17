@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool waitForRegroup = false;
         float stateTime = 0;
         public IntVector2 walkGoal, adjustedWalkGoal;
-        float teleportTime;
+        GameTimeStamp teleportTime;
 
         public IntVector2 nextNodePos;
         public AbsMapObject attackTarget = null;
@@ -382,7 +382,7 @@ namespace VikingEngine.DSSWars.GameObject
             float dist = to.SideLength(tilePos);
             float speedPerSec = (isShip ? transportSpeedSea : transportSpeedLand) * TimeExt.SecondToMs;
             float time = dist / speedPerSec;
-            teleportTime = Ref.TotalGameTimeSec + time;
+            teleportTime.setTimeFromNow(time); //= Ref.TotalGameTimeSec + time;
         }
 
         void Ai_Finalize_Attack()
@@ -431,7 +431,7 @@ namespace VikingEngine.DSSWars.GameObject
         bool orderOutsidePlayerAttension(IntVector2 to)
         {
 
-            return Ref.peRnd.Chance(0.8) &&
+            return Ref.peRnd.Chance(0.4) &&
                 !inRender_overviewLayer &&
                 DssRef.state.culling.outsidePlayerAttension(tilePos) &&
                 DssRef.state.culling.outsidePlayerAttension(to);
@@ -653,14 +653,16 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ArmyObjective.TeleportAttack:
                     new ArmyAttackObjectPointer(w, attackTarget);
-                    w.Write(teleportTime);
+                    teleportTime.write(w);  
+                    //w.Write(teleportTime);
                     break;
                 case ArmyObjective.MoveTo:
                     WP.writeTilePos(w, walkGoal);
                     break;
                 case ArmyObjective.TeleportMove:
                     WP.writeTilePos(w, walkGoal);
-                    w.Write(teleportTime);
+                    teleportTime.write(w);
+                    //w.Write(teleportTime);
                     break;
             }
 
@@ -698,7 +700,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             pointers.pointers.Add(targetPointer);
                         }
-                        teleportTime = r.ReadSingle();
+                        teleportTime.read(r);
                     }
                     break;
 
@@ -710,7 +712,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ArmyObjective.TeleportMove:
                     walkGoal = WP.readTilePos(r);
                     Order_MoveTo_Setup(walkGoal);
-                    teleportTime = r.ReadSingle();
+                    teleportTime.read(r);
                     break;
             }
 

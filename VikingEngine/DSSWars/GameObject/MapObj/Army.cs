@@ -1168,7 +1168,7 @@ namespace VikingEngine.DSSWars.GameObject
                         //Wait to jump
                         if (DssRef.state.culling.outsidePlayerAttension(tilePos))
                         {
-                            if (Ref.TotalGameTimeSec >= teleportTime)
+                            if (teleportTime.TimeOut())//Ref.TotalGameTimeSec >= teleportTime)
                             {
                                 Ai_Finalize_Attack();
                             }
@@ -1185,7 +1185,7 @@ namespace VikingEngine.DSSWars.GameObject
                         //Wait to jump
                         if (DssRef.state.culling.outsidePlayerAttension(tilePos))
                         {
-                            if (Ref.TotalGameTimeSec >= teleportTime)
+                            if (teleportTime.TimeOut())
                             {
                                 Ai_Finalize_Move();
                             }
