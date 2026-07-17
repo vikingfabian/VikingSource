@@ -158,13 +158,18 @@ namespace VikingEngine.DSSWars.GameObject
                 {  
                     int packetIndex = r.ReadByte();
                     Debug.ReadCheck(r);
+                    var rpos = r.BaseStream.Position;
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
                         int groupIndex = packetIndex * GroupsPerPacket + i;
                         if (r.ReadBoolean())
                         {
                             mapObj.NetReadGroup(r, groupIndex);
-                            Debug.ReadCheck(r);
+                            if (Debug.ReadCheck_returnIfError(r))
+                            {
+                                r.BaseStream.Position = rpos;
+                                mapObj.NetReadGroup(r, groupIndex);
+                            }
                         }
                         else
                         {

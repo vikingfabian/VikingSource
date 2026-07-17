@@ -205,6 +205,13 @@ namespace VikingEngine
             }
         }
 
+        public static bool ReadCheck_returnIfError(System.IO.BinaryReader r)
+        {
+            byte val = r.ReadByte();
+            return PlatformSettings.ViewErrorWarnings && val != StreamCheckValue;
+           
+        }
+
         public static int GarbageCollectionCount()
         {
             int gccount = 0;
