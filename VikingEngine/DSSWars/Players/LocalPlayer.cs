@@ -763,10 +763,10 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void onNewRelation(bool isActuator, PFaction otherPFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
+        public override void onNewRelation(bool isActuator, PFaction otherPFaction, DiplomaticRelation rel, RelationType previousRelation, bool fromAllianceTrade, bool localAction)
         {
-            base.onNewRelation(isActuator, otherPFaction, rel, previousRelation, localAction);
-
+            base.onNewRelation(isActuator, otherPFaction, rel, previousRelation, fromAllianceTrade, localAction);
+       
             //Faction otherFaction = otherPFaction.GetFaction();
 
             if (otherPFaction.TryGetFaction(out var otherFaction))
@@ -1099,7 +1099,7 @@ namespace VikingEngine.DSSWars.Players
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
             DssRef.settings.darkLordPlayer.pfaction.GetFaction().hasDeserters = false;
-            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction);
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1403,7 +1403,7 @@ namespace VikingEngine.DSSWars.Players
             enemyFac.money.copper = -10000;
             enemyFac.hasDeserters = true;
             enemyFac.player.protectedFromDelete = false;
-            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction);
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1494,7 +1494,7 @@ namespace VikingEngine.DSSWars.Players
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
             enemyFac.hasDeserters = false;
-            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction);
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
 
 
             IntVector2 position = gameControls.map.tilePosition;

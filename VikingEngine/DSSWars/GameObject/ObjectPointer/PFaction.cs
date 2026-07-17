@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Players;
@@ -55,7 +56,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                 return null;
             }
 
-            return DssRef.world.faction(factionIndex);
+            return DssRef.world.factions.GetIndex_Safe(factionIndex); ;
         }
 
         public bool TryGetFaction(out Faction faction)

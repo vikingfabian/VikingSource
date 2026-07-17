@@ -1063,10 +1063,10 @@ namespace VikingEngine.DSSWars.GameObject
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 soldiersCount = count;
-                if (soldiersCount <= 0)
-                {
-                    lib.DoNothing();
-                }
+                //if (soldiersCount <= 0)
+                //{
+                //    lib.DoNothing();
+                //}
 
                 //Endbart ändra när arme är i rörelse, måste följa center person
                 //tilePos = WP.ToTilePos(position);

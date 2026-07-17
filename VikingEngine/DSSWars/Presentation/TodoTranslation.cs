@@ -17,7 +17,12 @@ namespace VikingEngine.DSSWars.Presentation
         public string GameSettings_WideScrollbar => "Wide scrollbar";
         public string GameSettings_DisplayInputHelp => "Input help";
         public string GameSettings_InputSmoothing => "Input smoothing";
-        
+
+        //--
+        public string FactionName_Ellium => "Ellium";
+        public string FactionName_GrakPushdug => "Grak pushdug";
+        public string FactionName_Draugost => "Draugost";
+
         //--
         public string Unlock_PublicGames => "public games";
         public string UnlockPublic_Warning1 => "Do not play with strangers";

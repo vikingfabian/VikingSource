@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.EngineSpace.Translation.OptionLanguages;
 using VikingEngine.PJ.MiniGolf;
 
 namespace VikingEngine.DSSWars.GameObject.ObjectPointer
@@ -55,7 +56,10 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                     }
                     else
                     {
-                        DssRef.world.cities[objectIndex].groups.GetIndex_Safe(groupIndex);
+                        if (objectIndex >= 0 && objectIndex < DssRef.world.cities.Count)
+                        {
+                            DssRef.world.cities[objectIndex].groups.GetIndex_Safe(groupIndex);
+                        }
                     }
                     break;
                 case GameObjectType.Soldier:

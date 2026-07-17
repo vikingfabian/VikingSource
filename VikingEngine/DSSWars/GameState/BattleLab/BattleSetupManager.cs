@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
 
             enemyFac.hasDeserters = false;
-            DssRef.world.diplomacy.declareWar(player.pfaction, enemyFac.pfaction);
+            DssRef.world.diplomacy.declareWar(player.pfaction, enemyFac.pfaction, false);
 
             //IntVector2 position = WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter);//mapConttilePosition;
 

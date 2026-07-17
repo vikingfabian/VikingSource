@@ -834,12 +834,11 @@ namespace VikingEngine.DSSWars
         public void asynchCullingUpdate(float time, bool bStateA)
         {
             
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    p.unitsPixelTexture.updateColorProfile(this);
-                }
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.updateColorProfile(pfaction);
+            }
             
-
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
@@ -987,8 +986,6 @@ namespace VikingEngine.DSSWars
                             {
                                 if (myRelation.Relation <= RelationType.RelationTypeN4_War)
                                 {
-                                    //if (loop.OtherFaction(out var thirdParty))
-                                    //{
                                     var thirdParty = loop.OtherFaction_P();
                                         var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(alliedFaction, thirdParty);
 
@@ -1000,16 +997,16 @@ namespace VikingEngine.DSSWars
                                             {
                                                 if (protectedFromWars)
                                                 {
-                                                    DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, RelationType.RelationTypeN1_Enemies);
+                                                    DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, RelationType.RelationTypeN1_Enemies, null, null, false, true);
                                                 }
                                                 else
                                                 {
-                                                    DssRef.world.diplomacy.declareWar(alliedFaction, thirdParty);
+                                                    DssRef.world.diplomacy.declareWar(alliedFaction, thirdParty, true);
                                                 }
                                             }
                                             else
                                             {
-                                                DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, worst);
+                                                DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, worst, null, null, false, true);
                                             }
                                         }
                                     //}
@@ -1647,6 +1644,21 @@ namespace VikingEngine.DSSWars
         /// The Iron Saints, people who guard a mountain pass against evil.
         /// </summary>
         AerimAngren,
+
+        /// <summary>
+        /// Faction of city elves who grow purple flowers, and specialize in medicine
+        /// </summary>
+        Ellium,
+
+        /// <summary>
+        /// An independant group that are masters of tricks and illusions, their name means "filthy trick"
+        /// </summary>
+        GrakPushdug,
+
+        /// <summary>
+        /// Nobel household in a rough part of the world
+        /// </summary>
+        Draugost,
 
         NUM
     }

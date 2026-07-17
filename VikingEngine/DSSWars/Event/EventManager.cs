@@ -912,7 +912,7 @@ namespace VikingEngine.DSSWars.Event
                     while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var cindex in city.neighborCities)
                     {
                         var otherfaction = nCity.pfaction.GetFaction();
-                        if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender))
+                        if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender, 0))
                         {
                             return otherfaction;
                         }
@@ -981,7 +981,7 @@ namespace VikingEngine.DSSWars.Event
                                 !factionsChecked[nCity.pfaction.factionIndex])
                             {
                                 var otherfaction = nCity.pfaction.GetFaction();
-                                if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender))
+                                if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender, 0))
                                 {
                                     return otherfaction;
                                 }
@@ -1109,7 +1109,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    if (p.pfaction.GetFaction().isAlive)
+                    if (p.pfaction.TryGetFaction(out var faction) && faction.isAlive)
                     {
                         return;
                     }

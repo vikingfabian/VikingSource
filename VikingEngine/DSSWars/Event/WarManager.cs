@@ -209,7 +209,7 @@ namespace VikingEngine.DSSWars.Players
                             var friend = DssRef.state.events.findFriendsToDefender(attacker, faction);
                             if (friend != null)
                             {
-                                DssRef.world.diplomacy.declareWar(attacker.pfaction, friend.pfaction);
+                                DssRef.world.diplomacy.declareWar(attacker.pfaction, friend.pfaction, false);
                             }
                         }
 
@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Players
                                 opposingSize += strenght;
 
                                 attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                                DssRef.world.diplomacy.declareWar(attacker.pfaction, faction.pfaction);
+                                DssRef.world.diplomacy.declareWar(attacker.pfaction, faction.pfaction, false);
 
                                 attackers[attackersCount] = attacker.pfaction;
                                 attackersCount++;

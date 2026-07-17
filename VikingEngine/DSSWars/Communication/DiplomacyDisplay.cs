@@ -662,10 +662,10 @@ namespace VikingEngine.DSSWars.Interface
                     DssRef.world.diplomacy.endRelations(player.pfaction, otherfaction.pfaction);
                     break;
                 case RelationType.RelationTypeN3_Mobilization:
-                    DssRef.world.diplomacy.declareWar(player.pfaction, otherfaction.pfaction);
+                    DssRef.world.diplomacy.declareWar(player.pfaction, otherfaction.pfaction, false);
                     break;
                 case RelationType.RelationTypeN4_War:
-                    DssRef.world.diplomacy.declareWar(player.pfaction, otherfaction.pfaction );
+                    DssRef.world.diplomacy.declareWar(player.pfaction, otherfaction.pfaction, false );
                     break;
             }
         }

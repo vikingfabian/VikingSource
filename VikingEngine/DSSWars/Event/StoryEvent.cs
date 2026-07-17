@@ -375,7 +375,7 @@ namespace VikingEngine.DSSWars.Event
                 if (attacker != null)
                 {
                     attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.world.diplomacy.declareWar(attacker.pfaction, p.pfaction);
+                    DssRef.world.diplomacy.declareWar(attacker.pfaction, p.pfaction, false);
                 }
             }
         }
@@ -606,7 +606,7 @@ namespace VikingEngine.DSSWars.Event
 
                             foreach (var p in DssRef.state.localPlayers)
                             {
-                                DssRef.world.diplomacy.declareWar(enemyFac.pfaction, p.pfaction);
+                                DssRef.world.diplomacy.declareWar(enemyFac.pfaction, p.pfaction, false);
                             }
 
                                 return barbarianArmy;
@@ -721,7 +721,7 @@ namespace VikingEngine.DSSWars.Event
                         }
                         army.startInOnePoint();
 
-                        DssRef.world.diplomacy.declareWar(enemyFac.pfaction, DssRef.state.localPlayers[playerIx].pfaction);
+                        DssRef.world.diplomacy.declareWar(enemyFac.pfaction, DssRef.state.localPlayers[playerIx].pfaction, false);
                         army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
                     }
                 }
@@ -936,7 +936,7 @@ namespace VikingEngine.DSSWars.Event
                     bool bHasSearched = has_searched.Contains(faction);
 
                     if (!bHasSearched &&
-                        DssRef.world.diplomacy.botMayStartWar(faction, player.pfaction.GetFaction()) &&
+                        DssRef.world.diplomacy.botMayStartWar(faction, player.pfaction.GetFaction(), 0) &&
                         !attackers.Contains(faction))
                     {
                         attackers.Add(faction);

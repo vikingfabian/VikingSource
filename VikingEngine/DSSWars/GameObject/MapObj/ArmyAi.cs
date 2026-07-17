@@ -349,32 +349,32 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Ai_Order_MoveTo(IntVector2 goalTilePos)
         {
-            if (orderOutsidePlayerAttension(goalTilePos))
-            {
-                if (Order_MoveTo_Setup(goalTilePos))
-                { 
-                    objective = ArmyObjective.TeleportMove;
-                    calcTeleportTime(goalTilePos);
-                }
-            }
-            else
-            { 
+            //if (orderOutsidePlayerAttension(goalTilePos))
+            //{
+            //    if (Order_MoveTo_Setup(goalTilePos))
+            //    { 
+            //        objective = ArmyObjective.TeleportMove;
+            //        calcTeleportTime(goalTilePos);
+            //    }
+            //}
+            //else
+            //{ 
                 Order_MoveTo(goalTilePos);
-            }
+            //}
         }
 
         public void Ai_Order_Attack(AbsMapObject attackTarget)
         {
-            if (orderOutsidePlayerAttension(attackTarget))
-            {
-                Order_Attack_Setup(attackTarget);
-                objective = ArmyObjective.TeleportAttack;
-                calcTeleportTime(attackTarget.tilePos);
-            }
-            else
-            {
+            //if (orderOutsidePlayerAttension(attackTarget))
+            //{
+            //    Order_Attack_Setup(attackTarget);
+            //    objective = ArmyObjective.TeleportAttack;
+            //    calcTeleportTime(attackTarget.tilePos);
+            //}
+            //else
+            //{
                 Order_Attack(attackTarget);
-            }
+            //}
         }
 
         void calcTeleportTime(IntVector2 to)
@@ -473,7 +473,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Order_Attack_Setup(AbsMapObject attackTarget)
         {
-            DssRef.world.diplomacy.declareWar(pfaction, attackTarget.pfaction);
+            DssRef.world.diplomacy.declareWar(pfaction, attackTarget.pfaction, false);
             clearObjective();
             this.attackTarget = attackTarget;
             this.attackTargetFaction = attackTarget.pfaction;

@@ -531,7 +531,7 @@ namespace VikingEngine.DSSWars
         }
 
 
-        public void SetRelationType(PFaction faction1, PFaction faction2, PFaction actuator, RelationType? newRelation, float? relationSecondsLength = null, SpeakTerms? speakTerms = null, bool secret = false)
+        public void SetRelationType(PFaction faction1, PFaction faction2, PFaction actuator, RelationType? newRelation, float? relationSecondsLength = null, SpeakTerms? speakTerms = null, bool secret = false, bool fromAllianceTrade = false)
         {
             if (/*faction1 != null && faction2 != null && */faction1 != faction2)
             {
@@ -549,7 +549,7 @@ namespace VikingEngine.DSSWars
 
                 if (newRelation.HasValue)
                 {
-                    relation.SetRelation(faction1, faction2, newRelation.Value, actuator, out RelationType previous);
+                    relation.SetRelation(faction1, faction2, newRelation.Value, actuator, out RelationType previous, fromAllianceTrade);
                 }
             }
         }
@@ -581,7 +581,7 @@ namespace VikingEngine.DSSWars
         //    return null;    
         //}
 
-        public bool botMayStartWar(Faction attacker, Faction defender)
+        public bool botMayStartWar(Faction attacker, Faction defender, int warCount)
         {
             if (attacker != null && 
                 defender != null &&
@@ -595,8 +595,23 @@ namespace VikingEngine.DSSWars
                     return true;
                 }
 
-                bool mayAttackPlayer = !DssRef.difficulty.peaceful && DssRef.state.events.MayAttackPlayer() && attacker.player.mayAttackPlayer;
+                if (warCount >= 8)
+                {
+                    if (!Ref.rnd.Chance(0.005))
+                    {
+                        return false;
+                    }
+                }
+                else if (warCount >= 2)
+                {
+                    if (!Ref.rnd.Chance(0.05))
+                    {
+                        return false;
+                    }
+                }
+                
 
+                bool mayAttackPlayer = !DssRef.difficulty.peaceful && DssRef.state.events.MayAttackPlayer() && attacker.player.mayAttackPlayer;
 
                 if (!mayAttackPlayer &&
                     (defender.player.IsLocalPlayer() || DssRef.world.diplomacy.InplayerAlliance(defender.pfaction)))
@@ -655,7 +670,7 @@ namespace VikingEngine.DSSWars
                 
                 if (relation.Relation > RelationType.RelationType0_Neutral)
                 {
-                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, actingFaction, out RelationType prev);
+                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, actingFaction, out RelationType prev, false);
                     
                     if (actingFaction.TryGetPlayer(out var player) && player.IsLocalPlayer())
                     {
@@ -666,19 +681,16 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void declareWar(PFaction attacker, PFaction defender)
+        public void declareWar(PFaction attacker, PFaction defender, bool fromAllianceTrade)
         {
-            //if (attacker != null && 
-            //    defender != null &&
-            //    attacker.player != null &&
-            //    defender.player != null &&
+           
             if (attacker != defender &&
                 !GetRelation(attacker, defender).InWar() &&
                 attacker.TryGetPlayer(out var aPlayer) &&
                 defender.TryGetPlayer(out var dPlayer))
             {
                 ref var relation = ref GetRefRelation(attacker, defender);
-                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, attacker, out RelationType prevRelation);
+                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, attacker, out RelationType prevRelation, fromAllianceTrade);
                 
 
                 if (aPlayer.IsLocalPlayer())

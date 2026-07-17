@@ -1314,6 +1314,9 @@ namespace VikingEngine.DSSWars
                 FactionType.Hælfolc,
                 FactionType.AerimAngren,
 
+                FactionType.Ellium,
+                FactionType.GrakPushdug,
+                FactionType.Draugost,
             };
 
 

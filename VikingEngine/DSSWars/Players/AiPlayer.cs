@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
@@ -37,6 +38,7 @@ namespace VikingEngine.DSSWars.Players
         public AiConscript aiConscript = AiConscript.Default;
         public bool armyAi_enabled = true;
         protected int diplomacyPoints = 0;
+        public int warCount = -1;
 
         public override void AssignFaction(Faction faction)
         {
@@ -139,6 +141,28 @@ namespace VikingEngine.DSSWars.Players
        
             switch (faction.factiontype)
             {
+                case FactionType.Ellium:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_Ellium;
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.diplomaticSide = DiplomaticSide.Light;
+                    break;
+                case FactionType.GrakPushdug:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_GrakPushdug;
+                    aggressionLevel = AggressionLevel2_RandomAttacks;
+                    faction.diplomaticSide = DiplomaticSide.Dark;
+                    break;
+                case FactionType.Draugost:
+                    defaultSetup();
+                    techSetup();
+                    name = DssRef.todoLang.FactionName_Draugost;
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.diplomaticSide = DiplomaticSide.None;
+                    break;
+
                 case FactionType.AerimAngren:
                     defaultSetup();
                     techSetup();
@@ -1636,6 +1660,7 @@ namespace VikingEngine.DSSWars.Players
                 bool protect = Ref.peRnd.Chance(0.6);
 
                 List<PFaction> wars = DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectWars(faction);
+                warCount = wars.Count;
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
                     (aggressionLevel == AggressionLevel1_RevengeOnly && wars.Count > 0);
 
@@ -1888,9 +1913,25 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public bool mayAlly_checkWars(AiPlayer allyplayer)
+        {
+            int totwarcount = allyplayer.GetAiPlayer().warCount + warCount;
+            if (totwarcount >= 12)
+            {
+                return Ref.rnd.Chance(0.005);
+            }
+            if (totwarcount >= 6)
+            {
+                return Ref.rnd.Chance(0.05);
+            }
+            return true;
+        }
+
         public void botToBotAllyDeclaration(Faction enemyFaction, Faction allyFaction, bool tryEndOtherWars)
         {
-            if (allyFaction != null && DssRef.world.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(pfaction, allyFaction.pfaction, enemyFaction.pfaction, tryEndOtherWars))
+            if (allyFaction != null && 
+                mayAlly_checkWars( allyFaction.player.GetAiPlayer()) &&
+                DssRef.world.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(pfaction, allyFaction.pfaction, enemyFaction.pfaction, tryEndOtherWars))
             {
                 const int TinyFaction = 2;
                 const int LargeFaction = 8;
@@ -1910,7 +1951,7 @@ namespace VikingEngine.DSSWars.Players
                 else
                 {
                     ref var alliance = ref DssRef.world.diplomacy.GetRefRelation_Safe(pfaction, allyFaction.pfaction);
-                    alliance.SetRelation(PFaction.Empty, PFaction.Empty, RelationType.RelationType3_Ally, PFaction.Empty, out _);
+                    alliance.SetRelation(PFaction.Empty, PFaction.Empty, RelationType.RelationType3_Ally, PFaction.Empty, out _, false);
                     
                     alliance.allyAgainst = enemyFaction.myIndex;
                     allyFaction.player.GetAiPlayer().diplomacyPoints = 0;
@@ -2107,7 +2148,7 @@ namespace VikingEngine.DSSWars.Players
                         else
                         {
                             //Start new war
-                            city = AttackRandom(mainArmy);
+                            city = AttackRandom(wars.Count, mainArmy);
                             if (city != null)
                             {
                                 mainArmyWar = city.pfaction;
@@ -2559,7 +2600,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (faction.cities.Count == 0 && Ref.rnd.Chance(0.5))
                 {
-                    AttackRandom(army);
+                    AttackRandom(wars.Count, army);
                 }
                 else if (army != null &&
                     (army != mainArmy || Ref.rnd.Chance(0.25)))
@@ -2570,7 +2611,7 @@ namespace VikingEngine.DSSWars.Players
                         )
                     {
                         //Start new war
-                        AttackRandom(army);
+                        AttackRandom(wars.Count, army);
                     }
                     else
                     {
@@ -2628,8 +2669,11 @@ namespace VikingEngine.DSSWars.Players
             return null;
         }
 
-        City AttackRandom(Army army)
+        
+
+        City AttackRandom(int warCount, Army army)
         {
+            
             if (DssRef.state.events.RunAi() && army != null)
             {
                 //var faction = pfaction.GetFaction();
@@ -2647,7 +2691,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (city.cityType > CityType.UnClaimed && army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
                     {
-                        if (DssRef.world.diplomacy.botMayStartWar(pfaction.GetFaction(), city.pfaction.GetFaction()))//mayAttackFaction(city.GetFaction()))
+                        if (DssRef.world.diplomacy.botMayStartWar(pfaction.GetFaction(), city.pfaction.GetFaction(), warCount))//mayAttackFaction(city.GetFaction()))
                         {
                             army.Ai_Order_Attack(city);
                             return city;
@@ -2708,10 +2752,10 @@ namespace VikingEngine.DSSWars.Players
         //    return false;
         //}
 
-
-        override public void onNewRelation(bool isActuator, PFaction otherPFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
+        public override void onNewRelation(bool isActuator, PFaction otherPFaction, DiplomaticRelation rel, RelationType previousRelation, bool fromAllianceTrade, bool localAction)
         {
-            base.onNewRelation( isActuator, otherPFaction, rel, previousRelation, localAction);
+            base.onNewRelation(isActuator, otherPFaction, rel, previousRelation, fromAllianceTrade, localAction);
+        
             if (rel.Relation <= RelationType.RelationTypeN4_War)
             {
                 var faction = pfaction.GetFaction();
@@ -2753,7 +2797,7 @@ namespace VikingEngine.DSSWars.Players
             {
 #if DEBUG
                 var faction = pfaction.GetFaction();
-                if (faction.isAlive)
+                if (faction != null && faction.isAlive)
                 {
                     return name;
                 }

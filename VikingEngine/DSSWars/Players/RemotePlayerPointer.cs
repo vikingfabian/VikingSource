@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     Vector3 diff = pointerGoalWp - pointerWp;
 
-                    if (diff.Length() > 0.1f)
+                    if (diff.Length() > 0.004f)
                     {
                         float expectedUpdates = (Ref.netSession.netUpdateRate / Ref.main.TargetElapsedTime.Milliseconds) * 1.5f;
                         pointerSpeed = diff / expectedUpdates;
