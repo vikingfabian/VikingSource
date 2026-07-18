@@ -1,18 +1,14 @@
 
 Change log:
-* Fixed war manager crash
-* Fixed worker broken position crash
-* Fixed: pan didnt work when paused
+* 
 
-
-x client cant place settlement, stay value unclaimed
 x pause broken
 x battlelab, wait with army create
 x must show alliance blocked
 x delivery bugged
 x improve speedy resource info about city
 x share rename of city
-
+x missplacing settlements locks the settler in place
 
 KNOWN ISSUES
 
