@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             cityHallSubtilePos = subtilepos;
             var localPlayer = pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer();
-            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false);
+            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
            
             edit.SubmitOrExecute();
 
@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (!tile.IsWater())
                     {
                         citySquareSubtilePos = pos;
-                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false).SubmitOrExecute();
+                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false) { netShare = true }.SubmitOrExecute();
                         break;
                     }
                 }
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (!tile.IsWater())
                     {
-                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false).SubmitOrExecute();
+                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false) { netShare = true }.SubmitOrExecute();
                         break;
                     }
                 }
