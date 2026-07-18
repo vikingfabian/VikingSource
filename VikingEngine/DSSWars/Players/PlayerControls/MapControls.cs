@@ -1125,7 +1125,7 @@ namespace VikingEngine.DSSWars.Players
         float? targetRotation = null;
         void rotateCameraInput()
         {
-            const float XBuffer = 0.6f;
+            //const float XBuffer = 0.6f;
             const float RotationSpeed = 0.00006f;
             const float TargetRotationSpeed = 0.005f;
 

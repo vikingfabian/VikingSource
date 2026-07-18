@@ -452,7 +452,16 @@ namespace VikingEngine.DSSWars.Work
                     if (onInit)
                     {
                         float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                        float walkingPerc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
+                        float walkTime = status.processTimeLengthSec - finalizeWorkTime;
+                        float walkingPerc;
+                        if (walkTime < 1)
+                        {
+                            walkingPerc = 1;
+                        }
+                        else
+                        {
+                            walkingPerc = timePassed / walkTime;
+                        }
 
                         if (walkingPerc >= 1)
                         {

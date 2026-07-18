@@ -1,7 +1,8 @@
 
 Change log:
 * Fixed war manager crash
-
+* Fixed worker broken position crash
+* Fixed: pan didnt work when paused
 
 
 x client cant place settlement, stay value unclaimed

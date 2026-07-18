@@ -25,6 +25,7 @@ namespace VikingEngine.Engine
         public float LazyUpdateTime = 0;
         //float time_16msCountDown = 0;
         float gametime_16msCountDown = 0;
+        float time_16msCountDown = 0;
         public float TotalGameTime = 0;
         public bool exitApplication = false;
         public TextInput textInput = null;
@@ -174,6 +175,17 @@ namespace VikingEngine.Engine
                 {
                     gametime_16msCountDown -= Time16ms;
                     ++Ref.GameTimePassed16ms;
+                }
+            }
+            {//Calc Ref.GameTimePassed16ms
+                Ref.GameTimePassed16ms = 0;
+
+                time_16msCountDown += Ref.DeltaTimeMs;
+
+                while (time_16msCountDown >= Time16ms)
+                {
+                    time_16msCountDown -= Time16ms;
+                    ++Ref.TimePassed16ms;
                 }
             }
 
