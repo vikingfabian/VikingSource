@@ -10,7 +10,7 @@ x pause broken
 x battlelab, wait with army create
 x must show alliance blocked
 x delivery bugged
-x improve speedy info about city
+x improve speedy resource info about city
 x share rename of city
 
 

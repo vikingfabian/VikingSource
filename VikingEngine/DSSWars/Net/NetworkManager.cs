@@ -722,6 +722,9 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssBattleLabAddSoldiers:
                     BattleSetupManager.NetAddSoldiers(packet.r);
                     break;
+                case PacketType.DssRequestCityClaim:
+                    City.NetReadClaim(packet.r);
+                    break;
             }
 #if !DEBUG
             }
