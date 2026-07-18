@@ -51,6 +51,7 @@ namespace VikingEngine.DSSWars.Work
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+
 #if DEBUG
             if (Debug.CorruptValue(model.position))
             {
@@ -89,6 +90,12 @@ namespace VikingEngine.DSSWars.Work
                     {
                         model.position.X = goalPos.X;
                         model.position.Z = goalPos.Z;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         WP.Rotation1DToQuaterion(model, 2.8f);
                         //state = WorkerUnitState.FinalizeWork;
                        
@@ -110,6 +117,12 @@ namespace VikingEngine.DSSWars.Work
                     else
                     {
                         model.position += walkDir * speed;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         updateGroudY(false);
 
                         if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
@@ -444,11 +457,23 @@ namespace VikingEngine.DSSWars.Work
                         if (walkingPerc >= 1)
                         {
                             model.position = goalPos;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                             finalizeWorkTime = status.processTimeLengthSec - timePassed;
                         }
                         else
                         {
                             model.position = model.position * (1 - walkingPerc) + goalPos * walkingPerc;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
 
@@ -565,6 +590,12 @@ namespace VikingEngine.DSSWars.Work
                         else
                         {
                             model.position.Y += diff * 0.06f;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
                 }

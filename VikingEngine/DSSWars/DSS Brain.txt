@@ -1,16 +1,17 @@
 
 Change log:
-* fixed model crash
-* made ctrl+B available
-* voice input options in pause menu
-* fixed: send armies/cities
-* fixed: can attack ping
+* Fixed war manager crash
+
+
 
 x client cant place settlement, stay value unclaimed
 x pause broken
 x battlelab, wait with army create
 x must show alliance blocked
 x delivery bugged
+x improve speedy info about city
+x share rename of city
+
 
 KNOWN ISSUES
 

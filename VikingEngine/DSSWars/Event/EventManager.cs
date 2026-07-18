@@ -95,6 +95,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 asyncCheckVictory();
             }
+
         }
 
         void asyncCheckVictory()
@@ -978,6 +979,7 @@ namespace VikingEngine.DSSWars.Event
                         {
                             //var otherfactionIx = nCity.pfaction;
                             if (nCity.pfaction != city.pfaction &&
+                                nCity.pfaction.HasValue() &&
                                 !factionsChecked[nCity.pfaction.factionIndex])
                             {
                                 var otherfaction = nCity.pfaction.GetFaction();
