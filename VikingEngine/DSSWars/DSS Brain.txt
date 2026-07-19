@@ -1,10 +1,6 @@
 
 Change log:
-* Fixed empty player tooltip crash
-* (maybe) fixed placing resources on map as client, crash
-* New design to the play/pause-bar
-* Fixed attack text on tooltip
-* Removed delivery to ally (moved to later updates)
+* 
 
 x battlelab, wait with army create
 x must show alliance blocked
@@ -13,7 +9,7 @@ x must show war blocked
 x improve speedy resource info about city
 x share rename of city
 x missplacing settlements locks the settler in place
-
+x share city guard on battle event
 
 
 KNOWN ISSUES
