@@ -795,7 +795,7 @@ namespace VikingEngine.DSSWars.Players
         }
         public bool armyMayAttackHoverObj()
         {
-            return player.armyMayAttackObj(hover.obj as AbsMapObject);
+            return player.mayAttackObj(hover.obj as AbsMapObject);
             //if (hover.obj != null)
             //{
             //    switch (hover.obj.gameobjectType())

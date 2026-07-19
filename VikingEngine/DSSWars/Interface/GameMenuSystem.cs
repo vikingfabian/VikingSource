@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.Interface
 
             if (Ref.netSession.IsHostingMultiplayer)
             {
-                PlayerHud_HeadOptions.SpeedOptions(DssRef.state.LocalHost(), content, false);
+                PlayerHud_HeadOptions.SpeedOptions(DssRef.state.LocalHost(), content, false, true);
             }
 
             if (!PlatformSettings.STEAM_DEMO && 

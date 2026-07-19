@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Interface
 
             if (DssRef.state.IsSinglePlayer_LocalAndOnline())
             {
-                SpeedOptions(player, content, true);
+                SpeedOptions(player, content, true, false);
                 content.space();
             }
             else
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        public static void SpeedOptions(LocalPlayer player, RichBoxContent content, bool viewInput)
+        public static void SpeedOptions(LocalPlayer player, RichBoxContent content, bool viewInput, bool inPauseMenu)
         {
             Color NotSelectedIconCol = new Color(0.3f, 0.3f, 0.3f, 0.3f);
 
@@ -153,6 +153,8 @@ namespace VikingEngine.DSSWars.Interface
                 content.space(0.5f);
             }
 
+            Color textSelectCol = inPauseMenu ? Color.Black : HudLib.HeadBarTextColor_Beige;
+
             for (int i = 0; i < player.gameControls.GameSpeedOptions.Length; i++)
             {
                 int speed = player.gameControls.GameSpeedOptions[i];
@@ -160,7 +162,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 
                 content.Add(new ArtButton(selected ? RbButtonStyle.Primary : RbButtonStyle.OptionNotSelected,
-                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon, 1, selected? Color.White: NotSelectedIconCol), new RbText(speed.ToString(), selected ? HudLib.HeadBarTextColor_Beige : HudLib.HeadBarTextColor_DarkBeige) },
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon, 1, selected? Color.White: NotSelectedIconCol), new RbText(speed.ToString(), selected ? textSelectCol : HudLib.HeadBarTextColor_DarkBeige) },
                     new RbAction1Arg<int>(DssRef.state.GameSpeedClick, speed, RbSoundType.Option),
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {

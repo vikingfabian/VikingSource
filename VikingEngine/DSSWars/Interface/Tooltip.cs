@@ -469,13 +469,13 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        void hoverTip(Players.LocalPlayer player, GameObject.AbsGameObject obj)
+        void hoverTip(Players.LocalPlayer player, GameObject.AbsGameObject target)
         {
             if (StartupSettings.BlockTooltip) return;
 
             RichBoxContent content = new RichBoxContent();
 
-            if (obj.pfaction.TryGetFactionAndPlayer(out var tFaction, out var tPlayer))
+            if (target.pfaction.TryGetFactionAndPlayer(out var tFaction, out var tPlayer))
             {
                 bool attackTarget = false;
 
@@ -484,7 +484,9 @@ namespace VikingEngine.DSSWars.Interface
                     //attackTarget = player.gameControls.army != null &&
                     //    tFaction != player.pfaction.GetFaction();
 
-                    attackTarget = player.armyMayAttackObj(obj as AbsMapObject);
+                    attackTarget = player.gameControls.map.selection.obj != null && 
+                        player.gameControls.map.selection.obj.MayBattle() && 
+                        player.mayAttackObj(target);
 
                     if (attackTarget)
                     {
@@ -493,11 +495,11 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
 
-                obj.toTooltip(new ObjectHudArgs(content, player, false));
+                target.toTooltip(new ObjectHudArgs(content, player, false));
 
                 if (attackTarget)
                 {
-                    if (DssRef.world.diplomacy.GetRelation(player.pfaction, obj.pfaction).InWar())
+                    if (DssRef.world.diplomacy.GetRelation(player.pfaction, target.pfaction).InWar())
                     {
                         content.newParagraph();
                     }
@@ -505,7 +507,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         content.Add(new RbSeperationLine());
 
-                        RelationType rel = DssRef.world.diplomacy.GetRelation(player.pfaction, obj.pfaction).Relation;
+                        RelationType rel = DssRef.world.diplomacy.GetRelation(player.pfaction, target.pfaction).Relation;
 
                         if (tPlayer.IsRemotePlayer())
                         {
@@ -524,7 +526,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
 
                     var attacker = player.gameControls.map.selection.obj as Army;
-                    var defender = obj as AbsMapObject;
+                    var defender = target as AbsMapObject;
 
                     if (attacker != null &&
                         defender != null)

@@ -1100,7 +1100,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return true;
         }
-
+        public override bool MayBattle()
+        {
+            return true;
+        }
         public override AbsArmy GetAbsArmy()
         {
             group.army.TryGetTarget(out var tArmy);

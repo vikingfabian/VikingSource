@@ -46,6 +46,11 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
+        virtual public bool MayBattle()
+        {
+            return false;
+        }
+
         //public bool pfaction.TryGetFaction(out _)
         //{ 
         //    return pfaction >= 0 && factionIndex < DssRef.world.factions.Count;

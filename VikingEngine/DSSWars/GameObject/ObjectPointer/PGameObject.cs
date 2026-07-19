@@ -40,6 +40,13 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             this.objectIndex = objectIndex;
             this.groupIndex = groupIndex;
             this.groupMemberIndex = groupMemberIndex;
+
+#if DEBUG
+            if (objectType == GameObjectType.SoldierGroup && groupIndex < 0)
+            {
+                lib.DoNothing();
+            }
+#endif
         }
 
         public AbsGameObject Get()
@@ -58,7 +65,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                     {
                         if (objectIndex >= 0 && objectIndex < DssRef.world.cities.Count)
                         {
-                            DssRef.world.cities[objectIndex].groups.GetIndex_Safe(groupIndex);
+                            return DssRef.world.cities[objectIndex].groups.GetIndex_Safe(groupIndex);
                         }
                     }
                     break;

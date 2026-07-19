@@ -906,7 +906,7 @@ namespace VikingEngine.DSSWars.Players
         }
 
 
-        public bool armyMayAttackObj(AbsMapObject obj)
+        public bool mayAttackObj(AbsGameObject obj)
         {
             if (obj != null)
             {

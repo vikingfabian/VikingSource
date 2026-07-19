@@ -1151,10 +1151,10 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //     lib.DoNothing();
             //}
-            //if (fullUpdate && IsGuardGroup())
-            //{
-            //    lib.DoNothing();
-            //}
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
 
             if (inShipOrGuardTransform)
             {
@@ -1183,6 +1183,11 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (attackTarget_soldierGroupOrCity.TryGetGroup(out var attack_sp))
             {
+                if (IsArmyGroup())
+                {
+                    lib.DoNothing();
+                }
+
                 if (state != GroupState.Battle)
                 {
                     enterBattleState(true, true, attack_sp);
@@ -2055,6 +2060,10 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
             DssRef.world.unitCollAreaGrid.collectOpponentGroups(pfaction, tilePos, out  List<GameObject.SoldierGroup> groups, out List<City> cities);
 
             AbsGroup nearest = null;

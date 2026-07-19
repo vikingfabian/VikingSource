@@ -229,6 +229,8 @@ namespace VikingEngine.DSSWars.Delivery
                     content.Add(button);
                 }
 
+                /*
+                 //ALLY CITIES TEMP REMOVE
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.Diplomacy_RelationType_Ally + ":", HudLib.TitleColor_Label2));
                 content.newLine();
@@ -245,6 +247,7 @@ namespace VikingEngine.DSSWars.Delivery
                 {
                     content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
                 }
+                */
 
                 void listCities(Faction faction, bool ally, ref int count)
                 {
