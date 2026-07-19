@@ -35,7 +35,8 @@ namespace VikingEngine.DSSWars
 
         public const float WarHudIcons_DefaultScale = 0.8f;
 
-        public static readonly Color HeadBarTextColor_Beige = new Color(205,142,56);
+        public static readonly Color HeadBarTextColor_Beige = new Color(205, 142, 56);
+        public static readonly Color HeadBarTextColor_DarkBeige = new Color(100, 70, 30);
 
         public static readonly Color TitleColor_Head = new Color(104, 149, 219);
         public static readonly Color TitleColor_Head2 = ColorExt.ChangeBrighness(TitleColor_Head, -20);

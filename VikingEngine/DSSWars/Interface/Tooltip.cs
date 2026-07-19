@@ -474,77 +474,80 @@ namespace VikingEngine.DSSWars.Interface
             if (StartupSettings.BlockTooltip) return;
 
             RichBoxContent content = new RichBoxContent();
-            var tFaction = obj.pfaction.GetFaction();
-            bool attackTarget = false;
 
-            if (tFaction != null)
+            if (obj.pfaction.TryGetFactionAndPlayer(out var tFaction, out var tPlayer))
             {
-                //attackTarget = player.gameControls.army != null &&
-                //    tFaction != player.pfaction.GetFaction();
+                bool attackTarget = false;
 
-                attackTarget = player.armyMayAttackObj(obj as AbsMapObject);
+                if (tFaction != null)
+                {
+                    //attackTarget = player.gameControls.army != null &&
+                    //    tFaction != player.pfaction.GetFaction();
+
+                    attackTarget = player.armyMayAttackObj(obj as AbsMapObject);
+
+                    if (attackTarget)
+                    {
+                        content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = HudLib.TitleColor_Attack;
+                        content.newLine();
+                    }
+                }
+
+                obj.toTooltip(new ObjectHudArgs(content, player, false));
 
                 if (attackTarget)
                 {
-                    content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = HudLib.TitleColor_Attack;
-                    content.newLine();
-                }
-            }
-
-            obj.toTooltip(new ObjectHudArgs(content, player, false));
-            
-            if (attackTarget)
-            {
-                if (DssRef.world.diplomacy.GetRelation(player.pfaction, obj.pfaction).InWar())
-                {
-                    content.newParagraph();
-                }
-                else
-                {
-                    content.Add(new RbSeperationLine());
-
-                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.pfaction, obj.pfaction).Relation;
-
-                    if (tFaction.player.IsRemotePlayer())
+                    if (DssRef.world.diplomacy.GetRelation(player.pfaction, obj.pfaction).InWar())
                     {
-                        content.h2(DssRef.lang.Battle_DeclarWarReminder, HudLib.InfoYellow_Light);
-                        content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.todoLang.Diplomacy_OpenPlayerToPlayer, HudLib.TitleColor_Action);
-                        content.Add(new RbSeperationLine());
+                        content.newParagraph();
                     }
                     else
                     {
-                        content.h1(DssRef.lang.Hud_WardeclarationTitle);
-                        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-                        content.newLine();
-                        HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
                         content.Add(new RbSeperationLine());
+
+                        RelationType rel = DssRef.world.diplomacy.GetRelation(player.pfaction, obj.pfaction).Relation;
+
+                        if (tPlayer.IsRemotePlayer())
+                        {
+                            content.h2(DssRef.lang.Battle_DeclarWarReminder, HudLib.InfoYellow_Light);
+                            content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.todoLang.Diplomacy_OpenPlayerToPlayer, HudLib.TitleColor_Action);
+                            content.Add(new RbSeperationLine());
+                        }
+                        else
+                        {
+                            content.h1(DssRef.lang.Hud_WardeclarationTitle);
+                            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+                            content.newLine();
+                            HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
+                            content.Add(new RbSeperationLine());
+                        }
+                    }
+
+                    var attacker = player.gameControls.map.selection.obj as Army;
+                    var defender = obj as AbsMapObject;
+
+                    if (attacker != null &&
+                        defender != null)
+                    {
+
+                        content.Add(new RbBeginTitle(2));
+                        content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                        content.Add(new RbText(DssRef.lang.Hud_StrengthRating));//"Strength ratings:"));
+
+                        content.newLine();
+                        content.Add(new RbTexture(player.flagTexture, 1f, 0, 0.2f));
+
+                        content.Add(new RbText(": " + TextLib.OneDecimal(attacker.strengthValue)));//string.Format(HudLib.OneDecimalFormat, attacker.strengthValue)));
+                        content.newLine();
+                        content.text(DssRef.lang.Hud_Versus);
+                        content.newLine();
+                        content.Add(new RbTexture(tPlayer.flagTexture, 1f, 0, 0.2f));
+                        content.Add(new RbText(": " + TextLib.OneDecimal(defender.strengthValue)));
+                        content.newLine();
                     }
                 }
 
-                var attacker = player.gameControls.map.selection.obj as Army;
-                var defender = obj as AbsMapObject;
-                
-                if (attacker != null && 
-                    defender != null)
-                {
-                    
-                    content.Add(new RbBeginTitle(2));
-                    content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RbText(DssRef.lang.Hud_StrengthRating));//"Strength ratings:"));
-                    
-                    content.newLine();
-                    content.Add(new RbTexture(player.flagTexture, 1f, 0, 0.2f));
-                    
-                    content.Add(new RbText(": " + TextLib.OneDecimal(attacker.strengthValue)));//string.Format(HudLib.OneDecimalFormat, attacker.strengthValue)));
-                    content.newLine();
-                    content.text(DssRef.lang.Hud_Versus);
-                    content.newLine();
-                    content.Add(new RbTexture(tFaction.player.flagTexture, 1f, 0, 0.2f));
-                    content.Add(new RbText(": " + TextLib.OneDecimal(defender.strengthValue)));
-                    content.newLine();
-                }
             }
-            
             create(player, content, false);
 
             

@@ -168,6 +168,13 @@ namespace VikingEngine.DSSWars.GameState
             onSpeedChange();
         }
 
+        public void PlayPause(bool pause)
+        {
+            Ref.SetPause(pause);
+            menuSystem.gameWasPaused = Ref.isPaused;
+            onSpeedChange();
+        }
+
         public void GameSpeedClick(int toSpeed)
         {            
             Ref.SetPause(false);
@@ -199,6 +206,7 @@ namespace VikingEngine.DSSWars.GameState
             {
                 SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
             }
+            LocalHost().hud.needRefresh = true;
         }
 
         public bool closeMenuInput_AnyPlayer()

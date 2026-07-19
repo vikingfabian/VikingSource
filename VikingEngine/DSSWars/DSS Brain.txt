@@ -1,14 +1,18 @@
 
 Change log:
-* 
+* Fixed empty player tooltip crash
 
-x pause broken
+
+x pause is too unclear
 x battlelab, wait with army create
 x must show alliance blocked
 x delivery bugged
 x improve speedy resource info about city
 x share rename of city
 x missplacing settlements locks the settler in place
+xAs the host, I am prevented from declaring war on the client until the cooldown expires.
+-As the client, however, I can declare war (or at least request it) immediately without waiting for the same cooldown.
+
 
 KNOWN ISSUES
 
