@@ -69,27 +69,26 @@ namespace VikingEngine.DSSWars.Event
 
         virtual public void asyncUpdate(float time)
         {
-            //if (DssRef.state.localPlayers[0].tutorial != null)
-            //{
-            //    return;
-            //}
-
-            mainStory.TryPeek(out var ev);//var ev = mainStory.FirstOrDefault();
-            if (ev != null)
+            if (DssRef.state.host)
             {
-                if (ev.asyncUpdate(time))
+                mainStory.TryPeek(out var ev);//var ev = mainStory.FirstOrDefault();
+                if (ev != null)
                 {
-                    mainStory.TryDequeue(out _);
-                    if (mainStory.TryPeek(out var next))
+                    if (ev.asyncUpdate(time))
                     {
-                        next.onStart();
+                        mainStory.TryDequeue(out _);
+                        if (mainStory.TryPeek(out var next))
+                        {
+                            next.onStart();
+                        }
                     }
                 }
+
+                asyncUpdateDyingFactions(time);
+
+                asyncUpdateTooPeaceful(time);
+
             }
-
-            asyncUpdateDyingFactions(time);
-
-            asyncUpdateTooPeaceful(time);
 
             if (Ref.peRnd.ChanceF(0.1f))
             {
@@ -97,6 +96,8 @@ namespace VikingEngine.DSSWars.Event
             }
 
         }
+
+
 
         void asyncCheckVictory()
         {
