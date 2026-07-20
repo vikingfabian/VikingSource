@@ -80,6 +80,10 @@ namespace VikingEngine.Network
 
         public void ApplyFairProtection(PlayerToPlayerDiplomacyData PtoP)
         {
+            if (PtoP.warAllow == PlayerDiplomacyAllowType.Blocked)
+            {
+                warAllow = PlayerDiplomacyAllowType.Blocked;
+            }
             
             canBreakAlliance |= PtoP.canBreakAlliance;
             allianceLimit |= PtoP.allianceLimit;
@@ -215,6 +219,7 @@ namespace VikingEngine.Network
         public void ApplyHostSettings()
         {
             clientPtoP.ApplyHostSettings(Ref.netsett.remoteHostSettings.hostPtoP);
+            clientPtoP.ApplyFairProtection(Ref.netsett.clientPtoP);
             clientSettings.ApplyHostSettings(Ref.netsett.remoteHostSettings.hostSettings);
         }
     }

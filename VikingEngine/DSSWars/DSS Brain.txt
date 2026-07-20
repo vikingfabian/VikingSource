@@ -2,12 +2,8 @@
 Change log:
 * fixed: war blocked option did not work properly
 * blocked options are shown in multiplayer diplomacy
+* fair protection also includes blocked war declarations
 
-
-
-x must show alliance blocked
-x must show war blocked
-? is fair working on blocked?
 x improve speedy resource info about city
 x share rename of city
 x missplacing settlements locks the settler in place
