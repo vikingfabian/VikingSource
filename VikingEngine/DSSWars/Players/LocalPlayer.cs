@@ -594,7 +594,7 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.state.PlayType() == PlayStateType.Play &&
                 Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))
             {
-                tutorial = new PlayerControls.Tutorial(this);
+                new PlayerControls.Tutorial(this);
 
             }
 
@@ -626,7 +626,7 @@ namespace VikingEngine.DSSWars.Players
             
             if (inTutorialMode)
             {
-                tutorial = new PlayerControls.Tutorial(this);
+                new PlayerControls.Tutorial(this);
                 tutorial.readGameState(r, subversion);
 
             }

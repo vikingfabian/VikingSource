@@ -734,66 +734,74 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (isDeleted) return;
 
-            if (isShip != (transformType == SoldierTransformType.ToShip))
+            switch (transformType)
             {
-                isShip = transformType == SoldierTransformType.ToShip;
+                case SoldierTransformType.ToShip:
+                case SoldierTransformType.FromShip:
 
-                if (isShip)
-                {
-                    shipHealth = soldierData_soldier.basehealth * soldierCount;
-                    soldierCount = 1;
-                    currentBuilder = shipBuilder;
-                    soldierData = soldierConscript.createSoldierData();
-                }
-                else
-                {
-                    soldierCount = shipHealth / soldierData_soldier.basehealth;
-                    if (soldierCount <= 0)
+                    if (isShip != (transformType == SoldierTransformType.ToShip))
                     {
-                        lib.DoNothing();
-                    }
-                    currentBuilder = landBuilder;
-                    soldierData = soldierConscript.createSoldierData();
-                }
+                        isShip = transformType == SoldierTransformType.ToShip;
 
-                var soldiers_sp = soldiers;
-                if (soldiers_sp != null)
-                {
-                    int totalHealth = 0;
-
-                    var soldiersC = soldiers_sp.counter();
-                    while (soldiersC.Next())
-                    {
-                        totalHealth += soldiersC.sel.health;
-                        soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
-                    }
-                    soldiers_sp.Clear();
-
-                    if (transformType == SoldierTransformType.ToShip)
-                    {
-                        var shipData = soldierData;
-                        soldierConscript.shipSetup(ref shipData);
-
-                        var ship = createUnit(DssRef.units.Get(shipBuilder), IntVector2.Zero, false, WP.ToTilePos(position), ref shipData, true);
-
-                        if (ship != null)
+                        if (isShip)
                         {
-                            ship.position = position;
-                            ship.health = shipHealth;
-                            ship.refreshShipCarryCount();
+                            shipHealth = soldierData_soldier.basehealth * soldierCount;
+                            soldierCount = 1;
+                            currentBuilder = shipBuilder;
+                            soldierData = soldierConscript.createSoldierData();
                         }
-                    }
-                    else
-                    {
-                        //int count = (int)Math.Ceiling(totalHealth / (double)soldierData.basehealth);
-                        shipHealth = Bound.Min( totalHealth, 1);
-                        createAllSoldiers(currentBuilder, soldierCount, true);
-                    }
+                        else
+                        {
+                            soldierCount = shipHealth / soldierData_soldier.basehealth;
+                            if (soldierCount <= 0)
+                            {
+                                lib.DoNothing();
+                            }
+                            currentBuilder = landBuilder;
+                            soldierData = soldierConscript.createSoldierData();
+                        }
 
-                    refreshAttackRadius();
-                }
+                        var soldiers_sp = soldiers;
+                        if (soldiers_sp != null)
+                        {
+                            int totalHealth = 0;
 
-                state = GroupState.FindArmyPlacement;
+                            var soldiersC = soldiers_sp.counter();
+                            while (soldiersC.Next())
+                            {
+                                totalHealth += soldiersC.sel.health;
+                                soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
+                            }
+                            soldiers_sp.Clear();
+
+                            if (transformType == SoldierTransformType.ToShip)
+                            {
+                                var shipData = soldierData;
+                                soldierConscript.shipSetup(ref shipData);
+
+                                var ship = createUnit(DssRef.units.Get(shipBuilder), IntVector2.Zero, false, WP.ToTilePos(position), ref shipData, true);
+
+                                if (ship != null)
+                                {
+                                    ship.position = position;
+                                    ship.health = shipHealth;
+                                    ship.refreshShipCarryCount();
+                                }
+                            }
+                            else
+                            {
+                                //int count = (int)Math.Ceiling(totalHealth / (double)soldierData.basehealth);
+                                shipHealth = Bound.Min(totalHealth, 1);
+                                createAllSoldiers(currentBuilder, soldierCount, true);
+                            }
+
+                            refreshAttackRadius();
+                        }
+
+                        state = GroupState.FindArmyPlacement;
+
+                    }
+                    break;
             }
 
             inShipOrGuardTransform = false;

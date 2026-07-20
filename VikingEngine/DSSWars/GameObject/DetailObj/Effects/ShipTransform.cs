@@ -230,8 +230,12 @@ namespace VikingEngine.DSSWars.GameObject
                 if (city.claimCity(group.pfaction.GetFaction(), subTile))
                 {
                     group.DeleteMe(DeleteReason.Transform, true);
+                    return;
                 }
             }
+
+            //Fail
+            group.completeTransform(SoldierTransformType.Canceled, -1);
         }
 
         override protected int modelFrame()

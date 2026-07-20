@@ -242,13 +242,14 @@ namespace VikingEngine.DSSWars
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
             {
                 new Faction(DssRef.world, FactionType.DarkLord);
-                new Faction(DssRef.world, FactionType.SouthHara);
-                new Faction(DssRef.world, FactionType.Barbarians);
+                new Faction(DssRef.world, FactionType.SouthHara);                
             }
             else if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickBoss)
             {
                 new Faction(DssRef.world, FactionType.DarkLord);
             }
+
+            new Faction(DssRef.world, FactionType.Barbarians);
 
             int playerCount = DssRef.storage.playerCount;
 

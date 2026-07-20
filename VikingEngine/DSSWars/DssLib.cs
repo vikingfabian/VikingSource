@@ -283,6 +283,8 @@ namespace VikingEngine.DSSWars
 
         EnterGuard,
         ExitGuard,
+
+        Canceled,
     }
     enum AiAggressivity
     { 

@@ -7,11 +7,9 @@ Change log:
 * faster information send of terrain resources
 * will share renaming 
 * extended character limit on text chat
-* will share city guard on battle event
-
-x block tutorial x multiplayer?
-x missplacing settlements locks the settler in place
-
+* will share city guard on battle event, and it now works in both directions
+* fixed: tutorial should not have x5 speed
+* fixed: missplacing settlements locks the settler in place
 
 
 KNOWN ISSUES
