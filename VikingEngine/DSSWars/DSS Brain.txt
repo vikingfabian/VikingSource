@@ -5,8 +5,8 @@ Change log:
 * fair protection also includes blocked war declarations
 * fixed: some settings were not saved
 * faster information send of terrain resources
+* will share renaming 
 
-x share rename of city
 x missplacing settlements locks the settler in place
 x share city guard on battle event
 x need to extend character limit on text chat

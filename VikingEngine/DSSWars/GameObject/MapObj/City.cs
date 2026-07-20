@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.GameObject
         public BuildingStructure buildingStructure = new BuildingStructure();
         public TerrainStructure terrainStructure = new TerrainStructure();
 
-        ObjectName name = new ObjectName();
+        
 
         Intvector2MinMax guardCullingMinMax;
         public Rectangle2 cityTileArea;
@@ -2250,10 +2250,10 @@ namespace VikingEngine.DSSWars.GameObject
             return name.name;
         }
 
-        public override void NameEditEvent(string result, object tag)
-        {
-            name.setCustom(result);
-        }
+        //public override void NameEditEvent(string result, object tag)
+        //{
+        //    name.setCustom(result);
+        //}
 
         public override string TypeName()
         {

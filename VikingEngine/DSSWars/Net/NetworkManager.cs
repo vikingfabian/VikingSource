@@ -695,6 +695,10 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
+                case PacketType.DssRename:
+                    AbsMapObject.NetReadRename(packet.r);
+                    break;
+
                 case PacketType.DssReColor:
                     {
                         var faction = ObjectId.ReadFaction(packet.r, out _);

@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         const int ModelVariants = 3;
 
-        ObjectName name = new ObjectName();
+        //ObjectName name = new ObjectName();
         Graphics.AbsVoxelObj overviewModel;
         BoundingSphere bound;
         int modelVariant = 0;
@@ -400,10 +400,10 @@ namespace VikingEngine.DSSWars.GameObject
            return GameObjectType.LocationPin;
         }
 
-        public override void NameEditEvent(string result, object tag)
-        {
-            name.setCustom(result);
-        }
+        //public override void NameEditEvent(string result, object tag)
+        //{
+        //    name.setCustom(result);
+        //}
 
         public override string TypeName()
         {

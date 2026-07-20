@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float terrainSpeedMultiplier = 1.0f;
        
-        ObjectName name = new ObjectName();
+        //ObjectName name = new ObjectName();
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
@@ -298,10 +298,7 @@ namespace VikingEngine.DSSWars.GameObject
             return name.name;
         }
 
-        public override void NameEditEvent(string result, object tag)
-        {
-            name.setCustom(result);
-        }
+        
 
         void ArmyPresentationHud(ObjectHudArgs args, bool tooltip)
         {

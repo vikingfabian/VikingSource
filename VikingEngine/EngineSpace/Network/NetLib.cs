@@ -236,6 +236,7 @@ namespace VikingEngine.Network
         DssDeleteArmy,
         DssGiftAchievement,
         DssReColor,
+        DssRename,
 
         DssBattleLabStartNew,
         DssBattleLabAddSoldiers,

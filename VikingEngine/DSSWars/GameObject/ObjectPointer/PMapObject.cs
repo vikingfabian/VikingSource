@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.PJ.MiniGolf;
 
 namespace VikingEngine.DSSWars.GameObject.ObjectPointer
@@ -45,8 +46,17 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                         return f.armies.GetIndex_Safe(objectIndex);
                     }
                     break;
+
                 case GameObjectType.City:
                     return DssRef.world.cities[objectIndex];
+
+                case GameObjectType.LocationPin:
+                    var p = pfaction.GetPlayer() as AbsHumanPlayer;
+                    if (p != null)
+                    {
+                       return p.pins.GetIndex_Safe(objectIndex);
+                    }
+                    break;
             }
             
             return null;

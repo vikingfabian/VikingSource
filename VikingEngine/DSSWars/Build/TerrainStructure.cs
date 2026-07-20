@@ -155,60 +155,62 @@ namespace VikingEngine.DSSWars.Build
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(mineCount_bogIron);
-            w.Write(mineCount_iron);
-            w.Write(mineCount_tin);
-            w.Write(mineCount_copper);
-            w.Write(mineCount_lead);
-            w.Write(mineCount_silver);
-            w.Write(mineCount_gold);
-            w.Write(mineCount_mithril);
-            w.Write(mineCount_sulfur);
-            w.Write(mineCount_coal);
-            w.Write(mineCount_salt);
-
+            w.Write((byte)mineCount_bogIron);
+            w.Write((byte)mineCount_iron);
+            w.Write((byte)mineCount_tin);
+            w.Write((byte)mineCount_copper);
+            w.Write((byte)mineCount_lead);
+            w.Write((byte)mineCount_silver);
+            w.Write((byte)mineCount_gold);
+            w.Write((byte)mineCount_mithril);
+            w.Write((byte)mineCount_sulfur);
+            w.Write((byte)mineCount_coal);
+            w.Write((byte)mineCount_salt);
+    
             w.Write(resourceCount_stone);
             w.Write(resourceCount_wood);
             w.Write(mineCount_stoneblock);
-            w.Write(resourceCount_clay);
-
-            w.Write(wildAnimalCount_Fowl);
-            w.Write(wildAnimalCount_Boar);
-            w.Write(wildAnimalCount_Dog);
-            w.Write(wildAnimalCount_Ox);
-            w.Write(wildAnimalCount_Pony);
-            w.Write(wildAnimalCount_Wolf);
-            w.Write(wildAnimalCount_Cat);
-            w.Write(wildAnimalCount_Elephant);
+            w.Write((byte)resourceCount_clay);
+    
+            w.Write((byte)wildAnimalCount_Fowl);
+            w.Write((byte)wildAnimalCount_Boar);
+            w.Write((byte)wildAnimalCount_Dog);
+            w.Write((byte)wildAnimalCount_Ox);
+            w.Write((byte)wildAnimalCount_Pony);
+            w.Write((byte)wildAnimalCount_Wolf);
+            w.Write((byte)wildAnimalCount_Cat);
+            w.Write((byte)wildAnimalCount_Elephant);
+            Debug.WriteCheck(w);
         }
 
         public void read(System.IO.BinaryReader r)
         {
-            mineCount_bogIron = r.ReadInt32();
-            mineCount_iron = r.ReadInt32();
-            mineCount_tin = r.ReadInt32();
-            mineCount_copper = r.ReadInt32();
-            mineCount_lead = r.ReadInt32();
-            mineCount_silver = r.ReadInt32();
-            mineCount_gold = r.ReadInt32();
-            mineCount_mithril = r.ReadInt32();
-            mineCount_sulfur = r.ReadInt32();
-            mineCount_coal = r.ReadInt32();
-            mineCount_salt = r.ReadInt32();
-
+            mineCount_bogIron = r.ReadByte();
+            mineCount_iron = r.ReadByte();
+            mineCount_tin = r.ReadByte();
+            mineCount_copper = r.ReadByte();
+            mineCount_lead = r.ReadByte();
+            mineCount_silver = r.ReadByte();
+            mineCount_gold = r.ReadByte();
+            mineCount_mithril = r.ReadByte();
+            mineCount_sulfur = r.ReadByte();
+            mineCount_coal = r.ReadByte();
+            mineCount_salt = r.ReadByte();
+    
             resourceCount_stone = r.ReadInt32();
             resourceCount_wood = r.ReadInt32();
             mineCount_stoneblock = r.ReadInt32();
-            resourceCount_clay = r.ReadInt32();
-
-            wildAnimalCount_Fowl = r.ReadInt32();
-            wildAnimalCount_Boar = r.ReadInt32();
-            wildAnimalCount_Dog = r.ReadInt32();
-            wildAnimalCount_Ox = r.ReadInt32();
-            wildAnimalCount_Pony = r.ReadInt32();
-            wildAnimalCount_Wolf = r.ReadInt32();
-            wildAnimalCount_Cat = r.ReadInt32();
-            wildAnimalCount_Elephant = r.ReadInt32();
+            resourceCount_clay = r.ReadByte();
+    
+            wildAnimalCount_Fowl = r.ReadByte();
+            wildAnimalCount_Boar = r.ReadByte();
+            wildAnimalCount_Dog = r.ReadByte();
+            wildAnimalCount_Ox = r.ReadByte();
+            wildAnimalCount_Pony = r.ReadByte();
+            wildAnimalCount_Wolf = r.ReadByte();
+            wildAnimalCount_Cat = r.ReadByte();
+            wildAnimalCount_Elephant = r.ReadByte();
+            Debug.ReadCheck(r);
         }
 
         public int Get(ItemResourceType type)
