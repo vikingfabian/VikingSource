@@ -518,7 +518,7 @@ namespace VikingEngine.DSSWars.Event
                             //Available for spawn
                             //Faction enemyFac = DssRef.settings.Faction_Barbarian);
 
-                            if (DssRef.settings.Faction_Barbarian.TryGetFaction(out var enemyFac))
+                            if (!DssRef.settings.Faction_Barbarian.TryGetFaction(out var enemyFac))
                             {
                                 enemyFac = DssRef.world.findOrCreate(FactionType.Barbarians, DssRef.settings.Faction_Barbarian.factionIndex);
                                 DssRef.settings.Faction_Barbarian = enemyFac.pfaction;

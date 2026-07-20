@@ -378,12 +378,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public Tutorial(LocalPlayer player)
         {
+            player.tutorial = this;
             DssRef.storage.runTutorial = true;
             cityarea = new Rectangle2();
 
             this.player = player;
             player.hud.minimapProperty(null, true, false);
-            player.gameControls.refreshGameSpeedOptions(false);
+            
             display = new Interface.TutorialDisplay(player);
             initMissions();
 
@@ -419,6 +420,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.pfaction.GetFaction().refreshCityWork();
             
             refreshLimits();
+            player.gameControls.refreshGameSpeedOptions(false);
 
             //cancel tutorial in local mp
             if (DssRef.state.localPlayers.Count > 1)
