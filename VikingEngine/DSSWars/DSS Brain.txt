@@ -3,8 +3,9 @@ Change log:
 * fixed: war blocked option did not work properly
 * blocked options are shown in multiplayer diplomacy
 * fair protection also includes blocked war declarations
+* fixed: some settings were not saved
+* faster information send of terrain resources
 
-x improve speedy resource info about city
 x share rename of city
 x missplacing settlements locks the settler in place
 x share city guard on battle event
