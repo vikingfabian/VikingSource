@@ -825,8 +825,6 @@ namespace VikingEngine.DSSWars
 
             var sett = new NetSharedClientSettings();
             sett.ApplyHostSettings();
-            sett.clientPtoP.ApplyFairProtection();
-
             sett.write(w);
 
             w.Write((byte)localPlayers.Count);
@@ -843,6 +841,7 @@ namespace VikingEngine.DSSWars
         void NetReadPresentation(ReceivedPacket packet, RemotePlayer sender)
         {
             sender.netClientSettings.read(packet.r);
+            sender.netClientSettings.clientPtoP.ApplyFairProtection();
 
             int count = packet.r.ReadByte();
 

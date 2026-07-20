@@ -219,7 +219,7 @@ namespace VikingEngine.Network
         public void ApplyHostSettings()
         {
             clientPtoP.ApplyHostSettings(Ref.netsett.remoteHostSettings.hostPtoP);
-            clientPtoP.ApplyFairProtection(Ref.netsett.clientPtoP);
+            //clientPtoP.ApplyFairProtection(Ref.netsett.clientPtoP);
             clientSettings.ApplyHostSettings(Ref.netsett.remoteHostSettings.hostSettings);
         }
     }
