@@ -1005,14 +1005,18 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        /// <summary>
+        /// Sent one time, to each client
+        /// </summary>
         public void writeNet_map(System.IO.BinaryWriter w)
         {
             writeMapFile(w);
 
             pfaction.write(w);
-            //w.Write((ushort)pfaction);
-
+            
             w.Write((byte)Tile().heightLevel);
+
+            terrainStructure.write(w);
         }
 
         public void readNet_map(WorldData world, System.IO.BinaryReader r)
@@ -1037,6 +1041,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 overviewModel.position = position;
             }
+
+            terrainStructure.read(r);
 
             DssRef.world.unitCollAreaGrid.add(this);
         }

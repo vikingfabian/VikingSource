@@ -531,6 +531,7 @@ namespace VikingEngine.DSSWars.Interface
                                 {
                                     Ref.netsett.clientPtoP.allianceAllow = allowType;
                                 }
+                                Ref.netsett.settingsHasChanged = true;
                                 menu.CloseDropDown();
                             }, allowType), null);
                     }
@@ -564,6 +565,7 @@ namespace VikingEngine.DSSWars.Interface
                                 {
                                     Ref.netsett.clientPtoP.warAllow = allowType;
                                 }
+                                Ref.netsett.settingsHasChanged = true;
                                 menu.CloseDropDown();
                             }, allowType), null);
 

@@ -366,6 +366,10 @@ namespace VikingEngine.Network
             hostPtoP.read(r, storageVersion);
             
             clientPtoP.read(r, storageVersion);
+            if (clientPtoP.allianceAllow == PlayerDiplomacyAllowType.PlayersChoose)
+            {
+                clientPtoP.allianceAllow = PlayerDiplomacyAllowType.Allow;
+            }
             
             PlayerSpacing = r.ReadInt32();
 
@@ -397,7 +401,7 @@ namespace VikingEngine.Network
             hostPtoP.warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
             hostPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
 
-            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
+            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.Allow;
             clientPtoP.canBreakAlliance = true;
             clientPtoP.warAllow = PlayerDiplomacyAllowType.Blocked;
 
@@ -427,7 +431,7 @@ namespace VikingEngine.Network
             hostPtoP.warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
             hostPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
 
-            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
+            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.Allow;
             clientPtoP.canBreakAlliance = true;
             clientPtoP.warAllow = unlockPvp ? PlayerDiplomacyAllowType.Allow : PlayerDiplomacyAllowType.Blocked;
 
