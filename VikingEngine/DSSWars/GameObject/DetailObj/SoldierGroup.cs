@@ -959,22 +959,24 @@ namespace VikingEngine.DSSWars.GameObject
                     state = GroupState.Battle;
                     createSoldierObjects(enter, false);
 
+
+                    if (army.TryGetTarget(out var tarmy) && tarmy.IsNetHosted && tarmy.lastNetUpdate.secPassed(15) &&
+                           (!localAction || attackTarget_soldierGroupOrCity.pfaction.TryGetRemotePlayer(out _))) //Targeted by remote player
+                    {
+                        if (tarmy.IsArmy())
+                        {
+                            Army.NetFullArmyStatus(tarmy.GetArmy(), Network.PacketReliability.Unrelyable, false);
+                        }
+                        else
+                        {
+                            int packetCount = 0;
+                            tarmy.netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount, false);
+                            tarmy.lastNetUpdate.setNow();
+                        }
+                    }
+
                     if (localAction && targetObject != null)
                     {
-                        if (army.TryGetTarget(out var tarmy) && tarmy.IsNetHosted && tarmy.lastNetUpdate.secPassed(15) && 
-                            attackTarget_soldierGroupOrCity.pfaction.TryGetRemotePlayer(out _))
-                        {
-                            if (tarmy.IsArmy())
-                            {
-                                Army.NetFullArmyStatus(tarmy.GetArmy(), Network.PacketReliability.Unrelyable, false);
-                            }
-                            else
-                            {
-                                int packetCount = 0;
-                                tarmy.netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount, false);
-                            }
-                        }
-
                         var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEnterBattle, Network.PacketReliability.Reliable, out var packet);
                         {
                             Net.ObjectId.WriteSoldierGroup(w, this);
