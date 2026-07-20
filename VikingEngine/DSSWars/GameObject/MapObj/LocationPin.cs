@@ -18,7 +18,6 @@ namespace VikingEngine.DSSWars.GameObject
     {
         const int ModelVariants = 3;
 
-        //ObjectName name = new ObjectName();
         Graphics.AbsVoxelObj overviewModel;
         BoundingSphere bound;
         int modelVariant = 0;
@@ -156,7 +155,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void infoHud(ObjectHudArgs args)
         {
             args.content.newParagraph();
-            HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Message");
+            HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.todoLang.Message);
             args.content.newLine();
             for (PingMessage message = 0; message < PingMessage.NUM; message++)
             {
@@ -170,7 +169,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (DssRef.DlcSupporter.owned)
             {
                 args.content.newParagraph();
-                HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Model");
+                HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.todoLang.Hud_ModelType);
                 args.content.newLine();
 
                 int exendModel = ModelVariants;
@@ -196,17 +195,16 @@ namespace VikingEngine.DSSWars.GameObject
             if (Ref.netSession.InMultiplayerSession)
             {
                 args.content.newParagraph();
-                HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Share and ping");
+                HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.todoLang.ObjectType_LocationPin_Share);
                 args.content.newLine();
 
                 if (netInteractLevel == NetInteractLevel.Hidden)
                 {
-                    //interactLevelButton("Team", NetInteractLevel.Team);
-                    interactLevelButton("Everyone", NetInteractLevel.Public);
+                    interactLevelButton(DssRef.todoLang.Group_Everyone, NetInteractLevel.Public);
                 }
                 else
                 {
-                    interactLevelButton("Hide", NetInteractLevel.Hidden);
+                    interactLevelButton(DssRef.todoLang.Hud_Hide, NetInteractLevel.Hidden);
                 }
 
                 void interactLevelButton(string label, NetInteractLevel level)
@@ -214,10 +212,6 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>
                     {  new RbText(label)}, new RbAction1Arg<NetInteractLevel>(setInteractLevel, level, level == NetInteractLevel.Hidden? RbSoundType.Back : RbSoundType.Ping)));
                 }
-                //for (NetInteractLevel level = 0; level < NetInteractLevel.NUM; level++)
-                //{ 
-                    
-                //}
             }
             args.content.Add(new RbSeperationLine());
             args.content.newParagraph();
@@ -226,7 +220,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             args.content.newLine();
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
-               new RbText(  ".Delete all") }, new RbAction1Arg<DeleteReason>(args.player.clearPins, DeleteReason.Disband)));
+               new RbText(  DssRef.todoLang.Hud_DeleteAll) }, new RbAction1Arg<DeleteReason>(args.player.clearPins, DeleteReason.Disband)));
 
         }
 
@@ -250,13 +244,6 @@ namespace VikingEngine.DSSWars.GameObject
         public override void toTooltip(ObjectHudArgs args)
         {
             PinPresentationHud(args, true);
-            //base.toTooltip(args);
-            //var remote = pfaction.GetFaction()?.player.GetRemotePlayer();
-            //if (remote != null)
-            //{
-            //    args.content.newLine();
-            //    remote.addNetGamerToHud(args.content, true, false);
-            //}
 
             if (pingMessage != PingMessage.None)
             {
@@ -327,10 +314,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            //if (inRender_detailLayer)
-            //{
-            //    lib.DoNothing();
-            //}
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, IsNetHosted ? pfaction.GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
         }
 
@@ -376,20 +359,11 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        //public override bool aliveAndBelongTo(PFaction pfaction)
-        //{
-        //    return base.aliveAndBelongTo(faction);
-        //}
-
         public override bool defeatedBy(PFaction attackerFaction)
         {
             throw new NotImplementedException();
         }
 
-        //public override bool aliveAndBelongTo(int faction)
-        //{
-        //    throw new NotImplementedException();
-        //}
         public override void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason)
         {
             throw new NotImplementedException();
@@ -399,11 +373,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
            return GameObjectType.LocationPin;
         }
-
-        //public override void NameEditEvent(string result, object tag)
-        //{
-        //    name.setCustom(result);
-        //}
 
         public override string TypeName()
         {

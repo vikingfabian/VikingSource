@@ -178,6 +178,7 @@ namespace VikingEngine.DSSWars.GameState
         public void GameSpeedClick(int toSpeed)
         {            
             Ref.SetPause(false);
+            menuSystem.gameWasPaused = Ref.isPaused;
             Ref.SetGameSpeed(toSpeed);
             onSpeedChange();
         }
