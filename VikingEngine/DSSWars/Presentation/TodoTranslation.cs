@@ -49,6 +49,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string UseHandicap => "Use handicap";
         public string DifficultyDescription_BotAggression => "Bot aggression";
         public string Hud_GetExtraX => "Extra {0}";
+        public string Hud_Hide => "Hide";
+        public string Hud_ModelType => "Model";
 
         /// <summary>
         /// Label: Text text
@@ -89,6 +91,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string WarPreparationTimeTooltip => "A delay from war declaration until attacks are available";
         public string Hud_Allow => "Allow";
         public string Hud_Blocked => "Blocked";
+
+        public string Hud_DeleteAll => "Delete all";
         public string DiplomacyPlayersChoice => "Players choice";
         public string UnlockSureTitle => "Are you really, really sure?";
         public string UnlockSureDescription => "Will you be a big boy and not cry on the forum later?";
@@ -113,6 +117,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string DecorType_DiplomaticStatue => "Diplomatic statue";
 
+        public string Message => "Message";
         public string ObjectType_LocationPin => "Location pin";
         public string ObjectType_LocationPin_Share => "Share and ping";
         public string InputActionName_TextChat => "Text chat";

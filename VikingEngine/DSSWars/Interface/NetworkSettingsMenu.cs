@@ -266,6 +266,7 @@ namespace VikingEngine.DSSWars.Interface
                             relation == RelationType.RelationType0_Neutral,
                             new RbAction1Arg<RelationType>((RelationType rel) =>
                             {
+                                menu.CloseDropDown();
                                 Ref.netsett.hostSettings.startDiplomacy = relation;
                                 Ref.netsett.settingsHasChanged = true;
                             }, relation), null);
@@ -457,6 +458,7 @@ namespace VikingEngine.DSSWars.Interface
                         recieveGiftOpt.AddOption(caption, opt == Ref.netsett.clientSettings.recieveGifts, opt == GiftRecieveOption.Allow,
                             new RbAction1Arg<GiftRecieveOption>((GiftRecieveOption select) =>
                             {
+                                menu.CloseDropDown();
                                 Ref.netsett.clientSettings.recieveGifts = select;
                                 Ref.netsett.settingsHasChanged = true;
                             }, opt), null);

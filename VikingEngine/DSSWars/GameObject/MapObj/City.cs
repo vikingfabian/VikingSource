@@ -3927,6 +3927,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     //City handover
                     NetWriteHandoverPacket(newFaction.HostingPeer(), this);
+                    IsNetHosted = false;
                 }
 
                 if (netShare)
@@ -3941,10 +3942,6 @@ namespace VikingEngine.DSSWars.GameObject
                     packet.EndWrite_Asynch();
                 }
             }
-
-            
-
-
         }
 
         public static void NetReadSetFaction(RemotePlayer remotePlayer, System.IO.BinaryReader r)

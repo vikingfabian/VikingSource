@@ -319,6 +319,8 @@ namespace VikingEngine.Network
 
         public void write(System.IO.BinaryWriter w)
         {
+            hostSettings.write(w);
+
             w.Write(hostNetwork);
             w.Write(findNetwork);
 
@@ -352,6 +354,8 @@ namespace VikingEngine.Network
 
         public void read(System.IO.BinaryReader r, int storageVersion)
         {
+            hostSettings.read(r, storageVersion);
+
             hostNetwork = r.ReadBoolean();
             findNetwork = r.ReadBoolean();
 

@@ -1,16 +1,14 @@
 
 Change log:
-* fixed: war blocked option did not work properly
-* blocked options are shown in multiplayer diplomacy
-* fair protection also includes blocked war declarations
-* fixed: some settings were not saved
-* faster information send of terrain resources
-* will share renaming 
-* extended character limit on text chat
-* will share city guard on battle event, and it now works in both directions
-* fixed: tutorial should not have x5 speed
-* fixed: missplacing settlements locks the settler in place
+* Fixed: were not saving host main settings
+* Fixed: client capture/gift turned city to hosted on both sides
 
+x joined player saw others ping as their own
+x start diplomacy dont work
+x look at button on gifts
+x 
+x client cant gift units
+x cant end alliance, but settings was available
 
 KNOWN ISSUES
 
