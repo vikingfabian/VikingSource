@@ -1,8 +1,10 @@
 
 Change log:
-* 
+* fixed: war blocked option did not work properly
+* blocked options are shown in multiplayer diplomacy
 
-x battlelab, wait with army create
+
+
 x must show alliance blocked
 x must show war blocked
 ? is fair working on blocked?
@@ -10,7 +12,7 @@ x improve speedy resource info about city
 x share rename of city
 x missplacing settlements locks the settler in place
 x share city guard on battle event
-
+x need to extend character limit on text chat
 
 KNOWN ISSUES
 

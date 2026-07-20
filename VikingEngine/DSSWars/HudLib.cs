@@ -55,6 +55,7 @@ namespace VikingEngine.DSSWars
         //     Salmon color (R:250,G:128,B:114,A:255).
         public static readonly Color NotAvailableColor = new Color(250, 180, 180);
         public static readonly Color NotAvailableColor_Dark = Color.DarkRed;
+        public static readonly Color NotAvailableColor_Dark_Grayed = new Color(100, 40, 40);
 
         public static readonly Color TextColor_Relation = Color.LightBlue;
 
