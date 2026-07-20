@@ -6,10 +6,13 @@ Change log:
 * fixed: some settings were not saved
 * faster information send of terrain resources
 * will share renaming 
+* extended character limit on text chat
+* will share city guard on battle event
 
+x block tutorial x multiplayer?
 x missplacing settlements locks the settler in place
-x share city guard on battle event
-x need to extend character limit on text chat
+
+
 
 KNOWN ISSUES
 

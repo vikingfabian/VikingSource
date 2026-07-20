@@ -961,10 +961,18 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (localAction && targetObject != null)
                     {
-                        if (army.TryGetTarget(out var tarmy) && tarmy.IsNetHosted && tarmy.IsArmy() && tarmy.lastNetUpdate.secPassed(15) && 
+                        if (army.TryGetTarget(out var tarmy) && tarmy.IsNetHosted && tarmy.lastNetUpdate.secPassed(15) && 
                             attackTarget_soldierGroupOrCity.pfaction.TryGetRemotePlayer(out _))
                         {
-                            Army.NetFullArmyStatus(tarmy.GetArmy(), Network.PacketReliability.Unrelyable, false);
+                            if (tarmy.IsArmy())
+                            {
+                                Army.NetFullArmyStatus(tarmy.GetArmy(), Network.PacketReliability.Unrelyable, false);
+                            }
+                            else
+                            {
+                                int packetCount = 0;
+                                tarmy.netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount, false);
+                            }
                         }
 
                         var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEnterBattle, Network.PacketReliability.Reliable, out var packet);
@@ -972,13 +980,6 @@ namespace VikingEngine.DSSWars.GameObject
                             Net.ObjectId.WriteSoldierGroup(w, this);
 
                             attackTarget_soldierGroupOrCity.write(w);
-                            //attackTargetTimeLock.write_byte(w);
-                            //if (attackTarget_soldierGroupOrCity.objectType == GameObjectType.SoldierGroup)
-                            //{
-                            //    var tsoldiers = (SoldierGroup)targetObject;
-                            //    tsoldiers.writeNet(w);
-                            //}
-                            
                         }
                         packet.EndWrite_Asynch();
                     }
