@@ -24,6 +24,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             parentType = GameObjectType.NONE;
             objectIndex = -1;
             groupMemberIndex = -1;
+            pfaction = PFaction.Empty;
         }
 
         public PGameObject(

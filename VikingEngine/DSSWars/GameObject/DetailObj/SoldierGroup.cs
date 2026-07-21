@@ -2071,7 +2071,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
-            if (debugTagged)
+            if (attackTarget_soldierGroupOrCity.HasValue())
             {
                 lib.DoNothing();
             }
@@ -2100,6 +2100,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (nearest == null)
             {
+                attackTarget_soldierGroupOrCity = PGameObject.Empty;
                 foreach (var opponent in cities)
                 {
                     //if (opponent.guardCount > 0)
