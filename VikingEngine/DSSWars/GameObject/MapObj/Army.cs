@@ -1081,7 +1081,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 strengthValue = totalStrength; // AllUnits.AverageGroupStrength;
 
-                if (totalStrength > ArmySizeLeaderBoard.SizeUploaded)
+                if (totalStrength > ArmySizeLeaderBoard.SizeUploaded && pfaction.TryGetLocalPlayer(out _))
                 {
                     ArmySizeLeaderBoard.SizeUploaded = totalStrength;
                     Ref.update.AddSyncAction(new SyncAction(() =>

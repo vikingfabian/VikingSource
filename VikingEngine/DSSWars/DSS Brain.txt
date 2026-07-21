@@ -4,19 +4,18 @@ Change log:
 * Maybe fixed: Player replaced story ai
 * joining players always unlock iron age
 * fixed: host was sending client cities
+* fixed: cant end alliance, but settings was available
+* fixed: used all players army size for leaderboard upload
+* fixed: Music dont stop after battle stopped
 
 
-Music dont stop after battle stopped
 Ability to ban old players
 Fail to join message 
 Test casual 
-Allow handicap dont work
 Anyone can join private game
 Client got wrong banner
-
-x joined player saw others ping as their own
-x cant end alliance, but settings was available
 x save color is unrelyable
+
 KNOWN ISSUES
 
 ! old saved will have some bot flag color drifting
