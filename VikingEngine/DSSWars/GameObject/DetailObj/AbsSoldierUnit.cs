@@ -1257,9 +1257,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 ++enemyPlayer.GetLocalPlayer().statistics.EnemySoldiersKilled;
             }
-            if (group.pfaction.GetPlayer().IsLocalPlayer())
+            if (group.pfaction.TryGetLocalPlayer(out var localPlayer))
             {
-                ++group.pfaction.GetPlayer().GetLocalPlayer().statistics.FriendlySoldiersLost;
+                ++localPlayer.statistics.FriendlySoldiersLost;
             }
 
             if (fullUpdate)
