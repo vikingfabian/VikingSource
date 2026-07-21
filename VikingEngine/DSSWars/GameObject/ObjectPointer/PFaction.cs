@@ -155,6 +155,16 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             player = null;
             return false;
         }
+        public bool TryGetHumanPlayer(out Players.AbsHumanPlayer player)
+        {
+            if (TryGetPlayer(out var aplayer))
+            {
+                player = aplayer.GetHumanPlayer();
+                return player != null;
+            }
+            player = null;
+            return false;
+        }
         public bool TryGetRemotePlayer(out Players.RemotePlayer player)
         {
             if (TryGetPlayer(out var aplayer))

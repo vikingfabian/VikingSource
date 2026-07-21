@@ -84,6 +84,8 @@ namespace VikingEngine.DSSWars.Players
             localTooPeacefulPercentage = DssRef.difficulty.tooPeacefulPercentage;
             int honorGuard = DssRef.difficulty.honorGuardCount();
 
+            netClientSettings.clientSettings.ApplyHostSettings(Ref.netsett.hostSettings);
+
             if (netClientSettings.clientSettings.useHandicap)
             {
                 switch (netClientSettings.clientSettings.handicap_botAggression)

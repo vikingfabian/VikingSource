@@ -2027,7 +2027,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshAttackTarget()
         {
-            if (attackTarget_soldierGroupOrCity.TryGetGroup(out var target) &&                    
+            if (!attackTarget_soldierGroupOrCity.TryGetGroup(out var target) ||                    
 
                 (target.defeated() || 
                 !DssRef.world.diplomacy.GetRelation(pfaction, target.pfaction).InWar() ||
@@ -2037,10 +2037,10 @@ namespace VikingEngine.DSSWars.GameObject
                 attackTargetTimeLock = GameTimeStamp.None;
                 attackTarget_soldierGroupOrCity = PGameObject.Empty;
 
-                if (pfaction.TryGetPlayer(out var player) && player.IsRemotePlayer())
-                {
-                    lib.DoNothing();
-                }
+                //if (pfaction.TryGetPlayer(out var player) && player.IsRemotePlayer())
+                //{
+                //    lib.DoNothing();
+                //}
             }
         }
 
@@ -2051,7 +2051,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 lib.DoNothing();
             }
-            if (pfaction.TryGetLocalPlayer(out _))
+            if (attackTarget_soldierGroupOrCity.HasValue() && pfaction.TryGetLocalPlayer(out _))
             {
                 lib.DoNothing();
             }

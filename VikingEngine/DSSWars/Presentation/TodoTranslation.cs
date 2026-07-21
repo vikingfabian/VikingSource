@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string InputActionName_NextPin => "Next pin";
         public string InputActionName_PinAndPing => "Add pin";
 
-        public string Leaderboards_ArmySize => "Army size, in strength";
+        public string Leaderboards_ArmySize => "One army size, in strength";
         public string Leaderboards_MultiplayerPlayerCount => "Hosting player count";
 
         public string Multiplayer_BanWarning => "ban warning";

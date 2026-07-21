@@ -370,6 +370,18 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 else
                 {
+                    if (PtoP.suggestedRelation == RelationType.RelationType3_Ally)
+                    {
+                        var clientSett = otherPlayer.NetClientSettings();
+                        if (clientSett.clientPtoP.canBreakAlliance == false)
+                        {
+                            content.newLine();
+                            content.Add(new RbImage(HudLib.NotAvailableIcon));
+                            content.Add(new RbSpace(0.5f));
+                            content.Add(new RbText(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.CanBreakAlliance, DssRef.lang.Hud_Off), HudLib.NotAvailableColor_Dark_Grayed));
+                        }
+                    }
+
                     content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             new RbImage(HudLib.AvailableIcon),
@@ -429,7 +441,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (selectedRelation.Relation >= RelationType.RelationTypeN1_Enemies)
                 {
                     content.newLine();
-                    if (selectedRelation.Relation == RelationType.RelationType3_Ally || !settings.clientPtoP.canBreakAlliance)
+                    if (selectedRelation.Relation == RelationType.RelationType3_Ally && !settings.clientPtoP.canBreakAlliance)
                     {
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                         {
@@ -951,6 +963,16 @@ namespace VikingEngine.DSSWars.Interface
 
                     content.newLine();
                     content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Diplomacy_AllyCount, player.alliedFactions.Count), HudLib.InfoYellow_Light));
+                }
+            }
+            else
+            {
+                var clientSett = otherfaction.player.GetHumanPlayer().NetClientSettings();
+                if (clientSett.clientPtoP.canBreakAlliance == false)
+                {
+                    content.Add(new RbImage(HudLib.NotAvailableIcon));
+                    content.Add(new RbSpace(0.5f));
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.CanBreakAlliance, DssRef.lang.Hud_Off), HudLib.NotAvailableColor_Dark_Grayed));
                 }
             }
         }
