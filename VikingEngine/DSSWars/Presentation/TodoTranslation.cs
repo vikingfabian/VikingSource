@@ -175,6 +175,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Diplomacy_OfferRelation_Declined => "Declined offer relation";
         public string Diplomacy_SendGold => "Send gold";
         public string Diplomacy_GiftToPlayer => "Gift to player";
+        public string Diplomacy_RecievedGift => "Recived gift";
         public string Diplomacy_OnAccept => "If the other player accepts:";
         public string Diplomacy_WarPreparationTime => "War preparation time";
 

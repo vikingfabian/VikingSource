@@ -908,10 +908,8 @@ namespace VikingEngine.DSSWars
             if (cutScene == null)
             {
                 DssRef.world.diplomacy.async_update();
-                if (host)
-                {
-                    events.asyncUpdate(time);
-                }
+                events.asyncUpdate(time);
+                
             }
             return exitThreads;
         }

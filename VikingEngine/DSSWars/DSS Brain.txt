@@ -1,15 +1,10 @@
 
 Change log:
-* Fixed: were not saving host main settings
-* Fixed: client capture/gift turned city to hosted on both sides
+* 
 
 x joined player saw others ping as their own
-x start diplomacy dont work
-x look at button on gifts
-x 
-x client cant gift units
 x cant end alliance, but settings was available
-
+x save color is unrelyable
 KNOWN ISSUES
 
 ! old saved will have some bot flag color drifting
