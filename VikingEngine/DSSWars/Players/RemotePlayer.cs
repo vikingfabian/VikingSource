@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
@@ -144,6 +145,7 @@ namespace VikingEngine.DSSWars.Players
             while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
             {
                 citySel.money.copper = Math.Max(citySel.money.copper, Resource.Money.GoldToCopper * 100);
+                citySel.technology.iron.points = XpLib.Unlock.IronUnlock;
 
                 if (netClientSettings.clientSettings.useHandicap && 
                     netClientSettings.clientSettings.handicap_resourceBoost)

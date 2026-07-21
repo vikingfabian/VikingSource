@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.Map
                 {
                     for (int i = 0; i < area.groups.Count; ++i)
                     {
-                        var soldiers_sp = area.groups[i].GetSoldierGroup(out _).soldiers;
+                        var soldiers_sp = area.groups[i].GetSoldierGroup(out _)?.soldiers;
                         if (soldiers_sp != null)
                         {
                             var soldiersC = soldiers_sp.counter();
@@ -388,9 +388,10 @@ namespace VikingEngine.DSSWars.Map
                             for (int i = 0; i < area.groups.Count; ++i)
                             {
                                 if (area.groups[i].pabsarmy.pfaction == faction &&
-                                    area.groups[i].GetSoldierGroup(out _).rectangleCollision(rectangle))
+                                    area.groups[i].TryGetSoldierGroup(out var group) &&
+                                    group.rectangleCollision(rectangle))
                                 {
-                                    playerNearGroups.Add(area.groups[i].GetSoldierGroup(out _));
+                                    playerNearGroups.Add(group);
                                 }
                             }
                             
@@ -480,9 +481,11 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 foreach (var m in area.groups)
                                 {
-                                    if ( DssRef.world.diplomacy.GetRelation(faction, m.pabsarmy.pfaction).InWar())
+                                    if ( DssRef.world.diplomacy.GetRelation(faction, m.pabsarmy.pfaction).InWar() &&
+                                        m.TryGetSoldierGroup(out var group))
                                     {
-                                        groups_nearUpdate.Add(m.GetSoldierGroup(out _));
+                                       
+                                        groups_nearUpdate.Add(group);
                                     }
                                 }
                             }

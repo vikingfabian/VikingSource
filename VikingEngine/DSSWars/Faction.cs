@@ -40,7 +40,8 @@ namespace VikingEngine.DSSWars
 
         public int previousWarAgainstFaction = -1;
         //public DiplomaticRelation[] diplomaticRelations = null;
-        public bool storyFaction = false;
+        public bool viewOnLargeMap = false;
+        public bool storyProtectedFaction = false;
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;
@@ -121,7 +122,7 @@ namespace VikingEngine.DSSWars
         
         public bool displayInFullOverview()
         {
-            return storyFaction || player.IsHumanPlayer() || quickMatchFaction;
+            return viewOnLargeMap || player.IsHumanPlayer() || quickMatchFaction;
         }
 
         public bool IsNetHosted()

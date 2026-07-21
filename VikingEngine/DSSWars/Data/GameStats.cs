@@ -246,6 +246,20 @@ namespace VikingEngine.DSSWars.Data
 
                     startNewLocalMultiplayer,
 
+                    startHostingMultiplayer_2,
+                    startHostingMultiplayer_3,
+                    startHostingMultiplayer_4,
+                    startHostingMultiplayer_10,
+                    joinMultiplayer,
+                    playerToPlayerAlly,
+                    playerToPlayerWar,
+                    startMultiplayer_AllowPublic,
+                    startMultiplayer_AllowPvp,
+                    startMultiplayer_BlockPublic,
+                    startMultiplayer_BlockPvp,
+
+                    
+
                     start_voxeleditor,
                     start_mapgenerator,
                     start_character_creator,
