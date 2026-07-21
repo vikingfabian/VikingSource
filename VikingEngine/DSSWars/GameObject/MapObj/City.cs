@@ -1118,6 +1118,10 @@ namespace VikingEngine.DSSWars.GameObject
        
         public void readNet_update(System.IO.BinaryReader r, int part)
         {
+            if (IsNetHosted)
+            {
+                lib.DoNothing();
+            }
             switch (part)
             {
                 case 0:

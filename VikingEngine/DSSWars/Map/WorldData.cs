@@ -627,9 +627,11 @@ namespace VikingEngine.DSSWars
             {
                 int city = r.ReadUInt16();
                 this.cities[city].readNet_map(this, r);
+                if (this.cities[city].IsNetHosted)
+                {
+                    lib.DoNothing();
+                }
                 Debug.ReadCheck(r);
-
-                //Debug.ReadCheck(r);
             }
 
             DssRef.world.BordersUpdated = true;
@@ -953,7 +955,7 @@ namespace VikingEngine.DSSWars
                         f.availableForPlayerScore += 1000;
                     }
 
-                    if (f.storyFaction)
+                    if (f.viewOnLargeMap)
                     {
                         f.availableForPlayerScore -= 1000;
                     }
@@ -962,7 +964,7 @@ namespace VikingEngine.DSSWars
                         var adj = f.adjacentFactions(true);
                         foreach (var nFaction in adj)
                         {
-                            if (nFaction.storyFaction)
+                            if (nFaction.viewOnLargeMap)
                             {
                                 f.availableForPlayerScore -= 500;
                             }

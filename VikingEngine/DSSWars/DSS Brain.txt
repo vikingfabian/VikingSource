@@ -1,6 +1,18 @@
 
 Change log:
-* 
+* fixed find groups crash
+* Maybe fixed: Player replaced story ai
+* joining players always unlock iron age
+* fixed: host was sending client cities
+
+
+Music dont stop after battle stopped
+Ability to ban old players
+Fail to join message 
+Test casual 
+Allow handicap dont work
+Anyone can join private game
+Client got wrong banner
 
 x joined player saw others ping as their own
 x cant end alliance, but settings was available

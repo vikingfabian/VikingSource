@@ -204,12 +204,16 @@ namespace VikingEngine.DSSWars
                 var cities = player.GetAllCitiesInView();
                 foreach (var c in cities)
                 {
-                    DssRef.world.cities[c].net_roundtrip_asyncupdate(out int packetCount);
-                    sentAnything |= packetCount > 0;
-                    maxPackets -= packetCount;
-                    if (maxPackets <= 0)
+                    var city = DssRef.world.cities[c];
+                    if (city.IsNetHosted)
                     {
-                        break;
+                        city.net_roundtrip_asyncupdate(out int packetCount);
+                        sentAnything |= packetCount > 0;
+                        maxPackets -= packetCount;
+                        if (maxPackets <= 0)
+                        {
+                            break;
+                        }
                     }
                 }
                 player.Net_UpdateArmies(ref maxPackets);
