@@ -230,7 +230,6 @@ namespace VikingEngine.Network
         DssDiplomacyRelation,
         DssPlayerToPlayerRelation,
         DssEnterBattle,
-        //DssAttackDamage,
         DssSoldierDeath,
 
         DssDeleteArmy,
@@ -241,6 +240,8 @@ namespace VikingEngine.Network
         DssBattleLabStartNew,
         DssBattleLabAddSoldiers,
         
+        DssNUM,
+
         GameObjUpdate,
         GameObjDamageAndRemoval,
         SharePlayer,
@@ -374,19 +375,11 @@ namespace VikingEngine.Network
         birdCannonMostRight,
 
         //DSS
-        rtsWantSeed,
-        rtsSeed,
-        rtsMapLoadedAndReady,
-        rtsStartGame,
+        //rtsWantSeed,
+        //rtsSeed,
+        //rtsMapLoadedAndReady,
 
-        ShareGameObject,
-        Battle,
-        LoadingDoneAndReady,
-        GiveJoningPlayerStartData,
 
-        UpdatePosition,
-        RemoveGameObject,
-        UpdateGameObjectStatus,
-        BuySoldiers,
+        
     }
 }

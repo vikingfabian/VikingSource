@@ -88,6 +88,10 @@ namespace VikingEngine.DSSWars.Interface
                     case NetSessionDisplay.PAGE_RECOLOR:
                         netSessionDisplay.recolor(player, content, menu);
                         break;
+                    case NetSessionDisplay.PAGE_DEBUG:
+                        HudLib.returnButton(content, menu, true, null);
+                        DssRef.state.playstate().PacketCountToHud(content);
+                        break;
                 }
             }
             else if (netSessionDisplay.ClientInteractDisplay)

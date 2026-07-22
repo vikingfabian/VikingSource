@@ -1262,9 +1262,16 @@ namespace VikingEngine.DSSWars
             this.player = owner;
         }
 
-        public RbTexture FlagTextureToHud()
+        public AbsRichBoxImage FlagTextureToHud()
         {
-            return new RbTexture(player.flagTexture, 1f, 0, 0.2f);
+            if (player != null)
+            {
+                return new RbTexture(player.flagTexture, 1f, 0, 0.2f);
+            }
+            else
+            {
+                return new RbImage(SpriteName.MissingImage);
+            }
         }
         Color tempColor = FlagAndColor.AiColorRange.GetRandom();
 

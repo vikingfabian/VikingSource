@@ -25,11 +25,62 @@ namespace VikingEngine.DSSWars.Interface
         public const string PAGE_KICK = "kick";
         public const string PAGE_BLOCK = "block";
         public const string PAGE_RECOLOR = "recolor";
+        public const string PAGE_DEBUG = "debug";
         public RemotePlayer selectedPlayer = null;
         public RemotePlayer sendGiftTo = null;
 
         
         public bool ClientInteractDisplay => selectedPlayer != null;
+
+        public void overviewToHud(LocalPlayer player, RichBoxContent content, RichMenu menu)
+        {
+            if (sendGiftTo != null)
+            {
+                giftMenu(player, content);
+            }
+            else
+            {
+                content.h2(DssRef.todoLang.Multiplayer_NetSession, HudLib.TitleColor_Head);
+
+                gamerButton(player);
+                content.newLine();
+                content.Add(new RbSeperationLine());
+
+                var remoteC = DssRef.state.remotePlayers.counter();
+                while (remoteC.Next())
+                {
+                    gamerButton(remoteC.sel);
+
+                    remoteC.sel.addNetPingToHud(content);
+                }
+
+                content.newLine();
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("*debug") }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_RECOLOR, StackOption.Stack)));
+
+                content.Add(new RbSeperationLine());
+            }
+
+            void gamerButton(AbsHumanPlayer gamer)
+            {
+                content.newLine();
+                var settings = gamer.NetClientSettings();
+
+                RichBoxContent buttonContent = new RichBoxContent();
+                gamer.addNetGamerToHud(buttonContent, true, true);
+
+
+
+                content.Add(new ArtButton(gamer.HasSupportDLC() ? RbButtonStyle.GoldOutline : RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
+                    (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
+                    new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
+
+                if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
+                    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.IsFriend()))
+                {
+                    gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
+                }
+            }
+        }
 
         public void BanWarning(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
@@ -141,57 +192,7 @@ namespace VikingEngine.DSSWars.Interface
             })));
         }
 
-        public void overviewToHud(LocalPlayer player, RichBoxContent content)
-        {
-            if (sendGiftTo != null)
-            {
-                giftMenu(player, content);
-            }
-            else
-            {
-                content.h2(DssRef.todoLang.Multiplayer_NetSession, HudLib.TitleColor_Head);
-                
-                gamerButton(player);
-                content.newLine();
-                content.Add(new RbSeperationLine());
-
-                var remoteC = DssRef.state.remotePlayers.counter();
-                while (remoteC.Next())
-                {
-                    gamerButton(remoteC.sel);
-                    
-                    remoteC.sel.addNetPingToHud(content);
-                }
-
-                //if (DssRef.state.host || Ref.netsett.hostSettings.lobbyPublicity >= Network.LobbyPublicity.FriendsOnly)
-                //{
-                //    invite(content);
-                //}
-
-                content.Add(new RbSeperationLine());
-            }
-
-            void gamerButton(AbsHumanPlayer gamer)
-            {
-                content.newLine();
-                var settings = gamer.NetClientSettings();
-
-                RichBoxContent buttonContent = new RichBoxContent();
-                gamer.addNetGamerToHud(buttonContent, true, true);
-
-               
-
-                content.Add(new ArtButton(gamer.HasSupportDLC()? RbButtonStyle.GoldOutline : RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
-                    (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
-                    new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
-
-                if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
-                    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.IsFriend()))
-                {
-                    gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
-                }
-            }
-        }
+       
 
         public void recolor(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {

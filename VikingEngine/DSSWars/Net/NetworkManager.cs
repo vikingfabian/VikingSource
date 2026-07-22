@@ -50,6 +50,9 @@ namespace VikingEngine.DSSWars
         TimeStamp waitingForClientHandoverTime;
         public ChatLog chatLog = new ChatLog();
         public Color? recolor = null;
+
+        int[] packetsRecieved = new int[(int)PacketType.DssNUM];
+
         bool asynchClientNetUpdate(int id, float time)
         {
             if (remotePlayers.Count > 0 && factionHandOverComplete && asyncRoundTrip)
@@ -324,6 +327,9 @@ namespace VikingEngine.DSSWars
             try
             {
 #endif
+
+            packetsRecieved[(int)packet.type]++;
+
             switch (packet.type)
             {
                 case PacketType.DssJoined_WantWorld:
@@ -1277,6 +1283,25 @@ namespace VikingEngine.DSSWars
             saveGamestate.save();
 
             DssRef.storage.Save(null);
+        }
+
+        public void PacketCountToHud(RichBoxContent content)
+        {
+            content.h2("*Packets recieved", HudLib.TitleColor_Head2);
+            for (PacketType type = PacketType.NON + 1; type < PacketType.DssNUM; type++)
+            {
+                content.newLine();
+                content.Add(new RbText(packetsRecieved[(int)type].ToString()));
+                content.Add(new RbTab(0.25f));
+                content.Add(new RbText(type.ToString()));
+            }
+
+            content.newParagraph();
+            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Canvas_Clear) },
+                new RbAction(() =>
+                {
+                    Array.Clear(packetsRecieved);
+                }), null));
         }
     }
 }

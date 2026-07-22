@@ -41,7 +41,7 @@ namespace VikingEngine.SteamWrapping
                 
                 if (getVoiceResult == EVoiceResult.k_EVoiceResultOK && bytesWritten > 0)
                 {
-                    P2PManager.localPeer.lastvoice.setNow();
+                    P2PManager.localPeer?.lastvoice.setNow();
 
                     System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(PacketType.VoiceChat, PacketReliability.Unrelyable);
                     //Add to writer

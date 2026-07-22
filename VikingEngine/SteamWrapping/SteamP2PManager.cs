@@ -159,6 +159,7 @@ namespace VikingEngine.SteamWrapping
                                 else
                                 {
                                     //Unresponsive, kick player
+                                    Debug.CrashIfThreaded();
                                     RemovePeer(remoteGamers[i]);
                                 }
                             }
@@ -689,6 +690,8 @@ namespace VikingEngine.SteamWrapping
 
         public void disconnectSession()
         {
+            Debug.CrashIfThreaded();
+
             for (int i = remoteGamers.Count - 1; i >= 0; --i)
             {
                 RemovePeer(remoteGamers[i]);
@@ -704,6 +707,8 @@ namespace VikingEngine.SteamWrapping
 
         public void endSession()
         {
+            Debug.CrashIfThreaded();
+
             foreach (var gamer in remoteGamers)
             {
                 Ref.netsett.setUpdatedStoredGamer(gamer.storedData);
@@ -756,7 +761,7 @@ namespace VikingEngine.SteamWrapping
                     Debug.LogWarning("The remote user didn't answer, but we got no failure reason. Maybe you are not connected to the internet?");
                     break;
             }
-
+            Debug.CrashIfThreaded();
             for (int i = 0; i < remoteGamers.Count; ++i)
             {
                 if (remoteGamers[i].SteamID == peerID)

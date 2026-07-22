@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars
         Interface.MenuSystem menuSystem;
         LeaderboardMenu leaderboardMenu;
         MapBackgroundLoading mapBackgroundLoading;
-        NetworkLobby netLobby = new NetworkLobby();
+        //NetworkLobby netLobby = new NetworkLobby();
         GameTimer emitTimer = new GameTimer(0.1f);
 
         Texture2D bgTex;
@@ -2914,7 +2914,7 @@ namespace VikingEngine.DSSWars
 
             var availableList = availableInput();
                 
-            new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
+            new StartGame(true, /*netLobby,*/ saveMeta, mapBackgroundLoading);
           
         }
 
@@ -2991,7 +2991,7 @@ namespace VikingEngine.DSSWars
 
         void startGame_nochecks()
         {
-            new StartGame(true, netLobby, null, mapBackgroundLoading);
+            new StartGame(true, /*netLobby,*/ null, mapBackgroundLoading);
         }
 
         void listGameOverResults()
@@ -3281,7 +3281,7 @@ namespace VikingEngine.DSSWars
             playerData.inputSource = inputSource;
             DssRef.storage.checkPlayerDoublettes(0);
 
-            new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
+            new StartGame(true,/* netLobby,*/ saveMeta, mapBackgroundLoading);
         }
 
     }

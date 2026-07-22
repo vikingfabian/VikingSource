@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Net
             base.NetEvent_PingReturned(gamer);
 
             //Will wait for meta data in "startGame" state, packet type "DssSendWorld"
-            new StartGame(false, null, null, null);
+            new StartGame(false, /*null,*/ null, null);
             
         }
         public override void NetworkReadPacket(ReceivedPacket packet)

@@ -1,20 +1,34 @@
 
 Change log:
-* fixed find groups crash
-* Maybe fixed: Player replaced story ai
-* joining players always unlock iron age
-* fixed: host was sending client cities
-* fixed: cant end alliance, but settings was available
-* fixed: used all players army size for leaderboard upload
-* fixed: Music dont stop after battle stopped
+* fixed all reported crashes
 
 
+
+x Make a send to all ready package type 
+x Must be ready for map update 
+x Priority to handover 
+x reduce update packages on large map
+
+* pins added massive packet load
+x clients are used by the war manager
+x steel horse armor should show locked 
+x send ping as unreliable
+x mint symbol if cleever
 Ability to ban old players
 Fail to join message 
 Test casual 
 Anyone can join private game
 Client got wrong banner
 x save color is unrelyable
+x killing off faction still count as war, client dont remove factions
+x handover city was still hosted by host (flipped after awhile?)
+x players who join must check duplicate in remote players, gives ERR players
+x faction work settings arent saved to client (and cities work)
+x build orders need a new check on client load?
+x war manager is way to aggressive at 100%
+* master guild resets for clients
+x very hard to join large game
+x pigs become horse with wagon
 
 KNOWN ISSUES
 

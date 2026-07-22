@@ -62,16 +62,19 @@ namespace VikingEngine.DSSWars.GameObject
         public Circle selectionArea;
         override public void update(AbsSoldierUnit soldier)
         {
-            model.position = soldier.position;
-
-            if (shadowPlane != null)
+            if (model != null)
             {
-                shadowPlane.Position = model.position + shadowOffset;
-                shadowPlane.Rotation = model.Rotation;
-            }
+                model.position = soldier.position;
 
-            selectionArea.Center = soldier.posXZ();//bound.Center;
-            selectionArea.Center.Y -= 0.5f;
+                if (shadowPlane != null)
+                {
+                    shadowPlane.Position = model.position + shadowOffset;
+                    shadowPlane.Rotation = model.Rotation;
+                }
+
+                selectionArea.Center = soldier.posXZ();//bound.Center;
+                selectionArea.Center.Y -= 0.5f;
+            }
         }
 
         public AbsDetailUnitAdvancedModel()
@@ -100,7 +103,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 model = DssRef.models.ModelInstance_drawbatch(soldier.soldierData.modelName, soldier.soldierData.modelScale);
             }
-            model.position = soldier.position;
+
+            if (model != null)
+            {
+                model.position = soldier.position;
+            }
 
             createShadow(soldier);
 
@@ -176,6 +183,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual protected void updateAnimation(AbsSoldierUnit soldier)
         {
+            if (model == null)
+                return;
+
             if (soldier.state.walking)
             {
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
