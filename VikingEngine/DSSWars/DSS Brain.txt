@@ -28,6 +28,7 @@ x war manager is way to aggressive at 100%
 * master guild resets for clients
 x very hard to join large game
 x pigs become horse with wagon
+x generate large map from pointer
 
 KNOWN ISSUES
 

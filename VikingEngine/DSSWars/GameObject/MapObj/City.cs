@@ -1092,6 +1092,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetWriteHandover(System.IO.BinaryWriter w, City city, bool fullHandover)
         {
+            w.Write(fullHandover);
             w.Write((ushort)city.myIndex);
             city.writeGameState(w);
             

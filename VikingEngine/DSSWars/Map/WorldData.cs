@@ -628,10 +628,10 @@ namespace VikingEngine.DSSWars
             {
                 int city = r.ReadUInt16();
                 this.cities[city].readNet_map(this, r);
-                //if (this.cities[city].IsNetHosted)
-                //{
-                //    lib.DoNothing();
-                //}
+                if (this.cities[city].IsNetHosted)
+                {
+                    lib.DoNothing();
+                }
                 Debug.ReadCheck(r);
             }
 

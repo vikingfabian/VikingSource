@@ -382,9 +382,10 @@ namespace VikingEngine.DSSWars.Players
                 bits.write(w);
             }
 
-            
+            if (bSlowUpdate)
+            {
                 netWritePinUpdate();
-                
+            }   
         }
 
         public override void writeGameState(BinaryWriter w)
