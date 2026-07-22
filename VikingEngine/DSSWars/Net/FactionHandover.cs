@@ -111,11 +111,8 @@ namespace VikingEngine.DSSWars.Net
                     {
                         if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
                         {
-                            largeWriter = City.NetWriteHandoverPacket(peer, city);
-                            if (fullHandover)
-                            {
-                                city.IsNetHosted = false;
-                            }
+                            largeWriter = City.NetWriteHandoverPacket(peer, city, fullHandover);
+                            
                         }
                         else
                         {

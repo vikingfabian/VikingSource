@@ -1073,19 +1073,24 @@ namespace VikingEngine.DSSWars.GameObject
             }           
         }
 
-        public static SteamLargePacketWriter NetWriteHandoverPacket(AbsNetworkPeer peer, City city)
+        public static SteamLargePacketWriter NetWriteHandoverPacket(AbsNetworkPeer peer, City city, bool fullHandover)
         {
             DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
             var w = cityData.GetWriter();
-            City.NetWriteHandover(w, city);
+            City.NetWriteHandover(w, city, fullHandover);
 
             SteamLargePacketWriter largeWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
             largeWriter.begin();
 
+            if (fullHandover)
+            {
+                city.IsNetHosted = false;
+            }
+
             return largeWriter;
         }
 
-        public static void NetWriteHandover(System.IO.BinaryWriter w, City city)
+        public static void NetWriteHandover(System.IO.BinaryWriter w, City city, bool fullHandover)
         {
             w.Write((ushort)city.myIndex);
             city.writeGameState(w);
@@ -1093,13 +1098,16 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public static City NetReadHandOver(System.IO.BinaryReader r)
-        { 
+        {
+            bool fullHandover = r.ReadBoolean();
             int cityIx = r.ReadUInt16();
             var city = DssRef.world.cities[cityIx];
 
             city.readGameState(r, int.MaxValue, null);
-            city.IsNetHosted = true;
-
+            if (fullHandover)
+            {
+                city.IsNetHosted = true;
+            }
             return city;
         }
         public void writeNet_update(System.IO.BinaryWriter w, int part)
@@ -3930,7 +3938,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (IsNetHosted && !duringStartup && !newFaction.IsNetHosted())
                 {
                     //City handover
-                    NetWriteHandoverPacket(newFaction.HostingPeer(), this);
+                    NetWriteHandoverPacket(newFaction.HostingPeer(), this, true);
                     IsNetHosted = false;
                 }
 
