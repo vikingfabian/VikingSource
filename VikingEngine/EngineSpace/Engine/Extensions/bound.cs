@@ -77,7 +77,7 @@ namespace VikingEngine
         }
         public static bool IsWithin_Byte(int value)
         {
-            return value > byte.MinValue && value <= byte.MaxValue;
+            return value >= byte.MinValue && value <= byte.MaxValue;
         }
 
         public static ushort UShort(double value)

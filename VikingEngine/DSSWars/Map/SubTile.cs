@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Map
 
             if (!eqSubterrain)
             {
-                w.Write(subTerrain);
+                w.Write((byte)subTerrain);
             }
 
             if (!eqTerrainAmount)
