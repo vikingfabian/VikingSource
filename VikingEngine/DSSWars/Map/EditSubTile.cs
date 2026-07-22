@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map
         {
             hostedTile = pfaction.TryGetFaction(out var faction) && faction.IsNetHosted();
             isPlayer = faction.player != null && faction.player.IsLocalPlayer();
-            this.netShare = netShare;
+            this.netShare = netShare && isPlayer;
             this.position = position;
             this.value = value;
             this.editTerrain = editTerrain;

@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
                 content.newLine();
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("*debug") }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_RECOLOR, StackOption.Stack)));
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("*debug") }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_DEBUG, StackOption.Stack)));
 
                 content.Add(new RbSeperationLine());
             }
