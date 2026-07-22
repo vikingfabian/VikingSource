@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Players
         //bool inGame;
         public SpriteName statusIcon;
         public SpriteName itemIcon = SpriteName.NO_IMAGE;
+        public IntVector2 lastTilePos = IntVector2.Zero;
 
         public RemotePlayerPointer(Network.AbsNetworkPeer peer, bool inGame)
         {
@@ -74,6 +75,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (!mouseOverHud)
                 {
+                    
                     Vector3 diff = pointerGoalWp - pointerWp;
 
                     if (diff.Length() > 0.004f)
@@ -212,7 +214,9 @@ namespace VikingEngine.DSSWars.Players
                     mapLayer = MapDetailLayerType.FactionColors3;
                 }
 
-                pointerGoalWp = VectorExt.V3FromXZ(StreamLib.ReadVector2(r), 0.1f);
+                Vector2 pos = StreamLib.ReadVector2(r);
+                lastTilePos = new IntVector2(pos.X, pos.Y);
+                pointerGoalWp = VectorExt.V3FromXZ(pos, 0.1f);
 
             }
             else

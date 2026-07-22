@@ -5,10 +5,14 @@ Change log:
 * reduced the traffic from player status, enter battles and city building, tiles are instead resent if 10 minutes passed
 * fixed: clients are used by the war manager
 * will share faction death
+* fixed: client cities were flipped to hosted on save (fixes schools)
+* maybe fixed: dublicate remote players on rejoin
+* removed honor guards from 100% plus
+* reduced the aggression of the war manager with about 50%
+* Large map sending starts at the mouse position
 
 
 x Make a send to all ready package type 
-x Must be ready for map update 
 * pins added massive packet load
 x steel horse armor should show locked 
 x send ping as unreliable?
@@ -19,16 +23,10 @@ Test casual
 Anyone can join private game
 Client got wrong banner
 x save color is unrelyable
-
-x handover city was still hosted by host (flipped after awhile?)
-x players who join must check duplicate in remote players, gives ERR players
 x faction work settings arent saved to client (and cities work)
-x build orders need a new check on client load?
 x war manager is way to aggressive at 100%
-* master guild resets for clients
-x very hard to join large game
 x pigs become horse with wagon
-x generate large map from pointer
+x leave remote player display on leave
 
 KNOWN ISSUES
 

@@ -163,48 +163,69 @@ namespace VikingEngine.DSSWars.Players
 
             bool findMissingTile(out IntVector2 tilePos, bool isSubTile)
             {
-                Rectangle2 area;
+                Rectangle2 pass1area;
+                Rectangle2 pass2area;
+                int passCount;
 
                 if (isSubTile)
                 {
-                    area = playerCulling.enterArea;
+                    passCount = 1;
+                    pass1area = playerCulling.enterArea;
+                    pass2area = Rectangle2.ZeroOne;
                 }
                 else
                 {
-                    area = playerCulling.screenAreaRaw;
+                    
+                    pass2area = playerCulling.screenAreaRaw;
+                    if (pass2area.Height > 18)
+                    {
+                        passCount = 2;
+                        pass1area = Rectangle2.FromCenterTileAndRadius(pointer.lastTilePos, 9);
+                        pass1area.AddWidthRadius(2);
+                    }
+                    else
+                    {
+                        passCount = 1;
+                        pass1area = pass2area;
+                    }
                 }
 
-                
-                ForXYLoop loop = new ForXYLoop(area);
-                while (loop.Next())
+                for (int pass = 0; pass < passCount; pass++)
                 {
-                    if (remoteTileGrid.InBounds(loop.Position))
-                    {
-                        if (!remoteTileGrid.Get(loop.Position).HasTile(isSubTile))
-                        {
-                            tilePos = loop.Position;
-                            return true;
-                        }
-                        if (!isSubTile)
-                        {
-                            var tile = DssRef.world.tileGrid.Get(loop.Position);
-                            if (!citiesRecieved[tile.CityIndex])
-                            {
-                                CitiesInView.Add(tile.CityIndex);
-                            }
+                    Rectangle2 area = pass == 0 ? pass1area : pass2area;
 
-                            PFaction pfaction = tile.City().pfaction;
-                            if (pfaction.TryGetFaction(out var faction) && faction.player.IsLocal)
+                    ForXYLoop loop = new ForXYLoop(area);
+                    while (loop.Next())
+                    {
+                        if (remoteTileGrid.InBounds(loop.Position))
+                        {
+                            if (!remoteTileGrid.Get(loop.Position).HasTile(isSubTile))
                             {
-                                if (!factionsRecieved[pfaction.factionIndex])
+                                tilePos = loop.Position;
+                                return true;
+                            }
+                            if (!isSubTile)
+                            {
+                                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                                if (!citiesRecieved[tile.CityIndex])
                                 {
-                                    FactionsInView.Add(pfaction.factionIndex);
+                                    CitiesInView.Add(tile.CityIndex);
+                                }
+
+                                PFaction pfaction = tile.City().pfaction;
+                                if (pfaction.TryGetFaction(out var faction) && faction.player.IsLocal)
+                                {
+                                    if (!factionsRecieved[pfaction.factionIndex])
+                                    {
+                                        FactionsInView.Add(pfaction.factionIndex);
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
+                    
+                }
                 tilePos = IntVector2.NegativeOne;
                 return false;
             }
@@ -345,7 +366,7 @@ namespace VikingEngine.DSSWars.Players
 
         public bool HasTile(bool isSubTile)
         { 
-            return isSubTile? (detail && detailTimeStamp.TimeOut()) : overview;
+            return isSubTile? (detail && detailTimeStamp.HasTime()) : overview;
         }
     }
 }

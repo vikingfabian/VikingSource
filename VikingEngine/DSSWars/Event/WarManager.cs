@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Players
     {
         protected WarManagerGear warManagerGear;
         public Time tooPeacefulCheckTimer =
-            new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+            new Time(Ref.rnd.Float(30, 80), TimeUnit.Minutes);
 
         public float opposingSizePerc = 0;
         protected AiAggressivity localAiAggressivity = AiAggressivity.UseDefault;

@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Data
                     resourcesStartHelp = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 20 * TimeExt.MinuteInSeconds;
-                    tooPeacefulPercentage = 0.2f;
+                    tooPeacefulPercentage = 0.1f;
                     PlayerBonusGold = 2000;
                     break;
 
@@ -289,10 +289,10 @@ namespace VikingEngine.DSSWars.Data
                     //bossTimeSettings = BossTimeSettings.Normal;
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
-                    honorGuard = true;
+                    honorGuard = false;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
-                    tooPeacefulPercentage = 0.4f;
+                    tooPeacefulPercentage = 0.2f;
                     break;
 
                 case 4:
@@ -304,7 +304,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 10;
-                    tooPeacefulPercentage = 0.7f;
+                    tooPeacefulPercentage = 0.4f;
                     break;
 
                 case 5:
@@ -316,7 +316,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    tooPeacefulPercentage = 1f;
+                    tooPeacefulPercentage = 0.7f;
                     break;
 
                 case 6:
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    tooPeacefulPercentage = 1.5f;
+                    tooPeacefulPercentage = 2f;
                     break;
 
                 case 7: //200%
@@ -345,7 +345,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     aiDelayTimeSec = 0;
-                    tooPeacefulPercentage = 3f;
+                    tooPeacefulPercentage = 5f;
                     break;
 
                 case 8: // 300%

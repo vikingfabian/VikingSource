@@ -391,8 +391,13 @@ namespace VikingEngine.DSSWars.GameState
                 }
                 else if (remotePlayerC.sel.networkPeer.peer == peer)
                 {
-                    //TODO return region to AI
                     return remotePlayerC.sel;
+                }
+                else if (remotePlayerC.sel.networkPeer.peer.fullId == peer.fullId)
+                {
+                    //Duplicate!
+                    remotePlayerC.sel.DeleteMe();
+                    remotePlayerC.RemoveAtCurrent();
                 }
             }
 
