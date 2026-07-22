@@ -935,11 +935,13 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (health <= 0)
             {
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierDeath, Network.PacketReliability.Reliable, out var packet);
+                if (pfaction.TryGetRemotePlayer(out _) || group.lastNetUpdate.Seconds < 10)
                 {
-                    goPointer().write(w);
-                    //Net.ObjectId.WriteSoldier(w, this);
-                } packet.EndWrite_Asynch();
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierDeath, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        goPointer().write(w);
+                    } packet.EndWrite_Asynch();
+                }
                 onDeath(fullUpdate, enemyFaction);
             }
         }

@@ -239,6 +239,8 @@ namespace VikingEngine.Network
 
         DssBattleLabStartNew,
         DssBattleLabAddSoldiers,
+
+        DssFactionDeath,
         
         DssNUM,
 

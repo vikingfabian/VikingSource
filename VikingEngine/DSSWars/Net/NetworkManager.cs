@@ -89,12 +89,14 @@ namespace VikingEngine.DSSWars
             {
                 if (asyncRoundTrip)
                 {
+                    int maxSendLoops = factionHandovers.Count > 0 ? 2 : MaxSendLoops;
+
                     asyncRoundTrip = false;
                     handoverPlayer = async_updateHandover();
 
                     bool sentAnything = true;
 
-                    for (int loop = 0; loop < MaxSendLoops && sentAnything; loop++)
+                    for (int loop = 0; loop < maxSendLoops && sentAnything; loop++)
                     {
                         sentAnything = false;
 
@@ -671,7 +673,7 @@ namespace VikingEngine.DSSWars
                             pin.setInRenderState();
 
                             RichBoxContent content = new RichBoxContent();
-                            content.h1("Ping!", HudLib.TitleColor_Head);
+                            content.h1(DssRef.todoLang.ObjectType_LocationPin_Ping, HudLib.TitleColor_Head);
                             if (pin.pingMessage != PingMessage.None)
                             {
                                 content.text(pin.pingMessage.ToString(), HudLib.InfoYellow_Light);
@@ -739,6 +741,11 @@ namespace VikingEngine.DSSWars
                     break;
                 case PacketType.DssRequestCityClaim:
                     City.NetReadClaim(packet.r);
+                    break;
+                case PacketType.DssFactionDeath:
+                    PFaction pFaction = new PFaction(packet.r);
+                    if (pFaction.TryGetFaction(out var f))
+                    { f.DeleteMe(); }
                     break;
             }
 #if !DEBUG

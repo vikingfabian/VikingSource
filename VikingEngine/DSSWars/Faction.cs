@@ -1186,6 +1186,13 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.state.events.onPlayerDeath();
                 }
+
+                if (DssRef.state.host)
+                {
+                    Debug.CrashIfThreaded();
+                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionDeath, PacketReliability.Reliable);
+;                   pfaction.write(w);
+                }
             }
         }
 
