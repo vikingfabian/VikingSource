@@ -341,7 +341,7 @@ namespace VikingEngine.DSSWars.GameObject
             base.DeleteMe(reason, removeFromParent);
             overviewModel?.DeleteMe();
 
-            if (reason != DeleteReason.LostHost)
+            if (reason != DeleteReason.LostHost && reason != DeleteReason.NetworkEvent)
             {
                 var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinDelete, PacketReliability.Reliable);
                 w.Write((ushort)myIndex);

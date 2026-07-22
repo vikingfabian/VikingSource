@@ -1,15 +1,6 @@
 
 Change log:
-* fixed all reported crashes
-* debug menu with packet count
-* reduced the traffic from player status, enter battles and city building, tiles are instead resent if 10 minutes passed
-* fixed: clients are used by the war manager
-* will share faction death
-* fixed: client cities were flipped to hosted on save (fixes schools)
-* maybe fixed: dublicate remote players on rejoin
-* removed honor guards from 100% plus
-* reduced the aggression of the war manager with about 50%
-* Large map sending starts at the mouse position
+* Fixed the pin delete crashed the multiplayer
 
 
 x Make a send to all ready package type 
