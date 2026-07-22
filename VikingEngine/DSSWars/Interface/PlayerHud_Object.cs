@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                    
 
-                    netSessionDisplay.overviewToHud(player, content);
+                    netSessionDisplay.overviewToHud(player, content, menu);
                     
                     content.newParagraph();
                 }
