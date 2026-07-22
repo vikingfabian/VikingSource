@@ -1824,10 +1824,7 @@ namespace VikingEngine.DSSWars.Players
 
         public override bool IsLocal => true;
 
-        public override bool IsBot()
-        {
-            return false;
-        }
+        
 
         public override bool IsLocalPlayer()
         {

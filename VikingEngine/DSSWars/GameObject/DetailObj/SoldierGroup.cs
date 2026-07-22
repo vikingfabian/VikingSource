@@ -956,7 +956,7 @@ namespace VikingEngine.DSSWars.GameObject
             return target.position;
         }
 
-        public void enterBattleState(bool enter, bool localAction, AbsGroup targetObject)
+        public void enterBattleState(bool enter, bool localAction, AbsArmy tarmy, AbsGroup targetObject)
         {
             if (enter != (state == GroupState.Battle))
             {
@@ -968,7 +968,7 @@ namespace VikingEngine.DSSWars.GameObject
                     createSoldierObjects(enter, false);
 
 
-                    if (army.TryGetTarget(out var tarmy) && tarmy.IsNetHosted && tarmy.lastNetUpdate.secPassed(15) &&
+                    if (tarmy.IsNetHosted && tarmy.lastNetUpdate.secPassed(15) &&
                            (!localAction || attackTarget_soldierGroupOrCity.pfaction.TryGetRemotePlayer(out _))) //Targeted by remote player
                     {
                         if (tarmy.IsArmy())
@@ -983,7 +983,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    if (localAction && targetObject != null)
+                    if (localAction && 
+                        (!tarmy.IsNetHosted || (targetObject != null && targetObject.pfaction.TryGetRemotePlayer(out _))))
                     {
                         var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEnterBattle, Network.PacketReliability.Reliable, out var packet);
                         {
@@ -1043,7 +1044,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 group.attackTarget_soldierGroupOrCity = target;
                 //group.attackTargetTimeLock = time;
-                group.enterBattleState(true, false, null);
+                group.enterBattleState(true, false, absArmy, null);
             }
         }
 
@@ -1201,7 +1202,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (state != GroupState.Battle)
                 {
-                    enterBattleState(true, true, attack_sp);
+                    enterBattleState(true, true, tArmy, attack_sp);
                 }
                 enterBattleStateTime.setNow();
 
@@ -1293,7 +1294,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
 
                             
-                                enterBattleState(false, true, null);
+                                enterBattleState(false, true, tArmy, null);
                             }
                             
                         }
@@ -1448,7 +1449,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void OnBecomeAttackTarget(AbsGroup attacker)
         {
-            enterBattleState(true, true, attacker);
+            if (army.TryGetTarget(out var tArmy))
+            {
+                enterBattleState(true, true, tArmy, attacker);
+            }
         }
 
         public bool HasIdleCommand()

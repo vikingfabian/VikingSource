@@ -120,6 +120,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Message => "Message";
         public string ObjectType_LocationPin => "Location pin";
         public string ObjectType_LocationPin_Share => "Share and ping";
+        public string ObjectType_LocationPin_Ping => "Ping!";
         public string InputActionName_TextChat => "Text chat";
         public string InputActionName_TextChatLog => "Chat log";
         public string InputActionName_VoiceChat => "Voice chat";

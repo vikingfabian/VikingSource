@@ -397,7 +397,10 @@ namespace VikingEngine.DSSWars.Players
         {
             return true;
         }
-
+        public override bool IsBot()
+        {
+            return false;
+        }
         abstract public bool HasSupportDLC();
     }
 }

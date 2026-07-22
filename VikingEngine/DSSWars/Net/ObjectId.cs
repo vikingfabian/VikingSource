@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.Net
                 var group = ReadSoldierGroup(r, true, out mapObj);
                 if (group != null)
                 {
-                    group.enterBattleState(true, false, null);
+                    group.enterBattleState(true, false, mapObj, null);
 
                     var soldiers_sp = group.soldiers;
                     if (soldiers_sp != null)
