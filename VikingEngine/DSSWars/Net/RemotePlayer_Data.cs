@@ -341,10 +341,11 @@ namespace VikingEngine.DSSWars.Players
     struct RemoteTile
     {
         public bool overview, detail;
+        public GameTimeStamp detailTimeStamp;
 
         public bool HasTile(bool isSubTile)
         { 
-            return isSubTile? detail : overview;
+            return isSubTile? (detail && detailTimeStamp.TimeOut()) : overview;
         }
     }
 }

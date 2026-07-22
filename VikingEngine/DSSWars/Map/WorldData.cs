@@ -530,6 +530,7 @@ namespace VikingEngine.DSSWars
             {
                 var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(tilePos);
                 remoteTile.detail = true;
+                remoteTile.detailTimeStamp.setTimeFromNow(TimeExt.MinuteInSeconds * 10);
                 remotePlayerC.sel.remoteTileGrid.Set(tilePos, remoteTile);
             }
         }

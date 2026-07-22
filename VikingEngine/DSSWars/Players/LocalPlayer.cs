@@ -368,7 +368,7 @@ namespace VikingEngine.DSSWars.Players
         //    }
         //}
 
-        public void NetUpdate()
+        public void NetUpdate(bool bSlowUpdate)
         {
             {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
@@ -380,36 +380,11 @@ namespace VikingEngine.DSSWars.Players
 
                 EightBit bits = new EightBit(Ref.steam.recordingOn, DssRef.DlcSupporter.owned);
                 bits.write(w);
-                //w.Write(Ref.steam.recordingOn);
             }
 
             
                 netWritePinUpdate();
-                //var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPinUpdate, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
-
-                //if (!netSharePinCounter.HasMore())
-                //{ 
-                //    netSharePinCounter.Reset();
-                //}
-
-                //int maxPins = 5;
-                //while (netSharePinCounter.Next())
-                //{
-                //    if (netSharePinCounter.sel.netInteractLevel != Network.NetInteractLevel.Hidden)
-                //    {
-                //        w.Write((ushort)netSharePinCounter.CurrentIndex);
-                //        netSharePinCounter.sel.writeGameState(w);
-
-                //        if (--maxPins <= 0)
-                //        {
-                //            break;
-                //        }
-                //    }
-                //}
-
-                ////Mark end
-                //w.Write(ushort.MaxValue);
-            
+                
         }
 
         public override void writeGameState(BinaryWriter w)

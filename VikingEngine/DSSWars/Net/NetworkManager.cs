@@ -50,6 +50,7 @@ namespace VikingEngine.DSSWars
         TimeStamp waitingForClientHandoverTime;
         public ChatLog chatLog = new ChatLog();
         public Color? recolor = null;
+        //public bool SmallWorldNetSetup;
 
         int[] packetsRecieved = new int[(int)PacketType.DssNUM];
 
@@ -1032,16 +1033,21 @@ namespace VikingEngine.DSSWars
             }
         }
 
+
+        Timer.Basic NetSlowUpdate = new Timer.Basic(1500, true);
+
         public override void NetUpdate()
         {
             asyncRoundTrip = true;
 
+            bool slowUpdate = NetSlowUpdate.Update();
+
             foreach (var player in localPlayers)
             {
-                player.NetUpdate();
+                player.NetUpdate(slowUpdate);
             }
 
-            if (Ref.netSession.IsHost)
+            if (slowUpdate && Ref.netSession.IsHost)
             {
                 var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Unrelyable);
                 w.Write((byte)gameSpeedValue());
