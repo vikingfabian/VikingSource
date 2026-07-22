@@ -1,6 +1,7 @@
 
 Change log:
 * fixed all reported crashes
+* debug menu with packet count
 
 
 
