@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Players
 
         public NetSharedClientSettings netClientSettings;
         public double incomeMultiplier = 1;
-
+        public bool isDeleted = false;
         public RemotePlayer(Network.NetworkInstancePeer peer)
             :base()
         {
@@ -262,6 +262,7 @@ namespace VikingEngine.DSSWars.Players
         {
             clearPins(DeleteReason.LostHost);
             pointer.DeleteMe();
+            isDeleted = true;
         }
     }
 }

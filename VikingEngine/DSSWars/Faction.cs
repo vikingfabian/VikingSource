@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        virtual public void writeGameState(System.IO.BinaryWriter w)
+        public void writeGameState(System.IO.BinaryWriter w)
         {
             if (player.IsRemotePlayer())
             {
@@ -272,13 +272,13 @@ namespace VikingEngine.DSSWars
                 Debug.WriteCheck(w);
             }
 
-            workTemplate.writeGameState(w);
+            workTemplate.writeGameState(w);//y
 
             Debug.WriteCheck(w);
-            writeResources(w);
+            writeResources(w); //y
 
         }
-        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             factiontype = (FactionType)r.ReadUInt16();
             if (player != null && player.IsLocalPlayer() && player.GetLocalPlayer().isDropInPlayer)
@@ -381,34 +381,47 @@ namespace VikingEngine.DSSWars
 
         }
 
-        //void writeRelations(System.IO.BinaryWriter w)
-        //{
-        //    for (int i = 0; i < diplomaticRelations.Length; ++i)
-        //    {
-        //        if (diplomaticRelations[i] != null &&
-        //            diplomaticRelations[i].IsFactionOne(this))
-        //        {
-        //            diplomaticRelations[i].write(w);
-        //        }
-        //    }
-        //    w.Write(short.MinValue);
-        //}
+        public void writeClientState(System.IO.BinaryWriter w)
+        {
+            workTemplate.writeGameState(w);//y
 
-        //void readRelations(System.IO.BinaryReader r, int subVersion)
-        //{
-        //    while (true)
-        //    {
-        //        DiplomaticRelation relation = new DiplomaticRelation();
-        //        if (relation.read(r, subVersion))
-        //        {
-        //            relation.addToFactions();
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
+            writeResources(w); //y
+        }
+
+        public void readClientState(System.IO.BinaryReader r, int subVersion)
+        {
+            workTemplate.readGameState(r, subVersion, false);
+
+            readResources(r, subVersion);
+        }
+            //void writeRelations(System.IO.BinaryWriter w)
+            //{
+            //    for (int i = 0; i < diplomaticRelations.Length; ++i)
+            //    {
+            //        if (diplomaticRelations[i] != null &&
+            //            diplomaticRelations[i].IsFactionOne(this))
+            //        {
+            //            diplomaticRelations[i].write(w);
+            //        }
+            //    }
+            //    w.Write(short.MinValue);
+            //}
+
+            //void readRelations(System.IO.BinaryReader r, int subVersion)
+            //{
+            //    while (true)
+            //    {
+            //        DiplomaticRelation relation = new DiplomaticRelation();
+            //        if (relation.read(r, subVersion))
+            //        {
+            //            relation.addToFactions();
+            //        }
+            //        else
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
 
         void writeResources(System.IO.BinaryWriter w)
         {

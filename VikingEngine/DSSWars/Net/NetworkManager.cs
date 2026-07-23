@@ -427,10 +427,8 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssAssignFactionComplete:
                     {
                         factionHandOverComplete = true;
-                        //int factionIx = packet.r.ReadUInt16();
                         var pfaction = new PFaction(packet.r);
-                        //var faction = DssRef.world.faction(factionIx);
-                        if (pfaction.TryGetFaction(out var faction))//faction != null)
+                        if (pfaction.TryGetFaction(out var faction))
                         {
                             bool hosted = faction.IsNetHosted();
 
