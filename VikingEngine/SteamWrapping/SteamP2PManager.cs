@@ -26,6 +26,7 @@ namespace VikingEngine.SteamWrapping
         public SteamNetworkPeer Host;
         public SteamNetworkPeer localPeer;
         public List<AbsNetworkPeer> remoteGamers;
+        public List<AbsNetworkPeer> joinHistory;
         public bool hostSession = false;
 
         public bool IsHostingSession => Ref.steamlobby.InLobby && hostSession;
@@ -49,6 +50,7 @@ namespace VikingEngine.SteamWrapping
         {
             autoAcceptSessionRequests = true;
             remoteGamers = new List<AbsNetworkPeer>();
+            joinHistory = new List<AbsNetworkPeer>();
             
             connectFailCallback = new Callback<P2PSessionConnectFail_t>(OnConnectionFail, false);
             sessionRequestCallback = new Callback<P2PSessionRequest_t>(OnSessionRequest, false);
@@ -424,6 +426,7 @@ namespace VikingEngine.SteamWrapping
                 if (peer.SteamID == steamId)
                 {
                     Ref.netsett.setUpdatedStoredGamer(peer.storedData);
+                    joinHistory.Add(peer);
                     remoteGamers.RemoveAt(i);
                     Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
                     break;
@@ -712,8 +715,10 @@ namespace VikingEngine.SteamWrapping
             foreach (var gamer in remoteGamers)
             {
                 Ref.netsett.setUpdatedStoredGamer(gamer.storedData);
+                joinHistory.Add(gamer);
             }
-            remoteGamers.Clear();            
+            remoteGamers.Clear();
+            
             hostSession = false;
             Ref.steam.LobbyMatchmaker.RefreshLobbyVisibility();
         }
@@ -767,6 +772,7 @@ namespace VikingEngine.SteamWrapping
                 if (remoteGamers[i].SteamID == peerID)
                 {
                     var gamer = remoteGamers[i];
+                    joinHistory.Add(gamer);
                     remoteGamers.RemoveAt(i--);
                     Ref.NetUpdateReciever().NetEvent_PeerLost(gamer);
                     

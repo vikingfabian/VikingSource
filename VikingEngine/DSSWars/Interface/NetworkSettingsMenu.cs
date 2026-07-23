@@ -24,6 +24,7 @@ namespace VikingEngine.DSSWars.Interface
         const string UnlockPvp = "net sett unlock pvp";
         const string UnlockPvp_Sure = "net sett unlock pvp_sure";
         public const string BlockList = "blocklist";
+        public const string JoinHistoryList = "joinhistorylist";
 
         static readonly RelationType[] DefaultRelationsOptions = { RelationType.RelationType0_Neutral, RelationType.RelationType3_Ally, RelationType.RelationTypeN4_War };
 
@@ -127,6 +128,13 @@ namespace VikingEngine.DSSWars.Interface
                         menu.Refresh(content);
                     }
                     break;
+                case JoinHistoryList:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        joinHistoryList(content);
+                        menu.Refresh(content);
+                    }
+                    break;
             }
         }
 
@@ -160,6 +168,43 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             return count;
+        }
+
+        public int joinHistoryList(RichBoxContent content)
+        {
+          
+            HudLib.returnButton(content, menu, true, null);
+
+            content.h1(DssRef.todoLang.PlayerJoinHistoryTitle, HudLib.TitleColor_Head);
+
+            for (int i = 0; i < Ref.p2p.joinHistory.Count; i++)
+            {
+
+                var stored = Ref.netsett.getStoredGamer(Ref.p2p.joinHistory[i].fullId);
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember> {
+                            new RbImage(stored.ban == BanStatus.Banned? SpriteName.WarsHudIconBlockedPlayer : SpriteName.WarsHudIconClient),
+                            new RbSpace(0.5f),
+                            new RbText(LoadContent.CheckCharsSafety( Ref.p2p.joinHistory[i].Gamertag, LoadedFont.Regular)) },
+                    new RbAction1Arg<int>((int selected) =>
+                    {
+                        var peer = Ref.p2p.joinHistory[selected];
+                        var stored = Ref.netsett.getStoredGamer(peer.fullId);
+                        stored.ban = BanStatus.Banned;
+                        Ref.netsett.setUpdatedStoredGamer(stored);
+
+                        DssRef.storage.Save(null);
+
+                    }, i), new RbTooltip_Text(DssRef.todoLang.Multiplayer_BlockPlayer)));
+
+            }
+            if (Ref.p2p.joinHistory.Count == 0)
+            {
+                content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
+            }
+
+            return Ref.p2p.joinHistory.Count;
         }
 
         public void openmenu(string menuName, StackOption stack)
@@ -251,6 +296,14 @@ namespace VikingEngine.DSSWars.Interface
                     new RbSpace(0.5f),
                     new RbText(DssRef.todoLang.BlockedPlayersTitle) },
                 new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.WarsHudIconMultiplayer),
+                    new RbSpace(0.5f),
+                    new RbText(DssRef.todoLang.PlayerJoinHistoryTitle) },
+                new RbAction2Arg<string, StackOption>(openmenu, JoinHistoryList, StackOption.Stack)));
+
 
             content.newParagraph();
             if (bMainMenu)

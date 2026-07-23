@@ -151,6 +151,13 @@ namespace VikingEngine.DSSWars.Interface
                         menu.Refresh(content);
                     }
                     break;
+                case NetworkSettingsMenu.JoinHistoryList:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        new NetworkSettingsMenu(menu, false).joinHistoryList(content);
+                        menu.Refresh(content);
+                    }
+                    break;
             }
 
             return true;

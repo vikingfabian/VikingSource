@@ -1063,7 +1063,19 @@ namespace VikingEngine.DSSWars
         public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
         {
             base.NetEvent_PeerJoined(peer);
-            GetOrCreateRemotePlayer(peer, 0);
+            var player = GetOrCreateRemotePlayer(peer, 0);
+
+            if (host)
+            {
+                RichBoxContent content = new RichBoxContent();
+
+                content.h1(SpriteName.WarsHudIconMultiplayer, DssRef.todoLang.Network_ConnectingToGame, HudLib.TitleColor_Head);
+                
+                content.newLine();
+                player.addNetGamerToHud(content, true, false);
+
+                LocalHost().hud.messages.Add(content);                
+            }
 
             if (Ref.netsett.voiceOption == VoiceOption.AlwaysOn)
             {                

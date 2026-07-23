@@ -36,6 +36,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Unlock_PlayerVersusPlayer => "player versus player";
         public string UnlockPvp_Warning1 => "DSS is not designed for competetive games";
         public string UnlockPvp_Warning2 => "There is no balance, matches will be unfair";
+        public string PlayerJoinHistoryTitle => "Player join history";
         public string BlockedPlayersTitle => "Blocked players";
         public string ClickToRemoveBan => "Click: remove ban";
         public string HostSettingsTitle => "Host settings";

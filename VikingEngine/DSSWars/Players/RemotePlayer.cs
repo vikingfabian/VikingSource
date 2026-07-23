@@ -181,6 +181,7 @@ namespace VikingEngine.DSSWars.Players
 
         public override void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
         {
+            factionBanner &= ready;
             base.addNetGamerToHud(content, factionBanner, addStatus);
             if (addStatus && pointer.statusIcon != SpriteName.NO_IMAGE)
             {

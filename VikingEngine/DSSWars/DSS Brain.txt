@@ -1,14 +1,8 @@
 
 Change log:
-* Fixed rectangle select crash
-* Empty flag crash fix
-* will leave remote player display on leave
-* faction work settings, and cities are saved to client
-* fixed: steel horse armor should show locked 
-* fixed: mint symbol is a cleever
+* 
 
-Ability to ban old players
-Fail to join message 
+
 Test casual 
 Anyone can join private game
 x Client got wrong banner
