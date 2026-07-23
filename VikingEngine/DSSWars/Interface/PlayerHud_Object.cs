@@ -97,6 +97,7 @@ namespace VikingEngine.DSSWars.Interface
             else if (netSessionDisplay.ClientInteractDisplay)
             {
                 netSessionDisplay.clientToHud(player, content, menu);
+                netSessionDisplay.checkAlive();
             }
             else
             {
@@ -160,8 +161,9 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
             }
-
             
+
+
             menu.Refresh(content, player.gameControls.controllerPointer);
         }
 

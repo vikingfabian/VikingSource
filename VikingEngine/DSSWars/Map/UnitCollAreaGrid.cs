@@ -146,7 +146,6 @@ namespace VikingEngine.DSSWars.Map
             
             if (grid.TryGet(areaPos, out area))
             {
-                //var groups_sp = area.groups;
                 lock (area.groups)
                 {
                     for (int i = 0; i < area.groups.Count; ++i)
@@ -157,8 +156,7 @@ namespace VikingEngine.DSSWars.Map
                             var soldiersC = soldiers_sp.counter();
                             while (soldiersC.Next() && soldiersC.sel.tilePos == tilePos)
                             {
-                                new Timer.TimedAction1ArgTrigger<bool>(soldiersC.sel.updateGroudY, true, 3000); 
-                                //soldiersC.sel.updateGroudY(true);
+                                new Timer.TimedAction1ArgTrigger<bool>(soldiersC.sel.updateGroudY, true, 3000);                                 
                             }
                         }
                     }
@@ -177,7 +175,10 @@ namespace VikingEngine.DSSWars.Map
                 {
                     foreach (PArmy obj in area.armies)
                     {
-                        obj.GetArmy().updateModelsPosition();
+                        if (obj.TryGetArmy(out var army))
+                        {
+                            army.updateModelsPosition();
+                        }
                     }
                 }
             }
@@ -185,7 +186,6 @@ namespace VikingEngine.DSSWars.Map
 
         public List<AbsMapObject> MapControlsMultiselectMapObjects(IntVector2 tilePosStart, IntVector2 tilePosEnd, PFaction faction)
         {
-            //Debug.CrashIfThreaded();
             playerNearMapObjects.Clear();
 
             IntVector2 areaPosStart = tilePosStart / UnitGridSquareWidth;
@@ -209,7 +209,10 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 if (obj.pfaction == faction)
                                 {
-                                    playerNearMapObjects.Add(obj.GetArmy());
+                                    if (obj.TryGetArmy(out var army))
+                                    {
+                                        playerNearMapObjects.Add(army);
+                                    }
                                 }
                             }                            
                         }
@@ -223,9 +226,6 @@ namespace VikingEngine.DSSWars.Map
 
         public bool PlayerInBattle(IntVector2 tilePos, PFaction playerFaction)
         {
-            //Debug.CrashIfThreaded();
-            //playerNearMapObjects.Clear();
-
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
 
@@ -235,15 +235,6 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        //foreach (var cityIx in area.cities)
-                        //{
-                        //    var city = DssRef.world.cities[area.cities[i]];
-                        //    if (city.detailObj.inBattle != null && city.faction == player)
-                        //    {
-                        //        return true;
-                        //    }
-                        //}
-
                         lock (area.groups)
                         {
                             foreach (var pgroup in area.groups)
@@ -266,7 +257,6 @@ namespace VikingEngine.DSSWars.Map
 
         public List<AbsMapObject> MapControlsNearMapObjects(IntVector2 tilePos, bool controller)
         {
-            //Debug.CrashIfThreaded();
             playerNearMapObjects.Clear();
 
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
@@ -274,18 +264,19 @@ namespace VikingEngine.DSSWars.Map
 
             if (grid.TryGet(areaPos.X, areaPos.Y, out area))
             {
-                for (int i = 0; i < area.cities.Count; ++i)//each (var cityIx in area.cities)
+                for (int i = 0; i < area.cities.Count; ++i)
                 {
                     playerNearMapObjects.Add(DssRef.world.cities[area.cities[i]]);
                 }
                 lock (area.armies)
                 {
-                    //var armies_sp = area.armies;
                     foreach (var pa in area.armies)
                     {
-                        playerNearMapObjects.Add(pa.GetArmy());
-                    }
-                    
+                        if (pa.TryGetArmy(out var army))
+                        {
+                            playerNearMapObjects.Add(army);
+                        }
+                    }                    
                 }
             }
 
@@ -302,17 +293,19 @@ namespace VikingEngine.DSSWars.Map
                     {
                         if (grid.TryGet(x, y, out area))
                         {
-                            for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
+                            for (int i = 0; i < area.cities.Count; ++i)
                             {
                                 playerNearMapObjects.Add(DssRef.world.cities[area.cities[i]]);
                             }
 
                             lock(area.armies)
                             {
-                                //var armies_sp = area.armies;
                                 foreach (var pa in area.armies)
                                 {
-                                    playerNearMapObjects.Add(pa.GetArmy());
+                                    if (pa.TryGetArmy(out var army))
+                                    {
+                                        playerNearMapObjects.Add(army);
+                                    }
                                 }
 
                             }

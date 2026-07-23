@@ -406,6 +406,15 @@ namespace VikingEngine.DSSWars.Interface
                 }, new RbAction2Arg<string, CSteamID>(Steamworks.SteamFriends.ActivateGameOverlayToUser, "steamid", selectedPlayer.networkPeer.peer.SteamID),
                new RbTooltip_Text(DssRef.todoLang.Steam_OpenSteamOverlay)));
 
+            
+        }
+
+        public void checkAlive()
+        {
+            if (selectedPlayer.isDeleted)
+            {
+                selectedPlayer = null;
+            }
         }
     }
 }

@@ -626,6 +626,18 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.ReadCheck(r);
         }
 
+        public void writeClientState(System.IO.BinaryWriter w)
+        {
+            workTemplate.writeGameState(w);
+            writeClientResources(w);
+        }
+
+        public void readClientState(System.IO.BinaryReader r, int subversion)
+        {
+            workTemplate.readGameState(r, subversion, true);
+            readClientResources(r, subversion);
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
             try
@@ -1002,6 +1014,31 @@ namespace VikingEngine.DSSWars.GameObject
             for (int i = 0; i < CityResourceIndex.COUNT; ++i)
             {
                 DssRef.world.cityResouces[resourceComponentStartIndex + i].readCity(boolRegister, r, subversion);
+            }
+        }
+
+        public void writeClientResources(System.IO.BinaryWriter w)
+        {
+            w.Write((short)res_water.amount);
+
+            BoolRegister boolRegister = new BoolRegister(CityResourceIndex.COUNT * 2);
+            {
+                for (int i = 0; i < CityResourceIndex.COUNT; ++i)
+                {
+                    DssRef.world.cityResouces[resourceComponentStartIndex + i].writeFaction(boolRegister);
+                }
+            }
+            boolRegister.finalizeWrite(w);
+        }
+
+        public void readClientResources(System.IO.BinaryReader r, int subversion)
+        {
+            res_water.amount = r.ReadInt16();
+
+            BoolRegister boolRegister = new BoolRegister(r);
+            for (int i = 0; i < CityResourceIndex.COUNT; ++i)
+            {
+                DssRef.world.cityResouces[resourceComponentStartIndex + i].readFaction(boolRegister, r, subversion);
             }
         }
 

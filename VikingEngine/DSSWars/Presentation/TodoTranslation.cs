@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Group_Team = "team";
         public string Group_Everyone = "everyone";
 
-        public string EngineHud_SymbolForMillion => "M";
+        public string Language_SymbolForMillion => "M";
 
         public string DecorType_DiplomaticStatue => "Diplomatic statue";
 

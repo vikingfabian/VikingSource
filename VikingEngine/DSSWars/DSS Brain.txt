@@ -1,12 +1,10 @@
 
 Change log:
-* Fixed the pin delete crashed the multiplayer
+* Fixed rectangle select crash
+* will leave remote player display on leave
+* faction work settings, and cities are saved to client
 
-
-x Make a send to all ready package type 
-* pins added massive packet load
 x steel horse armor should show locked 
-x send ping as unreliable?
 x mint symbol if cleever
 Ability to ban old players
 Fail to join message 
@@ -14,10 +12,8 @@ Test casual
 Anyone can join private game
 Client got wrong banner
 x save color is unrelyable
-x faction work settings arent saved to client (and cities work)
-x war manager is way to aggressive at 100%
 x pigs become horse with wagon
-x leave remote player display on leave
+
 
 KNOWN ISSUES
 
