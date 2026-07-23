@@ -166,12 +166,13 @@ namespace VikingEngine.DSSWars.Data
 
                     for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
                     {
+                        memR.BaseStream.Position = readStart;
                         CityClientSaveMeta meta = clientSaveMetas[metaIx];
                         var city = DssRef.world.cities[meta.cityIndex];
 
                         if (city.pfaction == p.pfaction)
                         { 
-                            city.readClientState(r, version.sub);
+                            city.readClientState(memR, version.sub);
                         }
 
                         readStart += meta.memoryLength;
