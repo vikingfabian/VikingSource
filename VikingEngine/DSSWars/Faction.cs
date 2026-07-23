@@ -1284,9 +1284,14 @@ namespace VikingEngine.DSSWars
 
         public Color Color()
         {
-                if (player == null || player.profile.flag == null)
-                    return tempColor;
-                return player.profile.flag.col0_Main;            
+            if (player == null) 
+                return tempColor;
+
+            var sp_flag = player.profile.flag;
+            if (sp_flag == null)
+                return tempColor;
+
+            return sp_flag.col0_Main;            
         }
 
         public List<Faction> CollectWars()
