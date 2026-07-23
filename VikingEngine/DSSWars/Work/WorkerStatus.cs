@@ -1602,8 +1602,10 @@ namespace VikingEngine.DSSWars.Work
 
         public void setXpFor(XP.WorkExperienceType type, byte toXp)
         {
-            DssRef.world.SetWorkXp(XpEntityIndex, type, toXp);
-            
+            if (XpEntityIndex >= 0)
+            {
+                DssRef.world.SetWorkXp(XpEntityIndex, type, toXp);
+            }
         }
 
         public void addExperience(XP.WorkExperienceType type, City city, byte add = 0)

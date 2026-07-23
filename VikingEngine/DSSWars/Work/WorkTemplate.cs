@@ -90,6 +90,8 @@ namespace VikingEngine.DSSWars.Work
             work[workComponentStartIndex + (int)WorkPriorityType.craftSword].unlocked = unlocks.item_Sword;
             work[workComponentStartIndex + (int)WorkPriorityType.craftMailArmor].unlocked = unlocks.item_IronArmor;
             work[workComponentStartIndex + (int)WorkPriorityType.craftHeavyMailArmor].unlocked = unlocks.item_IronArmor;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftMountMailArmor].unlocked = unlocks.item_IronArmor;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftMountHeavyMailArmor].unlocked = unlocks.item_IronArmor;
             work[workComponentStartIndex + (int)WorkPriorityType.craftWarhammer].unlocked = unlocks.item_Sword;
 
             // work[resourceComponentStartIndex + (int)WorkPriorityType.craftKnightslance].unlocked = unlocks.item_Sword; // TODO: Add 'craftKnightslance' to Enum
@@ -101,6 +103,8 @@ namespace VikingEngine.DSSWars.Work
             work[workComponentStartIndex + (int)WorkPriorityType.craftTwoHandSword].unlocked = unlocks.item_LongSword;
             work[workComponentStartIndex + (int)WorkPriorityType.craftPlateArmor].unlocked = unlocks.item_SteelArmor;
             work[workComponentStartIndex + (int)WorkPriorityType.craftFullPlateArmor].unlocked = unlocks.item_SteelArmor;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftMountPlateArmor].unlocked = unlocks.item_SteelArmor;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftMountFullPlateArmor].unlocked = unlocks.item_SteelArmor;
 
             // Siege Engines
             work[workComponentStartIndex + (int)WorkPriorityType.craftCatapult].unlocked = unlocks.item_catapult;
@@ -1464,7 +1468,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         content.newLine();
                         Get(WorkPriorityType.coinmaker_copper).titleToHud(content, string.Format(CraftCoinCaption, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), DssRef.lang.Resource_TypeName_Copper),
-                            SpriteName.WarsSlaughter, SpriteName.WarsResource_CopperCoin);
+                            SpriteName.WarsHammer, SpriteName.WarsResource_CopperCoin);
                         content.space();
                         HudLib.blueprintButton(city, player, content, Minting.CopperCoin);
                         content.newLine();
@@ -1475,7 +1479,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         content.newParagraph();
                         Get(WorkPriorityType.coinmaker_bronze).titleToHud(content, string.Format(CraftCoinCaption, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), DssRef.lang.Resource_TypeName_Bronze),
-                            SpriteName.WarsSlaughter, SpriteName.WarsResource_BonzeCoin);
+                            SpriteName.WarsHammer, SpriteName.WarsResource_BonzeCoin);
                         content.space();
                         HudLib.blueprintButton(city, player, content, Minting.BronzeCoin);
                         content.newLine();
@@ -1486,7 +1490,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         content.newParagraph();
                         Get(WorkPriorityType.coinmaker_silver).titleToHud(content, string.Format(CraftCoinCaption, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), DssRef.lang.Resource_TypeName_Silver),
-                            SpriteName.WarsSlaughter, SpriteName.WarsResource_SilverCoin);
+                            SpriteName.WarsHammer, SpriteName.WarsResource_SilverCoin);
                         content.space();
                         HudLib.blueprintButton(city, player, content, Minting.SilverCoin);
                         content.newLine();
@@ -1497,7 +1501,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         content.newParagraph();
                         Get(WorkPriorityType.coinmaker_mithril).titleToHud(content, string.Format(CraftCoinCaption, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Coin), DssRef.lang.Resource_TypeName_Mithril),
-                            SpriteName.WarsSlaughter, SpriteName.WarsResource_ElfCoin);
+                            SpriteName.WarsHammer, SpriteName.WarsResource_ElfCoin);
                         content.space();
                         HudLib.blueprintButton(city, player, content, Minting.ElfCoin);
                         content.newLine();
