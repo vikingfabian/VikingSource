@@ -78,6 +78,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_ListExtra = "extra";
         const string UnderMenu_ListMusic= "music list";
         const string UnderMenu_PlayerSetup = "playersett";
+        const string UnderMenu_PlayerOnlySetup = "playeronlysett";
         const string UnderMenu_PlayerProfile = "playerprofile";
         const string UnderMenu_ListSaves = "saves";
         const string UnderMenu_ListSavesForExport = "exportsaves";
@@ -504,6 +505,17 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
+                case UnderMenu_PlayerOnlySetup:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        
+                        playerSetupToMenu(content);
+
+                        underMenu.Refresh(content);
+
+                    }
+                    break;
+
                 case UnderMenu_PlayerProfile:
                     {
                         var profile = DssRef.storage.profileStorage.Selected();
@@ -794,7 +806,7 @@ namespace VikingEngine.DSSWars
                         {
                             Ref.lobby.lockSession();
                             new Net.ConnectState(session);
-                        }, session)));
+                        }, session), new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_PlayerOnlySetup, StackOption.ClearStack)));
                 }
 
                 networkMenu.Refresh(content);

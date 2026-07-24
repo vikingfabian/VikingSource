@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars.GameState
 
         protected bool asynchArmyAiUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
@@ -279,11 +279,16 @@ namespace VikingEngine.DSSWars.GameState
 
         bool asyncMapBorders(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 overviewMap.runAsyncTask();
             }
             return exitThreads;
+        }
+
+        virtual protected bool UpdateReady()
+        {
+            return cutScene == null;
         }
 
         protected bool asynchSleepObjectsUpdate(int id, float time)

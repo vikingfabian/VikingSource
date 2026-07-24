@@ -659,7 +659,7 @@ namespace VikingEngine.DSSWars
                                 content.icontext(SpriteName.WarsHudHeadBarPlayIcon,
                                     string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed)));
                             }
-                            LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+                            LocalHost().hud.messages.Add(content, Ref.isPaused? SoundLib.speed_down : SoundLib.speed_up);
                         }
                     }
                     break;

@@ -1,13 +1,8 @@
 
 Change log:
-* Fixed xp index crash
-* improved on stuck lobbies
-* Fixed lobby private setting
-* Network games will pause during save
-* fixed: casual build did not share to host
+* 
+ 
 
-Test casual 
-x Client got wrong banner
 x save color is unrelyable
 x pigs become horse with wagon
 

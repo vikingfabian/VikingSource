@@ -763,9 +763,12 @@ namespace VikingEngine.DSSWars
             base.OnDestroy();
         }
 
-        
+        override protected bool UpdateReady()
+        {
+            return cutScene == null && (host || factionHandOverComplete);
+        }
 
-        
+
         //void shareAllHostedObjects(Network.AbsNetworkPeer sender)
         //{
         //    var factionsCounter = DssRef.world.factions.counter();
@@ -775,11 +778,11 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-       
+
 
         bool asyncWorkUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 float seconds = DssRef.time.pullAsyncWork_Seconds();
 
@@ -821,7 +824,7 @@ namespace VikingEngine.DSSWars
         {
             float seconds = DssRef.time.pullAsyncGameObjects_Seconds();
 
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 bool minute = DssRef.time.pullMinute(ref asynchGameObjectsMinutes);
 
@@ -851,7 +854,7 @@ namespace VikingEngine.DSSWars
 
         protected bool asynchNearObjectsUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 DssRef.world.unitCollAreaGrid.asynchUpdate();
 
@@ -876,7 +879,7 @@ namespace VikingEngine.DSSWars
         bool asyncResourcesUpdate(int id, float time)
         {
             //This thread is the only thay may edit subtiles
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 resources.asyncEditTiles();
                 //Runs every minute to upate any resource progression: trees grow, food spoil, etc
@@ -892,7 +895,7 @@ namespace VikingEngine.DSSWars
 
         bool asyncSlowUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 if (slowMinuteUpdate)
                 { 
@@ -906,7 +909,7 @@ namespace VikingEngine.DSSWars
 
         bool asyncDiplomacyUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 DssRef.world.diplomacy.async_update();
                 events.asyncUpdate(time);
@@ -921,7 +924,7 @@ namespace VikingEngine.DSSWars
         {
             DssRef.ambience.update_async();
 
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 foreach (var local in localPlayers)
                 {

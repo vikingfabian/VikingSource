@@ -65,10 +65,20 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 var settings = gamer.NetClientSettings();
 
+                RichBoxContent flagContent = new RichBoxContent();
+                gamer.addFlagToHud(flagContent);
+                content.Add(new ArtButton(RbButtonStyle.Outline, flagContent,
+                    new RbAction(() => {
+                        gamer.pfaction.GetFaction()?.refreshMainCity();
+                        var main = gamer.pfaction.GetFaction()?.mainCity;
+                        if (main != null)
+                        {
+                            player.gameControls.map.cameraFocus = main;
+                        }
+                    }), new RbTooltip_Text(DssRef.lang.InputActionName_NextCity)));
+
                 RichBoxContent buttonContent = new RichBoxContent();
-                gamer.addNetGamerToHud(buttonContent, true, true);
-
-
+                gamer.addNetGamerToHud(buttonContent, false, true);
 
                 content.Add(new ArtButton(gamer.HasSupportDLC() ? RbButtonStyle.GoldOutline : RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
                     (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
