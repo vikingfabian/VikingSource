@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Net
                 SteamFriends.GetPersonaName(),
                 alive.ToString(),
                 Engine.LoadContent.EngineVersion,
-                ((int)lobbyPublicity).ToString(),
+                ((int)Ref.steam.P2PManager.SessionLobbyPublicity()).ToString(),
 
                 ((int)DssRef.difficulty.setting_gameMode).ToString(),
                 DssRef.difficulty.TotalDifficulty().ToString(),

@@ -80,6 +80,7 @@ namespace VikingEngine.DSSWars
                 Ref.netsett.remoteHostSettings = new NetSharedHostSettings();
                 DssRef.storage.ruleset_instance = DssRef.storage.ruleset;
                 DssRef.storage.ruleset_instance.refreshSettings();
+                Ref.steamlobby?.refreshMetaData();
             }
 
             if (readWorld != null)

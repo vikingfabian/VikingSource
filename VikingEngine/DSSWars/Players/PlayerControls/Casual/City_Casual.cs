@@ -184,10 +184,9 @@ namespace VikingEngine.DSSWars.GameObject
                 var subTile = DssRef.world.subTileGrid.Get(buildPos);
                 bool upgrade = false;
 
-                //var dist = cityHallSubtilePos.SideLength(buildPos);
                 if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
                 {
-                    EditSubTile edit = new EditSubTile(true, pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer(), buildPos, subTile, true, true, false);
+                    EditSubTile edit = new EditSubTile(true, true, buildPos, subTile, true, true, false) { netShare = true };
                     edit.ExecuteEdit();
                 }
             }
