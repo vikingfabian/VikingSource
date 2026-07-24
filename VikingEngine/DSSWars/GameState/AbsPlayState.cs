@@ -189,16 +189,28 @@ namespace VikingEngine.DSSWars.GameState
             return speed;
         }
 
-        
-
         public void onSpeedChange()
         {
-            if (Ref.netSession.IsHostingMultiplayer)
+            if (host)
             {
                 var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Reliable);                
                 w.Write((byte)gameSpeedValue());
             }
 
+            if (Ref.isPaused)
+            {
+                SoundLib.speed_down.Play(Pan.Right);
+            }
+            else
+            {
+                SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
+            }
+            LocalHost().hud.needRefresh = true;
+        }
+
+        public void PauseOnNetSave(bool pause)
+        {
+            Ref.SetPause(pause);
             if (Ref.isPaused)
             {
                 SoundLib.speed_down.Play(Pan.Right);

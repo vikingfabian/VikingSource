@@ -714,6 +714,19 @@ namespace VikingEngine.Network
             return gamer;
         }
 
+        public BanStatus IsBanned(ulong id)
+        {
+            for (int i = 0; i < storedGamers.Count; i++)
+            {
+                if (storedGamers.array[i].id == id)
+                {
+                    return storedGamers.array[i].ban;
+                }
+            }
+            return BanStatus.None;
+        }
+
+
         public void setUpdatedStoredGamer(StoredNetworkGamer gamer)
         {
             if (storedGamers.array[gamer.index].id == gamer.id)

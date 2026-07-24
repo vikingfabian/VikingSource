@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars
         public int ReserveNextWorkXpIndex()
         {
             int loop = 0;
-            while (WorkXpInUse[nextXpIndex])
+            while (nextXpIndex >= WorkXpInUse.Length || WorkXpInUse[nextXpIndex])
             { 
                 ++nextXpIndex;
                 if (nextXpIndex >= WorkXpInUse.Length)
@@ -62,7 +62,8 @@ namespace VikingEngine.DSSWars
             }
 
             WorkXpInUse[nextXpIndex] = true;
-            return nextXpIndex;
+            
+            return nextXpIndex++;
         }
 
         public void FreeWorkerXp(int index)

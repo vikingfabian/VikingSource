@@ -1,7 +1,7 @@
 
 Change log:
-* 
-
+* Fixed xp index crash
+* improved on stuck lobbies
 
 Test casual 
 Anyone can join private game

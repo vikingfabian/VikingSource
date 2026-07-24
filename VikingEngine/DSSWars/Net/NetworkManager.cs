@@ -47,6 +47,7 @@ namespace VikingEngine.DSSWars
         bool waitingForClientHandover_autosave;
         bool waitingForClientHandover_exit;
         bool waitingForClientHandover = false;
+        bool waitingForClientHandover_Paused;
         TimeStamp waitingForClientHandoverTime;
         public ChatLog chatLog = new ChatLog();
         public Color? recolor = null;
@@ -148,6 +149,7 @@ namespace VikingEngine.DSSWars
                         waitingForClientHandover = false;
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
+                            Ref.SetPause(waitingForClientHandover_Paused);
                             new SaveScene(waitingForClientHandover_autosave).ExitGame = waitingForClientHandover_exit;
                         }));
                     }
@@ -1271,8 +1273,9 @@ namespace VikingEngine.DSSWars
                 waitingForClientHandover_autosave = autoSave;
                 waitingForClientHandover_exit = exit;
                 waitingForClientHandover = true;
+                waitingForClientHandover_Paused = Ref.isPaused;
                 waitingForClientHandoverTime.setNow();
-
+                DssRef.state.PauseOnNetSave(true);
                 remotePlayersCounter.Reset();
                 while (remotePlayersCounter.Next())
                 {
@@ -1292,7 +1295,7 @@ namespace VikingEngine.DSSWars
         void saveClient(System.IO.BinaryReader r)
         {
             RichBoxContent content = new RichBoxContent();
-            content.icontext(NetworkIcon, DssRef.lang.Hud_Save);
+            content.iconicontext(NetworkIcon, SpriteName.WarsHudIconSpeed_Pause, DssRef.lang.Hud_Save);
             LocalHost().hud.messages.Add(content, SoundLib.netMessage);
 
             factionHandovers.Enqueue(new FactionHandover(Ref.netSession.Host(), LocalHost().pfaction.GetFaction(), false, false));
@@ -1306,6 +1309,8 @@ namespace VikingEngine.DSSWars
             saveGamestate.save();
 
             DssRef.storage.Save(null);
+
+            DssRef.state.PauseOnNetSave(true);
         }
 
         public void PacketCountToHud(RichBoxContent content)
