@@ -9,6 +9,10 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Korean : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "넓은 스크롤 바";
+        public override string GameSettings_DisplayInputHelp => "조작 도움말";
+        public override string GameSettings_InputSmoothing => "입력 스무딩";
+
         //Mounts
         public override string InputSteam => "Steam 입력";
         public override string Input_SimulateMouse => "마우스 시뮬레이션";

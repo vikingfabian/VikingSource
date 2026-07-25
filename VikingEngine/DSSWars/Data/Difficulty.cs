@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Data
                 Difficulty difficultyLvl = new Difficulty(i);
 
                 new GuiTextButton(options[i].ToString() + "%",
-                    string.Format( string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.DifficultyDescription_BotAggression) /*DssRef.lang.DifficultyDescription_AiAggression*/, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
+                    string.Format( string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.DifficultyDescription_BotAggression) /*DssRef.lang.DifficultyDescription_AiAggression*/, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficultyLvl.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
                     //string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficultyLvl.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficultyLvl.aiEconomyLevel].ToString()) + Environment.NewLine +
@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars.Data
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsBattleIcon));
                 content.hspace();
-                content.Add(new RbText(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.DifficultyDescription_BotAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM))));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.DifficultyDescription_BotAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM))));
             }
             {
                 content.newLine();

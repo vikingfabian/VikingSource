@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
 
                             DssRef.state.LocalHost().gameControls.input.VoiceChat.ToRichContent(content);
                             content.space();
-                            content.Add(new RbText(DssRef.todoLang.Multiplayer_VoiceChat, HudLib.TitleColor_Action));
+                            content.Add(new RbText(DssRef.lang.Multiplayer_VoiceChat, HudLib.TitleColor_Action));
 
                             content.newParagraph();
                             AbsHumanPlayer player = (AbsHumanPlayer)tag;

@@ -144,21 +144,21 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.Ellium:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Ellium;
+                    name = DssRef.lang.FactionName_Ellium;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.diplomaticSide = DiplomaticSide.Light;
                     break;
                 case FactionType.GrakPushdug:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_GrakPushdug;
+                    name = DssRef.lang.FactionName_GrakPushdug;
                     aggressionLevel = AggressionLevel2_RandomAttacks;
                     faction.diplomaticSide = DiplomaticSide.Dark;
                     break;
                 case FactionType.Draugost:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Draugost;
+                    name = DssRef.lang.FactionName_Draugost;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.diplomaticSide = DiplomaticSide.None;
                     break;

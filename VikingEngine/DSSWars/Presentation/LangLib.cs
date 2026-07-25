@@ -657,16 +657,16 @@ namespace VikingEngine.DSSWars.Presentation
             switch (abs)
             {
                 case 100:
-                    result = DssRef.lang.EngineHud_SymbolFor100;
+                    result = DssRef.lang.Language_SymbolFor100;
                     break;
                 case 1000:
-                    result = DssRef.lang.EngineHud_SymbolFor1000;
+                    result = DssRef.lang.Language_SymbolFor1000;
                     break;
                 case 10_000:
-                    result = DssRef.lang.EngineHud_SymbolFor10000;
+                    result = DssRef.lang.Language_SymbolFor10000;
                     break;
                 case 1_000_000:
-                    result = DssRef.todoLang.Language_SymbolForMillion;
+                    result = DssRef.lang.Language_SymbolForMillion;
                     break;
                 default:
                     result = abs.ToString();
@@ -787,13 +787,13 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.InputActionName_ZoomOutKey;
 
                 case InputActionType.NextPin:
-                    return DssRef.todoLang.InputActionName_NextPin;
+                    return DssRef.lang.InputActionName_NextPin;
                 case InputActionType.PinAndPing:
-                    return DssRef.todoLang.ObjectType_LocationPin;
+                    return DssRef.lang.ObjectType_LocationPin;
                 case InputActionType.TextChat:
-                    return DssRef.todoLang.InputActionName_TextChat;
+                    return DssRef.lang.InputActionName_TextChat;
                 case InputActionType.VoiceChat:
-                    return DssRef.todoLang.InputActionName_VoiceChat;
+                    return DssRef.lang.InputActionName_VoiceChat;
 
 
                 default:

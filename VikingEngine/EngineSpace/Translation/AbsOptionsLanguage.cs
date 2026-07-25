@@ -9,6 +9,11 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+        //Multiplayer update
+        abstract public string GameSettings_WideScrollbar { get; }
+        abstract public string GameSettings_DisplayInputHelp { get; }
+        abstract public string GameSettings_InputSmoothing { get; }
+
         //Mounts update
         public abstract string InputSteam { get; }
         public abstract string Input_SimulateMouse { get; }

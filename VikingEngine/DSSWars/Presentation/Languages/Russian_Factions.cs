@@ -8,6 +8,10 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian
     {
+        public override string FactionName_Ellium => "Эллиум";
+        public override string FactionName_GrakPushdug => "Грак Пушдуг";
+        public override string FactionName_Draugost => "Драугост";
+
         public override string FactionName_Starshield => "Старшилд";
         public override string FactionName_Bluepeak => "Блупеак";
         public override string FactionName_Hoft => "Хофт";

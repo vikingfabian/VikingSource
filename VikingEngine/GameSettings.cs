@@ -679,7 +679,7 @@ namespace VikingEngine
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
                 content.space();
-                content.Add(new RbText(DssRef.todoLang.Multiplayer_VoiceChat, HudLib.TitleColor_Label));
+                content.Add(new RbText(DssRef.lang.Multiplayer_VoiceChat, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), netVoiceVolProperty, true));
             }
@@ -803,7 +803,7 @@ namespace VikingEngine
                 new RbAction(Ref.gamestate.OnResolutionChange)));
 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.GameSettings_WideScrollbar) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GameSettings_WideScrollbar) },
                wideScrollProperty));
             content.space();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) },

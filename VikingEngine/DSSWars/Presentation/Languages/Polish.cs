@@ -1,10 +1,187 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using System.Transactions;
+using VikingEngine.LootFest.BlockMap.Level;
+using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 
 namespace VikingEngine.DSSWars.Presentation
 {
     partial class Polish : AbsLanguage
     {
+
+        //Multiplayer update
+       
+        //--
+     
+
+        //--
+        public override string Unlock_PublicGames => "gry publiczne";
+        public override string UnlockPublic_Warning1 => "Nie graj z nieznajomymi";
+        public override string UnlockPublic_Warning2 => "Gra nie ma żadnych zabezpieczeń przed cheaterami i trollowaniem";
+        public override string Unlock_WarningBadExperience => "Będziesz się tu źle bawić";
+        public override string Hud_Accept => "Akceptuj";
+        public override string Hud_Block => "Zablokuj";
+        public override string Hud_Deny => "Odrzuć";
+        public override string Hud_Reason => "Powód";
+        public override string Hud_Full => "Pełny";
+        public override string Hud_Version => "Wersja";
+        public override string Unlock_PlayerVersusPlayer => "gracz kontra gracz (PvP)";
+        public override string UnlockPvp_Warning1 => "DSS nie jest stworzone z myślą o rywalizacji";
+        public override string UnlockPvp_Warning2 => "Nie ma tu balansu, mecze będą niesprawiedliwe";
+        public override string PlayerJoinHistoryTitle => "Historia dołączeń graczy";
+        public override string BlockedPlayersTitle => "Zablokowani gracze";
+        public override string ClickToRemoveBan => "Kliknij: usuń bana";
+        public override string HostSettingsTitle => "Ustawienia hosta";
+        public override string MaxPlayerCount => "Maksymalna liczba graczy";
+        public override string DistanceBetweenPlayers => "Odległość między graczami";
+        public override string AllowHandicap => "Zezwól na handicap";
+        public override string AllowCasualControls => "Zezwól na uproszczone sterowanie";
+        public override string AutoRecolorPlayerFlags => "Auto. kolorowanie flag graczy";
+        public override string DefaultDiplomacy => "Domyślna dyplomacja";
+        public override string ClientSettingsTitle => "Ustawienia klienta";
+        public override string UseHandicap => "Użyj handicapu";
+        public override string DifficultyDescription_BotAggression => "Agresywność botów";
+        public override string Hud_GetExtraX => "Dodatkowe {0}";
+        public override string Hud_Hide => "Ukryj";
+        public override string Hud_ModelType => "Model";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}: {1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "Boost surowców";
+        //public override string TaxIncome => "Wpływy z podatków";
+        public override string PlayerInteractionTitle => "Interakcje między graczami";
+        public override string DefaultPeaceful => "Domyślnie: Pokojowo";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "Domyślnie: Opcjonalny co-op";
+        public override string DefaultHardcore => "Domyślnie: Hardcore";
+        public override string GeneralTitle => "Ogólne";
+
+        public override string InputButton_Hold => "Przytrzymanie przycisku";
+        public override string InputButton_Toggle => "Przełączenie (Toggle)";
+        public override string VoiceOptAlwaysOn => "Zawsze włączone";
+        public override string VoiceTitle => "Głos";
+        public override string VoiceMute => "Wycisz (Mute)";
+        public override string GiftOptAllow => "Zezwól";
+        public override string GiftOptFriendsOnly => "Tylko znajomi";
+        public override string GiftOptBlocked => "Zablokowane";
+        public override string ReceiveAchievementsTitle => "Otrzymywanie achievementów";
+        public override string GiftWarning => "Uwaga! Podarowane achievementy mogą wydawać się poniżające";
+        public override string FullReset => "Pełny reset";
+        public override string AllowAllianceTitle => "Zezwól na sojusze";
+        public override string CanBreakAlliance => "Można zerwać sojusz";
+        public override string AllowWarTitle => "Zezwól na wojnę";
+        public override string FairProtection => "Uczciwa ochrona";
+        public override string FairProtectionTooltip => "Chronieni gracze muszą stosować własne zasady przeciwko tobie";
+        public override string MustAsk => "Wymagana zgoda";
+        public override string MustAskTooltip => "Obaj gracze muszą zgodzić się na walkę";
+        public override string AllianceLimit => "Limit sojuszu";
+        public override string AllianceLimitTooltip => "Nie możesz zostać zaatakowany przez większy sojusz graczy";
+        public override string GameStartProtection => "Ochrona na start gry";
+        public override string Hud_Time_Minutes => "minuty";
+        public override string WarPreparationTime => "Czas przygotowań do wojny";
+        public override string WarPreparationTimeTooltip => "Opóźnienie od wypowiedzenia wojny do odblokowania ataków";
+        public override string Hud_Allow => "Zezwól";
+        public override string Hud_Blocked => "Zablokowane";
+
+        public override string Hud_DeleteAll => "Usuń wszystko";
+        public override string DiplomacyPlayersChoice => "Wybór graczy";
+        public override string UnlockSureTitle => "Jesteś absolutnie, w 100% pewien?";
+        public override string UnlockSureDescription => "Zachowasz się jak dorosły i nie będziesz potem płakać na forum?";
+
+
+
+        public override string Network_PlayOffline => "Graj offline";
+        public override string JoinPermission_Title => "Uprawnienia dołączania";
+        public override string JoinPermission_Private => "Prywatna";
+        public override string JoinPermission_FriendsOnly => "Tylko znajomi";
+        public override string JoinPermission_Public => "Publiczna";
+
+        public override string Network_Join => "Dołącz do gry";
+        public override string Network_ConnectingToGame => "Łączenie...";
+        public override string Lobby_Category_MultiplayerSettings => "Ustawienia trybu wieloosobowego";
+
+        public override string Hud_Default => "Domyślne";
+        public override string Group_Team => "drużyna";
+        public override string Group_Everyone => "wszyscy";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "Statua dyplomacji";
+
+        public override string Message => "Wiadomość";
+        public override string ObjectType_LocationPin => "Znacznik lokalizacji";
+        public override string ObjectType_LocationPin_Share => "Udostępnij i pinguj";
+        public override string ObjectType_LocationPin_Ping => "Ping!";
+        public override string InputActionName_TextChat => "Czat tekstowy";
+        public override string InputActionName_TextChatLog => "Logi czatu";
+        public override string InputActionName_VoiceChat => "Czat głosowy";
+        public override string InputActionName_NextPin => "Następny pin";
+        public override string InputActionName_PinAndPing => "Dodaj pin";
+
+        public override string Leaderboards_ArmySize => "Rozmiar armii (w sile)";
+        public override string Leaderboards_MultiplayerPlayerCount => "Liczba hostowanych graczy";
+
+        public override string Multiplayer_BanWarning => "ostrzeżenie o banie";
+        public override string Multiplayer_SentToHost => "Zostanie wysłane do hosta";
+        public override string Multiplayer_AddToOwnBlocks => "Dodaj do własnej listy zablokowanych";
+
+        public override string Multiplayer_Message_RequestSent => "Wysłano prośbę";
+
+        public override string Multiplayer_BlockPlayer => "Zablokuj gracza";
+        public override string Multiplayer_NetSession => "Sesja sieciowa";
+        public override string GiftedAchievements => "Podarowane achievementy";
+        public override string GiftedAchievements_Description => "Nagradzaj złe zachowanie swoich znajomych";
+
+        public override string Multiplayer_Title => "Multiplayer";
+        public override string Multiplayer_Lobby => "Lobby multiplayer";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. Host rozpoczyna grę";
+        public override string Multiplayer_Tutorial_JoinButton => "2. Przycisk dołączenia pojawi się tutaj";
+        public override string Multiplayer_Tutorial_Visible => "Host musi mieć widoczny profil Steam";
+
+        public override string Multiplayer_KickPlayer => "Wyrzuć gracza (Kick)";
+        public override string Multiplayer_RequestBlockPlayer => "Prośba: Zablokuj gracza";
+        public override string Multiplayer_HandoverComplete => "Przekazanie zakończone";
+        public override string Multiplayer_LoadingClientSave => "Wczytywanie zapisu klienta";
+        public override string Multiplayer_ClientSaveComplete => "Zapis klienta zakończony";
+        public override string Multiplayer_BadActor => "Toksyczny gracz";
+        public override string Multiplayer_NetworkError => "Błąd sieci";
+        public override string Multiplayer_Sender => "Nadawca";
+        public override string Multiplayer_Receiver => "Odbiorca";
+        public override string Multiplayer_PlayerJoined => "Gracz dołączył";
+        public override string Multiplayer_PlayerLeft => "Gracz wyszedł";
+        public override string Multiplayer_RequestingClientGamestates => "Żądanie stanu gry od klientów...";
+        public override string Multiplayer_TextChat => "Czat tekstowy";
+        public override string Multiplayer_VoiceChat => "Czat głosowy";
+        public override string Steam_UserProfile => "Profil użytkownika";
+        public override string Steam_OpenSteamOverlay => "Otwórz overlay Steam";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "Mobilizacja";
+        public override string Diplomacy_OfferRelation => "Zaproponuj relacje";
+        public override string Diplomacy_OfferRelation_Declined => "Odrzucono propozycję relacji";
+        public override string Diplomacy_SendGold => "Wyślij złoto";
+        public override string Diplomacy_GiftToPlayer => "Podarunek dla gracza";
+        public override string Diplomacy_RecievedGift => "Otrzymano podarunek";
+        public override string Diplomacy_OnAccept => "Jeśli drugi gracz zaakceptuje:";
+        public override string Diplomacy_WarPreparationTime => "Czas przygotowań do wojny";
+
+        public override string Diplomacy_AboveSoftCap => "Powyżej soft capa";
+        public override string Diplomacy_BelowSoftCap => "Poniżej soft capa";
+        public override string Diplomacy_OpenPlayerToPlayer => "Otwórz dyplomację graczy";
+
+
         //Post mount update
         public override string StockPile_ItemsAreNotLost => "Przedmioty nie zostaną zniszczone, jeśli przekroczysz limit zapasów!";
         public override string SlaughterResult_PerAnimal => "Uzysk z uboju, na zwierzę";
@@ -1868,9 +2045,9 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "Dystans: {0}";
         public override string Delivery_DeliveryTimeX => "Czas dostawy: {0}";
         public override string Delivery_SenderMinimumCap => "Minimalny limit nadawcy";
-        public override string Delivery_RecieverMaximumCap => "Maksymalny limit odbiorcy";
+        public override string Delivery_ReceiverMaximumCap => "Maksymalny limit odbiorcy";
         public override string Delivery_ItemsReady => "Przedmioty gotowe";
-        public override string Delivery_RecieverReady => "Odbiorca gotowy";
+        public override string Delivery_ReceiverReady => "Odbiorca gotowy";
         public override string Hud_ThisCity => "To miasto";
         public override string Hud_RecieveingCity => "Miasto docelowe";
 
@@ -2078,7 +2255,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "Równina";
         public override string LandType_Water => "Woda";
         public override string BuildingType_Wall => "Mur";
-        public override string Delivery_AutoReciever_Description => "Wyśle do miasta z najmniejszą ilością zasobów";
+        public override string Delivery_AutoReceiver_Description => "Wyśle do miasta z najmniejszą ilością zasobów";
 
         public override string Hud_On => "Wł.";
         public override string Hud_Off => "Wył.";
@@ -3023,9 +3200,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Te symbole są potrzebne, aby zmieścić duże liczby w HUD, pojawi się tooltip wyjaśniający, jaką liczbę reprezentują
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "c";
-        public override string EngineHud_SymbolFor1000 => "k";
-        public override string EngineHud_SymbolFor10000 => "10k";
+        public override string Language_SymbolFor100 => "c";
+        public override string Language_SymbolFor1000 => "k";
+        public override string Language_SymbolFor10000 => "10k";
 
         /// <summary>
         /// Podczas ładowania plików od innych graczy nie otrzymasz ich postępów w osiągnięciach.

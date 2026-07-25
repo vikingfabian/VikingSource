@@ -440,12 +440,12 @@ namespace VikingEngine.DSSWars
                                     content.Add(start);
 
                                     content.newLine();
-                                    HudLib.Label(content, SpriteName.WarsHudIconNetwork, DssRef.todoLang.Multiplayer_Title);
+                                    HudLib.Label(content, SpriteName.WarsHudIconNetwork, DssRef.lang.Multiplayer_Title);
                                     content.hspace();
                                     content.Add(new RbText(Ref.netsett.JoinPermissionString()));
                                     content.space();
                                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                                        new RbAction2Arg<string, StackOption>(openUnderMenu, NetworkSettingsMenu.MultiplayerSettings, StackOption.Stack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_MultiplayerSettings)));
+                                        new RbAction2Arg<string, StackOption>(openUnderMenu, NetworkSettingsMenu.MultiplayerSettings, StackOption.Stack), new RbTooltip_Text(DssRef.lang.Lobby_Category_MultiplayerSettings)));
                                 }
                                 break;
 
@@ -723,7 +723,7 @@ namespace VikingEngine.DSSWars
             openNetWorkMenu();
 
             RichBoxContent content = new RichBoxContent();
-            content.h1(DssRef.todoLang.Multiplayer_Lobby, HudLib.TitleColor_Head2);
+            content.h1(DssRef.lang.Multiplayer_Lobby, HudLib.TitleColor_Head2);
             content.space();
             HudLib.InfoButton(content, new RbTooltip(networkTutorialTip));
 
@@ -733,13 +733,13 @@ namespace VikingEngine.DSSWars
         void networkTutorialTip(RichBoxContent content, object tag)
         {
             HudLib.BulletPoint(content);
-            content.Add(new RbText(DssRef.todoLang.Multiplayer_Tutorial_HostStart));
+            content.Add(new RbText(DssRef.lang.Multiplayer_Tutorial_HostStart));
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText(DssRef.todoLang.Multiplayer_Tutorial_JoinButton));
+            content.Add(new RbText(DssRef.lang.Multiplayer_Tutorial_JoinButton));
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText(DssRef.todoLang.Multiplayer_Tutorial_Visible));
+            content.Add(new RbText(DssRef.lang.Multiplayer_Tutorial_Visible));
         }
 
         public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
@@ -765,7 +765,7 @@ namespace VikingEngine.DSSWars
                     buttonContent.Add(new RbBeginTitle(1));
                     buttonContent.Add(new RbImage(SpriteName.WarsMapFilterMinimap));
                     buttonContent.Add(new RbSpace());
-                    buttonContent.Add(new RbText(DssRef.todoLang.Network_Join, HudLib.TitleColor_Head2, LoadedFont.Bold));
+                    buttonContent.Add(new RbText(DssRef.lang.Network_Join, HudLib.TitleColor_Head2, LoadedFont.Bold));
 
                     buttonContent.newLine();
                     HudLib.BulletPoint(buttonContent);
@@ -788,17 +788,17 @@ namespace VikingEngine.DSSWars
 
                     if (!meta.MatchingVersion)
                     {
-                        buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.Hud_Version, session.metaData.Version), HudLib.NotAvailableColor_Dark);
+                        buttonContent.icontext(SpriteName.cmdWarningTriangle, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Version, session.metaData.Version), HudLib.NotAvailableColor_Dark);
                     }
 
                     if (!meta.allowCasual && DssRef.storage.profileStorage.Selected().casualControls)
                     {
-                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), string.Format( DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.Hud_Allow,  DssRef.lang.Settings_CasualControls)).overrideColor = HudLib.NotAvailableColor_Dark;
+                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), string.Format( DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Hud_Allow,  DssRef.lang.Settings_CasualControls)).overrideColor = HudLib.NotAvailableColor_Dark;
                     }
 
                     if (meta.playerCount >= meta.maxPlayerCount && meta.maxPlayerCount != 0)
                     {
-                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), DssRef.todoLang.Hud_Full).overrideColor = HudLib.NotAvailableColor_Dark;
+                        buttonContent.iconicontext(SpriteName.cmdWarningTriangle, HudLib.CheckImage(false), DssRef.lang.Hud_Full).overrideColor = HudLib.NotAvailableColor_Dark;
                     }
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,
@@ -1176,7 +1176,7 @@ namespace VikingEngine.DSSWars
             }
             {
                 var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconNetworkSettings) },
-                     new RbAction2Arg<string, StackOption>(openUnderMenu, NetworkSettingsMenu.MultiplayerSettings, StackOption.ClearStack), new RbTooltip_Text(DssRef.todoLang.Lobby_Category_MultiplayerSettings));
+                     new RbAction2Arg<string, StackOption>(openUnderMenu, NetworkSettingsMenu.MultiplayerSettings, StackOption.ClearStack), new RbTooltip_Text(DssRef.lang.Lobby_Category_MultiplayerSettings));
                 content.Add(btn);
             }
             {

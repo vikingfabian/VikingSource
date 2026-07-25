@@ -512,7 +512,7 @@ namespace VikingEngine.DSSWars.Interface
                         if (tPlayer.IsRemotePlayer())
                         {
                             content.h2(DssRef.lang.Battle_DeclarWarReminder, HudLib.InfoYellow_Light);
-                            content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.todoLang.Diplomacy_OpenPlayerToPlayer, HudLib.TitleColor_Action);
+                            content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.lang.Diplomacy_OpenPlayerToPlayer, HudLib.TitleColor_Action);
                             content.Add(new RbSeperationLine());
                         }
                         else

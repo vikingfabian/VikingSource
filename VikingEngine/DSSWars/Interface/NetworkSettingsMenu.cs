@@ -47,24 +47,24 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.h1(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, DssRef.todoLang.Unlock_PublicGames), HudLib.TitleColor_Head);
+                        content.h1(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, DssRef.lang.Unlock_PublicGames), HudLib.TitleColor_Head);
                         content.h2(SpriteName.cmdWarningTriangle, DssRef.lang.Lobby_WarningTitle, HudLib.NotAvailableColor);
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.UnlockPublic_Warning1));
+                        content.Add(new RbText(DssRef.lang.UnlockPublic_Warning1));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.UnlockPublic_Warning2));
+                        content.Add(new RbText(DssRef.lang.UnlockPublic_Warning2));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.Unlock_WarningBadExperience));
+                        content.Add(new RbText(DssRef.lang.Unlock_WarningBadExperience));
 
                         content.newParagraph();
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                            new RbText(DssRef.todoLang.Hud_Accept)
+                            new RbText(DssRef.lang.Hud_Accept)
                         }, new RbAction2Arg<string, StackOption>(openmenu, UnlockPublic_Sure, StackOption.ReplaceLast))
                         { fillWidth = true });
 
@@ -85,24 +85,24 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.h1(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, DssRef.todoLang.Unlock_PlayerVersusPlayer), HudLib.TitleColor_Head);
+                        content.h1(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, DssRef.lang.Unlock_PlayerVersusPlayer), HudLib.TitleColor_Head);
                         content.h2(SpriteName.cmdWarningTriangle, DssRef.lang.Lobby_WarningTitle, HudLib.NotAvailableColor);
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.UnlockPvp_Warning1));
+                        content.Add(new RbText(DssRef.lang.UnlockPvp_Warning1));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.UnlockPvp_Warning2));
+                        content.Add(new RbText(DssRef.lang.UnlockPvp_Warning2));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.Unlock_WarningBadExperience));
+                        content.Add(new RbText(DssRef.lang.Unlock_WarningBadExperience));
 
                         content.newParagraph();
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                            new RbText(DssRef.todoLang.Hud_Accept)
+                            new RbText(DssRef.lang.Hud_Accept)
                         }, new RbAction2Arg<string, StackOption>(openmenu, UnlockPvp_Sure, StackOption.ReplaceLast))
                         { fillWidth = true });
 
@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Interface
             int count = 0;
             HudLib.returnButton(content, menu, true, null);
 
-            content.h1(DssRef.todoLang.BlockedPlayersTitle, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.BlockedPlayersTitle, HudLib.TitleColor_Head);
 
             for (int i = 0; i < Ref.netsett.storedGamers.Count; i++)
             {
@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.Interface
                             m.ban = BanStatus.None;
                             Ref.netsett.storedGamers.array[selected] = m;
                             DssRef.storage.Save(null);
-                        }, i), new RbTooltip_Text(DssRef.todoLang.ClickToRemoveBan)));
+                        }, i), new RbTooltip_Text(DssRef.lang.ClickToRemoveBan)));
                 }
             }
             if (count == 0)
@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.Interface
           
             HudLib.returnButton(content, menu, true, null);
 
-            content.h1(DssRef.todoLang.PlayerJoinHistoryTitle, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.PlayerJoinHistoryTitle, HudLib.TitleColor_Head);
 
             for (int i = 0; i < Ref.p2p.joinHistory.Count; i++)
             {
@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Interface
 
                         DssRef.storage.Save(null);
 
-                    }, i), new RbTooltip_Text(DssRef.todoLang.Multiplayer_BlockPlayer)));
+                    }, i), new RbTooltip_Text(DssRef.lang.Multiplayer_BlockPlayer)));
 
             }
             if (Ref.p2p.joinHistory.Count == 0)
@@ -230,12 +230,12 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                 }
 
-                content.h1(DssRef.todoLang.Lobby_Category_MultiplayerSettings, HudLib.TitleColor_Head);
+                content.h1(DssRef.lang.Lobby_Category_MultiplayerSettings, HudLib.TitleColor_Head);
 
-                content.h2(SpriteName.WarsHudIconHost, DssRef.todoLang.HostSettingsTitle, HudLib.TitleColor_Head2);
+                content.h2(SpriteName.WarsHudIconHost, DssRef.lang.HostSettingsTitle, HudLib.TitleColor_Head2);
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Network_PlayOffline) },
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Network_PlayOffline) },
                 Ref.netsett.OfflineProperty));
 
                 if (!Ref.netsett.hostNetwork)
@@ -244,25 +244,25 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 var publicityOptions = new DropDownBuilder("lobby public");
                 {
-                    publicityOptions.AddOption(DssRef.todoLang.JoinPermission_Private, Ref.netsett.lobbyPublicity == LobbyPublicity.Private, false,
+                    publicityOptions.AddOption(DssRef.lang.JoinPermission_Private, Ref.netsett.lobbyPublicity == LobbyPublicity.Private, false,
                         new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.Private), null);
-                    publicityOptions.AddOption(DssRef.todoLang.JoinPermission_FriendsOnly, Ref.netsett.lobbyPublicity == LobbyPublicity.FriendsOnly, false,
+                    publicityOptions.AddOption(DssRef.lang.JoinPermission_FriendsOnly, Ref.netsett.lobbyPublicity == LobbyPublicity.FriendsOnly, false,
                                         new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.FriendsOnly), null);
-                    var publicOpt = publicityOptions.AddOption(DssRef.todoLang.JoinPermission_Public, Ref.netsett.lobbyPublicity == LobbyPublicity.Public, false,
+                    var publicOpt = publicityOptions.AddOption(DssRef.lang.JoinPermission_Public, Ref.netsett.lobbyPublicity == LobbyPublicity.Public, false,
                                         new RbAction1Arg<LobbyPublicity>(setLobbyPublicity, LobbyPublicity.Public), null);
                     publicOpt.enabled = Ref.netsett.unlockPublicGames;
 
                 }
-                publicityOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.JoinPermission_Title, menu);
+                publicityOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.JoinPermission_Title, menu);
 
                 content.newLine();
-                HudLib.Label(content, SpriteName.WarsHudIconPlayerCount, DssRef.todoLang.MaxPlayerCount);
+                HudLib.Label(content, SpriteName.WarsHudIconPlayerCount, DssRef.lang.MaxPlayerCount);
                 content.hspace();
                 RbDragButton.RbDragButtonGroup(content, new List<float> { 10 },
                     new DragButtonSettings(2, 64, 1), Ref.netsett.MaxPlayerCountProperty, false);
 
                 content.newLine();
-                HudLib.Label(content, SpriteName.WarsHudIconDistanceOnMap, DssRef.todoLang.DistanceBetweenPlayers);
+                HudLib.Label(content, SpriteName.WarsHudIconDistanceOnMap, DssRef.lang.DistanceBetweenPlayers);
                 content.hspace();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 8, 1), Ref.netsett.PlayerSpacingProperty));
 
@@ -271,21 +271,21 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconHandicap),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.AllowHandicap) },
+                    new RbText(DssRef.lang.AllowHandicap) },
                     Ref.netsett.allowHandicapProperty));
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudCasualMode),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.AllowCasualControls) },
+                    new RbText(DssRef.lang.AllowCasualControls) },
                     Ref.netsett.allowCasualControlsProperty, new RbTooltip_Text(DssRef.lang.Settings_CasualControls_Description)));
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.VoxelEditorBucket),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.AutoRecolorPlayerFlags) },
+                    new RbText(DssRef.lang.AutoRecolorPlayerFlags) },
                     Ref.netsett.autoRecolorFlagsProperty, null));
 
                 content.newLine();
@@ -294,21 +294,21 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconBlockedPlayer),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.BlockedPlayersTitle) },
+                    new RbText(DssRef.lang.BlockedPlayersTitle) },
                 new RbAction2Arg<string, StackOption>(openmenu, BlockList, StackOption.Stack)));
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconMultiplayer),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.PlayerJoinHistoryTitle) },
+                    new RbText(DssRef.lang.PlayerJoinHistoryTitle) },
                 new RbAction2Arg<string, StackOption>(openmenu, JoinHistoryList, StackOption.Stack)));
 
 
             content.newParagraph();
             if (bMainMenu)
             {
-                content.h2(DssRef.todoLang.PlayerInteractionTitle, HudLib.TitleColor_Label);
+                content.h2(DssRef.lang.PlayerInteractionTitle, HudLib.TitleColor_Label);
 
                 var defDiplomacyOptions = new DropDownBuilder("def diplomacy");
                 {
@@ -325,7 +325,7 @@ namespace VikingEngine.DSSWars.Interface
                             }, relation), null);
                     }
                 }
-                defDiplomacyOptions.Build(content, SpriteName.WarsDiplomaticPoint, DssRef.todoLang.DefaultDiplomacy, menu);
+                defDiplomacyOptions.Build(content, SpriteName.WarsDiplomaticPoint, DssRef.lang.DefaultDiplomacy, menu);
 
                 playerInteractSettings(content, true);
 
@@ -335,13 +335,13 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbSeperationLine());
 
                 content.newParagraph();
-                content.h2(SpriteName.WarsHudIconClient, DssRef.todoLang.ClientSettingsTitle, HudLib.TitleColor_Head2);
+                content.h2(SpriteName.WarsHudIconClient, DssRef.lang.ClientSettingsTitle, HudLib.TitleColor_Head2);
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconHandicap),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.UseHandicap) },
+                    new RbText(DssRef.lang.UseHandicap) },
                     Ref.netsett.useHandicapProperty));
 
                 if (Ref.netsett.clientSettings.useHandicap)
@@ -358,7 +358,7 @@ namespace VikingEngine.DSSWars.Interface
                                     break;
                                 default:
                                 case HandicapLevel.Default:
-                                    caption = DssRef.todoLang.Hud_Default;
+                                    caption = DssRef.lang.Hud_Default;
                                     break;
                                 case HandicapLevel.Low:
                                     caption = DssRef.lang.Hud_Low;
@@ -379,20 +379,20 @@ namespace VikingEngine.DSSWars.Interface
                                 }, lvl), null);
                         }
                     }
-                    aggroOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.DifficultyDescription_BotAggression, menu);
+                    aggroOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.DifficultyDescription_BotAggression, menu);
 
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsUnitIcon_Honorguard),
                         new RbSpace(0.5f),
-                        new RbText(string.Format( DssRef.todoLang.Hud_GetExtraX, DssRef.lang.UnitType_HonorGuard)) },
+                        new RbText(string.Format( DssRef.lang.Hud_GetExtraX, DssRef.lang.UnitType_HonorGuard)) },
                         Ref.netsett.handicap_extraHonorGuardsProperty));
 
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsIcon_Resources),
                         new RbSpace(0.5f),
-                        new RbText(DssRef.todoLang.ResourceBoost) },
+                        new RbText(DssRef.lang.ResourceBoost) },
                         Ref.netsett.handicap_resourceBoostProperty));
 
                     var taxOptions = new DropDownBuilder("handicap tax");
@@ -407,7 +407,7 @@ namespace VikingEngine.DSSWars.Interface
                                     break;
                                 default:
                                 case HandicapLevel.Default:
-                                    caption = DssRef.todoLang.Hud_Default;
+                                    caption = DssRef.lang.Hud_Default;
                                     break;
                                 case HandicapLevel.Low:
                                     caption = DssRef.lang.Hud_Low;
@@ -428,26 +428,26 @@ namespace VikingEngine.DSSWars.Interface
                     taxOptions.Build(content, SpriteName.rtsIncome, DssRef.lang.Economy_TaxIncome, menu);
                 }
 
-                content.h2(DssRef.todoLang.PlayerInteractionTitle, HudLib.TitleColor_Label);
+                content.h2(DssRef.lang.PlayerInteractionTitle, HudLib.TitleColor_Label);
                 playerInteractSettings(content, false);
                 content.newParagraph();
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.DefaultPeaceful) }, new RbAction(Ref.netsett.resetPeaceful, RbSoundType.Paste))
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.DefaultPeaceful) }, new RbAction(Ref.netsett.resetPeaceful, RbSoundType.Paste))
                 { overrideBgColor = Color.DarkGray });
                 content.newLine();
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.DefaultCoOptional) }, new RbAction(Ref.netsett.resetMixed, RbSoundType.Paste))
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.DefaultCoOptional) }, new RbAction(Ref.netsett.resetMixed, RbSoundType.Paste))
                 { overrideBgColor = Color.DarkGray });
 
                 if (Ref.netsett.unlockPvp)
                 {
                     content.newLine();
-                    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.DefaultHardcore) }, new RbAction(Ref.netsett.resetHardcore, RbSoundType.Paste))
+                    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.DefaultHardcore) }, new RbAction(Ref.netsett.resetHardcore, RbSoundType.Paste))
                     { overrideBgColor = Color.DarkGray });
                 }
 
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
 
-                content.h2(DssRef.todoLang.GeneralTitle, HudLib.TitleColor_Head2);
+                content.h2(DssRef.lang.GeneralTitle, HudLib.TitleColor_Head2);
             }
             var voiceOpt = new DropDownBuilder("voice");
             {
@@ -465,15 +465,15 @@ namespace VikingEngine.DSSWars.Interface
                             break;
                         case VoiceOption.ButtonHold:
                             icon = chatKey;
-                            caption = DssRef.todoLang.InputButton_Hold;
+                            caption = DssRef.lang.InputButton_Hold;
                             break;
                         case VoiceOption.ButtonToggle:
                             icon = chatKey;
-                            caption = DssRef.todoLang.InputButton_Toggle;
+                            caption = DssRef.lang.InputButton_Toggle;
                             break;
                         case VoiceOption.AlwaysOn:
                             icon = SpriteName.MenuPixelIconSoundVol;
-                            caption = DssRef.todoLang.VoiceOptAlwaysOn;
+                            caption = DssRef.lang.VoiceOptAlwaysOn;
                             break;
                     }
 
@@ -486,7 +486,7 @@ namespace VikingEngine.DSSWars.Interface
                         }, opt), null);
                 }
             }
-            voiceOpt.Build(content, SpriteName.VoiceSoundOn, DssRef.todoLang.VoiceTitle, menu);
+            voiceOpt.Build(content, SpriteName.VoiceSoundOn, DssRef.lang.VoiceTitle, menu);
             if (bMainMenu)
             {
                 var recieveGiftOpt = new DropDownBuilder("gift");
@@ -498,13 +498,13 @@ namespace VikingEngine.DSSWars.Interface
                         {
                             default:
                             case GiftRecieveOption.Allow:
-                                caption = DssRef.todoLang.GiftOptAllow;
+                                caption = DssRef.lang.GiftOptAllow;
                                 break;
                             case GiftRecieveOption.FriendsOnly:
-                                caption = DssRef.todoLang.GiftOptFriendsOnly;
+                                caption = DssRef.lang.GiftOptFriendsOnly;
                                 break;
                             case GiftRecieveOption.Blocked:
-                                caption = DssRef.todoLang.GiftOptBlocked;
+                                caption = DssRef.lang.GiftOptBlocked;
                                 break;
                         }
 
@@ -517,10 +517,10 @@ namespace VikingEngine.DSSWars.Interface
                             }, opt), null);
                     }
                 }
-                recieveGiftOpt.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.ReceiveAchievementsTitle, menu);
+                recieveGiftOpt.Build(content, SpriteName.NO_IMAGE, DssRef.lang.ReceiveAchievementsTitle, menu);
                 content.space();
                 RichBoxContent info = new RichBoxContent();
-                HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.GiftWarning));
+                HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.GiftWarning));
 
                 content.newParagraph();
                 if (Ref.netsett.unlockPublicGames == false)
@@ -528,7 +528,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.birdUnLock),
                     new RbSpace(),
-                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, DssRef.todoLang.Unlock_PublicGames))
+                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, DssRef.lang.Unlock_PublicGames))
                 },
                         new RbAction2Arg<string, StackOption>(openmenu, UnlockPublic, StackOption.Stack)));
                     content.newLine();
@@ -538,13 +538,13 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.birdUnLock),
                     new RbSpace(),
-                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, DssRef.todoLang.Unlock_PlayerVersusPlayer))
+                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_Unlock, DssRef.lang.Unlock_PlayerVersusPlayer))
                 },
                     new RbAction2Arg<string, StackOption>(openmenu, UnlockPvp, StackOption.Stack)));
                 }
 
                 content.newParagraph();
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.FullReset) }, new RbAction(() =>
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.FullReset) }, new RbAction(() =>
                 {
                     new NetworkSettings();
                     menu.needRefresh = true;
@@ -592,12 +592,12 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
             }
-            allowAllianceOptions.Build(content, SpriteName.WarsRelationAlly, DssRef.todoLang.AllowAllianceTitle, menu);
+            allowAllianceOptions.Build(content, SpriteName.WarsRelationAlly, DssRef.lang.AllowAllianceTitle, menu);
 
             if (toPlayerDiplomacy.allianceAllow == PlayerDiplomacyAllowType.Allow)
             {
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.CanBreakAlliance) },
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.CanBreakAlliance) },
                     Ref.netsett.canBreakAllianceProperty)
                 { propertyTag = host });
             }
@@ -631,36 +631,36 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
             }
-            allowWarOptions.Build(content, SpriteName.WarsRelationWar, DssRef.todoLang.AllowWarTitle, menu);
+            allowWarOptions.Build(content, SpriteName.WarsRelationWar, DssRef.lang.AllowWarTitle, menu);
 
             if (toPlayerDiplomacy.warAllow == PlayerDiplomacyAllowType.Allow)
             {
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.FairProtection) },
-                    Ref.netsett.fairProtectionProperty, new RbTooltip_Text(DssRef.todoLang.FairProtectionTooltip))
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.FairProtection) },
+                    Ref.netsett.fairProtectionProperty, new RbTooltip_Text(DssRef.lang.FairProtectionTooltip))
                 { propertyTag = host });
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MustAsk) },
-                    Ref.netsett.warMustAskProperty, new RbTooltip_Text(DssRef.todoLang.MustAskTooltip))
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MustAsk) },
+                    Ref.netsett.warMustAskProperty, new RbTooltip_Text(DssRef.lang.MustAskTooltip))
                 { propertyTag = host });
 
                 if (!toPlayerDiplomacy.mustAsk)
                 {
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.AllianceLimit) },
-                        Ref.netsett.warAllianceLimitProperty, new RbTooltip_Text(DssRef.todoLang.AllianceLimitTooltip))
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.AllianceLimit) },
+                        Ref.netsett.warAllianceLimitProperty, new RbTooltip_Text(DssRef.lang.AllianceLimitTooltip))
                     { propertyTag = host });
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.GameStartProtection) },
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameStartProtection) },
                         Ref.netsett.warUseGameStartTimeProperty)
                     { propertyTag = host });
 
                     if (toPlayerDiplomacy.gameStartPreparationTime.use)
                     {
-                        HudLib.Label(content, DssRef.todoLang.Hud_Time_Minutes);
+                        HudLib.Label(content, DssRef.lang.Hud_Time_Minutes);
                         content.hspace();
                         RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
                             Ref.netsett.warStartTimeProperty, true, host);
@@ -669,13 +669,13 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.WarPreparationTime) },
-                    Ref.netsett.warUsePreparationTimeProperty, new RbTooltip_Text(DssRef.todoLang.WarPreparationTimeTooltip))
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.WarPreparationTime) },
+                    Ref.netsett.warUsePreparationTimeProperty, new RbTooltip_Text(DssRef.lang.WarPreparationTimeTooltip))
                 { propertyTag = host });
 
                 if (toPlayerDiplomacy.warDeclarePreparationTime.use)
                 {
-                    HudLib.Label(content, DssRef.todoLang.Hud_Time_Minutes);
+                    HudLib.Label(content, DssRef.lang.Hud_Time_Minutes);
                     content.hspace();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 10, 30 }, new DragButtonSettings(5, 120, 5),
                         Ref.netsett.warPreparationTimeProperty, true, host);
@@ -697,26 +697,26 @@ namespace VikingEngine.DSSWars.Interface
             switch (allowType)
             {
                 case PlayerDiplomacyAllowType.Allow:
-                    return DssRef.todoLang.Hud_Allow;
+                    return DssRef.lang.Hud_Allow;
 
                 default:
                 case PlayerDiplomacyAllowType.Blocked:
-                    return DssRef.todoLang.Hud_Blocked;
+                    return DssRef.lang.Hud_Blocked;
 
                 case PlayerDiplomacyAllowType.PlayersChoose:
-                    return DssRef.todoLang.DiplomacyPlayersChoice;
+                    return DssRef.lang.DiplomacyPlayersChoice;
             }
         }
 
         void unlockMultiplayer_Sure(bool bPublicGames)
         {
             RichBoxContent content = new RichBoxContent();
-            content.h1(DssRef.todoLang.UnlockSureTitle, HudLib.TitleColor_Head);
-            content.text(DssRef.todoLang.UnlockSureDescription);
+            content.h1(DssRef.lang.UnlockSureTitle, HudLib.TitleColor_Head);
+            content.text(DssRef.lang.UnlockSureDescription);
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                            new RbText(DssRef.todoLang.Hud_Accept)
+                            new RbText(DssRef.lang.Hud_Accept)
                         }, new RbAction(() => {
                             if (bPublicGames)
                             {

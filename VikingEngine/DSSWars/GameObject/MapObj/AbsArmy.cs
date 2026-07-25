@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (pfaction == player.pfaction && player.alliedFactions.Count > 0)
             {   
                 content.Add(new RbSeperationLine());
-                HudLib.Label(content, DssRef.todoLang.Diplomacy_GiftToPlayer);
+                HudLib.Label(content, DssRef.lang.Diplomacy_GiftToPlayer);
                 content.hspace();
 
                 if (lastTimeTradedBetweenPlayers.TimeOut())

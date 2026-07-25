@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars.Interface
                 
             }
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.GameSettings_DisplayInputHelp) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GameSettings_DisplayInputHelp) },
                 DisplayInputHelpProperty));
 
             content.newParagraph();
@@ -539,11 +539,11 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4, 0.1f), Ref.gamesett.panSpeedProperty, true));
 
-            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.GameSettings_InputSmoothing, Ref.langOpt.MouseButtonAction_Pan));
+            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Language_LabelAndText_Colon, Ref.langOpt.GameSettings_InputSmoothing, Ref.langOpt.MouseButtonAction_Pan));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.0f, 1f, 0.1f), Ref.gamesett.panSmoothingProperty, true));
 
-            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.todoLang.GameSettings_InputSmoothing, DssRef.lang.ButtonAction_Zoom));
+            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Language_LabelAndText_Colon, Ref.langOpt.GameSettings_InputSmoothing, DssRef.lang.ButtonAction_Zoom));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.0f, 0.9f, 0.1f), Ref.gamesett.zoomSmoothingProperty, true));
 
@@ -624,7 +624,7 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             content.newParagraph();
-            content.h2(DssRef.todoLang.Multiplayer_Title, HudLib.TitleColor_Head);
+            content.h2(DssRef.lang.Multiplayer_Title, HudLib.TitleColor_Head);
             content.newLine();
             new NetworkSettingsMenu(menu, false).multiplayerSettingsMenuContent(content);
         }

@@ -8,6 +8,9 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Spanish
     {
+        public override string FactionName_Ellium => "Ellium";
+        public override string FactionName_GrakPushdug => "Grak pushdug";
+        public override string FactionName_Draugost => "Draugost";
         public override string FactionName_Starshield => "Estrellaescudo";
         public override string FactionName_Bluepeak => "Pico Azul";
         public override string FactionName_Hoft => "Hoft";

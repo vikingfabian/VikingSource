@@ -11,6 +11,10 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 판타지 분위기를 살리면서 발음과 어감을 유지한 한국어 표기
         /// </summary>
+        public override string FactionName_Ellium => "엘리움";
+        public override string FactionName_GrakPushdug => "그라크 푸쉬두그";
+        public override string FactionName_Draugost => "드라우고스트";
+
         public override string FactionName_Starshield => "스타실드";
         public override string FactionName_Bluepeak => "블루피크";
         public override string FactionName_Hoft => "호프트";

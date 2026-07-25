@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space(0.5f);
             args.content.Add(new RbImage(SpriteName.WarsLocationPin));
             args.content.space(0.5f);
-            args.content.Add(new RbText(DssRef.todoLang.ObjectType_LocationPin, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+            args.content.Add(new RbText(DssRef.lang.ObjectType_LocationPin, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
 
@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void infoHud(ObjectHudArgs args)
         {
             args.content.newParagraph();
-            HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.todoLang.Message);
+            HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.lang.Message);
             args.content.newLine();
             for (PingMessage message = 0; message < PingMessage.NUM; message++)
             {
@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (DssRef.DlcSupporter.owned)
             {
                 args.content.newParagraph();
-                HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.todoLang.Hud_ModelType);
+                HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.lang.Hud_ModelType);
                 args.content.newLine();
 
                 int exendModel = ModelVariants;
@@ -195,16 +195,16 @@ namespace VikingEngine.DSSWars.GameObject
             if (Ref.netSession.InMultiplayerSession)
             {
                 args.content.newParagraph();
-                HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.todoLang.ObjectType_LocationPin_Share);
+                HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.lang.ObjectType_LocationPin_Share);
                 args.content.newLine();
 
                 if (netInteractLevel == NetInteractLevel.Hidden)
                 {
-                    interactLevelButton(DssRef.todoLang.Group_Everyone, NetInteractLevel.Public);
+                    interactLevelButton(DssRef.lang.Group_Everyone, NetInteractLevel.Public);
                 }
                 else
                 {
-                    interactLevelButton(DssRef.todoLang.Hud_Hide, NetInteractLevel.Hidden);
+                    interactLevelButton(DssRef.lang.Hud_Hide, NetInteractLevel.Hidden);
                 }
 
                 void interactLevelButton(string label, NetInteractLevel level)
@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             args.content.newLine();
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
-               new RbText(  DssRef.todoLang.Hud_DeleteAll) }, new RbAction1Arg<DeleteReason>(args.player.clearPins, DeleteReason.Disband)));
+               new RbText(  DssRef.lang.Hud_DeleteAll) }, new RbAction1Arg<DeleteReason>(args.player.clearPins, DeleteReason.Disband)));
 
         }
 

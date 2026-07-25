@@ -9,6 +9,341 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+        //Multiplayer update
+        
+        abstract public string Unlock_PublicGames { get; }
+        abstract public string UnlockPublic_Warning1 { get; }
+        abstract public string UnlockPublic_Warning2 { get; }
+        abstract public string Unlock_WarningBadExperience { get; }
+        abstract public string Hud_Accept { get; }
+        abstract public string Hud_Block { get; }
+        abstract public string Hud_Deny { get; }
+        abstract public string Hud_Reason { get; }
+        abstract public string Hud_Full { get; }
+        abstract public string Hud_Version { get; }
+        abstract public string Unlock_PlayerVersusPlayer { get; }
+        abstract public string UnlockPvp_Warning1 { get; }
+        abstract public string UnlockPvp_Warning2 { get; }
+        abstract public string PlayerJoinHistoryTitle { get; }
+        abstract public string BlockedPlayersTitle { get; }
+        abstract public string ClickToRemoveBan { get; }
+        abstract public string HostSettingsTitle { get; }
+        abstract public string MaxPlayerCount { get; }
+        abstract public string DistanceBetweenPlayers { get; }
+        abstract public string AllowHandicap { get; }
+        abstract public string AllowCasualControls { get; }
+        abstract public string AutoRecolorPlayerFlags { get; }
+        abstract public string DefaultDiplomacy { get; }
+        abstract public string ClientSettingsTitle { get; }
+        abstract public string UseHandicap { get; }
+        abstract public string DifficultyDescription_BotAggression { get; }
+        abstract public string Hud_GetExtraX { get; }
+        abstract public string Hud_Hide { get; }
+        abstract public string Hud_ModelType { get; }
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        abstract public string Language_LabelAndText_Colon { get; }
+        abstract public string Language_CatergoryDashUndercategory { get; }
+
+        abstract public string ResourceBoost { get; }
+        //abstract public string TaxIncome { get; }
+        abstract public string PlayerInteractionTitle { get; }
+        abstract public string DefaultPeaceful { get; }
+        abstract public string DefaultCoOptional { get; }
+        abstract public string DefaultHardcore { get; }
+        abstract public string GeneralTitle { get; }
+
+        abstract public string InputButton_Hold { get; }
+        abstract public string InputButton_Toggle { get; }
+        abstract public string VoiceOptAlwaysOn { get; }
+        abstract public string VoiceTitle { get; }
+        abstract public string VoiceMute { get; }
+        abstract public string GiftOptAllow { get; }
+        abstract public string GiftOptFriendsOnly { get; }
+        abstract public string GiftOptBlocked { get; }
+        abstract public string ReceiveAchievementsTitle { get; }
+        abstract public string GiftWarning { get; }
+        abstract public string FullReset { get; }
+        abstract public string AllowAllianceTitle { get; }
+        abstract public string CanBreakAlliance { get; }
+        abstract public string AllowWarTitle { get; }
+        abstract public string FairProtection { get; }
+        abstract public string FairProtectionTooltip { get; }
+        abstract public string MustAsk { get; }
+        abstract public string MustAskTooltip { get; }
+        abstract public string AllianceLimit { get; }
+        abstract public string AllianceLimitTooltip { get; }
+        abstract public string GameStartProtection { get; }
+        abstract public string Hud_Time_Minutes { get; }
+        abstract public string WarPreparationTime { get; }
+        abstract public string WarPreparationTimeTooltip { get; }
+        abstract public string Hud_Allow { get; }
+        abstract public string Hud_Blocked { get; }
+
+        abstract public string Hud_DeleteAll { get; }
+        abstract public string DiplomacyPlayersChoice { get; }
+        abstract public string UnlockSureTitle { get; }
+        abstract public string UnlockSureDescription { get; }
+
+        abstract public string Network_PlayOffline { get; }
+        abstract public string JoinPermission_Title { get; }
+        abstract public string JoinPermission_Private { get; }
+        abstract public string JoinPermission_FriendsOnly { get; }
+        abstract public string JoinPermission_Public { get; }
+
+        abstract public string Network_Join { get; }
+        abstract public string Network_ConnectingToGame { get; }
+        abstract public string Lobby_Category_MultiplayerSettings { get; }
+
+        abstract public string Hud_Default { get; }
+        abstract public string Group_Team { get; }
+        abstract public string Group_Everyone { get; }
+
+        abstract public string Language_SymbolForMillion { get; }
+
+        abstract public string DecorType_DiplomaticStatue { get; }
+
+        abstract public string Message { get; }
+        abstract public string ObjectType_LocationPin { get; }
+        abstract public string ObjectType_LocationPin_Share { get; }
+        abstract public string ObjectType_LocationPin_Ping { get; }
+        abstract public string InputActionName_TextChat { get; }
+        abstract public string InputActionName_TextChatLog { get; }
+        abstract public string InputActionName_VoiceChat { get; }
+        abstract public string InputActionName_NextPin { get; }
+        abstract public string InputActionName_PinAndPing { get; }
+
+        abstract public string Leaderboards_ArmySize { get; }
+        abstract public string Leaderboards_MultiplayerPlayerCount { get; }
+
+        abstract public string Multiplayer_BanWarning { get; }
+        abstract public string Multiplayer_SentToHost { get; }
+        abstract public string Multiplayer_AddToOwnBlocks { get; }
+
+        abstract public string Multiplayer_Message_RequestSent { get; }
+
+        abstract public string Multiplayer_BlockPlayer { get; }
+        abstract public string Multiplayer_NetSession { get; }
+        abstract public string GiftedAchievements { get; }
+        abstract public string GiftedAchievements_Description { get; }
+
+        abstract public string Multiplayer_Title { get; }
+        abstract public string Multiplayer_Lobby { get; }
+
+        abstract public string Multiplayer_Tutorial_HostStart { get; }
+        abstract public string Multiplayer_Tutorial_JoinButton { get; }
+        abstract public string Multiplayer_Tutorial_Visible { get; }
+
+        abstract public string Multiplayer_KickPlayer { get; }
+        abstract public string Multiplayer_RequestBlockPlayer { get; }
+        abstract public string Multiplayer_HandoverComplete { get; }
+        abstract public string Multiplayer_LoadingClientSave { get; }
+        abstract public string Multiplayer_ClientSaveComplete { get; }
+        abstract public string Multiplayer_BadActor { get; }
+        abstract public string Multiplayer_NetworkError { get; }
+        abstract public string Multiplayer_Sender { get; }
+        abstract public string Multiplayer_Receiver { get; }
+        abstract public string Multiplayer_PlayerJoined { get; }
+        abstract public string Multiplayer_PlayerLeft { get; }
+        abstract public string Multiplayer_RequestingClientGamestates { get; }
+        abstract public string Multiplayer_TextChat { get; }
+        abstract public string Multiplayer_VoiceChat { get; }
+        abstract public string Steam_UserProfile { get; }
+        abstract public string Steam_OpenSteamOverlay { get; }
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        abstract public string Diplomacy_RelationType_Mobilizing { get; }
+        abstract public string Diplomacy_OfferRelation { get; }
+        abstract public string Diplomacy_OfferRelation_Declined { get; }
+        abstract public string Diplomacy_SendGold { get; }
+        abstract public string Diplomacy_GiftToPlayer { get; }
+        abstract public string Diplomacy_RecievedGift { get; }
+        abstract public string Diplomacy_OnAccept { get; }
+        abstract public string Diplomacy_WarPreparationTime { get; }
+
+        abstract public string Diplomacy_AboveSoftCap { get; }
+        abstract public string Diplomacy_BelowSoftCap { get; }
+        abstract public string Diplomacy_OpenPlayerToPlayer { get; }
+        //--
+
+        //abstract public string GiftAchieve_WhiteKnight_Name { get; }
+        //abstract public string GiftAchieve_WhiteKnight_Desc { get; }
+
+        //abstract public string GiftAchieve_HeroComplexSaviorComplex_Name { get; }
+        //abstract public string GiftAchieve_HeroComplexSaviorComplex_Desc { get; }
+
+        //abstract public string GiftAchieve_CryBaby_Name { get; }
+        //abstract public string GiftAchieve_CryBaby_Desc { get; }
+
+        //abstract public string GiftAchieve_KingMaker_Name { get; }
+        //abstract public string GiftAchieve_KingMaker_Desc { get; }
+
+        //abstract public string GiftAchieve_Turtle_Name { get; }
+        //abstract public string GiftAchieve_Turtle_Desc { get; }
+
+        //abstract public string GiftAchieve_MetaPlayer_Name { get; }
+        //abstract public string GiftAchieve_MetaPlayer_Desc { get; }
+
+        //abstract public string GiftAchieve_Tryhard_Name { get; }
+        //abstract public string GiftAchieve_Tryhard_Desc { get; }
+
+        //abstract public string GiftAchieve_DidPracticeInSecret_Name { get; }
+        //abstract public string GiftAchieve_DidPracticeInSecret_Desc { get; }
+
+        //abstract public string GiftAchieve_TheEncyclopedia_Name { get; }
+        //abstract public string GiftAchieve_TheEncyclopedia_Desc { get; }
+
+        //abstract public string GiftAchieve_WarCriminal_Name { get; }
+        //abstract public string GiftAchieve_WarCriminal_Desc { get; }
+
+        //abstract public string GiftAchieve_FarmerRush_Name { get; }
+        //abstract public string GiftAchieve_FarmerRush_Desc { get; }
+
+        //abstract public string GiftAchieve_Politician_Name { get; }
+        //abstract public string GiftAchieve_Politician_Desc { get; }
+
+        //abstract public string GiftAchieve_Socializer_Name { get; }
+        //abstract public string GiftAchieve_Socializer_Desc { get; }
+
+        //abstract public string GiftAchieve_OverAchiever_Name { get; }
+        //abstract public string GiftAchieve_OverAchiever_Desc { get; }
+
+        //abstract public string GiftAchieve_Noob_Name { get; }
+        //abstract public string GiftAchieve_Noob_Desc { get; }
+
+        //abstract public string GiftAchieve_SwedishNeutrality_Name { get; }
+        //abstract public string GiftAchieve_SwedishNeutrality_Desc { get; }
+
+        //abstract public string GiftAchieve_TroubleMaker_Name { get; }
+        //abstract public string GiftAchieve_TroubleMaker_Desc { get; }
+
+        //abstract public string GiftAchieve_ScorchedEarth_Name { get; }
+        //abstract public string GiftAchieve_ScorchedEarth_Desc { get; }
+
+        //abstract public string GiftAchieve_WarMonger_Name { get; }
+        //abstract public string GiftAchieve_WarMonger_Desc { get; }
+
+        //abstract public string GiftAchieve_LivingInABubble_Name { get; }
+        //abstract public string GiftAchieve_LivingInABubble_Desc { get; }
+
+        //abstract public string GiftAchieve_Bully_Name { get; }
+        //abstract public string GiftAchieve_Bully_Desc { get; }
+
+        //abstract public string GiftAchieve_ControlFreak_Name { get; }
+        //abstract public string GiftAchieve_ControlFreak_Desc { get; }
+
+        //abstract public string GiftAchieve_RandomNothingMakesSense_Name { get; }
+        //abstract public string GiftAchieve_RandomNothingMakesSense_Desc { get; }
+
+        //abstract public string GiftAchieve_Hoarder_Name { get; }
+        //abstract public string GiftAchieve_Hoarder_Desc { get; }
+
+        //abstract public string GiftAchieve_Scatterbrained_Name { get; }
+        //abstract public string GiftAchieve_Scatterbrained_Desc { get; }
+
+        //abstract public string GiftAchieve_NearSighted_Name { get; }
+        //abstract public string GiftAchieve_NearSighted_Desc { get; }
+
+        //abstract public string GiftAchieve_AutomationAbuser_Name { get; }
+        //abstract public string GiftAchieve_AutomationAbuser_Desc { get; }
+
+        //abstract public string GiftAchieve_Troll_Name { get; }
+        //abstract public string GiftAchieve_Troll_Desc { get; }
+
+        //abstract public string GiftAchieve_MemeLord_Name { get; }
+        //abstract public string GiftAchieve_MemeLord_Desc { get; }
+
+        //abstract public string GiftAchieve_SupportSlave_Name { get; }
+        //abstract public string GiftAchieve_SupportSlave_Desc { get; }
+
+        //abstract public string GiftAchieve_DarkSidePlayer_Name { get; }
+        //abstract public string GiftAchieve_DarkSidePlayer_Desc { get; }
+
+        //abstract public string GiftAchieve_SlaughterHouse_Name { get; }
+        //abstract public string GiftAchieve_SlaughterHouse_Desc { get; }
+
+        //abstract public string GiftAchieve_AnimalCruelty_Name { get; }
+        //abstract public string GiftAchieve_AnimalCruelty_Desc { get; }
+
+        //abstract public string GiftAchieve_LuckyBastard_Name { get; }
+        //abstract public string GiftAchieve_LuckyBastard_Desc { get; }
+
+        //abstract public string GiftAchieve_Cursed_Name { get; }
+        //abstract public string GiftAchieve_Cursed_Desc { get; }
+
+        //abstract public string GiftAchieve_Backstabber_Name { get; }
+        //abstract public string GiftAchieve_Backstabber_Desc { get; }
+
+        //abstract public string GiftAchieve_Oathbreaker_Name { get; }
+        //abstract public string GiftAchieve_Oathbreaker_Desc { get; }
+
+        //abstract public string GiftAchieve_Wormtongue_Name { get; }
+        //abstract public string GiftAchieve_Wormtongue_Desc { get; }
+
+        //abstract public string GiftAchieve_ArmchairGeneral_Name { get; }
+        //abstract public string GiftAchieve_ArmchairGeneral_Desc { get; }
+
+        //abstract public string GiftAchieve_Salty_Name { get; }
+        //abstract public string GiftAchieve_Salty_Desc { get; }
+
+        //abstract public string GiftAchieve_SaltMiner_Name { get; }
+        //abstract public string GiftAchieve_SaltMiner_Desc { get; }
+
+        //abstract public string GiftAchieve_PuppetMaster_Name { get; }
+        //abstract public string GiftAchieve_PuppetMaster_Desc { get; }
+
+        //abstract public string GiftAchieve_TheCarry_Name { get; }
+        //abstract public string GiftAchieve_TheCarry_Desc { get; }
+
+        //abstract public string GiftAchieve_OneManArmy_Name { get; }
+        //abstract public string GiftAchieve_OneManArmy_Desc { get; }
+
+        //abstract public string GiftAchieve__4DChessPlayer_Name { get; }
+        //abstract public string GiftAchieve__4DChessPlayer_Desc { get; }
+
+        //abstract public string GiftAchieve_SpreadsheetWarrior_Name { get; }
+        //abstract public string GiftAchieve_SpreadsheetWarrior_Desc { get; }
+
+        //abstract public string GiftAchieve_MeatShield_Name { get; }
+        //abstract public string GiftAchieve_MeatShield_Desc { get; }
+
+        //abstract public string GiftAchieve_InDebt_Name { get; }
+        //abstract public string GiftAchieve_InDebt_Desc { get; }
+
+        //abstract public string GiftAchieve_OnLifeSupport_Name { get; }
+        //abstract public string GiftAchieve_OnLifeSupport_Desc { get; }
+
+        //abstract public string GiftAchieve_LoneWolf_Name { get; }
+        //abstract public string GiftAchieve_LoneWolf_Desc { get; }
+
+        //abstract public string GiftAchieve_ShaggyTooDopeAlwaysChilling_Name { get; }
+        //abstract public string GiftAchieve_ShaggyTooDopeAlwaysChilling_Desc { get; }
+
+        //abstract public string GiftAchieve_BadInfluence_Name { get; }
+        //abstract public string GiftAchieve_BadInfluence_Desc { get; }
+
+        //abstract public string GiftAchieve_HindsightTactician_Name { get; }
+        //abstract public string GiftAchieve_HindsightTactician_Desc { get; }
+
+        //abstract public string GiftAchieve_Houseplant_Name { get; }
+        //abstract public string GiftAchieve_Houseplant_Desc { get; }
+
+        //abstract public string GiftAchieve_Sheep_Name { get; }
+        //abstract public string GiftAchieve_Sheep_Desc { get; }
+
+        //abstract public string GiftAchieve_GlitchRider_Name { get; }
+        //abstract public string GiftAchieve_GlichRider_Desc { get; }
+
+        //abstract public string GiftAchieve_ChickenShit_Name { get; }
+        //abstract public string GiftAchieve_ChickenShit_Desc { get; }
+
+        //abstract public string GiftAchieve_TheLeakyCanteen_Name { get; }
+        //abstract public string GiftAchieve_TheLeakyCanteen_Desc { get; }
+
         //Post mount update
         public abstract string StockPile_ItemsAreNotLost { get; }
 
@@ -1068,9 +1403,9 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Delivery_DistanceX { get; }
         public abstract string Delivery_DeliveryTimeX { get; }
         public abstract string Delivery_SenderMinimumCap { get; }
-        public abstract string Delivery_RecieverMaximumCap { get; }
+        public abstract string Delivery_ReceiverMaximumCap { get; }
         public abstract string Delivery_ItemsReady { get; }
-        public abstract string Delivery_RecieverReady { get; }
+        public abstract string Delivery_ReceiverReady { get; }
         public abstract string Hud_ThisCity { get; }
         public abstract string Hud_RecieveingCity { get; }
 
@@ -1255,7 +1590,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string LandType_Flatland { get; }
         public abstract string LandType_Water { get; }
         public abstract string BuildingType_Wall { get; }
-        public abstract string Delivery_AutoReciever_Description { get; }
+        public abstract string Delivery_AutoReceiver_Description { get; }
 
         //public abstract string Hud_NoLimit { get; }
         public abstract string Hud_On { get; }
@@ -2162,9 +2497,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string InputActionName_NextWar { get; }
 
-        public abstract string EngineHud_SymbolFor100 { get; }
-        public abstract string EngineHud_SymbolFor1000 { get; }
-        public abstract string EngineHud_SymbolFor10000 { get; }
+        public abstract string Language_SymbolFor100 { get; }
+        public abstract string Language_SymbolFor1000 { get; }
+        public abstract string Language_SymbolFor10000 { get; }
 
         public abstract string GameMenu_BlockImportAchievements { get; }
 

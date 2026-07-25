@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Interface
                     if (hasController)
                     {
                         input_directionmap(map.cameraTiltUpSmooth, DssRef.lang.InputActionName_CameraTiltUp);
-                        input_buttonmap(map.PinAndPing, DssRef.todoLang.InputActionName_PinAndPing);
+                        input_buttonmap(map.PinAndPing, DssRef.lang.InputActionName_PinAndPing);
                     }
                     break;
 

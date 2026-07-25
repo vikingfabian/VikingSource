@@ -12,6 +12,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// The faction names are fantasy names designed to sound historic, they don't have to be directly translated as long as they keep some of their essence
         /// </summary>
+        public override string FactionName_Ellium => TextLib.ThaiConv("เอลเลียม");
+        public override string FactionName_GrakPushdug => TextLib.ThaiConv("แกรก|พุชดูก");
+        public override string FactionName_Draugost => TextLib.ThaiConv("ดราวกอสต์"); 
         public override string FactionName_Starshield => TextLib.ThaiConv("โล่|ดารา");
         public override string FactionName_Bluepeak => TextLib.ThaiConv("ยอด|เขา|สี|น้ำเงิน");
         public override string FactionName_Hoft => TextLib.ThaiConv("ฮอฟต์");

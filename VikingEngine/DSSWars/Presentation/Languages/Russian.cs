@@ -8,6 +8,174 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+        //Multiplayer update
+       
+        //--
+       
+        //--
+        public override string Unlock_PublicGames => "публичные игры";
+        public override string UnlockPublic_Warning1 => "Не играйте с незнакомцами";
+        public override string UnlockPublic_Warning2 => "В игре нет защиты от читеров или троллей";
+        public override string Unlock_WarningBadExperience => "У вас останутся плохие впечатления";
+        public override string Hud_Accept => "Принять";
+        public override string Hud_Block => "Заблокировать";
+        public override string Hud_Deny => "Отклонить";
+        public override string Hud_Reason => "Причина";
+        public override string Hud_Full => "Мест нет";
+        public override string Hud_Version => "Версия";
+        public override string Unlock_PlayerVersusPlayer => "игрок против игрока (PvP)";
+        public override string UnlockPvp_Warning1 => "DSS не предназначена для соревновательных матчей";
+        public override string UnlockPvp_Warning2 => "Здесь нет баланса, матчи будут нечестными";
+        public override string PlayerJoinHistoryTitle => "История подключений игроков";
+        public override string BlockedPlayersTitle => "Заблокированные игроки";
+        public override string ClickToRemoveBan => "Клик: снять бан";
+        public override string HostSettingsTitle => "Настройки хоста";
+        public override string MaxPlayerCount => "Макс. число игроков";
+        public override string DistanceBetweenPlayers => "Расстояние между игроками";
+        public override string AllowHandicap => "Разрешить фору";
+        public override string AllowCasualControls => "Разрешить упрощенное управление";
+        public override string AutoRecolorPlayerFlags => "Автоматически перекрашивать флаги";
+        public override string DefaultDiplomacy => "Дипломатия по умолчанию";
+        public override string ClientSettingsTitle => "Настройки клиента";
+        public override string UseHandicap => "Использовать фору";
+        public override string DifficultyDescription_BotAggression => "Агрессивность ботов";
+        public override string Hud_GetExtraX => "Доп. {0}";
+        public override string Hud_Hide => "Скрыть";
+        public override string Hud_ModelType => "Модель";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}: {1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "Буст ресурсов";
+        //public override string TaxIncome => "Доход от налогов";
+        public override string PlayerInteractionTitle => "Взаимодействие игроков";
+        public override string DefaultPeaceful => "По умолчанию: Мирно";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "По умолчанию: Кооп по желанию";
+        public override string DefaultHardcore => "По умолчанию: Хардкор";
+        public override string GeneralTitle => "Общие";
+
+        public override string InputButton_Hold => "Удержание кнопки";
+        public override string InputButton_Toggle => "Переключение (Toggle)";
+        public override string VoiceOptAlwaysOn => "Всегда включен";
+        public override string VoiceTitle => "Голос";
+        public override string VoiceMute => "Мьют";
+        public override string GiftOptAllow => "Разрешить";
+        public override string GiftOptFriendsOnly => "Только друзья";
+        public override string GiftOptBlocked => "Заблокировано";
+        public override string ReceiveAchievementsTitle => "Получение достижений";
+        public override string GiftWarning => "Внимание! Подаренные достижения могут показаться унизительными";
+        public override string FullReset => "Полный сброс";
+        public override string AllowAllianceTitle => "Разрешить союзы";
+        public override string CanBreakAlliance => "Можно разорвать союз";
+        public override string AllowWarTitle => "Разрешить войну";
+        public override string FairProtection => "Честная защита";
+        public override string FairProtectionTooltip => "Защищенные игроки обязаны использовать против вас те же правила";
+        public override string MustAsk => "Только с согласия";
+        public override string MustAskTooltip => "Оба игрока должны согласиться на бой";
+        public override string AllianceLimit => "Лимит альянса";
+        public override string AllianceLimitTooltip => "Вас не может атаковать альянс игроков большего размера";
+        public override string GameStartProtection => "Защита на старте игры";
+        public override string Hud_Time_Minutes => "минут";
+        public override string WarPreparationTime => "Время подготовки к войне";
+        public override string WarPreparationTimeTooltip => "Задержка между объявлением войны и возможностью атаковать";
+        public override string Hud_Allow => "Разрешить";
+        public override string Hud_Blocked => "Заблокировано";
+
+        public override string Hud_DeleteAll => "Удалить всё";
+        public override string DiplomacyPlayersChoice => "На выбор игроков";
+        public override string UnlockSureTitle => "Вы действительно, абсолютно уверены?";
+        public override string UnlockSureDescription => "Вы будете вести себя как взрослый и не пойдете потом ныть на форум?";
+
+
+
+        public override string Network_PlayOffline => "Играть оффлайн";
+        public override string JoinPermission_Title => "Права на подключение";
+        public override string JoinPermission_Private => "Приватная";
+        public override string JoinPermission_FriendsOnly => "Только друзья";
+        public override string JoinPermission_Public => "Публичная";
+
+        public override string Network_Join => "Присоединиться к игре";
+        public override string Network_ConnectingToGame => "Подключение...";
+        public override string Lobby_Category_MultiplayerSettings => "Настройки мультиплеера";
+
+        public override string Hud_Default => "По умолчанию";
+        public override string Group_Team => "команда";
+        public override string Group_Everyone => "все";
+
+        public override string Language_SymbolForMillion => "М";
+
+        public override string DecorType_DiplomaticStatue => "Дипломатическая статуя";
+
+        public override string Message => "Сообщение";
+        public override string ObjectType_LocationPin => "Метка на карте";
+        public override string ObjectType_LocationPin_Share => "Поделиться и пингануть";
+        public override string ObjectType_LocationPin_Ping => "Пинг!";
+        public override string InputActionName_TextChat => "Текстовый чат";
+        public override string InputActionName_TextChatLog => "Лог чата";
+        public override string InputActionName_VoiceChat => "Голосовой чат";
+        public override string InputActionName_NextPin => "Следующая метка";
+        public override string InputActionName_PinAndPing => "Добавить метку";
+
+        public override string Leaderboards_ArmySize => "Размер одной армии (в силе)";
+        public override string Leaderboards_MultiplayerPlayerCount => "Количество игроков на хосте";
+
+        public override string Multiplayer_BanWarning => "предупреждение о бане";
+        public override string Multiplayer_SentToHost => "Будет отправлено хосту";
+        public override string Multiplayer_AddToOwnBlocks => "Добавить в свой черный список";
+
+        public override string Multiplayer_Message_RequestSent => "Запрос отправлен";
+
+        public override string Multiplayer_BlockPlayer => "Заблокировать игрока";
+        public override string Multiplayer_NetSession => "Сетевая сессия";
+        public override string GiftedAchievements => "Подаренные достижения";
+        public override string GiftedAchievements_Description => "Вознаграждайте плохое поведение ваших друзей";
+
+        public override string Multiplayer_Title => "Мультиплеер";
+        public override string Multiplayer_Lobby => "Лобби мультиплеера";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. Хост запускает игру";
+        public override string Multiplayer_Tutorial_JoinButton => "2. Кнопка подключения появится здесь";
+        public override string Multiplayer_Tutorial_Visible => "Профиль хоста в Steam должен быть открытым";
+
+        public override string Multiplayer_KickPlayer => "Кикнуть игрока";
+        public override string Multiplayer_RequestBlockPlayer => "Запрос: Заблокировать игрока";
+        public override string Multiplayer_HandoverComplete => "Передача завершена";
+        public override string Multiplayer_LoadingClientSave => "Загрузка сохранения клиента";
+        public override string Multiplayer_ClientSaveComplete => "Сохранение клиента завершено";
+        public override string Multiplayer_BadActor => "Токсичный игрок";
+        public override string Multiplayer_NetworkError => "Ошибка сети";
+        public override string Multiplayer_Sender => "Отправитель";
+        public override string Multiplayer_Receiver => "Получатель";
+        public override string Multiplayer_PlayerJoined => "Игрок присоединился";
+        public override string Multiplayer_PlayerLeft => "Игрок вышел";
+        public override string Multiplayer_RequestingClientGamestates => "Запрос состояния игры у клиентов...";
+        public override string Multiplayer_TextChat => "Текстовый чат";
+        public override string Multiplayer_VoiceChat => "Голосовой чат";
+        public override string Steam_UserProfile => "Профиль пользователя";
+        public override string Steam_OpenSteamOverlay => "Открыть оверлей Steam";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "Мобилизация";
+        public override string Diplomacy_OfferRelation => "Предложить отношения";
+        public override string Diplomacy_OfferRelation_Declined => "Предложение отношений отклонено";
+        public override string Diplomacy_SendGold => "Отправить золото";
+        public override string Diplomacy_GiftToPlayer => "Подарок игроку";
+        public override string Diplomacy_RecievedGift => "Подарок получен";
+        public override string Diplomacy_OnAccept => "Если другой игрок согласится:";
+        public override string Diplomacy_WarPreparationTime => "Время подготовки к войне";
+
+        public override string Diplomacy_AboveSoftCap => "Выше софт-капа";
+        public override string Diplomacy_BelowSoftCap => "Ниже софт-капа";
+        public override string Diplomacy_OpenPlayerToPlayer => "Открыть дипломатию с игроком";
         //Post mount update
         public override string StockPile_ItemsAreNotLost => "Предметы не будут уничтожены при превышении лимита склада!";
         public override string SlaughterResult_PerAnimal => "Добыча при забое, за животное";
@@ -1836,9 +2004,9 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "Расстояние: {0}";
         public override string Delivery_DeliveryTimeX => "Время доставки: {0}";
         public override string Delivery_SenderMinimumCap => "Минимальный предел отправителя";
-        public override string Delivery_RecieverMaximumCap => "Максимальный предел получателя";
+        public override string Delivery_ReceiverMaximumCap => "Максимальный предел получателя";
         public override string Delivery_ItemsReady => "Предметы готовы";
-        public override string Delivery_RecieverReady => "Получатель готов";
+        public override string Delivery_ReceiverReady => "Получатель готов";
         public override string Hud_ThisCity => "Этот город";
         public override string Hud_RecieveingCity => "Город-получатель";
 
@@ -2029,7 +2197,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "Равнина";
         public override string LandType_Water => "Вода";
         public override string BuildingType_Wall => "Стена";
-        public override string Delivery_AutoReciever_Description => "Отправлять в город с наименьшим количеством ресурсов";
+        public override string Delivery_AutoReceiver_Description => "Отправлять в город с наименьшим количеством ресурсов";
 
         public override string Hud_On => "Включено";
         public override string Hud_Off => "Выключено";
@@ -2975,9 +3143,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// These symbols are needed to fit large numbers on the HUD,
         /// there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "c";
-        public override string EngineHud_SymbolFor1000 => "k";
-        public override string EngineHud_SymbolFor10000 => "10k";
+        public override string Language_SymbolFor100 => "c";
+        public override string Language_SymbolFor1000 => "k";
+        public override string Language_SymbolFor10000 => "10k";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress

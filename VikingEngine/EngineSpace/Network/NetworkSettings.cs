@@ -744,16 +744,16 @@ namespace VikingEngine.Network
                     default:
                         return TextLib.Error;
                     case LobbyPublicity.Private:
-                        return DssRef.todoLang.JoinPermission_Private;
+                        return DssRef.lang.JoinPermission_Private;
                     case LobbyPublicity.FriendsOnly:
-                        return DssRef.todoLang.JoinPermission_FriendsOnly;
+                        return DssRef.lang.JoinPermission_FriendsOnly;
                     case LobbyPublicity.Public:
-                        return DssRef.todoLang.JoinPermission_Public;
+                        return DssRef.lang.JoinPermission_Public;
                 }
             }
             else
             {
-                return DssRef.todoLang.Network_PlayOffline;
+                return DssRef.lang.Network_PlayOffline;
             }
         }
     }

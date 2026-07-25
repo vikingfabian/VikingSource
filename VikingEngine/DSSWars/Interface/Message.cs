@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Interface
         public void giftMessage(AbsArmy mapObj, RemotePlayer fromPlayer)
         {
             RichBoxContent content = new RichBoxContent();
-            content.h1(DssRef.todoLang.Diplomacy_RecievedGift, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Diplomacy_RecievedGift, HudLib.TitleColor_Head);
 
             content.newLine();
             var gotoButtonContent = new RichBoxContent();

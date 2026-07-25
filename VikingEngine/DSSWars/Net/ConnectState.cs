@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Net
         {
             Ref.music.stop(true);
 
-            Graphics.Text2 text = new Graphics.Text2(DssRef.todoLang.Network_ConnectingToGame,
+            Graphics.Text2 text = new Graphics.Text2(DssRef.lang.Network_ConnectingToGame,
                 LoadedFont.Bold, Engine.Screen.CenterScreen, Engine.Screen.TextTitleHeight,
                  Color.Yellow, ImageLayers.Lay1);
             text.OrigoAtCenter();
