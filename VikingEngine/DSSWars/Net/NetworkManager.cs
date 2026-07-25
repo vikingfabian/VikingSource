@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars
             return false;
         }
         private void netSendMapObjectsInView(RemotePlayer player, ref bool sentAnything)
-        {            
+        {
             if (player.gotStatus)
             {
                 player.gotStatus = false;
@@ -294,10 +294,10 @@ namespace VikingEngine.DSSWars
                             Color col = lib.HSL2RGB(hue, saturation, lightness);
 
                             if (!alreadyInUse(col))
-                            { 
+                            {
                                 return col;
                             }
-                        }                        
+                        }
                     }
                 }
             }
@@ -309,14 +309,14 @@ namespace VikingEngine.DSSWars
                 AllHumansLoop allHumans = new AllHumansLoop();
                 while (allHumans.Next(out var ready))
                 {
-                    if (player != allHumans.sel )
+                    if (player != allHumans.sel)
                     {
                         if (ColorExt.ValueDifference(color, allHumans.sel.profile.flag.col0_Main) < 20)
                         {
                             return true;
                         }
                     }
-                    
+
                 }
                 return false;
             }
@@ -355,7 +355,7 @@ namespace VikingEngine.DSSWars
                             sender.networkPeer.peer.isRecording = bits.Get(0);
                             bool dlc = bits.Get(1);
                             if (dlc != sender.supporterDLC)
-                            { 
+                            {
                                 sender.supporterDLC = dlc;
                                 sender.pointer.refreshDlc(dlc);
                             }
@@ -389,13 +389,13 @@ namespace VikingEngine.DSSWars
                         int factionIx = packet.r.ReadUInt16();
                         var faction = DssRef.world.faction(factionIx);
                         tplayer.AssignFaction(faction);
-                        
+
                         DssRef.time.setTotalTime(new TimeSpan(packet.r.ReadInt64()));
                         tplayer.timePlayed = new TimeSpan(packet.r.ReadInt64());
                         DssRef.world.metaData.worldId.read(packet.r);
-                        
+
                         LocalHost().netFirstTimeEnter = packet.r.ReadBoolean();
-                        
+
                     }
                     break;
 
@@ -525,7 +525,7 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssDeliver:
                     City.NetReadDelivery(packet);
-                    
+
                     break;
                 case PacketType.DssDeliverStatusRequest:
                     City.NetReadDeliveryStatusRequest(packet);
@@ -543,7 +543,7 @@ namespace VikingEngine.DSSWars
                         sender.addNetGamerToHud(content, true, false);
                         content.icontext(SpriteName.TextChatLetter, message.message);
 
-                        LocalHost().hud.messages.Add(content, SoundLib.netMessage);                        
+                        LocalHost().hud.messages.Add(content, SoundLib.netMessage);
                     }
                     break;
                 case PacketType.DssGiftAchievement:
@@ -659,7 +659,7 @@ namespace VikingEngine.DSSWars
                                 content.icontext(SpriteName.WarsHudHeadBarPlayIcon,
                                     string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed)));
                             }
-                            LocalHost().hud.messages.Add(content, Ref.isPaused? SoundLib.speed_down : SoundLib.speed_up);
+                            LocalHost().hud.messages.Add(content, Ref.isPaused ? SoundLib.speed_down : SoundLib.speed_up);
                         }
                     }
                     break;
@@ -774,7 +774,7 @@ namespace VikingEngine.DSSWars
             //}
         }
 
-        
+
 
         void netWriteSendWorld(ReceivedPacket requestPacket, RemotePlayer sender)
         {
@@ -823,7 +823,7 @@ namespace VikingEngine.DSSWars
             DssRef.storage.ruleset_instance.read(r, false);
 
             if (r.ReadBoolean())
-            { 
+            {
                 Color recolor = StreamLib.ReadColorStream_3B(r);
                 ((PlayState)DssRef.state).recolor = recolor;
             }
@@ -924,7 +924,7 @@ namespace VikingEngine.DSSWars
                             {
                                 Ref.update.AddSyncAction(new SyncAction(() =>
                                 {
-                                    
+
                                     sender.AssignFaction(faction);
                                     if (firstEnterSetup)
                                     {
@@ -948,6 +948,8 @@ namespace VikingEngine.DSSWars
 
         public override void NetEvent_LargePacket(ReceivedPacket packet)
         {
+            packetsRecieved[(int)packet.type]++;
+
             switch (packet.type)
             {
                 case PacketType.DssCityHandOver:
@@ -958,7 +960,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
                 case PacketType.DssWorldDiplomacy:
-                    DssRef.world.diplomacy.readRelations(packet.r, int.MaxValue);                    
+                    DssRef.world.diplomacy.readRelations(packet.r, int.MaxValue);
                     break;
             }
         }
@@ -1072,16 +1074,16 @@ namespace VikingEngine.DSSWars
                 RichBoxContent content = new RichBoxContent();
 
                 content.h1(SpriteName.WarsHudIconMultiplayer, DssRef.todoLang.Network_ConnectingToGame, HudLib.TitleColor_Head);
-                
+
                 content.newLine();
                 player.addNetGamerToHud(content, true, false);
 
-                LocalHost().hud.messages.Add(content);                
+                LocalHost().hud.messages.Add(content);
             }
 
             if (Ref.netsett.voiceOption == VoiceOption.AlwaysOn)
-            {                
-                Ref.steam.StartRecording();                
+            {
+                Ref.steam.StartRecording();
             }
 
             menuSystem.OnMultiplayer();
@@ -1100,7 +1102,7 @@ namespace VikingEngine.DSSWars
 
                 switch (maxPlayerCount)
                 {
-                    case 2: 
+                    case 2:
                         DssRef.stats.startHostingMultiplayer_2.addOne();
                         Ref.netsett.SendStats(true);
                         break;
@@ -1119,7 +1121,7 @@ namespace VikingEngine.DSSWars
             {
                 NetEvent_ConnectionLost("Host peer timeout");
             }
-            
+
             var player = GetPlayer(peer.fullId) as RemotePlayer;
 
             if (player == null)
@@ -1167,11 +1169,11 @@ namespace VikingEngine.DSSWars
                 LocalHost().hud.messages.Add(content, SoundLib.netJoined);
                 Ref.netsett.settingsHasChanged = true;
             }
-            
+
             Ref.steamlobby.refreshMetaData();
         }
 
-        
+
 
 
         public void NetWritePlayer(System.IO.BinaryWriter w, AbsHumanPlayer player)
@@ -1216,7 +1218,7 @@ namespace VikingEngine.DSSWars
 
             RichBoxContent content = new RichBoxContent();
 
-            
+
             from.addNetGamerToHud(content, true, false);
             content.hspace();
             content.Add(new RbImage(SpriteName.cmdConvertArrow));
@@ -1255,7 +1257,7 @@ namespace VikingEngine.DSSWars
         }
 
         public void KickPlayer(AbsNetworkPeer networkPeer)
-        { 
+        {
             Ref.netSession.kickFromNetwork(networkPeer);
         }
 
@@ -1265,7 +1267,7 @@ namespace VikingEngine.DSSWars
             Ref.netSession.kickFromNetwork(networkPeer);
         }
 
-        
+
         public void RequestClientGamestates(bool autoSave, bool exit = false)
         {
             if (waitingForClientHandover == false)
@@ -1303,7 +1305,7 @@ namespace VikingEngine.DSSWars
             var playTime = new TimeSpan(r.ReadInt64());
             WorldMetaId id = new WorldMetaId();
             id.read(r);
-                        
+
             ClientSaveMeta meta = new ClientSaveMeta(playTime, id, LocalHost().pfaction);
             ClientSaveState saveGamestate = new ClientSaveState(meta);
             saveGamestate.save();
@@ -1330,6 +1332,12 @@ namespace VikingEngine.DSSWars
                 {
                     Array.Clear(packetsRecieved);
                 }), null));
+
+            if (host)
+            {
+                content.newParagraph();
+                content.text("Handover queue: " + factionHandovers.Count.ToString());
+            }
         }
     }
 }

@@ -1693,7 +1693,7 @@ namespace VikingEngine.DSSWars.Players
                 else
                 {
                     ref var alliance = ref DssRef.world.diplomacy.GetRefRelation_Safe(pfaction, allyFaction.pfaction);
-                    alliance.SetRelation(PFaction.Empty, PFaction.Empty, RelationType.RelationType3_Ally, PFaction.Empty, out _, false);
+                    alliance.SetRelation(PFaction.Empty, PFaction.Empty, RelationType.RelationType3_Ally, PFaction.Empty, out _, false, true);
                     
                     alliance.allyAgainst = enemyFaction.myIndex;
                     allyFaction.player.GetAiPlayer().diplomacyPoints = 0;

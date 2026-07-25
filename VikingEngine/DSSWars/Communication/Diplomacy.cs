@@ -549,7 +549,7 @@ namespace VikingEngine.DSSWars
 
                 if (newRelation.HasValue)
                 {
-                    relation.SetRelation(faction1, faction2, newRelation.Value, actuator, out RelationType previous, fromAllianceTrade);
+                    relation.SetRelation(faction1, faction2, newRelation.Value, actuator, out RelationType previous, fromAllianceTrade, true);
                 }
             }
         }
@@ -670,7 +670,7 @@ namespace VikingEngine.DSSWars
                 
                 if (relation.Relation > RelationType.RelationType0_Neutral)
                 {
-                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, actingFaction, out RelationType prev, false);
+                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, actingFaction, out RelationType prev, false, true);
                     
                     if (actingFaction.TryGetPlayer(out var player) && player.IsLocalPlayer())
                     {
@@ -681,7 +681,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void declareWar(PFaction attacker, PFaction defender, bool fromAllianceTrade)
+        public void declareWar(PFaction attacker, PFaction defender, bool fromAllianceTrade, bool localAction = true)
         {
            
             if (attacker != defender &&
@@ -690,7 +690,7 @@ namespace VikingEngine.DSSWars
                 defender.TryGetPlayer(out var dPlayer))
             {
                 ref var relation = ref GetRefRelation(attacker, defender);
-                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, attacker, out RelationType prevRelation, fromAllianceTrade);
+                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, attacker, out RelationType prevRelation, fromAllianceTrade, localAction);
                 
 
                 if (aPlayer.IsLocalPlayer())

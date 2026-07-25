@@ -465,15 +465,15 @@ namespace VikingEngine.DSSWars.GameObject
             AbsMapObject attackTarget_sp = attackTarget;
             if (attackTarget_sp != null)
             {
-                Order_Attack_Setup(attackTarget_sp);
+                Order_Attack_Setup(attackTarget_sp, true);
                 objective = ArmyObjective.Attack;
                 onNewGoal(false);
             }
         }
 
-        public void Order_Attack_Setup(AbsMapObject attackTarget)
+        public void Order_Attack_Setup(AbsMapObject attackTarget, bool localAction)
         {
-            DssRef.world.diplomacy.declareWar(pfaction, attackTarget.pfaction, false);
+            DssRef.world.diplomacy.declareWar(pfaction, attackTarget.pfaction, false, localAction);
             clearObjective();
             this.attackTarget = attackTarget;
             this.attackTargetFaction = attackTarget.pfaction;
@@ -679,7 +679,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (pointers == null)
                         {
-                            targetPointer.SetPointer();
+                            targetPointer.SetPointer(false);
                         }
                         else
                         {
@@ -694,7 +694,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (pointers == null)
                         {
-                            targetPointer.SetPointer();
+                            targetPointer.SetPointer(false);
                         }
                         else
                         {

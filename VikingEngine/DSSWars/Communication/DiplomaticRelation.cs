@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Communication
             return Relation >= RelationType.RelationType3_Ally;
         }
 
-        public void SetRelation(PFaction faction1, PFaction faction2, RelationType newRelation, PFaction actuator, out RelationType previousRelation, bool fromAllianceTrade)
+        public void SetRelation(PFaction faction1, PFaction faction2, RelationType newRelation, PFaction actuator, out RelationType previousRelation, bool fromAllianceTrade, bool localAction)
         {
             previousRelation = Relation;
 
@@ -55,18 +55,20 @@ namespace VikingEngine.DSSWars.Communication
                 faction1.GetPlayer()?.onNewRelation(actuator == faction2,faction2, this, previousRelation, fromAllianceTrade, true);
                 faction2.GetPlayer()?.onNewRelation(actuator == faction1,faction1, this, previousRelation, fromAllianceTrade, true);
 
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
+                if (localAction)
                 {
-                    EightBit actuators = new EightBit(actuator == faction1, actuator == faction2);
-                    actuators.write(w);
-                    
-                    faction1.write(w);
-                    faction2.write(w);
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        EightBit actuators = new EightBit(actuator == faction1, actuator == faction2);
+                        actuators.write(w);
 
-                    write(w);
+                        faction1.write(w);
+                        faction2.write(w);
+
+                        write(w);
+                    }
+                    packet.EndWrite_Asynch();
                 }
-                packet.EndWrite_Asynch();
-
             }
         }
 
