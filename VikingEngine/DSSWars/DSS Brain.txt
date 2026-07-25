@@ -1,6 +1,6 @@
 
 Change log:
-* 
+* fixed net echo of war delare
 
 x får alla klienter en check vid map send?
 x still hard to join (maybe limit non ready traffic)

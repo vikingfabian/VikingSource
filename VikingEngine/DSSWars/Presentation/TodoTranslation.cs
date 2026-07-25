@@ -163,9 +163,6 @@ namespace VikingEngine.DSSWars.Presentation
         public string Multiplayer_RequestingClientGamestates => "Requesting client gamestates...";
         public string Multiplayer_TextChat => "Text chat";
         public string Multiplayer_VoiceChat => "Voice chat";
-        //public string Multiplayer_ => ;
-        //public string Multiplayer_ => ;
-        //public string Multiplayer_ => ;
         public string Steam_UserProfile => "User profile";
         public string Steam_OpenSteamOverlay => "Open Steam overlay";
         
