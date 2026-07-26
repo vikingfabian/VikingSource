@@ -334,7 +334,7 @@ namespace VikingEngine.DSSWars
 
             for (int i = start; i < end; i++)
             {
-                GetRefRelation(pfaction, new PFaction(i)).readRelation(r);
+                GetRefRelation_Safe(pfaction, new PFaction(i)).readRelation(r);
             }
            
             Debug.ReadCheck(r);
