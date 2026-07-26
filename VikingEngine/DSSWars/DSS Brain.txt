@@ -6,6 +6,7 @@ Change log:
 * blocked army and map update from handover player
 * fixed all reported crashes
 * The diplomatic relations are removed from the handover and will be sent with the map update instead
+* Compressed relation packages
 
 x no voice option
 x mute people

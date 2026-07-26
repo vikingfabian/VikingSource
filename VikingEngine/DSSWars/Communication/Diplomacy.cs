@@ -284,7 +284,7 @@ namespace VikingEngine.DSSWars
             {
                 int currentIndex = r.ReadUInt16();
 
-                if (currentIndex < diplomaticRelations.Length)
+                if (currentIndex < ushort.MaxValue)
                 {
                     GetRefRelation(pfaction, new PFaction(currentIndex)).read(r, int.MaxValue);
                 }
@@ -300,58 +300,39 @@ namespace VikingEngine.DSSWars
         {
             int length = DssRef.world.factions.Array.Length;
 
-            for (int part = 0; part < 2; part++)
+            int otherFaction = 0;
+            const int ChunkLength = 512;
+            //int chunkCount = MathExt.Div_Ceiling(length, ChunkLength);
+
+            do//for (int part = 0; part < 2; part++)
             {
+                int end = Bound.Max(otherFaction + ChunkLength, length);
+
                 var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionClientDiplomacy, PacketReliability.Reliable, out var packet);
                 {
-                    w.Write((byte)part);
                     pfaction.write(w);
-                    w.Write((ushort)length);
+                    w.Write((ushort)otherFaction);
+                    w.Write((ushort)end);
 
-                    int half = length / 2;
-                    int start, end;
-                    if (part == 0)
+                    for (; otherFaction < end; otherFaction++)
                     {
-                        start = 0;
-                        end = half;
-                    }
-                    else
-                    {
-                        start = half;
-                        end = length;
-                    }
-
-                    for (int i = start; i < end; i++)
-                    {
-                        var relation = GetRelation(pfaction, new PFaction(i));
+                        var relation = GetRelation(pfaction, new PFaction(otherFaction));
                         relation.write(w);
                     }
 
                     Debug.WriteCheck(w);
                 }
                 packet.EndWrite_Asynch();
-            }
+            
+            } while (otherFaction < length);
         }
         public void readRelationsForClient(System.IO.BinaryReader r)
-        {
-            int part = r.ReadByte();
+        {            
             PFaction pfaction = new PFaction(r);
-            int length = r.ReadUInt16();
+            int start = r.ReadUInt16();
+            int end = r.ReadUInt16();
 
-            int half = length / 2;
-            int start, end;
-            if (part == 0)
-            {
-                start = 0;
-                end = half;
-            }
-            else
-            {
-                start = half;
-                end = length;
-            }
-
-            for (int i = 0; i < length; i++)
+            for (int i = start; i < end; i++)
             {
                 GetRefRelation(pfaction, new PFaction(i)).readRelation(r);
             }
