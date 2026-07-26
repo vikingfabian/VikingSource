@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Net
 {
     class ConnectState : AbsDssState
     {
-        Time failTimer = new Time(8, TimeUnit.Seconds);
+        Time failTimer = new Time(20, TimeUnit.Seconds);
         //LobbyMetaData meta;
         public ConnectState(Network.AbsAvailableSession available)
             : base()
