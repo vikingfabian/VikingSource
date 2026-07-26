@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars
                     for (; otherFaction < end; otherFaction++)
                     {
                         var relation = GetRelation(pfaction, new PFaction(otherFaction));
-                        relation.write(w);
+                        relation.writeRelation(w);
                     }
 
                     Debug.WriteCheck(w);
