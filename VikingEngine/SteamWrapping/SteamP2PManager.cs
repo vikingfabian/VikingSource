@@ -401,13 +401,14 @@ namespace VikingEngine.SteamWrapping
             {
                 createLocalPeer();
             }
-
+            
             return localPeer;
         }
 
         void createLocalPeer()
         {
             localPeer = new SteamNetworkPeer(SteamUser.GetSteamID(), true);
+            localPeer.mapLoadedAndReady = hostSession;
         }
 
         public void RemovePeer(AbsNetworkPeer peer)
