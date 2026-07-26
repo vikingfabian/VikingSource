@@ -46,7 +46,7 @@ namespace VikingEngine.Network
     {
         public static readonly SendPacketToOptions SendToAll = new SendPacketToOptions(SendPacketTo.All, ulong.MaxValue);
         public static readonly SendPacketToOptions SendToHost = new SendPacketToOptions(SendPacketTo.Host, ulong.MaxValue);
-        public static readonly SendPacketToOptions SendToInVisualRange = new SendPacketToOptions(SendPacketTo.InVisualRange, ulong.MaxValue);
+        //public static readonly SendPacketToOptions SendToInVisualRange = new SendPacketToOptions(SendPacketTo.InVisualRange, ulong.MaxValue);
 
         public SendPacketTo To;
         public ulong SpecificGamerID;
@@ -111,9 +111,13 @@ namespace VikingEngine.Network
     enum SendPacketTo
     {
         All,
+        /// <summary>
+        /// Will use IsMapLoadedAndReady
+        /// </summary>
+        Ready,
         Host,
         OneSpecific,
-        InVisualRange,
+        //InVisualRange,
         NUM
     }
 
@@ -298,7 +302,7 @@ namespace VikingEngine.Network
         RequestMapSeed,
         DesignAreaStorageHeader,
         
-        Basic_MapLoadedAndReady,
+        //Basic_MapLoadedAndReady,
         
         cmdGameStarted,
         cmdShareUnitSetup,

@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Players
         public bool ready = false;
         public bool newPlayer = true;
         public bool supporterDLC = false;
-        public bool waitingForHandover = false;
+        public bool waitingForSaveHandover = false;
 
         public AbsPlayer previousPlayer;
         public PFaction assignedFaction = PFaction.Empty;//ushort.MaxValue;

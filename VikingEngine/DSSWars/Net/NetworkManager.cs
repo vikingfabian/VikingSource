@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars
             {
                 if (asyncRoundTrip)
                 {
-                    int maxSendLoops = factionHandovers.Count > 0 ? 2 : MaxSendLoops;
+                    int maxSendLoops = factionHandovers.Count > 0 ? 1 : MaxSendLoops;
 
                     asyncRoundTrip = false;
                     handoverPlayer = async_updateHandover();
@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars
                         var remoteC = remotePlayers.counter();
                         while (remoteC.Next())
                         {
-                            if (remoteC.sel.waitingForHandover)
+                            if (remoteC.sel.waitingForSaveHandover)
                             {
                                 ready = false;
                                 break;
@@ -459,7 +459,7 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssClientHandoverComplete:
                     {
-                        sender.waitingForHandover = false;
+                        sender.waitingForSaveHandover = false;
                         RichBoxContent content = new RichBoxContent();
                         content.icontext(NetworkIcon, DssRef.lang.Multiplayer_ClientSaveComplete);
                         content.newLine();
@@ -1042,24 +1042,27 @@ namespace VikingEngine.DSSWars
             }
         }
 
-
+        CircleCounterUp dividedUpdate = new CircleCounterUp(3);
         Timer.Basic NetSlowUpdate = new Timer.Basic(1500, true);
 
         public override void NetUpdate()
         {
             asyncRoundTrip = true;
 
-            bool slowUpdate = NetSlowUpdate.Update();
-
-            foreach (var player in localPlayers)
+            if (factionHandovers.IsEmpty || dividedUpdate.Next_IsReset())
             {
-                player.NetUpdate(slowUpdate);
-            }
+                bool slowUpdate = NetSlowUpdate.Update();
 
-            if (slowUpdate && Ref.netSession.IsHost)
-            {
-                var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Unrelyable);
-                w.Write((byte)gameSpeedValue());
+                foreach (var player in localPlayers)
+                {
+                    player.NetUpdate(slowUpdate);
+                }
+
+                if (slowUpdate && Ref.netSession.IsHost)
+                {
+                    var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Unrelyable);
+                    w.Write((byte)gameSpeedValue());
+                }
             }
         }
 
@@ -1281,7 +1284,7 @@ namespace VikingEngine.DSSWars
                 remotePlayersCounter.Reset();
                 while (remotePlayersCounter.Next())
                 {
-                    remotePlayersCounter.sel.waitingForHandover = true;
+                    remotePlayersCounter.sel.waitingForSaveHandover = true;
                 }
 
                 var w = Ref.netSession.BeginWritingPacket(PacketType.DssBeginSave, PacketReliability.Reliable);

@@ -474,18 +474,22 @@ namespace VikingEngine.DSSWars
             Tile previous = new Tile();
             while (loop.Next())
             {
+                remotePlayerC.Reset();
+                while (remotePlayerC.Next())
+                {
+                    if (remotePlayerC.sel.networkPeer.peer.mapLoadedAndReady)
+                    {
+                        var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
+                        remoteTile.overview = true;
+                        remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
+                    }
+                }
+
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
                 tile.writeMapFile(w, previous);
 
                 previous = tile;
 
-                remotePlayerC.Reset();
-                while (remotePlayerC.Next())
-                { 
-                    var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
-                    remoteTile.overview = true;
-                    remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
-                }
             }            
         }
 
@@ -511,6 +515,18 @@ namespace VikingEngine.DSSWars
 
         public void writeNet_SubTile(System.IO.BinaryWriter w, IntVector2 tilePos)
         {
+            var remotePlayerC = DssRef.state.remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                if (remotePlayerC.sel.networkPeer.peer.mapLoadedAndReady)
+                {
+                    var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(tilePos);
+                    remoteTile.detail = true;
+                    remoteTile.detailTimeStamp.setTimeFromNow(TimeExt.MinuteInSeconds * 10);
+                    remotePlayerC.sel.remoteTileGrid.Set(tilePos, remoteTile);
+                }
+            }
+
             tilePos.writeUshort(w);
 
             var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
@@ -523,15 +539,6 @@ namespace VikingEngine.DSSWars
                 tile.write(w, ref previous);
 
                 previous = tile;
-            }
-
-            var remotePlayerC = DssRef.state.remotePlayers.counter();
-            while (remotePlayerC.Next())
-            {
-                var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(tilePos);
-                remoteTile.detail = true;
-                remoteTile.detailTimeStamp.setTimeFromNow(TimeExt.MinuteInSeconds * 10);
-                remotePlayerC.sel.remoteTileGrid.Set(tilePos, remoteTile);
             }
         }
 
@@ -558,17 +565,12 @@ namespace VikingEngine.DSSWars
 
         public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)
         {
-            //int count = 
-
-            //w.Write((byte)factions.Count);
-            //foreach (int faction in factions) 
-            //{
-                int faction = factions.First();
-                w.Write((ushort)faction);
-                this.factions.Array[faction].writeNet(w);
-                Debug.WriteCheck(w);
-            //}
-
+            
+            int faction = factions.First();
+            w.Write((ushort)faction);
+            this.factions.Array[faction].writeNet(w);
+            Debug.WriteCheck(w);
+            
             SteamP2PManager.CrashOnTooLargePacket(w);
 
             var remotePlayerC = DssRef.state.remotePlayers.counter();
@@ -580,13 +582,10 @@ namespace VikingEngine.DSSWars
 
         public void readNet_Factions(System.IO.BinaryReader r)
         {
-            //int factionCount = r.ReadByte();
-            //for (int i = 0; i < factionCount; i++)
-            //{ 
-                int faction = r.ReadUInt16();
-                this.factions.Array[faction].readNet(r);
-                Debug.ReadCheck(r);
-            //}
+             
+            int faction = r.ReadUInt16();
+            this.factions.Array[faction].readNet(r);
+            Debug.ReadCheck(r);
         }
 
         public void writeNet_Cities(System.IO.BinaryWriter w, HashSet<int> CitiesInView)

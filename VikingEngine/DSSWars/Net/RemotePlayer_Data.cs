@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Players
                     var hasRecieved = remoteTileGrid.Get(loop.Position);
                     if (!hasRecieved.overview)
                     {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, Network.SendPacketTo.Ready, 0, out var packet);
                         {
                             DssRef.world.writeNet_Tile(w, loop.Position);
                         }
@@ -255,7 +255,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (!hasRecieved.detail)
                     {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, Network.SendPacketTo.Ready, 0, out var packet);
                         {
 #if DEBUG
                             if (w.BaseStream.Length > 6)

@@ -168,10 +168,12 @@ namespace VikingEngine.DSSWars.Net
                         {
                             city.IsNetHosted = false;
                         }
-                        //Debug.Log("Write handover complete");
+                        
                         var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFactionComplete, PacketReliability.Reliable, out var packet);
                         w.Write((ushort)faction.myIndex);
                         packet.EndWrite_Asynch();
+
+                        peer.mapLoadedAndReady = true;
                         part++;
                     }
                     break;

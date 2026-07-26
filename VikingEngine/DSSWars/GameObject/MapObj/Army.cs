@@ -113,7 +113,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetFullArmyStatus(Army army, Network.PacketReliability reliability, bool isHandOver)
         {
-            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, reliability, out var packet);
+            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, reliability, 
+                reliability == PacketReliability.Unrelyable? SendPacketTo.Ready : SendPacketTo.All, 0, out var packet);
             {
                 Army.NetWriteArmy(w, army);
                 army.lastNetUpdate.setNow();

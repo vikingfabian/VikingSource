@@ -270,10 +270,10 @@ namespace VikingEngine.SteamWrapping
                             case Network.PacketType.PlayerDisconnected:
                                 RemovePeer(packet.sender.SteamID);
                                 break;
-                            case PacketType.Basic_MapLoadedAndReady:
-                                packet.sender.mapLoadedAndReady = true;
-                                Debug.Log(packet.sender.Gamertag + ":: Map Loaded And Ready");
-                                break;
+                            //case PacketType.Basic_MapLoadedAndReady:
+                            //    packet.sender.mapLoadedAndReady = true;
+                            //    Debug.Log(packet.sender.Gamertag + ":: Map Loaded And Ready");
+                            //    break;
                             case Network.PacketType.KickPlayer:
                                 ulong fullId = packet.r.ReadUInt64();
                                 if (localPeer.fullId == fullId)
@@ -586,27 +586,40 @@ namespace VikingEngine.SteamWrapping
                 sendType = EP2PSend.k_EP2PSendReliable;
             }
 
-            if (to == SendPacketTo.OneSpecific)
+
+            switch (to)
             {
-                //bool result = SteamNetworking.SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
-                send(getOrCreatePeer(specificGamerID));
+                default:
+                    foreach (SteamNetworkPeer peer in remoteGamers)
+                    {
+                        send(peer);
+                    }
+                    break;
+
+                case SendPacketTo.Ready:
+                    foreach (SteamNetworkPeer peer in remoteGamers)
+                    {
+                        if (peer.mapLoadedAndReady)
+                        {
+                            send(peer);
+                        }
+                    }
+                    break;
+
+                case SendPacketTo.OneSpecific:
+                    send(getOrCreatePeer(specificGamerID));
+                    break;
+
+                case SendPacketTo.Host:
+                    if (Host != null)
+                    {
+                        send(Host);
+                    }
+                    break;
+
             }
-            else if (to == SendPacketTo.Host)
-            {
-                if (Host != null)
-                {
-                    send(Host);
-                    //SteamNetworking.SendP2PPacket(Host.SteamID, data, (uint)data.Length, sendType, 0);
-                }
-            }
-            else
-            {
-                foreach (SteamNetworkPeer peer in remoteGamers)
-                {
-                    send(peer);
-                    //SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
-                }
-            }
+
+           
 
             void send(AbsNetworkPeer peer)
             {
