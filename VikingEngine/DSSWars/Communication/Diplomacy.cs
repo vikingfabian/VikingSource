@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -247,33 +248,32 @@ namespace VikingEngine.DSSWars
             return ref diplomaticRelations[relIndex];
         }
 
-        public void writeRelationsFor(PFaction pfaction, ulong toPlayer, bool[] factionsRecieved)
+        public void writeRelationsForEnter(System.IO.BinaryWriter w, PFaction pfaction, ulong toPlayer/*, bool[] factionsRecieved*/)
         {
-
-            var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionDiplomacy, PacketReliability.Reliable, SendPacketTo.OneSpecific, toPlayer, out var packet, );
-            {
+            //var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionnEnterDiplomacy, PacketReliability.Reliable, SendPacketTo.OneSpecific, toPlayer, out var packet);
+            //{
                 w.Write((ushort)indexRegister.Length);
                 pfaction.write(w);
 
                 for (int i = 0; i < DssRef.world.factions.Array.Length; i++)
                 {
-                    if (factionsRecieved == null || !factionsRecieved[i])
-                    {
+                    //if (factionsRecieved == null || !factionsRecieved[i])
+                    //{
                         var relation = GetRelation(pfaction, new PFaction(i));
                         if (relation.HasValue())
                         {
                             w.Write((ushort)i);
                             relation.write(w);
                         }
-                    }
+                    //}
                 }
                 w.Write(ushort.MaxValue);
             
                 Debug.WriteCheck(w);
-            }
-            packet.EndWrite_Asynch();
+            //}
+            //packet.EndWrite_Asynch();
         }
-        public void readRelationsFor(System.IO.BinaryReader r)
+        public void readRelationsForEnter(System.IO.BinaryReader r)
         {
             int indexRegisterLength = r.ReadUInt16();
             initRegister(indexRegisterLength);
@@ -286,7 +286,7 @@ namespace VikingEngine.DSSWars
 
                 if (currentIndex < diplomaticRelations.Length)
                 {
-                    GetRefRelation(pfaction, new PFaction(currentIndex)).readRelation(r);
+                    GetRefRelation(pfaction, new PFaction(currentIndex)).read(r, int.MaxValue);
                 }
                 else
                 {
@@ -295,6 +295,70 @@ namespace VikingEngine.DSSWars
             }
             Debug.ReadCheck(r);
         }
+
+        public void writeRelationsForClient(PFaction pfaction)
+        {
+            int length = DssRef.world.factions.Array.Length;
+
+            for (int part = 0; part < 2; part++)
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionClientDiplomacy, PacketReliability.Reliable, out var packet);
+                {
+                    w.Write((byte)part);
+                    pfaction.write(w);
+                    w.Write((ushort)length);
+
+                    int half = length / 2;
+                    int start, end;
+                    if (part == 0)
+                    {
+                        start = 0;
+                        end = half;
+                    }
+                    else
+                    {
+                        start = half;
+                        end = length;
+                    }
+
+                    for (int i = start; i < end; i++)
+                    {
+                        var relation = GetRelation(pfaction, new PFaction(i));
+                        relation.write(w);
+                    }
+
+                    Debug.WriteCheck(w);
+                }
+                packet.EndWrite_Asynch();
+            }
+        }
+        public void readRelationsForClient(System.IO.BinaryReader r)
+        {
+            int part = r.ReadByte();
+            PFaction pfaction = new PFaction(r);
+            int length = r.ReadUInt16();
+
+            int half = length / 2;
+            int start, end;
+            if (part == 0)
+            {
+                start = 0;
+                end = half;
+            }
+            else
+            {
+                start = half;
+                end = length;
+            }
+
+            for (int i = 0; i < length; i++)
+            {
+                GetRefRelation(pfaction, new PFaction(i)).readRelation(r);
+            }
+           
+            Debug.ReadCheck(r);
+        }
+       
         public void writeRelations(System.IO.BinaryWriter w)
         {
             w.Write((ushort)indexRegister.Length);

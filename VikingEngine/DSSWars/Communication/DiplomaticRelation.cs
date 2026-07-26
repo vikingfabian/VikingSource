@@ -99,8 +99,8 @@ namespace VikingEngine.DSSWars.Communication
         {
             Relation = RelationType.RelationType0_Neutral;
             SpeakTerms = SpeakTerms.SpeakTermsN2_None;
-        }     
-
+        }
+       
         public void write(System.IO.BinaryWriter w)
         {
             

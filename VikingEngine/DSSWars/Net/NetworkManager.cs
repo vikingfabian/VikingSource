@@ -513,6 +513,10 @@ namespace VikingEngine.DSSWars
                     Army.NetReadArmy(packet.r);
                     break;
 
+                case PacketType.DssFactionClientDiplomacy:
+                    DssRef.world.diplomacy.readRelationsForClient(packet.r);
+                    break;
+
                 case PacketType.DssSoldierGroupStatus_Army:
                     //readGroupStatus(true);
                     AbsArmy.NetReadGroups(true, packet.r);
@@ -746,9 +750,7 @@ namespace VikingEngine.DSSWars
                     if (pFaction.TryGetFaction(out var f))
                     { f.DeleteMe(); }
                     break;
-                case PacketType.DssFactionDiplomacy:
-                    DssRef.world.diplomacy.readRelationsFor(packet.r);
-                    break;
+               
             }
 #if !DEBUG
             }
@@ -926,7 +928,6 @@ namespace VikingEngine.DSSWars
                             {
                                 Ref.update.AddSyncAction(new SyncAction(() =>
                                 {
-
                                     sender.AssignFaction(faction);
                                     if (firstEnterSetup)
                                     {
@@ -963,6 +964,10 @@ namespace VikingEngine.DSSWars
                     break;
                 case PacketType.DssWorldDiplomacy:
                     DssRef.world.diplomacy.readRelations(packet.r, int.MaxValue);
+                    break;
+
+                case PacketType.DssFactionnEnterDiplomacy:
+                    DssRef.world.diplomacy.readRelationsForEnter(packet.r);
                     break;
             }
         }

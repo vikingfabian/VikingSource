@@ -162,7 +162,15 @@ namespace VikingEngine.DSSWars.Net
                         //{
                         //    DssRef.world.diplomacy.writeRelationsFor(w, faction.pfaction, null);
                         //} packet.EndWrite_Asynch();
-                        DssRef.world.diplomacy.writeRelationsFor(faction.pfaction, peer.fullId, null);
+                        //DssRef.world.diplomacy.writeRelationsFor(faction.pfaction, peer.fullId, null);
+
+                        DataStream.MemoryStreamHandler diplomacyData = new DataStream.MemoryStreamHandler();
+                        var w = diplomacyData.GetWriter();
+                        DssRef.world.diplomacy.writeRelationsForEnter(w, faction.pfaction, peer.fullId);
+
+                        largeWriter = new SteamLargePacketWriter(diplomacyData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssFactionnEnterDiplomacy);
+                        largeWriter.begin();
+                        
                         part++;
                     }
                     break;

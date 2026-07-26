@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Players
             remoteTileGrid = new Grid2D<RemoteTile>(DssRef.world.Size);
             fullMapSendPosition = new ForXYLoop(DssRef.world.Size);
             citiesRecieved = new bool[DssRef.world.cities.Count];
-            factionsRecieved = new bool[DssRef.world.factions.Count];
+            factionsRecieved = new bool[DssRef.world.factions.Array.Length];
         }
 
         public PlayerMapHistory GetMapHistory()
@@ -125,19 +125,14 @@ namespace VikingEngine.DSSWars.Players
                 {
                     PFaction faction = new PFaction(FactionsInView.First());
 
-                    var remotePlayerC = DssRef.state.remotePlayers.counter();
-                    while (remotePlayerC.Next())
+                    DssRef.world.diplomacy.writeRelationsForClient(faction);
+                    
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
                     {
-                        DssRef.world.diplomacy.writeRelationsFor(faction, remotePlayerC.sel.networkPeer.peer.fullId, remotePlayerC.sel.factionsRecieved);
+                        DssRef.world.writeNet_Factions(w, faction);
                     }
-                                        
-                    {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
-                        {
-                            DssRef.world.writeNet_Factions(w, faction);
-                        }
-                        packet.EndWrite_Asynch();
-                    }                    
+                    packet.EndWrite_Asynch();
+                                      
                 }
                 else if (CitiesInView.Count > 0)
                 {
