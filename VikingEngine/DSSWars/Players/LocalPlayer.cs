@@ -372,7 +372,7 @@ namespace VikingEngine.DSSWars.Players
         public void NetUpdate(bool bSlowUpdate)
         {
             {
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, SendPacketTo.Ready, 0, playerData.localPlayerIndex);
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, SendPacketTo.All, 0, playerData.localPlayerIndex);
                 DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
 
                 RemotePlayerPointer.netWrite(w, this);
