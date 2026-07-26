@@ -104,8 +104,7 @@ namespace VikingEngine.DSSWars
                         var remoteC = remotePlayers.counter();
                         while (remoteC.Next())
                         {
-                            if ((remotePlayers.Count <= 2 || remoteC.sel.networkPeer.peer != handoverPlayer) &&
-                                remoteC.sel.ready &&
+                            if (remoteC.sel.networkPeer.peer.mapLoadedAndReady &&
                                 remoteC.sel.networkPeer.peer.lowPotensialLoad(0.5f))
                             {
                                 bool sentAnythingToPlayer = false;
@@ -1060,7 +1059,7 @@ namespace VikingEngine.DSSWars
 
                 if (slowUpdate && Ref.netSession.IsHost)
                 {
-                    var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Unrelyable);
+                    var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Unrelyable,  SendPacketTo.Ready, 0, null);
                     w.Write((byte)gameSpeedValue());
                 }
             }

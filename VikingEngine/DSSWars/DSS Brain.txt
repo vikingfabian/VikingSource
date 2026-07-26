@@ -4,7 +4,7 @@ Change log:
 * translations complete
 * the update rate will slow down even further on handover
 * blocked army and map update from handover player
-
+* fixed all reported crashes
 
 x no voice option
 x mute people

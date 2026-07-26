@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Net
 
         public bool Next()
         {
-            if (peer.highLoad())
+            if (peer.highLoad() && Ref.peRnd.ChanceF(0.75f))
             {
                 return true;
             }

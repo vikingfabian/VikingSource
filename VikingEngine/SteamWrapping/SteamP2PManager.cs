@@ -390,6 +390,7 @@ namespace VikingEngine.SteamWrapping
             }
             else
             {
+                peer.mapLoadedAndReady = true;
                 return true;
             }
         }
