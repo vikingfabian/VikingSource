@@ -123,11 +123,21 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else if (FactionsInView.Count > 0)
                 {
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
+                    PFaction faction = new PFaction(FactionsInView.First());
+
+                    var remotePlayerC = DssRef.state.remotePlayers.counter();
+                    while (remotePlayerC.Next())
                     {
-                        DssRef.world.writeNet_Factions(w, FactionsInView);
+                        DssRef.world.diplomacy.writeRelationsFor(faction, remotePlayerC.sel.networkPeer.peer.fullId, remotePlayerC.sel.factionsRecieved);
                     }
-                    packet.EndWrite_Asynch();
+                                        
+                    {
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
+                        {
+                            DssRef.world.writeNet_Factions(w, faction);
+                        }
+                        packet.EndWrite_Asynch();
+                    }                    
                 }
                 else if (CitiesInView.Count > 0)
                 {
@@ -146,7 +156,7 @@ namespace VikingEngine.DSSWars.Players
                     packet.EndWrite_Asynch();
                 }//TODO make sure owned cities are map ready
                 else if (Net_SendCityTiles_async())
-                { 
+                {
                     //no code
                 }
                 else

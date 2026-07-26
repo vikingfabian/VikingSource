@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 using static Sentry.MeasurementUnit;
 
@@ -100,16 +101,20 @@ namespace VikingEngine.DSSWars
 
         private void initRegister(int length)
         {
-            indexRegister = new int[length];
-
-            int nextLength = length;
-            int currentIndex = 0;
-
-            for (int i = 0; i < length; i++)
+            if (indexRegister == null || 
+                indexRegister.Length != length)
             {
-                indexRegister[i] = currentIndex;
-                currentIndex += nextLength;
-                nextLength--;
+                indexRegister = new int[length];
+
+                int nextLength = length;
+                int currentIndex = 0;
+
+                for (int i = 0; i < length; i++)
+                {
+                    indexRegister[i] = currentIndex;
+                    currentIndex += nextLength;
+                    nextLength--;
+                }
             }
         }
 
@@ -242,10 +247,58 @@ namespace VikingEngine.DSSWars
             return ref diplomaticRelations[relIndex];
         }
 
-        public void writeRelations(System.IO.BinaryWriter w)
-        {            
-            w.Write((ushort)indexRegister.Length);
+        public void writeRelationsFor(PFaction pfaction, ulong toPlayer, bool[] factionsRecieved)
+        {
+
+            var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionDiplomacy, PacketReliability.Reliable, SendPacketTo.OneSpecific, toPlayer, out var packet, );
+            {
+                w.Write((ushort)indexRegister.Length);
+                pfaction.write(w);
+
+                for (int i = 0; i < DssRef.world.factions.Array.Length; i++)
+                {
+                    if (factionsRecieved == null || !factionsRecieved[i])
+                    {
+                        var relation = GetRelation(pfaction, new PFaction(i));
+                        if (relation.HasValue())
+                        {
+                            w.Write((ushort)i);
+                            relation.write(w);
+                        }
+                    }
+                }
+                w.Write(ushort.MaxValue);
             
+                Debug.WriteCheck(w);
+            }
+            packet.EndWrite_Asynch();
+        }
+        public void readRelationsFor(System.IO.BinaryReader r)
+        {
+            int indexRegisterLength = r.ReadUInt16();
+            initRegister(indexRegisterLength);
+
+            PFaction pfaction = new PFaction(r);
+
+            while (true)
+            {
+                int currentIndex = r.ReadUInt16();
+
+                if (currentIndex < diplomaticRelations.Length)
+                {
+                    GetRefRelation(pfaction, new PFaction(currentIndex)).readRelation(r);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            Debug.ReadCheck(r);
+        }
+        public void writeRelations(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)indexRegister.Length);
+
             for (int currentIndex = 0; currentIndex < diplomaticRelations.Length; ++currentIndex)
             {
                 if (diplomaticRelations[currentIndex].HasValue())
@@ -255,10 +308,9 @@ namespace VikingEngine.DSSWars
                 }
             }
             w.Write(int.MaxValue);
-            
+
             Debug.WriteCheck(w);
         }
-
 
         public void readRelations(System.IO.BinaryReader r, int subVersion)
         {            

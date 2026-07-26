@@ -746,6 +746,9 @@ namespace VikingEngine.DSSWars
                     if (pFaction.TryGetFaction(out var f))
                     { f.DeleteMe(); }
                     break;
+                case PacketType.DssFactionDiplomacy:
+                    DssRef.world.diplomacy.readRelationsFor(packet.r);
+                    break;
             }
 #if !DEBUG
             }

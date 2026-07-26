@@ -563,12 +563,13 @@ namespace VikingEngine.DSSWars
             //unitCollAreaGrid.netSubTilesRecieved(tilePos);
         }
 
-        public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)
+        public void writeNet_Factions(System.IO.BinaryWriter w, PFaction faction)
         {
             
-            int faction = factions.First();
-            w.Write((ushort)faction);
-            this.factions.Array[faction].writeNet(w);
+            //int faction = factions.First();
+            //w.Write((ushort)faction);
+            faction.write(w);
+            this.factions.Array[faction.factionIndex].writeNet(w);
             Debug.WriteCheck(w);
             
             SteamP2PManager.CrashOnTooLargePacket(w);
@@ -576,7 +577,7 @@ namespace VikingEngine.DSSWars
             var remotePlayerC = DssRef.state.remotePlayers.counter();
             while (remotePlayerC.Next())
             {
-                remotePlayerC.sel.factionsRecieved[faction] = true;
+                remotePlayerC.sel.factionsRecieved[faction.factionIndex] = true;
             }
         }
 

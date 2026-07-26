@@ -231,6 +231,7 @@ namespace VikingEngine.Network
         DssGiftUnit,
 
         DssWorldDiplomacy,
+        DssFactionDiplomacy,
         DssDiplomacyRelation,
         DssPlayerToPlayerRelation,
         DssEnterBattle,

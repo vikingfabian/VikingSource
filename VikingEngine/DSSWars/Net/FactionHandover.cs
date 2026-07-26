@@ -151,12 +151,18 @@ namespace VikingEngine.DSSWars.Net
 
                 case HandoverPart.Diplomacy:
                     {
-                        DataStream.MemoryStreamHandler diplomacyData = new DataStream.MemoryStreamHandler();
-                        var w = diplomacyData.GetWriter();
-                        DssRef.world.diplomacy.writeRelations(w);
+                        //DataStream.MemoryStreamHandler diplomacyData = new DataStream.MemoryStreamHandler();
+                        //var w = diplomacyData.GetWriter();
+                        //DssRef.world.diplomacy.writeRelations(w);
 
-                        largeWriter = new SteamLargePacketWriter(diplomacyData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssWorldDiplomacy);
-                        largeWriter.begin();
+                        //largeWriter = new SteamLargePacketWriter(diplomacyData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssWorldDiplomacy);
+                        //largeWriter.begin();
+
+                        //var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionDiplomacy, PacketReliability.Reliable, out var packet);
+                        //{
+                        //    DssRef.world.diplomacy.writeRelationsFor(w, faction.pfaction, null);
+                        //} packet.EndWrite_Asynch();
+                        DssRef.world.diplomacy.writeRelationsFor(faction.pfaction, peer.fullId, null);
                         part++;
                     }
                     break;
