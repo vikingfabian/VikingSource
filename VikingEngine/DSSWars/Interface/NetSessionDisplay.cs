@@ -374,9 +374,8 @@ namespace VikingEngine.DSSWars.Interface
 
             content.Add(new RbSeperationLine());
 
-            content.newLine();
-            content.newLine();
-            HudLib.Label(content, SpriteName.MenuIconSoundVol, DssRef.lang.VoiceTitle);
+            content.newParagraph();
+            HudLib.Label(content, SpriteName.VoiceSoundOn, DssRef.lang.VoiceTitle);
             content.hspace();
             content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoiceDisabled) },
                 new RbAction(selectedPlayer.mute, RbSoundType.Stop),

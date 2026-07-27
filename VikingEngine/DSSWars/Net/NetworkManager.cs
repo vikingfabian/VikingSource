@@ -490,7 +490,7 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssCities:
                     DssRef.world.readNet_Cities(packet.r);
-                    break;
+                    break;                                                                                                           
 
                 case PacketType.DssCityStatus:
                     {

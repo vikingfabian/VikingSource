@@ -1,6 +1,6 @@
 
 Change log:
-* Volume slider for induvidual players
+* Volume slider for individual players
 * will display casual controls
 
 
