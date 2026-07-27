@@ -290,7 +290,7 @@ namespace VikingEngine.SteamWrapping
         {
             if (PlatformSettings.OnlineMultiplayer)
             {
-                InitVoice();
+                //InitVoice();
                 P2PManager = new SteamP2PManager();
                 LobbyMatchmaker = new SteamLobbyMatchmaker();
 

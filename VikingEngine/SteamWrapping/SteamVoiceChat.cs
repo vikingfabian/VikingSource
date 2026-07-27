@@ -85,7 +85,7 @@ namespace VikingEngine.SteamWrapping
                         peer.lastvoice.setNow();
                         // SubmitBuffer expects standard little-endian PCM wave data, which Steam kindly provides
                         peer._audioPlayback.SubmitBuffer(_uncompressedVoiceBuffer, 0, (int)nBytesWritten);
-                        peer._audioPlayback.Volume = volume;
+                        peer._audioPlayback.Volume = Bound.Set(volume, 0, 1);
                     }
                 }
             }

@@ -375,13 +375,13 @@ namespace VikingEngine.SteamWrapping
 
         bool approveNewPeer(SteamNetworkPeer peer)
         {
+            var stored = Ref.netsett.getStoredGamer(peer.fullId);
+            peer.storedData = stored;
+            stored.name = peer.Gamertag;
+            Ref.netsett.setUpdatedStoredGamer(stored);
+            
             if (hostSession)
-            {
-                var stored = Ref.netsett.getStoredGamer(peer.fullId);
-                stored.name = peer.Gamertag;
-                Ref.netsett.setUpdatedStoredGamer(stored);
-                peer.storedData = stored;
-
+            {      
                 return Ref.netSession.joinableStatus &&
                     remoteGamers.Count <= Ref.netsett.maxPlayerCount &&
                     stored.ban < BanStatus.Banned;// .bannedPeers.isBanned(peer) == false;
