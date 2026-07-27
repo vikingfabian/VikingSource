@@ -611,11 +611,21 @@ namespace VikingEngine.DSSWars.Players
         }
         public void cityTabClick(int tab)
         {
-            cityTab = AvailableCityTabs()[tab];
+            MenuTab newTab = AvailableCityTabs()[tab];
+            if (newTab != cityTab)
+            { 
+                cityTab = newTab;
+                SoundLib.Tab(newTab);
+            }
         }
         public void armyTabClick(int tab)
         {
-            armyTab = AvailableArmyTabs()[tab];
+            MenuTab newTab = AvailableArmyTabs()[tab];
+            if (newTab != armyTab)
+            {
+                armyTab = newTab;
+                SoundLib.Tab(newTab);
+            }
         }
 
         public void pinTabClick(int tab)

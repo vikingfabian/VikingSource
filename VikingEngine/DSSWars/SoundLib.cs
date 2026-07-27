@@ -19,15 +19,15 @@ namespace VikingEngine.DSSWars
     {
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
-        public static SoundContainerBase click, ui_expand, option_select, option_deselect, hover_disabled, clicktab,back, 
+        public static SoundContainerBase click, ui_expand, option_select, option_deselect, hover_disabled, clicktab, back,
             speed_down, speed_up,
             scroll_back, scroll_forward,
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
             copy, paste, start, stop,
             select_army, select_city, select_faction,
             ordermove, orderstop, message_loud, ping, trophy,
-            woodcut, tree_falling, breaking, scythe, drop_item, pickaxe, 
-            
+            woodcut, tree_falling, breaking, scythe, drop_item, pickaxe,
+
             hen, pig,
             hog, dog, wolf, lion, oxen, horse, elephant,
             /*heavy_walk, horse_walk,*/ wagon,
@@ -37,10 +37,13 @@ namespace VikingEngine.DSSWars
            bow, sword, spear, throwblade, throwitem, clothHit, crossbow, heavyballista, reloadballista,
            blade_light, blade_medium, blade_heavy, spear_whoosh,
            musket, cannon, block_attack, wood_bonk,
-            
+
            painvoice, fleshgore,
-            
-            netMessage, netJoined;
+            netMessage, netJoined,
+
+            tab_blackmarket, tab_build, tab_conscript, tab_defence,
+            tab_delivery, tab_economy, tab_help, tab_info, tab_pin, tab_resources,
+            tab_schools, tab_science, tab_stockpile, tab_work;
 
         public static SoundContainerBase[] WalkSounds;
         public static SoundContainerBase[] AnimalNoises;
@@ -93,7 +96,7 @@ namespace VikingEngine.DSSWars
             scythe = new SoundContainerSingle(SoundDir + "scythe", 0.2f, 0.4f);
             drop_item = new SoundContainerSingle(SoundDir + "drop_item", 1f, 0.4f);
             pickaxe = new SoundContainerSingle(SoundDir + "pickaxe", 0.6f, 0.2f);
-        
+
             hen = new SoundContainerMultiple([SoundDir + "hen1", SoundDir + "hen2"], 0.6f, 0.4f);
             pig = new SoundContainerSingle(SoundDir + "pig", 0.6f, 0.8f);
 
@@ -182,14 +185,14 @@ namespace VikingEngine.DSSWars
             blade_medium = new SoundContainerMultiple([SoundDir + "blade_whoosh_med_01", SoundDir + "blade_whoosh_med_02", SoundDir + "blade_whoosh_med_03", SoundDir + "blade_whoosh_med_05"], 0.06f, 0.4f);
             blade_heavy = new SoundContainerMultiple([SoundDir + "blade_whoosh_heavy_03", SoundDir + "blade_whoosh_heavy_04", SoundDir + "blade_whoosh_heavy_08", SoundDir + "blade_whoosh_heavy_14"], 0.08f, 0.4f);
             spear_whoosh = new SoundContainerMultiple([SoundDir + "spearwhoosh (1)", SoundDir + "spearwhoosh (2)", SoundDir + "spearwhoosh (3)", SoundDir + "spearwhoosh (4)"], 0.06f, 0.4f);
-            musket = new SoundContainerMultiple([SoundDir + "musket1",SoundDir + "musket2",SoundDir + "musket3"], 2f, 0.4f);
-            cannon = new SoundContainerMultiple([SoundDir + "cannon1",SoundDir + "cannon2",SoundDir + "cannon3"], 3f, 0.4f);
+            musket = new SoundContainerMultiple([SoundDir + "musket1", SoundDir + "musket2", SoundDir + "musket3"], 2f, 0.4f);
+            cannon = new SoundContainerMultiple([SoundDir + "cannon1", SoundDir + "cannon2", SoundDir + "cannon3"], 3f, 0.4f);
             block_attack = new SoundContainerMultiple([SoundDir + "block_attack (1)", SoundDir + "block_attack (3)"], 0.8f, 0.4f);
             wood_bonk = new SoundContainerMultiple([SoundDir + "wood_bonk1", SoundDir + "wood_bonk2"], 0.8f, 0.4f);
 
             //Damage
-            painvoice = new SoundContainerMultiple([SoundDir + "Dwarf Pain 1", SoundDir + "Dwarf Pain 2", SoundDir + "Dwarf Pain 3", SoundDir + "Dwarf Pain 4", SoundDir + "Dwarf Pain 5", SoundDir + "Dwarf Pain 6" ], 0.4f, 0.6f);
-            fleshgore =new SoundContainerMultiple([SoundDir + "flesh_gore (1)",SoundDir + "flesh_gore (2)",SoundDir + "flesh_gore (3)",SoundDir + "flesh_gore (4)",SoundDir + "flesh_gore (5)",SoundDir + "flesh_gore (6)",SoundDir + "flesh_gore (7)",SoundDir + "flesh_gore (8)",SoundDir + "flesh_gore (9)",SoundDir + "flesh_gore (10)",SoundDir + "flesh_gore (11)",SoundDir + "flesh_gore (12)",SoundDir + "flesh_gore (13)"], 0.1f, 0.5f);
+            painvoice = new SoundContainerMultiple([SoundDir + "Dwarf Pain 1", SoundDir + "Dwarf Pain 2", SoundDir + "Dwarf Pain 3", SoundDir + "Dwarf Pain 4", SoundDir + "Dwarf Pain 5", SoundDir + "Dwarf Pain 6"], 0.4f, 0.6f);
+            fleshgore = new SoundContainerMultiple([SoundDir + "flesh_gore (1)", SoundDir + "flesh_gore (2)", SoundDir + "flesh_gore (3)", SoundDir + "flesh_gore (4)", SoundDir + "flesh_gore (5)", SoundDir + "flesh_gore (6)", SoundDir + "flesh_gore (7)", SoundDir + "flesh_gore (8)", SoundDir + "flesh_gore (9)", SoundDir + "flesh_gore (10)", SoundDir + "flesh_gore (11)", SoundDir + "flesh_gore (12)", SoundDir + "flesh_gore (13)"], 0.1f, 0.5f);
             menu = new RbSoundProfile(click, wrong);
             menuOption = new RbSoundProfile(option_select, wrong);
             menuOptionDeselect = new RbSoundProfile(option_deselect, wrong);
@@ -205,6 +208,23 @@ namespace VikingEngine.DSSWars
             menuStart = new RbSoundProfile(start);
             menuStop = new RbSoundProfile(stop);
             menuPing = new RbSoundProfile(ping);
+
+            string MenuEnvDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "menu_environment" + DataStream.FilePath.Dir;
+
+            tab_blackmarket = new SoundContainerSingle(MenuEnvDir + "tab_blackmarket");
+            tab_build = new SoundContainerSingle(MenuEnvDir + "tab_build", 0.4f);
+            tab_conscript = new SoundContainerSingle(MenuEnvDir + "tab_conscript", 0.7f);
+            tab_defence = new SoundContainerSingle(MenuEnvDir + "tab_defence", 0.8f);
+            tab_delivery = new SoundContainerSingle(MenuEnvDir + "tab_delivery");
+            tab_economy = new SoundContainerSingle(MenuEnvDir + "tab_economy");
+            tab_help = new SoundContainerSingle(MenuEnvDir + "tab_help", 0.8f);
+            tab_info = new SoundContainerSingle(MenuEnvDir + "tab_info", 0.6f);
+            tab_pin = new SoundContainerSingle(MenuEnvDir + "tab_pin");
+            tab_resources = new SoundContainerSingle(MenuEnvDir + "tab_resources");
+            tab_schools = new SoundContainerSingle(MenuEnvDir + "tab_schools");
+            tab_science = new SoundContainerSingle(MenuEnvDir + "tab_science", 0.5f);
+            tab_stockpile = new SoundContainerSingle(MenuEnvDir + "tab_stockpile");
+            tab_work = new SoundContainerSingle(MenuEnvDir + "tab_work");
 
             WalkSounds = new SoundContainerBase[] {
                 footstep,
@@ -226,8 +246,69 @@ namespace VikingEngine.DSSWars
             //tabHoverAction = new RbSoundAction(menutabHover);
 
             Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, SoundDir + "out_of_ammo");
-            
+
             //Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
+        }
+        public static void SubTab(Resource.ResourceManagementType subTab)
+        {
+            switch (subTab)
+            {
+                case Resource.ResourceManagementType.Overview:
+                    tab_resources.Play();
+                    break;
+                case Resource.ResourceManagementType.Work:
+                    tab_work.Play();
+                    break;
+                case Resource.ResourceManagementType.Stockpile:
+                    tab_stockpile.Play();
+                    break;
+
+            }
+        }
+        public static void Tab(MenuTab tab)
+        {
+            switch (tab)
+            {
+                case MenuTab.Info:
+                    tab_info.Play();
+                    break;
+                case MenuTab.Help:
+                    tab_help.Play();
+                    break;
+                case MenuTab.Tag:
+                    tab_pin.Play();
+                    break;
+                case MenuTab.Resources:
+                    tab_resources.Play();
+                    break;
+                case MenuTab.StockPile:
+                    tab_stockpile.Play();
+                    break;
+                case MenuTab.Work:
+                    tab_work.Play();
+                    break;
+                case MenuTab.BlackMarket:
+                    tab_blackmarket.Play();
+                    break;
+                case MenuTab.Delivery:
+                    tab_delivery.Play();
+                    break;
+                case MenuTab.Progress:
+                    tab_science.Play();
+                    break;
+                case MenuTab.Defence:
+                    tab_defence.Play();
+                    break;
+                case MenuTab.Conscript:
+                case MenuTab.Casual_Recruit:
+                    tab_conscript.Play();
+                    break;
+                case MenuTab.Casual_Build:
+                case MenuTab.Build:
+                    tab_build.Play();
+                    break;
+
+            }
         }
 
         //public static void speedInputSound()

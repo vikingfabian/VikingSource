@@ -1569,7 +1569,12 @@ namespace VikingEngine.DSSWars.Interface
                             new List<AbsRichBoxMember> { new RbImage(groupIcon) },
                             new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                             {
+                                if (player.resourcesSubTab.managementType != resourcesSubTab.managementType)
+                                {   
+                                    SoundLib.SubTab(resourcesSubTab.managementType);
+                                }
                                 player.resourcesSubTab = resourcesSubTab;
+
                             }, tab, RbSoundType.Option),
                             new RbTooltip(resourceTabToolTip, tab)));
                         
