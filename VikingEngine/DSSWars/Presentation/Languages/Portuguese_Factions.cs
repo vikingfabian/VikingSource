@@ -5,6 +5,10 @@ namespace VikingEngine.DSSWars.Presentation
     partial class Portuguese
     {
         /// <summary>Fantasy names; we localize common words but keep unique flavor.</summary>
+        public override string FactionName_Ellium => "Ellium";
+        public override string FactionName_GrakPushdug => "Grak pushdug";
+        public override string FactionName_Draugost => "Draugost";
+
         public override string FactionName_Starshield => "Escudo Estelar";
         public override string FactionName_Bluepeak => "Pico Azul";
         public override string FactionName_Hoft => "Hoft";

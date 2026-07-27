@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsWorker));
                 content.space();
-                var textCont = new RbText(string.Format(DssRef.todoLang.Language_LabelAndText_Colon, DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(player.pfaction.GetFaction().citiesEconomy.taxIncome_copp)),
+                var textCont = new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(player.pfaction.GetFaction().citiesEconomy.taxIncome_copp)),
                     HudLib.AvailableColor);
                 content.Add(textCont);
 

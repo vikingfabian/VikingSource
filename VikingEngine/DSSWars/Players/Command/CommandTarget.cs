@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
@@ -14,6 +15,8 @@ namespace VikingEngine.DSSWars.Players.Command
     /// </summary>
     abstract class AbsCommandTarget
     {
+        public bool available = true;
+
         public AbsCommandTarget(LocalPlayer player)
         {
             player.gameControls.commandTarget?.DeleteMe();
@@ -28,11 +31,19 @@ namespace VikingEngine.DSSWars.Players.Command
             {
                 return true;
             }
-            else if (player.gameControls.input.mouseSelect.DownEvent 
-                /*player.gameControls.input.mouseOrder.DownEvent*/)
+            else if (player.gameControls.input.mouseSelect.DownEvent)
             {
-                OnClick(player, out bool complete);
-                return complete;
+                if (available)
+                {
+                    OnClick(player, out bool complete);
+                    SoundLib.ordermove.Play();
+                    return complete;
+                }
+                else
+                {
+                    SoundLib.wrong.Play();
+                }
+               
             }
             
             return false;
@@ -62,7 +73,7 @@ namespace VikingEngine.DSSWars.Players.Command
         public override bool update(LocalPlayer player)
         {
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.hover.subTile.subTilePos);
-            bool available = false;
+            available = false;
 
             if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(player.gameControls.map.hover.subTile.subTilePos), out var tile))
             {

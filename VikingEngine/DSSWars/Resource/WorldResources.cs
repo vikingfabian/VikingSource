@@ -65,6 +65,8 @@ namespace VikingEngine.DSSWars.Resource
             }
             else
             {
+                resourceRegister.adjustMinimumLength(collIndex +1);
+
                 var chunk = resourceRegister.Array[collIndex];
                 chunk.Add(resource);
                 resourceRegister.Array[collIndex] = chunk;

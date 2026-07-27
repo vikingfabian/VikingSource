@@ -22,6 +22,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.ToGG;
 
 
 namespace VikingEngine.DSSWars.Interface
@@ -1298,6 +1299,8 @@ namespace VikingEngine.DSSWars.Interface
                     }, prio, RbSoundType.Option));
                 content.Add(option);
             }
+
+
             
             void experience(WorkExperienceType experienceType, SpriteName typeIcon, string typeName, WorkExperienceLevels experienceLevels)
             {
@@ -1310,6 +1313,12 @@ namespace VikingEngine.DSSWars.Interface
                 typeNameText.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(typeNameText);
 
+                if (StartupSettings.UnlockAllProgress)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("+1") }, 
+                        new RbAction1Arg<WorkExperienceType>(city.debug_addOneMaster, experienceType)));
+                }
+
                 content.Add(new RbTab(0.4f));
                 content.Add(new RbImage(LangLib.ExperienceLevelIcon(level)));
                 content.Add(new RbText(LangLib.ExperienceLevel(level)));
@@ -1317,6 +1326,8 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbTab(0.7f));               
                 content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) }, null, new RbTooltip(infoTooltip, experienceLevels)));
                 player.hud.pins.toggleButton(content, new CityHudPinId(city.myIndex, new HudPin(experienceType)));
+
+                
 
                 void infoTooltip(RichBoxContent content, object tag)
                 {

@@ -25,16 +25,83 @@ namespace VikingEngine.DSSWars.Interface
         public const string PAGE_KICK = "kick";
         public const string PAGE_BLOCK = "block";
         public const string PAGE_RECOLOR = "recolor";
+        public const string PAGE_DEBUG = "debug";
         public RemotePlayer selectedPlayer = null;
         public RemotePlayer sendGiftTo = null;
 
         
         public bool ClientInteractDisplay => selectedPlayer != null;
 
+        public void overviewToHud(LocalPlayer player, RichBoxContent content, RichMenu menu)
+        {
+            if (sendGiftTo != null)
+            {
+                giftMenu(player, content);
+            }
+            else
+            {
+                content.h2(DssRef.lang.Multiplayer_NetSession, HudLib.TitleColor_Head);
+
+                gamerButton(player);
+                content.newLine();
+                content.Add(new RbSeperationLine());
+
+                var remoteC = DssRef.state.remotePlayers.counter();
+                while (remoteC.Next())
+                {
+                    gamerButton(remoteC.sel);
+
+                    remoteC.sel.addNetPingToHud(content);
+                }
+
+                content.newLine();
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("*debug") }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_DEBUG, StackOption.Stack)));
+
+                content.Add(new RbSeperationLine());
+            }
+
+            void gamerButton(AbsHumanPlayer gamer)
+            {
+                content.newLine();
+                var settings = gamer.NetClientSettings();
+
+                RichBoxContent flagContent = new RichBoxContent();
+                gamer.addFlagToHud(flagContent);
+                content.Add(new ArtButton(RbButtonStyle.Outline, flagContent,
+                    new RbAction(() => {
+                        gamer.pfaction.GetFaction()?.refreshMainCity();
+                        var main = gamer.pfaction.GetFaction()?.mainCity;
+                        if (main != null)
+                        {
+                            player.gameControls.map.cameraFocus = main;
+                        }
+                    }), new RbTooltip_Text(DssRef.lang.InputActionName_NextCity)));
+
+                RichBoxContent buttonContent = new RichBoxContent();
+                gamer.addNetGamerToHud(buttonContent, false, true);
+
+                content.Add(new ArtButton(gamer.HasSupportDLC() ? RbButtonStyle.GoldOutline : RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
+                    (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
+                    new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
+
+                if (gamer.profile.casualControls)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudCasualMode) },
+                        null, new RbTooltip_Text(DssRef.lang.Settings_CasualControls)));
+                }
+
+                if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
+                    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.IsFriend()))
+                {
+                    gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
+                }
+            }
+        }
+
         public void BanWarning(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             HudLib.returnButton(content, menu, true, null);
-            content.h1(string.Format(DssRef.lang.Hud_SendX, DssRef.todoLang.Multiplayer_BanWarning), HudLib.TitleColor_Head);
+            content.h1(string.Format(DssRef.lang.Hud_SendX, DssRef.lang.Multiplayer_BanWarning), HudLib.TitleColor_Head);
             content.newLine();
             selectedPlayer.addNetGamerToHud(content, true, true);
 
@@ -59,14 +126,14 @@ namespace VikingEngine.DSSWars.Interface
         public void RequestBlock(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             HudLib.returnButton(content, menu, true, null);
-            content.h1(DssRef.todoLang.Multiplayer_RequestBlockPlayer, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Multiplayer_RequestBlockPlayer, HudLib.TitleColor_Head);
             content.newLine();
             selectedPlayer.addNetGamerToHud(content, true, true);
-            content.text(DssRef.todoLang.Multiplayer_SentToHost, HudLib.InfoYellow_Light);
+            content.text(DssRef.lang.Multiplayer_SentToHost, HudLib.InfoYellow_Light);
 
             content.newParagraph();
 
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Multiplayer_AddToOwnBlocks) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Multiplayer_AddToOwnBlocks) },
                 Ref.netsett.alsoBlockOnRequestProperty));
 
             content.newParagraph();
@@ -87,7 +154,7 @@ namespace VikingEngine.DSSWars.Interface
 
                         DssRef.state.LocalHost().hud.messages.Add(new RichBoxContent()
                         {
-                            new RbText(DssRef.todoLang.Multiplayer_Message_RequestSent)
+                            new RbText(DssRef.lang.Multiplayer_Message_RequestSent)
                         });
 
                         menu.menuBack();
@@ -98,7 +165,7 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void Kick(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
-            content.h1(DssRef.todoLang.Multiplayer_KickPlayer, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Multiplayer_KickPlayer, HudLib.TitleColor_Head);
             selectedPlayer.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
@@ -120,7 +187,7 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void Block(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
-            content.h1(DssRef.todoLang.Multiplayer_BlockPlayer, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Multiplayer_BlockPlayer, HudLib.TitleColor_Head);
             selectedPlayer.addNetGamerToHud(content, true, false);
 
             content.newParagraph();
@@ -141,57 +208,7 @@ namespace VikingEngine.DSSWars.Interface
             })));
         }
 
-        public void overviewToHud(LocalPlayer player, RichBoxContent content)
-        {
-            if (sendGiftTo != null)
-            {
-                giftMenu(player, content);
-            }
-            else
-            {
-                content.h2(DssRef.todoLang.Multiplayer_NetSession, HudLib.TitleColor_Head);
-                
-                gamerButton(player);
-                content.newLine();
-                content.Add(new RbSeperationLine());
-
-                var remoteC = DssRef.state.remotePlayers.counter();
-                while (remoteC.Next())
-                {
-                    gamerButton(remoteC.sel);
-                    
-                    remoteC.sel.addNetPingToHud(content);
-                }
-
-                //if (DssRef.state.host || Ref.netsett.hostSettings.lobbyPublicity >= Network.LobbyPublicity.FriendsOnly)
-                //{
-                //    invite(content);
-                //}
-
-                content.Add(new RbSeperationLine());
-            }
-
-            void gamerButton(AbsHumanPlayer gamer)
-            {
-                content.newLine();
-                var settings = gamer.NetClientSettings();
-
-                RichBoxContent buttonContent = new RichBoxContent();
-                gamer.addNetGamerToHud(buttonContent, true, true);
-
-               
-
-                content.Add(new ArtButton(gamer.HasSupportDLC()? RbButtonStyle.GoldOutline : RbButtonStyle.Outline, buttonContent, new RbAction1Arg<AbsHumanPlayer>(
-                    (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
-                    new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
-
-                if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
-                    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.IsFriend()))
-                {
-                    gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
-                }
-            }
-        }
+       
 
         public void recolor(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
@@ -246,8 +263,8 @@ namespace VikingEngine.DSSWars.Interface
                         player.hud.needRefresh = true;
                     }, RbSoundType.Back)));
 
-            content.h2(DssRef.todoLang.GiftedAchievements, HudLib.TitleColor_Head);
-            content.text(DssRef.todoLang.GiftedAchievements_Description, HudLib.InfoYellow_Light);
+            content.h2(DssRef.lang.GiftedAchievements, HudLib.TitleColor_Head);
+            content.text(DssRef.lang.GiftedAchievements_Description, HudLib.InfoYellow_Light);
 
 #if DEBUG
             bool[] included = new bool[(int)GiftedAchievementType.NUM];
@@ -356,7 +373,16 @@ namespace VikingEngine.DSSWars.Interface
             diplomacyDisplay.toHud(content, selectedPlayer.pfaction.GetFaction(), false);
 
             content.Add(new RbSeperationLine());
-           
+
+            content.newParagraph();
+            HudLib.Label(content, SpriteName.VoiceSoundOn, DssRef.lang.VoiceTitle);
+            content.hspace();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoiceDisabled) },
+                new RbAction(selectedPlayer.mute, RbSoundType.Stop),
+                new RbTooltip_Text(DssRef.lang.VoiceMute)));
+            content.Add(new RbDragButton(new DragButtonSettings(new IntervalF(0, 2f), 0.1f),
+                selectedPlayer.voiceVolume, true));
+
             content.newLine();
             if (Ref.netSession.IsHost)
             {
@@ -371,21 +397,21 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.cmdWarningTriangle),
                     new RbSpace(0.5f),
-                    new RbText(string.Format(DssRef.lang.Hud_SendX, DssRef.todoLang.Multiplayer_BanWarning)) },
+                    new RbText(string.Format(DssRef.lang.Hud_SendX, DssRef.lang.Multiplayer_BanWarning)) },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BANWARNING, StackOption.Stack)));
 
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconExit),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.Multiplayer_KickPlayer) },
+                    new RbText(DssRef.lang.Multiplayer_KickPlayer) },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_KICK, StackOption.Stack)));
 
                 content.newLine();
                 content.Add(new ArtButton(Ref.netSession.IsHost ? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconBlockedPlayer),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.Multiplayer_BlockPlayer) },
+                    new RbText(DssRef.lang.Multiplayer_BlockPlayer) },
                     new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_BLOCK, StackOption.Stack)));
             }
             else
@@ -393,7 +419,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconBlockedPlayer),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.Multiplayer_RequestBlockPlayer) },
+                    new RbText(DssRef.lang.Multiplayer_RequestBlockPlayer) },
                      new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_REQUESTBLOCK, StackOption.Stack)));
 
             }
@@ -401,10 +427,19 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.SteamIcon),
                     new RbSpace(),
-                    new RbText(DssRef.todoLang.Steam_UserProfile)
+                    new RbText(DssRef.lang.Steam_UserProfile)
                 }, new RbAction2Arg<string, CSteamID>(Steamworks.SteamFriends.ActivateGameOverlayToUser, "steamid", selectedPlayer.networkPeer.peer.SteamID),
-               new RbTooltip_Text(DssRef.todoLang.Steam_OpenSteamOverlay)));
+               new RbTooltip_Text(DssRef.lang.Steam_OpenSteamOverlay)));
 
+            
+        }
+
+        public void checkAlive()
+        {
+            if (selectedPlayer.isDeleted)
+            {
+                selectedPlayer = null;
+            }
         }
     }
 }

@@ -150,10 +150,33 @@ namespace VikingEngine
         {
             w.Write(totalTimeStampSec);
         }
-
+        
         public void read(System.IO.BinaryReader r)
         {
             totalTimeStampSec = r.ReadSingle();
+        }
+        public void write_byte(System.IO.BinaryWriter w)
+        {
+            if (totalTimeStampSec > Ref.TotalGameTimeSec)
+            {
+                w.Write(Bound.Byte(Convert.ToInt32(Seconds)));
+            }
+            else
+            {
+                w.Write(byte.MinValue);
+            }
+        }
+        public void read_byte(System.IO.BinaryReader r)
+        {
+            totalTimeStampSec = r.ReadByte();
+            if (totalTimeStampSec == 0)
+            {
+                totalTimeStampSec = -1000;
+            }
+            else
+            {
+                totalTimeStampSec += Ref.TotalGameTimeSec;
+            }
         }
 
         public bool HasTime()

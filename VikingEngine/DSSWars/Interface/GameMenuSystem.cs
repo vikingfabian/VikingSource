@@ -144,6 +144,20 @@ namespace VikingEngine.DSSWars.Interface
                         menu.Refresh(content);
                     }
                     break;
+                case NetworkSettingsMenu.BlockList:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        new NetworkSettingsMenu(menu, false).blockList(content);
+                        menu.Refresh(content);
+                    }
+                    break;
+                case NetworkSettingsMenu.JoinHistoryList:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        new NetworkSettingsMenu(menu, false).joinHistoryList(content);
+                        menu.Refresh(content);
+                    }
+                    break;
             }
 
             return true;
@@ -291,7 +305,7 @@ namespace VikingEngine.DSSWars.Interface
 
             if (Ref.netSession.IsHostingMultiplayer)
             {
-                PlayerHud_HeadOptions.SpeedOptions(DssRef.state.LocalHost(), content, false);
+                PlayerHud_HeadOptions.SpeedOptions(DssRef.state.LocalHost(), content, false, true);
             }
 
             if (!PlatformSettings.STEAM_DEMO && 
@@ -371,7 +385,7 @@ namespace VikingEngine.DSSWars.Interface
                 
             }
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.GameSettings_DisplayInputHelp) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GameSettings_DisplayInputHelp) },
                 DisplayInputHelpProperty));
 
             content.newParagraph();
@@ -525,6 +539,14 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4, 0.1f), Ref.gamesett.panSpeedProperty, true));
 
+            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Language_LabelAndText_Colon, Ref.langOpt.GameSettings_InputSmoothing, Ref.langOpt.MouseButtonAction_Pan));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.0f, 1f, 0.1f), Ref.gamesett.panSmoothingProperty, true));
+
+            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Language_LabelAndText_Colon, Ref.langOpt.GameSettings_InputSmoothing, DssRef.lang.ButtonAction_Zoom));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.0f, 0.9f, 0.1f), Ref.gamesett.zoomSmoothingProperty, true));
+
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbSpace(), new RbText(Ref.langOpt.MouseSettings_Title) },
                 new RbAction2Arg<string, StackOption>(menu.OpenMenu, UnderMenu_Options_Mouse, StackOption.Stack)));
@@ -601,16 +623,10 @@ namespace VikingEngine.DSSWars.Interface
                 return DssRef.storage.blockImportAchievements;
             }
 
-            //bool longerBuildQueueProperty(object tag, bool set, bool value)
-            //{
-            //    if (set)
-            //    {
-            //        DssRef.storage.longerBuildQueue = value;
-
-            //        DssRef.storage.Save(null);
-            //    }
-            //    return DssRef.storage.longerBuildQueue;
-            //}
+            content.newParagraph();
+            content.h2(DssRef.lang.Multiplayer_Title, HudLib.TitleColor_Head);
+            content.newLine();
+            new NetworkSettingsMenu(menu, false).multiplayerSettingsMenuContent(content);
         }
 
         static void muteDisconnect(RichBoxContent content)
@@ -789,7 +805,17 @@ namespace VikingEngine.DSSWars.Interface
                 closeMenu();
             })));
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Find city from id") }, new RbAction(beginFindCityId))
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Find city from id (broken)") }, new RbAction(beginFindCityId))
+            {
+                fillWidth = true
+            });
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Enter battle lab") }, 
+                new RbAction(()=>
+                {
+                    DssRef.state.LocalHost().EnterBattleLab();
+                    closeMenu();
+                }))
             {
                 fillWidth = true
             });

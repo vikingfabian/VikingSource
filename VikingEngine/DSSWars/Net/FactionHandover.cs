@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Net
 
         public bool Next()
         {
-            if (peer.highLoad())
+            if (peer.highLoad() && Ref.peRnd.ChanceF(0.75f))
             {
                 return true;
             }
@@ -111,11 +111,8 @@ namespace VikingEngine.DSSWars.Net
                     {
                         if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
                         {
-                            largeWriter = City.NetWriteHandoverPacket(peer, city);
-                            if (fullHandover)
-                            {
-                                city.IsNetHosted = false;
-                            }
+                            largeWriter = City.NetWriteHandoverPacket(peer, city, fullHandover);
+                            
                         }
                         else
                         {
@@ -134,7 +131,7 @@ namespace VikingEngine.DSSWars.Net
                             armyCounter.sel.IsNetHosted = false;
                         }
                         
-                        Army.NetFullArmyStatus(armyCounter.sel, PacketReliability.Reliable);
+                        Army.NetFullArmyStatus(armyCounter.sel, PacketReliability.Reliable, true);
                     }
 
                     if (!armyCounter.HasMore())
@@ -154,12 +151,26 @@ namespace VikingEngine.DSSWars.Net
 
                 case HandoverPart.Diplomacy:
                     {
+                        //DataStream.MemoryStreamHandler diplomacyData = new DataStream.MemoryStreamHandler();
+                        //var w = diplomacyData.GetWriter();
+                        //DssRef.world.diplomacy.writeRelations(w);
+
+                        //largeWriter = new SteamLargePacketWriter(diplomacyData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssWorldDiplomacy);
+                        //largeWriter.begin();
+
+                        //var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionDiplomacy, PacketReliability.Reliable, out var packet);
+                        //{
+                        //    DssRef.world.diplomacy.writeRelationsFor(w, faction.pfaction, null);
+                        //} packet.EndWrite_Asynch();
+                        //DssRef.world.diplomacy.writeRelationsFor(faction.pfaction, peer.fullId, null);
+
                         DataStream.MemoryStreamHandler diplomacyData = new DataStream.MemoryStreamHandler();
                         var w = diplomacyData.GetWriter();
-                        DssRef.world.diplomacy.writeRelations(w);
+                        DssRef.world.diplomacy.writeRelationsForEnter(w, faction.pfaction, peer.fullId);
 
-                        largeWriter = new SteamLargePacketWriter(diplomacyData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssWorldDiplomacy);
+                        largeWriter = new SteamLargePacketWriter(diplomacyData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssFactionnEnterDiplomacy);
                         largeWriter.begin();
+                        
                         part++;
                     }
                     break;
@@ -171,10 +182,12 @@ namespace VikingEngine.DSSWars.Net
                         {
                             city.IsNetHosted = false;
                         }
-                        Debug.Log("Write handover complete");
+                        
                         var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFactionComplete, PacketReliability.Reliable, out var packet);
                         w.Write((ushort)faction.myIndex);
                         packet.EndWrite_Asynch();
+
+                        peer.mapLoadedAndReady = true;
                         part++;
                     }
                     break;

@@ -80,6 +80,7 @@ namespace VikingEngine.DSSWars
                 Ref.netsett.remoteHostSettings = new NetSharedHostSettings();
                 DssRef.storage.ruleset_instance = DssRef.storage.ruleset;
                 DssRef.storage.ruleset_instance.refreshSettings();
+                Ref.steamlobby?.refreshMetaData();
             }
 
             if (readWorld != null)
@@ -96,6 +97,7 @@ namespace VikingEngine.DSSWars
             else
             {
                 new LoadScene(loadMeta);
+                Ref.netsett.SendStats(false);
             }
 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
@@ -241,13 +243,14 @@ namespace VikingEngine.DSSWars
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
             {
                 new Faction(DssRef.world, FactionType.DarkLord);
-                new Faction(DssRef.world, FactionType.SouthHara);
-                new Faction(DssRef.world, FactionType.Barbarians);
+                new Faction(DssRef.world, FactionType.SouthHara);                
             }
             else if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickBoss)
             {
                 new Faction(DssRef.world, FactionType.DarkLord);
             }
+
+            new Faction(DssRef.world, FactionType.Barbarians);
 
             int playerCount = DssRef.storage.playerCount;
 
@@ -340,7 +343,7 @@ namespace VikingEngine.DSSWars
 
                     localPlayers[i].assignPlayer(i, playerCount, newGame);
 
-                    Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].pfaction.GetFaction().ToString());
+                    //Debug.Log("Add player " + localPlayers[i].ToString() + ", to " + localPlayers[i].pfaction.GetFaction().ToString());
                 }
             }
 
@@ -760,9 +763,12 @@ namespace VikingEngine.DSSWars
             base.OnDestroy();
         }
 
-        
+        override protected bool UpdateReady()
+        {
+            return cutScene == null && (host || factionHandOverComplete);
+        }
 
-        
+
         //void shareAllHostedObjects(Network.AbsNetworkPeer sender)
         //{
         //    var factionsCounter = DssRef.world.factions.counter();
@@ -772,11 +778,11 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-       
+
 
         bool asyncWorkUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 float seconds = DssRef.time.pullAsyncWork_Seconds();
 
@@ -818,7 +824,7 @@ namespace VikingEngine.DSSWars
         {
             float seconds = DssRef.time.pullAsyncGameObjects_Seconds();
 
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 bool minute = DssRef.time.pullMinute(ref asynchGameObjectsMinutes);
 
@@ -848,7 +854,7 @@ namespace VikingEngine.DSSWars
 
         protected bool asynchNearObjectsUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 DssRef.world.unitCollAreaGrid.asynchUpdate();
 
@@ -873,7 +879,7 @@ namespace VikingEngine.DSSWars
         bool asyncResourcesUpdate(int id, float time)
         {
             //This thread is the only thay may edit subtiles
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 resources.asyncEditTiles();
                 //Runs every minute to upate any resource progression: trees grow, food spoil, etc
@@ -889,7 +895,7 @@ namespace VikingEngine.DSSWars
 
         bool asyncSlowUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 if (slowMinuteUpdate)
                 { 
@@ -903,13 +909,11 @@ namespace VikingEngine.DSSWars
 
         bool asyncDiplomacyUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 DssRef.world.diplomacy.async_update();
-                if (host)
-                {
-                    events.asyncUpdate(time);
-                }
+                events.asyncUpdate(time);
+                
             }
             return exitThreads;
         }
@@ -920,7 +924,7 @@ namespace VikingEngine.DSSWars
         {
             DssRef.ambience.update_async();
 
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 foreach (var local in localPlayers)
                 {

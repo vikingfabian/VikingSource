@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float terrainSpeedMultiplier = 1.0f;
        
-        ObjectName name = new ObjectName();
+        //ObjectName name = new ObjectName();
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
@@ -85,7 +85,10 @@ namespace VikingEngine.DSSWars.GameObject
             id = ++DssRef.state.NextArmyId;
         }
 
-
+        public override bool MayBattle()
+        {
+            return true;
+        }
         public void init(Faction faction, int overrideIx = -1)
         {
 #if DEBUG
@@ -108,9 +111,10 @@ namespace VikingEngine.DSSWars.GameObject
             return food + conservedFood <= 10;
         }
 
-        public static void NetFullArmyStatus(Army army, Network.PacketReliability reliability )
+        public static void NetFullArmyStatus(Army army, Network.PacketReliability reliability, bool isHandOver)
         {
-            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, reliability, out var packet);
+            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, reliability, 
+                reliability == PacketReliability.Unrelyable? SendPacketTo.Ready : SendPacketTo.All, 0, out var packet);
             {
                 Army.NetWriteArmy(w, army);
                 army.lastNetUpdate.setNow();
@@ -118,7 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
             packet.EndWrite_Asynch();
 
             int packetCount = 1;
-            army.netWriteGroups(reliability, ref packetCount);
+            army.netWriteGroups(reliability, ref packetCount, isHandOver);
         }
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
@@ -295,10 +299,7 @@ namespace VikingEngine.DSSWars.GameObject
             return name.name;
         }
 
-        public override void NameEditEvent(string result, object tag)
-        {
-            name.setCustom(result);
-        }
+        
 
         void ArmyPresentationHud(ObjectHudArgs args, bool tooltip)
         {
@@ -1063,6 +1064,10 @@ namespace VikingEngine.DSSWars.GameObject
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 soldiersCount = count;
+                //if (soldiersCount <= 0)
+                //{
+                //    lib.DoNothing();
+                //}
 
                 //Endbart ändra när arme är i rörelse, måste följa center person
                 //tilePos = WP.ToTilePos(position);
@@ -1077,7 +1082,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 strengthValue = totalStrength; // AllUnits.AverageGroupStrength;
 
-                if (totalStrength > ArmySizeLeaderBoard.SizeUploaded)
+                if (totalStrength > ArmySizeLeaderBoard.SizeUploaded && pfaction.TryGetLocalPlayer(out _))
                 {
                     ArmySizeLeaderBoard.SizeUploaded = totalStrength;
                     Ref.update.AddSyncAction(new SyncAction(() =>
@@ -1164,7 +1169,7 @@ namespace VikingEngine.DSSWars.GameObject
                         //Wait to jump
                         if (DssRef.state.culling.outsidePlayerAttension(tilePos))
                         {
-                            if (Ref.TotalGameTimeSec >= teleportTime)
+                            if (teleportTime.TimeOut())//Ref.TotalGameTimeSec >= teleportTime)
                             {
                                 Ai_Finalize_Attack();
                             }
@@ -1181,7 +1186,7 @@ namespace VikingEngine.DSSWars.GameObject
                         //Wait to jump
                         if (DssRef.state.culling.outsidePlayerAttension(tilePos))
                         {
-                            if (Ref.TotalGameTimeSec >= teleportTime)
+                            if (teleportTime.TimeOut())
                             {
                                 Ai_Finalize_Move();
                             }
@@ -1226,6 +1231,11 @@ namespace VikingEngine.DSSWars.GameObject
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssDeleteArmy, Network.PacketReliability.Reliable);
                 Net.ObjectId.NetWriteMapObjId(w, this);
 
+            }
+
+            if (debugTagged)
+            {
+                lib.DoNothing();
             }
 
             isDeleted = true;
@@ -1320,7 +1330,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (netShare && prevFaction != null && prevFaction.IsNetHosted() && !newFaction.IsNetHosted())
             {
                 IsNetHosted = false;
-                Army.NetFullArmyStatus(this, PacketReliability.Reliable);
+                Army.NetFullArmyStatus(this, PacketReliability.Reliable, true);
             }
         }
 

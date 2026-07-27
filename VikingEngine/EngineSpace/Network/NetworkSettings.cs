@@ -80,6 +80,10 @@ namespace VikingEngine.Network
 
         public void ApplyFairProtection(PlayerToPlayerDiplomacyData PtoP)
         {
+            if (PtoP.warAllow == PlayerDiplomacyAllowType.Blocked)
+            {
+                warAllow = PlayerDiplomacyAllowType.Blocked;
+            }
             
             canBreakAlliance |= PtoP.canBreakAlliance;
             allianceLimit |= PtoP.allianceLimit;
@@ -215,6 +219,7 @@ namespace VikingEngine.Network
         public void ApplyHostSettings()
         {
             clientPtoP.ApplyHostSettings(Ref.netsett.remoteHostSettings.hostPtoP);
+            //clientPtoP.ApplyFairProtection(Ref.netsett.clientPtoP);
             clientSettings.ApplyHostSettings(Ref.netsett.remoteHostSettings.hostSettings);
         }
     }
@@ -277,6 +282,35 @@ namespace VikingEngine.Network
         
         public bool HasPvp => hostPtoP.warAllow == PlayerDiplomacyAllowType.Allow;
 
+
+        public void SendStats(bool host)
+        {
+            bool allowPvp = true;
+            if (host)
+            {
+                allowPvp &= HasPvp;
+            }
+
+            allowPvp &= clientPtoP.warAllow == PlayerDiplomacyAllowType.Allow;
+
+            if (allowPvp)
+            {
+                DssRef.stats.startMultiplayer_AllowPvp.addOne();
+            }
+            else
+            {
+                DssRef.stats.startMultiplayer_BlockPvp.addOne();
+            }
+
+            if (unlockPublicGames && lobbyPublicity == LobbyPublicity.Public)
+            {
+                DssRef.stats.startMultiplayer_AllowPublic.addOne();
+            }
+            else
+            {
+                DssRef.stats.startMultiplayer_BlockPublic.addOne();
+            }
+        }
         public NetworkSettings()
         {
             Ref.netsett = this;
@@ -285,6 +319,8 @@ namespace VikingEngine.Network
 
         public void write(System.IO.BinaryWriter w)
         {
+            hostSettings.write(w);
+
             w.Write(hostNetwork);
             w.Write(findNetwork);
 
@@ -318,6 +354,8 @@ namespace VikingEngine.Network
 
         public void read(System.IO.BinaryReader r, int storageVersion)
         {
+            hostSettings.read(r, storageVersion);
+
             hostNetwork = r.ReadBoolean();
             findNetwork = r.ReadBoolean();
 
@@ -332,6 +370,10 @@ namespace VikingEngine.Network
             hostPtoP.read(r, storageVersion);
             
             clientPtoP.read(r, storageVersion);
+            if (clientPtoP.allianceAllow == PlayerDiplomacyAllowType.PlayersChoose)
+            {
+                clientPtoP.allianceAllow = PlayerDiplomacyAllowType.Allow;
+            }
             
             PlayerSpacing = r.ReadInt32();
 
@@ -363,7 +405,7 @@ namespace VikingEngine.Network
             hostPtoP.warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
             hostPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
 
-            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
+            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.Allow;
             clientPtoP.canBreakAlliance = true;
             clientPtoP.warAllow = PlayerDiplomacyAllowType.Blocked;
 
@@ -393,7 +435,7 @@ namespace VikingEngine.Network
             hostPtoP.warDeclarePreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(5));
             hostPtoP.gameStartPreparationTime = new UseTimeLimit(true, TimeLength.FromMinutes(10));
 
-            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.PlayersChoose;
+            clientPtoP.allianceAllow = PlayerDiplomacyAllowType.Allow;
             clientPtoP.canBreakAlliance = true;
             clientPtoP.warAllow = unlockPvp ? PlayerDiplomacyAllowType.Allow : PlayerDiplomacyAllowType.Blocked;
 
@@ -672,6 +714,19 @@ namespace VikingEngine.Network
             return gamer;
         }
 
+        public BanStatus IsBanned(ulong id)
+        {
+            for (int i = 0; i < storedGamers.Count; i++)
+            {
+                if (storedGamers.array[i].id == id)
+                {
+                    return storedGamers.array[i].ban;
+                }
+            }
+            return BanStatus.None;
+        }
+
+
         public void setUpdatedStoredGamer(StoredNetworkGamer gamer)
         {
             if (storedGamers.array[gamer.index].id == gamer.id)
@@ -689,16 +744,16 @@ namespace VikingEngine.Network
                     default:
                         return TextLib.Error;
                     case LobbyPublicity.Private:
-                        return DssRef.todoLang.JoinPermission_Private;
+                        return DssRef.lang.JoinPermission_Private;
                     case LobbyPublicity.FriendsOnly:
-                        return DssRef.todoLang.JoinPermission_FriendsOnly;
+                        return DssRef.lang.JoinPermission_FriendsOnly;
                     case LobbyPublicity.Public:
-                        return DssRef.todoLang.JoinPermission_Public;
+                        return DssRef.lang.JoinPermission_Public;
                 }
             }
             else
             {
-                return DssRef.todoLang.Network_PlayOffline;
+                return DssRef.lang.Network_PlayOffline;
             }
         }
     }

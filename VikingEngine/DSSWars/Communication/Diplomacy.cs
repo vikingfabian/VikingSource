@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 using static Sentry.MeasurementUnit;
 
@@ -100,16 +102,20 @@ namespace VikingEngine.DSSWars
 
         private void initRegister(int length)
         {
-            indexRegister = new int[length];
-
-            int nextLength = length;
-            int currentIndex = 0;
-
-            for (int i = 0; i < length; i++)
+            if (indexRegister == null || 
+                indexRegister.Length != length)
             {
-                indexRegister[i] = currentIndex;
-                currentIndex += nextLength;
-                nextLength--;
+                indexRegister = new int[length];
+
+                int nextLength = length;
+                int currentIndex = 0;
+
+                for (int i = 0; i < length; i++)
+                {
+                    indexRegister[i] = currentIndex;
+                    currentIndex += nextLength;
+                    nextLength--;
+                }
             }
         }
 
@@ -242,10 +248,102 @@ namespace VikingEngine.DSSWars
             return ref diplomaticRelations[relIndex];
         }
 
-        public void writeRelations(System.IO.BinaryWriter w)
-        {            
-            w.Write((ushort)indexRegister.Length);
+        public void writeRelationsForEnter(System.IO.BinaryWriter w, PFaction pfaction, ulong toPlayer/*, bool[] factionsRecieved*/)
+        {
+            //var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionnEnterDiplomacy, PacketReliability.Reliable, SendPacketTo.OneSpecific, toPlayer, out var packet);
+            //{
+                w.Write((ushort)indexRegister.Length);
+                pfaction.write(w);
+
+                for (int i = 0; i < DssRef.world.factions.Array.Length; i++)
+                {
+                    //if (factionsRecieved == null || !factionsRecieved[i])
+                    //{
+                        var relation = GetRelation(pfaction, new PFaction(i));
+                        if (relation.HasValue())
+                        {
+                            w.Write((ushort)i);
+                            relation.write(w);
+                        }
+                    //}
+                }
+                w.Write(ushort.MaxValue);
             
+                Debug.WriteCheck(w);
+            //}
+            //packet.EndWrite_Asynch();
+        }
+        public void readRelationsForEnter(System.IO.BinaryReader r)
+        {
+            int indexRegisterLength = r.ReadUInt16();
+            initRegister(indexRegisterLength);
+
+            PFaction pfaction = new PFaction(r);
+
+            while (true)
+            {
+                int currentIndex = r.ReadUInt16();
+
+                if (currentIndex < ushort.MaxValue)
+                {
+                    GetRefRelation(pfaction, new PFaction(currentIndex)).read(r, int.MaxValue);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            Debug.ReadCheck(r);
+        }
+
+        public void writeRelationsForClient(PFaction pfaction)
+        {
+            int length = DssRef.world.factions.Array.Length;
+
+            int otherFaction = 0;
+            const int ChunkLength = 512;
+            //int chunkCount = MathExt.Div_Ceiling(length, ChunkLength);
+
+            do//for (int part = 0; part < 2; part++)
+            {
+                int end = Bound.Max(otherFaction + ChunkLength, length);
+
+                var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionClientDiplomacy, PacketReliability.Reliable, out var packet);
+                {
+                    pfaction.write(w);
+                    w.Write((ushort)otherFaction);
+                    w.Write((ushort)end);
+
+                    for (; otherFaction < end; otherFaction++)
+                    {
+                        var relation = GetRelation(pfaction, new PFaction(otherFaction));
+                        relation.writeRelation(w);
+                    }
+
+                    Debug.WriteCheck(w);
+                }
+                packet.EndWrite_Asynch();
+            
+            } while (otherFaction < length);
+        }
+        public void readRelationsForClient(System.IO.BinaryReader r)
+        {            
+            PFaction pfaction = new PFaction(r);
+            int start = r.ReadUInt16();
+            int end = r.ReadUInt16();
+
+            for (int i = start; i < end; i++)
+            {
+                GetRefRelation_Safe(pfaction, new PFaction(i)).readRelation(r);
+            }
+           
+            Debug.ReadCheck(r);
+        }
+       
+        public void writeRelations(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)indexRegister.Length);
+
             for (int currentIndex = 0; currentIndex < diplomaticRelations.Length; ++currentIndex)
             {
                 if (diplomaticRelations[currentIndex].HasValue())
@@ -255,10 +353,9 @@ namespace VikingEngine.DSSWars
                 }
             }
             w.Write(int.MaxValue);
-            
+
             Debug.WriteCheck(w);
         }
-
 
         public void readRelations(System.IO.BinaryReader r, int subVersion)
         {            
@@ -427,7 +524,7 @@ namespace VikingEngine.DSSWars
             {
                 var otherFaction = aiPlayerAsynchUpdate_threats[i];
                 if (GetRelation(aifaction.pfaction, otherFaction).Relation >= RelationType.RelationType2_Good ||
-                    aifaction.MyPlusAllianceStrengthValue() * threatFactor >= otherFaction.GetFaction().MyPlusAllianceStrengthValue())
+                    (otherFaction.TryGetFaction(out var of) && aifaction.MyPlusAllianceStrengthValue() * threatFactor >= of.MyPlusAllianceStrengthValue()))
                 {
                     aiPlayerAsynchUpdate_threats.RemoveAt(i);
                 }
@@ -531,7 +628,7 @@ namespace VikingEngine.DSSWars
         }
 
 
-        public void SetRelationType(PFaction faction1, PFaction faction2, PFaction actuator, RelationType? newRelation, float? relationSecondsLength = null, SpeakTerms? speakTerms = null, bool secret = false)
+        public void SetRelationType(PFaction faction1, PFaction faction2, PFaction actuator, RelationType? newRelation, float? relationSecondsLength = null, SpeakTerms? speakTerms = null, bool secret = false, bool fromAllianceTrade = false)
         {
             if (/*faction1 != null && faction2 != null && */faction1 != faction2)
             {
@@ -549,7 +646,7 @@ namespace VikingEngine.DSSWars
 
                 if (newRelation.HasValue)
                 {
-                    relation.SetRelation(faction1, faction2, newRelation.Value, actuator, out RelationType previous);
+                    relation.SetRelation(faction1, faction2, newRelation.Value, actuator, out RelationType previous, fromAllianceTrade, true);
                 }
             }
         }
@@ -581,7 +678,7 @@ namespace VikingEngine.DSSWars
         //    return null;    
         //}
 
-        public bool botMayStartWar(Faction attacker, Faction defender)
+        public bool botMayStartWar(Faction attacker, Faction defender, int warCount)
         {
             if (attacker != null && 
                 defender != null &&
@@ -595,8 +692,23 @@ namespace VikingEngine.DSSWars
                     return true;
                 }
 
-                bool mayAttackPlayer = !DssRef.difficulty.peaceful && DssRef.state.events.MayAttackPlayer() && attacker.player.mayAttackPlayer;
+                if (warCount >= 8)
+                {
+                    if (!Ref.rnd.Chance(0.005))
+                    {
+                        return false;
+                    }
+                }
+                else if (warCount >= 2)
+                {
+                    if (!Ref.rnd.Chance(0.05))
+                    {
+                        return false;
+                    }
+                }
+                
 
+                bool mayAttackPlayer = !DssRef.difficulty.peaceful && DssRef.state.events.MayAttackPlayer() && attacker.player.mayAttackPlayer;
 
                 if (!mayAttackPlayer &&
                     (defender.player.IsLocalPlayer() || DssRef.world.diplomacy.InplayerAlliance(defender.pfaction)))
@@ -655,7 +767,7 @@ namespace VikingEngine.DSSWars
                 
                 if (relation.Relation > RelationType.RelationType0_Neutral)
                 {
-                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, actingFaction, out RelationType prev);
+                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, actingFaction, out RelationType prev, false, true);
                     
                     if (actingFaction.TryGetPlayer(out var player) && player.IsLocalPlayer())
                     {
@@ -666,19 +778,16 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void declareWar(PFaction attacker, PFaction defender)
+        public void declareWar(PFaction attacker, PFaction defender, bool fromAllianceTrade, bool localAction = true)
         {
-            //if (attacker != null && 
-            //    defender != null &&
-            //    attacker.player != null &&
-            //    defender.player != null &&
+           
             if (attacker != defender &&
                 !GetRelation(attacker, defender).InWar() &&
                 attacker.TryGetPlayer(out var aPlayer) &&
                 defender.TryGetPlayer(out var dPlayer))
             {
                 ref var relation = ref GetRefRelation(attacker, defender);
-                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, attacker, out RelationType prevRelation);
+                relation.SetRelation(attacker, defender, RelationType.RelationTypeN4_War, attacker, out RelationType prevRelation, fromAllianceTrade, localAction);
                 
 
                 if (aPlayer.IsLocalPlayer())

@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.SteamWrapping;
 
 //
@@ -41,6 +42,11 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
         virtual public bool IsSoldiers()
+        {
+            return false;
+        }
+
+        virtual public bool MayBattle()
         {
             return false;
         }
@@ -300,6 +306,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public bool IsCollection() { return false; }
         virtual public int CollectionCount() { return 0; }
+
+        virtual public PGameObject goPointer() { return PGameObject.Empty; }
+
+        
         //abstract public bool IsDeleted();
     }
     enum GameObjectType

@@ -53,16 +53,22 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             cityUpdate = DssRef.state.PlayType() == GameState.PlayStateType.Play;
 
-            tabArmy = player.pfaction.GetFaction().armies.counter();            
-            tabPin = player.pins.counter();
+            //tabArmy = player.pfaction.GetFaction().armies.counter();            
+            //tabPin = player.pins.counter();
 
             map = new Players.MapControls(player);
             if (player.pfaction.GetFaction().mainCity != null)
             {
                 map.setCameraPos(player.pfaction.GetFaction().mainCity.tilePos);
             }
-
+            refreshFaction();
             refreshGameSpeedOptions(true);
+        }
+
+        public void refreshFaction()
+        {
+            tabArmy = player.pfaction.GetFaction().armies.counter();
+            tabPin = player.pins.counter();
         }
 
         public void refreshGameSpeedOptions(bool startUp)
@@ -87,6 +93,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
+            map.refreshSetting();
         }
 
         public void update()

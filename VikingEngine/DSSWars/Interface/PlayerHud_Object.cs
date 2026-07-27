@@ -65,7 +65,11 @@ namespace VikingEngine.DSSWars.Interface
 
             var content = new RichBoxContent();
 
-            if (menu.menuStack.Count > 0)
+            if (player.DisplayBattleLab(content, menu))
+            { 
+            
+            }
+            else if (menu.menuStack.Count > 0)
             {
                 switch (menu.menuStack.Last())
                 {
@@ -84,11 +88,16 @@ namespace VikingEngine.DSSWars.Interface
                     case NetSessionDisplay.PAGE_RECOLOR:
                         netSessionDisplay.recolor(player, content, menu);
                         break;
+                    case NetSessionDisplay.PAGE_DEBUG:
+                        HudLib.returnButton(content, menu, true, null);
+                        DssRef.state.playstate().PacketCountToHud(content);
+                        break;
                 }
             }
             else if (netSessionDisplay.ClientInteractDisplay)
             {
                 netSessionDisplay.clientToHud(player, content, menu);
+                netSessionDisplay.checkAlive();
             }
             else
             {
@@ -117,7 +126,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                    
 
-                    netSessionDisplay.overviewToHud(player, content);
+                    netSessionDisplay.overviewToHud(player, content, menu);
                     
                     content.newParagraph();
                 }
@@ -152,6 +161,8 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
             }
+            
+
 
             menu.Refresh(content, player.gameControls.controllerPointer);
         }

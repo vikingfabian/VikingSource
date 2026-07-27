@@ -46,7 +46,7 @@ namespace VikingEngine.Network
     {
         public static readonly SendPacketToOptions SendToAll = new SendPacketToOptions(SendPacketTo.All, ulong.MaxValue);
         public static readonly SendPacketToOptions SendToHost = new SendPacketToOptions(SendPacketTo.Host, ulong.MaxValue);
-        public static readonly SendPacketToOptions SendToInVisualRange = new SendPacketToOptions(SendPacketTo.InVisualRange, ulong.MaxValue);
+        //public static readonly SendPacketToOptions SendToInVisualRange = new SendPacketToOptions(SendPacketTo.InVisualRange, ulong.MaxValue);
 
         public SendPacketTo To;
         public ulong SpecificGamerID;
@@ -111,9 +111,13 @@ namespace VikingEngine.Network
     enum SendPacketTo
     {
         All,
+        /// <summary>
+        /// Will use IsMapLoadedAndReady
+        /// </summary>
+        Ready,
         Host,
         OneSpecific,
-        InVisualRange,
+        //InVisualRange,
         NUM
     }
 
@@ -209,6 +213,7 @@ namespace VikingEngine.Network
         DssCities,
         DssFactionStatus,
         DssCityStatus,
+        DssRequestCityClaim,
         DssCityHandOver,
         DssSetCityFaction,
         DssSetArmyFaction,
@@ -226,63 +231,24 @@ namespace VikingEngine.Network
         DssGiftUnit,
 
         DssWorldDiplomacy,
+        DssFactionnEnterDiplomacy,
+        DssFactionClientDiplomacy,
         DssDiplomacyRelation,
         DssPlayerToPlayerRelation,
         DssEnterBattle,
-        DssAttackDamage,
         DssSoldierDeath,
 
         DssDeleteArmy,
         DssGiftAchievement,
         DssReColor,
-        //LF2_WorldOverview,
-        //LF2_StartAttack,
-        //LF2_MapFlag,
-        //LF2_GameObjUpdate,
-        //LF2_PlayerVisualMode,
-        //LF2_ToSpecificPlayer,
-        //LF2_TakeDamage,
-        //LF2_HostShareDamageVisuals,
-        //LF2_AddGameObject,
-        //LF2_LostClientObj,
-        //LF2_CreateEffect,
-        //LF2_MapCreation,
-        //LF2_NewPlayer,
-        //LF2_Chat,
-        //LF2_QuickMessage,
-        //LF2_Express,
-        //LF2_GameObjectState,
-        //LF2_NewPlayerDoneLoadingMap,
-        //LF2_RequestChunk,
-        //LF2_RequestChunkGroup,
-        //LF2_SendChunk,
-        //LF2_GotChunk,
-        //LF2_RemoveGameObject,
-        //LF2_ChangedApperance,
-        //LF2_OpenCloseDoor,
-        //LF2_RemoveChunkObject,
-        //LF2_Explosion,
-        //LF2_PlayerDied,
-        //LF2_ChangeClientPermissions,
-        //LF2_InviteReady,
-        //LF2_RequestGeneratingEnvObj,
-        //LF2_PermitGeneratingEnvObj,
-        //LF2_ClosingChunk,
-        //LF2_RequestPickChestItem,
-        //LF2_PickChestItemPermit,
-        //LF2_DropItemToChest,
-        //LF2_BombExplosion,
-        //LF2_OutdatedChunk,
-        //LF2_NewEquipSetup,
-        //LF2_QuestDialogue,
-        //LF2_GameCompleted,
-        //LF2_GameProgress,
-        //LF2_EggnestDestroyedEvent,
-        //LF2_BossKey,
-        //LF2_RequestMapDenied,
-        //LF2_RequestMap,
-        //LF2_RequestBuildPermission,
-        //LF2_SetVisitedArea,
+        DssRename,
+
+        DssBattleLabStartNew,
+        DssBattleLabAddSoldiers,
+
+        DssFactionDeath,
+        
+        DssNUM,
 
         GameObjUpdate,
         GameObjDamageAndRemoval,
@@ -338,7 +304,7 @@ namespace VikingEngine.Network
         RequestMapSeed,
         DesignAreaStorageHeader,
         
-        Basic_MapLoadedAndReady,
+        //Basic_MapLoadedAndReady,
         
         cmdGameStarted,
         cmdShareUnitSetup,
@@ -417,19 +383,11 @@ namespace VikingEngine.Network
         birdCannonMostRight,
 
         //DSS
-        rtsWantSeed,
-        rtsSeed,
-        rtsMapLoadedAndReady,
-        rtsStartGame,
+        //rtsWantSeed,
+        //rtsSeed,
+        //rtsMapLoadedAndReady,
 
-        ShareGameObject,
-        Battle,
-        LoadingDoneAndReady,
-        GiveJoningPlayerStartData,
 
-        UpdatePosition,
-        RemoveGameObject,
-        UpdateGameObjectStatus,
-        BuySoldiers,
+        
     }
 }

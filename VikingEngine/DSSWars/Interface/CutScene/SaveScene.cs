@@ -168,6 +168,10 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                 {
                     DssRef.state.beginExit();
                 }
+                else
+                {
+                    DssRef.state.onSpeedChange();
+                }
             }
         }
     }

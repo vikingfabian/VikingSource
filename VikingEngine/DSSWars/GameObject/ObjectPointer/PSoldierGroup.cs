@@ -8,29 +8,31 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 {
     struct PSoldierGroup : IEquatable<PSoldierGroup>
     {
-        public PArmy parmy;
+        public PMapObject pabsarmy;
         public int groupIndex;
+        public bool isCityGuard;
         public static readonly PSoldierGroup Empty = new PSoldierGroup();
 
         public PSoldierGroup()
         {
-            parmy = PArmy.Empty;
+            pabsarmy = PMapObject.Empty;
             groupIndex = -1;
         }
-        public PSoldierGroup(PArmy parmy, int index)
+        public PSoldierGroup(PMapObject parmy, int index)
         {
-            this.parmy = parmy;
+            this.pabsarmy = parmy;
             groupIndex = index;
         }
 
         public PSoldierGroup(System.IO.BinaryReader r)
+            : this()
         {
             read(r);
         }
 
         public void write(System.IO.BinaryWriter w)
         {
-            parmy.write(w);
+            pabsarmy.write(w);
             if (groupIndex < 0)
             {
                 w.Write(ushort.MaxValue);
@@ -42,7 +44,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         }
         public void read(System.IO.BinaryReader r)
         {
-            parmy.read(r);
+            pabsarmy.read(r);
             groupIndex = r.ReadUInt16();
             if (groupIndex == ushort.MaxValue)
             {
@@ -50,21 +52,21 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             }
         }
 
-        public SoldierGroup GetSoldierGroup()
+        public SoldierGroup GetSoldierGroup(out AbsArmy army)
         {
-            var army = parmy.GetArmy();
+            army = pabsarmy.Get() as AbsArmy;
             if (army != null)
             {
-                return army.groups.GetIndex_Safe(groupIndex);
+                return army.GetAbsArmy().groups.GetIndex_Safe(groupIndex);
             }
             return null;
         }
         public  bool TryGetSoldierGroup(out SoldierGroup soldierGroup)
         {
-            var army = parmy.GetArmy();
+            var army = pabsarmy.Get();
             if (army != null)
             {
-                soldierGroup = army.groups.GetIndex_Safe(groupIndex);
+                soldierGroup = army.GetAbsArmy().groups.GetIndex_Safe(groupIndex);
                 return soldierGroup != null;
             }
             soldierGroup = null;
@@ -72,18 +74,18 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
         }
         public static bool operator ==(PSoldierGroup value1, PSoldierGroup value2)
         {
-            return value1.parmy == value2.parmy &&
+            return value1.pabsarmy == value2.pabsarmy &&
                 value1.groupIndex == value2.groupIndex;
         }
         public static bool operator !=(PSoldierGroup value1, PSoldierGroup value2)
         {
-            return value1.parmy != value2.parmy ||
+            return value1.pabsarmy != value2.pabsarmy ||
                 value1.groupIndex != value2.groupIndex;
         }
 
         public bool Equals(PSoldierGroup other)
         {
-            return parmy == other.parmy && other.groupIndex == groupIndex;
+            return pabsarmy == other.pabsarmy && other.groupIndex == groupIndex;
         }
         public override bool Equals(object obj)
         {
@@ -92,7 +94,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(parmy.pfaction.factionIndex, parmy.armyIndex, groupIndex);
+            return HashCode.Combine(pabsarmy.objectType, pabsarmy.pfaction.factionIndex, pabsarmy.objectIndex, groupIndex);
         }
 
         public bool HasValue()

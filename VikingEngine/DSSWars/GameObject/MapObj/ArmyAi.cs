@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool waitForRegroup = false;
         float stateTime = 0;
         public IntVector2 walkGoal, adjustedWalkGoal;
-        float teleportTime;
+        GameTimeStamp teleportTime;
 
         public IntVector2 nextNodePos;
         public AbsMapObject attackTarget = null;
@@ -349,32 +349,32 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Ai_Order_MoveTo(IntVector2 goalTilePos)
         {
-            if (orderOutsidePlayerAttension(goalTilePos))
-            {
-                if (Order_MoveTo_Setup(goalTilePos))
-                { 
-                    objective = ArmyObjective.TeleportMove;
-                    calcTeleportTime(goalTilePos);
-                }
-            }
-            else
-            { 
+            //if (orderOutsidePlayerAttension(goalTilePos))
+            //{
+            //    if (Order_MoveTo_Setup(goalTilePos))
+            //    { 
+            //        objective = ArmyObjective.TeleportMove;
+            //        calcTeleportTime(goalTilePos);
+            //    }
+            //}
+            //else
+            //{ 
                 Order_MoveTo(goalTilePos);
-            }
+            //}
         }
 
         public void Ai_Order_Attack(AbsMapObject attackTarget)
         {
-            if (orderOutsidePlayerAttension(attackTarget))
-            {
-                Order_Attack_Setup(attackTarget);
-                objective = ArmyObjective.TeleportAttack;
-                calcTeleportTime(attackTarget.tilePos);
-            }
-            else
-            {
+            //if (orderOutsidePlayerAttension(attackTarget))
+            //{
+            //    Order_Attack_Setup(attackTarget);
+            //    objective = ArmyObjective.TeleportAttack;
+            //    calcTeleportTime(attackTarget.tilePos);
+            //}
+            //else
+            //{
                 Order_Attack(attackTarget);
-            }
+            //}
         }
 
         void calcTeleportTime(IntVector2 to)
@@ -382,7 +382,7 @@ namespace VikingEngine.DSSWars.GameObject
             float dist = to.SideLength(tilePos);
             float speedPerSec = (isShip ? transportSpeedSea : transportSpeedLand) * TimeExt.SecondToMs;
             float time = dist / speedPerSec;
-            teleportTime = Ref.TotalGameTimeSec + time;
+            teleportTime.setTimeFromNow(time); //= Ref.TotalGameTimeSec + time;
         }
 
         void Ai_Finalize_Attack()
@@ -431,7 +431,7 @@ namespace VikingEngine.DSSWars.GameObject
         bool orderOutsidePlayerAttension(IntVector2 to)
         {
 
-            return Ref.peRnd.Chance(0.8) &&
+            return Ref.peRnd.Chance(0.4) &&
                 !inRender_overviewLayer &&
                 DssRef.state.culling.outsidePlayerAttension(tilePos) &&
                 DssRef.state.culling.outsidePlayerAttension(to);
@@ -465,15 +465,15 @@ namespace VikingEngine.DSSWars.GameObject
             AbsMapObject attackTarget_sp = attackTarget;
             if (attackTarget_sp != null)
             {
-                Order_Attack_Setup(attackTarget_sp);
+                Order_Attack_Setup(attackTarget_sp, true);
                 objective = ArmyObjective.Attack;
                 onNewGoal(false);
             }
         }
 
-        public void Order_Attack_Setup(AbsMapObject attackTarget)
+        public void Order_Attack_Setup(AbsMapObject attackTarget, bool localAction)
         {
-            DssRef.world.diplomacy.declareWar(pfaction, attackTarget.pfaction);
+            DssRef.world.diplomacy.declareWar(pfaction, attackTarget.pfaction, false, localAction);
             clearObjective();
             this.attackTarget = attackTarget;
             this.attackTargetFaction = attackTarget.pfaction;
@@ -653,14 +653,16 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ArmyObjective.TeleportAttack:
                     new ArmyAttackObjectPointer(w, attackTarget);
-                    w.Write(teleportTime);
+                    teleportTime.write(w);  
+                    //w.Write(teleportTime);
                     break;
                 case ArmyObjective.MoveTo:
                     WP.writeTilePos(w, walkGoal);
                     break;
                 case ArmyObjective.TeleportMove:
                     WP.writeTilePos(w, walkGoal);
-                    w.Write(teleportTime);
+                    teleportTime.write(w);
+                    //w.Write(teleportTime);
                     break;
             }
 
@@ -677,7 +679,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (pointers == null)
                         {
-                            targetPointer.SetPointer();
+                            targetPointer.SetPointer(false);
                         }
                         else
                         {
@@ -692,13 +694,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (pointers == null)
                         {
-                            targetPointer.SetPointer();
+                            targetPointer.SetPointer(false);
                         }
                         else
                         {
                             pointers.pointers.Add(targetPointer);
                         }
-                        teleportTime = r.ReadSingle();
+                        teleportTime.read(r);
                     }
                     break;
 
@@ -710,7 +712,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ArmyObjective.TeleportMove:
                     walkGoal = WP.readTilePos(r);
                     Order_MoveTo_Setup(walkGoal);
-                    teleportTime = r.ReadSingle();
+                    teleportTime.read(r);
                     break;
             }
 

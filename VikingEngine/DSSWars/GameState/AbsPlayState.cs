@@ -168,9 +168,17 @@ namespace VikingEngine.DSSWars.GameState
             onSpeedChange();
         }
 
+        public void PlayPause(bool pause)
+        {
+            Ref.SetPause(pause);
+            menuSystem.gameWasPaused = Ref.isPaused;
+            onSpeedChange();
+        }
+
         public void GameSpeedClick(int toSpeed)
         {            
             Ref.SetPause(false);
+            menuSystem.gameWasPaused = Ref.isPaused;
             Ref.SetGameSpeed(toSpeed);
             onSpeedChange();
         }
@@ -181,11 +189,9 @@ namespace VikingEngine.DSSWars.GameState
             return speed;
         }
 
-        
-
         public void onSpeedChange()
         {
-            if (Ref.netSession.IsHostingMultiplayer)
+            if (host)
             {
                 var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Reliable);                
                 w.Write((byte)gameSpeedValue());
@@ -199,6 +205,21 @@ namespace VikingEngine.DSSWars.GameState
             {
                 SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
             }
+            LocalHost().hud.needRefresh = true;
+        }
+
+        public void PauseOnNetSave(bool pause)
+        {
+            Ref.SetPause(pause);
+            if (Ref.isPaused)
+            {
+                SoundLib.speed_down.Play(Pan.Right);
+            }
+            else
+            {
+                SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
+            }
+            LocalHost().hud.needRefresh = true;
         }
 
         public bool closeMenuInput_AnyPlayer()
@@ -216,7 +237,7 @@ namespace VikingEngine.DSSWars.GameState
 
         protected bool asynchArmyAiUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
@@ -258,11 +279,16 @@ namespace VikingEngine.DSSWars.GameState
 
         bool asyncMapBorders(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 overviewMap.runAsyncTask();
             }
             return exitThreads;
+        }
+
+        virtual protected bool UpdateReady()
+        {
+            return cutScene == null;
         }
 
         protected bool asynchSleepObjectsUpdate(int id, float time)
@@ -304,24 +330,15 @@ namespace VikingEngine.DSSWars.GameState
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    if (factions.sel.IsNetHosted())
-                    {
+                    //if (factions.sel.IsNetHosted())
+                    //{
                         var armiesC = factions.sel.armies.counter();
                         while (armiesC.Next())
                         {
                             armiesC.sel.asyncBattleUpdate();
                         }
-                    }
-                }
-
-                foreach (var m in DssRef.world.cities)
-                {
-                    if (m.IsNetHosted)
-                    {
-                        m.asyncBattleUpdate();
-                    }
-                }
-               
+                    //}
+                }              
             }
             return exitThreads;
         }
@@ -391,8 +408,13 @@ namespace VikingEngine.DSSWars.GameState
                 }
                 else if (remotePlayerC.sel.networkPeer.peer == peer)
                 {
-                    //TODO return region to AI
                     return remotePlayerC.sel;
+                }
+                else if (remotePlayerC.sel.networkPeer.peer.fullId == peer.fullId)
+                {
+                    //Duplicate!
+                    remotePlayerC.sel.DeleteMe();
+                    remotePlayerC.RemoveAtCurrent();
                 }
             }
 

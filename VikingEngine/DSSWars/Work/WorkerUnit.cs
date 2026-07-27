@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -51,6 +52,12 @@ namespace VikingEngine.DSSWars.Work
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
+#if DEBUG
+            if (Debug.CorruptValue(model.position))
+            {
+                throw new Exception();      
+            }
+#endif
             checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
@@ -83,6 +90,12 @@ namespace VikingEngine.DSSWars.Work
                     {
                         model.position.X = goalPos.X;
                         model.position.Z = goalPos.Z;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         WP.Rotation1DToQuaterion(model, 2.8f);
                         //state = WorkerUnitState.FinalizeWork;
                        
@@ -104,6 +117,12 @@ namespace VikingEngine.DSSWars.Work
                     else
                     {
                         model.position += walkDir * speed;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         updateGroudY(false);
 
                         if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
@@ -411,6 +430,12 @@ namespace VikingEngine.DSSWars.Work
                     //remove hidden status
                     model.Visible = true;
                     model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+#if DEBUG
+                    if (Debug.CorruptValue(model.position))
+                    {
+                        throw new Exception();
+                    }
+#endif
                 }
 
                 if (status.subTileEnd == status.subTileStart)
@@ -427,16 +452,37 @@ namespace VikingEngine.DSSWars.Work
                     if (onInit)
                     {
                         float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                        float walkingPerc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
+                        float walkTime = status.processTimeLengthSec - finalizeWorkTime;
+                        float walkingPerc;
+                        if (walkTime < 1)
+                        {
+                            walkingPerc = 1;
+                        }
+                        else
+                        {
+                            walkingPerc = timePassed / walkTime;
+                        }
 
                         if (walkingPerc >= 1)
                         {
                             model.position = goalPos;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                             finalizeWorkTime = status.processTimeLengthSec - timePassed;
                         }
                         else
                         {
                             model.position = model.position * (1 - walkingPerc) + goalPos * walkingPerc;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
 
@@ -553,6 +599,12 @@ namespace VikingEngine.DSSWars.Work
                         else
                         {
                             model.position.Y += diff * 0.06f;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
                 }

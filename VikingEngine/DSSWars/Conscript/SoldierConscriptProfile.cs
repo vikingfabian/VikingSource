@@ -31,8 +31,12 @@ namespace VikingEngine.DSSWars.Conscript
         public void writeGameState(System.IO.BinaryWriter w)
         {
             conscript.writeGameState(w);
-            StreamLib.WriteFloatMultiplier(skillBonus, w);
+            byte wrote = StreamLib.WriteFloatMultiplier(skillBonus, w);
 #if DEBUG
+            if (wrote == 0)
+            {
+                throw new Exception();
+            }
             if (skillBonus == 0)
             {
                 throw new Exception();

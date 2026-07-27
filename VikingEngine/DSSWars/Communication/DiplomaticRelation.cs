@@ -18,6 +18,10 @@ namespace VikingEngine.DSSWars.Communication
         public bool secret = false;
         public int allyAgainst = -1;
 
+        public override string ToString()
+        {
+            return $"{Relation}, {SpeakTerms}, end sec {RelationEnd_GameTimeSec.Seconds}";
+        }
         public DiplomaticRelation()
         {   
         }
@@ -35,7 +39,7 @@ namespace VikingEngine.DSSWars.Communication
             return Relation >= RelationType.RelationType3_Ally;
         }
 
-        public void SetRelation(PFaction faction1, PFaction faction2, RelationType newRelation, PFaction actuator, out RelationType previousRelation)
+        public void SetRelation(PFaction faction1, PFaction faction2, RelationType newRelation, PFaction actuator, out RelationType previousRelation, bool fromAllianceTrade, bool localAction)
         {
             previousRelation = Relation;
 
@@ -48,25 +52,23 @@ namespace VikingEngine.DSSWars.Communication
                 {
                     SpeakTerms = SpeakTerms.SpeakTermsN2_None;
                 }
+                faction1.GetPlayer()?.onNewRelation(actuator == faction2,faction2, this, previousRelation, fromAllianceTrade, true);
+                faction2.GetPlayer()?.onNewRelation(actuator == faction1,faction1, this, previousRelation, fromAllianceTrade, true);
 
-                //faction1?.player?.onNewRelation(actuator == faction2, faction2, this, previousRelation);
-                //faction2?.player?.onNewRelation(actuator == faction1, faction1, this, previousRelation);
-                faction1.GetPlayer()?.onNewRelation(actuator == faction2,faction2, this, previousRelation, true);
-                faction2.GetPlayer()?.onNewRelation(actuator == faction1,faction1, this, previousRelation, true);
-
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
+                if (localAction)
                 {
-                    EightBit actuators = new EightBit(actuator == faction1, actuator == faction2);
-                    actuators.write(w);
-                    //Net.ObjectId.WriteFaction(w, faction1);
-                    //Net.ObjectId.WriteFaction(w, faction2);
-                    faction1.write(w);
-                    faction2.write(w);
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        EightBit actuators = new EightBit(actuator == faction1, actuator == faction2);
+                        actuators.write(w);
 
-                    write(w);
+                        faction1.write(w);
+                        faction2.write(w);
+
+                        write(w);
+                    }
+                    packet.EndWrite_Asynch();
                 }
-                packet.EndWrite_Asynch();
-
             }
         }
 
@@ -74,19 +76,22 @@ namespace VikingEngine.DSSWars.Communication
         {
             //Faction faction1 = Net.ObjectId.ReadFaction(r, out _);
             //Faction faction2 = Net.ObjectId.ReadFaction(r, out _);
-            PFaction faction1 = new PFaction(r);
-            PFaction faction2 = new PFaction(r);
+
+            
 
             //if (faction1 != null && faction2 != null)
             {
                 EightBit actuators = new EightBit(r);
 
+                PFaction faction1 = new PFaction(r);
+                PFaction faction2 = new PFaction(r);
+
                 ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1, faction2);
                 var previousRelation = rel.Relation;
                 rel.read(r, int.MaxValue);
 
-                faction1.GetPlayer()?.onNewRelation(actuators.Get(1), faction2, rel, previousRelation, false);
-                faction2.GetPlayer()?.onNewRelation(actuators.Get(0), faction1, rel, previousRelation, false);
+                faction1.GetPlayer()?.onNewRelation(actuators.Get(1), faction2, rel, previousRelation, false, false);
+                faction2.GetPlayer()?.onNewRelation(actuators.Get(0), faction1, rel, previousRelation, false, false);
             }
         }
 
@@ -94,8 +99,8 @@ namespace VikingEngine.DSSWars.Communication
         {
             Relation = RelationType.RelationType0_Neutral;
             SpeakTerms = SpeakTerms.SpeakTermsN2_None;
-        }     
-
+        }
+       
         public void write(System.IO.BinaryWriter w)
         {
             

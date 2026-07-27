@@ -47,5 +47,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             throw new NotImplementedException();
         }
+
+        public override bool MayBattle()
+        {
+            return true;
+        }
     }
 }

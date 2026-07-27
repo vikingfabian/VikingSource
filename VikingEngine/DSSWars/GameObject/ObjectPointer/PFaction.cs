@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Players;
@@ -55,7 +56,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                 return null;
             }
 
-            return DssRef.world.faction(factionIndex);
+            return DssRef.world.factions.GetIndex_Safe(factionIndex); ;
         }
 
         public bool TryGetFaction(out Faction faction)
@@ -154,6 +155,26 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             player = null;
             return false;
         }
+        public bool TryGetHumanPlayer(out Players.AbsHumanPlayer player)
+        {
+            if (TryGetPlayer(out var aplayer))
+            {
+                player = aplayer.GetHumanPlayer();
+                return player != null;
+            }
+            player = null;
+            return false;
+        }
+        public bool TryGetRemotePlayer(out Players.RemotePlayer player)
+        {
+            if (TryGetPlayer(out var aplayer))
+            {
+                player = aplayer.GetRemotePlayer();
+                return player != null;
+            }
+            player = null;
+            return false;
+        }
 
         public bool TryGetAiPlayer(out Players.AiPlayer player)
         {
@@ -164,6 +185,15 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             }
             player = null;
             return false;
+        }
+
+        public override string ToString()
+        {
+            if (TryGetFaction(out var faction))
+            { 
+                return faction.ToString();
+            }
+            return $"faction ({factionIndex})";
         }
     }
 

@@ -35,7 +35,8 @@ namespace VikingEngine.DSSWars
 
         public const float WarHudIcons_DefaultScale = 0.8f;
 
-        public static readonly Color HeadBarTextColor_Beige = new Color(205,142,56);
+        public static readonly Color HeadBarTextColor_Beige = new Color(205, 142, 56);
+        public static readonly Color HeadBarTextColor_DarkBeige = new Color(100, 70, 30);
 
         public static readonly Color TitleColor_Head = new Color(104, 149, 219);
         public static readonly Color TitleColor_Head2 = ColorExt.ChangeBrighness(TitleColor_Head, -20);
@@ -54,6 +55,7 @@ namespace VikingEngine.DSSWars
         //     Salmon color (R:250,G:128,B:114,A:255).
         public static readonly Color NotAvailableColor = new Color(250, 180, 180);
         public static readonly Color NotAvailableColor_Dark = Color.DarkRed;
+        public static readonly Color NotAvailableColor_Dark_Grayed = new Color(100, 40, 40);
 
         public static readonly Color TextColor_Relation = Color.LightBlue;
 

@@ -28,7 +28,7 @@ namespace VikingEngine.LootFest.Players
 
 #region VARIABLES
         public bool appearanceChanged = false;
-        public const int ChatMessageMaxChars = 250;
+        public const int ChatMessageMaxChars = 400;
         List<GamerName> gamerNames = new List<GamerName>();
         HUD.ButtonLayout buttonLayOut;
 

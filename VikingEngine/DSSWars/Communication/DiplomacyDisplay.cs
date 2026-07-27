@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VikingEngine.DSSWars.Communication;
@@ -122,7 +123,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.rtsMoney),
                     new RbSpace(0.5f),
-                    new RbText(DssRef.todoLang.Diplomacy_SendGold) },
+                    new RbText(DssRef.lang.Diplomacy_SendGold) },
                         new RbAction(SendGold), null, player.pfaction.GetFaction().money.GetGold() >= 10));
             }
 
@@ -218,7 +219,7 @@ namespace VikingEngine.DSSWars.Interface
             DssRef.state.LocalHost().pfaction.GetFaction().money.AddGold(gold);
 
             RichBoxContent content = new RichBoxContent();
-            content.h1(DssRef.todoLang.Diplomacy_SendGold, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Diplomacy_SendGold, HudLib.TitleColor_Head);
 
             content.newLine();
             sender.addNetGamerToHud(content, true, false);
@@ -268,12 +269,12 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (opt.tooLargeAlliance)
                 {
-                    content.icontext(HudLib.NotAvailableIcon, DssRef.todoLang.AllianceLimit, HudLib.NotAvailableColor);
-                    content.text(DssRef.todoLang.AllianceLimitTooltip, HudLib.InfoYellow_Light);
+                    content.icontext(HudLib.NotAvailableIcon, DssRef.lang.AllianceLimit, HudLib.NotAvailableColor);
+                    content.text(DssRef.lang.AllianceLimitTooltip, HudLib.InfoYellow_Light);
                 }
                 if (opt.startProtection)
                 {
-                    content.icontext(HudLib.NotAvailableIcon, DssRef.todoLang.GameStartProtection, HudLib.NotAvailableColor);
+                    content.icontext(HudLib.NotAvailableIcon, DssRef.lang.GameStartProtection, HudLib.NotAvailableColor);
                     content.text(HudLib.TimeSpan_LongText(opt.protectionTime), HudLib.InfoYellow_Light);
                 }
                 content.newParagraph();
@@ -369,6 +370,18 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 else
                 {
+                    if (PtoP.suggestedRelation == RelationType.RelationType3_Ally)
+                    {
+                        var clientSett = otherPlayer.NetClientSettings();
+                        if (clientSett.clientPtoP.canBreakAlliance == false)
+                        {
+                            content.newLine();
+                            content.Add(new RbImage(HudLib.NotAvailableIcon));
+                            content.Add(new RbSpace(0.5f));
+                            content.Add(new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.CanBreakAlliance, DssRef.lang.Hud_Off), HudLib.NotAvailableColor_Dark_Grayed));
+                        }
+                    }
+
                     content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
                             new RbImage(HudLib.AvailableIcon),
@@ -381,7 +394,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
                             new RbImage(HudLib.NotAvailableIcon),
                             new RbSpace(0.5f),
-                            new RbText(DssRef.todoLang.Hud_Deny),
+                            new RbText(DssRef.lang.Hud_Deny),
                         },
                         new RbAction1Arg<AbsHumanPlayer>(cancelToPlayerRelation, otherPlayer, RbSoundType.Stop)));
                 }
@@ -395,13 +408,6 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     offerToPlayerRelationButton(content, RelationType.RelationType1_Peace);
                     
-
-                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
-                    //    {
-                    //        new RbImage(SpriteName.WarsRelationPeace),
-                    //        new RbText(DssRef.lang.Diplomacy_OfferPeace),
-                    //    },
-                    //    new RbAction1Arg<RelationType>(offerToPlayerRelation, RelationType.RelationType1_Peace, RbSoundType.Buy)));
                 }
                 else if (selectedRelation.Relation < RelationType.RelationType3_Ally)
                 {
@@ -409,14 +415,18 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         content.newLine();
                         offerToPlayerRelationButton(content, RelationType.RelationType3_Ally);
-                        
-
-                        //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
-                        //{
-                        //    new RbImage(SpriteName.WarsRelationAlly),
-                        //    new RbText(DssRef.lang.Diplomacy_OfferAlliance),
-                        //},
-                        //new RbAction1Arg<RelationType>(offerToPlayerRelation, RelationType.RelationType3_Ally, RbSoundType.Buy)));
+                    }
+                    else
+                    {
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
+                        {
+                            new RbImage(SpriteName.WarsRelationAlly),
+                            new RbSpace(0.5f),
+                            new RbImage(HudLib.NotAvailableIcon),
+                            new RbSpace(0.5f),
+                            new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon,DssRef.lang.AllowAllianceTitle, DssRef.lang.Hud_Blocked), HudLib.NotAvailableColor_Dark_Grayed),
+                        },
+                       null, null, false));
                     }
                 }
 
@@ -428,40 +438,64 @@ namespace VikingEngine.DSSWars.Interface
                     forgeRelationButton(content, new DiplomacyOption(RelationType.RelationType0_Neutral));
                 }
 
-                if (selectedRelation.Relation >= RelationType.RelationTypeN1_Enemies &&
-                    (selectedRelation.Relation != RelationType.RelationType3_Ally || settings.clientPtoP.canBreakAlliance))
+                if (selectedRelation.Relation >= RelationType.RelationTypeN1_Enemies)
                 {
-
-                    RelationType warLevel = settings.clientPtoP.warDeclarePreparationTime.use ?
-                        RelationType.RelationTypeN3_Mobilization : RelationType.RelationTypeN4_War;
-                    var warOption = new DiplomacyOption(warLevel);
-
-                    warOption.tooLargeAlliance = false;
-
-                    if (settings.clientPtoP.allianceLimit)
+                    content.newLine();
+                    if (selectedRelation.Relation == RelationType.RelationType3_Ally && !settings.clientPtoP.canBreakAlliance)
                     {
-                        warOption.tooLargeAlliance = player.AllianceCount_Humans() > otherPlayer.AllianceCount_Humans();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
+                        {
+                            new RbImage(SpriteName.WarsRelationWar),
+                            new RbSpace(0.5f),
+                            new RbImage(HudLib.NotAvailableIcon),
+                            new RbSpace(0.5f),
+                            new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.CanBreakAlliance, DssRef.lang.Hud_Off), HudLib.NotAvailableColor_Dark_Grayed),
+                        }, null, null, false));
                     }
-
-                    warOption.startProtection = false;
-                    warOption.protectionTime = TimeSpan.Zero;
-                    if (settings.clientPtoP.gameStartPreparationTime.use)
+                    else if (settings.clientPtoP.warAllow == PlayerDiplomacyAllowType.Allow)
                     {
-                        warOption.protectionTime = settings.clientPtoP.gameStartPreparationTime.time.TimeSpan - otherPlayer.timePlayed;
-                        warOption.startProtection = warOption.protectionTime.Ticks > 0;
-                    }
+                        RelationType warLevel = settings.clientPtoP.warDeclarePreparationTime.use ?
+                            RelationType.RelationTypeN3_Mobilization : RelationType.RelationTypeN4_War;
+                        var warOption = new DiplomacyOption(warLevel);
 
-                    warOption.available = !warOption.tooLargeAlliance && !warOption.startProtection;
+                        warOption.tooLargeAlliance = false;
 
-                    if (settings.clientPtoP.mustAsk)
-                    {
-                        content.newLine();
-                        offerToPlayerRelationButton(content, warLevel);
+                        if (settings.clientPtoP.allianceLimit)
+                        {
+                            warOption.tooLargeAlliance = player.AllianceCount_Humans() > otherPlayer.AllianceCount_Humans();
+                        }
+
+                        warOption.startProtection = false;
+                        warOption.protectionTime = TimeSpan.Zero;
+                        if (settings.clientPtoP.gameStartPreparationTime.use)
+                        {
+                            warOption.protectionTime = settings.clientPtoP.gameStartPreparationTime.time.TimeSpan - otherPlayer.timePlayed;
+                            warOption.startProtection = warOption.protectionTime.Ticks > 0;
+                        }
+
+                        warOption.available = !warOption.tooLargeAlliance && !warOption.startProtection;
+
+                        if (settings.clientPtoP.mustAsk)
+                        {
+                            content.newLine();
+                            offerToPlayerRelationButton(content, warLevel);
+                        }
+                        else
+                        {
+                            content.newLine();
+                            forgeRelationButton(content, warOption);
+                        }
                     }
                     else
                     {
-                        content.newLine();
-                        forgeRelationButton(content, warOption);
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
+                        {
+                            new RbImage(SpriteName.WarsRelationWar),
+                            new RbSpace(0.5f),
+                            new RbImage(HudLib.NotAvailableIcon),
+                            new RbSpace(0.5f),
+                            new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon,DssRef.lang.AllowWarTitle, DssRef.lang.Hud_Blocked), HudLib.NotAvailableColor_Dark_Grayed),
+                        }, null, null, false));
                     }
                 }
             }
@@ -477,7 +511,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     new RbImage(icon),
                     new RbSpace(0.5f),
-                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.Diplomacy_OfferRelation, name)),
+                    new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Diplomacy_OfferRelation, name)),
                 },
                 new RbAction1Arg<RelationType>(offerToPlayerRelation, relation, RbSoundType.Buy), new RbTooltip(offerRelationTooltip, relation )));
         }
@@ -503,6 +537,20 @@ namespace VikingEngine.DSSWars.Interface
 
         void netSendP2p(PlayerToPlayerDiplomacy PtoP, AbsHumanPlayer otherPlayer)
         {
+            if (PtoP.suggestedBy == otherPlayer.pfaction)
+            {
+                switch (PtoP.suggestedRelation)
+                {
+                    case RelationType.RelationTypeN4_War:
+                    case RelationType.RelationTypeN3_Mobilization:
+                        DssRef.stats.playerToPlayerWar.addOne();
+                        break;
+                    case RelationType.RelationType3_Ally:
+                        DssRef.stats.playerToPlayerAlly.addOne();
+                        break;
+                }
+            }
+
             var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerToPlayerRelation, Network.PacketReliability.Reliable,
                      Network.SendPacketTo.OneSpecific, otherPlayer.networkPeer.peer.FullId, player.playerData.localPlayerIndex);
             
@@ -557,7 +605,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             var message = new RichBoxContent();
             sending.addNetGamerToHud(message, true, false);
-            message.text(DssRef.todoLang.Diplomacy_OfferRelation_Declined);
+            message.text(DssRef.lang.Diplomacy_OfferRelation_Declined);
             recieving.hud.messages.Add(message, SoundLib.stop);
         }
 
@@ -648,10 +696,10 @@ namespace VikingEngine.DSSWars.Interface
                     DssRef.world.diplomacy.endRelations(player.pfaction, otherfaction.pfaction);
                     break;
                 case RelationType.RelationTypeN3_Mobilization:
-                    DssRef.world.diplomacy.declareWar(player.pfaction, otherfaction.pfaction);
+                    DssRef.world.diplomacy.declareWar(player.pfaction, otherfaction.pfaction, false, true);
                     break;
                 case RelationType.RelationTypeN4_War:
-                    DssRef.world.diplomacy.declareWar(player.pfaction, otherfaction.pfaction );
+                    DssRef.world.diplomacy.declareWar(player.pfaction, otherfaction.pfaction, false, true );
                     break;
             }
         }
@@ -703,7 +751,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void offerRelationTooltip(RichBoxContent content, object tag)
         {
-            content.h1(DssRef.todoLang.Diplomacy_OnAccept, HudLib.TitleColor_Label2);
+            content.h1(DssRef.lang.Diplomacy_OnAccept, HudLib.TitleColor_Label2);
             relationTooltip(content, tag);
         }
 
@@ -782,7 +830,7 @@ namespace VikingEngine.DSSWars.Interface
             if (rel == RelationType.RelationTypeN3_Mobilization)
             {
                 var time = otherfaction.pfaction.GetPlayer().GetHumanPlayer().NetClientSettings().clientPtoP.warDeclarePreparationTime.time.TimeSpan;
-                HudLib.LabelAndText(content, SpriteName.cmdIconTimeOut, DssRef.todoLang.WarPreparationTime, HudLib.TimeSpan_LongText(time));
+                HudLib.LabelAndText(content, SpriteName.cmdIconTimeOut, DssRef.lang.WarPreparationTime, HudLib.TimeSpan_LongText(time));
             }
         }
 
@@ -915,6 +963,16 @@ namespace VikingEngine.DSSWars.Interface
 
                     content.newLine();
                     content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Diplomacy_AllyCount, player.alliedFactions.Count), HudLib.InfoYellow_Light));
+                }
+            }
+            else
+            {
+                var clientSett = otherfaction.player.GetHumanPlayer().NetClientSettings();
+                if (clientSett.clientPtoP.canBreakAlliance == false)
+                {
+                    content.Add(new RbImage(HudLib.NotAvailableIcon));
+                    content.Add(new RbSpace(0.5f));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.CanBreakAlliance, DssRef.lang.Hud_Off), HudLib.NotAvailableColor_Dark_Grayed));
                 }
             }
         }

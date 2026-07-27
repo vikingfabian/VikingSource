@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Net
 {
     class ConnectState : AbsDssState
     {
-        Time failTimer = new Time(8, TimeUnit.Seconds);
+        Time failTimer = new Time(20, TimeUnit.Seconds);
         //LobbyMetaData meta;
         public ConnectState(Network.AbsAvailableSession available)
             : base()
@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Net
         {
             Ref.music.stop(true);
 
-            Graphics.Text2 text = new Graphics.Text2(DssRef.todoLang.Network_ConnectingToGame,
+            Graphics.Text2 text = new Graphics.Text2(DssRef.lang.Network_ConnectingToGame,
                 LoadedFont.Bold, Engine.Screen.CenterScreen, Engine.Screen.TextTitleHeight,
                  Color.Yellow, ImageLayers.Lay1);
             text.OrigoAtCenter();
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Net
             base.NetEvent_PingReturned(gamer);
 
             //Will wait for meta data in "startGame" state, packet type "DssSendWorld"
-            new StartGame(false, null, null, null);
+            new StartGame(false, /*null,*/ null, null);
             
         }
         public override void NetworkReadPacket(ReceivedPacket packet)

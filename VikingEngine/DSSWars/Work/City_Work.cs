@@ -1332,6 +1332,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void debug_addOneMaster(WorkExperienceType type)
+        {
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+                var status = workerStatuses[i];
+                var xp = status.getXpFor(type);
+                if (xp.Level() < ExperienceLevel.Master_4)
+                {
+                    status.setXpFor(type, (byte)DssConst.WorkLevel_Master);
+                    return;
+                }
+            }
+        }
         public bool workerInSchoolCheckup(int idAndPosition, out float completeTimeSec)
         {
             IntVector2 pos = conv.IntToIntVector2(idAndPosition);

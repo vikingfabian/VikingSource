@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.EngineSpace;
@@ -39,6 +40,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
         public bool IsNetHosted = true;
+        public ObjectName name = new ObjectName();
 
         public AbsNetworkPeer NetHostingPeer()
         {
@@ -62,6 +64,30 @@ namespace VikingEngine.DSSWars.GameObject
         {
             
             //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
+        }
+
+        public PMapObject mapObjPointer()
+        {
+            return new PMapObject(gameobjectType(), pfaction, myIndex);
+        }
+
+        public override void NameEditEvent(string result, object tag)
+        {
+            name.setCustom(result);
+
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssRename, PacketReliability.Reliable);
+            mapObjPointer().write(w);
+            name.write(w);
+        }
+
+        public static void NetReadRename(System.IO.BinaryReader r)
+        {
+            var pointer = new PMapObject(r);
+            var obj = pointer.Get();
+            if (obj != null)
+            {
+                obj.name.read(r, int.MaxValue);
+            }
         }
 
         public void IndexToHud(RichBoxContent content)

@@ -199,8 +199,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newParagraph();
 
                 var gotoButtonContent = new RichBoxContent();
-                MessageGroup_Ingame.ControllerInputIcons(player,gotoButtonContent);
-                //gotoButtonContent.Add(new RbText(city.TypeName()));
+                MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
                 city.toButtonContent(gotoButtonContent, true);
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
@@ -211,11 +210,19 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-
         public void giftMessage(AbsArmy mapObj, RemotePlayer fromPlayer)
         {
             RichBoxContent content = new RichBoxContent();
-            content.h1("Recived gift", HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Diplomacy_RecievedGift, HudLib.TitleColor_Head);
+
+            content.newLine();
+            var gotoButtonContent = new RichBoxContent();
+            MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
+            mapObj.toButtonContent(gotoButtonContent, true);
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, mapObj, RbSoundType.Default))
+            { fillWidth = true });
 
             Add(content, SoundLib.netMessage);
         }

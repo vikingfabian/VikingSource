@@ -62,29 +62,34 @@ namespace VikingEngine.DSSWars
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    if (p.pfaction.GetFaction().militaryStrength > 200)
+                    if (!p.pfaction.TryGetFaction(out var playerFaction))
+                    {
+                        continue;
+                    }
+
+                    if (playerFaction.militaryStrength > 200)
                     {
                         UnlockAchievement_async(AchievementIndex.military_might_tier1);
 
-                        if (p.pfaction.GetFaction().militaryStrength > 500)
+                        if (playerFaction.militaryStrength > 500)
                         {
                             UnlockAchievement_async(AchievementIndex.military_might_tier2);
 
-                            if (p.pfaction.GetFaction().militaryStrength > 1500)
+                            if (playerFaction.militaryStrength > 1500)
                             {
                                 UnlockAchievement_async(AchievementIndex.military_might_tier3);
                             }
                         }
                     }
 
-                    if (p.pfaction.GetFaction().money.copper > int.MaxValue)
+                    if (playerFaction.money.copper > int.MaxValue)
                     {
                         UnlockAchievement_async(AchievementIndex.gold_64bit);
                     }
 
                     bool uploadLeaderBoard = false;
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref p.pfaction.GetFaction().cities, DssRef.world.cities, out City city))
+                    while (citiesC.Next(ref playerFaction.cities, DssRef.world.cities, out City city))
                     {
                         if (city.workForce.amount > LargePopulationCount_Tier1)
                         {
@@ -175,7 +180,7 @@ namespace VikingEngine.DSSWars
                     }
 
 
-                    var armiesC = p.pfaction.GetFaction().armies.counter();
+                    var armiesC = playerFaction.armies.counter();
                     while (armiesC.Next())
                     {
                         int vikings = 0;
@@ -372,34 +377,29 @@ namespace VikingEngine.DSSWars
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                if (p.statistics.WarsStartedByYou == 0)
+                if (p.pfaction.TryGetFaction(out var playerFaction))
                 {
-                    UnlockAchievement_onAny_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
-
-                    //if (victoryType == VictoryType.WorldPeace)
-                    //{
-                    //    UnlockAchievement_onAny_100(AchievementIndex.peace_and_love_any, AchievementIndex.peace_and_love_100);
-
-                    //    if (DssRef.world.metaData.mapSize >= MapSize.Large)
-                    //    {
-                    //        UnlockAchievement_on75(AchievementIndex.massive_peace_and_love);
-                    //    }
-                    //}
-                }
-                else if (p.statistics.WarsStartedByYou >= 10)
-                {
-                    UnlockAchievement(AchievementIndex.warstarter_tier1);
-                    if (p.statistics.WarsStartedByYou >= 20)
+                    if (p.statistics.WarsStartedByYou == 0)
                     {
-                        UnlockAchievement(AchievementIndex.warstarter_tier2);
-                        if (p.statistics.WarsStartedByYou >= 40)
+                        UnlockAchievement_onAny_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
+
+                    }
+                    else if (p.statistics.WarsStartedByYou >= 10)
+                    {
+                        UnlockAchievement(AchievementIndex.warstarter_tier1);
+                        if (p.statistics.WarsStartedByYou >= 20)
                         {
-                            UnlockAchievement(AchievementIndex.warstarter_tier3);
+                            UnlockAchievement(AchievementIndex.warstarter_tier2);
+                            if (p.statistics.WarsStartedByYou >= 40)
+                            {
+                                UnlockAchievement(AchievementIndex.warstarter_tier3);
+                            }
                         }
                     }
-                }
 
-                findHonorGuard(p);
+
+                    findHonorGuard(playerFaction);
+                }
             }
 
             
@@ -421,9 +421,9 @@ namespace VikingEngine.DSSWars
             }
 
 
-            void findHonorGuard(Players.LocalPlayer p)
+            void findHonorGuard(Faction playerfaction)
             {
-                var armiesC = p.pfaction.GetFaction().armies.counter();
+                var armiesC = playerfaction.armies.counter();
                 while (armiesC.Next())
                 {
                     var groupsC = armiesC.sel.groups.counter();

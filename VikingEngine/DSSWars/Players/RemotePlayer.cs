@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
@@ -28,17 +29,18 @@ namespace VikingEngine.DSSWars.Players
         public bool ready = false;
         public bool newPlayer = true;
         public bool supporterDLC = false;
-        public bool waitingForHandover = false;
+        public bool waitingForSaveHandover = false;
 
         public AbsPlayer previousPlayer;
         public PFaction assignedFaction = PFaction.Empty;//ushort.MaxValue;
         public FactionType previousFactionType;
         public RemotePlayerPointer pointer;
+        
         public GamerCommunicationSetting communicationSetting; //not implemented
 
         public NetSharedClientSettings netClientSettings;
         public double incomeMultiplier = 1;
-
+        public bool isDeleted = false;
         public RemotePlayer(Network.NetworkInstancePeer peer)
             :base()
         {
@@ -82,6 +84,8 @@ namespace VikingEngine.DSSWars.Players
 
             localTooPeacefulPercentage = DssRef.difficulty.tooPeacefulPercentage;
             int honorGuard = DssRef.difficulty.honorGuardCount();
+
+            netClientSettings.clientSettings.ApplyHostSettings(Ref.netsett.hostSettings);
 
             if (netClientSettings.clientSettings.useHandicap)
             {
@@ -144,6 +148,7 @@ namespace VikingEngine.DSSWars.Players
             while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
             {
                 citySel.money.copper = Math.Max(citySel.money.copper, Resource.Money.GoldToCopper * 100);
+                citySel.technology.iron.points = XpLib.Unlock.IronUnlock;
 
                 if (netClientSettings.clientSettings.useHandicap && 
                     netClientSettings.clientSettings.handicap_resourceBoost)
@@ -177,6 +182,7 @@ namespace VikingEngine.DSSWars.Players
 
         public override void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
         {
+            factionBanner &= ready;
             base.addNetGamerToHud(content, factionBanner, addStatus);
             if (addStatus && pointer.statusIcon != SpriteName.NO_IMAGE)
             {
@@ -225,6 +231,22 @@ namespace VikingEngine.DSSWars.Players
             intelligent = false;
         }
 
+        public void mute()
+        {
+            networkPeer.peer.storedData.communicationSetting.voiceVolume = 0;
+            Ref.netsett.settingsHasChanged = true;
+        }
+
+        public float voiceVolume(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                networkPeer.peer.storedData.communicationSetting.voiceVolume = value;
+                Ref.netsett.settingsHasChanged = true;
+            }
+            return networkPeer.peer.storedData.communicationSetting.voiceVolume;
+        }
+
         public override bool IsBot()
         {
             return false;
@@ -258,6 +280,7 @@ namespace VikingEngine.DSSWars.Players
         {
             clearPins(DeleteReason.LostHost);
             pointer.DeleteMe();
+            isDeleted = true;
         }
     }
 }

@@ -267,7 +267,11 @@ namespace VikingEngine.SteamWrapping
             SteamAvailableSession.RefreshServerTime();
 
             int count = (int)lobbyMatchList.m_nLobbiesMatching;
-            if (count > 0)
+            if (count == 0)
+            {
+                availableSessionsList.Clear();
+            }
+            else
             {
                 var rawList = new Dictionary<ulong, AbsAvailableSession>(count);
                 for (int i = 0; i < count; ++i)
@@ -283,13 +287,16 @@ namespace VikingEngine.SteamWrapping
                         {
                             canBeListed = false;
                         }
-
-                        if (session.metaData.lobbyPublicity == LobbyPublicity.FriendsOnly && session.friend == false)
+                        else if (session.metaData.lobbyPublicity == LobbyPublicity.Private ||
+                            (session.metaData.lobbyPublicity == LobbyPublicity.FriendsOnly && session.friend == false))
                         { //has locked out anyone that is not friend
                             canBeListed = false;
                         }
-
-                        if (session.refreshAvailable() == false)
+                        else if (Ref.netsett.IsBanned(session.lobbyHost) == BanStatus.Banned)
+                        {
+                            canBeListed = false;
+                        }
+                        else if (session.refreshAvailable() == false)
                         {
                             canBeListed = false;
                         }

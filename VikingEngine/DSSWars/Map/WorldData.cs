@@ -474,18 +474,22 @@ namespace VikingEngine.DSSWars
             Tile previous = new Tile();
             while (loop.Next())
             {
+                remotePlayerC.Reset();
+                while (remotePlayerC.Next())
+                {
+                    if (remotePlayerC.sel.networkPeer.peer.mapLoadedAndReady)
+                    {
+                        var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
+                        remoteTile.overview = true;
+                        remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
+                    }
+                }
+
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
                 tile.writeMapFile(w, previous);
 
                 previous = tile;
 
-                remotePlayerC.Reset();
-                while (remotePlayerC.Next())
-                { 
-                    var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
-                    remoteTile.overview = true;
-                    remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
-                }
             }            
         }
 
@@ -511,6 +515,18 @@ namespace VikingEngine.DSSWars
 
         public void writeNet_SubTile(System.IO.BinaryWriter w, IntVector2 tilePos)
         {
+            var remotePlayerC = DssRef.state.remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                if (remotePlayerC.sel.networkPeer.peer.mapLoadedAndReady)
+                {
+                    var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(tilePos);
+                    remoteTile.detail = true;
+                    remoteTile.detailTimeStamp.setTimeFromNow(TimeExt.MinuteInSeconds * 10);
+                    remotePlayerC.sel.remoteTileGrid.Set(tilePos, remoteTile);
+                }
+            }
+
             tilePos.writeUshort(w);
 
             var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
@@ -523,14 +539,6 @@ namespace VikingEngine.DSSWars
                 tile.write(w, ref previous);
 
                 previous = tile;
-            }
-
-            var remotePlayerC = DssRef.state.remotePlayers.counter();
-            while (remotePlayerC.Next())
-            {
-                var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(tilePos);
-                remoteTile.detail = true;
-                remotePlayerC.sel.remoteTileGrid.Set(tilePos, remoteTile);
             }
         }
 
@@ -555,37 +563,30 @@ namespace VikingEngine.DSSWars
             //unitCollAreaGrid.netSubTilesRecieved(tilePos);
         }
 
-        public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)
+        public void writeNet_Factions(System.IO.BinaryWriter w, PFaction faction)
         {
-            //int count = 
-
-            //w.Write((byte)factions.Count);
-            //foreach (int faction in factions) 
-            //{
-                int faction = factions.First();
-                w.Write((ushort)faction);
-                this.factions.Array[faction].writeNet(w);
-                Debug.WriteCheck(w);
-            //}
-
+            
+            //int faction = factions.First();
+            //w.Write((ushort)faction);
+            faction.write(w);
+            this.factions.Array[faction.factionIndex].writeNet(w);
+            Debug.WriteCheck(w);
+            
             SteamP2PManager.CrashOnTooLargePacket(w);
 
             var remotePlayerC = DssRef.state.remotePlayers.counter();
             while (remotePlayerC.Next())
             {
-                remotePlayerC.sel.factionsRecieved[faction] = true;
+                remotePlayerC.sel.factionsRecieved[faction.factionIndex] = true;
             }
         }
 
         public void readNet_Factions(System.IO.BinaryReader r)
         {
-            //int factionCount = r.ReadByte();
-            //for (int i = 0; i < factionCount; i++)
-            //{ 
-                int faction = r.ReadUInt16();
-                this.factions.Array[faction].readNet(r);
-                Debug.ReadCheck(r);
-            //}
+             
+            int faction = r.ReadUInt16();
+            this.factions.Array[faction].readNet(r);
+            Debug.ReadCheck(r);
         }
 
         public void writeNet_Cities(System.IO.BinaryWriter w, HashSet<int> CitiesInView)
@@ -627,9 +628,11 @@ namespace VikingEngine.DSSWars
             {
                 int city = r.ReadUInt16();
                 this.cities[city].readNet_map(this, r);
+                if (this.cities[city].IsNetHosted)
+                {
+                    lib.DoNothing();
+                }
                 Debug.ReadCheck(r);
-
-                //Debug.ReadCheck(r);
             }
 
             DssRef.world.BordersUpdated = true;
@@ -953,7 +956,7 @@ namespace VikingEngine.DSSWars
                         f.availableForPlayerScore += 1000;
                     }
 
-                    if (f.storyFaction)
+                    if (f.viewOnLargeMap)
                     {
                         f.availableForPlayerScore -= 1000;
                     }
@@ -962,7 +965,7 @@ namespace VikingEngine.DSSWars
                         var adj = f.adjacentFactions(true);
                         foreach (var nFaction in adj)
                         {
-                            if (nFaction.storyFaction)
+                            if (nFaction.viewOnLargeMap)
                             {
                                 f.availableForPlayerScore -= 500;
                             }
@@ -1314,6 +1317,9 @@ namespace VikingEngine.DSSWars
                 FactionType.Hælfolc,
                 FactionType.AerimAngren,
 
+                FactionType.Ellium,
+                FactionType.GrakPushdug,
+                FactionType.Draugost,
             };
 
 

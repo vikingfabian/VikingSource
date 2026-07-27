@@ -41,22 +41,25 @@ namespace VikingEngine.DSSWars.Players
 
         public void addNetGamerIconsToHud(RichBoxContent content, bool factionBanner)
         {
-            var faction = pfaction.GetFaction();
-            if (faction == null)
+            //var faction = pfaction.GetFaction();
+            //if (faction == null)
+            //{
+            //    if (profile.flag != null)
+            //    {
+            //        var flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+            //        content.Add(new RbTexture(flagTexture, 1f, 0, 0.2f));
+            //        //content.space();
+            //    }
+            //}
+            //else if (factionBanner && faction.player != null)
+            //{
+            //    content.Add(faction.FlagTextureToHud());
+            //    //content.space();
+            //}
+            if (factionBanner)
             {
-                if (profile.flag != null)
-                {
-                    var flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
-                    content.Add(new RbTexture(flagTexture, 1f, 0, 0.2f));
-                    //content.space();
-                }
+                addFlagToHud(content);
             }
-            else if (factionBanner && faction.player != null)
-            {
-                content.Add(faction.FlagTextureToHud());
-                //content.space();
-            }
-
             if (networkPeer != null)
             {
                 content.Add(new RbImage(Ref.netSession.Host() == networkPeer.peer? 
@@ -67,10 +70,29 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public void addFlagToHud(RichBoxContent content)
+        {
+            var faction = pfaction.GetFaction();
+            if (faction == null)
+            {
+                if (profile.flag != null)
+                {
+                    var flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+                    content.Add(new RbTexture(flagTexture, 1f, 0, 0.2f));
+                    //content.space();
+                }
+            }
+            else if (faction.player != null)
+            {
+                content.Add(faction.FlagTextureToHud());
+            }
+        }
+
         virtual public void addNetGamerToHud(RichBoxContent content, bool factionBanner, bool addStatus)
         {
-            addNetGamerIconsToHud(content, factionBanner);
-
+            
+                addNetGamerIconsToHud(content, factionBanner);
+            
             if (networkPeer != null)
             {
                 content.space();
@@ -397,7 +419,10 @@ namespace VikingEngine.DSSWars.Players
         {
             return true;
         }
-
+        public override bool IsBot()
+        {
+            return false;
+        }
         abstract public bool HasSupportDLC();
     }
 }

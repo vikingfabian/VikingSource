@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 13;
-        public const int SubVersion = 130; 
+        public const int SubVersion = 131; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.Data
         {
             foreach (var m in pointers)
             { 
-                m.SetPointer();
+                m.SetPointer(true);
             }
         }
     }
@@ -286,7 +286,7 @@ namespace VikingEngine.DSSWars.Data
             return r.ReadUInt16();
         }
 
-        abstract public void SetPointer();
+        abstract public void SetPointer(bool localAction);
     }
 
     class ArmyAttackObjectPointer: AbsObjectPointer
@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.Data
             ReadObjectPointer(r);
         }
 
-        public override void SetPointer()
+        public override void SetPointer(bool localAction)
         {
             var target = (AbsMapObject)GetObject();
 
@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 if (teleport)
                 {
-                    army.Order_Attack_Setup(target);
+                    army.Order_Attack_Setup(target, true);
                 }
                 else
                 {

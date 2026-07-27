@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         protected float strengthBeforeBattle = -1;
 
         public bool inBattle = false;
-        InBattleWith inBattleWith = new InBattleWith();
+        public InBattleWith inBattleWith = new InBattleWith();
         public GameTimeStamp lastTimeTradedBetweenPlayers = GameTimeStamp.None;
 
         public void tradeBetweenPlayers_toHud(LocalPlayer player, RichBoxContent content)
@@ -50,17 +50,17 @@ namespace VikingEngine.DSSWars.GameObject
             if (pfaction == player.pfaction && player.alliedFactions.Count > 0)
             {   
                 content.Add(new RbSeperationLine());
-                HudLib.Label(content, "Gift to player");
+                HudLib.Label(content, DssRef.lang.Diplomacy_GiftToPlayer);
                 content.hspace();
 
                 if (lastTimeTradedBetweenPlayers.TimeOut())
                 {
                     lock (player.alliedFactions)
                     {
-                        foreach (var m in player.alliedFactions)
+                        foreach (var pAlly in player.alliedFactions)
                         {
                             //var f = DssRef.world.faction(m);
-                            if (pfaction.TryGetFaction(out var f))
+                            if (pAlly.TryGetFaction(out var f))
                             {
                                 RichBoxContent buttonContent = new RichBoxContent();
                                 f.toHud(buttonContent, RelationType.NONE, true, true);
@@ -90,28 +90,34 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return new PArmy(pfaction, myIndex);
         }
+        
         public void AddSoldierGroup(SoldierGroup group)
         {
             //Hitta en plats bland alla grupper
             group.myIndex = groups.Add(group);
+            soldiersCount += group.soldierCount;
+            if (soldiersCount <= 0)
+            {
+                lib.DoNothing();
+            }
             group.army = new WeakReference<AbsArmy>(this);
             group.pfaction = pfaction;
         }
 
         const int GroupsPerPacket = 8;
-        public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount)
+        public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount, bool isHandOver)
         {
-            
-
             int groupIndex = 0;
             int packetIndex = 0;
             while (groupIndex < groups.Array.Length)
             {
                 var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
                 {
+                    w.Write(isHandOver);
                     Net.ObjectId.NetWriteMapObjId(w, this);
 
                     w.Write((byte)packetIndex);
+                    Debug.WriteCheck(w);
 
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
@@ -119,7 +125,9 @@ namespace VikingEngine.DSSWars.GameObject
                         if (group != null)
                         {
                             w.Write(true);
+
                             group.writeNet(w);
+                            Debug.WriteCheck(w);
                             //NetWriteGroup(w, group);
                         }
                         else
@@ -135,97 +143,92 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             lastNetUpdate.setNow();
-            /*
-            if (groups.Count > 0)
-            {
-
-                var groupC = groups.counter();
-
-                while (groupC.HasMore())
-                {
-                    int packetGroupCount = GroupsPerPacket;
-
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
-                    {
-                        packetCount++;
-                        Net.ObjectId.NetWriteMapObjId(w, this);
-
-                        while (--packetGroupCount >= 0 && groupC.Next())
-                        {
-                            NetWriteGroup(w, groupC.sel);
-                            lastNetUpdate.setNow();
-                        }
-
-                        w.Write(ushort.MaxValue);
-                    }
-                    packet.EndWrite_Asynch();
-                }
-            }
-            */
+          
         }
-        //public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
-        //{
-        //    //w.Write((ushort)group.myIndex);
-        //    group.writeNet(w);
-
-        //    Debug.WriteCheck(w);
-        //}
+       
         public static void NetReadGroups(bool bArmy, System.IO.BinaryReader r)
         {
+            bool isHandOver = r.ReadBoolean();
+
             if (ObjectId.NetReadMapObjId(r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
             {
-                if (mapObj != null)
-                {
+                if (mapObj != null && (!mapObj.IsNetHosted || isHandOver))
+                {  
                     int packetIndex = r.ReadByte();
-
+                    Debug.ReadCheck(r);
+                    
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
                         int groupIndex = packetIndex * GroupsPerPacket + i;
                         if (r.ReadBoolean())
                         {
-                            NetReadGroup(r, groupIndex, mapObj);
+                            var rpos = r.BaseStream.Position;
+                            mapObj.NetReadGroup(r, groupIndex);
+                            if (Debug.ReadCheck_returnIfError(r))
+                            {
+                                r.BaseStream.Position = rpos;
+                                mapObj.NetReadGroup(r, groupIndex);
+                            }
                         }
                         else
                         {
-                            mapObj.groups.PullIndex_Safe(groupIndex)?.DeleteMe(DeleteReason.NetworkEvent, false);
+                            var group = mapObj.groups.PullIndex_Safe(groupIndex);
+                            if (group != null)
+                            {
+                                //if (mapObj.IsArmy() || mapObj.IsNetHosted)
+                                //{
+                                //    lib.DoNothing();
+                                //}
+
+                                group.DeleteMe(DeleteReason.NetworkEvent, false);
+                            }
                         }
                     }
                     Debug.ReadCheck(r);
                 }
             }
         }
-        public static void NetReadGroup(System.IO.BinaryReader r, int index, AbsArmy army)
+        public void NetReadGroup(System.IO.BinaryReader r, int index)
         {
-                var group = army.groups.GetIndex_Safe(index);
-                bool needInit = false;
-                if (group == null)
-                {
-                    needInit = true;
-                    if (army.IsCity())
-                    {
-                        group = new GuardGroup(army);
-                    }
-                    else
-                    {
-                        group = new SoldierGroup(army);
-                    }
-                    army.groups.HardSet(group, index);
-                    group.myIndex = index;
-                    if (!group.pfaction.HasValue())
-                    {
-                        throw new Exception();
-                    }
-                }
+            var group = NetGetGroup(index, true, out var needInit);
+            group.readNet(this, r, needInit);
+            group.net_onUpdate();
+        }
 
-                group.readNet(army, r, needInit);
-                group.net_onUpdate();
-
+        public SoldierGroup NetGetGroup(int index, bool createIfMissing, out bool needInit)
+        {
+            var group = groups.GetIndex_Safe(index);
+            needInit = false;
             
+            if (group == null && createIfMissing)
+            {
+                needInit = true;
+                if (IsCity())
+                {
+                    group = new GuardGroup(this);
+                }
+                else
+                {
+                    group = new SoldierGroup(this);
+                }
+                groups.HardSet(group, index);
+                group.myIndex = index;
+                //if (!group.pfaction.HasValue())
+                //{
+                //    throw new Exception();
+                //}
+            }
+
+            return group;
         }
 
         virtual public void remove(SoldierGroup group)
         {
-            Debug.CrashIfThreaded();
+            //Debug.CrashIfThreaded();
+            if (IsNetHosted || debugTagged)//pfaction == DssRef.state.LocalHost().pfaction)
+            {
+                lib.DoNothing();
+            }
             groups.RemoveAt_EqualSafeCheck(group, group.myIndex);            
         }
         public override void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
@@ -294,73 +297,70 @@ namespace VikingEngine.DSSWars.GameObject
             inBattleWith = battles;
             mostCenterGroup = mostCenter;
 
-            if (inBattle)
+            if (IsNetHosted)
             {
-                if (battles.groupsInBattle == 0)
+                if (inBattle)
                 {
-                    DssRef.state.events?.onBattleEnd_async(this, inBattleWith);
-                    inBattle = false;
-                    if (pfaction.TryGetLocalPlayer(out var lp) && !DssRef.achieve.achivementsAreModeBlocked())
+                    if (battles.groupsInBattle == 0)
                     {
-                        float strengthLost = strengthBeforeBattle - strengthValue;
-                        if (strengthLost >= Achievements.Defeating_victory_strengthLost && groups.Count > 0)
+                        DssRef.state.events?.onBattleEnd_async(this, inBattleWith);
+                        inBattle = false;
+                        if (pfaction.GetPlayer().IsLocalPlayer() && !DssRef.achieve.achivementsAreModeBlocked())
                         {
-                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.defeating_victory);
-                        }
-
-                        int menLost = soldierCountBeforeBattle - soldiersCount;
-                        if (menLost >= Achievements.SlaughteredCount)
-                        {
-                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.slaughtered);
-                        }
-
-                        if (battles.attackingCity)
-                        {
-                            groupsC.Reset();
-                            while (groupsC.Next())
+                            float strengthLost = strengthBeforeBattle - strengthValue;
+                            if (strengthLost >= Achievements.Defeating_victory_strengthLost && groups.Count > 0)
                             {
-                                if (groupsC.sel.soldierConscript.conscript.weapon == Resource.ItemResourceType.SiegeCannonBronze)
+                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.defeating_victory);
+                            }
+
+                            int menLost = soldierCountBeforeBattle - soldiersCount;
+                            if (menLost >= Achievements.SlaughteredCount)
+                            {
+                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.slaughtered);
+                            }
+
+                            if (battles.attackingCity)
+                            {
+                                groupsC.Reset();
+                                while (groupsC.Next())
                                 {
-                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.ottoman);
-                                    break;
+                                    if (groupsC.sel.soldierConscript.conscript.weapon == Resource.ItemResourceType.SiegeCannonBronze)
+                                    {
+                                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.ottoman);
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            else if (battles.groupsInBattle >= 2)
-            {
-                inBattle = true;
-                strengthBeforeBattle = strengthValue;
-                soldierCountBeforeBattle = soldiersCount;
-                if (pfaction.TryGetLocalPlayer(out var localplayer))
+                else if (battles.groupsInBattle >= 2)
                 {
-                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    inBattle = true;
+                    strengthBeforeBattle = strengthValue;
+                    soldierCountBeforeBattle = soldiersCount;
+                    if (pfaction.TryGetLocalPlayer(out _))
                     {
-                        //var localplayer = GetPlayer().GetLocalPlayer();
-                        if (localplayer.battleMessageCheck(tilePos))
+                        Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            RichBoxContent content = new RichBoxContent();
-                            MessageGroup_Ingame.Title(content, DssRef.lang.Hud_Battle);
+                            var localplayer = pfaction.GetPlayer().GetLocalPlayer();
+                            if (localplayer.battleMessageCheck(tilePos))
+                            {
+                                RichBoxContent content = new RichBoxContent();
+                                MessageGroup_Ingame.Title(content, DssRef.lang.Hud_Battle);
 
-                            //var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                            //MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
-                            //gotoBattleButtonContent.Add(new RbText(TypeName()));
+                                var gotoButtonContent = new RichBoxContent();
+                                MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
+                                this.toButtonContent(gotoButtonContent, true);
 
-                            //content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                            //    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this)));
-                            var gotoButtonContent = new RichBoxContent();
-                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
-                            this.toButtonContent(gotoButtonContent, true);
+                                content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                                    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this, RbSoundType.Default))
+                                { fillWidth = true });
 
-                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
-                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this, RbSoundType.Default))
-                            { fillWidth = true });
-
-                            localplayer.hud.messages.Add(content);
-                        }
-                    }));
+                                localplayer.hud.messages.Add(content);
+                            }
+                        }));
+                    }
                 }
             }
         }
@@ -373,7 +373,7 @@ namespace VikingEngine.DSSWars.GameObject
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
-                groupsC.sel.writeGameState(w);               
+                groupsC.sel.writeGameState(w, true);               
             }
 
             Debug.WriteCheck(w);
@@ -405,8 +405,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        
 
+        public override AbsArmy GetAbsArmy()
+        {
+            return this;
+        }
         virtual public void asyncNearObjectsUpdate()
         {
             var groupsC = groups.counter();

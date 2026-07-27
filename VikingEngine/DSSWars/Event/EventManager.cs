@@ -69,33 +69,35 @@ namespace VikingEngine.DSSWars.Event
 
         virtual public void asyncUpdate(float time)
         {
-            //if (DssRef.state.localPlayers[0].tutorial != null)
-            //{
-            //    return;
-            //}
-
-            mainStory.TryPeek(out var ev);//var ev = mainStory.FirstOrDefault();
-            if (ev != null)
+            if (DssRef.state.host)
             {
-                if (ev.asyncUpdate(time))
+                mainStory.TryPeek(out var ev);//var ev = mainStory.FirstOrDefault();
+                if (ev != null)
                 {
-                    mainStory.TryDequeue(out _);
-                    if (mainStory.TryPeek(out var next))
+                    if (ev.asyncUpdate(time))
                     {
-                        next.onStart();
+                        mainStory.TryDequeue(out _);
+                        if (mainStory.TryPeek(out var next))
+                        {
+                            next.onStart();
+                        }
                     }
                 }
+
+                asyncUpdateDyingFactions(time);
+
+                asyncUpdateTooPeaceful(time);
+
             }
-
-            asyncUpdateDyingFactions(time);
-
-            asyncUpdateTooPeaceful(time);
 
             if (Ref.peRnd.ChanceF(0.1f))
             {
                 asyncCheckVictory();
             }
+
         }
+
+
 
         void asyncCheckVictory()
         {
@@ -912,7 +914,7 @@ namespace VikingEngine.DSSWars.Event
                     while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var cindex in city.neighborCities)
                     {
                         var otherfaction = nCity.pfaction.GetFaction();
-                        if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender))
+                        if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender, 0))
                         {
                             return otherfaction;
                         }
@@ -978,10 +980,11 @@ namespace VikingEngine.DSSWars.Event
                         {
                             //var otherfactionIx = nCity.pfaction;
                             if (nCity.pfaction != city.pfaction &&
+                                nCity.pfaction.HasValue() &&
                                 !factionsChecked[nCity.pfaction.factionIndex])
                             {
                                 var otherfaction = nCity.pfaction.GetFaction();
-                                if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender))
+                                if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender, 0))
                                 {
                                     return otherfaction;
                                 }
@@ -1109,7 +1112,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    if (p.pfaction.GetFaction().isAlive)
+                    if (p.pfaction.TryGetFaction(out var faction) && faction.isAlive)
                     {
                         return;
                     }

@@ -312,7 +312,7 @@ namespace VikingEngine.LootFest.Map.Terrain.AlgoObjects
             WorldPosition worldX = startPos;
             holeSteps.Reset(size.Y, size.X);
             int thicknessStep = 0;
-            Debug.Log("BUILD WALL");
+            //Debug.Log("BUILD WALL");
             for (int xpos = 0; xpos < (size.X + thickness); xpos++)
             {
                 foreach (WorldPosition lr in leftToRightSection)
@@ -325,7 +325,7 @@ namespace VikingEngine.LootFest.Map.Terrain.AlgoObjects
                     if (!holeSteps.IsHole(xpos, heightStep))
                     {
                         wp.SetBlock(material);//LfRef.chunks.Set(wp, bMaterial);
-                        Debug.Log("WallBild x" + xpos.ToString() + " y" + heightStep.ToString());
+                        //Debug.Log("WallBild x" + xpos.ToString() + " y" + heightStep.ToString());
                     }
                     thicknessStep++;
                     if (thicknessStep== thickness)

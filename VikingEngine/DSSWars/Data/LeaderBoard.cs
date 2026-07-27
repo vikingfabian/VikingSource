@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Data
                     title = DssRef.lang.Leaderboards_CitySize;
                     break;
                 case LeaderBoardType.army_size:
-                    title = DssRef.todoLang.Leaderboards_ArmySize;
+                    title = DssRef.lang.Leaderboards_ArmySize;
                     break;
                 case LeaderBoardType.survive300_time:
                     title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty300);
@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Data
                     title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty400);
                     break;
                 case LeaderBoardType.multiplayer_playercount:
-                    title = DssRef.todoLang.Leaderboards_MultiplayerPlayerCount;
+                    title = DssRef.lang.Leaderboards_MultiplayerPlayerCount;
                     break;
             }
 
@@ -364,7 +364,7 @@ namespace VikingEngine.DSSWars.Data
 
     class MultiplayerCountLeaderBoard : AbsLeaderBoard
     {
-        public static int CountUploaded = 2;
+        //public static int CountUploaded = 2;
         public MultiplayerCountLeaderBoard()
         {
             this.type = LeaderBoardType.multiplayer_playercount;

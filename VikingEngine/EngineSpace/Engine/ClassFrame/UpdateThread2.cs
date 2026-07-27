@@ -144,18 +144,16 @@ namespace VikingEngine
 
         override protected void asynchAction()
         {
-#if FALSE
-            if (updateAction != null)
-            {
-                end = updateAction(id, asynchTime);
-            }
-#else
+
+#if !DEBUG
             try
             {
+#endif
                 if (updateAction != null)
                 {
                     end = updateAction(id, asynchTime);
                 }
+#if !DEBUG
             }
             catch (Exception e)
             {

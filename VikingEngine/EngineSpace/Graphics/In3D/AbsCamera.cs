@@ -71,6 +71,12 @@ namespace VikingEngine.Graphics
             clearGoalTarget();
         }
 
+        public void MoveGoalLookTargetXZ(Vector2 move)
+        {
+            goalLookTarget.X += move.X;
+            goalLookTarget.Z += move.Y;
+        }
+
         public void clearGoalTarget()
         {
             goalLookTarget = lookTarget;

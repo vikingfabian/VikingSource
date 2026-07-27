@@ -457,16 +457,16 @@ namespace VikingEngine.DSSWars.Interface
         void nextPinTip(RichBoxContent content, object tag)
         {
             //var player = this.player.GetLocalPlayer();
-            content.Add(new RbText(DssRef.todoLang.ObjectType_LocationPin, HudLib.InfoYellow_Light));
+            content.Add(new RbText(DssRef.lang.ObjectType_LocationPin, HudLib.InfoYellow_Light));
             content.newParagraph();
-            content.ButtonDescription(player.gameControls.input.NextPin, DssRef.todoLang.InputActionName_NextPin);
-            content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.todoLang.InputActionName_PinAndPing);
-            content.ButtonDescription(SpriteName.KeyCtrl, DssRef.todoLang.ObjectType_LocationPin_Share);
+            content.ButtonDescription(player.gameControls.input.NextPin, DssRef.lang.InputActionName_NextPin);
+            content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.lang.InputActionName_PinAndPing);
+            content.ButtonDescription(SpriteName.KeyCtrl, DssRef.lang.ObjectType_LocationPin_Share);
         }
 
         void addPinTip(RichBoxContent content, object tag)
         {
-            content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.todoLang.InputActionName_PinAndPing);
+            content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.lang.InputActionName_PinAndPing);
         }
 
         void factionGoldTip(RichBoxContent content, object tag)
@@ -490,14 +490,14 @@ namespace VikingEngine.DSSWars.Interface
 
             
             content.newLine();
-            HudLib.Label(content, DssRef.todoLang.Diplomacy_BelowSoftCap);
+            HudLib.Label(content, DssRef.lang.Diplomacy_BelowSoftCap);
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec()))));
 
             content.newLine();
-            HudLib.Label(content, DssRef.todoLang.Diplomacy_AboveSoftCap);
+            HudLib.Label(content, DssRef.lang.Diplomacy_AboveSoftCap);
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
             content.space();

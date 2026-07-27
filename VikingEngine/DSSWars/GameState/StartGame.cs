@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars
     {
         TimeStamp joinRequestTime;
         int joinTrials = 0;
-        NetworkLobby netLobby;
+        //NetworkLobby netLobby;
         WorldDataStorage storage;
         int map_start_process_done = 0;
         
@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars
         SaveStateMeta loadMeta;
         bool host;
         
-        public StartGame(bool host, NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
+        public StartGame(bool host, /*NetworkLobby netLobby,*/ SaveStateMeta loadMeta, MapBackgroundLoading loading)
             :base()
         {
             DssRef.settings.playType = PlayStateType.Play;
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars
                 }
 
                 this.loading = loading;
-                this.netLobby = netLobby;
+                //this.netLobby = netLobby;
 
                 Ref.lobby.startCreateLobby(true);
             }

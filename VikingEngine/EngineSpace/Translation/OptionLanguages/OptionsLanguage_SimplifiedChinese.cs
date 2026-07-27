@@ -9,6 +9,10 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_SimplifiedChinese : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "宽滚动条";
+        public override string GameSettings_DisplayInputHelp => "操作提示";
+        public override string GameSettings_InputSmoothing => "输入平滑";
+
         //Mounts
         public override string InputSteam => "Steam输入";
         public override string Input_SimulateMouse => "模拟鼠标";

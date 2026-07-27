@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Interface
                         input_buttonmap(map.Controller_ObjectMenuToggle, DssRef.lang.InputActionName_ToggleMenu);
                         input_buttonmap(map.Controller_Faction, DssRef.lang.FactionSettings_Titel);
                     }
-                    input_directionmap(map.RbScroll(), DssRef.lang.Tutorial_ZoomInput);
+                    input_directionmap(map.RbScroll(), DssRef.lang.ButtonAction_Zoom);
 
                     if (!casual)
                     {
@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Interface
                     if (hasController)
                     {
                         input_directionmap(map.cameraTiltUpSmooth, DssRef.lang.InputActionName_CameraTiltUp);
-                        input_buttonmap(map.PinAndPing, DssRef.todoLang.InputActionName_PinAndPing);
+                        input_buttonmap(map.PinAndPing, DssRef.lang.InputActionName_PinAndPing);
                     }
                     break;
 

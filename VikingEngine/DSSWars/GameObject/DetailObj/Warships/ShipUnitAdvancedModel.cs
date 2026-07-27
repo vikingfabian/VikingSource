@@ -97,7 +97,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void update(AbsSoldierUnit soldier)
         {
+            if (model == null)
+            { return; }
+                
             base.update(soldier);
+           
             model.position.Y -= 0.02f;
             WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);
 

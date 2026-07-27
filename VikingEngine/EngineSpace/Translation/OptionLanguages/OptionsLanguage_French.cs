@@ -8,6 +8,10 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_French : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "Barre de défilement large";
+        public override string GameSettings_DisplayInputHelp => "Aide aux commandes";
+        public override string GameSettings_InputSmoothing => "Lissage des commandes";
+
         //Mounts
         public override string InputSteam => "Steam Input";
         public override string Input_SimulateMouse => "Simuler la souris";

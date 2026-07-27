@@ -40,7 +40,8 @@ namespace VikingEngine.DSSWars
 
         public int previousWarAgainstFaction = -1;
         //public DiplomaticRelation[] diplomaticRelations = null;
-        public bool storyFaction = false;
+        public bool viewOnLargeMap = false;
+        public bool storyProtectedFaction = false;
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;
@@ -121,7 +122,7 @@ namespace VikingEngine.DSSWars
         
         public bool displayInFullOverview()
         {
-            return storyFaction || player.IsHumanPlayer() || quickMatchFaction;
+            return viewOnLargeMap || player.IsHumanPlayer() || quickMatchFaction;
         }
 
         public bool IsNetHosted()
@@ -236,7 +237,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        virtual public void writeGameState(System.IO.BinaryWriter w)
+        public void writeGameState(System.IO.BinaryWriter w)
         {
             if (player.IsRemotePlayer())
             {
@@ -271,13 +272,13 @@ namespace VikingEngine.DSSWars
                 Debug.WriteCheck(w);
             }
 
-            workTemplate.writeGameState(w);
+            workTemplate.writeGameState(w);//y
 
             Debug.WriteCheck(w);
-            writeResources(w);
+            writeResources(w); //y
 
         }
-        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             factiontype = (FactionType)r.ReadUInt16();
             if (player != null && player.IsLocalPlayer() && player.GetLocalPlayer().isDropInPlayer)
@@ -380,34 +381,47 @@ namespace VikingEngine.DSSWars
 
         }
 
-        //void writeRelations(System.IO.BinaryWriter w)
-        //{
-        //    for (int i = 0; i < diplomaticRelations.Length; ++i)
-        //    {
-        //        if (diplomaticRelations[i] != null &&
-        //            diplomaticRelations[i].IsFactionOne(this))
-        //        {
-        //            diplomaticRelations[i].write(w);
-        //        }
-        //    }
-        //    w.Write(short.MinValue);
-        //}
+        public void writeClientState(System.IO.BinaryWriter w)
+        {
+            workTemplate.writeGameState(w);//y
 
-        //void readRelations(System.IO.BinaryReader r, int subVersion)
-        //{
-        //    while (true)
-        //    {
-        //        DiplomaticRelation relation = new DiplomaticRelation();
-        //        if (relation.read(r, subVersion))
-        //        {
-        //            relation.addToFactions();
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
+            writeResources(w); //y
+        }
+
+        public void readClientState(System.IO.BinaryReader r, int subVersion)
+        {
+            workTemplate.readGameState(r, subVersion, false);
+
+            readResources(r, subVersion);
+        }
+            //void writeRelations(System.IO.BinaryWriter w)
+            //{
+            //    for (int i = 0; i < diplomaticRelations.Length; ++i)
+            //    {
+            //        if (diplomaticRelations[i] != null &&
+            //            diplomaticRelations[i].IsFactionOne(this))
+            //        {
+            //            diplomaticRelations[i].write(w);
+            //        }
+            //    }
+            //    w.Write(short.MinValue);
+            //}
+
+            //void readRelations(System.IO.BinaryReader r, int subVersion)
+            //{
+            //    while (true)
+            //    {
+            //        DiplomaticRelation relation = new DiplomaticRelation();
+            //        if (relation.read(r, subVersion))
+            //        {
+            //            relation.addToFactions();
+            //        }
+            //        else
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
 
         void writeResources(System.IO.BinaryWriter w)
         {
@@ -834,12 +848,11 @@ namespace VikingEngine.DSSWars
         public void asynchCullingUpdate(float time, bool bStateA)
         {
             
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    p.unitsPixelTexture.updateColorProfile(this);
-                }
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.updateColorProfile(pfaction);
+            }
             
-
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
@@ -872,13 +885,14 @@ namespace VikingEngine.DSSWars
 
                 if (player != null && player.IsLocalPlayer())
                 {
+                    var localplayer = player.GetLocalPlayer();
 
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        player.orders.refreshAvailable(this.pfaction);
+                        player.orders?.refreshAvailable(this.pfaction);
 
                         RichBoxContent content = new RichBoxContent();
-                        var localplayer = player.GetLocalPlayer();
+                        
                         if (localplayer.battleMessageCheck(city.tilePos))
                         {
                             MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
@@ -986,8 +1000,6 @@ namespace VikingEngine.DSSWars
                             {
                                 if (myRelation.Relation <= RelationType.RelationTypeN4_War)
                                 {
-                                    //if (loop.OtherFaction(out var thirdParty))
-                                    //{
                                     var thirdParty = loop.OtherFaction_P();
                                         var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(alliedFaction, thirdParty);
 
@@ -999,16 +1011,16 @@ namespace VikingEngine.DSSWars
                                             {
                                                 if (protectedFromWars)
                                                 {
-                                                    DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, RelationType.RelationTypeN1_Enemies);
+                                                    DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, RelationType.RelationTypeN1_Enemies, null, null, false, true);
                                                 }
                                                 else
                                                 {
-                                                    DssRef.world.diplomacy.declareWar(alliedFaction, thirdParty);
+                                                    DssRef.world.diplomacy.declareWar(alliedFaction, thirdParty, true);
                                                 }
                                             }
                                             else
                                             {
-                                                DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, worst);
+                                                DssRef.world.diplomacy.SetRelationType(alliedFaction, thirdParty, alliedFaction, worst, null, null, false, true);
                                             }
                                         }
                                     //}
@@ -1187,6 +1199,13 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.state.events.onPlayerDeath();
                 }
+
+                if (DssRef.state.host)
+                {
+                    Debug.CrashIfThreaded();
+                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionDeath, PacketReliability.Reliable);
+;                   pfaction.write(w);
+                }
             }
         }
 
@@ -1263,17 +1282,29 @@ namespace VikingEngine.DSSWars
             this.player = owner;
         }
 
-        public RbTexture FlagTextureToHud()
+        public AbsRichBoxImage FlagTextureToHud()
         {
-            return new RbTexture(player.flagTexture, 1f, 0, 0.2f);
+            if (player != null)
+            {
+                return new RbTexture(player.flagTexture, 1f, 0, 0.2f);
+            }
+            else
+            {
+                return new RbImage(SpriteName.MissingImage);
+            }
         }
         Color tempColor = FlagAndColor.AiColorRange.GetRandom();
 
         public Color Color()
         {
-                if (player == null || player.profile.flag == null)
-                    return tempColor;
-                return player.profile.flag.col0_Main;            
+            if (player == null) 
+                return tempColor;
+
+            var sp_flag = player.profile.flag;
+            if (sp_flag == null)
+                return tempColor;
+
+            return sp_flag.col0_Main;            
         }
 
         public List<Faction> CollectWars()
@@ -1646,6 +1677,21 @@ namespace VikingEngine.DSSWars
         /// The Iron Saints, people who guard a mountain pass against evil.
         /// </summary>
         AerimAngren,
+
+        /// <summary>
+        /// Faction of city elves who grow purple flowers, and specialize in medicine
+        /// </summary>
+        Ellium,
+
+        /// <summary>
+        /// An independant group that are masters of tricks and illusions, their name means "filthy trick"
+        /// </summary>
+        GrakPushdug,
+
+        /// <summary>
+        /// Nobel household in a rough part of the world
+        /// </summary>
+        Draugost,
 
         NUM
     }

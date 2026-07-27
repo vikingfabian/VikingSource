@@ -78,12 +78,25 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt start_voxeleditor = new StatsInt("start_voxeleditor");
         public StatsInt start_mapgenerator = new StatsInt("start_mapgenerator");
         public StatsInt start_character_creator = new StatsInt("start_character_creator");
-
         public StatsInt start_battle_lab = new StatsInt("start_battle_lab");
         public StatsInt battle_lab_newbattle = new StatsInt("battle_lab_newbattle");
         public StatsInt start_commander = new StatsInt("start_commander");
         public StatsInt commander_won = new StatsInt("commander_won");
         public StatsInt commander_lost = new StatsInt("commander_lost");
+
+        public StatsInt startHostingMultiplayer_2 = new StatsInt("startHostingMultiplayer_2");
+        public StatsInt startHostingMultiplayer_3 = new StatsInt("startHostingMultiplayer_3");
+        public StatsInt startHostingMultiplayer_4 = new StatsInt("startHostingMultiplayer_4");
+        public StatsInt startHostingMultiplayer_10 = new StatsInt("startHostingMultiplayer_10");
+
+        public StatsInt joinMultiplayer = new StatsInt("joinMultiplayer");
+        public StatsInt playerToPlayerAlly = new StatsInt("playerToPlayerAlly");
+        public StatsInt playerToPlayerWar = new StatsInt("playerToPlayerWar");
+
+        public StatsInt startMultiplayer_AllowPublic = new StatsInt("startMultiplayer_AllowPublic");
+        public StatsInt startMultiplayer_AllowPvp = new StatsInt("startMultiplayer_AllowPvp");
+        public StatsInt startMultiplayer_BlockPublic = new StatsInt("startMultiplayer_BlockPublic");
+        public StatsInt startMultiplayer_BlockPvp = new StatsInt("startMultiplayer_BlockPvp");
 
         public StatsInt won25perc = new StatsInt("won_25perc");
         public StatsInt won50perc = new StatsInt("won_50perc");
@@ -232,6 +245,20 @@ namespace VikingEngine.DSSWars.Data
                     startNew_MapHuge,
 
                     startNewLocalMultiplayer,
+
+                    startHostingMultiplayer_2,
+                    startHostingMultiplayer_3,
+                    startHostingMultiplayer_4,
+                    startHostingMultiplayer_10,
+                    joinMultiplayer,
+                    playerToPlayerAlly,
+                    playerToPlayerWar,
+                    startMultiplayer_AllowPublic,
+                    startMultiplayer_AllowPvp,
+                    startMultiplayer_BlockPublic,
+                    startMultiplayer_BlockPvp,
+
+                    
 
                     start_voxeleditor,
                     start_mapgenerator,

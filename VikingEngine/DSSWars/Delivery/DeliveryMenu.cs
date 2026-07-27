@@ -224,11 +224,13 @@ namespace VikingEngine.DSSWars.Delivery
                             new RbTooltip((RichBoxContent content, object tag) =>
                             {
                                 content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Name;
-                                content.text(DssRef.lang.Delivery_AutoReciever_Description).overrideColor = HudLib.InfoYellow_Light;
+                                content.text(DssRef.lang.Delivery_AutoReceiver_Description).overrideColor = HudLib.InfoYellow_Light;
                             }));
                     content.Add(button);
                 }
 
+                /*
+                 //ALLY CITIES TEMP REMOVE
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.Diplomacy_RelationType_Ally + ":", HudLib.TitleColor_Label2));
                 content.newLine();
@@ -245,6 +247,7 @@ namespace VikingEngine.DSSWars.Delivery
                 {
                     content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
                 }
+                */
 
                 void listCities(Faction faction, bool ally, ref int count)
                 {
@@ -366,7 +369,7 @@ namespace VikingEngine.DSSWars.Delivery
                     }
                     content.newParagraph();
 
-                    var maxLabel = new RbText(DssRef.lang.Delivery_RecieverMaximumCap + ":");
+                    var maxLabel = new RbText(DssRef.lang.Delivery_ReceiverMaximumCap + ":");
                     maxLabel.overrideColor = HudLib.TitleColor_Label_Dark;
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { maxLabel },
                         UseRecieverMaxProperty));
@@ -608,7 +611,7 @@ namespace VikingEngine.DSSWars.Delivery
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        var text = new RbText(DssRef.lang.Delivery_RecieverReady);
+                        var text = new RbText(DssRef.lang.Delivery_ReceiverReady);
                         text.overrideColor = isSending || currentStatus.CanRecieve(currentStatus.inProgress.type) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
 
