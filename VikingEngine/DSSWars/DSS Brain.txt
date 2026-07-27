@@ -1,10 +1,10 @@
 
 Change log:
-* 
+* Volume slider for induvidual players
+* will display casual controls
 
 
-x no voice option
-x mute people
+
 x save color is unrelyable
 x pigs become horse with wagon
 

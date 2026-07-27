@@ -44,8 +44,6 @@ namespace VikingEngine.SteamWrapping
 
         Time heavyTrafficPause = Time.Zero;
 
-                
-
         public SteamP2PManager()
         {
             autoAcceptSessionRequests = true;
@@ -428,6 +426,7 @@ namespace VikingEngine.SteamWrapping
                 if (peer.SteamID == steamId)
                 {
                     Ref.netsett.setUpdatedStoredGamer(peer.storedData);
+                    peer.unload();
                     joinHistory.Add(peer);
                     remoteGamers.RemoveAt(i);
                     Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
@@ -730,6 +729,7 @@ namespace VikingEngine.SteamWrapping
             foreach (var gamer in remoteGamers)
             {
                 Ref.netsett.setUpdatedStoredGamer(gamer.storedData);
+                gamer.unload();
                 joinHistory.Add(gamer);
             }
             remoteGamers.Clear();
@@ -787,6 +787,7 @@ namespace VikingEngine.SteamWrapping
                 if (remoteGamers[i].SteamID == peerID)
                 {
                     var gamer = remoteGamers[i];
+                    gamer.unload();
                     joinHistory.Add(gamer);
                     remoteGamers.RemoveAt(i--);
                     Ref.NetUpdateReciever().NetEvent_PeerLost(gamer);

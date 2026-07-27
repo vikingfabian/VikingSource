@@ -35,6 +35,7 @@ namespace VikingEngine.DSSWars.Players
         public PFaction assignedFaction = PFaction.Empty;//ushort.MaxValue;
         public FactionType previousFactionType;
         public RemotePlayerPointer pointer;
+        
         public GamerCommunicationSetting communicationSetting; //not implemented
 
         public NetSharedClientSettings netClientSettings;
@@ -228,6 +229,22 @@ namespace VikingEngine.DSSWars.Players
             work = false;
             buildType = BuildAndExpandType.NUM_NONE;
             intelligent = false;
+        }
+
+        public void mute()
+        {
+            networkPeer.peer.storedData.communicationSetting.voiceVolume = 0;
+            Ref.netsett.settingsHasChanged = true;
+        }
+
+        public float voiceVolume(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                networkPeer.peer.storedData.communicationSetting.voiceVolume = value;
+                Ref.netsett.settingsHasChanged = true;
+            }
+            return networkPeer.peer.storedData.communicationSetting.voiceVolume;
         }
 
         public override bool IsBot()

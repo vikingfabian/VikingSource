@@ -84,6 +84,12 @@ namespace VikingEngine.DSSWars.Interface
                     (AbsHumanPlayer select) => { selectedPlayer = select as RemotePlayer; player.hud.needRefresh = true; }, gamer),
                     new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput), gamer.IsRemotePlayer()));
 
+                if (gamer.profile.casualControls)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudCasualMode) },
+                        null, new RbTooltip_Text(DssRef.lang.Settings_CasualControls)));
+                }
+
                 if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
                     (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.IsFriend()))
                 {
@@ -367,7 +373,17 @@ namespace VikingEngine.DSSWars.Interface
             diplomacyDisplay.toHud(content, selectedPlayer.pfaction.GetFaction(), false);
 
             content.Add(new RbSeperationLine());
-           
+
+            content.newLine();
+            content.newLine();
+            HudLib.Label(content, SpriteName.MenuIconSoundVol, DssRef.lang.VoiceTitle);
+            content.hspace();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoiceDisabled) },
+                new RbAction(selectedPlayer.mute, RbSoundType.Stop),
+                new RbTooltip_Text(DssRef.lang.VoiceMute)));
+            content.Add(new RbDragButton(new DragButtonSettings(new IntervalF(0, 2f), 0.1f),
+                selectedPlayer.voiceVolume, true));
+
             content.newLine();
             if (Ref.netSession.IsHost)
             {

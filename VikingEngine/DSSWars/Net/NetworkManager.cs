@@ -859,6 +859,8 @@ namespace VikingEngine.DSSWars
                 var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
                 profile.flag.write(w);
 
+                w.Write(profile.casualControls);
+
                 Net.ObjectId.WriteFaction(w, local.pfaction.GetFaction());
 
                 local.giftedAchievements.writeNetStatus(w);
@@ -876,6 +878,8 @@ namespace VikingEngine.DSSWars
                 sender.profile.flag = new FlagAndColor(packet.r);
                 sender.pointer.colorFrame.Color = sender.profile.flag.col0_Main;
                 sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
+
+                sender.profile.casualControls = packet.r.ReadBoolean();
                 //Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
                 var pfaction = new PFaction(packet.r);
                 if (pfaction.HasValue())
