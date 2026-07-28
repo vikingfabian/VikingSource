@@ -11,28 +11,28 @@ namespace VikingEngine
     /// <summary>
     /// Extended functions for a 1D array representing a 2D grid
     /// </summary>
-    class Grid1D<T>
+    class Grid2D_L<T>
     {
         IntVector2 size;
 
         public T[] array;
         public T sel;
 
-        public Grid1D()
+        public Grid2D_L()
         { }
 
-        public Grid1D(int size)
+        public Grid2D_L(int size)
             : this(new IntVector2(size))
         {
         }
 
-        public Grid1D(T[] array, IntVector2 size)
+        public Grid2D_L(T[] array, IntVector2 size)
         {
             this.array = array;
             this.size = size;
         }
 
-        public Grid1D(IntVector2 size)
+        public Grid2D_L(IntVector2 size)
         {
             this.size = size;
             array = new T[size.Area()];
@@ -136,7 +136,10 @@ namespace VikingEngine
         {
             return array[GetIndex(position.X, position.Y)];
         }
-
+        public ref T GetRef(int x, int y)
+        {
+            return ref array[GetIndex(x, y)];
+        }
         public ref T GetRef(IntVector2 position)
         {
             return ref array[GetIndex(position.X, position.Y)];
@@ -325,16 +328,16 @@ namespace VikingEngine
             array = copy;
         }
 
-        public Grid1D<T> Rotate(int clockWiseSteps)
+        public Grid2D_L<T> Rotate(int clockWiseSteps)
         {
-            Grid1D<T> result;
+            Grid2D_L<T> result;
             IntVector2 max = size - 1;
 
             switch (clockWiseSteps)
             {
                 case 1:
                     {//90 degrees
-                        result = new Grid1D<T>(new IntVector2(size.Y, size.X));
+                        result = new Grid2D_L<T>(new IntVector2(size.Y, size.X));
 
                         for (int y = 0; y < size.Y; ++y)
                         {
@@ -347,7 +350,7 @@ namespace VikingEngine
                     break;
                 case 2:
                     { //180 degrees
-                        result = new Grid1D<T>(size);
+                        result = new Grid2D_L<T>(size);
 
                         for (int y = 0; y < size.Y; ++y)
                         {
@@ -360,7 +363,7 @@ namespace VikingEngine
                     break;
                 case 3:
                     { //270 degrees
-                        result = new Grid1D<T>(new IntVector2(size.Y, size.X));
+                        result = new Grid2D_L<T>(new IntVector2(size.Y, size.X));
 
                         for (int y = 0; y < size.Y; ++y)
                         {
@@ -380,9 +383,9 @@ namespace VikingEngine
             return result;
         }
 
-        public Grid1D<T> Flip(bool xAxis)
+        public Grid2D_L<T> Flip(bool xAxis)
         {
-            var result = new Grid1D<T>(size);
+            var result = new Grid2D_L<T>(size);
             IntVector2 max = size - 1;
 
             if (xAxis)
@@ -413,12 +416,12 @@ namespace VikingEngine
             return result;
         }
 
-        public Grid1D<T> Clone()
+        public Grid2D_L<T> Clone()
         {
-            return new Grid1D<T>((T[])array.Clone(), size);
+            return new Grid2D_L<T>((T[])array.Clone(), size);
         }
 
-        public bool EqualData(Grid1D<T> other)
+        public bool EqualData(Grid2D_L<T> other)
         {
             if (other.size == size)
             {

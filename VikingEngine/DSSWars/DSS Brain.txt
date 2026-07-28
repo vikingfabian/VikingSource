@@ -8,6 +8,7 @@ Performance
 * Removed all unessesary faction references
 * Removed refences from the aria unit grid
 
+* Using linear arrays for the map
 
 
 KNOWN ISSUES

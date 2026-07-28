@@ -406,7 +406,7 @@ namespace VikingEngine.DSSWars.Interface
                             player.factionPixelTexture.filter = filter;
                             DssRef.world.BordersUpdated = true;
                        }
-                   , filter, RbSoundType.Option), new RbTooltip_Text(string.Format(DssRef.todoLang.Language_CathergoryDashUndercathegory, DssRef.lang.MapFilter, filterName))));
+                   , filter, RbSoundType.Option), new RbTooltip_Text(string.Format(DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.MapFilter, filterName))));
             }
             
         }
