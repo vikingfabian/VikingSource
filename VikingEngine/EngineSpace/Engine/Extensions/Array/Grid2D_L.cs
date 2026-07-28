@@ -5,8 +5,8 @@ using System.Text;
 
 namespace VikingEngine
 {
-    delegate T ResizeGrid1D_GetDefault<T>(int x, int y);
-    delegate void ResizeGrid1D_Removing<T>(T item, int x, int y);
+    delegate T ResizeGrid2DL_GetDefault<T>(int x, int y);
+    delegate void ResizeGrid2DL_Removing<T>(T item, int x, int y);
 
     /// <summary>
     /// Extended functions for a 1D array representing a 2D grid
@@ -52,7 +52,7 @@ namespace VikingEngine
             return x + y * size.X;
         }
 
-        public void ReSize(IntVector2 newSize, ResizeGrid1D_GetDefault<T> getDefaultItem, ResizeGrid1D_Removing<T> removeItem)
+        public void ReSize(IntVector2 newSize, ResizeGrid2DL_GetDefault<T> getDefaultItem, ResizeGrid2DL_Removing<T> removeItem)
         {
             T[] newArray = new T[newSize.Area()];
             int lengthX = lib.LargestValue(size.X, newSize.X);
