@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 var objectMenuArea = new VectorRect(player.hud.head.factionMenuStart,
                     new Vector2(HudLib.HeadDisplayWidth, 500));
-                objectMenuArea.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
+                objectMenuArea.SetBottom(player.playerData.view.wideScreenSafeScreenArea.Bottom, true);
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
                 var bgTex = menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
 

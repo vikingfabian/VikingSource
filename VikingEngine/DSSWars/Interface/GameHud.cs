@@ -54,8 +54,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
             player.hud = this;
-            MessageStart = new Vector2(player.playerData.view.safeScreenArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),
-               player.playerData.view.safeScreenArea.Y);
+            MessageStart = new Vector2(player.playerData.view.wideScreenSafeScreenArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),
+               player.playerData.view.wideScreenSafeScreenArea.Y);
 
             //displays = new GameHudDisplays(player);
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)

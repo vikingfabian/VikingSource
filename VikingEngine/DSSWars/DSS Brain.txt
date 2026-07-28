@@ -5,7 +5,7 @@ Change log:
 * compressed headbar Ui
 * Can pick army or guards on automation
 * Will set captured cities to auto
-
+* Ultra wide support - adjustable ui placement
 
 Performance
 * Removed all unessesary faction references

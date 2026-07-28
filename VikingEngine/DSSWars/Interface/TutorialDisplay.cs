@@ -31,11 +31,11 @@ namespace VikingEngine.DSSWars.Interface
             {
                 refresh = true;
 
-                VectorRect area = player.playerData.view.safeScreenArea;
+                VectorRect area = player.playerData.view.wideScreenSafeScreenArea;
                 area.Width = HudLib.richboxGui.width;
-                area.X = player.playerData.view.safeScreenArea.Right - area.Width;
+                area.X = player.playerData.view.wideScreenSafeScreenArea.Right - area.Width;
                 area.Y = player.hud.MessageStart.Y;
-                area.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
+                area.SetBottom(player.playerData.view.wideScreenSafeScreenArea.Bottom, true);
 
                 display = new RichMenu(HudLib.TutorialRbSettings, area, new Vector2(16), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
                 //display.addBackground(HudLib.HudTutorialBackground, HudLib.GUILayer + 2);

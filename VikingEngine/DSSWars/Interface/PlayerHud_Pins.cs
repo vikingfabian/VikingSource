@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (menu == null && (player.hud.pins.Count > 0 || Ref.netSession.InMultiplayerSession))
             {
-                var menuArea = player.playerData.view.safeScreenArea;
+                var menuArea = player.playerData.view.wideScreenSafeScreenArea;
                 menuArea.X = player.hud.head.Right;
                 if (player.hud.headOptions != null)
                 {
@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 else
                 {
-                    menuArea.SetRight(player.playerData.view.safeScreenArea.Right, true);
+                    menuArea.SetRight(player.playerData.view.wideScreenSafeScreenArea.Right, true);
                 }
 
                 menu = new RichMenu(HudLib.RbSettings, menuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);

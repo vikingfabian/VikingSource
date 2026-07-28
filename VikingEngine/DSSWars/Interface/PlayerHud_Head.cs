@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
             float headWidth = HudLib.HeadDisplayWidth * 1.36f;
-            var headMenuArea = player.playerData.view.safeScreenArea;
+            var headMenuArea = player.playerData.view.wideScreenSafeScreenArea;
             headMenuArea.Width = headWidth;
             menu = new RichMenu(HudLib.RbSettings_Head, headMenuArea, new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
             refreshFaction(player, true);

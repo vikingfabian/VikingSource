@@ -35,14 +35,14 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (menu == null)
             {
-                var objectMenuArea = player.playerData.view.safeScreenArea;
+                var objectMenuArea = player.playerData.view.wideScreenSafeScreenArea;
                 objectMenuArea.Width = HudLib.HeadDisplayWidth;
 
                 if (player.hud.head != null)
                 {
                     objectMenuArea.Position.Y = player.hud.head.Bottom + Engine.Screen.IconSize * 0.5f;
                 }
-                objectMenuArea.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
+                objectMenuArea.SetBottom(player.playerData.view.wideScreenSafeScreenArea.Bottom, true);
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
                 var bgTex = menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
 

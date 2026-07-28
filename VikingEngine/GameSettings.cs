@@ -758,6 +758,8 @@ namespace VikingEngine
                 OversizeHeight.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeHeight, menu);
             }
 
+           
+
             //new GuiTextButton(Ref.langOpt.GraphicsOption_RecordingPresets, null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
 
             DropDownBuilder RecordPreset = new DropDownBuilder("RecordPreset");
@@ -816,6 +818,21 @@ namespace VikingEngine
             HudLib.Label(content, Ref.langOpt.Setting_MinimapScale);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.2f, 2f, 0.1f), minimapScaleProperty, true));
+
+            content.newParagraph();
+            content.h2(DssRef.todoLang.GameSettings_UltraWide, HudLib.TitleColor_Head2);
+
+            content.newLine();
+            HudLib.Label(content, DssRef.todoLang.GameSettings_UltraWide_LeftEdge);
+            content.hspace();
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(Engine.Screen.UltraWideEdgeRange, 1),
+                wideScreenEdgeLProperty, false);
+
+            content.newLine();
+            HudLib.Label(content, DssRef.todoLang.GameSettings_UltraWide_RightEdge);
+            content.hspace();
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(Engine.Screen.UltraWideEdgeRange, 1),
+                wideScreenEdgeRProperty, false);
         }
 
         public void SetDisplayMode(WindowDisplayMode mode)
@@ -1039,6 +1056,26 @@ namespace VikingEngine
                 settingsHasChanged = true;
             }
             return Engine.Screen.WindowScalePerc;
+        }
+        public int wideScreenEdgeLProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                Engine.Screen.UltraWideEdge_Left = value;
+                Engine.Screen.RefreshWideScreen();
+                settingsHasChanged = true;
+            }
+            return Engine.Screen.UltraWideEdge_Left;
+        }
+        public int wideScreenEdgeRProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                Engine.Screen.UltraWideEdge_Right = value;
+                Engine.Screen.RefreshWideScreen();
+                settingsHasChanged = true;
+            }
+            return Engine.Screen.UltraWideEdge_Right;
         }
 
         //public void graphicsOptions(GuiLayout layout)
