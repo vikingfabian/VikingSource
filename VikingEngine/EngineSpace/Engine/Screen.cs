@@ -229,9 +229,7 @@ namespace VikingEngine.Engine
             SafeArea.AddYRadius(-safeEdge.Y);
             WideScreenSafeArea = SafeArea;
             WideScreenSafeArea.AddToLeftSide((float)Math.Round( RenderingResolution.X * -(UltraWideEdge_Left / 100.0)));
-            WideScreenSafeArea.Width += ((float)Math.Round(RenderingResolution.X * -(UltraWideEdge_Right / 100.0)));
-
-
+            WideScreenSafeArea.Width += (float)Math.Round(RenderingResolution.X * -(UltraWideEdge_Right / 100.0));
 
             ResolutionVec = RenderingResolution.Vec;
             MonitorCenter = MonitorTargetResolution / 2;
