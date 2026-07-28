@@ -43,6 +43,9 @@ namespace VikingEngine
             array = new T[size.Volume()];
         }
 
+       
+
+
         public void initGrid(IntVector3 size)
         {
             this.size = size;
@@ -199,6 +202,23 @@ namespace VikingEngine
                 value = default(T);
                 return false;
             }
+        }
+
+        public T GetSafe(int x, int y, int z)
+        {
+            if (InBounds(x, y, z))
+            {
+                return array[GetIndex(x, y, z)];
+            }
+            return default(T);
+        }
+        public T GetSafe(IntVector3 pos)
+        {
+            if (InBounds(pos))
+            {
+                return array[GetIndex(pos.X, pos.Y, pos.Z)];
+            }
+            return default(T);
         }
 
         public bool TryGet(int x, int y, int z, out T value)
@@ -476,10 +496,10 @@ namespace VikingEngine
             return array[index];
         }
 
-        public IntVector3 Size
-        {
-            get { return size; }
-        }
+        //public IntVector3 Size
+        //{
+        //    get { return size; }
+        //}
 
         //public Rectangle3 Volume
         //{
@@ -514,7 +534,8 @@ namespace VikingEngine
         public int Width { get { return size.X; } }
         public int Height { get { return size.Y; } }
         public int Depth { get { return size.Z; } }
-
+        public IntVector3 Size { get { return size; } }
+        public IntVector3 Limits { get { return size - 1; } }
         public override string ToString()
         {
             return "Grid 1D<" + typeof(T).ToString() + ">[" + size.X.ToString() + ", " + size.Y.ToString() + ", " + size.Z.ToString() + "]";

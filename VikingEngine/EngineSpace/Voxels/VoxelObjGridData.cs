@@ -474,107 +474,107 @@ namespace VikingEngine.Voxels
             return result;
         }
 
-        const string NumberLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public string ToMessage()
-        {
+        //const string NumberLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        //public string ToMessage()
+        //{
 
-            string result = "|";
-            List<byte> usingMaterials = new List<byte>();
-            List<byte> compressedData = ToCompressedData();
-            for (int i = 0; i < compressedData.Count; i += 2)
-            {
-                byte material = compressedData[i];
-                int usingPos;
-                if (usingMaterials.Contains(material))
-                {
-                    for (usingPos = 0; usingPos < usingMaterials.Count; usingPos++)
-                    {
-                        if (usingMaterials[usingPos] == material)
-                            break;
-                    }
-                }
-                else
-                {
-                    usingPos = usingMaterials.Count;
-                    usingMaterials.Add(material);
-                    if (usingMaterials.Count > NumberLetters.Length)
-                        return "ERR";
-                }
-                result += NumberLetters[usingPos] + compressedData[i + 1].ToString();
-            }
+        //    string result = "|";
+        //    List<byte> usingMaterials = new List<byte>();
+        //    List<byte> compressedData = ToCompressedData();
+        //    for (int i = 0; i < compressedData.Count; i += 2)
+        //    {
+        //        byte material = compressedData[i];
+        //        int usingPos;
+        //        if (usingMaterials.Contains(material))
+        //        {
+        //            for (usingPos = 0; usingPos < usingMaterials.Count; usingPos++)
+        //            {
+        //                if (usingMaterials[usingPos] == material)
+        //                    break;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            usingPos = usingMaterials.Count;
+        //            usingMaterials.Add(material);
+        //            if (usingMaterials.Count > NumberLetters.Length)
+        //                return "ERR";
+        //        }
+        //        result += NumberLetters[usingPos] + compressedData[i + 1].ToString();
+        //    }
 
-            foreach (byte m in usingMaterials)
-            {
-                result = m.ToString() + SaveData.Dimension + result;
-            }
+        //    foreach (byte m in usingMaterials)
+        //    {
+        //        result = m.ToString() + SaveData.Dimension + result;
+        //    }
 
 
-            return lib.IntV3Text(Limits) + SaveData.Dimension + result;
-        }
+        //    return lib.IntV3Text(Limits) + SaveData.Dimension + result;
+        //}
 
-        public VoxelObjGridData(string fromMessage)
-        {
-            string part1 = TextLib.EmptyString;
-            foreach (char c in fromMessage)
-            {
-                if (c == '|')
-                {
-                    break;
-                }
-                else
-                {
-                    part1 += c;
-                }
-            }
-            List<byte> compressedData = new List<byte>();
-            List<int> materials = lib.StingIntDimentions(part1);
-            IntVector3 readLimits = new IntVector3(materials[0], materials[1], materials[2]);
-            materials.RemoveRange(0, 3);
+        //public VoxelObjGridData(string fromMessage)
+        //{
+        //    string part1 = TextLib.EmptyString;
+        //    foreach (char c in fromMessage)
+        //    {
+        //        if (c == '|')
+        //        {
+        //            break;
+        //        }
+        //        else
+        //        {
+        //            part1 += c;
+        //        }
+        //    }
+        //    List<byte> compressedData = new List<byte>();
+        //    List<int> materials = lib.StingIntDimentions(part1);
+        //    IntVector3 readLimits = new IntVector3(materials[0], materials[1], materials[2]);
+        //    materials.RemoveRange(0, 3);
 
-            const bool BackWardMaterials = true;
-            if (BackWardMaterials)
-            {
-                List<int> clone = new List<int>(materials.Capacity);
-                materials.Clear();
-                for (int i = clone.Count - 1; i >= 0; i--)
-                {
-                    materials.Add(clone[i]);
-                }
-            }
+        //    const bool BackWardMaterials = true;
+        //    if (BackWardMaterials)
+        //    {
+        //        List<int> clone = new List<int>(materials.Capacity);
+        //        materials.Clear();
+        //        for (int i = clone.Count - 1; i >= 0; i--)
+        //        {
+        //            materials.Add(clone[i]);
+        //        }
+        //    }
 
-            if (materials.Count == 0)
-            {
-                return;
-            }
+        //    if (materials.Count == 0)
+        //    {
+        //        return;
+        //    }
 
-            //materials.Insert(0, 0);
+        //    //materials.Insert(0, 0);
 
-            fromMessage.Remove(0, part1.Length + 1);
+        //    fromMessage.Remove(0, part1.Length + 1);
 
-            for (int i = 0; i < fromMessage.Length; i++)
-            {
-                char mLetter = fromMessage[i];
-                for (int letterIx = 0; letterIx < NumberLetters.Length; letterIx++)
-                {
-                    if (NumberLetters[letterIx] == mLetter)
-                    {
-                        i++;
-                        string num = TextLib.EmptyString;
-                        while (i < fromMessage.Length && TextLib.Numbers.Contains(fromMessage[i]))
-                        {
-                            num += fromMessage[i];
-                            i++;
-                        }
-                        compressedData.Add((byte)materials[letterIx]); compressedData.Add((byte)lib.SafeStringToInt(num));
-                        i--;
-                    }
-                }
-            }
+        //    for (int i = 0; i < fromMessage.Length; i++)
+        //    {
+        //        char mLetter = fromMessage[i];
+        //        for (int letterIx = 0; letterIx < NumberLetters.Length; letterIx++)
+        //        {
+        //            if (NumberLetters[letterIx] == mLetter)
+        //            {
+        //                i++;
+        //                string num = TextLib.EmptyString;
+        //                while (i < fromMessage.Length && TextLib.Numbers.Contains(fromMessage[i]))
+        //                {
+        //                    num += fromMessage[i];
+        //                    i++;
+        //                }
+        //                compressedData.Add((byte)materials[letterIx]); compressedData.Add((byte)lib.SafeStringToInt(num));
+        //                i--;
+        //            }
+        //        }
+        //    }
 
-            IntVector3 size = readLimits + 1;
-            MaterialGrid = new byte[size.X, size.Y, size.Z];
-            FromCompressedData(compressedData);
-        }
+        //    IntVector3 size = readLimits + 1;
+        //    MaterialGrid = new byte[size.X, size.Y, size.Z];
+        //    FromCompressedData(compressedData);
+        //}
 
         public VoxelObjGridData Rotate(int rotationSteps, bool replaceOriginalData)
         {
@@ -646,7 +646,7 @@ namespace VikingEngine.Voxels
         public VoxelObjGridData FlipDir(Dimensions dimention, IntervalIntV3 limits, bool replaceOriginalData)
         {
             VoxelObjGridData clone = new VoxelObjGridData(limits.Add + 1);//this.Clone();
-            //newGrid(limits.Add + 1);
+           
             IntVector3 pos = IntVector3.Zero;
             IntVector3 fromPos = IntVector3.Zero;
             for (pos.Z = limits.Min.Z; pos.Z <= limits.Max.Z; ++pos.Z)
