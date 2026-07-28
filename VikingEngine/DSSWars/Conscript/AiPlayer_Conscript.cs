@@ -140,7 +140,8 @@ namespace VikingEngine.DSSWars.Players
             //    lib.DoNothing();
             //}
 
-            bool guard = false;
+            //bool guard = false;
+            ArmyType armyTypeFilter = ArmyType.Mix;
 
             int minGuardCount = 2 + (int)city.cityType * 2;
 
@@ -152,7 +153,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         if (city.defenceBuildings[i].AvailableForAutoAssign(city, IsBot()))
                         {
-                            guard = true;
+                            armyTypeFilter = ArmyType.CityGuard;
                             break;
                         }
                     }
@@ -164,7 +165,7 @@ namespace VikingEngine.DSSWars.Players
             barracksCount = 0;
             barracksType = BuildAndExpandType.NUM_NONE;
 
-            if (AutoConscriptLib.HasEnoughFoodAndGold(pfaction.GetFaction(), city, guard, aggresive) &&
+            if (AutoConscriptLib.HasEnoughFoodAndGold(pfaction.GetFaction(), city, armyTypeFilter, aggresive) &&
                 city.conscriptBuildings.Count > 0)
             {
                 AutoWeaponOption weapon = new AutoWeaponOption(ItemResourceType.NONE, false, BuildAndExpandType.SoldierBarracks);
@@ -172,11 +173,11 @@ namespace VikingEngine.DSSWars.Players
 
                 foreach (var w in ConscriptWeaponPrioOrder)
                 {
-                    unitCount = ItemPropertyColl.Get(w.item).soldierData.UnitCount(guard);
+                    unitCount = ItemPropertyColl.Get(w.item).soldierData.UnitCount(armyTypeFilter);
 
                     if (city.GetGroupedResource(w.item).amount >= unitCount &&
                         city.buildingStructure.getBarracksCount(w.barracks) > 0 &&
-                        AutoConscriptLib.MayUseItemInConscript(city, w.item, true, guard))
+                        AutoConscriptLib.MayUseItemInConscript(city, w.item, true))
                     {  
                         weapon = w;                        
                         break;
@@ -188,7 +189,7 @@ namespace VikingEngine.DSSWars.Players
                     weapon = weapon.item,
                     //armorLevel = armorLevel,
                     training = TrainingLevel.Basic,
-                    specialization = guard ? SpecializationType.CityGuard : SpecializationType.None,
+                    specialization = armyTypeFilter== ArmyType.CityGuard ? SpecializationType.CityGuard : SpecializationType.None,
                 };
 
                 if (weapon.item == ItemResourceType.NONE)
@@ -198,7 +199,7 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 var weaponProp = ItemPropertyColl.Get(weapon.item);
-                manCount = weaponProp.soldierData.workForceCount(guard);
+                manCount = weaponProp.soldierData.workForceCount(armyTypeFilter);
 
                 if (weaponProp.Filter_IsTwoHandWeapon)
                 {
@@ -231,14 +232,14 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 if (weapon.item == ItemResourceType.NONE ||
-                    !AutoConscriptLib.MayUseItemInConscript(city, profile.armorLevel, false, guard))                   
+                    !AutoConscriptLib.MayUseItemInConscript(city, profile.armorLevel, false))                   
                 {
                     //Item is too low quality
                     profile = ConscriptProfile.Empty;
                     return;
                 }
 
-                if (!guard)
+                if (armyTypeFilter != ArmyType.CityGuard)//!guard)
                 {
                     foreach (var animal in conscriptMountPrioOrder)
                     {
@@ -305,15 +306,16 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        protected bool buySoldiersBalanceCheck_asynch(City city, bool aggresive, double overrideChance, out bool guardOnly)
+        protected bool buySoldiersBalanceCheck_asynch(City city, bool aggresive, double overrideChance, out ArmyType armyTypeFilter)
         {
-            guardOnly = false;
+            armyTypeFilter = ArmyType.Mix;
 
             if (!Ref.rnd.Chance(overrideChance))
             {
                 if (aggressionLevel == AggressionLevel0_Passive)
                 {
-                    guardOnly = true;
+                    armyTypeFilter = ArmyType.CityGuard;
+                    //guardOnly = true;
                 }
                 else
                 {
@@ -333,17 +335,18 @@ namespace VikingEngine.DSSWars.Players
                             maxCount -= armiesC.sel.soldiersCount;
                             if (maxCount < 0)
                             {
-                               guardOnly = true;
+                                armyTypeFilter = ArmyType.CityGuard;
+                                //guardOnly = true;
                                 break;
                             }
                         }
                     }
                 }
             }
-            return buySoldiers(city, aggresive, guardOnly, false);
+            return buySoldiers(city, aggresive, armyTypeFilter, false);
         }
 
-        virtual protected bool buySoldiers(City city, bool aggresive, bool guardOnly, bool commit)
+        virtual protected bool buySoldiers(City city, bool aggresive, ArmyType armyTypeFilter, bool commit)
         {
             
             if (!aggresive && !AutoConscriptLib.HasEnoughMen(city))
@@ -358,7 +361,7 @@ namespace VikingEngine.DSSWars.Players
 
             setupConscriptAi_async(city, aggresive, out ConscriptProfile profile, out BuildAndExpandType barracksType, out int barracksCount, out int manCount, out int unitCount);
 
-            if (guardOnly && profile.specialization != SpecializationType.CityGuard)
+            if (armyTypeFilter == ArmyType.CityGuard && profile.specialization != SpecializationType.CityGuard)
             {
                 return false;
             }

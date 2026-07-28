@@ -55,18 +55,13 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        public static bool MayUseItemInConscript(City city, ItemResourceType item, bool isWeapon, bool guard)
+        public static bool MayUseItemInConscript(City city, ItemResourceType item, bool isWeapon)
         {
             
             if (isWeapon && city.warAutoWeaponType != WarAutoWeaponType.Mix)
             {
                 ConscriptProfile profile = new ConscriptProfile() { weapon = item };
                 profile.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
-
-                //if (guard && knight)
-                //{
-                //    return false;
-                //}
 
                 switch (city.warAutoWeaponType)
                 {
@@ -130,7 +125,7 @@ namespace VikingEngine.DSSWars.Conscript
             return city.workForce.amount < city.HousingCount_Workers - DssConst.SoldierGroup_DefaultCount;
         }
 
-        public static bool HasEnoughFoodAndGold(Faction faction, City city, bool guard, bool aggresive)
+        public static bool HasEnoughFoodAndGold(Faction faction, City city, ArmyType armyTypeFilter, bool aggresive)
         {
             if (faction.GetGold(city) > DssConst.Gold_RichStatus)
             {
@@ -139,7 +134,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
                
 
-            if (guard)
+            if (armyTypeFilter == ArmyType.CityGuard)
             {
                 if (DssRef.storage.ruleset_instance.centralGold)
                 {

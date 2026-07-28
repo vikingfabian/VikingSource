@@ -738,6 +738,11 @@ namespace VikingEngine.DSSWars.Players
                     nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
                 }
             }
+
+            if (!profile.casualControls)
+            { 
+                city.automateCity = true;
+            }
         }
 
         public override void onNewRelation(bool isActuator, PFaction otherPFaction, DiplomaticRelation rel, RelationType previousRelation, bool fromAllianceTrade, bool localAction)
@@ -1006,11 +1011,11 @@ namespace VikingEngine.DSSWars.Players
                 city.automateCity &&
                 city.automationFocus == AutomationFocus.Military)
             {
-                if (buySoldiers(city, false, false, false))
+                if (buySoldiers(city, false, city.warAutoArmyType, false))
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        buySoldiers(city, false, false, true);
+                        buySoldiers(city, false, city.warAutoArmyType, true);
                     }));
                 }
             }
@@ -1180,7 +1185,7 @@ namespace VikingEngine.DSSWars.Players
             Rotation1D enemyRot = Rotation1D.FromDegrees(180 + Ref.rnd.Plus_Minus(10));
             Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.settings.Faction_DarkFollower.GetFaction();//DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
+            Faction enemyFac = DssRef.settings.Faction_DarkFollower.GetFaction();
             enemyFac.hasDeserters = false;
             //DssRef.world.diplomacy.declareWar(faction, enemyFac);
 

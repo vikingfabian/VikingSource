@@ -39,6 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         public AutomationFocus automationFocus = AutomationFocus.NoFocus;
         public WarAutoQuality warAutoQuality = WarAutoQuality.Medium;
         public WarAutoWeaponType warAutoWeaponType = WarAutoWeaponType.Mix;
+        public ArmyType warAutoArmyType = ArmyType.Mix;
 
         public ExportAutoType exportAutoType = ExportAutoType.Resources;
 

@@ -27,7 +27,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 39;
+        const int Version = 40;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 

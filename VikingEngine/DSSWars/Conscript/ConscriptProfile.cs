@@ -59,7 +59,10 @@ namespace VikingEngine.DSSWars.Conscript
 
             return result;
         }
-
+        public ArmyType ArmyType()
+        { 
+            return specialization == SpecializationType.CityGuard? Conscript.ArmyType.CityGuard : Conscript.ArmyType.ArmyMen;
+        }
         public int menCost()
         {
             SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
@@ -876,6 +879,14 @@ namespace VikingEngine.DSSWars.Conscript
         Green,
         AntiCavalry,
         DarkLord,
+        Mix,
+    }
+
+    enum ArmyType
+    { 
+        ArmyMen,
+        CityGuard,
+        Mix,
     }
 
     enum ConscriptActiveStatus
