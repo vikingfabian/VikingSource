@@ -43,7 +43,8 @@ namespace VikingEngine.DSSWars
 
             tab_blackmarket, tab_build, tab_conscript, tab_defence,
             tab_delivery, tab_economy, tab_help, tab_info, tab_pin, tab_resources,
-            tab_schools, tab_science, tab_stockpile, tab_work;
+            tab_schools, tab_science, tab_stockpile, tab_work, 
+            tab_disband, tab_armydiv;
 
         public static SoundContainerBase[] WalkSounds;
         public static SoundContainerBase[] AnimalNoises;
@@ -225,6 +226,8 @@ namespace VikingEngine.DSSWars
             tab_science = new SoundContainerSingle(MenuEnvDir + "tab_science", 0.5f);
             tab_stockpile = new SoundContainerSingle(MenuEnvDir + "tab_stockpile");
             tab_work = new SoundContainerSingle(MenuEnvDir + "tab_work");
+            tab_disband = new SoundContainerSingle(MenuEnvDir + "tab_disband", 0.7f);
+            tab_armydiv = new SoundContainerSingle(MenuEnvDir + "tab_armydiv");
 
             WalkSounds = new SoundContainerBase[] {
                 footstep,
@@ -275,6 +278,9 @@ namespace VikingEngine.DSSWars
                 case MenuTab.Help:
                     tab_help.Play();
                     break;
+                case MenuTab.Economy:
+                    tab_economy.Play();
+                    break;
                 case MenuTab.Tag:
                     tab_pin.Play();
                     break;
@@ -307,7 +313,12 @@ namespace VikingEngine.DSSWars
                 case MenuTab.Build:
                     tab_build.Play();
                     break;
-
+                case MenuTab.Disband:
+                    tab_disband.Play(); 
+                    break;
+                case MenuTab.Divide:
+                    tab_armydiv.Play();
+                    break;
             }
         }
 

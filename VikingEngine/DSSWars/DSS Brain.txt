@@ -2,7 +2,8 @@
 Change log:
 * Animal habitats on heatmap, and tab names
 * Rebalanced animal placement
-* compressed headbar Ui
+* Compressed headbar Ui
+* Tabs have environmental sounds
 
 Performance
 * Removed all unessesary faction references

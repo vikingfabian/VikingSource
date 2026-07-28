@@ -421,9 +421,11 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
+                SoundLib.Tab(tab);
                 player.factionTab = tab;
             }
             player.hud.needRefresh = true;
+            
         }
 
         void TabTip(RichBoxContent content, object tag)

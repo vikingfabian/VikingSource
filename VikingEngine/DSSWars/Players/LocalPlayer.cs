@@ -613,9 +613,16 @@ namespace VikingEngine.DSSWars.Players
         {
             MenuTab newTab = AvailableCityTabs()[tab];
             if (newTab != cityTab)
-            { 
+            {
                 cityTab = newTab;
-                SoundLib.Tab(newTab);
+                if (newTab == MenuTab.Resources)
+                {
+                    SoundLib.SubTab(resourcesSubTab.managementType);
+                }
+                else
+                {
+                    SoundLib.Tab(newTab);
+                }
             }
         }
         public void armyTabClick(int tab)
