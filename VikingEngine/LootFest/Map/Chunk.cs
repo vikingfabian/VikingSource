@@ -476,7 +476,7 @@ namespace VikingEngine.LootFest.Map
 
         public void writeDataGrid(System.IO.BinaryWriter w)
         {
-            Voxels.VoxelLib.CompressGridHD(DataGrid, w);
+            //Voxels.VoxelLib.CompressGridHD(DataGrid, w);
         }
 
         public void ReadChunk(System.IO.BinaryReader r)
@@ -489,7 +489,7 @@ namespace VikingEngine.LootFest.Map
 
         public void readDataGrid(System.IO.BinaryReader r)
         {
-            Voxels.VoxelLib.DeCompressGridHD(DataGrid, r);
+            //Voxels.VoxelLib.DeCompressGridHD(DataGrid, r);
 
             if (openstatus < ScreenOpenStatus.Detail_2)
                 openstatus = ScreenOpenStatus.Detail_2;

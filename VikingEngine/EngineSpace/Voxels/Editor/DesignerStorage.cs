@@ -338,7 +338,7 @@ namespace VikingEngine.Voxels
         {
             var grid = designer.SelectionToGrid();
 
-            Voxels.VoxelLib.WriteVoxelObjAnimHD(w, grid.MaterialGrid);
+            Voxels.VoxelLib.WriteVoxelObjAnimHD(w, grid);
         }
 
         void readSelection(System.IO.BinaryReader r)
