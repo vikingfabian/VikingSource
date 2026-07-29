@@ -14,7 +14,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
     class DropDownOption : List<AbsRichBoxMember>
     {
         public SpriteName iconAfter = SpriteName.NO_IMAGE;
-
+        public bool enabled = true;
         public DropDownOption()
             :base(2)
         { }
@@ -30,6 +30,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
         int selectedIx = -1;
         int defaultIx = -1;
         string name;
+       
 
         public DropDownBuilder(string name)
         { 
@@ -173,7 +174,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
                     content.Add(new RbSpace());
                     AbsRbAction tooltip = optionsTooltip != null ? optionsTooltip[i] : null;
                     onSelect[i].sound = RbSoundType.Option;
-                    content.Add(new ArtButton(style, options[i], onSelect[i], optionsTooltip[i]));
+                    content.Add(new ArtButton(style, options[i], onSelect[i], optionsTooltip[i], options[i].enabled));
                     if (options[i].iconAfter != SpriteName.NO_IMAGE)
                     {
                         content.space();

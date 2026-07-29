@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.EngineSpace.Graphics.In3D;
@@ -18,46 +19,14 @@ namespace VikingEngine.DSSWars.GameObject
         public bool debugTagged = false;
         
         
-        abstract public bool defeatedBy(int attackerFaction);
+        abstract public bool defeatedBy(PFaction attackerFaction);
 
         virtual public bool defeated()
         {
             return isDeleted;
         }
 
-        abstract public bool aliveAndBelongTo(int faction);
-
-        //virtual public void toHud(ObjectHudArgs args)
-        //{
-        //    string name = Name();
-
-        //    if (name != null)
-        //    {
-        //        args.content.text(name).overrideColor = Color.LightYellow;
-        //        args.content.newLine();
-        //    }
-
-        //    args.content.Add(new RichBoxBeginTitle());
-        //    args.content.Add(GetFaction().FlagTextureToHud());
-        //    args.content.Add(new RichBoxText(TypeName()));
-
-        //    if (PlatformSettings.DevBuild)
-        //    {
-        //        args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
-        //    }
-        //    if (GetFaction() != args.player.faction)
-        //    {
-        //        var relation = DssRef.world.diplomacy.GetRelationType(args.player.faction, GetFaction());
-
-        //        args.content.newLine();
-        //        args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
-        //        args.content.newLine();
-        //        args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
-        //        args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
-
-        //    }
-        //    args.content.Add(new RichBoxSeperationLine());
-        //}
+        abstract public bool aliveAndBelongTo(PFaction faction);
 
         public override AbsWorldObject GetWorldObject()
         {
@@ -107,5 +76,17 @@ namespace VikingEngine.DSSWars.GameObject
         Disband,
         Desert,
         CameraCulling,
+
+        NetworkEvent,
+        LostHost,
+    }
+
+    enum ConvertReason
+    { 
+        Assigned,
+        Diplomacy,
+        Gift,
+        Claim,
+        WarCapture,
     }
 }

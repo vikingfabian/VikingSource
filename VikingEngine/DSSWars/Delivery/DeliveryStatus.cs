@@ -36,6 +36,7 @@ namespace VikingEngine.DSSWars.Delivery
         public DeliveryProfile inProgress;
 
         public TimeInGameCountdown countdown;
+        public GameTimeStamp remoteDeliveryUpdateRequest;
 
         public void halt()
         {
@@ -105,7 +106,7 @@ namespace VikingEngine.DSSWars.Delivery
             //while (citiesC.Next())
             //{
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            while (citiesC.Next(ref player.faction.cities))
+            while (citiesC.Next(ref player.pfaction.GetFaction().cities))
             {
                 if (citiesC.sel == profile.toCity)
                 {
@@ -363,6 +364,11 @@ namespace VikingEngine.DSSWars.Delivery
         public int SendAmount;
         public int autoCity;
         public ItemResourceType type;
+
+        public override string ToString()
+        {
+            return $"Deliver {SendAmount} {type} to {toCity}";
+        }
 
         public bool fullSetup()
         {

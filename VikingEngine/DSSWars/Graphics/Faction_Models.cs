@@ -21,6 +21,15 @@ namespace VikingEngine.DSSWars
 
         List<int> processStarted = new List<int>(8);
 
+        public void onNewPlayerModels()
+        {
+            models_loaded.Clear();
+            lock (processStarted)
+            {
+                processStarted.Clear();
+            }
+        }
+
         public Graphics.VoxelModelInstance AutoLoadModelInstance(VoxelModelName name,
            float scale = 1f, bool addToRender = false)
         {
@@ -100,14 +109,18 @@ namespace VikingEngine.DSSWars
 
                             if (process)
                             {
-                                var model = new CharacterModelBuilder().buildModel(player.profile, modelData);
-                                lock (models_loaded)
+                                if (player.IsRemotePlayer())
                                 {
+                                    lib.DoNothing();
+                                }
+                                var model = new CharacterModelBuilder().buildModel(player.profile, modelData);
+                                //lock (models_loaded)
+                                //{
                                     if (!models_loaded.ContainsKey(id))
                                     {
                                         models_loaded.TryAdd(id, model);
                                     }
-                                }
+                                //}
                             }
                         }
 
@@ -190,10 +203,10 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void OnRawModelLoaded_asynch(VoxelModelName name, VoxelObjGridDataAnimHD grid)
-        {
-            generateFromGrid_asynch(name, grid);
-        }
+        //public void OnRawModelLoaded_asynch(VoxelModelName name, VoxelObjGridDataAnimHD grid)
+        //{
+        //    generateFromGrid_asynch(name, grid);
+        //}
 
         void generateFromGrid_asynch(VoxelModelName name, VoxelObjGridDataAnimHD grid)
         {

@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryBannerModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new HorseBanner(soldier.GetFaction(), soldier.soldierData.modelScale, riderY);
+            banner = new HorseBanner(soldier.pfaction.GetFaction(), soldier.soldierData.modelScale, riderY);
         }
 
         protected override void updateAnimation(AbsSoldierUnit soldier)
@@ -236,7 +236,7 @@ namespace VikingEngine.DSSWars.GameObject
             banner.DeleteMe();
         }
 
-        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsSoldierUnit unit)
         {
             base.onNewModel(name, master, unit);
             banner.onNewModel_asynch(name, master);

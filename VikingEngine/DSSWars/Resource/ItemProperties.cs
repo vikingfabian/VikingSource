@@ -19,97 +19,6 @@ using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.Resource
 {
-    //struct ItemSource
-    //{
-
-    //    public ItemSourceType source;
-    //    public int sourceId;
-
-    //    public ItemSource(TerrainSubFoilType terrain)
-    //    {
-    //        source = ItemSourceType.Terrain;
-    //        sourceId = (int)terrain;
-    //    }
-
-    //    public ItemSource(TerrainMineType mineType)
-    //    {
-    //        source = ItemSourceType.Mine;
-    //        sourceId = (int)mineType;
-    //    }
-
-    //    public ItemSource(ItemSourceType source, BuildAndExpandType buiding1)
-    //    {
-    //        this.source = source;
-    //        sourceId = (int)buiding1;
-    //    }
-
-    //    public ItemSource(BuildAndExpandType buiding1)
-    //    {
-    //        this.source =  ItemSourceType.Crafting;
-    //        sourceId = (int)buiding1;
-    //    }
-
-    //    public void ToHud(RichBoxContent content)
-    //    {
-    //        if (sourceId >= 0)
-    //        {
-    //            content.newLine();
-    //            switch (source)
-    //            {
-    //                case ItemSourceType.Terrain:
-    //                    label(DssRef.lang.ItemSource_Terrain);
-    //                    terrain(sourceId);
-
-    //                    void terrain(int terrainType)
-    //                    {
-    //                        if (terrainType >= 0)
-    //                        {
-    //                            IconName.Terrain(TerrainMainType.Foil, terrainType, out var icon, out var name);
-    //                            content.Add(new RbImage(icon));
-    //                            content.hspace();
-    //                            content.Add(new RbText(name));
-    //                        }
-    //                    }
-
-    //                    break;
-
-    //                case ItemSourceType.Farm:
-    //                    label(DssRef.lang.ItemSource_Farm);
-    //                    addBuilding(sourceId);
-    //                    break;
-
-    //                case ItemSourceType.Crafting:
-
-    //                    label(DssRef.lang.ItemSource_CraftStation);
-    //                    addBuilding(sourceId);
-    //                    break;
-
-    //                case ItemSourceType.Mine:
-    //                    label(DssRef.lang.ItemSource_Gathering);
-    //                    IconName.Terrain(TerrainMainType.Mine, sourceId, out var icon, out var name);
-    //                    content.Add(new RbImage(icon));
-    //                    content.hspace();
-    //                    content.Add(new RbText(name));
-    //                    break;
-
-    //            }
-
-    //            void label(string typeName)
-    //            {
-    //                content.Add(new RbText(typeName + ":", HudLib.TitleColor_Label));
-    //                content.space();
-    //            }
-
-    //            void addBuilding(int building)
-    //            {
-    //                IconName.Building((BuildAndExpandType)building, out var icon, out var name);
-    //                content.Add(new RbImage(icon));
-    //                content.hspace();
-    //                content.Add(new RbText(TextLib.LargeFirstLetter(name)));
-    //            }
-    //        }
-    //    }
-    //}
 
     class ItemProperties
     {
@@ -122,16 +31,14 @@ namespace VikingEngine.DSSWars.Resource
         public CraftBlueprint bp1;
         public CraftBlueprint bp2;
         public StorageType storageType;
-
+        
         public SoldierData soldierData = new SoldierData();
         public bool Filter_IsWarMachine = false;
         public bool Filter_IsTwoHandWeapon = true;
         public bool Filter_IsRidingAnimal = false;
-        //public bool Filter_IsRidingWagon = false;
         public WagonPull wagonPull = WagonPull.None;
         public ArmorCarry armorCarry = ArmorCarry.None;
         public int cityResourceIndex;
-        //public int defaultStockPile = 100;
 
         public ItemSource itemSource1 = ItemSource.None, itemSource2 = ItemSource.None, itemSource3 = ItemSource.None;
         public CityBiome restrictedToBiom = CityBiome.NUM_NONE;
@@ -205,6 +112,17 @@ namespace VikingEngine.DSSWars.Resource
         AnamalHabitat,
         Building,
         NUM
+    }
+
+    enum ItemMainCategory
+    { 
+        Gold,
+        Population,
+        BaseResource,
+        RefinedResource,
+        Metal,
+        Military,
+        Animal,
     }
 
     enum WagonPull

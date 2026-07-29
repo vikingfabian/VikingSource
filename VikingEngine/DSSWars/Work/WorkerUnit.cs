@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -37,18 +39,25 @@ namespace VikingEngine.DSSWars.Work
         int prevX, prevZ;
         float walkDist_beforeRefresh = 0f;
         AbsWorkEffect workEffect = null;
+        PFaction pFaction;
 
         public WorkerUnit(AbsArmy mapObject, WorkerStatus status, int statusIndex)
         {
             parentMapObject = mapObject;
-            factionIndex = mapObject.factionIndex;
+            pfaction = mapObject.pfaction;//factionIndex = mapObject.factionIndex;
             //this.status = status;
             myIndex = statusIndex;
-            model = mapObject.GetFaction_NoChecks().AutoLoadModelInstance_batched(
+            model = mapObject.pfaction.GetFaction().AutoLoadModelInstance_batched(
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
+#if DEBUG
+            if (Debug.CorruptValue(model.position))
+            {
+                throw new Exception();      
+            }
+#endif
             checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
@@ -57,7 +66,6 @@ namespace VikingEngine.DSSWars.Work
 
         public bool update(City city)
         {
-
 
             //if (myIndex == 6)
             //{
@@ -82,6 +90,12 @@ namespace VikingEngine.DSSWars.Work
                     {
                         model.position.X = goalPos.X;
                         model.position.Z = goalPos.Z;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         WP.Rotation1DToQuaterion(model, 2.8f);
                         //state = WorkerUnitState.FinalizeWork;
                        
@@ -103,6 +117,12 @@ namespace VikingEngine.DSSWars.Work
                     else
                     {
                         model.position += walkDir * speed;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         updateGroudY(false);
 
                         if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
@@ -146,41 +166,42 @@ namespace VikingEngine.DSSWars.Work
                             if (workAnimation_soundframe())
                             {
                                 workEffect?.onSoundAnimation();
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-
-                                switch ((TerrainSubFoilType)subTile.subTerrain)
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainSubFoilType.DryWood:
-                                    case TerrainSubFoilType.TreeSoft:
-                                    case TerrainSubFoilType.TreeHard:
-                                        SoundLib.woodcut.Play(model.position);
-                                        break;
-                                    case TerrainSubFoilType.TreeApple:
-                                    case TerrainSubFoilType.TreeBanana:
-                                    case TerrainSubFoilType.WheatFarm:
-                                    case TerrainSubFoilType.WheatFarmUpgraded:
-                                    case TerrainSubFoilType.LinenFarm:
-                                    case TerrainSubFoilType.LinenFarmUpgraded:
-                                    case TerrainSubFoilType.RapeSeedFarm:
-                                    case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                                    case TerrainSubFoilType.HempFarm:
-                                    case TerrainSubFoilType.HempFarmUpgraded:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.scythe.Play(model.position);
-                                        }
-                                        break;
-                                    case TerrainSubFoilType.StoneBlock:
-                                        SoundLib.pickaxe.Play(model.position);
-                                        break;
-                                    case TerrainSubFoilType.ClayPit:
-                                    case TerrainSubFoilType.BogIron:
-                                    case TerrainSubFoilType.Stones:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.dig.Play(model.position);
-                                        }
-                                        break;
+                                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                                    {
+                                        case TerrainSubFoilType.DryWood:
+                                        case TerrainSubFoilType.TreeSoft:
+                                        case TerrainSubFoilType.TreeHard:
+                                            SoundLib.woodcut.Play(model.position);
+                                            break;
+                                        case TerrainSubFoilType.TreeApple:
+                                        case TerrainSubFoilType.TreeBanana:
+                                        case TerrainSubFoilType.WheatFarm:
+                                        case TerrainSubFoilType.WheatFarmUpgraded:
+                                        case TerrainSubFoilType.LinenFarm:
+                                        case TerrainSubFoilType.LinenFarmUpgraded:
+                                        case TerrainSubFoilType.RapeSeedFarm:
+                                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                                        case TerrainSubFoilType.HempFarm:
+                                        case TerrainSubFoilType.HempFarmUpgraded:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.scythe.Play(model.position);
+                                            }
+                                            break;
+                                        case TerrainSubFoilType.StoneBlock:
+                                            SoundLib.pickaxe.Play(model.position);
+                                            break;
+                                        case TerrainSubFoilType.ClayPit:
+                                        case TerrainSubFoilType.BogIron:
+                                        case TerrainSubFoilType.Stones:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.dig.Play(model.position);
+                                            }
+                                            break;
+                                    }
                                 }
                             }
                             break;
@@ -200,25 +221,27 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                                var building = (TerrainBuildingType)subTile.subTerrain;
-
-                                switch (building)
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainBuildingType.Brewery:
-                                    case TerrainBuildingType.Work_Bench:
-                                    case TerrainBuildingType.Work_Cook:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.genericWork.Play(model.position);
-                                        }
-                                        break;
-                                    case TerrainBuildingType.Work_Smith:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.anvil.Play(model.position);
-                                        }
-                                        break;
+                                    var building = (TerrainBuildingType)subTile.subTerrain;
+
+                                    switch (building)
+                                    {
+                                        case TerrainBuildingType.Brewery:
+                                        case TerrainBuildingType.Work_Bench:
+                                        case TerrainBuildingType.Work_Cook:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.genericWork.Play(model.position);
+                                            }
+                                            break;
+                                        case TerrainBuildingType.Work_Smith:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.anvil.Play(model.position);
+                                            }
+                                            break;
+                                    }
                                 }
                             }
 
@@ -251,23 +274,25 @@ namespace VikingEngine.DSSWars.Work
                         switch (status.work)
                         {
                             case WorkType.GatherFoil:
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                                switch ((TerrainSubFoilType)subTile.subTerrain)
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainSubFoilType.DryWood:
-                                    case TerrainSubFoilType.TreeSoft:
-                                    case TerrainSubFoilType.TreeHard:
-                                        SoundLib.tree_falling.Play(model.position);
-                                        break;
+                                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                                    {
+                                        case TerrainSubFoilType.DryWood:
+                                        case TerrainSubFoilType.TreeSoft:
+                                        case TerrainSubFoilType.TreeHard:
+                                            SoundLib.tree_falling.Play(model.position);
+                                            break;
 
-                                    case TerrainSubFoilType.Stones:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.pickup.Play(model.position);
-                                        }
-                                        break;
+                                        case TerrainSubFoilType.Stones:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.pickup.Play(model.position);
+                                            }
+                                            break;
+                                    }
+                                    EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 }
-                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 break;
                             case WorkType.Plant:
                                 int waterCost;
@@ -354,39 +379,42 @@ namespace VikingEngine.DSSWars.Work
             switch (status.work)
             {
                 case WorkType.Craft:
-                    SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                    var building = (TerrainBuildingType)subTile.subTerrain;
-
-                    switch (building)
+                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                     {
-                        case TerrainBuildingType.Work_Cook:
-                            workEffect = new CookingWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Work_CoalPit:
-                            workEffect = new CoalPitWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Work_Smith:
-                            workEffect = new SmithWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Smelter:
-                            workEffect = new SmelterWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Foundry:
-                            workEffect = new FoundryWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Brewery:
-                            workEffect = new BreweryWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Pottery:
-                            workEffect = new PotteryWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Butcher:
-                            workEffect = new ButcherWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Smoker:
-                            workEffect = new SmokingWorkEffect(status.subTileEnd);
-                            break;
+                        var building = (TerrainBuildingType)subTile.subTerrain;
 
+                        switch (building)
+                        {
+                            case TerrainBuildingType.Work_Cook:
+                                workEffect = new CookingWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Work_CoalPit:
+                                workEffect = new CoalPitWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Work_Smith:
+                                workEffect = new SmithWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Smelter:
+                                workEffect = new SmelterWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Foundry:
+                                workEffect = new FoundryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Brewery:
+                                workEffect = new BreweryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Pottery:
+                                workEffect = new PotteryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Butcher:
+                                workEffect = new ButcherWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Smoker:
+                                workEffect = new SmokingWorkEffect(status.subTileEnd);
+                                break;
+
+                        }
+                        
                     }
                     break;
             }
@@ -402,6 +430,12 @@ namespace VikingEngine.DSSWars.Work
                     //remove hidden status
                     model.Visible = true;
                     model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+#if DEBUG
+                    if (Debug.CorruptValue(model.position))
+                    {
+                        throw new Exception();
+                    }
+#endif
                 }
 
                 if (status.subTileEnd == status.subTileStart)
@@ -418,16 +452,37 @@ namespace VikingEngine.DSSWars.Work
                     if (onInit)
                     {
                         float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                        float walkingPerc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
+                        float walkTime = status.processTimeLengthSec - finalizeWorkTime;
+                        float walkingPerc;
+                        if (walkTime < 1)
+                        {
+                            walkingPerc = 1;
+                        }
+                        else
+                        {
+                            walkingPerc = timePassed / walkTime;
+                        }
 
                         if (walkingPerc >= 1)
                         {
                             model.position = goalPos;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                             finalizeWorkTime = status.processTimeLengthSec - timePassed;
                         }
                         else
                         {
                             model.position = model.position * (1 - walkingPerc) + goalPos * walkingPerc;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
 
@@ -544,6 +599,12 @@ namespace VikingEngine.DSSWars.Work
                         else
                         {
                             model.position.Y += diff * 0.06f;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
                 }
@@ -564,7 +625,7 @@ namespace VikingEngine.DSSWars.Work
         void WorkerPresentationHud(ObjectHudArgs args, bool tooltip)
         {
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.Add(pfaction.GetFaction().FlagTextureToHud());
             args.content.space(0.5f);
             args.content.Add(new RbImage(SpriteName.WarsWorker));
             args.content.space(0.5f);
@@ -573,6 +634,7 @@ namespace VikingEngine.DSSWars.Work
             args.content.space();
             args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
+            args.content.newLine();
             ownerToHud(args, false);
         }
         public override void toHud(ObjectHudArgs args)
@@ -687,10 +749,10 @@ namespace VikingEngine.DSSWars.Work
         {
             return GameObjectType.Worker;
         }
-        public override Faction GetFaction()
-        {
-            return parentMapObject.GetFaction();
-        }
+        //public override Faction GetFaction()
+        //{
+        //    return parentMapObject.GetFaction();
+        //}
         public override City GetCity()
         {
             return parentMapObject.GetCity();
@@ -705,10 +767,10 @@ namespace VikingEngine.DSSWars.Work
             return model.position;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
-        {
-            return faction == parentMapObject.GetFaction();
-        }
+        //public override bool aliveAndBelongTo(Faction faction)
+        //{
+        //    return faction == parentMapObject.GetFaction();
+        //}
 
         public override WorkerUnit GetWorker()
         {

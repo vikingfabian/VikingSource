@@ -56,7 +56,7 @@ namespace VikingEngine.Voxels
                 {
                     for (int z = 0; z < size.Z; z++)
                     {
-                        ushort block = gridData.MaterialGrid[x, y, z];
+                        ushort block = gridData.Get(x, y, z);
                         if (block == BlockHD.EmptyBlock)
                             continue;
 
@@ -67,7 +67,7 @@ namespace VikingEngine.Voxels
                             IntVector3 neighbor = new IntVector3(x + offset.X, y + offset.Y, z + offset.Z);
 
                             bool isExposed = !gridData.InBounds(neighbor) ||
-                                gridData.MaterialGrid[neighbor.X, neighbor.Y, neighbor.Z] == BlockHD.EmptyBlock;
+                                gridData.Get(neighbor.X, neighbor.Y, neighbor.Z) == BlockHD.EmptyBlock;
 
                             if (isExposed)
                             {

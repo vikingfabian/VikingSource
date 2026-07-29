@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.EngineSpace;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.Network;
 //
 
 
@@ -37,6 +39,26 @@ namespace VikingEngine.DSSWars.GameObject
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
+        public bool IsNetHosted = true;
+        public ObjectName name = new ObjectName();
+
+        public AbsNetworkPeer NetHostingPeer()
+        {
+            if (IsNetHosted)
+            {
+                return Ref.netSession.LocalPeer();
+            }
+            else if (pfaction.TryGetPlayer(out var p) && p.IsRemotePlayer())
+            {
+                return p.GetRemotePlayer().networkPeer.peer;
+            }
+            else
+            { 
+                return Ref.netSession.Host();
+            }
+        }
+
+        public MapObjectTag Tag = new MapObjectTag();
 
         public AbsMapObject()
         {
@@ -44,12 +66,41 @@ namespace VikingEngine.DSSWars.GameObject
             //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
         }
 
+        public PMapObject mapObjPointer()
+        {
+            return new PMapObject(gameobjectType(), pfaction, myIndex);
+        }
+
+        public override void NameEditEvent(string result, object tag)
+        {
+            name.setCustom(result);
+
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssRename, PacketReliability.Reliable);
+            mapObjPointer().write(w);
+            name.write(w);
+        }
+
+        public static void NetReadRename(System.IO.BinaryReader r)
+        {
+            var pointer = new PMapObject(r);
+            var obj = pointer.Get();
+            if (obj != null)
+            {
+                obj.name.read(r, int.MaxValue);
+            }
+        }
+
+        public void IndexToHud(RichBoxContent content)
+        {
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex.ToString() + (IsNetHosted ? " h" : " c")) , HudLib.SecondaryTextColor));
+        }
+
         virtual public bool lowFood() { throw new NotImplementedException(); }
         public bool payGold(int cost)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
                 if (faction == null)
                 {
                     return false;
@@ -64,9 +115,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool payGold(int cost, bool allowDept)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
                 if (faction == null)
                 {
                     return false;
@@ -86,11 +137,26 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
+            if (IsNetHosted || lastNetUpdate.belowTime_sec(20))
+            {
+                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
+            }
+            else
+            {
+                enterRender_overviewLayer_async = false;
+                enterRender_detailLayer_async = false;
+            }
         }
         
 
-        public void PauseUpdate()
+        virtual public void PauseUpdate()
+        {
+            updateDetailLevel();
+
+            
+        }
+
+        virtual public void clientPauseUpdate()
         {
             updateDetailLevel();
         }
@@ -104,12 +170,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (enterRender_detailLayer_async != inRender_detailLayer)
             {
+                if (this.gameobjectType() == GameObjectType.Army)
+                {
+                    lib.DoNothing();
+                }
                 inRender_detailLayer = enterRender_detailLayer_async;
                 setInRenderState();
             }
         }
 
-        abstract protected void setInRenderState();
+        abstract public void setInRenderState();
 
         //virtual public void ExitBattleGroup()
         //{
@@ -140,8 +210,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
         virtual public void tagSprites(out SpriteName back, out SpriteName art)
-        { 
-            throw new NotImplementedException();
+        {
+            back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);
+            art = Tag.TagArt();//Data.TagLib.ArtSprite(tagArt);
         }
         public bool tagToHud(RichBoxContent content)
         {
@@ -166,16 +237,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool LocalMember
         {
-            get { return GetPlayer().IsLocal; }
+            get { return pfaction.GetPlayer().IsLocal; }
         }
 
         //abstract public Faction Faction();
 
-        virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert)
+        virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
-            this.factionIndex = newFaction.myIndex;
+            this.pfaction = newFaction.pfaction;
             
-            OnNewOwner(newFaction, convert);
+            OnNewOwner(newFaction, convert, convertReason);
+
+            IsNetHosted = newFaction.IsNetHosted();
         }
 
         //override public Faction GetFaction()
@@ -183,7 +256,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    return faction;
         //}
 
-        abstract public void OnNewOwner(Faction newFaction, bool convert);
+        abstract public void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason);
 
         public override AbsMapObject RelatedMapObject()
         {
@@ -219,7 +292,8 @@ namespace VikingEngine.DSSWars.GameObject
             throw new NotImplementedException();
         }
 
-        
+        abstract public bool IsCity();
+        abstract public bool IsArmy();
     }
 
     

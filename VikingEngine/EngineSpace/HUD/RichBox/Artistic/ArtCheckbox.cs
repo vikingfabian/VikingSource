@@ -12,8 +12,8 @@ namespace VikingEngine.HUD.RichBox.Artistic
         RbImage checkImage = null;
         SpriteName checkOn, checkOff;
         public object propertyTag = null;
-        public ArtCheckbox(List<AbsRichBoxMember> content, BoolGetSet_Tag property, AbsRbAction enter=null)
-            :base(RbButtonStyle.CheckBox, content, null, enter)
+        public ArtCheckbox(List<AbsRichBoxMember> buttonContent, BoolGetSet_Tag property, AbsRbAction enter=null)
+            :base(RbButtonStyle.CheckBox, buttonContent, null, enter)
         {
             this.property = property;
             this.enabled = true;

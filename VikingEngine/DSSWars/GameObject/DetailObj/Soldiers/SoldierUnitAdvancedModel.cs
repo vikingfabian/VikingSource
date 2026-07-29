@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         virtual public void onNewModel(LootFest.VoxelModelName name,
-            Graphics.VoxelModel master, AbsDetailUnit unit)
+            Graphics.VoxelModel master, AbsSoldierUnit unit)
         {
             DSSWars.Faction.SetNewMaster(name, unit.soldierData.modelName, model, master);
         }
@@ -27,6 +27,11 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void update(AbsSoldierUnit soldier)
         {
         
+        }
+
+        virtual public void SetPosition(Vector3 position)
+        { 
+            model.position = position;
         }
 
         virtual public void RotateVector(Vector3 forward, ref Vector3 pos)
@@ -57,16 +62,19 @@ namespace VikingEngine.DSSWars.GameObject
         public Circle selectionArea;
         override public void update(AbsSoldierUnit soldier)
         {
-            model.position = soldier.position;
-
-            if (shadowPlane != null)
+            if (model != null)
             {
-                shadowPlane.Position = model.position + shadowOffset;
-                shadowPlane.Rotation = model.Rotation;
-            }
+                model.position = soldier.position;
 
-            selectionArea.Center = soldier.posXZ();//bound.Center;
-            selectionArea.Center.Y -= 0.5f;
+                if (shadowPlane != null)
+                {
+                    shadowPlane.Position = model.position + shadowOffset;
+                    shadowPlane.Rotation = model.Rotation;
+                }
+
+                selectionArea.Center = soldier.posXZ();//bound.Center;
+                selectionArea.Center.Y -= 0.5f;
+            }
         }
 
         public AbsDetailUnitAdvancedModel()
@@ -76,24 +84,30 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.soldierData.factionColoredModel)
             {
-                var faction = soldier.GetFaction_NoChecks();
+                if (soldier.pfaction.TryGetFactionAndPlayer(out var faction, out var player))
+                {
 
-                if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
-                {
-                    model = faction.AutoLoadModelInstance_character(
-                        soldier.soldierData.modelData, soldier.soldierData.modelScale * faction.player.profile.character.soldierScale);
-                }
-                else
-                {
-                    model = faction.AutoLoadModelInstance_batched(
-                        soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
+                    if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
+                    {
+                        model = faction.AutoLoadModelInstance_character(
+                            soldier.soldierData.modelData, soldier.soldierData.modelScale * player.profile.character.soldierScale);
+                    }
+                    else
+                    {
+                        model = faction.AutoLoadModelInstance_batched(
+                            soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
+                    }
                 }
             }
             else
             {
                 model = DssRef.models.ModelInstance_drawbatch(soldier.soldierData.modelName, soldier.soldierData.modelScale);
             }
-            model.position = soldier.position;
+
+            if (model != null)
+            {
+                model.position = soldier.position;
+            }
 
             createShadow(soldier);
 
@@ -169,6 +183,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual protected void updateAnimation(AbsSoldierUnit soldier)
         {
+            if (model == null)
+                return;
+
             if (soldier.state.walking)
             {
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);

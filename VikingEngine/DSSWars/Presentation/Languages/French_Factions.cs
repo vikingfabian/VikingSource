@@ -13,6 +13,10 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// The faction names are fantasy names designed to sound historic, they don't have to be directly translated as long as they keep some of their essense
         /// </summary>
+
+        public override string FactionName_Ellium => "Ellium";
+        public override string FactionName_GrakPushdug => "Grak pushdug";
+        public override string FactionName_Draugost => "Draugost";
         public override string FactionName_Starshield => "Bouclier d'Étoiles";
         public override string FactionName_Bluepeak => "Pic Bleu";
         public override string FactionName_Hoft => "Sabo";

@@ -1,91 +1,20 @@
 "controller_mappings"
 {
 	"version"		"3"
-	"revision"		"165"
-	"title"		"xbox3"
+	"revision"		"169"
+	"title"		"xbox v5"
 	"description"		"Official controller layout for xbox one controller"
 	"creator"		"76561198046251956"
 	"progenitor"		""
-	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-beta_test\\controller_xboxone.vdf"
+	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-next_patch\\controller_xboxone.vdf"
 	"export_type"		"personal_local"
 	"controller_type"		"controller_xboxone"
 	"controller_caps"		"1590271"
 	"major_revision"		"0"
 	"minor_revision"		"0"
-	"Timestamp"		"1771505021"
+	"Timestamp"		"1783025841"
 	"actions"
 	{
-		"InGameControls"
-		{
-			"title"		"#Set_Ingame"
-			"legacy_set"		"0"
-			"StickPadGyro"
-			{
-				"PanCamera"
-				{
-					"title"		"#Action_Pan"
-					"input_mode"		"joystick_move"
-				}
-				"CameraStick"
-				{
-					"title"		"#Action_CameraStick"
-					"input_mode"		"joystick_move"
-				}
-				"CameraTilt"
-				{
-					"title"		"#Action_CameraTilt"
-					"input_mode"		"joystick_move"
-				}
-				"MoveCursor"
-				{
-					"title"		"#Action_Cursor"
-					"input_mode"		"absolute_mouse"
-				}
-			}
-			"Button"
-			{
-				"SELECT"		"#Action_select"
-				"order"		"#Action_order"
-				"quick_select"		"#Action_quick_select"
-				"cancel"		"#Action_cancel"
-				"stop_start"		"#Action_stop_start"
-				"open_menu"		"#Action_menu"
-				"toggle_hud_detail"		"#Action_toggle_hud"
-				"toggle_minimap"		"#Action_toggle_map"
-				"tab_left"		"#Action_tab_l"
-				"tab_right"		"#Action_tab_r"
-				"zoomInKey"		"#Action_zoomInKey"
-				"zoomOutKey"		"#Action_zoomOutKey"
-				"build"		"#Action_build"
-				"copy"		"#Action_copy"
-				"paste"		"#Action_paste"
-				"gamespeed"		"#Action_gamespeed"
-				"pause"		"#Action_pause"
-				"next_city"		"#Action_next_city"
-				"next_army"		"#Action_next_army"
-				"next_war"		"#Action_next_war"
-				"controller_focus"		"#Action_controller_focus"
-				"controller_faction"		"#Action_controller_faction"
-				"controller_message"		"#Action_controller_message"
-			}
-		}
-		"MenuControls"
-		{
-			"title"		"#Set_Menu"
-			"legacy_set"		"0"
-			"StickPadGyro"
-			{
-				"Scroll"
-				{
-					"title"		"#Action_ScrollMenu"
-					"input_mode"		"joystick_move"
-				}
-			}
-			"Button"
-			{
-				"close_menu"		"#Action_ReturnToGame"
-			}
-		}
 		"EditorControls"
 		{
 			"title"		"#Set_Editor"
@@ -123,30 +52,89 @@
 				"editor_ToggleCameraMode"		"#Action_ToggleCameraMode"
 			}
 		}
+		"InGameControls"
+		{
+			"title"		"#Set_Ingame"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"PanCamera"
+				{
+					"title"		"#Action_Pan"
+					"input_mode"		"joystick_move"
+				}
+				"CameraStick"
+				{
+					"title"		"#Action_CameraStick"
+					"input_mode"		"joystick_move"
+				}
+				"CameraTilt"
+				{
+					"title"		"#Action_CameraTilt"
+					"input_mode"		"joystick_move"
+				}
+				"MoveCursor"
+				{
+					"title"		"#Action_Cursor"
+					"input_mode"		"absolute_mouse"
+				}
+				"GameScroll"
+				{
+					"title"		"#Action_ScrollMenu"
+					"input_mode"		"absolute_mouse"
+				}
+			}
+			"Button"
+			{
+				"SELECT"		"#Action_select"
+				"order"		"#Action_order"
+				"quick_select"		"#Action_quick_select"
+				"cancel"		"#Action_cancel"
+				"stop_start"		"#Action_stop_start"
+				"open_menu"		"#Action_menu"
+				"toggle_hud_detail"		"#Action_toggle_hud"
+				"toggle_minimap"		"#Action_toggle_map"
+				"tab_left"		"#Action_tab_l"
+				"tab_right"		"#Action_tab_r"
+				"zoomInKey"		"#Action_zoomInKey"
+				"zoomOutKey"		"#Action_zoomOutKey"
+				"build"		"#Action_build"
+				"copy"		"#Action_copy"
+				"paste"		"#Action_paste"
+				"gamespeed"		"#Action_gamespeed"
+				"pause"		"#Action_pause"
+				"PinAndPing"		"#Action_PinAndPing"
+				"TextChat"		"#Action_TextChat"
+				"VoiceChat"		"#Action_VoiceChat"
+				"next_city"		"#Action_next_city"
+				"next_army"		"#Action_next_army"
+				"next_pin"		"#Action_next_pin"
+				"next_war"		"#Action_next_war"
+				"controller_focus"		"#Action_controller_focus"
+				"controller_faction"		"#Action_controller_faction"
+				"controller_message"		"#Action_controller_message"
+			}
+		}
+		"MenuControls"
+		{
+			"title"		"#Set_Menu"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"Scroll"
+				{
+					"title"		"#Action_ScrollMenu"
+					"input_mode"		"joystick_move"
+				}
+			}
+			"Button"
+			{
+				"close_menu"		"#Action_ReturnToGame"
+			}
+		}
 	}
 	"action_layers"
 	{
-		"InGameAlt1"
-		{
-			"title"		"#Layer_InGame_Alt1"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
-		"InGameAlt2"
-		{
-			"title"		"#Layer_InGame_Alt2"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
-		"InGameAlt1And2"
-		{
-			"title"		"#Layer_InGame_Alt1And2"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"InGameControls"
-		}
 		"editor_selection"
 		{
 			"title"		"#Layer_Editor_Selection"
@@ -160,6 +148,27 @@
 				"editor_selection_rotateCCW"		"#Action_rotateCCW"
 				"editor_selection_rotateCW"		"#Action_rotateCW"
 			}
+		}
+		"InGameAlt1"
+		{
+			"title"		"#Layer_InGame_Alt1"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
+		}
+		"InGameAlt1And2"
+		{
+			"title"		"#Layer_InGame_Alt1And2"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
+		}
+		"InGameAlt2"
+		{
+			"title"		"#Layer_InGame_Alt2"
+			"legacy_set"		"0"
+			"set_layer"		"1"
+			"parent_set_name"		"InGameControls"
 		}
 	}
 	"localization"
@@ -215,6 +224,10 @@
 			"Action_rotateCCW"		"Rotate CCW"
 			"Action_rotateCW"		"Rotate CW"
 			"Action_ToggleCameraMode"		"Toggle camera mode"
+			"Action_PinAndPing"		"Pin"
+			"Action_TextChat"		"Text Chat"
+			"Action_VoiceChat"		"Voice Chat"
+			"Action_next_pin"		"Next Pin"
 		}
 		"french"
 		{
@@ -260,6 +273,10 @@
 			"Action_mirrorY"		"Miroir Y"
 			"Action_undo"		"Annuler l'action"
 			"Action_YmovementToggle"		"Activer/Désactiver l'axe Y"
+			"Action_PinAndPing"		"Marqueur"
+			"Action_TextChat"		"Chat textuel"
+			"Action_VoiceChat"		"Chat vocal"
+			"Action_next_pin"		"Marqueur suivant"
 		}
 		"schinese"
 		{
@@ -305,6 +322,10 @@
 			"Action_mirrorY"		"Y轴镜像"
 			"Action_undo"		"撤销"
 			"Action_YmovementToggle"		"切换Y轴"
+			"Action_PinAndPing"		"标记"
+			"Action_TextChat"		"文本聊天"
+			"Action_VoiceChat"		"语音聊天"
+			"Action_next_pin"		"下一个标记"
 		}
 		"japanese"
 		{
@@ -350,6 +371,10 @@
 			"Action_mirrorY"		"Y軸反転"
 			"Action_undo"		"元に戻す"
 			"Action_YmovementToggle"		"Y軸切り替え"
+			"Action_PinAndPing"		"ピン"
+			"Action_TextChat"		"テキストチャット"
+			"Action_VoiceChat"		"ボイスチャット"
+			"Action_next_pin"		"次のピン"
 		}
 		"german"
 		{
@@ -395,6 +420,10 @@
 			"Action_mirrorY"		"Y spiegeln"
 			"Action_undo"		"Rückgängig"
 			"Action_YmovementToggle"		"Y-Achse umschalten"
+			"Action_PinAndPing"		"Pin"
+			"Action_TextChat"		"Textchat"
+			"Action_VoiceChat"		"Sprachchat"
+			"Action_next_pin"		"Nächster Pin"
 		}
 		"spanish"
 		{
@@ -440,6 +469,10 @@
 			"Action_mirrorY"		"Reflejar Y"
 			"Action_undo"		"Deshacer"
 			"Action_YmovementToggle"		"Alternar eje Y"
+			"Action_PinAndPing"		"Pin"
+			"Action_TextChat"		"Chat de texto"
+			"Action_VoiceChat"		"Chat de voz"
+			"Action_next_pin"		"Siguiente pin"
 		}
 		"thai"
 		{
@@ -485,6 +518,10 @@
 			"Action_mirrorY"		"กลับด้านแกน Y"
 			"Action_undo"		"เลิกทำ"
 			"Action_YmovementToggle"		"เปิด/ปิด แกน Y"
+			"Action_PinAndPing"		"ปักหมุด"
+			"Action_TextChat"		"แชทข้อความ"
+			"Action_VoiceChat"		"แชทด้วยเสียง"
+			"Action_next_pin"		"ปักหมุดถัดไป"
 		}
 		"russian"
 		{
@@ -530,6 +567,10 @@
 			"Action_mirrorY"		"Отразить по Y"
 			"Action_undo"		"Отменить"
 			"Action_YmovementToggle"		"Ось Y (вкл/выкл)"
+			"Action_PinAndPing"		"Метка"
+			"Action_TextChat"		"Текстовый чат"
+			"Action_VoiceChat"		"Голосовой чат"
+			"Action_next_pin"		"Следующая метка"
 		}
 		"brazilian"
 		{
@@ -575,6 +616,10 @@
 			"Action_mirrorY"		"Espelhar Y"
 			"Action_undo"		"Desfazer"
 			"Action_YmovementToggle"		"Alternar Eixo Y"
+			"Action_PinAndPing"		"Marcador"
+			"Action_TextChat"		"Chat de texto"
+			"Action_VoiceChat"		"Chat de voz"
+			"Action_next_pin"		"Próximo marcador"
 		}
 		"turkish"
 		{
@@ -620,6 +665,10 @@
 			"Action_mirrorY"		"Y Yansıtma"
 			"Action_undo"		"Geri Al"
 			"Action_YmovementToggle"		"Y Ekseni Aç/Kapat"
+			"Action_PinAndPing"		"İşaret"
+			"Action_TextChat"		"Metin Sohbeti"
+			"Action_VoiceChat"		"Sesli Sohbet"
+			"Action_next_pin"		"Sonraki İşaret"
 		}
 		"italian"
 		{
@@ -665,6 +714,10 @@
 			"Action_mirrorY"		"Specchia Y"
 			"Action_undo"		"Annulla azione"
 			"Action_YmovementToggle"		"Attiva/Disattiva asse Y"
+			"Action_PinAndPing"		"Segnalino"
+			"Action_TextChat"		"Chat di testo"
+			"Action_VoiceChat"		"Chat vocale"
+			"Action_next_pin"		"Segnalino successivo"
 		}
 		"polish"
 		{
@@ -710,6 +763,10 @@
 			"Action_mirrorY"		"Odbicie lustrzane Y"
 			"Action_undo"		"Cofnij"
 			"Action_YmovementToggle"		"Przełącz oś Y"
+			"Action_PinAndPing"		"Znacznik"
+			"Action_TextChat"		"Czat tekstowy"
+			"Action_VoiceChat"		"Czat głosowy"
+			"Action_next_pin"		"Następny znacznik"
 		}
 	}
 	"group"
@@ -2147,6 +2204,54 @@
 		"description"		""
 		"inputs"
 		{
+			"button_a"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls PinAndPing, Pin, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_x"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls VoiceChat, Voice Chat, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls TextChat, Text Chat, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2330,6 +2435,22 @@
 						"bindings"
 						{
 							"binding"		"game_action InGameControls next_war, Next War, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls next_pin, Next Pin, , "
 						}
 					}
 				}

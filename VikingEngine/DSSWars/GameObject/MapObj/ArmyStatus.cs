@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -10,7 +11,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public int[] typeCount = new int[(int)UnitFilterType.NUM];
 
-        public Dictionary<UnitFilterType, int> getTypeCounts(Faction faction)
+        public Dictionary<UnitFilterType, int> getTypeCounts(PFaction faction)
         {
             Dictionary<UnitFilterType, int> result = new Dictionary<UnitFilterType, int>();
 
@@ -25,7 +26,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (faction != null && faction.player.IsLocalPlayer())
+                if (faction.TryGetPlayer(out var player) && player.IsLocalPlayer())
                 {
                     if (result.ContainsKey(UnitFilterType.MithrilKnight) && result.ContainsKey(UnitFilterType.MithrilBow))
                     {
@@ -37,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
             return result;
         }
 
-        public List<KeyValuePair<UnitFilterType, int>> getTypeCounts_Sorted(Faction faction)
+        public List<KeyValuePair<UnitFilterType, int>> getTypeCounts_Sorted(PFaction faction)
         {
             var counts = getTypeCounts(faction);
             var sortedList = counts.ToList();

@@ -112,10 +112,10 @@ namespace VikingEngine
 
         public static string LargeNumber(int number)
         {
-            //if (number < short.MinValue)
-            //{
-            //    return Error;
-            //}
+            if (number == int.MinValue)
+            {
+                return Error;
+            }
 
             if (Math.Abs(number) < 1000)
             {
@@ -280,6 +280,10 @@ namespace VikingEngine
         public static string PercentTextWithSymbol(float percent)
         {
             return Convert.ToInt32(percent * 100).ToString() + "%";
+        }
+        public static string PercentTextWithSymbol(int percent)
+        {
+            return percent.ToString() + "%";
         }
         public static string PercentText(float percent)
         {

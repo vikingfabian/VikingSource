@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.Network;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
 using VikingEngine.Voxels;
@@ -34,7 +36,7 @@ namespace VikingEngine.DSSWars
         Texture2D bgTex;
 
         bool bSpriteSheetTexture = false;
-       
+        bool joinedSession = false;
         public IntroState(bool isReset)
             : base(isReset)
         {
@@ -106,7 +108,7 @@ namespace VikingEngine.DSSWars
             part++;
             UserGeneratedContent.UGClib.GameContentInit();
             part++;
-            bgTex = LobbyState.LoadBg();
+            bgTex = MainMenuState.LoadBg();
             part++;
         }
 
@@ -147,7 +149,7 @@ namespace VikingEngine.DSSWars
 
         protected override void asyncLoading_OnRestart(ref int part)
         {
-            bgTex = LobbyState.LoadBg();
+            bgTex = MainMenuState.LoadBg();
             part++;
         }
 
@@ -156,7 +158,7 @@ namespace VikingEngine.DSSWars
 
             try
             {
-                introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
+                introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.5f);
             }
             catch (Exception ex)
             {                
@@ -223,10 +225,38 @@ namespace VikingEngine.DSSWars
                 
 #endif
 
-                new LobbyState(bgTex);
+                //if (Ref.netSession.InMultiplayerSession)
+                //{
+                //    lib.DoNothing();
+                //}
+
+                string[] args = System.Environment.GetCommandLineArgs();
+                foreach (string arg in args)
+                {
+                    if (arg.ToLower() == "+connect_lobby")
+                    { 
+                        joinedSession = true;
+                    }
+                }
+
+                if (joinedSession)
+                {
+                    new ConnectionState();
+                }
+                else
+                {
+                    new MainMenuState(bgTex);
+                }
             }
         }
-
+        public override void NetworkStatusMessage(NetworkStatusMessage message)
+        {
+            base.NetworkStatusMessage(message);
+            if (message == Network.NetworkStatusMessage.Joining_session)
+            {
+                joinedSession = true;
+            }
+        }
 
         protected override void createDrawManager()
         {

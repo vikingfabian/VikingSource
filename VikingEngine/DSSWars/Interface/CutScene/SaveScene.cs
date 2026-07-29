@@ -168,6 +168,10 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                 {
                     DssRef.state.beginExit();
                 }
+                else
+                {
+                    DssRef.state.onSpeedChange();
+                }
             }
         }
     }
@@ -187,12 +191,16 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         public LoadScene(System.IO.BinaryReader readWorld)
             : base()
         {
-            var meta = new SaveStateMeta();
-            saveGamestate = new SaveGamestate(meta);
-            saveGamestate.readNet(readWorld);
+            //var meta = new SaveStateMeta();
+            //saveGamestate = new SaveGamestate(meta);
 
-            saveGamestate.complete = true;
+            //Ref.netsett.remoteHostSettings.read(readWorld);
 
+            //saveGamestate.readNet(readWorld);
+            //saveGamestate.complete = true;
+
+            //DssRef.storage.ruleset_instance.read(readWorld, false);
+            saveGamestate = PlayState.NetReadSendWorld(readWorld);
         }
 
         protected override string SaveString => DssRef.lang.Progressbar_LoadProgress;
@@ -212,11 +220,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             }
             else
             {
-                if (InputLib.AnyKeyDownEvent())
-                {
+                //if (InputLib.AnyKeyDownEvent() || Ref.netSession.IsClient)
+                //{
                     Close();
-                    
-                }
+                    //DssRef.state.menuSystem.pauseMenu();
+                //}
             }
         }
     }

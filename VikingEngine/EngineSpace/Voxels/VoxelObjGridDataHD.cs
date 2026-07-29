@@ -1,193 +1,248 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using VikingEngine.DSSWars;
 using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.Voxels
 {
-    class VoxelObjGridDataHD
-    {
-        public int Rotation;
-        public IntVector3 Size
+    
+        class VoxelObjGridDataHD : Grid3D_L<ushort>
         {
-            get
+            public int Rotation;
+            public List<ushort> special = null;
+
+            public VoxelObjGridDataHD() : base()
+            { }
+
+            public VoxelObjGridDataHD(IntVector3 size) : base(size)
+            { }
+
+            // Helper constructor for Clone()
+            public VoxelObjGridDataHD(ushort[] array, IntVector3 size) : base(array, size)
+            { }
+
+            public VoxelObjGridDataHD(IntVector3 size, List<VoxelHD> voxels) : base(size)
             {
-                if (MaterialGrid == null)
-                    return IntVector3.Zero;
-                return new IntVector3(MaterialGrid.GetLength(0), MaterialGrid.GetLength(1), MaterialGrid.GetLength(2));
+                SafeAddVoxels(voxels);
             }
-        }
-        public IntVector3 Limits
-        {
-            get
+
+            public VoxelObjGridDataHD(IntVector3 size, List<VoxelHD> voxels, IntVector3 offset) : base(size)
             {
-                return Size - 1;
-            }
-        }
-
-        public ushort[, ,] MaterialGrid;
-        public List<ushort> special = null;
-
-        //public VoxelObjGridDataHD(IntVector3 size)
-        //{
-        //    newGrid(size);
-        //}
-        
-        public VoxelObjGridDataHD()
-        { }
-        public VoxelObjGridDataHD(IntVector3 size)
-        {
-            MaterialGrid = new ushort[size.X, size.Y, size.Z];
-        }
-
-        public VoxelObjGridDataHD(IntVector3 size, List<VoxelHD> voxels)
-        {
-            newGrid(size);
-            SafeAddVoxels(voxels);
-        }
-
-        public VoxelObjGridDataHD(IntVector3 size, List<VoxelHD> voxels, IntVector3 offset)
-        {
-            newGrid(size);
-            VoxelHD v;
-
-            for (int i = 0; i < voxels.Count; ++i)
-            {
-                v = voxels[i];
-
-                IntVector3 vpos = v.Position + offset;
-                if (vpos.X >= 0 && vpos.X < size.X &&
-                    vpos.Y >= 0 && vpos.Y < size.Y &&
-                    vpos.Z >= 0 && vpos.Z < size.Z)
+                VoxelHD v;
+                for (int i = 0; i < voxels.Count; ++i)
                 {
-                    MaterialGrid[vpos.X, vpos.Y, vpos.Z] = v.Material;
-                }
-            }
-        }
+                    v = voxels[i];
 
-        public VoxelObjGridDataHD(ushort[,,] materialGrid)
-        {
-            MaterialGrid = materialGrid;
-        }
-
-        public void ReplaceMaterial(ushort from1, ushort to1, IntervalIntV3 inVolume)
-        {
-            if (from1 == to1) return;
-
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 sz = Size;
-
-            for (pos.Y = inVolume.Min.Y; pos.Y <= inVolume.Max.Y; ++pos.Y)
-            {
-                for (pos.Z = inVolume.Min.Z; pos.Z <= inVolume.Max.Z; ++pos.Z)
-                {
-                    for (pos.X = inVolume.Min.X; pos.X <= inVolume.Max.X; ++pos.X)
+                    IntVector3 vpos = v.Position + offset;
+                    if (InBounds(vpos))
                     {
-                        if (MaterialGrid[pos.X, pos.Y, pos.Z] == from1)
-                            MaterialGrid[pos.X, pos.Y, pos.Z] = to1;
+                        Set(vpos, v.Material);
                     }
                 }
             }
-        }
 
-        public void SetMaterialProperty(MaterialProperty toMaterial)
-        {
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 sz = Size;
-
-            for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+            public VoxelObjGridDataHD(ushort[,,] materialGrid)
+                : base(new IntVector3(materialGrid.GetLength(0), materialGrid.GetLength(1), materialGrid.GetLength(2)))
             {
-                for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                IntVector3 sz = Size;
+                for (int z = 0; z < sz.Z; ++z)
                 {
-                    for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                    for (int y = 0; y < sz.Y; ++y)
                     {
-                        ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
-                        if (value != BlockHD.EmptyBlock)
+                        for (int x = 0; x < sz.X; ++x)
                         {
-                            MaterialGrid[pos.X, pos.Y, pos.Z] = BlockHD.SetMaterialProperty(value, toMaterial);
+                            Set(x, y, z, materialGrid[x, y, z]);
                         }
                     }
                 }
             }
-        }
 
-        public void ReplaceMaterial(Dictionary<ushort, ushort> findReplace, IntervalIntV3 inVolume)
-        {
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 sz = Size;
-
-            for (pos.Y = inVolume.Min.Y; pos.Y <= inVolume.Max.Y; ++pos.Y)
+            public void ReplaceMaterial(ushort from1, ushort to1, IntervalIntV3 inVolume)
             {
-                for (pos.Z = inVolume.Min.Z; pos.Z <= inVolume.Max.Z; ++pos.Z)
+                if (from1 == to1) return;
+
+                IntVector3 pos = IntVector3.Zero;
+
+                for (pos.Y = inVolume.Min.Y; pos.Y <= inVolume.Max.Y; ++pos.Y)
                 {
-                    for (pos.X = inVolume.Min.X; pos.X <= inVolume.Max.X; ++pos.X)
+                    for (pos.Z = inVolume.Min.Z; pos.Z <= inVolume.Max.Z; ++pos.Z)
                     {
-                        if (findReplace.TryGetValue(MaterialGrid[pos.X, pos.Y, pos.Z], out ushort toColor))
-                        { 
-                             MaterialGrid[pos.X, pos.Y, pos.Z] = toColor;
+                        for (pos.X = inVolume.Min.X; pos.X <= inVolume.Max.X; ++pos.X)
+                        {
+                            if (Get(pos) == from1)
+                                Set(pos, to1);
                         }
                     }
                 }
             }
-        }
-        
-        public void BucketFill(IntVector3 pos, ushort find, ushort replace, bool continious)
-        {
-            if (continious)
-            {
-                ReplaceMaterial(find, replace);
-            }
-            else
-            {
-                if (!InBounds(pos)) return;
-                if (MaterialGrid[pos.X, pos.Y, pos.Z] != find || find == replace) return;
 
-                Queue<IntVector3> queue = new Queue<IntVector3>();
-                queue.Enqueue(pos);
+            public void SetMaterialProperty(MaterialProperty toMaterial)
+            {
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 sz = Size;
 
-                while (queue.Count > 0)
+                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
                 {
-                    IntVector3 current = queue.Dequeue();
-
-                    if (!InBounds(current)) continue;
-                    if (MaterialGrid[current.X, current.Y, current.Z] != find) continue;
-
-                    MaterialGrid[current.X, current.Y, current.Z] = replace;
-
-                    for (CubeFace face = 0; face < CubeFace.NUM; ++face)
+                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
                     {
-                        IntVector3 adjacent = new IntVector3(face) + current;
-                        queue.Enqueue(adjacent);
+                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                        {
+                            ushort value = Get(pos);
+                            if (value != BlockHD.EmptyBlock)
+                            {
+                                Set(pos, BlockHD.SetMaterialProperty(value, toMaterial));
+                            }
+                        }
                     }
                 }
             }
-        }
 
-
-        public void ReplaceMaterial(ushort from1, ushort to1)
-        {
-            
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 sz = Size;
-
-            for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+            public void ReplaceMaterial(Dictionary<ushort, ushort> findReplace, IntervalIntV3 inVolume)
             {
-                for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                IntVector3 pos = IntVector3.Zero;
+
+                for (pos.Y = inVolume.Min.Y; pos.Y <= inVolume.Max.Y; ++pos.Y)
                 {
-                    for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                    for (pos.Z = inVolume.Min.Z; pos.Z <= inVolume.Max.Z; ++pos.Z)
                     {
-                        if (MaterialGrid[pos.X, pos.Y, pos.Z] == from1)
-                            MaterialGrid[pos.X, pos.Y, pos.Z] = to1;
+                        for (pos.X = inVolume.Min.X; pos.X <= inVolume.Max.X; ++pos.X)
+                        {
+                            if (findReplace.TryGetValue(Get(pos), out ushort toColor))
+                            {
+                                Set(pos, toColor);
+                            }
+                        }
                     }
                 }
             }
-        }
-        public void ReplaceMaterial(List<BlockHDPair> findReplace)
-        {
-            if (findReplace != null && findReplace.Count > 0)
+
+            public void BucketFill(IntVector3 pos, ushort find, ushort replace, bool continious)
+            {
+                if (continious)
+                {
+                    ReplaceMaterial(find, replace);
+                }
+                else
+                {
+                    if (!InBounds(pos)) return;
+                    if (Get(pos) != find || find == replace) return;
+
+                    Queue<IntVector3> queue = new Queue<IntVector3>();
+                    queue.Enqueue(pos);
+
+                    while (queue.Count > 0)
+                    {
+                        IntVector3 current = queue.Dequeue();
+
+                        if (!InBounds(current)) continue;
+                        if (Get(current) != find) continue;
+
+                        Set(current, replace);
+
+                        for (CubeFace face = 0; face < CubeFace.NUM; ++face)
+                        {
+                            IntVector3 adjacent = new IntVector3(face) + current;
+                            queue.Enqueue(adjacent);
+                        }
+                    }
+                }
+            }
+
+
+            public void ReplaceMaterial(ushort from1, ushort to1)
+            {
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 sz = Size;
+
+                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                {
+                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                    {
+                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                        {
+                            if (Get(pos) == from1)
+                                Set(pos, to1);
+                        }
+                    }
+                }
+            }
+
+            public void ReplaceMaterial(List<BlockHDPair> findReplace)
+            {
+                if (findReplace != null && findReplace.Count > 0)
+                {
+                    IntVector3 pos = IntVector3.Zero;
+                    IntVector3 sz = Size;
+
+                    for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                    {
+                        for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                        {
+                            for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                            {
+                                foreach (BlockHDPair fromTo in findReplace)
+                                {
+                                    if (Get(pos) == fromTo.block1)
+                                    {
+                                        Set(pos, fromTo.block2);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            public void ReplaceMaterial(List<TwoAppearanceMaterials> findReplace)
+            {
+                if (findReplace.Count > 0)
+                {
+                    IntVector3 pos = IntVector3.Zero;
+                    IntVector3 sz = Size;
+                    ushort replace;
+
+                    for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                    {
+                        for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                        {
+                            for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                            {
+                                foreach (TwoAppearanceMaterials fromTo in findReplace)
+                                {
+                                    if (fromTo.mat1.replaceMaterial(Get(pos), fromTo.mat2, out replace))
+                                    {
+                                        Set(pos, replace);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            public void ReplaceMaterial(Dictionary<ushort, ushort> findReplace)
+            {
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 sz = Size;
+
+                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                {
+                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                    {
+                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                        {
+                            if (findReplace.TryGetValue(Get(pos), out ushort toColor))
+                            {
+                                Set(pos, toColor);
+                            }
+                        }
+                    }
+                }
+            }
+
+            public void Combine(List<BlockHDPair> findReplace, List<VoxelObjGridDataHD> addItemsData)
             {
                 IntVector3 pos = IntVector3.Zero;
                 IntVector3 sz = Size;
@@ -200,20 +255,29 @@ namespace VikingEngine.Voxels
                         {
                             foreach (BlockHDPair fromTo in findReplace)
                             {
-                                if (MaterialGrid[pos.X, pos.Y, pos.Z] == fromTo.block1)
+                                if (Get(pos) == fromTo.block1)
                                 {
-                                    MaterialGrid[pos.X, pos.Y, pos.Z] = fromTo.block2;
+                                    Set(pos, fromTo.block2);
                                     break;
+                                }
+                            }
+
+                            if (addItemsData != null)
+                            {
+                                foreach (VoxelObjGridDataHD grid in addItemsData)
+                                {
+                                    if (grid.InBounds(pos) && grid.Get(pos) != BlockHD.EmptyBlock)
+                                    {
+                                        Set(pos, grid.Get(pos));
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-        public void ReplaceMaterial(List<TwoAppearanceMaterials> findReplace)
-        {
-            if (findReplace.Count > 0)
+
+            public void Combine(List<TwoAppearanceMaterials> findReplace, List<VoxelObjGridDataHD> addItemsData)
             {
                 IntVector3 pos = IntVector3.Zero;
                 IntVector3 sz = Size;
@@ -227,407 +291,108 @@ namespace VikingEngine.Voxels
                         {
                             foreach (TwoAppearanceMaterials fromTo in findReplace)
                             {
-                                if (fromTo.mat1.replaceMaterial(MaterialGrid[pos.X, pos.Y, pos.Z], fromTo.mat2, out replace))
+                                if (fromTo.mat1.replaceMaterial(Get(pos), fromTo.mat2, out replace))
                                 {
-                                    MaterialGrid[pos.X, pos.Y, pos.Z] = replace;
+                                    Set(pos, replace);
                                     break;
                                 }
                             }
-                        }
-                    }
-                }
-            }
-        }
-        public void ReplaceMaterial(Dictionary<ushort, ushort> findReplace)
-        {
-            
-                IntVector3 pos = IntVector3.Zero;
-                IntVector3 sz = Size;
 
-                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
-                {
-                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
-                    {
-                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
-                        {
-                            if (findReplace.TryGetValue(MaterialGrid[pos.X, pos.Y, pos.Z], out ushort toColor))
+                            if (addItemsData != null)
                             {
-                                MaterialGrid[pos.X, pos.Y, pos.Z] = toColor;
-                            }
-                        }
-                    }
-                }
-            
-        }
-
-        public void Combine(List<BlockHDPair> findReplace, List<VoxelObjGridDataHD> addItemsData)
-        {
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 sz = Size;
-
-            for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
-            {
-                for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
-                {
-                    for (pos.X = 0; pos.X < sz.X; ++pos.X)
-                    {
-                        foreach (BlockHDPair fromTo in findReplace)
-                        {
-                            if (MaterialGrid[pos.X, pos.Y, pos.Z] == fromTo.block1)
-                            {
-                                MaterialGrid[pos.X, pos.Y, pos.Z] = fromTo.block2;
-                                break;
-                            }
-                        }
-
-                        if (addItemsData != null)
-                        {
-                            foreach (VoxelObjGridDataHD grid in addItemsData)
-                            {
-                                if (grid.InBounds(pos) && grid.MaterialGrid[pos.X, pos.Y, pos.Z] != BlockHD.EmptyBlock)
+                                foreach (VoxelObjGridDataHD grid in addItemsData)
                                 {
-                                    MaterialGrid[pos.X, pos.Y, pos.Z] = grid.MaterialGrid[pos.X, pos.Y, pos.Z];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public void Combine(List<TwoAppearanceMaterials> findReplace, List<VoxelObjGridDataHD> addItemsData)
-        {
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 sz = Size;
-            ushort replace;
-
-            for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
-            {
-                for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
-                {
-                    for (pos.X = 0; pos.X < sz.X; ++pos.X)
-                    {
-                        foreach (TwoAppearanceMaterials fromTo in findReplace)
-                        {
-                            if (fromTo.mat1.replaceMaterial(MaterialGrid[pos.X, pos.Y, pos.Z], fromTo.mat2, out replace))//MaterialGrid[pos.X, pos.Y, pos.Z] == fromTo.block1)
-                            {
-                                MaterialGrid[pos.X, pos.Y, pos.Z] = replace;//fromTo.block2;
-                                break;
-                            }
-                        }
-
-                        if (addItemsData != null)
-                        {
-                            foreach (VoxelObjGridDataHD grid in addItemsData)
-                            {
-                                if (grid.InBounds(pos) && grid.MaterialGrid[pos.X, pos.Y, pos.Z] != BlockHD.EmptyBlock)
-                                {
-                                    MaterialGrid[pos.X, pos.Y, pos.Z] = grid.MaterialGrid[pos.X, pos.Y, pos.Z];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public void Resize(IntVector3 newSize)
-        {
-            if (newSize != Size)
-            {
-                IntVector3 copyArea = new IntVector3
-                    (
-                    lib.SmallestValue(newSize.X, Size.X),
-                    lib.SmallestValue(newSize.Y, Size.Y),
-                    lib.SmallestValue(newSize.Z, Size.Z));
-
-                ushort[, ,] old = MaterialGrid;
-                newGrid(newSize);
-
-                IntVector3 pos = IntVector3.Zero;
-                for (pos.Y = 0; pos.Y < copyArea.Y; ++pos.Y)
-                {
-                    for (pos.Z = 0; pos.Z < copyArea.Z; ++pos.Z)
-                    {
-                        for (pos.X = 0; pos.X < copyArea.X; ++pos.X)
-                        {
-                            Set(pos, old[pos.X, pos.Y, pos.Z]);
-                        }
-                    }
-                }
-            }
-        }
-
-        void newGrid(IntVector3 size)
-        {
-            MaterialGrid = new ushort[size.X, size.Y, size.Z];
-        }
-
-        
-        public VoxelObjGridDataHD Clone()
-        {
-            ushort[, ,] cloneGrid = (ushort[, ,])MaterialGrid.Clone();
-            return new VoxelObjGridDataHD(cloneGrid);
-        }
-
-        public ushort Get(IntVector3 pos)
-        {
-           return MaterialGrid[pos.X, pos.Y, pos.Z];
-            //return 0;
-        }
-        public void Set(IntVector3 pos, ushort value)
-        {
-             MaterialGrid[pos.X, pos.Y, pos.Z] = value;
-        }
-        public void SetSafe(IntVector3 pos, ushort value)
-        {
-            IntVector3 sz = Size;
-            if (pos.X >= 0 && pos.X < sz.X &&
-                pos.Y >= 0 && pos.Y < sz.Y &&
-                pos.Z >= 0 && pos.Z < sz.Z)
-            {
-                MaterialGrid[pos.X, pos.Y, pos.Z] = value;
-            }
-        }
-        public ushort GetSafe(IntVector3 pos)
-        {
-            if (InBounds(pos))
-            { return MaterialGrid[pos.X, pos.Y, pos.Z]; }
-            else
-            { return BlockHD.EmptyBlock; }
-        }
-
-        public bool InBounds(IntVector3 pos)
-        {
-            return 0 <= pos.X && pos.X < MaterialGrid.GetLength(0) &&
-                0 <= pos.Y && pos.Y < MaterialGrid.GetLength(1) &&
-                0 <= pos.Z && pos.Z < MaterialGrid.GetLength(2);
-        }
-
-        public Vector3 BottomCenterAdj()
-        {
-            return new Vector3(
-                -(Size.X - 1) * PublicConstants.Half,
-                0,
-                -(Size.Z - 1) * PublicConstants.Half);
-        }
-        public Vector3 CenterAdj()
-        {
-            return -(Size.Vec - Vector3.One) * PublicConstants.Half;
-        }
-
-        public void AddVoxels(List<VoxelHD> voxels)
-        {
-            foreach (var v in voxels)
-            {
-                MaterialGrid[v.Position.X, v.Position.Y, v.Position.Z] = v.Material;
-            }
-        }
-
-        public void AddVoxels(List<VoxelHD> voxels, IntVector3 offset)
-        {
-            foreach (var v in voxels)
-            {
-                MaterialGrid[v.Position.X + offset.X, v.Position.Y + offset.Y, v.Position.Z + offset.Z] = v.Material;
-            }
-        }
-
-        public void SafeAddVoxels(List<VoxelHD> voxels)
-        {
-            foreach (var v in voxels)
-            {
-                SetSafe(v.Position, v.Material);
-            }
-        }
-
-        public void SafeAddVoxels(List<VoxelHD> voxels, IntVector3 offset)
-        {
-            IntVector3 sz = Size;
-            foreach (var v in voxels)
-            {
-                var pos = v.Position + offset;
-                if (pos.X >= 0 && pos.X < sz.X &&
-                    pos.Y >= 0 && pos.Y < sz.Y &&
-                    pos.Z >= 0 && pos.Z < sz.Z)
-                {
-                    MaterialGrid[pos.X, pos.Y, pos.Z] = v.Material;
-                }
-                //SetSafe(v.Position, v.Material);
-            }
-        }
-
-
-
-        public List<VoxelHD> GetVoxelArray()
-        {
-            List<VoxelHD> result = new List<VoxelHD>();
-            if (MaterialGrid != null)
-            {
-                IntVector3 pos = IntVector3.Zero;
-                IntVector3 sz = Size;
-                //int index = 0;
-                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
-                {
-                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
-                    {
-                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
-                        {
-                            ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
-                            if (value != BlockHD.EmptyBlock)
-                            {
-                                result.Add(new VoxelHD(pos, MaterialGrid[pos.X, pos.Y, pos.Z]));
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace, IntVector3 bounds)
-        {
-            List<VoxelHD> result = new List<VoxelHD>();
-            if (MaterialGrid != null)
-            {
-                IntVector3 pos = IntVector3.Zero;
-                IntVector3 sz = Size;
-
-                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
-                {
-                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
-                    {
-                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
-                        {
-                            ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
-                            if (value != BlockHD.EmptyBlock)
-                            {
-                                IntVector3 vpos = pos + offset;
-                                if (vpos.X >= 0 && vpos.X < bounds.X &&
-                                    vpos.Y >= 0 && vpos.Y < bounds.Y &&
-                                    vpos.Z >= 0 && vpos.Z < bounds.Z)
-                                {
-                                    if (findReplace.TryGetValue(value, out ushort toColor))
+                                    if (grid.InBounds(pos) && grid.Get(pos) != BlockHD.EmptyBlock)
                                     {
-                                        value = toColor;
-                                    }
-                                    result.Add(new VoxelHD(vpos, value));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace, out ushort jointResult, out IntVector3 jointPos)
-        {
-            jointResult = BlockHD.EmptyBlock;
-            jointPos = IntVector3.NegativeOne;
-
-            List<VoxelHD> result = new List<VoxelHD>();
-            if (MaterialGrid != null)
-            {
-                IntVector3 pos = IntVector3.Zero;
-                IntVector3 sz = Size;
-
-                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
-                {
-                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
-                    {
-                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
-                        {
-                            ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
-                            if (value != BlockHD.EmptyBlock)
-                            {
-                                if (findReplace.TryGetValue(value, out ushort toColor))
-                                {
-                                    result.Add(new VoxelHD(pos + offset, toColor));
-                                }
-                                else if (value == BlockHD.JointForward || value == BlockHD.JointUp)
-                                {
-                                    jointResult = value;
-                                    jointPos = pos + offset;
-                                }
-                                else
-                                {
-                                    result.Add(new VoxelHD(pos + offset, value));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace, ushort findjoint, out IntVector3 jointPos)
-        {
-            
-            jointPos = IntVector3.NegativeOne;
-
-            List<VoxelHD> result = new List<VoxelHD>();
-            if (MaterialGrid != null)
-            {
-                IntVector3 pos = IntVector3.Zero;
-                IntVector3 sz = Size;
-
-                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
-                {
-                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
-                    {
-                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
-                        {
-                            ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
-                            if (value != BlockHD.EmptyBlock)
-                            {
-                                if (findReplace.TryGetValue(value, out ushort toColor))
-                                {
-                                    result.Add(new VoxelHD(pos + offset, toColor));
-                                }
-                                else if (value == BlockHD.JointForward || value == BlockHD.JointUp)
-                                {
-                                    if (value == findjoint)
-                                    {
-                                        jointPos = pos + offset;
+                                        Set(pos, grid.Get(pos));
                                     }
                                 }
-                                else
-                                {
-                                    result.Add(new VoxelHD(pos + offset, value));
-                                }
                             }
                         }
                     }
                 }
             }
-            return result;
-        }
 
-        public List<VoxelHD> GetVoxelArray(out VoxelJoint joint)
-        {
-            joint = VoxelJoint.Empty;
-
-            List<VoxelHD> result = new List<VoxelHD>();
-            if (MaterialGrid != null)
+            public void Resize(IntVector3 newSize)
             {
-                IntVector3 pos = IntVector3.Zero;
-                IntVector3 sz = Size;
-
-                for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                if (newSize != Size)
                 {
-                    for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                    ReSize(newSize, null, null);
+                }
+            }
+
+            public new VoxelObjGridDataHD Clone()
+            {
+                return new VoxelObjGridDataHD((ushort[])array.Clone(), Size);
+            }
+
+            public void SetSafe(IntVector3 pos, ushort value)
+            {
+                TrySet(pos, value);
+            }
+
+            public Vector3 BottomCenterAdj()
+            {
+                return new Vector3(
+                    -(Size.X - 1) * PublicConstants.Half,
+                    0,
+                    -(Size.Z - 1) * PublicConstants.Half);
+            }
+
+            public Vector3 CenterAdj()
+            {
+                return -(Size.Vec - Vector3.One) * PublicConstants.Half;
+            }
+
+            public void AddVoxels(List<VoxelHD> voxels)
+            {
+                foreach (var v in voxels)
+                {
+                    Set(v.Position, v.Material);
+                }
+            }
+
+            public void AddVoxels(List<VoxelHD> voxels, IntVector3 offset)
+            {
+                foreach (var v in voxels)
+                {
+                    Set(v.Position.X + offset.X, v.Position.Y + offset.Y, v.Position.Z + offset.Z, v.Material);
+                }
+            }
+
+            public void SafeAddVoxels(List<VoxelHD> voxels)
+            {
+                foreach (var v in voxels)
+                {
+                    SetSafe(v.Position, v.Material);
+                }
+            }
+
+            public void SafeAddVoxels(List<VoxelHD> voxels, IntVector3 offset)
+            {
+                foreach (var v in voxels)
+                {
+                    var pos = v.Position + offset;
+                    SetSafe(pos, v.Material);
+                }
+            }
+
+            public List<VoxelHD> GetVoxelArray()
+            {
+                List<VoxelHD> result = new List<VoxelHD>();
+                if (array != null)
+                {
+                    IntVector3 pos = IntVector3.Zero;
+                    IntVector3 sz = Size;
+
+                    for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
                     {
-                        for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                        for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
                         {
-                            ushort value = MaterialGrid[pos.X, pos.Y, pos.Z];
-                            if (value != BlockHD.EmptyBlock)
+                            for (pos.X = 0; pos.X < sz.X; ++pos.X)
                             {
-                                if (value == BlockHD.JointForward || value == BlockHD.JointUp)
-                                {
-                                    joint = new VoxelJoint(pos, value);
-                                }
-                                else
+                                ushort value = Get(pos);
+                                if (value != BlockHD.EmptyBlock)
                                 {
                                     result.Add(new VoxelHD(pos, value));
                                 }
@@ -635,337 +400,478 @@ namespace VikingEngine.Voxels
                         }
                     }
                 }
+                return result;
             }
 
-#if DEBUG
-            //if (joint.value == BlockHD.EmptyBlock)
-            //{
-            //    lib.DoNothing();
-            //}
-#endif
-
-            return result;
-        }
-
-        public List<VoxelHD> GetVoxelArrayCentered() //only centers X and Z
-        {
-            IntVector3 limits = this.Limits;
-            IntVector3 adjustPos = new IntVector3(limits.X / PublicConstants.Twice, 0, limits.Z / PublicConstants.Twice);
-            IntVector3 voxelPos = IntVector3.Zero;
-            List<VoxelHD> result = new List<VoxelHD>();
-            IntVector3 pos = IntVector3.Zero;
-            // Unused var
-            //int index = 0;
-            for (pos.Z = 0; pos.Z < limits.Z; ++pos.Z)
+            public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace, IntVector3 bounds)
             {
-                voxelPos.Z = pos.Z + adjustPos.Z;
-                for (pos.Y = 0; pos.Y < limits.Y; ++pos.Y)
+                List<VoxelHD> result = new List<VoxelHD>();
+                if (array != null)
                 {
-                    voxelPos.Y = pos.Y;
-                    for (pos.X = 0; pos.X < limits.X; ++pos.X)
+                    IntVector3 pos = IntVector3.Zero;
+                    IntVector3 sz = Size;
+
+                    for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
                     {
-                        if (MaterialGrid[pos.X, pos.Y, pos.Z] != BlockHD.EmptyBlock)
+                        for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
                         {
-                            voxelPos.X = pos.X + adjustPos.X;
-                            result.Add(new VoxelHD(voxelPos, MaterialGrid[pos.X, pos.Y, pos.Z]));
+                            for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                            {
+                                ushort value = Get(pos);
+                                if (value != BlockHD.EmptyBlock)
+                                {
+                                    IntVector3 vpos = pos + offset;
+                                    if (vpos.X >= 0 && vpos.X < bounds.X &&
+                                        vpos.Y >= 0 && vpos.Y < bounds.Y &&
+                                        vpos.Z >= 0 && vpos.Z < bounds.Z)
+                                    {
+                                        if (findReplace.TryGetValue(value, out ushort toColor))
+                                        {
+                                            value = toColor;
+                                        }
+                                        result.Add(new VoxelHD(vpos, value));
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-            }
-            return result;
-        }
-        
-
-        byte currentValueReplace(byte material, List<byte> find, List<byte> replace)
-        {
-            for (int i = 0; i < find.Count; i++)
-            {
-                if (material == find[i])
-                    return replace[i];
-            }
-            return material;
-        }
-
-        
-        public VoxelObjGridDataHD Rotate(int rotationSteps, bool replaceOriginalData)
-        {
-            return this.Rotate(rotationSteps, new IntervalIntV3(IntVector3.Zero, this.Limits), replaceOriginalData);
-        }
-
-        public VoxelObjGridDataHD Rotate(int rotationSteps, IntVector3 limits, bool replaceOriginalData)
-        {
-            return this.Rotate(rotationSteps, new IntervalIntV3(IntVector3.Zero, limits), replaceOriginalData);
-        }
-
-        /// <param name="rotationSteps">a value between 1-3, representing 90degree steps</param>
-        /// <param name="limits"></param>
-        public VoxelObjGridDataHD Rotate(int rotationSteps, IntervalIntV3 limits, bool replaceOriginalData)
-        {
-            VoxelObjGridDataHD clone = null;
-
-            Rotation += rotationSteps;
-            switch (rotationSteps)
-            {
-                case 1:
-                    limits = new IntervalIntV3(IntVector3.Zero, new IntVector3(limits.AddZ, limits.AddY, limits.AddX));
-                    clone = SwapXZ(limits);
-                    clone = clone.FlipDir(Dimensions.X, limits, false);
-                    break;
-                case 2://180D
-                    clone = FlipDir(Dimensions.X, limits, false);
-                    clone = clone.FlipDir(Dimensions.Z, limits, false);
-                    break;
-                case 3:
-                    limits = new IntervalIntV3(IntVector3.Zero, new IntVector3(limits.AddZ, limits.AddY, limits.AddX));
-                    clone = SwapXZ(limits);
-                    clone = clone.FlipDir(Dimensions.Z, limits, false);
-                    break;
+                return result;
             }
 
-            if (replaceOriginalData)
+            public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace, out ushort jointResult, out IntVector3 jointPos)
             {
-                MaterialGrid = clone.MaterialGrid;
-            }
-            return clone;
-        }
-        VoxelObjGridDataHD SwapXZ(IntervalIntV3 limits)
-        {
-            VoxelObjGridDataHD clone = new VoxelObjGridDataHD(limits.Add + 1);//this.Clone();
-            //newGrid(limits.Add + 1);
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 invPos = IntVector3.Zero;
+                jointResult = BlockHD.EmptyBlock;
+                jointPos = IntVector3.NegativeOne;
 
-            for (pos.Z = 0; pos.Z <= limits.AddZ; ++pos.Z)
-            {
-                invPos.X = pos.Z;
-
-                for (pos.X = 0; pos.X <= limits.AddX; ++pos.X)
+                List<VoxelHD> result = new List<VoxelHD>();
+                if (array != null)
                 {
-                    invPos.Z = pos.X;
+                    IntVector3 pos = IntVector3.Zero;
+                    IntVector3 sz = Size;
 
-                    for (pos.Y = 0; pos.Y <= limits.AddY; ++pos.Y)
+                    for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
                     {
-                        invPos.Y = pos.Y;
-
-                        //Set(pos, clone.Get(invPos));
-                        clone.Set(pos, Get(invPos));
+                        for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                        {
+                            for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                            {
+                                ushort value = Get(pos);
+                                if (value != BlockHD.EmptyBlock)
+                                {
+                                    if (findReplace.TryGetValue(value, out ushort toColor))
+                                    {
+                                        result.Add(new VoxelHD(pos + offset, toColor));
+                                    }
+                                    else if (value == BlockHD.JointForward || value == BlockHD.JointUp)
+                                    {
+                                        jointResult = value;
+                                        jointPos = pos + offset;
+                                    }
+                                    else
+                                    {
+                                        result.Add(new VoxelHD(pos + offset, value));
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                return result;
             }
 
-            return clone;
-        }
-        public VoxelObjGridDataHD FlipDir(Dimensions dimention, IntervalIntV3 limits, bool replaceOriginalData)
-        {
-            VoxelObjGridDataHD clone = new VoxelObjGridDataHD(Size);
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 fromPos = IntVector3.Zero;
-            for (pos.Z = limits.Min.Z; pos.Z <= limits.Max.Z; ++pos.Z)
+            public List<VoxelHD> GetVoxelArray(IntVector3 offset, Dictionary<ushort, ushort> findReplace, ushort findjoint, out IntVector3 jointPos)
             {
-                if (dimention == Dimensions.Z)
-                    fromPos.Z = limits.Max.Z - (pos.Z - limits.Min.Z);
-                else
-                    fromPos.Z = pos.Z;
-                for (pos.Y = limits.Min.Y; pos.Y <= limits.Max.Y; ++pos.Y)
+                jointPos = IntVector3.NegativeOne;
+
+                List<VoxelHD> result = new List<VoxelHD>();
+                if (array != null)
                 {
-                    if (dimention == Dimensions.Y)
-                        fromPos.Y = limits.Max.Y - (pos.Y - limits.Min.Y);
+                    IntVector3 pos = IntVector3.Zero;
+                    IntVector3 sz = Size;
+
+                    for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                    {
+                        for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                        {
+                            for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                            {
+                                ushort value = Get(pos);
+                                if (value != BlockHD.EmptyBlock)
+                                {
+                                    if (findReplace.TryGetValue(value, out ushort toColor))
+                                    {
+                                        result.Add(new VoxelHD(pos + offset, toColor));
+                                    }
+                                    else if (value == BlockHD.JointForward || value == BlockHD.JointUp)
+                                    {
+                                        if (value == findjoint)
+                                        {
+                                            jointPos = pos + offset;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        result.Add(new VoxelHD(pos + offset, value));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return result;
+            }
+
+            public List<VoxelHD> GetVoxelArray(out VoxelJoint joint)
+            {
+                joint = VoxelJoint.Empty;
+
+                List<VoxelHD> result = new List<VoxelHD>();
+                if (array != null)
+                {
+                    IntVector3 pos = IntVector3.Zero;
+                    IntVector3 sz = Size;
+
+                    for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
+                    {
+                        for (pos.Z = 0; pos.Z < sz.Z; ++pos.Z)
+                        {
+                            for (pos.X = 0; pos.X < sz.X; ++pos.X)
+                            {
+                                ushort value = Get(pos);
+                                if (value != BlockHD.EmptyBlock)
+                                {
+                                    if (value == BlockHD.JointForward || value == BlockHD.JointUp)
+                                    {
+                                        joint = new VoxelJoint(pos, value);
+                                    }
+                                    else
+                                    {
+                                        result.Add(new VoxelHD(pos, value));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            public List<VoxelHD> GetVoxelArrayCentered()
+            {
+                IntVector3 limits = this.Limits;
+                IntVector3 adjustPos = new IntVector3(limits.X / PublicConstants.Twice, 0, limits.Z / PublicConstants.Twice);
+                IntVector3 voxelPos = IntVector3.Zero;
+                List<VoxelHD> result = new List<VoxelHD>();
+                IntVector3 pos = IntVector3.Zero;
+
+                for (pos.Z = 0; pos.Z < limits.Z; ++pos.Z)
+                {
+                    voxelPos.Z = pos.Z + adjustPos.Z;
+                    for (pos.Y = 0; pos.Y < limits.Y; ++pos.Y)
+                    {
+                        voxelPos.Y = pos.Y;
+                        for (pos.X = 0; pos.X < limits.X; ++pos.X)
+                        {
+                            ushort val = Get(pos);
+                            if (val != BlockHD.EmptyBlock)
+                            {
+                                voxelPos.X = pos.X + adjustPos.X;
+                                result.Add(new VoxelHD(voxelPos, val));
+                            }
+                        }
+                    }
+                }
+                return result;
+            }
+
+            byte currentValueReplace(byte material, List<byte> find, List<byte> replace)
+            {
+                for (int i = 0; i < find.Count; i++)
+                {
+                    if (material == find[i])
+                        return replace[i];
+                }
+                return material;
+            }
+
+            public VoxelObjGridDataHD Rotate(int rotationSteps, bool replaceOriginalData)
+            {
+                return this.Rotate(rotationSteps, new IntervalIntV3(IntVector3.Zero, this.Limits), replaceOriginalData);
+            }
+
+            public VoxelObjGridDataHD Rotate(int rotationSteps, IntVector3 limits, bool replaceOriginalData)
+            {
+                return this.Rotate(rotationSteps, new IntervalIntV3(IntVector3.Zero, limits), replaceOriginalData);
+            }
+
+            public VoxelObjGridDataHD Rotate(int rotationSteps, IntervalIntV3 limits, bool replaceOriginalData)
+            {
+                VoxelObjGridDataHD clone = null;
+
+                Rotation += rotationSteps;
+                switch (rotationSteps)
+                {
+                    case 1:
+                        limits = new IntervalIntV3(IntVector3.Zero, new IntVector3(limits.AddZ, limits.AddY, limits.AddX));
+                        clone = SwapXZ(limits);
+                        clone = clone.FlipDir(Dimensions.X, limits, false);
+                        break;
+                    case 2:
+                        clone = FlipDir(Dimensions.X, limits, false);
+                        clone = clone.FlipDir(Dimensions.Z, limits, false);
+                        break;
+                    case 3:
+                        limits = new IntervalIntV3(IntVector3.Zero, new IntVector3(limits.AddZ, limits.AddY, limits.AddX));
+                        clone = SwapXZ(limits);
+                        clone = clone.FlipDir(Dimensions.Z, limits, false);
+                        break;
+                }
+
+                if (replaceOriginalData && clone != null)
+                {
+                    array = clone.array;
+                    initGrid(clone.Size);
+                }
+                return clone;
+            }
+
+            VoxelObjGridDataHD SwapXZ(IntervalIntV3 limits)
+            {
+                VoxelObjGridDataHD clone = new VoxelObjGridDataHD(limits.Add + 1);
+
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 invPos = IntVector3.Zero;
+
+                for (pos.Z = 0; pos.Z <= limits.AddZ; ++pos.Z)
+                {
+                    invPos.X = pos.Z;
+
+                    for (pos.X = 0; pos.X <= limits.AddX; ++pos.X)
+                    {
+                        invPos.Z = pos.X;
+
+                        for (pos.Y = 0; pos.Y <= limits.AddY; ++pos.Y)
+                        {
+                            invPos.Y = pos.Y;
+                            clone.Set(pos, Get(invPos));
+                        }
+                    }
+                }
+
+                return clone;
+            }
+
+            public VoxelObjGridDataHD FlipDir(Dimensions dimention, IntervalIntV3 limits, bool replaceOriginalData)
+            {
+                VoxelObjGridDataHD clone = new VoxelObjGridDataHD(Size);
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 fromPos = IntVector3.Zero;
+
+                for (pos.Z = limits.Min.Z; pos.Z <= limits.Max.Z; ++pos.Z)
+                {
+                    if (dimention == Dimensions.Z)
+                        fromPos.Z = limits.Max.Z - (pos.Z - limits.Min.Z);
                     else
-                        fromPos.Y = pos.Y;
+                        fromPos.Z = pos.Z;
 
-                    for (pos.X = limits.Min.X; pos.X <= limits.Max.X; ++pos.X)
+                    for (pos.Y = limits.Min.Y; pos.Y <= limits.Max.Y; ++pos.Y)
                     {
-                        if (dimention == Dimensions.X)
-                            fromPos.X = limits.Max.X - (pos.X - limits.Min.X);
+                        if (dimention == Dimensions.Y)
+                            fromPos.Y = limits.Max.Y - (pos.Y - limits.Min.Y);
                         else
-                            fromPos.X = pos.X;
+                            fromPos.Y = pos.Y;
 
-                        //Set(pos, clone.Get(fromPos));
-                        clone.Set(pos, Get(fromPos));
-                    }
-                }
-            }
-
-            if (replaceOriginalData)
-            {
-                MaterialGrid = clone.MaterialGrid;
-            }
-            return clone;
-        }
-        public void Move(IntVector3 dir, IntervalIntV3 limits)
-        {
-            VoxelObjGridDataHD clone = this.Clone();
-            newGrid(limits.Add + 1);
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 toPos = IntVector3.Zero;
-            for (pos.Z = limits.Min.Z; pos.Z <= limits.Max.Z; ++pos.Z)
-            {
-                toPos.Z = pos.Z + dir.Z;
-                for (pos.Y = limits.Min.Y; pos.Y <= limits.Max.Y; ++pos.Y)
-                {
-                    toPos.Y = pos.Y + dir.Y;
-                    for (pos.X = limits.Min.X; pos.X <= limits.Max.X; ++pos.X)
-                    {
-                        toPos.X = pos.X + dir.X;
-                        SetSafe(toPos, clone.Get(pos));
-                    }
-                }
-            }
-        }
-        public void BuildOnTerrain(LootFest.Map.WorldPosition origo)
-        {
-            if (!origo.CorrectPos)
-                return;
-
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 size = Size;
-
-            ushort material;
-            for (pos.Z = 0; pos.Z < size.Z; ++pos.Z)
-            {
-                for (pos.X = 0; pos.X < size.X; ++pos.X)
-                {
-                    pos.Y = 0;
-                    material = Get(pos);
-
-                    if (material != BlockHD.EmptyBlock)
-                    {
-                        VikingEngine.LootFest.Map.WorldPosition wp = origo.GetNeighborPos(pos);
-                        wp.SetFromHeightMap(0);
-                        ushort topMaterial = wp.GetBlock();
-
-                        while (wp.Y > origo.Y)
+                        for (pos.X = limits.Min.X; pos.X <= limits.Max.X; ++pos.X)
                         {
-                            wp.Screen.Set(wp, LootFest.Map.HDvoxel.BlockHD.EmptyBlock);
-                            --wp.Y;
-                        }
+                            if (dimention == Dimensions.X)
+                                fromPos.X = limits.Max.X - (pos.X - limits.Min.X);
+                            else
+                                fromPos.X = pos.X;
 
-                        while (wp.Y <= origo.Y)
-                        {
-                            wp.SetBlock(topMaterial);//.Screen.voxels.Set(wp, new LootFest.Map.HDvoxel.BlockHD(topMaterial));
-                            ++wp.Y;
-                        }
-                    }
-
-                    for (pos.Y = 0; pos.Y < size.Y; ++pos.Y)
-                    {
-                        material = Get(pos);
-                        if (material != BlockHD.EmptyBlock)
-                        {
-                            //if (BlockHD.ToMaterialValue(material) == BlockHD.AntiMaterial)
-                            //{
-                            //    material = BlockHD.EmptyBlock;
-                            //}
-
-                            origo.GetNeighborPos(pos).SetBlock_IfOpen(material);//LootFest.LfRef.chunks.SetIfOpen(origo.GetNeighborPos(pos), material);
+                            clone.Set(pos, Get(fromPos));
                         }
                     }
                 }
-            }   
-        }
 
-        /// <summary>
-        /// The position of the top-most block
-        /// </summary>
-        /// <returns>Y index</returns>
-        public int TopBlock()
-        {
-            IntVector3 pos = IntVector3.Zero;
-            IntVector3 size = Size;
-
-            for (pos.Y = size.Y - 1; pos.Y >= 1; --pos.Y)
-            {
-                for (pos.Z = 0; pos.Z < size.Z; ++pos.Z)
+                if (replaceOriginalData)
                 {
-                    for (pos.X = 0; pos.X < size.X; ++pos.X)
+                    array = clone.array;
+                }
+                return clone;
+            }
+
+            public void Move(IntVector3 dir, IntervalIntV3 limits)
+            {
+                VoxelObjGridDataHD clone = this.Clone();
+                initGrid(limits.Add + 1);
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 toPos = IntVector3.Zero;
+
+                for (pos.Z = limits.Min.Z; pos.Z <= limits.Max.Z; ++pos.Z)
+                {
+                    toPos.Z = pos.Z + dir.Z;
+                    for (pos.Y = limits.Min.Y; pos.Y <= limits.Max.Y; ++pos.Y)
                     {
-                        if (Get(pos) != BlockHD.EmptyBlock)
+                        toPos.Y = pos.Y + dir.Y;
+                        for (pos.X = limits.Min.X; pos.X <= limits.Max.X; ++pos.X)
                         {
-                            return pos.Y;
+                            toPos.X = pos.X + dir.X;
+                            SetSafe(toPos, clone.Get(pos));
                         }
                     }
                 }
             }
 
-            return 0;
-        }
+            //public void BuildOnTerrain(LootFest.Map.WorldPosition origo)
+            //{
+            //    if (!origo.CorrectPos)
+            //        return;
 
-        public void Merge(VoxelObjGridDataHD other, bool keepOldGridSize, bool newBlocksReplaceOld, IntVector3 offset)
-        {
-            IntVector3 loopSize;
-            IntVector3 mySz = Size;
-            IntVector3 otherSz = other.Size;
+            //    IntVector3 pos = IntVector3.Zero;
+            //    IntVector3 size = Size;
 
-            if (keepOldGridSize)
-            {
-                loopSize = new IntVector3(
-                    lib.SmallestValue(mySz.X, otherSz.X),
-                    lib.SmallestValue(mySz.Y, otherSz.Y),
-                    lib.SmallestValue(mySz.Z, otherSz.Z));
-            }
-            else
-            {
-                
-                loopSize = new IntVector3(
-                    lib.LargestValue(mySz.X, otherSz.X),
-                    lib.LargestValue(mySz.Y, otherSz.Y),
-                    lib.LargestValue(mySz.Z, otherSz.Z));
-                Resize(loopSize);
-            }
+            //    ushort material;
+            //    for (pos.Z = 0; pos.Z < size.Z; ++pos.Z)
+            //    {
+            //        for (pos.X = 0; pos.X < size.X; ++pos.X)
+            //        {
+            //            pos.Y = 0;
+            //            material = Get(pos);
 
-            IntVector3 pos = IntVector3.Zero;
-            ushort oldMaterial;
-            ushort newMaterial;
-            for (pos.Y = 0; pos.Y < loopSize.Y; ++pos.Y)
+            //            if (material != BlockHD.EmptyBlock)
+            //            {
+            //                VikingEngine.LootFest.Map.WorldPosition wp = origo.GetNeighborPos(pos);
+            //                wp.SetFromHeightMap(0);
+            //                ushort topMaterial = wp.GetBlock();
+
+            //                while (wp.Y > origo.Y)
+            //                {
+            //                    wp.Screen.Set(wp, LootFest.Map.HDvoxel.BlockHD.EmptyBlock);
+            //                    --wp.Y;
+            //                }
+
+            //                while (wp.Y <= origo.Y)
+            //                {
+            //                    wp.SetBlock(topMaterial);
+            //                    ++wp.Y;
+            //                }
+            //            }
+
+            //            for (pos.Y = 0; pos.Y < size.Y; ++pos.Y)
+            //            {
+            //                material = Get(pos);
+            //                if (material != BlockHD.EmptyBlock)
+            //                {
+            //                    origo.GetNeighborPos(pos).SetBlock_IfOpen(material);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            public int TopBlock()
             {
-                for (pos.Z = 0; pos.Z < loopSize.Z; ++pos.Z)
+                IntVector3 pos = IntVector3.Zero;
+                IntVector3 size = Size;
+
+                for (pos.Y = size.Y - 1; pos.Y >= 1; --pos.Y)
                 {
-                    for (pos.X = 0; pos.X < loopSize.X; ++pos.X)
+                    for (pos.Z = 0; pos.Z < size.Z; ++pos.Z)
                     {
-                        oldMaterial = Get(pos);
-                        newMaterial = other.Get(pos);
-
-                        if (newBlocksReplaceOld)
+                        for (pos.X = 0; pos.X < size.X; ++pos.X)
                         {
-                            if (newMaterial != BlockHD.EmptyBlock)
+                            if (Get(pos) != BlockHD.EmptyBlock)
                             {
-                                SetSafe(pos + offset, newMaterial);
+                                return pos.Y;
                             }
                         }
-                        else
+                    }
+                }
+
+                return 0;
+            }
+
+            public void Merge(VoxelObjGridDataHD other, bool keepOldGridSize, bool newBlocksReplaceOld, IntVector3 offset)
+            {
+                IntVector3 loopSize;
+                IntVector3 mySz = Size;
+                IntVector3 otherSz = other.Size;
+
+                if (keepOldGridSize)
+                {
+                    loopSize = new IntVector3(
+                        lib.SmallestValue(mySz.X, otherSz.X),
+                        lib.SmallestValue(mySz.Y, otherSz.Y),
+                        lib.SmallestValue(mySz.Z, otherSz.Z));
+                }
+                else
+                {
+                    loopSize = new IntVector3(
+                        lib.LargestValue(mySz.X, otherSz.X),
+                        lib.LargestValue(mySz.Y, otherSz.Y),
+                        lib.LargestValue(mySz.Z, otherSz.Z));
+                    Resize(loopSize);
+                }
+
+                IntVector3 pos = IntVector3.Zero;
+                ushort oldMaterial;
+                ushort newMaterial;
+                for (pos.Y = 0; pos.Y < loopSize.Y; ++pos.Y)
+                {
+                    for (pos.Z = 0; pos.Z < loopSize.Z; ++pos.Z)
+                    {
+                        for (pos.X = 0; pos.X < loopSize.X; ++pos.X)
                         {
-                            if (oldMaterial == BlockHD.EmptyBlock)
+                            oldMaterial = Get(pos);
+                            newMaterial = other.Get(pos);
+
+                            if (newBlocksReplaceOld)
                             {
-                                SetSafe(pos + offset, newMaterial);
+                                if (newMaterial != BlockHD.EmptyBlock)
+                                {
+                                    SetSafe(pos + offset, newMaterial);
+                                }
+                            }
+                            else
+                            {
+                                if (oldMaterial == BlockHD.EmptyBlock)
+                                {
+                                    SetSafe(pos + offset, newMaterial);
+                                }
                             }
                         }
-                        
                     }
                 }
             }
-        }
 
-        public void write(System.IO.BinaryWriter w)
-        {
-            const byte Version = 1;
-
-            w.Write(Version);
-            Size.WriteByteStream(w);
-
-            VoxelLib.CompressGridHD(MaterialGrid, w);
-        }
-        public void read(System.IO.BinaryReader r)
-        {
-            byte version = r.ReadByte();
-            if (version > 0)
+            public void write(System.IO.BinaryWriter w)
             {
-                IntVector3 sz = IntVector3.FromByteSzStream(r);
+                const byte Version = 1;
 
-                Resize(sz);
-                VoxelLib.DeCompressGridHD(MaterialGrid, r);
+                w.Write(Version);
+                Size.WriteByteStream(w);
+
+                // Updated to pass the 1D array inherited from Grid3D_L.
+                // Adjust to your actual VoxelLib method signature appropriately.
+                VoxelLib.CompressGridHD(this, w);
+            }
+
+            public void read(System.IO.BinaryReader r)
+            {
+                byte version = r.ReadByte();
+                if (version > 0)
+                {
+                    IntVector3 sz = IntVector3.FromByteSzStream(r);
+
+                    Resize(sz);
+                    // Updated to read into the 1D array inherited from Grid3D_L.
+                    // Adjust to your actual VoxelLib method signature appropriately.
+                    VoxelLib.DeCompressGridHD(this, r);
+                }
             }
         }
-        
     }
-}
+
 

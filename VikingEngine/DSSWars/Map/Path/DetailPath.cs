@@ -61,11 +61,11 @@ namespace VikingEngine.DSSWars.Map.Path
 
         public void Return(DetailWalkingPath pathresult)
         {
-            // Reset the node to a default state
-
-            //pathresult.recycle();
-            pathresult.timeStamp = Ref.TotalFrameCount;
-            resultPool.Enqueue(pathresult);
+            if (pathresult != null)
+            {
+                pathresult.timeStamp = Ref.TotalFrameCount;
+                resultPool.Enqueue(pathresult);
+            }
         }
     }
 
@@ -79,12 +79,12 @@ namespace VikingEngine.DSSWars.Map.Path
         //IntVector2 gridOffset;
         IntVector2 nodeUseTopLeft, nodeUseBottomRight;
         //DetailPathNode[,] nodeGrid;
-        Grid1D<DetailPathNode> nodeGrid;
+        Grid2D_L<DetailPathNode> nodeGrid;
 
         public DetailPathFinding()
         {
             Rectangle2 area = Rectangle2.FromCenterTileAndRadius(IntVector2.Zero, MaxTileRadius);
-            nodeGrid = new Grid1D<DetailPathNode>(area.size);//new DetailPathNode[area.Width, area.Height];
+            nodeGrid = new Grid2D_L<DetailPathNode>(area.size);//new DetailPathNode[area.Width, area.Height];
         }
 
         public DetailWalkingPath FindPath(int pathThreadIndex, IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.Map.Path
 
         public Vector3 NextNodeWp(Vector3 myPos, out bool complete, out bool ship)
         {
-            complete = currentNodeIx < 0;
+            complete = currentNodeIx < 0 || currentNodeIx >= nodes.Count;
             if (complete)
             {
                 ship = false;
@@ -558,9 +558,10 @@ namespace VikingEngine.DSSWars.Map.Path
             moveCost += parent.moveCost;
 
             //Value = moveCost + (Math.Abs(pos.X - goalPos.X) + Math.Abs(pos.Y - goalPos.Y)) * MoveCostStraight;
-            int dx = Math.Abs(pos.X - goalPos.X);
-            int dy = Math.Abs(pos.Y - goalPos.Y);
-            Heuristic = (MoveCostStraight * (dx + dy)) + ((MoveCostDiagonal - 2 * MoveCostStraight) * Math.Min(dx, dy));
+            //int dx = Math.Abs(pos.X - goalPos.X);
+            //int dy = Math.Abs(pos.Y - goalPos.Y);
+            //Heuristic = (MoveCostStraight * (dx + dy)) + ((MoveCostDiagonal - 2 * MoveCostStraight) * Math.Min(dx, dy));
+            Heuristic = (pos - goalPos).Length() * MoveCostStraight;
 
             const float DistanceToGoalWeight = 1.5f;
             Heuristic *= DistanceToGoalWeight;

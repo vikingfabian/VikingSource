@@ -62,29 +62,34 @@ namespace VikingEngine.DSSWars
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    if (p.faction.militaryStrength > 200)
+                    if (!p.pfaction.TryGetFaction(out var playerFaction))
+                    {
+                        continue;
+                    }
+
+                    if (playerFaction.militaryStrength > 200)
                     {
                         UnlockAchievement_async(AchievementIndex.military_might_tier1);
 
-                        if (p.faction.militaryStrength > 500)
+                        if (playerFaction.militaryStrength > 500)
                         {
                             UnlockAchievement_async(AchievementIndex.military_might_tier2);
 
-                            if (p.faction.militaryStrength > 1500)
+                            if (playerFaction.militaryStrength > 1500)
                             {
                                 UnlockAchievement_async(AchievementIndex.military_might_tier3);
                             }
                         }
                     }
 
-                    if (p.faction.money.copper > int.MaxValue)
+                    if (playerFaction.money.copper > int.MaxValue)
                     {
                         UnlockAchievement_async(AchievementIndex.gold_64bit);
                     }
 
                     bool uploadLeaderBoard = false;
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City city))
+                    while (citiesC.Next(ref playerFaction.cities, DssRef.world.cities, out City city))
                     {
                         if (city.workForce.amount > LargePopulationCount_Tier1)
                         {
@@ -175,7 +180,7 @@ namespace VikingEngine.DSSWars
                     }
 
 
-                    var armiesC = p.faction.armies.counter();
+                    var armiesC = playerFaction.armies.counter();
                     while (armiesC.Next())
                     {
                         int vikings = 0;
@@ -372,34 +377,29 @@ namespace VikingEngine.DSSWars
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                if (p.statistics.WarsStartedByYou == 0)
+                if (p.pfaction.TryGetFaction(out var playerFaction))
                 {
-                    UnlockAchievement_onAny_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
-
-                    //if (victoryType == VictoryType.WorldPeace)
-                    //{
-                    //    UnlockAchievement_onAny_100(AchievementIndex.peace_and_love_any, AchievementIndex.peace_and_love_100);
-
-                    //    if (DssRef.world.metaData.mapSize >= MapSize.Large)
-                    //    {
-                    //        UnlockAchievement_on75(AchievementIndex.massive_peace_and_love);
-                    //    }
-                    //}
-                }
-                else if (p.statistics.WarsStartedByYou >= 10)
-                {
-                    UnlockAchievement(AchievementIndex.warstarter_tier1);
-                    if (p.statistics.WarsStartedByYou >= 20)
+                    if (p.statistics.WarsStartedByYou == 0)
                     {
-                        UnlockAchievement(AchievementIndex.warstarter_tier2);
-                        if (p.statistics.WarsStartedByYou >= 40)
+                        UnlockAchievement_onAny_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
+
+                    }
+                    else if (p.statistics.WarsStartedByYou >= 10)
+                    {
+                        UnlockAchievement(AchievementIndex.warstarter_tier1);
+                        if (p.statistics.WarsStartedByYou >= 20)
                         {
-                            UnlockAchievement(AchievementIndex.warstarter_tier3);
+                            UnlockAchievement(AchievementIndex.warstarter_tier2);
+                            if (p.statistics.WarsStartedByYou >= 40)
+                            {
+                                UnlockAchievement(AchievementIndex.warstarter_tier3);
+                            }
                         }
                     }
-                }
 
-                findHonorGuard(p);
+
+                    findHonorGuard(playerFaction);
+                }
             }
 
             
@@ -421,9 +421,9 @@ namespace VikingEngine.DSSWars
             }
 
 
-            void findHonorGuard(Players.LocalPlayer p)
+            void findHonorGuard(Faction playerfaction)
             {
-                var armiesC = p.faction.armies.counter();
+                var armiesC = playerfaction.armies.counter();
                 while (armiesC.Next())
                 {
                     var groupsC = armiesC.sel.groups.counter();
@@ -795,6 +795,65 @@ namespace VikingEngine.DSSWars
         /// </summary>
         cannonphant, //i, t, a
 
+
+        Gift_WhiteKnight,
+        Gift_HeroComplexSaviorComplex,
+        Gift_CryBaby,
+        Gift_KingMaker,
+        Gift_Turtle,
+        Gift_MetaPlayer,
+        Gift_Tryhard,
+        Gift_DidPracticeInSecret,
+        Gift_TheEncyclopedia,
+        Gift_WarCriminal,
+        Gift_FarmerRush,
+        Gift_Politian,
+        Gift_Socializer,
+        Gift_OverAchiever,
+        Gift_Noob,
+        Gift_SwedishNeutrality,
+        Gift_TroubleMaker,
+        Gift_ScorchedEarth,
+        Gift_WarMonger,
+        Gift_LivingInABobble,
+        Gift_Bully,
+        Gift_ControlFreak,
+        Gift_RandomNothingMakesSense,
+        Gift_Hoarder,
+        Gift_Scatterbrained,
+        Gift_NearSighted,
+        Gift_AutomationAbuser,
+        Gift_Troll,
+        Gift_MemeLord,
+        Gift_SupportSlave,
+        Gift_DarkSidePlayer,
+        Gift_SlaughterHouse,
+        Gift_AnimalCruelty,
+        Gift_LuckyBastard,
+        Gift_Cursed,
+        Gift_Backstabber,
+        Gift_Oathbreaker,
+        Gift_Wormtongue,
+        Gift_ArmchairGeneral,
+        Gift_Salty,
+        Gift_SaltMiner,
+        Gift_PuppetMaster,
+        Gift_TheCarry,
+        Gift_OneManArmy,
+        Gift__4DChessPlayer,
+        Gift_SpreadsheetWarrior,
+        Gift_MeatShield,
+        Gift_InDebt,
+        Gift_OnLifeSupport,
+        Gift_LoneWolf,
+        Gift_ShaggyTooDopeAlwaysChilling,
+        Gift_BadInfluence,
+        Gift_HindsightTactician,
+        Gift_Houseplant,
+        Gift_Sheep,
+        Gift_GlichRider,
+        Gift_ChickenShit,
+        Gift_TheLeakyCanteen,
 
 
         NUM_ACHIEVEMENTS

@@ -116,11 +116,11 @@ namespace VikingEngine.DSSWars.Map.Path3
         public const byte TileStatus_Initialized = 3;
 
         
-        public Grid1D<byte> tileStatus;
+        public Grid2D_L<byte> tileStatus;
         public MoveCostLayer4(WorldData world)
             :base(4, Layer4TileWidth, world.subTileGrid.Size / Layer4TileWidth)
         {
-            tileStatus = new Grid1D<byte>(size);
+            tileStatus = new Grid2D_L<byte>(size);
         }
     }
 

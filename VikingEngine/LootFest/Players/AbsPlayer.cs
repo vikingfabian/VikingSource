@@ -154,7 +154,7 @@ namespace VikingEngine.LootFest.Players
         //    //{
         //    //    privateHomeIndex = LfRef.worldOverView.SetPrivateHomeOwner(this);
 
-        //    //    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.GivePrivateAreaIx, Network.PacketReliability.ReliableLasy);
+        //    //    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.GivePrivateAreaIx, Network.PacketReliability.Reliable);
         //    //    w.Write(this.StaticNetworkId);
         //    //    w.Write((byte)privateHomeIndex);
 

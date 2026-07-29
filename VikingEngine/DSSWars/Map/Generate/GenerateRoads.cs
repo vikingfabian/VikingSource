@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void fromCity(WorldData world, City city)
         {
             DssRef.world = world;
-            PcgRandom rnd = new PcgRandom(world.metaData.seed * city.myIndex);
+            PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * city.myIndex);
 
             EcsStaticArrayCounter neighbors = city.CityNeighbors();
             while (neighbors.Next(out int n))//foreach (var n in city.neighborCities)
@@ -47,14 +47,14 @@ namespace VikingEngine.DSSWars.Map.Generate
 
 
                     if (rnd.Chance(chance) &&
-                       (nCity.factionIndex == city.factionIndex || rnd.Chance(0.1)))
+                       (nCity.pfaction == city.pfaction || rnd.Chance(0.1)))
                     {
 
-                        if (city.myIndex == 139 || n == 139)
-                        {
-                            lib.DoNothing();
-                            Debug.Log($"From {city.myIndex} to {n}");
-                        }
+                        //if (city.myIndex == 139 || n == 139)
+                        //{
+                        //    lib.DoNothing();
+                        //    Debug.Log($"From {city.myIndex} to {n}");
+                        //}
 
                         PathFinding largePath = new PathFinding();
                         var largePathResult = largePath.FindPath(-1, city.tilePos, (int)conv.ToDir8(nCity.tilePos - city.tilePos), nCity.tilePos, false);
@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                         void placeOnSubTile(IntVector2 pos)
                         {
-                            ref SubTile subTile = ref world.subTileGrid.array[pos.X, pos.Y];
+                            ref SubTile subTile = ref world.subTileGrid.GetRef(pos);// [pos.X, pos.Y];
 
                             bool canBuild = false;
                             switch (subTile.mainTerrain)

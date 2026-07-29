@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.HUD.RichBox
 {
@@ -435,6 +436,84 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Center => pointer.position;
         public override Vector2 Size => pointer.size;
     }
+
+    class RbGamerIcon : RbTexture
+    {
+        public RbGamerIcon(Network.AbsNetworkPeer gamer, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
+            : base(null, scale, addLeftSpace, addRightSpace)
+        {
+            if (gamer != null)
+            {
+                if (gamer.storedGamerIcon != null)
+                {
+                    tex = gamer.storedGamerIcon;
+                }
+                else
+                {
+                    new GamerIconLoader(gamer, this);
+                }
+            }
+        }
+
+        public void OnLoadedIcon(Texture2D texture)
+        {
+            tex = texture;
+            if (pointer != null)
+            {
+                pointer.Texture = texture;
+                pointer.SetFullTextureSource();
+            }
+        }
+
+        class GamerIconLoader : LazyUpdate
+        {
+            RbGamerIcon reciever;
+            Network.AbsNetworkPeer gamer;
+            int trials = 0;
+            Timer.Basic trialTimer = new Timer.Basic(500, true);
+
+            public GamerIconLoader(Network.AbsNetworkPeer gamer, RbGamerIcon reciever)
+                :base(false)
+            {
+                this.gamer = gamer;
+                this.reciever = reciever;
+
+                if (TryLoadSteamImage() == false)
+                {
+                    AddToUpdateList();
+                }
+            }
+
+            public override void Time_Update(float time_ms)
+            {
+                if (trialTimer.Update(time_ms))
+                {
+                    if (TryLoadSteamImage() || ++trials >= 6)
+                    {
+                        DeleteMe();
+                    }
+                }
+            }
+            bool TryLoadSteamImage()
+            {
+                var steamPeer = gamer as SteamNetworkPeer;
+                if (steamPeer != null)
+                {
+                    var steamImage = steamPeer.GetGamerIcon184x184();
+
+                    if (steamImage.state == SteamImageLoadState.ImageLoadedCorrectly)
+                    {
+                        steamPeer.storedGamerIcon = steamImage.texture;
+                        reciever.OnLoadedIcon(steamImage.texture);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+
+    
 
     class RbSpace : AbsRichBoxMember
     {

@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 13;
-        public const int SubVersion = 113; 
+        public const int SubVersion = 131; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Data
             Debug.WriteCheck(w);
             DssRef.world.writeGameState(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.state.Game().writeGameState(w); MainProgress++;
+            DssRef.state.playstate().writeGameState(w); MainProgress++;
         }        
 
         public void readGameState(System.IO.BinaryReader r)
@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.world = worldData;
             
 
-            DssRef.state.Game().initGameState(false, pointers);
+            DssRef.state.playstate().initGameState(false, pointers);
             
 
             //STATE
@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
             DssRef.time.setTotalTime(meta.playTime);
-            DssRef.state.Game().readGameState(r, version.sub, pointers);
+            DssRef.state.playstate().readGameState(r, version.sub, pointers);
 
             //Clean up
             DssRef.state.events.loadCleanup();
@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.Data
         {
             foreach (var m in pointers)
             { 
-                m.SetPointer();
+                m.SetPointer(true);
             }
         }
     }
@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Data
                 switch (type)
                 {
                     case GameObjectType.Army:
-                        writeFaction(w, gameObject.GetFaction_NoChecks());
+                        writeFaction(w, gameObject.pfaction.GetFaction());
                         w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:
@@ -286,7 +286,7 @@ namespace VikingEngine.DSSWars.Data
             return r.ReadUInt16();
         }
 
-        abstract public void SetPointer();
+        abstract public void SetPointer(bool localAction);
     }
 
     class ArmyAttackObjectPointer: AbsObjectPointer
@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.Data
             ReadObjectPointer(r);
         }
 
-        public override void SetPointer()
+        public override void SetPointer(bool localAction)
         {
             var target = (AbsMapObject)GetObject();
 
@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 if (teleport)
                 {
-                    army.Order_Attack_Setup(target);
+                    army.Order_Attack_Setup(target, true);
                 }
                 else
                 {

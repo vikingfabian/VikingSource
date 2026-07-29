@@ -50,8 +50,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             ExistingWorkers.Clear();
 
-            if (HasFaction())
+            if (pfaction.TryGetFaction(out _))
             {
+
                 foreach (var unit in workerUnits)
                 {
                     ExistingWorkers.Add(unit.myIndex);

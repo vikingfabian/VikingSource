@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -17,8 +18,8 @@ namespace VikingEngine.DSSWars.Map
 
         //Faction playerFaction;
 
-        public UnitsPixelTexture(Faction faction) 
-            :base(faction)
+        public UnitsPixelTexture(int playerIx) 
+            :base(playerIx)
         {
             
             initTexture();
@@ -42,16 +43,18 @@ namespace VikingEngine.DSSWars.Map
 
         //}
 
-        public void updateColorProfile(Faction faction)
+        public void updateColorProfile(PFaction pfaction)
         {
-            if (faction == playerFaction)
+            var playerPFaction = DssRef.state.localPlayers[playerIx].pfaction;
+            
+            if (pfaction == playerPFaction)
             {
                 colorProfile1 = Color.Green;
                 colorProfile2 = Color.LightGreen;
             }
             else
             {
-                var relation = DssRef.world.diplomacy.GetRelation(playerFaction, faction).Relation;
+                var relation = DssRef.world.diplomacy.GetRefRelation_Safe(playerPFaction, pfaction).Relation;
                 if (relation <= RelationType.RelationTypeN1_Enemies)
                 {
                     colorProfile1 = Color.Red;
@@ -68,6 +71,7 @@ namespace VikingEngine.DSSWars.Map
                     colorProfile2 = Color.LightGray;
                 }
             }
+            
         }
 
 

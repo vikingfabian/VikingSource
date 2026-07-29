@@ -490,6 +490,11 @@ namespace VikingEngine
             return base.GetHashCode();
         }
 
+        public int Volume()
+        {
+            return X * Y * Z;
+        }
+
         public void ClampAll(int min, int max)
         {
             X = MathExt.Clamp(X, min, max);

@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars
 
         public long GetGold(City city)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return money.GetGold();
             }
@@ -437,7 +437,7 @@ namespace VikingEngine.DSSWars
                 return true;
             }
 
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return money.GetGold() >= cost;
             }
@@ -449,7 +449,7 @@ namespace VikingEngine.DSSWars
 
         public bool hasMoney(Money cost, AbsMapObject mapObj)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return money >= cost;
             }
@@ -461,7 +461,7 @@ namespace VikingEngine.DSSWars
 
         public ref Money GetRefMoney(AbsMapObject mapObj)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return ref money;
             }
@@ -475,13 +475,13 @@ namespace VikingEngine.DSSWars
         public bool payGold(int cost, bool allowDept, AbsArmy city)
         {
 #if DEBUG
-            if (player.IsLocalPlayer() && StartupSettings.EndlessResources)
+            if (player != null && player.IsLocalPlayer() && StartupSettings.EndlessResources)
             {
                 return true;
             }
 #endif
 
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             { 
                 return money.PayGold(cost, allowDept);                
             }
@@ -492,7 +492,7 @@ namespace VikingEngine.DSSWars
         }
         public int payGold_MuchAsPossible(int cost, City city)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 return (int)money.payGold_MuchAsPossible(cost);//pay(ref gold);
             }
@@ -516,7 +516,7 @@ namespace VikingEngine.DSSWars
 
         public void addGold(long value, City city)
         {
-            if (DssRef.storage.gameRuleset.centralGold)
+            if (DssRef.storage.ruleset_instance.centralGold)
             {
                 money.AddGold(value);
             }
@@ -788,7 +788,7 @@ namespace VikingEngine.DSSWars
 
                 
 
-                int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
+                int end = resourceComponentStartIndex + CityResourceIndex.COUNT;
                 for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
                 {
                     DssRef.world.factionResourceOverviews[itemIx].clearFactionOverView();
@@ -797,9 +797,9 @@ namespace VikingEngine.DSSWars
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref cities))
                 {
-                    int start = citiesC.sel * CityResoureIndex.COUNT;
+                    int start = citiesC.sel * CityResourceIndex.COUNT;
 
-                    for (int index = 0; index < CityResoureIndex.COUNT; index++)
+                    for (int index = 0; index < CityResourceIndex.COUNT; index++)
                     {
                         ref var cityResource = ref DssRef.world.cityResouces[start + index];
                         cityResource.changeRate.oneSecondUpdate();
@@ -811,7 +811,7 @@ namespace VikingEngine.DSSWars
                     }
                 }
 
-                ResourceChangeRate foodChange = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + CityResoureIndex.food].changeRate;
+                ResourceChangeRate foodChange = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + CityResourceIndex.food].changeRate;
                 foodProduction.add(foodChange.prevProduced);
                 foodSpending.add(foodChange.prevConsumed);
             }

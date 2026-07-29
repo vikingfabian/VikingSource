@@ -72,9 +72,9 @@ namespace VikingEngine.PJ.PjEngine
                 var dlc = Ref.steam.DLC;
                 if (dlc != null)
                 {
-                    Dlc1Characters = dlc.JoustingCharacterPack;
-                    Dlc2Bling = dlc.JoustingBlingPack;
-                    DlcZombie = dlc.JoustingZombiePack;
+                    //Dlc1Characters = dlc.JoustingCharacterPack;
+                    //Dlc2Bling = dlc.JoustingBlingPack;
+                    //DlcZombie = dlc.JoustingZombiePack;
 
                     if (PlatformSettings.DevBuild)
                     {

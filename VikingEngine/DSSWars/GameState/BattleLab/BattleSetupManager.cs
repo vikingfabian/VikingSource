@@ -28,6 +28,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public const int BothPlayers = 2;
 
         public bool StartState = true;
+        static Army clientArmy = null;
         public Army friendlyArmy, enemyArmy;
 
         BattleSetup Setup => BattleLabStorage.Singleton.setup;
@@ -47,28 +48,76 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
-            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.world.diplomacy.declareWar(player.faction, enemyFac);
+            Faction enemyFac = null;
+            if (DssRef.state.remotePlayers.Count > 0)
+            {
+                enemyFac = DssRef.state.remotePlayers.First().pfaction.GetFaction();
+            }
+            else if (DssRef.settings.darkLordPlayer != null)
+            {
+                enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
+            }
+            else
+            {
+                PcgRandom rnd = new PcgRandom(0);
+                do
+                {
+                    var fac = DssRef.world.factions.GetRandomSafe(rnd);
+                    if (fac.player.IsBot())
+                    {
+                        enemyFac = fac;
+                    }
+                } while (enemyFac == null);
+            }
+
+
+
+            enemyFac.hasDeserters = false;
+            DssRef.world.diplomacy.declareWar(player.pfaction, enemyFac.pfaction, false);
 
             //IntVector2 position = WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter);//mapConttilePosition;
 
             {
-                var army = player.faction.NewArmy(VectorExt.AddX(center, -2));
+                var army = player.pfaction.GetFaction().NewArmy(VectorExt.AddX(center, -2));
                 friendlyArmy = army;
                 army.rotation = playerRot;
                 army.food = float.MaxValue / 8;
 
                 army.armyColumnWidth = 6;
             }
+
+            IntVector2 enemyTile = VectorExt.AddX(center, 2);
+            if (enemyFac.IsNetHosted())
             {
-                var army = enemyFac.NewArmy(VectorExt.AddX(center, 2));
+                var army = enemyFac.NewArmy(enemyTile);
                 enemyArmy = army;
                 army.rotation = enemyRot;
                 army.food = float.MaxValue / 8;
 
                 army.armyColumnWidth = 6;
             }
+            else
+            {
+                enemyArmy = null;
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssBattleLabStartNew, Network.PacketReliability.Reliable, Network.SendPacketTo.OneSpecific, enemyFac.player.GetRemotePlayer().networkPeer.peer.fullId, null);
+                enemyTile.write(w);
+                w.Write(enemyRot.radians);
+            }
+        }
+
+
+        public static void NetStartBattleLab(System.IO.BinaryReader r)
+        {
+            IntVector2 tile = IntVector2.FromRead(r);
+            Rotation1D rotation = new Rotation1D(r.ReadSingle());
+
+            var army = DssRef.state.LocalHost().pfaction.GetFaction().NewArmy(tile);
+            clientArmy = army;
+            army.rotation = rotation;
+            army.food = float.MaxValue / 8;
+            army.armyColumnWidth = 6;
+
+            army.debugTagged = true;
         }
         public void startBattle(bool paused)
         {
@@ -85,7 +134,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             }
             if (attacker == 1 || attacker == BattleSetupManager.BothPlayers)
             {
-                enemyArmy.Order_Attack(friendlyArmy);
+                enemyArmy?.Order_Attack(friendlyArmy);
             }
 
             DssRef.stats.battle_lab_newbattle.addOne();
@@ -162,42 +211,80 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         public void addSoldier(int count, ConscriptProfile conscript, int toPlayer)
         {
-            //conscript.specialization = SpecializationType.Traditional;
-            //conscript.training = TrainingLevel.Basic;
 
+            //SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+            //{
+            //    conscript = conscript,
+            //};
+
+            //for (int i = 0; i < count; ++i)
+            //{
+            //    if (toPlayer != EnemyPlayer)
+            //    {
+            //        new SoldierGroup(friendlyArmy, SoldierProfile, friendlyArmy.position);
+            //    }
+            //    if (toPlayer != HumanPlayer)
+            //    {
+            //        new SoldierGroup(enemyArmy, SoldierProfile, enemyArmy.position);
+            //    }
+            //}
+
+            //if (toPlayer != EnemyPlayer)
+            //{
+            //    friendlyArmy.setAsStartArmy();
+            //}
+            //if (toPlayer != HumanPlayer)
+            //{
+            //    enemyArmy?.setAsStartArmy();
+            //}
+
+            if (toPlayer != EnemyPlayer)
+            {
+                AddSoldier(count, conscript, friendlyArmy);
+            }
+            if (toPlayer != HumanPlayer)
+            {
+                if (enemyArmy != null)
+                {
+                    AddSoldier(count, conscript, enemyArmy);
+                }
+                else
+                {
+                    var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssBattleLabAddSoldiers, Network.PacketReliability.Reliable, Network.SendPacketTo.OneSpecific,
+                        DssRef.state.remotePlayers.First().networkPeer.peer.FullId, null);
+
+                    w.Write(count);
+                    conscript.writeGameState(w);
+                }
+            }
+        }
+
+        public static void NetAddSoldiers(System.IO.BinaryReader r)
+        {
+            int count = r.ReadInt32();
+            ConscriptProfile profile = new ConscriptProfile();
+            profile.readGameState(r);
+
+            AddSoldier(count, profile, clientArmy);
+        }
+
+        public static void AddSoldier(int count, ConscriptProfile conscript, Army toArmy)
+        {
             SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
             {
                 conscript = conscript,
-                //new ConscriptProfile()
-                //{
-                //    weapon = weapon,
-                //    armorLevel = Resource.ItemResourceType.PaddedArmor,
-                //    training = TrainingLevel.Basic,
-                //    specialization = SpecializationType.Traditional,
-                //}
             };
 
             for (int i = 0; i < count; ++i)
             {
-                if (toPlayer != EnemyPlayer)
-                {
-                    new SoldierGroup(friendlyArmy, SoldierProfile, friendlyArmy.position);
-                }
-                if (toPlayer != HumanPlayer)
-                {
-                    new SoldierGroup(enemyArmy, SoldierProfile, enemyArmy.position);
-                }
+                var group = new SoldierGroup(toArmy, SoldierProfile, toArmy.position);
+                group.debugTagged = true;
             }
 
-            if (toPlayer != EnemyPlayer)
-            {
-                friendlyArmy.setAsStartArmy();
-            }
-            if (toPlayer != HumanPlayer)
-            {
-                enemyArmy.setAsStartArmy();
-            }
+            toArmy.setAsStartArmy();
         }
+
+        
 
         public void addTimedAttackFromEnemy(float seconds)
         {

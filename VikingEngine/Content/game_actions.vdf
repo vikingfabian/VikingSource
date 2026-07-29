@@ -80,9 +80,13 @@
 				"paste"				"#Action_paste"
 				"gamespeed"			"#Action_gamespeed"
 				"pause"				"#Action_pause"
+				"PinAndPing"		"#Action_PinAndPing"
+				"TextChat"			"#Action_TextChat"
+				"VoiceChat"			"#Action_VoiceChat"
 				
 				"next_city"			"#Action_next_city"
 				"next_army"			"#Action_next_army"
+				"next_pin"			"#Action_next_pin"
 				"next_war"			"#Action_next_war"
 
 				"controller_focus"	"#Action_controller_focus"
@@ -252,6 +256,12 @@
 			"Action_rotateCCW"			"Rotate CCW"
 			"Action_rotateCW"			"Rotate CW"
 			"Action_ToggleCameraMode"	"Toggle camera mode"
+
+			//Multiplayer update
+			"Action_PinAndPing"		"Pin"
+			"Action_TextChat"		"Text Chat"
+			"Action_VoiceChat"		"Voice Chat"
+			"Action_next_pin"		"Next Pin"
 		}
 		
 		"french"

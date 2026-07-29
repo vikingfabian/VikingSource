@@ -22,6 +22,11 @@ namespace VikingEngine
             w.Write(encoded);
         }
 
+        public static void FloatAsPercentU16_WriteEmpty(BinaryWriter w)
+        {
+            w.Write(ushort.MinValue);
+        }
+
         public static float ReadFloatFromPercentU16(BinaryReader r, float max)
         {
             ushort encoded = r.ReadUInt16();
@@ -162,9 +167,11 @@ namespace VikingEngine
 
         const float FloatMultiplier = 50; //Accuracy of 2%
 
-        public static void WriteFloatMultiplier(float value, System.IO.BinaryWriter w)
-        {            
-            w.Write((byte) (value * FloatMultiplier));
+        public static byte WriteFloatMultiplier(float value, System.IO.BinaryWriter w)
+        {
+           byte byteVal = (byte)(value * FloatMultiplier);
+            w.Write(byteVal);
+            return byteVal;
         }
 
         public static float ReadFloatMultiplier(System.IO.BinaryReader r)

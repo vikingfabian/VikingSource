@@ -9,6 +9,10 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_German : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "Breiter Scrollbalken";
+        public override string GameSettings_DisplayInputHelp => "Steuerungshilfe";
+        public override string GameSettings_InputSmoothing => "Eingabeglättung";
+
         //Mounts
         public override string InputSteam => "Steam Input";
         public override string Input_SimulateMouse => "Maus simulieren";

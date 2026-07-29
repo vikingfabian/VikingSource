@@ -57,6 +57,11 @@ namespace VikingEngine
             return new Color(r+change, g+change, b+change);
         }
 
+        public static int ValueDifference(Color col1, Color col2)
+        {
+            return Math.Abs(col1.R - col2.R) + Math.Abs(col1.G - col2.G) + Math.Abs(col1.B - col2.B);
+        }
+
         public static Color ChangeYellow(Color col, int change)
         {
             col.Deconstruct(out byte r, out byte g, out byte b);

@@ -1249,6 +1249,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/dog_growl2.wav
 
+#begin DSS/Sound/down.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/down.wav
+
 #begin DSS/Sound/drop_item.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1711,6 +1717,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/pig.wav
 
+#begin DSS/Sound/ping.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ping.wav
+
+#begin DSS/Sound/player_enters.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/player_enters.wav
+
 #begin DSS/Sound/reload_ballista1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1855,6 +1873,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/tab_hover.wav
 
+#begin DSS/Sound/TalkingShort.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/TalkingShort.wav
+
 #begin DSS/Sound/throw.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1872,6 +1896,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/trophy.wav
+
+#begin DSS/Sound/up.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/up.wav
 
 #begin DSS/Sound/wagon1.wav
 /importer:WavImporter
@@ -2941,6 +2971,9 @@
 #begin VoxelModel/LfWars/cityicon.vox
 /copy:VoxelModel/LfWars/cityicon.vox
 
+#begin VoxelModel/LfWars/decor_netstatue.vox
+/copy:VoxelModel/LfWars/decor_netstatue.vox
+
 #begin VoxelModel/LfWars/decor_statue.vox
 /copy:VoxelModel/LfWars/decor_statue.vox
 
@@ -3105,6 +3138,9 @@
 
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
+
+#begin VoxelModel/LfWars/pin.vox
+/copy:VoxelModel/LfWars/pin.vox
 
 #begin VoxelModel/LfWars/pony_brown.vox
 /copy:VoxelModel/LfWars/pony_brown.vox

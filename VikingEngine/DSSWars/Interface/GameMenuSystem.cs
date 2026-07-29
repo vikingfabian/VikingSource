@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Interface
         public const string UnderMenu_Options_Keyboard = "options_keyboard";
         public const string UnderMenu_Options_Keyboard_Key = "options_keyboard_key";
         public const string UnderMenu_ControllerDisconnected = "controller disconnected";
-        bool gameWasPaused;
+        public bool gameWasPaused;
         Graphics.Image blackFade;
         protected ImageLayers layer = ImageLayers.Foreground7;
         RichMenu menu;
@@ -50,8 +50,10 @@ namespace VikingEngine.DSSWars.Interface
             if (menu == null)
             {
                 gameWasPaused = Ref.isPaused;
-                Ref.SetPause(true);
-
+                if (!Ref.netSession.InMultiplayerSession)
+                {
+                    Ref.SetPause(true);
+                }
                 if (blackFade == null)
                 {
                     VectorRect area = Engine.Screen.Area;
@@ -88,6 +90,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
                 menu.updateMouseInput(ref mouseOver);
+
                 
                 if (input.Menu.DownEvent)
                 {
@@ -141,6 +144,20 @@ namespace VikingEngine.DSSWars.Interface
                         menu.Refresh(content);
                     }
                     break;
+                case NetworkSettingsMenu.BlockList:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        new NetworkSettingsMenu(menu, false).blockList(content);
+                        menu.Refresh(content);
+                    }
+                    break;
+                case NetworkSettingsMenu.JoinHistoryList:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        new NetworkSettingsMenu(menu, false).joinHistoryList(content);
+                        menu.Refresh(content);
+                    }
+                    break;
             }
 
             return true;
@@ -177,7 +194,16 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        void watchEpilogue()
+        public void OnMultiplayer()
+        {
+            if (menu != null)
+            {
+                Ref.SetPause(gameWasPaused);
+
+            }
+        }
+
+            void watchEpilogue()
         {
             closeMenu();
             new CutScene.NightmarePrologue();
@@ -189,7 +215,17 @@ namespace VikingEngine.DSSWars.Interface
 
             if (DssRef.state.cutScene == null)
             {
-                new SaveScene(false);
+                if (Ref.netSession.InMultiplayerSession)
+                {
+                    if (Ref.netSession.IsHost)
+                    {
+                        ((PlayState)DssRef.state).RequestClientGamestates(false);
+                    }
+                }
+                else
+                {
+                    new SaveScene(false);
+                }
             }
         }
 
@@ -199,7 +235,18 @@ namespace VikingEngine.DSSWars.Interface
 
             if (DssRef.state.cutScene == null)
             {
-                new SaveScene(true).ExitGame = true;
+                if (Ref.netSession.InMultiplayerSession)
+                {
+                    if (Ref.netSession.IsHost)
+                    {
+                        ((PlayState)DssRef.state).RequestClientGamestates(true, true);
+                    }
+                }
+                else
+                {
+                    new SaveScene(true).ExitGame = true;
+                }
+                //new SaveScene(true).ExitGame = true;
             }
             else
             {
@@ -255,35 +302,50 @@ namespace VikingEngine.DSSWars.Interface
 
             HudLib.WishListButton(content);
 
-            
+
+            if (Ref.netSession.IsHostingMultiplayer)
+            {
+                PlayerHud_HeadOptions.SpeedOptions(DssRef.state.LocalHost(), content, false, true);
+            }
 
             if (!PlatformSettings.STEAM_DEMO && 
                 DssRef.settings.playType == GameState.PlayStateType.Play)
             {
-                if (DssRef.storage.runTutorial)
+                if (DssRef.state.LocalHost().tutorial != null)
                 { //TODO yes no dialogue
                     endTutorialButton(content);
-                   
-                    
                 }
 
-                content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                     //new RbImage(SpriteName.WarsHudIconSave),
-                     //   new RbSpace(),
-                    new RbText(DssRef.lang.Hud_Save) }, new RbAction(saveGameState),
-                    new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
+                if (DssRef.state.host)
                 {
-                    fillWidth = true
-                });
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    new RbText(DssRef.lang.Hud_Save) }, new RbAction(saveGameState),
+                        new RbTooltip_Text(DssRef.lang.GameMenu_SaveStateWarnings))
+                    {
+                        fillWidth = true
+                    });
+                }
+                content.newLine();
+
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.SteamIcon),
+                    new RbSpace(),
+                    new RbImage(SpriteName.WarsHudIconNetwork),
+                    new RbSpace(),
+                    new RbText(".Invite")
+                    }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text("Open Steam overlay"))
+                    {
+                        fillWidth = true
+                    });
 
 
 #if DEBUG
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
-                {
-                    fillWidth = true
-                });
+                    {
+                        fillWidth = true
+                    });
 #endif
             }
 
@@ -293,7 +355,7 @@ namespace VikingEngine.DSSWars.Interface
                 DssRef.storage.multiplayerGameSpeedToMenu(content, menu);
             }
 
-
+            
             content.newLine();
             Ref.gamesett.volumeOptions(content);
 
@@ -320,7 +382,11 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
                     p.hud.minimapProperty));
+                
             }
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GameSettings_DisplayInputHelp) },
+                DisplayInputHelpProperty));
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -353,7 +419,8 @@ namespace VikingEngine.DSSWars.Interface
             });
 
             if (!PlatformSettings.STEAM_DEMO && 
-                DssRef.settings.playType == GameState.PlayStateType.Play)
+                DssRef.settings.playType == GameState.PlayStateType.Play &&
+                DssRef.state.host)
             {
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_SaveAndExit) }, new RbAction(saveAndExit, RbSoundType.Back))
@@ -386,6 +453,20 @@ namespace VikingEngine.DSSWars.Interface
             });
         }
 
+        bool DisplayInputHelpProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                Ref.gamesett.displayInputHelp = value;
+                Ref.gamesett.settingsHasChanged = true;
+
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.hud.inputHelp.refreshUpdate(p);
+                }
+            }
+            return Ref.gamesett.displayInputHelp;
+        }
 
         public static void SettingsToMenu(RichBoxContent content, RichMenu menu, bool lobby)
         {
@@ -457,6 +538,14 @@ namespace VikingEngine.DSSWars.Interface
             HudLib.Label(content, SpriteName.ArrowKeys, Ref.langOpt.Settings_KeyMapPanSpeed);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4, 0.1f), Ref.gamesett.panSpeedProperty, true));
+
+            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Language_LabelAndText_Colon, Ref.langOpt.GameSettings_InputSmoothing, Ref.langOpt.MouseButtonAction_Pan));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.0f, 1f, 0.1f), Ref.gamesett.panSmoothingProperty, true));
+
+            HudLib.Label(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Language_LabelAndText_Colon, Ref.langOpt.GameSettings_InputSmoothing, DssRef.lang.ButtonAction_Zoom));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.0f, 0.9f, 0.1f), Ref.gamesett.zoomSmoothingProperty, true));
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Mouse, 0.8f), new RbSpace(), new RbText(Ref.langOpt.MouseSettings_Title) },
@@ -534,16 +623,10 @@ namespace VikingEngine.DSSWars.Interface
                 return DssRef.storage.blockImportAchievements;
             }
 
-            //bool longerBuildQueueProperty(object tag, bool set, bool value)
-            //{
-            //    if (set)
-            //    {
-            //        DssRef.storage.longerBuildQueue = value;
-
-            //        DssRef.storage.Save(null);
-            //    }
-            //    return DssRef.storage.longerBuildQueue;
-            //}
+            content.newParagraph();
+            content.h2(DssRef.lang.Multiplayer_Title, HudLib.TitleColor_Head);
+            content.newLine();
+            new NetworkSettingsMenu(menu, false).multiplayerSettingsMenuContent(content);
         }
 
         static void muteDisconnect(RichBoxContent content)
@@ -722,7 +805,17 @@ namespace VikingEngine.DSSWars.Interface
                 closeMenu();
             })));
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Find city from id") }, new RbAction(beginFindCityId))
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Find city from id (broken)") }, new RbAction(beginFindCityId))
+            {
+                fillWidth = true
+            });
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Enter battle lab") }, 
+                new RbAction(()=>
+                {
+                    DssRef.state.LocalHost().EnterBattleLab();
+                    closeMenu();
+                }))
             {
                 fillWidth = true
             });

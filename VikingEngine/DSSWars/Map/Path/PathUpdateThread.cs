@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.Voxels;
 
@@ -16,11 +17,11 @@ namespace VikingEngine.DSSWars.Map.Path
         int startFaction;
         int endFaction;
 
-        public LayerPathFindingPool layerPathFindingPool = new LayerPathFindingPool();
+        //public LayerPathFindingPool layerPathFindingPool = new LayerPathFindingPool();
         public PathFindingPool pathFindingPool = new PathFindingPool();
         public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
 
-        public List<GameObject.AbsArmy> ArmiesColl_asyncupdate = new List<AbsArmy>();
+        public List<AbsArmy> ArmiesColl_asyncupdate = new List<AbsArmy>();
 
         public PathUpdateThread(int index, int startFaction, int endFaction, System.Threading.ThreadPriority prio = System.Threading.ThreadPriority.BelowNormal)
         {              

@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 //return payment
                 var city = GetCity();
-                var faction = city.GetFaction();
+                var faction = city.pfaction.GetFaction();
                 recruitCost(city, out int men, out int gold);
 
                 faction.money.AddGold(gold);
@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     recruitTimeSeconds = city.casualRecruitTime_sec(first.soldierType);
 
                     if (DssRef.storage.runTutorial &&
-                        city.GetFaction().armies.Count == 0)
+                        city.pfaction.GetFaction().armies.Count == 0)
                     {
                         recruitTimeSeconds = 5;
                     }
@@ -192,7 +192,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
                 else
                 {
-                    var faction = city.GetFaction();
+                    var faction = city.pfaction.GetFaction();
 
                     recruitCost(city, out int men, out int gold);
                     if (faction.hasGold(gold, city) && city.workForce.amount >= men)
@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
                 else
                 {
-                    var faction = city.GetFaction();
+                    var faction = city.pfaction.GetFaction();
 
                     if (mayQueueBuild(city, first.build))
                     {
@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
                 else
                 {
-                    hasGold = Math.Min(player.faction.GetGold(city), gold);
+                    hasGold = Math.Min(player.pfaction.GetFaction().GetGold(city), gold);
                     hasMen = Math.Min(city.workForce.amount, men);
                 }
 
@@ -369,7 +369,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                 var first = arraylib.First(buildQueue);
                 buildCost(city, out int gold);
-                long hasGold = payedBuildCost ? gold : Math.Min(player.faction.GetGold(city), gold);
+                long hasGold = payedBuildCost ? gold : Math.Min(player.pfaction.GetFaction().GetGold(city), gold);
 
                 progressPoint(ItemResourceType.Gold, (int)hasGold, gold);
 
@@ -480,7 +480,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             if (payedBuildCost)
             {
                 var city = GetCity();
-                var faction = city.GetFaction();
+                var faction = city.pfaction.GetFaction();
                 buildCost(city, out int gold);
                 faction.money.AddGold(gold);
             }

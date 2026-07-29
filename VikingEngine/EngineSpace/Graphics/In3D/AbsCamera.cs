@@ -71,6 +71,12 @@ namespace VikingEngine.Graphics
             clearGoalTarget();
         }
 
+        public void MoveGoalLookTargetXZ(Vector2 move)
+        {
+            goalLookTarget.X += move.X;
+            goalLookTarget.Z += move.Y;
+        }
+
         public void clearGoalTarget()
         {
             goalLookTarget = lookTarget;
@@ -200,6 +206,7 @@ namespace VikingEngine.Graphics
 
         protected Vector2 tilt = Vector2.Zero;
         public Vector3 goalLookTarget = Vector3.Zero;
+        public Vector3 prevLookTarget = new Vector3(100, 0, 100);
         protected Vector3 lookTarget = new Vector3(100, 0, 100);
         public float zoomChaseLengthPercentage = 0.1f;
         public float positionChaseLengthPercentage = VikingEngine.LootFest.Players.Player.HeroCamChaseSpeed;
@@ -373,6 +380,7 @@ namespace VikingEngine.Graphics
         }
         virtual public void Time_Update(float time_ms)
         {
+           
             camShakeValue -= time_ms;
         }
 

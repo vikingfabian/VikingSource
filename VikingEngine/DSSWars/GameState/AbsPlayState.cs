@@ -40,12 +40,14 @@ namespace VikingEngine.DSSWars.GameState
         public ConcurrentStack<VoxelModelInstance_Pooled> voxelModelInstancesPooled = new ConcurrentStack<VoxelModelInstance_Pooled>();
 
         public bool exitThreads = false;
-        protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
+        //protected Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);
+        protected ProcessTime processTime = new ProcessTime();
 
         public AbsCutScene cutScene = null;
         public bool host = true;
         public GameMenuSystem menuSystem;
-        public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
+        public SpottedArray<Players.RemotePlayer> remotePlayers;
+        protected SpottedArrayCounter<Players.RemotePlayer> remotePlayersCounter;
         public List<Players.LocalPlayer> localPlayers;
         public EventManager events;
         public Progress progress = new Progress();
@@ -63,6 +65,9 @@ namespace VikingEngine.DSSWars.GameState
         public AbsPlayState() 
             :base() 
         {
+            remotePlayers = new SpottedArray<Players.RemotePlayer>();
+            remotePlayersCounter = new SpottedArrayCounter<RemotePlayer>(remotePlayers);
+
             DssRef.state = this;
             
         }
@@ -104,7 +109,7 @@ namespace VikingEngine.DSSWars.GameState
 
         protected void prePlayerInit()
         {
-            XpLib.Unlock = new TechnologyUnlock(DssRef.difficulty.setting_techMulti);
+            XpLib.Unlock = new TechnologyUnlock(DssRef.storage.ruleset_instance.setting_techMulti);
             DssRef.storage.profileStorage.refreshProfiles();
             CityMenu.InitGame();
         }
@@ -123,8 +128,6 @@ namespace VikingEngine.DSSWars.GameState
             {
                 p.hud.initMap();
             }
-
-            
         }
 
         public ConcurrentStack<Graphics.VoxelModelInstance> modelPool(bool detail)
@@ -145,12 +148,78 @@ namespace VikingEngine.DSSWars.GameState
 
                 if (closeMenuInput_AnyPlayer())
                 {
+                    if (Ref.netsett.settingsHasChanged)
+                    {
+                        Ref.netsett.settingsHasChanged = false;
+                        DssRef.storage.Save(null);
+                    }
                     menuSystem.closeMenu();
                 }
 
                 return true;
             }
             return false;
+        }
+
+        public void TogglePause()
+        {   
+            Ref.TogglePause();
+            menuSystem.gameWasPaused = Ref.isPaused;
+            onSpeedChange();
+        }
+
+        public void PlayPause(bool pause)
+        {
+            Ref.SetPause(pause);
+            menuSystem.gameWasPaused = Ref.isPaused;
+            onSpeedChange();
+        }
+
+        public void GameSpeedClick(int toSpeed)
+        {            
+            Ref.SetPause(false);
+            menuSystem.gameWasPaused = Ref.isPaused;
+            Ref.SetGameSpeed(toSpeed);
+            onSpeedChange();
+        }
+
+        protected int gameSpeedValue()
+        {
+            int speed = Ref.isPaused ? 0 : (int)Ref.GameTimeSpeed;
+            return speed;
+        }
+
+        public void onSpeedChange()
+        {
+            if (host)
+            {
+                var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Reliable);                
+                w.Write((byte)gameSpeedValue());
+            }
+
+            if (Ref.isPaused)
+            {
+                SoundLib.speed_down.Play(Pan.Right);
+            }
+            else
+            {
+                SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
+            }
+            LocalHost().hud.needRefresh = true;
+        }
+
+        public void PauseOnNetSave(bool pause)
+        {
+            Ref.SetPause(pause);
+            if (Ref.isPaused)
+            {
+                SoundLib.speed_down.Play(Pan.Right);
+            }
+            else
+            {
+                SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
+            }
+            LocalHost().hud.needRefresh = true;
         }
 
         public bool closeMenuInput_AnyPlayer()
@@ -168,15 +237,18 @@ namespace VikingEngine.DSSWars.GameState
 
         protected bool asynchArmyAiUpdate(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    var armiesC = factions.sel.armies.counter();
-                    while (armiesC.Next())
+                    if (factions.sel.IsNetHosted())
                     {
-                        armiesC.sel.asynchAiUpdate(time);
+                        var armiesC = factions.sel.armies.counter();
+                        while (armiesC.Next())
+                        {
+                            armiesC.sel.asynchAiUpdate(time);
+                        }
                     }
                 }
             }
@@ -207,11 +279,16 @@ namespace VikingEngine.DSSWars.GameState
 
         bool asyncMapBorders(int id, float time)
         {
-            if (cutScene == null)
+            if (UpdateReady())
             {
                 overviewMap.runAsyncTask();
             }
             return exitThreads;
+        }
+
+        virtual protected bool UpdateReady()
+        {
+            return cutScene == null;
         }
 
         protected bool asynchSleepObjectsUpdate(int id, float time)
@@ -223,14 +300,16 @@ namespace VikingEngine.DSSWars.GameState
                     var factions = DssRef.world.factions.counter();
                     while (factions.Next())
                     {
-                        
-                        factions.sel.asynchSleepObjectsUpdate(time);
+                        factions.sel.asynchSleepObjectsUpdate(time);                        
                     }
 
 
                     foreach (var m in DssRef.world.cities)
                     {
-                        m.async_sleepUpate(time);
+                        if (m.IsNetHosted)
+                        {
+                            m.async_sleepUpate(time);
+                        }
                     }
 
                 }
@@ -247,21 +326,19 @@ namespace VikingEngine.DSSWars.GameState
         protected bool asyncBattlesUpdate(int id, float time)
         {
             if (cutScene == null)
-            {
+            {                
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    var armiesC = factions.sel.armies.counter();
-                    while (armiesC.Next())
-                    {
-                        armiesC.sel.asyncBattleUpdate();
-                    }
-                }
-
-                foreach (var m in DssRef.world.cities)
-                {
-                    m.asyncBattleUpdate();
-                }
+                    //if (factions.sel.IsNetHosted())
+                    //{
+                        var armiesC = factions.sel.armies.counter();
+                        while (armiesC.Next())
+                        {
+                            armiesC.sel.asyncBattleUpdate();
+                        }
+                    //}
+                }              
             }
             return exitThreads;
         }
@@ -314,8 +391,14 @@ namespace VikingEngine.DSSWars.GameState
             new ExitToLobby(false);
         }
 
-        public Players.RemotePlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
+        public Players.AbsHumanPlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
         {
+            Players.AbsHumanPlayer player = peer.instancePeers?[SplitScreenIndex].Tag as Players.AbsHumanPlayer;
+            if (player != null)
+            {
+                return player;
+            }
+
             var remotePlayerC = remotePlayers.counter();
             while (remotePlayerC.Next())
             {
@@ -325,9 +408,19 @@ namespace VikingEngine.DSSWars.GameState
                 }
                 else if (remotePlayerC.sel.networkPeer.peer == peer)
                 {
-                    //TODO return region to AI
                     return remotePlayerC.sel;
                 }
+                else if (remotePlayerC.sel.networkPeer.peer.fullId == peer.fullId)
+                {
+                    //Duplicate!
+                    remotePlayerC.sel.DeleteMe();
+                    remotePlayerC.RemoveAtCurrent();
+                }
+            }
+
+            if (peer.fullId == Ref.netSession.LocalPeer().fullId)
+            {
+                return LocalHost();
             }
 
             //No found
@@ -336,14 +429,14 @@ namespace VikingEngine.DSSWars.GameState
             {
                 remotePlayers.Add(new Players.RemotePlayer(ins));
             }
-            return (Players.RemotePlayer)peer.instancePeers[SplitScreenIndex].Tag;
+            return (Players.AbsHumanPlayer)peer.instancePeers[SplitScreenIndex].Tag;
         }
         virtual public void OneMinute_Update()
         { }
 
         public bool IsSinglePlayer_LocalAndOnline()
         { 
-            return DssRef.storage.playerCount == 1 && !Ref.netSession.InMultiplayerSession;
+            return DssRef.storage.playerCount == 1 && remotePlayers.Count == 0;
         }
         public bool IsSinglePlayer_Local()
         {
@@ -357,7 +450,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             return localPlayers[0];
         }
-        virtual public PlayState Game()
+        virtual public PlayState playstate()
         {
             throw new NotImplementedException();
         }

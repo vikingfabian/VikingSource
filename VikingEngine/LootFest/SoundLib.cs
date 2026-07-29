@@ -74,7 +74,7 @@ namespace VikingEngine.LootFest
             Engine.LoadContent.LoadSound(LoadedSound.EnemyProj2, SoundDir + "enemyproj2");
 
             Engine.LoadContent.LoadSound(LoadedSound.door, SoundDir + "door");
-            Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
+           
 
             Engine.LoadContent.LoadSound(LoadedSound.express_anger, SoundDir + "express_anger");
             Engine.LoadContent.LoadSound(LoadedSound.express_hi1, SoundDir + "express_hi1");
@@ -85,6 +85,8 @@ namespace VikingEngine.LootFest
             Engine.LoadContent.LoadSound(LoadedSound.express_teasing2, SoundDir + "express_teasing2");
             Engine.LoadContent.LoadSound(LoadedSound.express_thumbup1, SoundDir + "express_thumbup1");
             Engine.LoadContent.LoadSound(LoadedSound.express_thumbup2, SoundDir + "express_thumbup2");
+
+            Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
             Engine.LoadContent.LoadSound(LoadedSound.player_enters, SoundDir + "player_enters");
             Engine.LoadContent.LoadSound(LoadedSound.enter_build, SoundDir + "enter_build");
            

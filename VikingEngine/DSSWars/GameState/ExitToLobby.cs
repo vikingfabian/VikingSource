@@ -22,11 +22,14 @@ namespace VikingEngine.DSSWars.GameState
             this.startLoadingMap = startLoadingMap;
             draw.ClrColor = Color.Black;
             Ref.lobby?.disconnect(null);
+
+            DssRef.storage.Save(null);
+            
             //Input.Mouse.RestoreDefault();//Input.Mouse.Visible = true;
         }
         void load_asynch()
         {
-            bgTex = LobbyState.LoadBg();
+            bgTex = MainMenuState.LoadBg();
         }
         public override void Time_Update(float time)
         {
@@ -46,7 +49,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             DssRef.state = null;
             DssRef.world = null;
-            var lobby = new LobbyState(bgTex, startLoadingMap);
+            var lobby = new MainMenuState(bgTex, startLoadingMap);
 
             if (mapBackgroundLoading != null)
             {

@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
@@ -29,6 +30,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool cityUpdate;
         int tabCity = -1;
         SpottedArrayCounter<Army> tabArmy;
+        SpottedArrayCounter<LocationPin> tabPin;
         int tabWarFaction = -1;
         public int[] GameSpeedOptions;
         public InputHelpState inputHelpState = InputHelpState.Map;
@@ -51,15 +53,22 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             cityUpdate = DssRef.state.PlayType() == GameState.PlayStateType.Play;
 
-            tabArmy = player.faction.armies.counter();            
+            //tabArmy = player.pfaction.GetFaction().armies.counter();            
+            //tabPin = player.pins.counter();
 
             map = new Players.MapControls(player);
-            if (player.faction.mainCity != null)
+            if (player.pfaction.GetFaction().mainCity != null)
             {
-                map.setCameraPos(player.faction.mainCity.tilePos);
+                map.setCameraPos(player.pfaction.GetFaction().mainCity.tilePos);
             }
-
+            refreshFaction();
             refreshGameSpeedOptions(true);
+        }
+
+        public void refreshFaction()
+        {
+            tabArmy = player.pfaction.GetFaction().armies.counter();
+            tabPin = player.pins.counter();
         }
 
         public void refreshGameSpeedOptions(bool startUp)
@@ -84,6 +93,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
+            map.refreshSetting();
         }
 
         public void update()
@@ -145,6 +155,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else if (diplomacy != null)
             {   
+                player.playerNetState = PlayerNetState.Diplomacy;
                 map.mapControlsUpdate();
                 player.hud.updateToolTip_menu();
 
@@ -159,6 +170,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else
             {
+                player.playerNetState = PlayerNetState.Map;
+                if (map.selection.obj != null && map.selection.obj.gameobjectType() == GameObjectType.City)
+                {
+                    player.playerNetState = PlayerNetState.City;
+                }
                 inputHelpState = InputHelpState.Map;
                 map.focusedUpdate();
 
@@ -173,6 +189,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
                 else if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
                 {
+                    player.playerNetState = PlayerNetState.Building;
                     inputHelpState = InputHelpState.Build;
                     map.cancelRectangleSelect();
                     build.updateBuildMode();                    
@@ -215,6 +232,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (army != null)
             {
                 inputHelpState = InputHelpState.Army;
+                player.playerNetState = PlayerNetState.Army;
                 army.update();
             }
             else
@@ -292,13 +310,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         setMenuFocus(false, true);
                         clearSelection();
-                    }
-                
+                    }                
 
                     if (input.Controller_TabLeft.DownEvent)
                     {
                         controllerTabbing(-1, true);
                     }
+
                     if (input.Controller_TabRight.DownEvent)
                     {
                         controllerTabbing(1, true);
@@ -309,49 +327,38 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     player.hud.messages.onControllerClick();
                 }
+
                 
             }
 
-            //if (input.inputSource.IsController)
-            //{
+            if (Ref.netSession.InMultiplayerSession)
+            {
+                if (input.TextChat.DownEvent)
+                {
+                    new TextChat();
+                }
+                switch (Ref.netsett.voiceOption)
+                {
+                    case Network.VoiceOption.ButtonToggle:
+                        if (input.VoiceChat.DownEvent)
+                        {
+                            Ref.steam.ToggleRecording();
+                        }
+                        break;
 
-            //    bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
-            //    if (!menuFocusState &&
-            //    !hud.menuFocus &&
-            //        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))
-            //    {
-            //        if (armyControls != null &&
-            //            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
-            //        {
-            //            mapExecute();
-            //        }
-            //        else
-            //        {
-            //            mapSelect();
-            //        }
-            //    }
-
-            //    if (input.ControllerMessageClick.DownEvent)
-            //    {
-            //        hud.messages.onControllerClick();
-            //    }
-
-            //    if (inputConnected && !input.Connected)
-            //    {
-            //        DssRef.state.menuSystem.controllerLost();
-            //    }
-            //    inputConnected = input.Connected;
-            //}
-            //else
-            //{
-            //    if (!hud.mouseOverHud)
-            //    {
-
-            //    }
-            //}
-
-
-
+                    case Network.VoiceOption.ButtonHold:
+                        if (input.VoiceChat.DownEvent)
+                        {
+                            Ref.steam.StartRecording();
+                        }
+                        else if (input.VoiceChat.UpEvent)
+                        { 
+                            Ref.steam.StopRecording();
+                        }
+                        break;
+                }
+            }
+            
             gameSpeedInput();
 
             updateObjectTabbing();
@@ -603,7 +610,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.mapLayersManager.current.DrawDetailLayer)
             {
-                if (input.Build.DownEvent && map.hover.subTile.city.factionIndex == player.faction.myIndex)
+                if (input.Build.DownEvent && map.hover.subTile.city.pfaction == player.pfaction)
                 {
                     if (player.profile.casualControls)
                     {
@@ -837,7 +844,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             if (map.hover.obj != null &&
-                (map.hover.obj.GetFaction() == player.faction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
+                (map.hover.obj.pfaction.GetFaction() == player.pfaction.GetFaction() || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
             {
                 SoundLib.click.Play();
                 map.onSelect();
@@ -903,7 +910,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
             {
                 var city = tile.City();
-                if (city.factionIndex == player.faction.myIndex)
+                if (city.pfaction == player.pfaction)
                 {
                     mapSelect(city);
                 }
@@ -913,7 +920,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         void updateObjectTabbing()
         {
             //CITY
-            if (input.NextCity.DownEvent && player.faction.cities.Count > 0)
+            if (input.NextCity.DownEvent && player.pfaction.GetFaction().cities.Count > 0)
             {
                 nextCity();
                 if (input.inputSource.ControllerMode)
@@ -925,13 +932,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //ARMY
             if (input.NextArmy.DownEvent)
             {
-                nextArmy(!Input.Keyboard.Shift);
-         
+                nextArmy(!input.Shift());         
+            }
+
+            if (input.NextArmy.DownEvent)
+            {
+                nextPin(!input.Shift());
+
             }
 
             if (input.NextWar.DownEvent)
             {
-                nextWar(!Input.Keyboard.Shift);
+                nextWar(!input.Shift());
             }
         }
 
@@ -947,7 +959,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.needRefresh = true;
 
             int dir = 1;
-            if (Input.Keyboard.Shift &&
+            if (input.Shift() &&
                 player.gameControls.input.inputSource.HasKeyBoard)
             {
                 dir = -1;
@@ -956,17 +968,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             int loops = 0;
             do
             {
-                tabCity = Bound.SetRollover(tabCity + dir, 0, player.faction.cities.Array.Length-1);
+                tabCity = Bound.SetRollover(tabCity + dir, 0, player.pfaction.GetFaction().cities.Array.Length-1);
 
-                var cIx = player.faction.cities.Array[tabCity];
+                var cIx = player.pfaction.GetFaction().cities.Array[tabCity];
                 if (cIx >= 0)
                 {
                     var city = DssRef.world.cities[cIx];
-                    if (city.factionIndex == player.faction.myIndex)
+                    if (city.pfaction == player.pfaction)
                     {
                         if (city.automateCity &&
                             player.gameControls.input.inputSource.HasKeyBoard &&
-                            Input.Keyboard.Alt)
+                            input.Alt())
                         {
                             continue;
                         }
@@ -980,7 +992,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                 }
 
-            } while (++loops < player.faction.cities.Array.Length);
+            } while (++loops < player.pfaction.GetFaction().cities.Array.Length);
 
             //if (forward)
             //{
@@ -1026,8 +1038,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     map.cameraFocus = tabArmy.sel;
                     mapSelect(tabArmy.sel);
-
-                    return;
                 }
             }
             else
@@ -1036,11 +1046,31 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     map.cameraFocus = tabArmy.sel;
                     mapSelect(tabArmy.sel);
-
-                    return;
                 }
             }
             
+        }
+        public void nextPin(bool forward)
+        {
+            //xx
+            player.hud.needRefresh = true;
+            if (forward)
+            {
+                if (tabPin.Next_Rollover())
+                {
+                    map.cameraFocus = tabPin.sel;
+                    mapSelect(tabPin.sel);
+                }
+            }
+            else
+            {
+                if (tabPin.Prev_Rollover())
+                {
+                    map.cameraFocus = tabPin.sel;
+                    mapSelect(tabPin.sel);
+                }
+            }
+
         }
 
         public void nextWar(bool forward)
@@ -1089,8 +1119,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             bool checkRelation(int i)
             {
-                var rel = DssRef.world.diplomacy.GetRelation(player.faction.myIndex, i);//player.faction.diplomaticRelations[i];
-                if (rel.Relation <= RelationType.RelationTypeN3_War)
+                var rel = DssRef.world.diplomacy.GetRelation(player.pfaction, new GameObject.ObjectPointer.PFaction(i));//player.faction.diplomaticRelations[i];
+                if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
                 {
                     var enemy = DssRef.world.faction(i);
                     if (enemy != null)
@@ -1157,29 +1187,36 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         void gameSpeedInput()
         {
-            if (DssRef.state.IsSinglePlayer_Local())
+            if (DssRef.state.IsSinglePlayer_LocalAndOnline() && (input.inputSource.HasKeyBoard || tabFocus() == ControllerTabFocus.Pause_GamePlay))
             {
                 if ((DssRef.difficulty.setting_allowPauseCommand || StartupSettings.PauseCheat) &&
                     input.PauseGame.DownEvent)
                 {
                     Ref.TogglePause();
+
+                    DssRef.state.onSpeedChange();
+
                 }
 
                 if (input.GameSpeed.DownEvent)
                 {
                     setNextGameSpeed();
+
+                    DssRef.state.onSpeedChange();
+
                 }
             }
         }
 
         void setNextGameSpeed()
         {
-            if (DssRef.state.IsSinglePlayer_Local())
+            if (DssRef.state.IsSinglePlayer_LocalAndOnline())
             {
                 if (Ref.isPaused)
                 {
                     Ref.SetPause(false);
                     player.hud.needRefresh = true;
+
                 }
                 else
                 {

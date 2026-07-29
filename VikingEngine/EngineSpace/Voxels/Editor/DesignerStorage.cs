@@ -74,7 +74,7 @@ namespace VikingEngine.Voxels
            
            saveFileName = modelName.ToString();
            
-            Debug.Log("Loading vox model: " + modelName.ToString());
+            //Debug.Log("Loading vox model: " + modelName.ToString());
         }
 
         public void loadRetailModel(string modelName)
@@ -84,7 +84,7 @@ namespace VikingEngine.Voxels
 
             saveFileName = modelName;
 
-            Debug.Log("Loading vox model: " + modelName.ToString());
+            //Debug.Log("Loading vox model: " + modelName.ToString());
         }
 
         void modelLoaded(VoxelObjGridDataAnimHD model)
@@ -338,7 +338,7 @@ namespace VikingEngine.Voxels
         {
             var grid = designer.SelectionToGrid();
 
-            Voxels.VoxelLib.WriteVoxelObjAnimHD(w, grid.MaterialGrid);
+            Voxels.VoxelLib.WriteVoxelObjAnimHD(w, grid);
         }
 
         void readSelection(System.IO.BinaryReader r)

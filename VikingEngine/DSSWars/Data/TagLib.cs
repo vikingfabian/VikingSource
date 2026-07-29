@@ -450,7 +450,7 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
-        public static void TagsToMenu(RichBoxContent content, LocalPlayer player, AbsArmy mapObj)
+        public static void TagsToMenu(RichBoxContent content, LocalPlayer player, AbsMapObject mapObj)
         {
             HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
             content.newLine();

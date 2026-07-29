@@ -84,54 +84,53 @@ namespace VikingEngine.LootFest
         }
 
         public override void NetEvent_SessionsFound(
-            List<AbsAvailableSession> availableSessions, 
-            List<AbsAvailableSession> prevAvailableSessionsList)
+            List<AbsAvailableSession> availableSessions)
         {
-            if (availableSessions != null && 
-                LfRef.gamestate.LocalHostingPlayer.inEditor == false)
-            {
-                base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
+            //if (availableSessions != null && 
+            //    LfRef.gamestate.LocalHostingPlayer.inEditor == false)
+            //{
+            //    base.NetEvent_SessionsFound(availableSessions);
 
-                List<AbsAvailableSession> newLobbies, lostLobbies;
+            //    List<AbsAvailableSession> newLobbies, lostLobbies;
 
-                prevAvailableSessionsList = new List<AbsAvailableSession>(lobbies.Count);
-                foreach (var m in lobbies)
-                {
-                    prevAvailableSessionsList.Add(m.lobby);
-                }
+            //    prevAvailableSessionsList = new List<AbsAvailableSession>(lobbies.Count);
+            //    foreach (var m in lobbies)
+            //    {
+            //        prevAvailableSessionsList.Add(m.lobby);
+            //    }
 
-                filterNewAndOldLobbies(availableSessions, prevAvailableSessionsList, out newLobbies, out lostLobbies);
+            //    filterNewAndOldLobbies(availableSessions, prevAvailableSessionsList, out newLobbies, out lostLobbies);
 
-                if (lostLobbies.Count > 0)
-                {
-                    for (int i = lobbies.Count - 1; i >= 0; --i)
-                    {
-                        if (lostLobbies.Contains(lobbies[i].lobby))
-                        {
-                            lobbies[i].remove();
-                        }
-                    }
-                }
+            //    if (lostLobbies.Count > 0)
+            //    {
+            //        for (int i = lobbies.Count - 1; i >= 0; --i)
+            //        {
+            //            if (lostLobbies.Contains(lobbies[i].lobby))
+            //            {
+            //                lobbies[i].remove();
+            //            }
+            //        }
+            //    }
 
-                for (int i = lobbies.Count - 1; i >= 0; --i)
-                {
-                    if (lobbies[i].IsDeleted)
-                    {
-                        lobbies.RemoveAt(i);
-                    }
-                }
+            //    for (int i = lobbies.Count - 1; i >= 0; --i)
+            //    {
+            //        if (lobbies[i].IsDeleted)
+            //        {
+            //            lobbies.RemoveAt(i);
+            //        }
+            //    }
 
 
-                foreach (var m in newLobbies)
-                {
-                    Vector3 pos = LfRef.gamestate.LocalHostingPlayer.hero.Position;
-                    pos.Y += 5;
+            //    foreach (var m in newLobbies)
+            //    {
+            //        Vector3 pos = LfRef.gamestate.LocalHostingPlayer.hero.Position;
+            //        pos.Y += 5;
 
-                    pos += VectorExt.V2toV3XZ(Rotation1D.Random().Direction(16f));
+            //        pos += VectorExt.V2toV3XZ(Rotation1D.Random().Direction(16f));
 
-                    lobbies.Add(new VikingEngine.LootFest.GO.NPC.LobbyCharacter(new GO.GoArgs(pos), m));
-                }
-            }
+            //        lobbies.Add(new VikingEngine.LootFest.GO.NPC.LobbyCharacter(new GO.GoArgs(pos), m));
+            //    }
+            //}
             
         }
     }

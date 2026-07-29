@@ -6,9 +6,11 @@ using System.Text;
 
 namespace VikingEngine.Network
 {
-    interface INetworkUpdateReviever
+    interface INetworkUpdateReciever
     {
         void NetworkStatusMessage(Network.NetworkStatusMessage message);
+
+        void NetEvent_ErrorMessage(string message, Network.AbsNetworkPeer peer, bool peerIsSender);
         void NetEvent_PeerJoined(Network.AbsNetworkPeer gamer);
         void NetEvent_JoinedLobby(string name, ulong lobbyHost, bool fromInvite);
         void NetEvent_GotNetworkId();
@@ -17,10 +19,16 @@ namespace VikingEngine.Network
         void NetEvent_PingReturned(Network.AbsNetworkPeer gamer);
         void NetEvent_ConnectionLost(string reason);
         void NetEvent_SessionsFound(
-            List<AbsAvailableSession> availableSessions, 
-            List<AbsAvailableSession> prevAvailableSessionsList);
+            List<AbsAvailableSession> availableSessions);
 
         void NetEvent_LargePacket(Network.ReceivedPacket packet);
+
+        AbsLobbyMetaData NetEvent_StartLobbyMetaData();
+
+        /// <summary>
+        /// Is hosting a lobby, only to search for others
+        /// </summary>
+        bool InLobbySearchState();
     }
 
     enum NetLobbyState
@@ -33,7 +41,7 @@ namespace VikingEngine.Network
         Closing,
     }
 
-    class NetLobby : INetworkUpdateReviever
+    class NetLobby : INetworkUpdateReciever
     {
         public bool autoCreateSession = true;
         public bool searchLobbies = false;
@@ -62,16 +70,23 @@ namespace VikingEngine.Network
 #if PCGAME
             if (Ref.steam.isNetworkInitialized)
             {
-                if (Ref.p2p.IsHostingSession)
+                if (Ref.netsett.hostNetwork)
                 {
-                    state = NetLobbyState.LockedInSession;
+                    if (Ref.p2p.IsHostingSession)
+                    {
+                        state = NetLobbyState.LockedInSession;
+                    }
+                    else
+                    {
+                        state = NetLobbyState.CreatingSession;
+                        createLobbyFailTime = new Time(8, TimeUnit.Seconds);
+
+                        Ref.steam.P2PManager.CreateSession();//.LobbyMatchmaker.CreateLobbyIfNotInOne();
+                    }
                 }
                 else
                 {
-                    state = NetLobbyState.CreatingSession;
-                    createLobbyFailTime = new Time(8, TimeUnit.Seconds);
-
-                    Ref.steam.P2PManager.CreateSession();//.LobbyMatchmaker.CreateLobbyIfNotInOne();
+                    Ref.steamlobby.LeaveCurrentLobby();
                 }
             }
 #endif
@@ -130,6 +145,8 @@ namespace VikingEngine.Network
                 }
             }
         }
+        virtual public void NetEvent_ErrorMessage(string message, Network.AbsNetworkPeer peer, bool peerIsSender)
+        { }
 
         public void tryJoin(AbsAvailableSession session)
         {
@@ -239,7 +256,15 @@ namespace VikingEngine.Network
             }
         }
 
-        virtual public void NetEvent_LargePacket(Network.ReceivedPacket packet) { }
+        virtual public void NetEvent_LargePacket(Network.ReceivedPacket packet)
+        {
+            Ref.gamestate.NetEvent_LargePacket(packet);
+        }
+
+        virtual public bool InLobbySearchState()
+        {
+            return searchLobbies;
+        }
 
         virtual public void NetEvent_PingReturned(Network.AbsNetworkPeer gamer)
         {
@@ -251,11 +276,12 @@ namespace VikingEngine.Network
             state = NetLobbyState.Offline;
         }
         virtual public void NetEvent_SessionsFound(
-            List<AbsAvailableSession> availableSessions, 
-            List<AbsAvailableSession> prevAvailableSessionsList)
+            List<AbsAvailableSession> availableSessions)
+            //, 
+            //List<AbsAvailableSession> prevAvailableSessionsList)
         {
             updateTimer.Seconds = SearchTimerSec;
-            Ref.gamestate.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
+            Ref.gamestate.NetEvent_SessionsFound(availableSessions/*, prevAvailableSessionsList*/);
         }
 
         protected void filterNewAndOldLobbies(
@@ -307,10 +333,17 @@ namespace VikingEngine.Network
             searchLobbies = false;
         }
 
+
+
         virtual public void applyNewSettings()
         { }
 
         virtual protected void onEndedSession()
-        { }  
+        { }
+
+        virtual public AbsLobbyMetaData NetEvent_StartLobbyMetaData() 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

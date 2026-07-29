@@ -170,6 +170,12 @@ namespace VikingEngine
             return value;
         }
 
+        public static IntVector3 AddZ(IntVector3 value, int add)
+        {
+            value.Z += add;
+            return value;
+        }
+
         public static Vector3 AddXZ(Vector3 value, Vector2 xz)
         {
             value.X += xz.X;

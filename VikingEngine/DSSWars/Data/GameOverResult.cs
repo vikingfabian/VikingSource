@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars.Data
         public GameEndReason endReason; VictoryType vType;
         public bool matchResults = false;
         Difficulty difficulty;
+        GameRuleset ruleset;
         List<GameOverResultPlayer> players;
         public GameOverResult(GameEndReason endReason, VictoryType vType, MatchResult matchResult)
         {
@@ -77,6 +78,7 @@ namespace VikingEngine.DSSWars.Data
             }
 
             difficulty = DssRef.difficulty.Clone();
+            ruleset = DssRef.storage.ruleset;
 
 
             players = new List<GameOverResultPlayer>();
@@ -235,14 +237,14 @@ namespace VikingEngine.DSSWars.Data
 
             if (!tooltip)
             {
-                content.icontext(HudLib.CheckImage(DssRef.storage.gameRuleset.centralGold), DssRef.lang.Settings_CentralGold);
+                content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.centralGold), DssRef.lang.Settings_CentralGold);
                 content.icontext(HudLib.CheckImage(difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
 
-                content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(difficulty.setting_foodMulti)));
-                content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(difficulty.setting_waterMulti)));
-                content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(difficulty.setting_childMulti)));
-                content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(difficulty.setting_craftMulti)));
-                content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_TechMultiplier, difficulty.TechMultiProperty(null, false, 0)));
+                content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(ruleset.setting_foodMulti)));
+                content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(ruleset.setting_waterMulti)));
+                content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(ruleset.setting_childMulti)));
+                content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(ruleset.setting_craftMulti)));
+                content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_TechMultiplier, ruleset.TechMultiProperty(null, false, 0)));
 
                 var time = HudLib.TimeSpan_LongText(gameTime);
                 content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
@@ -293,6 +295,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(matchResults);
 
             difficulty.write(w);
+            ruleset.write(w, true);
 
             Debug.WriteCheck(w);
 
@@ -318,6 +321,11 @@ namespace VikingEngine.DSSWars.Data
 
             difficulty = new Difficulty();
             difficulty.read(r, storageVersion);
+
+            if (storageVersion >= 37)
+            {
+                ruleset.read(r, true);
+            }
 
             Debug.ReadCheck(r);
 
@@ -348,7 +356,7 @@ namespace VikingEngine.DSSWars.Data
                 {
                     foreach (var f in matchResult.winner)
                     {
-                        if (f == player.faction)
+                        if (f == player.pfaction.GetFaction())
                         {
                             matchWinner = true;
                         }

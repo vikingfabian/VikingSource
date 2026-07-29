@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (cesspits.array != null)
                     {
-                        Span<bool> span = stackalloc bool[EntityComponent.CityResoureIndex.COUNT];
+                        Span<bool> span = stackalloc bool[EntityComponent.CityResourceIndex.COUNT];
 
                         lock (cesspits.array)
                         {
@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                         }
 
-                        for (int i = 0; i < EntityComponent.CityResoureIndex.COUNT; ++i)
+                        for (int i = 0; i < EntityComponent.CityResourceIndex.COUNT; ++i)
                         {
                             DssRef.world.cityResouces[resourceComponentStartIndex + i].hasCesspit = span[i];
                         }

@@ -30,16 +30,15 @@ namespace VikingEngine.ToGG.HeroQuest
             print(TextLib.EnumName(message.ToString()));
         }
 
-        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions, 
-            List<AbsAvailableSession> prevAvailableSessionsList)
+        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
         {
-            if (availableSessions != null)
-            {
-                AbsAvailableSession session = availableSessions[0];
-                tryJoin(session);
-                print("Joining " + session.name);
-            }
-            base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
+            //if (availableSessions != null)
+            //{
+            //    AbsAvailableSession session = availableSessions[0];
+            //    tryJoin(session);
+            //    print("Joining " + session.name);
+            //}
+            //base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
         }
 
         public override void NetEvent_PeerJoined(Network.AbsNetworkPeer gamer)

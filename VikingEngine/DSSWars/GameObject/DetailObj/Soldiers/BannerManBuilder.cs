@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         public BannerManModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new Banner(soldier.GetFaction_NoChecks(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
+            banner = new Banner(soldier.pfaction.GetFaction(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
         }
 
         //protected override void updateShipAnimation(AbsSoldierUnit soldier)
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
             banner = null;
         }
 
-        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsSoldierUnit unit)
         {
             base.onNewModel(name, master, unit);
             banner.onNewModel_asynch(name, master);

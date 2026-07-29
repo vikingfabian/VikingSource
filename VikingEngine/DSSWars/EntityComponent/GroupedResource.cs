@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Characters;
 
 namespace VikingEngine.DSSWars.EntityComponent
 {
@@ -30,11 +31,19 @@ namespace VikingEngine.DSSWars.EntityComponent
         //static readonly int[] LimitOptions = { 100, 500, 2000, int.MaxValue };
 
         public int amount;
+
+        /// <summary>
+        /// Limit from storage buildings
+        /// </summary>
         public int capacity;
+        
+        /// <summary>
+        /// Player set limit
+        /// </summary>
         public int stockPileLimit;
         public int deliverCount;
         public bool hasCesspit;
-        //public StockpileLimitOption limitOption;
+        
         public bool useStockLimit;
 
         public ResourceChangeRate changeRate;
@@ -67,6 +76,25 @@ namespace VikingEngine.DSSWars.EntityComponent
                 useStockLimit = true;
                 stockPileLimit = Math.Min(capacity, limit);
             }
+        }
+
+        //public void setUseLimit(bool use)
+        //{
+        //    useStockLimit = use;
+        //    if (use)
+        //    {
+        //        stockPileLimit = Math.Min(capacity, stockPileLimit);
+        //    }
+        //    else
+        //    {
+        //        stockPileLimit = capacity;
+        //    }
+        //}
+
+        public void hardSetLimit(int limit)
+        {
+            useStockLimit = true;
+            stockPileLimit = limit;
         }
 
         public void clearFactionOverView()
@@ -130,6 +158,17 @@ namespace VikingEngine.DSSWars.EntityComponent
             }
         }
 
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            w.Write(amount);
+            w.Write((ushort)stockPileLimit);
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+            amount = r.ReadInt32();
+            stockPileLimit = r.ReadUInt16();
+        }
+
         public void writeCity(BoolRegister boolRegister)//System.IO.BinaryWriter w)
         {
             if (boolRegister.SetNext(amount != 0))
@@ -137,13 +176,6 @@ namespace VikingEngine.DSSWars.EntityComponent
                 boolRegister.writer.Write(amount);
             }
             writeStockPile(boolRegister);
-            //if (boolRegister.SetNext(useStockLimit))
-            //{
-            //    boolRegister.writer.Write((ushort)stockPileLimit);
-            //}
-
-            //    w.Write(useStockLimit);
-            //w.Write((ushort)stockPileLimit);
         }
         public void readCity(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
         {
@@ -152,23 +184,14 @@ namespace VikingEngine.DSSWars.EntityComponent
                 amount = r.ReadInt32();
             }
             readStockPile(boolRegister, r, subversion);
-            //useStockLimit = boolRegister.GetNext();
-            //if (useStockLimit)
-            //{
-            //    stockPileLimit = r.ReadUInt16();
-            //}            
         }
 
         public void writeFaction(BoolRegister boolRegister)
         {
-            //w.Write(useStockLimit);
-            //w.Write((ushort)stockPileLimit);
             writeStockPile(boolRegister);
         }
         public void readFaction(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
         {
-            //useStockLimit = r.ReadBoolean();
-            //stockPileLimit = r.ReadUInt16();
             readStockPile(boolRegister, r, subversion);
         }
 
@@ -183,27 +206,27 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public bool needMore()
         {
-            return amount < stockPileLimit;
+            return amount < MaxLimit();
         }
 
         public bool reachedBuffer()
         {
-            return amount >= stockPileLimit;
+            return amount >= MaxLimit();
         }
 
         public bool almostReachedBuffer()
         {
-            return amount >= stockPileLimit - 50;
+            return amount >= MaxLimit() - 50;
         }
 
         public bool needToImport()
         {
-            return amount < stockPileLimit;
+            return amount < MaxLimit();
         }
 
         public bool canTradeAway()
         {
-            return amount >= 30 && amount >= stockPileLimit;
+            return amount >= 30 && amount >= MathExt.MultiplyInt(MaxLimit(), 0.8);
         }
 
         public int amountPlusDelivery()
@@ -211,21 +234,31 @@ namespace VikingEngine.DSSWars.EntityComponent
             return amount + deliverCount;
         }
 
-        
+        public int MaxLimit()
+        {
+            if (useStockLimit)
+            {
+                return Math.Min(stockPileLimit, capacity);
+            }
+            else
+            {
+                return capacity;
+            }
+        }
 
         public void add(ItemResource item, int multiply = 1)
         {
             amount += item.amount * multiply;
         }
 
-        public void add(int add, bool respectLimit)
-        {
-            amount += add;
-            if (respectLimit && amount > stockPileLimit)
-            {
-                amount = stockPileLimit;
-            }
-        }
+        //public void add(int add, bool respectLimit)
+        //{
+        //    amount += add;
+        //    if (respectLimit && amount > stockPileLimit)
+        //    {
+        //        amount = stockPileLimit;
+        //    }
+        //}
 
         public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer)
         {
@@ -273,13 +306,13 @@ namespace VikingEngine.DSSWars.EntityComponent
                     new RbText(TextLib.LargeFirstLetter(itemName) + ": ", HudLib.TitleColor_TypeName),
                     new RbText(TextLib.LargeNumber(amount)),
 
-                }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.faction, city, item))));
+                }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.pfaction.GetFaction(), city, item))));
 
                 if (item != ItemResourceType.Water_G &&
                     item != ItemResourceType.Gold &&
                     item != ItemResourceType.Men)
                 {
-                    bool reached = amount >= stockPileLimit;
+                    bool reached = amount >= MaxLimit();
                     reachedBuffer |= reached;
                     SpriteName stockIcon;
                     
@@ -314,7 +347,7 @@ namespace VikingEngine.DSSWars.EntityComponent
                                 content.newLine();
                                 content.Add(new RbImage(stockIcon));
                                 content.space();
-                                content.Add(new RbText(city.GetGroupedResource(item).stockPileLimit.ToString()));
+                                content.Add(new RbText(city.GetGroupedResource(item).MaxLimit().ToString()));
                             }));
 
                         //content.space();
@@ -366,7 +399,7 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public override string ToString()
         {
-            return $"Grouped resource {amount}/{stockPileLimit}";
+            return $"Grouped resource {amount}/{MaxLimit()}";
         }
     }
     //struct GroupedResource

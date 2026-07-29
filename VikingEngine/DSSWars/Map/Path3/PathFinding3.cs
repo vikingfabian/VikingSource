@@ -19,21 +19,21 @@ namespace VikingEngine.DSSWars.Map.Path3
             layer3_temp = new MoveCostLayer(3, 8, new IntVector2(2));
         }
 
-        public LayerWalkingPath FindHighPath(Vector3 start, Vector3 goal, int startDir, bool startAsShip, bool endAsShip)
-        {
-            float tileLength = VectorExt.SideLength_XZ(start, goal);
+        //public LayerWalkingPath FindHighPath(Vector3 start, Vector3 goal, int startDir, bool startAsShip, bool endAsShip)
+        //{
+        //    float tileLength = VectorExt.SideLength_XZ(start, goal);
 
-            LayerWalkingPath lay4Path = null;
-            if (tileLength > 32)
-            {
-                LayerPathFinding path = DssRef.world.GetLayerPath(4);
-                path.FindPath(DssRef.world.layer4, 
-            }
-        }
-        public DetailWalkingPath FindDetailPath(LayerWalkingPath parentPath, Vector3 start, Vector3 goal, int startDir, bool startAsShip, bool endAsShip)
-        {
+        //    LayerWalkingPath lay4Path = null;
+        //    if (tileLength > 32)
+        //    {
+        //        LayerPathFinding path = DssRef.world.GetLayerPath(4);
+        //        path.FindPath(DssRef.world.layer4, 
+        //    }
+        //}
+        //public DetailWalkingPath FindDetailPath(LayerWalkingPath parentPath, Vector3 start, Vector3 goal, int startDir, bool startAsShip, bool endAsShip)
+        //{
 
-        }
+        //}
     }
 
     

@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars
 {
     partial class WorldData
     {
-        public Grid2D<MoveCost> layer0;
+        public Grid2D_L<MoveCost> layer0;
         public MoveCostLayer layer2;
         public MoveCostLayer4 layer4;
 
@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars
 
         void InitMoveCostLayers()
         {
-            layer0 = new Grid2D<MoveCost>(subTileGrid.Size);
+            layer0 = new Grid2D_L<MoveCost>(subTileGrid.Size);
             layer2 = new MoveCostLayer(2, MoveCostLayer.Layer2TileWidth, subTileGrid.Size / MoveCostLayer.Layer2TileWidth);
             layer4 = new MoveCostLayer4(this);
         }
@@ -126,14 +126,14 @@ namespace VikingEngine.DSSWars
 
                 for (pos.X = subTilePos.X; pos.X < subTileEnd.X; pos.X += 2)
                 {
-                    MoveCost topLeft = DssRef.world.subTileGrid.array[pos.X, pos.Y].GetMoveCost();
-                    layer0.array[pos.X, pos.Y] = topLeft;
-                    MoveCost topRight = DssRef.world.subTileGrid.array[pos.X + 1, pos.Y].GetMoveCost();
-                    layer0.array[pos.X + 1, pos.Y] = topRight;
-                    MoveCost bottomLeft = DssRef.world.subTileGrid.array[pos.X, pos.Y + 1].GetMoveCost();
-                    layer0.array[pos.X, pos.Y + 1] = bottomLeft;
-                    MoveCost bottomRight = DssRef.world.subTileGrid.array[pos.X + 1, pos.Y + 1].GetMoveCost();
-                    layer0.array[pos.X + 1, pos.Y + 1] = bottomRight;
+                    MoveCost topLeft = DssRef.world.subTileGrid.Get(pos.X, pos.Y).GetMoveCost();
+                    layer0.Set(pos.X, pos.Y, topLeft);
+                    MoveCost topRight = DssRef.world.subTileGrid.Get(pos.X + 1, pos.Y).GetMoveCost();
+                    layer0.Set(pos.X + 1, pos.Y , topRight);
+                    MoveCost bottomLeft = DssRef.world.subTileGrid.Get(pos.X, pos.Y + 1).GetMoveCost();
+                    layer0.Set(pos.X, pos.Y + 1 , bottomLeft);
+                    MoveCost bottomRight = DssRef.world.subTileGrid.Get(pos.X + 1, pos.Y + 1).GetMoveCost();
+                    layer0.Set(pos.X + 1, pos.Y + 1, bottomRight);
 
                     //Horizontal
                     path1 = MoveCost.Sum(topLeft, topRight);

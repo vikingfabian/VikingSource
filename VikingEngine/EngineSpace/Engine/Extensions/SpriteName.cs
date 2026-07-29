@@ -934,6 +934,7 @@ namespace VikingEngine
         cmdPointer,
         cmdPointerAttack,
         cmdClientPointer,
+        cmdClientPointerMetallic,
         defaultGamerIcon,
 
         cmdCard3by2,
@@ -988,6 +989,12 @@ namespace VikingEngine
         DoomBarFrame,
         QuestBanner,
         QuestBannerHighlight,
+
+        SupportDlcBanner,
+        SupportDlcBannerHighlight,
+        GooBanner,
+        GooBannerHighlight,
+
 
         BronzeChestClosed,
         BronzeChestOpen,
@@ -2444,7 +2451,15 @@ namespace VikingEngine
         WarsHudHeadBarTabSelected,
         WarsHudHeadBarTabNotSelected,
         WarsHudHeadBarOutlineButton,
-
+        WarsHudCasualMode,
+        WarsHudCasualModeDisabled,
+        WarsHudIconHandicap,
+        WarsHudIconDistanceOnMap,
+        WarsHudIconMultiplayer,
+        WarsHudIconClient,
+        WarsHudIconHost,
+        WarsHudIconPlayerCount,
+        WarsHudIconBlockedPlayer,
 
         WarsHudHeadBarPlayIcon,
         WarsHudHeadBarPauseIcon,
@@ -2465,12 +2480,18 @@ namespace VikingEngine
         WarsHudBrownDot,
         WarsHudRoundButtonNotSelected,
         WarsHudRoundButtonSecondary,
+        WarsHudRoundButtonDisabled,
         WarsHudListArrowSelected,
         WarsHudListArrowDefault,
         WarsHudListArrowNotSelected,
+        WarsHudGoldOutline,
+        WarsHudGoldOutline_Gray,
 
         WarsHudIconExit,
         WarsHudIconSettings,
+        WarsHudIconNetwork,
+        WarsHudIconNetworkSettings,
+
         WarsHudIconAdd,
         WarsHudIconOpen,
         WarsHudIconStart,
@@ -2496,11 +2517,16 @@ namespace VikingEngine
         WarsHudIconSpeed_Low,
         WarsHudIconSpeed_Medium,
         WarsHudIconSpeed_High,
-
+        WarsGiftedAward,
+        WarsGiftedAwardDisabled,
+        VoiceSoundOn,
+        VoiceSoundOff,
+        VoiceDisabled,
+        TextChatLetter,
 
         DSS2MainMenu,
+        SteamIconAndName,
         SteamIcon,
-
         WarsTutorialArmy,
         WarsTutorialCity,
         WarsTutorialSoldiers,
@@ -2576,8 +2602,9 @@ namespace VikingEngine
         HudPin_Falcon7,
         HudPin_Falcon8,
         HudPin_Falcon9,
+        HudPin_Falcon_,
 
-   
+
         HudPin_Castle0,
         HudPin_Castle1,
         HudPin_Castle2,
@@ -2588,8 +2615,9 @@ namespace VikingEngine
         HudPin_Castle7,
         HudPin_Castle8,
         HudPin_Castle9,
+        HudPin_Castle_,
 
-     
+
         HudPin_Horse0,
         HudPin_Horse1,
         HudPin_Horse2,
@@ -2600,8 +2628,9 @@ namespace VikingEngine
         HudPin_Horse7,
         HudPin_Horse8,
         HudPin_Horse9,
+        HudPin_Horse_,
 
-  
+
         HudPin_Ship0,
         HudPin_Ship1,
         HudPin_Ship2,
@@ -2612,8 +2641,9 @@ namespace VikingEngine
         HudPin_Ship7,
         HudPin_Ship8,
         HudPin_Ship9,
+        HudPin_Ship_,
 
-      
+
         HudPin_Cannon0,
         HudPin_Cannon1,
         HudPin_Cannon2,
@@ -2624,6 +2654,7 @@ namespace VikingEngine
         HudPin_Cannon7,
         HudPin_Cannon8,
         HudPin_Cannon9,
+        HudPin_Cannon_,
 
 
         WarsRelationAlly,
@@ -2632,6 +2663,7 @@ namespace VikingEngine
         WarsRelationNeutral,
         WarsRelationTruce,
         WarsRelationEnemy,
+        WarsRelationMobilizing,
         WarsRelationWar,
         WarsRelationTotalWar,
         WarsRelationServant,
@@ -2754,6 +2786,7 @@ namespace VikingEngine
         WarsUnitIcon_IronSiegeCannon,
         WarsUnitIcon_Slingshot,
         WarsUnitIcon_Spearman,
+        WarsLocationPin,
 
         WarsSpecializeField,
         WarsSpecializeSea,
@@ -2825,6 +2858,12 @@ namespace VikingEngine
         WarsBuild_ElephantPen,
         WarsBuild_WarElephantPen,
         WarsBuild_OliphantPen,
+
+        WarsBuild_DiplomaticStatue_ThumbsUpWest,
+        WarsBuild_DiplomaticStatue_ThumbsUpEast,
+        WarsBuild_DiplomaticStatue_InsultWest,
+        WarsBuild_DiplomaticStatue_InsultEast,
+        WarsBuild_DiplomaticStatue_GoldenPoop,
 
         WarsBuild_Statue,
         WarsBuild_Carpenter,

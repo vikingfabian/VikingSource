@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Players
 
                         if (city != null) 
                         {
-                            if (city.factionIndex == player.faction.myIndex)
+                            if (city.pfaction == player.pfaction)
                             {
                                 switch (subTile.mainTerrain)
                                 {
@@ -230,7 +230,7 @@ namespace VikingEngine.DSSWars.Players
             upgrade = false;
             if (city != null)
             {
-                if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
+                if (city.pfaction.GetPlayer() == player || DssRef.difficulty.GodPowers())
                 {
                     if (subTile.MayBuild(player.gameControls.build.placeBuildingType, out upgrade))
                     {
@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     city = tile.City();
                     
-                        if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
+                        if (city.pfaction.GetPlayer() == player || DssRef.difficulty.GodPowers())
                         {
                             if (subTilePos != city.citySquareSubtilePos && subTilePos != city.cityHallSubtilePos) //center tile is protected
                             {

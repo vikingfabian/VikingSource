@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void createMenu(LocalPlayer player)
         {
-            if (player.hud.pins.Count > 0 && menu == null)
+            if (menu == null && (player.hud.pins.Count > 0 || Ref.netSession.InMultiplayerSession))
             {
                 var menuArea = player.playerData.view.safeScreenArea;
                 menuArea.X = player.hud.head.Right;

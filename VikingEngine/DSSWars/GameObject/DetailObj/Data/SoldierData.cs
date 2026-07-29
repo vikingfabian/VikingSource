@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public float animalFoodUpkeep(int unitCount)
         {
-            return animalFoodMultiplier * unitCount * DssRef.difficulty.mountFoodUpkeep;
+            return animalFoodMultiplier * unitCount * DssRef.storage.ruleset_instance.mountFoodUpkeep;
         }
 
         public int UnitCount()

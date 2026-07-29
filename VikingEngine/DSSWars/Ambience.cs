@@ -242,7 +242,7 @@ namespace VikingEngine.DSSWars
             }
 
             bool playerLookingAtBattle = detailLayer.current.type == MapDetailLayerType.UnitDetail1 &&
-                DssRef.world.unitCollAreaGrid.PlayerInBattle(tileCenter, DssRef.state.LocalHost().faction.myIndex);
+                DssRef.world.unitCollAreaGrid.PlayerInBattle(tileCenter, DssRef.state.LocalHost().pfaction);
             bool hadBattleSound = battleFade > 0;
             battleFade = Bound.Set(battleFade + FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(playerLookingAtBattle) * Ref.DeltaGameTimeSec, 0f, 1f);
             var battleFadeTotal = battleFade * musicReduceFade * Ref.gamesett.BattleMelodyVol();

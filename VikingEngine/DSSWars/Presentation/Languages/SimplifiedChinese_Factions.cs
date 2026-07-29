@@ -8,6 +8,9 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese
     {
+        public override string FactionName_Ellium => "埃利乌姆";
+        public override string FactionName_GrakPushdug => "格拉克·普什杜格";
+        public override string FactionName_Draugost => "德劳戈斯特";
         public override string FactionName_Starshield => "星盾";
         public override string FactionName_Bluepeak => "蓝峰";
         public override string FactionName_Hoft => "霍夫特";

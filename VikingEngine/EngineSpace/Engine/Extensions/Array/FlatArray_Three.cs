@@ -11,7 +11,7 @@ namespace VikingEngine
     /// <summary>
     /// A complete garbage-free fixed array of up to 3 items.
     /// </summary>
-    public struct FlatArray_Three<T> where T : struct, IEquatable<T>
+    public struct FlatArray_Three<T> where T : struct/*, IEquatable<T>*/
     {
         public const int Capacity = 3;
         public int count;
@@ -27,6 +27,33 @@ namespace VikingEngine
                 case 1: value2 = v; break;
                 case 2: value3 = v; break;
                 default: throw new InvalidOperationException("FlatArray_Three is full.");
+            }
+            count++;
+        }
+        public void TryAdd(T v)
+        {
+            switch (count)
+            {
+                case 0: value1 = v; break;
+                case 1: value2 = v; break;
+                case 2: value3 = v; break;
+                default: return;
+            }
+            count++;
+        }
+
+        public void TryAddIfNotContains(T v)
+        {
+            if (count > 0 && value1.Equals(v)) return;
+            if (count > 1 && value2.Equals(v)) return;
+            if (count > 2 && value3.Equals(v)) return;
+            
+            switch (count)
+            {
+                case 0: value1 = v; break;
+                case 1: value2 = v; break;
+                case 2: value3 = v; break;
+                default: return;
             }
             count++;
         }

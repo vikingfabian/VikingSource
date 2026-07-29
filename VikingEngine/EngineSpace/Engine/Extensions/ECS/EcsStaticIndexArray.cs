@@ -14,11 +14,11 @@ namespace VikingEngine
     /// </summary>
     struct EcsStaticArrayCounter
     {
-        EcsStaticArray array;
+        EcsStaticIndexArray array;
         int end;
         public int index;
 
-        public EcsStaticArrayCounter(EcsStaticArray array, int entityIndex, int count)
+        public EcsStaticArrayCounter(EcsStaticIndexArray array, int entityIndex, int count)
         {
             this.array = array;
             array.LoopSpan(entityIndex, count, out index, out end);
@@ -40,10 +40,11 @@ namespace VikingEngine
 
         public bool Next<T>(List<T> list, out T value)
         {
-            index++;
+            
             if (index < end)
             {
                 int idx = array.array[index];
+                index++;
                 value = list[idx];
                 return true;
             }
@@ -52,13 +53,13 @@ namespace VikingEngine
             return false;
         }
     }
-    struct EcsStaticArray
+    struct EcsStaticIndexArray
     {
         // Large shared flat array
         public int[] array;
         int arrayLength;
 
-        public EcsStaticArray(int arrayLength, int entityCount)
+        public EcsStaticIndexArray(int arrayLength, int entityCount)
         {
             this.arrayLength = arrayLength;
             array = new int[arrayLength * entityCount];

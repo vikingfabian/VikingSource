@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars;
+using System.Collections.Concurrent;
+
 
 
 #if PCGAME
@@ -28,7 +30,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    class SteamManager
+    partial class SteamManager
     {
         public bool IsGameOverlayActive { get; private set; }
         public SteamAchievements Achievements = null;
@@ -60,6 +62,8 @@ namespace VikingEngine.SteamWrapping
         public ESteamAPIInitResult steamInitResult;
         public string steamInitErrorMsg;
         public bool statsNeedUpdate = false;
+
+        
 
         static void SteamAPIDebugTextHook(int severity, StringBuilder builder)
         {
@@ -130,6 +134,7 @@ namespace VikingEngine.SteamWrapping
         {
             if (Ref.steam.isInitialized)
             {
+                DisposeVoice();
                 SteamInput.Shutdown();
             }
         }
@@ -274,22 +279,64 @@ namespace VikingEngine.SteamWrapping
                 PlatformSettings.RunProgram == StartProgram.DSS ||
                 PlatformSettings.RunProgram == StartProgram.ToGG)
             {
-                if (PlatformSettings.OnlineMultiplayer)
-                {
-                    P2PManager = new SteamP2PManager();
-                    LobbyMatchmaker = new SteamLobbyMatchmaker();
-                    //VOIP = new SteamVOIP();
-
-                    isNetworkInitialized = true;
-                }
+                initMultiPlayer();
             }
 
             DLC = new SteamDLC();
             
-            //RequestStats();
         }
 
-        public void Update()
+        public void initMultiPlayer()
+        {
+            if (PlatformSettings.OnlineMultiplayer)
+            {
+                //InitVoice();
+                P2PManager = new SteamP2PManager();
+                LobbyMatchmaker = new SteamLobbyMatchmaker();
+
+                isNetworkInitialized = true;
+
+                ProcessSteamLaunchCommandLine();
+            }
+        }
+
+
+
+    void ProcessSteamLaunchCommandLine()
+    {
+        // Grab the command line string from Steam
+        int charsWritten = SteamApps.GetLaunchCommandLine(out string commandLine, 1024);
+
+        // The method returns the number of characters written. 
+        // If it's greater than 0, Steam passed us an argument.
+        if (charsWritten > 0)
+        {
+            Console.WriteLine($"Raw Steam Command Line: {commandLine}");
+
+            // Example parsing: Check if the string contains a lobby invite
+            if (commandLine.Contains("+connect_lobby"))
+            {
+                // Because it's a single raw string (e.g., "+connect_lobby 109775240987"), 
+                // you'll need to split it to extract the ID.
+                string[] parts = commandLine.Split(' ');
+
+                for (int i = 0; i < parts.Length - 1; i++)
+                {
+                    if (parts[i].ToLower() == "+connect_lobby")
+                    {
+                        if (ulong.TryParse(parts[i + 1], out ulong lobbyID))
+                        {
+                                // Trigger your network join logic here!
+                                //Console.WriteLine($"Joining Lobby: {lobbyID}");
+                                throw new Exception("join from command");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void Update()
         {
             if (isInitialized)
             {
@@ -297,9 +344,8 @@ namespace VikingEngine.SteamWrapping
                 
                 if (P2PManager != null)
                 {
-                    //VOIP.Update();
-
                     P2PManager.update();
+                    UpdateVoice();
                 }
 
                 if (statsNeedUpdate)

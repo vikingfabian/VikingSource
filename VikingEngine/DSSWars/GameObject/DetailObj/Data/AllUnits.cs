@@ -59,6 +59,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         static int DPS(int damage, float attackAndCoolDownTime)
         {
+            if (attackAndCoolDownTime == 0)
+            {
+                return 0;
+            }
             return Convert.ToInt32(damage / (attackAndCoolDownTime / 1000.0));
         }
         static float GroupStrengh_Raw(int soldierCount, float dps, int health)

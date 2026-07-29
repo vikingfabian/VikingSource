@@ -25,10 +25,11 @@ namespace VikingEngine.DSSWars.Build
         public static readonly ItemResourceType[] AllTerrainResources = {
         ItemResourceType.Wood_Group,
         ItemResourceType.Stone_G,
-        ItemResourceType.Brick,
-        ItemResourceType.Coal,
-
         ItemResourceType.Clay,
+        ItemResourceType.Brick,
+        ItemResourceType.Salt,
+        ItemResourceType.Coal,
+                
         ItemResourceType.BogIron,
         ItemResourceType.IronOre_G,
         ItemResourceType.TinOre,
@@ -37,8 +38,17 @@ namespace VikingEngine.DSSWars.Build
         ItemResourceType.SilverOre,
         ItemResourceType.GoldOre,
         ItemResourceType.RawMithril,
-        ItemResourceType.Salt,
+        
         ItemResourceType.Sulfur,
+
+        ItemResourceType.Fowl,
+        ItemResourceType.Boar,
+        ItemResourceType.Dog,
+        ItemResourceType.Oxen,
+        ItemResourceType.Pony,
+        ItemResourceType.Wolf,
+        ItemResourceType.WildCat,
+        ItemResourceType.Elephant,
     };
 
         public int mineCount_bogIron;
@@ -53,13 +63,11 @@ namespace VikingEngine.DSSWars.Build
         public int mineCount_sulfur;
         public int mineCount_coal;
 
-        // --- New Mine Count ---
         public int mineCount_salt;
 
         public int resourceCount_stone;
         public int resourceCount_wood;
 
-        // --- New Resource Counts ---
         public int mineCount_stoneblock;
         public int resourceCount_clay;
 
@@ -155,7 +163,65 @@ namespace VikingEngine.DSSWars.Build
 
         }
 
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)mineCount_bogIron);
+            w.Write((byte)mineCount_iron);
+            w.Write((byte)mineCount_tin);
+            w.Write((byte)mineCount_copper);
+            w.Write((byte)mineCount_lead);
+            w.Write((byte)mineCount_silver);
+            w.Write((byte)mineCount_gold);
+            w.Write((byte)mineCount_mithril);
+            w.Write((byte)mineCount_sulfur);
+            w.Write((byte)mineCount_coal);
+            w.Write((byte)mineCount_salt);
+    
+            w.Write(resourceCount_stone);
+            w.Write(resourceCount_wood);
+            w.Write(mineCount_stoneblock);
+            w.Write((byte)resourceCount_clay);
+    
+            w.Write((byte)wildAnimalCount_Fowl);
+            w.Write((byte)wildAnimalCount_Boar);
+            w.Write((byte)wildAnimalCount_Dog);
+            w.Write((byte)wildAnimalCount_Ox);
+            w.Write((byte)wildAnimalCount_Pony);
+            w.Write((byte)wildAnimalCount_Wolf);
+            w.Write((byte)wildAnimalCount_Cat);
+            w.Write((byte)wildAnimalCount_Elephant);
+            Debug.WriteCheck(w);
+        }
 
+        public void read(System.IO.BinaryReader r)
+        {
+            mineCount_bogIron = r.ReadByte();
+            mineCount_iron = r.ReadByte();
+            mineCount_tin = r.ReadByte();
+            mineCount_copper = r.ReadByte();
+            mineCount_lead = r.ReadByte();
+            mineCount_silver = r.ReadByte();
+            mineCount_gold = r.ReadByte();
+            mineCount_mithril = r.ReadByte();
+            mineCount_sulfur = r.ReadByte();
+            mineCount_coal = r.ReadByte();
+            mineCount_salt = r.ReadByte();
+    
+            resourceCount_stone = r.ReadInt32();
+            resourceCount_wood = r.ReadInt32();
+            mineCount_stoneblock = r.ReadInt32();
+            resourceCount_clay = r.ReadByte();
+    
+            wildAnimalCount_Fowl = r.ReadByte();
+            wildAnimalCount_Boar = r.ReadByte();
+            wildAnimalCount_Dog = r.ReadByte();
+            wildAnimalCount_Ox = r.ReadByte();
+            wildAnimalCount_Pony = r.ReadByte();
+            wildAnimalCount_Wolf = r.ReadByte();
+            wildAnimalCount_Cat = r.ReadByte();
+            wildAnimalCount_Elephant = r.ReadByte();
+            Debug.ReadCheck(r);
+        }
 
         public int Get(ItemResourceType type)
         {
@@ -186,13 +252,22 @@ namespace VikingEngine.DSSWars.Build
                 case ItemResourceType.Wood_Group:
                     return resourceCount_wood;
 
-                // --- New Get Cases ---
                 case ItemResourceType.Salt:
                     return mineCount_salt;
                 case ItemResourceType.Clay:
                     return resourceCount_clay;
                 case ItemResourceType.Brick:
                     return mineCount_stoneblock;
+
+
+                case ItemResourceType.Fowl: return wildAnimalCount_Fowl;
+        case ItemResourceType.Boar: return wildAnimalCount_Boar;
+        case ItemResourceType.Dog: return wildAnimalCount_Dog;
+        case ItemResourceType.Oxen: return wildAnimalCount_Ox;
+        case ItemResourceType.Pony: return wildAnimalCount_Pony;
+        case ItemResourceType.Wolf: return wildAnimalCount_Wolf;
+        case ItemResourceType.WildCat: return wildAnimalCount_Cat;
+        case ItemResourceType.Elephant: return wildAnimalCount_Elephant;
 
                 default:
                     return 0;
@@ -520,7 +595,11 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Statue_Lion:
                 case BuildAndExpandType.Statue_Horse:
                 case BuildAndExpandType.Statue_Pillar:
-
+                case BuildAndExpandType.DiplomaticStatue_ThumbsUpWest:
+                case BuildAndExpandType.DiplomaticStatue_ThumbsUpEast:
+                case BuildAndExpandType.DiplomaticStatue_InsultWest:
+                case BuildAndExpandType.DiplomaticStatue_InsultEast:
+                case BuildAndExpandType.DiplomaticStatue_GoldenPoop:
 
                 case BuildAndExpandType.FlagPole_LongBanner:
                 case BuildAndExpandType.FlagPole_Banner:
@@ -557,10 +636,15 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.StoneWallGreen:
                 case BuildAndExpandType.StoneWallWoodHouse:
                 //case BuildAndExpandType.Logistics:
-                case BuildAndExpandType.ManorLord:
-                case BuildAndExpandType.GreatHall:
+               
                 case BuildAndExpandType.Palisade:
                     return wallCount;
+
+                case BuildAndExpandType.ManorLord:
+                    return lib.BoolToInt01(manorLord);
+
+                case BuildAndExpandType.GreatHall:
+                    return lib.BoolToInt01(greatHall);
 
                 case BuildAndExpandType.Logistics:
                     return buildingLevel_logistics;

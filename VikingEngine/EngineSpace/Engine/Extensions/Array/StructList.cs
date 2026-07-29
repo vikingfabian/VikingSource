@@ -50,6 +50,7 @@ namespace VikingEngine.EngineSpace
         public void Init(int initialCapacity)
         {
             array = new T[initialCapacity];
+            Count = 0;
         }
 
         public void Add(T item)

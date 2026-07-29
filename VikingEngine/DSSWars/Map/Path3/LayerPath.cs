@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         List<LayerPathNode> open = new List<LayerPathNode>();
 
-        Grid1D<LayerPathNode> nodeGrid;
+        Grid2D_L<LayerPathNode> nodeGrid;
 
         public int layer;
 
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         public LayerPathFinding(MoveCostLayer layer)
         {
             this.layer = layer.layer;
-            nodeGrid = new Grid1D<LayerPathNode>(layer.size);
+            nodeGrid = new Grid2D_L<LayerPathNode>(layer.size);
         }
 
 

@@ -23,7 +23,7 @@ namespace VikingEngine.LootFest.Map.Process
 
                 new DataStream.OpenAndSendFile(
                     path, Network.PacketType.SendChunk, writePrefix, Network.SendPacketTo.All, 0,
-                        Network.PacketReliability.ReliableLasy, LoadAndSendChunkFailure);
+                        Network.PacketReliability.Reliable, LoadAndSendChunkFailure);
             }
         }
 

@@ -9,6 +9,11 @@ namespace VikingEngine.DSSWars.Presentation
     partial class AbsLanguage
     {
         // Faction names
+        //--
+        abstract public string FactionName_Ellium { get; }
+        abstract public string FactionName_GrakPushdug { get; }
+        abstract public string FactionName_Draugost { get; }
+
         public abstract string FactionName_Starshield { get; }
         public abstract string FactionName_Bluepeak { get; }
         public abstract string FactionName_Hoft { get; }

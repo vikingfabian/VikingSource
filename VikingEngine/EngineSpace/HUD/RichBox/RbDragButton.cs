@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,19 +67,20 @@ namespace VikingEngine.HUD.RichBox
 
         public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, FloatGetSetTag floatValue, bool oneDecimal = true, object tag = null)
         {
-            var dragButton = new RbDragButton(settings, floatValue, oneDecimal);
+            
+            var dragButton = new RbDragButton(settings, floatValue, oneDecimal, null, tag);
             float value = floatValue(tag, false, 0);
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i], false, value <= settings.min));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], false, value > settings.min));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i], false, value >= settings.max));
+                content.Add(new RbDragOptionButton(dragButton, options[i], false, value < settings.max));
             }
         }
 
@@ -279,7 +281,7 @@ namespace VikingEngine.HUD.RichBox
             if (useSymbols)
             {
                 content = new List<AbsRichBoxMember> { new RbText(LangLib.ValueSymbol((int)add)) };
-                enter = new RbTooltip_Text(TextLib.PlusMinus(add));
+                enter = new RbTooltip_Text(Math.Abs(add) >= 1000? TextLib.LargeNumber((int)add) : TextLib.PlusMinus(add));
             }
             else
             {

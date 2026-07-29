@@ -8,6 +8,177 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+        //Multiplayer update
+        
+        //--
+      
+
+        //--
+        public override string Unlock_PublicGames => "公开游戏";
+        public override string UnlockPublic_Warning1 => "不要和陌生人一起玩";
+        public override string UnlockPublic_Warning2 => "本游戏没有任何防作弊或防 Troll（恶意破坏）的机制";
+        public override string Unlock_WarningBadExperience => "你会有很差的游戏体验";
+        public override string Hud_Accept => "接受";
+        public override string Hud_Block => "屏蔽";
+        public override string Hud_Deny => "拒绝";
+        public override string Hud_Reason => "原因";
+        public override string Hud_Full => "满员";
+        public override string Hud_Version => "版本";
+        public override string Unlock_PlayerVersusPlayer => "玩家对战（PvP）";
+        public override string UnlockPvp_Warning1 => "DSS并非为竞技比赛而设计";
+        public override string UnlockPvp_Warning2 => "游戏没有平衡性，对局将会非常不公平";
+        public override string PlayerJoinHistoryTitle => "玩家加入历史";
+        public override string BlockedPlayersTitle => "已屏蔽的玩家";
+        public override string ClickToRemoveBan => "点击：解除 Ban";
+        public override string HostSettingsTitle => "Host 设置";
+        public override string MaxPlayerCount => "最大玩家数";
+        public override string DistanceBetweenPlayers => "玩家间距";
+        public override string AllowHandicap => "允许让步（Handicap）";
+        public override string AllowCasualControls => "允许休闲操作";
+        public override string AutoRecolorPlayerFlags => "自动重染色玩家旗帜";
+        public override string DefaultDiplomacy => "默认外交";
+        public override string ClientSettingsTitle => "客户端设置";
+        public override string UseHandicap => "使用让步";
+        public override string DifficultyDescription_BotAggression => "Bot 攻击性";
+        public override string Hud_GetExtraX => "额外 {0}";
+        public override string Hud_Hide => "隐藏";
+        public override string Hud_ModelType => "模型";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}：{1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "资源 Boost";
+        //public override string TaxIncome => "税收收入";
+        public override string PlayerInteractionTitle => "玩家交互";
+        public override string DefaultPeaceful => "默认：和平";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "默认：可选 Co-op";
+        public override string DefaultHardcore => "默认：硬核（Hardcore）";
+        public override string GeneralTitle => "常规";
+
+        public override string InputButton_Hold => "长按按钮";
+        public override string InputButton_Toggle => "切换按钮（Toggle）";
+        public override string VoiceOptAlwaysOn => "始终开启";
+        public override string VoiceTitle => "语音";
+        public override string VoiceMute => "静音（Mute）";
+        public override string GiftOptAllow => "允许";
+        public override string GiftOptFriendsOnly => "仅限好友";
+        public override string GiftOptBlocked => "已屏蔽";
+        public override string ReceiveAchievementsTitle => "接收成就";
+        public override string GiftWarning => "警告！别人赠送的成就可能会让人觉得受到了侮辱";
+        public override string FullReset => "完全重置";
+        public override string AllowAllianceTitle => "允许结盟";
+        public override string CanBreakAlliance => "可背弃同盟";
+        public override string AllowWarTitle => "允许战争";
+        public override string FairProtection => "公平保护";
+        public override string FairProtectionTooltip => "受保护的玩家必须对你使用他们自己的规则";
+        public override string MustAsk => "必须同意";
+        public override string MustAskTooltip => "双方玩家必须同意才能开战";
+        public override string AllianceLimit => "结盟限制";
+        public override string AllianceLimitTooltip => "无法被规模更大的玩家联盟攻击";
+        public override string GameStartProtection => "开局保护";
+        public override string Hud_Time_Minutes => "分钟";
+        public override string WarPreparationTime => "战争准备时间";
+        public override string WarPreparationTimeTooltip => "宣战后到可以攻击之间的延迟";
+        public override string Hud_Allow => "允许";
+        public override string Hud_Blocked => "已屏蔽";
+
+        public override string Hud_DeleteAll => "全部删除";
+        public override string DiplomacyPlayersChoice => "玩家的选择";
+        public override string UnlockSureTitle => "你真的、真的确定吗？";
+        public override string UnlockSureDescription => "你能表现得像个成年人，以后别去论坛里哭诉吗？";
+
+
+
+        public override string Network_PlayOffline => "离线游玩";
+        public override string JoinPermission_Title => "加入权限";
+        public override string JoinPermission_Private => "私密";
+        public override string JoinPermission_FriendsOnly => "仅限好友";
+        public override string JoinPermission_Public => "公开";
+
+        public override string Network_Join => "加入游戏";
+        public override string Network_ConnectingToGame => "连接中...";
+        public override string Lobby_Category_MultiplayerSettings => "多人游戏设置";
+
+        public override string Hud_Default => "默认";
+        public override string Group_Team => "队伍";
+        public override string Group_Everyone => "所有人";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "外交雕像";
+
+        public override string Message => "消息";
+        public override string ObjectType_LocationPin => "位置标记";
+        public override string ObjectType_LocationPin_Share => "分享并 Ping";
+        public override string ObjectType_LocationPin_Ping => "Ping！";
+        public override string InputActionName_TextChat => "文本聊天";
+        public override string InputActionName_TextChatLog => "聊天记录";
+        public override string InputActionName_VoiceChat => "语音聊天";
+        public override string InputActionName_NextPin => "下一个标记";
+        public override string InputActionName_PinAndPing => "添加标记";
+
+        public override string Leaderboards_ArmySize => "单支军队规模（战斗力）";
+        public override string Leaderboards_MultiplayerPlayerCount => "Host 中的玩家数量";
+
+        public override string Multiplayer_BanWarning => "Ban 警告";
+        public override string Multiplayer_SentToHost => "将发送给 Host";
+        public override string Multiplayer_AddToOwnBlocks => "添加到你自己的屏蔽列表";
+
+        public override string Multiplayer_Message_RequestSent => "请求已发送";
+
+        public override string Multiplayer_BlockPlayer => "屏蔽玩家";
+        public override string Multiplayer_NetSession => "网络会话";
+        public override string GiftedAchievements => "获赠的成就";
+        public override string GiftedAchievements_Description => "奖励你朋友的恶劣行为";
+
+        public override string Multiplayer_Title => "多人游戏";
+        public override string Multiplayer_Lobby => "多人 Lobby";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. Host 开始一场游戏";
+        public override string Multiplayer_Tutorial_JoinButton => "2. 加入按钮会出现在这里";
+        public override string Multiplayer_Tutorial_Visible => "Host 必须公开其 Steam 个人资料";
+
+        public override string Multiplayer_KickPlayer => "Kick（踢出）玩家";
+        public override string Multiplayer_RequestBlockPlayer => "请求：屏蔽玩家";
+        public override string Multiplayer_HandoverComplete => "移交完成";
+        public override string Multiplayer_LoadingClientSave => "正在加载客户端存档";
+        public override string Multiplayer_ClientSaveComplete => "客户端存档完成";
+        public override string Multiplayer_BadActor => "恶劣玩家";
+        public override string Multiplayer_NetworkError => "网络错误";
+        public override string Multiplayer_Sender => "发送者";
+        public override string Multiplayer_Receiver => "接收者";
+        public override string Multiplayer_PlayerJoined => "玩家已加入";
+        public override string Multiplayer_PlayerLeft => "玩家已离开";
+        public override string Multiplayer_RequestingClientGamestates => "正在请求客户端游戏状态...";
+        public override string Multiplayer_TextChat => "文本聊天";
+        public override string Multiplayer_VoiceChat => "语音聊天";
+        public override string Steam_UserProfile => "用户资料";
+        public override string Steam_OpenSteamOverlay => "打开 Steam Overlay";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "动员中";
+        public override string Diplomacy_OfferRelation => "提议外交关系";
+        public override string Diplomacy_OfferRelation_Declined => "拒绝了外交提议";
+        public override string Diplomacy_SendGold => "赠送黄金";
+        public override string Diplomacy_GiftToPlayer => "给玩家的礼物";
+        public override string Diplomacy_RecievedGift => "收到的礼物";
+        public override string Diplomacy_OnAccept => "如果另一名玩家接受：";
+        public override string Diplomacy_WarPreparationTime => "战争准备时间";
+
+        public override string Diplomacy_AboveSoftCap => "超出 Soft cap（软上限）";
+        public override string Diplomacy_BelowSoftCap => "低于 Soft cap（软上限）";
+        public override string Diplomacy_OpenPlayerToPlayer => "开启玩家间外交";
+
+
         //Post mount update
         public override string StockPile_ItemsAreNotLost => "如果超出库存上限，物品也不会被销毁！";
         public override string SlaughterResult_PerAnimal => "每只动物的屠宰产量";
@@ -925,7 +1096,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 外交沟通。你能讨论条款的程度。0：条款
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "讨论条款：{0}";
+        public override string Diplomacy_SpeakTermIs => "讨论条款";
 
         /// <summary>
         /// 外交沟通。优于正常。
@@ -1312,7 +1483,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 控制军队的菜单选项。发送士兵到不同的军队。
         /// </summary>
-        public override string ArmyOption_SendX => "发送 {0}";
+        public override string Hud_SendX => "发送 {0}";
 
         /// <summary>
         /// 控制军队的菜单选项。发送士兵到不同的军队。
@@ -1470,7 +1641,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Money => "未支付薪水的士兵正在逃离你的军队";
 
 
-        public override string DifficultyDescription_AiAggression => "AI攻击性: {0}。";
+        //public override string DifficultyDescription_AiAggression => "AI攻击性: {0}。";
         public override string DifficultyDescription_BossSize => "Boss规模: {0}。";
         public override string DifficultyDescription_BossEnterTime => "Boss进入时间: {0}。";
         public override string DifficultyDescription_AiEconomy => "AI经济: {0}%。";
@@ -1838,9 +2009,9 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "距离: {0}";
         public override string Delivery_DeliveryTimeX => "配送时间: {0}";
         public override string Delivery_SenderMinimumCap => "发送者的最低容量";
-        public override string Delivery_RecieverMaximumCap => "接收者的最大容量";
+        public override string Delivery_ReceiverMaximumCap => "接收者的最大容量";
         public override string Delivery_ItemsReady => "物品已准备好";
-        public override string Delivery_RecieverReady => "接收者已准备好";
+        public override string Delivery_ReceiverReady => "接收者已准备好";
         public override string Hud_ThisCity => "本城市";
         public override string Hud_RecieveingCity => "接收城市";
 
@@ -1932,7 +2103,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "选择标签: {0}";
         public override string Tutorial_IncreasePriorityOnX => "提高{0}的优先级";
         public override string Tutorial_PlaceBuildOrder => "下达建筑指令: {0}";
-        public override string Tutorial_ZoomInput => "缩放";
+        public override string ButtonAction_Zoom => "缩放";
 
         public override string Tutorial_SelectACity => "选择一座城市";
         public override string Tutorial_ZoomInWorkers => "放大查看工人";
@@ -2033,13 +2204,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "平原";
         public override string LandType_Water => "水域";
         public override string BuildingType_Wall => "墙";
-        public override string Delivery_AutoReciever_Description => "将发送至资源最少的城市";
+        public override string Delivery_AutoReceiver_Description => "将发送至资源最少的城市";
 
         public override string Hud_On => "开";
         public override string Hud_Off => "关";
 
-        public override string Hud_Time_Seconds => "{0} 秒";
-        public override string Hud_Time_Minutes => "{0} 分钟";
+        public override string Hud_Time_XSeconds => "{0} 秒";
+        public override string Hud_Time_XMinutes => "{0} 分钟";
         public override string Hud_Undo => "撤销";
         public override string Hud_Redo => "重做";
 
@@ -2972,9 +3143,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// These symbols are needed to fit large numbers on the HUD,
         /// there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "百";
-        public override string EngineHud_SymbolFor1000 => "千";
-        public override string EngineHud_SymbolFor10000 => "万";
+        public override string Language_SymbolFor100 => "百";
+        public override string Language_SymbolFor1000 => "千";
+        public override string Language_SymbolFor10000 => "万";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress

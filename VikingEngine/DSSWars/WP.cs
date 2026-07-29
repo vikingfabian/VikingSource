@@ -127,20 +127,26 @@ namespace VikingEngine.DSSWars
         /// </summary>
         public static float GroundY(Vector3 wp)
         {
-            return DssRef.world.subTileGrid.array[
+            return DssRef.world.subTileGrid.Get(
                 Convert.ToInt32(wp.X * WorldData.TileSubDivitions + 3.5f),
-                Convert.ToInt32(wp.Z * WorldData.TileSubDivitions + 3.5f)].groundY;
+                Convert.ToInt32(wp.Z * WorldData.TileSubDivitions + 3.5f)).groundY;
         }
 
         public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);            
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);
+            }
         }
 
         public static void Rotation1DToQuaterion(Graphics.AbsVoxelObj mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.Identity;
-            mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.Identity;
+                mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            }
         }
 
         public static RotationQuarterion ToQuaterion(float rotation)
@@ -199,5 +205,17 @@ namespace VikingEngine.DSSWars
 
             tilePos = new IntVector2(position.X, position.Z);
         }
+
+        public static bool ReadPosXZPercentU16_ZeroCheck(BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        {
+            position = Vector3.Zero;
+            position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
+            position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
+
+            tilePos = new IntVector2(position.X, position.Z);
+
+            return position.X > 0;
+        }
+
     }
 }

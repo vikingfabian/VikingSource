@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
             resetAnimalNoise();
 
-            var faction = soldier.GetFaction_NoChecks();
+            var faction = soldier.pfaction.GetFaction();
 
             Soldier1PosDiff = new Vector3(0.02f, 0, -0.04f) * modelData.scale;
             Soldier1PosDiff.Y += modelData.riderY;
@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         public BalkongBannerModel(AbsSoldierUnit soldier)
             : base(soldier, false)
         {
-            banner = new HorseBanner(soldier.GetFaction(), soldier.soldierData.modelScale, riderY);
+            banner = new HorseBanner(soldier.pfaction.GetFaction(), soldier.soldierData.modelScale, riderY);
             update(soldier);
         }
 
@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             banner.DeleteMe();
         }
 
-        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsSoldierUnit unit)
         {
             base.onNewModel(name, master, unit);
             banner.onNewModel_asynch(name, master);
