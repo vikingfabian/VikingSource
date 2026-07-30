@@ -71,10 +71,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 else
                                 {
+                                    
                                     status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
 
-                                    if (allCollected &&
-                                        (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= totalMen))
+                                    if (allCollected)
                                     {
                                         if (status.CountDownQue())
                                         {
@@ -82,6 +82,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
                                         }
                                     }
+                                    
                                 }
                                 break;
 
