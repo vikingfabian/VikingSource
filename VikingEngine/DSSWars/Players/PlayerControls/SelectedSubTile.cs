@@ -38,6 +38,8 @@ namespace VikingEngine.DSSWars.Players
         {
             hasSelection = false;
             selectTileResult = SelectTileResult.None;
+            tileOfInterest = false;
+            //subTile = SubTile.Empty;
         }
 
         public static Mesh CreateOutlineModel(LocalPlayer player, bool isHover)

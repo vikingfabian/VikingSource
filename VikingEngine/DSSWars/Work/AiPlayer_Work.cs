@@ -212,61 +212,61 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType building, out bool intelligent)
-        {
-            building = BuildAndExpandType.NUM_NONE;
-            intelligent = false;
-            work = false;
+        //public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType building, out bool intelligent)
+        //{
+        //    building = BuildAndExpandType.NUM_NONE;
+        //    intelligent = false;
+        //    work = false;
 
-            if (city.needMore(CityResoureIndex.rawFood) && Ref.peRnd.Chance(0.6))
-            {
-                building = BuildAndExpandType.WheatFarm;
-            }
-            else if (city.resourceAmount(CityResoureIndex.fuel) < ResourceLowBuffer && city.resourceAmount(CityResoureIndex.wood)/*res_wood.amount*/ > ResourceLowBuffer && Ref.rnd.Chance(0.6))
-            {
-                building = BuildAndExpandType.CoalPit;
-            }
-            else if (city.needMore(CityResoureIndex.skinLinnen) && Ref.peRnd.Chance(0.6))
-            {
-                building = BuildAndExpandType.LinenFarm;
-            }
-            else if (city.conscriptBuildings.Count < 2 && Ref.peRnd.Chance(0.6))
-            {
-                building = BuildAndExpandType.SoldierBarracks;
-            }
-            else
-            {
-                var res_ironore = city.GetGroupedResource(CityResoureIndex.ironore);
-                var res_iron = city.GetGroupedResource(CityResoureIndex.iron);
+        //    if (city.needMore(CityResoureIndex.rawFood) && Ref.peRnd.Chance(0.6))
+        //    {
+        //        building = BuildAndExpandType.WheatFarm;
+        //    }
+        //    else if (city.resourceAmount(CityResoureIndex.fuel) < ResourceLowBuffer && city.resourceAmount(CityResoureIndex.wood)/*res_wood.amount*/ > ResourceLowBuffer && Ref.rnd.Chance(0.6))
+        //    {
+        //        building = BuildAndExpandType.CoalPit;
+        //    }
+        //    else if (city.needMore(CityResoureIndex.skinLinnen) && Ref.peRnd.Chance(0.6))
+        //    {
+        //        building = BuildAndExpandType.LinenFarm;
+        //    }
+        //    else if (city.conscriptBuildings.Count < 2 && Ref.peRnd.Chance(0.6))
+        //    {
+        //        building = BuildAndExpandType.SoldierBarracks;
+        //    }
+        //    else
+        //    {
+        //        var res_ironore = city.GetGroupedResource(CityResoureIndex.ironore);
+        //        var res_iron = city.GetGroupedResource(CityResoureIndex.iron);
 
-                if (((city.buildingStructure.Smith_count == 0 && city.resourceAmount(CityResoureIndex.ironore)/*res_ironore.amount*/ > ResourceLowBuffer) ||
-                    (res_ironore.amount >= res_ironore.MaxLimit())
-                        && Ref.peRnd.Chance(0.02))
-                    )
-                {
-                    if (res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
-                    {
-                        if (!BlackMarketResources.AiPurchaseIron(city, faction))
-                        {
+        //        if (((city.buildingStructure.Smith_count == 0 && city.resourceAmount(CityResoureIndex.ironore)/*res_ironore.amount*/ > ResourceLowBuffer) ||
+        //            (res_ironore.amount >= res_ironore.MaxLimit())
+        //                && Ref.peRnd.Chance(0.02))
+        //            )
+        //        {
+        //            if (res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
+        //            {
+        //                if (!BlackMarketResources.AiPurchaseIron(city, faction))
+        //                {
 
-                            intelligent = true;
-                            work = true;
+        //                    intelligent = true;
+        //                    work = true;
 
-                            return;
-                        }
-                    }
-                    building = BuildAndExpandType.Smith;
-                }
-                else if (city.deliveryServices.Count < 2 && Ref.peRnd.Chance(0.2))
-                {
-                    building = BuildAndExpandType.Postal;
-                }
-                else
-                {
-                    intelligent = true;
-                    work = true;
-                }
-            }
-        }
+        //                    return;
+        //                }
+        //            }
+        //            building = BuildAndExpandType.Smith;
+        //        }
+        //        else if (city.deliveryServices.Count < 2 && Ref.peRnd.Chance(0.2))
+        //        {
+        //            building = BuildAndExpandType.Postal;
+        //        }
+        //        else
+        //        {
+        //            intelligent = true;
+        //            work = true;
+        //        }
+        //    }
+        //}
     }
 }

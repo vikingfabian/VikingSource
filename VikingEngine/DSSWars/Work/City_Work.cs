@@ -944,9 +944,16 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    if (hostUpdate && (faction.player.IsBot() || automateCity))
+                    if (hostUpdate)
                     {
-                        workAutoBuild();
+                        if (faction.player.IsBot() || automateCity)
+                        {
+                            workAutoBuild();
+                        }
+                        else
+                        {
+                            automatedExpandUpdate();
+                        }
                     }
 
                     void craftBench(IntVector2 pos, int distanceValue, ItemResourceType[] types, int prioAdd = 0)

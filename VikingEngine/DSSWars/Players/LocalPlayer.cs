@@ -1059,6 +1059,8 @@ namespace VikingEngine.DSSWars.Players
         {
             if (mapLayersManager.current.DrawFar)
             {
+                gameControls.map.hover.subTile.clear();
+                //gameControls.map.selection.subTile.clear();
                 if (gameControls.diplomacy == null)
                 {
                     gameControls.diplomacy = new DiplomacyMap(this);
@@ -1077,6 +1079,8 @@ namespace VikingEngine.DSSWars.Players
 
             if (mapLayersManager.current.DrawMid)
             {
+                gameControls.map.hover.subTile.clear();
+                //gameControls.map.selection.subTile.clear();
                 if (cityTagMap == null)
                 {
                     cityTagMap = new CityTagMap(this);
@@ -1091,6 +1095,8 @@ namespace VikingEngine.DSSWars.Players
                     cityTagMap = null;
                 }
             }
+
+            
         }
                 
         void battleLineUpTest3_friendly_only()
@@ -1805,11 +1811,11 @@ namespace VikingEngine.DSSWars.Players
             //hud.oneSecondUpdate(this);
         }
 
-        public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType farm, out bool intelligent)
-        {
-            intelligent = true;
-            city.AutoExpandType(out work, out farm);
-        }
+        //public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType farm, out bool intelligent)
+        //{
+        //    intelligent = true;
+        //    city.AutoExpandType(out work, out farm);
+        //}
         //public bool CityTagsOnMapProperty(object tag, bool set, bool value)
         //{
         //    if (set)

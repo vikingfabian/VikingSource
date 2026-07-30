@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Players
         public bool mayAttackPlayer = true;
 
         public Orders.Orders orders;
-        abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
+        //abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
 
         public PlayerProfile profile;
         public Texture2D flagTexture;
