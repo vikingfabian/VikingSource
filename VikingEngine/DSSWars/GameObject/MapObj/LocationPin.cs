@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;

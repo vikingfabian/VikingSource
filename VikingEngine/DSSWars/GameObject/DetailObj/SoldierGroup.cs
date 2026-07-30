@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Net;
@@ -1602,7 +1603,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 //    args.content.Add(button);
                 //}
-                ArmyMenu.ColumnWidth(args.content, tArmy);
+                MapObjMenu.ColumnWidth(args.content, tArmy);
 
                 args.content.newParagraph();
 
@@ -1657,7 +1658,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (soldierConscript.conscript.weapon == ItemResourceType.Settler)
             {
-                ArmyMenu.settlerButton(args.player, args.content, this);
+                MapObjMenu.settlerButton(args.player, args.content, this);
             }
         }
 

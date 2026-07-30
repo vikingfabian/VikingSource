@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
@@ -1247,7 +1248,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         public bool InBuildOrdersMode(bool includeZoomLevel = true)
         {
-            return player.cityTab == Interface.MenuTab.Build &&
+            return player.cityTab == MenuTab.Build &&
                 map.selection.obj != null &&
                 map.selection.obj.gameobjectType() == GameObjectType.City &&
                 build.buildMode != SelectTileResult.None &&

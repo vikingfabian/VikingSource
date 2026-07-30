@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
@@ -25,17 +24,15 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG;
 
 
-namespace VikingEngine.DSSWars.Interface
+namespace VikingEngine.DSSWars.Interface.MapObjMenu
 {
-    class CityMenu
+    partial class MapObjMenu //CITY MENU
     {
-        public static List<MenuTab> Tabs;
+        public static List<MenuTab> CityTabs;
         public static List<MenuTab> CasualTabs = new List<MenuTab> { MenuTab.Info, MenuTab.Casual_Recruit, MenuTab.Casual_Build, MenuTab.Tag };
-
-        protected Players.LocalPlayer player;
+        //protected LocalPlayer player;
         protected City city;
         
-
         public static readonly AutomationFocus[] AvailableAutomationFocuses =
         {
             AutomationFocus.NoFocus,
@@ -47,22 +44,22 @@ namespace VikingEngine.DSSWars.Interface
 
         public static void InitGame()
         {
-            Tabs = new List<MenuTab>() {
+            CityTabs = new List<MenuTab>() {
                 MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket,
                 MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, MenuTab.Progress,
                 MenuTab.Tag};
 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
             {
-                Tabs.Insert(1, MenuTab.God_Recruit);
+                CityTabs.Insert(1, MenuTab.God_Recruit);
             }
             else
             {
-                Tabs.Add(MenuTab.Help);
+                CityTabs.Add(MenuTab.Help);
             }
         }
 
-        public CityMenu(Players.LocalPlayer player, City city, RichBoxContent content)
+        public MapObjMenu(LocalPlayer player, City city, RichBoxContent content)
         {
             this.player = player;
             this.city = city;
@@ -187,9 +184,6 @@ namespace VikingEngine.DSSWars.Interface
                     case MenuTab.CessPit:
                         city.cesspitToHud(player, content);
                         break;
-                    //case MenuTab.Mix:
-                    //    mixTab(content);
-                    //    break;
 
                     case MenuTab.Tag:
                         tagsToMenu(content);
@@ -228,13 +222,7 @@ namespace VikingEngine.DSSWars.Interface
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
                         conscript = BattleLabStorage.Singleton.setup.conscript,
-                        //new ConscriptProfile()
-                        //{
-                        //    weapon = BattleLabStorage.Singleton.setup.selectedWeapon,
-                        //    armorLevel = Resource.ItemResourceType.PaddedArmor,
-                        //    training = TrainingLevel.Basic,
-                        //    specialization = SpecializationType.Traditional,
-                        //}
+                      
                     };
 
                     var army = city.recruitToClosestArmy();
@@ -460,8 +448,6 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             content.Add(new RbText(DssRef.lang.Help_Food_Postal));
 
-
-
         }
 
 
@@ -506,7 +492,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
             
                 var subTab = new ArtButton(player.progressSubTab == workSubTab? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
-                    new RbAction1Arg<ProgressSubTab>((ProgressSubTab resourcesSubTab) =>
+                    new RbAction1Arg<ProgressSubTab>((resourcesSubTab) =>
                     {
                         player.progressSubTab = resourcesSubTab;
                     }, workSubTab, RbSoundType.Tab), new RbTooltip_Text(description));
@@ -537,713 +523,6 @@ namespace VikingEngine.DSSWars.Interface
             
         }
 
-        //void mixTab(RichBoxContent content)
-        //{
-        //    for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
-        //    {
-        //        for (ResourceGroup group = 0; group < ResourceGroup.NUM; group++)
-        //        {
-                    
-        //            if (group == ResourceGroup.Mint)
-        //            {
-        //                bool includeMint = managementType == ResourceManagementType.Work && city.buildingStructure.CoinMinter_count > 0;
-        //                if (!includeMint)
-        //                {
-        //                    continue;
-        //                }
-
-        //                IconName.Tab(group, out SpriteName groupIcon, out string groupName);
-        //                var tab = new ResourcesSubTab(managementType, group);
-        //                content.Add(new ArtOption(player.resourcesSubTab.EqualTab(tab), 
-        //                    new List<AbsRichBoxMember> { new RbImage(groupIcon) },
-        //                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
-        //                    {
-        //                        player.resourcesSubTab = resourcesSubTab;
-        //                    }, tab, RbSoundType.Option)));
-        //                content.space();
-        //            }
-
-        //        }
-        //    }
-
-
-        //    //if (player.tutorial == null || player.tutorial.DisplayStockpile())
-        //    {
-        //        for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
-        //        {
-        //            var tabContent = new RichBoxContent();
-        //            //string text = null;
-        //            switch (resourcesSubTab)
-        //            {
-        //                case ResourcesSubTab.Overview_Resources:
-        //                    tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
-        //                    tabContent.space();
-        //                    tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-        //                    break;
-
-        //                case ResourcesSubTab.Overview_Metals:
-        //                    tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-        //                    break;
-
-        //                case ResourcesSubTab.Overview_Weapons:
-        //                    tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-        //                    break;
-
-        //                case ResourcesSubTab.Overview_Projectile:
-        //                    tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-        //                    break;
-
-        //                case ResourcesSubTab.Overview_Armor:
-        //                    tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
-        //                    break;
-
-
-        //            }
-        //            var subTab = new ArtOption(player.resourcesSubTab == resourcesSubTab,tabContent,
-        //                new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
-        //                {
-        //                    player.resourcesSubTab = resourcesSubTab;
-        //                }, resourcesSubTab, RbSoundType.Option));
-        //            //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
-        //            content.Add(subTab);
-        //            content.space();
-        //        }
-        //        content.newParagraph();
-        //    }
-
-        //    bool reachedBuffer = false;
-
-        //    switch (player.resourcesSubTab)
-        //    {
-        //        case ResourcesSubTab.Overview_Resources:
-        //            {
-        //                ItemResourceType item = ItemResourceType.Wood_Group;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.wood);
-        //                work(item, WorkPriorityType.move);
-        //                blackMarket(item);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Stone_G;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.stone);
-        //                blackMarket(item);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Fuel_G;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Fuel1, CraftResourceLib.Charcoal);
-        //                work(item, WorkPriorityType.farmfuel);
-        //                work(item, WorkPriorityType.craftFuel);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.RawFood_Group;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.farmfood);
-        //                blackMarket(item);
-        //                end(item);
-        //            }                    
-
-        //            {
-        //                ItemResourceType item = ItemResourceType.Food_G;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Food1, CraftResourceLib.Food2);
-        //                work(item, WorkPriorityType.craftFood);
-        //                blackMarket(item);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Beer;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Beer);
-        //                work(item, WorkPriorityType.craftBeer);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.CoolingFluid;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.CoolingFluid);
-        //                work(item, WorkPriorityType.craftCoolingFluid);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.SkinLinen_Group;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.farmlinen);
-        //                blackMarket(item);
-        //                end(item);
-        //            }
-        //            content.newParagraph();
-        //            {
-        //                ItemResourceType item = ItemResourceType.Toolkit;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Toolkit);
-        //                work(item, WorkPriorityType.craftToolkit);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Wagon2Wheel;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Wagon2Wheel);
-        //                work(item, WorkPriorityType.craftWagonLight);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Wagon4Wheel;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Wagon4Wheel);
-        //                work(item, WorkPriorityType.craftWagonHeavy);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.BlackPowder;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.BlackPowder);
-        //                work(item, WorkPriorityType.craftBlackPowder);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.LedBullet;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.LedBullets);
-        //                work(item, WorkPriorityType.craftBullet);
-        //                end(item);
-        //            }
-
-        //            break;
-        //        case ResourcesSubTab.Overview_Metals:
-
-        //            {
-        //                ItemResourceType item = ItemResourceType.IronOre_G;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.miningIron);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.TinOre;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.miningTin);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.CopperOre;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.miningCopper);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.LeadOre;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.miningLead);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.SilverOre;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.miningSilver);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Sulfur;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.miningSulfur);
-        //                end(item);
-        //            }
-        //            content.newParagraph();
-        //            {
-        //                ItemResourceType item = ItemResourceType.Iron_G;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
-        //                work(item, WorkPriorityType.smeltIron);
-        //                blackMarket(item);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Tin;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Tin);
-        //                work(item, WorkPriorityType.smeltTin);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Copper;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
-        //                work(item, WorkPriorityType.smeltCopper);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Lead;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Lead);
-        //                work(item, WorkPriorityType.smeltLead);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Silver;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
-        //                work(item, WorkPriorityType.smeltSilver);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.RawMithril;
-        //                mixResource(item, false);
-        //                work(item, WorkPriorityType.miningMithril);
-        //                end(item);
-        //            }
-        //            content.newParagraph();
-
-        //            {
-        //                ItemResourceType item = ItemResourceType.Bronze;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Bronze);
-        //                work(item, WorkPriorityType.craftBronze);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.CastIron;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.CastIron);
-        //                work(item, WorkPriorityType.craftCastIron);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.BloomeryIron;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.BloomeryIron);
-        //                work(item, WorkPriorityType.craftBloomeryIron);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Steel;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
-        //                work(item, WorkPriorityType.craftSteel);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Mithril;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Mithril);
-        //                work(item, WorkPriorityType.craftMithril);
-        //                end(item);
-        //            }
-        //            break;
-
-        //        case ResourcesSubTab.Overview_Weapons:
-
-        //            {
-        //                ItemResourceType item = ItemResourceType.SharpStick;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.SharpStick);
-        //                work(item, WorkPriorityType.craftSharpStick);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.HandSpear;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
-        //                work(item, WorkPriorityType.craftHandSpear);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.BronzeSword;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.BronzeSword);
-        //                work(item, WorkPriorityType.craftBronzeSword);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.ShortSword;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.ShortSword);
-        //                work(item, WorkPriorityType.craftShortSword);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Sword;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Sword);
-        //                work(item, WorkPriorityType.craftSword);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.LongSword;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.LongSword);
-        //                work(item, WorkPriorityType.craftLongSword);
-        //                end(item);
-        //            }
-        //            content.newParagraph();
-        //            {
-        //                ItemResourceType item = ItemResourceType.Warhammer;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
-        //                work(item, WorkPriorityType.craftWarhammer);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.TwoHandSword;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.TwoHandSword);
-        //                work(item, WorkPriorityType.craftTwoHandSword);
-        //                end(item);
-        //            }
-        //            //{
-        //            //    ItemResourceType item = ItemResourceType.KnightsLance;
-        //            //    mixResource(item, false);
-        //            //    HudLib.blueprint(content, CraftResourceLib.KnightsLance);
-        //            //    work(item, WorkPriorityType.craftKnightsLance);
-        //            //    end(item);
-        //            //}
-        //            {
-        //                ItemResourceType item = ItemResourceType.MithrilSword;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.MithrilSword);
-        //                work(item, WorkPriorityType.craftMithrilSword);
-        //                end(item);
-        //            }
-        //            break;
-
-        //        case ResourcesSubTab.Overview_Projectile:
-
-        //            {
-        //                ItemResourceType item = ItemResourceType.SlingShot;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Slingshot);
-        //                work(item, WorkPriorityType.craftSlingshot);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.ThrowingSpear;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.ThrowingSpear1,CraftResourceLib.ThrowingSpear2);
-        //                work(item, WorkPriorityType.craftThrowingspear);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Bow;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Bow);
-        //                work(item, WorkPriorityType.craftBow);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.LongBow;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.LongBow);
-        //                work(item, WorkPriorityType.craftLongbow);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Crossbow;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.CrossBow);
-        //                work(item, WorkPriorityType.craftCrossbow);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.MithrilBow;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.MithrilBow);
-        //                work(item, WorkPriorityType.craftMithrilbow);
-        //                end(item);
-        //            }
-        //            content.newParagraph();
-        //            {
-        //                ItemResourceType item = ItemResourceType.HandCannon;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.BronzeHandCannon);
-        //                work(item, WorkPriorityType.craftHandCannon);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.HandCulverin;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.BronzeHandCulverin);
-        //                work(item, WorkPriorityType.craftHandCulverin);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Rifle;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Rifle);
-        //                work(item, WorkPriorityType.craftRifle);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Blunderbuss;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Blunderbus);
-        //                work(item, WorkPriorityType.craftBlunderbus);
-        //                end(item);
-        //            }
-        //            content.newParagraph();
-        //            {
-        //                ItemResourceType item = ItemResourceType.Ballista;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Ballista_Iron,CraftResourceLib.Ballista_Bronze);
-        //                work(item, WorkPriorityType.craftBallista);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Manuballista;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.ManuBallista);
-        //                work(item, WorkPriorityType.craftManuBallista);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.Catapult;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.Catapult);
-        //                work(item, WorkPriorityType.craftCatapult);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.SiegeCannonBronze;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.SiegeCannonBronze);
-        //                work(item, WorkPriorityType.craftSiegeCannonBronze);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.ManCannonBronze;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.ManCannonBronze);
-        //                work(item, WorkPriorityType.craftManCannonBronze);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.SiegeCannonIron;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.SiegeCannonIron);
-        //                work(item, WorkPriorityType.craftSiegeCannonIron);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.ManCannonIron;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.ManCannonIron);
-        //                work(item, WorkPriorityType.craftManCannonIron);
-        //                end(item);
-        //            }
-
-        //            break;
-
-        //        case ResourcesSubTab.Overview_Armor:
-
-        //            {
-        //                ItemResourceType item = ItemResourceType.PaddedArmor;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.PaddedArmor);
-        //                work(item, WorkPriorityType.craftPaddedArmor);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.HeavyPaddedArmor;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.HeavyPaddedArmor);
-        //                work(item, WorkPriorityType.craftHeavyPaddedArmor);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.BronzeArmor;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.BronzeArmor);
-        //                work(item, WorkPriorityType.craftBronzeArmor);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.IronArmor;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.MailArmor);
-        //                work(item, WorkPriorityType.craftMailArmor);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.HeavyIronArmor;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.HeavyMailArmor);
-        //                work(item, WorkPriorityType.craftHeavyMailArmor);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.LightPlateArmor;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.PlateArmor);
-        //                work(item, WorkPriorityType.craftPlateArmor);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.FullPlateArmor;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.FullPlateArmor);
-        //                work(item, WorkPriorityType.craftFullPlateArmor);
-        //                end(item);
-        //            }
-        //            {
-        //                ItemResourceType item = ItemResourceType.MithrilArmor;
-        //                mixResource(item, false);
-        //                HudLib.blueprint(content, CraftResourceLib.MithrilArmor);
-        //                work(item, WorkPriorityType.craftMithrilArmor);
-        //                end(item);
-        //            }
-
-        //            break;
-        //    }
-
-        //    void mixResource(ItemResourceType item, bool safeGuard)
-        //    {
-        //        content.newLine();
-
-        //        var typeIcon = ResourceLib.Icon(item);
-        //        var typeName = LangLib.Item(item);
-        //        var city_res = city.GetGroupedResource(item);
-
-        //        var infoContent = new List<AbsRichBoxMember>(2);
-        //        infoContent.Add(new RbImage(typeIcon));
-        //        infoContent.Add(new RbSpace());
-        //        var amountText = new RbText(city_res.amount.ToString());
-        //        amountText.overrideColor = Color.White;
-        //        infoContent.Add(amountText);
-
-        //        var infoButton = new RbButton(infoContent, null, new RbAction(() =>
-        //        {
-        //            RichBoxContent content = new RichBoxContent();
-        //            content.Add(new RbText(typeName));
-        //            player.hud.tooltip.create(player, content, true);
-        //        }));
-        //        infoButton.overrideBgColor = HudLib.InfoYellow_BG;
-
-        //        content.Add(infoButton);
-        //        content.space();
-                
-
-        //        if (item != ItemResourceType.Water_G &&
-        //           item != ItemResourceType.Gold &&
-        //           item != ItemResourceType.Men)
-        //        {
-        //            var stockpileContent = new List<AbsRichBoxMember>(2);
-        //            stockpileContent.Add(new RbText(city_res.goalBuffer.ToString()));
-
-        //            bool reached = city_res.amount >= city_res.goalBuffer;
-        //            reachedBuffer |= reached;
-        //            SpriteName stockIcon;
-        //            if (safeGuard)
-        //            {
-        //                stockIcon = SpriteName.WarsStockpileAdd_Protected;
-        //            }
-        //            else if (reached)
-        //            {
-        //                stockIcon = SpriteName.WarsStockpileStop;
-        //            }
-        //            else
-        //            {
-        //                stockIcon = SpriteName.WarsStockpileAdd;
-        //            }
-        //            var icon = new RbImage(stockIcon);
-        //            stockpileContent.Add(icon);
-
-
-        //            var stockpileButton = new ArtButton( RbButtonStyle.HoverArea, stockpileContent, 
-        //                new RbAction(() =>
-        //                {
-        //                    player.mixTabEditType = MixTabEditType.Stockpile;
-        //                    player.mixTabItem = item;
-        //                }, RbSoundType.Default), 
-        //                new RbAction(()=> {
-        //                    var content = new RichBoxContent();
-        //                    content.text(DssRef.lang.Resource_Tab_Stockpile);
-        //                    player.hud.tooltip.create(player, content, true);
-        //                }));
-
-        //            content.Add(new RbTab(0.22f));
-        //            content.Add(stockpileButton);
-        //            content.space();
-        //        }
-        //    }
-
-            
-
-        //    void work(ItemResourceType item, WorkPriorityType workPriorityType)
-        //    {
-        //        LangLib.WorkNameIcon(workPriorityType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
-        //        var buttonContent = new RichBoxContent();
-        //        buttonContent.Add(new RbImage(workIcon));
-        //        var prio = city.workTemplate.GetWorkPriority(workPriorityType);
-        //        buttonContent.Add(new RbText(prio.value.ToString()));
-
-        //        var button = new RbButton(buttonContent, new RbAction(() =>
-        //        {
-        //            player.mixTabEditType = MixTabEditType.WorkPrio;
-        //            player.mixWorkType = workPriorityType;
-        //            player.mixTabItem = item;
-        //        }, RbSoundType.Default),
-        //        new RbAction(()=> 
-        //        {
-        //            var content = new RichBoxContent();
-        //            HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
-        //            content.text(name);
-        //            player.hud.tooltip.create(player, content, true);
-        //        }));
-
-        //        //content.Add(new RichBoxTab(0.5f));
-        //        content.Add(button);
-        //        content.space();
-        //    }
-
-        //    void blackMarket(ItemResourceType item)
-        //    {
-        //        var buttonContent = new RichBoxContent();
-        //        buttonContent.Add(new RbText("BM"));
-
-        //        var button = new ArtButton( RbButtonStyle.Primary,buttonContent, new RbAction(() =>
-        //        {
-        //            player.mixTabEditType = MixTabEditType.BlackMarket;
-        //            player.mixTabItem = item;
-        //        }, RbSoundType.Default),
-        //        new RbAction(() =>
-        //        {
-        //            var content = new RichBoxContent();
-        //            HudLib.Label(content, DssRef.lang.Hud_BlackMarket);
-                   
-        //            player.hud.tooltip.create(player, content, true);
-        //        }));
-        //        //button.overrideBgColor = Color.DarkViolet;
-        //        content.Add(button);
-        //        content.space();
-        //    }
-
-        //    void end(ItemResourceType item)
-        //    {
-        //        if (player.mixTabEditType != MixTabEditType.None &&
-        //           item == player.mixTabItem)
-        //        {
-        //            var city_res = city.GetGroupedResource(item);
-
-        //            content.newLine();
-        //            switch (player.mixTabEditType)
-        //            {
-        //                case MixTabEditType.Stockpile:
-        //                    //stockPileEdit(content, item, city_res);
-        //                    break;
-        //                case MixTabEditType.WorkPrio:
-        //                    LangLib.WorkNameIcon(player.mixWorkType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
-        //                    city.workTemplate.GetWorkPriority(player.mixWorkType).toHud(player, content, name, workIcon, typeIcon, player.mixWorkType, player.faction, city);
-        //                    break;
-        //                case MixTabEditType.BlackMarket:
-        //                    BlackMarketResources.ResourceToHud(item, player, content, city);
-        //                    break;
-        //            }
-        //        }
-        //    }
-        //}
-      
         void experienceTab(RichBoxContent content)
         {
             HudLib.Label(content, DssRef.lang.Experience_TopExperience);
@@ -1293,7 +572,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 }
                 var option = new ArtOption(city.experenceOrDistance == prio, new List<AbsRichBoxMember> { new RbText(text) },
-                    new RbAction1Arg<ExperienceOrDistancePrio>((ExperienceOrDistancePrio val) =>
+                    new RbAction1Arg<ExperienceOrDistancePrio>((val) =>
                     {
                         city.experenceOrDistance = val;
                     }, prio, RbSoundType.Option));
@@ -1403,7 +682,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
 
                     var subTab = new ArtButton(player.tagSubTab == subTabType ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
-                        new RbAction1Arg<TagSubTab>((TagSubTab subTabType) =>
+                        new RbAction1Arg<TagSubTab>((subTabType) =>
                         {
                             player.tagSubTab = subTabType;
                         }, subTabType, RbSoundType.Tab), description == null ? null : new RbTooltip_Text(description));
@@ -1433,7 +712,7 @@ namespace VikingEngine.DSSWars.Interface
 
                         var subTab = new ArtButton(player.resourcesSubTab.resourceGroup == managementType ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                             new List<AbsRichBoxMember> { new RbImage(managementIcon) },
-                            new RbAction1Arg<ResourceGroupType>((ResourceGroupType tab) =>
+                            new RbAction1Arg<ResourceGroupType>((tab) =>
                             {
                                 player.resourcesSubTab.resourceGroup = tab;
                             }, managementType, RbSoundType.Tab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
@@ -1567,7 +846,7 @@ namespace VikingEngine.DSSWars.Interface
                         var tab = new ResourcesSubTab(managementType, group);
                         content.Add(new ArtButton(player.resourcesSubTab.EqualTab(tab)? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                             new List<AbsRichBoxMember> { new RbImage(groupIcon) },
-                            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                            new RbAction1Arg<ResourcesSubTab>((resourcesSubTab) =>
                             {
                                 player.resourcesSubTab = resourcesSubTab;
                             }, tab, RbSoundType.Option),
@@ -2033,29 +1312,6 @@ namespace VikingEngine.DSSWars.Interface
 
                     break;
             }
-
-            //void stockpile(ItemResourceType item)
-            //{   
-            //    GroupedResource res = city.GetGroupedResource(item);
-
-            //    content.newLine();
-
-            //    content.Add(new ArtButton(RbButtonStyle.HoverArea, 
-            //        new List<AbsRichBoxMember>{
-            //            new RbImage(res.amount >= res.stockPileLimit ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
-            //            new RbImage(ResourceLib.Icon(item))},null,
-            //            //new RbTooltip((RichBoxContent content, object tag) =>
-            //            //{
-            //            //    bool buffer = false;
-            //            //    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
-            //            //}
-            //            new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(null,city, item))
-            //            ));
-                
-            //    content.space();
-               
-            //    //stockPileEdit(content, item, res);
-            //}
         }
 
         private void godPowerSetAllResources(RichBoxContent content, ItemResourceType[] Resources)
@@ -2063,7 +1319,6 @@ namespace VikingEngine.DSSWars.Interface
             if (DssRef.difficulty.GodPowers())
             {
                 content.newParagraph();
-                //ItemResourceType[] Resources = City.MovableCityResource_Misc;
 
                 HudLib.Label(content, DssRef.lang.GeneralSetting_SetAll);
                 content.space();
@@ -2089,87 +1344,6 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        
-
-        //void purchaseOptions(RichBoxContent content)
-        //{
-        //    //if (city.battleGroup == null)
-        //    {
-        //        if (city.damages.HasValue())
-        //        {
-        //            content.newLine();
-        //            content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>{
-        //                            new RbImage(SpriteName.unitEmoteLove),
-        //                            new RbText(DssRef.lang.CityOption_Repair),
-        //                        },
-        //                new RbAction1Arg<bool>(buyRepairAction, true, RbSoundType.Buy),
-        //                new RbTooltip(buyRepairToolTip, true),
-        //                city.buyRepair(false, true)));
-        //        }
-
-        //        content.newLine();
-
-        //        //if (city.battleGroup == null)
-        //        //{
-        //        //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-        //        //            new RichBoxImage(SpriteName.birdFireball),
-        //        //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
-        //        //        },
-        //        //        new RbAction(city.burnItDown, RbSoundType.Default),
-        //        //        new RbAction(burnToolTip),
-        //        //         city.damages.value < city.MaxDamages()));
-
-        //        //    content.newLine();
-        //        //}
-
-        //        {
-        //            int count = 1;
-        //            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
-        //                            new RbImage(SpriteName.WarsGuardAdd),
-        //                            new RbText( DssRef.lang.CityOption_ExpandGuardSize),
-        //                        },
-        //                new RbAction1Arg<int>(buyCityGuardsAction, count, RbSoundType.Buy),
-        //                new RbTooltip(buyGuardSizeToolTip, count),
-        //                city.buyCityGuards(false, count)));
-        //        }
-        //        //content.Add(new RichBoxSpace());
-        //        {
-        //            int count = 5;
-        //            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
-        //                    new RbText(string.Format(DssRef.lang.Hud_XTimes, count)) 
-        //                },
-        //                new RbAction1Arg<int>(buyCityGuardsAction, count, RbSoundType.Buy),
-        //                new RbTooltip(buyGuardSizeToolTip, count),
-        //                city.buyCityGuards(false, count)));
-        //        }
-
-        //        content.newLine();
-        //        {
-        //            int count = 1;
-        //            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
-        //                            new RbImage(SpriteName.WarsGuard),
-        //                            new RbText( DssRef.lang.CityOption_LowerGuardSize),
-        //                        },
-        //                new RbAction1Arg<int>(city.releaseGuardSize, count * DssConst.ExpandGuardSize, RbSoundType.Buy),
-        //                new RbTooltip(releaseGuardSizeToolTip, count),
-        //                city.canReleaseGuardSize(count)));
-        //        }
-        //        //if (!city.nobelHouse && city.canEverGetNobelHouse())
-        //        //{
-        //        //    content.Button(DssRef.lang.Building_NobleHouse,
-        //        //            new RbAction(city.buyNobelHouseAction, RbSoundType.Buy),
-        //        //            new RbAction(buyNobelhouseTooltip),
-        //        //            city.canBuyNobelHouse());
-        //        //}
-        //    }
-        //}
-
-        
-
-       
-
-        
-
         void conscriptTab(RichBoxContent content)
         {
             new ConscriptMenu().ToHud(city, player, content);
@@ -2185,449 +1359,12 @@ namespace VikingEngine.DSSWars.Interface
             new DeliveryMenu().ToHud(city, player, content);
         }
 
-        //void recruitTab(RichBoxContent content)
-        //{            
-        //    content.newLine();
-
-        //    ArmyStatus status;
-        //    Army recruitArmy = city.recruitToClosestArmy();
-        //    if (recruitArmy != null)
-        //    {
-        //        status = recruitArmy.Status();
-        //    }
-        //    else
-        //    {
-        //        status = new ArmyStatus();
-        //    }
-
-        //    content.h2(DssRef.lang.UnitType_Recruit);
-        //    foreach (var opt in city.cityPurchaseOptions)
-        //    {
-        //        if (opt.available)
-        //        {
-        //            content.newLine();
-
-        //            string recruitText = string.Format(DssRef.lang.CityOption_RecruitType, DssRef.profile.Name(opt.unitType));
-        //            string count = status.typeCount[(int)opt.unitType].ToString();
-        //            AbsSoldierProfile typeData = DssRef.profile.Get(opt.unitType);
-
-        //            content.Add(new RichBoxText(count));
-        //            content.Add(new RichBoxImage(typeData.icon));
-
-        //            content.Add(new RichBoxSpace());
-
-        //            content.Add(new RichboxButton(
-        //                new List<AbsRichBoxMember>
-        //                {
-        //                new RichBoxText(recruitText),
-        //                },
-        //                new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, 1, player, RbSoundType.Buy),
-        //                new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
-        //                canBuySoldiers(opt.unitType, 1)));
-
-        //            content.space();
-        //            multiBuy(5);
-
-        //            content.space();
-
-        //            multiBuy(25);
-
-        //            void multiBuy(int multiCount)
-        //            {
-        //                content.Button(string.Format(DssRef.lang.Hud_XTimes, multiCount),
-        //                    new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, multiCount, player, RbSoundType.Buy),
-        //                    new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, multiCount),
-        //                    canBuySoldiers(opt.unitType, multiCount));
-        //            }
-        //        }
-        //    }
-
-        //    if (!player.inTutorialMode)
-        //    {
-        //        content.newLine();
-
-        //        content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, TextLib.LargeNumber(city.mercenaries)));
-
-        //        content.newLine();
-
-        //        //string importMecenariesText = "Import {0} mercenaries";
-
-        //        content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-        //        new RichBoxImage(SpriteName.WarsSoldierIcon),
-        //        new RichBoxText( string.Format(DssRef.lang.CityOption_BuyXMercenaries, DssLib.MercenaryPurchaseCount)),
-        //    },
-        //            new RbAction1Arg<int>(buyMercenaryAction, 1, RbSoundType.Buy),
-        //            new RbAction1Arg<int>(buyMercenaryToolTip, 1),
-        //            city.buyMercenary(false, 1)));
-
-        //        content.Add(new RichBoxSpace());
-
-        //        content.Button((DssLib.MercenaryPurchaseCount * 5).ToString(),
-        //            new RbAction1Arg<int>(buyMercenaryAction, 5, RbSoundType.Buy),
-        //            new RbAction1Arg<int>(buyMercenaryToolTip, 5),
-        //            city.buyMercenary(false, 5));
-
-        //        content.Add(new RichBoxNewLine(true));
-
-
-        //        if (city.damages.HasValue())
-        //        {
-        //            content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-        //                            new RichBoxImage(SpriteName.unitEmoteLove),
-        //                            new RichBoxText(DssRef.lang.CityOption_Repair),
-        //                        },
-        //                new RbAction1Arg<bool>(buyRepairAction, true, RbSoundType.Buy),
-        //                new RbAction1Arg<bool>(buyRepairToolTip, true),
-        //                city.buyRepair(false, true)));
-        //        }
-        //        //else
-        //        //{
-        //        //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-        //        //            new RichBoxImage(SpriteName.WarsWorkerAdd),
-        //        //            new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
-        //        //        },
-        //        //        new RbAction1Arg<int>(buyWorkforceAction, 1, RbSoundType.Buy),
-        //        //        new RbAction1Arg<int>(buyWorkforceToolTip, 1),
-        //        //        city.buyWorkforce(false, 1)));
-        //        //}
-
-
-        //        content.newLine();
-
-        //        //if (city.battleGroup == null)
-        //        //{
-        //        //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-        //        //            new RichBoxImage(SpriteName.birdFireball),
-        //        //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
-        //        //        },
-        //        //        new RbAction(city.burnItDown, RbSoundType.Default),
-        //        //        new RbAction(burnToolTip),
-        //        //         city.damages.value < city.MaxDamages()));
-
-        //        //    content.newLine();
-        //        //}
-
-        //        {
-        //            int count = 1;
-        //            content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-        //                            new RichBoxImage(SpriteName.WarsGuardAdd),
-        //                            new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
-        //                        },
-        //                new RbAction1Arg<int>(buyCityGuardsAction, count, RbSoundType.Buy),
-        //                new RbAction1Arg<int>(buyGuardSizeToolTip, count),
-        //                city.buyCityGuards(false, count)));
-        //        }
-        //        content.Add(new RichBoxSpace());
-        //        {
-        //            int count = 5;
-        //            content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
-        //            new RbAction1Arg<int>(buyCityGuardsAction, count, RbSoundType.Buy),
-        //            new RbAction1Arg<int>(buyGuardSizeToolTip, count),
-        //            city.buyCityGuards(false, count));
-        //        }
-
-        //        content.newLine();
-
-        //        if (!city.nobelHouse && city.canEverGetNobelHouse())
-        //        {
-        //            content.Button(DssRef.lang.Building_NobleHouse,
-        //                    new RbAction(city.buyNobelHouseAction, RbSoundType.Buy),
-        //                    new RbAction(buyNobelhouseTooltip),
-        //                    city.canBuyNobelHouse());
-        //        }
-
-        //        content.newLine();
-        //    }
-            
-        //}
-
-        //void tradeTab(RichBoxContent content)
-        //{
-        //    city.tradeTemplate.toHud(player,content, city.GetFaction(), city);
-        //}
-
-        //void tabClick(int tab)
-        //{
-        //    this.player.cityTab = (MenuTab)tab;
-        //}
-
-        //bool canBuySoldiers(UnitType unitType, int count)
-        //{
-        //    Army army;
-        //    return city.buySoldiers(unitType, count, false, out army);
-        //}
-       
-        //void buyNobelhouseTooltip()
-        //{
-        //    RichBoxContent content = new RichBoxContent(); 
-
-        //    if (city.nobelHouse)
-        //    {
-        //        content.h2(DssRef.lang.Building_IsBuilt);
-        //    }
-        //    else
-        //    {
-        //        content.h2(DssRef.lang.Building_BuildAction);
-        //        content.newLine();
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
-        //        content.newLine();
-        //        HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, DssLib.NobelHouseWorkForceReqiurement, city.workForce);
-        //        content.newLine();
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-        //        content.newLine();
-        //        HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, DssLib.NobleHouseCost, player.faction.gold);
-        //        HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobleHouseUpkeep));
-        //        content.newLine();
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-                
-        //    }
-
-        //    content.newLine();
-
-        //    //string addDiplomacy = "1 diplomacy point per {0} seconds";
-        //    int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.NobelHouseAddDiplomacy * 3600);
-        //    //string addDiplomacyMax = "+{0} to diplomacy point max limit";
-        //    //string addCommand = "1 command point per {0} seconds";
-        //    //int commandSec = Convert.ToInt32(DssLib.NobelHouseAddCommand * 3600);
-        //    //string upkeep = "upkeep +{0}";
-
-
-        //    HudLib.BulletPoint(content);
-        //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
-        //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
-        //    content.newLine();
-
-        //    HudLib.BulletPoint(content);
-        //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
-        //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.NobelHouseAddMaxDiplomacy)));
-        //    content.newLine();
-
-        //    //content.ListDot();
-        //    //content.Add(new RichBoxImage(SpriteName.WarsCommandAddTime));
-        //    //content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
-        //    //content.newLine();
-
-        //    HudLib.BulletPoint(content);
-        //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
-        //    content.newLine();
-
-        //    //content.ListDot();
-        //    //content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-        //    //HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobelHouseUpkeep), true);
-        //    //content.Add(new RichBoxText(string.Format(upkeep, DssLib.NobelHouseUpkeep)));
-        //    content.newLine();
-
-        //    player.hud.tooltip.create(player, content, true);
-        
-        
-        //}
-
-
-        //void buyMercenaryAction(int count)
-        //{
-        //    city.buyMercenary(true, count);
-        //}
-
-        //public void buyMercenaryToolTip(int count)
-        //{
-        //    RichBoxContent content = new RichBoxContent();
-
-        //    int cost = city.buyMercenaryCost(count);
-
-        //    content.text(TextLib.Quote(DssRef.lang.CityOption_Mercenaries_Description));
-        //    content.newLine();
-        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-        //    content.newLine();
-        //    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, cost, player.faction.gold);
-        //    content.text(string.Format(DssRef.lang.Hud_Purchase_CostWillIncreaseByX, DssRef.difficulty.MercenaryPurchaseCost_Add * count));
-        //    content.newLine();
-        //    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.MercenaryOnMarket, DssLib.MercenaryPurchaseCount * count, player.mercenaryMarket.Int());
-
-        //    content.newParagraph();
-        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-        //    content.newLine();
-        //    content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, DssLib.MercenaryPurchaseCount * count));
-            
-        //    player.hud.tooltip.create(player, content, true);
-        //}
-
-
-        //void buyWorkforceAction(int count)
-        //{
-        //    city.buyWorkforce(true, count);
-        //}
-
-        //void buyRepairAction(bool all)
-        //{
-        //    city.buyRepair(true, all);
-        //}
-
-        //public void buyWorkforceToolTip(int count)
-        //{
-        //    RichBoxContent content = new RichBoxContent();
-        //    if (city.canExpandWorkForce(count))
-        //    {
-        //        content.text(TextLib.Quote(DssRef.lang.ResourceType_Workers_Description));
-        //        content.newLine();
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-        //        content.newLine();
-        //        HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, city.expandWorkForceCost()* count, player.faction.gold);
-        //        content.newLine();
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-        //        content.newLine();
-        //        content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.CityOption_ExpandWorkForce_IncreaseMax, DssConst.ExpandWorkForce * count));
-        //    }
-        //    else 
-        //    {
-        //        content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
-        //    }
-        //    player.hud.tooltip.create(player, content, true);
-        //}
-
         public void burnToolTip()
         {
             RichBoxContent content = new RichBoxContent();
 
             content.text(DssRef.lang.CityOption_BurnItDown_Description);
-
-            //player.hud.tooltip.create(player, content, true);
         }
-
-        //public void buyRepairToolTip(RichBoxContent content, object tag)
-        //{
-        //    bool all = (bool)tag;
-        //    //RichBoxContent content = new RichBoxContent();
-        //    int count, cost;
-        //    city.repairCountAndCost( all, out count, out cost);
-
-        //    content.text(TextLib.Quote(DssRef.lang.CityOption_Repair_Description));
-        //    content.newLine();
-        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-        //    content.newLine();
-        //    HudLib.ResourceCost(content, ResourceType.Gold, cost, player.faction.gold);
-        //    content.newLine();
-        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-        //    content.newLine();
-        //    content.icontext(SpriteName.unitEmoteLove, string.Format(DssRef.lang.CityOption_RepairGain, city.damages.Int()));
-            
-        //    //player.hud.tooltip.create(player, content, true);
-        //}
-
-        //void buyCityGuardsAction(int count)
-        //{
-        //    city.buyCityGuards(true, count);
-        //}
-
-        //public void releaseGuardSizeToolTip(RichBoxContent content, object tag)//int count)
-        //{
-        //    int count = (int)tag;
-        //    //RichBoxContent content = new RichBoxContent();
-
-        //    if (city.canReleaseGuardSize(count))
-        //    {
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
-        //        content.newLine();
-        //        content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, -DssConst.ExpandGuardSize * count));
-                
-                
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
-        //        HudLib.ItemCount(content, SpriteName.rtsIncome, DssRef.lang.ResourceType_Gold, (DssConst.ReleaseGuardSizeGain * count).ToString());
-
-        //    }
-        //    else
-        //    {
-        //        content.Add(new RbText(DssRef.lang.Hud_Purchase_MinCapacity, Color.Red));
-        //    }
-
-        //    //player.hud.tooltip.create(player, content, true);
-        //}
-
-        //public void buyGuardSizeToolTip(RichBoxContent content, object tag)//int count)
-        //{
-        //    int count = (int)tag;
-        //    //RichBoxContent content = new RichBoxContent();
-
-        //    if (city.canIncreaseGuardSize(count, false))
-        //    {
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
-        //        content.newLine();
-        //        HudLib.ResourceCost(content, ResourceType.Gold, DssConst.ExpandGuardSizeCost * count, player.faction.gold);
-        //        content.newLine();
-        //        //content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
-        //        HudLib.Upkeep(content, city.GuardUpkeep(DssConst.ExpandGuardSize * count));
-
-        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
-
-        //        content.icontext(SpriteName.WarsGuardAdd, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, TextLib.PlusMinus( DssConst.ExpandGuardSize * count)));
-        //    }
-        //    else 
-        //    {
-        //        content.Add(new RbText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
-        //        content.newLine();
-        //        content.Add(new RbText(DssRef.lang.Hud_GuardCount_MustExpandCityMessage, Color.Red));
-        //    }
-
-        //    //player.hud.tooltip.create(player, content, true);
-        //}
-
-        //public void buySoldiersTip(CityPurchaseOption opt, int count)
-        //{
-        //    var typeData = DssRef.profile.Get(opt.unitType);
-        //    var soldierData = DssRef.profile.Get(UnitType.Soldier);
-        //    int dpsSoldier = soldierData.DPS_land();
-        //    RichBoxContent content = new RichBoxContent();
-        //    HudLib.Description(content, typeData.description);//content.text(TextLib.Quote(typeData.description));
-        //    content.newLine();
-        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-        //    content.newLine();
-        //    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, opt.goldCost * count, player.faction.gold);
-        //    content.newLine();
-        //    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, typeData.workForceCount() * count, city.workForce);
-        //    content.newLine();
-        //    content.newLine();
-
-        //    content.text(string.Format(DssRef.lang.Hud_EnergyUpkeepX, typeData.energyPerSoldier));
-        //    //HudLib.Upkeep(content, typeData.Upkeep() * count);
-        //    //content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
-        //    content.newParagraph();
-
-        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-        //    int unitCount = typeData.rowWidth * typeData.columnsDepth;
-        //    //string countText = "{0} groups, a total of {1} units";
-        //    content.text(string.Format(DssRef.lang.SoldierStats_GroupCountAndSoldierCount, count, unitCount * count));
-        //    content.newParagraph();
-
-        //    content.h2(DssRef.lang.SoldierStats_Title);
-        //    content.text(DssRef.lang.Hud_PurchaseTitle_Cost + ": " + TextLib.OneDecimal(opt.goldCost / (double)unitCount));
-        //    //content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
-        //    //HudLib.Upkeep(content, typeData.Upkeep() / (double)unitCount);
-
-            
-        //    content.text(string.Format(DssRef.lang.SoldierStats_AttackStrengthLandSeaCity, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));
-        //    content.text(string.Format( DssRef.lang.SoldierStats_Health, typeData.basehealth));
-        //    content.text(string.Format(DssRef.lang.SoldierStats_RecruitTrainingTimeMinutes, TextLib.OneDecimal(typeData.recruitTrainingTimeSec / 60.0)));
-
-        //    speedBonus(true, typeData.ArmySpeedBonusLand);
-        //    speedBonus(false, typeData.ArmySpeedBonusSea);
-
-
-        //    player.hud.tooltip.create(player, content, true);
-
-        //    void speedBonus(bool land, double bonus)
-        //    {
-        //        if (bonus != 0)
-        //        {                    
-        //            string bonusText = land? DssRef.lang.SoldierStats_SpeedBonusLand : DssRef.lang.SoldierStats_SpeedBonusSea;
-        //            content.text(string.Format(bonusText, TextLib.PercentAddText((float)bonus)));
-        //        }
-        //    }
-        //}
-
-        string dpsCompared(int dps, int dpsSoldier)
-        {
-           return TextLib.OneDecimal(dps / (double)dpsSoldier);
-        }
-
         
     }
 
@@ -2648,6 +1385,7 @@ namespace VikingEngine.DSSWars.Interface
         Automation,
         Disband,
         Divide,
+        Filter,
         Progress,
         Mix,
         Help,
@@ -2668,31 +1406,6 @@ namespace VikingEngine.DSSWars.Interface
         BlackMarket,
     }
 
-    //enum ResourcesSubTab
-    //{ 
-    //    Overview_Resources,
-    //    Overview_Metals,
-    //    Overview_Weapons,
-    //    Overview_Projectile,
-    //    Overview_Armor,
-
-    //    Work_Resources,
-    //    Work_Metals,
-    //    Work_Weapons,
-    //    Work_Projectile,
-    //    Work_Armor,
-    //    Work_Mint,
-
-    //    Stockpile_Resources,
-    //    Stockpile_Metals,
-    //    Stockpile_Weapons,
-    //    Stockpile_Projectile,
-    //    Stockpile_Armor,
-
-    //    Auto,
-
-    //}
-
     struct ResourcesSubTab
     {
         public ResourceGroupType resourceGroup;
@@ -2709,19 +1422,6 @@ namespace VikingEngine.DSSWars.Interface
             return resourceGroup == other.resourceGroup && managementType == other.managementType;
         }
     }
-
-   
-
-    //enum WorkSubTab
-    //{
-    //    Priority_Resources,
-    //    Priority_Metals,
-    //    Priority_Weapons,
-    //    Priority_Armor,
-
-    //    NUM,
-    //        Experience,
-    //}
 
     enum ProgressSubTab
     { 

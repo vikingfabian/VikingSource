@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -81,7 +82,7 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
             //args.content.Add(new RbSeperationLine());
-            new ArmyMenu(args.player, this, args.content);
+            new MapObjMenu(args.player, this, args.content);
         }
 
         void removeClick(AbsMapObject obj)

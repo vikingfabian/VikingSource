@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
@@ -111,7 +112,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             XpLib.Unlock = new TechnologyUnlock(DssRef.storage.ruleset_instance.setting_techMulti);
             DssRef.storage.profileStorage.refreshProfiles();
-            CityMenu.InitGame();
+            MapObjMenu.InitGame();
         }
 
         protected void postPlayerInit()

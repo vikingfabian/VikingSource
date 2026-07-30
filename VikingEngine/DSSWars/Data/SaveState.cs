@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 
 
 namespace VikingEngine.DSSWars.Data
@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Data
                DssRef.storage.readGameSetup(r);
             }
 
-            CityMenu.InitGame();
+            MapObjMenu.InitGame();
             Debug.ReadCheck(r);
             DssRef.settings.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);

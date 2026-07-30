@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
@@ -88,7 +89,7 @@ namespace VikingEngine.DSSWars.Players
 
         public MenuTab factionTab = MenuTab.NUM_NONE;
         public MenuTab cityTab;
-        public MenuTab armyTab = ArmyMenu.Tabs[0];
+        public MenuTab armyTab = MapObjMenu.ArmyTabs[0];
         public MenuTab pinTab = MenuTab.Info;
         public ResourcesSubTab resourcesSubTab = new ResourcesSubTab();
 
@@ -627,14 +628,14 @@ namespace VikingEngine.DSSWars.Players
         {
             if (profile.casualControls)
             {
-                return CityMenu.CasualTabs;
+                return MapObjMenu.CasualTabs;
             }
-            return tutorial != null && tutorial.TutorialMode() ? tutorial.cityTabs : CityMenu.Tabs;
+            return tutorial != null && tutorial.TutorialMode() ? tutorial.cityTabs : MapObjMenu.CityTabs;
         }
 
         public List<MenuTab> AvailableArmyTabs()
         {
-            return ArmyMenu.Tabs;
+            return MapObjMenu.ArmyTabs;
         }
 
         public void beginCreatePin()
