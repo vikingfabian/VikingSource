@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CityCulture cityCulture = CityCulture.NUM_NONE;
         public CityBiome cityBiome = CityBiome.Default_Fields;
 
-        public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
+        public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.OrchardApple;
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;
 
