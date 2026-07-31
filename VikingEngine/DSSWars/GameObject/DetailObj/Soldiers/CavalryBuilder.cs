@@ -86,6 +86,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case Resource.ItemResourceType.Pony:
                     modelData = DssVar.ponyModel;
+                    modelData.wagonPullDistance = 0.2f;
                     break;
 
                 default:
