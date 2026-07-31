@@ -167,9 +167,11 @@ namespace VikingEngine
 
         const float FloatMultiplier = 50; //Accuracy of 2%
 
-        public static void WriteFloatMultiplier(float value, System.IO.BinaryWriter w)
-        {            
-            w.Write((byte) (value * FloatMultiplier));
+        public static byte WriteFloatMultiplier(float value, System.IO.BinaryWriter w)
+        {
+           byte byteVal = (byte)(value * FloatMultiplier);
+            w.Write(byteVal);
+            return byteVal;
         }
 
         public static float ReadFloatMultiplier(System.IO.BinaryReader r)

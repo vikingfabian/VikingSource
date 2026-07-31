@@ -31,7 +31,7 @@ namespace VikingEngine
         public static readonly IntVector2 CballGoalTextSz = new IntVector2(2, 5);
 
         public static readonly IntVector2 CballGoliePaddleSz = new IntVector2(10, 46);
-
+        
         public static readonly IntVector2 DSSCardSz = new IntVector2(6, 8);
 
         public static readonly IntVector2 PjModeSz = new IntVector2(112, 64);
@@ -1969,8 +1969,11 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_DiplomaticStatue_GoldenPoop, 3, 3);
                     add(SpriteName.WarsBuild_DiplomaticStatue_ThumbsUpEast, 3, 3);
                     add(SpriteName.WarsBuild_DiplomaticStatue_InsultWest, 3, 3);
-                    
-                    
+
+                    addWithSizeDef(SpriteName.GooBannerHighlight, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.GooBanner, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.SupportDlcBanner, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.SupportDlcBannerHighlight, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
                 }
             }
 
@@ -2073,6 +2076,7 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Falcon7);
                 add(SpriteName.HudPin_Falcon8);
                 add(SpriteName.HudPin_Falcon9);
+                add(SpriteName.HudPin_Falcon_);
 
                 add(SpriteName.HudPin_Castle0);
                 add(SpriteName.HudPin_Castle1);
@@ -2084,6 +2088,7 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Castle7);
                 add(SpriteName.HudPin_Castle8);
                 add(SpriteName.HudPin_Castle9);
+                add(SpriteName.HudPin_Castle_);
 
                 add(SpriteName.HudPin_Horse0);
                 add(SpriteName.HudPin_Horse1);
@@ -2095,6 +2100,7 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Horse7);
                 add(SpriteName.HudPin_Horse8);
                 add(SpriteName.HudPin_Horse9);
+                add(SpriteName.HudPin_Horse_);
 
                 add(SpriteName.HudPin_Ship0);
                 add(SpriteName.HudPin_Ship1);
@@ -2106,6 +2112,7 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Ship7);
                 add(SpriteName.HudPin_Ship8);
                 add(SpriteName.HudPin_Ship9);
+                add(SpriteName.HudPin_Ship_);
 
                 add(SpriteName.HudPin_Cannon0);
                 add(SpriteName.HudPin_Cannon1);
@@ -2117,11 +2124,30 @@ namespace VikingEngine
                 add(SpriteName.HudPin_Cannon7);
                 add(SpriteName.HudPin_Cannon8);
                 add(SpriteName.HudPin_Cannon9);
+                add(SpriteName.HudPin_Cannon_);
 
-                currentIndex++;
-                add(SpriteName.WarsIconPin);
+                //currentIndex++;
+                add(SpriteName.WarsLocationPin);
                 add(SpriteName.WarsHudRoundButtonDisabled);
                 add(SpriteName.WarsHudGoldOutline);
+                add(SpriteName.WarsHudGoldOutline_Gray);
+                add(SpriteName.VoiceSoundOn);
+                add(SpriteName.VoiceSoundOff);
+                add(SpriteName.VoiceDisabled);
+                add(SpriteName.TextChatLetter);
+                add(SpriteName.WarsHudCasualMode);
+                add(SpriteName.WarsHudCasualModeDisabled);
+                add(SpriteName.WarsHudIconHandicap);
+                add(SpriteName.WarsHudIconDistanceOnMap);
+                add(SpriteName.cmdClientPointerMetallic);
+
+                add(SpriteName.WarsHudIconMultiplayer);
+                add(SpriteName.WarsHudIconClient);
+                add(SpriteName.WarsHudIconHost);
+                add(SpriteName.WarsHudIconPlayerCount);
+
+                add(SpriteName.WarsHudIconBlockedPlayer);
+                add(SpriteName.WarsRelationMobilizing);
             }
 
 
@@ -2192,7 +2218,7 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_SilverCoin);
 
                 add(SpriteName.WarsWorkSmelting);
-                add(SpriteName.HudLocationPinIcon);
+                add(SpriteName.HudPinIcon);
                 add(SpriteName.warsBuildCategoryAdvanced);
                 add(SpriteName.warsBuildCategorySearch);
                 add(SpriteName.WarsHudGodPowerButton);
@@ -2301,7 +2327,9 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_SmallServiceHouse, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_BigServiceHouse, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_Palisade, currentIndex, 3, 3);
-                add(SpriteName.SteamIcon, currentIndex, 8, 3);
+                var steamIx = currentIndex;
+                add(SpriteName.SteamIcon, steamIx, 3, 3);
+                add(SpriteName.SteamIconAndName, steamIx, 8, 3);
                 add(SpriteName.WarsBuild_Tent, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_Bookpress, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_ResearchCenter, currentIndex, 3, 3);

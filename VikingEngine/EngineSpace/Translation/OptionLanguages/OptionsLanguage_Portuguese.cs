@@ -8,6 +8,10 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
     // Keep a distinct class name so it can live side-by-side with English
     class OptionsLanguage_Portuguese : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "Barra de rolagem larga";
+        public override string GameSettings_DisplayInputHelp => "Ajuda de comandos";
+        public override string GameSettings_InputSmoothing => "Suavização de comandos";
+
         //Mounts
         public override string InputSteam => "Steam Input";
         public override string Input_SimulateMouse => "Simular mouse";

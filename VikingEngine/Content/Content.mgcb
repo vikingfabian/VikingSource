@@ -1249,6 +1249,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/dog_growl2.wav
 
+#begin DSS/Sound/down.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/down.wav
+
 #begin DSS/Sound/drop_item.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1890,6 +1896,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/trophy.wav
+
+#begin DSS/Sound/up.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/up.wav
 
 #begin DSS/Sound/wagon1.wav
 /importer:WavImporter

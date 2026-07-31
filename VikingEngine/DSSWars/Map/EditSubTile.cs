@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -14,12 +15,14 @@ namespace VikingEngine.DSSWars.Map
         public bool editAmount;
         public bool editCollection;
         public bool hostedTile;
+        public bool isPlayer;
         public bool netShare;
 
-        public EditSubTile(Faction faction, bool netShare, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
+        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
         {
-            hostedTile = faction != null && faction.IsNetHosted();
-            this.netShare = netShare;
+            hostedTile = pfaction.TryGetFaction(out var faction) && faction.IsNetHosted();
+            isPlayer = faction.player != null && faction.player.IsLocalPlayer();
+            this.netShare = netShare && isPlayer;
             this.position = position;
             this.value = value;
             this.editTerrain = editTerrain;
@@ -27,9 +30,10 @@ namespace VikingEngine.DSSWars.Map
             this.editCollection = editCollection;
         }
 
-        public EditSubTile(bool hosted, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
+        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
         {
             hostedTile = hosted;
+            this.isPlayer = isPlayer;
             this.position = position;
             this.value = value;
             this.editTerrain = editTerrain;
@@ -119,7 +123,7 @@ namespace VikingEngine.DSSWars.Map
 
             if (netShare && Ref.netSession.InMultiplayerSession)
             {
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEditSubTile, Network.PacketReliability.Reliable, out var packet);
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEditSubTile, isPlayer ? Network.PacketReliability.Reliable : Network.PacketReliability.Unrelyable, out var packet);
                 write(w);
                 packet.EndWrite_Asynch();
             }

@@ -134,13 +134,19 @@ namespace VikingEngine.DSSWars
 
         public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);            
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);
+            }
         }
 
         public static void Rotation1DToQuaterion(Graphics.AbsVoxelObj mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.Identity;
-            mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.Identity;
+                mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            }
         }
 
         public static RotationQuarterion ToQuaterion(float rotation)

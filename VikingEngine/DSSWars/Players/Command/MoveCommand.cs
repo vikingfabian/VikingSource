@@ -17,7 +17,10 @@ namespace VikingEngine.DSSWars.Players.Command
         }
         public override void refreshGoal(Vector3 goalPos)
         {
-            goalWp = goalPos;
+            if (VectorExt.PlaneXZDistance(ref goalWp, ref goalPos) > WorldData.SubTileWidth)
+            {
+                goalWp = goalPos;
+            }
         }
 
         public override bool hasPathCommand(out bool pathTowardsUnit)

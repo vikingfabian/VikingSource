@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -122,7 +123,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.group = group;
             this.gridPlacement = gridPlacement;
-            myIndex = group.GetFaction_NoChecks().pickNextUnitId();
+            myIndex = group.pfaction.GetFaction().pickNextUnitId();
 
             boundRadius = soldierData.boundRadius;
 
@@ -379,12 +380,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update2_battle_attack(float time, bool fullUpate, float groupWalkSpeed)
         {
-            if (group.debugTagged)
-            {
-                lib.DoNothing();
-                var attack = attackTarget;
-                var attack2 = nextAttackTarget;
-            }
+            //if (group.debugTagged)
+            //{
+            //    lib.DoNothing();
+            //    var attack = attackTarget;
+            //    var attack2 = nextAttackTarget;
+            //}
 
             updateMoveAttackPrio(time, fullUpate, freeToMove(time), groupWalkSpeed);
 
@@ -450,6 +451,14 @@ namespace VikingEngine.DSSWars.GameObject
                 state2 = SoldierState2.wakeup;
                 stateTime = 0;
             }
+        }
+
+        public void clientPauseUpdate()
+        {
+            updateGroupPosition();
+            updateGroudY(true);
+            
+            model?.update(this);
         }
 
         public void setReGroupState()
@@ -632,9 +641,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             FindMinValuePointer<AbsSoldierUnit> closest = new FindMinValuePointer<AbsSoldierUnit>();
 
-            AbsGroup attack_sp = null;
-            group.attackTarget_soldierGroupOrCity.TryGetTarget(out attack_sp);
-            if (attack_sp != null)
+            //AbsGroup attack_sp = null;
+            //group.attackTarget_soldierGroupOrCity.TryGetTarget(out attack_sp);
+            if (group.attackTarget_soldierGroupOrCity.TryGetGroup(out var attack_sp))
             {
                 if (attack_sp.gameobjectType() == GameObjectType.SoldierGroup)
                 {
@@ -664,14 +673,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (attackTarget == null)
             {
-                attackTarget = RefExt.Target_safe(group.attackTarget_soldierGroupOrCity)?.Soldiers()?.GetRandomSafe(Ref.peRnd);
+                attackTarget = ((AbsGroup)group.attackTarget_soldierGroupOrCity.Get())?.Soldiers()?.GetRandomSafe(Ref.peRnd);
             }
 
             var target = attackTarget;
 
             if (target == null ||
                 target.Dead() ||
-                target.GetFaction() == this.GetFaction())
+                target.pfaction == this.pfaction)
             {
                 attackTarget = null;
                 return HasTargetInReach.NoTarget;
@@ -855,7 +864,7 @@ namespace VikingEngine.DSSWars.GameObject
             battleData?.asycUpdate(this);
         }
 
-        virtual public void takeDamage(int damageAmount, float blockReduce, AbsSoldierUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate, out bool blocked)
+        virtual public void takeDamage(int damageAmount, float blockReduce, AbsSoldierUnit meleeAttacker, Rotation1D attackDir, PFaction enemyFaction, bool fullUpdate, out bool blocked)
         {
             float diff = Rotation1D.AngleDifference_Absolute(attackDir.radians, rotation.radians);
 
@@ -885,31 +894,24 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     recievedProjectileAttackWhileIdle = state.idle;
 
-                    if (meleeAttacker.IsNetHosted)
-                    {
-                        if (IsNetHosted)
-                        {
-                            //lockedIncomingDamage -= damageAmount;
-                            //health -= damageAmount;
-
-                            //if (health <= 0)
-                            //{
-                            //    onDeath(fullUpdate, enemyFaction);
-                            //}
-                            reduceHealth(damageAmount, enemyFaction, fullUpdate);
-                        }
-                        else
-                        {
-                            //Send damage to client
-                            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssAttackDamage, Network.PacketReliability.Reliable, out var packet);
-                            {
-                                w.Write((ushort)damageAmount);
-                                w.Write(attackDir.ByteDir);
-                                Net.ObjectId.WriteSoldier(w, this);
-                            }
-                            packet.EndWrite_Asynch();
-                        }
-                    }
+                    //if (meleeAttacker.IsNetHosted)
+                    //{
+                        //if (IsNetHosted)
+                        //{
+                    reduceHealth(damageAmount, enemyFaction, fullUpdate);
+                        //}
+                        //else
+                        //{
+                        //    //Send damage to client
+                        //    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssAttackDamage, Network.PacketReliability.Reliable, out var packet);
+                        //    {
+                        //        w.Write((ushort)damageAmount);
+                        //        w.Write(attackDir.ByteDir);
+                        //        Net.ObjectId.WriteSoldier(w, this);
+                        //    }
+                        //    packet.EndWrite_Asynch();
+                        //}
+                    //}
 
                     if (fullUpdate)
                     {
@@ -926,19 +928,30 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void reduceHealth(int damageAmount, Faction enemyFaction, bool fullUpdate)
+        public void reduceHealth(int damageAmount, PFaction enemyFaction, bool fullUpdate)
         {
             lockedIncomingDamage -= damageAmount;
             health -= damageAmount;
 
             if (health <= 0)
             {
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierDeath, Network.PacketReliability.Reliable, out var packet);
+                if (pfaction.TryGetRemotePlayer(out _) || group.lastNetUpdate.Seconds < 10)
                 {
-                    Net.ObjectId.WriteSoldier(w, this);
-                } packet.EndWrite_Asynch();
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierDeath, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        goPointer().write(w);
+                    } packet.EndWrite_Asynch();
+                }
                 onDeath(fullUpdate, enemyFaction);
             }
+        }
+
+        public override PGameObject goPointer()
+        {
+            var p = group.goPointer();
+            p.objectType = GameObjectType.Soldier;
+            p.groupMemberIndex = myIndex;
+            return p;
         }
 
         public static void ReadAttackDamage(System.IO.BinaryReader r)
@@ -949,7 +962,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (soldier != null)
             {
-                soldier.reduceHealth(damageAmount, null, true);
+                soldier.reduceHealth(damageAmount, PFaction.Empty, true);
 
                 if (mapObj.inRender_detailLayer)
                 {
@@ -985,7 +998,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 var target_sp = group.GetAttackTarget();
-                if (player.faction == GetFaction() && target_sp != null)
+                if (player.pfaction == pfaction && target_sp != null)
                 {
                     selection.TargetLine(ref group.position, ref target_sp.position);
                 }
@@ -1013,6 +1026,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void toHud(ObjectHudArgs args)
         {
             group.toHud(args);
+
             if (args.ShowFull)
             {
                 stateDebugText(args.content);
@@ -1022,7 +1036,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void stateDebugText(RichBoxContent content)
         {
             content.newLine();
-            content.text("SoldierAiState: " + state2.ToString());
+            
 
             content.Add(new RbNewLine(true));
             content.text(group.TypeName());
@@ -1088,7 +1102,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return true;
         }
-
+        public override bool MayBattle()
+        {
+            return true;
+        }
         public override AbsArmy GetAbsArmy()
         {
             group.army.TryGetTarget(out var tArmy);
@@ -1137,14 +1154,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
             var attackTarget_sp = attackTarget;
 
-            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(factionIndex))
+            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(pfaction))
             {
                 attackTarget = null;
             }
 
             var nextAttackTarget_sp = nextAttackTarget;
             nextAttackTarget = null;
-            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(factionIndex))
+            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(pfaction))
             {
                 attackTarget = nextAttackTarget_sp;
             }
@@ -1235,15 +1252,16 @@ namespace VikingEngine.DSSWars.GameObject
             get { return soldierData.basehealth - health; }
         }
 
-        virtual public void onDeath(bool fullUpdate, Faction enemyFaction)
+        virtual public void onDeath(bool fullUpdate, PFaction enemyFaction)
         {
-            if (enemyFaction != null && enemyFaction.player.IsLocalPlayer())
+
+            if (enemyFaction.TryGetPlayer(out var enemyPlayer) && enemyPlayer.IsLocalPlayer())
             {
-                ++enemyFaction.player.GetLocalPlayer().statistics.EnemySoldiersKilled;
+                ++enemyPlayer.GetLocalPlayer().statistics.EnemySoldiersKilled;
             }
-            if (group.GetPlayer().IsLocalPlayer())
+            if (group != null && group.pfaction.TryGetLocalPlayer(out var localPlayer))
             {
-                ++group.GetPlayer().GetLocalPlayer().statistics.FriendlySoldiersLost;
+                ++localPlayer.statistics.FriendlySoldiersLost;
             }
 
             if (fullUpdate)
@@ -1283,12 +1301,12 @@ namespace VikingEngine.DSSWars.GameObject
             return health <= 0;
         }
 
-        public override bool defeatedBy(int attackerFaction)
+        public override bool defeatedBy(PFaction attackerFaction)
         {
             return Dead_IncomingDamageIncluded();
         }
 
-        override public bool aliveAndBelongTo(int faction)
+        override public bool aliveAndBelongTo(PFaction faction)
         {
             return health > 0;
         }
@@ -1311,10 +1329,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public Players.AbsPlayer player()
-        {
-            return GetFaction()?.player;
-        }
+        //public Players.AbsPlayer player()
+        //{
+        //    return GetFaction()?.player;
+        //}
 
         virtual public Vector3 projectileStartPos()
         {
@@ -1482,7 +1500,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    target.takeDamage(damage, blockReduce, this, attackDir, GetFaction(), fullUpdate, out _);
+                    target.takeDamage(damage, blockReduce, this, attackDir, pfaction, fullUpdate, out _);
                 }
                 else
                 {
@@ -1501,8 +1519,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                var f = this.GetFaction();
-                if (f != null && f.player.IsLocalPlayer())
+                if (this.pfaction.TryGetFaction(out var f) && f.player.IsLocalPlayer())
                 {
                     if (group.soldierConscript.conscript.isKnight())
                     {

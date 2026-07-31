@@ -8,6 +8,11 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "Geniş kaydırma çubuğu";
+        public override string GameSettings_DisplayInputHelp => "Kontrol yardımı";
+        public override string GameSettings_InputSmoothing => "Kontrol yumuşatma";
+
+
         //Mounts
         public override string InputSteam => "Steam Input";
         public override string Input_SimulateMouse => "Fareyi simüle et";

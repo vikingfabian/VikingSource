@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
         public static SoundContainerBase click, ui_expand, option_select, option_deselect, hover_disabled, clicktab,back, 
+            speed_down, speed_up,
             scroll_back, scroll_forward,
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
             copy, paste, start, stop,
@@ -61,6 +62,10 @@ namespace VikingEngine.DSSWars
             scroll_forward = new SoundContainerSingle(SoundDir + "scroll_forward", 0.8f);
             //hovertab = new SoundContainerSingle(SoundDir + "tab_hover", 0.7f);
             back = new SoundContainerSingle(SoundDir + "back", 0.05f);
+
+            speed_up = new SoundContainerSingle(SoundDir + "up", 0.2f);
+            speed_down = new SoundContainerSingle(SoundDir + "down", 0.25f);
+
             buy = new SoundContainerSingle(SoundDir + "buy");
             wrong = new SoundContainerSingle(SoundDir + "wrong", 0.6f);
             soft_buzz_error = new SoundContainerSingle(SoundDir + "soft_buzz_error", 0.1f);
@@ -224,6 +229,18 @@ namespace VikingEngine.DSSWars
             
             //Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
         }
+
+        //public static void speedInputSound()
+        //{
+        //    if (Ref.isPaused)
+        //    {
+        //        SoundLib.speed_down.Play(Pan.Right);
+        //    }
+        //    else
+        //    {
+        //        SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
+        //    }
+        //}
     }
 
     enum WalkSoundType

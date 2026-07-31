@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
@@ -17,7 +19,6 @@ namespace VikingEngine.DSSWars.GameObject
     {
         const int ModelVariants = 3;
 
-        ObjectName name = new ObjectName();
         Graphics.AbsVoxelObj overviewModel;
         BoundingSphere bound;
         int modelVariant = 0;
@@ -28,21 +29,20 @@ namespace VikingEngine.DSSWars.GameObject
         public LocationPin(RemotePlayer player)
         {
             IsNetHosted = false;
-            factionIndex = player.faction.myIndex;
+            pfaction = player.pfaction;
         }
 
         public LocationPin(AbsHumanPlayer player, Vector3 position)
         { 
             this.position = position;
-            
-            factionIndex = player.faction.myIndex;
+            pfaction = player.pfaction; 
             createOverViewModel();
             inRender_overviewLayer = true;          
         }
 
         public LocationPin(AbsHumanPlayer player, System.IO.BinaryReader r, int subVersion)
         {
-            factionIndex = player.faction.myIndex;
+            pfaction = player.pfaction;
             readGameState(r, subVersion);
         }
 
@@ -80,16 +80,16 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
             if (!tagToHud(args.content))
             {
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
                 if (faction != null)
                 {
                     args.content.Add(faction.FlagTextureToHud());
                 }
             }
             args.content.space(0.5f);
-            args.content.Add(new RbImage(SpriteName.HudLocationPinIcon));
+            args.content.Add(new RbImage(SpriteName.WarsLocationPin));
             args.content.space(0.5f);
-            args.content.Add(new RbText(".Location pin", tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+            args.content.Add(new RbText(DssRef.lang.ObjectType_LocationPin, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
 
@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void infoHud(ObjectHudArgs args)
         {
             args.content.newParagraph();
-            HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Message");
+            HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.lang.Message);
             args.content.newLine();
             for (PingMessage message = 0; message < PingMessage.NUM; message++)
             {
@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (DssRef.DlcSupporter.owned)
             {
                 args.content.newParagraph();
-                HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Model");
+                HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.lang.Hud_ModelType);
                 args.content.newLine();
 
                 int exendModel = ModelVariants;
@@ -196,42 +196,23 @@ namespace VikingEngine.DSSWars.GameObject
             if (Ref.netSession.InMultiplayerSession)
             {
                 args.content.newParagraph();
-                HudLib.Label(args.content, SpriteName.NO_IMAGE, ".Share and ping");
+                HudLib.Label(args.content, SpriteName.NO_IMAGE, DssRef.lang.ObjectType_LocationPin_Share);
                 args.content.newLine();
 
                 if (netInteractLevel == NetInteractLevel.Hidden)
                 {
-                    interactLevelButton("Team", NetInteractLevel.Team);
-                    interactLevelButton("Everyone", NetInteractLevel.Public);
+                    interactLevelButton(DssRef.lang.Group_Everyone, NetInteractLevel.Public);
                 }
                 else
                 {
-                    interactLevelButton("Hide", NetInteractLevel.Hidden);
+                    interactLevelButton(DssRef.lang.Hud_Hide, NetInteractLevel.Hidden);
                 }
 
                 void interactLevelButton(string label, NetInteractLevel level)
                 {
                     args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>
-                    {  new RbText(label)}, new RbAction1Arg<NetInteractLevel>((NetInteractLevel selected) =>
-                    {
-                        netInteractLevel = selected;
-                        if (netInteractLevel > NetInteractLevel.Hidden)
-                        {
-                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPing, PacketReliability.Reliable);
-                            w.Write((ushort)myIndex);
-                            writeGameState(w);
-                        }
-                        else
-                        {
-                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinHide, PacketReliability.Reliable);
-                            w.Write((ushort)myIndex);
-                        }
-                    }, level, level == NetInteractLevel.Hidden? RbSoundType.Back : RbSoundType.Ping)));
+                    {  new RbText(label)}, new RbAction1Arg<NetInteractLevel>(setInteractLevel, level, level == NetInteractLevel.Hidden? RbSoundType.Back : RbSoundType.Ping)));
                 }
-                //for (NetInteractLevel level = 0; level < NetInteractLevel.NUM; level++)
-                //{ 
-                    
-                //}
             }
             args.content.Add(new RbSeperationLine());
             args.content.newParagraph();
@@ -240,19 +221,30 @@ namespace VikingEngine.DSSWars.GameObject
 
             args.content.newLine();
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
-               new RbText(  ".Delete all") }, new RbAction1Arg<DeleteReason>(args.player.clearPins, DeleteReason.Disband)));
+               new RbText(  DssRef.lang.Hud_DeleteAll) }, new RbAction1Arg<DeleteReason>(args.player.clearPins, DeleteReason.Disband)));
 
+        }
+
+        public void setInteractLevel(NetInteractLevel selected)
+        {
+            netInteractLevel = selected;
+
+            if (netInteractLevel > NetInteractLevel.Hidden)
+            {
+                var w = Ref.netSession.BeginWritingPacket(PacketType.DssPing, PacketReliability.Reliable);
+                w.Write((ushort)myIndex);
+                writeGameState(w);
+            }
+            else
+            {
+                var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinHide, PacketReliability.Reliable);
+                w.Write((ushort)myIndex);
+            }
         }
 
         public override void toTooltip(ObjectHudArgs args)
         {
-            base.toTooltip(args);
-            var remote = GetFaction()?.player.GetRemotePlayer();
-            if (remote != null)
-            {
-                args.content.newLine();
-                remote.addNetGamerToHud(args.content, true, false);
-            }
+            PinPresentationHud(args, true);
 
             if (pingMessage != PingMessage.None)
             {
@@ -294,7 +286,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void createOverViewModel()
         {
-            var f = GetFaction();
+            var f = pfaction.GetFaction();
             if (f != null && Net_IsVisible())
             {
                 tilePos = WP.ToTilePos(position);
@@ -323,11 +315,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            //if (inRender_detailLayer)
-            //{
-            //    lib.DoNothing();
-            //}
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, IsNetHosted ? GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, IsNetHosted ? pfaction.GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
         }
 
         public override void setInRenderState()
@@ -354,7 +342,7 @@ namespace VikingEngine.DSSWars.GameObject
             base.DeleteMe(reason, removeFromParent);
             overviewModel?.DeleteMe();
 
-            if (reason != DeleteReason.LostHost)
+            if (reason != DeleteReason.LostHost && reason != DeleteReason.NetworkEvent)
             {
                 var w = Ref.netSession.BeginWritingPacket(PacketType.DssPinDelete, PacketReliability.Reliable);
                 w.Write((ushort)myIndex);
@@ -372,21 +360,12 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
-        {
-            return base.aliveAndBelongTo(faction);
-        }
-
-        public override bool defeatedBy(int attackerFaction)
+        public override bool defeatedBy(PFaction attackerFaction)
         {
             throw new NotImplementedException();
         }
 
-        public override bool aliveAndBelongTo(int faction)
-        {
-            throw new NotImplementedException();
-        }
-        public override void OnNewOwner(Faction newFaction, bool convert)
+        public override void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason)
         {
             throw new NotImplementedException();
         }
@@ -394,11 +373,6 @@ namespace VikingEngine.DSSWars.GameObject
         public override GameObjectType gameobjectType()
         {
            return GameObjectType.LocationPin;
-        }
-
-        public override void NameEditEvent(string result, object tag)
-        {
-            name.setCustom(result);
         }
 
         public override string TypeName()
@@ -420,7 +394,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return false;
         }
-
+        public override bool aliveAndBelongTo(PFaction faction)
+        {
+            throw new NotImplementedException();
+        }
+        
     }
 
     enum PingMessage

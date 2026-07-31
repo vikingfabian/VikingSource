@@ -6,6 +6,7 @@ using System.Text;
 using System.Transactions;
 using VikingEngine.DataLib;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Settings;

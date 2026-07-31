@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Data
 
         public static string ArmyName(int armyId)
         {
-            random.SetSeed(armyId + DssRef.world.metaData.objSeed);
+            random.SetSeed(armyId + DssRef.world.metaData.worldId.objSeed);
 
             if (Ref.gamesett.language == LanguageType.Thai)
             {
@@ -273,7 +273,7 @@ namespace VikingEngine.DSSWars.Data
 
         public static string CityName(IntVector2 pos)
         {
-            random.SetSeed(pos.X * 3 + pos.Y * 11 + DssRef.world.metaData.objSeed);
+            random.SetSeed(pos.X * 3 + pos.Y * 11 + DssRef.world.metaData.worldId.objSeed);
 
             string cityName = "";
 

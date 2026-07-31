@@ -146,6 +146,21 @@ namespace VikingEngine.Network
             } }
 
         /// <summary>
+        /// In active multiplayer session and hosting it
+        /// </summary>
+        public bool IsHostingMultiplayer
+        {
+            get
+            {
+#if PCGAME
+                return Ref.steam.isNetworkInitialized && Ref.steam.LobbyMatchmaker.hostLobby && Ref.steam.P2PManager.remoteGamers.Count > 0; ;
+#else
+                return false;
+#endif
+            }
+        }
+
+        /// <summary>
         /// Har joinat MP grupp
         /// </summary>
         public bool IsClient { get { return InMultiplayerSession && !IsHost; } }

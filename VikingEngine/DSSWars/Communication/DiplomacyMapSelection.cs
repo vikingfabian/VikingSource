@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Communication
                     seletionbox.Visible = relation.bg != null && relation.bg.Visible;
 
                     int cityCount = 0;
-                    var faction = DssRef.world.faction(relation.faction);
+                    var faction = relation.pfaction.GetFaction();
                     if (faction != null)
                     {
                         

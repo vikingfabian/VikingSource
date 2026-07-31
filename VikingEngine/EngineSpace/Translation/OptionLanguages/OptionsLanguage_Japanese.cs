@@ -9,6 +9,10 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Japanese : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "ワイドスクロールバー";
+        public override string GameSettings_DisplayInputHelp => "操作ヘルプ";
+        public override string GameSettings_InputSmoothing => "入力スムージング";
+
         //Mounts
         public override string InputSteam => "Steam入力";
         public override string Input_SimulateMouse => "マウス操作をシミュレート";

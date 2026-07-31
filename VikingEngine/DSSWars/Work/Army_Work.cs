@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.GameObject
             const float FoodBuffer_minutes = 15f;
             const float ConservedFoodBuffer_minutes = FoodBuffer_minutes * 2f;
 
-            float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            float energy = DssConst.ManDefaultEnergyCost / DssRef.storage.ruleset_instance.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float minuteEnergy = TimeExt.MinuteInSeconds * energy;
             bufferGoalFood = FoodBuffer_minutes * minuteEnergy;
             bufferGoalConservedFood = ConservedFoodBuffer_minutes * minuteEnergy;
@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_workUpdate(Faction faction, float seconds)
         {
-            if ( factionIndex >= 0)
+            if ( pfaction.HasValue())
             {
                 bool casual = GetCasual();
 
@@ -92,17 +92,17 @@ namespace VikingEngine.DSSWars.GameObject
         public static float ManUpkeepToFoodUpkeep(float manUpkeep)
         {
             float energyUpkeep = manUpkeep * DssConst.ManDefaultEnergyCost;
-            float foodUpkeep = energyUpkeep / DssRef.difficulty.FoodEnergySett;
+            float foodUpkeep = energyUpkeep / DssRef.storage.ruleset_instance.FoodEnergySett;
             return foodUpkeep;
         }
 
         void foodUpkeepUpdate_async(Faction faction, float seconds)
         {
 
-            if (debugTagged)
-            {
-                lib.DoNothing();
-            }
+            //if (debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
 
             //float energyUpkeep = totalUpkeep * DssConst.ManDefaultEnergyCost;
             //float foodUpkeep = energyUpkeep * DssRef.difficulty.FoodEnergySett;
@@ -116,16 +116,16 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //Order new food
                 City city = DssRef.world.tileGrid.Get(tilePos).City();
-                if (city != null && city.HasFaction())
+                if (city != null && city.pfaction.TryGetFaction(out _))
                 {
                     float bufferGoal_percentage = -1;
                     int goldCostMulti = 1;
-                    if (city.factionIndex == factionIndex)
+                    if (city.pfaction == pfaction)
                     {
                         bufferGoal_percentage = 1f;
                         goldCostMulti = 0;
                     }
-                    else if (!DssRef.world.diplomacy.GetRelation(city.factionIndex, factionIndex).InWar())
+                    else if (!DssRef.world.diplomacy.GetRelation(city.pfaction, pfaction).InWar())
                     {
                         bufferGoal_percentage = 0.5f;
                     }
@@ -139,11 +139,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (Ref.peRnd.ChanceF(0.6f))
                         {
-                            orderMissingFood(food, bufferGoalFood, city.resourceAmount(EntityComponent.CityResoureIndex.food), DssConst.FoodGoldValue * goldCostMulti, ItemResourceType.Food_G);
+                            orderMissingFood(food, bufferGoalFood, city.resourceAmount(EntityComponent.CityResourceIndex.food), DssConst.FoodGoldValue * goldCostMulti, ItemResourceType.Food_G);
                         }
                         else
                         {
-                            orderMissingFood(conservedFood, bufferGoalConservedFood, city.resourceAmount(EntityComponent.CityResoureIndex.ConservedFood), DssConst.ConservedFoodGoldValue * goldCostMulti, ItemResourceType.ConservedFood);
+                            orderMissingFood(conservedFood, bufferGoalConservedFood, city.resourceAmount(EntityComponent.CityResourceIndex.ConservedFood), DssConst.ConservedFoodGoldValue * goldCostMulti, ItemResourceType.ConservedFood);
                         }
 
                         void orderMissingFood(float hasAmount, float goalAmount, int cityAmount, int goldValue, ItemResourceType foodType)
@@ -203,15 +203,15 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 bool allowDept = false;
 
-                if (GetPlayer().IsLocalPlayer())
+                if (pfaction.TryGetLocalPlayer(out var lp))
                 {
                     //goNegative = false;
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        GetPlayer().GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
+                        lp.hud.messages.armyLowFoodMessage(this);
                     }));
                 }
-                else if (!DssRef.storage.gameRuleset.centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
+                else if (!DssRef.storage.ruleset_instance.centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
                 {
                     allowDept = true;
                 }

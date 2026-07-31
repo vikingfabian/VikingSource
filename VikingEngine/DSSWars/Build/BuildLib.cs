@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
@@ -251,7 +252,7 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city, bool autoBuild)
         {
-            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || (StartupSettings.UnlockAllProgress && city.GetPlayer().IsLocalPlayer())) && !autoBuild;
+            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || (StartupSettings.UnlockAllProgress && city.pfaction.TryGetLocalPlayer(out _))) && !autoBuild;
 
             bool devUnlockAll = StartupSettings.UnlockAllProgress;
 
@@ -358,57 +359,57 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.TrapperHut);
 
-                addAnimalPen(BuildAndExpandType.FowlPen, CityResoureIndex.Fowl, city.buildingStructure.FowlPen_count);
-                addAnimalPen(BuildAndExpandType.HenPen, CityResoureIndex.Hen, city.buildingStructure.HenPen_count);
+                addAnimalPen(BuildAndExpandType.FowlPen, CityResourceIndex.Fowl, city.buildingStructure.FowlPen_count);
+                addAnimalPen(BuildAndExpandType.HenPen, CityResourceIndex.Hen, city.buildingStructure.HenPen_count);
 
-                addAnimalPen(BuildAndExpandType.BoarPen, CityResoureIndex.Boar, city.buildingStructure.BoarPen_count);
-                addAnimalPen(BuildAndExpandType.PigPen, CityResoureIndex.Pig, city.buildingStructure.PigPen_count);
+                addAnimalPen(BuildAndExpandType.BoarPen, CityResourceIndex.Boar, city.buildingStructure.BoarPen_count);
+                addAnimalPen(BuildAndExpandType.PigPen, CityResourceIndex.Pig, city.buildingStructure.PigPen_count);
 
                 // --- Wild Pigs / Hogs ---
                 if (biomRequirement(CityBiome.Mountain))
                 {
-                    addAnimalPen(BuildAndExpandType.WildPigPen, CityResoureIndex.WildPig, city.buildingStructure.WildPigPen_count);
-                    addAnimalPen(BuildAndExpandType.WildHogPen, CityResoureIndex.WildHog, city.buildingStructure.WildHogPen_count);
-                    addAnimalPen(BuildAndExpandType.WarHogPen, CityResoureIndex.WarHog, city.buildingStructure.WarHogPen_count);
-                    addAnimalPen(BuildAndExpandType.StagHogPen, CityResoureIndex.StagHog, city.buildingStructure.StagHogPen_count);
+                    addAnimalPen(BuildAndExpandType.WildPigPen, CityResourceIndex.WildPig, city.buildingStructure.WildPigPen_count);
+                    addAnimalPen(BuildAndExpandType.WildHogPen, CityResourceIndex.WildHog, city.buildingStructure.WildHogPen_count);
+                    addAnimalPen(BuildAndExpandType.WarHogPen, CityResourceIndex.WarHog, city.buildingStructure.WarHogPen_count);
+                    addAnimalPen(BuildAndExpandType.StagHogPen, CityResourceIndex.StagHog, city.buildingStructure.StagHogPen_count);
                 }
 
                 // --- Oxen ---
-                addAnimalPen(BuildAndExpandType.OxenPen, CityResoureIndex.Oxen, city.buildingStructure.OxenPen_count);
-                addAnimalPen(BuildAndExpandType.KineOxenPen, CityResoureIndex.KineOxen, city.buildingStructure.KineOxenPen_count);
+                addAnimalPen(BuildAndExpandType.OxenPen, CityResourceIndex.Oxen, city.buildingStructure.OxenPen_count);
+                addAnimalPen(BuildAndExpandType.KineOxenPen, CityResourceIndex.KineOxen, city.buildingStructure.KineOxenPen_count);
 
                 // --- Dogs ---
-                addAnimalPen(BuildAndExpandType.DogCage, CityResoureIndex.Dog, city.buildingStructure.DogCage_count);
-                addAnimalPen(BuildAndExpandType.HoundCage, CityResoureIndex.Hound, city.buildingStructure.HoundCage_count);
+                addAnimalPen(BuildAndExpandType.DogCage, CityResourceIndex.Dog, city.buildingStructure.DogCage_count);
+                addAnimalPen(BuildAndExpandType.HoundCage, CityResourceIndex.Hound, city.buildingStructure.HoundCage_count);
 
                 // --- Horses ---
-                addAnimalPen(BuildAndExpandType.PonyPen, CityResoureIndex.Pony, city.buildingStructure.PonyPen_count);
-                addAnimalPen(BuildAndExpandType.HorsePen, CityResoureIndex.Horse, city.buildingStructure.HorsePen_count);
-                addAnimalPen(BuildAndExpandType.WarHorsePen, CityResoureIndex.WarHorse, city.buildingStructure.WarHorsePen_count);
-                addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResoureIndex.DraftHorse, city.buildingStructure.DraftHorsePen_count);
+                addAnimalPen(BuildAndExpandType.PonyPen, CityResourceIndex.Pony, city.buildingStructure.PonyPen_count);
+                addAnimalPen(BuildAndExpandType.HorsePen, CityResourceIndex.Horse, city.buildingStructure.HorsePen_count);
+                addAnimalPen(BuildAndExpandType.WarHorsePen, CityResourceIndex.WarHorse, city.buildingStructure.WarHorsePen_count);
+                addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResourceIndex.DraftHorse, city.buildingStructure.DraftHorsePen_count);
                                
 
                 // --- Wolves ---
                 if (biomRequirement(CityBiome.Desolate))
                 {
-                    addAnimalPen(BuildAndExpandType.WolfCage, CityResoureIndex.Wolf, city.buildingStructure.WolfCage_count);
-                    addAnimalPen(BuildAndExpandType.WargCage, CityResoureIndex.Warg, city.buildingStructure.WargCage_count);
-                    addAnimalPen(BuildAndExpandType.AlphaWargCage, CityResoureIndex.AlphaWarg, city.buildingStructure.AlphaWargCage_count);
+                    addAnimalPen(BuildAndExpandType.WolfCage, CityResourceIndex.Wolf, city.buildingStructure.WolfCage_count);
+                    addAnimalPen(BuildAndExpandType.WargCage, CityResourceIndex.Warg, city.buildingStructure.WargCage_count);
+                    addAnimalPen(BuildAndExpandType.AlphaWargCage, CityResourceIndex.AlphaWarg, city.buildingStructure.AlphaWargCage_count);
                 }
 
                 // --- Cats ---
                 if (biomRequirement(CityBiome.Forest))
                 {
-                    addAnimalPen(BuildAndExpandType.WildCatCage, CityResoureIndex.WildCat, city.buildingStructure.WildCatCage_count);
-                    addAnimalPen(BuildAndExpandType.LionCage, CityResoureIndex.Lion, city.buildingStructure.LionCage_count);
-                    addAnimalPen(BuildAndExpandType.WarLionCage, CityResoureIndex.WarLion, city.buildingStructure.WarLionCage_count);
+                    addAnimalPen(BuildAndExpandType.WildCatCage, CityResourceIndex.WildCat, city.buildingStructure.WildCatCage_count);
+                    addAnimalPen(BuildAndExpandType.LionCage, CityResourceIndex.Lion, city.buildingStructure.LionCage_count);
+                    addAnimalPen(BuildAndExpandType.WarLionCage, CityResourceIndex.WarLion, city.buildingStructure.WarLionCage_count);
                 }
                 // --- Elephants ---
                 if (biomRequirement(CityBiome.Desert))
                 {
-                    addAnimalPen(BuildAndExpandType.ElephantCage, CityResoureIndex.Elephant, city.buildingStructure.ElephantCage_count);
-                    addAnimalPen(BuildAndExpandType.WarElephantCage, CityResoureIndex.WarElephant, city.buildingStructure.WarElephantCage_count);
-                    addAnimalPen(BuildAndExpandType.OliphantCage, CityResoureIndex.Oliphant, city.buildingStructure.OliphantCage_count);
+                    addAnimalPen(BuildAndExpandType.ElephantCage, CityResourceIndex.Elephant, city.buildingStructure.ElephantCage_count);
+                    addAnimalPen(BuildAndExpandType.WarElephantCage, CityResourceIndex.WarElephant, city.buildingStructure.WarElephantCage_count);
+                    addAnimalPen(BuildAndExpandType.OliphantCage, CityResourceIndex.Oliphant, city.buildingStructure.OliphantCage_count);
                 }
             }
 
@@ -432,7 +433,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.RecruitmentLevel2);
                 list.Add(BuildAndExpandType.RecruitmentLevel3);
 
-                if (!DssRef.storage.gameRuleset.centralGold)
+                if (!DssRef.storage.ruleset_instance.centralGold)
                 {
                     list.Add(BuildAndExpandType.GoldDeliveryLvl1);
                     list.Add(BuildAndExpandType.GoldDeliveryLvl2);
@@ -1407,7 +1408,7 @@ namespace VikingEngine.DSSWars.Build
             return false;
         }
 
-        public static bool TryAutoBuild(Faction faction, IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
+        public static bool TryAutoBuild(PFaction pfaction, IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
         {
             SubTile subTile;
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out subTile))
@@ -1415,7 +1416,7 @@ namespace VikingEngine.DSSWars.Build
                 if (CanAutoBuildHere(ref subTile))
                 {
                     subTile.SetType(mainType, terrainSubType, amount);
-                    EditSubTile edit = new EditSubTile(faction, true,subTilePos, subTile, true, true, false);
+                    EditSubTile edit = new EditSubTile(pfaction, true,subTilePos, subTile, true, true, false);
                     edit.Submit();
                     return true;
                 }
@@ -1470,7 +1471,7 @@ namespace VikingEngine.DSSWars.Build
                     subTile.subTerrain = 0;
                 }
             
-                EditSubTile edit = new EditSubTile(city.GetFaction(), true, subTilePos, subTile, true, true, true);
+                EditSubTile edit = new EditSubTile(city.pfaction, true, subTilePos, subTile, true, true, true);
                 edit.Submit();
             }
         }

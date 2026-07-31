@@ -31,16 +31,17 @@ namespace VikingEngine.DSSWars.Defence
             : base(army)
         { }
 
-        public override void writeGameState(BinaryWriter w)
+        //public override void writeGameState(BinaryWriter w)
+        public override void writeGameState(BinaryWriter w, bool includePosition)
         {
-            base.writeGameState(w);
+            base.writeGameState(w, includePosition);
+       
             w.Write(assignedToPost_IdAndPosition);
         }
-
-        public override void readGameState(AbsArmy tArmy, BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
+        public override void readGameState(AbsArmy tArmy, BinaryReader r, int subVersion, bool needInit, bool includePosition, ObjectPointerCollection pointers)
         {
-            base.readGameState(tArmy, r, subVersion, needInit, pointers);
-
+            base.readGameState(tArmy, r, subVersion, needInit, includePosition, pointers);
+        
             assignedToPost_IdAndPosition = r.ReadInt32();
             if (assignedToPost_IdAndPosition >= 0)
             {
@@ -161,41 +162,41 @@ namespace VikingEngine.DSSWars.Defence
             damageBlockChance_fromTerrain = 0;
         }
 
-        void setRestingMode(bool set)
-        {
-            if (set != restingGuardMode)
-            {
-                restingGuardMode = set;
+        //void setRestingMode(bool set)
+        //{
+        //    if (set != restingGuardMode)
+        //    {
+        //        restingGuardMode = set;
 
-                if (set)
-                {
-                    int count = 0;
-                    var soldiersC = soldiers.counter();
-                    while (soldiersC.Next())
-                    {
-                        count++;
-                        if (count == 1)
-                        {
-                            soldiersC.sel.groupOffset = Vector2.Zero;
-                        }
-                        else
-                        {
-                            soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
-                            soldiersC.RemoveAtCurrent();
-                        }
-                    }
-                    soldierCount = count;
-                }
-                else
-                {
-                    var first = FirstSoldier();
-                    if (first != null)
-                    {
-                        refillGuardUnits(first.SoldierProfile(), soldierCount - 1, first.model != null);
-                    }
-                }
-            }
-        }
+        //        if (set)
+        //        {
+        //            int count = 0;
+        //            var soldiersC = soldiers.counter();
+        //            while (soldiersC.Next())
+        //            {
+        //                count++;
+        //                if (count == 1)
+        //                {
+        //                    soldiersC.sel.groupOffset = Vector2.Zero;
+        //                }
+        //                else
+        //                {
+        //                    soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
+        //                    soldiersC.RemoveAtCurrent();
+        //                }
+        //            }
+        //            soldierCount = count;
+        //        }
+        //        else
+        //        {
+        //            var first = FirstSoldier();
+        //            if (first != null)
+        //            {
+        //                refillGuardUnits(first.SoldierProfile(), soldierCount - 1, first.model != null);
+        //            }
+        //        }
+        //    }
+        //}
 
         //public override void update(float time, bool fullUpdate)
         //{

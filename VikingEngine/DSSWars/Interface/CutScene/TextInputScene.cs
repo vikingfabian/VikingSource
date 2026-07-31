@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState.VoxelEditor;
+using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
@@ -89,7 +90,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
        
         public TextChat()
         {
-            init(".Text chat - everyone", null);
+            init(string.Format( DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.InputActionName_TextChat, DssRef.lang.Group_Everyone), null);
         }
 
         override public void textInput_complete(string result, object tag)
@@ -101,8 +102,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
                 RichBoxContent content = new RichBoxContent();
                 DssRef.state.LocalHost().addNetGamerToHud(content, true, false);
-                content.icontext(SpriteName.LfChatBobbleIcon, result);
+                content.icontext(SpriteName.TextChatLetter, result);
                 DssRef.state.LocalHost().hud.messages.Add(content, null);
+
+                var message = new ChatLogMessage(Ref.steam.P2PManager.localPeer, result);
+                ((PlayState)DssRef.state).chatLog.Add(message);
             }
             base.textInput_complete(result, tag);
             Close();

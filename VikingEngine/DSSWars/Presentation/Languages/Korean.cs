@@ -11,6 +11,176 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+        //Multiplayer update
+        
+        //--
+        
+
+        //--
+        public override string Unlock_PublicGames => "공개 게임";
+        public override string UnlockPublic_Warning1 => "모르는 사람과 플레이하지 마세요";
+        public override string UnlockPublic_Warning2 => "이 게임은 치트나 트롤링을 막을 시스템이 전혀 없습니다";
+        public override string Unlock_WarningBadExperience => "매우 불쾌한 경험을 할 수 있습니다";
+        public override string Hud_Accept => "수락";
+        public override string Hud_Block => "차단";
+        public override string Hud_Deny => "거절";
+        public override string Hud_Reason => "사유";
+        public override string Hud_Full => "가득 참";
+        public override string Hud_Version => "버전";
+        public override string Unlock_PlayerVersusPlayer => "플레이어 간 전투 (PvP)";
+        public override string UnlockPvp_Warning1 => "DSS는 경쟁전 용도로 설계되지 않았습니다";
+        public override string UnlockPvp_Warning2 => "밸런스 조정이 없어 매우 불공평한 매치가 될 것입니다";
+        public override string PlayerJoinHistoryTitle => "플레이어 접속 기록";
+        public override string BlockedPlayersTitle => "차단된 플레이어";
+        public override string ClickToRemoveBan => "클릭: 차단 해제";
+        public override string HostSettingsTitle => "호스트 설정";
+        public override string MaxPlayerCount => "최대 플레이어 수";
+        public override string DistanceBetweenPlayers => "플레이어 간 거리";
+        public override string AllowHandicap => "핸디캡 허용";
+        public override string AllowCasualControls => "캐주얼 조작 허용";
+        public override string AutoRecolorPlayerFlags => "플레이어 깃발 자동 색상 변경";
+        public override string DefaultDiplomacy => "기본 외교";
+        public override string ClientSettingsTitle => "클라이언트 설정";
+        public override string UseHandicap => "핸디캡 사용";
+        public override string DifficultyDescription_BotAggression => "봇 공격성";
+        public override string Hud_GetExtraX => "추가 {0}";
+        public override string Hud_Hide => "숨기기";
+        public override string Hud_ModelType => "모델";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}: {1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "자원 부스트";
+        //public override string TaxIncome => "세금 수입";
+        public override string PlayerInteractionTitle => "플레이어 상호작용";
+        public override string DefaultPeaceful => "기본값: 평화";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "기본값: 선택적 코옵(Co-op)";
+        public override string DefaultHardcore => "기본값: 하드코어";
+        public override string GeneralTitle => "일반";
+
+        public override string InputButton_Hold => "버튼 길게 누르기";
+        public override string InputButton_Toggle => "버튼 토글";
+        public override string VoiceOptAlwaysOn => "항상 켜기";
+        public override string VoiceTitle => "음성";
+        public override string VoiceMute => "뮤트";
+        public override string GiftOptAllow => "허용";
+        public override string GiftOptFriendsOnly => "친구만";
+        public override string GiftOptBlocked => "차단됨";
+        public override string ReceiveAchievementsTitle => "업적 받기";
+        public override string GiftWarning => "경고! 선물 받은 업적은 기분을 상하게 할 수 있습니다";
+        public override string FullReset => "풀 리셋";
+        public override string AllowAllianceTitle => "동맹 허용";
+        public override string CanBreakAlliance => "동맹 파기 가능";
+        public override string AllowWarTitle => "전쟁 허용";
+        public override string FairProtection => "공평한 보호";
+        public override string FairProtectionTooltip => "보호받는 플레이어는 당신에게도 동일한 규칙을 적용해야 합니다";
+        public override string MustAsk => "동의 필수";
+        public override string MustAskTooltip => "양측 플레이어가 전투에 동의해야 합니다";
+        public override string AllianceLimit => "동맹 제한";
+        public override string AllianceLimitTooltip => "더 큰 규모의 플레이어 동맹으로부터 공격받지 않습니다";
+        public override string GameStartProtection => "게임 시작 시 보호";
+        public override string Hud_Time_Minutes => "분";
+        public override string WarPreparationTime => "전쟁 준비 시간";
+        public override string WarPreparationTimeTooltip => "전쟁 선포 후 공격이 가능해질 때까지의 대기 시간";
+        public override string Hud_Allow => "허용";
+        public override string Hud_Blocked => "차단됨";
+
+        public override string Hud_DeleteAll => "모두 삭제";
+        public override string DiplomacyPlayersChoice => "플레이어의 선택";
+        public override string UnlockSureTitle => "정말, 진심으로 확실합니까?";
+        public override string UnlockSureDescription => "나중에 포럼에서 징징대지 않을 성숙한 어른이 맞으신가요?";
+
+
+
+        public override string Network_PlayOffline => "오프라인 플레이";
+        public override string JoinPermission_Title => "참가 권한";
+        public override string JoinPermission_Private => "비공개";
+        public override string JoinPermission_FriendsOnly => "친구만";
+        public override string JoinPermission_Public => "공개";
+
+        public override string Network_Join => "게임 참가";
+        public override string Network_ConnectingToGame => "연결 중...";
+        public override string Lobby_Category_MultiplayerSettings => "멀티플레이어 설정";
+
+        public override string Hud_Default => "기본값";
+        public override string Group_Team => "팀";
+        public override string Group_Everyone => "모두";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "외교 동상";
+
+        public override string Message => "메시지";
+        public override string ObjectType_LocationPin => "위치 핀";
+        public override string ObjectType_LocationPin_Share => "공유 및 핑 찍기";
+        public override string ObjectType_LocationPin_Ping => "핑!";
+        public override string InputActionName_TextChat => "텍스트 채팅";
+        public override string InputActionName_TextChatLog => "채팅 로그";
+        public override string InputActionName_VoiceChat => "보이스 채팅";
+        public override string InputActionName_NextPin => "다음 핀";
+        public override string InputActionName_PinAndPing => "핀 추가";
+
+        public override string Leaderboards_ArmySize => "단일 군대 규모 (전투력)";
+        public override string Leaderboards_MultiplayerPlayerCount => "호스팅 중인 플레이어 수";
+
+        public override string Multiplayer_BanWarning => "차단(밴) 경고";
+        public override string Multiplayer_SentToHost => "호스트에게 전송됩니다";
+        public override string Multiplayer_AddToOwnBlocks => "내 차단 목록에 추가";
+
+        public override string Multiplayer_Message_RequestSent => "요청 전송됨";
+
+        public override string Multiplayer_BlockPlayer => "플레이어 차단";
+        public override string Multiplayer_NetSession => "네트워크 세션";
+        public override string GiftedAchievements => "선물 받은 업적";
+        public override string GiftedAchievements_Description => "친구들의 나쁜 행동에 보상을 줍니다";
+
+        public override string Multiplayer_Title => "멀티플레이어";
+        public override string Multiplayer_Lobby => "멀티플레이어 로비";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. 호스트가 게임을 시작합니다";
+        public override string Multiplayer_Tutorial_JoinButton => "2. 여기에 참가 버튼이 나타납니다";
+        public override string Multiplayer_Tutorial_Visible => "호스트의 Steam 프로필이 공개 상태여야 합니다";
+
+        public override string Multiplayer_KickPlayer => "플레이어 추방(킥)";
+        public override string Multiplayer_RequestBlockPlayer => "요청: 플레이어 차단";
+        public override string Multiplayer_HandoverComplete => "인수인계 완료";
+        public override string Multiplayer_LoadingClientSave => "클라이언트 저장 데이터 불러오는 중";
+        public override string Multiplayer_ClientSaveComplete => "클라이언트 저장 완료";
+        public override string Multiplayer_BadActor => "비매너 유저";
+        public override string Multiplayer_NetworkError => "네트워크 오류";
+        public override string Multiplayer_Sender => "보낸 사람";
+        public override string Multiplayer_Receiver => "받는 사람";
+        public override string Multiplayer_PlayerJoined => "플레이어가 참가했습니다";
+        public override string Multiplayer_PlayerLeft => "플레이어가 떠났습니다";
+        public override string Multiplayer_RequestingClientGamestates => "클라이언트 게임 상태를 요청하는 중...";
+        public override string Multiplayer_TextChat => "텍스트 채팅";
+        public override string Multiplayer_VoiceChat => "보이스 채팅";
+        public override string Steam_UserProfile => "유저 프로필";
+        public override string Steam_OpenSteamOverlay => "Steam 오버레이 열기";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "동원 중";
+        public override string Diplomacy_OfferRelation => "관계 제안";
+        public override string Diplomacy_OfferRelation_Declined => "관계 제안 거절됨";
+        public override string Diplomacy_SendGold => "골드 보내기";
+        public override string Diplomacy_GiftToPlayer => "플레이어에게 선물";
+        public override string Diplomacy_RecievedGift => "선물 받음";
+        public override string Diplomacy_OnAccept => "상대방이 수락할 경우:";
+        public override string Diplomacy_WarPreparationTime => "전쟁 준비 시간";
+
+        public override string Diplomacy_AboveSoftCap => "소프트 캡 초과";
+        public override string Diplomacy_BelowSoftCap => "소프트 캡 미만";
+        public override string Diplomacy_OpenPlayerToPlayer => "플레이어 간 외교 열기";
+
         //Post mount update
         public override string StockPile_ItemsAreNotLost => "비축량을 초과해도 아이템이 파괴되지 않습니다!";
         public override string SlaughterResult_PerAnimal => "동물당 도축 생산량";
@@ -1325,7 +1495,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => "{0} 파견";
+        public override string Hud_SendX => "{0} 파견";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1484,7 +1654,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Money => "급여를 받지 못한 병사들이 군대를 이탈하고 있습니다.";
 
 
-        public override string DifficultyDescription_AiAggression => "AI 공격성: {0}";
+        //public override string DifficultyDescription_AiAggression => "AI 공격성: {0}";
         public override string DifficultyDescription_BossSize => "보스 규모: {0}";
         public override string DifficultyDescription_BossEnterTime => "보스 등장 시간: {0}";
         public override string DifficultyDescription_AiEconomy => "AI 경제력: {0}%";
@@ -1861,9 +2031,9 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "거리: {0}";
         public override string Delivery_DeliveryTimeX => "배송 시간: {0}";
         public override string Delivery_SenderMinimumCap => "송신 최소 한도";
-        public override string Delivery_RecieverMaximumCap => "수신 최대 한도";
+        public override string Delivery_ReceiverMaximumCap => "수신 최대 한도";
         public override string Delivery_ItemsReady => "보낼 아이템 준비 완료";
-        public override string Delivery_RecieverReady => "수신 준비 완료";
+        public override string Delivery_ReceiverReady => "수신 준비 완료";
         public override string Hud_ThisCity => "이 도시";
         public override string Hud_RecieveingCity => "수신 도시";
 
@@ -1954,7 +2124,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "탭 선택: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0}의 우선순위 높이기";
         public override string Tutorial_PlaceBuildOrder => "건설 명령 배치: {0}";
-        public override string Tutorial_ZoomInput => "줌 조작";
+        public override string ButtonAction_Zoom => "줌 조작";
 
         public override string Tutorial_SelectACity => "도시 선택";
         public override string Tutorial_ZoomInWorkers => "확대하여 일꾼을 확인하세요";
@@ -2049,13 +2219,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "평지";
         public override string LandType_Water => "물";
         public override string BuildingType_Wall => "성벽";
-        public override string Delivery_AutoReciever_Description => "가장 적은 자원을 가진 도시에 자동으로 보냅니다.";
+        public override string Delivery_AutoReceiver_Description => "가장 적은 자원을 가진 도시에 자동으로 보냅니다.";
 
         public override string Hud_On => "켜짐";
         public override string Hud_Off => "꺼짐";
 
-        public override string Hud_Time_Seconds => "{0}초";
-        public override string Hud_Time_Minutes => "{0}분";
+        public override string Hud_Time_XSeconds => "{0}초";
+        public override string Hud_Time_XMinutes => "{0}분";
         public override string Hud_Undo => "되돌리기";
         public override string Hud_Redo => "다시 실행";
 
@@ -2959,9 +3129,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// These symbols are needed to fit large numbers on the HUD, there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "c";
-        public override string EngineHud_SymbolFor1000 => "k";
-        public override string EngineHud_SymbolFor10000 => "10k";
+        public override string Language_SymbolFor100 => "c";
+        public override string Language_SymbolFor1000 => "k";
+        public override string Language_SymbolFor10000 => "10k";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress. Use the word for Steam Achievements.

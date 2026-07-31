@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Stockpile;
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (cesspits.array != null)
                     {
-                        Span<bool> span = stackalloc bool[EntityComponent.CityResoureIndex.COUNT];
+                        Span<bool> span = stackalloc bool[EntityComponent.CityResourceIndex.COUNT];
 
                         lock (cesspits.array)
                         {
@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                         }
 
-                        for (int i = 0; i < EntityComponent.CityResoureIndex.COUNT; ++i)
+                        for (int i = 0; i < EntityComponent.CityResourceIndex.COUNT; ++i)
                         {
                             DssRef.world.cityResouces[resourceComponentStartIndex + i].hasCesspit = span[i];
                         }

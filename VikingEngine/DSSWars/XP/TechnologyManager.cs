@@ -24,9 +24,6 @@ namespace VikingEngine.DSSWars.XP
                         var factionsCounter = DssRef.world.factions.counter();
                         while (factionsCounter.Next())
                         {
-                            //var citiesC = factionsCounter.sel.cities.counter();
-                            //while (citiesC.Next())
-                            //{
                             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                             while (citiesC.Next(ref factionsCounter.sel.cities, DssRef.world.cities, out City citySel))
                             {
@@ -55,22 +52,23 @@ namespace VikingEngine.DSSWars.XP
                 {
                     if (city.IsNetHosted)
                     {
-                        //if (city.debugTagged)
-                        //{
-                        //    lib.DoNothing();
-                        //}
+                        if (city.debugTagged || city.myIndex == 192)
+                        {
+                            lib.DoNothing();
+                        }
                         EcsStaticArrayCounter neighbors = city.CityNeighbors();
                         while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var ni in city.neighborCities)
                         {
+                            
                             //var nCity = DssRef.world.cities[ni];
-                            if (city.factionIndex == nCity.factionIndex)
+                            if (city.pfaction == nCity.pfaction)
                             {
                                 TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
                                 //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
                             }
                             else
                             {
-                                switch (DssRef.world.diplomacy.GetRelation(city.GetFaction(), nCity.GetFaction()).Relation)
+                                switch (DssRef.world.diplomacy.GetRelation(city.pfaction, nCity.pfaction).Relation)
                                 {
                                     case RelationType.RelationType2_Good:
                                         TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
@@ -103,9 +101,6 @@ namespace VikingEngine.DSSWars.XP
 #if DEBUG
                     if (StartupSettings.UnlockAllProgress && factionsC.sel.player.IsLocalPlayer())
                     {
-                        //var citiesCounter = factionsC.sel.cities.counter();
-                        //while (citiesCounter.Next())
-                        //{
                         SpottedPointerArrayCounter unlockCities = new SpottedPointerArrayCounter();
                         while (unlockCities.Next(ref factionsC.sel.cities, DssRef.world.cities, out City citySel))
                         {
@@ -114,9 +109,6 @@ namespace VikingEngine.DSSWars.XP
                     }
 #endif
 
-                    //var citiesC = factionsC.sel.cities.counter();
-                    //while (citiesC.Next())
-                    //{
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref factionsC.sel.cities, DssRef.world.cities, out City citySel))
                     {

@@ -112,10 +112,10 @@ namespace VikingEngine
 
         public static string LargeNumber(int number)
         {
-            //if (number < short.MinValue)
-            //{
-            //    return Error;
-            //}
+            if (number == int.MinValue)
+            {
+                return Error;
+            }
 
             if (Math.Abs(number) < 1000)
             {

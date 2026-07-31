@@ -90,12 +90,6 @@ namespace VikingEngine.DSSWars.Work
 
         public void writeGameState(City city, System.IO.BinaryWriter w, bool netPacket)
         {
-            //w.Write((byte)xpType1);
-            //w.Write((byte)xpType2);
-            //w.Write((byte)xpType3);
-            //w.Write(xp1);
-            //w.Write(xp2);
-            //w.Write(xp3);
             DssRef.world.writeWorkXp(XpEntityIndex, w);
 
             byte saveEnergy = EnergyBounds.GetValueBytePercentPos_WithBound(energy);
@@ -111,24 +105,11 @@ namespace VikingEngine.DSSWars.Work
                 w.Write(Bound.Byte(secondsPassed / TimeNetShareDiv));
                 w.Write(Bound.Byte((int)processTimeLengthSec / TimeNetShareDiv));
                 (subTileEnd - city.cityHallSubtilePos).writeShort(w);
+                (subTileStart - city.cityHallSubtilePos).writeShort(w);
             }
         }
         public void readGameState(City city, System.IO.BinaryReader r, bool netPacket, int subversion)
         {
-            //xpType1 = (WorkExperienceType)r.ReadByte();
-            //xpType2 = (WorkExperienceType)r.ReadByte();
-            //xpType3 = (WorkExperienceType)r.ReadByte();
-
-            //if (subversion < 80)
-            //{
-            //    XpLib.AdjustVersion80Skill(ref xpType1);
-            //    XpLib.AdjustVersion80Skill(ref xpType2);
-            //    XpLib.AdjustVersion80Skill(ref xpType3);
-            //}
-
-            //xp1 = r.ReadByte();
-            //xp2 = r.ReadByte();
-            //xp3 = r.ReadByte();
             DssRef.world.readWorkXp(XpEntityIndex, r, subversion);
 
             energy = EnergyBounds.GetFromBytePercent(r.ReadByte());
@@ -143,7 +124,7 @@ namespace VikingEngine.DSSWars.Work
                 processTimeStartStampSec = Ref.TotalGameTimeSec - secondsPassed;
                 processTimeLengthSec = r.ReadByte() * TimeNetShareDiv;
                 subTileEnd = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
-                subTileStart = subTileEnd;
+                subTileStart = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
             }
         }
 
@@ -244,13 +225,13 @@ namespace VikingEngine.DSSWars.Work
             XpEntityIndex = -1;
         }
 
-        int farmGrowthMultiplier(int terrainAmount, City city, bool upgraded)
+        int farmGrowthMultiplier(int terrainAmount, City city/*, bool upgraded*/)
         {
             //terrainAmount *= 5;
-            if (upgraded)
-            {
-                terrainAmount *= 2;
-            }
+            //if (upgraded)
+            //{
+            //    terrainAmount *= 2;
+            //}
 
             if (city.cityCulture == CityCulture.FertileGround)
             {
@@ -392,7 +373,7 @@ namespace VikingEngine.DSSWars.Work
 
         void workComplete(City city, bool visualUnit)
         {
-            var faction = city.GetFaction_NoChecks();
+            var faction = city.pfaction.GetFaction();
             
             WorkExperienceType gainXp= WorkExperienceType.NUM_NONE;
 
@@ -405,6 +386,12 @@ namespace VikingEngine.DSSWars.Work
             if (!city.IsNetHosted) {
                 return;
             }
+
+            if (!DssRef.world.subTileGrid.InBounds(subTileEnd))
+            {
+                return;
+            }
+
             ref SubTile subTile = ref DssRef.world.subTileGrid.GetRef(subTileEnd);
 
             bool tryRepeatWork = false;
@@ -681,11 +668,11 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case WorkType.Eat:
-                    int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
+                    int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.storage.ruleset_instance.FoodEnergySett);
 
-                    city.AddGroupedResource(CityResoureIndex.food, -eatAmount, false);
+                    city.AddGroupedResource(CityResourceIndex.food, -eatAmount, false);
                     //city.foodSpending.add(eatAmount);
-                    energy += eatAmount * DssRef.difficulty.FoodEnergySett;
+                    energy += eatAmount * DssRef.storage.ruleset_instance.FoodEnergySett;
                     break;
 
 
@@ -716,7 +703,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Food_G,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.OrchidFoodAmount, city, false));
+                                        farmGrowthMultiplier(DssConst.OrchidFoodAmount, city/*, false*/));
 
                                 subTile.terrainAmount = TerrainContent.OrchardPlucked;
 
@@ -729,7 +716,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Wheat,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.WheatFoodAmount, city, foilType == TerrainSubFoilType.WheatFarmUpgraded));
+                                        farmGrowthMultiplier(DssConst.WheatFoodAmount, city/*, foilType == TerrainSubFoilType.WheatFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
 
@@ -743,7 +730,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Linen,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.LinenHarvestAmount, city, foilType == TerrainSubFoilType.LinenFarmUpgraded));
+                                        farmGrowthMultiplier(DssConst.LinenHarvestAmount, city/*, foilType == TerrainSubFoilType.LinenFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -757,7 +744,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Rapeseed,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city, foilType == TerrainSubFoilType.RapeSeedFarmUpgraded));
+                                        farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city/*, foilType == TerrainSubFoilType.RapeSeedFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -772,7 +759,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Hemp,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city, foilType == TerrainSubFoilType.HempFarmUpgraded));
+                                        farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city/*, foilType == TerrainSubFoilType.HempFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -852,7 +839,7 @@ namespace VikingEngine.DSSWars.Work
 
                             if (chunk.count <= 0)
                             {
-                                EditSubTile editTile = new EditSubTile(faction, true, subTileEnd, subTile, false, false, true);
+                                EditSubTile editTile = new EditSubTile(city.pfaction, true, subTileEnd, subTile, false, false, true);
                                 editTile.value.collectionPointer = -1;
 
                                 if (subTile.mainTerrain == TerrainMainType.Resourses)
@@ -1264,6 +1251,8 @@ namespace VikingEngine.DSSWars.Work
                                 }
                                 size = TerrainContent.OliphantGrowth;
                                 break;
+
+                            
                         }
 
                         //if (building == TerrainBuildingType.PigPen)
@@ -1283,7 +1272,7 @@ namespace VikingEngine.DSSWars.Work
                         {
                             subTile.terrainAmount -= size.maxSize;
 
-                            EditSubTile editTile = new EditSubTile( faction, false, subTileEnd, subTile, false, true, false);
+                            EditSubTile editTile = new EditSubTile(city.pfaction, false, subTileEnd, subTile, false, true, false);
                             editTile.Submit();
                             
                             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -1324,10 +1313,10 @@ namespace VikingEngine.DSSWars.Work
                     int payment = carry.amount;
                     ItemResource recieved = toCity.MakeTrade(tradeForItem, payment);
 
-                    if (city.factionIndex != toCity.factionIndex)
+                    if (city.pfaction != toCity.pfaction)
                     {
                         faction.CityTradeImportCounting += payment;
-                        toCity.GetFaction().CityTradeExportCounting += payment;
+                        toCity.pfaction.GetFaction().CityTradeExportCounting += payment;
                     }
 
                     carry = recieved;
@@ -1544,7 +1533,7 @@ namespace VikingEngine.DSSWars.Work
                         if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
                         {
 
-                            EditSubTile edit = new EditSubTile(faction, true, subTileEnd, subTile, true, true, false);
+                            EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, true, false);
                             edit.Submit();
                         }
                         gainXp = build.experienceType();
@@ -1613,8 +1602,10 @@ namespace VikingEngine.DSSWars.Work
 
         public void setXpFor(XP.WorkExperienceType type, byte toXp)
         {
-            DssRef.world.SetWorkXp(XpEntityIndex, type, toXp);
-            
+            if (XpEntityIndex >= 0)
+            {
+                DssRef.world.SetWorkXp(XpEntityIndex, type, toXp);
+            }
         }
 
         public void addExperience(XP.WorkExperienceType type, City city, byte add = 0)
@@ -1897,9 +1888,9 @@ namespace VikingEngine.DSSWars.Work
         {
             if (orderId >= 0)
             {
-                if (city.GetPlayer().orders != null)
+                if (city.pfaction.GetPlayer().orders != null)
                 {
-                    return city.GetPlayer().orders.GetFromId(orderId) != null;
+                    return city.pfaction.GetPlayer().orders.GetFromId(orderId) != null;
                 }
             }
 
@@ -1950,7 +1941,7 @@ namespace VikingEngine.DSSWars.Work
                 ref subTile.collectionPointer);
 
             subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
-            EditSubTile editSubTile = new EditSubTile(city.GetFaction(), true, subTileEnd, subTile, true, true, true);
+            EditSubTile editSubTile = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, true, true);
             editSubTile.Submit();
             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
@@ -2090,7 +2081,7 @@ namespace VikingEngine.DSSWars.Work
                     timeSec = DssConst.WorkTime_Mine;
                     break;
                 case WorkType.Craft:
-                    timeSec = DssConst.WorkTime_Craft * DssRef.difficulty.setting_craftMulti;
+                    timeSec = DssConst.WorkTime_Craft * DssRef.storage.ruleset_instance.setting_craftMulti;
                     break;
 
                 case WorkType.Build:

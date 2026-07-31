@@ -67,6 +67,7 @@ namespace VikingEngine.DSSWars.Data
                 GiftedAchievementType.Turtle,
                 GiftedAchievementType.FarmerRush,
                 GiftedAchievementType.Hoarder,
+                GiftedAchievementType.TheLeakyCanteen,
                 GiftedAchievementType.SwedishNeutrality,
                 GiftedAchievementType.LivingInABobble,
                 GiftedAchievementType.ShaggyTooDopeAlwaysChilling,
@@ -81,6 +82,7 @@ namespace VikingEngine.DSSWars.Data
                 GiftedAchievementType.SupportSlave,
                 GiftedAchievementType.MeatShield,
                 GiftedAchievementType.TheCarry,
+                GiftedAchievementType.Sheep,
                 GiftedAchievementType.LoneWolf,
                 GiftedAchievementType.ArmchairGeneral,
                 GiftedAchievementType.HindsightTactician,
@@ -93,6 +95,7 @@ namespace VikingEngine.DSSWars.Data
                 GiftedAchievementType.TroubleMaker,
                 GiftedAchievementType.RandomNothingMakesSense,
                 GiftedAchievementType.Troll,
+                GiftedAchievementType.GlichRider,
                 GiftedAchievementType.MemeLord,
                 GiftedAchievementType.DarkSidePlayer
             },
@@ -101,6 +104,7 @@ namespace VikingEngine.DSSWars.Data
             new GiftedAchievementType[]
             {
                 GiftedAchievementType.CryBaby,
+                 GiftedAchievementType.ChickenShit,
                 GiftedAchievementType.Noob,
                 GiftedAchievementType.Scatterbrained,
                 GiftedAchievementType.NearSighted,
@@ -610,6 +614,33 @@ namespace VikingEngine.DSSWars.Data
                         stats = DssRef.stats.Gifted_Sheep,
                     };
 
+                case GiftedAchievementType.GlichRider:
+                    return new GiftedAchievement()
+                    {
+                        name = DssRef.todoLang.GiftAchieve_GlitchRider_Name,
+                        description = DssRef.todoLang.GiftAchieve_GlichRider_Desc,
+                        achievement = AchievementIndex.Gift_GlichRider,
+                        stats = DssRef.stats.Gifted_GlitchRider,
+                    };
+
+                case GiftedAchievementType.ChickenShit:
+                    return new GiftedAchievement()
+                    {
+                        name = DssRef.todoLang.GiftAchieve_ChickenShit_Name,
+                        description = DssRef.todoLang.GiftAchieve_ChickenShit_Desc,
+                        achievement = AchievementIndex.Gift_ChickenShit,
+                        stats = DssRef.stats.Gifted_ChickenShit,
+                    };
+
+                case GiftedAchievementType.TheLeakyCanteen:
+                    return new GiftedAchievement()
+                    {
+                        name = DssRef.todoLang.GiftAchieve_TheLeakyCanteen_Name,
+                        description = DssRef.todoLang.GiftAchieve_TheLeakyCanteen_Desc,
+                        achievement = AchievementIndex.Gift_TheLeakyCanteen,
+                        stats = DssRef.stats.Gifted_TheLeakyCanteen,
+                    };
+
                 case GiftedAchievementType.NUM:
                 default:
 #if DEBUG
@@ -678,6 +709,10 @@ namespace VikingEngine.DSSWars.Data
         HindsightTactician,
         Houseplant,
         Sheep,
+        GlichRider,
+
+        ChickenShit,//Chicken shit - are you afraid?
+        TheLeakyCanteen,//So dry, not a drop of water!
         NUM,
     }
 

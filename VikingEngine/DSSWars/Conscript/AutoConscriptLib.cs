@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (guard)
             {
-                if (DssRef.storage.gameRuleset.centralGold)
+                if (DssRef.storage.ruleset_instance.centralGold)
                 {
                     return faction.money.copper > 0 && (aggresive || faction.GoldSecDiff() > -(DssConst.UpkeepPerGuard_copp * Money.CopperToGold * 50));
                 }
@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-                var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
+                var res_food = city.GetRefGroupedResource(EntityComponent.CityResourceIndex.food);
 
                 if (aggresive || res_food.changeRate.Change > -20)
                 {
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Conscript
                         case WarAutoQuality.Medium:
                             return res_food.amount > 200;
                         case WarAutoQuality.High:
-                            return res_food.amount > res_food.stockPileLimit / 2;
+                            return res_food.amount > res_food.MaxLimit() / 2;
                     }
                 }
                 else

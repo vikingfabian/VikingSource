@@ -12,7 +12,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -657,13 +657,16 @@ namespace VikingEngine.DSSWars.Presentation
             switch (abs)
             {
                 case 100:
-                    result = DssRef.lang.EngineHud_SymbolFor100;
+                    result = DssRef.lang.Language_SymbolFor100;
                     break;
                 case 1000:
-                    result = DssRef.lang.EngineHud_SymbolFor1000;
+                    result = DssRef.lang.Language_SymbolFor1000;
                     break;
-                case 10000:
-                    result = DssRef.lang.EngineHud_SymbolFor10000;
+                case 10_000:
+                    result = DssRef.lang.Language_SymbolFor10000;
+                    break;
+                case 1_000_000:
+                    result = DssRef.lang.Language_SymbolForMillion;
                     break;
                 default:
                     result = abs.ToString();
@@ -783,8 +786,23 @@ namespace VikingEngine.DSSWars.Presentation
                 case InputActionType.ZoomOutKey:
                     return DssRef.lang.InputActionName_ZoomOutKey;
 
+                case InputActionType.NextPin:
+                    return DssRef.lang.InputActionName_NextPin;
+                case InputActionType.PinAndPing:
+                    return DssRef.lang.ObjectType_LocationPin;
+                case InputActionType.TextChat:
+                    return DssRef.lang.InputActionName_TextChat;
+                case InputActionType.VoiceChat:
+                    return DssRef.lang.InputActionName_VoiceChat;
+
+
                 default:
+
+#if DEBUG
                     throw new NotImplementedException($"InputActionName not implemented for {action}");
+#else
+        return TextLib.Error;
+#endif       
             }
         }
         //public string Name(InputActionType type)
@@ -792,46 +810,46 @@ namespace VikingEngine.DSSWars.Presentation
         //    switch (type)
         //    {
 
-        //        case InputActionType.StopStart:
-        //            return DssRef.lang.ArmyOption_Halt;
-        //        //case InputButtonType.AutomationSetting:
-        //        //    return DssRef.lang.Automation_Title;
-        //        //case InputButtonType.Home:
-        //        //    return;
-        //        case InputActionType.ToggleHudDetail:
-        //            return DssRef.lang.Input_ToggleHudDetail;
-        //        case InputActionType.GameSpeed:
-        //            return DssRef.lang.Input_GameSpeed;
-        //        case InputActionType.PauseGame:
-        //            return DssRef.lang.Input_Pause;
-        //        case InputActionType.NextCity:
-        //            return DssRef.lang.Input_NextCity;
-        //        case InputActionType.NextArmy:
-        //            return DssRef.lang.Input_NextArmy;
-        //        case InputActionType.NextBattle:
-        //            return DssRef.lang.Input_NextBattle;
+            //        case InputActionType.StopStart:
+            //            return DssRef.lang.ArmyOption_Halt;
+            //        //case InputButtonType.AutomationSetting:
+            //        //    return DssRef.lang.Automation_Title;
+            //        //case InputButtonType.Home:
+            //        //    return;
+            //        case InputActionType.ToggleHudDetail:
+            //            return DssRef.lang.Input_ToggleHudDetail;
+            //        case InputActionType.GameSpeed:
+            //            return DssRef.lang.Input_GameSpeed;
+            //        case InputActionType.PauseGame:
+            //            return DssRef.lang.Input_Pause;
+            //        case InputActionType.NextCity:
+            //            return DssRef.lang.Input_NextCity;
+            //        case InputActionType.NextArmy:
+            //            return DssRef.lang.Input_NextArmy;
+            //        case InputActionType.NextBattle:
+            //            return DssRef.lang.Input_NextBattle;
 
-        //        case InputActionType.ControllerFocus:
-        //            return DssRef.lang.Input_ToggleHudFocus;
-        //        case InputActionType.ControllerCancel:
-        //            return Ref.langOpt.Hud_Cancel;
-        //        case InputActionType.ControllerMessageClick:
-        //            return DssRef.lang.Input_ClickMessage;
+            //        case InputActionType.ControllerFocus:
+            //            return DssRef.lang.Input_ToggleHudFocus;
+            //        case InputActionType.ControllerCancel:
+            //            return Ref.langOpt.Hud_Cancel;
+            //        case InputActionType.ControllerMessageClick:
+            //            return DssRef.lang.Input_ClickMessage;
 
-        //        case InputActionType.WASD_UP:
-        //            return DssRef.lang.Input_Up;
-        //        case InputActionType.WASD_DOWN:
-        //            return DssRef.lang.Input_Down;
-        //        case InputActionType.WASD_LEFT:
-        //            return DssRef.lang.Input_Left;
-        //        case InputActionType.WASD_RIGHT:
-        //            return DssRef.lang.Input_Right;
+            //        case InputActionType.WASD_UP:
+            //            return DssRef.lang.Input_Up;
+            //        case InputActionType.WASD_DOWN:
+            //            return DssRef.lang.Input_Down;
+            //        case InputActionType.WASD_LEFT:
+            //            return DssRef.lang.Input_Left;
+            //        case InputActionType.WASD_RIGHT:
+            //            return DssRef.lang.Input_Right;
 
-        //        default:
-        //            return "ERR";
+            //        default:
+            //            return "ERR";
 
-        //    }
-        //}
+            //    }
+            //}
         public static SpriteName Training_Icon(TrainingLevel training)
         {
             return (SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)training);
@@ -1733,66 +1751,66 @@ namespace VikingEngine.DSSWars.Presentation
         
 
                 
-        public static string UnitFilterName(UnitFilterType filterType)
+        public static string UnitFilterName(UnitNameType filterType)
         {
             switch (filterType)
             {
-                case UnitFilterType.Settler:
+                case UnitNameType.Settler:
                     return DssRef.lang.UnitType_Settler;
-                case UnitFilterType.SharpStick:
+                case UnitNameType.SharpStick:
                     return DssRef.lang.UnitType_Folkman;
 
-                case UnitFilterType.Sword:
-                case UnitFilterType.LongSword:
+                case UnitNameType.Sword:
+                case UnitNameType.LongSword:
                     return DssRef.lang.UnitType_Soldier;
-                case UnitFilterType.Pike:
-                case UnitFilterType.Spear:
+                case UnitNameType.Pike:
+                case UnitNameType.Spear:
                     return DssRef.lang.UnitType_Spearman;
 
-                case UnitFilterType.Skirmisher:
+                case UnitNameType.Skirmisher:
                     return DssRef.lang.UnitType_Skirmisher;
-                case UnitFilterType.Bow:
+                case UnitNameType.Bow:
                     return DssRef.lang.UnitType_Archer;
 
-                case UnitFilterType.CrossBow:
+                case UnitNameType.CrossBow:
                     return DssRef.lang.UnitType_Crossbow;
-                case UnitFilterType.Rifle:
+                case UnitNameType.Rifle:
                     return DssRef.lang.UnitType_LongRangeRifle;
-                case UnitFilterType.Shotgun:
+                case UnitNameType.Shotgun:
                     return DssRef.lang.UnitType_CloseRangeRifle;
 
 
-                case UnitFilterType.Ballista:
+                case UnitNameType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
-                case UnitFilterType.ManuBallista:
+                case UnitNameType.ManuBallista:
                     return DssRef.lang.Resource_TypeName_Manuballista;
-                case UnitFilterType.Catapult:
+                case UnitNameType.Catapult:
                     return DssRef.lang.Resource_TypeName_Catapult;
 
-                case UnitFilterType.ManCannonBronze:
+                case UnitNameType.ManCannonBronze:
                     return DssRef.lang.Resource_TypeName_ManCannonBronze;
-                case UnitFilterType.SiegeCannonBronze:
+                case UnitNameType.SiegeCannonBronze:
                     return DssRef.lang.Resource_TypeName_SiegeCannonBronze;
-                case UnitFilterType.ManCannonIron:
+                case UnitNameType.ManCannonIron:
                     return DssRef.lang.Resource_TypeName_ManCannonIron;
-                case UnitFilterType.SiegeCannonIron:
+                case UnitNameType.SiegeCannonIron:
                     return DssRef.lang.Resource_TypeName_SiegeCannonIron;
 
-                case UnitFilterType.TwohandSword:
-                case UnitFilterType.Warhammer:
+                case UnitNameType.TwohandSword:
+                case UnitNameType.Warhammer:
                     return DssRef.lang.UnitType_FootKnight;
                 //case UnitFilterType.Knight:
                 //    return DssRef.lang.UnitType_CavalryKnight;
-                case UnitFilterType.MithrilBow:
+                case UnitNameType.MithrilBow:
                     return DssRef.lang.UnitType_MithrilArcher;
-                case UnitFilterType.MithrilKnight:
+                case UnitNameType.MithrilKnight:
                     return DssRef.lang.UnitType_MithrilSwordsman;
 
-                case UnitFilterType.GreenSoldier:
+                case UnitNameType.GreenSoldier:
                     return DssRef.lang.FactionName_Greenwood;
-                case UnitFilterType.HonourGuard:
+                case UnitNameType.HonourGuard:
                     return DssRef.lang.UnitType_HonorGuard;
-                case UnitFilterType.Viking:
+                case UnitNameType.Viking:
                     return DssRef.lang.UnitType_Viking;
 
                 default:

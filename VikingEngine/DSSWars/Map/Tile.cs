@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
@@ -309,23 +310,23 @@ namespace VikingEngine.DSSWars.Map
         {
             if (BorderCount > 0)
             {
-                int owner = DssRef.world.cities[CityIndex].factionIndex;
-                if (BorderRegion_North >= 0 && DssRef.world.cities[BorderRegion_North].factionIndex != owner)
+                PFaction owner = DssRef.world.cities[CityIndex].pfaction;
+                if (BorderRegion_North >= 0 && DssRef.world.cities[BorderRegion_North].pfaction != owner)
                 {
                     sameFaction = false;
                     return true;
                 }
-                if (BorderRegion_East >= 0 && DssRef.world.cities[BorderRegion_East].factionIndex != owner)
+                if (BorderRegion_East >= 0 && DssRef.world.cities[BorderRegion_East].pfaction != owner)
                 {
                     sameFaction = false;
                     return true;
                 }
-                if (BorderRegion_South >= 0 && DssRef.world.cities[BorderRegion_South].factionIndex != owner)
+                if (BorderRegion_South >= 0 && DssRef.world.cities[BorderRegion_South].pfaction != owner)
                 {
                     sameFaction = false;
                     return true;
                 }
-                if (BorderRegion_West >= 0 && DssRef.world.cities[BorderRegion_West].factionIndex != owner)
+                if (BorderRegion_West >= 0 && DssRef.world.cities[BorderRegion_West].pfaction != owner)
                 {
                     sameFaction = false;
                     return true;
@@ -370,17 +371,17 @@ namespace VikingEngine.DSSWars.Map
 
         public Faction Faction()
         {
-           return DssRef.world.cities[CityIndex].GetFaction();
+           return DssRef.world.cities[CityIndex].pfaction.GetFaction();
         }
-        public Faction Faction_Safe()
-        {
-            return DssRef.world.cities[CityIndex].GetFaction_Safe();
-        }
+        //public Faction Faction_Safe()
+        //{
+        //    return DssRef.world.cities[CityIndex].GetFaction_Safe();
+        //}
 
         public Color FactionColor()
         {
             var c = DssRef.world.cities[CityIndex];
-            var p = c.GetPlayer();
+            var p = c.pfaction.GetPlayer();
             if (p != null && p.profile.flag != null)
             {
                 return p.profile.flag.col0_Main;
@@ -528,22 +529,22 @@ namespace VikingEngine.DSSWars.Map
             //{
             //    lib.DoNothing();
             //}
-            int faction = city.factionIndex;
+            //int faction = city.factionIndex;
             float red = 0;
             float green = 0;
 
-            if (faction < 0)
+            if (city.pfaction.IsEmpty())
             {
                 return ColorExt.VeryDarkGray;
             }
 
-            if (faction == playerFaction.myIndex)
+            if (city.pfaction == playerFaction.pfaction)
             {
                 brightness *= 0.5f;
             }
             else
             {
-               var rel = DssRef.world.diplomacy.GetRelation_Safe(playerFaction.myIndex, faction).Relation;
+               var rel = DssRef.world.diplomacy.GetRelation(playerFaction.pfaction, city.pfaction).Relation;
 
                 if (rel <= RelationType.RelationTypeN2_Truce)
                 {
@@ -584,16 +585,20 @@ namespace VikingEngine.DSSWars.Map
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
             City city = City();
-            int faction = city.factionIndex;
+            //int faction = city.factionIndex;
 
             Color factionCol;
-            if (faction < 0 || faction >= DssRef.world.factions.Array.Length)
+            //if (faction < 0 || faction >= DssRef.world.factions.Array.Length)
+            //{
+            //    factionCol = Color.Gray;
+            //}
+            if (city.pfaction.TryGetFaction(out var faction))
             {
-                factionCol = Color.Gray;
+                factionCol = faction.Color();
             }
             else
-            {
-                factionCol = DssRef.world.factions.Array[faction].Color();
+            { 
+                factionCol = Color.Gray;
             }
             int distance = city.tilePos.SideLength(pos);
             
@@ -603,7 +608,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else if (hasBorder(out bool sameFaction))
             {
-                if (faction < 0)
+                if (faction == null)
                 {
                     factionCol = Color.LightGray;
                 }

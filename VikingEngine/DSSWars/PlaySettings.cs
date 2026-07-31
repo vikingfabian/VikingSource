@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.ToGG.MoonFall;
 
@@ -15,15 +16,15 @@ namespace VikingEngine.DSSWars
     {
         public Players.DarkLordPlayer darkLordPlayer;
 
-        public int Faction_SouthHara = -1;
-        public int Faction_GreenWood = -1;
-        public int Faction_DarkFollower = -1;
-        public int Faction_Barbarian = -1;
-        public int Faction_UnitedKingdom = -1;
+        public PFaction Faction_SouthHara = PFaction.Empty;
+        public PFaction Faction_GreenWood = PFaction.Empty;
+        public PFaction Faction_DarkFollower = PFaction.Empty;
+        public PFaction Faction_Barbarian = PFaction.Empty;
+        public PFaction Faction_UnitedKingdom = PFaction.Empty;
 
-        public int Faction_DyingMonger = -1;
-        public int Faction_DyingHate = -1;
-        public int Faction_DyingDestru = -1;        
+        public PFaction Faction_DyingMonger = PFaction.Empty;
+        public PFaction Faction_DyingHate = PFaction.Empty;
+        public PFaction Faction_DyingDestru = PFaction.Empty;        
 
         public int AiArmyPurchase_MoneyMin;
         public int AiArmyPurchase_IncomeMin;

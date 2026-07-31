@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
@@ -71,16 +72,16 @@ namespace VikingEngine.DSSWars.Interface
                         break;
 
                     case MenuTab.Resources:
-                        player.faction.resourceTab(player, content);
+                        player.pfaction.GetFaction().resourceTab(player, content);
                         break;
 
                     case MenuTab.StockPile:
 
-                        player.faction.stockPileTab(player, content);
+                        player.pfaction.GetFaction().stockPileTab(player, content);
                         break;
 
                     case MenuTab.Work:
-                        player.faction.workTab(content);
+                        player.pfaction.GetFaction().workTab(content);
                         break;
 
                     //case MenuTab.Trade:
@@ -124,8 +125,8 @@ namespace VikingEngine.DSSWars.Interface
             
             content.Add(new RbNewLine(true));
 
-            content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(player.faction.cities.Count)));
-            content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(player.faction.armies.Count)));
+            content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(player.pfaction.GetFaction().cities.Count)));
+            content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(player.pfaction.GetFaction().armies.Count)));
 
             content.ButtonDescription(player.gameControls.input.Build, DssRef.lang.Input_Build);
             content.ButtonDescription(player.gameControls.input.Copy, DssRef.lang.Hud_CopySetup);
@@ -146,7 +147,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceProduction, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), Convert.ToInt32( player.faction.foodProduction.displayValue_gold_sec)), HudLib.AvailableColor));
+                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceProduction, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), Convert.ToInt32( player.pfaction.GetFaction().foodProduction.displayValue_gold_sec)), HudLib.AvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
             }
@@ -155,7 +156,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), Convert.ToInt32(player.faction.foodSpending.displayValue_gold_sec)), HudLib.NotAvailableColor));
+                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), Convert.ToInt32(player.pfaction.GetFaction().foodSpending.displayValue_gold_sec)), HudLib.NotAvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
             }
@@ -175,7 +176,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsWorker));
                 content.space();
-                var textCont = new RbText(string.Format(DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(player.faction.citiesEconomy.taxIncome_copp)),
+                var textCont = new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(player.pfaction.GetFaction().citiesEconomy.taxIncome_copp)),
                     HudLib.AvailableColor);
                 content.Add(textCont);
 
@@ -190,7 +191,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsResource_GoldOre));
                 content.space();
-                var textCont = new RbText(string.Format(DssRef.lang.Economy_SoldResources, player.faction.CitySoldResources),
+                var textCont = new RbText(string.Format(DssRef.lang.Economy_SoldResources, player.pfaction.GetFaction().CitySoldResources),
                     HudLib.AvailableColor);
                 content.Add(textCont);
 
@@ -206,7 +207,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsServiceMen));
                 content.space();
-                var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(player.faction.citiesEconomy.servicemenUpkeep_copp)),
+                var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(player.pfaction.GetFaction().citiesEconomy.servicemenUpkeep_copp)),
                     HudLib.NotAvailableColor);
                 content.Add(textCont);
 
@@ -220,7 +221,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsGuard));
                 content.space();
-                var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(player.faction.citiesEconomy.cityGuardUpkeep_copp)),
+                var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(player.pfaction.GetFaction().citiesEconomy.cityGuardUpkeep_copp)),
                     HudLib.NotAvailableColor);
                 content.Add(textCont);
 
@@ -234,7 +235,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.faction.citiesEconomy.blackMarketCosts_Food_gold)), HudLib.NotAvailableColor));
+                content.Add(new RbText(string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.pfaction.GetFaction().citiesEconomy.blackMarketCosts_Food_gold)), HudLib.NotAvailableColor));
                 //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.faction.citiesEconomy.blackMarketCosts_Food_gold)));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
@@ -242,11 +243,11 @@ namespace VikingEngine.DSSWars.Interface
             
             if (DssLib.UseLocalTrading)
             {
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_LocalCityTrade_Export, player.faction.CityTradeExport));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_LocalCityTrade_Export, player.pfaction.GetFaction().CityTradeExport));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_LocalCityTrade_Import, player.faction.CityTradeImport));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_LocalCityTrade_Import, player.pfaction.GetFaction().CityTradeImport));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
             }
@@ -261,7 +262,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.ResourceType_Gold), /*player.ConvertUpkeep(*/Money.ToGold(Convert.ToInt32( player.faction.totalArmiesUpkeep.copper))/*, out _))*/), HudLib.NotAvailableColor));
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.ResourceType_Gold), /*player.ConvertUpkeep(*/Money.ToGold(Convert.ToInt32( player.pfaction.GetFaction().totalArmiesUpkeep.copper))/*, out _))*/), HudLib.NotAvailableColor));
                     content.space();
                     HudLib.PerSecondInfo(player, content, false);
                 }
@@ -270,7 +271,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), (int)player.faction.totalArmiesUpkeep.food/* player.ConvertUpkeep(player.faction.armyFoodUpkeep, out _))*/), HudLib.NotAvailableColor));
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), (int)player.pfaction.GetFaction().totalArmiesUpkeep.food/* player.ConvertUpkeep(player.faction.armyFoodUpkeep, out _))*/), HudLib.NotAvailableColor));
                     content.space();
                     HudLib.PerSecondInfo(player, content, false);
                 }
@@ -279,7 +280,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ImportCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.faction.armyFoodImportCost)), HudLib.NotAvailableColor));
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ImportCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.pfaction.GetFaction().armyFoodImportCost)), HudLib.NotAvailableColor));
                     content.space();
                     HudLib.PerSecondInfo(player, content, true);
                 }
@@ -287,7 +288,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.faction.armyFoodBlackMarketCost)), HudLib.NotAvailableColor));
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(player.pfaction.GetFaction().armyFoodBlackMarketCost)), HudLib.NotAvailableColor));
                     content.space();
                     HudLib.PerSecondInfo(player, content, true);
                 }
@@ -297,7 +298,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.ResourceType_Gold), TextLib.OneDecimal(Money.ToGoldF(player.faction.totalArmiesUpkeep.copper))/* TextLib.OneDecimal( player.ConvertUpkeep(player.faction.armyFoodUpkeep, out _)))*/), HudLib.NotAvailableColor));
+                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.ResourceType_Gold), TextLib.OneDecimal(Money.ToGoldF(player.pfaction.GetFaction().totalArmiesUpkeep.copper))/* TextLib.OneDecimal( player.ConvertUpkeep(player.faction.armyFoodUpkeep, out _)))*/), HudLib.NotAvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
             }
@@ -349,7 +350,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void progressTab(Players.LocalPlayer player)
         {
-            new XP.TechnologyHud(player, null).technologyHud(content, player.faction);
+            new XP.TechnologyHud(player, null).technologyHud(content, player.pfaction.GetFaction());
         }
         public bool updateMouseInput(ref bool mouseOver)
         {

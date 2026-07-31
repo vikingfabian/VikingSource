@@ -44,6 +44,7 @@ namespace VikingEngine.SteamWrapping
             fullId = id.m_SteamID;
             this.localPeer = local;
             lastHeardFrom = Ref.TotalTimeSec + 6f;
+            isFriend = local || SteamFriends.HasFriend(id, EFriendFlags.k_EFriendFlagImmediate);
         }
 
         public SteamUserOld SteamUser()

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.Communication
 {
@@ -16,15 +18,17 @@ namespace VikingEngine.DSSWars.Communication
         public bool secret = false;
         public int allyAgainst = -1;
 
+        public override string ToString()
+        {
+            return $"{Relation}, {SpeakTerms}, end sec {RelationEnd_GameTimeSec.Seconds}";
+        }
         public DiplomaticRelation()
         {   
         }
-
         public bool HasValue()
         { 
             return Relation != RelationType.RelationType0_Neutral || SpeakTerms != SpeakTerms.SpeakTerms0_Normal;
         }
-
         public bool InWar()
         {
             return Diplomacy.IsWar(Relation);
@@ -35,45 +39,59 @@ namespace VikingEngine.DSSWars.Communication
             return Relation >= RelationType.RelationType3_Ally;
         }
 
-        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, out RelationType previousRelation/*, bool localAction*/)
+        public void SetRelation(PFaction faction1, PFaction faction2, RelationType newRelation, PFaction actuator, out RelationType previousRelation, bool fromAllianceTrade, bool localAction)
         {
             previousRelation = Relation;
 
-            if (Relation != newRelation &&
-                faction1 != null && faction2 != null)
+            if (Relation != newRelation )
+                //&&
+                //faction1 != null && faction2 != null)
             {
                 Relation = newRelation;
-                if (Relation == RelationType.RelationTypeN4_TotalWar)
+                if (Relation == RelationType.RelationTypeN5_TotalWar)
                 {
                     SpeakTerms = SpeakTerms.SpeakTermsN2_None;
                 }
+                faction1.GetPlayer()?.onNewRelation(actuator == faction2,faction2, this, previousRelation, fromAllianceTrade, true);
+                faction2.GetPlayer()?.onNewRelation(actuator == faction1,faction1, this, previousRelation, fromAllianceTrade, true);
 
-                faction1.player?.onNewRelation(faction2, this, previousRelation, true);
-                faction2.player?.onNewRelation(faction1, this, previousRelation, true);
-
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
+                if (localAction)
                 {
-                    Net.ObjectId.WriteFaction(w, faction1);
-                    Net.ObjectId.WriteFaction(w, faction2);
-                    write(w);
-                }
-                packet.EndWrite_Asynch();
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDiplomacyRelation, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        EightBit actuators = new EightBit(actuator == faction1, actuator == faction2);
+                        actuators.write(w);
 
+                        faction1.write(w);
+                        faction2.write(w);
+
+                        write(w);
+                    }
+                    packet.EndWrite_Asynch();
+                }
             }
         }
 
         public static void NetReadRelation(System.IO.BinaryReader r)
         {
-            Faction faction1 = Net.ObjectId.ReadFaction(r);
-            Faction faction2 = Net.ObjectId.ReadFaction(r);
-            if (faction1 != null && faction2 != null)
+            //Faction faction1 = Net.ObjectId.ReadFaction(r, out _);
+            //Faction faction2 = Net.ObjectId.ReadFaction(r, out _);
+
+            
+
+            //if (faction1 != null && faction2 != null)
             {
-                ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
+                EightBit actuators = new EightBit(r);
+
+                PFaction faction1 = new PFaction(r);
+                PFaction faction2 = new PFaction(r);
+
+                ref var rel = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1, faction2);
                 var previousRelation = rel.Relation;
                 rel.read(r, int.MaxValue);
 
-                faction1.player?.onNewRelation(faction2, rel, previousRelation, false);
-                faction2.player?.onNewRelation(faction1, rel, previousRelation, false);
+                faction1.GetPlayer()?.onNewRelation(actuators.Get(1), faction2, rel, previousRelation, false, false);
+                faction2.GetPlayer()?.onNewRelation(actuators.Get(0), faction1, rel, previousRelation, false, false);
             }
         }
 
@@ -82,8 +100,7 @@ namespace VikingEngine.DSSWars.Communication
             Relation = RelationType.RelationType0_Neutral;
             SpeakTerms = SpeakTerms.SpeakTermsN2_None;
         }
-      
-
+       
         public void write(System.IO.BinaryWriter w)
         {
             
@@ -111,10 +128,7 @@ namespace VikingEngine.DSSWars.Communication
             {
                 w.Write((ushort)allyAgainst);
             }
-
         }
-
-        
 
         public void read(System.IO.BinaryReader r, int subVersion)
         {
@@ -124,16 +138,25 @@ namespace VikingEngine.DSSWars.Communication
             {
                 Relation = (RelationType)r.ReadSByte();
             }
+            else
+            {
+                Relation = RelationType.RelationType0_Neutral;
+            }
+
             if (hasSpeakTerms)
             {
                 SpeakTerms = (SpeakTerms)r.ReadSByte();
             }
+            else
+            {
+                SpeakTerms = SpeakTerms.SpeakTerms0_Normal;
+            }
+
             if (hasEndTime)
             {
                 RelationEnd_GameTimeSec.read(r);
             }
-
-                    
+        
             if (hasCommonEnemy)
             {
                 allyAgainst = r.ReadUInt16();
@@ -174,11 +197,12 @@ namespace VikingEngine.DSSWars.Communication
 
         public void truce_update()
         {
-            if (Relation == RelationType.RelationTypeN2_Truce)
+            if (Relation == RelationType.RelationTypeN2_Truce ||
+                Relation == RelationType.RelationTypeN3_Mobilization)
             {
                 if (RelationEnd_GameTimeSec.TimeOut())
                 {
-                    Relation = RelationType.RelationTypeN3_War;
+                    Relation = RelationType.RelationTypeN4_War;
                 }
             }
         }

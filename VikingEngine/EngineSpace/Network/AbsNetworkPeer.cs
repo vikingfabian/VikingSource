@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Audio;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars;
-using Steamworks;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.Network
 {
@@ -70,9 +71,20 @@ namespace VikingEngine.Network
         public object Tag = null;
         public StoredNetworkGamer storedData;
 
+        public bool isFriend = false;
+        public bool isRecording = false;
+        public TimeStamp lastvoice;
+        public DynamicSoundEffectInstance _audioPlayback = null;
+
         public bool lowLoad()
         {
             return packetLoad + potensialLoad < maxPacketCount;
+        }
+
+        public void unload()
+        {
+            _audioPlayback?.Stop();
+            _audioPlayback?.Dispose();
         }
 
         public bool lowPotensialLoad(float add)

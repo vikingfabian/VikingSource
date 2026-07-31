@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -53,61 +54,28 @@ namespace VikingEngine.DSSWars.Interface
 
             if (DssRef.state.IsSinglePlayer_LocalAndOnline())
             {
-
-                
-                    bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause_GamePlay, out Color focusColor);
-                    if (viewControllerTabs && DssRef.difficulty.setting_allowPauseCommand &&
-                        player.gameControls.input.Controller_TabLeft.IsActive)
-                    {
-                        content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
-                        content.space(0.5f);
-                    }
-
-                if (DssRef.difficulty.setting_allowPauseCommand)
-                {
-                    content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
-                        new RbAction(Ref.TogglePause), new RbTooltip((RichBoxContent content, object tag) =>
-                        {
-                            //if (player.gameControls.input.PauseGame.IsActive)
-                            //{
-                            //    content.Add(new RbImage(player.gameControls.input.PauseGame.Icon));
-                            //    content.Add(new RbSpace(0.5f));
-                            //}
-                            player.gameControls.input.PauseGame.ToRichContent(content);
-                            content.hspace();
-                            content.Add(new RbText(DssRef.lang.Input_Pause));
-                        }), DssRef.difficulty.setting_allowPauseCommand));
-                }
-
-                if (viewControllerTabs)
-                {
-                    content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
-                    content.space(0.5f);
-                }
-                for (int i = 0; i < player.gameControls.GameSpeedOptions.Length; i++)
-                {
-                    int speed = player.gameControls.GameSpeedOptions[i];
-                    content.Add(new ArtOption(Ref.TargetGameTimeSpeed == speed,
-                        new List<AbsRichBoxMember> { new RbText(speed.ToString()) },
-                        new RbAction1Arg<int>(gameSpeedClick, speed, RbSoundType.Option),
-                        new RbTooltip((RichBoxContent content, object tag) =>
-                        {
-                            //if (player.gameControls.input.GameSpeed.IsActive)
-                            //{
-                            //    content.Add(new RbImage(player.gameControls.input.GameSpeed.Icon));
-                            //    content.Add(new RbSpace(0.5f));
-                            //}
-                            player.gameControls.input.GameSpeed.ToRichContent(content);
-                            content.hspace();
-                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed))));
-                        })));
-
-                }
+                SpeedOptions(player, content, true, false);
                 content.space();
             }
+            else
+            {
+                content.space(2);
+                content.Add(new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon));
+                //if (!Ref.isPaused)
+                {
+                    content.Add(new RbText(string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed), HudLib.HeadBarTextColor_Beige));
+                }
+                content.space(4);
 
-            
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.TextChatLetter) },
+                    new RbAction(() =>
+                    {
+                        new TextChat();
+                    }),
+                    new RbTooltip(((PlayState)DssRef.state).chatLog.toolTip)));
+            }
+
             if (player.gameControls.input.inputSource.IsXnaController)
             {
                 content.Add(new RbImage(player.gameControls.input.Menu.Icon));
@@ -139,16 +107,82 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        //public void pauseAction()
-        //{
-        //    Ref.SetPause(!Ref.isPaused);
-        //}
-
-        void gameSpeedClick(int toSpeed)
+        public static void SpeedOptions(LocalPlayer player, RichBoxContent content, bool viewInput, bool inPauseMenu)
         {
-            Ref.SetPause(false);
-            Ref.SetGameSpeed(toSpeed);
+            Color NotSelectedIconCol = new Color(0.3f, 0.3f, 0.3f, 0.3f);
+
+            bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause_GamePlay, out Color focusColor) && viewInput;
+            if (viewControllerTabs && DssRef.difficulty.setting_allowPauseCommand &&
+                player.gameControls.input.Controller_TabLeft.IsActive)
+            {
+                content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
+                content.space(0.5f);
+            }
+
+            if (DssRef.difficulty.setting_allowPauseCommand)
+            {
+                //Play / Pause
+                content.Add(new ArtButton(Ref.isPaused ? RbButtonStyle.Primary : RbButtonStyle.OptionNotSelected,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPauseIcon, 1, Ref.isPaused? Color.White : NotSelectedIconCol) },
+                    new RbAction1Arg<bool>(DssRef.state.PlayPause, true), new RbTooltip((RichBoxContent content, object tag) =>
+                    {
+                        if (viewInput)
+                        {
+                            player.gameControls.input.PauseGame.ToRichContent(content);
+                            content.hspace();
+                        }
+                        content.Add(new RbText(DssRef.lang.Input_Pause));
+                    }), DssRef.difficulty.setting_allowPauseCommand));
+
+                //content.Add(new ArtButton(Ref.isPaused ? RbButtonStyle.OptionNotSelected : RbButtonStyle.Primary,
+                //    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon, 1, Ref.isPaused ? NotSelectedIconCol : Color.White) },
+                //    new RbAction1Arg<bool>(DssRef.state.PlayPause, false), new RbTooltip((RichBoxContent content, object tag) =>
+                //    {
+                //        if (viewInput)
+                //        {
+                //            player.gameControls.input.PauseGame.ToRichContent(content);
+                //            content.hspace();
+                //        }
+                //        content.Add(new RbText(DssRef.lang.Input_Pause));
+                //    }), DssRef.difficulty.setting_allowPauseCommand));
+            }
+
+            if (viewControllerTabs)
+            {
+                content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
+                content.space(0.5f);
+            }
+
+            Color textSelectCol = inPauseMenu ? Color.Black : HudLib.HeadBarTextColor_Beige;
+
+            for (int i = 0; i < player.gameControls.GameSpeedOptions.Length; i++)
+            {
+                int speed = player.gameControls.GameSpeedOptions[i];
+                bool selected = Ref.TargetGameTimeSpeed == speed && !Ref.isPaused;
+
+                
+                content.Add(new ArtButton(selected ? RbButtonStyle.Primary : RbButtonStyle.OptionNotSelected,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon, 1, selected? Color.White: NotSelectedIconCol), new RbText(speed.ToString(), selected ? textSelectCol : HudLib.HeadBarTextColor_DarkBeige) },
+                    new RbAction1Arg<int>(DssRef.state.GameSpeedClick, speed, RbSoundType.Option),
+                    new RbTooltip((RichBoxContent content, object tag) =>
+                    {
+                        if (viewInput)
+                        {
+                            player.gameControls.input.GameSpeed.ToRichContent(content);
+                            content.hspace();
+                        }
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed))));
+                    })));
+            }
+
+            //void gameSpeedClick(int toSpeed)
+            //{
+            //    Ref.SetPause(false);
+            //    Ref.SetGameSpeed(toSpeed);
+            //    SoundLib.speedInputSound();
+            //}
         }
+
 
         /// <returns>need refresh</returns>
         public bool updateMouseInput(ref bool mouseOver)

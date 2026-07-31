@@ -40,10 +40,11 @@ namespace VikingEngine
 
         public bool Next<T>(List<T> list, out T value)
         {
-            index++;
+            
             if (index < end)
             {
                 int idx = array.array[index];
+                index++;
                 value = list[idx];
                 return true;
             }

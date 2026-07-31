@@ -392,10 +392,27 @@ namespace VikingEngine
             list.RemoveAt(list.Count - 1);
             return result;
         }
+
         public static void RemoveLast<T>(List<T> list)
         {
             if (list.Count > 0)
             { list.RemoveAt(list.Count - 1); }
+        }
+
+        public static void RemoveLast<T>(List<T> list, int removeCount)
+        {
+            removeCount = Math.Min(list.Count, removeCount);
+            list.RemoveRange(list.Count - removeCount, removeCount);
+        }
+
+        public static void RemoveLast_Unsafe<T>(List<T> list, int removeCount)
+        {
+            list.RemoveRange(list.Count - removeCount, removeCount);
+        }
+
+        public static void RemoveFirst_Unsafe<T>(List<T> list, int removeCount)
+        {
+            list.RemoveRange(0, removeCount);
         }
 
         public static void RemoveCurrentInForwardLoop<T>(List<T> list, ref int i)

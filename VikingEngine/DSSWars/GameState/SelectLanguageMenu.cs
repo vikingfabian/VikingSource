@@ -86,6 +86,13 @@ namespace VikingEngine.DSSWars.GameState
                 case LanguageType.Chinese:
                     DssRef.stats.language_simplified_chinese.addOne();
                     break;
+                case LanguageType.Polish:
+                    DssRef.stats.language_polish.addOne();
+                    break;
+                case LanguageType.Thai:
+                    DssRef.stats.language_thai.addOne();
+                    break;
+
             }
 
             Ref.gamesett.language = language;

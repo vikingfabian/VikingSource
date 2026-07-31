@@ -26,6 +26,7 @@ namespace VikingEngine.SteamWrapping
         public SteamNetworkPeer Host;
         public SteamNetworkPeer localPeer;
         public List<AbsNetworkPeer> remoteGamers;
+        public List<AbsNetworkPeer> joinHistory;
         public bool hostSession = false;
 
         public bool IsHostingSession => Ref.steamlobby.InLobby && hostSession;
@@ -43,12 +44,11 @@ namespace VikingEngine.SteamWrapping
 
         Time heavyTrafficPause = Time.Zero;
 
-                
-
         public SteamP2PManager()
         {
             autoAcceptSessionRequests = true;
             remoteGamers = new List<AbsNetworkPeer>();
+            joinHistory = new List<AbsNetworkPeer>();
             
             connectFailCallback = new Callback<P2PSessionConnectFail_t>(OnConnectionFail, false);
             sessionRequestCallback = new Callback<P2PSessionRequest_t>(OnSessionRequest, false);
@@ -159,6 +159,7 @@ namespace VikingEngine.SteamWrapping
                                 else
                                 {
                                     //Unresponsive, kick player
+                                    Debug.CrashIfThreaded();
                                     RemovePeer(remoteGamers[i]);
                                 }
                             }
@@ -267,10 +268,10 @@ namespace VikingEngine.SteamWrapping
                             case Network.PacketType.PlayerDisconnected:
                                 RemovePeer(packet.sender.SteamID);
                                 break;
-                            case PacketType.Basic_MapLoadedAndReady:
-                                packet.sender.mapLoadedAndReady = true;
-                                Debug.Log(packet.sender.Gamertag + ":: Map Loaded And Ready");
-                                break;
+                            //case PacketType.Basic_MapLoadedAndReady:
+                            //    packet.sender.mapLoadedAndReady = true;
+                            //    Debug.Log(packet.sender.Gamertag + ":: Map Loaded And Ready");
+                            //    break;
                             case Network.PacketType.KickPlayer:
                                 ulong fullId = packet.r.ReadUInt64();
                                 if (localPeer.fullId == fullId)
@@ -305,7 +306,7 @@ namespace VikingEngine.SteamWrapping
                             //case PacketType.VoiceChat:
                             //    Ref.steam.readChat(packet.r);
                             case PacketType.VoiceChat:
-                                Ref.steam.readVoice(packet.r);
+                                Ref.steam.readVoice(packet.sender, packet.r);
                                 break;
                         }
                     }
@@ -374,19 +375,20 @@ namespace VikingEngine.SteamWrapping
 
         bool approveNewPeer(SteamNetworkPeer peer)
         {
+            var stored = Ref.netsett.getStoredGamer(peer.fullId);
+            peer.storedData = stored;
+            stored.name = peer.Gamertag;
+            Ref.netsett.setUpdatedStoredGamer(stored);
+            
             if (hostSession)
-            {
-                var stored = Ref.netsett.getStoredGamer(peer.fullId);
-                stored.name = peer.Gamertag;
-                Ref.netsett.setUpdatedStoredGamer(stored);
-                peer.storedData = stored;
-
+            {      
                 return Ref.netSession.joinableStatus &&
                     remoteGamers.Count <= Ref.netsett.maxPlayerCount &&
                     stored.ban < BanStatus.Banned;// .bannedPeers.isBanned(peer) == false;
             }
             else
             {
+                peer.mapLoadedAndReady = true;
                 return true;
             }
         }
@@ -397,13 +399,14 @@ namespace VikingEngine.SteamWrapping
             {
                 createLocalPeer();
             }
-
+            
             return localPeer;
         }
 
         void createLocalPeer()
         {
             localPeer = new SteamNetworkPeer(SteamUser.GetSteamID(), true);
+            localPeer.mapLoadedAndReady = hostSession;
         }
 
         public void RemovePeer(AbsNetworkPeer peer)
@@ -423,6 +426,8 @@ namespace VikingEngine.SteamWrapping
                 if (peer.SteamID == steamId)
                 {
                     Ref.netsett.setUpdatedStoredGamer(peer.storedData);
+                    peer.unload();
+                    joinHistory.Add(peer);
                     remoteGamers.RemoveAt(i);
                     Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
                     break;
@@ -582,27 +587,40 @@ namespace VikingEngine.SteamWrapping
                 sendType = EP2PSend.k_EP2PSendReliable;
             }
 
-            if (to == SendPacketTo.OneSpecific)
+
+            switch (to)
             {
-                //bool result = SteamNetworking.SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
-                send(getOrCreatePeer(specificGamerID));
+                default:
+                    foreach (SteamNetworkPeer peer in remoteGamers)
+                    {
+                        send(peer);
+                    }
+                    break;
+
+                case SendPacketTo.Ready:
+                    foreach (SteamNetworkPeer peer in remoteGamers)
+                    {
+                        if (peer.mapLoadedAndReady)
+                        {
+                            send(peer);
+                        }
+                    }
+                    break;
+
+                case SendPacketTo.OneSpecific:
+                    send(getOrCreatePeer(specificGamerID));
+                    break;
+
+                case SendPacketTo.Host:
+                    if (Host != null)
+                    {
+                        send(Host);
+                    }
+                    break;
+
             }
-            else if (to == SendPacketTo.Host)
-            {
-                if (Host != null)
-                {
-                    send(Host);
-                    //SteamNetworking.SendP2PPacket(Host.SteamID, data, (uint)data.Length, sendType, 0);
-                }
-            }
-            else
-            {
-                foreach (SteamNetworkPeer peer in remoteGamers)
-                {
-                    send(peer);
-                    //SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
-                }
-            }
+
+           
 
             void send(AbsNetworkPeer peer)
             {
@@ -674,7 +692,7 @@ namespace VikingEngine.SteamWrapping
             {
                 if (Ref.netsett.lobbyPublicity == LobbyPublicity.Private)
                 {
-                    return LobbyPublicity.Private;
+                    return LobbyPublicity.FriendsOnly;
                 }
                 else
                 {
@@ -689,6 +707,8 @@ namespace VikingEngine.SteamWrapping
 
         public void disconnectSession()
         {
+            Debug.CrashIfThreaded();
+
             for (int i = remoteGamers.Count - 1; i >= 0; --i)
             {
                 RemovePeer(remoteGamers[i]);
@@ -704,11 +724,16 @@ namespace VikingEngine.SteamWrapping
 
         public void endSession()
         {
+            Debug.CrashIfThreaded();
+
             foreach (var gamer in remoteGamers)
             {
                 Ref.netsett.setUpdatedStoredGamer(gamer.storedData);
+                gamer.unload();
+                joinHistory.Add(gamer);
             }
-            remoteGamers.Clear();            
+            remoteGamers.Clear();
+            
             hostSession = false;
             Ref.steam.LobbyMatchmaker.RefreshLobbyVisibility();
         }
@@ -756,13 +781,17 @@ namespace VikingEngine.SteamWrapping
                     Debug.LogWarning("The remote user didn't answer, but we got no failure reason. Maybe you are not connected to the internet?");
                     break;
             }
-
+            Debug.CrashIfThreaded();
             for (int i = 0; i < remoteGamers.Count; ++i)
             {
                 if (remoteGamers[i].SteamID == peerID)
                 {
-                    Ref.NetUpdateReciever().NetEvent_PeerLost(remoteGamers[i]);
+                    var gamer = remoteGamers[i];
+                    gamer.unload();
+                    joinHistory.Add(gamer);
                     remoteGamers.RemoveAt(i--);
+                    Ref.NetUpdateReciever().NetEvent_PeerLost(gamer);
+                    
                 }
             }
         }

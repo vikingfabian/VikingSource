@@ -121,6 +121,7 @@ namespace VikingEngine.DSSWars.Interface
         LocalPlayer player;
 
         static readonly TimeLength FoodWarningTimeout = new TimeLength(120);
+        public TimeStamp DeliveryMessageTime = TimeStamp.None;
 
         TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
         TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
@@ -133,7 +134,7 @@ namespace VikingEngine.DSSWars.Interface
 
         bool highEconomyWarningBlock()
         { 
-            return DssRef.storage.gameRuleset.centralGold && player.faction.money.GetGold() > DssConst.Gold_RichStatus;
+            return DssRef.storage.ruleset_instance.centralGold && player.pfaction.GetFaction().money.GetGold() > DssConst.Gold_RichStatus;
         }
 
         public void blockFoodWarning(bool block)
@@ -198,8 +199,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newParagraph();
 
                 var gotoButtonContent = new RichBoxContent();
-                MessageGroup_Ingame.ControllerInputIcons(player,gotoButtonContent);
-                //gotoButtonContent.Add(new RbText(city.TypeName()));
+                MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
                 city.toButtonContent(gotoButtonContent, true);
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
@@ -210,6 +210,22 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
+        public void giftMessage(AbsArmy mapObj, RemotePlayer fromPlayer)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h1(DssRef.lang.Diplomacy_RecievedGift, HudLib.TitleColor_Head);
+
+            content.newLine();
+            var gotoButtonContent = new RichBoxContent();
+            MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
+            mapObj.toButtonContent(gotoButtonContent, true);
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, mapObj, RbSoundType.Default))
+            { fillWidth = true });
+
+            Add(content, SoundLib.netMessage);
+        }
         public void armyLowFoodMessage(Army army)
         {
             if (!highEconomyWarningBlock() &&
@@ -294,7 +310,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void goToMapObject(AbsGameObject obj)
         {
-            if (obj.factionIndex == player.faction.myIndex)
+            if (obj.pfaction == player.pfaction)
             {
                 player.gameControls.map.selection.obj = obj;
             }

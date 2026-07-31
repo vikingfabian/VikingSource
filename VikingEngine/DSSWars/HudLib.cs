@@ -35,6 +35,9 @@ namespace VikingEngine.DSSWars
 
         public const float WarHudIcons_DefaultScale = 0.8f;
 
+        public static readonly Color HeadBarTextColor_Beige = new Color(205, 142, 56);
+        public static readonly Color HeadBarTextColor_DarkBeige = new Color(100, 70, 30);
+
         public static readonly Color TitleColor_Head = new Color(104, 149, 219);
         public static readonly Color TitleColor_Head2 = ColorExt.ChangeBrighness(TitleColor_Head, -20);
         public static readonly Color TitleColor_Action = Color.LightBlue;
@@ -52,6 +55,7 @@ namespace VikingEngine.DSSWars
         //     Salmon color (R:250,G:128,B:114,A:255).
         public static readonly Color NotAvailableColor = new Color(250, 180, 180);
         public static readonly Color NotAvailableColor_Dark = Color.DarkRed;
+        public static readonly Color NotAvailableColor_Dark_Grayed = new Color(100, 40, 40);
 
         public static readonly Color TextColor_Relation = Color.LightBlue;
 
@@ -109,6 +113,8 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
 
+        
+
         public static readonly string EngineVersionString = "VikingEngine ver: {0}" + (PlatformSettings.LinuxBuild? " linux" : " windows");
         public static void Init()
         {
@@ -157,6 +163,10 @@ namespace VikingEngine.DSSWars
             RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudOutlineButton, 1, 8, 1f, true, true)
             {
                 disableTexture = SpriteName.WarsHudHoverArea
+            };
+            RbSettings.artGoldOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudGoldOutline, 1, 8, 1f, true, true)
+            {
+                disableTexture = SpriteName.WarsHudGoldOutline_Gray
             };
             RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
 
@@ -503,7 +513,11 @@ namespace VikingEngine.DSSWars
         { 
             return value? SpriteName.warsCheckYes : SpriteName.warsCheckNo;
         }
-
+        public static void AvailableIconToHud(RichBoxContent content, bool available)
+        {
+            content.Add(new RbImage( available ? AvailableIcon : NotAvailableIcon));
+            content.hspace();
+        }
         public static string Date(DateTime date)
         { 
             return string.Format(DssRef.lang.Hud_Date, date.Year, date.Month, date.Day);
@@ -516,10 +530,10 @@ namespace VikingEngine.DSSWars
 
         public static string TimeSpan_LongText(TimeSpan time)
         {
-            string result = string.Format(DssRef.lang.Hud_Time_Seconds, time.Seconds);
+            string result = string.Format(DssRef.lang.Hud_Time_XSeconds, time.Seconds);
             if (time.TotalMinutes >= 1)
             {
-                result = string.Format(DssRef.lang.Hud_Time_Minutes, time.Minutes) + ", " + result;
+                result = string.Format(DssRef.lang.Hud_Time_XMinutes, time.Minutes) + ", " + result;
             }
             if (time.TotalHours >= 1)
             {
@@ -750,7 +764,7 @@ namespace VikingEngine.DSSWars
             if (PlatformSettings.STEAM_DEMO && Ref.steam.isInitialized)
             {
                 content.newLine();
-                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
+                var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIconAndName) }, new RbAction(() =>
                 {
                     Steamworks.SteamFriends.ActivateGameOverlayToStore(
                     new Steamworks.AppId_t( 3585100),

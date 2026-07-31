@@ -19,8 +19,6 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 {
     class BattleLabPlayer : Players.LocalPlayer
     {
-
-        BattleSetupManager setupManager;
         public BattleLabPlayer(Faction faction)
             : base(faction, true)
         {
@@ -31,7 +29,6 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             if (hud.maximizedHud)
             {
-
                 hud.objMenu.createMenu(this);
                 RichBoxContent content = new RichBoxContent();
                 var result = setupManager.updateObjectDisplay(content, hud.objMenu.menu);

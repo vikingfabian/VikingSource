@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.Communication
 {
     struct RelationsLoop
     {
-        int faction;
+        PFaction faction;
         public int otherFactionIx = -1;
 
-        public RelationsLoop(int faction) 
+        public RelationsLoop(PFaction faction) 
         { 
             this.faction = faction;
         }
@@ -20,7 +21,7 @@ namespace VikingEngine.DSSWars.Communication
         {
             otherFactionIx++;
 
-            if (otherFactionIx == faction)
+            if (otherFactionIx == faction.factionIndex)
             {
                 otherFactionIx++;
             }
@@ -45,19 +46,25 @@ namespace VikingEngine.DSSWars.Communication
         }
 
         public int RelationIndex()
-        { 
-            return DssRef.world.diplomacy.RelationIndex(faction, otherFactionIx);
+        {
+            DssRef.world.diplomacy.RelationIndex(faction.factionIndex, otherFactionIx, out var result);
+            return result;
         }
 
         public DiplomaticRelation Relation()
         {
-            return DssRef.world.diplomacy.GetRelation(faction, otherFactionIx);
+            return DssRef.world.diplomacy.GetRelation(faction, OtherFaction_P());
         }
 
         public bool OtherFaction(out Faction other)
         { 
             other = DssRef.world.factions.Array[otherFactionIx];
             return other != null;
+        }
+
+        public PFaction OtherFaction_P()
+        { 
+            return new PFaction(otherFactionIx);
         }
     }
 }

@@ -58,9 +58,18 @@ namespace VikingEngine.DSSWars.GameObject
             resource.amount = amount;
         }
 
+        public void resourceAmountSet_Minimum(int cityResourceIndex, int amount)
+        {
+            ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+            if (resource.amount < amount)
+            {
+                resource.amount = amount;
+            }
+        }
+
         override public bool lowFood()
         {
-            return resourceAmount(CityResoureIndex.food) <= workForce.amount;//DssConst.WorkSafeGuardAmount;
+            return resourceAmount(CityResourceIndex.food) <= workForce.amount;//DssConst.WorkSafeGuardAmount;
         }
 
 
@@ -101,7 +110,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (itemIndex < 0) 
             {
-                var faction = GetFaction();
+                var faction = pfaction.GetFaction();
 
                 if (faction == null)
                 {
@@ -175,7 +184,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 throw new Exception();
             }
-            if (itemIndex + factionIndex * CityResoureIndex.COUNT >= world.factionResourceOverviews.Length)
+            if (itemIndex + pfaction.factionIndex * CityResourceIndex.COUNT >= world.factionResourceOverviews.Length)
             {
                 throw new Exception();
             }
@@ -189,12 +198,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void AddGroupedResource(int itemIndex, int add, bool respectLimit)
         {
-            if (factionIndex < 0)
+            if (pfaction.factionIndex < 0)
             {
                 return;
             }
 #if DEBUG
-            if (factionIndex < 0)
+            if (pfaction.factionIndex < 0)
             {
                 throw new Exception();
             }
@@ -202,7 +211,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 throw new Exception();
             }
-            if (itemIndex + factionIndex * CityResoureIndex.COUNT >= DssRef.world.factionResourceOverviews.Length)
+            if (itemIndex + pfaction.factionIndex * CityResourceIndex.COUNT >= DssRef.world.factionResourceOverviews.Length)
             {
                 throw new Exception();
             }
@@ -210,15 +219,15 @@ namespace VikingEngine.DSSWars.GameObject
 
             ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             resource.amount += add;
-            if (resource.amount >= resource.stockPileLimit)
+            if (resource.amount >= resource.MaxLimit())
             {
                 if (resource.hasCesspit)
                 {
-                    int remove = resource.amount - resource.stockPileLimit + 10;
+                    int remove = resource.amount - resource.MaxLimit() + 10;
                     resource.amount -= remove;
                     if (Ref.peRnd.ChanceF(DssConst.CessPitConvertToFuelPercentage))
                     {
-                        AddGroupedResource(CityResoureIndex.fuel, remove, true);
+                        AddGroupedResource(CityResourceIndex.fuel, remove, true);
                     }
                 }
                 //else
@@ -262,9 +271,9 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case ItemResourceType.Gold:
                         int amount;
-                        if (DssRef.storage.gameRuleset.centralGold)
+                        if (DssRef.storage.ruleset_instance.centralGold)
                         {
-                            var faction = GetFaction_NoChecks();
+                            var faction = pfaction.GetFaction();
                             if (faction != null)
                             {
                                 amount = faction.money.GetGold32();
@@ -338,13 +347,13 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.RawFood_Group:
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
-                    return needMore(CityResoureIndex.rawFood);
+                    return needMore(CityResourceIndex.rawFood);
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
-                    return needMore(CityResoureIndex.wood);
+                    return needMore(CityResourceIndex.wood);
 
                 case ItemResourceType.NONE:
                     return false;
@@ -437,7 +446,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             if (Ref.peRnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
-                GetPlayer().IsBot())
+                pfaction.GetPlayer().IsBot())
             {
                 if (DssRef.difficulty.resourceMultiplyDecrease)
                 {
@@ -472,7 +481,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, Money cost)
         {
-            var faction = GetFaction();
+            var faction = pfaction.GetFaction();
             ref Money money = ref faction.GetRefMoney(this);
             if (money.pay(cost * count, false, faction.player))
             {

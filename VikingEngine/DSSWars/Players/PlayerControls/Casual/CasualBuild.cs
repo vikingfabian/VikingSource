@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 content.Add(new RbTab(0.06f));
 
                 {
-                    bool canAfford = player.faction.hasGold(option.price, city);
+                    bool canAfford = player.pfaction.GetFaction().hasGold(option.price, city);
 
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>
                     {
@@ -378,7 +378,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     {
                         if (buildcount <= maxCount)
                         {
-                            bool canAfford = player.faction.hasGold(option.price * buildcount, city);
+                            bool canAfford = player.pfaction.GetFaction().hasGold(option.price * buildcount, city);
 
                             if (count + buildcount <= maxCount)
                             {
@@ -465,7 +465,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                HudLib.ResourceCost(content, ResourceType.Gold, option.price * buildPurchase.count, (int)player.faction.GetGold(city));
+                HudLib.ResourceCost(content, ResourceType.Gold, option.price * buildPurchase.count, (int)player.pfaction.GetFaction().GetGold(city));
 
                 content.newLine();
                 HudLib.BulletPoint(content);
@@ -589,7 +589,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         HudLib.BulletPoint(content);
                         content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(Money.CopperToGold * DssConst.Casual_Farm2TaxIncreasePercUnits_copp))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(Money.CopperToGold * DssConst.Casual_Farm2TaxIncreasePercUnits_copp))));
                         break;
 
                     case CasualBuildType.UnlockFarming3:
@@ -598,7 +598,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         HudLib.BulletPoint(content);
                         content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(Money.CopperToGold * DssConst.Casual_Farm3TaxIncreasePercUnits_copp))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(Money.CopperToGold * DssConst.Casual_Farm3TaxIncreasePercUnits_copp))));
                         break;
 
                 }

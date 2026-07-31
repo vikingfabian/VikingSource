@@ -6,6 +6,7 @@ using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
@@ -75,7 +76,7 @@ namespace VikingEngine.DSSWars.Players
                 new Vector2(MathHelper.PiOver2, Map.MapLayerManager.NormalCamAngle),
                 player.playerData.view.DrawAreaF.Width, player.playerData.view.DrawAreaF.Height);
             camera.FarPlane = 800;
-            camera.positionChaseLengthPercentage = 0.9f;
+            
             camera.FieldOfView = 20;
             camera.UseTerrainCollisions = false;
             camera.zoomChaseLengthPercentage = 0.5f;
@@ -94,11 +95,19 @@ namespace VikingEngine.DSSWars.Players
 
             rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.Height.DeepWaterHeight-1, Map.Settings.Height.MaxHeight +1);
 
+            refreshSetting();
+
             if (controllerMode)
             {
                 //controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
                 controllerPointer = new Image(SpriteName.cmdPointer, CursorCenterPos(), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
             }
+        }
+
+
+        public void refreshSetting()
+        {
+            camera.positionChaseLengthPercentage = Bound.Min(1f - Ref.gamesett.panSmoothing, 0.075f);
         }
 
         public Vector2 CursorCenterPos()
@@ -185,7 +194,12 @@ namespace VikingEngine.DSSWars.Players
 
             if (player.gameControls.input.PinAndPing.DownEvent)
             {
-                player.createPin();
+                var pin = player.createPin();
+
+                if (player.gameControls.input.inputSource.HasKeyBoard && Input.Keyboard.Ctrl)
+                {
+                    pin.setInteractLevel(Network.NetInteractLevel.Public);
+                }
             }
 
         }
@@ -195,7 +209,7 @@ namespace VikingEngine.DSSWars.Players
             if (onNewTile)
             {
                 var newCity = DssRef.world.tileGrid.Get(tilePosition).City();
-                if (newCity != selection.obj && newCity.factionIndex == player.faction.myIndex)
+                if (newCity != selection.obj && newCity.pfaction == player.pfaction)
                 {
                     selection.obj = newCity;
                     player.hud.needRefresh = true;
@@ -343,7 +357,7 @@ namespace VikingEngine.DSSWars.Players
 
                                 if (rectangleBound.vectorRect.SideLength() > 1f)
                                 {
-                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction.myIndex);
+                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.pfaction);
 
                                     if (Input.Keyboard.Ctrl)
                                     {
@@ -352,7 +366,7 @@ namespace VikingEngine.DSSWars.Players
 
                                     if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
                                     {
-                                        hover.obj = new ArmyCollection(player.faction);
+                                        hover.obj = new ArmyCollection(player.pfaction);
                                     }
 
                                     for (int i = nearMapObjects.Count - 1; i >= 0; i--)
@@ -376,11 +390,11 @@ namespace VikingEngine.DSSWars.Players
                         case MapDetailLayerType.UnitDetail1:
                             {
                                 var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearGroups_Rectangle(
-                                    WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction, rectangleBound);
+                                    WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.pfaction, rectangleBound);
 
                                 if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.DetailCollection)
                                 {
-                                    hover.obj = new DetailObjectCollection(player.faction);
+                                    hover.obj = new DetailObjectCollection(player.pfaction);
                                 }
 
                                 hover.obj.GetDetailCollection().set(nearDetailUnits);
@@ -457,7 +471,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void selectCollection(List<SoldierGroup> coll)
         {
-            var collObj = new DetailObjectCollection(player.faction); //TODO if (coll.objects.Count == 1)
+            var collObj = new DetailObjectCollection(player.pfaction); //TODO if (coll.objects.Count == 1)
             collObj.set(coll);
             selection.obj = collObj;
             player.gameControls.soldier = new SoldierControls(coll);
@@ -640,12 +654,12 @@ namespace VikingEngine.DSSWars.Players
                 var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
                 foreach (var m in nearMapObjects)
                 {
-                    if (m.rayCollision(ray))
+                    if (m != null && m.rayCollision(ray))
                     {
                         intersectObj = m;
 
                         if (
-                            (m.factionIndex == player.faction.myIndex && m.gameobjectType() == GameObjectType.Army) ||
+                            (m.pfaction == player.pfaction && m.gameobjectType() == GameObjectType.Army) ||
                             lookingForAttackTarget()
                             )
                         {
@@ -695,14 +709,14 @@ namespace VikingEngine.DSSWars.Players
             foreach (AbsMapObject m in nearMapObjects)
             {
                 var dist = VectorExt.PlaneXZLength(m.position - pointerPosWP);
-                bool enemy = m.factionIndex != player.faction.myIndex;
+                bool enemy = m.pfaction != player.pfaction;
                 float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
                 if (dist <= maxDistance)
                 {
                     if (dist < closest ||
                         (
-                            closestObj.factionIndex != player.faction.myIndex &&
+                            closestObj.pfaction != player.pfaction &&
                             dist < closest + FriendlyPriorityDistAdd &&
                             !lookingForAttackTarget()
                         )
@@ -745,14 +759,14 @@ namespace VikingEngine.DSSWars.Players
                 foreach (var m in nearMapObjects)
                 {
                     var dist= VectorExt.PlaneXZLength(m.position - pointerPosWP);
-                    bool enemy = m.factionIndex != player.faction.myIndex;
+                    bool enemy = m.pfaction != player.pfaction;
                     float maxDistance = enemy ? maxDistance_enemy : maxDistance_friend;
 
                     if (dist <= maxDistance)
                     {
                         if (dist < closest || 
                             (
-                                closestObj.factionIndex != player.faction.myIndex && 
+                                closestObj.pfaction != player.pfaction  && 
                                 dist < closest + FriendlyPriorityDistAdd && 
                                 !lookingForAttackTarget()
                             )
@@ -782,18 +796,30 @@ namespace VikingEngine.DSSWars.Players
         }
         public bool armyMayAttackHoverObj()
         {
-            if (hover.obj != null)
-            {
-                if (hover.obj.gameobjectType() == GameObjectType.City &&
-                    hover.obj.GetCity().cityType == CityType.UnClaimed)
-                {
-                    return false;
-                }
-                return hover.obj.GetFaction() != player.faction;
+            return player.mayAttackObj(hover.obj as AbsMapObject);
+            //if (hover.obj != null)
+            //{
+            //    switch (hover.obj.gameobjectType())
+            //    {
+            //        case GameObjectType.City:
+            //            if (hover.obj.GetCity().cityType == CityType.UnClaimed)
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        case GameObjectType.LocationPin:
+            //            return false;
+            //    }
+            //    //if (hover.obj.gameobjectType() == GameObjectType.City &&
+            //    //    hover.obj.GetCity().cityType == CityType.UnClaimed)
+            //    //{
+            //    //    return false;
+            //    //}
+            //    return hover.obj.pfaction.GetFaction() != player.pfaction.GetFaction();
 
-            }
+            //}
 
-            return false;
+            //return false;
         }
 
 
@@ -816,7 +842,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bound.Radius = DssVar.Worker_StandardBoundRadius;
-            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_Workers(tilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
+            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_PlusWorkers(tilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
             foreach (var m in nearMapObjects)
             {
                 switch (m.gameobjectType())
@@ -878,14 +904,14 @@ namespace VikingEngine.DSSWars.Players
             {
                 case SelectTileResult.Conscript:
                     {
-                        player.cityTab = Interface.MenuTab.Conscript;
+                        player.cityTab = MenuTab.Conscript;
                         selectedSubTile.city.selectedConscript = selectedSubTile.city.conscriptIxFromSubTile(selectedSubTile.subTilePos);
 
                     }
                     break;
                 case SelectTileResult.Wall:
                     {
-                        player.cityTab = Interface.MenuTab.Defence;
+                        player.cityTab = MenuTab.Defence;
                         selectedSubTile.city.selectedDefenceBuilding = selectedSubTile.city.defenceIxFromSubTile(selectedSubTile.subTilePos);
 
                     }
@@ -894,15 +920,15 @@ namespace VikingEngine.DSSWars.Players
                 case SelectTileResult.Postal:
                 case SelectTileResult.GoldDeliver:
                     {
-                        player.cityTab = Interface.MenuTab.Delivery;
+                        player.cityTab = MenuTab.Delivery;
                         selectedSubTile.city.selectedDelivery = selectedSubTile.city.deliveryIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;
 
                 case SelectTileResult.School:
                     {
-                        player.cityTab = Interface.MenuTab.Progress;
-                        player.progressSubTab = Interface.ProgressSubTab.Schools;
+                        player.cityTab = MenuTab.Progress;
+                        player.progressSubTab = ProgressSubTab.Schools;
                         selectedSubTile.city.selectedSchool = selectedSubTile.city.SchoolIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;
@@ -910,15 +936,15 @@ namespace VikingEngine.DSSWars.Players
                 case SelectTileResult.ResearchCenter:
                 case SelectTileResult.BookPress:
                     {
-                        player.cityTab = Interface.MenuTab.Progress;
-                        player.progressSubTab = Interface.ProgressSubTab.Research;
+                        player.cityTab = MenuTab.Progress;
+                        player.progressSubTab = ProgressSubTab.Research;
                         selectedSubTile.city.selectedResearchBuilding = selectedSubTile.city.ResearchIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;
 
                 case SelectTileResult.CessPit:
                     {
-                        player.cityTab = Interface.MenuTab.CessPit;
+                        player.cityTab = MenuTab.CessPit;
                         selectedSubTile.city.selectedCessPit = selectedSubTile.city.cesspitIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;
@@ -1002,7 +1028,7 @@ namespace VikingEngine.DSSWars.Players
 
         void checkSelectionAlive()
         {
-            if (selection.obj != null && selection.obj.aliveAndBelongTo(player.faction) == false && !DssRef.difficulty.GodPowers())
+            if (selection.obj != null && selection.obj.aliveAndBelongTo(player.pfaction) == false && !DssRef.difficulty.GodPowers())
             { 
                 player.gameControls.clearSelection();
             }
@@ -1069,7 +1095,7 @@ namespace VikingEngine.DSSWars.Players
                 float zdiff = targetZoom - camera.CurrentZoom;
                 if (Math.Abs(zdiff) > 2)
                 {
-                    camera.CurrentZoom += zdiff * 0.4f / Ref.UpdateTimes60FPS;
+                    camera.CurrentZoom += zdiff * (1f - Ref.gamesett.zoomSmoothing)/*0.4f*/ / Ref.UpdateTimes60FPS;
                 }
                 else
                 {
@@ -1083,7 +1109,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         var mousePosition2 = screenPosToWorldPos(player.gameControls.input.mouse.Position);
                         Vector3 diff = mousePosition2 - pointerPosWP;
-                        panCamera(VectorExt.V3XZtoV2( -diff), true);
+                        panCamera(VectorExt.V3XZtoV2( -diff), true, false);
                     }
                 }
             }
@@ -1100,7 +1126,7 @@ namespace VikingEngine.DSSWars.Players
         float? targetRotation = null;
         void rotateCameraInput()
         {
-            const float XBuffer = 0.6f;
+            //const float XBuffer = 0.6f;
             const float RotationSpeed = 0.00006f;
             const float TargetRotationSpeed = 0.005f;
 
@@ -1248,7 +1274,7 @@ namespace VikingEngine.DSSWars.Players
             //Debug.Log("---");
             //Debug.Log(player.gameControls.input.move.direction.ToString());
             //Debug.Log(player.gameControls.input.moveCursor.direction.ToString());
-            panCamera(movePanLength, true);
+            panCamera(movePanLength, true, true);
         }
 
         void mousePanInput()
@@ -1271,7 +1297,7 @@ namespace VikingEngine.DSSWars.Players
 
                     Vector3 diff = pointerPosWP - prevMousePosition;
 
-                    panCamera(VectorExt.V3XZtoV2(-diff), false);
+                    panCamera(VectorExt.V3XZtoV2(-diff), false, false);
 
                     return;
                 }
@@ -1282,7 +1308,7 @@ namespace VikingEngine.DSSWars.Players
                         player.gameControls.input.mouse.HasEdgePush())
                     {
                         var speed = PanSpeed();
-                        panCamera(player.gameControls.input.mouse.EdgePush(Ref.DeltaTimeMs * speed, speed), true);
+                        panCamera(player.gameControls.input.mouse.EdgePush(Ref.DeltaTimeMs * speed, speed), true, false);
 
                     }
                 //}
@@ -1301,8 +1327,8 @@ namespace VikingEngine.DSSWars.Players
                 
                 goal.Y = 0;
                 goal.Z += 0.5f;
-                Vector3 diff = goal - camera.LookTarget;
-                diff.Y = 0;
+                Vector2 diff = new Vector2(goal.X - camera.LookTarget.X, goal.Z - camera.LookTarget.Z) ;
+                
                 if (VectorExt.HasValue(diff))
                 {
                     float panSpeed = 0.003f * Ref.DeltaTimeMs * camera.targetZoom;
@@ -1315,14 +1341,15 @@ namespace VikingEngine.DSSWars.Players
                     {
                         
                         diff.Normalize();
-                        Vector3 move = diff * panSpeed;
+                        Vector2 move = diff * panSpeed;
                         if (!Debug.CorruptValue(move))
                         {
-                            camera.LookTarget += move;
+                            camera.MoveLookTargetXZ(move);
                         }
                     }
                     
                     playerPointerPos = camera.LookTarget;
+                   // onPan();
                 } 
             }
         }
@@ -1334,7 +1361,7 @@ namespace VikingEngine.DSSWars.Players
 
 
 
-        void panCamera(Vector2 pan, bool followCamRotation)
+        void panCamera(Vector2 pan, bool followCamRotation, bool keyInput)
         {
             //pan.Y = 0;
             if (VectorExt.HasValue(pan))
@@ -1344,8 +1371,17 @@ namespace VikingEngine.DSSWars.Players
                     pan = VectorExt.RotateVector(pan, camera.Tilt.X - CamStartRotation);
                 }
 
-                camera.MoveLookTargetXZ(pan);
-                onPan();
+                if (keyInput)
+                {
+                    camera.MoveGoalLookTargetXZ(pan);
+                    onPan();
+                }
+                else
+                {
+                    camera.MoveLookTargetXZ(pan);
+                    onPan();
+                }
+                
             }
         }
 
@@ -1396,20 +1432,23 @@ namespace VikingEngine.DSSWars.Players
         {
 
 
-            Vector3 camTarget = playerPointerPos;
-            camTarget.Y = 0.1f;
+            //Vector3 camTarget = playerPointerPos;
+            //camTarget.Y = 0.1f;
 
-            if ((camTarget - camera.LookTarget).Length() < 0.5f)
-            {
-                camera.LookTarget = camTarget;
-            }
-            else
-            {
-                camera.GoalLookTarget = camTarget;
-            }
+            //if ((camTarget - camera.LookTarget).Length() < 0.5f)
+            //{
+            //    camera.LookTarget = camTarget;
+            //}
+            //else
+            //{
+            //    camera.GoalLookTarget = camTarget;
+            //}
             camera.Time_Update(Ref.DeltaTimeMs);
+            //if (cameraFocus != null)
+            //{
+            //    onPan();
+            //}
 
-            
         }
 
         public GameObjectType SelectionType

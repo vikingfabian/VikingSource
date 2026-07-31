@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.Data;
 
-namespace VikingEngine.DSSWars
+namespace VikingEngine.DSSWars.Event
 {
     class GameTime
     {

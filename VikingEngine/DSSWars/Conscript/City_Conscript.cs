@@ -71,10 +71,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 else
                                 {
+                                    
                                     status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
 
-                                    if (allCollected &&
-                                        (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= totalMen))
+                                    if (allCollected)
                                     {
                                         if (status.CountDownQue())
                                         {
@@ -82,6 +82,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
                                         }
                                     }
+                                    
                                 }
                                 break;
 
@@ -93,7 +94,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     resetActive(ref status);
 
-                                    if (GetPlayer().IsLocalPlayer())
+                                    if (pfaction.TryGetLocalPlayer(out _))//.GetPlayer().IsLocalPlayer())
                                     {
                                         if (status.inProgress.specialization == SpecializationType.CityGuard)
                                         {
@@ -432,7 +433,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (army == null)
                 {
-                    army = GetFaction().NewArmy(recruitToTile);
+                    army = pfaction.GetFaction().NewArmy(recruitToTile);
                 }
             }
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
@@ -514,7 +515,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (army == null)
             {
-                army = GetFaction().NewArmy(recruitToTile);
+                army = pfaction.GetFaction().NewArmy(recruitToTile);
             }
 
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()

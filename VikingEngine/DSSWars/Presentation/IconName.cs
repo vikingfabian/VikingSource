@@ -57,11 +57,15 @@ namespace VikingEngine.DSSWars
                     icon = SpriteName.WarsRelationTruce;
                     name = DssRef.lang.Diplomacy_RelationType_Truce;
                     break;
-                case RelationType.RelationTypeN3_War:
+                case RelationType.RelationTypeN3_Mobilization:
+                    icon = SpriteName.WarsRelationMobilizing;
+                    name = DssRef.lang.Diplomacy_RelationType_Mobilizing;
+                    break;
+                case RelationType.RelationTypeN4_War:
                     icon = SpriteName.WarsRelationWar;
                     name = DssRef.lang.Diplomacy_RelationType_War;
                     break;
-                case RelationType.RelationTypeN4_TotalWar:
+                case RelationType.RelationTypeN5_TotalWar:
                     icon = SpriteName.WarsRelationTotalWar;
                     name = DssRef.lang.Diplomacy_RelationType_TotalWar;
                     break;
@@ -1812,19 +1816,19 @@ namespace VikingEngine.DSSWars
                             break;
 
                         case TerrainDecorType.DiplomaticStatue_ThumbsUpWest:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_DiplomaticStatue);
                             break;
                         case TerrainDecorType.DiplomaticStatue_ThumbsUpEast:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_DiplomaticStatue);
                             break;
                         case TerrainDecorType.DiplomaticStatue_InsultWest:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_DiplomaticStatue);
                             break;
                         case TerrainDecorType.DiplomaticStatue_InsultEast:
-                            name = string.Format(DssRef.lang.VariantType_D, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_DiplomaticStatue);
                             break;
                         case TerrainDecorType.DiplomaticStatue_GoldenPoop:
-                            name = string.Format(DssRef.lang.VariantType_E, DssRef.todoLang.DecorType_DiplomaticStatue);
+                            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_DiplomaticStatue);
                             break;
 
                         case TerrainDecorType.FlagPole_LongBanner:

@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Interface
         public CityTagMap(LocalPlayer player)
         {
             this.player = player;
-            armiesC = player.faction.armies.counter();
+            armiesC = player.pfaction.GetFaction().armies.counter();
             cityTags = new List<CityTagMapMember>(8);
         }
 
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Interface
             if (player.cityHudSettings.ViewAnyOnMap())
             {
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+                while (citiesC.Next(ref player.pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                 {
                     if (citySel.Tag.backType != Data.CityTagBack.NONE &&
                         citySel.inRender_overviewLayer)

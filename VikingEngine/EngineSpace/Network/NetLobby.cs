@@ -70,16 +70,23 @@ namespace VikingEngine.Network
 #if PCGAME
             if (Ref.steam.isNetworkInitialized)
             {
-                if (Ref.p2p.IsHostingSession)
+                if (Ref.netsett.hostNetwork)
                 {
-                    state = NetLobbyState.LockedInSession;
+                    if (Ref.p2p.IsHostingSession)
+                    {
+                        state = NetLobbyState.LockedInSession;
+                    }
+                    else
+                    {
+                        state = NetLobbyState.CreatingSession;
+                        createLobbyFailTime = new Time(8, TimeUnit.Seconds);
+
+                        Ref.steam.P2PManager.CreateSession();//.LobbyMatchmaker.CreateLobbyIfNotInOne();
+                    }
                 }
                 else
                 {
-                    state = NetLobbyState.CreatingSession;
-                    createLobbyFailTime = new Time(8, TimeUnit.Seconds);
-
-                    Ref.steam.P2PManager.CreateSession();//.LobbyMatchmaker.CreateLobbyIfNotInOne();
+                    Ref.steamlobby.LeaveCurrentLobby();
                 }
             }
 #endif

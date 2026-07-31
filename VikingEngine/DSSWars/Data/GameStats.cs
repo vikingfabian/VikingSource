@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.Data
@@ -33,6 +34,8 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt language_brazilian_portuguese = new StatsInt("language_brazilian_portuguese");
         public StatsInt language_italian = new StatsInt("language_italian");
         public StatsInt language_korean = new StatsInt("language_korean");
+        public StatsInt language_polish = new StatsInt("language_polish");
+        public StatsInt language_thai = new StatsInt("language_thai");
 
         public StatsInt blueScreen = new StatsInt("bluescreen");
         public StatsInt startTutorial = new StatsInt("start_tutorial");
@@ -75,12 +78,25 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt start_voxeleditor = new StatsInt("start_voxeleditor");
         public StatsInt start_mapgenerator = new StatsInt("start_mapgenerator");
         public StatsInt start_character_creator = new StatsInt("start_character_creator");
-
         public StatsInt start_battle_lab = new StatsInt("start_battle_lab");
         public StatsInt battle_lab_newbattle = new StatsInt("battle_lab_newbattle");
         public StatsInt start_commander = new StatsInt("start_commander");
         public StatsInt commander_won = new StatsInt("commander_won");
         public StatsInt commander_lost = new StatsInt("commander_lost");
+
+        public StatsInt startHostingMultiplayer_2 = new StatsInt("startHostingMultiplayer_2");
+        public StatsInt startHostingMultiplayer_3 = new StatsInt("startHostingMultiplayer_3");
+        public StatsInt startHostingMultiplayer_4 = new StatsInt("startHostingMultiplayer_4");
+        public StatsInt startHostingMultiplayer_10 = new StatsInt("startHostingMultiplayer_10");
+
+        public StatsInt joinMultiplayer = new StatsInt("joinMultiplayer");
+        public StatsInt playerToPlayerAlly = new StatsInt("playerToPlayerAlly");
+        public StatsInt playerToPlayerWar = new StatsInt("playerToPlayerWar");
+
+        public StatsInt startMultiplayer_AllowPublic = new StatsInt("startMultiplayer_AllowPublic");
+        public StatsInt startMultiplayer_AllowPvp = new StatsInt("startMultiplayer_AllowPvp");
+        public StatsInt startMultiplayer_BlockPublic = new StatsInt("startMultiplayer_BlockPublic");
+        public StatsInt startMultiplayer_BlockPvp = new StatsInt("startMultiplayer_BlockPvp");
 
         public StatsInt won25perc = new StatsInt("won_25perc");
         public StatsInt won50perc = new StatsInt("won_50perc");
@@ -169,6 +185,9 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt Gifted_HindsightTactician = new StatsInt("Gifted_HindsightTactician");
         public StatsInt Gifted_Houseplant = new StatsInt("Gifted_Houseplant");
         public StatsInt Gifted_Sheep = new StatsInt("Gifted_Sheep");
+        public StatsInt Gifted_GlitchRider = new StatsInt("Gifted_GlitchRider");
+        public StatsInt Gifted_ChickenShit = new StatsInt("Gifted_ChickenShit");
+        public StatsInt Gifted_TheLeakyCanteen = new StatsInt("Gifted_TheLeakyCanteen");
 
         public GameStats()
         {
@@ -227,6 +246,20 @@ namespace VikingEngine.DSSWars.Data
 
                     startNewLocalMultiplayer,
 
+                    startHostingMultiplayer_2,
+                    startHostingMultiplayer_3,
+                    startHostingMultiplayer_4,
+                    startHostingMultiplayer_10,
+                    joinMultiplayer,
+                    playerToPlayerAlly,
+                    playerToPlayerWar,
+                    startMultiplayer_AllowPublic,
+                    startMultiplayer_AllowPvp,
+                    startMultiplayer_BlockPublic,
+                    startMultiplayer_BlockPvp,
+
+                    
+
                     start_voxeleditor,
                     start_mapgenerator,
                     start_character_creator,
@@ -281,6 +314,8 @@ namespace VikingEngine.DSSWars.Data
                     language_brazilian_portuguese,
                     language_italian,
                     language_korean,
+                    language_polish,
+                    language_thai,
 
                     Gifted_WhiteKnight,
                     Gifted_HeroComplexSaviorComplex,
@@ -573,6 +608,15 @@ namespace VikingEngine.DSSWars.Data
                     break;
                 case GiftedAchievementType.Sheep:
                     Gifted_Sheep.add(1);
+                    break;
+                case GiftedAchievementType.GlichRider:
+                    Gifted_GlitchRider.add(1);
+                    break;
+                case GiftedAchievementType.ChickenShit:
+                    Gifted_ChickenShit.add(1);
+                    break;
+                case GiftedAchievementType.TheLeakyCanteen:
+                    Gifted_TheLeakyCanteen.add(1);
                     break;
                 case GiftedAchievementType.NUM:
                 default:

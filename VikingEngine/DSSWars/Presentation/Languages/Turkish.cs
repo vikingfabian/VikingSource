@@ -12,6 +12,174 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+        //Multiplayer update
+        
+
+        //--
+        public override string Unlock_PublicGames => "herkese açık oyunlar";
+        public override string UnlockPublic_Warning1 => "Yabancılarla oynama";
+        public override string UnlockPublic_Warning2 => "Oyunun hileye veya trollere karşı hiçbir koruması yoktur";
+        public override string Unlock_WarningBadExperience => "Kötü bir deneyim yaşayacaksın";
+        public override string Hud_Accept => "Kabul et";
+        public override string Hud_Block => "Engelle";
+        public override string Hud_Deny => "Reddet";
+        public override string Hud_Reason => "Sebep";
+        public override string Hud_Full => "Dolu";
+        public override string Hud_Version => "Sürüm";
+        public override string Unlock_PlayerVersusPlayer => "oyuncu oyuncuya karşı (PvP)";
+        public override string UnlockPvp_Warning1 => "DSS rekabetçi maçlar için tasarlanmamıştır";
+        public override string UnlockPvp_Warning2 => "Dengeleme yoktur, maçlar adil olmayacaktır";
+        public override string PlayerJoinHistoryTitle => "Oyuncu katılım geçmişi";
+        public override string BlockedPlayersTitle => "Engellenen oyuncular";
+        public override string ClickToRemoveBan => "Tıkla: banı kaldır";
+        public override string HostSettingsTitle => "Host ayarları";
+        public override string MaxPlayerCount => "Maks. oyuncu sayısı";
+        public override string DistanceBetweenPlayers => "Oyuncular arası mesafe";
+        public override string AllowHandicap => "Handikaba izin ver";
+        public override string AllowCasualControls => "Basitleştirilmiş kontrollere izin ver";
+        public override string AutoRecolorPlayerFlags => "Oyuncu bayraklarını oto. renklendir";
+        public override string DefaultDiplomacy => "Varsayılan diplomasi";
+        public override string ClientSettingsTitle => "Client (İstemci) ayarları";
+        public override string UseHandicap => "Handikap kullan";
+        public override string DifficultyDescription_BotAggression => "Bot agresifliği";
+        public override string Hud_GetExtraX => "Ekstra {0}";
+        public override string Hud_Hide => "Gizle";
+        public override string Hud_ModelType => "Model";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}: {1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "Kaynak boost'u";
+        //public override string TaxIncome => "Vergi geliri";
+        public override string PlayerInteractionTitle => "Oyuncu etkileşimi";
+        public override string DefaultPeaceful => "Varsayılan: Barışçıl";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "Varsayılan: İsteğe bağlı Co-op";
+        public override string DefaultHardcore => "Varsayılan: Hardcore";
+        public override string GeneralTitle => "Genel";
+
+        public override string InputButton_Hold => "Basılı tut";
+        public override string InputButton_Toggle => "Aç-kapat (Toggle)";
+        public override string VoiceOptAlwaysOn => "Her zaman açık";
+        public override string VoiceTitle => "Ses";
+        public override string VoiceMute => "Sustur (Mute)";
+        public override string GiftOptAllow => "İzin ver";
+        public override string GiftOptFriendsOnly => "Sadece arkadaşlar";
+        public override string GiftOptBlocked => "Engellendi";
+        public override string ReceiveAchievementsTitle => "Başarımları al";
+        public override string GiftWarning => "Uyarı! Hediye edilen başarımlar (achievements) aşağılayıcı hissettirebilir";
+        public override string FullReset => "Tam sıfırlama (Full reset)";
+        public override string AllowAllianceTitle => "İttifaka izin ver";
+        public override string CanBreakAlliance => "İttifakı bozabilir";
+        public override string AllowWarTitle => "Savaşa izin ver";
+        public override string FairProtection => "Adil koruma";
+        public override string FairProtectionTooltip => "Korunan oyuncular kendi kurallarını sana karşı da uygulamak zorundadır";
+        public override string MustAsk => "İzin zorunlu";
+        public override string MustAskTooltip => "Savaşmak için her iki oyuncunun da onay vermesi gerekir";
+        public override string AllianceLimit => "İttifak limiti";
+        public override string AllianceLimitTooltip => "Daha büyük bir oyuncu ittifakı tarafından saldırıya uğrayamazsın";
+        public override string GameStartProtection => "Oyun başlangıcı koruması";
+        public override string Hud_Time_Minutes => "dakika";
+        public override string WarPreparationTime => "Savaş hazırlık süresi";
+        public override string WarPreparationTimeTooltip => "Savaş ilanı ile saldırıların yapılabileceği an arasındaki bekleme süresi";
+        public override string Hud_Allow => "İzin ver";
+        public override string Hud_Blocked => "Engellendi";
+
+        public override string Hud_DeleteAll => "Hepsini sil";
+        public override string DiplomacyPlayersChoice => "Oyuncuların seçimi";
+        public override string UnlockSureTitle => "Gerçekten ama gerçekten emin misin?";
+        public override string UnlockSureDescription => "Yetişkin gibi davranıp sonradan forumlarda ağlamayacaksın, değil mi?";
+
+
+
+        public override string Network_PlayOffline => "Çevrimdışı oyna";
+        public override string JoinPermission_Title => "Katılma İzinleri";
+        public override string JoinPermission_Private => "Gizli";
+        public override string JoinPermission_FriendsOnly => "Sadece arkadaşlar";
+        public override string JoinPermission_Public => "Herkese açık";
+
+        public override string Network_Join => "Oyuna katıl";
+        public override string Network_ConnectingToGame => "Bağlanıyor...";
+        public override string Lobby_Category_MultiplayerSettings => "Çok oyunculu (Multiplayer) ayarları";
+
+        public override string Hud_Default => "Varsayılan";
+        public override string Group_Team => "takım";
+        public override string Group_Everyone => "herkes";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "Diplomasi heykeli";
+
+        public override string Message => "Mesaj";
+        public override string ObjectType_LocationPin => "Konum işareti (Pin)";
+        public override string ObjectType_LocationPin_Share => "Paylaş ve ping at";
+        public override string ObjectType_LocationPin_Ping => "Ping!";
+        public override string InputActionName_TextChat => "Yazılı sohbet";
+        public override string InputActionName_TextChatLog => "Sohbet geçmişi";
+        public override string InputActionName_VoiceChat => "Sesli sohbet";
+        public override string InputActionName_NextPin => "Sonraki pin";
+        public override string InputActionName_PinAndPing => "Pin ekle";
+
+        public override string Leaderboards_ArmySize => "Tek bir ordunun büyüklüğü (güç bazında)";
+        public override string Leaderboards_MultiplayerPlayerCount => "Host edilen oyuncu sayısı";
+
+        public override string Multiplayer_BanWarning => "ban uyarısı";
+        public override string Multiplayer_SentToHost => "Host'a gönderilecek";
+        public override string Multiplayer_AddToOwnBlocks => "Kendi engellenenler listene ekle";
+
+        public override string Multiplayer_Message_RequestSent => "İstek gönderildi";
+
+        public override string Multiplayer_BlockPlayer => "Oyuncuyu engelle";
+        public override string Multiplayer_NetSession => "Ağ oturumu";
+        public override string GiftedAchievements => "Hediye edilen başarımlar";
+        public override string GiftedAchievements_Description => "Arkadaşlarının kötü davranışlarını ödüllendir";
+
+        public override string Multiplayer_Title => "Multiplayer";
+        public override string Multiplayer_Lobby => "Multiplayer lobisi";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. Host bir oyun başlatır";
+        public override string Multiplayer_Tutorial_JoinButton => "2. Katıl butonu burada görünecektir";
+        public override string Multiplayer_Tutorial_Visible => "Host'un Steam profili görünür olmalıdır";
+
+        public override string Multiplayer_KickPlayer => "Oyuncuyu kickle (At)";
+        public override string Multiplayer_RequestBlockPlayer => "İstek: Oyuncuyu engelle";
+        public override string Multiplayer_HandoverComplete => "Devir işlemi tamamlandı";
+        public override string Multiplayer_LoadingClientSave => "Client (istemci) kaydı yükleniyor";
+        public override string Multiplayer_ClientSaveComplete => "Client kaydı tamamlandı";
+        public override string Multiplayer_BadActor => "Toksik oyuncu";
+        public override string Multiplayer_NetworkError => "Ağ hatası";
+        public override string Multiplayer_Sender => "Gönderen";
+        public override string Multiplayer_Receiver => "Alıcı";
+        public override string Multiplayer_PlayerJoined => "Oyuncu katıldı";
+        public override string Multiplayer_PlayerLeft => "Oyuncu ayrıldı";
+        public override string Multiplayer_RequestingClientGamestates => "Client oyun durumları isteniyor...";
+        public override string Multiplayer_TextChat => "Yazılı sohbet";
+        public override string Multiplayer_VoiceChat => "Sesli sohbet";
+        public override string Steam_UserProfile => "Kullanıcı profili";
+        public override string Steam_OpenSteamOverlay => "Steam arayüzünü (overlay) aç";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "Seferberlik";
+        public override string Diplomacy_OfferRelation => "İlişki teklif et";
+        public override string Diplomacy_OfferRelation_Declined => "Teklif edilen ilişki reddedildi";
+        public override string Diplomacy_SendGold => "Altın gönder";
+        public override string Diplomacy_GiftToPlayer => "Oyuncuya hediye";
+        public override string Diplomacy_RecievedGift => "Hediye alındı";
+        public override string Diplomacy_OnAccept => "Eğer diğer oyuncu kabul ederse:";
+        public override string Diplomacy_WarPreparationTime => "Savaş hazırlık süresi";
+
+        public override string Diplomacy_AboveSoftCap => "Soft cap'in üzerinde";
+        public override string Diplomacy_BelowSoftCap => "Soft cap'in altında";
+        public override string Diplomacy_OpenPlayerToPlayer => "Oyuncular arası diplomasiyi aç";
+
         //Post mount update
         public override string StockPile_ItemsAreNotLost => "Depo sınırını aşarsanız eşyalar yok olmaz!";
         public override string SlaughterResult_PerAnimal => "Hayvan başına kesim verimi";
@@ -1322,7 +1490,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => "Şunu gönder: {0}";
+        public override string Hud_SendX => "Şunu gönder: {0}";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1481,7 +1649,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "Firariler!";
         public override string EventMessage_DesertersText_Money => "Parası ödenmemiş askerler, ordundan firar ediyorlar";
 
-        public override string DifficultyDescription_AiAggression => "YZ agresifliği: {0}.";
+        //public override string DifficultyDescription_AiAggression => "YZ agresifliği: {0}.";
         public override string DifficultyDescription_BossSize => "Baş düşman gücü: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Baş düşmanın gelişine kalan süre: {0}.";
         public override string DifficultyDescription_AiEconomy => "YZ ekonomisi: %{0}.";
@@ -1858,9 +2026,9 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "Mesafe: {0}";
         public override string Delivery_DeliveryTimeX => "Teslimat süresi: {0}";
         public override string Delivery_SenderMinimumCap => "Gönderen minimum sınırı";
-        public override string Delivery_RecieverMaximumCap => "Alıcı maks sınırı";
+        public override string Delivery_ReceiverMaximumCap => "Alıcı maks sınırı";
         public override string Delivery_ItemsReady => "Eşyalar hazır";
-        public override string Delivery_RecieverReady => "Alıcı hazır";
+        public override string Delivery_ReceiverReady => "Alıcı hazır";
         public override string Hud_ThisCity => "Bu Şehir";
         public override string Hud_RecieveingCity => "Alıcı şehir";
 
@@ -1952,7 +2120,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "Sekme seç: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0} için önceliği arttır";
         public override string Tutorial_PlaceBuildOrder => "{0} için inşa emri ver";
-        public override string Tutorial_ZoomInput => "Yakınlaştır";
+        public override string ButtonAction_Zoom => "Yakınlaştır";
 
         public override string Tutorial_SelectACity => "Bir şehir seç";
         public override string Tutorial_ZoomInWorkers => "İşçileri görmek için yakınlaştır";
@@ -2056,13 +2224,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "Düz arazi";
         public override string LandType_Water => "Su";
         public override string BuildingType_Wall => "Sur";
-        public override string Delivery_AutoReciever_Description => "Kaynaklar, stoğu en az olan şehre gönderilir.";
+        public override string Delivery_AutoReceiver_Description => "Kaynaklar, stoğu en az olan şehre gönderilir.";
 
         public override string Hud_On => "Açık";
         public override string Hud_Off => "Kapalı";
 
-        public override string Hud_Time_Seconds => "{0} saniye";
-        public override string Hud_Time_Minutes => "{0} dakika";
+        public override string Hud_Time_XSeconds => "{0} saniye";
+        public override string Hud_Time_XMinutes => "{0} dakika";
         public override string Hud_Undo => "Geri al";
         public override string Hud_Redo => "Yinele";
 
@@ -3024,9 +3192,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// These symbols are needed to fit large numbers on the HUD,
         /// there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "c";
-        public override string EngineHud_SymbolFor1000 => "k";
-        public override string EngineHud_SymbolFor10000 => "10k";
+        public override string Language_SymbolFor100 => "c";
+        public override string Language_SymbolFor1000 => "k";
+        public override string Language_SymbolFor10000 => "10k";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress

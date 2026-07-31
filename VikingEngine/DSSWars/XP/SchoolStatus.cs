@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.XP
     struct SchoolStatus
     {
         public const ExperienceLevel MaxLevel = ExperienceLevel.Expert_3;
-        public const int MaxQue = 4;
+        public const int MaxQue = 5;
 
         public WorkExperienceType learnExperience;
         public ExperienceLevel toLevel;

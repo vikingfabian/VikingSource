@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Players
@@ -14,21 +16,44 @@ namespace VikingEngine.DSSWars.Players
         public bool local;
         public int localScreenIndex;
         public ulong id;
-        public int faction;
+        public PFaction pfaction;
+        public TimeSpan timePlayed;
+        public Color? recolor;
 
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(local);
             w.Write((byte)localScreenIndex);
             w.Write(id);
-            w.Write((ushort)faction);
+            //w.Write((ushort)faction);
+            pfaction.write(w);
+            w.Write((int)timePlayed.TotalSeconds);
+
+            w.Write(recolor.HasValue);
+            if (recolor.HasValue) 
+            { 
+                StreamLib.WriteColorStream_3B(w, recolor.Value);
+            }
         }
         public void read(System.IO.BinaryReader r, int subVersion)
         {
             local = r.ReadBoolean();
             localScreenIndex = r.ReadByte();
             id = r.ReadUInt64();
-            faction = r.ReadUInt16();
+            pfaction.read(r); //= r.ReadUInt16();
+            timePlayed = TimeSpan.FromSeconds(r.ReadInt32());
+
+            if (subVersion >= 118)
+            {
+                if (r.ReadBoolean())
+                {
+                    recolor = StreamLib.ReadColorStream_3B(r);
+                }
+                else
+                {
+                    recolor = null;
+                }
+            }
         }
 
         public override int GetHashCode()
@@ -48,7 +73,7 @@ namespace VikingEngine.DSSWars.Players
 
     partial class RemotePlayer
     {
-        static List<Army> netCollArmies = new List<Army>(16);
+        static List<AbsArmy> netCollArmies = new List<AbsArmy>(16);
 
         public const int OverviewSendChunkSize = 8;
         static HashSet<int> CitiesInView = new HashSet<int>();
@@ -65,7 +90,7 @@ namespace VikingEngine.DSSWars.Players
             remoteTileGrid = new Grid2D<RemoteTile>(DssRef.world.Size);
             fullMapSendPosition = new ForXYLoop(DssRef.world.Size);
             citiesRecieved = new bool[DssRef.world.cities.Count];
-            factionsRecieved = new bool[DssRef.world.factions.Count];
+            factionsRecieved = new bool[DssRef.world.factions.Array.Length];
         }
 
         public PlayerMapHistory GetMapHistory()
@@ -73,7 +98,9 @@ namespace VikingEngine.DSSWars.Players
             return new PlayerMapHistory()
             {
                 id = networkPeer.peer.fullId,
-                faction = assignedFaction,
+                pfaction = assignedFaction,
+                timePlayed = timePlayed,
+                recolor = profile.flag == null ? null : profile.flag.col0_Main,
             };
         }
 
@@ -96,11 +123,16 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else if (FactionsInView.Count > 0)
                 {
+                    PFaction faction = new PFaction(FactionsInView.First());
+
+                    DssRef.world.diplomacy.writeRelationsForClient(faction);
+                    
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
                     {
-                        DssRef.world.writeNet_Factions(w, FactionsInView);
+                        DssRef.world.writeNet_Factions(w, faction);
                     }
                     packet.EndWrite_Asynch();
+                                      
                 }
                 else if (CitiesInView.Count > 0)
                 {
@@ -119,7 +151,7 @@ namespace VikingEngine.DSSWars.Players
                     packet.EndWrite_Asynch();
                 }//TODO make sure owned cities are map ready
                 else if (Net_SendCityTiles_async())
-                { 
+                {
                     //no code
                 }
                 else
@@ -136,48 +168,69 @@ namespace VikingEngine.DSSWars.Players
 
             bool findMissingTile(out IntVector2 tilePos, bool isSubTile)
             {
-                Rectangle2 area;
+                Rectangle2 pass1area;
+                Rectangle2 pass2area;
+                int passCount;
 
                 if (isSubTile)
                 {
-                    area = playerCulling.enterArea;
+                    passCount = 1;
+                    pass1area = playerCulling.enterArea;
+                    pass2area = Rectangle2.ZeroOne;
                 }
                 else
                 {
-                    area = playerCulling.screenAreaRaw;
+                    
+                    pass2area = playerCulling.screenAreaRaw;
+                    if (pass2area.Height > 18)
+                    {
+                        passCount = 2;
+                        pass1area = Rectangle2.FromCenterTileAndRadius(pointer.lastTilePos, 9);
+                        pass1area.AddWidthRadius(2);
+                    }
+                    else
+                    {
+                        passCount = 1;
+                        pass1area = pass2area;
+                    }
                 }
 
-                
-                ForXYLoop loop = new ForXYLoop(area);
-                while (loop.Next())
+                for (int pass = 0; pass < passCount; pass++)
                 {
-                    if (remoteTileGrid.InBounds(loop.Position))
-                    {
-                        if (!remoteTileGrid.Get(loop.Position).HasTile(isSubTile))
-                        {
-                            tilePos = loop.Position;
-                            return true;
-                        }
-                        if (!isSubTile)
-                        {
-                            var tile = DssRef.world.tileGrid.Get(loop.Position);
-                            if (!citiesRecieved[tile.CityIndex])
-                            {
-                                CitiesInView.Add(tile.CityIndex);
-                            }
+                    Rectangle2 area = pass == 0 ? pass1area : pass2area;
 
-                            int faction = tile.City().factionIndex;
-                            if (faction >= 0 && DssRef.world.factions.Array[faction].player.IsLocal)
+                    ForXYLoop loop = new ForXYLoop(area);
+                    while (loop.Next())
+                    {
+                        if (remoteTileGrid.InBounds(loop.Position))
+                        {
+                            if (!remoteTileGrid.Get(loop.Position).HasTile(isSubTile))
                             {
-                                if (!factionsRecieved[faction])
+                                tilePos = loop.Position;
+                                return true;
+                            }
+                            if (!isSubTile)
+                            {
+                                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                                if (!citiesRecieved[tile.CityIndex])
                                 {
-                                    FactionsInView.Add(faction);
+                                    CitiesInView.Add(tile.CityIndex);
+                                }
+
+                                PFaction pfaction = tile.City().pfaction;
+                                if (pfaction.TryGetFaction(out var faction) && faction.player.IsLocal)
+                                {
+                                    if (!factionsRecieved[pfaction.factionIndex])
+                                    {
+                                        FactionsInView.Add(pfaction.factionIndex);
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
+                    
+                }
                 tilePos = IntVector2.NegativeOne;
                 return false;
             }
@@ -185,11 +238,11 @@ namespace VikingEngine.DSSWars.Players
 
         public bool Net_SendCityTiles_async()
         {
-            if (faction != null && faction.cities.Count > 0)
+            if (pfaction.GetFaction() != null && pfaction.GetFaction().cities.Count > 0)
             {
                 int chunkSize = 4;
 
-                int cityIx = faction.cities.GetRandom(Ref.rnd);
+                int cityIx = pfaction.GetFaction().cities.GetRandom(Ref.rnd);
                 var city = DssRef.world.cities[cityIx];
                 ForXYLoop loop = new ForXYLoop(city.cityTileArea);
                 while (loop.Next() && chunkSize > 0)
@@ -197,7 +250,7 @@ namespace VikingEngine.DSSWars.Players
                     var hasRecieved = remoteTileGrid.Get(loop.Position);
                     if (!hasRecieved.overview)
                     {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, Network.SendPacketTo.Ready, 0, out var packet);
                         {
                             DssRef.world.writeNet_Tile(w, loop.Position);
                         }
@@ -207,7 +260,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (!hasRecieved.detail)
                     {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, Network.SendPacketTo.Ready, 0, out var packet);
                         {
 #if DEBUG
                             if (w.BaseStream.Length > 6)
@@ -279,9 +332,9 @@ namespace VikingEngine.DSSWars.Players
 
                 foreach (Army army in netCollArmies)
                 {
-                    if (army.IsNetHosted && army.lastNetUpdate.secPassed(waitSeconds))
+                    if (army.IsNetHosted &&  army.lastNetUpdate.secPassed(army.inBattle? 1 : waitSeconds))
                     {
-                        Army.NetFullArmyStatus(army, Network.PacketReliability.Unrelyable);
+                        Army.NetFullArmyStatus(army, Network.PacketReliability.Unrelyable, false);
                     }
                 }
             }
@@ -314,10 +367,11 @@ namespace VikingEngine.DSSWars.Players
     struct RemoteTile
     {
         public bool overview, detail;
+        public GameTimeStamp detailTimeStamp;
 
         public bool HasTile(bool isSubTile)
         { 
-            return isSubTile? detail : overview;
+            return isSubTile? (detail && detailTimeStamp.HasTime()) : overview;
         }
     }
 }

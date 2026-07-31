@@ -1,23 +1,22 @@
 
-## MULTIPLAYER UPDATE ##
-* 
+Change log:
+* Animal habitats on heatmap, and tab names
+* Rebalanced animal placement
+* compressed headbar Ui
+* improved pony model
+
+Performance
+* Removed all unessesary faction references
+* Removed refences from the aria unit grid
+
+
 
 KNOWN ISSUES
-X save doesn't work 
-X most settings have no effect yet
-X lobbies can get stuck 
-X sending resources don't work 
-X remote cities have wonky workers
-X old saved will have some bot flag color drifting
-
-X host button doublette 
 
 ##ICONS TODO
 * gray rounded button
-* gold frames
-* network icon
-* pin
-
+* mobilizing
+* join game icon
 
 #MOUNTED TODO
 * 

@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void addToRender_flag()
         {
-            if (faction.player.profile.flag != null)
+            if (faction.player != null && faction.player.profile.flag != null)
             {
                 model = faction.AutoLoadModelInstance_batched(
                     LootFest.VoxelModelName.wars_flag, scale);

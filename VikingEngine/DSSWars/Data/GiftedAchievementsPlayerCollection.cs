@@ -7,7 +7,6 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.Data
 {
@@ -16,6 +15,25 @@ namespace VikingEngine.DSSWars.Data
         public ulong sender;
         public GiftedAchievementType type;
         public TimeInGameCountdown time;
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(sender);
+            w.Write((byte)type);
+            time.writeGameState(w);
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            sender = r.ReadUInt64();
+            type = (GiftedAchievementType)r.ReadByte();
+            time.readGameState(r, true);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(sender, type);
+        }
     }
 
     struct GiftedAchievementsPlayerCollection
@@ -105,6 +123,51 @@ namespace VikingEngine.DSSWars.Data
             }
 
             return result;
+        }
+
+        public void writeNetStatus(System.IO.BinaryWriter w)
+        {
+            if (recieved != null)
+            {
+                foreach (var m in recieved)
+                {
+                    if (!m.time.TimeOut())
+                    {
+                        w.Write(true);
+
+                        m.write(w);
+                    }
+                }
+            }
+            w.Write(false);
+        }
+
+        public void readNetStatus(System.IO.BinaryReader r)
+        {
+            HashSet<int> alreadyContains = new HashSet<int>();
+
+            if (recieved == null)
+            {
+                recieved = new List<GiftedAchievementsTypeAndTime>();
+            }
+            else
+            {
+                foreach (var m in recieved)
+                {
+                    alreadyContains.Add(m.GetHashCode());
+                }
+            }
+
+            while (r.ReadBoolean())
+            {
+                GiftedAchievementsTypeAndTime gifted = new GiftedAchievementsTypeAndTime();
+                gifted.read(r);
+                if (!alreadyContains.Contains(gifted.GetHashCode()))
+                {
+                    recieved.Add(gifted);
+                }
+            }
+            
         }
     }
 }

@@ -43,8 +43,9 @@ namespace VikingEngine.DSSWars.Data
         public bool generateNewMaps = true;
 
         public MapSettingsStorage mapSettings = MapSettingsStorage.Default;
-        public MetaProgression metaProgression = new MetaProgression(); 
-        public GameRuleset gameRuleset = new GameRuleset();
+        public MetaProgression metaProgression = new MetaProgression();
+        public GameRuleset ruleset = new GameRuleset();
+        public GameRuleset ruleset_instance = new GameRuleset();
 
         public List<int> mutedSongs = new List<int>();
 
@@ -67,13 +68,13 @@ namespace VikingEngine.DSSWars.Data
             demoSetup();
 
 #else
-           gameRuleset.defaultGameSettings();
+           ruleset.defaultGameSettings();
 #endif
         }
 
         void demoSetup()
         {
-            gameRuleset.demoSetup();
+            ruleset.demoSetup();
             mapSettings = MapSettingsStorage.Default;
             mapSettings.customSeed = true;
             mapSettings.seed = 1;
@@ -127,15 +128,16 @@ namespace VikingEngine.DSSWars.Data
             characterStorage.Load();
             profileStorage.Load();
 
-            if (!metaProgression.unlockedDangerousSettings)
-            {
-                DssRef.difficulty.setting_foodMulti = 1;
-                DssRef.difficulty.setting_waterMulti = 1;
-                DssRef.difficulty.setting_childMulti = 1;
-                DssRef.difficulty.setting_craftMulti = 1;
-            }
+            //if (!metaProgression.unlockedDangerousSettings)
+            //{
+            //    DssRef.difficulty.setting_foodMulti = 1;
+            //    DssRef.difficulty.setting_waterMulti = 1;
+            //    DssRef.difficulty.setting_childMulti = 1;
+            //    DssRef.difficulty.setting_craftMulti = 1;
+            //}
         }
 
+       
         public void Save(IStreamIOCallback callBack)
         {
             try
@@ -150,17 +152,18 @@ namespace VikingEngine.DSSWars.Data
             }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
-        public const int Version = 36;
+        public const int Version = 38;
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);
-            gameRuleset.write(w);
+            ruleset.write(w, true);
             DssRef.difficulty.write(w);
         }
         public void readGameSetup(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
-            gameRuleset.read(r);
+            ruleset.read(r, true);
+            ruleset_instance = ruleset;
             DssRef.difficulty.read(r, version);
         }
 
@@ -188,7 +191,8 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write(speed5x);
 
-            gameRuleset.write(w);
+            //ruleset.write(w, true);
+            
             mapSettings.write(w);
 
             w.Write(mutedSongs.Count);
@@ -270,7 +274,11 @@ namespace VikingEngine.DSSWars.Data
 
                 speed5x = r.ReadBoolean();
 
-                gameRuleset.read(r);
+                if (version < 38)
+                {
+                    ruleset.read(r, true);
+                    ruleset_instance = ruleset;
+                }
                 mapSettings.read(r, version);
 
                 generateNewMaps = true;
@@ -330,7 +338,7 @@ namespace VikingEngine.DSSWars.Data
                     return;
                 }
 
-                gameRuleset.mapSize = (MapSize)r.ReadInt32();
+                ruleset.mapSize = (MapSize)r.ReadInt32();
 
                 if (!gamestate || version < 16)
                 {
@@ -364,7 +372,7 @@ namespace VikingEngine.DSSWars.Data
                 }
                 if (version >= 21)
                 {
-                    gameRuleset.centralGold = r.ReadBoolean();
+                    ruleset.centralGold = r.ReadBoolean();
                 }
                 mapSettings.read(r, version);
 

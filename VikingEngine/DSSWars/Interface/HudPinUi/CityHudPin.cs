@@ -1,25 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
-using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.LootFest.Players;
-using VikingEngine.ToGG.MoonFall;
 
-namespace VikingEngine.DSSWars.Interface
+namespace VikingEngine.DSSWars.Interface.HudPinUi
 {
-    //HUD Pins
     enum HudPinType
     {
         Resource,
@@ -44,7 +36,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             id = r.ReadByte();
             if (subversion >= 88)
-            { 
+            {
                 type = (HudPinType)r.ReadByte();
             }
         }
@@ -76,11 +68,11 @@ namespace VikingEngine.DSSWars.Interface
                     IconName.Item(item, out var icon, out var name);
                     var resourceCount = city.GetGroupedResource(item);
                     content.Add(new RbButton(
-                        new List<AbsRichBoxMember> { 
+                        new List<AbsRichBoxMember> {
                             new RbImage(icon),
-                            new RbSpace(0.5f), 
+                            new RbSpace(0.5f),
                             new RbText(resourceCount.amount.ToString(), Color.White)
-                        }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(null,city, item)), true, BgCol));
+                        }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(null, city, item)), true, BgCol));
                     break;
                 case HudPinType.TechnologyTree:
                     var techType = (TechnologyTreeType)id;
@@ -103,8 +95,8 @@ namespace VikingEngine.DSSWars.Interface
                         buttonContent.Add(new RbText($"{progress.points}/{goal}", Color.White));
                     }
                     content.Add(new RbButton(
-                        buttonContent, null, 
-                        new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Technology_Title, techname)), 
+                        buttonContent, null,
+                        new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Technology_Title, techname)),
                         true, BgCol));
                     break;
 
@@ -119,9 +111,10 @@ namespace VikingEngine.DSSWars.Interface
                             new RbSpace(0.5f),
                             new RbImage(LangLib.ExperienceLevelIcon( levels.Max())),
                         }, null, new RbTooltip_Text(xpName), true, BgCol));
-                    
+
                     break;
-        }}
+            }
+        }
 
         public bool Equals(HudPin other)
         {
@@ -145,7 +138,7 @@ namespace VikingEngine.DSSWars.Interface
     {
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write((byte)this.Count);
+            w.Write((byte)Count);
             foreach (var pin in this)
             {
                 pin.writeGameState(w);
@@ -170,7 +163,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     return true;
                 }
-            } 
+            }
             return false;
         }
 
@@ -185,113 +178,6 @@ namespace VikingEngine.DSSWars.Interface
                 }
             }
             return false;
-        }
-    }
-
-    class HudPinManager : Dictionary<int, CityHudPin>
-    {
-        public HudPinManager() :
-            base(8)
-        { }
-
-        public void toggleButton(RichBoxContent content, CityHudPinId pinId)
-        {
-            bool onHud = TryGet(pinId);
-            content.Add(new ArtToggle(onHud, new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.HudLocationPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { Set(pinId, !onHud); }),
-                    new RbTooltip_Text(DssRef.lang.HudPins)));
-        }
-
-        public void clear(City city)
-        {
-            this.Remove(city.myIndex);
-        }
-
-        public void writeGameState(System.IO.BinaryWriter w)
-        {
-            w.Write((ushort)this.Count);
-            foreach (var kv in this)
-            {
-                w.Write((ushort)kv.Key);
-                kv.Value.writeGameState(w);
-            }
-        }
-
-        public void readGameState(System.IO.BinaryReader r, int subversion)
-        {
-            int count = r.ReadUInt16();
-            for (int i = 0; i < count; i++)
-            {
-                int city = r.ReadUInt16();
-
-                CityHudPin pins = new CityHudPin();
-                pins.readGameState(r, subversion);
-                Add(city, pins);
-            }
-        }
-
-
-        public void toHUD(LocalPlayer player, RichBoxContent content)
-        { 
-            foreach (var kv in this)
-            {
-                City city = DssRef.world.cities[kv.Key];
-                if (city.ToPinHud(new ObjectHudArgs(content, player, false))) 
-                {
-                    foreach (var pin in kv.Value)
-                    { 
-                        pin.toHud(content, city);
-                    }
-                    content.space(2);
-                }
-            }
-        }
-
-        public bool isPinnedProperty(object tag, bool set, bool value)
-        {
-            CityHudPinId id = (CityHudPinId)tag;
-            if (set)
-            {
-                Set(id, value);
-            }
-            return TryGet(id);
-        }
-
-        public bool TryGet(CityHudPinId id)
-        {
-            if (TryGetValue(id.cityIndex, out CityHudPin pins))
-            {
-                return pins.TryGet(id.hudPin);
-            }
-            return false;
-        }
-
-        public void Set(CityHudPinId id, bool add)
-        {
-            if (TryGetValue(id.cityIndex, out CityHudPin pins))
-            {
-                if (add)
-                {
-                    if (!pins.TryGet(id.hudPin))
-                    {
-                        pins.Add(id.hudPin);
-                    }
-                }
-                else
-                {
-                    pins.TryRemove(id.hudPin);
-                    if (pins.Count == 0)
-                    { 
-                        this.Remove(id.cityIndex);
-                    }
-                }
-            }
-            else if (add)
-            {
-                pins = new CityHudPin() { id.hudPin };
-                this.Add(id.cityIndex, pins);
-            }
-
         }
     }
 }

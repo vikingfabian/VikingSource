@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -37,18 +39,25 @@ namespace VikingEngine.DSSWars.Work
         int prevX, prevZ;
         float walkDist_beforeRefresh = 0f;
         AbsWorkEffect workEffect = null;
+        PFaction pFaction;
 
         public WorkerUnit(AbsArmy mapObject, WorkerStatus status, int statusIndex)
         {
             parentMapObject = mapObject;
-            factionIndex = mapObject.factionIndex;
+            pfaction = mapObject.pfaction;//factionIndex = mapObject.factionIndex;
             //this.status = status;
             myIndex = statusIndex;
-            model = mapObject.GetFaction_NoChecks().AutoLoadModelInstance_batched(
+            model = mapObject.pfaction.GetFaction().AutoLoadModelInstance_batched(
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
+#if DEBUG
+            if (Debug.CorruptValue(model.position))
+            {
+                throw new Exception();      
+            }
+#endif
             checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
@@ -81,6 +90,12 @@ namespace VikingEngine.DSSWars.Work
                     {
                         model.position.X = goalPos.X;
                         model.position.Z = goalPos.Z;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         WP.Rotation1DToQuaterion(model, 2.8f);
                         //state = WorkerUnitState.FinalizeWork;
                        
@@ -102,6 +117,12 @@ namespace VikingEngine.DSSWars.Work
                     else
                     {
                         model.position += walkDir * speed;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         updateGroudY(false);
 
                         if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
@@ -409,6 +430,12 @@ namespace VikingEngine.DSSWars.Work
                     //remove hidden status
                     model.Visible = true;
                     model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+#if DEBUG
+                    if (Debug.CorruptValue(model.position))
+                    {
+                        throw new Exception();
+                    }
+#endif
                 }
 
                 if (status.subTileEnd == status.subTileStart)
@@ -425,16 +452,37 @@ namespace VikingEngine.DSSWars.Work
                     if (onInit)
                     {
                         float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                        float walkingPerc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
+                        float walkTime = status.processTimeLengthSec - finalizeWorkTime;
+                        float walkingPerc;
+                        if (walkTime < 1)
+                        {
+                            walkingPerc = 1;
+                        }
+                        else
+                        {
+                            walkingPerc = timePassed / walkTime;
+                        }
 
                         if (walkingPerc >= 1)
                         {
                             model.position = goalPos;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                             finalizeWorkTime = status.processTimeLengthSec - timePassed;
                         }
                         else
                         {
                             model.position = model.position * (1 - walkingPerc) + goalPos * walkingPerc;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
 
@@ -551,6 +599,12 @@ namespace VikingEngine.DSSWars.Work
                         else
                         {
                             model.position.Y += diff * 0.06f;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
                 }
@@ -571,7 +625,7 @@ namespace VikingEngine.DSSWars.Work
         void WorkerPresentationHud(ObjectHudArgs args, bool tooltip)
         {
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.Add(pfaction.GetFaction().FlagTextureToHud());
             args.content.space(0.5f);
             args.content.Add(new RbImage(SpriteName.WarsWorker));
             args.content.space(0.5f);
@@ -695,10 +749,10 @@ namespace VikingEngine.DSSWars.Work
         {
             return GameObjectType.Worker;
         }
-        public override Faction GetFaction()
-        {
-            return parentMapObject.GetFaction();
-        }
+        //public override Faction GetFaction()
+        //{
+        //    return parentMapObject.GetFaction();
+        //}
         public override City GetCity()
         {
             return parentMapObject.GetCity();
@@ -713,10 +767,10 @@ namespace VikingEngine.DSSWars.Work
             return model.position;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
-        {
-            return faction == parentMapObject.GetFaction();
-        }
+        //public override bool aliveAndBelongTo(Faction faction)
+        //{
+        //    return faction == parentMapObject.GetFaction();
+        //}
 
         public override WorkerUnit GetWorker()
         {

@@ -65,7 +65,11 @@ namespace VikingEngine.DSSWars.Interface
 
             var content = new RichBoxContent();
 
-            if (menu.menuStack.Count > 0)
+            if (player.DisplayBattleLab(content, menu))
+            { 
+            
+            }
+            else if (menu.menuStack.Count > 0)
             {
                 switch (menu.menuStack.Last())
                 {
@@ -81,12 +85,19 @@ namespace VikingEngine.DSSWars.Interface
                     case NetSessionDisplay.PAGE_BLOCK:
                         netSessionDisplay.Block(player, content, menu);
                         break;
-
+                    case NetSessionDisplay.PAGE_RECOLOR:
+                        netSessionDisplay.recolor(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_DEBUG:
+                        HudLib.returnButton(content, menu, true, null);
+                        DssRef.state.playstate().PacketCountToHud(content);
+                        break;
                 }
             }
             else if (netSessionDisplay.ClientInteractDisplay)
             {
                 netSessionDisplay.clientToHud(player, content, menu);
+                netSessionDisplay.checkAlive();
             }
             else
             {
@@ -95,7 +106,7 @@ namespace VikingEngine.DSSWars.Interface
                     var hoverCity = tile.City();
                     hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
 
-                    if (hoverCity.factionIndex == player.faction.myIndex &&
+                    if (hoverCity.pfaction == player.pfaction &&
                         player.mapLayer() <= Map.MapDetailLayerType.TerrainOverview2)
                     {
                         content.newLine();
@@ -110,18 +121,20 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new RbSeperationLine());
                 }
 
+                
                 if (DssRef.state.remotePlayers.Count > 0)
                 {
-                    netSessionDisplay.overviewToHud(player, content);
-                    //content.h2(".Net session", HudLib.TitleColor_Head);
-                    //var remoteC = DssRef.state.remotePlayers.counter();
-                    //while(remoteC.Next())
-                    //{
-                    //    content.newLine();
-                    //    remoteC.sel.addNetGamerToHud(content, true);//RemoteToHud(content);
-                    //}
-                    //content.Add(new RbSeperationLine());
+                   
+
+                    netSessionDisplay.overviewToHud(player, content, menu);
+                    
+                    content.newParagraph();
                 }
+                
+                //else if (DssRef.state.host && Ref.steam.isInitialized && Ref.netsett.hostNetwork)
+                //{
+                //    netSessionDisplay.invite(content);
+                //}
 
                 content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
 
@@ -148,6 +161,8 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
             }
+            
+
 
             menu.Refresh(content, player.gameControls.controllerPointer);
         }

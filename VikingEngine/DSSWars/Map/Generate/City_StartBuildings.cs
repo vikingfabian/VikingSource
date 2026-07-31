@@ -18,10 +18,13 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 citySquareSubtilePos;
 
 
+        
+
         public void createCampSite(IntVector2 subtilepos)
         {
             cityHallSubtilePos = subtilepos;
-            EditSubTile edit = new EditSubTile(true, subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false);
+            var localPlayer = pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer();
+            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
            
             edit.SubmitOrExecute();
 
@@ -35,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (!tile.IsWater())
                     {
                         citySquareSubtilePos = pos;
-                        new EditSubTile(true, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false).SubmitOrExecute();
+                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false) { netShare = true }.SubmitOrExecute();
                         break;
                     }
                 }
@@ -48,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (!tile.IsWater())
                     {
-                        new EditSubTile(true, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false).SubmitOrExecute();
+                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false) { netShare = true }.SubmitOrExecute();
                         break;
                     }
                 }
@@ -66,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (cityType == CityType.Campsite)
             {
-                PcgRandom rnd = new PcgRandom(world.metaData.seed * myIndex);
+                PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
                 var subtile = WP.ToSubTilePos_Centered(tilePos);
                 subtile.X += rnd.Plus_Minus(3);
@@ -76,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                PcgRandom rnd = new PcgRandom(world.metaData.seed * myIndex);
+                PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
                 List<IntVector2> emptyGeneral = new List<IntVector2>();
                 Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);

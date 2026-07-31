@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.Profile;
@@ -20,7 +22,8 @@ namespace VikingEngine.DSSWars.Players
         public const int AggressionLevel3_FocusedAttacks = 3;
 
         public bool IsPlayerNeighbor = false;
-        public Faction faction;
+        //public Faction faction;
+        public PFaction pfaction;
         public int aggressionLevel = AggressionLevel0_Passive;
         public bool protectedFromBotAttacks = false;
         protected bool ignorePlayerCapture = false;
@@ -29,11 +32,12 @@ namespace VikingEngine.DSSWars.Players
         public bool mayAttackPlayer = true;
 
         public Orders.Orders orders;
-        abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
+        //abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
 
         public PlayerProfile profile;
         public Texture2D flagTexture;
 
+        //public Faction pfaction.GetFaction();
         public AbsPlayer()
         { }
 
@@ -45,15 +49,42 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void AssignFaction(Faction faction)
         {
-            this.faction = faction;
+            this.pfaction = faction.Pointer();
+            //faction.player = this;
             faction.SetStartOwner(this);
             faction.onNewPlayerModels();
             DssRef.world.BordersUpdated = true;
         }
 
+        virtual public void SetColor(Color selected, bool netShare)
+        {
+            //if (IsLocalPlayer())
+            //{
+            //    var clone = profile.flag.Clone();
+            //    profile.flag = clone;
+            //}
+            profile.flag.col0_Main = selected;
+            refreshFlag();
+
+            if (netShare)
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssReColor, Network.PacketReliability.Reliable);
+                pfaction.write(w);//Net.ObjectId.WriteFaction(w, faction);
+                StreamLib.WriteColorStream_3B(w, selected);
+            }
+        }
+
+        virtual public void refreshFlag()
+        {
+            flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+            pfaction.GetFaction()?.onNewPlayerModels();
+            
+            DssRef.world.BordersUpdated = true;
+        }
+
         public AbsPlayer(Faction faction, bool newGame)
         {
-            this.faction = faction;
+            this.pfaction = faction.Pointer();
             faction.SetStartOwner(this);
 
             if (newGame)
@@ -61,7 +92,7 @@ namespace VikingEngine.DSSWars.Players
                 createStartupBarracks();
 
                 int startGold = DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox ? 500 : 200;
-                if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
                 {
                     startGold = 6000;
                 }
@@ -88,7 +119,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void createStartupBarracks()
         { 
-            faction.mainCity?.createStartupBarracks();
+            pfaction.GetFaction().mainCity?.createStartupBarracks();
         }
 
         virtual public void Update()
@@ -138,33 +169,36 @@ namespace VikingEngine.DSSWars.Players
         virtual public void aiPlayerAsynchUpdate(float time)
         { }
 
-        virtual public void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool localAction)
+        //virtual public void onNewRelation(bool isActuator, Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
+        virtual public void onNewRelation(bool isActuator, PFaction otherPFaction, Communication.DiplomaticRelation rel, RelationType previousRelation, bool fromAllianceTrade, bool localAction)
         {
             //On peace, stop all attacking armies
             bool fromWar = Diplomacy.IsWar(previousRelation);
             bool toWar = Diplomacy.IsWar(rel.Relation);
+            var faction = pfaction.GetFaction();
+            //var otherFaction = otherPFaction.GetFaction();
 
             if (fromWar != toWar)
             {
                 if (toWar)
                 {
-                    if (localAction)
+                    if (!fromAllianceTrade && localAction)
                     {
-                        faction.tradeAllianceWars(otherFaction, rel);
+                        faction.tradeAllianceWars(isActuator, otherPFaction);
                     }
                 }
                 else
                 {
-                    faction.stopAllAttacksAgainst(otherFaction);
+                    faction.stopAllAttacksAgainst(otherPFaction);
                 }
             }
 
             if (rel.Relation == RelationType.RelationType3_Ally &&
                 !rel.secret)
             {
-                if (localAction)
+                if (!fromAllianceTrade && localAction)
                 {
-                    faction.tradeAllianceWars(otherFaction, rel);
+                    faction.tradeAllianceWars(isActuator, otherPFaction);
                 }
             }
         }
@@ -223,10 +257,10 @@ namespace VikingEngine.DSSWars.Players
 
                 //player.GetAiPlayer().refreshAggression();
 
-                ref var relation = ref DssRef.world.diplomacy.GetRefRelation(faction.myIndex, player.faction.myIndex);
+                ref var relation = ref DssRef.world.diplomacy.GetRefRelation(pfaction, player.pfaction);
                 relation.SetWorseSpeakTerms(DssRef.world.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.world.diplomacy.SpeakTermsOnNeigbor_NoneChance);
 
-                if (faction.Size() >= FactionSize.Big)
+                if (pfaction.TryGetFaction(out var faction) && faction.Size() >= FactionSize.Big)
                 {
                     protectedFromBotAttacks = true;
                 }
@@ -237,8 +271,9 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
             {
-                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
+                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(pfaction))
                 {
+                    var faction = pfaction.GetFaction();
                     IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                     Army mainArmy = faction.NewArmy(onTile);
 
@@ -269,6 +304,7 @@ namespace VikingEngine.DSSWars.Players
 
         protected void settlerGuardUnits()
         {
+            var faction = pfaction.GetFaction();
             IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
             Army mainArmy = faction.NewArmy(onTile);
 

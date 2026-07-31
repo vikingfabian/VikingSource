@@ -14,6 +14,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
 using VikingEngine.Sound;
 
 namespace VikingEngine
@@ -280,6 +281,7 @@ namespace VikingEngine
 #if PJ
             new PJ.StartScreen(isReset);
 #elif DSS
+            //new DeadState();
             new DSSWars.IntroState(isReset);
 #elif TOGG
             new ToGG.IntroState(isReset);

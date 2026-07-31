@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface.HudPinUi;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -300,7 +302,7 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        void updateMenuDisplays(bool refresh)
+        public void updateMenuDisplays(bool refresh)
         {
 
             if (player.gameControls.diplomacy != null)

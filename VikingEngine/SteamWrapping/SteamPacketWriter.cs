@@ -69,7 +69,8 @@ namespace VikingEngine.SteamWrapping
         public void send()
         {
             if (Ref.steam.isNetworkInitialized)
-            {  
+            {
+                //Debug.Log(storedtype.ToString());
                 Ref.steam.P2PManager.Send(this.ByteArray(out long length), (uint)length, relyability, To, new Steamworks.CSteamID(SpecificGamerID));
               
             }

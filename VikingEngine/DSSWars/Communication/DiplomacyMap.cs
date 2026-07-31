@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
@@ -17,10 +18,9 @@ namespace VikingEngine.DSSWars.Communication
         List<QuestFlag> questFlags = new List<QuestFlag>();
         RelationFlag[] relationFlags;
         LocalPlayer player;
-        //Graphics.Image hoverbox, seletionbox;
         DiplomacyMapSelection hoverGui, selectGui;
         RelationFlag selected = null, currentHover;
-        public int relationArrowHover = -1;
+        public PFaction relationArrowHover = PFaction.Empty;
 
         int flashCount = 4;
         bool viewFlash = true;
@@ -44,18 +44,12 @@ namespace VikingEngine.DSSWars.Communication
 
             for (int i = 0; i < relationFlags.Length; i++)
             {
-                relationFlags[i] = new RelationFlag(i);
+                relationFlags[i] = new RelationFlag(new PFaction(i));
             }
 
             hoverGui = new DiplomacyMapSelection(false);
             selectGui = new DiplomacyMapSelection(true);
-            //hverbox = new Graphics.Image(SpriteName.WarsRelationFlagOutline, Vector2.Zero, Vector2.One, HudLib.DiplomacyDisplayLayer + 3);
-            //hoverbox.Visible = false;
-            //hoverbox.Color = ColorExt.FromAlpha(0.9f);
-
-            //seletionbox = new Graphics.Image(SpriteName.WarsRelationFlagOutline, Vector2.Zero, Vector2.One, HudLib.DiplomacyDisplayLayer + 2);
-            //seletionbox.Visible = false;
-
+           
             foreach (var factory in DssRef.state.events.factories)
             {
                 questFlags.Add(new QuestFlag()
@@ -105,11 +99,8 @@ namespace VikingEngine.DSSWars.Communication
 
             foreach (var rel in relationFlags)
             {
-                Faction faction = DssRef.world.faction(rel.faction);
-                //if (faction!= null && faction.myIndex == 18)
-                //{
-                //    lib.DoNothing();
-                //}
+                Faction faction = rel.pfaction.GetFaction();
+                
                 if (faction != null &&
                     faction.player != null &&
                     faction.isAlive &&
@@ -153,7 +144,7 @@ namespace VikingEngine.DSSWars.Communication
 
                     rel.ImageGroup.SetVisible(visible);
 
-                    if (faction == player.faction)
+                    if (faction == player.pfaction.GetFaction())
                     {
                         rel.relationIcon.Visible = false;
                     }
@@ -229,7 +220,7 @@ namespace VikingEngine.DSSWars.Communication
                 player.hud.needRefresh=true;
             }
 
-            relationArrowHover = -1;
+            relationArrowHover = PFaction.Empty;
 
             relationArrows.preUpdate();
 
@@ -247,7 +238,7 @@ namespace VikingEngine.DSSWars.Communication
                 {
                     if (player.gameControls.input.mouseSelect.DownEvent)
                     {
-                        selectFaction(currentHover.faction);
+                        selectFaction(currentHover.pfaction);
                         //selected = currentHover;
 
                         //SoundLib.select_faction.Play();
@@ -284,7 +275,7 @@ namespace VikingEngine.DSSWars.Communication
 
             if (selected != null)
             {
-                selectedFaction = DssRef.world.faction(selected.faction);
+                selectedFaction =selected.pfaction.GetFaction();
 
                 selectedFlagPos = selected.position;
                 
@@ -307,10 +298,10 @@ namespace VikingEngine.DSSWars.Communication
 
         }
 
-        void selectFaction(int factionIx)
+        void selectFaction(PFaction factionIx)
         {
             //selected = faction;
-            selected = relationFlags[factionIx];
+            selected = relationFlags[factionIx.factionIndex];
 
             SoundLib.select_faction.Play();
             player.hud.needRefresh = true;
@@ -320,7 +311,7 @@ namespace VikingEngine.DSSWars.Communication
                 player.gameControls.setMenuFocus(true, true);
             }
 
-            var faction = DssRef.world.faction(factionIx);
+            var faction = factionIx.GetFaction();//DssRef.world.faction(factionIx);
 
             previousFactionsLookedAt.Remove(faction);
             if (previousFactionsLookedAt.Count > PreviousFactionsLookedAtCount)
@@ -394,14 +385,14 @@ namespace VikingEngine.DSSWars.Communication
 
             foreach (var rel in relationFlags)
             {
-                Faction faction = DssRef.world.faction(rel.faction);
-                if (faction != null)
+                //Faction faction = DssRef.world.faction(rel.faction);
+                if (rel.pfaction.TryGetFaction(out var faction))
                 {
                     bool cityPos;
                     rel.tilePos = faction.landAreaCenter(out cityPos);
 
                     rel.inCullingView = tileBound.IntersectTilePoint(rel.tilePos);
-                    rel.relation = DssRef.world.diplomacy.GetRelation_Safe(player.faction.myIndex, rel.faction).Relation; 
+                    rel.relation = DssRef.world.diplomacy.GetRelation(player.pfaction, rel.pfaction).Relation; 
                 }
             }
 
@@ -426,12 +417,12 @@ namespace VikingEngine.DSSWars.Communication
             if (selected != null)
             {
                 selection = true;
-                return DssRef.world.faction(selected.faction);
+                return selected.pfaction.GetFaction();
             }
             else if (currentHover != null)
             {
                 selection = false;
-                return DssRef.world.faction(currentHover.faction);
+                return currentHover.pfaction.GetFaction();
             }
 
             selection = false;

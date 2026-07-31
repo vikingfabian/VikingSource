@@ -15,6 +15,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
         Secondary,
         GodPower,
         Outline,
+        GoldOutline,
         CheckBox,
         OptionSelected,
         OptionNotSelected,
@@ -69,6 +70,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.Outline:
                     textureSett = group.settings.artOutlineButtonTex;
+                    break;
+                case RbButtonStyle.GoldOutline:
+                    textureSett = group.settings.artGoldOutlineButtonTex;
                     break;
                 case RbButtonStyle.OptionSelected:
                     textureSett = group.settings.artOptionButtonTex;

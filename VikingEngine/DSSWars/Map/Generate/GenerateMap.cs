@@ -10,6 +10,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Network;
 using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
@@ -109,7 +110,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         findCityTerrain(generateSettings);
 
                         factionStartAreas(worldMeta.mapSize, 
-                            DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full, 
+                            DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full, 
                             generateSettings);
                         break;
 
@@ -132,7 +133,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             findCityTerrain(generateSettings);
 
                             factionStartAreas(worldMeta.mapSize, 
-                                DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full, 
+                                DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full, 
                                 generateSettings);
                         }
                         break;
@@ -180,7 +181,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (generateSettings.factionsOnMap)
                 {
-                    factionStartAreas(worldMeta.mapSize, DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full, generateSettings);
+                    factionStartAreas(worldMeta.mapSize, DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full, generateSettings);
                 }
 
                 if (save)
@@ -331,8 +332,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void generateSubTiles(WorldData world)
         { 
             this.world = world;
-            world.rnd = new PcgRandom(world.metaData.seed);
-            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.seed);
+            world.rnd = new PcgRandom(world.metaData.worldId.seed);
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.worldId.seed);
 
             //Debug.Log("postLoadGenerate_Part1, " + world.metaData.seed);
             //partComplete = new bool[ProcessSubTileParts];
@@ -396,7 +397,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
-            world.rnd = new PcgRandom(world.metaData.seed);
+            world.rnd = new PcgRandom(world.metaData.worldId.seed);
 
             Task.Factory.StartNew(async () =>
             {
@@ -982,7 +983,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             int numHeadCities = world.areaTileCount / 2000;
             world.cities = new List<City>(numHeadCities);
 
-            switch (DssRef.storage.gameRuleset.factionStartSize)
+            switch (DssRef.storage.ruleset.factionStartSize)
             { 
                 case FactionStartSize.Full:
                     generateSettings.percentageUnclaimed = 0.25f;
@@ -1293,7 +1294,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         {
                             if (world.cities[cityIx].terrainStructure.HasIndependantResources() == false)
                             {
-                                if (DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full || Ref.rnd.Chance(0.75))
+                                if (DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full || Ref.rnd.Chance(0.75))
                                 {
                                     world.cities[cityIx].cityType = CityType.UnClaimed;
                                     unclaimed++;
@@ -1371,7 +1372,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             foreach (City c in world.cities)
             {
-                if (c.factionIndex < 0 && c.cityType > CityType.UnClaimed)
+                if (c.pfaction.IsEmpty() && c.cityType > CityType.UnClaimed)
                 {
                     int size = goalWorkForce;
                     bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
@@ -1415,7 +1416,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             };
 
             int count = DssRef.difficulty.setting_QuickMatch_PlayerCount - DssRef.storage.playerCount;
-            world.quickMatchFactions = new List<int>(count);
+            world.quickMatchFactions = new List<PFaction>(count);
             //DssRef.settings.Faction_QuickMatch_Start = -1;
             //DssRef.settings.Faction_QuickMatch_End = -1;
 
@@ -1426,7 +1427,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 //faction.displayInFullOverview = true;
                 region.GetStartFactionRegion(nationWorkForce, oneCity, randomCity_inMapCenter(), world, faction);
 
-                world.quickMatchFactions.Add(faction.myIndex);
+                world.quickMatchFactions.Add(faction.pfaction);
                 //if (i == 0)
                 //{
                 //    DssRef.settings.Faction_QuickMatch_Start = faction.myIndex;
@@ -1579,7 +1580,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             while (collection.Count > 0)
             {
                 var city = arraylib.RandomListMemberPop(collection, world.rnd);
-                if (city.factionIndex < 0 && city.cityType > CityType.UnClaimed)
+                if (city.pfaction.IsEmpty() && city.cityType > CityType.UnClaimed)
                 {
                     return city;
                 }
@@ -1656,7 +1657,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             int ix = world.rnd.Int(world.cities.Count);
 
-            while (world.cities[ix].factionIndex >= 0 || world.cities[ix].cityType == CityType.UnClaimed)
+            while (world.cities[ix].pfaction.HasValue()|| world.cities[ix].cityType == CityType.UnClaimed)
             {
                 ix++;
                 if (ix >= world.cities.Count)
@@ -1874,12 +1875,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 foreach (var pos in animalSpawns)
                 {
-                    Tile tile =  world.tileGrid.Get(WP.SubtileToTilePos(pos));
+                    Tile tile = world.tileGrid.Get(WP.SubtileToTilePos(pos));
                     var biome = world.cities[tile.CityIndex].cityBiome;
 
                     double rnd = world.rnd.Double();
 
-                    TerrainBuildingType animal;
+                    TerrainBuildingType animal = TerrainBuildingType.NUM_NONE;
 
                     switch (biome)
                     {
@@ -1894,11 +1895,11 @@ namespace VikingEngine.DSSWars.Map.Generate
                             }
                             break;
                         case CityBiome.Forest:
-                            if (rnd < 0.5)
+                            if (rnd < 0.1)
                             {
                                 animal = TerrainBuildingType.CatHabitat;
                             }
-                            else
+                            else if (rnd < 0.8)
                             {
                                 animal = TerrainBuildingType.BoarHabitat;
                             }
@@ -1947,9 +1948,12 @@ namespace VikingEngine.DSSWars.Map.Generate
                             break;
                     }
 
-                    var subTile = world.subTileGrid.Get(pos);
-                    subTile.SetType(TerrainMainType.Building, (int)animal, 1);
-                    world.subTileGrid.Set(pos, subTile);
+                    if (animal != TerrainBuildingType.NUM_NONE)
+                    {
+                        var subTile = world.subTileGrid.Get(pos);
+                        subTile.SetType(TerrainMainType.Building, (int)animal, 1);
+                        world.subTileGrid.Set(pos, subTile);
+                    }
                 }
             }
 

@@ -8,7 +8,175 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
+        //Multiplayer update
+        
+        //--
+    
 
+        //--
+        public override string Unlock_PublicGames => "パブリックゲーム";
+        public override string UnlockPublic_Warning1 => "知らないプレイヤーとは遊ばないでください";
+        public override string UnlockPublic_Warning2 => "このゲームにはチートや荒らしに対する保護はありません";
+        public override string Unlock_WarningBadExperience => "不快な思いをする可能性があります";
+        public override string Hud_Accept => "承諾";
+        public override string Hud_Block => "ブロック";
+        public override string Hud_Deny => "拒否";
+        public override string Hud_Reason => "理由";
+        public override string Hud_Full => "満員";
+        public override string Hud_Version => "バージョン";
+        public override string Unlock_PlayerVersusPlayer => "プレイヤー対プレイヤー（PvP）";
+        public override string UnlockPvp_Warning1 => "DSSは競技向け（コンペティティブ）に設計されていません";
+        public override string UnlockPvp_Warning2 => "バランス調整がないため、不公平なマッチになります";
+        public override string PlayerJoinHistoryTitle => "プレイヤー参加履歴";
+        public override string BlockedPlayersTitle => "ブロックしたプレイヤー";
+        public override string ClickToRemoveBan => "クリック：BAN（ブロック）解除";
+        public override string HostSettingsTitle => "ホスト設定";
+        public override string MaxPlayerCount => "最大プレイヤー数";
+        public override string DistanceBetweenPlayers => "プレイヤー間の距離";
+        public override string AllowHandicap => "ハンデを許可";
+        public override string AllowCasualControls => "カジュアル操作を許可";
+        public override string AutoRecolorPlayerFlags => "プレイヤーの旗を自動で色分け";
+        public override string DefaultDiplomacy => "デフォルトの外交";
+        public override string ClientSettingsTitle => "クライアント設定";
+        public override string UseHandicap => "ハンデを使用";
+        public override string DifficultyDescription_BotAggression => "ボットの攻撃性";
+        public override string Hud_GetExtraX => "追加の{0}";
+        public override string Hud_Hide => "非表示";
+        public override string Hud_ModelType => "モデル";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}：{1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "リソースブースト";
+        //public override string TaxIncome => "税収";
+        public override string PlayerInteractionTitle => "プレイヤーインタラクション";
+        public override string DefaultPeaceful => "デフォルト：ピースフル（平和）";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "デフォルト：Co-op（任意）";
+        public override string DefaultHardcore => "デフォルト：ハードコア";
+        public override string GeneralTitle => "全般";
+
+        public override string InputButton_Hold => "ボタン長押し";
+        public override string InputButton_Toggle => "ボタン切り替え（トグル）";
+        public override string VoiceOptAlwaysOn => "常時オン";
+        public override string VoiceTitle => "ボイス";
+        public override string VoiceMute => "ミュート";
+        public override string GiftOptAllow => "許可";
+        public override string GiftOptFriendsOnly => "フレンドのみ";
+        public override string GiftOptBlocked => "ブロック";
+        public override string ReceiveAchievementsTitle => "実績の受け取り";
+        public override string GiftWarning => "警告！プレゼントされた実績は屈辱的に感じる場合があります";
+        public override string FullReset => "フルリセット";
+        public override string AllowAllianceTitle => "同盟を許可";
+        public override string CanBreakAlliance => "同盟の破棄を許可";
+        public override string AllowWarTitle => "戦争を許可";
+        public override string FairProtection => "公平な保護";
+        public override string FairProtectionTooltip => "保護されたプレイヤーは、あなたに対しても自身のルールを適用する必要があります";
+        public override string MustAsk => "承認必須";
+        public override string MustAskTooltip => "両プレイヤーが戦闘に合意する必要があります";
+        public override string AllianceLimit => "同盟の制限";
+        public override string AllianceLimitTooltip => "規模の大きいプレイヤー同盟からは攻撃されません";
+        public override string GameStartProtection => "ゲーム開始時の保護";
+        public override string Hud_Time_Minutes => "分";
+        public override string WarPreparationTime => "戦争準備期間";
+        public override string WarPreparationTimeTooltip => "宣戦布告から実際に攻撃可能になるまでの遅延";
+        public override string Hud_Allow => "許可";
+        public override string Hud_Blocked => "ブロック";
+
+        public override string Hud_DeleteAll => "すべて削除";
+        public override string DiplomacyPlayersChoice => "プレイヤーの選択";
+        public override string UnlockSureTitle => "本当に、本当によろしいですか？";
+        public override string UnlockSureDescription => "後でフォーラムで泣き言を言わないと約束できますか？";
+
+
+
+        public override string Network_PlayOffline => "オフラインプレイ";
+        public override string JoinPermission_Title => "参加権限";
+        public override string JoinPermission_Private => "プライベート";
+        public override string JoinPermission_FriendsOnly => "フレンドのみ";
+        public override string JoinPermission_Public => "パブリック";
+
+        public override string Network_Join => "ゲームに参加";
+        public override string Network_ConnectingToGame => "接続中...";
+        public override string Lobby_Category_MultiplayerSettings => "マルチプレイヤー設定";
+
+        public override string Hud_Default => "デフォルト";
+        public override string Group_Team => "チーム";
+        public override string Group_Everyone => "全員";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "外交の像";
+
+        public override string Message => "メッセージ";
+        public override string ObjectType_LocationPin => "ロケーションピン";
+        public override string ObjectType_LocationPin_Share => "共有してPingを送信";
+        public override string ObjectType_LocationPin_Ping => "Ping!";
+        public override string InputActionName_TextChat => "テキストチャット";
+        public override string InputActionName_TextChatLog => "チャットログ";
+        public override string InputActionName_VoiceChat => "ボイスチャット";
+        public override string InputActionName_NextPin => "次のピン";
+        public override string InputActionName_PinAndPing => "ピンを追加";
+
+        public override string Leaderboards_ArmySize => "1つの軍隊の規模（戦力）";
+        public override string Leaderboards_MultiplayerPlayerCount => "ホスト中のプレイヤー数";
+
+        public override string Multiplayer_BanWarning => "BAN（ブロック）警告";
+        public override string Multiplayer_SentToHost => "ホストに送信されます";
+        public override string Multiplayer_AddToOwnBlocks => "自分のブロックリストに追加する";
+
+        public override string Multiplayer_Message_RequestSent => "リクエストを送信しました";
+
+        public override string Multiplayer_BlockPlayer => "プレイヤーをブロック";
+        public override string Multiplayer_NetSession => "ネットワークセッション";
+        public override string GiftedAchievements => "プレゼントされた実績";
+        public override string GiftedAchievements_Description => "フレンドの悪ふざけに対する報酬";
+
+        public override string Multiplayer_Title => "マルチプレイヤー";
+        public override string Multiplayer_Lobby => "マルチプレイヤーロビー";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. ホストがゲームを開始します";
+        public override string Multiplayer_Tutorial_JoinButton => "2. ここに参加ボタンが表示されます";
+        public override string Multiplayer_Tutorial_Visible => "ホストのSteamプロフィールが公開されている必要があります";
+
+        public override string Multiplayer_KickPlayer => "プレイヤーをキック";
+        public override string Multiplayer_RequestBlockPlayer => "リクエスト：プレイヤーをブロック";
+        public override string Multiplayer_HandoverComplete => "引き継ぎ完了";
+        public override string Multiplayer_LoadingClientSave => "クライアントのセーブデータを読み込み中";
+        public override string Multiplayer_ClientSaveComplete => "クライアントのセーブが完了しました";
+        public override string Multiplayer_BadActor => "悪質なプレイヤー";
+        public override string Multiplayer_NetworkError => "ネットワークエラー";
+        public override string Multiplayer_Sender => "送信者";
+        public override string Multiplayer_Receiver => "受信者";
+        public override string Multiplayer_PlayerJoined => "プレイヤーが参加しました";
+        public override string Multiplayer_PlayerLeft => "プレイヤーが退出しました";
+        public override string Multiplayer_RequestingClientGamestates => "クライアントのゲームステータスをリクエスト中...";
+        public override string Multiplayer_TextChat => "テキストチャット";
+        public override string Multiplayer_VoiceChat => "ボイスチャット";
+        public override string Steam_UserProfile => "ユーザープロフィール";
+        public override string Steam_OpenSteamOverlay => "Steamオーバーレイを開く";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "動員中";
+        public override string Diplomacy_OfferRelation => "関係を提案";
+        public override string Diplomacy_OfferRelation_Declined => "提案された関係を拒否";
+        public override string Diplomacy_SendGold => "ゴールドを送る";
+        public override string Diplomacy_GiftToPlayer => "プレイヤーへの贈り物";
+        public override string Diplomacy_RecievedGift => "贈り物を受け取りました";
+        public override string Diplomacy_OnAccept => "相手プレイヤーが承諾した場合：";
+        public override string Diplomacy_WarPreparationTime => "戦争準備期間";
+
+        public override string Diplomacy_AboveSoftCap => "ソフトキャップ超過";
+        public override string Diplomacy_BelowSoftCap => "ソフトキャップ未満";
+        public override string Diplomacy_OpenPlayerToPlayer => "プレイヤー間の外交を開く";
         //Post mount update
         public override string StockPile_ItemsAreNotLost => "備蓄上限を超えてもアイテムは破壊されません！";
         public override string SlaughterResult_PerAnimal => "動物1匹あたりの屠殺生産量";
@@ -1321,7 +1489,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 軍隊を制御するためのメニューオプション。兵士を軍隊間で送るオプション。
         /// </summary>
-        public override string ArmyOption_SendX => "{0} を送る";
+        public override string Hud_SendX => "{0} を送る";
 
         /// <summary>
         /// 軍隊を制御するためのメニューオプション。兵士を軍隊間で送るオプション。
@@ -1476,7 +1644,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "脱走者！";
         public override string EventMessage_DesertersText_Money => "未払いの兵士たちがあなたの軍隊から脱走しています";
 
-        public override string DifficultyDescription_AiAggression => "AIの攻撃性: {0}。";
+        //public override string DifficultyDescription_AiAggression => "AIの攻撃性: {0}。";
         public override string DifficultyDescription_BossSize => "ボスのサイズ: {0}。";
         public override string DifficultyDescription_BossEnterTime => "ボス登場時間: {0}。";
         public override string DifficultyDescription_AiEconomy => "AIの経済: {0}%。";
@@ -1849,9 +2017,9 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "距離: {0}";
         public override string Delivery_DeliveryTimeX => "配送時間: {0}";
         public override string Delivery_SenderMinimumCap => "送信者の最低限の上限";
-        public override string Delivery_RecieverMaximumCap => "受信者の最大上限";
+        public override string Delivery_ReceiverMaximumCap => "受信者の最大上限";
         public override string Delivery_ItemsReady => "準備ができているアイテム";
-        public override string Delivery_RecieverReady => "受信者が準備完了";
+        public override string Delivery_ReceiverReady => "受信者が準備完了";
         public override string Hud_ThisCity => "この都市";
         public override string Hud_RecieveingCity => "受信都市";
 
@@ -1943,7 +2111,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "タブを選択: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0}の優先度を上げる";
         public override string Tutorial_PlaceBuildOrder => "{0}の建設指示を出す";
-        public override string Tutorial_ZoomInput => "ズーム";
+        public override string ButtonAction_Zoom => "ズーム";
 
         public override string Tutorial_SelectACity => "都市を選択";
         public override string Tutorial_ZoomInWorkers => "労働者にズームイン";
@@ -2043,13 +2211,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "平地";
         public override string LandType_Water => "水域";
         public override string BuildingType_Wall => "壁";
-        public override string Delivery_AutoReciever_Description => "資源が最も少ない都市に送信されます";
+        public override string Delivery_AutoReceiver_Description => "資源が最も少ない都市に送信されます";
 
         public override string Hud_On => "オン";
         public override string Hud_Off => "オフ";
 
-        public override string Hud_Time_Seconds => "{0}秒";
-        public override string Hud_Time_Minutes => "{0}分";
+        public override string Hud_Time_XSeconds => "{0}秒";
+        public override string Hud_Time_XMinutes => "{0}分";
         public override string Hud_Undo => "元に戻す";
         public override string Hud_Redo => "やり直し";
 
@@ -2984,9 +3152,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// These symbols are needed to fit large numbers on the HUD,
         /// there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "百";
-        public override string EngineHud_SymbolFor1000 => "千";
-        public override string EngineHud_SymbolFor10000 => "万";
+        public override string Language_SymbolFor100 => "百";
+        public override string Language_SymbolFor1000 => "千";
+        public override string Language_SymbolFor10000 => "万";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress

@@ -13,12 +13,12 @@ namespace VikingEngine.DSSWars
     {
         public Diplomacy diplomacy;
         const int DefaultFactionCount = 64;
-        public GroupedResource[] factionResourceOverviews = new GroupedResource[DefaultFactionCount * CityResoureIndex.COUNT];
+        public GroupedResource[] factionResourceOverviews = new GroupedResource[DefaultFactionCount * CityResourceIndex.COUNT];
         public WorkPriority[] factionWork = new WorkPriority[DefaultFactionCount * WorkTemplate.COUNT];
 
         void init_FactionComponents()
         {
-            factionResourceOverviews = new GroupedResource[factions.Array.Length * CityResoureIndex.COUNT];
+            factionResourceOverviews = new GroupedResource[factions.Array.Length * CityResourceIndex.COUNT];
             factionWork = new WorkPriority[factions.Array.Length * WorkTemplate.COUNT];
             //diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
             diplomacy = new Diplomacy(factions.Array.Length);
@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars
 
         public void factionComponentsAdd(Faction faction)
         {
-            if (factions.Array.Length * CityResoureIndex.COUNT >= factionResourceOverviews.Length)
+            if (factions.Array.Length * CityResourceIndex.COUNT >= factionResourceOverviews.Length)
             {
                 int startIndex = factionResourceOverviews.Length;
                 Array.Resize(ref factionResourceOverviews, factionResourceOverviews.Length * 2);
@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars
 
         void initFaction(Faction faction)
         {
-            faction.resourceComponentStartIndex = faction.myIndex * CityResoureIndex.COUNT;
+            faction.resourceComponentStartIndex = faction.myIndex * CityResourceIndex.COUNT;
             
             runList(ResourceLib.MovableCityResource_Misc);
             runList(ResourceLib.MovableCityResource_Metals);
@@ -82,14 +82,14 @@ namespace VikingEngine.DSSWars
 
         public void writeStockPile(BinaryWriter w, Faction faction)
         {
-            for (int i = 0; i < CityResoureIndex.COUNT; i++)
+            for (int i = 0; i < CityResourceIndex.COUNT; i++)
             {
                 factionResourceOverviews[faction.resourceComponentStartIndex + i].writeStockPile(w);
             }
         }
         public void readStockPile(BinaryReader r, int subVersion, Faction faction)
         {
-            for (int i = 0; i < CityResoureIndex.COUNT; i++)
+            for (int i = 0; i < CityResourceIndex.COUNT; i++)
             {
                 factionResourceOverviews[faction.resourceComponentStartIndex + i].readStockPile(r, subVersion);
             }
@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars
 
                 if (resourceGroup == ResourceGroupType.NUM)
                 {
-                    for (int i = 0; i < CityResoureIndex.COUNT; i++)
+                    for (int i = 0; i < CityResourceIndex.COUNT; i++)
                     {
                         copy(i);
                     }
@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars
                         case CopyPasteOption.ToMemory:
                             if (player.stockPileCopy == null)
                             {
-                                player.stockPileCopy = new GroupedResource[CityResoureIndex.COUNT];
+                                player.stockPileCopy = new GroupedResource[CityResourceIndex.COUNT];
                             }
 
                             if (city == null)

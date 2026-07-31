@@ -863,14 +863,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void colorPalette(RichBoxContent content, Action<BlockHD> link/*, Action<BlockHD> replaceLink*/)
         {
-
+            
             var inUse = designer.materialsInUse(true, out ushort selected);
 
-            //if (selected != 0)
-            //{
-            //    ColorButton(BlockHD.ToColor(selected), layout, link, true);
-            //    new GuiSectionSeparator(layout);
-            //}
             content.newLine();
             HudLib.Label(content, DssRef.lang.Editor_ColorsInUseLabel);
             content.newLine();
@@ -1040,15 +1035,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             //new GuiIntSlider(SpriteName.NO_IMAGE, "B", blueProperty, RGBrange, false, layout);
             //new GuiSectionSeparator(layout);
 
-            colorPalette(content, designer.pickColorLink/*, designer.pickColorAndMaterialLink*/);
+            colorPalette(content, designer.pickColorLink);
 
             Refresh(content);
         }
 
         void selectMaterialMenu()
         {
-            //Color current = BlockHD.FilterColor(designer.SelectedMaterial.ma);
-
             RichBoxContent content = new RichBoxContent();
             HudLib.returnButton(content, menu, true, closeMenu);
 
@@ -1062,7 +1055,6 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.newLine();
                 content.Add(new ArtOption(material == designer.SelectedMaterial.material,
                     new List<AbsRichBoxMember> { new RbText(material.ToString()) }, new RbAction1Arg<MaterialProperty>(designer.pickMaterialLink, material, RbSoundType.Option)));
-
             }
 
             content.newParagraph();
@@ -1070,12 +1062,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.newLine();
             allLayersChkBox(content);
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(".Replace all") }, new RbAction(designer.replaceAllMaterials)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText( ".Replace all") }, new RbAction(designer.replaceAllMaterials)));
 
             Refresh(content);
         }
-
-        
 
         void colorTintButton(Color col, Color tint, bool currentCol, SpriteName icon, string text, RichBoxContent content, Action<BlockHD> link)
         {
@@ -1089,8 +1079,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 1, col) },
                 new RbAction1Arg<BlockHD>(link, new BlockHD(col)))
-                { SpaceAfter = 0, });
-            
+                { SpaceAfter = 0, });            
         }
 
         void appearanceMaterialsButton(bool bigButton, ushort col, string name, RichBoxContent content, Action<BlockHD> link)

@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Data
             switch (type)
             {
                 case GameObjectType.Army:
-                    WriteFactionPointer(w, gameObject.GetFaction());
+                    WriteFactionPointer(w, gameObject.pfaction.GetFaction());
                     w.Write((ushort)gameObject.myIndex);
                     break;
 
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Data
                     break;
 
                 case GameObjectType.Faction:
-                    WriteFactionPointer(w, gameObject.GetFaction());
+                    WriteFactionPointer(w, gameObject.pfaction.GetFaction());
                     break;
             }
         }

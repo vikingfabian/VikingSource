@@ -124,18 +124,22 @@ namespace VikingEngine.DSSWars.Conscript
             var me = this;
 
             int avaialble = allItems(unitsNeeded, CommitOption.Preview);
+            totalMen = perUnitCount.menPerUnit * unitsNeeded;
 
             switch (commit)
             {
                 case CommitOption.Commit:
-                    unitsCollected = avaialble;
-
-                    if (avaialble >= unitsNeeded)
+                    if (profile.specialization != SpecializationType.CityGuard || city.AvailableGuardHousing() >= totalMen)
                     {
-                        allItems(unitsNeeded, commit);
-                        completed = true;
+                        unitsCollected = avaialble;
+
+                        if (avaialble >= unitsNeeded)
+                        {
+                            allItems(unitsNeeded, commit);
+                            completed = true;
+                        }
+                        //unitsCollected += avaialble;
                     }
-                    //unitsCollected += avaialble;
                     break;
                 case CommitOption.Revert:
                     allItems(unitsCollected, commit);
@@ -143,7 +147,7 @@ namespace VikingEngine.DSSWars.Conscript
                     completed = true;
                     break;
             }
-            totalMen = perUnitCount.menPerUnit * unitsNeeded;
+            
             return avaialble;
 
             //--
@@ -227,8 +231,8 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (requireMaxFood)
             {
-                var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
-                food = res_food.amount >= res_food.stockPileLimit - 50;
+                var res_food = city.GetRefGroupedResource(EntityComponent.CityResourceIndex.food);
+                food = res_food.amount >= res_food.MaxLimit() - 50;
             }
             else
             {

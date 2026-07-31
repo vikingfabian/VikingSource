@@ -12,6 +12,7 @@ namespace VikingEngine.Network
         public const string NameKey = "NAME";
 
         public bool MatchingVersion;
+        public string Version;
         public bool alive = true;
         public string name;
         public LobbyPublicity lobbyPublicity;
@@ -20,6 +21,7 @@ namespace VikingEngine.Network
         public const string LobbyAliveDataKey = "ALIVE";
         protected const string LobbyPublicityDataKey = "PUBLIC";
         protected const string VersionDataKey = "VER";
+        
 
         abstract public string[] GetKeys();
         public string[] Values;

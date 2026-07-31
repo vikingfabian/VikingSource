@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -28,9 +30,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public ArmyCollection(Faction faction)
+        public ArmyCollection(PFaction faction)
         {
-            this.factionIndex = faction.myIndex;
+            this.pfaction = pfaction;
         }
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
@@ -80,13 +82,13 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
             //args.content.Add(new RbSeperationLine());
-            new ArmyMenu(args.player, this, args.content);
+            new MapObjMenu(args.player, this, args.content);
         }
 
         void removeClick(AbsMapObject obj)
         {
             remove(obj.GetArmy());
-            obj.GetPlayer().GetLocalPlayer().hud.needRefresh = true;
+            obj.pfaction.GetPlayer().GetLocalPlayer().hud.needRefresh = true;
         }
 
         void remove(Army army)
@@ -109,7 +111,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void selectClick(AbsMapObject obj)
         {            
-            obj.GetPlayer().GetLocalPlayer().gameControls.mapSelect(obj);
+            obj.pfaction.GetPlayer().GetLocalPlayer().gameControls.mapSelect(obj);
 
             DeleteMembers(false);
         }
@@ -149,7 +151,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override bool aliveAndBelongTo(int faction)
+        public override bool aliveAndBelongTo(PFaction faction)
         {
             refreshAlive();
 
@@ -228,7 +230,7 @@ namespace VikingEngine.DSSWars.GameObject
                     obj.army.disbandArmyAction();
                 }
 
-                objects[0].army.GetPlayer().GetLocalPlayer().gameControls.clearSelection();
+                objects[0].army.pfaction.GetPlayer().GetLocalPlayer().gameControls.clearSelection();
 
                 DeleteMembers(false);
             }
