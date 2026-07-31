@@ -3,6 +3,7 @@ Change log:
 * Animal habitats on heatmap, and tab names
 * Rebalanced animal placement
 * compressed headbar Ui
+* improved pony model
 
 Performance
 * Removed all unessesary faction references
