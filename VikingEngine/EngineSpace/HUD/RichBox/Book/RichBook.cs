@@ -9,12 +9,7 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.EngineSpace.HUD.RichBox.Book
 {
-    //abstract class AbsRichBookMember
-    //{ 
-
-    //}
-
-    //class Txt
+    
 
     struct RichBookSettings
     {
@@ -30,7 +25,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Book
             "<p>new paragrapth",
             "<*>bullet point",
             "<h2>subtitle",
-            "<br>text <img=pinIcon> more text",
+            "<br>text <img=InterfaceIconCamera> more text",
         };
        
         public void GenerateUI(RichBoxContent content, string[] inputLines, RichBookSettings settings)
@@ -133,10 +128,5 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Book
             
         }
 
-        //    public RichBook(params AbsRichBookMember[] array)
-        //        :base(array.Length)
-        //    { 
-        //        AddRange(array);
-        //    }
     }
 }
