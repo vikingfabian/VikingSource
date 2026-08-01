@@ -8,7 +8,6 @@ KNOWN ISSUES
 
 ##ICONS TODO
 * gray rounded button
-* join game icon
 
 #MOUNTED TODO
 * 

@@ -46,6 +46,10 @@ using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars
 {
+    //class TestClass
+    //{
+    //    string value = "mu";
+    //}
     class MainMenuState : AbsDssState
     {
         static bool FirstTimeLoad = true;
@@ -163,6 +167,21 @@ namespace VikingEngine.DSSWars
             }
 
 #if DEBUG
+            
+            //SpottedArray<TestClass> list = new SpottedArray<TestClass>();
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    list.Add(new TestClass());
+            //}
+
+            //list.PullIndex_Safe(1);
+
+            //list.RemoveAt(3);
+
+            //list.Add(new TestClass());
+            //list.Add(new TestClass());
+
             //new TimedAction0ArgTrigger(collectReports, 600);
 
             //MemoryStreamHandler memory = new MemoryStreamHandler();
