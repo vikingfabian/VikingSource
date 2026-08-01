@@ -2142,12 +2142,15 @@ namespace VikingEngine
                 add(SpriteName.cmdClientPointerMetallic);
 
                 add(SpriteName.WarsHudIconMultiplayer);
+                
                 add(SpriteName.WarsHudIconClient);
                 add(SpriteName.WarsHudIconHost);
                 add(SpriteName.WarsHudIconPlayerCount);
 
                 add(SpriteName.WarsHudIconBlockedPlayer);
                 add(SpriteName.WarsRelationMobilizing);
+                add(SpriteName.WarsHudIconMultiplayerJoin, 2, 1);
+
             }
 
 
@@ -3009,7 +3012,8 @@ namespace VikingEngine
                     currentIndex += 4;
                     addWithSizeDef(SpriteName.cmdTutVideo_BoardTile, currentIndex, 48, 48);
 
-                    
+                    addWithSizeDef(SpriteName.WarsTextureGroupSquare, currentIndex, 64, 48);
+                    addWithSizeDef(SpriteName.WarsTextureGroupSquareMelee, currentIndex, 64, 48);
                 }
             }
 

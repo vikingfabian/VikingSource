@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         LoadingState loadingState = LoadingState.None;
         public WorldData2 world;
-        Grid2D<Tile2> dataGrid;
+        Grid2D_L<Tile2> dataGrid;
         List<Task> tasks = new List<Task>(64);
         List<Vector2> connectPoints = null;
         EngineSpace.Maths.SimplexNoise2D noiseMap;
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             // Create a temporary grid to store the smoothed results
             // We must read from 'dataGrid' and write to 'tempGrid' to avoid race conditions
-            Grid2D<Tile2> tempGrid = new Grid2D<Tile2>(dataGrid.Size);
+            Grid2D_L<Tile2> tempGrid = new Grid2D_L<Tile2>(dataGrid.Size);
 
             // Thresholds
             float heightDiffThreshold = 0.2f; // How "bumpy" it needs to be to trigger smoothing
@@ -137,13 +137,13 @@ namespace VikingEngine.DSSWars.Map.Map2
             {
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
-                    float currentH = dataGrid.array[x, y].groundY;
+                    float currentH = dataGrid.Get(x, y).groundY;
 
                     // CONSTRAINT 1: Value Range Check
                     // If value is too low (water) or too high (mountain peaks), skip it.
                     if (currentH <= minHeight || currentH > maxHeight)
                     {
-                        tempGrid.array[x, y] = dataGrid.array[x, y];
+                        tempGrid.Set(x, y, dataGrid.Get(x, y));
                         continue;
                     }
 
@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                             // Boundary check
                             if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
                             {
-                                float neighborH = dataGrid.array[nx, ny].groundY;
+                                float neighborH = dataGrid.Get(nx, ny).groundY;
 
                                 // CONSTRAINT 2: Difference Check
                                 // If ANY neighbor is significantly different, we flag this tile for smoothing
@@ -180,12 +180,12 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         // "Even them out" -> Average of all neighbors
                         float average = totalHeight / count;
-                        tempGrid.array[x, y] = new Tile2 { groundY = average };
+                        tempGrid.Set(x, y, new Tile2 { groundY = average });
                     }
                     else
                     {
                         // If it's already smooth enough, keep original value
-                        tempGrid.array[x, y] = dataGrid.array[x, y];
+                        tempGrid.Set(x, y, dataGrid.Get(x, y));
                     }
                 }
             });
@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Map.Map2
        
         void scaleUp4()
         {
-            Grid2D<Tile2> largeGrid = new Grid2D<Tile2>(dataGrid.Size * 2);
+            Grid2D_L<Tile2> largeGrid = new Grid2D_L<Tile2>(dataGrid.Size * 2);
 
             // Parallel.For handles the splitting automatically.
             // We iterate over the X-axis in parallel, and let each thread handle a full column (Y-loop).
@@ -229,19 +229,19 @@ namespace VikingEngine.DSSWars.Map.Map2
                     int nextX = (x + 1 < dataGrid.Size.X) ? x + 1 : x;
                     int nextY = (y + 1 < dataGrid.Size.Y) ? y + 1 : y;
 
-                    float hTL = dataGrid.array[x, y].groundY;
-                    float hTR = dataGrid.array[nextX, y].groundY;
-                    float hBL = dataGrid.array[x, nextY].groundY;
-                    float hBR = dataGrid.array[nextX, nextY].groundY;
+                    float hTL = dataGrid.Get(x, y).groundY;
+                    float hTR = dataGrid.Get(nextX, y).groundY;
+                    float hBL = dataGrid.Get(x, nextY).groundY;
+                    float hBR = dataGrid.Get(nextX, nextY).groundY;
 
                     float avgTop = (hTL + hTR) * 0.5f;
                     float avgLeft = (hTL + hBL) * 0.5f;
                     float avgCenter = (hTL + hTR + hBL + hBR) * 0.25f;
 
-                    largeGrid.array[lgX, lgY] = new Tile2 { groundY = hTL };
-                    largeGrid.array[lgX + 1, lgY] = new Tile2 { groundY = avgTop };
-                    largeGrid.array[lgX, lgY + 1] = new Tile2 { groundY = avgLeft };
-                    largeGrid.array[lgX + 1, lgY + 1] = new Tile2 { groundY = avgCenter };
+                    largeGrid.Set(lgX, lgY, new Tile2 { groundY = hTL });
+                    largeGrid.Set(lgX + 1, lgY, new Tile2 { groundY = avgTop });
+                    largeGrid.Set(lgX, lgY + 1, new Tile2 { groundY = avgLeft });
+                    largeGrid.Set(lgX + 1, lgY + 1, new Tile2 { groundY = avgCenter });
                 }
             });
 
@@ -250,7 +250,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
         void scaleUp8()
         {
-            Grid2D<Tile2> largeGrid = new Grid2D<Tile2>(dataGrid.Size * 2);
+            Grid2D_L<Tile2> largeGrid = new Grid2D_L<Tile2>(dataGrid.Size * 2);
 
             Parallel.For(0, dataGrid.Size.X, x =>
             {
@@ -272,10 +272,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                     float avgCenter = (sTL + sTR + sBL + sBR) * 0.25f;
 
                     // 3. Assign to Large Grid
-                    largeGrid.array[lgX, lgY] = new Tile2 { groundY = sTL };
-                    largeGrid.array[lgX + 1, lgY] = new Tile2 { groundY = avgTop };
-                    largeGrid.array[lgX, lgY + 1] = new Tile2 { groundY = avgLeft };
-                    largeGrid.array[lgX + 1, lgY + 1] = new Tile2 { groundY = avgCenter };
+                    largeGrid.Set(lgX, lgY, new Tile2 { groundY = sTL });
+                    largeGrid.Set(lgX + 1, lgY, new Tile2 { groundY = avgTop });
+                    largeGrid.Set(lgX, lgY + 1, new Tile2 { groundY = avgLeft });
+                    largeGrid.Set(lgX + 1, lgY + 1, new Tile2 { groundY = avgCenter });
                 }
             });
 
@@ -301,7 +301,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     // Check bounds for neighbors
                     if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
                     {
-                        totalHeight += dataGrid.array[nx, ny].groundY;
+                        totalHeight += dataGrid.Get(nx, ny).groundY;
                         count++;
                     }
                 }

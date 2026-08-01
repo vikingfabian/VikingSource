@@ -2456,6 +2456,7 @@ namespace VikingEngine
         WarsHudIconHandicap,
         WarsHudIconDistanceOnMap,
         WarsHudIconMultiplayer,
+        WarsHudIconMultiplayerJoin,
         WarsHudIconClient,
         WarsHudIconHost,
         WarsHudIconPlayerCount,
@@ -2956,6 +2957,10 @@ namespace VikingEngine
         WarsFlagType_FlagLarge,
         WarsFlagType_Streamer,
         WarsFlagType_Triangle,
+
+        WarsTextureGroupSquare,
+        WarsTextureGroupSquareMelee,
+
 
         WarsResource_PaddedArmor,
         WarsResource_HeavyPaddedArmor,
