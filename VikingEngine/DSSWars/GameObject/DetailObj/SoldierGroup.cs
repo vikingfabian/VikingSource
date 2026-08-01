@@ -308,10 +308,10 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             var wState = state;
             w.Write((byte)wState);
-            Debug.WriteCheck(w);
+            //Debug.WriteCheck(w);
  
             writeGameState(w, wState <= GroupState.FindArmyPlacement);
-            Debug.WriteCheck(w);
+            //Debug.WriteCheck(w);
 
             switch (wState)
             {
@@ -348,10 +348,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             GroupState rState = (GroupState)r.ReadByte();
             state = rState;
-            Debug.ReadCheck(r);
+            //Debug.ReadCheck(r);
 
             readGameState(tArmy, r, int.MaxValue, needInit, rState <= GroupState.FindArmyPlacement, null);
-            Debug.ReadCheck(r);
+            //Debug.ReadCheck(r);
             setGroundY();
             
 

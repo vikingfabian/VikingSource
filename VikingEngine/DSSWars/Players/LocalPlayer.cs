@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Players
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
-        //public int allyCount = 0;
+        
         public int warCount = 0;
         public int diplomaticPoints_softMax;
 
@@ -351,25 +351,6 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
-        //public void initPlayerToPlayer(int playerindex, int numPlayers)
-        //{
-
-        //    for (int i = 0; i < numPlayers; i++)
-        //    {
-        //        if (i != playerindex)
-        //        {
-        //            if (toPlayerDiplomacies[i] == null)
-        //            {
-        //                var PtoP = new PlayerToPlayerDiplomacy()
-        //                { index = i, };
-
-        //                toPlayerDiplomacies[i] = PtoP;
-        //                var otherP = DssRef.state.localPlayers[i].toPlayerDiplomacies[playerindex] = PtoP;
-        //            }
-        //        }
-        //    }
-        //}
-
         public void NetUpdate(bool bSlowUpdate)
         {
             {
@@ -398,34 +379,21 @@ namespace VikingEngine.DSSWars.Players
 
             statistics.writeGameState(w);
 
-            //if (toPlayerDiplomacies == null)
-            //{
-            //    w.Write(ushort.MinValue);
-            //}
-            //else
-            //{
-                foreach (var kv in toPlayerDiplomacies)//for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
-                {
-                    //var tp = toPlayerDiplomacies[i];
-                    //if (kv.Value != null)
-                    //{
-                        //w.Write((ushort)kv.Key);
-                kv.Key.write(w);        
+
+            foreach (var kv in toPlayerDiplomacies)
+            {
+                kv.Key.write(w);
                 kv.Value.writeGameState(w);
-                    //}
-                }
-                w.Write(ushort.MaxValue);
-            //}
+            }
+            w.Write(ushort.MaxValue);
 
             automation.writeGameState(w);
 
-            w.Write(int.MinValue);//none
+            w.Write(int.MinValue);
 
             tutorial_writeGameState(w);
             orders.writeGameState(w);
 
-            //w.Write(viewCityTagsOnMap);
-            //w.Write(viewArmyTagsOnMap);
             cityHudSettings.write(w);   
             armyHudSettings.write(w);
 
@@ -785,7 +753,29 @@ namespace VikingEngine.DSSWars.Players
 
         public void userUpdate(bool cityUpdate)
         {
+            gameControls.update();
 
+            debugUpdate();
+
+            mapLayersManager.Update();
+            playerData.view.Camera.RecalculateMatrices();
+
+            if (cityUpdate)
+            {
+                updateMapOverlays();
+                cityBorders.update(this);
+            }
+
+            updatePlayer();
+        }
+
+        public void uiUpdateOnly()
+        { 
+            gameControls.UiUpdateOnly();
+        }
+
+        void debugUpdate()
+        {
 #if DEBUG
             if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
             {
@@ -793,11 +783,8 @@ namespace VikingEngine.DSSWars.Players
                 c.text(gameControls.map.tilePosition.ToString());
                 hud.messages.Add(c);
             }
-#endif 
-            gameControls.update();
 
-            if (PlatformSettings.DevBuild)
-            {
+            
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
                 {
                     //var armiesC = faction.armies.counter();
@@ -842,7 +829,7 @@ namespace VikingEngine.DSSWars.Players
                     //Ref.steam.StopRecording();
                 }
 
-                    if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
+                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
                     //battleLineUpTest2(false);
@@ -857,30 +844,12 @@ namespace VikingEngine.DSSWars.Players
                     obj?.AddDebugTag();
                 }
 
-               
-            }
+
             if (Input.Keyboard.KeyDownEvent(Keys.B) && Input.Keyboard.Ctrl)
             {
                 DssRef.state.menuSystem.debugMenu();
             }
-
-            mapLayersManager.Update();
-            playerData.view.Camera.RecalculateMatrices();
-
-
-            if (cityUpdate)
-            {
-                updateMapOverlays();
-                cityBorders.update(this);
-            }
-
-            //if (Ref.peRnd.Chance(0.1))
-            //{
-
-            //}
-            
-            
-            updatePlayer();
+#endif 
         }
 
 

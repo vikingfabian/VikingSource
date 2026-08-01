@@ -99,10 +99,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void update()
         {
-            if (Input.Keyboard.Ctrl)
-            {
-                lib.DoNothing();
-            }
+            //if (Input.Keyboard.Ctrl)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (player.hud.popMenu != null)
             {
@@ -363,6 +363,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             gameSpeedInput();
 
             updateObjectTabbing();
+        }
+
+        public void UiUpdateOnly()
+        {
+            player.hud.update(out _, false);
         }
 
         public void CancelBuildMode()

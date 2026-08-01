@@ -509,7 +509,7 @@ namespace VikingEngine.DSSWars
 
         public override void Time_Update(float time)
         {
-            bool bUserUpdate = true;
+            bool bUserMapUpdate = true;
 
             base.Time_Update(time);
             Sound.SoundStackManager.Update();
@@ -540,7 +540,7 @@ namespace VikingEngine.DSSWars
             if (pauseMenuUpdate())
             {
                 setPlayerNetState(PlayerNetState.InMenu);
-                bUserUpdate = false;
+                bUserMapUpdate = false;
                 if (Ref.isPaused)
                 {
                     return;
@@ -562,14 +562,7 @@ namespace VikingEngine.DSSWars
                 {
                     foreach (var m in DssRef.world.cities)
                     {
-                        //if (m.IsNetHosted)
-                        //{
-                            m.update();
-                        //}
-                        //else
-                        //{
-                        //    m.update_client();
-                        //}
+                        m.update();
                     }
 
                     var factionsC = DssRef.world.factions.counter();
@@ -598,24 +591,21 @@ namespace VikingEngine.DSSWars
                 }
                 
             }
-            else
-            {
-                //if (host)
+            else //PAUSE UPDATE
+            {   
+                if (isReady)
                 {
-                    if (isReady)
+                    foreach (var m in DssRef.world.cities)
                     {
-                        foreach (var m in DssRef.world.cities)
-                        {
-                            m.PauseUpdate();
-                        }
-
-                        var factions = DssRef.world.factions.counter();
-                        while (factions.Next())
-                        {
-                            factions.sel.PauseUpdate();
-                        }
+                        m.PauseUpdate();
                     }
-                }
+
+                    var factions = DssRef.world.factions.counter();
+                    while (factions.Next())
+                    {
+                        factions.sel.PauseUpdate();
+                    }
+                }                
             }
 
             switch (processTime.update())
@@ -635,29 +625,17 @@ namespace VikingEngine.DSSWars
                     }
                     break;
             }
-            //if (DssRef.time.halfSecond)
-            //{
-            //    overviewMap.HalfSecondUpdate();
-            //}
-            //if (subTileReloadTimer.Update())
-            //{
-            //    if (detailMap != null)
-            //    {
-            //        detailMap.oneSecondUpdate = true;
-            //    }
-             
-            //    if (overviewMap != null)
-            //    {
-            //        overviewMap.bRefreshTimer = true;
-            //    }
-            //}
-
+            
             overviewMap.update();
 
-            if (bUserUpdate)
-            {
-                updateUserInput();
-            }
+            //if (bUserUpdate)
+            //{
+                updateUserInput(bUserMapUpdate);
+            //}
+            //else
+            //{ 
+                
+            //}
 
             Engine.ParticleHandler.Update(time);
         }
@@ -677,23 +655,30 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        protected void updateUserInput()
+        protected void updateUserInput(bool bUserMapUpdate)
         {
             if (localPlayers != null)
             {
                 foreach (var local in localPlayers)
                 {
-                    local.userUpdate(true);
-                    
-                    if (local.gameControls.input.Menu.DownEvent)
+                    if (bUserMapUpdate)
                     {
-                        menuSystem.pauseMenu();
-                    }
+                        local.userUpdate(true);
 
-                    if (local.playerData.LostController)
+                        if (local.gameControls.input.Menu.DownEvent)
+                        {
+                            menuSystem.pauseMenu();
+                        }
+
+                        if (local.playerData.LostController)
+                        {
+                            local.playerData.IgnoreLostController = true;
+                            menuSystem.controllerDisconnectMenu(); //todo lost menu
+                        }
+                    }
+                    else
                     {
-                        local.playerData.IgnoreLostController = true;
-                        menuSystem.controllerDisconnectMenu(); //todo lost menu
+                        local.uiUpdateOnly();
                     }
 
                     remotePlayersCounter.Reset();

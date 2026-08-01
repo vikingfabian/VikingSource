@@ -3,6 +3,12 @@ Change log:
 * Animal habitats on heatmap, and tab names
 * Rebalanced animal placement
 * compressed headbar Ui
+* some ui polish
+* book press increased build level 1 > 2
+
+Multiplayer
+* improved update during pause menu (multiplayer)
+* compressed some net packets
 
 Performance
 * Removed all unessesary faction references
