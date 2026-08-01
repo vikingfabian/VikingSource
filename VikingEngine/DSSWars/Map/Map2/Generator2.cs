@@ -824,7 +824,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
         }
 
-        void tileColor(ref Tile2 tile)
+        void tileColor(ref SubTile tile)
         {
             if (tile.groundY > Height_WaterBottom)
             {
