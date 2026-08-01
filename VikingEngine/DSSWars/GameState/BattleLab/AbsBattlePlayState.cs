@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 return;
             }
 
-            if (pauseMenuUpdate())
+            if (pauseMenuUpdate(out _))
             {
                 return;
             }

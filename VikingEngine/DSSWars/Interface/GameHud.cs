@@ -208,11 +208,10 @@ namespace VikingEngine.DSSWars.Interface
                 mouseOverHud |= miniMapMouseOver;
             }
 
+            refresh = refreshTimer.Update();
+
             if (allowInput)
             {
-                
-                refresh = refreshTimer.Update();
-
                 refresh |= player.gameControls.map.selection.isNew ||
                     player.gameControls.map.hover.isNew ||
                     SteamWrapping.SteamInputManager.InputLayerChange ||
@@ -276,19 +275,7 @@ namespace VikingEngine.DSSWars.Interface
 
 
 
-                if (refresh)
-                {
-                    //Debug.Log("game hud -refresh");
-                    refreshTimer.Reset();
-                    head?.refreshUpdate(player);
-                    headOptions?.refreshUpdate();
-                    pinHud?.refreshUpdate(player);
-                    updateMenuDisplays(true);
-                    factionMenu.refreshUpdate(player);
-                    inputHelp.refreshUpdate(player);
-
-                    needRefresh = false;
-                }
+                
 
 
 
@@ -296,9 +283,22 @@ namespace VikingEngine.DSSWars.Interface
 
                 
             }
-            else
+            //else
+            //{
+            //    refresh = false;
+            //}
+            if (refresh)
             {
-                refresh = false;
+                //Debug.Log("game hud -refresh");
+                refreshTimer.Reset();
+                head?.refreshUpdate(player);
+                headOptions?.refreshUpdate();
+                pinHud?.refreshUpdate(player);
+                updateMenuDisplays(true);
+                factionMenu.refreshUpdate(player);
+                inputHelp.refreshUpdate(player);
+
+                needRefresh = false;
             }
         }
 

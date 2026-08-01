@@ -763,7 +763,7 @@ namespace VikingEngine.DSSWars
 
                     RichBoxContent buttonContent = new RichBoxContent();
                     buttonContent.Add(new RbBeginTitle(1));
-                    buttonContent.Add(new RbImage(SpriteName.WarsMapFilterMinimap));
+                    buttonContent.Add(new RbImage(SpriteName.WarsHudIconMultiplayerJoin));
                     buttonContent.Add(new RbSpace());
                     buttonContent.Add(new RbText(DssRef.lang.Network_Join, HudLib.TitleColor_Head2, LoadedFont.Bold));
 
