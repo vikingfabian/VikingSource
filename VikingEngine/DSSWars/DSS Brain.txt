@@ -1,6 +1,6 @@
 
 Change log:
-* 
+* Cubic far group models
 
 * Using linear arrays for the map, and voxel data
 

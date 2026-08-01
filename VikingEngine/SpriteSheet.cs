@@ -3012,7 +3012,8 @@ namespace VikingEngine
                     currentIndex += 4;
                     addWithSizeDef(SpriteName.cmdTutVideo_BoardTile, currentIndex, 48, 48);
 
-                    
+                    addWithSizeDef(SpriteName.WarsTextureGroupSquare, currentIndex, 64, 48);
+                    addWithSizeDef(SpriteName.WarsTextureGroupSquareMelee, currentIndex, 64, 48);
                 }
             }
 
