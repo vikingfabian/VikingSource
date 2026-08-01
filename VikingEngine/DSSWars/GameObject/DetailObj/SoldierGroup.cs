@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Net;
@@ -307,10 +308,10 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             var wState = state;
             w.Write((byte)wState);
-            Debug.WriteCheck(w);
+            //Debug.WriteCheck(w);
  
             writeGameState(w, wState <= GroupState.FindArmyPlacement);
-            Debug.WriteCheck(w);
+            //Debug.WriteCheck(w);
 
             switch (wState)
             {
@@ -347,10 +348,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             GroupState rState = (GroupState)r.ReadByte();
             state = rState;
-            Debug.ReadCheck(r);
+            //Debug.ReadCheck(r);
 
             readGameState(tArmy, r, int.MaxValue, needInit, rState <= GroupState.FindArmyPlacement, null);
-            Debug.ReadCheck(r);
+            //Debug.ReadCheck(r);
             setGroundY();
             
 
@@ -1602,7 +1603,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 //    args.content.Add(button);
                 //}
-                ArmyMenu.ColumnWidth(args.content, tArmy);
+                MapObjMenu.ColumnWidth(args.content, tArmy);
 
                 args.content.newParagraph();
 
@@ -1657,7 +1658,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (soldierConscript.conscript.weapon == ItemResourceType.Settler)
             {
-                ArmyMenu.settlerButton(args.player, args.content, this);
+                MapObjMenu.settlerButton(args.player, args.content, this);
             }
         }
 

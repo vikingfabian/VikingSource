@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.Conscript
                     
         }
 
-        public UnitFilterType filterType()
+        public UnitNameType filterType()
         {
             switch (conscript.specialization)
             {
@@ -111,71 +111,71 @@ namespace VikingEngine.DSSWars.Conscript
                     switch (conscript.weapon)
                     {
                         case ItemResourceType.Settler:
-                            return UnitFilterType.Settler;
+                            return UnitNameType.Settler;
                         case ItemResourceType.SharpStick:
-                            return UnitFilterType.SharpStick;
+                            return UnitNameType.SharpStick;
 
                         case ItemResourceType.BronzeSword:
                         case ItemResourceType.ShortSword:
                         case ItemResourceType.Sword:
-                            return UnitFilterType.Sword;
+                            return UnitNameType.Sword;
                         case ItemResourceType.LongSword:
-                            return UnitFilterType.LongSword;
+                            return UnitNameType.LongSword;
 
                         case ItemResourceType.Pike:
-                            return UnitFilterType.Pike;
+                            return UnitNameType.Pike;
                         case ItemResourceType.HandSpear:
-                            return UnitFilterType.Spear;
+                            return UnitNameType.Spear;
 
                         case ItemResourceType.Warhammer:
-                            return UnitFilterType.Warhammer;
+                            return UnitNameType.Warhammer;
                         case ItemResourceType.TwoHandSword:
-                            return UnitFilterType.TwohandSword;
+                            return UnitNameType.TwohandSword;
                         //case ItemResourceType.KnightsLance:
                         //    return UnitFilterType.Knight;
                         case ItemResourceType.MithrilSword:
-                            return UnitFilterType.MithrilKnight;
+                            return UnitNameType.MithrilKnight;
 
                         case ItemResourceType.SlingShot:
                         case ItemResourceType.ThrowingSpear:
-                            return UnitFilterType.Skirmisher;
+                            return UnitNameType.Skirmisher;
                         case ItemResourceType.Bow:
                         case ItemResourceType.LongBow:
-                            return UnitFilterType.Bow;
+                            return UnitNameType.Bow;
 
                         case ItemResourceType.Crossbow:
-                            return UnitFilterType.CrossBow;
+                            return UnitNameType.CrossBow;
                         case ItemResourceType.MithrilBow:
-                            return UnitFilterType.MithrilBow;
+                            return UnitNameType.MithrilBow;
 
                         case ItemResourceType.HandCannon:
                         case ItemResourceType.Rifle:
-                            return UnitFilterType.Rifle;
+                            return UnitNameType.Rifle;
                         case ItemResourceType.HandCulverin:
                         case ItemResourceType.Blunderbuss:
-                            return UnitFilterType.Shotgun;
+                            return UnitNameType.Shotgun;
 
                         case ItemResourceType.Ballista:
-                            return UnitFilterType.Ballista;
+                            return UnitNameType.Ballista;
                         case ItemResourceType.Manuballista:
-                            return UnitFilterType.ManuBallista;
+                            return UnitNameType.ManuBallista;
                         case ItemResourceType.Catapult:
-                            return UnitFilterType.Catapult;
+                            return UnitNameType.Catapult;
                         case ItemResourceType.SiegeCannonBronze:
-                            return UnitFilterType.SiegeCannonBronze;
+                            return UnitNameType.SiegeCannonBronze;
                         case ItemResourceType.ManCannonBronze:
-                            return UnitFilterType.ManCannonBronze;
+                            return UnitNameType.ManCannonBronze;
                         case ItemResourceType.SiegeCannonIron:
-                            return UnitFilterType.SiegeCannonIron;
+                            return UnitNameType.SiegeCannonIron;
                         case ItemResourceType.ManCannonIron:
-                            return UnitFilterType.ManCannonIron;
+                            return UnitNameType.ManCannonIron;
 
                         case ItemResourceType.RoseWarrior_dog:
-                            return UnitFilterType.RoseWarrior;
+                            return UnitNameType.RoseWarrior;
                         case ItemResourceType.RoseWarrior_soldier:
-                            return UnitFilterType.RoseWarrior;
+                            return UnitNameType.RoseWarrior;
                         case ItemResourceType.RoseWarrior_tank:
-                            return UnitFilterType.RoseWarrior;
+                            return UnitNameType.RoseWarrior;
 
 
                         default:
@@ -184,13 +184,13 @@ namespace VikingEngine.DSSWars.Conscript
                     }
 
                 case SpecializationType.Green:
-                    return UnitFilterType.GreenSoldier;
+                    return UnitNameType.GreenSoldier;
                 case SpecializationType.HonorGuard:
-                    return UnitFilterType.HonourGuard;
+                    return UnitNameType.HonourGuard;
                 case SpecializationType.Viking:
-                    return UnitFilterType.Viking;
+                    return UnitNameType.Viking;
                 case SpecializationType.DarkLord:
-                    return UnitFilterType.DarkLord;
+                    return UnitNameType.DarkLord;
             }
         }
 
