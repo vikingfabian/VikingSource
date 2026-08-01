@@ -1,6 +1,6 @@
 
 Change log:
-* 
+* Black market limit: I added 500 as limit, it grows with 50 for each city capture
 
 
 

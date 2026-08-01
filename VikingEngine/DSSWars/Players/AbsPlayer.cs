@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,6 +37,8 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerProfile profile;
         public Texture2D flagTexture;
+
+        
 
         //public Faction pfaction.GetFaction();
         public AbsPlayer()
@@ -127,10 +130,12 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
-
+            
         }
-
-        
+        virtual public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        {
+            
+        }
 
         protected void readAiPlayerGameState(BinaryReader r, int subversion)
         {
@@ -148,20 +153,6 @@ namespace VikingEngine.DSSWars.Players
                 
             }
         }
-
-        virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
-        {
-
-        }
-
-        //virtual public void writeNet(System.IO.BinaryWriter w)
-        //{
-
-        //}
-        //virtual public void readNet(System.IO.BinaryReader r)
-        //{
-
-        //}
 
         virtual public void oneSecUpdate()
         { }
