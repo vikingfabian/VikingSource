@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         public float flatness;
         public bool noise;
         public float noiseStrength;
+        public double quadChance;
 
         public void refreshRadius()
         {
