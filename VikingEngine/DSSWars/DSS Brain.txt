@@ -1,8 +1,9 @@
 
 Change log:
-* 
-
-
+* look at weird attack trigger in file
+* friendly visar public i session list
+* population limit on conscript dont work
+* case PacketType.DssDeliverStatusReply: //Is sending when it shouldnt, is auto?
 
 KNOWN ISSUES
 

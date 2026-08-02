@@ -311,9 +311,10 @@ namespace VikingEngine.DSSWars.GameObject
 #if DEBUG
             if (cityResourceIndex < 0)
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
 #endif
+            ItemPropertyColl.CityIndex(type);
             return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
 

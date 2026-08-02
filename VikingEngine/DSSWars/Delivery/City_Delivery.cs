@@ -339,7 +339,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    city.GetRefGroupedResource(resourceType).readNet(packet.r);
+                    //Crashes on men
+                    //city.GetGroupedResource(resourceType).readNet(packet.r);
                 }
             }
         }
