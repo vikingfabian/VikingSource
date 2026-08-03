@@ -55,8 +55,13 @@ namespace VikingEngine.DSSWars.Interface
                 flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
                 menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
                 flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 8));
+                
+                Graphics.Image flagBgTex = new Image(SpriteName.WhiteArea_LFtiles, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer +1, false);
+                flagBgTex.Color = player.profile.flag.col0_Main;
+
                 flagBgArea.Position.Y += (flagBgArea.Height - flagBgArea.Width) * 0.5f;
                 flagBgArea.Height = flagBgArea.Width;
+                flagBgArea.AddRadius(-2);
 
                 flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
                 RefreshFlag(player);
