@@ -1,12 +1,6 @@
 
 Change log:
-* Fixed: ally war share was broken
-* War manager: bots must have at least 4 in army strength to declare war
-* fixed: population limit on conscript dont work
-* resource change rate is shown per minute
-
-* friendly visar public i session list
-* case PacketType.DssDeliverStatusReply: //Is sending when it shouldnt, is auto?
+* 
 
 
 KNOWN ISSUES

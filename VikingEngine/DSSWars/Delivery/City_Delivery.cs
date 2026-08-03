@@ -309,6 +309,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetWriteDeliveryStatusReply(ReceivedPacket packet, City city, ItemResourceType resourceType)
         {
+#if DEBUG
+            throw new Exception();
+#endif
             var w = Ref.netSession.BeginWritingPacket(PacketType.DssDeliverStatusReply, PacketReliability.Unrelyable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
             Net.ObjectId.WriteCity(w, city);
             w.Write((byte)resourceType);
