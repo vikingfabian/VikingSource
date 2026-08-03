@@ -1,24 +1,14 @@
 
 Change log:
-* Animal habitats on heatmap, and tab names
-* Rebalanced animal placement
-* compressed headbar Ui
+* 
 * Can pick army or guards on automation
 * Will set captured cities to auto
-
-
-Performance
-* Removed all unessesary faction references
-* Removed refences from the aria unit grid
-
 
 
 KNOWN ISSUES
 
 ##ICONS TODO
 * gray rounded button
-* mobilizing
-* join game icon
 
 #MOUNTED TODO
 * 

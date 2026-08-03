@@ -223,14 +223,14 @@ namespace VikingEngine.DSSWars.Players
             ready = true;
         }
 
-       
-        public override void AutoExpandType(City city, out bool work, out BuildAndExpandType buildType, out bool intelligent)
-        {
-            work = false;
-            buildType = BuildAndExpandType.NUM_NONE;
-            intelligent = false;
-        }
+        //public override void AutoExpandType(City city, out bool work, out BuildAndExpandType buildType, out bool intelligent)
+        //{
+        //    work = false;
+        //    buildType = BuildAndExpandType.NUM_NONE;
+        //    intelligent = false;
+        //}
 
+        //}
         public void mute()
         {
             networkPeer.peer.storedData.communicationSetting.voiceVolume = 0;

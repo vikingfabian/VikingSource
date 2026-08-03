@@ -685,109 +685,19 @@ namespace VikingEngine.DSSWars
             return DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
         }
 
-        int resourceSecondUpdates = 0;
+        int resourceMinuteUpdates = 0;
 
-        public void resourceOverviewOneSecondUpdate()
+        public void resourceOverviewOneMinuteUpdate()
         {
-            resourceSecondUpdates++;
-            
-
-            //int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
-            //for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
-            //{
-            //    //ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[itemIx];
-            //    //overview.oneSecondUpdate();
-            //    DssRef.world.factionResourceOverviews[itemIx].changeRate.oneSecondUpdate();
-            //}
-            //res_wood.oneSecondUpdate();
-            //res_fuel.oneSecondUpdate();
-            //res_stone.oneSecondUpdate();
-            //res_rawFood.oneSecondUpdate();
-            //res_food.oneSecondUpdate();
-            //res_beer.oneSecondUpdate();
-            //res_coolingfluid.oneSecondUpdate();
-            //res_skinLinnen.oneSecondUpdate();
-
-            //res_ironore.oneSecondUpdate();
-            //res_TinOre.oneSecondUpdate();
-            //res_CupperOre.oneSecondUpdate();
-            //res_LeadOre.oneSecondUpdate();
-            //res_SilverOre.oneSecondUpdate();
-            //res_GoldOre.oneSecondUpdate();
-
-            //res_iron.oneSecondUpdate();
-            //res_Tin.oneSecondUpdate();
-            //res_Cupper.oneSecondUpdate();
-            //res_Lead.oneSecondUpdate();
-            //res_Silver.oneSecondUpdate();
-            //res_RawMithril.oneSecondUpdate();
-            //res_Sulfur.oneSecondUpdate();
-
-            //res_Bronze.oneSecondUpdate();
-            //res_Steel.oneSecondUpdate();
-            //res_CastIron.oneSecondUpdate();
-            //res_BloomeryIron.oneSecondUpdate();
-            //res_Mithril.oneSecondUpdate();
-
-            //res_Palisade.oneSecondUpdate();
-            //res_Toolkit.oneSecondUpdate();
-            //res_Wagon2Wheel.oneSecondUpdate();
-            //res_Wagon4Wheel.oneSecondUpdate();
-            //res_BlackPowder.oneSecondUpdate();
-            //res_GunPowder.oneSecondUpdate();
-            //res_LedBullet.oneSecondUpdate();
-
-            //res_sharpstick.oneSecondUpdate();
-            //res_BronzeSword.oneSecondUpdate();
-            //res_shortsword.oneSecondUpdate();
-            //res_Sword.oneSecondUpdate();
-            //res_LongSword.oneSecondUpdate();
-            //res_HandSpear.oneSecondUpdate();
-            //res_MithrilSword.oneSecondUpdate();
-
-            //res_Warhammer.oneSecondUpdate();
-            //res_twohandsword.oneSecondUpdate();
-            //res_knightslance.oneSecondUpdate();
-            //res_SlingShot.oneSecondUpdate();
-            //res_ThrowingSpear.oneSecondUpdate();
-            //res_bow.oneSecondUpdate();
-            //res_longbow.oneSecondUpdate();
-            //res_crossbow.oneSecondUpdate();
-            //res_MithrilBow.oneSecondUpdate();
-
-            //res_HandCannon.oneSecondUpdate();
-            //res_HandCulvertin.oneSecondUpdate();
-            //res_Rifle.oneSecondUpdate();
-            //res_Blunderbuss.oneSecondUpdate();
-
-            //res_BatteringRam.oneSecondUpdate();
-            //res_ballista.oneSecondUpdate();
-            //res_Manuballista.oneSecondUpdate();
-            //res_Catapult.oneSecondUpdate();
-            //res_SiegeCannonBronze.oneSecondUpdate();
-            //res_ManCannonBronze.oneSecondUpdate();
-            //res_SiegeCannonIron.oneSecondUpdate();
-            //res_ManCannonIron.oneSecondUpdate();
-
-            //res_paddedArmor.oneSecondUpdate();
-            //res_HeavyPaddedArmor.oneSecondUpdate();
-            //res_BronzeArmor.oneSecondUpdate();
-            //res_mailArmor.oneSecondUpdate();
-            //res_heavyMailArmor.oneSecondUpdate();
-            //res_LightPlateArmor.oneSecondUpdate();
-            //res_FullPlateArmor.oneSecondUpdate();
-            //res_MithrilArmor.oneSecondUpdate();
+            resourceMinuteUpdates++;            
         }
-
         
         public void updateResourceOverview_async()
         {
-            if (resourceSecondUpdates > 0)
+            if (resourceMinuteUpdates > 0)
             {
-                resourceSecondUpdates--;
-
+                resourceMinuteUpdates--;
                 
-
                 int end = resourceComponentStartIndex + CityResourceIndex.COUNT;
                 for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
                 {
@@ -802,7 +712,7 @@ namespace VikingEngine.DSSWars
                     for (int index = 0; index < CityResourceIndex.COUNT; index++)
                     {
                         ref var cityResource = ref DssRef.world.cityResouces[start + index];
-                        cityResource.changeRate.oneSecondUpdate();
+                        cityResource.changeRate.oneMinuteUpdate();
 
                         ref var factionOverview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + index];
                         factionOverview.amount += cityResource.amount;
@@ -816,186 +726,7 @@ namespace VikingEngine.DSSWars
                 foodSpending.add(foodChange.prevConsumed);
             }
 
-            //var citiesC = cities.counter();
-
-            //for (int itemIx = 0; itemIx < CityResoureIndex.COUNT; itemIx++)
-            //{
-            //    ref ResourceFactionOverview overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIx];
-            //    overview.clearCurrent();
-
-            //    //citiesC.Reset();
-            //    //while (citiesC.Next())
-            //    //{
-            //    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            //    while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
-            //    {
-            //        overview.current += DssRef.world.cityResouces[citySel.resourceComponentStartIndex + itemIx].amount;
-            //    }
-            //}
-
-
-            //res_wood.clearCurrent();
-            //res_fuel.clearCurrent();
-            //res_stone.clearCurrent();
-            //res_rawFood.clearCurrent();
-            //res_food.clearCurrent();
-            //res_beer.clearCurrent();
-            //res_coolingfluid.clearCurrent();
-            //res_skinLinnen.clearCurrent();
-
-            //res_ironore.clearCurrent();
-            //res_TinOre.clearCurrent();
-            //res_CupperOre.clearCurrent();
-            //res_LeadOre.clearCurrent();
-            //res_SilverOre.clearCurrent();
-            //res_GoldOre.clearCurrent();
-
-            //res_iron.clearCurrent();
-            //res_Tin.clearCurrent();
-            //res_Cupper.clearCurrent();
-            //res_Lead.clearCurrent();
-            //res_Silver.clearCurrent();
-            //res_RawMithril.clearCurrent();
-            //res_Sulfur.clearCurrent();
-
-            //res_Bronze.clearCurrent();
-            //res_Steel.clearCurrent();
-            //res_CastIron.clearCurrent();
-            //res_BloomeryIron.clearCurrent();
-            //res_Mithril.clearCurrent();
-
-            //res_Palisade.clearCurrent();
-            //res_Toolkit.clearCurrent();
-            //res_Wagon2Wheel.clearCurrent();
-            //res_Wagon4Wheel.clearCurrent();
-            //res_BlackPowder.clearCurrent();
-            //res_GunPowder.clearCurrent();
-            //res_LedBullet.clearCurrent();
-
-            //res_sharpstick.clearCurrent();
-            //res_BronzeSword.clearCurrent();
-            //res_shortsword.clearCurrent();
-            //res_Sword.clearCurrent();
-            //res_LongSword.clearCurrent();
-            //res_HandSpear.clearCurrent();
-            //res_MithrilSword.clearCurrent();
-
-            //res_Warhammer.clearCurrent();
-            //res_twohandsword.clearCurrent();
-            //res_knightslance.clearCurrent();
-            //res_SlingShot.clearCurrent();
-            //res_ThrowingSpear.clearCurrent();
-            //res_bow.clearCurrent();
-            //res_longbow.clearCurrent();
-            //res_crossbow.clearCurrent();
-            //res_MithrilBow.clearCurrent();
-
-            //res_HandCannon.clearCurrent();
-            //res_HandCulvertin.clearCurrent();
-            //res_Rifle.clearCurrent();
-            //res_Blunderbuss.clearCurrent();
-
-            //res_BatteringRam.clearCurrent();
-            //res_ballista.clearCurrent();
-            //res_Manuballista.clearCurrent();
-            //res_Catapult.clearCurrent();
-            //res_SiegeCannonBronze.clearCurrent();
-            //res_ManCannonBronze.clearCurrent();
-            //res_SiegeCannonIron.clearCurrent();
-            //res_ManCannonIron.clearCurrent();
-
-            //res_paddedArmor.clearCurrent();
-            //res_HeavyPaddedArmor.clearCurrent();
-            //res_BronzeArmor.clearCurrent();
-            //res_mailArmor.clearCurrent();
-            //res_heavyMailArmor.clearCurrent();
-            //res_LightPlateArmor.clearCurrent();
-            //res_FullPlateArmor.clearCurrent();
-            //res_MithrilArmor.clearCurrent();
-
-            //var citiesC = cities.counter();
-            //while (citiesC.Next())
-            //{
-            //    res_wood.current += citiesC.sel.res_wood.amount;
-            //    res_fuel.current += citiesC.sel.res_fuel.amount;
-            //    res_stone.current += citiesC.sel.res_stone.amount;
-            //    res_rawFood.current += citiesC.sel.res_rawFood.amount;
-            //    res_food.current += citiesC.sel.res_food.amount;
-            //    res_beer.current += citiesC.sel.res_beer.amount;
-            //    res_coolingfluid.current += citiesC.sel.res_coolingfluid.amount;
-            //    res_skinLinnen.current += citiesC.sel.res_skinLinnen.amount;
-
-            //    res_ironore.current += citiesC.sel.res_ironore.amount;
-            //    res_TinOre.current += citiesC.sel.res_TinOre.amount;
-            //    res_CupperOre.current += citiesC.sel.res_CupperOre.amount;
-            //    res_LeadOre.current += citiesC.sel.res_LeadOre.amount;
-            //    res_SilverOre.current += citiesC.sel.res_SilverOre.amount;
-            //    res_GoldOre.current += citiesC.sel.res_GoldOre.amount;
-
-            //    res_iron.current += citiesC.sel.res_iron.amount;
-            //    res_Tin.current += citiesC.sel.res_Tin.amount;
-            //    res_Cupper.current += citiesC.sel.res_Cupper.amount;
-            //    res_Lead.current += citiesC.sel.res_Lead.amount;
-            //    res_Silver.current += citiesC.sel.res_Silver.amount;
-            //    res_RawMithril.current += citiesC.sel.res_RawMithril.amount;
-            //    res_Sulfur.current += citiesC.sel.res_Sulfur.amount;
-
-            //    res_Bronze.current += citiesC.sel.res_Bronze.amount;
-            //    res_Steel.current += citiesC.sel.res_Steel.amount;
-            //    res_CastIron.current += citiesC.sel.res_CastIron.amount;
-            //    res_BloomeryIron.current += citiesC.sel.res_BloomeryIron.amount;
-            //    res_Mithril.current += citiesC.sel.res_Mithril.amount;
-
-            //    res_Palisade.current += citiesC.sel.res_Palisade.amount;
-            //    res_Toolkit.current += citiesC.sel.res_Toolkit.amount;
-            //    res_Wagon2Wheel.current += citiesC.sel.res_Wagon2Wheel.amount;
-            //    res_Wagon4Wheel.current += citiesC.sel.res_Wagon4Wheel.amount;
-            //    res_BlackPowder.current += citiesC.sel.res_BlackPowder.amount;
-            //    res_GunPowder.current += citiesC.sel.res_GunPowder.amount;
-            //    res_LedBullet.current += citiesC.sel.res_LedBullet.amount;
-
-            //    res_sharpstick.current += citiesC.sel.res_sharpstick.amount;
-            //    res_BronzeSword.current += citiesC.sel.res_BronzeSword.amount;
-            //    res_shortsword.current += citiesC.sel.res_shortsword.amount;
-            //    res_Sword.current += citiesC.sel.res_Sword.amount;
-            //    res_LongSword.current += citiesC.sel.res_LongSword.amount;
-            //    res_HandSpear.current += citiesC.sel.res_HandSpear.amount;
-            //    res_MithrilSword.current += citiesC.sel.res_MithrilSword.amount;
-
-            //    res_Warhammer.current += citiesC.sel.res_Warhammer.amount;
-            //    res_twohandsword.current += citiesC.sel.res_twohandsword.amount;
-            //    res_knightslance.current += citiesC.sel.res_knightslance.amount;
-            //    res_SlingShot.current += citiesC.sel.res_SlingShot.amount;
-            //    res_ThrowingSpear.current += citiesC.sel.res_ThrowingSpear.amount;
-            //    res_bow.current += citiesC.sel.res_bow.amount;
-            //    res_longbow.current += citiesC.sel.res_longbow.amount;
-            //    res_crossbow.current += citiesC.sel.res_crossbow.amount;
-            //    res_MithrilBow.current += citiesC.sel.res_MithrilBow.amount;
-
-            //    res_HandCannon.current += citiesC.sel.res_HandCannon.amount;
-            //    res_HandCulvertin.current += citiesC.sel.res_HandCulvertin.amount;
-            //    res_Rifle.current += citiesC.sel.res_Rifle.amount;
-            //    res_Blunderbuss.current += citiesC.sel.res_Blunderbuss.amount;
-
-            //    res_BatteringRam.current += citiesC.sel.res_BatteringRam.amount;
-            //    res_ballista.current += citiesC.sel.res_ballista.amount;
-            //    res_Manuballista.current += citiesC.sel.res_Manuballista.amount;
-            //    res_Catapult.current += citiesC.sel.res_Catapult.amount;
-            //    res_SiegeCannonBronze.current += citiesC.sel.res_SiegeCannonBronze.amount;
-            //    res_ManCannonBronze.current += citiesC.sel.res_ManCannonBronze.amount;
-            //    res_SiegeCannonIron.current += citiesC.sel.res_SiegeCannonIron.amount;
-            //    res_ManCannonIron.current += citiesC.sel.res_ManCannonIron.amount;
-
-            //    res_paddedArmor.current += citiesC.sel.res_paddedArmor.amount;
-            //    res_HeavyPaddedArmor.current += citiesC.sel.res_HeavyPaddedArmor.amount;
-            //    res_BronzeArmor.current += citiesC.sel.res_BronzeArmor.amount;
-            //    res_mailArmor.current += citiesC.sel.res_mailArmor.amount;
-            //    res_heavyMailArmor.current += citiesC.sel.res_heavyMailArmor.amount;
-            //    res_LightPlateArmor.current += citiesC.sel.res_LightPlateArmor.amount;
-            //    res_FullPlateArmor.current += citiesC.sel.res_FullPlateArmor.amount;
-            //    res_MithrilArmor.current += citiesC.sel.res_MithrilArmor.amount;
-
-            //}
+            
         }
     }
 }

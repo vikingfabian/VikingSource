@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
@@ -86,7 +87,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CityCulture cityCulture = CityCulture.NUM_NONE;
         public CityBiome cityBiome = CityBiome.Default_Fields;
 
-        public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
+        public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.OrchardApple;
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;
 
@@ -2411,7 +2412,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (pfaction== args.player.pfaction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                     {
                         CityDetailsHud(true, args.player, args.content);
-                        new Interface.CityMenu(args.player, this, args.content);
+                        new MapObjMenu(args.player, this, args.content);
                     }
                     else
                     {
@@ -2628,7 +2629,7 @@ namespace VikingEngine.DSSWars.GameObject
                         HudLib.Label(content, DssRef.lang.Automation_AutomationFocus);
 
                         content.newLine();
-                        foreach (var focus in CityMenu.AvailableAutomationFocuses)
+                        foreach (var focus in MapObjMenu.AvailableAutomationFocuses)
                         {
                             SpriteName sprite = SpriteName.NO_IMAGE;
                             string caption = null;
@@ -3018,7 +3019,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     content.space();
 
-                    content.Add(new RbImage(SpriteName.unitEmoteSnore));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_IdleCount.ToString()));
 
