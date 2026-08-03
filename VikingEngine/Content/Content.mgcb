@@ -1621,6 +1621,102 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/load_ballista.wav
 
+#begin DSS/Sound/menu_environment/tab_armydiv.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_armydiv.wav
+
+#begin DSS/Sound/menu_environment/tab_blackmarket.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_blackmarket.wav
+
+#begin DSS/Sound/menu_environment/tab_build.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_build.wav
+
+#begin DSS/Sound/menu_environment/tab_conscript.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_conscript.wav
+
+#begin DSS/Sound/menu_environment/tab_defence.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_defence.wav
+
+#begin DSS/Sound/menu_environment/tab_delivery.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_delivery.wav
+
+#begin DSS/Sound/menu_environment/tab_disband.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_disband.wav
+
+#begin DSS/Sound/menu_environment/tab_economy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_economy.wav
+
+#begin DSS/Sound/menu_environment/tab_help.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_help.wav
+
+#begin DSS/Sound/menu_environment/tab_info.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_info.wav
+
+#begin DSS/Sound/menu_environment/tab_pin.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_pin.wav
+
+#begin DSS/Sound/menu_environment/tab_resources.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_resources.wav
+
+#begin DSS/Sound/menu_environment/tab_schools.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_schools.wav
+
+#begin DSS/Sound/menu_environment/tab_science.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_science.wav
+
+#begin DSS/Sound/menu_environment/tab_stockpile.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_stockpile.wav
+
+#begin DSS/Sound/menu_environment/tab_work.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_environment/tab_work.wav
+
 #begin DSS/Sound/menu_expand.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

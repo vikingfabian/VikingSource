@@ -5,6 +5,10 @@ Change log:
 * Can pick army or guards on automation
 * Will set captured cities to auto
 * Ultra wide support - adjustable ui placement
+* Animal habitats on heatmap, and tab names
+* Rebalanced animal placement
+* Compressed headbar Ui
+* Tabs have environmental sounds
 
 * Using linear arrays for the map, and voxel data
 
