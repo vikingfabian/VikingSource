@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         //-------
 
+        public string Hud_ApplyToAll => "Apply to all";
         public string Hud_OutOfStock => "Out of stock";
         //public string GameSettings_WideScrollbar => "Wide scrollbar";
         //public string GameSettings_DisplayInputHelp => "Input help";

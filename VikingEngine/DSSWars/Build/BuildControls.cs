@@ -53,6 +53,7 @@ namespace VikingEngine.DSSWars.Build
         LocalPlayer player;
         City city;
         bool blockBuildUpdate = false;
+        public bool ordersDifferFromPriority = false;
 
         public BuildAndExpandType CompressedBuildMode()
         {
@@ -775,7 +776,12 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
                         player.pfaction.GetFaction(), city, ItemResourceType.NONE);
-
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsConstructBuildingIcon),
+                        new RbSpace(0.5f),
+                        new RbText(string.Format( DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Work_OrderPrioTitle, DssRef.todoLang.Hud_ApplyToAll )) },
+                        new RbAction1Arg<City>(player.ApplyBuildPrioToAll, city), null, ordersDifferFromPriority));
 
                 }
                 

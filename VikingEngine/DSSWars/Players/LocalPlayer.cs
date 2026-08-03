@@ -1106,20 +1106,49 @@ namespace VikingEngine.DSSWars.Players
 
             lock (orders.orders)
             {
+                bool differentPrio = false;
+                int prio = city.workTemplate.Get(WorkPriorityType.buildOrders).value;
+
                 for (int i = 0; i < orders.orders.Count; ++i)
                 {
                     var buildOrder = orders.orders[i].GetBuild();
-                    if (buildOrder != null && !Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.city))
+                    if (buildOrder != null)
                     {
-                        buildOrder.city.WorkerStats_StuckBuildings_Process++;
+                        if (!Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.city))
+                        {
+                            buildOrder.city.WorkerStats_StuckBuildings_Process++;
+                        }
+
+                        differentPrio |= buildOrder.priority != prio;
                     }
                 }
+
+                gameControls.build.ordersDifferFromPriority = differentPrio;
             }
 
             citiesC.Reset();
             while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
             {
                 citySel.WorkerStats_StuckBuildings = citySel.WorkerStats_StuckBuildings_Process;
+            }
+        }
+
+        public void ApplyBuildPrioToAll(City city)
+        {
+            lock (orders.orders)
+            {
+                int prio = city.workTemplate.Get(WorkPriorityType.buildOrders).value;
+
+                for (int i = 0; i < orders.orders.Count; ++i)
+                {
+                    var buildOrder = orders.orders[i].GetBuild();
+                    if (buildOrder != null)
+                    {
+                        buildOrder.priority = prio;
+                    }
+                }
+
+                gameControls.build.ordersDifferFromPriority = false;
             }
         }
 
