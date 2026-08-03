@@ -9,7 +9,7 @@ namespace VikingEngine.Network
         public bool IsAvailable = true;
 
         public ulong lobbyId;
-        public ulong lobbyHost;
+        //public ulong lobbyHost;
         //public string name;
         public bool friend = false;
         //public LobbyPublicity publicity;
