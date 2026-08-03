@@ -1,5 +1,6 @@
 
 Change log:
+* Black market limit: I added 500 as limit, it grows with 50 for each city capture
 * A hover button for all city resources
 * Can pick army or guards on automation
 * Will set captured cities to auto

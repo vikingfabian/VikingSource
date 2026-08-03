@@ -87,41 +87,42 @@ namespace VikingEngine.DSSWars.Data
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                p.orders.writeGameState(w);
+                p.writeClientSave(w);
+                //p.orders.writeGameState(w);
 
-                p.writePins(w);
-                Debug.WriteCheck(w);
+                //p.writePins(w);
+                //Debug.WriteCheck(w);
 
-                p.pfaction.GetFaction().writeClientState(w);
-                Debug.WriteCheck(w);
+                //p.pfaction.GetFaction().writeClientState(w);
+                //Debug.WriteCheck(w);
 
-                var f = p.pfaction.GetFaction();
-                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                //var f = p.pfaction.GetFaction();
+                //SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
 
-                List<CityClientSaveMeta> clientSaveMetas = new List<CityClientSaveMeta>(f.cities.Count);
-                MemoryStreamHandler memory = new MemoryStreamHandler();
-                var memW = memory.GetWriter();
+                //List<CityClientSaveMeta> clientSaveMetas = new List<CityClientSaveMeta>(f.cities.Count);
+                //MemoryStreamHandler memory = new MemoryStreamHandler();
+                //var memW = memory.GetWriter();
 
-                while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
-                {
-                    var meta = new CityClientSaveMeta() { cityIndex = city.myIndex, memoryStart = memW.BaseStream.Position };
+                //while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
+                //{
+                //    var meta = new CityClientSaveMeta() { cityIndex = city.myIndex, memoryStart = memW.BaseStream.Position };
 
-                    city.writeClientState(memW);
-                    meta.memoryLength = memW.BaseStream.Position - meta.memoryStart;
-                    clientSaveMetas.Add(meta);
-                    //city.workTemplate.onFactionChange(city, workTemplate, true);
-                }
+                //    city.writeClientState(memW);
+                //    meta.memoryLength = memW.BaseStream.Position - meta.memoryStart;
+                //    clientSaveMetas.Add(meta);
+                //    //city.workTemplate.onFactionChange(city, workTemplate, true);
+                //}
 
 
-                w.Write((ushort)clientSaveMetas.Count);
-                foreach (var c in clientSaveMetas)
-                {
-                    c.write(w);
-                }
+                //w.Write((ushort)clientSaveMetas.Count);
+                //foreach (var c in clientSaveMetas)
+                //{
+                //    c.write(w);
+                //}
 
-                memory.WriteSaveFile(w);
+                //memory.WriteSaveFile(w);
 
-                Debug.WriteCheck(w);
+                //Debug.WriteCheck(w);
             }
 
 
@@ -139,54 +140,55 @@ namespace VikingEngine.DSSWars.Data
             for (int i = 0; i < localPlayersCount; i++)
             {
                 var p = DssRef.state.localPlayers[i];
-                p.orders.readGameState(i, r, version.sub, null);
+                p.readClientSave(i, r, version.sub);
+                //p.orders.readGameState(i, r, version.sub, null);
 
-                p.readPins(r, version.sub);
-                Debug.ReadCheck(r);
+                //p.readPins(r, version.sub);
+                //Debug.ReadCheck(r);
 
-                if (version.sub >= 131)
-                {
-                    var f = p.pfaction.GetFaction();
-                    f.readClientState(r, version.sub);
-                    Debug.ReadCheck(r);
+                //if (version.sub >= 131)
+                //{
+                //    var f = p.pfaction.GetFaction();
+                //    f.readClientState(r, version.sub);
+                //    Debug.ReadCheck(r);
 
-                    int clientSaveMetasCount = r.ReadUInt16();
-                    List<CityClientSaveMeta> clientSaveMetas = new List<CityClientSaveMeta>(clientSaveMetasCount);
-                    for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
-                    {
-                        CityClientSaveMeta meta = new CityClientSaveMeta();
-                        meta.read(r);
-                        clientSaveMetas.Add(meta);
-                    }
+                //    int clientSaveMetasCount = r.ReadUInt16();
+                //    List<CityClientSaveMeta> clientSaveMetas = new List<CityClientSaveMeta>(clientSaveMetasCount);
+                //    for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
+                //    {
+                //        CityClientSaveMeta meta = new CityClientSaveMeta();
+                //        meta.read(r);
+                //        clientSaveMetas.Add(meta);
+                //    }
 
-                    MemoryStreamHandler memory = new MemoryStreamHandler();
-                    memory.ReadSaveFile(r);
-                    var memR = memory.GetReader();
-                    long readStart = 0;
+                //    MemoryStreamHandler memory = new MemoryStreamHandler();
+                //    memory.ReadSaveFile(r);
+                //    var memR = memory.GetReader();
+                //    long readStart = 0;
 
-                    for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
-                    {
-                        memR.BaseStream.Position = readStart;
-                        CityClientSaveMeta meta = clientSaveMetas[metaIx];
-                        var city = DssRef.world.cities[meta.cityIndex];
+                //    for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
+                //    {
+                //        memR.BaseStream.Position = readStart;
+                //        CityClientSaveMeta meta = clientSaveMetas[metaIx];
+                //        var city = DssRef.world.cities[meta.cityIndex];
 
-                        if (city.pfaction == p.pfaction)
-                        { 
-                            city.readClientState(memR, version.sub);
-                        }
+                //        if (city.pfaction == p.pfaction)
+                //        { 
+                //            city.readClientState(memR, version.sub);
+                //        }
 
-                        readStart += meta.memoryLength;
-                    }
+                //        readStart += meta.memoryLength;
+                //    }
 
-                    Debug.ReadCheck(r);
+                //    Debug.ReadCheck(r);
 
-                    //Apply faction setup
-                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
-                    {
-                        city.workTemplate.onFactionChange(city, f.workTemplate, true);
-                    }
-                }
+                //    //Apply faction setup
+                //    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                //    while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
+                //    {
+                //        city.workTemplate.onFactionChange(city, f.workTemplate, true);
+                //    }
+                //}
             }
         }
 

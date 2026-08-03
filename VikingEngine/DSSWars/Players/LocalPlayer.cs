@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Steamworks;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
@@ -55,6 +57,9 @@ namespace VikingEngine.DSSWars.Players
         
         public int warCount = 0;
         public int diplomaticPoints_softMax;
+
+       
+           
 
         public Data.Statistics statistics = new Data.Statistics();
 
@@ -117,6 +122,8 @@ namespace VikingEngine.DSSWars.Players
         public FactionPixelTexture minimapPixelTexture;
 
         public UnitsPixelTexture unitsPixelTexture;
+        public int BlackMarketCount = 500;
+        public int PrevCityCount = 1;
 
         public Profile.ObjectHudSettings cityHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings armyHudSettings = new Profile.ObjectHudSettings();
@@ -413,9 +420,12 @@ namespace VikingEngine.DSSWars.Players
             tooPeacefulCheckTimer.write(w);
             //gameControls.build.buildPriority.writeGameState(w, false);
 
+            writeBlackMarket(w);
+
             Debug.WriteCheck(w);
         }
 
+        
         public override void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             base.readGameState(r, subversion, pointers);
@@ -428,16 +438,11 @@ namespace VikingEngine.DSSWars.Players
 
             diplomaticPoints.value = r.ReadInt16();
 
-            //Debug.ReadCheck(r);//TEMP!
-
             statistics.readGameState(r, subversion);
-
-
-            //Debug.ReadCheck(r);//TEMP!
 
             if (subversion >= 59)
             {
-                while (true)//if (toPlayerDiplomacies != null)
+                while (true)
                 {
 
                     var rpfaction = PFaction.Empty;
@@ -472,17 +477,12 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            // Debug.ReadCheck(r);//TEMP!
-
             automation.readGameState(r, subversion);
-
-            // Debug.ReadCheck(r);//TEMP!
 
             var none1 = r.ReadInt32();
 
             tutorial_readGameState(r, subversion);
 
-            // Debug.ReadCheck(r);//TEMP!
             orders.readGameState(playerData.localPlayerIndex, r, subversion, pointers);
 
             if (subversion < 103)
@@ -530,7 +530,131 @@ namespace VikingEngine.DSSWars.Players
             {
                 tooPeacefulCheckTimer.read(r);
             }
+
+            readBlackMarket(r, subversion);
+
             Debug.ReadCheck(r);
+        }
+
+        public void writeBlackMarket(BinaryWriter w)
+        {
+            w.Write(Bound.UShort(BlackMarketCount));
+            w.Write(Bound.UShort(PrevCityCount));
+        }
+        public void readBlackMarket(BinaryReader r, int subversion)
+        {
+            if (subversion >= 132)
+            {
+                BlackMarketCount = r.ReadUInt16();
+                PrevCityCount = r.ReadUInt16();
+            }
+        }
+        struct CityClientSaveMeta
+        {
+            public int cityIndex;
+            public long memoryStart;
+            public long memoryLength;
+
+            public void write(System.IO.BinaryWriter w)
+            {
+                w.Write((ushort)cityIndex);
+                w.Write((ushort)memoryLength);
+            }
+
+            public void read(System.IO.BinaryReader r)
+            {
+                cityIndex = r.ReadUInt16();
+                memoryLength = r.ReadUInt16();
+            }
+        }
+        public void writeClientSave(BinaryWriter w)
+        {
+            orders.writeGameState(w);
+
+            writePins(w);
+            Debug.WriteCheck(w);
+
+            pfaction.GetFaction().writeClientState(w);
+            Debug.WriteCheck(w);
+
+            var f = pfaction.GetFaction();
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+
+            List<CityClientSaveMeta> clientSaveMetas = new List<CityClientSaveMeta>(f.cities.Count);
+            MemoryStreamHandler memory = new MemoryStreamHandler();
+            var memW = memory.GetWriter();
+
+            while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
+            {
+                var meta = new CityClientSaveMeta() { cityIndex = city.myIndex, memoryStart = memW.BaseStream.Position };
+
+                city.writeClientState(memW);
+                meta.memoryLength = memW.BaseStream.Position - meta.memoryStart;
+                clientSaveMetas.Add(meta);
+                //city.workTemplate.onFactionChange(city, workTemplate, true);
+            }
+
+
+            w.Write((ushort)clientSaveMetas.Count);
+            foreach (var c in clientSaveMetas)
+            {
+                c.write(w);
+            }
+
+            memory.WriteSaveFile(w);
+
+            writeBlackMarket(w);
+            Debug.WriteCheck(w);
+        }
+        public void readClientSave(int playerIx, BinaryReader r, int subversion)
+        {
+            orders.readGameState(playerIx, r, subversion, null);
+
+            readPins(r, subversion);
+            Debug.ReadCheck(r);
+                        
+            var f = pfaction.GetFaction();
+            f.readClientState(r, subversion);
+            Debug.ReadCheck(r);
+
+            int clientSaveMetasCount = r.ReadUInt16();
+            List<CityClientSaveMeta> clientSaveMetas = new List<CityClientSaveMeta>(clientSaveMetasCount);
+            for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
+            {
+                CityClientSaveMeta meta = new CityClientSaveMeta();
+                meta.read(r);
+                clientSaveMetas.Add(meta);
+            }
+
+            MemoryStreamHandler memory = new MemoryStreamHandler();
+            memory.ReadSaveFile(r);
+            var memR = memory.GetReader();
+            long readStart = 0;
+
+            for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
+            {
+                memR.BaseStream.Position = readStart;
+                CityClientSaveMeta meta = clientSaveMetas[metaIx];
+                var city = DssRef.world.cities[meta.cityIndex];
+
+                if (city.pfaction == pfaction)
+                {
+                    city.readClientState(memR, subversion);
+                }
+
+                readStart += meta.memoryLength;
+            }
+
+            readBlackMarket(r, subversion);
+            Debug.ReadCheck(r);
+
+            //Apply faction setup
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
+            {
+                city.workTemplate.onFactionChange(city, f.workTemplate, true);
+            }
+            
         }
 
         public void InitTutorial(bool newGame)
@@ -541,9 +665,7 @@ namespace VikingEngine.DSSWars.Players
                 Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))
             {
                 new PlayerControls.Tutorial(this);
-
             }
-
         }
 
         public bool IntutorialMode()
@@ -574,9 +696,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 new PlayerControls.Tutorial(this);
                 tutorial.readGameState(r, subversion);
-
-            }
-            
+            }            
         }
         public void cityTabClick(int tab)
         {
@@ -625,60 +745,7 @@ namespace VikingEngine.DSSWars.Players
         public override void createStartUnits(double unitCountMulti, bool settlerGuard)
         {
             playerStartUnits(unitCountMulti, settlerGuard, DssRef.difficulty.honorGuardCount());
-            //if (faction.cities.Count > 0)
-            //{
-            //    if (quickMatchUnits(false))
-            //    {
-            //        return;
-            //    }
-            //    if (settlerGuard)
-            //    {
-            //        settlerGuardUnits();
-            //        return;
-            //    }
-
-            //    IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
-            //    var mainArmy = faction.NewArmy(onTile);
-            //    mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_SpecializeTradition);
-                
-            //    for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
-            //    {
-            //        new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
-            //    }
-
-            //    if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
-            //    {
-            //        int guardCount = MathExt.MultiplyInt(12, unitCountMulti);
-
-            //        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            //        while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
-            //        {
-            //            if (citySel != faction.mainCity)
-            //            {
-            //                onTile = citySel.ArmySpawnTilePos();
-            //                var army = faction.NewArmy(onTile);
-            //                for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
-            //                {
-            //                    new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
-            //                    --guardCount;
-            //                }
-
-            //                army.setAsStartArmy();
-            //                if (guardCount <= 3)
-            //                {
-            //                    break;
-            //                }
-            //            }
-            //        }
-
-            //        for (int i = 0; i < guardCount; ++i)
-            //        {
-            //            new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
-            //        }
-            //    }
-
-            //    mainArmy.setAsStartArmy();
-            //}
+           
         }
 
         void refreshNeihgborAggression()
@@ -706,6 +773,13 @@ namespace VikingEngine.DSSWars.Players
                 {
                     nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
                 }
+            }
+
+            var f = pfaction.GetFaction();
+            if (f.cities.Count > PrevCityCount)
+            {
+                BlackMarketCount += 50 * f.cities.Count - PrevCityCount;
+                PrevCityCount = f.cities.Count;
             }
 
             if (!profile.casualControls)

@@ -30,16 +30,7 @@ namespace VikingEngine.DSSWars.Resource
     }
     static class BlackMarketResources
     {
-        //static readonly ItemResourceType[] Resources =
-        //{
-        //    ItemResourceType.Wood_Group,
-        //    ItemResourceType.Stone_G,
-        //    ItemResourceType.Brick,
-        //    ItemResourceType.Iron_G,
-        //    ItemResourceType.RawFood_Group,
-        //    ItemResourceType.SkinLinen_Group,
-
-        //};
+        
         static int Cost_RawFood = DssConst.FoodGoldValue_BlackMarket - 5;
         static int Cost_Food = DssConst.FoodGoldValue_BlackMarket;
         static int Cost_Wood = 50;
@@ -116,7 +107,8 @@ namespace VikingEngine.DSSWars.Resource
                 return;
             }
 
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Resources).overrideColor = HudLib.TitleColor_Label;
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Resources, HudLib.TitleColor_Head);
+
             content.Add(new RbSeperationLine());
             int lineCount = 0;
             foreach (var r in Resources)
@@ -128,8 +120,11 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(new RbSeperationLine());
                 }
             }
-
             content.newLine();
+            HudLib.LabelAndText(content, SpriteName.WarsStockpileLimit, DssRef.lang.Hud_Available, player.BlackMarketCount.ToString());
+
+            content.newParagraph();
+            content.Add(new RbSeperationLine());
             content.Add(new RbImage(SpriteName.rtsUpkeep));
             content.Add(new RbText(Cost_Food.ToString()));
             content.Add(new RbTab(0.3f));
@@ -137,37 +132,20 @@ namespace VikingEngine.DSSWars.Resource
             content.space();
             content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
             content.space();
-            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Info_WhenFoodRunsOut));
+            HudLib.InfoButton(content, new RbTooltip(tooltip));
 
+        }
+
+        static void tooltip(RichBoxContent content, object tag)
+        {
+            content.h2(SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, HudLib.TitleColor_Name);
+            content.text(DssRef.lang.Info_WhenFoodRunsOut);
+            content.text(DssRef.lang.Hud_NoLimit, HudLib.InfoYellow_Light);
         }
 
         public static void ResourceToHud(MarketResource res, LocalPlayer player, RichBoxContent content, City city)
         {
-            //switch (item)
-            //{
-            //    case ItemResourceType.RawFood_Group:
-            //        Resource(CostMultiply(city, Cost_RawFood), ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);
-            //        break;
-            //    case ItemResourceType.Food_G:
-            //        Resource(CostMultiply(city, Cost_Food), ItemResourceType.Food_G, DssRef.lang.Resource_TypeName_Food);
-            //        break;
-            //    case ItemResourceType.Wood_Group:
-            //        Resource(CostMultiply(city, Cost_Wood), ItemResourceType.Wood_Group, DssRef.lang.Resource_TypeName_Wood);
-            //        break;
-            //    case ItemResourceType.Stone_G:
-            //        Resource(CostMultiply(city, Cost_Stone), ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
-            //        break;
-            //    case ItemResourceType.Brick:
-            //        Resource(CostMultiply(city, Cost_Brick), ItemResourceType.Brick, DssRef.lang.Resource_TypeName_Brick);
-            //        break;
-            //    case ItemResourceType.SkinLinen_Group:
-            //        Resource(CostMultiply(city, Cost_SkinAndLinnen), ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_Linen);
-            //        break;
-            //    case ItemResourceType.Iron_G:
-            //        Resource(CostMultiply(city, Cost_Iron), ItemResourceType.Iron_G, DssRef.lang.Resource_TypeName_Iron);
-            //        break;
-            //}
-
+           
             Resource(CostMultiply(city, res.cost), res.item);
 
             void Resource(Money cost, ItemResourceType resourceType)
@@ -193,19 +171,28 @@ namespace VikingEngine.DSSWars.Resource
 
                 content.Add(button);
                 content.Add(new RbTab(0.5f));
-                //content.space();
-
+                
+                int prevCount = int.MaxValue;
                 foreach (var c in PurchaseCount)
                 {
                     count = c;
+
+                    if (player.BlackMarketCount < count && player.BlackMarketCount > prevCount)
+                    {
+                        count = player.BlackMarketCount;
+                    }
+                    prevCount = c;
+
+                    bool canPay = player.pfaction.GetFaction().hasMoney(cost * count, city);
+                    bool available = count <= player.BlackMarketCount;
+
                     ArtButton xbutton = new ArtButton( RbButtonStyle.Secondary, new List<AbsRichBoxMember>
                         {
                             new RbText(string.Format(DssRef.lang.Hud_XTimes, count)),
                         },
                     new RbAction3Arg<ItemResourceType, int, Money>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
-                    tooltip(count), player.pfaction.GetFaction().hasMoney(cost * count, city));
+                    tooltip(count), canPay && available);
                     content.Add(xbutton);
-                    //content.space();
                 }
 
 
@@ -213,19 +200,25 @@ namespace VikingEngine.DSSWars.Resource
                 {
                     return new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        //RichBoxContent content = new RichBoxContent();
-                        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
+                        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
                         content.newLine();
                         HudLib.ResourceCost(content, ResourceType.Gold, cost.GetGold32() * count, (int)player.pfaction.GetFaction().GetGold(city));
 
+
+                        bool outOfStock = count > player.BlackMarketCount;
+                        if (outOfStock)
+                        {
+                            content.newLine();
+                            content.iconicontext(SpriteName.WarsStockpileLimit, HudLib.NotAvailableIcon, DssRef.todoLang.Hud_OutOfStock);
+                        }
+
                         content.newParagraph();
 
-                        content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn).overrideColor = HudLib.TitleColor_Label;
+                        content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn, HudLib.TitleColor_Label);
                         bool reachedBuffer = false;
-                        //bool safeGuard = city.foodSafeGuardIsActive(resourceType);
+
                         city.GetGroupedResource(resourceType).toMenu(content, resourceType, ref reachedBuffer);
                         
-                        //player.hud.tooltip.create(player, content, true);
 
                     }, count);
                 }
