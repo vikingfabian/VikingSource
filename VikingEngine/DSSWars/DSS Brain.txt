@@ -4,6 +4,8 @@ Change log:
 * Can pick army or guards on automation
 * Will set captured cities to auto
 
+## QoL ##
+* Build priority - apply to all button
 
 KNOWN ISSUES
 
