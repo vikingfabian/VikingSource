@@ -1,27 +1,18 @@
 
 Change log:
-* Animal habitats on heatmap, and tab names
-* Rebalanced animal placement
-* compressed headbar Ui
-* some ui polish
-* book press increased build level 1 > 2
+* Fixed: ally war share was broken
+* War manager: bots must have at least 4 in army strength to declare war
+* fixed: population limit on conscript dont work
+* resource change rate is shown per minute
 
-Multiplayer
-* improved update during pause menu (multiplayer)
-* compressed some net packets
-
-Performance
-* Removed all unessesary faction references
-* Removed refences from the aria unit grid
-
+* friendly visar public i session list
+* case PacketType.DssDeliverStatusReply: //Is sending when it shouldnt, is auto?
 
 
 KNOWN ISSUES
 
 ##ICONS TODO
 * gray rounded button
-* mobilizing
-* join game icon
 
 #MOUNTED TODO
 * 

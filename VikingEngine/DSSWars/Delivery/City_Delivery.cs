@@ -187,9 +187,6 @@ namespace VikingEngine.DSSWars.GameObject
                     int minAmount = int.MaxValue;
                     City foundcity = null;
 
-                    //var citiesC = GetFaction().cities.counter();
-                    //while (citiesC.Next())
-                    //{
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
@@ -200,7 +197,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (hasAmount < minAmount)
                                 {
                                     minAmount = hasAmount;
-                                    foundcity = citySel;// = citiesC.sel;
+                                    foundcity = citySel;
                                 }
                             }
                         }
@@ -339,7 +336,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    city.GetRefGroupedResource(resourceType).readNet(packet.r);
+                    //Crashes on men
+                    //city.GetGroupedResource(resourceType).readNet(packet.r);
                 }
             }
         }

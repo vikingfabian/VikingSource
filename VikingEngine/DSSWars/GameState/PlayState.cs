@@ -537,11 +537,11 @@ namespace VikingEngine.DSSWars
                 return;
             }
 
-            if (pauseMenuUpdate())
+            if (pauseMenuUpdate(out bool blockInput))
             {
                 setPlayerNetState(PlayerNetState.InMenu);
                 bUserMapUpdate = false;
-                if (Ref.isPaused)
+                if (Ref.isPaused || blockInput)
                 {
                     return;
                 }
