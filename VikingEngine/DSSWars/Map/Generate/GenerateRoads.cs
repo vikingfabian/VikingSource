@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                         void placeOnSubTile(IntVector2 pos)
                         {
-                            ref SubTile subTile = ref world.subTileGrid.array[pos.X, pos.Y];
+                            ref SubTile subTile = ref world.subTileGrid.GetRef(pos);// [pos.X, pos.Y];
 
                             bool canBuild = false;
                             switch (subTile.mainTerrain)

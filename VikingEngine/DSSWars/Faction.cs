@@ -1358,6 +1358,22 @@ namespace VikingEngine.DSSWars
             return sp_flag.col0_Main;            
         }
 
+        public void Colors(out Color main, out Color second)
+        {
+            if (player != null)
+            {
+                var sp_flag = player.profile.flag;
+                if (sp_flag != null)
+                {
+                    main = sp_flag.col0_Main;
+                    second = sp_flag.col1_Detail1;
+                    return;
+                }
+            }
+            main = tempColor;
+            second = tempColor;
+        }
+
         public List<Faction> CollectWars()
         {
             List<Faction> opponents = new List<Faction>();

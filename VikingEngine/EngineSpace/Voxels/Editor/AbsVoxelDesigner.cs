@@ -156,7 +156,7 @@ namespace VikingEngine.Voxels
                     var loop = new ForXYZLoop(m.Size);
                     while (loop.Next())
                     {
-                        ushort mat = m.MaterialGrid[loop.Position.X, loop.Position.Y, loop.Position.Z];
+                        ushort mat = m.Get(loop.Position);//MaterialGrid[loop.Position.X, loop.Position.Y, loop.Position.Z];
 
                         if (mat != 0 && !inUse[mat])
                         {

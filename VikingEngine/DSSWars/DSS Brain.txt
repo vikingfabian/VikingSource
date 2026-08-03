@@ -5,6 +5,12 @@ Change log:
 * Will set captured cities to auto
 
 
+* Using linear arrays for the map, and voxel data
+
+#MAP 2.0
+* Cubic far group models
+
+
 KNOWN ISSUES
 
 ##ICONS TODO

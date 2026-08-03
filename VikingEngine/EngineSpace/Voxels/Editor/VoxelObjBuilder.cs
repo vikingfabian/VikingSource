@@ -410,7 +410,7 @@ namespace VikingEngine.Voxels
 
                     for (gridPos.X = 0; gridPos.X < size.X; gridPos.X++)
                     {
-                        material = materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z];
+                        material = materialGrid.Get(gridPos.X, gridPos.Y, gridPos.Z);
 
                         if (material != BlockHD.EmptyBlock)
                         {
@@ -419,7 +419,7 @@ namespace VikingEngine.Voxels
                             position.X = gridPos.X + posAdjust.X;
 
                             //TOP
-                            if (notCheckBottom || materialGrid.MaterialGrid[gridPos.X, gridPos.Y + 1, gridPos.Z] == BlockHD.EmptyBlock)
+                            if (notCheckBottom || materialGrid.Get(gridPos.X, gridPos.Y + 1, gridPos.Z) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -441,7 +441,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //BOTTOM
-                            if (notCheckTop || materialGrid.MaterialGrid[gridPos.X, gridPos.Y - 1, gridPos.Z] == BlockHD.EmptyBlock)
+                            if (notCheckTop || materialGrid.Get(gridPos.X, gridPos.Y - 1, gridPos.Z) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -463,7 +463,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //FRONT
-                            if (notCheckFront || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z + 1] == BlockHD.EmptyBlock)
+                            if (notCheckFront || materialGrid.Get(gridPos.X, gridPos.Y, gridPos.Z + 1) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -485,7 +485,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //BACK
-                            if (notCheckBack || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z - 1] == BlockHD.EmptyBlock)
+                            if (notCheckBack || materialGrid.Get(gridPos.X, gridPos.Y, gridPos.Z - 1) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -507,7 +507,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //RIGHT
-                            if (notCheckRight || materialGrid.MaterialGrid[gridPos.X - 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
+                            if (notCheckRight || materialGrid.Get(gridPos.X - 1, gridPos.Y, gridPos.Z) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -529,7 +529,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //LEFT
-                            if (notCheckLeft || materialGrid.MaterialGrid[gridPos.X + 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
+                            if (notCheckLeft || materialGrid.Get(gridPos.X + 1, gridPos.Y, gridPos.Z) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -595,7 +595,7 @@ namespace VikingEngine.Voxels
 
                     for (gridPos.X = 0; gridPos.X < size.X; gridPos.X++)
                     {
-                        material = materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z];
+                        material = materialGrid.Get(gridPos.X, gridPos.Y, gridPos.Z);
 
                         if (material != BlockHD.EmptyBlock)
                         {
@@ -604,7 +604,7 @@ namespace VikingEngine.Voxels
                             position.X = gridPos.X + posAdjust.X;
 
                             //TOP
-                            if (notCheckBottom || materialGrid.MaterialGrid[gridPos.X, gridPos.Y + 1, gridPos.Z] == BlockHD.EmptyBlock)
+                            if (notCheckBottom || materialGrid.Get(gridPos.X, gridPos.Y + 1, gridPos.Z) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -626,7 +626,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //BOTTOM
-                            if (notCheckTop || materialGrid.MaterialGrid[gridPos.X, gridPos.Y - 1, gridPos.Z] == BlockHD.EmptyBlock)
+                            if (notCheckTop || materialGrid.Get(gridPos.X, gridPos.Y - 1, gridPos.Z) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -648,7 +648,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //FRONT
-                            if (notCheckFront || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z + 1] == BlockHD.EmptyBlock)
+                            if (notCheckFront || materialGrid.Get(gridPos.X, gridPos.Y, gridPos.Z + 1) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -670,7 +670,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //BACK
-                            if (notCheckBack || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z - 1] == BlockHD.EmptyBlock)
+                            if (notCheckBack || materialGrid.Get(gridPos.X, gridPos.Y, gridPos.Z - 1) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -692,7 +692,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //RIGHT
-                            if (notCheckRight || materialGrid.MaterialGrid[gridPos.X - 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
+                            if (notCheckRight || materialGrid.Get(gridPos.X - 1, gridPos.Y, gridPos.Z) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE
@@ -714,7 +714,7 @@ namespace VikingEngine.Voxels
                                 totalVerticeIx += BlockLib.NumVerticesPerFace;
                             }
                             //LEFT
-                            if (notCheckLeft || materialGrid.MaterialGrid[gridPos.X + 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
+                            if (notCheckLeft || materialGrid.Get(gridPos.X + 1, gridPos.Y, gridPos.Z) == BlockHD.EmptyBlock)
                             {
                                 Graphics.Face data = Block.GetVoxelObjFace(position,
                                     //FACE

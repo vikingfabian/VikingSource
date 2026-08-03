@@ -13,7 +13,6 @@ namespace VikingEngine
     {
         public IntVector2 min, max;
 
-
         public Intvector2MinMax(IntVector2 center) 
         {
             min = center;
@@ -52,6 +51,8 @@ namespace VikingEngine
                 max.Y = pos.Y;
             }
         }
+
+        public IntVector2 Size => max - min;
 
     }
 }

@@ -2958,6 +2958,10 @@ namespace VikingEngine
         WarsFlagType_Streamer,
         WarsFlagType_Triangle,
 
+        WarsTextureGroupSquare,
+        WarsTextureGroupSquareMelee,
+
+
         WarsResource_PaddedArmor,
         WarsResource_HeavyPaddedArmor,
         WarsResource_BronzeArmor,

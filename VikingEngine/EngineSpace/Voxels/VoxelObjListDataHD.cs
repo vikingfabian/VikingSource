@@ -185,10 +185,10 @@ namespace VikingEngine.Voxels
                 {
                     for (pos.X = 0; pos.X < sz.X; ++pos.X)
                     {
-                        if (grid.MaterialGrid[pos.X, pos.Y, pos.Z] != BlockHD.EmptyBlock)
+                        var value = grid.Get(pos);
+                        if (value != BlockHD.EmptyBlock)
                         {
-
-                            Voxels.Add(new VoxelHD(pos + offset, grid.MaterialGrid[pos.X, pos.Y, pos.Z]));
+                            Voxels.Add(new VoxelHD(pos + offset, value));
                         }
                     }
                 }

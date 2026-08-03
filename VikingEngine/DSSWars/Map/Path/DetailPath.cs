@@ -79,12 +79,12 @@ namespace VikingEngine.DSSWars.Map.Path
         //IntVector2 gridOffset;
         IntVector2 nodeUseTopLeft, nodeUseBottomRight;
         //DetailPathNode[,] nodeGrid;
-        Grid1D<DetailPathNode> nodeGrid;
+        Grid2D_L<DetailPathNode> nodeGrid;
 
         public DetailPathFinding()
         {
             Rectangle2 area = Rectangle2.FromCenterTileAndRadius(IntVector2.Zero, MaxTileRadius);
-            nodeGrid = new Grid1D<DetailPathNode>(area.size);//new DetailPathNode[area.Width, area.Height];
+            nodeGrid = new Grid2D_L<DetailPathNode>(area.size);//new DetailPathNode[area.Width, area.Height];
         }
 
         public DetailWalkingPath FindPath(int pathThreadIndex, IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
