@@ -7,14 +7,22 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.Resource
 {
+    struct AllCityResourcesTag
+    {
+        public PFaction pfaction;
+        public PMapObject city;
+        public ItemResourceType item;
+    }
     struct ResourceInfoTag
     {
         public ResourceInfoTag(Faction faction, City city, ItemResourceType item)
@@ -216,6 +224,51 @@ namespace VikingEngine.DSSWars.Resource
         {
             ResourceInfoTag args = (ResourceInfoTag)tag;
             FullResourceInfo(args.faction, args.city, args.item, content); 
+        }
+        
+
+        public static void AllCityResources(RichBoxContent content, object tag)
+        {
+            content.h1(DssRef.lang.Hud_AllCities, HudLib.TitleColor_Head);
+            content.newLine();
+
+            AllCityResourcesTag args = (AllCityResourcesTag)tag;
+            if (args.item == ItemResourceType.NONE)
+            {
+                content.Add(new RbText(DssRef.lang.Hud_None));
+                return;
+            }
+            IconName.Item(args.item, out var icon, out var name);
+
+            var f = args.pfaction.GetFaction();
+            if (f.cities.Count > 1)
+            {
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
+                {
+                    if (city.myIndex != args.city.objectIndex)
+                    {
+                        var resourceCount = city.GetGroupedResource(args.item);
+
+                        //HudLib.BulletSeperationPoint(content);
+                        RichBoxContent buttonContent = new RichBoxContent();
+
+                        buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
+                        city.tagToHud(buttonContent);
+                        buttonContent.hspace();
+                        buttonContent.Add(new RbText(city.myIndex.ToString(), HudLib.SecondaryTextColor));
+                        buttonContent.space();
+                        buttonContent.Add(new RbImage(icon));
+                        buttonContent.hspace();
+                        buttonContent.Add(new RbText(resourceCount.amount.ToString(), Color.White));
+                        content.Add(new RbButton(buttonContent, null, null, false, ColorExt.VeryDarkGray));
+                    }
+                }
+            }
+            else
+            {
+                content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
+            }
         }
 
         public static void FullResourceInfo(Faction faction, City city, ItemResourceType item, RichBoxContent content)

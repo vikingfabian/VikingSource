@@ -1,11 +1,12 @@
 
 Change log:
-* 
+* A hover button for all city resources
 
 
 KNOWN ISSUES
 
 ##ICONS TODO
+* all cities icon
 * gray rounded button
 
 #MOUNTED TODO

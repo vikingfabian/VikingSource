@@ -327,6 +327,11 @@ namespace VikingEngine.DSSWars.EntityComponent
                             }));
 
                         content.Add(infoButton);
+
+
+                        var allCitiesButton = new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconCollection) },
+                            null, new RbTooltip(Resource.ResourceLib.AllCityResources, new AllCityResourcesTag() { city = city.mapObjPointer(), item = item, pfaction = player.pfaction }));
+                        content.Add(allCitiesButton);
                     }
                 }
 
