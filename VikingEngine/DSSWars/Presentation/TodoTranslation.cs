@@ -19,7 +19,16 @@ namespace VikingEngine.DSSWars.Presentation
 
     class TodoTranslation
     {
+        public string GameSettings_UltraWide => "Ultra wide";
+        public string GameSettings_UltraWide_LeftEdge => "UI left edge";
+        public string GameSettings_UltraWide_RightEdge => "UI right edge";
+
+
+        //-------
+
         public string UnitType_Faction => "Faction";
+
+
         //-------
 
         public string Hud_OutOfStock => "Out of stock";

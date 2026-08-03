@@ -4,7 +4,7 @@ Change log:
 * A hover button for all city resources
 * Can pick army or guards on automation
 * Will set captured cities to auto
-
+* Ultra wide support - adjustable ui placement
 
 * Using linear arrays for the map, and voxel data
 
