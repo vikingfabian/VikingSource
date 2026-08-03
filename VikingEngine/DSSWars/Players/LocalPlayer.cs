@@ -1743,8 +1743,10 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
 
-            pfaction.GetFaction().resourceOverviewOneSecondUpdate();
-
+            if (DssRef.time.oneMinute)
+            {
+                pfaction.GetFaction().resourceOverviewOneMinuteUpdate();
+            }
             double max = DssRef.world.diplomacy.DefaultMaxDiplomacy + DssRef.world.diplomacy.EmbassyAddMaxDiplomacy * pfaction.GetFaction().embassyCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);
             diplomaticPoints.setMax(max + DssRef.world.diplomacy.Diplomacy_HardMax_Add);
