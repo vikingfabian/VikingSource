@@ -1,6 +1,6 @@
 
 Change log:
-* 
+* A hover button for all city resources
 * Can pick army or guards on automation
 * Will set captured cities to auto
 
@@ -8,6 +8,7 @@ Change log:
 KNOWN ISSUES
 
 ##ICONS TODO
+* all cities icon
 * gray rounded button
 
 #MOUNTED TODO
