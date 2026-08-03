@@ -778,7 +778,9 @@ namespace VikingEngine.DSSWars.Build
                         player.pfaction.GetFaction(), city, ItemResourceType.NONE);
                     content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                        new RbText(string.Format( DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Build_Order, DssRef.todoLang.Hud_ApplyToAll )) },
+                        new RbImage(SpriteName.WarsConstructBuildingIcon),
+                        new RbSpace(0.5f),
+                        new RbText(string.Format( DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Work_OrderPrioTitle, DssRef.todoLang.Hud_ApplyToAll )) },
                         new RbAction1Arg<City>(player.ApplyBuildPrioToAll, city), null, ordersDifferFromPriority));
 
                 }
