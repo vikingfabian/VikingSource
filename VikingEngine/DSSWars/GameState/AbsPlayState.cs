@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Interface;
@@ -141,8 +142,10 @@ namespace VikingEngine.DSSWars.GameState
            
         }
 
-        protected bool pauseMenuUpdate()
+        protected bool pauseMenuUpdate(out bool blockInput)
         {
+            blockInput = false;
+            
             if (menuSystem.IsOpen())
             {
                 menuSystem.menuUpdate();
@@ -155,6 +158,7 @@ namespace VikingEngine.DSSWars.GameState
                         DssRef.storage.Save(null);
                     }
                     menuSystem.closeMenu();
+                    blockInput = true;
                 }
 
                 return true;
@@ -206,7 +210,8 @@ namespace VikingEngine.DSSWars.GameState
             {
                 SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
             }
-            LocalHost().hud.needRefresh = true;
+            //LocalHost().hud.needRefresh = true;
+            LocalHost().hud.headOptions?.refreshUpdate();
         }
 
         public void PauseOnNetSave(bool pause)

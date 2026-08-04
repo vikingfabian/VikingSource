@@ -2142,12 +2142,15 @@ namespace VikingEngine
                 add(SpriteName.cmdClientPointerMetallic);
 
                 add(SpriteName.WarsHudIconMultiplayer);
+                
                 add(SpriteName.WarsHudIconClient);
                 add(SpriteName.WarsHudIconHost);
                 add(SpriteName.WarsHudIconPlayerCount);
 
                 add(SpriteName.WarsHudIconBlockedPlayer);
                 add(SpriteName.WarsRelationMobilizing);
+                add(SpriteName.WarsHudIconMultiplayerJoin, 2, 1);
+
             }
 
 

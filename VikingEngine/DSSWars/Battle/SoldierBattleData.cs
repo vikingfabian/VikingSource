@@ -290,7 +290,7 @@ namespace VikingEngine.DSSWars.Battle
 
             if (closestOpponent == null)
             {
-                var groupTarget_sp = ((AbsGroup)parent.group.attackTarget_soldierGroupOrCity.Get())?.Soldiers();
+                var groupTarget_sp = ((AbsGroup)parent.group.attackTarget_soldierGroupOrCity.Clone().Get())?.Soldiers();
 
                 if (groupTarget_sp != null)
                 {

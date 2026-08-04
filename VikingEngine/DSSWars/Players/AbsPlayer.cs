@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (!fromAllianceTrade && localAction)
                     {
-                        faction.tradeAllianceWars(isActuator, otherPFaction);
+                        faction.tradeAllianceWars(isActuator, otherPFaction, false);
                     }
                 }
                 else
@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (!fromAllianceTrade && localAction)
                 {
-                    faction.tradeAllianceWars(isActuator, otherPFaction);
+                    faction.tradeAllianceWars(isActuator, otherPFaction, true);
                 }
             }
         }

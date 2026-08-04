@@ -1,12 +1,7 @@
 
 Change log:
-* Animal habitats on heatmap, and tab names
-* Rebalanced animal placement
-* compressed headbar Ui
+* Fixed soldier target crash
 
-Performance
-* Removed all unessesary faction references
-* Removed refences from the aria unit grid
 
 * More efficient unit filter system
 
@@ -14,8 +9,6 @@ KNOWN ISSUES
 
 ##ICONS TODO
 * gray rounded button
-* mobilizing
-* join game icon
 
 #MOUNTED TODO
 * 

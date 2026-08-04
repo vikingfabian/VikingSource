@@ -2977,7 +2977,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     content.space();
 
-                    content.Add(new RbImage(SpriteName.unitEmoteSnore));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_IdleCount.ToString()));
 

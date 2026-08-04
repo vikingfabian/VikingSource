@@ -285,11 +285,11 @@ namespace VikingEngine.DSSWars.XP
                 {
                     if (value >= faction.cities.Count)
                     {
-                        caption += $"({DssRef.lang.Hud_AllCities})";
+                        caption += $" ({DssRef.lang.Hud_AllCities})";
                     }
                     else
                     {
-                        caption += $"({value}/{faction.cities.Count})";
+                        caption += $" ({value}/{faction.cities.Count})";
                     }
                 }
 
