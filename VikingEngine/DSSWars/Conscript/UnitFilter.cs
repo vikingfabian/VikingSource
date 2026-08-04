@@ -83,5 +83,6 @@ namespace VikingEngine.DSSWars.Conscript
 
         Primitive,
         GunPowder,
+        NUM
     }
 }

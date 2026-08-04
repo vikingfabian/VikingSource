@@ -15,20 +15,51 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 {
     partial class MapObjMenu //REASSIGN MENU
     {
-        
+        class SoldierGroupAndCount
+        {
+            public int sortId;
+            public SoldierGroup group;
+            public int count;
+
+            public SoldierGroupAndCount(int sortId, SoldierGroup group)
+            {
+                this.group = group;
+                count = 1;
+                this.sortId = sortId;
+                //sortId = group.soldierConscript.conscript.SortOrderValue();
+            }
+        }
 
         protected void ResassignTab(RichBoxContent content)
         {
             var army = mapObj.GetAbsArmy();
 
             List<SoldierGroup> groups = army.groups.toList();
-            groups.Sort((a, b) => b.soldierConscript.conscript.SortOrderValue().CompareTo(a.soldierConscript.conscript.SortOrderValue()));
+            Dictionary<int, SoldierGroupAndCount> groupCountDic = new Dictionary<int, SoldierGroupAndCount>(groups.Count);
+            //List<SoldierGroupAndCount> groupAndCounts = new List<SoldierGroupAndCount>(groups.Count);
+            foreach (var group in groups)
+            {
+                int sortId = group.soldierConscript.conscript.SortOrderValue();
+                if (groupCountDic.TryGetValue(sortId, out var groupAndCount))
+                {
+                    groupAndCount.count++;
+                }
+                else
+                {
+                    groupCountDic.Add(sortId, new SoldierGroupAndCount(sortId, group));
+                }
+            }
+            List<SoldierGroupAndCount> groupAndCounts = groupCountDic.Values.ToList();
+            groupAndCounts.Sort((a, b) => a.sortId.CompareTo(b.sortId));
 
             HashSet<ItemResourceType> itemsUsed = new HashSet<ItemResourceType>();
-            UnitFilter unitFilter = new UnitFilter();
+            UnitFilter unitFilterUsed = new UnitFilter();
 
-            foreach (SoldierGroup group in groups)
+            bool noFilter = player.armyFilterItems.Count == 0 && player.armyFilterClasses.value.IsEmpty();
+
+            foreach (SoldierGroupAndCount groupcount in groupAndCounts)
             {
+                var group = groupcount.group;
                 itemsUsed.Add(group.soldierConscript.conscript.man);
                 itemsUsed.Add(group.soldierConscript.conscript.weapon);
                 itemsUsed.Add(group.soldierConscript.conscript.shield);
@@ -36,7 +67,8 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 itemsUsed.Add(group.soldierConscript.conscript.armorLevel);
                 itemsUsed.Add(group.soldierConscript.conscript.vehicle);
 
-                bool inFilter = player.armyFilterItems.Count == 0 ||
+                bool inFilter = noFilter ||
+                     player.armyFilterClasses.value.InFilter(group.soldierData.unitFilter.value) ||
                     player.armyFilterItems.Contains(group.soldierConscript.conscript.man) ||
                     player.armyFilterItems.Contains(group.soldierConscript.conscript.weapon) ||
                     player.armyFilterItems.Contains(group.soldierConscript.conscript.shield) ||
@@ -44,12 +76,20 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     player.armyFilterItems.Contains(group.soldierConscript.conscript.armorLevel) ||
                     player.armyFilterItems.Contains(group.soldierConscript.conscript.vehicle);
 
-                unitFilter.value.Combine(group.soldierData.unitFilter.value);
+                unitFilterUsed.value.Combine(group.soldierData.unitFilter.value);
 
                 RichBoxContent buttonContent = new RichBoxContent();
                 group.TypeIcon(buttonContent);
                 group.soldierConscript.conscript.toHud(buttonContent, true);
-                content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent, null, new RbTooltip( tooltip, group), inFilter));
+                content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent, null, new RbTooltip(tooltip, group), inFilter));
+
+                if (groupcount.count > 1)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("×" + groupcount.count.ToString()) },
+                        null, null, inFilter));
+                }
+
+                content.space();
             }
 
             content.newParagraph();
@@ -74,11 +114,31 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     new RbTooltip_Text(itemName))); 
             }
             content.newLine();
+            for (UnitFilterType filterType = 0; filterType < UnitFilterType.NUM; filterType++)
+            {
+                if (unitFilterUsed.Contains(filterType))
+                {
+                    content.Add(new ArtToggle(player.armyFilterClasses.Contains(filterType),
+                    new List<AbsRichBoxMember> { new RbText(filterType.ToString()) },
+                    new RbAction1Arg<UnitFilterType>((UnitFilterType selected) => {
+                        if (player.armyFilterClasses.Contains(selected))
+                        {
+                            player.armyFilterClasses.Remove(selected);
+                        }
+                        else
+                        {
+                            player.armyFilterClasses.Add(selected);
+                        }
+                    }, filterType)));
+                }
+            }
+            
+            content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.FlagEditor_ClearAll) },
                 new RbAction(() => { 
                     player.armyFilterItems.Clear();
                     player.armyFilterClasses = new UnitFilter();
-                })));
+                }),null, !noFilter));
 
 
             void tooltip(RichBoxContent content, object tag)

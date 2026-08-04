@@ -171,18 +171,22 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.Bow:
                 case ItemResourceType.LongBow:
                 case ItemResourceType.Crossbow:
+                case ItemResourceType.MithrilBow:
+                    unitFilter.Add(UnitFilterType.Ranged);
+                    break;
 
                 case ItemResourceType.HandCannon:
                 case ItemResourceType.HandCulverin:
                 case ItemResourceType.Rifle:
                 case ItemResourceType.Blunderbuss:
-                case ItemResourceType.MithrilBow:
+
                     //ranged = true;
                     //rangedMan = true;
                     //meleeMan = false;
 
                     //warmachine = false;
                     unitFilter.Add(UnitFilterType.Ranged);
+                    unitFilter.Add(UnitFilterType.GunPowder);
                     break;
 
                 
@@ -192,6 +196,9 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.Ballista:
                 case ItemResourceType.Manuballista:
                 case ItemResourceType.Catapult:
+                    unitFilter.Add(UnitFilterType.Ranged);
+                    unitFilter.Add(UnitFilterType.WarMachine);
+                    break;
 
                 case ItemResourceType.SiegeCannonBronze:
                 case ItemResourceType.ManCannonBronze:
@@ -204,6 +211,7 @@ namespace VikingEngine.DSSWars.Conscript
                     //warmachine = true;
                     unitFilter.Add(UnitFilterType.Ranged);
                     unitFilter.Add(UnitFilterType.WarMachine);
+                    unitFilter.Add(UnitFilterType.GunPowder);
                     break;
 
                 case ItemResourceType.UN_BatteringRam:
@@ -218,6 +226,11 @@ namespace VikingEngine.DSSWars.Conscript
 
                 default:
                     throw new NotImplementedException();
+            }
+
+            if (!unitFilter.Contains(UnitFilterType.GunPowder))
+            {
+                unitFilter.Contains(UnitFilterType.Primitive);
             }
 
             return unitFilter;
