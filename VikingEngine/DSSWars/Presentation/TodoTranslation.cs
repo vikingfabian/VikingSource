@@ -20,6 +20,11 @@ namespace VikingEngine.DSSWars.Presentation
     class TodoTranslation
     {
         public string UnitType_Faction => "Faction";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public string MenuTab_Reassign => "Reassign";
         //-------
 
 
@@ -76,7 +81,7 @@ namespace VikingEngine.DSSWars.Presentation
         //public string DefaultCoOptional => "Default: Co-optional";
         //public string DefaultHardcore => "Default: Hardcore";
         //public string GeneralTitle => "General";
-        
+
         //public string InputButton_Hold => "Button hold";
         //public string InputButton_Toggle => "Button toggle";
         //public string VoiceOptAlwaysOn => "Always on";
@@ -176,7 +181,7 @@ namespace VikingEngine.DSSWars.Presentation
         //public string Multiplayer_VoiceChat => "Voice chat";
         //public string Steam_UserProfile => "User profile";
         //public string Steam_OpenSteamOverlay => "Open Steam overlay";
-        
+
         ///// <summary>
         ///// In this relation there is a countdown towards war
         ///// </summary>

@@ -92,6 +92,8 @@ namespace VikingEngine.DSSWars.Players
         public MenuTab armyTab = MapObjMenu.ArmyTabs[0];
         public MenuTab pinTab = MenuTab.Info;
         public ResourcesSubTab resourcesSubTab = new ResourcesSubTab();
+        public HashSet<ItemResourceType> armyFilterItems = new HashSet<ItemResourceType>();
+        public UnitFilter armyFilterClasses = new UnitFilter();
 
         public ProgressSubTab progressSubTab = 0;
         public TagSubTab tagSubTab = 0;
@@ -832,7 +834,7 @@ namespace VikingEngine.DSSWars.Players
                     //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
                     //DssRef.state.events.TestNextEvent();
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
-                    //battleLineUpTest2(false);
+                    battleLineUpTest2(true);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.testTooPeacefulCheck();
                     //Ref.steam.StartRecording();
@@ -1187,7 +1189,7 @@ namespace VikingEngine.DSSWars.Players
             Rotation1D enemyRot = Rotation1D.FromDegrees(180 + Ref.rnd.Plus_Minus(10));
             Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.settings.Faction_DarkFollower.GetFaction();//DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
+            Faction enemyFac = DssRef.settings.Faction_Barbarian.GetFaction();//DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
             enemyFac.hasDeserters = false;
             //DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
@@ -1245,6 +1247,24 @@ namespace VikingEngine.DSSWars.Players
                         {
                             weapon = Resource.ItemResourceType.ThrowingSpear,
                             armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Ballista,
+                            armorLevel = Resource.ItemResourceType.PaddedArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,
                         }

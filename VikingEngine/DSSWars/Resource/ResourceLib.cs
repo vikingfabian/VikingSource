@@ -93,7 +93,6 @@ namespace VikingEngine.DSSWars.Resource
             
             ItemResourceType.Warhammer,
             ItemResourceType.TwoHandSword,
-             //ItemResourceType.KnightsLance,
             ItemResourceType.MithrilSword,
 
             ItemResourceType.BucklerShield,

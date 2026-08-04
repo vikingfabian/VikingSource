@@ -223,6 +223,11 @@ namespace VikingEngine.DSSWars.Conscript
             return unitFilter;
         }
 
+        public int SortOrderValue()
+        {
+            return ItemPropertyColl.Get(weapon).UnitSortValue + ItemPropertyColl.Get(armorLevel).UnitSortValue + ItemPropertyColl.Get(shield).UnitSortValue + ItemPropertyColl.Get(animal).UnitSortValue;
+        }
+
         public double armySpeedBonus(bool land)
         {
             if (land)

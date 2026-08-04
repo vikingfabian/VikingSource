@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Work;
@@ -1733,8 +1734,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelData.modelType = ModelType.Custom;
             }
 
-
-
+            UnitFilterLib.Init();
         }
 
         public static ItemProperties Get(ItemResourceType type)

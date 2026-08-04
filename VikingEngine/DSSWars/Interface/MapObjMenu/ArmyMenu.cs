@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         //ArmyFilterMenu armyFilterMenu;
 
         public static readonly List<MenuTab> ArmyTabs = new List<MenuTab>() {
-            MenuTab.Info, MenuTab.Divide, MenuTab.Disband, MenuTab.Tag };
+            MenuTab.Info, MenuTab.Reassign, /*MenuTab.Divide, MenuTab.Disband,*/ MenuTab.Tag };
 
         public MapObjMenu(LocalPlayer player, ArmyCollection objectCollection, RichBoxContent content)
         {
@@ -66,6 +66,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             this.player = player;
             this.army = army;
+            mapObj = army;
 
             if (!DssRef.storage.ruleset_instance.centralGold)
             {
@@ -135,8 +136,8 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                         case MenuTab.Divide:
                             divideTab(content);
                             break;
-                        case MenuTab.Filter:
-
+                        case MenuTab.Reassign:
+                            ResassignTab(content);
                             break;
                         case MenuTab.Disband:
                             disbandTab(content);
