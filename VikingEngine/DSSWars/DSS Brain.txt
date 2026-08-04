@@ -1,6 +1,6 @@
 
 Change log:
-* 
+* Fixed soldier target crash
 
 
 KNOWN ISSUES
