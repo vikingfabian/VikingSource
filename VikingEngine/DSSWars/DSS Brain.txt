@@ -8,7 +8,7 @@ Performance
 * Removed all unessesary faction references
 * Removed refences from the aria unit grid
 
-
+* More efficient unit filter system
 
 KNOWN ISSUES
 

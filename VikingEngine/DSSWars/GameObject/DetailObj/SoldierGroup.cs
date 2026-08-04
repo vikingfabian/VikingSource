@@ -100,6 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
         public UnitBuildType shipBuilder;
 
         public SoldierConscriptProfile soldierConscript;
+        
         public SoldierData soldierData;
         public SoldierData soldierData_soldier;
         public bool isShip = false;
