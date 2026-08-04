@@ -135,6 +135,24 @@ namespace VikingEngine.DSSWars.GameObject
                         workForce.amount += add;
                         return;
 
+                    case ItemResourceType.ImmigrantsOrWorkers:
+                        if (add > 0)
+                        {
+                            workForce.amount += add;
+                            if (workForce.amount > HousingCount_Workers)
+                            {
+                                immigrants.value += workForce.amount - HousingCount_Workers;
+                                workForce.amount = HousingCount_Workers;
+                            }
+                        }
+                        else
+                        {
+                            int spendImmigrants = Math.Min(immigrants.Int(), -add);
+                            immigrants.value -= spendImmigrants;
+                            workForce.amount += add + spendImmigrants;
+                        }
+                        return;
+
                     case ItemResourceType.NobleMen:
                         freeNobelMen.amount += add;
                         return;

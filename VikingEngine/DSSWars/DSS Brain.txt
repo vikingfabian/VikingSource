@@ -3,6 +3,7 @@ Change log:
 * Animal habitats on heatmap, and tab names
 * Rebalanced animal placement
 * compressed headbar Ui
+* When spending workers, immigrants will be used first
 
 Performance
 * Removed all unessesary faction references
