@@ -357,7 +357,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     selectedPlayer = gamer;
                 }
-                player.hud.needRefresh = true;
+                //player.hud.needRefresh = true;
             });
             content.Add(tabGroup);
 

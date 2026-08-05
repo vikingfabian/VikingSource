@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                             divideTab(content);
                             break;
                         case MenuTab.Reassign:
-                            ResassignTab(content);
+                            ResassignTab(content, out secondMenuContent);
                             break;
                         case MenuTab.Disband:
                             disbandTab(content);

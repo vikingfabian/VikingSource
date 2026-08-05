@@ -4,8 +4,10 @@ Change log:
 
 
 * More efficient unit filter system
+* New reassign menu for soldiers
 
 KNOWN ISSUES
+x reassign dont work with controller
 
 ##ICONS TODO
 * gray rounded button

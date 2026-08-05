@@ -222,6 +222,9 @@ namespace VikingEngine.DSSWars.Interface
 
         public void refreshObject(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected)
         {
+            bool bUseSecondMenu = false;
+
+
             if (menu != null && menu.BlockRefresh())
             {
                 return;
@@ -243,13 +246,14 @@ namespace VikingEngine.DSSWars.Interface
                 createMenu(true, player);
 
                 var content = new RichBoxContent();
-                obj.toHud(new ObjectHudArgs(content, player, selected), out RichBoxContent secondMenuContent);
+                obj.toHud(new ObjectHudArgs(content, player, selected), out var secondMenuContent);
                 menu.Refresh(content, player.gameControls.controllerPointer);
 
                 if (secondMenuContent != null)
                 {
+                    bUseSecondMenu = true;
                     createMenu(false, player);
-                    secondMenu.Refresh(content, player.gameControls.controllerPointer);
+                    secondMenu.Refresh(secondMenuContent, player.gameControls.controllerPointer);
                 }
             }
 
@@ -271,17 +275,31 @@ namespace VikingEngine.DSSWars.Interface
 
                 selectHistory.Add(obj);                
             }
+
+            if (!bUseSecondMenu)
+            {
+                secondMenu?.DeleteMe();
+                secondMenu = null;
+            }
         }
 
         /// <returns>need refresh</returns>
         public bool updateMouseInput(ref bool mouseOver)
         {
+            bool needRefresh = false;
+
+            if (secondMenu != null)
+            {
+                secondMenu.updateMouseInput(ref mouseOver);
+                needRefresh = secondMenu.needRefresh;
+            }
+
             if (menu != null)
             {
                 menu.updateMouseInput(ref mouseOver);
-                return menu.needRefresh;
+                needRefresh |= menu.needRefresh;
             }
-            return false;
+            return needRefresh;
         }
     }
 }

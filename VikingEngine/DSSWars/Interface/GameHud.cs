@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
@@ -304,7 +305,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void updateMenuDisplays(bool refresh)
         {
-
+           
             if (player.gameControls.diplomacy != null)
             {
                 var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
@@ -344,6 +345,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (refresh)
                 {
                     objMenu.refreshObject(player, obj, selected);
+                    
                 }
             }
         }
