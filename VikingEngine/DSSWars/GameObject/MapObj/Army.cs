@@ -370,15 +370,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
         }
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
+
             debugTagButton(args.content);
 
             ArmyPresentationHud(args, false);
 
             if (pfaction == args.player.pfaction)
             {
-                new MapObjMenu(args.player, this, args.content);
+                new MapObjMenu(args.player, this, args.content, out secondMenuContent);
             }
             else
             {

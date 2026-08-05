@@ -1544,8 +1544,9 @@ namespace VikingEngine.DSSWars.GameObject
             SoldiersPresentationHud(args, true, true);
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             if (!army.TryGetTarget(out var tArmy))
             {
                 return;

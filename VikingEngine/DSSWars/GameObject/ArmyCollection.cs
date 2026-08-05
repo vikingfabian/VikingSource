@@ -55,8 +55,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+
+            secondMenuContent = null;
             refreshAlive();
             GroupPresentation(args, false);
             

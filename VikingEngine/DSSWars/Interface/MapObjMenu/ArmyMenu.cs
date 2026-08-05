@@ -62,8 +62,9 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             }
         }
 
-        public MapObjMenu(LocalPlayer player, Army army, RichBoxContent content)
+        public MapObjMenu(LocalPlayer player, Army army, RichBoxContent content, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             this.player = player;
             this.army = army;
             mapObj = army;

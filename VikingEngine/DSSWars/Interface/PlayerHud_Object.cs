@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Interface
         public NetSessionDisplay netSessionDisplay = new NetSessionDisplay();
 
         public DiplomacyDisplay diplomacy;
-        public RichMenu menu;
+        public RichMenu menu, secondMenu;
         public AbsArmy otherArmy;
 
         public RichMenu Menu => menu;
@@ -31,37 +31,55 @@ namespace VikingEngine.DSSWars.Interface
             diplomacy = new DiplomacyDisplay(player);
         }
 
-        public void createMenu(LocalPlayer player, bool highOpacity = true)
+        public void createMenu(bool defaultMenu, LocalPlayer player, bool highOpacity = true)
         {
-            if (menu == null)
+            RichMenu richMenu = defaultMenu? menu: secondMenu;
+
+            if (richMenu == null)
             {
                 var objectMenuArea = player.playerData.view.safeScreenArea;
                 objectMenuArea.Width = HudLib.HeadDisplayWidth;
+
+                if (!defaultMenu)
+                {
+                    objectMenuArea.nextAreaX(1, 16);
+                }
 
                 if (player.hud.head != null)
                 {
                     objectMenuArea.Position.Y = player.hud.head.Bottom + Engine.Screen.IconSize * 0.5f;
                 }
                 objectMenuArea.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
-                menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
-                var bgTex = menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
+                richMenu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
+                var bgTex = richMenu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
 
                 bgTex.SetColor(ColorExt.GrayScale(0.9f));
-               
+
+                if (defaultMenu)
+                {
+                    menu = richMenu;
+                }
+                else
+                { 
+                    secondMenu = richMenu;
+                }
             }
 
-            menu.backgroundTextures.SetOpacity(highOpacity ? 0.95f : 0.92f);
+            richMenu.backgroundTextures.SetOpacity(highOpacity ? 0.95f : 0.92f);
         }
 
         public void deleteMenu()
         {
             menu?.DeleteMe();
             menu = null;
+
+            secondMenu?.DeleteMe();
+            secondMenu = null;
         }
 
         void historyDisplay(Players.LocalPlayer player)
         {
-            createMenu(player, false);
+            createMenu(true, player, false);
 
             var content = new RichBoxContent();
 
@@ -131,11 +149,6 @@ namespace VikingEngine.DSSWars.Interface
                     content.newParagraph();
                 }
                 
-                //else if (DssRef.state.host && Ref.steam.isInitialized && Ref.netsett.hostNetwork)
-                //{
-                //    netSessionDisplay.invite(content);
-                //}
-
                 content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
 
                 for (int i = selectHistory.Count - 1; i >= 0; --i)
@@ -187,7 +200,7 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
-            createMenu(player);
+            createMenu(true,player);
 
             if (faction != null)
             {
@@ -227,11 +240,17 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                createMenu(player);
+                createMenu(true, player);
 
                 var content = new RichBoxContent();
-                obj.toHud(new ObjectHudArgs(content, player, selected));
+                obj.toHud(new ObjectHudArgs(content, player, selected), out RichBoxContent secondMenuContent);
                 menu.Refresh(content, player.gameControls.controllerPointer);
+
+                if (secondMenuContent != null)
+                {
+                    createMenu(false, player);
+                    secondMenu.Refresh(content, player.gameControls.controllerPointer);
+                }
             }
 
             if (selected)

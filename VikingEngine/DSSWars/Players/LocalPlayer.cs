@@ -94,6 +94,7 @@ namespace VikingEngine.DSSWars.Players
         public ResourcesSubTab resourcesSubTab = new ResourcesSubTab();
         public HashSet<ItemResourceType> armyFilterItems = new HashSet<ItemResourceType>();
         public UnitFilter armyFilterClasses = new UnitFilter();
+        public MovingGroupsCollection movingGroupsCollection = null;
 
         public ProgressSubTab progressSubTab = 0;
         public TagSubTab tagSubTab = 0;
