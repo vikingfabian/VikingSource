@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public ArmyCollection(PFaction faction)
+        public ArmyCollection(PFaction pfaction)
         {
             this.pfaction = pfaction;
         }

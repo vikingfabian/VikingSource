@@ -1,8 +1,6 @@
 
 Change log:
-* Fixed soldier target crash
-* Fixed empty banner model crash
-* Fixed: There is no option to limit the stockpile for padded armor
+* ArmyCollection empty faction fix
 
 
 KNOWN ISSUES
