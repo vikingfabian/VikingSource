@@ -365,8 +365,6 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
             {
-
-
                 if (tradeAbleArmies[i] == army ||
                     WP.birdDistance(army, tradeAbleArmies[i]) > Army.MaxTradeDistance)
                 {
