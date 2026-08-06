@@ -26,10 +26,10 @@ namespace VikingEngine.DSSWars
 
 
         //## DEFAULT FALSE ##
-        public static bool EndlessResources = PlatformSettings.DevBuild ? true : 
+        public static bool EndlessResources = PlatformSettings.DevBuild ? false : 
             false;//DO NOT CHANGE    
 
-        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? true :
+        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
         public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :

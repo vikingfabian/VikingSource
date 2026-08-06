@@ -58,13 +58,13 @@ namespace VikingEngine.DSSWars.Event
                         {
                             if (checkTime.TimeOut())
                             {
-#if DEBUG
-                                Ref.update.AddSyncAction(new SyncAction(() =>
-                                {
-                                    DssRef.state.localPlayers[0].hud.messages.Add(
-                                        "Event Power check", StoryEventType().ToString());
-                                }));
-#endif
+//#if DEBUG
+//                                Ref.update.AddSyncAction(new SyncAction(() =>
+//                                {
+//                                    DssRef.state.localPlayers[0].hud.messages.Add(
+//                                        "Event Power check", StoryEventType().ToString());
+//                                }));
+//#endif
 
                                 PowerCheck();
                                 eventState = EventState.TriggerEvent_countdown;
@@ -74,14 +74,14 @@ namespace VikingEngine.DSSWars.Event
                     case EventState.TriggerEvent_countdown:
                         if (triggerTime.TimeOut())
                         {
-#if DEBUG
-                            Ref.update.AddSyncAction(new SyncAction(() =>
-                            {
-                                DssRef.state.localPlayers[0].hud.messages.Add(
-                                    "Event Trigger", StoryEventType().ToString());
-                            }));
+//#if DEBUG
+//                            Ref.update.AddSyncAction(new SyncAction(() =>
+//                            {
+//                                DssRef.state.localPlayers[0].hud.messages.Add(
+//                                    "Event Trigger", StoryEventType().ToString());
+//                            }));
 
-#endif
+//#endif
                             calcAndRunEvent_async();
                             eventState = EventState.Done;
                         }
