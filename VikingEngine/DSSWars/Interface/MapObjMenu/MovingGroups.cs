@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
@@ -41,13 +43,25 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
             return false;
         }
+        public void disband()
+        {
+            mainArmy.Disband(otherArmies.First);
+        }
+        public void apply()
+        {   
+            foreach (var m in otherArmies.list)
+            {
+                mainArmy.Apply(m);
 
+                m.Apply(mainArmy);
+            }
+        }
         public void cancel()
         {
             mainArmy.cancel();
             foreach (var m in otherArmies.list)
             {
-                m.cancel();
+                mainArmy.cancel();
             }
         }
     }
@@ -152,6 +166,79 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     toArmy.recieveGroups.Remove(group.group);
                 }
             }
+        }
+
+        public void Disband(MovingGroups toArmy)
+        {            
+            foreach (var group in toArmy.recieveGroups)
+            {
+                group.DeleteMe(DeleteReason.Disband, true);
+            }
+
+            if (army.groups.Count > 0 && army.IsArmy())
+            {
+                army.GetArmy().refreshPositions(false);
+            }
+        }
+
+        public void Apply(MovingGroups toArmy)
+        {
+            int moveCount = 0;
+
+            if (moveGroups.Count > 0 && toArmy.army == null)
+            {
+                IntVector2 onTile = DssRef.world.GetFreeTile(army.tilePos);
+                toArmy.army = army.pfaction.GetFaction().NewArmy(onTile);                 
+            }
+            
+            foreach (var group in toArmy.recieveGroups)
+            {
+                if (group.isDeleted)
+                { continue; }
+                
+                army.groups.RemoveAt(group.myIndex);
+                toArmy.army.AddSoldierGroup(group);
+                moveCount++;
+            }
+
+            if (army.IsArmy())
+            {
+                //Move gold
+                var myArmy = army.GetArmy();
+                float startGroupCount = army.groups.Count;
+                Money transportGold;
+                float food = 0;
+                float conservedFood = 0;
+
+                if (army.groups.Count <= 0)
+                {
+                    transportGold = army.money;
+                    food = myArmy.food;
+                    conservedFood = myArmy.conservedFood;
+                    army.DeleteMe(DeleteReason.EmptyGroup, true);
+                }
+                else
+                {
+                    float percMove = (startGroupCount - army.groups.Count) / startGroupCount;
+                    transportGold = new Money(army.money.copper * percMove);
+                    food = myArmy.food * percMove;
+                    conservedFood = myArmy.conservedFood * percMove;
+                    myArmy.refreshPositions(false);
+                }
+
+                myArmy.money -= transportGold;
+                myArmy.food -= food;
+                myArmy.conservedFood -= conservedFood;
+
+                var otherArmy = toArmy.army.GetArmy();
+                otherArmy.money += transportGold;
+                otherArmy.food += food;
+                otherArmy.conservedFood += conservedFood;
+
+                otherArmy.refreshPositions(false);
+                otherArmy.onArmyMerge();
+            }
+            //army.tradeSoldiersAction(ref player.hud.objMenu.otherArmy, type, count);
         }
 
         public static List<SoldierGroupAndCount> ListUnits(LocalPlayer player, RichBoxContent content, MovingGroups sending, MovingGroups recieving, 
@@ -267,7 +354,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     new RbAction3Arg<MovingGroups, MovingGroups, bool>(moveAll,
                             sending, recieving, false), null, groupAndCounts.Count > 0));
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.ArmyOption_DivideHalf) },
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.ArmyOption_SendHalf) },
                     new RbAction3Arg<MovingGroups, MovingGroups, bool>(moveAll,
                             sending, recieving, true), null, groupAndCounts.Count > 0));
 

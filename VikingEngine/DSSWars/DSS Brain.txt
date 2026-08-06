@@ -5,6 +5,7 @@ Change log:
 
 * More efficient unit filter system
 * New reassign menu for soldiers
+* Fixed: food will also follow army split
 
 KNOWN ISSUES
 x reassign dont work with controller

@@ -1700,7 +1700,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendAll => "Send All";
+        public override string ArmyOption_SendAll => "Send all";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.

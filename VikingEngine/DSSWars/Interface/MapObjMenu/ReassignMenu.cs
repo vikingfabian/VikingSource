@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 }
                 else
                 {
-                    army.toButtonContent(buttonContent, true);
+                    army.toTabContent(buttonContent, true);
                 }
 
                 tabs.Add(new ArtTabMember(buttonContent));
@@ -146,13 +146,37 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             content.newLine();
 
             //TAB CONTENT
+            if (player.movingGroupsCollection.otherArmies.Selected().army != null)
+            {
+                player.movingGroupsCollection.otherArmies.Selected().army.toButtonContent(content, false);
+                content.Add(new RbSeperationLine());
+                content.newParagraph();
+            }
             MovingGroups.ListUnits(player, content, player.movingGroupsCollection.otherArmies.Selected(), player.movingGroupsCollection.mainArmy, out HashSet<ItemResourceType> itemsUsed, out UnitFilter unitFilterUsed, out bool noFilter);
 
             content.newParagraph();
             bool hasMoveChanges = player.movingGroupsCollection.hasMoved();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) }, null, null, hasMoveChanges) { fillWidth = true });
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) }, new RbAction(()=>
+                {
+                    player.movingGroupsCollection.apply();
+                    player.movingGroupsCollection = null;
+                }), 
+                null, hasMoveChanges) { fillWidth = true });
+            if (player.movingGroupsCollection.otherArmies.Selected().army == null)
+            {
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.ArmyOption_Disband) }, new RbAction(() =>
+                {
+                    player.movingGroupsCollection.disband();
+                    player.movingGroupsCollection = null;
+                }), null, hasMoveChanges)
+                { fillWidth = true });
+            }
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Cancel) }, new RbAction(player.movingGroupsCollection.cancel), null, hasMoveChanges) { fillWidth = true });
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Cancel) }, new RbAction(() =>
+            {
+                player.movingGroupsCollection = null;
+            }), null, hasMoveChanges) { fillWidth = true });
             
 
             return content;

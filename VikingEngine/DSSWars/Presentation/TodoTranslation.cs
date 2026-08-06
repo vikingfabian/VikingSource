@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// Move soldiers between armies
         /// </summary>
         public string MenuTab_Reassign => "Reassign";
+        public string ArmyOption_SendHalf => "Send half";
         //-------
 
 

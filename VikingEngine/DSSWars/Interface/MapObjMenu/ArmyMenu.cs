@@ -24,8 +24,6 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         const string TradeMenuState = "trade";
         //LocalPlayer player;
         protected Army army;
-        //ArmyCollection objectCollection;
-        //ArmyFilterMenu armyFilterMenu;
 
         public static readonly List<MenuTab> ArmyTabs = new List<MenuTab>() {
             MenuTab.Info, MenuTab.Reassign, /*MenuTab.Divide, MenuTab.Disband,*/ MenuTab.Tag };
@@ -404,8 +402,6 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 new RbAction(mergeArmies, RbSoundType.Default), null);
                 content.Add(allbutton);
             }
-
-            
         }
 
 
@@ -504,11 +500,11 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             army.tradeSoldiersAction(ref player.hud.objMenu.otherArmy, type, count);            
         }
 
-        void startArmyTrade(Army toarmy)
-        {
-            player.hud.objMenu.otherArmy = toarmy;
-            player.hud.objMenu.menu.OpenMenu(TradeMenuState, StackOption.Stack);
-        }
+        //void startArmyTrade(Army toarmy)
+        //{
+        //    player.hud.objMenu.otherArmy = toarmy;
+        //    player.hud.objMenu.menu.OpenMenu(TradeMenuState, StackOption.Stack);
+        //}
 
         void selectArmyTrade(AbsArmy toarmy)
         {
