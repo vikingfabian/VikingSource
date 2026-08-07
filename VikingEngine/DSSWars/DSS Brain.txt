@@ -4,6 +4,8 @@ Change log:
 * Rebalanced animal placement
 * Compressed headbar Ui
 * Tabs have environmental sounds
+* Theme music added to playlist
+
 
 Performance
 * Removed all unessesary faction references
