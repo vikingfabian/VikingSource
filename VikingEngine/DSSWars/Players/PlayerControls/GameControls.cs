@@ -567,7 +567,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                     storedPos = controllerPointer_storedPos_defaultObject;
                                     break;
                             }
-                            player.hud.objMenu.createMenu(player);
+                            player.hud.objMenu.createMenu(true, player);
                             controllerPointer.setMenu(player.hud.objMenu.menu, storedPos);
                         }
                         else

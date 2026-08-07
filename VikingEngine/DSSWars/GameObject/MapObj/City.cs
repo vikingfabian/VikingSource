@@ -2399,9 +2399,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
-            
+            secondMenuContent = null;
             CityPresentationHud(args, false);
             
             //if (HasFaction())

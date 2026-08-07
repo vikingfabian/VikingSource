@@ -104,43 +104,47 @@ namespace VikingEngine.DSSWars.Conscript
             return false;
         }
 
-        public void classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide)
+        public UnitFilter classify()//out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide)
         {
-            switch (animal)
+            UnitFilter unitFilter = new UnitFilter();
+            if (animal == ItemResourceType.NONE)
             {
-                case ItemResourceType.NONE:
-                    animalCompanion = false;
-                    animalMount = false;
-                    break;
-
-                case ItemResourceType.Pig:
-                case ItemResourceType.Dog:
-                case ItemResourceType.Hound:
-                    animalCompanion = true;
-                    animalMount = false;
-                    break;
-
-                default:                    
-                    animalCompanion = false;
-                    animalMount = true;
-                    break;
-            }
-
-            if (vehicle == ItemResourceType.NONE)
-            {
-                wagonRide = false;
+                unitFilter.Add(UnitFilterType.FootSoldier);
             }
             else
             {
-                if (animalMount)
+                unitFilter.Add(UnitFilterType.Animal);
+                switch (animal)
                 {
-                    animalMount = false;
-                    wagonRide = true;
+                    case ItemResourceType.Pig:
+                    case ItemResourceType.Dog:
+                    case ItemResourceType.Hound:
+                        unitFilter.Add(UnitFilterType.AnimalCompanion);
+                        //animalCompanion = true;
+                        //animalMount = false;
+                        break;
+
+                    default:
+                        unitFilter.Add(UnitFilterType.AnimalRider);
+                        //animalCompanion = false;
+                        //animalMount = true;
+                        break;
                 }
-                else
+            }
+
+            if (vehicle != ItemResourceType.NONE)
+            {
+                if (unitFilter.Contains(UnitFilterType.AnimalRider))
                 {
-                    wagonRide = false;
+                    //animalMount = false;
+                    //wagonRide = true;
+                    unitFilter.Remove(UnitFilterType.AnimalRider);
+                    unitFilter.Add(UnitFilterType.WagonRider);
                 }
+                //else
+                //{
+                //    wagonRide = false;
+                //}
             }
 
             switch (weapon)
@@ -153,11 +157,16 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.LongSword:
                 case ItemResourceType.HandSpear:
                 case ItemResourceType.Pike:
-                    ranged = false;
-                    rangedMan = false;
-                    meleeMan = true;
-                    
-                    warmachine = false;
+                case ItemResourceType.Warhammer:
+                case ItemResourceType.TwoHandSword:
+                //case ItemResourceType.KnightsLance:
+                case ItemResourceType.MithrilSword:
+                    //ranged = false;
+                    //rangedMan = false;
+                    //meleeMan = true;
+
+                    //warmachine = false;
+                    unitFilter.Add(UnitFilterType.Melee);
                     break;
 
                 case ItemResourceType.SlingShot:
@@ -165,63 +174,74 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.Bow:
                 case ItemResourceType.LongBow:
                 case ItemResourceType.Crossbow:
+                case ItemResourceType.MithrilBow:
+                    unitFilter.Add(UnitFilterType.Ranged);
+                    break;
 
                 case ItemResourceType.HandCannon:
                 case ItemResourceType.HandCulverin:
                 case ItemResourceType.Rifle:
                 case ItemResourceType.Blunderbuss:
-                    ranged = true;
-                    rangedMan = true;
-                    meleeMan = false;
-                    
-                    warmachine = false;
+
+                    //ranged = true;
+                    //rangedMan = true;
+                    //meleeMan = false;
+
+                    //warmachine = false;
+                    unitFilter.Add(UnitFilterType.Ranged);
+                    unitFilter.Add(UnitFilterType.GunPowder);
                     break;
 
-                case ItemResourceType.Warhammer:
-                case ItemResourceType.TwoHandSword:
-                //case ItemResourceType.KnightsLance:
-                case ItemResourceType.MithrilSword:
-                    ranged = false;
-                    rangedMan = false;
-                    meleeMan = true;
-                    
-                    warmachine = false;
-                    break;
+                
 
-                case ItemResourceType.MithrilBow:
-                    ranged = true;
-                    rangedMan = true;
-                    meleeMan = false;
-                    
-                    warmachine = false;
-                    break;
+
 
                 case ItemResourceType.Ballista:
                 case ItemResourceType.Manuballista:
                 case ItemResourceType.Catapult:
+                    unitFilter.Add(UnitFilterType.Ranged);
+                    unitFilter.Add(UnitFilterType.WarMachine);
+                    break;
 
                 case ItemResourceType.SiegeCannonBronze:
                 case ItemResourceType.ManCannonBronze:
                 case ItemResourceType.SiegeCannonIron:
                 case ItemResourceType.ManCannonIron:
-                    ranged = true;
-                    rangedMan = false;
-                    meleeMan = false;
-                    
-                    warmachine = true;
+                    //ranged = true;
+                    //rangedMan = false;
+                    //meleeMan = false;
+
+                    //warmachine = true;
+                    unitFilter.Add(UnitFilterType.Ranged);
+                    unitFilter.Add(UnitFilterType.WarMachine);
+                    unitFilter.Add(UnitFilterType.GunPowder);
                     break;
 
                 case ItemResourceType.UN_BatteringRam:
-                    ranged = false;
-                    rangedMan = false;
-                    meleeMan = false;
-                    
-                    warmachine = true;
+                    //ranged = false;
+                    //rangedMan = false;
+                    //meleeMan = false;
+
+                    //warmachine = true;
+                    unitFilter.Add(UnitFilterType.Melee);
+                    unitFilter.Add(UnitFilterType.WarMachine);
                     break;
 
                 default:
                     throw new NotImplementedException();
             }
+
+            if (!unitFilter.Contains(UnitFilterType.GunPowder))
+            {
+                unitFilter.Contains(UnitFilterType.Primitive);
+            }
+
+            return unitFilter;
+        }
+
+        public int SortOrderValue()
+        {
+            return ItemPropertyColl.Get(weapon).UnitSortValue + ItemPropertyColl.Get(armorLevel).UnitSortValue + ItemPropertyColl.Get(shield).UnitSortValue + ItemPropertyColl.Get(animal).UnitSortValue;
         }
 
         public double armySpeedBonus(bool land)

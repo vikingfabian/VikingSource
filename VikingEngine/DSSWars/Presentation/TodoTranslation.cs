@@ -28,7 +28,11 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string UnitType_Faction => "Faction";
 
-
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public string MenuTab_Reassign => "Reassign";
+        public string ArmyOption_SendHalf => "Send half";
         //-------
 
         public string Hud_ApplyToAll => "Apply to all";

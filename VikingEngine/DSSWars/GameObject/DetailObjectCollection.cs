@@ -83,8 +83,9 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             GroupPresentation(args, false);
             //args.content.h2(string.Format(DssRef.lang.Hud_ObjectsAndCount, DssRef.lang.UnitType_CollectionOfSoldiers, objects.Count), HudLib.TitleColor_TypeName);
             list(armyGroups);

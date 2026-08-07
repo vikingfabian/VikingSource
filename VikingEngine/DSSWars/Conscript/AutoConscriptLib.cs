@@ -61,24 +61,24 @@ namespace VikingEngine.DSSWars.Conscript
             if (isWeapon && city.warAutoWeaponType != WarAutoWeaponType.Mix)
             {
                 ConscriptProfile profile = new ConscriptProfile() { weapon = item };
-                profile.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+                var filter = profile.classify();//out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
                 switch (city.warAutoWeaponType)
                 {
                     case WarAutoWeaponType.Melee:
-                        if (!meleeMan)
+                        if (!filter.Contains(UnitFilterType.Melee))//meleeMan)
                         { 
                             return false;
                         }
                         break;
                     case WarAutoWeaponType.Ranged:
-                        if (!rangedMan)
+                        if (filter.RangedNotWarMachine())//if (!rangedMan)
                         {
                             return false;
                         }
                         break;
                     case WarAutoWeaponType.Warmachine:
-                        if (!warmachine)
+                        if (!filter.Contains(UnitFilterType.WarMachine))//if (!warmachine)
                         {
                             return false;
                         }

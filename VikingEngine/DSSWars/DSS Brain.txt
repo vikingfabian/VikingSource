@@ -18,7 +18,12 @@ Change log:
 ## QoL ##
 * Build priority - apply to all button
 
+* More efficient unit filter system
+* New reassign menu for soldiers
+* Fixed: food will also follow army split
+
 KNOWN ISSUES
+x reassign dont work with controller
 
 ##ICONS TODO
 * all cities icon

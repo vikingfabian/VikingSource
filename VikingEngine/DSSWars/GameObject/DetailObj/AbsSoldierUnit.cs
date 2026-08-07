@@ -1023,9 +1023,9 @@ namespace VikingEngine.DSSWars.GameObject
             group.toTooltip(args);
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
-            group.toHud(args);
+            group.toHud(args, out secondMenuContent);
 
             if (args.ShowFull)
             {

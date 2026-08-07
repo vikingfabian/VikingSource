@@ -1390,7 +1390,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         Automation,
         Disband,
         Divide,
-        Filter,
+        Reassign,
         Progress,
         Mix,
         Help,

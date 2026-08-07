@@ -14,6 +14,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 {
     struct SoldierData
     {
+        public UnitFilter unitFilter;
+
         public float blockChance = DssConst.DefaultBlockChance;
         /// <summary>
         /// Max blocks are refills per second
