@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.EngineSpace.HUD.RichBox;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;

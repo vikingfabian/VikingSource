@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         LoadingState loadingState = LoadingState.None;
         public WorldData2 world;
-        Grid2D_L<Map.SubTile> dataGrid;
+        Grid2D_L<GenTile> dataGrid;
         List<Task> tasks = new List<Task>(64);
         List<Vector2> connectPoints = null;
         EngineSpace.Maths.SimplexNoise2D noiseMap;
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 tasks.Clear();
 
                 SmoothMap();
-                scaleUp16x();
+                //scaleUp16x();
 
                 postProcessPixels();
 
@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             // Create a temporary grid to store the smoothed results
             // We must read from 'dataGrid' and write to 'tempGrid' to avoid race conditions
-            Grid2D_L<SubTile> tempGrid = new Grid2D_L<SubTile>(dataGrid.Size);
+            Grid2D_L<GenTile> tempGrid = new Grid2D_L<GenTile>(dataGrid.Size);
 
             // Thresholds
             float heightDiffThreshold = 0.2f; // How "bumpy" it needs to be to trigger smoothing
@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         // "Even them out" -> Average of all neighbors
                         float average = totalHeight / count;
-                        tempGrid.Set(x, y, new SubTile { groundY = average });
+                        tempGrid.Set(x, y, new GenTile { groundY = average });
                     }
                     else
                     {
@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.Map.Map2
        
         void scaleUp4()
         {
-            Grid2D_L<SubTile> largeGrid = new Grid2D_L<SubTile>(dataGrid.Size * 2);
+            Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
 
             // Parallel.For handles the splitting automatically.
             // We iterate over the X-axis in parallel, and let each thread handle a full column (Y-loop).
@@ -249,10 +249,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                     float avgLeft = (hTL + hBL) * 0.5f;
                     float avgCenter = (hTL + hTR + hBL + hBR) * 0.25f;
 
-                    largeGrid.Set(lgX, lgY, new SubTile { groundY = hTL });
-                    largeGrid.Set(lgX + 1, lgY, new SubTile { groundY = avgTop });
-                    largeGrid.Set(lgX, lgY + 1, new SubTile { groundY = avgLeft });
-                    largeGrid.Set(lgX + 1, lgY + 1, new SubTile { groundY = avgCenter });
+                    largeGrid.Set(lgX, lgY, new GenTile { groundY = hTL });
+                    largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
+                    largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
+                    largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
                 }
             });
 
@@ -261,7 +261,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
         void scaleUp8()
         {
-            Grid2D_L<SubTile> largeGrid = new Grid2D_L<SubTile>(dataGrid.Size * 2);
+            Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
 
             Parallel.For(0, dataGrid.Size.X, x =>
             {
@@ -283,10 +283,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                     float avgCenter = (sTL + sTR + sBL + sBR) * 0.25f;
 
                     // 3. Assign to Large Grid
-                    largeGrid.Set(lgX, lgY, new SubTile { groundY = sTL });
-                    largeGrid.Set(lgX + 1, lgY, new SubTile { groundY = avgTop });
-                    largeGrid.Set(lgX, lgY + 1, new SubTile { groundY = avgLeft });
-                    largeGrid.Set(lgX + 1, lgY + 1, new SubTile { groundY = avgCenter });
+                    largeGrid.Set(lgX, lgY, new GenTile { groundY = sTL });
+                    largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
+                    largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
+                    largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
                 }
             });
 
@@ -398,7 +398,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         //    return noiseOptions;
         //}
 
-        void tileColor(ref SubTile tile)
+        void tileColor(ref GenTile tile)
         {
             if (tile.groundY > Height_WaterBottom)
             {

@@ -181,11 +181,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public void setInRenderState();
 
-        //virtual public void ExitBattleGroup()
-        //{
-        //    battleGroup = null;
-        //}
-
         public float distanceTo(AbsMapObject obj)
         {
             return VectorExt.Length(position.X - obj.position.X, position.Z - obj.position.Z);
@@ -250,8 +245,6 @@ namespace VikingEngine.DSSWars.GameObject
             get { return pfaction.GetPlayer().IsLocal; }
         }
 
-        //abstract public Faction Faction();
-
         virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
             this.pfaction = newFaction.pfaction;
@@ -260,11 +253,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             IsNetHosted = newFaction.IsNetHosted();
         }
-
-        //override public Faction GetFaction()
-        //{
-        //    return faction;
-        //}
 
         abstract public void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason);
 

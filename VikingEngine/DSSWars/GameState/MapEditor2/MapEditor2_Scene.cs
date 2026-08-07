@@ -17,11 +17,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         bool loadingState = false;
         Generator3 generator = new Generator3();
         GeneratorMap map;
+        public bool iconState = true;
         public MapEditor2_Scene()
             : base()
         {
             display = new MapEditor2Display(this);
             map = new GeneratorMap(display.topRight);
+            new Interface.EditorBackground();
         }
 
         public override void Time_Update(float time)
