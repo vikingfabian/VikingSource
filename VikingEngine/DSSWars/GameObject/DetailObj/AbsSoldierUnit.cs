@@ -570,7 +570,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     applyTargetReach(inReach);
                 }
-                else if (group.attackTarget_soldierGroupOrCity != null)
+                else if (group.attackTarget_soldierGroupOrCity.HasValue())
                 {
                     if (mayMove)
                     {
@@ -643,7 +643,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             //AbsGroup attack_sp = null;
             //group.attackTarget_soldierGroupOrCity.TryGetTarget(out attack_sp);
-            if (group.attackTarget_soldierGroupOrCity.TryGetGroup(out var attack_sp))
+            if (group.attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var attack_sp))
             {
                 if (attack_sp.gameobjectType() == GameObjectType.SoldierGroup)
                 {
@@ -673,7 +673,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (attackTarget == null)
             {
-                attackTarget = ((AbsGroup)group.attackTarget_soldierGroupOrCity.Get())?.Soldiers()?.GetRandomSafe(Ref.peRnd);
+                attackTarget = ((AbsGroup)group.attackTarget_soldierGroupOrCity.Clone().Get())?.Soldiers()?.GetRandomSafe(Ref.peRnd);
             }
 
             var target = attackTarget;
