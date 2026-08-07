@@ -27,6 +27,19 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             otherArmies.Add(new MovingGroups(null, false), true);
         }
 
+        public bool Contains(AbsArmy army)
+        {
+            foreach (var oa in otherArmies.list)
+            {
+                if (oa.army == army)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public bool hasMoved()
         {
             if (mainArmy.moveGroups.Count > 0)
@@ -91,12 +104,14 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         }
         public void SendAllGroups(LocalPlayer player, MovingGroups toArmy, bool bHalf)
         {
-            List<SoldierGroupAndCount> allGroups = ListUnits(player, null, this, toArmy, out _, out _, out _);
+            HashSet<ItemResourceType> itemsUsed = new HashSet<ItemResourceType>();
+            UnitFilter unitFilterUsed = new UnitFilter();
+            List<SoldierGroupAndCount> allGroups = ListUnits(player, null, this, toArmy, itemsUsed, ref unitFilterUsed, out _);
 
             bool halfToggle = true;
             foreach (var group in allGroups)
             {
-                if (group.inFilter && group.group.army.TryGetTarget(out var tArmy))
+                if (group.inFilter && group.displayGroup.army.TryGetTarget(out var tArmy))
                 {
                     if (tArmy == army)
                     {
@@ -109,14 +124,14 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 }
             }
         }
-        public void AddGroup(SoldierGroupAndCount group, MovingGroups toArmy, bool add, bool moveAll)
+        public void AddGroup(SoldierGroupAndCount group, MovingGroups toArmy, bool moveAway, bool moveAll)
         {
             bool non = false;
-            MoveGroup(group, toArmy, add, moveAll, false, ref non);
+            MoveGroup(group, toArmy, moveAway, moveAll, false, ref non);
         }
-        public void MoveGroup(SoldierGroupAndCount group, MovingGroups toArmy, bool add, bool moveAll, bool moveHalf, ref bool halfToggler)
+        public void MoveGroup(SoldierGroupAndCount group, MovingGroups toArmy, bool moveAway, bool moveAll, bool moveHalf, ref bool halfToggler)
         {
-            if (add)
+            if (moveAway)
             {
                 if (moveAll)
                 {
@@ -138,23 +153,23 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 }
                 else
                 {
-                    moveGroups.Add(group.group);
-                    toArmy.recieveGroups.Add(group.group);
+                    moveGroups.Add(group.displayGroup);
+                    toArmy.recieveGroups.Add(group.displayGroup);
                 }
             }
             else
             {
                 if (moveAll)
                 {
-                    var groupsC = army.groups.counter();
+                    var groupsC = toArmy.army.groups.counter();
                     while (groupsC.Next())
                     {
                         if (groupsC.sel.soldierConscript.conscript.SortOrderValue() == group.sortId)
                         {
                             if (!moveHalf || halfToggler)
                             {
-                                moveGroups.Remove(groupsC.sel);
-                                toArmy.recieveGroups.Remove(groupsC.sel);
+                                toArmy.moveGroups.Remove(groupsC.sel);
+                                recieveGroups.Remove(groupsC.sel);
                             }
                             halfToggler = !halfToggler;
                         }
@@ -162,8 +177,8 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 }
                 else
                 {
-                    moveGroups.Remove(group.group);
-                    toArmy.recieveGroups.Remove(group.group);
+                    toArmy.moveGroups.Remove(group.displayGroup);
+                    recieveGroups.Remove(group.displayGroup);
                 }
             }
         }
@@ -185,67 +200,73 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             int moveCount = 0;
 
-            if (moveGroups.Count > 0 && toArmy.army == null)
+            if (moveGroups.Count > 0)
             {
-                IntVector2 onTile = DssRef.world.GetFreeTile(army.tilePos);
-                toArmy.army = army.pfaction.GetFaction().NewArmy(onTile);                 
-            }
-            
-            foreach (var group in toArmy.recieveGroups)
-            {
-                if (group.isDeleted)
-                { continue; }
-                
-                army.groups.RemoveAt(group.myIndex);
-                toArmy.army.AddSoldierGroup(group);
-                moveCount++;
-            }
 
-            if (army.IsArmy())
-            {
-                //Move gold
-                var myArmy = army.GetArmy();
-                float startGroupCount = army.groups.Count;
-                Money transportGold;
-                float food = 0;
-                float conservedFood = 0;
-
-                if (army.groups.Count <= 0)
+                if (toArmy.army == null)
                 {
-                    transportGold = army.money;
-                    food = myArmy.food;
-                    conservedFood = myArmy.conservedFood;
-                    army.DeleteMe(DeleteReason.EmptyGroup, true);
-                }
-                else
-                {
-                    float percMove = (startGroupCount - army.groups.Count) / startGroupCount;
-                    transportGold = new Money(army.money.copper * percMove);
-                    food = myArmy.food * percMove;
-                    conservedFood = myArmy.conservedFood * percMove;
-                    myArmy.refreshPositions(false);
+                    IntVector2 onTile = DssRef.world.GetFreeTile(army.tilePos);
+                    toArmy.army = army.pfaction.GetFaction().NewArmy(onTile);
                 }
 
-                myArmy.money -= transportGold;
-                myArmy.food -= food;
-                myArmy.conservedFood -= conservedFood;
+                foreach (var group in toArmy.recieveGroups)
+                {
+                    if (group.isDeleted)
+                    { continue; }
 
-                var otherArmy = toArmy.army.GetArmy();
-                otherArmy.money += transportGold;
-                otherArmy.food += food;
-                otherArmy.conservedFood += conservedFood;
+                    army?.groups.RemoveAt(group.myIndex);
+                    toArmy.army.AddSoldierGroup(group);
+                    moveCount++;
+                }
 
-                otherArmy.refreshPositions(false);
-                otherArmy.onArmyMerge();
+                if (army != null && army.IsArmy())
+                {
+                    //Move gold
+                    var myArmy = army.GetArmy();
+                    float startGroupCount = army.groups.Count;
+                    Money transportGold;
+                    float food = 0;
+                    float conservedFood = 0;
+
+                    if (army.groups.Count <= 0)
+                    {
+                        transportGold = army.money;
+                        food = myArmy.food;
+                        conservedFood = myArmy.conservedFood;
+                        army.DeleteMe(DeleteReason.EmptyGroup, true);
+                    }
+                    else
+                    {
+                        float percMove = (startGroupCount - army.groups.Count) / startGroupCount;
+                        transportGold = new Money(army.money.copper * percMove);
+                        food = myArmy.food * percMove;
+                        conservedFood = myArmy.conservedFood * percMove;
+                        myArmy.refreshPositions(false);
+                    }
+
+                    myArmy.money -= transportGold;
+                    myArmy.food -= food;
+                    myArmy.conservedFood -= conservedFood;
+
+                    if (toArmy.army != null)
+                    {
+                        var otherArmy = toArmy.army.GetArmy();
+                        otherArmy.money += transportGold;
+                        otherArmy.food += food;
+                        otherArmy.conservedFood += conservedFood;
+
+                        otherArmy.refreshPositions(false);
+                        otherArmy.onArmyMerge();
+                    }
+                }
             }
-            //army.tradeSoldiersAction(ref player.hud.objMenu.otherArmy, type, count);
         }
 
         public static List<SoldierGroupAndCount> ListUnits(LocalPlayer player, RichBoxContent content, MovingGroups sending, MovingGroups recieving, 
-            out HashSet<ItemResourceType> itemsUsed, out UnitFilter unitFilterUsed, out bool noFilter)
+            HashSet<ItemResourceType> itemsUsed, ref UnitFilter unitFilterUsed, out bool noFilter)
         {
             Dictionary<int, SoldierGroupAndCount> groupCountDic = new Dictionary<int, SoldierGroupAndCount>(16);
-            List<SoldierGroup> groups = new List<SoldierGroup>(64);
+            
             if (sending.army != null)
             {
                 var groupsC = sending.army.groups.counter();
@@ -253,38 +274,38 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 {
                     if (!sending.moveGroups.Contains(groupsC.sel))
                     {
-                        groups.Add(groupsC.sel);
+                        addGroup(groupsC.sel, true);
                     }
                 }
             }
 
-            groups.AddRange(sending.recieveGroups);
-
-            foreach (var group in groups)
+            foreach (SoldierGroup group in sending.recieveGroups)
             {
-                if (!sending.moveGroups.Contains(group))
+                addGroup(group, false);
+            }
+
+            void addGroup(SoldierGroup group, bool sending)
+            {
+                int sortId = group.soldierConscript.conscript.SortOrderValue();
+                if (groupCountDic.TryGetValue(sortId, out var groupAndCount))
                 {
-                    int sortId = group.soldierConscript.conscript.SortOrderValue();
-                    if (groupCountDic.TryGetValue(sortId, out var groupAndCount))
-                    {
-                        groupAndCount.count++;
-                    }
-                    else
-                    {
-                        groupCountDic.Add(sortId, new SoldierGroupAndCount(sortId, group));
-                    }
+                    groupAndCount.AddOne(group, sending);//.count++;
+                }
+                else
+                {
+                    groupCountDic.Add(sortId, new SoldierGroupAndCount(sortId, group, sending));
                 }
             }
 
             List<SoldierGroupAndCount> groupAndCounts = groupCountDic.Values.ToList();
             groupAndCounts.Sort((a, b) => a.sortId.CompareTo(b.sortId));
 
-            itemsUsed = new HashSet<ItemResourceType>();
-            unitFilterUsed = new UnitFilter();
+            //itemsUsed = new HashSet<ItemResourceType>();
+            //unitFilterUsed = new UnitFilter();
             noFilter = player.armyFilterItems.Count == 0 && player.armyFilterClasses.value.IsEmpty();
             foreach (SoldierGroupAndCount groupcount in groupAndCounts)
             {
-                var group = groupcount.group;
+                var group = groupcount.displayGroup;
                 itemsUsed.Add(group.soldierConscript.conscript.man);
                 itemsUsed.Add(group.soldierConscript.conscript.weapon);
                 itemsUsed.Add(group.soldierConscript.conscript.shield);
@@ -310,14 +331,14 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     group.soldierConscript.conscript.toHud(buttonContent, true);
                     content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,
                         new RbAction4Arg<SoldierGroupAndCount, MovingGroups, MovingGroups, bool>(moveGroup,
-                            groupcount, player.movingGroupsCollection.mainArmy, player.movingGroupsCollection.otherArmies.Selected(), false),
+                            groupcount, sending, recieving, false),
                         new RbTooltip(tooltip, group), groupcount.inFilter));
 
                     if (groupcount.count > 1)
                     {
                         content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("×" + groupcount.count.ToString()) },
                             new RbAction4Arg<SoldierGroupAndCount, MovingGroups, MovingGroups, bool>(moveGroup,
-                            groupcount, player.movingGroupsCollection.mainArmy, player.movingGroupsCollection.otherArmies.Selected(), true),
+                            groupcount, sending, recieving, true),
                             null, groupcount.inFilter));
                     }
 
@@ -326,20 +347,18 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     //--
                     void moveGroup(SoldierGroupAndCount group, MovingGroups sending, MovingGroups recieving, bool moveAll)
                     {
-                        if (group.group.army.TryGetTarget(out var groupOwner))
+                        if (group.sending != null)
                         {
-                            bool leftSide;
-                            if (groupOwner == sending.army)
+                            sending.AddGroup(group, recieving, true, moveAll);
+                            if (!moveAll)
                             {
-                                leftSide = !sending.moveGroups.Contains(group.group);
+                                return;
                             }
-                            else
-                            {
-                                leftSide = recieving.moveGroups.Contains(group.group);
-                            }
+                        }
 
-                            sending.AddGroup(group, recieving, leftSide, moveAll);
-
+                        if (group.recieving != null)
+                        {
+                            sending.AddGroup(group, recieving, false, moveAll);
                         }
                     }
 
@@ -350,15 +369,32 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             if (content != null)
             {
                 content.newParagraph();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.ArmyOption_SendAll) },
+                content.Add(new ArtButton(RbButtonStyle.Secondary, MoveButtonContent(DssRef.lang.ArmyOption_SendAll),
                     new RbAction3Arg<MovingGroups, MovingGroups, bool>(moveAll,
                             sending, recieving, false), null, groupAndCounts.Count > 0));
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.ArmyOption_SendHalf) },
+                content.Add(new ArtButton(RbButtonStyle.Secondary, MoveButtonContent(DssRef.todoLang.ArmyOption_SendHalf),
                     new RbAction3Arg<MovingGroups, MovingGroups, bool>(moveAll,
                             sending, recieving, true), null, groupAndCounts.Count > 0));
 
-                void moveAll(MovingGroups sending, MovingGroups recieving, bool moveHalf)
+                List<AbsRichBoxMember> MoveButtonContent(string caption)
+                {
+                    var buttonContent = new List<AbsRichBoxMember> { new RbText(caption) };
+                    if (sending.isMainArmy)
+                    {
+                        buttonContent.Add(new RbSpace());
+                        buttonContent.Add(new RbImage(SpriteName.VoxelEditorFrameNext));
+                    }
+                    else
+                    {
+                        buttonContent.Insert(0,new RbImage(SpriteName.VoxelEditorFramePrevious));
+                        buttonContent.Insert(1,new RbSpace());
+                        
+                    }
+                    return buttonContent;
+                }
+
+               void moveAll(MovingGroups sending, MovingGroups recieving, bool moveHalf)
                 {
                     sending.SendAllGroups(player, recieving, moveHalf);
                 }
@@ -379,15 +415,44 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
     class SoldierGroupAndCount
     {
         public int sortId;
-        public SoldierGroup group;
+        public SoldierGroup displayGroup;
+        public SoldierGroup sending;
+        public SoldierGroup recieving;
         public int count;
         public bool inFilter;
 
-        public SoldierGroupAndCount(int sortId, SoldierGroup group)
+        public SoldierGroupAndCount(int sortId, SoldierGroup group, bool sendingSide)
         {
-            this.group = group;
+            this.displayGroup = group;
+            if (sendingSide)
+            {
+                sending = group;
+            }
+            else
+            {
+                recieving = group;
+            }
             count = 1;
             this.sortId = sortId;
+        }
+
+        public void AddOne(SoldierGroup group, bool sendingSide)
+        {
+            if (sendingSide)
+            {
+                if (sending == null)
+                {
+                    sending = group;
+                }
+            }
+            else
+            {
+                if (recieving == null)
+                {
+                    recieving = group;
+                }
+            }
+            count++;
         }
     }
 }

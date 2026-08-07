@@ -26,25 +26,38 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
             if (player.movingGroupsCollection == null || player.movingGroupsCollection.mainArmy.army != army)
             {
-                player.movingGroupsCollection = new MovingGroupsCollection(army);
+                player.movingGroupsCollection = new MovingGroupsCollection(army);               
+            }
 
-                var armyArmy = army.GetArmy();
-                if (armyArmy != null)
+            var armyArmy = army.GetArmy();
+            if (armyArmy != null)
+            {
+                List<AbsArmy> tradeAbleArmies = new List<AbsArmy>();
+                DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.tilePos, 1,
+                    tradeAbleArmies);
+
+                FilterTradeAbleArmies(armyArmy, tradeAbleArmies);
+
+                foreach (var ta in tradeAbleArmies)
                 {
-                    List<AbsArmy> tradeAbleArmies = new List<AbsArmy>();
-                    DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.tilePos, 1,
-                        tradeAbleArmies);
-
-                    FilterTradeAbleArmies(armyArmy, tradeAbleArmies);
-
-                    foreach (var ta in tradeAbleArmies)
+                    if (!player.movingGroupsCollection.Contains(ta))
                     {
                         player.movingGroupsCollection.otherArmies.Add(new MovingGroups(ta, false));
                     }
                 }
             }
 
-            MovingGroups.ListUnits(player, content, player.movingGroupsCollection.mainArmy, player.movingGroupsCollection.otherArmies.Selected(), out HashSet<ItemResourceType> itemsUsed, out UnitFilter unitFilterUsed, out bool noFilter);
+            HashSet<ItemResourceType> itemsUsed = new HashSet<ItemResourceType>();
+            UnitFilter unitFilterUsed = new UnitFilter();
+            MovingGroups.ListUnits(player, content, player.movingGroupsCollection.mainArmy, player.movingGroupsCollection.otherArmies.Selected(), 
+                itemsUsed, ref unitFilterUsed, out bool noFilter);
+            
+            RichBoxContent otherUnitList = new RichBoxContent();
+            if (player.gameControls.map.selection.obj != null)
+            {
+                MovingGroups.ListUnits(player, otherUnitList, player.movingGroupsCollection.otherArmies.Selected(), player.movingGroupsCollection.mainArmy,
+                itemsUsed, ref unitFilterUsed, out noFilter);
+            }
 
             content.newParagraph();
             HudLib.Label(content, DssRef.lang.HUD_Filter);
@@ -102,7 +115,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
             if (player.gameControls.map.selection.obj != null)
             {
-                content2 = reassignToMenu();
+                content2 = reassignToMenu(otherUnitList);
             }
             else
             {
@@ -110,7 +123,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             }
         }
 
-        RichBoxContent reassignToMenu()
+        RichBoxContent reassignToMenu(RichBoxContent unitList)
         {
             RichBoxContent content = new RichBoxContent();
 
@@ -152,7 +165,9 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
             }
-            MovingGroups.ListUnits(player, content, player.movingGroupsCollection.otherArmies.Selected(), player.movingGroupsCollection.mainArmy, out HashSet<ItemResourceType> itemsUsed, out UnitFilter unitFilterUsed, out bool noFilter);
+            //MovingGroups.ListUnits(player, content, player.movingGroupsCollection.otherArmies.Selected(), player.movingGroupsCollection.mainArmy, 
+            //    out HashSet<ItemResourceType> itemsUsed, out UnitFilter unitFilterUsed, out bool noFilter);
+            content.AddRange(unitList);
 
             content.newParagraph();
             bool hasMoveChanges = player.movingGroupsCollection.hasMoved();
