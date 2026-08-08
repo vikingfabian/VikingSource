@@ -6,6 +6,7 @@ Change log:
 * Tabs have environmental sounds
 * Theme music added to playlist
 * All relation actions will trigger messages
+* A UI easter egg
 
 Sound
 * Tabs have environmental sounds
