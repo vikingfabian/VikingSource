@@ -771,28 +771,77 @@ namespace VikingEngine.DSSWars.Players
                     (otherFaction.player != null && otherFaction.player.IsHumanPlayer()))
                 {
 
-                    if (rel.Relation >= RelationType.RelationType0_Neutral)
+                    switch (rel.Relation)
                     {
-                        message(DssRef.lang.Diplomacy_RelationType);
+                        case RelationType.RelationType3_Ally:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationAlly.Play());
+                            break;
+                        case RelationType.RelationType2_Good:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationGood.Play());
+                            break;
+                        case RelationType.RelationType1_Peace:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationGood.Play());
+                            break;
+                        case RelationType.RelationType0_Neutral:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN1_Enemies:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN2_Truce:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN3_Mobilization:
+                        case RelationType.RelationTypeN4_War:
+                            if (previousRelation == RelationType.RelationTypeN2_Truce)
+                            {
+                                message(DssRef.lang.Diplomacy_TruceEndTitle, SoundLib.eventRelationWar.Play());
+                            }
+                            else
+                            {
+                                message(DssRef.lang.Diplomacy_WarDeclarationTitle, SoundLib.eventRelationWar.Play());
+                                Ref.music.OnGameEvent();
+                            }
+                            break;
+                       
+                        case RelationType.RelationTypeN5_TotalWar:
+                            if (previousRelation == RelationType.RelationTypeN2_Truce)
+                            {
+                                message(DssRef.lang.Diplomacy_TruceEndTitle, SoundLib.eventRelationTotalWar.Play());
+                            }
+                            else
+                            {
+                                message(DssRef.lang.Diplomacy_WarDeclarationTitle, SoundLib.eventRelationTotalWar.Play());
+                                Ref.music.OnGameEvent();
+                            }
+                            break;
+
                     }
-                    else if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
+
+                    //if (rel.Relation >= RelationType.RelationType0_Neutral)
+                    //{
+                    //    message(DssRef.lang.Diplomacy_RelationType);
+                    //}
+                    //else if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
+                    //{
+                    //    if (previousRelation == RelationType.RelationTypeN2_Truce)
+                    //    {
+                    //        message(DssRef.lang.Diplomacy_TruceEndTitle);
+                    //    }
+                    //    else
+                    //    {
+                    //        message(DssRef.lang.Diplomacy_WarDeclarationTitle);
+                    //        Ref.music.OnGameEvent();
+                    //    }
+                    //}
+
+                    void message(string title, SoundContainerBase sound)
                     {
-                        if (previousRelation == RelationType.RelationTypeN2_Truce)
-                        {
-                            message(DssRef.lang.Diplomacy_TruceEndTitle);
-                        }
-                        else
-                        {
-                            message(DssRef.lang.Diplomacy_WarDeclarationTitle);
-                            Ref.music.OnGameEvent();
-                        }
-                    }
-                    void message(string title)
-                    {
+                        //SoundContainerBase sound = 
                         RichBoxContent content = new RichBoxContent();
                         MessageGroup_Ingame.Title(content, title);
                         DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content, true);
-                        Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, SoundLib.message_loud, true));
+                        Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, sound, true));
                     }
 
                 }

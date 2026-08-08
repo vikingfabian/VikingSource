@@ -39,12 +39,16 @@ namespace VikingEngine.DSSWars
            musket, cannon, block_attack, wood_bonk,
 
            painvoice, fleshgore,
-            netMessage, netJoined,
+            netMessage, netJoined, eventRepeatSound, eventRelationGainVassal,
 
             tab_blackmarket, tab_build, tab_conscript, tab_defence,
             tab_delivery, tab_economy, tab_help, tab_info, tab_pin, tab_resources,
             tab_schools, tab_science, tab_stockpile, tab_work, 
             tab_disband, tab_armydiv;
+
+        public static MessageTimer eventRelationTotalWar, eventRelationWar, eventRelationEnemy, eventRelationGood, eventRelationAlly,
+            eventBattle, eventSiege, eventLost,
+            eventResourceLow;
 
         public static SoundContainerBase[] WalkSounds;
         public static SoundContainerBase[] AnimalNoises;
@@ -250,7 +254,20 @@ namespace VikingEngine.DSSWars
 
             Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, SoundDir + "out_of_ammo");
 
-            //Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
+            string StingerDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "stinger" + DataStream.FilePath.Dir;
+            eventRepeatSound = new SoundContainerSingle(StingerDir + "stringer_repeat");
+            eventRelationWar = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship War"));
+            eventRelationEnemy = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Enemy  "));
+            eventRelationGood = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Good"));
+            eventRelationAlly = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Ally"));
+            eventRelationTotalWar = new MessageTimer(new SoundContainerSingle(StingerDir + "Total War"));
+            eventRelationGainVassal = new SoundContainerSingle(StingerDir + "Gaining a vassalv2");
+
+            eventBattle = new MessageTimer(new SoundContainerSingle(StingerDir + "Entered battlev4"));
+            eventSiege = new MessageTimer(new SoundContainerSingle(StingerDir + "Under Siege"));
+            eventLost = new MessageTimer(new SoundContainerSingle(StingerDir + "Lost battlev1"));
+
+            eventResourceLow = new MessageTimer(new SoundContainerSingle(StingerDir + "Out of Resource Eventv4"));
         }
         public static void SubTab(Resource.ResourceManagementType subTab)
         {

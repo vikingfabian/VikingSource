@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default))
                 { fillWidth = true });
 
-                Add(content, SoundLib.message_loud);
+                Add(content, SoundLib.eventResourceLow.Play());
             }
         }
 

@@ -17,5 +17,20 @@ namespace VikingEngine.DSSWars.Data
             this.sound = sound;
             lastPlayed = TimeStamp.None;
         }
+
+        public SoundContainerBase Play()
+        {
+            SoundContainerBase result;
+            if (lastPlayed.secPassed(8))
+            {
+                result = sound;
+            }
+            else
+            {
+                result = SoundLib.eventRepeatSound;
+            }
+            lastPlayed.setNow();
+            return result;
+        }
     }
 }
