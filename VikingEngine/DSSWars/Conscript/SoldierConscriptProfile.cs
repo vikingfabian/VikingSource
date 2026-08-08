@@ -378,6 +378,10 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);
             soldierData.attackTimePlusCoolDown /= 1f + skillBonus;
 
+            if (conscript.armorLevel != ItemResourceType.NONE)
+            {
+                soldierData.basehealth += armorData.basehealth;
+            }
             ShieldProperties.AddToConscript(ref soldierData, ref conscript, ranged);
 
             return soldierData;
