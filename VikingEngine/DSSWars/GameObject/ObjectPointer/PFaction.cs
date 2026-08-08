@@ -61,9 +61,10 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 
         public bool TryGetFaction(out Faction faction)
         {
-            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            var ix_sp = factionIndex;
+            if (ix_sp >= 0 && ix_sp < DssRef.world.factions.Count)
             {
-                faction = DssRef.world.factions.Array[factionIndex];
+                faction = DssRef.world.factions.Array[ix_sp];
                 return true;
             }
             faction = null;
@@ -72,9 +73,10 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 
         public bool TryGetFactionAndPlayer(out Faction faction, out AbsPlayer player)
         {
-            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            var ix_sp = factionIndex;
+            if (ix_sp >= 0 && ix_sp < DssRef.world.factions.Count)
             {
-                faction = DssRef.world.factions.Array[factionIndex];
+                faction = DssRef.world.factions.Array[ix_sp];
                 player = faction.player;
                 return player != null;
             }
