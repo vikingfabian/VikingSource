@@ -5,6 +5,7 @@ Change log:
 * Compressed headbar Ui
 * Tabs have environmental sounds
 * Theme music added to playlist
+* All relation actions will trigger messages
 
 Sound
 * Tabs have environmental sounds

@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Interface
         public static void Title(RichBoxContent content, string title)
         {
             content.Add(new RbBeginTitle(2));
-            content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+            content.Add(new RbImage(SpriteName.unitEmoteAlerted, 1, HudLib.InfoYellow_Light));
             content.space();
             content.Add(new RbText(title, Color.Yellow));
             content.newLine();

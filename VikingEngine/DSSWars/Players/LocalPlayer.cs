@@ -734,10 +734,11 @@ namespace VikingEngine.DSSWars.Players
 
             if (otherPFaction.TryGetFaction(out var otherFaction))
             {
-                if ((rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
-                    otherFaction.factiontype != FactionType.SouthHara)
-                    ||
-                    (otherFaction.player != null && otherFaction.player.IsHumanPlayer()))
+                if (otherFaction.factiontype != FactionType.SouthHara)
+                //(rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
+                //otherFaction.factiontype != FactionType.SouthHara)
+                //||
+                //(otherFaction.player != null && otherFaction.player.IsHumanPlayer()))
                 {
 
                     switch (rel.Relation)
