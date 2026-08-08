@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
                     Net.ObjectId.NetWriteMapObjId(w, this);
 
                     w.Write((byte)packetIndex);
-                    Debug.WriteCheck(w);
+                    //Debug.WriteCheck(w);
 
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.GameObject
                             w.Write(true);
 
                             group.writeNet(w);
-                            Debug.WriteCheck(w);
+                            //Debug.WriteCheck(w);
                             //NetWriteGroup(w, group);
                         }
                         else
@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (mapObj != null && (!mapObj.IsNetHosted || isHandOver))
                 {  
                     int packetIndex = r.ReadByte();
-                    Debug.ReadCheck(r);
+                    //Debug.ReadCheck(r);
                     
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
@@ -165,11 +165,11 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             var rpos = r.BaseStream.Position;
                             mapObj.NetReadGroup(r, groupIndex);
-                            if (Debug.ReadCheck_returnIfError(r))
-                            {
-                                r.BaseStream.Position = rpos;
-                                mapObj.NetReadGroup(r, groupIndex);
-                            }
+                            //if (Debug.ReadCheck_returnIfError(r))
+                            //{
+                            //    r.BaseStream.Position = rpos;
+                            //    mapObj.NetReadGroup(r, groupIndex);
+                            //}
                         }
                         else
                         {

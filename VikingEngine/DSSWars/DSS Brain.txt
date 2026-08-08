@@ -6,19 +6,19 @@ Change log:
 * Tabs have environmental sounds
 * Theme music added to playlist
 
+Sound
+* Tabs have environmental sounds
+* Theme music added to playlist
+* new event sounds
 
 Performance
 * Removed all unessesary faction references
 * Removed refences from the aria unit grid
 
-
-
 KNOWN ISSUES
 
 ##ICONS TODO
 * gray rounded button
-* mobilizing
-* join game icon
 
 #MOUNTED TODO
 * 

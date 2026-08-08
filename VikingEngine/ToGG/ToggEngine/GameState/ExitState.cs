@@ -49,6 +49,7 @@ namespace VikingEngine.ToGG.GameState
             if (viewTime.CountDown() ||
                 (toggRef.inputmap.anyExitKey() && UpdateCount > 16))
             {
+                Ref.lobby.disconnect(null);
                 new MainMenuState();
             }
         }

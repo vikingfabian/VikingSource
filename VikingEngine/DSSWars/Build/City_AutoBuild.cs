@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.GameObject
                 GetGroupedResource(EntityComponent.CityResourceIndex.iron).amount >= Build.CraftBuildingLib.WorkBenchIronCount)
             {
                 safeGuardBuild = BuildAndExpandType.WorkBench;
-            }            
+            }
             else if (cityType == CityType.Campsite && pfaction.TryGetFaction(out var faction) && faction.cities.Count == 1 &&
                 buildingStructure.SoldierBarracks_count + buildingStructure.ArcherBarracks_count < 1)
             {
@@ -142,74 +142,10 @@ namespace VikingEngine.DSSWars.GameObject
                 //autoAdjustResourcesToCitySize(false);
                 commit_automateCityBuilding();
             }
-            else //Player default
-            {
 
-                AutoExpandType(out bool work, out Build.BuildAndExpandType buildType);
-                if (work)
-                {
-                    buildType = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
-
-                    if (work && workForce.amount >= HousingCount_Workers)
-                    {
-                        buildType = BuildAndExpandType.WorkerHut;
-                    }
-
-                    if (buildType != BuildAndExpandType.NUM_NONE)
-                    {
-                        for (int i = 0; i < 4; i++)
-                        {
-                            AutoBuildList.Add(buildType);
-                        }
-                    }
-                }
-            }
 
             AutoUpgradeCityHall();
-
-            for (int i = 0; i < AutoBuildList.Count; ++i)
-            {
-                var buildType = AutoBuildList[i];
-
-#if DEBUG
-                if (buildType == BuildAndExpandType.WorkerTent)
-                {
-                    lib.DoNothing();
-
-                }
-#endif
-
-                bool foundPos = false;
-                IntVector2 pos = IntVector2.Zero;
-
-                if (this.buildingStructure.getCount(buildType) > 0)
-                {
-                    var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
-                    if (prevPos.X > 0)
-                    {
-                        foundPos = findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
-                    }
-                }
-
-                if (!foundPos && CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))
-                {
-                    foundPos = true;
-                }
-
-                if (foundPos)
-                {
-                    if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources_ignorewater(this) &&
-                        work_isFreeTile(pos))
-                    {
-                        byte prio = buildType == safeGuardBuild ? WorkTemplate.MaxPrio : workTemplate.Get(WorkPriorityType.autoBuild).value;
-                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
-                    }
-                }
-                else
-                {
-                    break;
-                }
-            }
+            runAutoBuildList(safeGuardBuild);
 
             if (safeGuardBuild == BuildAndExpandType.NUM_NONE)
             {
@@ -267,7 +203,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //TRAPPER
                 if (buildingStructure.SuggestedTrapperPos.X > 0)
                 {
-                    if (MayAutoBuildHere(buildingStructure.SuggestedTrapperPos) && 
+                    if (MayAutoBuildHere(buildingStructure.SuggestedTrapperPos) &&
                         work_isFreeTile(buildingStructure.SuggestedTrapperPos))
                     {
                         workQue.Add(new WorkQueMember(WorkType.Build, (int)BuildAndExpandType.TrapperHut, 0, buildingStructure.SuggestedTrapperPos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
@@ -275,8 +211,140 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-            
 
+
+        }
+
+        void runAutoBuildList(BuildAndExpandType safeGuardBuild)
+        {
+            for (int i = 0; i < AutoBuildList.Count; ++i)
+            {
+                var buildType = AutoBuildList[i];
+
+#if DEBUG
+                if (buildType == BuildAndExpandType.WorkerTent)
+                {
+                    lib.DoNothing();
+
+                }
+#endif
+
+                bool foundPos = false;
+                IntVector2 pos = IntVector2.Zero;
+
+                if (this.buildingStructure.getCount(buildType) > 0)
+                {
+                    var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
+                    if (prevPos.X > 0)
+                    {
+                        foundPos = findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
+                    }
+                }
+
+                if (!foundPos && CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))
+                {
+                    foundPos = true;
+                }
+
+                if (foundPos)
+                {
+                    if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources_ignorewater(this) &&
+                        work_isFreeTile(pos))
+                    {
+                        byte prio = buildType == safeGuardBuild ? WorkTemplate.MaxPrio : workTemplate.Get(WorkPriorityType.autoBuild).value;
+                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// From the player auto build tab
+        /// </summary>
+        void automatedExpandUpdate()
+        {
+            AutoBuildList.Clear();
+
+            if (buildingStructure.buildingLevel_logistics == 0)
+            {
+                autoBuild_Farm = false;
+                autoBuild_Work = false;
+                return;
+            }
+
+            //work = autoBuild_Work;
+            Build.BuildAndExpandType buildType = BuildAndExpandType.NUM_NONE;
+            if (autoBuild_Work && workForce.amount >= HousingCount_Workers)
+            {
+                buildType = BuildAndExpandType.WorkerHut;
+            }
+            else if (autoBuild_Farm)
+            {
+                bool needMore = false;
+                switch (autoExpandFarmType)
+                {
+                    case BuildAndExpandType.OrchardApple:
+                        needMore = GetGroupedResource(CityResourceIndex.food).needMore();
+                        break;
+                    case BuildAndExpandType.WheatFarm:
+                        needMore = GetGroupedResource(CityResourceIndex.rawFood).needMore();
+                        break;
+                    case BuildAndExpandType.LinenFarm:
+                        needMore = GetGroupedResource(CityResourceIndex.skinLinnen).needMore();
+                        break;
+                    case BuildAndExpandType.RapeSeedFarm:
+                        needMore = GetGroupedResource(CityResourceIndex.fuel).needMore();
+                        break;
+                    case BuildAndExpandType.HempFarm:
+                        needMore = GetGroupedResource(CityResourceIndex.skinLinnen).needMore() || 
+                            GetGroupedResource(CityResourceIndex.fuel).needMore();
+                        break;
+                    default:
+#if DEBUG
+                        throw new Exception();
+#endif
+                        break;
+
+                }
+
+                if (needMore)
+                {
+                    buildType = autoExpandFarmType;
+                }
+            }
+
+            if (buildType != BuildAndExpandType.NUM_NONE)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    AutoBuildList.Add(buildType);
+                }
+
+                runAutoBuildList(BuildAndExpandType.NUM_NONE);
+            }
+            //farm = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
+            //AutoExpandType(out bool work, out Build.BuildAndExpandType buildType);
+            //if (work)
+            //{
+            //    buildType = autoBuild_Farm? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
+
+            //    if (work && workForce.amount >= HousingCount_Workers)
+            //    {
+            //        buildType = BuildAndExpandType.WorkerHut;
+            //    }
+
+            //    if (buildType != BuildAndExpandType.NUM_NONE)
+            //    {
+            //        for (int i = 0; i< 4; i++)
+            //        {
+            //            AutoBuildList.Add(buildType);
+            //        }
+            //    }
+            //}
         }
 
         private void AutoUpgradeCityHall()
@@ -820,18 +888,18 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
-        {
-            work = autoBuild_Work;
+        //public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
+        //{
+        //    work = autoBuild_Work;
 
-            if (buildingStructure.buildingLevel_logistics == 0)
-            {
-                farm = Build.BuildAndExpandType.NUM_NONE;
-                return;
-            }
+        //    if (buildingStructure.buildingLevel_logistics == 0)
+        //    {
+        //        farm = Build.BuildAndExpandType.NUM_NONE;
+        //        return;
+        //    }
 
-            farm = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
-        }
+        //    farm = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
+        //}
 
         void auto_updateWorkPrio()
         {

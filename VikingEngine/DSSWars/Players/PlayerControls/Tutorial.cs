@@ -16,8 +16,8 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.HudPinUi;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Presentation;
@@ -1095,7 +1095,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
 
-                    if (player.cityTab == Interface.MenuTab.Casual_Build)
+                    if (player.cityTab == MenuTab.Casual_Build)
                     {
                         if (!CasualBuildBarracks_selectTab)
                         {
@@ -1130,7 +1130,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.CasualRecruitSoldier:
                     
 
-                    if (player.cityTab == Interface.MenuTab.Casual_Recruit)
+                    if (player.cityTab == MenuTab.Casual_Recruit)
                     {
                         if (!casualRecruit_selectTab)
                         {
@@ -1198,7 +1198,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     
 
                     
-                    if (player.cityTab == Interface.MenuTab.Resources)
+                    if (player.cityTab == MenuTab.Resources)
                     {
                         if (!collectResources_selectTab)
                         {
@@ -1259,7 +1259,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!linen_selectTab)
                     {
-                        if (player.cityTab == Interface.MenuTab.Build)
+                        if (player.cityTab == MenuTab.Build)
                         {
                             linen_selectTab = true;
                             onPartSuccess();
@@ -1300,7 +1300,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.ProduceWeaponsArmor:
                     //if (!weaponsArmor_selectTab)
                     //{
-                    if (player.cityTab == Interface.MenuTab.Resources)
+                    if (player.cityTab == MenuTab.Resources)
                     {
                         if (!weaponsArmor_selectTab)
                         {
@@ -1401,7 +1401,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!conscriptArmy_selectTab)
                     {
-                        if (player.cityTab == Interface.MenuTab.Conscript)
+                        if (player.cityTab == MenuTab.Conscript)
                         {
                             conscriptArmy_selectTab = true;
 
@@ -1522,7 +1522,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                         if (city != null)
                         {
-                            if (player.cityTab == Interface.MenuTab.Conscript)
+                            if (player.cityTab == MenuTab.Conscript)
                             {
                                 if (!secondCity_conscriptTab.Value1)
                                 {
@@ -1590,7 +1590,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
 
                     if (tagCity_selectCity_sound.Value1 &&
-                        player.cityTab == Interface.MenuTab.Tag)
+                        player.cityTab == MenuTab.Tag)
                     {
                         if (!tagCity_tagTab_sound.Value1)
                         {
@@ -1629,7 +1629,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     //TwoBools tagCity_subTabTag_sound = TwoBools.False;
                     if (tagCity_selectCity_sound.Value1 &&
-                        player.cityTab == Interface.MenuTab.Tag &&
+                        player.cityTab == MenuTab.Tag &&
                         player.tagSubTab == TagSubTab.HudPin)
                     {
                         if (!tagCity_subTabTag_sound.Value1)
@@ -2078,7 +2078,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.BuildDefences:
 
-                    if (player.cityTab == Interface.MenuTab.Build)
+                    if (player.cityTab == MenuTab.Build)
                     {
                         if (!buildDefences_selectBuildTab)
                         {
@@ -2208,7 +2208,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                             check(ref recruitGuard_buildWall, city.buildingStructure.wallCount > 0 || hasBuildOrder(BuildAndExpandType.DirtWall));
 
-                            if (player.cityTab == Interface.MenuTab.Conscript)
+                            if (player.cityTab == MenuTab.Conscript)
                             {
                                 if (!recruitGuard_selectConscriptTab)
                                 {

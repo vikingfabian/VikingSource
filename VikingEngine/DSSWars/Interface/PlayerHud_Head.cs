@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -37,7 +38,7 @@ namespace VikingEngine.DSSWars.Interface
         public PlayerHud_Head(LocalPlayer player)
         {
             this.player = player;
-            float headWidth = HudLib.HeadDisplayWidth * 1.36f;
+            float headWidth = HudLib.HeadDisplayWidth * 1.5f;
             var headMenuArea = player.playerData.view.safeScreenArea;
             headMenuArea.Width = headWidth;
             menu = new RichMenu(HudLib.RbSettings_Head, headMenuArea, new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);

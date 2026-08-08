@@ -31,13 +31,12 @@ namespace VikingEngine.Network
             }
             metaData.OnDataRecieved();
 
-            this.lobbyHost = SteamMatchmaking.GetLobbyOwner(available).m_SteamID;
+            //this.lobbyHost = SteamMatchmaking.GetLobbyOwner(available).m_SteamID;
 
-            CSteamID steamIDFriend;
-            if (Ref.steam.LobbyMatchmaker.lobbyIsFriend(available, out steamIDFriend))
+            if (Ref.steam.LobbyMatchmaker.lobbyIsFriend(metaData.host))
             {
                 friend = true;
-                lobbyHost = steamIDFriend.m_SteamID;
+                //lobbyHost = steamIDFriend.m_SteamID;
             }
         }
 
@@ -50,7 +49,7 @@ namespace VikingEngine.Network
 
         public SteamImageLoadData tryLoadGamerIcon()
         {
-            SteamImageLoadData steamImage = SteamNetworkPeer.GetAvatarImage(new CSteamID( lobbyHost));
+            SteamImageLoadData steamImage = SteamNetworkPeer.GetAvatarImage(metaData.host/*new CSteamID( lobbyHost)*/);
             return steamImage;
         }
 

@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.Graphics.In3D;
@@ -377,7 +378,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (pfaction == args.player.pfaction)
             {
-                new Interface.ArmyMenu(args.player, this, args.content);
+                new MapObjMenu(args.player, this, args.content);
             }
             else
             {
@@ -535,7 +536,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void tradeSoldiersAction(ref AbsArmy toArmy, UnitFilterType type, int count)
+        public void tradeSoldiersAction(ref AbsArmy toArmy, UnitNameType type, int count)
         {
             if (
                 toArmy != null &&
@@ -555,7 +556,7 @@ namespace VikingEngine.DSSWars.GameObject
             tradeSoldiersTo(type, count, toArmy);
         }
 
-        public void tradeSoldiersTo(UnitFilterType type, int count, AbsArmy toArmy)
+        public void tradeSoldiersTo(UnitNameType type, int count, AbsArmy toArmy)
         {
             float startGroupCount = groups.Count;
             var groupsCounter = groups.counter();
@@ -601,7 +602,7 @@ namespace VikingEngine.DSSWars.GameObject
             DeleteMe(DeleteReason.Disband, true);
         }
 
-        public void disbandSoldiersAction(UnitFilterType type, int count)
+        public void disbandSoldiersAction(UnitNameType type, int count)
         {
             var groupsCounter = groups.counter();
             while (groupsCounter.Next())

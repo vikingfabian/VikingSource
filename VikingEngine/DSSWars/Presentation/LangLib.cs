@@ -12,7 +12,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -1751,66 +1751,66 @@ namespace VikingEngine.DSSWars.Presentation
         
 
                 
-        public static string UnitFilterName(UnitFilterType filterType)
+        public static string UnitFilterName(UnitNameType filterType)
         {
             switch (filterType)
             {
-                case UnitFilterType.Settler:
+                case UnitNameType.Settler:
                     return DssRef.lang.UnitType_Settler;
-                case UnitFilterType.SharpStick:
+                case UnitNameType.SharpStick:
                     return DssRef.lang.UnitType_Folkman;
 
-                case UnitFilterType.Sword:
-                case UnitFilterType.LongSword:
+                case UnitNameType.Sword:
+                case UnitNameType.LongSword:
                     return DssRef.lang.UnitType_Soldier;
-                case UnitFilterType.Pike:
-                case UnitFilterType.Spear:
+                case UnitNameType.Pike:
+                case UnitNameType.Spear:
                     return DssRef.lang.UnitType_Spearman;
 
-                case UnitFilterType.Skirmisher:
+                case UnitNameType.Skirmisher:
                     return DssRef.lang.UnitType_Skirmisher;
-                case UnitFilterType.Bow:
+                case UnitNameType.Bow:
                     return DssRef.lang.UnitType_Archer;
 
-                case UnitFilterType.CrossBow:
+                case UnitNameType.CrossBow:
                     return DssRef.lang.UnitType_Crossbow;
-                case UnitFilterType.Rifle:
+                case UnitNameType.Rifle:
                     return DssRef.lang.UnitType_LongRangeRifle;
-                case UnitFilterType.Shotgun:
+                case UnitNameType.Shotgun:
                     return DssRef.lang.UnitType_CloseRangeRifle;
 
 
-                case UnitFilterType.Ballista:
+                case UnitNameType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
-                case UnitFilterType.ManuBallista:
+                case UnitNameType.ManuBallista:
                     return DssRef.lang.Resource_TypeName_Manuballista;
-                case UnitFilterType.Catapult:
+                case UnitNameType.Catapult:
                     return DssRef.lang.Resource_TypeName_Catapult;
 
-                case UnitFilterType.ManCannonBronze:
+                case UnitNameType.ManCannonBronze:
                     return DssRef.lang.Resource_TypeName_ManCannonBronze;
-                case UnitFilterType.SiegeCannonBronze:
+                case UnitNameType.SiegeCannonBronze:
                     return DssRef.lang.Resource_TypeName_SiegeCannonBronze;
-                case UnitFilterType.ManCannonIron:
+                case UnitNameType.ManCannonIron:
                     return DssRef.lang.Resource_TypeName_ManCannonIron;
-                case UnitFilterType.SiegeCannonIron:
+                case UnitNameType.SiegeCannonIron:
                     return DssRef.lang.Resource_TypeName_SiegeCannonIron;
 
-                case UnitFilterType.TwohandSword:
-                case UnitFilterType.Warhammer:
+                case UnitNameType.TwohandSword:
+                case UnitNameType.Warhammer:
                     return DssRef.lang.UnitType_FootKnight;
                 //case UnitFilterType.Knight:
                 //    return DssRef.lang.UnitType_CavalryKnight;
-                case UnitFilterType.MithrilBow:
+                case UnitNameType.MithrilBow:
                     return DssRef.lang.UnitType_MithrilArcher;
-                case UnitFilterType.MithrilKnight:
+                case UnitNameType.MithrilKnight:
                     return DssRef.lang.UnitType_MithrilSwordsman;
 
-                case UnitFilterType.GreenSoldier:
+                case UnitNameType.GreenSoldier:
                     return DssRef.lang.FactionName_Greenwood;
-                case UnitFilterType.HonourGuard:
+                case UnitNameType.HonourGuard:
                     return DssRef.lang.UnitType_HonorGuard;
-                case UnitFilterType.Viking:
+                case UnitNameType.Viking:
                     return DssRef.lang.UnitType_Viking;
 
                 default:

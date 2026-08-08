@@ -71,15 +71,18 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 else
                                 {
-                                    status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
-
-                                    if (allCollected &&
-                                        (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= totalMen))
+                                    status.followsRequirements(this, out bool population, out bool food);
+                                    if (population && food)
                                     {
-                                        if (status.CountDownQue())
+                                        status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
+
+                                        if (allCollected)
                                         {
-                                            status.active++;
-                                            status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
+                                            if (status.CountDownQue())
+                                            {
+                                                status.active++;
+                                                status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
+                                            }
                                         }
                                     }
                                 }

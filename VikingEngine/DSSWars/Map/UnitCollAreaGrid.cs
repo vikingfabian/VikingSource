@@ -456,8 +456,8 @@ namespace VikingEngine.DSSWars.Map
 
         public void collectOpponentGroups(PFaction faction, IntVector2 tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities)
         {
-            lock (groups_nearUpdate)
-            {
+            //lock (groups_nearUpdate)
+            //{
                 groups_nearUpdate.Clear();
                 cities_nearUpdate.Clear();
 
@@ -476,8 +476,7 @@ namespace VikingEngine.DSSWars.Map
                                 {
                                     if ( DssRef.world.diplomacy.GetRelation(faction, m.pabsarmy.pfaction).InWar() &&
                                         m.TryGetSoldierGroup(out var group))
-                                    {
-                                       
+                                    {                                       
                                         groups_nearUpdate.Add(group);
                                     }
                                 }
@@ -501,7 +500,7 @@ namespace VikingEngine.DSSWars.Map
                 groups = groups_nearUpdate;
                 cities = cities_nearUpdate;
                 
-            }
+            //}
         }
 
         public void collectGroups(IntVector2 tilePos,
