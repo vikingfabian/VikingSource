@@ -687,7 +687,7 @@ namespace VikingEngine.DSSWars
                                 new RbAction1Arg<AbsGameObject>(LocalHost().hud.messages.goToMapObject, pin, RbSoundType.Default))
                             { fillWidth = true });
 
-                            LocalHost().hud.messages.Add(content, SoundLib.message_loud);
+                            LocalHost().hud.messages.Add(content, SoundLib.ping);
                         }
                     }
                     break;

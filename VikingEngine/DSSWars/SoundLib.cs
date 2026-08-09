@@ -41,6 +41,7 @@ namespace VikingEngine.DSSWars
 
            painvoice, fleshgore, sillyFanfare,
             netMessage, netJoined, eventRepeatSound, eventRelationGainVassal,
+            forYourInformation, goodNews, warningMessage, storyDramaticEvent,
 
             tab_blackmarket, tab_build, tab_conscript, tab_defence,
             tab_delivery, tab_economy, tab_help, tab_info, tab_pin, tab_resources,
@@ -49,7 +50,7 @@ namespace VikingEngine.DSSWars
 
         public static MessageTimer eventRelationTotalWar, eventRelationWar, eventRelationEnemy, eventRelationGood, eventRelationAlly,
             eventBattle, eventSiege, eventLost,
-            eventResourceLow;
+            eventResourceLow, eventDeserters;
 
         public static SoundContainerBase[] WalkSounds;
         public static SoundContainerBase[] AnimalNoises;
@@ -269,8 +270,13 @@ namespace VikingEngine.DSSWars
             eventLost = new MessageTimer(new SoundContainerSingle(StingerDir + "Lost battlev1", 1.3f));
 
             eventResourceLow = new MessageTimer(new SoundContainerSingle(StingerDir + "Out of Resource Eventv4"));
+            eventDeserters = new MessageTimer(new SoundContainerSingle(StingerDir + "UnitsDesertedModified"));
 
             sillyFanfare = new SoundContainerSingle(StingerDir + "Silly fanfarev3-volumen+7", 0.6f);
+            forYourInformation = new SoundContainerSingle(StingerDir + "For Your Information", 1f);
+            goodNews = new SoundContainerSingle(StingerDir + "Good News", 1f);
+            storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 1f);
+            warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 1f);
         }
         public static void SubTab(Resource.ResourceManagementType subTab)
         {
