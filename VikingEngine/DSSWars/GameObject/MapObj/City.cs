@@ -2414,7 +2414,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (pfaction== args.player.pfaction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                     {
                         CityDetailsHud(true, args.player, args.content);
-                        new MapObjMenu(args.player, this, args.content);
+                        new MapObjMenu(args.player, this, args.content, out secondMenuContent);
                     }
                     else
                     {

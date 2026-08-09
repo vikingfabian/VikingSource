@@ -46,7 +46,8 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             CityTabs = new List<MenuTab>() {
                 MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket,
-                MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, MenuTab.Progress,
+                MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, 
+                MenuTab.Reassign, MenuTab.Progress,
                 MenuTab.Tag};
 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
@@ -59,10 +60,12 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             }
         }
 
-        public MapObjMenu(LocalPlayer player, City city, RichBoxContent content)
+        public MapObjMenu(LocalPlayer player, City city, RichBoxContent content, out RichBoxContent secondMenuContent)
         {
             this.player = player;
             this.city = city;
+            mapObj = city;
+            secondMenuContent = null;
 
             if (!DssRef.storage.ruleset_instance.centralGold)
             {
@@ -163,6 +166,10 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                     case MenuTab.Defence:
                         defenceTab(content);
+                        break;
+
+                    case MenuTab.Reassign:
+                        ResassignTab(content, out secondMenuContent);
                         break;
 
                     case MenuTab.Delivery:
