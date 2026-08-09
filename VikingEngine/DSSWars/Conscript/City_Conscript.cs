@@ -71,18 +71,20 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 else
                                 {
-                                    
-                                    status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
-
-                                    if (allCollected)
+                                    status.followsRequirements(this, out bool population, out bool food);
+                                    if (population && food)
                                     {
-                                        if (status.CountDownQue())
+                                        status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
+
+                                        if (allCollected)
                                         {
-                                            status.active++;
-                                            status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
+                                            if (status.CountDownQue())
+                                            {
+                                                status.active++;
+                                                status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
+                                            }
                                         }
                                     }
-                                    
                                 }
                                 break;
 
@@ -442,20 +444,20 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = profile.man == ItemResourceType.NobleMen? DssConst.NobelMenSkillBonus : 1,
             };
 
-            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+            var filter = soldierProfile.conscript.classify();//out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
 
             switch (cityCulture)
             {
                
                 case CityCulture.Archers:
-                    if (rangedMan)
+                    if (filter.RangedNotWarMachine())
                     {
                         soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
                 case CityCulture.Warriors:
-                    if (meleeMan)
+                    if (filter.MeleeNotWarMachine())
                     {
                         soldierProfile.skillBonus *= 1.2f;
                     }
@@ -473,13 +475,13 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case CityCulture.SiegeEngineer:
-                    if (warmachine)
+                    if (filter.Contains(UnitFilterType.WarMachine))
                     {
                         soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
                 case CityCulture.Wheelwright:
-                    if (wagonRide)
+                    if (filter.Contains(UnitFilterType.WagonRider))
                     {
                         soldierProfile.mobileBonus_PercAdd = Culture.WheelWhrightBonus;
                     }

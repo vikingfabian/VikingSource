@@ -99,10 +99,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void update()
         {
-            if (Input.Keyboard.Ctrl)
-            {
-                lib.DoNothing();
-            }
+            //if (Input.Keyboard.Ctrl)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (player.hud.popMenu != null)
             {
@@ -365,6 +365,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             updateObjectTabbing();
         }
 
+        public void UiUpdateOnly()
+        {
+            player.hud.update(out _, false);
+        }
+
         public void CancelBuildMode()
         {
             player.hud.needRefresh = true;
@@ -562,7 +567,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                     storedPos = controllerPointer_storedPos_defaultObject;
                                     break;
                             }
-                            player.hud.objMenu.createMenu(player);
+                            player.hud.objMenu.createMenu(true, player);
                             controllerPointer.setMenu(player.hud.objMenu.menu, storedPos);
                         }
                         else

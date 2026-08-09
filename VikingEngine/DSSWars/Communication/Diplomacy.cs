@@ -683,6 +683,7 @@ namespace VikingEngine.DSSWars
             if (attacker != null && 
                 defender != null &&
                 attacker.armies.Count > 0 &&
+                attacker.militaryStrength > 4 &&
                 attacker != defender &&
                 attacker.player.IsBot())
             {

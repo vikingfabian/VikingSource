@@ -93,7 +93,6 @@ namespace VikingEngine.DSSWars.Resource
             
             ItemResourceType.Warhammer,
             ItemResourceType.TwoHandSword,
-             //ItemResourceType.KnightsLance,
             ItemResourceType.MithrilSword,
 
             ItemResourceType.BucklerShield,
@@ -241,6 +240,7 @@ namespace VikingEngine.DSSWars.Resource
             //todo public ResourceOverview res_wood
             content.newLine();
             resources.changeRate.toMenu(content);
+            content.text(DssRef.lang.Hud_Time_ValuePerMinute, HudLib.InfoYellow_Light);
 
             if (properties.storageType != StorageType.NUM_NONE)
             {

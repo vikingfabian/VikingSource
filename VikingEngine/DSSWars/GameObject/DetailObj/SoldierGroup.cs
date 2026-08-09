@@ -100,6 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
         public UnitBuildType shipBuilder;
 
         public SoldierConscriptProfile soldierConscript;
+        
         public SoldierData soldierData;
         public SoldierData soldierData_soldier;
         public bool isShip = false;
@@ -308,10 +309,10 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             var wState = state;
             w.Write((byte)wState);
-            Debug.WriteCheck(w);
+            //Debug.WriteCheck(w);
  
             writeGameState(w, wState <= GroupState.FindArmyPlacement);
-            Debug.WriteCheck(w);
+            //Debug.WriteCheck(w);
 
             switch (wState)
             {
@@ -348,10 +349,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             GroupState rState = (GroupState)r.ReadByte();
             state = rState;
-            Debug.ReadCheck(r);
+            //Debug.ReadCheck(r);
 
             readGameState(tArmy, r, int.MaxValue, needInit, rState <= GroupState.FindArmyPlacement, null);
-            Debug.ReadCheck(r);
+            //Debug.ReadCheck(r);
             setGroundY();
             
 
@@ -1194,7 +1195,7 @@ namespace VikingEngine.DSSWars.GameObject
             var command_sp = command;
             float groupWalkSpeedTime = soldierData.walkingSpeed * time;
             
-            if (attackTarget_soldierGroupOrCity.TryGetGroup(out var attack_sp))
+            if (attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var attack_sp))
             {
                 if (IsArmyGroup())
                 {
@@ -1543,8 +1544,9 @@ namespace VikingEngine.DSSWars.GameObject
             SoldiersPresentationHud(args, true, true);
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             if (!army.TryGetTarget(out var tArmy))
             {
                 return;
@@ -2032,7 +2034,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshAttackTarget()
         {
-            if (!attackTarget_soldierGroupOrCity.TryGetGroup(out var target) ||                    
+            if (!attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var target) ||                    
 
                 (target.defeated() || 
                 !DssRef.world.diplomacy.GetRelation(pfaction, target.pfaction).InWar() ||
@@ -2127,7 +2129,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //var target = RefExt.Target_safe(attackTarget_soldierGroupOrCity);
                 if (!nearest.defeatedBy(pfaction) && pNearest != attackTarget_soldierGroupOrCity)
                 {
-                    if (attackTarget_soldierGroupOrCity.TryGetGroup(out var target))//target != null)
+                    if (attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var target))//target != null)
                     {
                         //Compare distance
                         if (distanceValueTo(target, float.MaxValue) * 2f <= distanceValueTo(nearest, float.MaxValue))
@@ -2283,7 +2285,7 @@ namespace VikingEngine.DSSWars.GameObject
 #endif
 
             //AbsGroup attack_sp = null;
-            attackTarget_soldierGroupOrCity.TryGetGroup(out var attack_sp);
+            attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var attack_sp);
             var command_sp = command;
 
             if (command_sp != null && command_sp.hasPathCommand(out bool towardsUnit))
@@ -2826,7 +2828,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             content.text("Group State: " + state.ToString());
             content.text("target string: " + attackTarget_soldierGroupOrCity.ToString());
-            if (attackTarget_soldierGroupOrCity.TryGetGroup(out var target))
+            if (attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var target))
             {
                 content.text("attacking: " + target.TypeName());
                 
@@ -2891,7 +2893,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                return attackTarget_soldierGroupOrCity.Get() as AbsGroup;
+                return attackTarget_soldierGroupOrCity.Clone().Get() as AbsGroup;
             }
         }
 

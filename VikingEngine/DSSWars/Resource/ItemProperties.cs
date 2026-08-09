@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,8 @@ namespace VikingEngine.DSSWars.Resource
 
         public ItemSource itemSource1 = ItemSource.None, itemSource2 = ItemSource.None, itemSource3 = ItemSource.None;
         public CityBiome restrictedToBiom = CityBiome.NUM_NONE;
+
+        public int UnitSortValue;
         
         public ItemProperties(ItemResourceType type, int cityResourceIndex, float weight, WorkPriorityType work, 
             CraftBlueprint bp1, CraftBlueprint bp2, StorageType storageType)

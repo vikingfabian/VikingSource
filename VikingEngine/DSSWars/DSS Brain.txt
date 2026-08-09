@@ -1,24 +1,18 @@
 
 Change log:
-* Animal habitats on heatmap, and tab names
-* Rebalanced animal placement
-* compressed headbar Ui
+* Fixed soldier target crash
 * improved pony model
 
 
-
-Performance
-* Removed all unessesary faction references
-* Removed refences from the aria unit grid
-
-
+* More efficient unit filter system
+* New reassign menu for soldiers
+* Fixed: food will also follow army split
 
 KNOWN ISSUES
+x reassign dont work with controller
 
 ##ICONS TODO
 * gray rounded button
-* mobilizing
-* join game icon
 
 #MOUNTED TODO
 * 

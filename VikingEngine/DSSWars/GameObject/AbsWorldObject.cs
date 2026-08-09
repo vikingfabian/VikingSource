@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
         protected void debugTagButton(RichBoxContent content)
         {
 #if DEBUG
-            content.Button(string.Format("debug tag ({0})", debugTagged), new HUD.RichBox.RbAction(AddDebugTag), null, true);
+            //content.Button(string.Format("debug tag ({0})", debugTagged), new HUD.RichBox.RbAction(AddDebugTag), null, true);
 #endif
         }
 

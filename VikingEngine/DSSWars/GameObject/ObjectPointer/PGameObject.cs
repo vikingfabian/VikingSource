@@ -50,6 +50,12 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
 #endif
         }
 
+        public PGameObject Clone()
+        {
+            PGameObject clone = this;
+            return clone;
+        }
+
         public AbsGameObject Get()
         {
             switch (objectType)

@@ -2401,9 +2401,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
-            
+            secondMenuContent = null;
             CityPresentationHud(args, false);
             
             //if (HasFaction())
@@ -2414,7 +2414,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (pfaction== args.player.pfaction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                     {
                         CityDetailsHud(true, args.player, args.content);
-                        new MapObjMenu(args.player, this, args.content);
+                        new MapObjMenu(args.player, this, args.content, out secondMenuContent);
                     }
                     else
                     {
@@ -2977,7 +2977,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     content.space();
 
-                    content.Add(new RbImage(SpriteName.unitEmoteSnore));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_IdleCount.ToString()));
 

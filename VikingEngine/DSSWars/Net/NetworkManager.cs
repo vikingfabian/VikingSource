@@ -533,7 +533,7 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssDeliverStatusRequest:
                     City.NetReadDeliveryStatusRequest(packet);
                     break;
-                case PacketType.DssDeliverStatusReply:
+                case PacketType.DssDeliverStatusReply: //Is sending when it shouldnt, is auto?
                     City.NetReadDeliveryStatusReply(packet);
                     break;
 
