@@ -2654,7 +2654,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!PlatformSettings.STEAM_DEMO)
                     {
-                        player.hud.messages.Add(DssRef.lang.Tutorial_CompleteTitle, DssRef.lang.Tutorial_CompleteMessage);
+                        player.hud.messages.Add(DssRef.lang.Tutorial_CompleteTitle, DssRef.lang.Tutorial_CompleteMessage, SoundLib.goodNews);
                     }
                     
                     EndTutorial();
@@ -2677,7 +2677,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
                 else if (missions.sel == TutorialMission.EndAdvisor)
                 {
-                    player.hud.messages.Add(DssRef.lang.Tutorial_AdvisorCompleteTitle, DssRef.lang.Tutorial_AdvisorCompleteMessage);
+                    player.hud.messages.Add(DssRef.lang.Tutorial_AdvisorCompleteTitle, DssRef.lang.Tutorial_AdvisorCompleteMessage, SoundLib.goodNews);
                     EndAdvisor();
                 }
             }

@@ -238,7 +238,7 @@ namespace VikingEngine.DSSWars
             {
                 if (SteamAchievements.DebugSetAchievement_Local((int)achievement))
                 {
-                    DssRef.state.LocalHost().hud.messages.Add("Achivement", achievement.ToString());
+                    DssRef.state.LocalHost().hud.messages.Add("Achivement", achievement.ToString(), null);
                 }
             }
         }

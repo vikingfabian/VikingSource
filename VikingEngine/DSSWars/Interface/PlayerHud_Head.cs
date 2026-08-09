@@ -23,7 +23,8 @@ namespace VikingEngine.DSSWars.Interface
     class PlayerHud_Head
     {
         ImageAdvanced flag;
-        NineSplitAreaTexture flagBg;
+        VectorRect flagClickArea;
+        //NineSplitAreaTexture flagBg;
         RichMenu menu;
         public float Bottom;
         public float Right;
@@ -52,7 +53,8 @@ namespace VikingEngine.DSSWars.Interface
                 //flagBgArea.Position.Y += 4;
                 var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
                 flagBgArea.Round();
-                flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
+                flagClickArea = flagBgArea;
+                NineSplitAreaTexture flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
                 menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
                 flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 8));
                 
@@ -101,8 +103,20 @@ namespace VikingEngine.DSSWars.Interface
 
         /// <returns>need refresh</returns>
         public bool updateMouseInput(ref bool mouseOver)
-        { 
-            menu.updateMouseInput(ref mouseOver);
+        {
+            if (flagClickArea.IntersectPoint(menu.InputMap().RbMouseInstance().Position))
+            {
+                mouseOver = true;
+                if (menu.InputMap().RbClick().DownEvent)
+                {
+                    SoundLib.sillyFanfare.Play();
+                    player.gameControls.nextCity(player.pfaction.GetFaction().mainCity);
+                }
+            }
+            else
+            {
+                menu.updateMouseInput(ref mouseOver);
+            }
             return menu.needRefresh;
         }
 

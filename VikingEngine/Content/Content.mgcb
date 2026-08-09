@@ -88,6 +88,12 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Dreamscape Adventures.ogg
 
+#begin DSS/Music/DSS War Industry -Theme music.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/DSS War Industry -Theme music.ogg
+
 #begin DSS/Music/echoes of valor.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -1938,6 +1944,174 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/start.wav
+
+#begin DSS/Sound/stinger/Bad News.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Bad News.wav
+
+#begin DSS/Sound/stinger/Become vassalv2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Become vassalv2.wav
+
+#begin DSS/Sound/stinger/Enemies are approaching v2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Enemies are approaching v2.wav
+
+#begin DSS/Sound/stinger/Entered battlev4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Entered battlev4.wav
+
+#begin DSS/Sound/stinger/For Your Information.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/For Your Information.wav
+
+#begin DSS/Sound/stinger/Gaining a vassalv2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Gaining a vassalv2.wav
+
+#begin DSS/Sound/stinger/Good News.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Good News.wav
+
+#begin DSS/Sound/stinger/Lost battlev1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Lost battlev1.wav
+
+#begin DSS/Sound/stinger/NeutralMessage.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/NeutralMessage.wav
+
+#begin DSS/Sound/stinger/new discoveryv1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/new discoveryv1.wav
+
+#begin DSS/Sound/stinger/New relationship Ally.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/New relationship Ally.wav
+
+#begin DSS/Sound/stinger/New relationship Enemy  .wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/New relationship Enemy  .wav
+
+#begin DSS/Sound/stinger/New relationship Good.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/New relationship Good.wav
+
+#begin DSS/Sound/stinger/New relationship War.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/New relationship War.wav
+
+#begin DSS/Sound/stinger/New Resource Pool Foundv2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/New Resource Pool Foundv2.wav
+
+#begin DSS/Sound/stinger/Out of Resource Eventv4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Out of Resource Eventv4.wav
+
+#begin DSS/Sound/stinger/process can_t be done message.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/process can_t be done message.wav
+
+#begin DSS/Sound/stinger/process complete message.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/process complete message.wav
+
+#begin DSS/Sound/stinger/Received gifts.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Received gifts.wav
+
+#begin DSS/Sound/stinger/Saving game.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Saving game.wav
+
+#begin DSS/Sound/stinger/Silly fanfarev3-volumen+7.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Silly fanfarev3-volumen+7.wav
+
+#begin DSS/Sound/stinger/stringer_repeat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/stringer_repeat.wav
+
+#begin DSS/Sound/stinger/System_ Story event v2  with choir.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/System_ Story event v2  with choir.wav
+
+#begin DSS/Sound/stinger/Total War.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Total War.wav
+
+#begin DSS/Sound/stinger/Under Siege.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Under Siege.wav
+
+#begin DSS/Sound/stinger/UnitsDesertedModified.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/UnitsDesertedModified.wav
+
+#begin DSS/Sound/stinger/Warning-Alert Message.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Warning-Alert Message.wav
+
+#begin DSS/Sound/stinger/Won battlev2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stinger/Won battlev2.wav
 
 #begin DSS/Sound/stop.wav
 /importer:WavImporter
