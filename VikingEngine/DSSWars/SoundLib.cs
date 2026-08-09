@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars
            blade_light, blade_medium, blade_heavy, spear_whoosh,
            musket, cannon, block_attack, wood_bonk,
 
-           painvoice, fleshgore,
+           painvoice, fleshgore, sillyFanfare,
             netMessage, netJoined, eventRepeatSound, eventRelationGainVassal,
 
             tab_blackmarket, tab_build, tab_conscript, tab_defence,
@@ -269,6 +269,8 @@ namespace VikingEngine.DSSWars
             eventLost = new MessageTimer(new SoundContainerSingle(StingerDir + "Lost battlev1", 1.3f));
 
             eventResourceLow = new MessageTimer(new SoundContainerSingle(StingerDir + "Out of Resource Eventv4"));
+
+            sillyFanfare = new SoundContainerSingle(StingerDir + "Silly fanfarev3-volumen+7", 0.6f);
         }
         public static void SubTab(Resource.ResourceManagementType subTab)
         {

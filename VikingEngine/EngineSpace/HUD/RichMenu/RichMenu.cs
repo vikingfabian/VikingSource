@@ -373,7 +373,7 @@ namespace VikingEngine.HUD.RichMenu
 
         public bool intersectCursor()
         {
-            return backgroundArea.IntersectPoint(InputMap().RbMouseInstance().Position/*Input.Mouse.Position*/)
+            return backgroundArea.IntersectPoint(InputMap().RbMouseInstance().Position)
                      ||
                      interaction.interactionStack != null;
         }

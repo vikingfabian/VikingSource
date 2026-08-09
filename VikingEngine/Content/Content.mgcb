@@ -2035,12 +2035,6 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/stinger/New Resource Pool Foundv2.wav
 
-#begin DSS/Sound/stinger/New Resource Pool Foundv2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/stinger/New Resource Pool Foundv2.wav
-
 #begin DSS/Sound/stinger/Out of Resource Eventv4.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -2071,11 +2065,11 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/stinger/Saving game.wav
 
-#begin DSS/Sound/stinger/Silly fanfarev3.wav
+#begin DSS/Sound/stinger/Silly fanfarev3-volumen+7.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:DSS/Sound/stinger/Silly fanfarev3.wav
+/build:DSS/Sound/stinger/Silly fanfarev3-volumen+7.wav
 
 #begin DSS/Sound/stinger/stringer_repeat.wav
 /importer:WavImporter
