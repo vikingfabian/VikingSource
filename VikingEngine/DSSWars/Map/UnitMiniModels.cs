@@ -84,10 +84,6 @@ namespace VikingEngine.DSSWars.Map
                                         pos.Y = Tile.UnitQuadMinY;
                                     }
 
-                                    //PolygonColor poly = Graphics.PolygonColor.QuadXZ(pos,
-                                    //    new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians - MathExt.TauOver4,
-                                    //    SpriteName.WarsTextureGroupSquare, Dir4.N,
-                                    //    main);
                                     topPoly.quadXZPlacement(pos,
                                         new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians - MathExt.TauOver4);
                                     polygons.Add(topPoly);
@@ -99,7 +95,7 @@ namespace VikingEngine.DSSWars.Map
                                     typeSymbol.setSprite(SpriteName.WarsTextureGroupSquareMelee, Dir4.N);
                                     typeSymbol.SetColor(second);
 
-                                    polygons.Add(typeSymbol);
+                                    //polygons.Add(typeSymbol);
 
 
                                 }

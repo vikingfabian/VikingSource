@@ -383,7 +383,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 soldierData.basehealth += armorData.basehealth;
             }
-            ShieldProperties.AddToConscript(ref soldierData, ref conscript, ranged);
+            //ShieldProperties.AddToConscript(ref soldierData, ref conscript);
 
             return soldierData;
 
