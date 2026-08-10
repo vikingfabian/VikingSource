@@ -297,10 +297,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             var faction = pfaction.GetFaction();
             mayEdit = faction != null && faction.player.IsLocalPlayer();
-            return name.name;
+            return name.GetName();
         }
-
-        
 
         void ArmyPresentationHud(ObjectHudArgs args, bool tooltip)
         {

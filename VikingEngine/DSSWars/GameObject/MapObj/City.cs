@@ -2296,7 +2296,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return TextLib.Error;
             }
             mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
-            return name.name;
+            return name.GetName();
         }
 
         //public override void NameEditEvent(string result, object tag)

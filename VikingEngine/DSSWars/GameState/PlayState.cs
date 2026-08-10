@@ -232,7 +232,7 @@ namespace VikingEngine.DSSWars
                 {
                     PlayerMapHistory mapHistory = new PlayerMapHistory();
                     mapHistory.read(r, subversion);
-                    previousRemotePlayers.Add(mapHistory.GetHashCode(), mapHistory);
+                    previousRemotePlayers.TryAdd(mapHistory.GetHashCode(), mapHistory);
                 }
             }
         }
