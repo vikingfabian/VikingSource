@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                 if (army == null)
                 {
-                    buttonContent.Add(new RbText(DssRef.lang.ArmyOption_NewArmy));
+                    buttonContent.Add(new RbText(mapObj.IsCity() ? DssRef.lang.ArmyOption_Disband : DssRef.lang.ArmyOption_NewArmy));
                 }
                 else
                 {
@@ -165,18 +165,22 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
             }
-            //MovingGroups.ListUnits(player, content, player.movingGroupsCollection.otherArmies.Selected(), player.movingGroupsCollection.mainArmy, 
-            //    out HashSet<ItemResourceType> itemsUsed, out UnitFilter unitFilterUsed, out bool noFilter);
+           
             content.AddRange(unitList);
 
             content.newParagraph();
             bool hasMoveChanges = player.movingGroupsCollection.hasMoved();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) }, new RbAction(()=>
-                {
-                    player.movingGroupsCollection.apply();
-                    player.movingGroupsCollection = null;
-                }), 
-                null, hasMoveChanges) { fillWidth = true });
+
+            if (mapObj.IsArmy())
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) }, new RbAction(() =>
+                    {
+                        player.movingGroupsCollection.apply();
+                        player.movingGroupsCollection = null;
+                    }),
+                    null, hasMoveChanges)
+                { fillWidth = true });
+            }
             if (player.movingGroupsCollection.otherArmies.Selected().army == null)
             {
                 content.newLine();

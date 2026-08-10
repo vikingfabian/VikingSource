@@ -667,7 +667,9 @@ namespace VikingEngine.DSSWars
 
                         if (local.gameControls.input.Menu.DownEvent)
                         {
-                            menuSystem.pauseMenu();
+                            //menuSystem.pauseMenu();
+                            menuSystem.openAndReturnToStack();
+                            
                         }
 
                         if (local.playerData.LostController)

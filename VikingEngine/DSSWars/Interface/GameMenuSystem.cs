@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Interface.CutScene;
@@ -10,6 +11,7 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.EngineSpace.HUD.RichBox.Book;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -34,11 +36,21 @@ namespace VikingEngine.DSSWars.Interface
         public const string UnderMenu_Options_Keyboard = "options_keyboard";
         public const string UnderMenu_Options_Keyboard_Key = "options_keyboard_key";
         public const string UnderMenu_ControllerDisconnected = "controller disconnected";
+
+
+        public const string Manual_Main = "manual";
+        public const string Manual_Work = "manual_work";
+        public const string Manual_Food = "manual_food";
+        public const string Manual_Soldiers = "manual_soldiers";
+
+
         public bool gameWasPaused;
         Graphics.Image blackFade;
         protected ImageLayers layer = ImageLayers.Foreground7;
         RichMenu menu;
         InputMap input;
+        bool storeStack = false;
+        List<string> menuStack = null;
         public GameMenuSystem()
             //: base(new InputMap(Engine.XGuide.LocalHostIndex), MenuType.InGame)
         {
@@ -73,8 +85,22 @@ namespace VikingEngine.DSSWars.Interface
 
                 menu = new RichMenu(HudLib.RbSettings, menuArea, new Vector2(8), RichMenu.DefaultRenderEdge, layer, new PlayerData(PlayerData.AllPlayers));
 
+                
+
                 DssRef.state.updateMouseVisible();
             }
+        }
+
+        public void openAndReturnToStack()
+        {
+            pauseMenu();
+            if (menuStack != null)
+            {
+                menu.menuStack = menuStack;
+                refreshPage(menu, false, out storeStack);
+            }
+            
+            
         }
 
         public bool menuUpdate()
@@ -84,7 +110,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (menu.needRefresh)
                 {
-                    if (refreshPage(menu, false) == false)
+                    if (refreshPage(menu, false, out storeStack) == false)
                     {
                         pauseMenu();
                     }
@@ -103,8 +129,9 @@ namespace VikingEngine.DSSWars.Interface
             return false;
         }
 
-        public static bool refreshPage(RichMenu menu, bool lobby)
+        public static bool refreshPage(RichMenu menu, bool lobby, out bool storeStack)
         {
+            storeStack = false;
             switch (menu.menuStack.LastOrDefault())
             {
                 default:
@@ -112,6 +139,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 case UnderMenu_Options:
                     {
+                        storeStack = true;
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
                         SettingsToMenu(content, menu, false);
@@ -120,14 +148,17 @@ namespace VikingEngine.DSSWars.Interface
                     break;
                 
                 case UnderMenu_Options_Mouse:
+                    storeStack = true;
                     mouseOptions(menu, lobby);
                     break;
 
                 case UnderMenu_Options_Keyboard:
+                    storeStack = true;
                     keyboardOptions(menu, lobby);
                     break;
 
                 case UnderMenu_Options_Keyboard_Key:
+                    storeStack = true;
                     listMapOptions(menu, lobby);
                     break;
 
@@ -155,6 +186,94 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         RichBoxContent content = new RichBoxContent();
                         new NetworkSettingsMenu(menu, false).joinHistoryList(content);
+                        menu.Refresh(content);
+                    }
+                    break;
+
+                case Manual_Main:
+                    {
+                        storeStack = true;
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, null);
+
+                        content.h1(DssRef.todoLang.GameManual, HudLib.TitleColor_Head);
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsHammer),
+                            new RbSpace(),
+                            new RbText(DssRef.todoLang.GameManualTitle_Work),
+                            
+                            }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Manual_Work, StackOption.Stack))
+                            {
+                                fillWidth = true
+                            });
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsResource_Food),
+                            new RbSpace(),
+                            new RbText(DssRef.lang.Resource_TypeName_Food),
+
+                            }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Manual_Food, StackOption.Stack))
+                        {
+                            fillWidth = true
+                        });
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsSoldierMan),
+                            new RbSpace(),
+                            new RbText(DssRef.todoLang.GameManualTitle_Soldiers),
+
+                            }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Manual_Soldiers, StackOption.Stack))
+                        {
+                            fillWidth = true
+                        });
+
+                        menu.Refresh(content);
+                    }
+                    break;
+                case Manual_Work:
+                    {
+                        storeStack = true;
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, null);
+
+                        new RichBook().GenerateUI(content, DssRef.todoLang.manual_work, null, HudLib.BookSettings);
+
+                        menu.Refresh(content);
+
+                        foreach (var p in DssRef.state.localPlayers)
+                        {
+                            p.tutorial?.onOpenManual();
+                        }
+                    }
+                    break;
+                case Manual_Food:
+                    {
+                        storeStack = true;
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, null);
+
+                        new RichBook().GenerateUI(content, DssRef.todoLang.manual_food, null, HudLib.BookSettings);
+
+                        menu.Refresh(content);
+                    }
+                    break;
+                case Manual_Soldiers:
+                    {
+                        storeStack = true;
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, null);
+
+                        new RichBook().GenerateUI(content, DssRef.todoLang.manual_soldiers, new Dictionary<string, string> {
+                            { "barracks", DssRef.lang.BuildingType_SoldierBarracks },
+                            { "queue", DssRef.lang.Hud_ProductionQueue },
+
+                        }, 
+                        HudLib.BookSettings);
+
                         menu.Refresh(content);
                     }
                     break;
@@ -186,11 +305,25 @@ namespace VikingEngine.DSSWars.Interface
                 Ref.SetPause(gameWasPaused);
                 blackFade?.DeleteMe();
                 blackFade = null;
+                if (storeStack)
+                {
+                    storeStack = false;
+                    menuStack = menu.menuStack;
+                }
+                else
+                {
+                    menuStack = null;
+                }
                 menu.DeleteMe();
                 menu = null;
 
                 DssRef.state.updateMouseVisible();
                 GC.Collect();
+
+                //foreach (var p in DssRef.state.localPlayers)
+                //{
+                //    p.tutorial?.onCloseMenu();
+                //}
             }
         }
 
@@ -268,7 +401,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             pauseMenu();
             menu.menuStack.Add(UnderMenu_ControllerDisconnected);
-            refreshPage(menu, false);
+            refreshPage(menu, false, out storeStack);
         }
 
         public void TutorialCompleteMenu()
@@ -335,18 +468,29 @@ namespace VikingEngine.DSSWars.Interface
                     new RbSpace(),
                     new RbText(".Invite")
                     }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text("Open Steam overlay"))
+                {
+                    fillWidth = true
+                });
+
+                content.newLine();
+
+                content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.MenuPixelIconManual),
+                    new RbSpace(),
+                    new RbText(DssRef.todoLang.GameManual)
+                    }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Manual_Main, StackOption.Stack))
                     {
                         fillWidth = true
                     });
 
 
-#if DEBUG
+//#if DEBUG
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
                     {
                         fillWidth = true
                     });
-#endif
+//#endif
             }
 
             if (DssRef.state.IsLocalMultiplayer())
@@ -360,11 +504,11 @@ namespace VikingEngine.DSSWars.Interface
             Ref.gamesett.volumeOptions(content);
 
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+            content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.WarsHudIconSettings),
                 new RbSpace(),
                 new RbText(DssRef.lang.Lobby_Category_Options)
-            }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, UnderMenu_Options, StackOption.Stack))
+            }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, UnderMenu_Options, StackOption.Stack))
             { 
                 fillWidth = true,
             });
