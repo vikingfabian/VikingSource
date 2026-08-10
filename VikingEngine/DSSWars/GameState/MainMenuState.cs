@@ -96,9 +96,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_leaderboards = "leaderboard";
 
 
-        const float MoreArrowTabbing = 0.9f;
-        const float MoreArrowScale = 0.4f;
-        SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
+        
         SaveStateMeta loadGame = null;
         MessageGroup_Editor messages;
 
@@ -298,7 +296,7 @@ namespace VikingEngine.DSSWars
                 case GameMenuSystem.UnderMenu_Options_Mouse:
                 case GameMenuSystem.UnderMenu_Options_Keyboard:
                 case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
-                    GameMenuSystem.refreshPage(underMenu, true);
+                    GameMenuSystem.refreshPage(underMenu, true, out _);
                     break;
 
                 case UnderMenu_GameOverResults:
@@ -1147,7 +1145,7 @@ namespace VikingEngine.DSSWars
                     new RbImage(SpriteName.WarsHudIconOpen),
                     new RbTab(ButtonTextTabbing),
                     new RbText(DssRef.lang.GameMenu_ContinueFromSave),
-                    new RbTab(MoreArrowTabbing),
+                    //new RbTab(MoreArrowTabbing),
                 },
                 new RbAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), new RbTooltip_Text(saves[0].InfoString()));
                 btn.fillWidth = true;
@@ -1156,17 +1154,19 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
-                moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
+                //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
+                //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(arraylib.HasMembers(saves)  ? RbButtonStyle.Secondary: RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                var btn = new ArtButton(arraylib.HasMembers(saves)  ? RbButtonStyle.Secondary: RbButtonStyle.Primary,
+                    HudLib.AddMoreArrowToButton(
+                    new List<AbsRichBoxMember> { 
                     new RbBeginTitle(), 
                     new RbImage(SpriteName.WarsHudIconAdd), 
                     new RbTab(ButtonTextTabbing), 
                     new RbText(DssRef.lang.Settings_NewGame),
-                    new RbTab(MoreArrowTabbing),
-                    moreArrow,
-                },
+                    //new RbTab(MoreArrowTabbing),
+                    //moreArrow,
+                }),
                 new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_NewGame, StackOption.ClearStack), null);
                 btn.fillWidth = true;
                 content.Add(btn);
@@ -1174,14 +1174,14 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
-                moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
+                //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
+                //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                var btn = new ArtButton(RbButtonStyle.Secondary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsHudIconOpen), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.GameMenu_LoadState),
-                    new RbTab(MoreArrowTabbing),
-                    moreArrow,
-                }, new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListSaves, StackOption.ClearStack), null);
+                    //new RbTab(MoreArrowTabbing),
+                    //moreArrow,
+                }), new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListSaves, StackOption.ClearStack), null);
                 btn.fillWidth = true;
                 content.Add(btn);
             }
@@ -1245,17 +1245,17 @@ namespace VikingEngine.DSSWars
                 {
                     content.newLine();
 
-                    var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
-                    moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
+                    //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
+                    //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                    var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    var btn = new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                             new RbBeginTitle(),
                             new RbImage(SpriteName.WarsHudIconTutorial),
                             new RbTab(ButtonTextTabbing),
                             new RbText(DssRef.lang.Lobby_Tutorial),
-                            new RbTab(MoreArrowTabbing),
-                            moreArrow,
-                        },
+                            //new RbTab(MoreArrowTabbing),
+                            //moreArrow,
+                        }),
                     new RbAction2Arg<bool, bool>(beginDemoLink, casual, true), null);
                     btn.fillWidth = true;
                     content.Add(btn);
@@ -1265,17 +1265,17 @@ namespace VikingEngine.DSSWars
                 {
                     content.newLine();
 
-                    var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
-                    moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
+                    //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
+                    //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                    var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    var btn = new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                             new RbBeginTitle(),
                             new RbImage(SpriteName.WarsHudIconStart),
                             new RbTab(ButtonTextTabbing),
                             new RbText(DssRef.lang.LobbyDemoMode_Demo),
-                            new RbTab(MoreArrowTabbing),
-                            moreArrow,
-                        },
+                            //new RbTab(MoreArrowTabbing),
+                            //moreArrow,
+                        }),
                     new RbAction2Arg<bool, bool>(beginDemoLink, casual, false),
                     //new RbAction(beginDemo), 
                     new RbTooltip_Text(string.Format(DssRef.lang.Demo_Description, 90)));
@@ -1662,17 +1662,17 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
-                moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
+                //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
+                //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                var btn = new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                                     new RbBeginTitle(),
                                     new RbImage(SpriteName.WarsHudIconAdd),
                                     new RbSpace(),
                                     new RbText(DssRef.lang.Hud_Next),
-                                    new RbTab(MoreArrowTabbing),
-                                    moreArrow,
-                                },
+                                    //new RbTab(MoreArrowTabbing),
+                                    //moreArrow,
+                                }),
                     new RbAction1Arg<StartGameMode>(openPlayerSetupForMode, StartGameMode.Play), null);
 
                 btn.fillWidth = true;
@@ -3077,16 +3077,16 @@ namespace VikingEngine.DSSWars
 
                 content.newLine();
 
-                var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
-                moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
+                //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
+                //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                                    new RbImage(SpriteName.WarsHudIconOpen),
-                                    new RbSpace(),
-                                    new RbText(save.TitleString()),
-                                    new RbTab(MoreArrowTabbing),
-                                    moreArrow,
-                                },
+                var btn = new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsHudIconOpen),
+                        new RbSpace(),
+                        new RbText(save.TitleString()),
+                        //new RbTab(MoreArrowTabbing),
+                        //moreArrow,
+                    }),
                     new RbAction1Arg<SaveStateMeta>(loadFileClick, save), 
                     new RbTooltip_Text(save.InfoString()));
 

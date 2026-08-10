@@ -46,18 +46,19 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             CityTabs = new List<MenuTab>() {
                 MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket,
-                MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, 
-                MenuTab.Reassign, MenuTab.Progress,
+                MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Reassign, 
+                MenuTab.Defence, 
+                MenuTab.Progress,
                 MenuTab.Tag};
 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
             {
                 CityTabs.Insert(1, MenuTab.God_Recruit);
             }
-            else
-            {
-                CityTabs.Add(MenuTab.Help);
-            }
+            //else
+            //{
+            //    CityTabs.Add(MenuTab.Help);
+            //}
         }
 
         public MapObjMenu(LocalPlayer player, City city, RichBoxContent content, out RichBoxContent secondMenuContent)
@@ -439,7 +440,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+            content.Add(new RbImage(SpriteName.WarsBuild_TreeApple));
             content.space();
             content.Add(new RbText(DssRef.lang.Help_Food_DontBuild));
 

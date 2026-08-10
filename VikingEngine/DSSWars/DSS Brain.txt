@@ -8,6 +8,9 @@ Change log:
 * New reassign menu for soldiers
 * Fixed: food will also follow army split
 
+* Added game manual section in pause menu, the menu will also remember the page you are on
+* Removed city help tab
+
 KNOWN ISSUES
 x reassign dont work with controller
 
