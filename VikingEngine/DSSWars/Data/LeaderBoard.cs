@@ -482,6 +482,7 @@ namespace VikingEngine.DSSWars.Data
         domination_speed100,
         domination_speed150,
         city_size,
+        //nation_size,
         army_size,
         survive300_time,
         survive400_time,

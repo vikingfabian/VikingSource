@@ -1,6 +1,8 @@
 
 Change log:
-* 
+* Fixed huge map breaking 16 bit size limit
+* Compressed build order storage
+* wider headbar
 
 KNOWN ISSUES
 
