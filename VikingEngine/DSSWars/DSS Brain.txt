@@ -10,6 +10,7 @@ Change log:
 
 * Added game manual section in pause menu, the menu will also remember the page you are on
 * Removed city help tab
+* Added "open game manual" as second mission in tutorial
 
 KNOWN ISSUES
 x reassign dont work with controller

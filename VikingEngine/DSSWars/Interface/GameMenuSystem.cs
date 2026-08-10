@@ -243,6 +243,11 @@ namespace VikingEngine.DSSWars.Interface
                         new RichBook().GenerateUI(content, DssRef.todoLang.manual_work, null, HudLib.BookSettings);
 
                         menu.Refresh(content);
+
+                        foreach (var p in DssRef.state.localPlayers)
+                        {
+                            p.tutorial?.onOpenManual();
+                        }
                     }
                     break;
                 case Manual_Food:
@@ -314,6 +319,11 @@ namespace VikingEngine.DSSWars.Interface
 
                 DssRef.state.updateMouseVisible();
                 GC.Collect();
+
+                //foreach (var p in DssRef.state.localPlayers)
+                //{
+                //    p.tutorial?.onCloseMenu();
+                //}
             }
         }
 

@@ -26,6 +26,8 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public string MenuTab_Reassign => "Reassign";
         public string ArmyOption_SendHalf => "Send half";
+
+        public string Tutorial_OpenManual => "Open pause menu and read about {0} in the {1}";
         //-------
 
 
