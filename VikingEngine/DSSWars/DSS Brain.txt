@@ -1,8 +1,6 @@
 
 Change log:
-* Multicore safe faction get
-* Fixed multiplayer store user doublette
-* Fixed crashing font on renamed cities/armies
+* 
 
 KNOWN ISSUES
 

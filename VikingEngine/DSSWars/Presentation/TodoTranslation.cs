@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string UnitType_Faction => "Faction";
         //-------
 
-
+        public string Multiplayer_Invite => "Invite";
         //public string GameSettings_WideScrollbar => "Wide scrollbar";
         //public string GameSettings_DisplayInputHelp => "Input help";
         //public string GameSettings_InputSmoothing => "Input smoothing";
@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.Presentation
         //public string DefaultCoOptional => "Default: Co-optional";
         //public string DefaultHardcore => "Default: Hardcore";
         //public string GeneralTitle => "General";
-        
+
         //public string InputButton_Hold => "Button hold";
         //public string InputButton_Toggle => "Button toggle";
         //public string VoiceOptAlwaysOn => "Always on";
@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars.Presentation
         //public string Multiplayer_VoiceChat => "Voice chat";
         //public string Steam_UserProfile => "User profile";
         //public string Steam_OpenSteamOverlay => "Open Steam overlay";
-        
+
         ///// <summary>
         ///// In this relation there is a countdown towards war
         ///// </summary>
