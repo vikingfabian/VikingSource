@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, mapObj, RbSoundType.Default))
             { fillWidth = true });
 
-            Add(content, SoundLib.netMessage);
+            Add(content, SoundLib.recievedGift.Play());
         }
         public void armyLowFoodMessage(Army army)
         {

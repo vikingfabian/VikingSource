@@ -44,6 +44,8 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, HudLib.CutSceneBgLayer);
             bg.Color = Color.Black;
             bg.Opacity = 0.8f;
+
+            SoundLib.saving.Play();
         }
 
         public override void Time_Update(float time)
