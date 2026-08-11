@@ -179,22 +179,15 @@ namespace VikingEngine.DSSWars.Build
         public bool buildKeyDown = false;
         Vector3 keyDownPos;
         IntVector2 startTile, currentTile;
-        List<BuildSelection> selection = new List<BuildSelection>();
+        BuildSelectGuiCollection selection = new BuildSelectGuiCollection();
         LShapeDir lShape;
-        class BuildSelection
-        {
-            public IntVector2 position;
-            public bool mayBuild;
-            public Mesh model;
-            public int usesBuildQue;
-            public City City;
-        }
+        
 
         public void updateBuildMode()
         {
             if (player.gameControls.input.mouseSelect.DownEvent)
             {
-                deleteSelection();
+                selection.deleteSelection();
                 buildKeyDown = true;
                 startTile = player.gameControls.map.hover.subTile.subTilePos;
                 keyDownPos = player.gameControls.map.pointerPosWP;
@@ -212,24 +205,24 @@ namespace VikingEngine.DSSWars.Build
                         case MapPaintToolShape.Free:
                             if (addToSelection(player.gameControls.map.hover.subTile.subTilePos, true))
                             {
-                                refreshSelection();
+                                //refreshSelection();
                             }
                             break;
                         case MapPaintToolShape.Area:
                             {
-                                deleteSelection();
+                                selection.deleteSelection();
                                 var area = Rectangle2.FromTwoTilePoints(startTile, player.gameControls.map.hover.subTile.subTilePos);
                                 ForXYLoop loop = new ForXYLoop(area);
                                 while (loop.Next())
                                 {
                                     addToSelection(loop.Position, false);
                                 }
-                                refreshSelection();
+                                //refreshSelection();
                             }
                             break;
                         case MapPaintToolShape.LShape:
                             {
-                                deleteSelection();
+                                selection.deleteSelection();
 
                                 if (startTile.SideLength(player.gameControls.map.hover.subTile.subTilePos) > 1)
                                 {
@@ -298,13 +291,13 @@ namespace VikingEngine.DSSWars.Build
                                         break;
                                 }
 
-                                refreshSelection();
+                                //refreshSelection();
                             }
                             break;
                         case MapPaintToolShape.Line:
                             {
                                 //How do I make a line that is one tile thick?
-                                deleteSelection(); // Clear previous selection
+                                selection.deleteSelection(); // Clear previous selection
 
                                 IntVector2 start = startTile;
                                 IntVector2 end = player.gameControls.map.hover.subTile.subTilePos;
@@ -345,7 +338,7 @@ namespace VikingEngine.DSSWars.Build
                                     }
                                 }
 
-                                refreshSelection();
+                                //refreshSelection();
                             }
                             break;
                     }
@@ -354,14 +347,12 @@ namespace VikingEngine.DSSWars.Build
 
             if (player.gameControls.input.mouseSelect.UpEvent )
             {
-               
-
                 bool anySucccess = false;
                 int soundIndex = 0;
                 SoundContainerBase sound = buildMode == SelectTileResult.Build? SoundLib.start_build_contruct : SoundLib.start_destroy_contruct;
-                foreach (var sel in selection)
+                for (int i = 0; i < selection.useCount; ++i)//each (var sel in selection)
                 {
-                    bool success = actOnTile(sel.position, true, out _, out _);
+                    bool success = actOnTile(selection[i].position, true, out _, out _);
 
                     if (success)
                     {
@@ -389,7 +380,8 @@ namespace VikingEngine.DSSWars.Build
                     SoundLib.wrong.Play();
                 }
 
-                deleteSelection();
+                //deleteSelection();
+                selection.deleteSelection();
                 buildKeyDown = false;
             }
 
@@ -400,9 +392,9 @@ namespace VikingEngine.DSSWars.Build
             {
                 if (checkDoublette)
                 {
-                    foreach (var sel in selection)
+                    for (int i = 0; i < selection.useCount; ++i)//foreach (var sel in selection)
                     {
-                        if (sel.position == subTilePos)
+                        if (selection[i].position == subTilePos)
                         {
                             return false;
                         }
@@ -411,58 +403,40 @@ namespace VikingEngine.DSSWars.Build
 
                 bool canAct = actOnTile(subTilePos, false, out int usesBuildQue, out City city);
 
-                var model = SelectedSubTile.CreateOutlineModel(player, false);
-                model.Visible = true;
-                model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                selection.Create(player, subTilePos, canAct, usesBuildQue, city);
+                //var model = SelectedSubTile.CreateOutlineModel(player, false);
+                //model.Visible = true;
+                //model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
                 
-                if (!canAct)
-                {
-                    model.Color = HudLib.NotAvailableColor;
-                }
+                //if (!canAct)
+                //{
+                //    model.Color = HudLib.NotAvailableColor;
+                //}
 
-                selection.Add(new BuildSelection() { 
-                    position = subTilePos, 
-                    mayBuild = canAct,
-                    model = model,
-                    usesBuildQue = usesBuildQue,
-                    City = city,
-                });
+                //selection.Add(new BuildSelectGui() { 
+                //    position = subTilePos, 
+                //    mayBuild = canAct,
+                //    model = model,
+                //    usesBuildQue = usesBuildQue,
+                //    City = city,
+                //});
                 return true;
             }
 
-            void refreshSelection()
-            {
-                //Dictionary<int, int> city_queLength = new Dictionary<int, int>();
+            //void refreshSelection()
+            //{
+            //    //Dictionary<int, int> city_queLength = new Dictionary<int, int>();
 
-                foreach (var sel in selection)
-                {
-                    if (sel.mayBuild /*&& sel.usesBuildQue != 0*/)
-                    {
-                        //int availabeQueueLength;
-                        //if (!city_queLength.TryGetValue(sel.City.myIndex, out availabeQueueLength))
-                        //{
-                        //    availabeQueueLength = sel.City.availableBuildQueueLength(player);
-                        //    city_queLength.Add(sel.City.myIndex, availabeQueueLength);                           
-                        //}
+            //    for (int i = 0; i < selection.useCount; ++i)//foreach (var sel in selection)
+            //    {
+            //        if (sel.mayBuild)
+            //        {                        
+            //            sel.model.Color = Color.White;
+            //        }
+            //    }
+            //}
 
-                        sel.model.Color = /*(availabeQueueLength > 0 || sel.usesBuildQue <= 0)  ?*/ Color.White/* : Color.Gray*/;
-
-                        //availabeQueueLength -= sel.usesBuildQue;
-                        //city_queLength[sel.City.myIndex] = Bound.Min(availabeQueueLength, 0);
-                    }
-                }
-            }
-
-            void deleteSelection()
-            {
-                foreach (var sel in selection)
-                {
-                    sel.model.DeleteMe();
-                }
-                currentTile = IntVector2.NegativeOne;
-                
-                selection.Clear();
-            }
+           
         }
 
 

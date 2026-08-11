@@ -1,8 +1,13 @@
 
 Change log:
-* Fixed huge map breaking 16 bit size limit
+* Fixed huge map positions breaking 16 bit size limit
+* fixed: huge cities broke 16bit limit
 * Compressed build order storage
 * wider headbar
+* casual controls will be shown on leaderboards
+* fixed: Casual city setup is stored and is still running on non-casual control setup
+* fixed: Casual capture can get city stuck in automate (like war)
+* Improved build select performance
 
 KNOWN ISSUES
 

@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.GameState
         protected SpottedArrayCounter<Players.RemotePlayer> remotePlayersCounter;
         public List<Players.LocalPlayer> localPlayers;
         public EventManager events;
-        public Progress progress = new Progress();
+        //public Progress progress = new Progress();
         public int NextArmyId = 0;
         protected int stepFramesCount = 0;
         public Ambience ambience;

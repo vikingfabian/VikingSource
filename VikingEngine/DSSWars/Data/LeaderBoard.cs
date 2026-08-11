@@ -58,10 +58,14 @@ namespace VikingEngine.DSSWars.Data
                     DssRef.achieve.UnlockAchievement(AchievementIndex.leaderboard_glory);
                 }
 
+                if (leaderBoard.casualControls)
+                {
+                    content.Add(new RbImage(SpriteName.WarsHudCasualMode));
+                    content.hspace();
+                }
+
                 content.Add(new RbText(LoadContent.CheckCharsSafety(entry.userName, LoadedFont.Regular), nameCol));
 
-
-                
             }
 
             if (values.Count == 0)
@@ -224,6 +228,8 @@ namespace VikingEngine.DSSWars.Data
 
     abstract class AbsLeaderBoard: SteamLeaderBoardLocal
     {
+        public bool casualControls;
+
         public static void CreateLeaderBoards()
         {
             //LeaderBoardType type = LeaderBoardType.survive400_time;
@@ -298,6 +304,26 @@ namespace VikingEngine.DSSWars.Data
             return name ;
         }
 
+        protected void AddCasualControls()
+        {
+            var state = DssRef.state?.playstate();
+            if (state != null)
+            {
+                casualControls = state.casualControls;
+            }
+
+            scoreDetails.Add(lib.BoolToInt01(casualControls));
+        }
+
+        protected void GetCasualControls(SteamLeaderBoardRemote entry, int detailIx)
+        {
+            casualControls  = false;
+            if (entry.scoreDetails.TryGetIndex(detailIx, out int value))
+            {
+                casualControls = lib.ToBool(value);
+            }
+        }
+
         public override void BeginUpload()
         {
             if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
@@ -328,11 +354,14 @@ namespace VikingEngine.DSSWars.Data
             setup(LeaderBoardType.city_size, workerCount);
             scoreDetails.Add(difficulty);
             scoreDetails.Add((int)DssRef.time.TotalIngameTime().TotalSeconds);
+            AddCasualControls();
+
             BeginUpload();
         }
 
         public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
         {
+            GetCasualControls(entry, 3);
             wideContent = false;
             content.Add(new RbText(TextLib.LargeNumber(entry.score)));
         }
@@ -352,11 +381,13 @@ namespace VikingEngine.DSSWars.Data
             setup(LeaderBoardType.army_size, Convert.ToInt32(armyStrength));
             scoreDetails.Add(difficulty);
             scoreDetails.Add(soldiersCount);
+            AddCasualControls();
             BeginUpload();
         }
 
         public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
         {
+            GetCasualControls(entry, 3);
             wideContent = false;
             content.Add(new RbText(TextLib.LargeNumber(entry.score)));
         }
@@ -376,11 +407,13 @@ namespace VikingEngine.DSSWars.Data
 
             setup(LeaderBoardType.multiplayer_playercount, count);
             scoreDetails.Add(difficulty);
+            AddCasualControls();
             BeginUpload();
         }
 
         public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
         {
+            GetCasualControls(entry, 2);
             wideContent = false;
             content.Add(new RbText(entry.score.ToString()));
         }
@@ -400,12 +433,14 @@ namespace VikingEngine.DSSWars.Data
             var difficulty = DssRef.difficulty.TotalDifficulty();
             setup(difficulty >= Difficulty400? LeaderBoardType.survive400_time : LeaderBoardType.survive300_time, (int)time.TotalSeconds);
             scoreDetails.Add(difficulty);
+            AddCasualControls();
             BeginUpload();
                         
         }
 
         public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
         {
+            GetCasualControls(entry, 2);
             wideContent = true;
             content.Add(new RbText(HudLib.TimeSpan_LongText(TimeSpan.FromSeconds(entry.score))));
         }
@@ -433,6 +468,7 @@ namespace VikingEngine.DSSWars.Data
                         {
                             setup(LeaderBoardType.story_difficulty, difficulty);
                             scoreDetails.Add((int)DssRef.time.TotalIngameTime().TotalSeconds);
+                            AddCasualControls();
                             BeginUpload();
                         }
                         break;
@@ -453,6 +489,7 @@ namespace VikingEngine.DSSWars.Data
                         }
                         setup(type, (int)DssRef.time.TotalIngameTime().TotalSeconds);
                         scoreDetails.Add(difficulty);
+                        AddCasualControls();
                         BeginUpload();
                         break;
 
@@ -462,6 +499,7 @@ namespace VikingEngine.DSSWars.Data
 
         public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
         {
+            GetCasualControls(entry, 2);
             if (type == LeaderBoardType.story_difficulty)
             {
                 wideContent = false;

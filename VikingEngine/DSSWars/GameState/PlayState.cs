@@ -47,8 +47,9 @@ namespace VikingEngine.DSSWars
     partial class PlayState : AbsPlayState
     {
         public int nextGroupId = 0;
-        public bool PartyMode = false;   
-        
+        //public bool PartyMode = false;   
+        public bool casualControls;
+
         TechnologyManager technologyManager = new TechnologyManager();
         bool bResourceMinuteUpdate = true;
         bool slowMinuteUpdate = true;
@@ -211,18 +212,19 @@ namespace VikingEngine.DSSWars
                 m.write(w);
             }
 
+            w.Write(casualControls);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             resources.readGameState(r, subversion);
             events.readGameState(r, subversion, pointers);
 
-            if (subversion >= 16)
-            {
-                progress.readGameState(r, subversion, pointers);
-            }
+            //if (subversion >= 16)
+            //{
+            //    progress.readGameState(r, subversion, pointers);
+            //}
             if (subversion >= 105)
-            { 
+            {
                 NextArmyId = r.ReadInt32();
             }
             if (subversion >= 115)
@@ -234,6 +236,10 @@ namespace VikingEngine.DSSWars
                     mapHistory.read(r, subversion);
                     previousRemotePlayers.TryAdd(mapHistory.GetHashCode(), mapHistory);
                 }
+            }
+            if (subversion >= 132)
+            {
+                casualControls |= r.ReadBoolean();
             }
         }
 
@@ -351,8 +357,9 @@ namespace VikingEngine.DSSWars
             {
                 var pdata = localPlayers[i].playerData;
                 Mouse.AddPlayer(pdata, playerCount, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
-
-                //localPlayers[i].initPlayerToPlayer(i, playerCount);
+                
+                casualControls |= localPlayers[i].profile.casualControls;
+                
             }
 
             if (newGame && DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)

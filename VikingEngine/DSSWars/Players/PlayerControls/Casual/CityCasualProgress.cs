@@ -116,6 +116,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             }
         }
 
+        public void clearAll()
+        {
+            clearRecruitQueue();
+            clearBuildQueue();
+        }
+
         public void clearRecruitQueue()
         {
             cancelCurrentRecruit();
