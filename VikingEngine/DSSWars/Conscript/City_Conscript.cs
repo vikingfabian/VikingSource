@@ -444,20 +444,20 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = profile.man == ItemResourceType.NobleMen? DssConst.NobelMenSkillBonus : 1,
             };
 
-            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+            var filter = soldierProfile.conscript.classify();//out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
 
             switch (cityCulture)
             {
                
                 case CityCulture.Archers:
-                    if (rangedMan)
+                    if (filter.RangedNotWarMachine())
                     {
                         soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
                 case CityCulture.Warriors:
-                    if (meleeMan)
+                    if (filter.MeleeNotWarMachine())
                     {
                         soldierProfile.skillBonus *= 1.2f;
                     }
@@ -475,13 +475,13 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case CityCulture.SiegeEngineer:
-                    if (warmachine)
+                    if (filter.Contains(UnitFilterType.WarMachine))
                     {
                         soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
                 case CityCulture.Wheelwright:
-                    if (wagonRide)
+                    if (filter.Contains(UnitFilterType.WagonRider))
                     {
                         soldierProfile.mobileBonus_PercAdd = Culture.WheelWhrightBonus;
                     }

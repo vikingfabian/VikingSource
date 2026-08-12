@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
@@ -55,8 +56,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
             player.hud = this;
-            MessageStart = new Vector2(player.playerData.view.safeScreenArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),
-               player.playerData.view.safeScreenArea.Y);
+            MessageStart = new Vector2(player.playerData.view.wideScreenSafeScreenArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),
+               player.playerData.view.wideScreenSafeScreenArea.Y);
 
             //displays = new GameHudDisplays(player);
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
@@ -304,7 +305,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void updateMenuDisplays(bool refresh)
         {
-
+           
             if (player.gameControls.diplomacy != null)
             {
                 var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
@@ -344,6 +345,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (refresh)
                 {
                     objMenu.refreshObject(player, obj, selected);
+                    
                 }
             }
         }

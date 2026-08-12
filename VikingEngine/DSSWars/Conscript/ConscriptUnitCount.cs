@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-                groupUnitCount = weaponProp.soldierData.UnitCount(conscript.specialization == SpecializationType.CityGuard);
+                groupUnitCount = weaponProp.soldierData.UnitCount(conscript.ArmyType());
                 if (weaponProp.Filter_IsWarMachine)
                 {
                     //The wagon is one big weapon

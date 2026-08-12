@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Map
         {
             bMouseInput = player.gameControls.input.inputSource.useTouchAsMouseSim;
             Vector2 sz = Engine.Screen.IconSizeV2 * 5f * Ref.gamesett.MinimapScale;
-            Vector2 pos = player.playerData.view.safeScreenArea.RightBottom - sz;
+            Vector2 pos = player.playerData.view.wideScreenSafeScreenArea.RightBottom - sz;
             area = new VectorRect(pos, sz);
             area.Round();
             areaHalfSize = area.Size * 0.5f;

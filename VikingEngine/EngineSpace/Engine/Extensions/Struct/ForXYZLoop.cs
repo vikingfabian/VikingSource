@@ -8,7 +8,7 @@ namespace VikingEngine
     struct ForXYZLoop
     {
         IntervalIntV3 volume;
-        IntVector3 position;
+        IntVector3 nextPos;
         public IntVector3 Position;
 
         bool done;
@@ -24,8 +24,8 @@ namespace VikingEngine
         public ForXYZLoop(IntervalIntV3 volume)
         {
             this.volume =volume;
-            position = volume.Min;
-            Position = position;
+            nextPos = volume.Min;
+            Position = nextPos;
             done = false;
         }
         public bool AtEdge
@@ -40,17 +40,17 @@ namespace VikingEngine
 
         public IntVector3 Next_Old()
         {
-            IntVector3 result = position;
-            position.X++;
-            if (position.X > volume.Max.X)
+            IntVector3 result = nextPos;
+            nextPos.X++;
+            if (nextPos.X > volume.Max.X)
             {
-                position.X = volume.Min.X;
-                position.Y++;
-                if (position.Y > volume.Max.Y)
+                nextPos.X = volume.Min.X;
+                nextPos.Y++;
+                if (nextPos.Y > volume.Max.Y)
                 {
-                    position.Y = volume.Min.Y;
-                    position.Z++;
-                    if (position.Z > volume.Max.Z)
+                    nextPos.Y = volume.Min.Y;
+                    nextPos.Z++;
+                    if (nextPos.Z > volume.Max.Z)
                     {
                         done = true;
                     }
@@ -66,17 +66,17 @@ namespace VikingEngine
         {
             bool result = !done;
 
-            Position = position;
-            ++position.X;
-            if (position.X > volume.Max.X)
+            Position = nextPos;
+            ++nextPos.X;
+            if (nextPos.X > volume.Max.X)
             {
-                position.X = volume.Min.X;
-                ++position.Y;
-                if (position.Y > volume.Max.Y)
+                nextPos.X = volume.Min.X;
+                ++nextPos.Y;
+                if (nextPos.Y > volume.Max.Y)
                 {
-                    position.Y = volume.Min.Y;
-                    ++position.Z;
-                    if (position.Z > volume.Max.Z)
+                    nextPos.Y = volume.Min.Y;
+                    ++nextPos.Z;
+                    if (nextPos.Z > volume.Max.Z)
                     {
                         done = true;
                     }
@@ -84,6 +84,26 @@ namespace VikingEngine
             }
 
             return result;
+        }
+
+        public void UndoToPrevious()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                nextPos.X--;
+                if (nextPos.X < volume.Min.X)
+                {
+                    nextPos.X = volume.Max.X;
+                    nextPos.Y--;
+                    if (nextPos.Y < volume.Min.Y)
+                    {
+                        nextPos.Y = volume.Max.Y;
+                        nextPos.Z--;
+                    }
+                }
+            }
+
+            Next();
         }
     }
 

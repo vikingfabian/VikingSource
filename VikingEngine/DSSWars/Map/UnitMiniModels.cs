@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -64,6 +65,11 @@ namespace VikingEngine.DSSWars.Map
                         var faction_sp = factions.sel;
                         if (faction_sp != null)
                         {
+                            faction_sp.Colors(out Color main, out Color second);
+                            PolygonColor topPoly = new PolygonColor();
+                            topPoly.setSprite(SpriteName.WarsTextureGroupSquare, Dir4.N);
+                            topPoly.SetColor(main);
+
                             var armies = faction_sp.armies.counter();
                             while (armies.Next())
                             {
@@ -71,19 +77,27 @@ namespace VikingEngine.DSSWars.Map
                                 while (groups.Next())
                                 {
                                     Vector3 pos = groups.sel.position;
-                                    pos.Y += 0.02f;
+                                    pos.Y += 0.07f;
 
                                     if (pos.Y < Tile.UnitQuadMinY)
                                     {
                                         pos.Y = Tile.UnitQuadMinY;
                                     }
 
-                                    var poly = Graphics.PolygonColor.QuadXZ(pos,
-                                        new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians,
-                                        SpriteName.WhiteArea_LFtiles, Dir4.N,
-                                        faction_sp.Color());
+                                    topPoly.quadXZPlacement(pos,
+                                        new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians - MathExt.TauOver4);
+                                    polygons.Add(topPoly);
+                                    
+                                    topPoly.quadXZSides(0.2f, SpriteName.WhiteArea_LFtiles, Dir4.N, second, polygons);
 
-                                    polygons.Add(poly);
+                                    PolygonColor typeSymbol = topPoly;
+                                    typeSymbol.Move(new Vector3(0, 0.01f, 0));
+                                    typeSymbol.setSprite(SpriteName.WarsTextureGroupSquareMelee, Dir4.N);
+                                    typeSymbol.SetColor(second);
+
+                                    //polygons.Add(typeSymbol);
+
+
                                 }
                             }
                         }

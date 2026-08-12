@@ -209,6 +209,16 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(new RbText(TypeName(), dark? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
 
         }
+
+        public void toTabContent(RichBoxContent content, bool dark)
+        {
+            //content.Add(new RbText(Name(out _), dark ? HudLib.TitleColor_Name_Dark : HudLib.TitleColor_Name));
+            //content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+            TypeIcon(content);
+            content.hspace();
+            content.Add(new RbText(myIndex.ToString(), dark ? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
+
+        }
         virtual public void tagSprites(out SpriteName back, out SpriteName art)
         {
             back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);

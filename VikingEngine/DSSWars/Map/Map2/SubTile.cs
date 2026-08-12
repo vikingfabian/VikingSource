@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map.Map2
 {
-    struct Tile2
-    {
-        public Color color;
-        public float groundY;
-    }
+    //struct SubTile
+    //{
+    //    public Color color;
+    //    public float groundY;
+    //}
 }

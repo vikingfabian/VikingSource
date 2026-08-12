@@ -84,12 +84,12 @@ namespace VikingEngine.DSSWars.Map
 
         List<PathNode> open = new List<PathNode>();
 
-        Grid1D<PathNode> nodeGrid;
+        Grid2D_L<PathNode> nodeGrid;
 
         
         public PathFinding()
         {
-            nodeGrid = new Grid1D<PathNode>(DssRef.world.Size);//new PathNode[DssRef.world.Size.X, DssRef.world.Size.Y];
+            nodeGrid = new Grid2D_L<PathNode>(DssRef.world.Size);//new PathNode[DssRef.world.Size.X, DssRef.world.Size.Y];
         }
 
 

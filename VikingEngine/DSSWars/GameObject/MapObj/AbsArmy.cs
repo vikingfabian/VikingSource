@@ -18,6 +18,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
 using VikingEngine.PJ;
+using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -353,11 +354,22 @@ namespace VikingEngine.DSSWars.GameObject
                                 MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
                                 this.toButtonContent(gotoButtonContent, true);
 
+
+
                                 content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
                                     new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this, RbSoundType.Default))
                                 { fillWidth = true });
 
-                                localplayer.hud.messages.Add(content);
+                                SoundContainerBase sound;
+                                if (this.IsArmy())
+                                {
+                                    sound = SoundLib.eventBattle.Play();
+                                }
+                                else
+                                {
+                                    sound = SoundLib.eventSiege.Play();
+                                }
+                                localplayer.hud.messages.Add(content, sound);
                             }
                         }));
                     }

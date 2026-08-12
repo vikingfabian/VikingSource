@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         enum TutorialMission
         {
             CollectResources,
-            
+            OpenManual,
             Linen,
             //SharpStickWork,
             ProduceWeaponsArmor,
@@ -101,6 +101,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool collectResources_selectTab_sound = false;
         bool collectResources_collectwood = false;
         bool collectResources_collectstone = false;
+
+        TutorialProgressPoint openManual = new TutorialProgressPoint();
+        //TutorialProgressPoint openManual_closeMenu = new TutorialProgressPoint();
 
         bool CasualBuildBarracks_selectCity = false;
         bool CasualBuildBarracks_selectCity_sound = false;
@@ -333,6 +336,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 missions = new List2<TutorialMission>
                 {
                     TutorialMission.CollectResources,
+                    TutorialMission.OpenManual,
                     TutorialMission.Linen,
                     TutorialMission.ProduceWeaponsArmor,
                     TutorialMission.ConscriptArmy,
@@ -510,6 +514,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.newParagraph();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(DssRef.lang.Help_Work_Automatic, HudLib.InfoYellow_VeryLight));
+                    break;
+
+                case TutorialMission.OpenManual:
+                    content.iconicontext(HudLib.CheckImage(openManual.completed), SpriteName.MenuPixelIconManual, string.Format(DssRef.todoLang.Tutorial_OpenManual, DssRef.todoLang.GameManualTitle_Work, DssRef.todoLang.GameManual));
                     break;
 
                 case TutorialMission.CasualBuildBarracks:
@@ -2492,7 +2500,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 SoundLib.trophy.Play();
             }
+
             display.refresh = true;
+            if (DssRef.state.menuSystem.IsOpen())
+            {
+                bool non = false;
+                display.update(ref non);
+            }
+            
 
             bool missionComplete = false;
 
@@ -2504,6 +2519,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         collectResources_selectTab &&
                         collectResources_collectwood &&
                         collectResources_collectstone;
+                    break;
+
+                case TutorialMission.OpenManual:
+                    missionComplete = openManual.completed /*&& openManual_closeMenu.completed*/;
                     break;
 
                 case TutorialMission.CasualBuildBarracks:
@@ -2654,7 +2673,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!PlatformSettings.STEAM_DEMO)
                     {
-                        player.hud.messages.Add(DssRef.lang.Tutorial_CompleteTitle, DssRef.lang.Tutorial_CompleteMessage);
+                        player.hud.messages.Add(DssRef.lang.Tutorial_CompleteTitle, DssRef.lang.Tutorial_CompleteMessage, SoundLib.goodNews);
                     }
                     
                     EndTutorial();
@@ -2677,7 +2696,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
                 else if (missions.sel == TutorialMission.EndAdvisor)
                 {
-                    player.hud.messages.Add(DssRef.lang.Tutorial_AdvisorCompleteTitle, DssRef.lang.Tutorial_AdvisorCompleteMessage);
+                    player.hud.messages.Add(DssRef.lang.Tutorial_AdvisorCompleteTitle, DssRef.lang.Tutorial_AdvisorCompleteMessage, SoundLib.goodNews);
                     EndAdvisor();
                 }
             }
@@ -2807,6 +2826,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
         }
 
+        public void onOpenManual()
+        {
+            if (missions.sel == TutorialMission.OpenManual)
+            {
+                check(ref openManual, true);
+            }
+        }
+        //public void onCloseMenu()
+        //{
+        //    check(ref openManual_closeMenu, openManual.completed);
+        //}
+
         public void EndAdvisor()
         {
             player.tutorial = null;
@@ -2820,12 +2851,5 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             ((PlayState)DssRef.state).initStartUnits(true);
         }
-            //    var factionC = DssRef.world.factions.counter();
-            //    while (factionC.Next())
-            //    {
-            //        factionC.sel.player.createStartupBarracks();
-            //        factionC.sel.player.createStartUnits();
-            //    }
-            //}
      }
 }

@@ -72,8 +72,8 @@ namespace VikingEngine.DSSWars
         public VectorRect unitBounds;
         public IntVector2 Size;
         public IntVector2 HalfSize;
-        public Grid2D<Tile> tileGrid;
-        public Grid2D<SubTile> subTileGrid;
+        public Grid2D_L<Tile> tileGrid;
+        public Grid2D_L<SubTile> subTileGrid;
        
         public UnitCollAreaGrid unitCollAreaGrid;
 
@@ -267,11 +267,11 @@ namespace VikingEngine.DSSWars
             unitBounds.AddRadius(-1f);
 
             //create grid
-            tileGrid = new Grid2D<Tile>(Size);
+            tileGrid = new Grid2D_L<Tile>(Size);
 
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
-            subTileGrid = new Grid2D<SubTile>(Size * TileSubDivitions);
+            subTileGrid = new Grid2D_L<SubTile>(Size * TileSubDivitions);
         }
 
         bool subTileHasRepeatValue(ref SubTile subtile)
@@ -1050,17 +1050,17 @@ namespace VikingEngine.DSSWars
         public float SubTileHeight(Vector3 wp)
         {
 
-            return subTileGrid.array[
+            return subTileGrid.Get(
                 Convert.ToInt32(wp.X * TileSubDivitions + 3.5f), 
-                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)].groundY;                
+                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)).groundY;                
         }
 
         public float SubTileHeight(Vector3 wp, out SubTile subTile)
         {
 
-            subTile = subTileGrid.array[
+            subTile = subTileGrid.Get(
                 Convert.ToInt32(wp.X * TileSubDivitions + 3.5f),
-                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)];
+                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f));
             return subTile.groundY;
         }
 
@@ -1145,7 +1145,7 @@ namespace VikingEngine.DSSWars
         {
             if (tileBounds.IntersectTilePoint(pos))
             {
-                tile = tileGrid.array[pos.X, pos.Y];
+                tile = tileGrid.Get(pos);
                 return true;
             }
             else

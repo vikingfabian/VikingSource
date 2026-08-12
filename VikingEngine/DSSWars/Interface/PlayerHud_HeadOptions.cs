@@ -24,13 +24,13 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
             //
-            var optionsDisplayAr = player.playerData.view.safeScreenArea;
+            var optionsDisplayAr = player.playerData.view.wideScreenSafeScreenArea;
             optionsDisplayAr.X = 0;
             menu = new RichMenu(HudLib.RbSettings_HeadOptions, optionsDisplayAr, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
             {
                 refreshUpdate();
                 menu.updateWidthFromContent(true);
-                float toX = lib.SmallestValue(player.playerData.view.DrawAreaF.Right - 8,  player.playerData.view.safeScreenArea.Right) - menu.backgroundArea.Width;
+                float toX = lib.SmallestValue(player.playerData.view.DrawAreaF.Right - 8,  player.playerData.view.wideScreenSafeScreenArea.Right) - menu.backgroundArea.Width;
                 
                 menu.move(VectorExt.V2FromX(toX));
                 menu.updateHeightFromContent(false);

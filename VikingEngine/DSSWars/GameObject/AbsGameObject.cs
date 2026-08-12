@@ -262,8 +262,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        virtual public void toHud(Interface.ObjectHudArgs args)
+        virtual public void toHud(Interface.ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             var faction = pfaction.GetFaction();
 
             nameToHud(args.content, true);

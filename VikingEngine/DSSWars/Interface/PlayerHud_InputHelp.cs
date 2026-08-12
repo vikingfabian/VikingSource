@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 var objectMenuArea = new VectorRect(0, 0,
                     HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * (player.gameControls.input.inputSource.HasControllerInput? 0.76f : 0.54f));
-                objectMenuArea.X = player.playerData.view.safeScreenArea.Right - objectMenuArea.Width;
+                objectMenuArea.X = player.playerData.view.wideScreenSafeScreenArea.Right - objectMenuArea.Width;
                 objectMenuArea.Y = bottom - objectMenuArea.Height;
 
                 menu = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(0), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);

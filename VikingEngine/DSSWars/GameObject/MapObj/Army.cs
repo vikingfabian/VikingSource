@@ -368,15 +368,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
         }
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
+
             debugTagButton(args.content);
 
             ArmyPresentationHud(args, false);
 
             if (pfaction == args.player.pfaction)
             {
-                new MapObjMenu(args.player, this, args.content);
+                new MapObjMenu(args.player, this, args.content, out secondMenuContent);
             }
             else
             {
@@ -1439,15 +1441,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (totalDeserters > 0)
             {
-                //var faction = GetFaction();
-
-                if (pfaction.TryGetLocalPlayer(out var player))//faction != null && faction.player.IsLocalPlayer())
+                if (pfaction.TryGetLocalPlayer(out var player))
                 {
-                    //var player = faction.player.GetLocalPlayer();
                     if (player.hud.messages.freeSpace())
                     {
                         player.hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, player.profile.casualControls? 
-                            DssRef.lang.EventMessage_DesertersText_Money : DssRef.lang.EventMessage_DesertersText_Food);
+                            DssRef.lang.EventMessage_DesertersText_Money : DssRef.lang.EventMessage_DesertersText_Food, SoundLib.eventDeserters.Play());
                         player.statistics.SoldiersDeserted += totalDeserters;
                     }
                 }

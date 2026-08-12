@@ -100,8 +100,9 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override RichBoxContent ToHud()
         {
+           
             RichBoxContent content = new RichBoxContent();
-            content.h2(upgrade? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
+            content.h2(SpriteName.WarsConstructBuildingIcon, upgrade ? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
             BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city, upgrade);
 
             content.newLine();

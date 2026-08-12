@@ -276,7 +276,10 @@ namespace VikingEngine
         {
             return u.X * v.Y - u.Y * v.X;
         }
-
+        public static float V2Cross(Vector2 a, Vector2 b, Vector2 p)
+        {
+            return (b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X);
+        }
         public static bool NearZero(float x)
         {
             return x < 1e-10f;
