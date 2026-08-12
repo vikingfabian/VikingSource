@@ -27,10 +27,6 @@ namespace VikingEngine.DSSWars.Conscript
         public int unitsCollected;
         public int unitsNeeded;
 
-        //public int menCollected;
-        //public int menNeeded;
-        //public int equipmentCollected;
-
         public int idAndPosition;
         public TrainingLevel maxTrainingLevel;
         public int que;
@@ -196,21 +192,9 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void returnItems(City city)
         {
-            if (active >= ConscriptActiveStatus.CollectingEquipment)// ||
-                    //active == ConscriptActiveStatus.CollectingMen)
+            if (active >= ConscriptActiveStatus.CollectingEquipment)
             {
-                //return items
-                //ItemResourceType weaponItem = inProgress.weapon;
-                //ItemResourceType armorItem = inProgress.armorLevel;
-
-                //city.AddGroupedResource(weaponItem, equipmentCollected);
-
-                //if (inProgress.armorLevel != ItemResourceType.NONE)
-                //{
-                //    city.AddGroupedResource(armorItem, equipmentCollected);
-                //}
-
-                //city.workForce.amount += menCollected;
+                
                 payItems(city, CommitOption.Revert, out _, out _);
 
                 active = ConscriptActiveStatus.Idle;

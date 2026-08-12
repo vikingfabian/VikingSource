@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string GameSettings_UltraWide_LeftEdge => "UI left edge";
         public string GameSettings_UltraWide_RightEdge => "UI right edge";
 
-
+        public string Multiplayer_Invite => "Invite";
         //-------
 
         public string UnitType_Faction => "Faction";
@@ -39,6 +39,40 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Hud_ApplyToAll => "Apply to all";
         public string Hud_OutOfStock => "Out of stock";
+        //public string ResourceBoost => "Resource boost";
+        ////public string TaxIncome => "Tax income";
+        //public string PlayerInteractionTitle => "Player interaction";
+        //public string DefaultPeaceful => "Default: Peaceful";
+        //public string DefaultCoOptional => "Default: Co-optional";
+        //public string DefaultHardcore => "Default: Hardcore";
+        //public string GeneralTitle => "General";
+
+        //public string InputButton_Hold => "Button hold";
+        //public string InputButton_Toggle => "Button toggle";
+        //public string VoiceOptAlwaysOn => "Always on";
+        //public string VoiceTitle => "Voice";
+        //public string VoiceMute => "Mute";
+        //public string GiftOptAllow => "Allow";
+        //public string GiftOptFriendsOnly => "Friends only";
+        //public string GiftOptBlocked => "Blocked";
+        //public string ReceiveAchievementsTitle => "Recieve achievements";
+        //public string GiftWarning => "Warning! Gifted achievements can feel demeaning";
+        //public string FullReset => "Full reset";
+        //public string AllowAllianceTitle => "Allow alliance";
+        //public string CanBreakAlliance => "Can break alliance";
+        //public string AllowWarTitle => "Allow war";
+        //public string FairProtection => "Fair protection";
+        //public string FairProtectionTooltip => "Protected players must use their rules on you";
+        //public string MustAsk => "Must ask";
+        //public string MustAskTooltip => "Both players must agree to fight";
+        //public string AllianceLimit => "Alliance limt";
+        //public string AllianceLimitTooltip => "Can't be attacked by a larger player alliance";
+        //public string GameStartProtection => "Game start protection";
+        //public string Hud_Time_Minutes => "minutes";
+        //public string WarPreparationTime => "War preparation time";
+        //public string WarPreparationTimeTooltip => "A delay from war declaration until attacks are available";
+        //public string Hud_Allow => "Allow";
+        //public string Hud_Blocked => "Blocked";
 
         public string GiftAchieve_WhiteKnight_Name => "White Knight";
         public string GiftAchieve_WhiteKnight_Desc => "Looking good, protecting others.";

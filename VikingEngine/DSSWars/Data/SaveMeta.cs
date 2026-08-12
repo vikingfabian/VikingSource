@@ -265,6 +265,7 @@ namespace VikingEngine.DSSWars.Data
         public DateTime saveDate;
         public TimeSpan playTime;
         public int localPlayerCount = 1;
+        
         int difficulty;
         public GameModeMainType gameMode = GameModeMainType.NUM;
         public float setting_foodMulti = -1;
@@ -379,6 +380,7 @@ namespace VikingEngine.DSSWars.Data
             saveDate = DateTime.Now;
             playTime = DssRef.time.TotalIngameTime();
             localPlayerCount = DssRef.state.localPlayers.Count;
+            
             difficulty = DssRef.difficulty.TotalDifficulty();
             gameMode = DssRef.difficulty.setting_gameMode;
             worldmeta = DssRef.world.metaData;
@@ -409,6 +411,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(saveDate.Ticks); 
             w.Write(playTime.Ticks);
             w.Write(localPlayerCount);
+            
             w.Write((short)difficulty);
 
             if (worldmeta == null)
@@ -456,6 +459,7 @@ namespace VikingEngine.DSSWars.Data
             saveDate = new DateTime(r.ReadInt64());
             playTime = new TimeSpan(r.ReadInt64());
             localPlayerCount = r.ReadInt32();
+            
             difficulty = r.ReadInt16();
 
             worldmeta = new WorldMetaData(r);

@@ -575,8 +575,11 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Bound.Short(freeNobelMen.amount));
             w.Write(Bound.UShort(PenFoodUpkeep_minute));
 
-            cityHallSubtilePos.writeUshort(w);
-            citySquareSubtilePos.writeUshort(w);
+            WP.writeSubTilePos(w, cityHallSubtilePos);
+            WP.writeSubTilePos(w, citySquareSubtilePos);
+
+            //cityHallSubtilePos.writeUshort(w);
+            //citySquareSubtilePos.writeUshort(w);
 
             Debug.WriteCheck(w);
 
@@ -607,9 +610,16 @@ namespace VikingEngine.DSSWars.GameObject
             freeNobelMen.amount = r.ReadInt16();
             PenFoodUpkeep_minute = r.ReadUInt16();
 
-            cityHallSubtilePos.readUshort(r);
-            citySquareSubtilePos.readUshort(r);
-
+            if (subversion >= 132)
+            {
+                cityHallSubtilePos = WP.readSubTilePos(r);
+                citySquareSubtilePos = WP.readSubTilePos(r);
+            }
+            else
+            { 
+                cityHallSubtilePos.readUshort(r);
+                citySquareSubtilePos.readUshort(r);
+            }
 
             Debug.ReadCheck(r);
 
@@ -641,10 +651,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             try
             {
-                if (myIndex == 153)
-                {
-                    lib.DoNothing();
-                }
+                //if (myIndex == 153)
+                //{
+                //    lib.DoNothing();
+                //}
 
                 writeHousing(w);
 
@@ -933,7 +943,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Debug.WriteCheck(w);
 
-            w.Write((ushort)workerStatuses.Count);
+            w.Write(/*(ushort)*/workerStatuses.Count);
             writeStatusesStartEnd(part, workerStatuses.Count, out bool meta, out int start, out int end);
 
             if (meta)
@@ -955,7 +965,20 @@ namespace VikingEngine.DSSWars.GameObject
 
             IntVector2 startPos = citySquareSubtilePos;//WP.ToSubTilePos_Centered(tilePos);
 
-            int workerStatusesCount = r.ReadUInt16();
+            int workerStatusesCount;
+            if (subversion >= 132)
+            {
+                workerStatusesCount = r.ReadInt32();
+            }
+            else
+            {
+                workerStatusesCount = r.ReadUInt16();
+            }
+            //if (myIndex == 1804)
+            //{
+            //    //workerStatusesCount += ushort.MaxValue;
+            //    workerStatusesCount = workerStatusesCount | (1 << 16);
+            //}
             writeStatusesStartEnd(part, workerStatusesCount, out bool meta, out int start, out int end);
             
             if (meta)
@@ -4118,7 +4141,8 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     DssRef.world.copyStockPile(null, newFaction, this, CopyPasteOption.FactionToCity, ResourceGroupType.NUM);
                 }
-                
+
+                CheckCasual(newFaction.player);
             }
         }
 

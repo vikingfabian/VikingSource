@@ -466,8 +466,8 @@ namespace VikingEngine.DSSWars.Interface
                     new RbSpace(),
                     new RbImage(SpriteName.WarsHudIconNetwork),
                     new RbSpace(),
-                    new RbText(".Invite")
-                    }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text("Open Steam overlay"))
+                    new RbText(DssRef.todoLang.Multiplayer_Invite)
+                    }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text(DssRef.lang.Steam_OpenSteamOverlay))
                 {
                     fillWidth = true
                 });

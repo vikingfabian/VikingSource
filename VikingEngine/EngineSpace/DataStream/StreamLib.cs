@@ -103,6 +103,22 @@ namespace VikingEngine
         }
 
 
+        public static void WriteUInt24(System.IO.BinaryWriter w, int value)
+        {
+            //maximum value of 16,777,215
+            // Write 3 bytes for X
+            w.Write((byte)(value & 0xFF));         // 1st byte (Lowest 8 bits)
+            w.Write((byte)((value >> 8) & 0xFF));  // 2nd byte (Middle 8 bits)
+            w.Write((byte)((value >> 16) & 0xFF)); // 3rd byte (Highest 8 bits of our 24)
+        }
+
+        public static int ReadUInt24(System.IO.BinaryReader r)
+        {
+            // Reconstruct X from 3 bytes
+            return r.ReadByte() | (r.ReadByte() << 8) | (r.ReadByte() << 16);
+        }
+
+
         public static void ValueIO(ref float value, System.IO.BinaryWriter w, System.IO.BinaryReader r)
         {
             if (w != null)

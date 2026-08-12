@@ -33,6 +33,17 @@ namespace VikingEngine
             return false;
         }
 
+        public bool TryGetIndex(int index, out T value)
+        {
+            if (index >= 0 && index < Count)
+            {
+                value = Array[index];
+                return true;
+            }
+            value = default(T);
+            return false;   
+        }
+
         public int Add(T obj)
         {
             int index = Count;
