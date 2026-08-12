@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
@@ -1445,9 +1446,23 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (player.hud.messages.freeSpace())
                     {
-                        player.hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, player.profile.casualControls? 
-                            DssRef.lang.EventMessage_DesertersText_Money : DssRef.lang.EventMessage_DesertersText_Food, SoundLib.eventDeserters.Play());
+                        string desc = player.profile.casualControls ?
+                            DssRef.lang.EventMessage_DesertersText_Money : DssRef.lang.EventMessage_DesertersText_Food;
+                        
+                        player.hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, desc, SoundLib.eventDeserters.Play());
                         player.statistics.SoldiersDeserted += totalDeserters;
+
+                        if (Ref.steam.isInitialized)
+                        {
+                            SteamTimeline.AddInstantaneousTimelineEvent(
+                                        DssRef.lang.EventMessage_DesertersTitle,               // Title in UI
+                                        desc, // Description in UI
+                                        "steam_flag",                 // Built-in Steam icon 
+                                        6,                              // Priority (0 = default, max= 1000)
+                                        0f,                             // Offset in seconds
+                                        ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                    );
+                        }
                     }
                 }
             }

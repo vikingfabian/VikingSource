@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -370,6 +371,18 @@ namespace VikingEngine.DSSWars.GameObject
                                     sound = SoundLib.eventSiege.Play();
                                 }
                                 localplayer.hud.messages.Add(content, sound);
+
+                                if (Ref.steam.isInitialized)
+                                {
+                                    SteamTimeline.AddInstantaneousTimelineEvent(
+                                                DssRef.lang.Hud_Battle,               // Title in UI
+                                                this.Name(out _), // Description in UI
+                                                "steam_combat",                 // Built-in Steam icon 
+                                                5,                              // Priority (0 = default, max= 1000)
+                                                0f,                             // Offset in seconds
+                                                ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                            );
+                                }
                             }
                         }));
                     }

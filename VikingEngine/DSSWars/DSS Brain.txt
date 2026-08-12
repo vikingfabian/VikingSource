@@ -20,6 +20,8 @@ Sound
 * Theme music added to playlist
 * new event sounds
 
+* Steam timeline
+
 Performance
 * Removed all unessesary faction references
 * Removed refences from the aria unit grid

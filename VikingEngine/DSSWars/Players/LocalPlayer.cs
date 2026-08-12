@@ -759,6 +759,18 @@ namespace VikingEngine.DSSWars.Players
             gameControls.map.selection.obj = pin;
             hud.needRefresh = true;
 
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                            DssRef.lang.ObjectType_LocationPin_Ping,               // Title in UI
+                            DssRef.lang.ObjectType_LocationPin, // Description in UI
+                            "steam_marker",                 // Built-in Steam icon 
+                            4,                              // Priority (0 = default, max= 1000)
+                            0f,                             // Offset in seconds
+                            ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                        );
+            }
+
             return pin;
         }        
 
@@ -889,6 +901,17 @@ namespace VikingEngine.DSSWars.Players
 
                     void message(string title, SoundContainerBase sound)
                     {
+                        if (Ref.steam.isInitialized)
+                        {
+                            SteamTimeline.AddInstantaneousTimelineEvent(
+                                        title,               // Title in UI
+                                        DssRef.lang.Diplomacy_RelationType, // Description in UI
+                                        "steam_scroll",                 // Built-in Steam icon 
+                                        (uint)(-(int)rel.Relation + 5),                              // Priority (0 = default, max= 1000)
+                                        0f,                             // Offset in seconds
+                                        ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                    );
+                        }
                         //SoundContainerBase sound = 
                         RichBoxContent content = new RichBoxContent();
                         MessageGroup_Ingame.Title(content, title);

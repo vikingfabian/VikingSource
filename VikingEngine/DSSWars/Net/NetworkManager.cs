@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -547,6 +548,18 @@ namespace VikingEngine.DSSWars
                         content.icontext(SpriteName.TextChatLetter, message.message);
 
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+
+                        if (Ref.steam.isInitialized)
+                        {
+                            SteamTimeline.AddInstantaneousTimelineEvent(
+                                        string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.InputActionName_TextChat, sender.Name),               // Title in UI
+                                        DssRef.lang.Multiplayer_Title, // Description in UI
+                                        "steam_chat",                 // Built-in Steam icon 
+                                        0,                              // Priority (0 = default, max= 1000)
+                                        0f,                             // Offset in seconds
+                                        ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                    );
+                        }
                     }
                     break;
                 case PacketType.DssGiftAchievement:
@@ -688,6 +701,18 @@ namespace VikingEngine.DSSWars
                             { fillWidth = true });
 
                             LocalHost().hud.messages.Add(content, SoundLib.ping);
+
+                            if (Ref.steam.isInitialized)
+                            {
+                                SteamTimeline.AddInstantaneousTimelineEvent(
+                                            string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.ObjectType_LocationPin_Ping, sender.Name),               // Title in UI
+                                            DssRef.lang.ObjectType_LocationPin, // Description in UI
+                                            "steam_marker",                 // Built-in Steam icon 
+                                            1,                              // Priority (0 = default, max= 1000)
+                                            0f,                             // Offset in seconds
+                                            ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                        );
+                            }
                         }
                     }
                     break;
@@ -895,7 +920,17 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 sender.addNetGamerToHud(content, true, false);
                 LocalHost().hud.messages.Add(content, SoundLib.netJoined);
-
+                if (Ref.steam.isInitialized)
+                {
+                    SteamTimeline.AddInstantaneousTimelineEvent(
+                                string.Format( DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Multiplayer_PlayerJoined, sender.Name),               // Title in UI
+                                DssRef.lang.Multiplayer_Title, // Description in UI
+                                "steam_group",                 // Built-in Steam icon 
+                                10,                              // Priority (0 = default, max= 1000)
+                                0f,                             // Offset in seconds
+                                ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                            );
+                }
 
                 if (host)
                 {
@@ -1080,6 +1115,7 @@ namespace VikingEngine.DSSWars
         int maxPlayerCount = 1;
         public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
         {
+           
             base.NetEvent_PeerJoined(peer);
             var player = GetOrCreateRemotePlayer(peer, 0);
 

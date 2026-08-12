@@ -93,12 +93,15 @@ namespace VikingEngine.SteamWrapping
 
         public void StartRecording()
         {
-            recordingOn = true;
-            if (P2PManager.localPeer != null)
+            if (!recordingOn)
             {
-                P2PManager.localPeer.isRecording = recordingOn;
+                recordingOn = true;
+                if (P2PManager.localPeer != null)
+                {
+                    P2PManager.localPeer.isRecording = recordingOn;
+                }
+                SteamUser.StartVoiceRecording();
             }
-            SteamUser.StartVoiceRecording();
         }
 
         public void StopRecording()
