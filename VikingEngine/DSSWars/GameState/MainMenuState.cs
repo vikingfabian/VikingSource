@@ -1,32 +1,21 @@
-﻿using Microsoft.CodeAnalysis.FlowAnalysis;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.GameObject.Animal;
-using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Net;
-using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
@@ -39,7 +28,6 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
-using VikingEngine.PJ;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
 using VikingEngine.Timer;
@@ -107,6 +95,7 @@ namespace VikingEngine.DSSWars
         public MainMenuState(Texture2D bgTex, bool startLoadingMap = true)
             : base()
         {
+            //SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Menus);
             DssRef.storage.profileStorage.refreshProfiles();
             HudLib.Init();
             
