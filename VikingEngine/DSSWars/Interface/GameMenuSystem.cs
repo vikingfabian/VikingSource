@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,10 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (menu == null)
             {
+                if (Ref.steam.isInitialized)
+                {
+                    SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Menus);
+                }
                 gameWasPaused = Ref.isPaused;
                 if (!Ref.netSession.InMultiplayerSession)
                 {
@@ -173,6 +178,10 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (menu != null)
             {
+                if (Ref.steam.isInitialized)
+                {
+                    SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Playing);
+                }
                 if (Ref.gamesett.settingsHasChanged)
                 {
                     foreach (var p in DssRef.state.localPlayers)

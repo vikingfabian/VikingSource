@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steamworks;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,7 @@ namespace VikingEngine.DSSWars.GameState
         public AbsPlayState() 
             :base() 
         {
+            
             remotePlayers = new SpottedArray<Players.RemotePlayer>();
             remotePlayersCounter = new SpottedArrayCounter<RemotePlayer>(remotePlayers);
 

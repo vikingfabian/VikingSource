@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -95,7 +95,11 @@ namespace VikingEngine.DSSWars
         public MainMenuState(Texture2D bgTex, bool startLoadingMap = true)
             : base()
         {
-            //SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Menus);
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Menus);
+            }
+
             DssRef.storage.profileStorage.refreshProfiles();
             HudLib.Init();
             

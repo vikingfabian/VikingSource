@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace VikingEngine.DSSWars.Net
         public ConnectState(Network.AbsAvailableSession available)
             : base()
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_LoadingScreen);
+            }
             Ref.lobby.searchLobbies = false;
             available.join();
             //meta = available.metaData as LobbyMetaData;
