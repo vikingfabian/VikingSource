@@ -40,8 +40,10 @@ namespace VikingEngine.DSSWars
            musket, cannon, block_attack, wood_bonk,
 
            painvoice, fleshgore, sillyFanfare,
-            netMessage, netJoined, eventRepeatSound, eventRelationGainVassal,
+            netMessage, netJoined, 
+            eventRepeatSound, eventRelationGainVassal,
             forYourInformation, goodNews, warningMessage, storyDramaticEvent,
+            saving,
 
             tab_blackmarket, tab_build, tab_conscript, tab_defence,
             tab_delivery, tab_economy, tab_help, tab_info, tab_pin, tab_resources,
@@ -49,7 +51,7 @@ namespace VikingEngine.DSSWars
             tab_disband, tab_armydiv;
 
         public static MessageTimer eventRelationTotalWar, eventRelationWar, eventRelationEnemy, eventRelationGood, eventRelationAlly,
-            eventBattle, eventSiege, eventLost,
+            eventBattle, eventSiege, eventLost, recievedGift,
             eventResourceLow, eventDeserters;
 
         public static SoundContainerBase[] WalkSounds;
@@ -277,6 +279,9 @@ namespace VikingEngine.DSSWars
             goodNews = new SoundContainerSingle(StingerDir + "Good News", 1f);
             storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 1f);
             warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 1f);
+            saving = new SoundContainerSingle(StingerDir + "Saving game", 1f);
+            recievedGift = new MessageTimer(new SoundContainerSingle(StingerDir + "Received gifts"));
+
         }
         public static void SubTab(Resource.ResourceManagementType subTab)
         {

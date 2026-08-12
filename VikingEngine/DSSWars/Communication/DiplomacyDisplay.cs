@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars.Interface
             content.newLine();
             content.icontext(SpriteName.rtsMoney, TextLib.LargeNumber(gold));
 
-            DssRef.state.LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+            DssRef.state.LocalHost().hud.messages.Add(content, SoundLib.recievedGift.Play());
         }
 
         private void forgeRelationButton(RichBoxContent content, DiplomacyOption opt)
