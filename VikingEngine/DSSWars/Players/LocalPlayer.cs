@@ -390,7 +390,7 @@ namespace VikingEngine.DSSWars.Players
 
             automation.writeGameState(w);
 
-            w.Write(int.MinValue);
+            Debug.WriteCheck(w);
 
             tutorial_writeGameState(w);
             orders.writeGameState(w);
@@ -479,9 +479,14 @@ namespace VikingEngine.DSSWars.Players
             automation.readGameState(r, subversion);
 
             // Debug.ReadCheck(r);//TEMP!
-
-            var none1 = r.ReadInt32();
-
+            if (subversion >= 133)
+            {
+                Debug.ReadCheck(r);
+            }
+            else
+            {
+                var none1 = r.ReadInt32();
+            }
             tutorial_readGameState(r, subversion);
 
             // Debug.ReadCheck(r);//TEMP!

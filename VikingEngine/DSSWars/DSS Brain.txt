@@ -3,6 +3,8 @@ Change log:
 * Remote player display is blocked until handover is complete
 * Handles failure to join, no available faction 
 
+* Increased the byte size boundaries on player saves 
+
 KNOWN ISSUES
 
 ##ICONS TODO
