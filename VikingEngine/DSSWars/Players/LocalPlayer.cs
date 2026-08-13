@@ -131,9 +131,10 @@ namespace VikingEngine.DSSWars.Players
         public Profile.ObjectHudSettings cityHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings armyHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings pinHudSettings = new Profile.ObjectHudSettings();
-     
 
-        public int firstAttacker = ushort.MaxValue;
+
+        // public int firstAttacker = ushort.MaxValue;
+        public PFaction firstAttacker = PFaction.Empty;
         public int nextDominationSize;
         public int factionsTerminated = 0;
         public bool barbarianKiller = false;
@@ -399,7 +400,7 @@ namespace VikingEngine.DSSWars.Players
 
             automation.writeGameState(w);
 
-            w.Write(int.MinValue);
+            Debug.WriteCheck(w);
 
             tutorial_writeGameState(w);
             orders.writeGameState(w);
@@ -407,7 +408,8 @@ namespace VikingEngine.DSSWars.Players
             cityHudSettings.write(w);   
             armyHudSettings.write(w);
 
-            w.Write((ushort)firstAttacker);
+            firstAttacker.write(w);
+            //w.Write((ushort)firstAttacker);
             w.Write((ushort)nextDominationSize);
             w.Write(cohalitionEvent);
             w.Write(barbarianKiller);
@@ -482,8 +484,15 @@ namespace VikingEngine.DSSWars.Players
 
             automation.readGameState(r, subversion);
 
-            var none1 = r.ReadInt32();
-
+            // Debug.ReadCheck(r);//TEMP!
+            if (subversion >= 133)
+            {
+                Debug.ReadCheck(r);
+            }
+            else
+            {
+                var none1 = r.ReadInt32();
+            }
             tutorial_readGameState(r, subversion);
 
             orders.readGameState(playerData.localPlayerIndex, r, subversion, pointers);
@@ -501,7 +510,8 @@ namespace VikingEngine.DSSWars.Players
 
             if (subversion >= 73)
             {
-                firstAttacker = r.ReadUInt16();
+                firstAttacker.read(r);
+                //firstAttacker = r.ReadUInt16();
             }
             nextDominationSize = r.ReadUInt16();
             if (subversion < 72)

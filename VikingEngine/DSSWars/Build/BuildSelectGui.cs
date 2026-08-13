@@ -16,10 +16,12 @@ namespace VikingEngine.DSSWars.Build
     class BuildSelectGuiCollection : List<BuildSelectGui>
     {
         public int useCount = 0;
-
+        public IntVector2 startTile, currentTile;
         public BuildSelectGuiCollection()
             :base(64)
-        { }
+        {
+            deleteSelection();
+        }
 
         public void Create(LocalPlayer player, IntVector2 subTilePos, bool canAct, int usesBuildQue, City city)
         {
@@ -39,6 +41,7 @@ namespace VikingEngine.DSSWars.Build
                     model = model
                 };
                 Add(buildSelectGui);
+                useCount = Count;
             }
 
             buildSelectGui.position = subTilePos;
@@ -76,6 +79,7 @@ namespace VikingEngine.DSSWars.Build
             }
 
             useCount = 0;
+            currentTile = IntVector2.NegativeOne;
         }
     }
 
@@ -91,7 +95,7 @@ namespace VikingEngine.DSSWars.Build
         {
             City = null;
             model.Visible = false;
-           // position = IntVector2.NegativeOne;
+            
         }
 
         

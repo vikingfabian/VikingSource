@@ -71,6 +71,7 @@ namespace VikingEngine.DSSWars.Build
         public BuildControls(LocalPlayer player) 
         { 
             this.player = player;
+            
         }
 
         public BuildOption placeBuildingOption()
@@ -179,10 +180,9 @@ namespace VikingEngine.DSSWars.Build
 
         public bool buildKeyDown = false;
         Vector3 keyDownPos;
-        IntVector2 startTile, currentTile;
-        BuildSelectGuiCollection selection = new BuildSelectGuiCollection();
-        LShapeDir lShape;
         
+        BuildSelectGuiCollection selection = new BuildSelectGuiCollection();
+        LShapeDir lShape;        
 
         public void updateBuildMode()
         {
@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 selection.deleteSelection();
                 buildKeyDown = true;
-                startTile = player.gameControls.map.hover.subTile.subTilePos;
+                selection.startTile = player.gameControls.map.hover.subTile.subTilePos;
                 keyDownPos = player.gameControls.map.pointerPosWP;
                 lShape = LShapeDir.NoSet;
                 //actOnTile(player.mapControls.hover.subTile);
@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Build
 
             if (buildKeyDown)
             {
-                if (player.gameControls.map.hover.subTile.subTilePos != currentTile)
+                if (player.gameControls.map.hover.subTile.subTilePos != selection.currentTile)
                 {
                     //Update paint selection
                     switch (toolShape)
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Build
                         case MapPaintToolShape.Area:
                             {
                                 selection.deleteSelection();
-                                var area = Rectangle2.FromTwoTilePoints(startTile, player.gameControls.map.hover.subTile.subTilePos);
+                                var area = Rectangle2.FromTwoTilePoints(selection.startTile, player.gameControls.map.hover.subTile.subTilePos);
                                 ForXYLoop loop = new ForXYLoop(area);
                                 while (loop.Next())
                                 {
@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 selection.deleteSelection();
 
-                                if (startTile.SideLength(player.gameControls.map.hover.subTile.subTilePos) > 1)
+                                if (selection.startTile.SideLength(player.gameControls.map.hover.subTile.subTilePos) > 1)
                                 {
                                     if (lShape == LShapeDir.NoSet)
                                     {
@@ -244,18 +244,18 @@ namespace VikingEngine.DSSWars.Build
                                     lShape = LShapeDir.NoSet;
                                 }
 
-                                IntVector2 diff = player.gameControls.map.hover.subTile.subTilePos - startTile;
+                                IntVector2 diff = player.gameControls.map.hover.subTile.subTilePos - selection.startTile;
                                 IntVector2 dir = new IntVector2(lib.ToLeftRight(diff.X), lib.ToLeftRight(diff.Y));
                                 IntVector2 length = new IntVector2(Math.Abs(diff.X), Math.Abs(diff.Y));
 
-                                IntVector2 pos = startTile;
+                                IntVector2 pos = selection.startTile;
 
                                 //var area = Rectangle2.FromTwoTilePoints(startTile, player.mapControls.hover.subTile.subTilePos);
                                 switch (lShape)
                                 {
                                     case LShapeDir.NoSet:
                                         {
-                                            addToSelection(startTile, false);
+                                            addToSelection(selection.startTile, false);
                                             addToSelection(player.gameControls.map.hover.subTile.subTilePos, true);
                                         }
                                         break;
@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.Build
                                 //How do I make a line that is one tile thick?
                                 selection.deleteSelection(); // Clear previous selection
 
-                                IntVector2 start = startTile;
+                                IntVector2 start = selection.startTile;
                                 IntVector2 end = player.gameControls.map.hover.subTile.subTilePos;
 
                                 int x0 = start.X, y0 = start.Y;
@@ -386,7 +386,7 @@ namespace VikingEngine.DSSWars.Build
                 buildKeyDown = false;
             }
 
-            currentTile = player.gameControls.map.hover.subTile.subTilePos;
+            selection.currentTile = player.gameControls.map.hover.subTile.subTilePos;
 
 
             bool addToSelection(IntVector2 subTilePos, bool checkDoublette) 

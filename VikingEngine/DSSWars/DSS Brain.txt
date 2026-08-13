@@ -1,18 +1,19 @@
 
 Change log:
+* Handles failure to join, no available faction 
 * Black market limit: I added 500 as limit, it grows with 50 for each city capture
 * A hover button for all city resources
 * Can pick army or guards on automation
 * Will set captured cities to auto
 * Ultra wide support - adjustable ui placement
-* Animal habitats on heatmap, and tab names
-* Rebalanced animal placement
 * Compressed headbar Ui
 * Tabs have environmental sounds
 * Theme music added to playlist
 * All relation actions will trigger messages
 * A UI easter egg
 * improved pony model
+
+* Increased the byte size boundaries on player saves 
 
 * Using linear arrays for the map, and voxel data
 Sound
@@ -21,6 +22,9 @@ Sound
 * new event sounds
 
 * Steam timeline
+
+
+X timeline checkbox on steamworks
 
 Performance
 * Removed all unessesary faction references

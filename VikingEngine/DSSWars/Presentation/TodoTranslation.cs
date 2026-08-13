@@ -24,7 +24,10 @@ namespace VikingEngine.DSSWars.Presentation
         public string GameSettings_UltraWide_RightEdge => "UI right edge";
 
         public string Multiplayer_Invite => "Invite";
-        //-------
+        public string JoinFailure_NoAvailableFaction => "Join failed, no available faction.";
+        //public string GameSettings_WideScrollbar => "Wide scrollbar";
+        //public string GameSettings_DisplayInputHelp => "Input help";
+        //public string GameSettings_InputSmoothing => "Input smoothing";
 
         public string UnitType_Faction => "Faction";
 
