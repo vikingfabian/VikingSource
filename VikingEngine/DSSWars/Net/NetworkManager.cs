@@ -382,6 +382,20 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
+                case PacketType.DssAssignFaction_Failed:
+                    if (!DssRef.state.UpdateReady())
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.icontext(SpriteName.RedErrorCross, DssRef.todoLang.JoinFailure_NoAvailableFaction);
+                        LocalHost().hud.messages.Add(content, SoundLib.wrong);
+
+                        new Timer.ActionEventTimedTrigger(() =>
+                        {
+                            DssRef.state.beginExit();
+                        }, new Time(5, TimeUnit.Seconds));
+                    }
+                    break;
+
                 case PacketType.DssAssignFaction:
                     {
                         var tplayer = NetReadPlayer(packet.r);
@@ -928,6 +942,8 @@ namespace VikingEngine.DSSWars
                                 faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
                             }
 
+                            faction = null;
+
                             if (faction != null && faction.player.IsBot())
                             {
                                 Ref.update.AddSyncAction(new SyncAction(() =>
@@ -941,6 +957,20 @@ namespace VikingEngine.DSSWars
                                     Ref.steam.P2PManager.OnSendingLargeDataChunk();
 
                                     factionHandovers.Enqueue(new FactionHandover(packet.sender, faction, firstEnterSetup, true));
+                                }));
+                            }
+                            else
+                            {                                
+
+                                Ref.update.AddSyncAction(new SyncAction(() =>
+                                {
+                                    Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction_Failed, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
+                                    RichBoxContent content = new RichBoxContent();
+                                    content.icontext(SpriteName.RedErrorCross, DssRef.todoLang.JoinFailure_NoAvailableFaction);
+                                    sender.addNetGamerToHud(content, false, false);
+                                    LocalHost().hud.messages.Add(content, SoundLib.wrong);
+
+                                    
                                 }));
                             }
                         }

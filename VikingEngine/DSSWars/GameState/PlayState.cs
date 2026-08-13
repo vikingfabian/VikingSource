@@ -755,7 +755,7 @@ namespace VikingEngine.DSSWars
             base.OnDestroy();
         }
 
-        override protected bool UpdateReady()
+        override public bool UpdateReady()
         {
             return cutScene == null && (host || factionHandOverComplete);
         }

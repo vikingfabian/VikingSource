@@ -292,7 +292,7 @@ namespace VikingEngine.DSSWars.GameState
             return exitThreads;
         }
 
-        virtual protected bool UpdateReady()
+        virtual public bool UpdateReady()
         {
             return cutScene == null;
         }
