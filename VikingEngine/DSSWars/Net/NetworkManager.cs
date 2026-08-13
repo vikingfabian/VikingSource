@@ -894,7 +894,7 @@ namespace VikingEngine.DSSWars
                 sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
 
                 sender.profile.casualControls = packet.r.ReadBoolean();
-                //Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
+               
                 var pfaction = new PFaction(packet.r);
                 if (pfaction.HasValue())
                 {
@@ -941,8 +941,6 @@ namespace VikingEngine.DSSWars
                                 firstEnterSetup = true;
                                 faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
                             }
-
-                            faction = null;
 
                             if (faction != null && faction.player.IsBot())
                             {
