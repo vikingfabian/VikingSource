@@ -156,7 +156,10 @@ namespace VikingEngine.DSSWars
             }
 
 #if DEBUG
-            
+            for (int i = 0; i < 20; ++i)
+            {
+                StreamLib.TestGrowingWriter_UShort(Ref.rnd.Int(1000000000));
+            }
             //SpottedArray<TestClass> list = new SpottedArray<TestClass>();
 
             //for (int i = 0; i < 10; i++)

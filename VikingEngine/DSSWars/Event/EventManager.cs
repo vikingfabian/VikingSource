@@ -640,7 +640,7 @@ namespace VikingEngine.DSSWars.Event
                                 }
                             }
 
-                            if (p.firstAttacker == faction.myIndex)
+                            if (p.firstAttacker == faction.pfaction)
                             { 
                                 DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.destroy_first_attacker_any, AchievementIndex.destroy_first_attacker_100);
 
@@ -1090,9 +1090,9 @@ namespace VikingEngine.DSSWars.Event
             {
                 ++player.statistics.WarsStartedByEnemy;
 
-                if (player.firstAttacker == ushort.MaxValue)
+                if (player.firstAttacker.IsEmpty())
                 { 
-                    player.firstAttacker = other.myIndex;
+                    player.firstAttacker = other.pfaction;
                 }
             }
 

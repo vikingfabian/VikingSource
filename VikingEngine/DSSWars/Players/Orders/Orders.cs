@@ -204,6 +204,11 @@ namespace VikingEngine.DSSWars.Players.Orders
         public void readGameState(int playerIx, BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {            
             int ordersCount = r.ReadUInt16();
+
+//#if DEBUG
+//            ordersCount += ushort.MaxValue + 1;
+//#endif
+
             for (int i = 0; i < ordersCount; i++)
             {
                 OrderType type = OrderType.Build;

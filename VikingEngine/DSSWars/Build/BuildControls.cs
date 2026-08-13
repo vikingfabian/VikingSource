@@ -181,8 +181,7 @@ namespace VikingEngine.DSSWars.Build
         Vector3 keyDownPos;
         
         BuildSelectGuiCollection selection = new BuildSelectGuiCollection();
-        LShapeDir lShape;
-        
+        LShapeDir lShape;        
 
         public void updateBuildMode()
         {

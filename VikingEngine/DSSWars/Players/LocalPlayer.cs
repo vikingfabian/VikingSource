@@ -121,9 +121,10 @@ namespace VikingEngine.DSSWars.Players
         public Profile.ObjectHudSettings cityHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings armyHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings pinHudSettings = new Profile.ObjectHudSettings();
-     
 
-        public int firstAttacker = ushort.MaxValue;
+
+        // public int firstAttacker = ushort.MaxValue;
+        public PFaction firstAttacker = PFaction.Empty;
         public int nextDominationSize;
         public int factionsTerminated = 0;
         public bool barbarianKiller = false;
@@ -397,7 +398,8 @@ namespace VikingEngine.DSSWars.Players
             cityHudSettings.write(w);   
             armyHudSettings.write(w);
 
-            w.Write((ushort)firstAttacker);
+            firstAttacker.write(w);
+            //w.Write((ushort)firstAttacker);
             w.Write((ushort)nextDominationSize);
             w.Write(cohalitionEvent);
             w.Write(barbarianKiller);
@@ -498,7 +500,8 @@ namespace VikingEngine.DSSWars.Players
 
             if (subversion >= 73)
             {
-                firstAttacker = r.ReadUInt16();
+                firstAttacker.read(r);
+                //firstAttacker = r.ReadUInt16();
             }
             nextDominationSize = r.ReadUInt16();
             if (subversion < 72)
