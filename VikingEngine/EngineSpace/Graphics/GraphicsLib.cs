@@ -89,6 +89,7 @@ namespace VikingEngine.Graphics
         Poision,
         GoldenSparkle,
         BulletTrace,
+        WaterFoam,
         Fire,
         ExplosionFire,
         Smoke,
@@ -168,9 +169,11 @@ namespace VikingEngine.Graphics
         //Bump,
         //BumpMask,
         //Water,
-        Shadow,
+        BillboardShadow,
+        //MonoShadow,
         FixedLight,
         Flag,
+        SeaNoise,
         NUM_NON,
     }
 

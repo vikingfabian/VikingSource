@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Input;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.Voxels
 {
@@ -17,6 +18,7 @@ namespace VikingEngine.Voxels
 
         public IDirectionalMap moveXZ;
         public IDirectionalMap cameraXMoveY;
+        
         public IButtonMap toggleCameraMode;
         public IDirectionalMap cameraZoom;
         public IButtonMap draw;
@@ -31,12 +33,17 @@ namespace VikingEngine.Voxels
         public IButtonMap undo;
         public IButtonMap previous;
         public IButtonMap next;
+        public IButtonMap rotateCCW;
+        public IButtonMap rotateCW;
 
+        /// <summary>
+        /// For ingame editing
+        /// </summary>
         public IButtonMap OpenClose;
 
         public IButtonMap keyboardYmovementToggel = new KeyboardButtonMap(Keys.LeftShift);
         public IButtonMap mouseUseButton = new MouseButtonMap(MouseButton.Left);
-        public IButtonMap mouseToolMenu = new KeyboardButtonMap(Keys.LeftControl); //
+        //public IButtonMap mouseToolMenu = new KeyboardButtonMap(Keys.LeftControl); //
 
 
         float movePencilTime = 0;
@@ -68,8 +75,9 @@ namespace VikingEngine.Voxels
             }
         }
 
-        public Vector3 pencilMovement(int playerIndex, float settingsMoveSpeed)
+        public Vector3 pencilMovement(int playerIndex, float settingsMoveSpeed, out bool yMoveToggle)
         {
+            yMoveToggle = false;
             if (toggleCameraMode.IsDown)
             {
                 return Vector3.Zero;
@@ -106,6 +114,7 @@ namespace VikingEngine.Voxels
 
             if (keyboardYmovementToggel.IsDown)
             {
+                yMoveToggle = true;
                 result.Y -= result.Z;
                 result.Z = 0;
             }
@@ -204,34 +213,51 @@ namespace VikingEngine.Voxels
         {
             useMouseInput = true;
 
-            moveXZ = new AlternativeDirectionalMap(Input.PlayerInputMap.arrowKeys, Input.PlayerInputMap.WASD);
+            moveXZ = Input.PlayerInputMap.arrowKeys;
             cameraXMoveY = null;//cameraXMoveY = directionalMappings[(int)DirActionType.GamePlayerMovement];
-            toggleCameraMode = new MouseButtonMap(MouseButton.Right);
-            cameraZoom =
-                new DirectionalButtonsMap(new KeyboardButtonMap(Keys.OemPlus), new KeyboardButtonMap(Keys.OemMinus), new NoButtonMap(), new NoButtonMap());
+            toggleCameraMode = new KeyboardButtonMap(Keys.Space);
+            cameraZoom = new DirectionalButtonsMap(new KeyboardButtonMap(Keys.OemPlus), new KeyboardButtonMap(Keys.OemMinus), new NoButtonMap(), new NoButtonMap());
 
-            draw = new NoButtonMap();//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.Space), new MouseButtonMap(MouseButton.Left));
-            erase = new NoButtonMap();//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.LeftAlt), new MouseButtonMap(MouseButton.Right));
-            select = new NoButtonMap();//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.LeftControl), new MouseButtonMap(MouseButton.Middle));
+            draw = new MouseButtonMap(MouseButton.Left);//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.Space), new MouseButtonMap(MouseButton.Left));
+            erase = new MouseButtonMap(MouseButton.Right);//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.LeftAlt), new MouseButtonMap(MouseButton.Right));
+            select = new KeyboardButtonMap(Keys.LeftControl);
             colorPick = new KeyboardButtonMap(Keys.LeftAlt);
-            cancel = new KeyboardButtonMap(Keys.Delete);
-            mirrorX = new KeyboardButtonMap(Keys.D1);
-            mirrorY = new KeyboardButtonMap(Keys.D2);
+            cancel = new KeyboardButtonMap(Keys.Back);
+            mirrorX = new KeyboardButtonMap(Keys.X);
+            mirrorY = new KeyboardButtonMap(Keys.Y);
             undo = new KeyboardButtonMap(Keys.Z);
-            previous = new KeyboardButtonMap(Keys.PageUp);
-            next = new KeyboardButtonMap(Keys.PageDown);
+            previous = new KeyboardButtonMap(Keys.A);
+            next = new KeyboardButtonMap(Keys.D);
 
             OpenClose = new KeyboardButtonMap(Keys.Tab);
         }
+        public void steamSetup(int controllerIndex, IDirectionalMap gamemove, IDirectionalMap gamecamera)
+        {
+            moveXZ = new SteamAnalogMap(SteamActionSet.EditorControls, false, SteamAnalogAction.editor_moveXZ, controllerIndex);
+            cameraXMoveY = new SteamAnalogMap(SteamActionSet.EditorControls, false, SteamAnalogAction.editor_cameraXMoveY, controllerIndex);
+            toggleCameraMode = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_YmovementToggle, controllerIndex);
+            cameraZoom = new SteamAnalogMap(SteamActionSet.EditorControls, false, SteamAnalogAction.editor_cameraZoom, controllerIndex);
 
+            draw = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_draw, controllerIndex);
+            erase = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_erase, controllerIndex);
+            select = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_select, controllerIndex);
+            colorPick = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_colorPick, controllerIndex);
+            cancel = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_cancel, controllerIndex);
+            mirrorX = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_selection_mirrorX, controllerIndex);
+            mirrorY = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_selection_mirrorY, controllerIndex);
+            rotateCCW = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_selection_rotateCCW, controllerIndex);
+            rotateCW = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_selection_rotateCW, controllerIndex);
+            undo = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_undo, controllerIndex);
+            previous = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_tab_left, controllerIndex);
+            next = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_tab_right, controllerIndex);
+        }
         public void xboxSetup(int controllerIndex, IDirectionalMap gamemove, IDirectionalMap gamecamera)
         {
             useMouseInput = false;
 
             moveXZ = gamemove;
             cameraXMoveY = gamecamera;
-            cameraZoom =
-                new DirectionalButtonsMap(new XboxButtonMap(Buttons.DPadUp, controllerIndex), new XboxButtonMap(Buttons.DPadDown, controllerIndex), new NoButtonMap(), new NoButtonMap());
+            cameraZoom = new DirectionalButtonsMap(new XboxButtonMap(Buttons.DPadUp, controllerIndex), new XboxButtonMap(Buttons.DPadDown, controllerIndex), new NoButtonMap(), new NoButtonMap());
             toggleCameraMode = new XboxButtonMap(Buttons.LeftTrigger, controllerIndex);
 
             draw = new XboxButtonMap(Buttons.RightShoulder, controllerIndex);

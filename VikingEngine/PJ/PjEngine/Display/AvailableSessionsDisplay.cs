@@ -27,7 +27,7 @@ namespace VikingEngine.PJ.Display
         const int SearchingBarDotCount = 8;
         Graphics.Image[] searchingBar;
         Graphics.Image searchingBarCenter, noSessionsIcon;
-        CirkleCounterUp searchBarCount = new CirkleCounterUp(0, SearchingBarDotCount - 1);
+        CircleCounterUp searchBarCount = new CircleCounterUp(0, SearchingBarDotCount - 1);
         Timer.Basic searchBarTimer = new Timer.Basic(100, true);
 
         public AvailableSessionsDisplay(float topBarH)
@@ -222,7 +222,7 @@ namespace VikingEngine.PJ.Display
             float darken = 0.2f;
             const int DarkenCount = 3;
 
-            CirkleCounterDown count = new CirkleCounterDown(searchBarCount.Max);
+            CircleCounterDown count = new CircleCounterDown(searchBarCount.Max);
             count.value = searchBarCount.Next();
             
             for (int i = 0; i < SearchingBarDotCount; ++i)

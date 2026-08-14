@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.Network;
-using Valve.Steamworks;
+using Steamworks;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
 
@@ -35,18 +35,24 @@ namespace VikingEngine.SteamWrapping
     {
         string gamertag = null;
         bool localPeer;
-        
-        public SteamNetworkPeer(ulong id, bool local)
+        CSteamID id;
+        //public HSteamNetConnection connection;
+
+        public SteamNetworkPeer(CSteamID id, bool local)
         {
-            this.fullId = id;
+            this.id = id;
+            fullId = id.m_SteamID;
             this.localPeer = local;
             lastHeardFrom = Ref.TotalTimeSec + 6f;
+            isFriend = local || SteamFriends.HasFriend(id, EFriendFlags.k_EFriendFlagImmediate);
         }
 
-        public SteamUser SteamUser()
+        public SteamUserOld SteamUser()
         {
-            return new SteamUser(fullId);
+            return new SteamUserOld(id);
         }
+
+        public override CSteamID SteamID => id;
 
         override public bool IsLocal
         {
@@ -55,28 +61,27 @@ namespace VikingEngine.SteamWrapping
 
         public SteamImageLoadData GetGamerIcon32x32()
         {
-            return GetAvatarImage(SteamAPI.SteamFriends().GetSmallFriendAvatar(fullId), 32);
+            return GetAvatarImage(SteamFriends.GetSmallFriendAvatar(id), 32);
         }
 
         public SteamImageLoadData GetGamerIcon64x64()
         {
-            return GetAvatarImage(SteamAPI.SteamFriends().GetMediumFriendAvatar(fullId), 64);
+            return GetAvatarImage(SteamFriends.GetMediumFriendAvatar(id), 64);
         }
 
         public SteamImageLoadData GetGamerIcon184x184()
         {
-            return GetAvatarImage(SteamAPI.SteamFriends().GetLargeFriendAvatar(fullId), 184);
+            return GetAvatarImage(SteamFriends.GetLargeFriendAvatar(id), 184);
         }
 
         public static SteamImageLoadData GetLocalGamerIcon184x184()
         {
-            ulong id = SteamAPI.SteamUser().GetSteamID();
-            return GetAvatarImage(SteamAPI.SteamFriends().GetLargeFriendAvatar(id), 184);
+            return GetAvatarImage(SteamFriends.GetLargeFriendAvatar(Steamworks.SteamUser.GetSteamID()), 184);
         }
 
-        public static SteamImageLoadData GetAvatarImage(ulong steamId)
+        public static SteamImageLoadData GetAvatarImage(CSteamID steamId)
         {
-            return GetAvatarImage(SteamAPI.SteamFriends().GetLargeFriendAvatar(steamId), 184);
+            return GetAvatarImage(SteamFriends.GetLargeFriendAvatar(steamId), 184);
         }
 
         public static SteamImageLoadData GetAvatarImage(int id, int sideLength)
@@ -92,7 +97,7 @@ namespace VikingEngine.SteamWrapping
 
             int pixCount = sideLength * sideLength * 4;
             byte[] textureData = new byte[pixCount];
-            SteamAPI.SteamUtils().GetImageRGBA(id, textureData, pixCount * sizeof(byte));
+            SteamUtils.GetImageRGBA(id, textureData, pixCount * sizeof(byte));
 
             // Texture2D wants ARGB, not RGBA
             for (int i = 0; i < sideLength * sideLength; ++i)
@@ -120,13 +125,13 @@ namespace VikingEngine.SteamWrapping
         {
             get
             {
-                if (Ref.steam.P2PManager.localPeer.fullId == this.fullId)
+                if (Ref.steam.P2PManager.localPeer.SteamID == this.SteamID)
                 {
                     return true;
                 }
                 else
                 {
-                    return Ref.steam.P2PManager.GetPeer(fullId) != null;
+                    return Ref.steam.P2PManager.GetPeer(SteamID) != null;
                 }        
             }
         }
@@ -137,11 +142,44 @@ namespace VikingEngine.SteamWrapping
             {
                 if (gamertag == null)
                 {
-                    gamertag = SteamAPI.SteamFriends().GetFriendPersonaName(fullId);
+                    gamertag = SteamFriends.GetFriendPersonaName(id);
                 }
                 return gamertag;
             }
         }
+
+        //public bool HasAvailableTrafficSpace()
+        //{
+        //    // Assuming connectionHandle is your active HSteamNetConnection
+        //    SteamNetConnectionRealTimeStatus_t connectionStatus = new SteamNetConnectionRealTimeStatus_t();
+        //    SteamNetConnectionRealTimeLaneStatus_t pLanes = new SteamNetConnectionRealTimeLaneStatus_t();
+        //    EResult result = SteamNetworkingSockets.GetConnectionRealTimeStatus(
+        //        connection, //TODO need handle
+        //        ref connectionStatus,
+        //        0,
+        //        ref pLanes
+        //    );
+
+        //    if (result == EResult.k_EResultOK)
+        //    {
+        //        // These tell you how many bytes are currently sitting in Steam's local outbox
+        //        int pendingUnreliable = connectionStatus.m_cbPendingUnreliable;
+        //        int pendingReliable = connectionStatus.m_cbPendingReliable;
+
+        //        // This tells you Steam's current estimate of the connection's bandwidth capacity (Bytes/sec)
+        //        int estimatedBandwidthBps = connectionStatus.m_nSendRateBytesPerSecond;
+
+        //        // --- EXAMPLE LOGIC ---
+
+        //        // Calculate total pending bytes
+        //        int totalPending = pendingUnreliable + pendingReliable;
+
+        //        // If we have more than 1 second worth of data queued up, we are sending too fast!
+        //        return totalPending < estimatedBandwidthBps / 2;
+        //    }
+
+        //    return false;
+        //}
     }
 }
 #endif

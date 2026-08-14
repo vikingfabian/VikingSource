@@ -15,6 +15,7 @@ namespace VikingEngine
 
         public const float Tau = MathHelper.TwoPi;
         public const float TauOver2 = MathHelper.Pi;
+        public const float TauOver3 = MathHelper.TwoPi / 3f;
         public const float TauOver4 = MathHelper.PiOver2;
         public const float TauOver8 = MathHelper.PiOver4;
         public const float TauOver6 = MathHelper.Pi / 3f;
@@ -66,6 +67,18 @@ namespace VikingEngine
         public static int Pow(int value, double power)
         {
             return Convert.ToInt32(Math.Pow(value, power));
+        }
+
+        public static int NextPowerOfTen(int value)
+        {
+            if (value <= 0)
+                return 1;
+
+            int power = 1;
+            while (power <= value)
+                power *= 10;
+
+            return power;
         }
 
         /// <summary>
@@ -238,6 +251,13 @@ namespace VikingEngine
             return (float)((int)x);
         }
 
+        public static int SplitFloat(float value, out float fractionalPart)
+        {
+            int integerPart = (int)value;
+            fractionalPart = value - integerPart;
+            return integerPart;
+        }
+
         public static float Log2(float x)
         {
             return (float)Math.Log(x, 2);
@@ -256,7 +276,10 @@ namespace VikingEngine
         {
             return u.X * v.Y - u.Y * v.X;
         }
-
+        public static float V2Cross(Vector2 a, Vector2 b, Vector2 p)
+        {
+            return (b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X);
+        }
         public static bool NearZero(float x)
         {
             return x < 1e-10f;
@@ -265,6 +288,11 @@ namespace VikingEngine
         public static int MultiplyInt(double value1, double value2)
         {
             return Convert.ToInt32(value2 * value1);
+        }
+
+        public static int DivideInt(double value, double divBy)
+        {
+            return Convert.ToInt32(value / divBy);
         }
 
         public static IntVector2 Max(IntVector2 a, IntVector2 b)
@@ -474,6 +502,29 @@ namespace VikingEngine
         public static int PercentageInteger(float perc)
         {
             return Convert.ToInt32(perc * 100);
+        }
+
+        /// <summary>
+        /// 5 will return 5+4+3+2+1
+        /// </summary>
+        /// <returns>Sum of all lower numbers</returns>
+        public static int GaussSum(int n)
+        {
+            return n * (n + 1) / 2;
+        }
+
+        public static int InvertedGaussSumIndex(int entityCount, int entityNumber)
+        {
+            // 1. Calculate the full size of the triangle (e.g., 55)
+            int totalSum = entityCount * (entityCount + 1) / 2;
+
+            // 2. Calculate the size of the "remaining" triangle
+            // For entity 1, we subtract the sum of 10..1 (55) -> Index 0
+            // For entity 2, we subtract the sum of 9..1 (45)  -> Index 10
+            int remainingLength = entityCount - (entityNumber - 1);
+            int remainingSum = remainingLength * (remainingLength + 1) / 2;
+
+            return totalSum - remainingSum;
         }
     }
 }

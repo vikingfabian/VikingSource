@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO.Characters
             weaponAttackFrame = 1;
             sleepingFrame1 = 2;
 
-            createImage(VoxelModelName.greatwolf, 5f, new Graphics.AnimationsSettings(10, 0.8f, 5));
+            createImage(VoxelModelName.NUM_NON, 5f, new Graphics.AnimationsSettings(10, 0.8f, 5));
             
             
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickRectangleRotatedFromFeet(new Vector3(0.15f * modelScale, 0.22f * modelScale, modelScale * 0.48f), 0f);

@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.GameObject
 {
+    //struct AnimationData
+    //{ 
+    
+    //}
+
     struct WalkingAnimation
     {
         public const float StandardMoveFrames = 0.03f;
@@ -15,6 +20,7 @@ namespace VikingEngine.DSSWars.GameObject
         public static readonly WalkingAnimation WorkerCarry = new WalkingAnimation(9, 12, StandardMoveFramesGnome);
         public static readonly WalkingAnimation WorkerTrading = new WalkingAnimation(13, 16, StandardMoveFramesGnome);
 
+        public int idleframe, idleblinkframe, attackframe;
         public int startframe, endFrame;
         int currentFrame;
 
@@ -31,8 +37,21 @@ namespace VikingEngine.DSSWars.GameObject
             moveLength = 0;
         }
 
-        public void update(float speed, Graphics.AbsVoxelObj model)
+        public WalkingAnimation(int idleframe, int attackframe, int startframe, int endFrame, float movelengthBetweenFrames)
         {
+            this.idleframe = idleframe;
+            this.attackframe = attackframe;
+            this.startframe = startframe;
+            this.endFrame = endFrame;
+            this.movelengthBetweenFrames = movelengthBetweenFrames;
+
+            currentFrame = startframe;
+            moveLength = 0;
+        }
+
+        public void update(float speed, Graphics.AbsVoxelObj model, out bool enterEvenFrame)
+        {
+            enterEvenFrame = false;
             moveLength += speed;
             if (moveLength >= movelengthBetweenFrames)
             {
@@ -43,12 +62,19 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 model.Frame = currentFrame;
+                enterEvenFrame = lib.IsEven(currentFrame);
+                  
+
+                //if (lib.IsEven(currentFrame) && Ref.peRnd.ChanceF_Low(0.04f))
+                //{
+                //    SoundLib.footstep.Play(model.position);
+                //}
             }
         }
 
         public void randomStartFrame()
         {
-            currentFrame = Ref.rnd.Int(startframe, endFrame + 1);
+            currentFrame = Ref.peRnd.Int(startframe, endFrame + 1);
         }
     }
 }

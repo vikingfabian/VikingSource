@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.LootFest.Data;
@@ -20,6 +21,7 @@ namespace VikingEngine.DSSWars.Data
         public float Minutes
         {
             get { return seconds / TimeExt.MinuteInSeconds; }
+            set { seconds = TimeExt.MinuteInSeconds * value; }
         }
 
         // Override ToString method to display seconds and milliseconds
@@ -53,9 +55,30 @@ namespace VikingEngine.DSSWars.Data
             return new TimeLength(minutes * TimeExt.MinuteInSeconds);
         }
 
+        public static TimeLength FromHours(float hours)
+        {
+            return new TimeLength(hours * TimeExt.HourInSeconds);
+        }
+
+        public TimeSpan TimeSpan
+        {
+            get { return TimeSpan.FromSeconds(seconds); }
+            set { seconds = (float)value.TotalSeconds; }
+        }
+
         public override string ToString()
         {
             return $"Time length: {seconds} seconds";
+        }
+
+        public void write_ushort(System.IO.BinaryWriter w)
+        {
+           w.Write(Bound.UShort(seconds));
+        }
+
+        public void read_ushort(System.IO.BinaryReader r)
+        {
+            seconds = r.ReadUInt16();
         }
     }
 
@@ -82,6 +105,12 @@ namespace VikingEngine.DSSWars.Data
             start();//endTimeSec = Ref.TotalGameTimeSec + length.seconds;
         }
 
+        public void start(IntervalF randomSecondsRange)
+        {
+            this.length = new TimeLength(randomSecondsRange.GetRandom());
+            start();//endTimeSec = Ref.TotalGameTimeSec + length.seconds;
+        }
+
         public void start()
         { 
             endTimeSec = Ref.TotalGameTimeSec + length.seconds;
@@ -94,7 +123,20 @@ namespace VikingEngine.DSSWars.Data
         }
         public bool TimeOut()
         {
-            return Ref.TotalGameTimeSec >= endTimeSec;
+            if (endTimeSec > 0)
+            {
+                return Ref.TotalGameTimeSec >= endTimeSec;
+            }
+            else
+            {
+                start();
+                return false;
+            }
+        }
+
+        public TimeLength TimePassed()
+        {
+            return new TimeLength(length.seconds - endTimeSec + Ref.TotalGameTimeSec);
         }
 
         public TimeLength RemainingLength()
@@ -107,18 +149,71 @@ namespace VikingEngine.DSSWars.Data
             w.Write((ushort)Bound.Min(RemainingLength().seconds, 0));
         }
 
-        public void readGameState(System.IO.BinaryReader r)
+        public void readGameState(System.IO.BinaryReader r, bool bStart = false)
         {
             float remaining = r.ReadUInt16();
             if (remaining > 0)
             {
-                start(new TimeLength(remaining));
+                length = new TimeLength(remaining);
+            }
+
+            if (bStart)
+            {
+                start();
             }
         }
 
         public override string ToString()
         {
             return $"Count down: {RemainingLength()}/{length.seconds} seconds";
+        }
+    }
+
+    struct UseTimeLimit
+    {
+        public bool use;
+        public TimeLength time;
+
+        public UseTimeLimit(bool use, TimeLength time)
+        { 
+            this.use = use;
+            this.time = time;
+        }
+
+        public void write_ushort(System.IO.BinaryWriter w, bool storeTime)
+        {
+            w.Write(use);
+            if (use || storeTime)
+            {
+                time.write_ushort(w);
+            }
+        }
+
+        public void read_ushort(System.IO.BinaryReader r, bool storeTime)
+        {
+            use = r.ReadBoolean();
+            if (use || storeTime)
+            {
+                time.read_ushort(r);
+            }
+        }
+
+        public bool UseProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                use = value;
+            }
+            return use;
+        }
+
+        public float MinuteProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                time.Minutes = value;
+            }
+            return time.Minutes;
         }
     }
 }

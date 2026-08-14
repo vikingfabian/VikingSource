@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+
 //xna
 using VikingEngine.Input;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest.Players
 {
@@ -200,89 +203,89 @@ namespace VikingEngine.LootFest.Players
         }
         public void BeginCreationMode(IntVector2 chunkCenterPos)
         {
-            if (hero.Alive)
-            {
-                if (localHost)
-                {
-                    LfRef.gamestate.clientPlayersCounter.Reset();
-                    while (LfRef.gamestate.clientPlayersCounter.Next())
-                    {
-                        LfRef.gamestate.clientPlayersCounter.sel.removeStatusDisplay();
-                    }
-                }
-                //pData.inputMap.SetGameStateLayout(ControllerActionSetType.EditorControls);
-                //check if area is done loading
-                IntVector2 pos = hero.ScreenPos;
-                if (!LfRef.chunks.ChunksDataLoaded(pos))
-                {
-                    Print(StillLoadingMessage);
-                    return;
-                }
+            //if (hero.Alive)
+            //{
+            //    if (localHost)
+            //    {
+            //        LfRef.gamestate.clientPlayersCounter.Reset();
+            //        while (LfRef.gamestate.clientPlayersCounter.Next())
+            //        {
+            //            LfRef.gamestate.clientPlayersCounter.sel.removeStatusDisplay();
+            //        }
+            //    }
+            //    //pData.inputMap.SetGameStateLayout(ControllerActionSetType.EditorControls);
+            //    //check if area is done loading
+            //    IntVector2 pos = hero.ScreenPos;
+            //    if (!LfRef.chunks.ChunksDataLoaded(pos))
+            //    {
+            //        Print(StillLoadingMessage);
+            //        return;
+            //    }
 
 
-                Music.SoundManager.PlayFlatSound(LoadedSound.enter_build);
+            //    Music.SoundManager.PlayFlatSound(LoadedSound.enter_build);
 
-                CloseMenu();
-                //mode = PlayerMode.Creation;
-                //pick the area the player is standing at and send it to the designer
-                voxelDesignerStartPos = Editor.VoxelDesigner.HeroPosToCreationStartPos(chunkCenterPos);
+            //    CloseMenu();
+            //    //mode = PlayerMode.Creation;
+            //    //pick the area the player is standing at and send it to the designer
+            //    voxelDesignerStartPos = VoxelDesigner.HeroPosToCreationStartPos(chunkCenterPos);
 
-                System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ClientStartingEditing,
-                    Network.PacketReliability.Reliable, PlayerIndex);
-                Map.WorldPosition.WriteChunkGrindex_Static(hero.ScreenPos, w);
+            //    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ClientStartingEditing,
+            //        Network.PacketReliability.Reliable, PlayerIndex);
+            //    Map.WorldPosition.WriteChunkGrindex_Static(hero.ScreenPos, w);
 
 
-                storedCamera = localPData.view.Camera;
-                voxelDesigner = new Editor.VoxelDesigner(
-                    voxelDesignerStartPos, localPData.view.Camera, Storage.CamTopViewFOV, menuArea(), this);
-                localPData.view.Camera.TiltX = storedCamera.TiltX;
+            //    storedCamera = localPData.view.Camera;
+            //    voxelDesigner = new VoxelDesigner(
+            //        voxelDesignerStartPos, localPData.view.Camera, Storage.CamTopViewFOV, menuArea(), this);
+            //    localPData.view.Camera.TiltX = storedCamera.TiltX;
 
-                if (localHost)
-                { //Clear out NPCs
-                    foreach (var m in LfRef.net.lobbies)
-                    {
-                        m.remove();
-                    }
-                }
-            }
+            //    if (localHost)
+            //    { //Clear out NPCs
+            //        foreach (var m in LfRef.net.lobbies)
+            //        {
+            //            m.remove();
+            //        }
+            //    }
+            //}
         }
 
         public void EndCreationMode()
         {
-            if (voxelDesigner != null)
-            {
-                if (localHost)
-                {
-                    LfRef.gamestate.clientPlayersCounter.Reset();
-                    int ix = 0;
-                    while (LfRef.gamestate.clientPlayersCounter.Next())
-                    {
-                        LfRef.gamestate.clientPlayersCounter.sel.createStatusDisplay(ix);
-                        ix++;
-                    }
-                }
-                //pData.inputMap.SetGameStateLayout(ControllerActionSetType.InGameControls);
-                //pick the new design and add it to the map
-                //Voxels.VoxelObjListData editChunk = voxelDesigner.voxels;
-                //notify host
-                if (Ref.netSession.IsClient)
-                {
-                    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ClientEndingEditing,
-                        Network.PacketReliability.ReliableLasy, PlayerIndex);
-                }
+            //if (voxelDesigner != null)
+            //{
+            //    if (localHost)
+            //    {
+            //        LfRef.gamestate.clientPlayersCounter.Reset();
+            //        int ix = 0;
+            //        while (LfRef.gamestate.clientPlayersCounter.Next())
+            //        {
+            //            LfRef.gamestate.clientPlayersCounter.sel.createStatusDisplay(ix);
+            //            ix++;
+            //        }
+            //    }
+            //    //pData.inputMap.SetGameStateLayout(ControllerActionSetType.InGameControls);
+            //    //pick the new design and add it to the map
+            //    //Voxels.VoxelObjListData editChunk = voxelDesigner.voxels;
+            //    //notify host
+            //    if (Ref.netSession.IsClient)
+            //    {
+            //        System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ClientEndingEditing,
+            //            Network.PacketReliability.Reliable, PlayerIndex);
+            //    }
 
-                //mode = PlayerMode.Play;
-                voxelDesigner.DeleteMe();
-                voxelDesigner = null;
-                storedCamera.TiltX = localPData.view.Camera.TiltX;
-                localPData.view.Camera = storedCamera;
+            //    //mode = PlayerMode.Play;
+            //    voxelDesigner.DeleteMe();
+            //    voxelDesigner = null;
+            //    storedCamera.TiltX = localPData.view.Camera.TiltX;
+            //    localPData.view.Camera = storedCamera;
 
-                hero.CheckIfUnderGround();
+            //    hero.CheckIfUnderGround();
 
-                LfRef.world.saveUpdate();
-            }
-            refreshCamSettings();
-            IsInCreationMode = false;
+            //    LfRef.world.saveUpdate();
+            //}
+            //refreshCamSettings();
+            //IsInCreationMode = false;
         }
     }
 }

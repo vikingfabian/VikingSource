@@ -5,6 +5,14 @@ using System.Text;
 
 namespace VikingEngine.DSSWars.GameObject
 {
+    abstract class AbsModelAttachment_Batched : AbsModelAttachment
+    {
+        public override void DeleteMe()
+        {
+            model.preRemoveFromDrawBatch();
+        }
+    }
+
     abstract class AbsModelAttachment
     {
         protected Graphics.AbsVoxelObj model;
@@ -26,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
             DSSWars.Faction.SetNewMaster(name, modelName(), model, master);
         }
 
-        public void DeleteMe()
+        virtual public void DeleteMe()
         {
             model.DeleteMe();
         }

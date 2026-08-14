@@ -79,10 +79,6 @@ namespace VikingEngine
                 {
                     nextPos.X = max.X;
                     nextPos.Y--;
-                    //if (nextPos.Y < min.Y)
-                    //{
-                    //    throw new Exception();
-                    //}
                 }
             }
 

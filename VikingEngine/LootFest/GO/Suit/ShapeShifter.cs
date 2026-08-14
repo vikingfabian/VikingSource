@@ -16,13 +16,13 @@ namespace VikingEngine.LootFest.GO
         const float ReloadTime = 180;
         //const int ThrowJavelinAttackIndex = 2;
 
-        CirkleCounterUp attackIndex = new CirkleCounterUp(1, 1);
+        CircleCounterUp attackIndex = new CircleCounterUp(1, 1);
         WeaponAttack.HandWeaponAttackSettings spearStab, spearSwing;
 
 
 
         public ShapeShifter(Players.AbsPlayer user)
-            : base(user, VoxelModelName.shapeshifter_spear)
+            : base(user, VoxelModelName.NUM_NON)
         {
             Vector3 spearBound =  new Vector3(1.8f, HandWeaponAttackSettings.SwordBoundScaleH, 8.5f);
             Vector3 spearOffset = new Vector3(3f, 1.4f, 4f);

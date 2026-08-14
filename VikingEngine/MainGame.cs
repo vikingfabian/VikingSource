@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Win32;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -8,15 +6,20 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using VikingEngine.LootFest.Editor;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Win32;
-using System.Threading.Tasks;
 using System.Globalization;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
+using VikingEngine.Engine;
+using VikingEngine.Sound;
 
 namespace VikingEngine
 {
+   
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -41,8 +44,7 @@ namespace VikingEngine
             TaskExt.CheckStorageQue();
 
             Ref.update.AbortThreads();
-            //Ref.asynchUpdate.AbortThreads();
-            //Engine.Storage.AbortSaveThread(true);
+
         }
 
         /* Fields */
@@ -84,6 +86,8 @@ namespace VikingEngine
 
 #endif 
 
+
+        
             DebugExtensions.BlueScreen.TryCatch(init1_Construct, DebugExtensions.TryMethodType.Init1);
         }
 
@@ -158,22 +162,7 @@ namespace VikingEngine
             base.Draw(gameTime);
         }
 
-        protected override void UnloadContent()
-        {
-            //Ref.analytics.onExit();
-            Ref.update.exitApplication = true;
-            AbortAllThreads();
-
-            //System.Threading.Thread.Sleep(16);
-
-            Engine.Sound.StopMusic();
-            Engine.XGuide.OnSuspend(true);
-            //Ref.gamestate.onClosingApplication();
-            base.UnloadContent();
-
-            //Input.PlayerInputMap.StopAllVibration();
-            Input.Mouse.Visible = true;
-        }
+       
 
         /* Novelty Methods */
         void init1_Construct()
@@ -192,6 +181,8 @@ namespace VikingEngine
             mainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif
             var sett = new GameSettings();
+            new Network.NetworkSettings();
+
             if (PlatformSettings.PC_platform)
             {
                 targetFrameRate = sett.FrameRate;
@@ -219,21 +210,66 @@ namespace VikingEngine
         void init3_LoadContent()
         {
             Engine.LoadContent.Init(Content);
+           
+            bootUp();
+        }
+
+        public void baseContentLoad(ref int part)
+        {
+            Engine.LoadContent.BaseContentLoad();
+            part++;
+
             DataLib.SpriteCollection.Init();
+            part++;
+
             Engine.Draw.Init();
-
+            part++;
+            
             Input.InputLib.Init(this);
-
+            part++;
 #if XBOX
             Engine.Screen.ApplyScreenSettings();
             new XboxWrapping.XboxManager();
 #endif
             Engine.XGuide.Init(this);
+            part++;
 
             DataLib.SaveLoad.Init();
+            part++;
+        }
+        protected override void UnloadContent()
+        {
+            //Ref.analytics.onExit();
+            Ref.update.exitApplication = true;
+            AbortAllThreads();
 
-            bootUp();
+            Ref.music?.Dispose();
+            Engine.XGuide.OnSuspend(true);
+            //Ref.gamestate.onClosingApplication();
+            base.UnloadContent();
 
+            //Input.PlayerInputMap.StopAllVibration();
+            Input.Mouse.Reset();//.Visible = true;
+
+            Ref.steam.OnShutdown();
+
+            System.Threading.Tasks.Task.Delay(500).Wait();
+            //Call if one of the threads arent close after some time
+            if (Ref.update.HaveLiveThreads())
+            {
+                try
+                {
+                    //System.ExecutionEngineException
+#if !DEBUG
+                    Environment.FailFast("Forces shutdown on threads");
+#endif
+
+                }
+                catch
+                { 
+                    
+                }
+            }
         }
 
         void bootUp()
@@ -246,6 +282,7 @@ namespace VikingEngine
 #if PJ
             new PJ.StartScreen(isReset);
 #elif DSS
+            //new DeadState();
             new DSSWars.IntroState(isReset);
 #elif TOGG
             new ToGG.IntroState(isReset);

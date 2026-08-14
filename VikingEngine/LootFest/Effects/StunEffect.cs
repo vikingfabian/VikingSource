@@ -13,7 +13,7 @@ namespace VikingEngine.LootFest.Effects
         {
             this.stunTimer = stunTimer;
             this.posOffset = posOffset;
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.stun, scale, 0, false);
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, scale, 0, false);
             parent.AddChildObject(this);
         }
 

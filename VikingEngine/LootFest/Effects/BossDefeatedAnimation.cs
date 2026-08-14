@@ -75,9 +75,9 @@ namespace VikingEngine.LootFest.Effects
                         //}
                         foreach (var m in affectedHeroes)
                         {
-                            m.Express(VoxelModelName.express_thumbup);
+                            m.Express(VoxelModelName.NUM_NON);
                         }
-                        stateTimer = new Time(2, TimeUnit.Seconds);
+                            stateTimer = new Time(2, TimeUnit.Seconds);
                         break;
                     case 2:
 

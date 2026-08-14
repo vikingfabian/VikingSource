@@ -1,269 +1,385 @@
 ﻿using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
-using VikingEngine.HUD;
-using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Players;
-using VikingEngine.LootFest.Players;
-using VikingEngine.HUD.RichBox;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-//using VikingEngine.DSSWars.Battle;
-using VikingEngine.DSSWars.GameState;
-using System;
-using System.IO;
 using Microsoft.Xna.Framework.Input;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.ToGG;
+using Steamworks;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.Players.Orders;
-using VikingEngine.DSSWars.Data;
-using System.Threading.Tasks;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
-using VikingEngine.ToGG.Commander.LevelSetup;
-using VikingEngine.ToGG.HeroQuest.Net;
+using VikingEngine.DSSWars.EntityComponent;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+
+using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.GameState.BattleLab;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Stockpile;
 using VikingEngine.DSSWars.Work;
-using System.Net.Http.Headers;
-using System.Drawing;
-using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.DSSWars.XP;
+using VikingEngine.Engine;
+using VikingEngine.Graphics;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichMenu;
+using VikingEngine.Network;
+using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars.Players
 {
     partial class LocalPlayer : AbsHumanPlayer
     {
-        public const int MaxSpeedOption = 5;
         public Engine.PlayerData playerData;
 
         public GameHud hud;
-        public InputMap input;
-        bool inputConnected;
-        
-        public MapControls mapControls;
-        public ArmyControls armyControls = null;
 
-        public MapDetailLayerManager drawUnitsView;
-        public bool bUnitDetailLayer_buffer;
-        public bool bUnitDetailLayer;
+        public GameControls gameControls;
+        protected BattleSetupManager setupManager = null;
+
+        public MapLayerManager mapLayersManager;
 
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
-        public DiplomacyMap diplomacyMap = null;
+
         public CityTagMap cityTagMap = null;
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
+        
+        public int warCount = 0;
         public int diplomaticPoints_softMax;
+
+       
+           
 
         public Data.Statistics statistics = new Data.Statistics();
 
-        public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
+        /// <summary>
+        /// Faction is key
+        /// </summary>
+        public Dictionary<PFaction, PlayerToPlayerDiplomacy> toPlayerDiplomacies = new Dictionary<PFaction, PlayerToPlayerDiplomacy>();
+        
+
+        public List<PFaction> alliedFactions = new List<PFaction>();
+        public List<PFaction> alliedFactions_build = new List<PFaction>();
+        public bool netFirstTimeEnter;
+
+        public PlayerToPlayerDiplomacy GetOrCreateToPlayerDiplomacy(AbsHumanPlayer player)
+        {
+            PlayerToPlayerDiplomacy result = null;
+            if (toPlayerDiplomacies.TryGetValue(player.pfaction, out result) == false)
+            {
+                result = new PlayerToPlayerDiplomacy(player.pfaction);
+                toPlayerDiplomacies.Add(result.pfaction, result);
+            }
+
+            return result;
+        }
+
         public Automation automation;
-        public Build.BuildControls buildControls;
-
-        //public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
-
-        int tabCity = -1;
-        SpottedArrayCounter<Army> tabArmy;
-        //SpottedArrayCounter<BattleGroup> tabBattle;
-
-        public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
 
         const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
         const double MercenaryMarketAddPerSec_Speed1 = 0.5;
         const double MercenaryMarketAddPerSec_Speed2 = 0.3;
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
-        public MenuTab factionTab = MenuTab.NUM_NONE;//HeadDisplay.Tabs[0];
-        public MenuTab cityTab = CityMenu.Tabs[0];
-        public MenuTab armyTab = ArmyMenu.Tabs[0];
-        public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
-        //public WorkSubTab workSubTab = WorkSubTab.Priority_Resources;
+        public MenuTab factionTab = MenuTab.NUM_NONE;
+        public MenuTab cityTab;
+        public MenuTab armyTab = MapObjMenu.ArmyTabs[0];
+        public MenuTab pinTab = MenuTab.Info;
+        public ResourcesSubTab resourcesSubTab = new ResourcesSubTab();
+        public HashSet<ItemResourceType> armyFilterItems = new HashSet<ItemResourceType>();
+        public UnitFilter armyFilterClasses = new UnitFilter();
+        public MovingGroupsCollection movingGroupsCollection = null;
+
         public ProgressSubTab progressSubTab = 0;
+        public TagSubTab tagSubTab = 0;
+        public BuildAndExpandType conscriptSubTab = BuildAndExpandType.ALL;
+        public ItemResourceType deliverySupTab = ItemResourceType.NUM;
         public MixTabEditType mixTabEditType = MixTabEditType.None;
         public WorkPriorityType mixWorkType = WorkPriorityType.NUM_NONE;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;
+        public BuildCategoryTab buildCategoryTab = 0;
+        public BuildFilterTag buildFilterTag = 0;
+        public XP.TechnologyTreeType selectedTech = 0;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
-        public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmashineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
+        public BarracksStatus soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
+        public SchoolStatus schoolCopy;
+        public List<CesspitStatus> cesspitsCopy = new List<CesspitStatus>();
+        public GroupedResource[] stockPileCopy = null;
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
-        public bool viewCityTagsOnMap = true;
-        public bool viewArmyTagsOnMap = true;
-        public int[] GameSpeedOptions;
 
+        public FactionPixelTexture factionPixelTexture;
+        public FactionPixelTexture minimapPixelTexture;
+
+        public UnitsPixelTexture unitsPixelTexture;
+        public int BlackMarketCount = 500;
+        public int PrevCityCount = 1;
+
+        public Profile.ObjectHudSettings cityHudSettings = new Profile.ObjectHudSettings();
+        public Profile.ObjectHudSettings armyHudSettings = new Profile.ObjectHudSettings();
+        public Profile.ObjectHudSettings pinHudSettings = new Profile.ObjectHudSettings();
+
+
+        // public int firstAttacker = ushort.MaxValue;
+        public PFaction firstAttacker = PFaction.Empty;
         public int nextDominationSize;
-        public int dominationEvents = 0;
+        public int factionsTerminated = 0;
+        public bool barbarianKiller = false;
+        public bool cohalitionEvent = false;
+        public bool cohalitionWarning = false;
 
         static readonly Vector3 ThemeNorth_Blue = new Vector3(0f, 0f, 0.3f);
         static readonly Vector3 ThemeMid_Yellow = new Vector3(0.15f, 0.15f, 0);
         static readonly Vector3 ThemeSouth_Red = new Vector3(0.2f, 0.05f, 0f);
 
         public Vector3 ShaderThemeColor = ThemeMid_Yellow;
+        
+        List<MessagePosition> battleMessages = new List<MessagePosition>(8);
+        public bool isDropInPlayer = false;
 
-        public LocalPlayer(Faction faction)
-           : base(faction)
+        public StoredCameraPos storedCameraPos;
+        public PlayerNetState playerNetState = PlayerNetState.InMenu;
+
+        public int sendGold = 1000;
+       
+        public LocalPlayer()
         {
-            faction.addMoney_factionWide( DssRef.difficulty.PlayerBonusGold);
-            orders = new Orders.Orders();
+            baseInit();
+        }
+        public void EnterBattleLab()
+        {
+            BattleLabStorage.Singleton = new BattleLabStorage();
+            setupManager = new BattleSetupManager();
+        }
 
-            faction.factiontype = FactionType.Player;
-            faction.availableForPlayer = false;
-
-            automation = new Automation(this);
-            if (DssRef.storage.speed5x)
+        public bool DisplayBattleLab(RichBoxContent content, RichMenu menu)
+        {
+            if (setupManager != null)
             {
-                GameSpeedOptions = new int[] { 1, 2, MaxSpeedOption };
+                setupManager.updateObjectDisplay(content, menu);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void openPlayerToPlayerDisplay(AbsHumanPlayer selected)
+        { 
+            gameControls.clearSelection();
+
+            if (selected.IsLocal)
+            {
+
             }
             else
             {
-                GameSpeedOptions = new int[] { 1, 2 };
+                hud.objMenu.netSessionDisplay.selectedPlayer = selected.GetRemotePlayer();
             }
-
-            faction.technology = new XP.TechnologyTemplate();
-            faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
-
-            faction.addMoney_factionWide(10000);
+            hud.needRefresh = true;
         }
 
-        
-        
+        public override void refreshFlag()
+        {
+            base.refreshFlag();
+            hud.head.RefreshFlag(this);
+        }
+        public void DrawDetalLayer_Mesh(int cameraIndex)
+        {
+            gameControls.map.hover.groupModels_detail.Draw(cameraIndex);
+            gameControls.map.selection.groupModels_detail.Draw(cameraIndex);
+        }
+        public void DrawMidLayer_Mesh(int cameraIndex)
+        {
+            gameControls.map.hover.groupModels_terrian.Draw(cameraIndex);
+            gameControls.map.selection.groupModels_terrian.Draw(cameraIndex);
+        }
 
-        
+        void baseInit()
+        {
+            orders = new Orders.Orders();
+            automation = new Automation(this);
+            schoolCopy = new SchoolStatus();
+            schoolCopy.defaulSetup();
+
+            localAiAggressivity = DssRef.difficulty.aiAggressivity;
+            localTooPeacefulPercentage = DssRef.difficulty.tooPeacefulPercentage;
+            if (DssRef.difficulty.extremeAggression)
+            {
+                localAiAggressivity = AiAggressivity.Extreme;
+            }
+            warManagerGear = new WarManagerGear(WarManagerGear.StartGear, localAiAggressivity);
+        }
+
+        public LocalPlayer(Faction faction, bool newGame)
+           : base(faction, newGame)
+        {
+            baseInit();
+            if (newGame)
+            {
+                startingResources();
+
+            }
+            setPlayerFaction(faction);
+
+            faction.technology = new XP.TechnologyTemplate();
+            faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
+        }
+        public override void AssignFaction(Faction faction)
+        {
+            base.AssignFaction(faction);
+            gameControls.refreshFaction();
+        }
+        public override void SetColor(Color selected, bool netShare)
+        {
+            var clone = profile.flag.Clone();
+            profile.flag = clone;
+            base.SetColor(selected, netShare);
+        }
+
+        public bool battleMessageCheck(IntVector2 tilepos)
+        {
+            for (int i = battleMessages.Count - 1; i >= 0; --i)
+            {
+                if (battleMessages[i].time.secPassed(20))
+                {
+                    battleMessages.RemoveAt(i);
+                }
+                else if (battleMessages[i].tilePos.SideLength(tilepos) <= 5)
+                {
+                    return false;
+                }
+            }
+
+            battleMessages.Add(new MessagePosition(tilepos));
+            return true;
+        }
+
+        public void initNetwork()
+        {
+            var peer = Ref.netSession.LocalPeer();
+            if (peer != null)
+            {
+                networkPeer = new Network.NetworkInstancePeer(peer, playerData.localPlayerIndex);
+            }
+        }
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
-            faction.SetProfile(DssRef.storage.flagStorage.flagDesigns[pStorage.flagDesignIndex]);
-            faction.diplomaticSide = DiplomaticSide.Light;
-
-            tabArmy = faction.armies.counter();
-            //tabBattle = new SpottedArrayCounter<BattleGroup>(battles);
-
-            input = new InputMap(playerindex);
-            if (Ref.netSession.HasInternet)
+            var profile = DssRef.storage.profileStorage.profiles[pStorage.profileIndex];
+            if (DssRef.state.PlayType() == PlayStateType.Play && DssRef.state.playstate().recolor.HasValue)
             {
-                var peer = Ref.netSession.LocalPeer();
-                if (peer != null)
-                {
-                    networkPeer = new Network.NetworkInstancePeer(peer,playerindex);
-                }
+                profile.flag = profile.flag.Clone();
+                profile.flag.col0_Main = DssRef.state.playstate().recolor.Value;
             }
-            input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
-            if (pStorage.inputSource.IsController)
+            SetProfile(profile);
+            if (!DssRef.state.host)
+            {
+                profile.casualControls &= Ref.netsett.remoteHostSettings.hostSettings.allowCasualControls;
+            }
+            
+            pfaction.GetFaction().diplomaticSide = DiplomaticSide.Light;
+
+            InputMap input = new InputMap(playerindex);
+            input.setInputSource(pStorage.inputSource);
+
+            if (pStorage.inputSource.IsXnaController)
             {
                 input.copyDataFrom(Ref.gamesett.controllerMap);
             }
-            else
+            else if (pStorage.inputSource.HasKeyBoard)
             {
                 input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
 
-            inputConnected = input.Connected;
+            //inputConnected = input.Connected;
 
-            faction.profile.gameStartInit();
-            faction.displayInFullOverview = true;
+            //faction.displayInFullOverview = true;
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
 
+            if (Ref.netSession.HasInternet)
+            {
+                initNetwork();
+            }
+
+            if (!Bound.IsWithin(playerData.view.ScreenIndex, 0, 3))
+            {
+                throw new Exception("Screen index error: " + playerData.view.ScreenIndex.ToString());
+            }
+
+            new GameControls(this, input);
 
             new GameHud(this, numPlayers);
-            buildControls = new Build.BuildControls(this);
 
+            cityTab = AvailableCityTabs()[0];
 
-            
-            mapControls = new Players.MapControls(this);
-            if (faction.mainCity != null)
-            {
-                mapControls.setCameraPos(faction.mainCity.tilePos);
-            }
             Ref.draw.AddPlayerScreen(playerData);
-            drawUnitsView = new MapDetailLayerManager(playerData);
+            mapLayersManager = new MapLayerManager(playerData);
             InitTutorial(newGame);
 
-            //new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", playerindex);
-
             refreshNeihgborAggression();
-            if (numPlayers > 1)
-            {
-                toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
-            }
-
-            if (StartupSettings.EndlessResources)
-            {
-                foreach (var c in faction.cities.Array)
-                {
-                    if (c != null)
-                    {
-                        //foreach (var type in City.MovableCityResourceTypes)
-                        //{
-                        //    var res = c.GetGroupedResource(type);
-                        //    res.amount += 1000;
-                        //    c.SetGroupedResource(type, res);
-                        //}
-                    }
-                }
-            }
+            //if (numPlayers > 1)
+            //{
+            //    toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
+            //}
 
             menDeliveryCopy = new DeliveryStatus();
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
 
             itemDeliveryCopy = new DeliveryStatus();
-            menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
-            
+            itemDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
+
             goldDeliveryCopy = new DeliveryStatus();
             goldDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Gold);
 
-            soldierConscriptCopy = new ConscriptProfile();
-            soldierConscriptCopy.defaultSetup(Build.BuildAndExpandType.SoldierBarracks);
+            soldierConscriptCopy = new BarracksStatus(BuildAndExpandType.SoldierBarracks);
 
-            archerConscriptCopy = new ConscriptProfile();
-            archerConscriptCopy.defaultSetup(Build.BuildAndExpandType.ArcherBarracks);
+            archerConscriptCopy = new BarracksStatus(BuildAndExpandType.ArcherBarracks);
 
-            warmashineConscriptCopy = new ConscriptProfile();
-            warmashineConscriptCopy.defaultSetup(Build.BuildAndExpandType.WarmashineBarracks);
+            warmachineConscriptCopy = new BarracksStatus(BuildAndExpandType.WarmachineBarracks);
 
-            knightConscriptCopy = new ConscriptProfile();
-            knightConscriptCopy.defaultSetup(Build.BuildAndExpandType.KnightsBarracks);
+            //knightConscriptCopy = new BarracksStatus(BuildAndExpandType.KnightsBarracks);
 
-            gunConscriptCopy = new ConscriptProfile();
-            gunConscriptCopy.defaultSetup(Build.BuildAndExpandType.GunBarracks);
+            gunConscriptCopy = new BarracksStatus(BuildAndExpandType.GunBarracks);
 
-            cannonConscriptCopy = new ConscriptProfile();
-            cannonConscriptCopy.defaultSetup(Build.BuildAndExpandType.CannonBarracks);
+            cannonConscriptCopy = new BarracksStatus(BuildAndExpandType.CannonBarracks);
 
         }
 
-        public void initPlayerToPlayer(int playerindex, int numPlayers)
+        public void NetUpdate(bool bSlowUpdate)
         {
-
-            for (int i = 0; i < numPlayers; i++)
             {
-                if (i != playerindex)
-                {
-                    if (toPlayerDiplomacies[i] == null)
-                    {
-                        var PtoP = new PlayerToPlayerDiplomacy()
-                        { index = i, };
-
-                        toPlayerDiplomacies[i] = PtoP;
-                        var otherP = DssRef.state.localPlayers[i].toPlayerDiplomacies[playerindex] = PtoP;
-                    }
-                }
-            }
-        }
-
-        public void NetUpdate()
-        {
-            if (Ref.netSession.IsClient)
-            {
-                var w = Ref.netSession.BeginWritingPacketToHost(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, SendPacketTo.All, 0, playerData.localPlayerIndex);
                 DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
+
+                RemotePlayerPointer.netWrite(w, this);
+
+                w.Write((int)timePlayed.TotalSeconds);
+
+                EightBit bits = new EightBit(Ref.steam.recordingOn, DssRef.DlcSupporter.owned);
+                bits.write(w);
             }
+
+            if (bSlowUpdate)
+            {
+                netWritePinUpdate();
+            }   
         }
 
         public override void writeGameState(BinaryWriter w)
@@ -271,290 +387,420 @@ namespace VikingEngine.DSSWars.Players
             base.writeGameState(w);
 
             w.Write((short)diplomaticPoints.Int());
+
             statistics.writeGameState(w);
-            if (toPlayerDiplomacies != null)
+
+
+            foreach (var kv in toPlayerDiplomacies)
             {
-                foreach (var tp in toPlayerDiplomacies)
-                {
-                    if (tp == null)
-                    {
-                        w.Write(false);
-                    }
-                    else
-                    {
-                        w.Write(true);
-                        tp.writeGameState(w);
-                    }
-                }
+                kv.Key.write(w);
+                kv.Value.writeGameState(w);
             }
+            w.Write(ushort.MaxValue);
+
             automation.writeGameState(w);
 
-            w.Write(mercenaryCost);
+            Debug.WriteCheck(w);
 
             tutorial_writeGameState(w);
-
             orders.writeGameState(w);
 
-            w.Write(viewCityTagsOnMap);
-            w.Write(viewArmyTagsOnMap);
+            cityHudSettings.write(w);   
+            armyHudSettings.write(w);
 
+            firstAttacker.write(w);
+            //w.Write((ushort)firstAttacker);
             w.Write((ushort)nextDominationSize);
-            w.Write((ushort)dominationEvents);
+            w.Write(cohalitionEvent);
+            w.Write(barbarianKiller);
+            w.Write((ushort)factionsTerminated);
+
+            writePins(w);
+            
+
+            storedCameraPos.writeGameState(w);
+
+            hud.pins.writeGameState(w);
+
+            tooPeacefulCheckTimer.write(w);
+            //gameControls.build.buildPriority.writeGameState(w, false);
+
+            writeBlackMarket(w);
+
             Debug.WriteCheck(w);
         }
 
+        
         public override void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             base.readGameState(r, subversion, pointers);
 
-            diplomaticPoints.value = r.ReadInt16();
-            statistics.readGameState(r, subversion);
-            if (toPlayerDiplomacies != null)
+            if (isDropInPlayer)
             {
-                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
+                readAiPlayerGameState(r, subversion);
+                return;
+            }
+
+            diplomaticPoints.value = r.ReadInt16();
+
+            statistics.readGameState(r, subversion);
+
+            if (subversion >= 59)
+            {
+                while (true)
                 {
-                    if (r.ReadBoolean())
+
+                    var rpfaction = PFaction.Empty;
+                    //int factionIndex = -1;
+
+                    if (subversion >= 114)
                     {
-                        PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy();
+                        rpfaction.read(r);
+                        //factionIndex = r.ReadUInt16();
+                    }
+                    else
+                    {
+                        int player = r.ReadInt16();
+
+                        if (arraylib.InBound(DssRef.state.localPlayers, player))
+                        {
+                            rpfaction = DssRef.state.localPlayers[player].pfaction;
+                        }
+                    }
+
+                    if (rpfaction.HasValue())
+                    {
+                        PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy(rpfaction);
+
                         tp.readGameState(r, subversion);
-                        toPlayerDiplomacies[i] = tp;
+                        toPlayerDiplomacies.Add(rpfaction, tp);                        
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
+
             automation.readGameState(r, subversion);
 
-            mercenaryCost = r.ReadInt32();
-            
+            // Debug.ReadCheck(r);//TEMP!
+            if (subversion >= 133)
+            {
+                Debug.ReadCheck(r);
+            }
+            else
+            {
+                var none1 = r.ReadInt32();
+            }
             tutorial_readGameState(r, subversion);
 
-            orders.readGameState(r, subversion, pointers);
+            orders.readGameState(playerData.localPlayerIndex, r, subversion, pointers);
 
-            viewCityTagsOnMap = r.ReadBoolean();
-            viewArmyTagsOnMap = r.ReadBoolean();
-
-            if (subversion >= 45)
+            if (subversion < 103)
             {
-                nextDominationSize = r.ReadUInt16();
-                dominationEvents = r.ReadUInt16();
+                var viewCityTagsOnMap = r.ReadBoolean();
+                var viewArmyTagsOnMap = r.ReadBoolean();
             }
+            else
+            {
+                cityHudSettings.read(r, subversion);
+                armyHudSettings.read(r, subversion);
+            }
+
+            if (subversion >= 73)
+            {
+                firstAttacker.read(r);
+                //firstAttacker = r.ReadUInt16();
+            }
+            nextDominationSize = r.ReadUInt16();
+            if (subversion < 72)
+            {
+                r.ReadUInt16();
+            }
+            else
+            {
+                cohalitionEvent = r.ReadBoolean();
+                barbarianKiller = r.ReadBoolean();
+                factionsTerminated = r.ReadUInt16();
+            }
+
+            if (subversion > 53)
+            {
+                readPins(r, subversion);
+            }
+
+            if (subversion >= 66)
+            {
+                storedCameraPos.readGameState(r, subversion);
+            }
+            if (subversion >= 69)
+            {
+                hud.pins.readGameState(r, subversion);
+            }
+
+            if (subversion >= 85)
+            {
+                tooPeacefulCheckTimer.read(r);
+            }
+
+            readBlackMarket(r, subversion);
 
             Debug.ReadCheck(r);
         }
 
+        public void writeBlackMarket(BinaryWriter w)
+        {
+            w.Write(Bound.UShort(BlackMarketCount));
+            w.Write(Bound.UShort(PrevCityCount));
+        }
+        public void readBlackMarket(BinaryReader r, int subversion)
+        {
+            if (subversion >= 132)
+            {
+                BlackMarketCount = r.ReadUInt16();
+                PrevCityCount = r.ReadUInt16();
+            }
+        }
+        struct CityClientSaveMeta
+        {
+            public int cityIndex;
+            public long memoryStart;
+            public long memoryLength;
+
+            public void write(System.IO.BinaryWriter w)
+            {
+                w.Write((ushort)cityIndex);
+                w.Write((ushort)memoryLength);
+            }
+
+            public void read(System.IO.BinaryReader r)
+            {
+                cityIndex = r.ReadUInt16();
+                memoryLength = r.ReadUInt16();
+            }
+        }
+        public void writeClientSave(BinaryWriter w)
+        {
+            orders.writeGameState(w);
+
+            writePins(w);
+            Debug.WriteCheck(w);
+
+            pfaction.GetFaction().writeClientState(w);
+            Debug.WriteCheck(w);
+
+            var f = pfaction.GetFaction();
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+
+            List<CityClientSaveMeta> clientSaveMetas = new List<CityClientSaveMeta>(f.cities.Count);
+            MemoryStreamHandler memory = new MemoryStreamHandler();
+            var memW = memory.GetWriter();
+
+            while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
+            {
+                var meta = new CityClientSaveMeta() { cityIndex = city.myIndex, memoryStart = memW.BaseStream.Position };
+
+                city.writeClientState(memW);
+                meta.memoryLength = memW.BaseStream.Position - meta.memoryStart;
+                clientSaveMetas.Add(meta);
+                //city.workTemplate.onFactionChange(city, workTemplate, true);
+            }
+
+
+            w.Write((ushort)clientSaveMetas.Count);
+            foreach (var c in clientSaveMetas)
+            {
+                c.write(w);
+            }
+
+            memory.WriteSaveFile(w);
+
+            writeBlackMarket(w);
+            Debug.WriteCheck(w);
+        }
+        public void readClientSave(int playerIx, BinaryReader r, int subversion)
+        {
+            orders.readGameState(playerIx, r, subversion, null);
+
+            readPins(r, subversion);
+            Debug.ReadCheck(r);
+                        
+            var f = pfaction.GetFaction();
+            f.readClientState(r, subversion);
+            Debug.ReadCheck(r);
+
+            int clientSaveMetasCount = r.ReadUInt16();
+            List<CityClientSaveMeta> clientSaveMetas = new List<CityClientSaveMeta>(clientSaveMetasCount);
+            for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
+            {
+                CityClientSaveMeta meta = new CityClientSaveMeta();
+                meta.read(r);
+                clientSaveMetas.Add(meta);
+            }
+
+            MemoryStreamHandler memory = new MemoryStreamHandler();
+            memory.ReadSaveFile(r);
+            var memR = memory.GetReader();
+            long readStart = 0;
+
+            for (int metaIx = 0; metaIx < clientSaveMetasCount; metaIx++)
+            {
+                memR.BaseStream.Position = readStart;
+                CityClientSaveMeta meta = clientSaveMetas[metaIx];
+                var city = DssRef.world.cities[meta.cityIndex];
+
+                if (city.pfaction == pfaction)
+                {
+                    city.readClientState(memR, subversion);
+                }
+
+                readStart += meta.memoryLength;
+            }
+
+            readBlackMarket(r, subversion);
+            Debug.ReadCheck(r);
+
+            //Apply faction setup
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref f.cities, DssRef.world.cities, out City city))
+            {
+                city.workTemplate.onFactionChange(city, f.workTemplate, true);
+            }
+            
+        }
+
         public void InitTutorial(bool newGame)
         {
-            if (newGame && DssRef.storage.runTutorial)
+            if ((newGame || PlatformSettings.STEAM_DEMO) &&
+                DssRef.storage.runTutorial &&
+                DssRef.state.PlayType() == PlayStateType.Play &&
+                Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))
             {
-                tutorial = new PlayerControls.Tutorial(this);
+                new PlayerControls.Tutorial(this);
             }
-            //inTutorialMode = false;
-            //mapControls.setZoomRange(inTutorialMode);
+        }
+
+        public bool IntutorialMode()
+        {
+            if (tutorial != null)
+            {
+                return tutorial.TutorialMode();
+            }
+            return false;
         }
 
         public void tutorial_writeGameState(BinaryWriter w)
         {
-            //w.Write(inTutorialMode);
-            //w.Write((int)tutorialMission);
-            //w.Write(tutorialMission_BuySoldier);
-            //w.Write(tutorialMission_MoveArmy);
             if (tutorial != null)
             {
                 w.Write(true);
-                tutorial.tutorial_writeGameState(w);
+                tutorial.writeGameState(w);
             }
             else
             { w.Write(false); }
         }
 
         public void tutorial_readGameState(BinaryReader r, int subversion)
-        {
-            if (subversion >= 7)
+        {   
+            bool inTutorialMode = r.ReadBoolean();
+            
+            if (inTutorialMode)
             {
-                bool inTutorialMode = r.ReadBoolean();
-                if (subversion < 15)
-                {
-                    bool non1 = r.ReadBoolean();
-                    bool non2 = r.ReadBoolean();
-                }
-
-                if (inTutorialMode)
-                {
-                    tutorial = new PlayerControls.Tutorial(this);
-                    tutorial.tutorial_readGameState(r, subversion);
-                }
-            }
-        }
-        public void factionTabClick(int tab)
-        {
-            factionTab = HeadDisplay.Tabs[tab];
+                new PlayerControls.Tutorial(this);
+                tutorial.readGameState(r, subversion);
+            }            
         }
         public void cityTabClick(int tab)
         {
-            cityTab = AvailableCityTabs()[tab];
+            MenuTab newTab = AvailableCityTabs()[tab];
+            if (newTab != cityTab)
+            {
+                cityTab = newTab;
+                if (newTab == MenuTab.Resources)
+                {
+                    SoundLib.SubTab(resourcesSubTab.managementType);
+                }
+                else
+                {
+                    SoundLib.Tab(newTab);
+                }
+            }
         }
         public void armyTabClick(int tab)
         {
-            armyTab = AvailableArmyTabs()[tab];
+            MenuTab newTab = AvailableArmyTabs()[tab];
+            if (newTab != armyTab)
+            {
+                armyTab = newTab;
+                SoundLib.Tab(newTab);
+            }
+        }
+
+        public void pinTabClick(int tab)
+        {
+            pinTab = tab == 0? MenuTab.Info : MenuTab.Tag;
         }
 
         public List<MenuTab> AvailableCityTabs()
-        { 
-            return tutorial != null ? tutorial.cityTabs : CityMenu.Tabs;
+        {
+            if (profile.casualControls)
+            {
+                return MapObjMenu.CasualTabs;
+            }
+            return tutorial != null && tutorial.TutorialMode() ? tutorial.cityTabs : MapObjMenu.CityTabs;
         }
 
         public List<MenuTab> AvailableArmyTabs()
         {
-            return ArmyMenu.Tabs;
+            return MapObjMenu.ArmyTabs;
         }
 
-        public bool InBuildOrdersMode()
-        {
-            return cityTab == Display.MenuTab.Build &&
-                mapControls.selection.obj != null &&
-                mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
-                buildControls.buildMode != SelectTileResult.None;                        
+        public void beginCreatePin()
+        { 
+            
         }
-
-        
-
-        //public RbAction WorkSafeguardTooltip;
-        
-
-       
-
-       
-
-        public override void createStartUnits()
+        public LocationPin createPin()
         {
-            IntVector2 onTile = DssRef.world.GetFreeTile(faction.mainCity.tilePos);
+            LocationPin pin = new LocationPin(this, gameControls.map.pointerPosWP);
+            pin.myIndex = pins.Add(pin);
+            pin.basicInit();
 
-            var mainArmy = faction.NewArmy(onTile);
-            mainArmy.tagBack = CityTagBack.Blue;
-            mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
+            gameControls.map.selection.obj = pin;
+            hud.needRefresh = true;
 
-            for (int i = 0; i < 5; ++i)
+            if (Ref.steam.isInitialized)
             {
-                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                            DssRef.lang.ObjectType_LocationPin_Ping,               // Title in UI
+                            DssRef.lang.ObjectType_LocationPin, // Description in UI
+                            "steam_marker",                 // Built-in Steam icon 
+                            4,                              // Priority (0 = default, max= 1000)
+                            0f,                             // Offset in seconds
+                            ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                        );
             }
 
-            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
-            {
-                int guardCount = 12;
+            return pin;
+        }        
 
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
-                {
-                    if (citiesC.sel != faction.mainCity)
-                    {
-                        onTile = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
-                        var army = faction.NewArmy(onTile);
-                        for (int i = 0; i < 4; ++i)
-                        {
-                            new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
-                            --guardCount;
-                        }
-                        //army.OnSoldierPurchaseCompleted();
-                        army.setAsStartArmy();
-                        if (guardCount <= 3)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                for (int i = 0; i < guardCount; ++i)
-                {
-                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
-                }
-            }
-            //mainArmy.OnSoldierPurchaseCompleted();
-            mainArmy.setAsStartArmy();
-        }
-
-        public void toPeacefulCheck_asynch()
+        public override void createStartUnits(double unitCountMulti, bool settlerGuard)
         {
-            if (faction.citiesEconomy.tax(null) > 0 && !DssRef.state.events.AiDelay())
-            {
-                int warCount = 0;
-                float opposingSize = 0;
-
-                for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
-                {
-                    if (faction.diplomaticRelations[relIx] != null &&
-                        faction.diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN2_Truce)
-                    {
-                        var opponent = faction.diplomaticRelations[relIx].opponent(faction);
-                        if (opponent.player.IsAi())
-                        {
-                            ++warCount;
-                            opposingSize += opponent.citiesEconomy.tax(null);
-                        }
-                    }
-                }
-
-                bool toPeaceful = true;
-
-                if (opposingSize > 0)
-                {
-                    float opposingSizePerc;
-                    
-                    opposingSizePerc = opposingSize / faction.citiesEconomy.tax(null);
-                    
-                    toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
-                }
-
-                if (toPeaceful)
-                {
-                    //start a war
-                    //const int MaxTrials = 10;
-
-                    //for (int i = 0; i < MaxTrials; ++i)
-                    //{
-                    //    var city = faction.cities.GetRandomUnsafe(Ref.rnd);
-                    //    if (city != null)
-                    //    {
-                    //        foreach (var cindex in city.neighborCities)
-                    //        {
-                    //            var otherfaction = DssRef.world.cities[cindex].faction;
-                    //            if ((otherfaction.factiontype == FactionType.DefaultAi ||  otherfaction.factiontype == FactionType.DarkFollower) &&
-                    //                otherfaction.armies.Count > 0)
-                    //            {
-                    //                var rel = DssRef.diplomacy.GetRelationType(faction, otherfaction);
-                    //                if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
-                    //                {
-                    //                    var aiPlayer = otherfaction.player.GetAiPlayer();
-                    //                    if (aiPlayer.aggressionLevel <= AiPlayer.AggressionLevel1_RevengeOnly)
-                    //                    {
-                    //                        aiPlayer.aggressionLevel = AiPlayer.AggressionLevel2_RandomAttacks;
-                    //                        aiPlayer.refreshAggression();
-                    //                    }
-                    //                    DssRef.diplomacy.declareWar(otherfaction, faction);
-                    //                    return;
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
-                    var attacker = DssRef.state.events.findAttackingNeighborFaction(faction);
-                    attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.diplomacy.declareWar(attacker, faction);
-                }
-            }
+            playerStartUnits(unitCountMulti, settlerGuard, DssRef.difficulty.honorGuardCount());
+           
         }
-
-       
 
         void refreshNeihgborAggression()
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                 {
-                    foreach (var n in citiesC.sel.neighborCities)
+                    EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
                     {
-                        DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                        nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
                     }
                 }
             }
@@ -564,411 +810,281 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                foreach (var n in city.neighborCities)
+                EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))
                 {
-                    DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
-                }                
+                    nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                }
             }
 
-            if (faction.cities.Count >= DssRef.world.cities.Count - 5)
+            var f = pfaction.GetFaction();
+            if (f.cities.Count > PrevCityCount)
             {
-                DssRef.state.events.onWorldDomination();
+                BlackMarketCount += 50 * f.cities.Count - PrevCityCount;
+                PrevCityCount = f.cities.Count;
+            }
+
+            if (!profile.casualControls)
+            { 
+                city.automateCity = true;
             }
         }
 
-        //public void enterBattle(Battle.BattleGroup battleGroup, AbsMapObject playerUnit)
-        //{
-        //    battles.Add(battleGroup);
-        //    RichBoxContent content = new RichBoxContent();
-        //    hud.messages.Title(content, DssRef.lang.Hud_Battle);
-
-        //    var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-        //    hud.messages.ControllerInputIcons(gotoBattleButtonContent);
-        //    gotoBattleButtonContent.Add(new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()));
-
-        //    content.Add(new RichboxButton(gotoBattleButtonContent,
-        //        new RbAction1Arg<Battle.BattleGroup>(goToBattle, battleGroup)));
-        //    hud.messages.Add(content);
-        //}
-
-        //void goToBattle(Battle.BattleGroup battleGroup)
-        //{
-        //    mapControls.cameraFocus = battleGroup;
-        //}
-
-        public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
+        public override void onNewRelation(bool isActuator, PFaction otherPFaction, DiplomaticRelation rel, RelationType previousRelation, bool fromAllianceTrade, bool localAction)
         {
-            base.onNewRelation(otherFaction, rel, previousRelation);
+            base.onNewRelation(isActuator, otherPFaction, rel, previousRelation, fromAllianceTrade, localAction);
+       
+            //Faction otherFaction = otherPFaction.GetFaction();
 
-            if (rel.Relation == RelationType.RelationType3_Ally)
+            if (otherPFaction.TryGetFaction(out var otherFaction))
             {
-                DssRef.achieve.onAlly(faction, otherFaction);
-            }
+                if (otherFaction.factiontype != FactionType.SouthHara)
+                //(rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
+                //otherFaction.factiontype != FactionType.SouthHara)
+                //||
+                //(otherFaction.player != null && otherFaction.player.IsHumanPlayer()))
+                {
 
-            if ((rel.Relation <= RelationType.RelationTypeN3_War &&
-                otherFaction.factiontype != FactionType.SouthHara)
-                ||
-                otherFaction.player.IsLocalPlayer())
-            {
-                string title;
-                if (rel.Relation >= RelationType.RelationType2_Good)
-                {
-                    title = DssRef.lang.Diplomacy_RelationType;
-                }
-                else if (previousRelation == RelationType.RelationTypeN2_Truce)
-                {
-                    title = DssRef.lang.Diplomacy_TruceEndTitle;
-                }
-                else
-                {
-                    title = DssRef.lang.Diplomacy_WarDeclarationTitle;
-                    Ref.music.OnGameEvent();
-                }
+                    switch (rel.Relation)
+                    {
+                        case RelationType.RelationType3_Ally:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationAlly.Play());
+                            break;
+                        case RelationType.RelationType2_Good:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationGood.Play());
+                            break;
+                        case RelationType.RelationType1_Peace:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationGood.Play());
+                            break;
+                        case RelationType.RelationType0_Neutral:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN1_Enemies:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN2_Truce:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN3_Mobilization:
+                        case RelationType.RelationTypeN4_War:
+                            if (previousRelation == RelationType.RelationTypeN2_Truce)
+                            {
+                                message(DssRef.lang.Diplomacy_TruceEndTitle, SoundLib.eventRelationWar.Play());
+                            }
+                            else
+                            {
+                                message(DssRef.lang.Diplomacy_WarDeclarationTitle, SoundLib.eventRelationWar.Play());
+                                Ref.music.OnGameEvent();
+                            }
+                            break;
+                       
+                        case RelationType.RelationTypeN5_TotalWar:
+                            if (previousRelation == RelationType.RelationTypeN2_Truce)
+                            {
+                                message(DssRef.lang.Diplomacy_TruceEndTitle, SoundLib.eventRelationTotalWar.Play());
+                            }
+                            else
+                            {
+                                message(DssRef.lang.Diplomacy_WarDeclarationTitle, SoundLib.eventRelationTotalWar.Play());
+                                Ref.music.OnGameEvent();
+                            }
+                            break;
 
-                RichBoxContent content = new RichBoxContent();
-                hud.messages.Title(content, title);
-                DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
-                Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(hud.messages.Add, content));
+                    }
+
+                    //if (rel.Relation >= RelationType.RelationType0_Neutral)
+                    //{
+                    //    message(DssRef.lang.Diplomacy_RelationType);
+                    //}
+                    //else if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
+                    //{
+                    //    if (previousRelation == RelationType.RelationTypeN2_Truce)
+                    //    {
+                    //        message(DssRef.lang.Diplomacy_TruceEndTitle);
+                    //    }
+                    //    else
+                    //    {
+                    //        message(DssRef.lang.Diplomacy_WarDeclarationTitle);
+                    //        Ref.music.OnGameEvent();
+                    //    }
+                    //}
+
+                    void message(string title, SoundContainerBase sound)
+                    {
+                        if (Ref.steam.isInitialized)
+                        {
+                            SteamTimeline.AddInstantaneousTimelineEvent(
+                                        title,               // Title in UI
+                                        DssRef.lang.Diplomacy_RelationType, // Description in UI
+                                        "steam_scroll",                 // Built-in Steam icon 
+                                        (uint)(-(int)rel.Relation + 5),                              // Priority (0 = default, max= 1000)
+                                        0f,                             // Offset in seconds
+                                        ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                    );
+                        }
+                        //SoundContainerBase sound = 
+                        RichBoxContent content = new RichBoxContent();
+                        MessageGroup_Ingame.Title(content, title);
+                        DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content, true);
+                        Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, sound, true));
+                    }
+
+                }
             }
         }
 
-        //public void loadedAndReady()
-        //{ }
-
-        //override public void Update()
-        //{
-        //    if (tutorial != null)
-        //    {
-        //        tutorial.update();
-        //    }
-        //}
-
-        public void userUpdate()
+        public void userUpdate(bool cityUpdate)
         {
+            gameControls.update();
 
-            if (tutorial != null)
+            debugUpdate();
+
+            mapLayersManager.Update();
+            playerData.view.Camera.RecalculateMatrices();
+
+            if (cityUpdate)
             {
-                tutorial.update();
+                updateMapOverlays();
+                cityBorders.update(this);
             }
 
-            bool menuFocusState = mapControls.focusedObjectMenuState();
-           
-                
-            hud.update();
+            updatePlayer();
+        }
 
-                
-            mapControls.update(hud.mouseOver);
+        public void uiUpdateOnly()
+        { 
+            gameControls.UiUpdateOnly();
+        }
 
-            if (input.AutomationSetting.DownEvent)
+        void debugUpdate()
+        {
+#if DEBUG
+            if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
             {
-                hud.OpenAutomationMenu();
-            }                
+                RichBoxContent c = new RichBoxContent();
+                c.text(gameControls.map.tilePosition.ToString());
+                hud.messages.Add(c);
+            }
 
             
+                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
+                {
+                    //var armiesC = faction.armies.counter();
+                    //while (armiesC.Next())
+                    //{
+                    //    armiesC.sel.food = -100;
+                    //    armiesC.sel.conservedFood = -120;
 
-            if (armyControls != null)
-            {
-                armyControls.update();
-            }
-            else
-            {
-                updateMapShortCuts();
-            }
-
-            if (PlatformSettings.DevBuild)
-            {
+                    //}
+                    //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
+                    //DssRef.state.events.TestNextEvent();
+                    //DssRef.state.events.TestNextEvent();
+                    //hud.objMenu.diplomacy?.makeServant();
+                    //if (gameControls.map.hover.obj is City)
+                    //{
+                    //    gameControls.map.hover.obj.GetCity().setFaction(faction, false, false, true);
+                    //}
+                    //if (gameControls.map.hover.obj is Army)
+                    //{
+                    //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
+                    //}
+                    //if (gameControls.map.hover.obj is Army)
+                    //{
+                    //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
+                    //}
+                    //debugKillCityLess();
+                    //fleeingArmyTest();
+                }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
-                    //battleLineUpTest(true);
+                    //faction.money.copper = -100000000000;
+                    //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
+                    //DssRef.state.events.TestNextEvent();
+                    //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
+                    battleLineUpTest2(true);
+                    //DssRef.state.events.TestNextEvent();
+                    //DssRef.state.events.testTooPeacefulCheck();
+                    //Ref.steam.StartRecording();
+                }
+                else if (Input.Keyboard.KeyUpEvent(Microsoft.Xna.Framework.Input.Keys.Y))
+                {
+                    //Ref.steam.StopRecording();
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
-                    var tile = DssRef.world.tileGrid.Get(mapControls.tilePosition);
-                    Debug.Log(tile.ToString() );
+                    //battleLineUpTest3_friendly_only();
+                    //battleLineUpTest2(false);
+
+                    //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
+                    //Debug.Log(tile.ToString());
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.N) && !Input.Keyboard.Ctrl)
                 {
-                    AbsWorldObject obj = mapControls.hover.obj as AbsWorldObject;
+                    AbsWorldObject obj = gameControls.map.hover.obj as AbsWorldObject;
                     obj?.AddDebugTag();
                 }
-            }
 
-            if (input.inputSource.IsController)
+
+            if (Input.Keyboard.KeyDownEvent(Keys.B) && Input.Keyboard.Ctrl)
             {
-
-                bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
-                    if (!menuFocusState && 
-                        !hud.menuFocus &&
-                        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))    
-                    {
-                        if (armyControls != null && 
-                            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
-                        {
-                            mapExecute();
-                        }
-                        else
-                        {
-                            mapSelect();
-                        }
-                    }
-
-                    if (input.ControllerMessageClick.DownEvent)
-                    {
-                        hud.messages.onControllerClick();
-                    }
-
-                    if (inputConnected && !input.Connected)
-                    {
-                        DssRef.state.menuSystem.controllerLost();
-                    }
-                    inputConnected = input.Connected;
-                }
-                else
-                {
-                    if (!hud.mouseOver)
-                    {
-                        if (input.Select.DownEvent)
-                        {
-                            mapSelect();
-                        }
-                        if (input.Execute.DownEvent)
-                        {
-                            mapExecute();
-                        }
-                    }
-                }
-
-                if (input.ControllerCancel.DownEvent && InBuildOrdersMode())
-                {
-                    buildControls.buildMode = SelectTileResult.None;
-                }
-            
-
-                updateGameSpeed();
-            
-
-            updateObjectTabbing();
-
-            
-
-            //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
-            drawUnitsView.Update();
-            playerData.view.Camera.RecalculateMatrices();
-            updateMapOverlays();
-
-            cityBorders.update(this);
+                DssRef.state.menuSystem.debugMenu();
+            }
+#endif 
         }
 
-        void setBuildMode(City city, BuildAndExpandType type)
+
+        public bool mayAttackObj(AbsGameObject obj)
         {
-            mapSelect(city);
-            cityTab = MenuTab.Build;
-            if (type != BuildAndExpandType.NUM_NONE)
+            if (obj != null)
             {
-                buildControls.buildMode = SelectTileResult.Build;
-                buildControls.placeBuildingType = type;
-            }
-        }
-
-        void updateMapShortCuts()
-        {
-            if (drawUnitsView.current.DrawDetailLayer)
-            {
-                if (input.Build.DownEvent && mapControls.hover.subTile.city.faction == this.faction)
+                switch (obj.gameobjectType())
                 {
-                    var order = orders.orderOnSubTile(mapControls.hover.subTile.subTilePos) as BuildOrder;
-                    if ( order != null)
-                    {
-                        setBuildMode(mapControls.hover.subTile.city, order.buildingType);
-                        return;
-                    }                    
-
-                    var build = BuildLib.BuildTypeFromTerrain(mapControls.hover.subTile.subTile.mainTerrain, mapControls.hover.subTile.subTile.subTerrain);
-                    setBuildMode(mapControls.hover.subTile.city, build);
-                    return;
+                    case GameObjectType.City:
+                        if (obj.GetCity().cityType == CityType.UnClaimed)
+                        {
+                            return false;
+                        }
+                        break;
+                    case GameObjectType.LocationPin:
+                        return false;
                 }
-
-                bool inHotkeyRepeceptiveMenu = mapControls.selection.obj != null &&
-                    mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
-                    (cityTab == MenuTab.Delivery || cityTab == MenuTab.Conscript);
-
-                if (!inHotkeyRepeceptiveMenu)
-                {
-                    switch (mapControls.hover.subTile.subTile.mainTerrain)
-                    {
-                        case TerrainMainType.Building:
-
-                            switch ((TerrainBuildingType)mapControls.hover.subTile.subTile.subTerrain)
-                            {
-                                case TerrainBuildingType.Recruitment:
-                                case TerrainBuildingType.Postal:
-                                    if (input.Copy.DownEvent)
-                                    {
-                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        mapControls.hover.subTile.city.copyDelivery(this, ix);
-                                        SoundLib.copy.Play();
-                                    }
-                                    if (input.Paste.DownEvent)
-                                    {
-                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        mapControls.hover.subTile.city.pasteDelivery(this, ix);
-                                        SoundLib.paste.Play();
-                                    }
-                                    if (input.Stop.DownEvent)
-                                    {
-                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        bool start = mapControls.hover.subTile.city.toggleDeliveryStop(ix);
-                                        (start? SoundLib.start : SoundLib.stop).Play();
-                                    }
-                                    break;
-
-                                case TerrainBuildingType.Nobelhouse:
-                                case TerrainBuildingType.SoldierBarracks:
-                                    if (input.Copy.DownEvent)
-                                    {
-                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        mapControls.hover.subTile.city.copyConscript(this, ix);
-                                        SoundLib.copy.Play();
-                                    }
-                                    if (input.Paste.DownEvent)
-                                    {
-                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        mapControls.hover.subTile.city.pasteConscript(this, ix);
-                                        SoundLib.paste.Play();
-                                    }
-                                    if (input.Stop.DownEvent)
-                                    {
-                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
-                                        bool start = mapControls.hover.subTile.city.toggleConscriptStop(ix);
-                                        (start ? SoundLib.start : SoundLib.stop).Play();
-                                        hud.needRefresh = true;
-                                    }
-                                    break;
-                            }
-                            break;
-                    }
-                }
-                //            //    case TerrainBuildingType.Recruitment:
-                //            //        build = BuildAndExpandType.Recruitment;
-                //            //        break;
-                //            //    case TerrainBuildingType.PigPen:
-                //            //        build = BuildAndExpandType.PigPen;
-                //            //        break;
-                //            //    case TerrainBuildingType.HenPen:
-                //            //        build = BuildAndExpandType.HenPen;
-                //            //        break;
-                //            //    case TerrainBuildingType.Barracks:
-                //            //        build = BuildAndExpandType.Barracks;
-                //            //        break;
-                //            //    case TerrainBuildingType.Brewery:
-                //            //        build = BuildAndExpandType.Brewery;
-                //            //        break;
-                //            //    case TerrainBuildingType.Carpenter:
-                //            //        build = BuildAndExpandType.Carpenter;
-                //            //        break;
-                //            //    case TerrainBuildingType.Nobelhouse:
-                //            //        build = BuildAndExpandType.Nobelhouse;
-                //            //        break;
-                //            //    case TerrainBuildingType.Storehouse:
-                //            //        build = BuildAndExpandType.Storehouse;
-                //            //        break;
-                //            //    case TerrainBuildingType.Tavern:
-                //            //        build = BuildAndExpandType.Tavern;
-                //            //        break;
-                //            //    case TerrainBuildingType.WorkerHut:
-                //            //        build = BuildAndExpandType.WorkerHuts;
-                //            //        break;
-                //            //    case TerrainBuildingType.Work_Bench:
-                //            //        build = BuildAndExpandType.WorkBench;
-                //            //        break;
-
-                //            //}
-
-                //            setBuildMode(mapControls.hover.subTile.city, build);
-                //        }
+                //if (hover.obj.gameobjectType() == GameObjectType.City &&
+                //    hover.obj.GetCity().cityType == CityType.UnClaimed)
+                //{
+                //    return false;
                 //}
-
-#if DEBUG
-                if (VikingEngine.Input.Keyboard.KeyDownEvent(Keys.P))
-                {
-                    var subtile = DssRef.world.subTileGrid.Get(mapControls.hover.subTile.subTilePos);
-                    subtile.SetType(TerrainMainType.Wall, (int)TerrainWallType.StoneWall, 1);
-                    DssRef.world.subTileGrid.Set(mapControls.hover.subTile.subTilePos, subtile);
-                }
-#endif
+                return obj.pfaction.GetFaction() != pfaction.GetFaction();
 
             }
 
-            if (mapControls.selection.obj != null && 
-                mapControls.selection.obj.gameobjectType() == GameObjectType.City)
-            {
-                var city = mapControls.selection.obj.GetCity();
-                switch (cityTab)
-                {
-                    case MenuTab.Delivery:
-                        if (input.Stop.DownEvent)
-                        {
-                            bool start = city.toggleDeliveryStop(city.selectedDelivery);
-                            hud.needRefresh = true;
-                            (start ? SoundLib.start : SoundLib.stop).Play();
-                        }
-                        if (input.Copy.DownEvent)
-                        {
-                            city.copyDelivery(this);
-                            SoundLib.copy.Play();
-                        }
-                        if (input.Paste.DownEvent)
-                        {
-                            city.pasteDelivery(this);
-                            SoundLib.paste.Play();
-                            hud.needRefresh = true;
-                        }
-                        break;
-                    case MenuTab.Conscript:
-                        if (input.Stop.DownEvent)
-                        {
-                            bool start = city.toggleConscriptStop(city.selectedConscript);
-                            hud.needRefresh = true;
-                            (start ? SoundLib.start : SoundLib.stop).Play();
-                        }
-                        if (input.Copy.DownEvent)
-                        {
-                            city.copyConscript(this);
-                            SoundLib.copy.Play();
-                        }
-                        if (input.Paste.DownEvent)
-                        {
-                            city.pasteConscript(this);
-                            SoundLib.paste.Play();
-                            hud.needRefresh = true;
-                        }
-                        break;
-                }
-            }
+            return false;
         }
 
-        public void debugMenu(GuiLayout layout)
-        {
-            new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
-            new GuiTextButton("1000 resources", "add 1000 of all resources to all cities", new GuiAction(new Action(debugAddResources) + DssRef.state.menuSystem.closeMenu), false, layout);
-            new GuiTextButton("Enemy alliance", "when the player grow to fast", new GuiAction(new Action(()=> { DssRef.state.events.collectAllianceAgainstPlayerDomination(this); }) + DssRef.state.menuSystem.closeMenu), false, layout);
 
-            //UnitType[] unitTypes = DssLib.AvailableUnitTypes;
-            //foreach (var type in unitTypes)
-            //{ 
-            //    new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
-            //        new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
-            //}
+        //public void debugMenu(GuiLayout layout)
+        //{
+        //    new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
+        //    new GuiTextButton("1000 resources", "add 1000 of all resources to all cities", new GuiAction(new Action(debugAddResources) + DssRef.state.menuSystem.closeMenu), false, layout);
 
-            //foreach (var type in unitTypes)
-            //{
-            //    new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
-            //        new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
-            //}
-        }
+
+
+        //    //new GuiTextButton("Enemy alliance", "when the player grow to fast", new GuiAction(new Action(()=> { DssRef.state.events.collectAllianceAgainstPlayerDomination(this); }) + DssRef.state.menuSystem.closeMenu), false, layout);
+
+        //    //UnitType[] unitTypes = DssLib.AvailableUnitTypes;
+        //    //foreach (var type in unitTypes)
+        //    //{ 
+        //    //    new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
+        //    //        new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
+        //    //}
+
+        //    //foreach (var type in unitTypes)
+        //    //{
+        //    //    new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
+        //    //        new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
+        //    //}
+        //}
 
         void debugAddResources()
         {
@@ -980,7 +1096,7 @@ namespace VikingEngine.DSSWars.Players
                 //    res.amount += 1000;
                 //    c.SetGroupedResource(type, res);
                 //}
-            } 
+            }
         }
 
         //void battleLineTest(UnitType type, bool sea)
@@ -992,14 +1108,14 @@ namespace VikingEngine.DSSWars.Players
 
         //    Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
         //    DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            
+
         //    IntVector2 position = mapControls.tilePosition;
 
-            
+
         //    {
         //        var army = faction.NewArmy(position);
         //        army.rotation = playerRot;
-                
+
         //        for (int i = 0; i < 5; ++i)
         //        {
         //           var group =  new SoldierGroup(army, UnitType.Soldier, false);
@@ -1012,7 +1128,7 @@ namespace VikingEngine.DSSWars.Players
         //        army.refreshPositions(true);
         //    }
         //    {
-                
+
         //        var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
         //        army.rotation = enemyRot;
         //        int count = type == UnitType.Ballista ? 10 : 5;
@@ -1025,7 +1141,7 @@ namespace VikingEngine.DSSWars.Players
         //                group.completeTransform(SoldierTransformType.ToShip);
         //            }
         //        }
-                    
+
         //        army.refreshPositions(true);               
 
         //    }
@@ -1033,193 +1149,123 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncUserUpdate()
         {
-            diplomacyMap?.asynchUpdate();
+            gameControls.diplomacy?.asynchUpdate();
 
             automation.asyncUpdate();
 
-            var city = faction.cities.GetRandomUnsafe(Ref.rnd);
-            if (city != null && 
-                city.automateCity && 
+            var city = pfaction.GetFaction().cities.GetRandom(Ref.rnd, DssRef.world.cities);
+            if (city != null &&
+                city.automateCity &&
                 city.automationFocus == AutomationFocus.Military)
             {
-                if (buySoldiers(city, true, false))
+                if (buySoldiers(city, false, city.warAutoArmyType, false))
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        buySoldiers(city, true, true);
+                        buySoldiers(city, false, city.warAutoArmyType, true);
                     }));
                 }
             }
 
-            faction.updateResourceOverview_async();
+            pfaction.GetFaction().updateResourceOverview_async();
 
-            float z = mapControls.camera.LookTarget.Z / DssRef.world.Size.Y;
+            float z = gameControls.map.camera.LookTarget.Z / DssRef.world.Size.Y;
             if (z < 0.5)
             {
                 setThemeColor(z / 0.5f, ThemeNorth_Blue, ThemeMid_Yellow);
             }
             else
             {
-                setThemeColor((z - 0.5f)/ 0.5f, ThemeMid_Yellow, ThemeSouth_Red);
+                setThemeColor((z - 0.5f) / 0.5f, ThemeMid_Yellow, ThemeSouth_Red);
             }
 
             void setThemeColor(float percSouth, Vector3 north, Vector3 south)
             {
-                ShaderThemeColor = VectorExt.AddX( north * (1f - percSouth) + south * percSouth, DssRef.time.ShaderDayLight_RedTint);
+                ShaderThemeColor = VectorExt.AddX(north * (1f - percSouth) + south * percSouth, DssRef.time.ShaderDayLight_RedTint);
+            }
+
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
+            {
+                citySel.WorkerStats_StuckBuildings_Process = 0;
+            }
+
+            lock (orders.orders)
+            {
+                bool differentPrio = false;
+                int prio = city.workTemplate.Get(WorkPriorityType.buildOrders).value;
+
+                for (int i = 0; i < orders.orders.Count; ++i)
+                {
+                    var buildOrder = orders.orders[i].GetBuild();
+                    if (buildOrder != null)
+                    {
+                        if (!Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.city))
+                        {
+                            buildOrder.city.WorkerStats_StuckBuildings_Process++;
+                        }
+
+                        differentPrio |= buildOrder.priority != prio;
+                    }
+                }
+
+                gameControls.build.ordersDifferFromPriority = differentPrio;
+            }
+
+            citiesC.Reset();
+            while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
+            {
+                citySel.WorkerStats_StuckBuildings = citySel.WorkerStats_StuckBuildings_Process;
             }
         }
 
-        void updateObjectTabbing()
+        public void ApplyBuildPrioToAll(City city)
         {
-            //CITY
-            if (input.NextCity.DownEvent && faction.cities.Count > 0)
+            lock (orders.orders)
             {
-                nextCity(!Input.Keyboard.Shift);
-                //if (Input.Keyboard.Shift)
-                //{
-                //    tabCity--;
-                //    if (tabCity < 0)
-                //    {
-                //        tabCity = faction.cities.Count-1;
-                //    }
-                //}
-                //else
-                //{
-                //    tabCity++;
-                //    if (tabCity >= faction.cities.Count)
-                //    {
-                //        tabCity = 0;
-                //    }
-                //}
+                int prio = city.workTemplate.Get(WorkPriorityType.buildOrders).value;
 
-
-                //int current = 0;
-                //var citiesC = faction.cities.counter();
-                //while (citiesC.Next())
-                //{
-                //    if (current == tabCity)
-                //    { 
-                //        //focus on city
-                //        mapControls.cameraFocus = citiesC.sel;
-                //        mapSelect(citiesC.sel);
-
-                //        return;
-                //    }
-                //    current++;
-                //}
-            }
-
-            //ARMY
-            if (input.NextArmy.DownEvent)
-            {
-                nextArmy(!Input.Keyboard.Shift);
-                //if (Input.Keyboard.Shift)
-                //{
-                //    if (tabArmy.Prev_Rollover())
-                //    {
-                //        mapControls.cameraFocus = tabArmy.sel;
-                //        mapSelect(tabArmy.sel);
-
-                //        return;
-                //    }
-                //}
-                //else
-                //{
-                //    if (tabArmy.Next_Rollover())
-                //    {
-                //        mapControls.cameraFocus = tabArmy.sel;
-                //        mapSelect(tabArmy.sel);
-
-                //        return;
-                //    }
-                //}
-            }
-
-        }
-
-        public void nextCity(bool forward)
-        {
-            if (forward)
-            {
-                tabCity++;
-                if (tabCity >= faction.cities.Count)
+                for (int i = 0; i < orders.orders.Count; ++i)
                 {
-                    tabCity = 0;
+                    var buildOrder = orders.orders[i].GetBuild();
+                    if (buildOrder != null)
+                    {
+                        buildOrder.priority = prio;
+                    }
                 }
-            }
-            else
-            {
-                tabCity--;
-                if (tabCity < 0)
-                {
-                    tabCity = faction.cities.Count - 1;
-                }
-            }
 
-
-            int current = 0;
-            var citiesC = faction.cities.counter();
-            while (citiesC.Next())
-            {
-                if (current == tabCity)
-                {
-                    //focus on city
-                    mapControls.cameraFocus = citiesC.sel;
-                    mapSelect(citiesC.sel);
-
-                    return;
-                }
-                current++;
-            }
-        }
-        public void nextArmy(bool forward)
-        {
-            if (forward)
-            {
-               if (tabArmy.Next_Rollover())
-                {
-                    mapControls.cameraFocus = tabArmy.sel;
-                    mapSelect(tabArmy.sel);
-
-                    return;
-                }
-            }
-            else
-            {
-                if (tabArmy.Prev_Rollover())
-                {
-                    mapControls.cameraFocus = tabArmy.sel;
-                    mapSelect(tabArmy.sel);
-
-                    return;
-                }
+                gameControls.build.ordersDifferFromPriority = false;
             }
         }
 
         void updateMapOverlays()
         {
-            if (drawUnitsView.current.DrawOverview)
+            if (mapLayersManager.current.DrawFar)
             {
-                if (diplomacyMap == null)
+                gameControls.map.hover.subTile.clear();
+                //gameControls.map.selection.subTile.clear();
+                if (gameControls.diplomacy == null)
                 {
-                    diplomacyMap = new DiplomacyMap(this);
+                    gameControls.diplomacy = new DiplomacyMap(this);
                 }
 
-                diplomacyMap.update();
+                gameControls.diplomacy.update();
             }
             else
             {
-                if (diplomacyMap != null)
+                if (gameControls.diplomacy != null)
                 {
-                    diplomacyMap.DeleteMe();
-                    diplomacyMap = null;
+                    gameControls.diplomacy.DeleteMe();
+                    gameControls.diplomacy = null;
                 }
             }
 
-            if (drawUnitsView.current.DrawNormal)
+            if (mapLayersManager.current.DrawMid)
             {
+                gameControls.map.hover.subTile.clear();
+                //gameControls.map.selection.subTile.clear();
                 if (cityTagMap == null)
-                { 
+                {
                     cityTagMap = new CityTagMap(this);
                 }
                 cityTagMap.update();
@@ -1227,80 +1273,36 @@ namespace VikingEngine.DSSWars.Players
             else
             {
                 if (cityTagMap != null)
-                { 
+                {
                     cityTagMap.DeleteMe();
                     cityTagMap = null;
                 }
             }
+
+            
         }
-
-        void updateGameSpeed()
-        {
-           
-            if (DssRef.difficulty.setting_allowPauseCommand && 
-                input.PauseGame.DownEvent && 
-                DssRef.state.localPlayers.Count == 1)//IsLocalHost())
-            {
-                hud.headOptions.pauseAction();
-            }
-
-            if (DssRef.state.IsSinglePlayer() && input.GameSpeed.DownEvent)
-            {
-                if (Ref.isPaused)
-                {
-                    //Ref.isPaused = false;
-                    //Ref.GameTimeSpeed = 1f;
-                    Ref.SetPause(false);
-                }
-                else
-                {
-                    for (int i = 0; i < GameSpeedOptions.Length; i++)
-                    {
-                        if (GameSpeedOptions[i] == Ref.GameTimeSpeed)
-                        {
-                            int next = Bound.SetRollover(i + 1, 0, GameSpeedOptions.Length - 1);
-                            Ref.SetGameSpeed( GameSpeedOptions[next]);
-                            hud.needRefresh = true;
-                            break;
-                        }
-                    }
-                }
-            }           
-        }
-
-
-        void cityBuilderTest()
-        {
-            //IntVector2 position = mapControls.subTilePosition;
-
-            //var model = DssRef.models.ModelInstance( LootFest.VoxelModelName.city_tower24, WorldData.SubTileWidth * 1.4f, false);//1.4f
-            //model.AddToRender(DrawGame.UnitDetailLayer);
-            //model.position = WP.ToSubTilePos_Centered(position);
-           
-        }
-
-
-
-        void battleLineUpTest(bool friendly)
+                
+        void battleLineUpTest3_friendly_only()
         {
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
-            Rotation1D playerRot =enemyRot.getInvert();
+            Rotation1D playerRot = enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
-            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.diplomacy.declareWar(faction, enemyFac);
-           
+            Faction enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
+            DssRef.settings.darkLordPlayer.pfaction.GetFaction().hasDeserters = false;
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
 
-            IntVector2 position = mapControls.tilePosition;
+
+            IntVector2 position = gameControls.map.tilePosition;
 
             Army friendlyArmy, enemyArmy;
 
 
             //if (friendly)
             {
-                var army = faction.NewArmy(position);
+                var army = pfaction.GetFaction().NewArmy(position);
                 friendlyArmy = army;
                 army.rotation = playerRot;
+
 
                 {
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
@@ -1314,7 +1316,7 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 8; ++i)
+                    for (int i = 0; i < 64; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1331,55 +1333,315 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 4; ++i)
+                    for (int i = 0; i < 16; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
                 }
-                //{
-                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                //    {
-                //        conscript = new ConscriptProfile()
-                //        {
-                //            weapon = Resource.ItemResourceType.HandCulverin,
-                //            armorLevel = Resource.ItemResourceType.IronArmor,
-                //            training = TrainingLevel.Basic,
-                //            specialization = SpecializationType.Traditional,
-                //        }
-                //    };
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Ballista,
+                            armorLevel = Resource.ItemResourceType.PaddedArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
 
-                //    for (int i = 0; i < 4; ++i)
-                //    {
-                //        new SoldierGroup(army, SoldierProfile, army.position);
-                //    }
-                //}
-                //{
-                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                //    {
-                //        conscript = new ConscriptProfile()
-                //        {
-                //            weapon = Resource.ItemResourceType.ManCannonBronze,
-                //            armorLevel = Resource.ItemResourceType.IronArmor,
-                //            training = TrainingLevel.Basic,
-                //            specialization = SpecializationType.Traditional,
-                //        }
-                //    };
+                    for (int i = 0; i < 16; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
 
-                //    for (int i = 0; i < 2; ++i)
-                //    {
-                //        new SoldierGroup(army, SoldierProfile, army.position);
-                //    }
-                //}
                 army.setAsStartArmy();
                 //army.(true);
             }
-            //else
+
+        }
+
+        void battleLineUpTest2(bool friendly)
+        {
+            Rotation1D enemyRot = Rotation1D.FromDegrees(180 + Ref.rnd.Plus_Minus(10));
+            Rotation1D playerRot = enemyRot.getInvert();
+
+            Faction enemyFac = DssRef.settings.Faction_Barbarian.GetFaction();//DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
+            enemyFac.hasDeserters = false;
+            //DssRef.world.diplomacy.declareWar(faction, enemyFac);
+
+
+            IntVector2 position = gameControls.map.tilePosition;
+
+            Army friendlyArmy, enemyArmy;
+
+
+            if (friendly)
+            {
+                var army = pfaction.GetFaction().NewArmy(position);
+                friendlyArmy = army;
+                army.rotation = playerRot;
+                army.armyColumnWidth = 6;
+
+                //{
+                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                //    {
+                //        conscript = new ConscriptProfile()
+                //        {
+                //            weapon = Resource.ItemResourceType.ShortSword,
+                //            armorLevel = Resource.ItemResourceType.IronArmor,
+                //            training = TrainingLevel.Basic,
+                //            specialization = SpecializationType.Traditional,
+                //        }
+                //    };
+
+                //    for (int i = 0; i < 8; ++i)
+                //    {
+                //        new SoldierGroup(army, SoldierProfile, army.position);
+                //    }
+                //}
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Sword,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.ThrowingSpear,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Ballista,
+                            armorLevel = Resource.ItemResourceType.PaddedArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            //weapon = Resource.ItemResourceType.KnightsLance,
+                            //armorLevel = Resource.ItemResourceType.IronArmor,
+                            //training = TrainingLevel.Basic,
+                            //specialization = SpecializationType.Traditional,
+
+
+                            man = Resource.ItemResourceType.NobleMen,
+                            weapon = Resource.ItemResourceType.HandSpear,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            animal = Resource.ItemResourceType.WarHorse,
+                            mountArmor = Resource.ItemResourceType.MountIronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Bow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Ballista,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+
+                army.setAsStartArmy();
+                //army.(true);
+            }
+            else
             {
 
                 var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
                 enemyArmy = army;
                 army.rotation = enemyRot;
 
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Pike,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 12; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Crossbow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.TwoHandSword,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Catapult,
+                            armorLevel = Resource.ItemResourceType.PaddedArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+
+                army.refreshPositions(true);
+                army.setAsStartArmy();
+            }
+        }
+        void fleeingArmyTest()
+        {
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
+            Rotation1D playerRot = enemyRot.getInvert();
+
+            Faction enemyFac = DssRef.settings.Faction_Barbarian.GetFaction();
+            enemyFac.money.copper = -10000;
+            enemyFac.hasDeserters = true;
+            enemyFac.player.protectedFromDelete = false;
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
+
+
+            IntVector2 position = gameControls.map.tilePosition;
+
+            Army friendlyArmy, enemyArmy;
+
+
+            //if (friendly)
+            {
+                var army = pfaction.GetFaction().NewArmy(position);
+                friendlyArmy = army;
+                army.rotation = playerRot;
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Crossbow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 12; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
                 {
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
@@ -1397,12 +1659,69 @@ namespace VikingEngine.DSSWars.Players
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
                 }
+
+                army.setAsStartArmy();
+            }
+            //else
+            {
+
+                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                enemyArmy = army;
+                army.rotation = enemyRot;
+
                 {
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.Bow,
+                            weapon = Resource.ItemResourceType.ShortSword,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 16; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                
+
+                army.refreshPositions(true);
+                army.setAsStartArmy();
+                army.food = 0;
+            }
+
+        }
+
+        void battleLineUpTest(bool friendly)
+        {
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
+            Rotation1D playerRot = enemyRot.getInvert();
+
+            Faction enemyFac = DssRef.settings.darkLordPlayer.pfaction.GetFaction();
+            enemyFac.hasDeserters = false;
+            DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
+
+
+            IntVector2 position = gameControls.map.tilePosition;
+
+            Army friendlyArmy, enemyArmy;
+
+
+            //if (friendly)
+            {
+                var army = pfaction.GetFaction().NewArmy(position);
+                friendlyArmy = army;
+                army.rotation = playerRot;
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Crossbow,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,
@@ -1414,179 +1733,158 @@ namespace VikingEngine.DSSWars.Players
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
                 }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Ballista,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 4; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+               
+                army.setAsStartArmy();
+                //army.(true);
+            }
+            //else
+            {
+
+                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                enemyArmy = army;
+                army.rotation = enemyRot;
+
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.ShortSword,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 16; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.LongBow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Pike,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
                 //{
                 //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                 //    {
                 //        conscript = new ConscriptProfile()
                 //        {
-                //            weapon = Resource.ItemResourceType.HandCulverin,
+                //            weapon = Resource.ItemResourceType.KnightsLance,
                 //            armorLevel = Resource.ItemResourceType.IronArmor,
                 //            training = TrainingLevel.Basic,
                 //            specialization = SpecializationType.Traditional,
                 //        }
                 //    };
 
-                //    for (int i = 0; i < 4; ++i)
+                //    for (int i = 0; i < 8; ++i)
                 //    {
                 //        new SoldierGroup(army, SoldierProfile, army.position);
                 //    }
                 //}
-                //{
-                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                //    {
-                //        conscript = new ConscriptProfile()
-                //        {
-                //            weapon = Resource.ItemResourceType.ManCannonBronze,
-                //            armorLevel = Resource.ItemResourceType.IronArmor,
-                //            training = TrainingLevel.Basic,
-                //            specialization = SpecializationType.Traditional,
-                //        }
-                //    };
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.TwoHandSword,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
 
-                //    for (int i = 0; i < 2; ++i)
-                //    {
-                //        new SoldierGroup(army, SoldierProfile, army.position);
-                //    }
-                //}
-
-                //army.refreshPositions(true);
+                    for (int i = 0; i < 5; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+              
+                army.refreshPositions(true);
                 army.setAsStartArmy();
             }
 
-            friendlyArmy.Order_Attack(enemyArmy);
-
         }
 
-        void mapSelect()
-        {
-            if (mapControls.hover.subTile.hasSelection && InBuildOrdersMode())
-            {
-                buildControls.onTileSelect(mapControls.hover.subTile);
-            }
-            else
-            {
-                bool sameMapObject = mapControls.selection.obj != null;
-                if (mapControls.hover.subTile.hasSelection)
-                {
-                    sameMapObject &= mapControls.selection.obj == mapControls.hover.subTile.city;
-                }
-                else
-                {
-                    sameMapObject &= mapControls.hover.obj == mapControls.selection.obj;
-                }
-                bool oldselection = clearSelection();
-
-                bool newselection = clickHover(sameMapObject);
-
-                if (newselection && input.inputSource.IsController)
-                {
-                    if (input.ControllerFocus.DownEvent || mapControls.focusedObjectMenuState())
-                    {
-                        mapControls.setObjectMenuFocus(true);
-                    }
-                }
 
 
-                if (oldselection && !newselection)
-                {
-                    SoundLib.back.Play();
-                } 
-            }
-        }
-
-        public void mapSelect(AbsWorldObject mapObject)
-        {
-            bool sameMapObject = mapControls.selection.obj != null && mapObject == mapControls.selection.obj;
-            clearSelection();
-
-            mapControls.hover.obj = mapObject;
-            clickHover(sameMapObject);
-
-        }
-        
-        public bool clearSelection()
-        {
-            bool bClear=false;
-
-            if (armyControls != null)
-            {
-                armyControls.clearState();
-                armyControls = null;                
-            }
-
-            bClear = mapControls.clearSelection();
-            hud.clearState();
-
-            return bClear;
-        }
-
-        void mapExecute()
-        {
-            if (armyControls != null)
-            {
-                armyControls.mapExecute();
-                armyControls.moveOrderEffect();
-
-                if (input.inputSource.IsController)
-                {
-                    clearSelection();
-                }
-            }
-        }
 
         public void asyncPlayerPathUpdate(float time)
         {
-            armyControls?.asynchUpdate();
+            gameControls.army?.asynchPathUpdate();
 
             //return false;
         }
 
-        bool clickHover(bool sameMapObject)
+        override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            if (mapControls.hover.subTile.hasSelection)//.selectable(faction, out var city))
-            {
+            base.asynchCullingUpdate(time, bStateA);
 
-                SoundLib.click.Play();
+            orders.cullingUpdate(bStateA, playerData.localPlayerIndex);
+        }
 
-                mapControls.onTileSelect(mapControls.hover.subTile, sameMapObject);
-
-                return true;
-            }
-
-            if (mapControls.hover.obj != null &&
-                mapControls.hover.obj.GetFaction() == this.faction)
-            {
-                SoundLib.click.Play();
-                mapControls.onSelect();
-
-                switch (mapControls.selection.obj.gameobjectType())
-                {
-                    case GameObjectType.Army:
-                        SoundLib.select_army.Play();
-                        {
-                            armyControls = new ArmyControls(this, new List<AbsMapObject> { mapControls.selection.obj.GetArmy() });
-                        }
-                        break;
-                    case GameObjectType.City:
-                        SoundLib.select_city.Play();
-                        break;
-
-                    //case GameObjectType.Faction:
-                    //    SoundLib.select_faction.Play();
-                    //    break;
-                }
-
-                return true;
-            }
-
-            
-
-            return false;
+        public void baseOnGameStart()
+        {
+            factionPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true,
+                (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
+                FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
+            minimapPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true, FactionMapFilter.Minimap);
+            unitsPixelTexture = new UnitsPixelTexture(playerData.localPlayerIndex);
         }
 
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
+
+            baseOnGameStart();
+
             hud.messages.onGameStart();
             oneSecUpdate();
 
@@ -1594,34 +1892,70 @@ namespace VikingEngine.DSSWars.Players
             {
                 commandPoints.value = commandPoints.max * 0.5;
                 diplomaticPoints.value = diplomaticPoints.max * 0.6;
-            }
 
-            if (DssRef.difficulty.resourcesStartHelp)
-            {
-                Task.Factory.StartNew(() =>
+
+                if (DssRef.difficulty.resourcesStartHelp)
                 {
-                    var citiesC = faction.cities.counter();
-                    while (citiesC.Next())
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
-                        citiesC.sel.checkPlayerFuelAccess_OnGamestart_async();
+                        citySel.checkPlayerFuelAccess_OnGamestart_async();
                     }
-                });
+                }
             }
 
-            if (newGame)
-            { 
-                faction.mainCity.tagBack = CityTagBack.Carton;
-                faction.mainCity.tagArt = CityTagArt.IconFaction;
+            pfaction.GetFaction().refreshMainCity();
+            if (pfaction.GetFaction().mainCity != null)
+            {
+                if (newGame)
+                {
+                    pfaction.GetFaction().mainCity.Tag = new MapObjectTag(CityTagBack.Carton, MapObjectTag.Tag_Faction);
+
+                    if (profile.casualControls)
+                    {
+                        pfaction.GetFaction().mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
+                    }
+
+                    if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
+                    {   
+                        for (int i = 0; i < CityResourceIndex.COUNT; i++)
+                        {
+                            ref GroupedResource resources = ref pfaction.GetFaction().mainCity.GetRefGroupedResource(i);
+                            resources.hardSetLimit(100);
+                        }
+                    }
+                }
+
+                gameControls.map.setCameraPos(pfaction.GetFaction().mainCity.tilePos);
+            }
+            else
+            {
+                gameControls.map.setCameraPos(DssRef.world.Size / 2);
             }
 
-            nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+            nextDominationSize = pfaction.GetFaction().cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+
+            if (DssRef.state.host)
+            {
+                timePlayed = DssRef.time.TotalIngameTime();
+            }
         }
 
         public double diplomacyAddPerSec()
         {
-            return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.NobelHouseAddDiplomacy * faction.nobelHouseCount;
+            return DssRef.world.diplomacy.DefaultDiplomacyPerSecond + DssRef.world.diplomacy.EmbassyAddDiplomacy * pfaction.GetFaction().embassyCount;
         }
 
+        public MapDetailLayerType mapLayer()
+        {
+            if (Map.MapLayerManager.CameraIndexToView == null ||
+                Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex] == null)
+            {
+                return MapDetailLayerType.TerrainOverview2;
+            }
+
+            return Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex].current.type;
+        }
         public double diplomacyAddPerSec_CapIncluded()
         {
             if (diplomaticPoints.value < diplomaticPoints_softMax)
@@ -1630,7 +1964,7 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                return DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
+                return DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
             }
         }
 
@@ -1638,11 +1972,13 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
 
-            faction.resourceOverviewOneSecondUpdate();
-
-            double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.NobelHouseAddMaxDiplomacy * faction.nobelHouseCount;
+            if (DssRef.time.oneMinute)
+            {
+                pfaction.GetFaction().resourceOverviewOneMinuteUpdate();
+            }
+            double max = DssRef.world.diplomacy.DefaultMaxDiplomacy + DssRef.world.diplomacy.EmbassyAddMaxDiplomacy * pfaction.GetFaction().embassyCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);
-            diplomaticPoints.setMax(max + DssRef.diplomacy.Diplomacy_HardMax_Add);
+            diplomaticPoints.setMax(max + DssRef.world.diplomacy.Diplomacy_HardMax_Add);
 
             if (diplomaticPoints.value < diplomaticPoints_softMax)
             {
@@ -1650,21 +1986,21 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                diplomaticPoints.add(DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
+                diplomaticPoints.add(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
             }
 
             if (mercenaryMarket.value < MercenaryMarketSoftLock1)
             {
                 mercenaryMarket.value += MercenaryMarketAddPerSec_Speed1;
             }
-            else 
+            else
             {
                 mercenaryMarket.value += MercenaryMarketAddPerSec_Speed2;
             }
 
             if (StartupSettings.EndlessResources)
             {
-                faction.addMoney_factionWide(1000);
+                pfaction.GetFaction().addGold_factionWide(1000);
             }
 
             if (StartupSettings.EndlessDiplomacy)
@@ -1677,41 +2013,27 @@ namespace VikingEngine.DSSWars.Players
             //hud.oneSecondUpdate(this);
         }
 
-        public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType farm, out bool intelligent)
-        {
-            intelligent = true;
-            city.AutoExpandType(out work, out farm);
-        }
-        public bool CityTagsOnMapProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                viewCityTagsOnMap = value;
-                (value ? SoundLib.click : SoundLib.back).Play();
-            }
-            return viewCityTagsOnMap;
-        }
-
-        public bool ArmyTagsOnMapProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                viewArmyTagsOnMap = value;
-                (value ? SoundLib.click : SoundLib.back).Play();
-            }
-            return viewArmyTagsOnMap;
-        }
+        //public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType farm, out bool intelligent)
+        //{
+        //    intelligent = true;
+        //    city.AutoExpandType(out work, out farm);
+        //}
+       
         public bool IsLocalHost()
-        { 
+        {
             return playerData.localPlayerIndex == 0;
         }
 
-        public override bool IsLocal => true;
-
-        public override bool IsAi()
+        virtual public bool updateObjectDisplay()
         {
             return false;
         }
+
+
+
+        public override bool IsLocal => true;
+
+        
 
         public override bool IsLocalPlayer()
         {
@@ -1722,6 +2044,42 @@ namespace VikingEngine.DSSWars.Players
         {
             return this;
         }
-        public override string Name => playerData.PublicName(LoadedFont.Regular);
+        public override bool HasSupportDLC()
+        {
+            return DssRef.DlcSupporter.owned;
+        }
+        public override string Name
+        {
+
+            get
+            {
+                if (string.IsNullOrEmpty(profile.name))
+                {
+                    return playerData.PublicName(LoadedFont.Regular);
+                }
+                else
+                {
+                    return LoadContent.CheckCharsSafety(profile.name, LoadedFont.Regular);
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Local Player ({playerData.PublicName(LoadedFont.Regular)})";
+        }
+    }
+
+    struct MessagePosition
+    {
+        public IntVector2 tilePos;
+        public GameTimeStamp time;
+
+        public MessagePosition(IntVector2 tilePos)
+        {
+            this.tilePos = tilePos;
+            time = GameTimeStamp.Now();
+        }
     }
 }
+

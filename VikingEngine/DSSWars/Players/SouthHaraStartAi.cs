@@ -37,10 +37,8 @@ namespace VikingEngine.DSSWars.Players
                     if (!messageDone &&
                             armiesC.sel.walkGoal.SideLength(armiesC.sel.tilePos) <= 80)
                     {                       
-                        foreach (var p in DssRef.state.localPlayers)
-                        {
-                            p.hud.messages.Add(DssRef.lang.EventMessage_HaraMercenaryTitle, DssRef.lang.EventMessage_HaraMercenaryText);
-                        }
+                         DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.EventMessage_HaraMercenaryTitle, DssRef.lang.EventMessage_HaraMercenaryText, SoundLib.storyDramaticEvent);
+                        
                         messageDone = true;
                     }
 
@@ -56,7 +54,7 @@ namespace VikingEngine.DSSWars.Players
         void complete()
         {
             faction.player.GetAiPlayer().nextDecisionTimer.Seconds = 5;
-            faction.gold = 20000;
+            faction.money.copper = 2000000;
             faction.hasDeserters = true;
             DeleteMe();
         }

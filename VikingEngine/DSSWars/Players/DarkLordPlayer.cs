@@ -6,43 +6,68 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
 {
     class DarkLordPlayer : AiPlayer
     {
-        List<Faction> darkLordAllies;
+        List<PFaction> servantFactions;
         int maxDiplomacy;
-        int diplomacyPoints = 0;
+        
         bool hasEntered = false;
 
         public int factoriesLeft;
 
-        public AbsDetailUnit darkLordUnit = null;
+        public AbsSoldierUnit darkLordUnit = null;
 
-        public DarkLordPlayer(Faction faction)
-            : base(faction)
+        int servantCountdown = 20;
+
+
+        public DarkLordPlayer(Faction faction, bool newGame)
+            : base(faction, newGame)
         {
-            switch (DssRef.difficulty.bossSize)
+            DssRef.settings.darkLordPlayer = this;
+
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
             {
-                case BossSize.Small:
-                    factoriesLeft = 2;
-                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 16;
-                    break;
-                case BossSize.Medium:
-                    factoriesLeft = 3;
-                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 22;
-                    break;
-                case BossSize.Large:
-                    factoriesLeft = 3;
-                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 34;
-                    break;
-                case BossSize.Huge:
-                    factoriesLeft = 4;
-                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 40;
-                    break;
+                switch (DssRef.difficulty.bossSize)
+                {
+                    case BossSize.Small:
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 60;
+                        break;
+                    case BossSize.Medium:
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 120;
+                        break;
+                    case BossSize.Large:
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 200;
+                        break;
+                    case BossSize.Huge:
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 300;
+                        break;
+                }
+            }
+            else
+            {
+                switch (DssRef.difficulty.bossSize)
+                {
+                    case BossSize.Small:
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 30;
+                        break;
+                    case BossSize.Medium:
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 60;
+                        break;
+                    case BossSize.Large:
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 100;
+                        break;
+                    case BossSize.Huge:
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 140;
+                        break;
+                }
+                
             }
         }
 
@@ -50,12 +75,13 @@ namespace VikingEngine.DSSWars.Players
         {
             base.writeGameState(w);
 
-            w.Write(arraylib.SafeCount(darkLordAllies));
-            if (darkLordAllies != null)
+            w.Write(arraylib.SafeCount(servantFactions));
+            if (servantFactions != null)
             {
-                foreach (var ally in darkLordAllies)
+                foreach (var ally in servantFactions)
                 {
-                    w.Write((ushort)ally.parentArrayIndex);
+                    //w.Write((ushort)ally.myIndex);
+                    ally.write(w);
                 }
             }
 
@@ -74,11 +100,11 @@ namespace VikingEngine.DSSWars.Players
             int darkLordAlliesCount = r.ReadInt32();
             if (darkLordAlliesCount > 0)
             {
-                darkLordAllies = new List<Faction>(darkLordAlliesCount);
+                servantFactions = new List<PFaction>(darkLordAlliesCount);
                 for (int i = 0; i < darkLordAlliesCount; i++)
                 {
-                    var f = DssRef.world.factions.Array[r.ReadUInt16()];
-                    darkLordAllies.Add(f);
+                    //var f = DssRef.world.factions.GetIndex_Safe(r.ReadUInt16());
+                    servantFactions.Add(new PFaction(r));
                 }
             }
 
@@ -90,66 +116,52 @@ namespace VikingEngine.DSSWars.Players
             Debug.ReadCheck(r);
         }
 
-        public void EnterMap(Faction takeOverFaction, List<Faction> darkLordAllies)
+        public void EnterMap(/*Faction takeOverFaction, */List<PFaction> servantFactions, List<PFaction> darkLordAllies)
         {
-            if (DssRef.difficulty.PercDifficulty > 100)
-            {
-                Ref.music.stop(true);
-                Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
-            }
+            
+            pfaction.GetFaction().money.copper = DssConst.HeadCityStartMaxWorkForce * 1000000;
 
-            faction.gold = DssConst.HeadCityStartMaxWorkForce * 10;
-
-            this.darkLordAllies = darkLordAllies;
-            Faction greenwood = DssRef.world.factions.Array[DssRef.settings.Faction_GreenWood];
+            //this.servantFactions = darkLordAllies;
+            //Faction greenwood = DssRef.world.faction(DssRef.settings.Faction_GreenWood);
            
             foreach (var ally in darkLordAllies)
             {
-               var relation = DssRef.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
-
-                if (relation != null)
-                {
-                    relation.secret = false;
-                }
+                DssRef.world.diplomacy.SetRelationType(pfaction, ally, pfaction, RelationType.RelationType3_Ally);
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    DssRef.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN4_TotalWar).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+                    DssRef.world.diplomacy.SetRelationType(p.pfaction, ally, ally, RelationType.RelationTypeN5_TotalWar);
                 }
 
-                if (greenwood != null)
-                {
-                    DssRef.diplomacy.SetRelationType(greenwood, ally, RelationType.RelationTypeN4_TotalWar);
-                }                
+                //if (greenwood != null)
+                //{
+                    DssRef.world.diplomacy.SetRelationType(DssRef.settings.Faction_GreenWood, ally, ally, RelationType.RelationTypeN5_TotalWar);
+                //}                
             }
 
-            darkLordAllies.Remove(faction);
-            darkLordAllies.Remove(takeOverFaction);
+            //darkLordAllies.Remove(faction);
+            //darkLordAllies.Remove(takeOverFaction);
 
-            makeServant(takeOverFaction, true);
+            //makeServant(takeOverFaction, true);
+            
+            //TEMP
+            //maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 64;
 
-            foreach (var f in darkLordAllies)
+            diplomacyPoints = maxDiplomacy;
+            //foreach (var f in darkLordAllies)
+            while (servantFactions.Count > 0 &&
+                diplomacyPoints > 0)
             {
-                if (f.factiontype == FactionType.DefaultAi)
-                {
-                    makeServant(f, false);
-                }
+                var f = arraylib.RandomListMemberPop(servantFactions);
+                makeServant(f.GetFaction(), false);
             }
+            this.servantFactions = servantFactions;
 
-            diplomacyPoints /= 4;
+            //diplomacyPoints /= 4;
 
             hasEntered = true;
+            protectedFromDelete = false;
         }
-
-        //public override void Update()
-        //{
-        //    base.Update();
-
-        //    if (hasEntered)
-        //    { 
-                
-        //    }
-        //}
 
         public override void aiPlayerAsynchUpdate(float time)
         {
@@ -158,21 +170,28 @@ namespace VikingEngine.DSSWars.Players
 
             if (hasEntered)
             {
-                var city = faction.cities.GetRandomUnsafe(Ref.rnd);
+                var city = pfaction.GetFaction().cities.GetRandom(Ref.rnd, DssRef.world.cities);
                 if (city != null)
                 {
-                    foreach (var n in city.neighborCities)
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))
                     {
-                        var nFaction = DssRef.world.cities[n].faction;
-                        if (nFaction != faction &&
+                        var nFaction = nCity.pfaction.GetFaction();
+                        if (nFaction != null &&
+                            nFaction != pfaction.GetFaction() &&
                             nFaction.diplomaticSide != DiplomaticSide.Light &&
-                            !DssRef.diplomacy.PositiveRelationWithPlayer(nFaction))
+                            !DssRef.world.diplomacy.PositiveRelationWithPlayer(nFaction))
                         {
-                            lock (darkLordAllies)
+                            if (servantFactions == null)
                             {
-                                if (!darkLordAllies.Contains(nFaction))
+                                servantFactions = new List<PFaction>(8);
+                            }
+
+                            lock (servantFactions)
+                            {
+                                if (!servantFactions.Contains(nFaction.pfaction))
                                 {
-                                    darkLordAllies.Add(nFaction);
+                                    servantFactions.Add(nFaction.pfaction);
                                 }
                             }
                         }
@@ -187,26 +206,29 @@ namespace VikingEngine.DSSWars.Players
 
             if (hasEntered)
             {
-                if (maxDiplomacy > 0)
+                --servantCountdown;
+
+                if (maxDiplomacy > 0 && servantCountdown <= 0)
                 {
-                    diplomacyPoints += DssConst.HeadCityStartMaxWorkForce / 20;
+                    diplomacyPoints += 5;
 
                     if (diplomacyPoints >= 0)
                     {
                         Faction ally = null;
-                        lock (darkLordAllies)
+                        lock (servantFactions)
                         {
-                            ally = arraylib.RandomListMemberPop(darkLordAllies);
+                            ally = arraylib.RandomListMemberPop(servantFactions).GetFaction();
                         }
 
                         if (ally != null && ally.cities.Count > 0)
                         {
                             makeServant(ally, true);
+                            servantCountdown = Ref.rnd.Int(5, 40);
                         }
                     }
                 }
 
-                if (faction.cities.Count == 0)
+                if (pfaction.GetFaction().cities.Count == 0)
                 {
                     DssRef.state.events.onAllDarkCitiesDestroyed();
                 }
@@ -215,36 +237,41 @@ namespace VikingEngine.DSSWars.Players
 
         void makeServant(Faction takeOverFaction, bool factory)
         {
-            int cost = takeOverFaction.citiesEconomy.workerCount;
+            int cost = takeOverFaction.totalWorkForce;// .citiesEconomy.workerCount;
+
             diplomacyPoints -= cost;
             maxDiplomacy -= cost;
 
-            takeOverFaction.mergeTo(faction);
+            takeOverFaction.mergeTo(pfaction.GetFaction());
 
-            if (factory && factoriesLeft > 0 && takeOverFaction.mainCity != null)
-            {
-                --factoriesLeft;
-                takeOverFaction.mainCity.setFactoryType(true);
-            }
+            //if (factory && factoriesLeft > 0 && takeOverFaction.mainCity != null)
+            //{
+            //    --factoriesLeft;
+            //    takeOverFaction.mainCity.setFactoryType(true);
+            //}
         }
 
-        protected override bool buySoldiers(City city, bool aggresive, bool commit)
-        {
-            bool result = base.buySoldiers(city, aggresive, commit);
+        //protected override bool buySoldiers(City city, bool aggresive, bool commit)
+        //{
+        //    bool result = base.buySoldiers(city, aggresive, commit);
 
-            if (commit && DssRef.state.events.nextEvent == EventType.DarkLordInPerson)
-            {
-                city.conscriptArmy(DssLib.SoldierProfile_HonorGuard.conscript, city.defaultConscriptPos(), 4);
+        //    //if (commit && DssRef.state.events.CurrentEvent()?.StoryEventType() == EventType.DarkLordInPerson)
+        //    //{
+        //    //    city.conscriptArmy(DssLib.SoldierProfile_HonorGuard.conscript, city.defaultConscriptPos(), 4);
 
-                ConscriptProfile profile = new ConscriptProfile();
-                profile.specialization = SpecializationType.DarkLord;
-                city.conscriptArmy(profile, city.defaultConscriptPos(), 1);
+        //    //    ConscriptProfile profile = new ConscriptProfile();
+        //    //    profile.specialization = SpecializationType.DarkLord;
+        //    //    city.conscriptArmy(profile, city.defaultConscriptPos(), 1);
 
-                DssRef.state.events.nextEvent = EventType.KillTheDarkLord;
-            }
+        //    //    DssRef.state.events.addStoryEvent(new List<AbsStoryEvent>
+        //    //        {
+        //    //            new StoryEvent_KillTheDarkLord()
+        //    //        }, true);
+        //    //    //DssRef.state.events.nextEvent = EventType.KillTheDarkLord;
+        //    //}
 
-            return result;
-        }
+        //    return result;
+        //}
     }
 
 }

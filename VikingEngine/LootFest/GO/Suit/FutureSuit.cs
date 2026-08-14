@@ -12,7 +12,7 @@ namespace VikingEngine.LootFest.GO
         AbsFutureSuitGun gun;
 
         public FutureSuit(Players.AbsPlayer user)
-            : base(user, VoxelModelName.sword_base)
+            : base(user, VoxelModelName.NUM_NON)
         {
             
             gun = new MashineGun(player);

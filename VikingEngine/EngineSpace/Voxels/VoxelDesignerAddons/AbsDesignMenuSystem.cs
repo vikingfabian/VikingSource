@@ -8,7 +8,20 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Voxels
 {
-    class AbsDesignMenuSystem
+    abstract class AbsDesignMenuSystem_Base
+    {
+        abstract public void closeMenu();
+        abstract public bool InMenu { get; }
+
+        /// <returns>Exit</returns>
+        abstract public bool Update();
+
+        virtual public void openMenu() { throw new NotImplementedException(); }
+
+        abstract public void selectionMenu();
+    }
+
+    class AbsDesignMenuSystem : AbsDesignMenuSystem_Base
     {
         public HUD.Gui menu;
         AbsVoxelDesigner designer;
@@ -18,19 +31,19 @@ namespace VikingEngine.Voxels
             this.designer = designer;
         }
 
-        public bool Update()
+        override public bool Update()
         {
             return menu.Update();
         }
 
-        virtual public void openMenu() { throw new NotImplementedException(); }
+       
         //virtual protected DrawTool drawTool
         //{
         //    get { return designer.tool; }
         //    set { designer.tool = value; }
         //}
 
-        virtual public void selectionMenu()
+        override public void selectionMenu()
         {
 
             // HUD.File file = new HUD.File();
@@ -49,7 +62,7 @@ namespace VikingEngine.Voxels
             new GuiTextButton("Copy", null, new GuiAction1Arg<bool>(designer.copySelectedVoxels, false), false, layout);
             new GuiTextButton("Cut", null, new GuiAction1Arg<bool>(designer.copySelectedVoxels, true), false, layout);
             //new GuiTextButton("Save as template", null, designer.LinkSelSaveTemplate, true, layout);
-            new GuiTextButton("Make Stamp", null, new GuiAction1Arg<bool>(designer.stampSelection, true), false, layout);
+            //new GuiTextButton("Make Stamp", null, new GuiAction1Arg<bool>(designer.stampSelection, true), false, layout);
             new GuiTextButton("Rotate/Flip", null, LinkRotateFlip, true, layout);
         }
 
@@ -64,12 +77,12 @@ namespace VikingEngine.Voxels
 
         protected void allFramesChkBox(HUD.GuiLayout layout)
         {
-            if (designer is LootFest.Editor.VoxelDesigner)
-            {
-                if (((LootFest.Editor.VoxelDesigner)designer).inGame)
-                    return;
-            }
-            new GuiCheckbox("All frames", "Make the same action on all frames", designer.bRepeateOnAllFramesProperty, layout);
+            //if (designer is VoxelDesigner)
+            //{
+            //    if (((VoxelDesigner)designer).inGame)
+            //        return;
+            //}
+            //new GuiCheckbox("All frames", "Make the same action on all frames", designer.bRepeateOnAllFramesProperty, layout);
         }
 
         protected void roatateFlipMenu(HUD.GuiLayout layout)
@@ -82,10 +95,9 @@ namespace VikingEngine.Voxels
             new HUD.GuiTextButton("Flip lying/standing", null, designer.flipLyingToStanding, false, layout);
         }
 
-        void linkFindReplaceSelectionMaterials()//HUD.File file, Action<Data.MaterialType> callBack, bool showMoreMenusArrow)
+        void linkFindReplaceSelectionMaterials()
         {
-            //bool[] haveMaterial = selectedVoxels.ContainMaterials();
-
+            
             var used = designer.materialsInSelection();
 
 
@@ -94,15 +106,7 @@ namespace VikingEngine.Voxels
             {
                 new GuiTextButton("Empty", null, new GuiAction1Arg<ushort>(designer.linkReplaceSelectionMaterials, VikingEngine.LootFest.Map.HDvoxel.BlockHD.EmptyBlock),
                     true, layout);
-                //for (MaterialType type = (MaterialType)1; type < MaterialType.NUM; type++)
-                //{
-                //    if (haveMaterial[(int)type])
-                //    {
-                //        new GuiIcon(BlockTextures.MaterialTile(type), TextLib.EnumName(type.ToString()),
-                //            new GuiAction1Arg<MaterialType>(linkReplaceSelectionMaterials, type), false, layout);
-                //    }
-                //}
-
+                
                 foreach (var m in used)
                 {
                     Color col = VikingEngine.LootFest.Map.HDvoxel.BlockHD.ToColor(m);
@@ -116,19 +120,19 @@ namespace VikingEngine.Voxels
             } layout.End();
         }
 
-        virtual public void closeMenu()
+        override public void closeMenu()
         {
             if (menu != null)
             {
                 menu.DeleteMe();
                 menu = null;
                 designer.updateFrameInfo();
-                Input.Mouse.Visible = false;
+                Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
 
                 //designer.inputMap.SetGameStateLayout(ControllerActionSetType.EditorControls);
             }
         }
-        public bool InMenu
+        override public bool InMenu
         {
             get { return menu != null && menu.Visible; }
         }

@@ -361,12 +361,12 @@ namespace VikingEngine.LootFest.Players
 
         public override void TextInputEvent(string input, object tag)
         {
-            if (voxelDesigner != null && voxelDesigner.WaitingForTextInput)
-            {
-                voxelDesigner.TextInputEvent(input, tag);
-                //return true;
-            }
-            else
+            //if (voxelDesigner != null && voxelDesigner.WaitingForTextInput)
+            //{
+            //    voxelDesigner.TextInputEvent(input, tag);
+            //    //return true;
+            //}
+            //else
             {
                 input = Engine.LoadContent.CheckCharsSafety(input, LoadedFont.Regular);
                 input = TextLib.CheckBadLanguage(input);
@@ -377,8 +377,8 @@ namespace VikingEngine.LootFest.Players
 
                 if (Ref.netSession.InMultiplayerSession)
                 {
-                    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.Chat,
-                        Network.PacketReliability.Chat, PlayerIndex);
+                    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.TextChat,
+                        Network.PacketReliability.Reliable, PlayerIndex);
                     w.Write(input);
                 }
 
@@ -408,8 +408,8 @@ namespace VikingEngine.LootFest.Players
 
                 if (Ref.netSession.HasInternet)
                 {
-                    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.Chat,
-                        Network.PacketReliability.ReliableLasy, PlayerIndex);
+                    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.TextChat,
+                        Network.PacketReliability.Reliable, PlayerIndex);
                     w.Write(result);
                 }
 

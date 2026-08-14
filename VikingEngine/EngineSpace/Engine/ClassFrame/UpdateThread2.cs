@@ -13,11 +13,9 @@ namespace VikingEngine
     {
         protected AsynchUpdateAction updateAction;
 
-        //ManualResetEvent resetEvent = new ManualResetEvent(false);
         AutoResetEvent resetEvent = new AutoResetEvent(false);
         System.Threading.Thread thread;
-        //Task task;
-
+       
         protected float time = 0, asynchTime = 0;
         protected string name;
         protected int id;
@@ -32,9 +30,6 @@ namespace VikingEngine
             this.name = name;
             this.id = id;
             this.updateAction = updateAction;
-
-            //this.startDelay = startDelay;
-            //this.updateDelays = updateDelays;
 
             if (addToUpdate)
             {
@@ -62,12 +57,6 @@ namespace VikingEngine
                     asynchTime = time;
                     time -= asynchTime;
 
-                    //if (asynchTime <= 0)
-                    //{ 
-                    //    lib.DoNothing(); //why is this often zero
-                    //}
-                    //if (asynchTime > 0)
-                    //{
                     busyThread = true;
                     {
                         asynchAction();
@@ -75,30 +64,22 @@ namespace VikingEngine
                     busyThread = false;
                     //}
                 }
-            });
 
+                thread.Join();
+            });
+            
             thread.Start();
             thread.Priority = priority;
         }
 
-        //void threadAction()
-        //{
-        //    while (!end)
-        //    {
-        //        asynchTime = time;
-        //        time = 0;
-        //        asynchAction();
-
-        //        if (time == 0)
-        //        {
-        //            System.Threading.Thread.Sleep(16);
-        //        }
-        //    }
-        //}
-
         public override void Time_Update(float time_ms)
         {
-            if (end)
+            //if (end)
+            //{
+            //    DeleteMe();
+            //    return;
+            //}
+            if (!thread.IsAlive)
             {
                 DeleteMe();
                 return;
@@ -110,22 +91,7 @@ namespace VikingEngine
             {
                 resetEvent.Set(); // Signal the waiting thread
             }
-             
-
         }
-
-        //void startNewUpdate()
-        //{
-        //    if (--startDelay < 0)
-        //    {
-        //        asynchTime = time;
-        //        time = 0;
-
-        //        task = Task.Factory.StartNew(asynchAction);
-                
-        //    }
-        //}
-
         virtual protected void asynchAction()
         {
             if (updateAction != null)
@@ -140,11 +106,27 @@ namespace VikingEngine
             AbortThreads();
         }
 
-        public override void AbortThreads()
+        public override bool AbortThreads()
         {
-            end = true;
-            resetEvent.Set();
-            thread?.Join();
+
+            if (thread.ThreadState == ThreadState.Running ||
+                thread.ThreadState == ThreadState.WaitSleepJoin)
+            {
+                end = true;
+                resetEvent.Set();
+                return true;
+            }
+            return false;
+//#if DEBUG
+//                thread?.Join();
+//#endif
+            
+
+        }
+
+        public bool Alive()
+        { 
+            return thread != null && thread.IsAlive;
         }
 
         public override string ToString()
@@ -162,22 +144,23 @@ namespace VikingEngine
 
         override protected void asynchAction()
         {
-#if DEBUG
-            if (updateAction != null)
-            {
-                end = updateAction(id, asynchTime);
-            }
-#else
+
+#if !DEBUG
             try
             {
+#endif
                 if (updateAction != null)
                 {
                     end = updateAction(id, asynchTime);
                 }
+#if !DEBUG
             }
             catch (Exception e)
             {
-                BlueScreen.ThreadException = e;
+                if (!end)
+                {
+                    BlueScreen.ThreadException = e;
+                }
             }
 #endif
 

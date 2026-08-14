@@ -4,8 +4,10 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
 
@@ -15,50 +17,26 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public Vector3 position = Vector3.Zero;
         public bool debugTagged = false;
-        public bool isDeleted = false;
         
-        abstract public bool defeatedBy(Faction attacker);
+        
+        abstract public bool defeatedBy(PFaction attackerFaction);
 
         virtual public bool defeated()
         {
             return isDeleted;
         }
 
-        abstract public bool aliveAndBelongTo(int faction);
+        abstract public bool aliveAndBelongTo(PFaction faction);
 
-        //virtual public void toHud(ObjectHudArgs args)
-        //{
-        //    string name = Name();
+        public override AbsWorldObject GetWorldObject()
+        {
+            return this;
+        }
 
-        //    if (name != null)
-        //    {
-        //        args.content.text(name).overrideColor = Color.LightYellow;
-        //        args.content.newLine();
-        //    }
-
-        //    args.content.Add(new RichBoxBeginTitle());
-        //    args.content.Add(GetFaction().FlagTextureToHud());
-        //    args.content.Add(new RichBoxText(TypeName()));
-
-        //    if (PlatformSettings.DevBuild)
-        //    {
-        //        args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
-        //    }
-        //    if (GetFaction() != args.player.faction)
-        //    {
-        //        var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
-
-        //        args.content.newLine();
-        //        args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
-        //        args.content.newLine();
-        //        args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
-        //        args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
-
-        //    }
-        //    args.content.Add(new RichBoxSeperationLine());
-        //}
-
-        
+        public override Vector3 WorldPos()
+        {
+            return position;
+        }
         virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)
         { }
 
@@ -69,7 +47,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void debugTagButton(RichBoxContent content)
         {
-            content.Button(string.Format("debug tag ({0})", debugTagged), new HUD.RichBox.RbAction(AddDebugTag), null, true);
+#if DEBUG
+            //content.Button(string.Format("debug tag ({0})", debugTagged), new HUD.RichBox.RbAction(AddDebugTag), null, true);
+#endif
         }
 
         virtual public void AddDebugTag()
@@ -80,6 +60,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector2 posXZ()
         { return new Vector2(position.X, position.Z); }
+
+        virtual public bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
+        { 
+            throw new NotImplementedException();
+        }
     }
 
 
@@ -91,5 +76,17 @@ namespace VikingEngine.DSSWars.GameObject
         Disband,
         Desert,
         CameraCulling,
+
+        NetworkEvent,
+        LostHost,
+    }
+
+    enum ConvertReason
+    { 
+        Assigned,
+        Diplomacy,
+        Gift,
+        Claim,
+        WarCapture,
     }
 }

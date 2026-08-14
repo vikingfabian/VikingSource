@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -13,15 +15,16 @@ namespace VikingEngine.DSSWars
     class PlaySettings
     {
         public Players.DarkLordPlayer darkLordPlayer;
-        public int Faction_SouthHara;
-        public int Faction_GreenWood;
-        public int Faction_DarkFollower;
-        public int Faction_UnitedKingdom;
 
-        public int Faction_DyingMonger;
-        public int Faction_DyingHate;
-        public int Faction_DyingDestru;
+        public PFaction Faction_SouthHara = PFaction.Empty;
+        public PFaction Faction_GreenWood = PFaction.Empty;
+        public PFaction Faction_DarkFollower = PFaction.Empty;
+        public PFaction Faction_Barbarian = PFaction.Empty;
+        public PFaction Faction_UnitedKingdom = PFaction.Empty;
 
+        public PFaction Faction_DyingMonger = PFaction.Empty;
+        public PFaction Faction_DyingHate = PFaction.Empty;
+        public PFaction Faction_DyingDestru = PFaction.Empty;        
 
         public int AiArmyPurchase_MoneyMin;
         public int AiArmyPurchase_IncomeMin;
@@ -30,7 +33,10 @@ namespace VikingEngine.DSSWars
         public int AiArmyPurchase_IncomeMin_Aggresive;
 
         int aiDelayTimeSec = 0;
-      
+
+        public PlayStateType playType = PlayStateType.Play;
+
+        public List<string> returnFromEditorMenuStack = null;
         //public bool AiDelay = true;
 
         public PlaySettings() 

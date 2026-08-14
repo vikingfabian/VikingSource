@@ -10,6 +10,19 @@ namespace VikingEngine
     /// </summary>
     static class conv
     {
+        public static CubeFace Invert(CubeFace facing)
+        {
+            switch (facing)
+            {
+                case CubeFace.Xnegative: return CubeFace.Xpositive;
+                case CubeFace.Xpositive: return CubeFace.Xnegative;
+                case CubeFace.Ynegative: return CubeFace.Ypositive;
+                case CubeFace.Ypositive: return CubeFace.Ynegative;
+                case CubeFace.Znegative: return CubeFace.Zpositive;
+                case CubeFace.Zpositive: return CubeFace.Znegative;
+                default: throw new NotImplementedException("Bad call, please give a valid facing");
+            }
+        }
         public static Dir4 ToDir4(Vector2 dir, bool SouthIsPositive)
         {
             return ToDir4(dir.X, dir.Y, SouthIsPositive);
@@ -249,6 +262,11 @@ namespace VikingEngine
         public static int IntVector2ToInt(IntVector2 value)
         {
             return (value.X << 16) | value.Y;
+        }
+
+        public static int ToPercentage(double chance)
+        {
+            return Convert.ToInt32(chance * 100);
         }
     }
 }

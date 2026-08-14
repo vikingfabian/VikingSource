@@ -7,6 +7,9 @@ using VikingEngine.Graphics;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.Voxels;
+
+
 ////xna
 
 
@@ -22,7 +25,7 @@ namespace VikingEngine.LootFest.GameState
         const int LoadingAnimationDotCount = 7;
         Time startLoadingAnimation = new Time(1f, TimeUnit.Seconds);
         Time nextBumpTimer;
-        CirkleCounterUp currentLoadingAnimationBump = new CirkleCounterUp(0, LoadingAnimationDotCount - 1);
+        CircleCounterUp currentLoadingAnimationBump = new CircleCounterUp(0, LoadingAnimationDotCount - 1);
         Graphics.Image[] loadingAnimation = null;
 
         public IntroScene(bool isReset)
@@ -105,7 +108,7 @@ namespace VikingEngine.LootFest.GameState
             SoundLib.LoadMusic();
 
             Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
-                    LoadedTexture.square_particle,
+                    LoadedTexture.particle3,
                     });
             Engine.LoadContent.LoadTexture(LoadedTexture.BlockTextures, LfLib.ContentFolder + "lf3blockTex");
 
@@ -116,7 +119,7 @@ namespace VikingEngine.LootFest.GameState
 
             LfRef.Images.Init();//mt
             Data.BlockTextures.InitMaterials();
-            Data.Block.Init();//mt
+            Block.Init();//mt
             VikingEngine.LootFest.Map.HDvoxel.BlockPatternMaterialsLib.Init();
             LfLib.Init();
             LfRef.Images.LoadStandardVobjects();
@@ -146,7 +149,7 @@ namespace VikingEngine.LootFest.GameState
         void createFolderStructure()
         {
             DataStream.FilePath.CreateStorageFolder(LfLib.OverrideModelsFolder);
-            DataStream.FilePath.CreateStorageFolder(Editor.DesignerStorage.UserVoxelObjFolder);
+            DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
 
             for (int i = 0; i < VikingEngine.LootFest.Players.PlayerStorageGroup.FilesCount; ++i)
             {
@@ -154,7 +157,7 @@ namespace VikingEngine.LootFest.GameState
             }
             DataStream.FilePath.CreateStorageFolder(VikingEngine.LootFest.Players.PlayerStorageGroup.FileFolderName(0, false));
 
-            LootFest.Editor.DesignerStorage.InitFolderStructure();
+            //DesignerStorage.InitFolderStructure();
         }
 
         void loadingThreadException(Exception e)
@@ -242,10 +245,10 @@ namespace VikingEngine.LootFest.GameState
                     {
                         new VikingEngine.LootFest.BlockMap.EditorState();
                     }
-                    else
-                    {
-                        new GameState.VoxelDesignState(XGuide.LocalHostIndex);
-                    }
+                    //else
+                    //{
+                    //    new GameState.VoxelDesignState(XGuide.LocalHostIndex);
+                    //}
                 }
                 else
                 {

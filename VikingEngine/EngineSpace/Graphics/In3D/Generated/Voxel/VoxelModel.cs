@@ -4,6 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
+using VikingEngine.LootFest.Map;
+using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine.Graphics
 {
@@ -41,30 +46,96 @@ namespace VikingEngine.Graphics
             }
         }
 
+        //public void Draw(int cameraIndex, Texture2D texture)
+        //{ 
+            
+        //}
+
         public void Draw()
         {
             Effect.DrawVB(Frame, this, VB);
         }
+        //public override void DrawShadow(int cameraIndex, AbsEffect shader)
+        //{
+        //    if (Effect == MapLayer_Detail.ModelEffect)
+        //    {
+        //        Draw();
+        //    }
+        //    else
+        //    {
+        //        shader.DrawVB(Frame, this, VB);
+        //    }
+        //}
+       
 
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{
+        //    VB.SetBuffer();
+        //    Matrix world = Matrix.CreateScale(scale) *
+        //                   Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+        //                   Matrix.CreateTranslation(position);
+        //    shader.Parameters["World"].SetValue(world);
+        //    shader.Parameters["WorldViewIT"].SetValueTranspose(Matrix.Invert(world * view));
+        //    shader.CurrentTechnique.Passes[0].Apply();
+        //    VB.Draw(Frame);
+        //}
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         {
-            VB.SetBuffer();
-            Matrix world = Matrix.CreateScale(scale) *
-                           Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
-                           Matrix.CreateTranslation(position);
-            shader.Parameters["World"].SetValue(world);
-            shader.Parameters["WorldViewIT"].SetValueTranspose(Matrix.Invert(world * view));
-            shader.CurrentTechnique.Passes[0].Apply();
-            VB.Draw(Frame);
+            if (drawDepth)
+            {
+                if (VB != null)
+                {
+                    VB.SetBuffer();
+
+                    Matrix world =
+                        Matrix.CreateScale(scale) *
+                        Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+                        Matrix.CreateTranslation(position);
+
+                    // Send to the shader and draw.
+                    shader.Parameters["ModelToLight"].SetValue(light.modelToLight(world));
+                    shader.CurrentTechnique.Passes[0].Apply();
+                    VB.Draw(Frame);
+                }
+            }
+            else
+            {
+                Effect.DrawVB(Frame, this, VB);
+            }
         }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+
+        public override void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
-            VB.SetBuffer();
-            shader.Parameters["World"].SetValue(Matrix.CreateScale(scale) *
-                Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
-                Matrix.CreateTranslation(position));
-            shader.CurrentTechnique.Passes[0].Apply();
-            VB.Draw(Frame);
+            if (customShader)
+            {
+                Effect.DrawVB(Frame, this, VB);
+            }
+            else if (VB != null)
+            {
+                VB.SetBuffer();
+                Matrix modelWorld = Matrix.CreateScale(scale) *
+                            Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+                            Matrix.CreateTranslation(position);
+                //shader.Parameters["Texture"]?.SetValue(LoadContent.Texture(LoadedTexture.WhiteArea));
+                shader.Parameters["Color"]?.SetValue(Color.ToVector4());
+
+                Matrix world = /*transforms[modelMesh.ParentBone.Index] **/ modelWorld;
+                Matrix worldViewMatrix = world * camera.ViewMatrix;
+                Matrix worldViewProjMatrix = world * camera.ViewProjection;
+                Matrix lightWorldViewProjMatrix = world * light.ViewProjection;
+
+                Matrix temp = worldViewMatrix;
+                temp.Translation = Vector3.Zero;
+                Matrix worldViewIT = Matrix.Transpose(Matrix.Invert(temp));
+
+                shader.Parameters["NormalToView"]?.SetValue(worldViewIT);
+                shader.Parameters["ModelToScreen"]?.SetValue(worldViewProjMatrix);
+                shader.Parameters["ModelToLight"]?.SetValue(lightWorldViewProjMatrix);
+                shader.Parameters["ModelToView"]?.SetValue(worldViewMatrix);
+
+                shader.CurrentTechnique.Passes[0].Apply();
+                VB.Draw(Frame);
+            }
         }
 
         /* Novelty methods */

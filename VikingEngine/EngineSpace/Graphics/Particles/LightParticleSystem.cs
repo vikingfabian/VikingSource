@@ -121,9 +121,9 @@ namespace VikingEngine.Graphics
         }
 
 
-        public override void Time_Update(float time)
+        public override void Update()
         {
-            base.Time_Update(time);
+            base.Update();
 
             for (int i = 0; i < lightsAndShadows.Count; ++i)
             {
@@ -149,12 +149,12 @@ namespace VikingEngine.Graphics
             get { return LoadedEffect.LightParticleEffect; }
         }
 
-        public void PostRender(RenderTarget2D scene, RenderTarget2D depthMap)
+        public void PostRender(AbsCamera camera, RenderTarget2D scene, RenderTarget2D depthMap)
         {
             particleEffect.Parameters["wvp"].SetValue(Ref.draw.wvpMatrix);
             //particleEffect.Parameters["SceneMap"].SetValue(scene);
             particleEffect.Parameters["DepthMap"].SetValue(depthMap);
-            SetCamera();
+            SetCamera(camera);
             Draw();
         }
     }

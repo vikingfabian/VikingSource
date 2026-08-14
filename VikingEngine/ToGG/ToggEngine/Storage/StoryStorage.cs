@@ -6,7 +6,7 @@ using VikingEngine.ToGG.Data;
 
 namespace VikingEngine.ToGG.Storage
 {
-    class StoryStorage : VikingEngine.DataStream.IStreamIOCallback
+    class StoryStorage : VikingEngine.IStreamIOCallback
     {
         string storyName;
         public Dictionary<LevelEnum, PlayerStoryProgress> progressPoints = new Dictionary<LevelEnum, PlayerStoryProgress>();

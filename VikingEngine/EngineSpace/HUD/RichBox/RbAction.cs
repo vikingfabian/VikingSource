@@ -10,7 +10,8 @@ namespace VikingEngine.HUD.RichBox
 {
     abstract class AbsRbAction
     {
-        public RbSoundProfile sound;
+        public int tagId = 0;
+        public RbSoundType sound;
 
         public bool enabled = true;
         abstract public void actionTrigger();
@@ -65,7 +66,7 @@ namespace VikingEngine.HUD.RichBox
     {
         public Action action;
 
-        public RbAction(Action action, RbSoundProfile sound = null)
+        public RbAction(Action action, RbSoundType sound = RbSoundType.Default)
         {
             this.action = action;
             this.sound = sound; 
@@ -73,10 +74,10 @@ namespace VikingEngine.HUD.RichBox
 
         public override void actionTrigger()
         {
-            sound?.onActionTrigger(enabled);
+            RbSoundSetup.Get(sound)?.play(enabled);
             if (enabled)
             {
-                action.Invoke();
+                action?.Invoke();
             }
         }
     }
@@ -86,7 +87,7 @@ namespace VikingEngine.HUD.RichBox
         public Action<Arg1> action;
         Arg1 arg1;
 
-        public RbAction1Arg(Action<Arg1> action, Arg1 arg1, RbSoundProfile sound = null)
+        public RbAction1Arg(Action<Arg1> action, Arg1 arg1, RbSoundType sound = RbSoundType.Default)
         {
             this.action = action;
             this.arg1 = arg1;
@@ -95,7 +96,7 @@ namespace VikingEngine.HUD.RichBox
 
         public override void actionTrigger()
         {
-            sound?.onActionTrigger(enabled);
+            RbSoundSetup.Get(sound)?.play(enabled);
             if (enabled)
             {
                 action.Invoke(arg1);
@@ -109,7 +110,7 @@ namespace VikingEngine.HUD.RichBox
         Arg1 arg1; 
         Arg2 arg2;
 
-        public RbAction2Arg(Action<Arg1, Arg2> action, Arg1 arg1, Arg2 arg2, RbSoundProfile sound = null)
+        public RbAction2Arg(Action<Arg1, Arg2> action, Arg1 arg1, Arg2 arg2, RbSoundType sound = RbSoundType.Default)
         {
             this.action = action;
             this.arg1 = arg1;
@@ -119,7 +120,7 @@ namespace VikingEngine.HUD.RichBox
 
         public override void actionTrigger()
         {
-            sound?.onActionTrigger(enabled);
+            RbSoundSetup.Get(sound)?.play(enabled);
             if (enabled)
             {
                 action.Invoke(arg1, arg2);
@@ -134,7 +135,7 @@ namespace VikingEngine.HUD.RichBox
         Arg2 arg2;
         Arg3 arg3;
 
-        public RbAction3Arg(Action<Arg1, Arg2, Arg3> action, Arg1 arg1, Arg2 arg2, Arg3 arg3, RbSoundProfile sound = null)
+        public RbAction3Arg(Action<Arg1, Arg2, Arg3> action, Arg1 arg1, Arg2 arg2, Arg3 arg3, RbSoundType sound = RbSoundType.Default)
         {
             this.action = action;
             this.arg1 = arg1;
@@ -145,10 +146,66 @@ namespace VikingEngine.HUD.RichBox
 
         public override void actionTrigger()
         {
-            sound?.onActionTrigger(enabled);
+            RbSoundSetup.Get(sound)?.play(enabled);
             if (enabled)
             {
                 action.Invoke(arg1, arg2, arg3);
+            }
+        }
+    }
+
+    class RbAction4Arg<Arg1, Arg2, Arg3, Arg4> : AbsRbAction
+    {
+        public Action<Arg1, Arg2, Arg3, Arg4> action;
+        Arg1 arg1;
+        Arg2 arg2;
+        Arg3 arg3;
+        Arg4 arg4;
+        public RbAction4Arg(Action<Arg1, Arg2, Arg3, Arg4> action, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, RbSoundType sound = RbSoundType.Default)
+        {
+            this.action = action;
+            this.arg1 = arg1;
+            this.arg2 = arg2;
+            this.arg3 = arg3;
+            this.arg4 = arg4;
+            this.sound = sound;
+        }
+
+        public override void actionTrigger()
+        {
+            RbSoundSetup.Get(sound)?.play(enabled);
+            if (enabled)
+            {
+                action.Invoke(arg1, arg2, arg3, arg4);
+            }
+        }
+    }
+
+    class RbAction5Arg<Arg1, Arg2, Arg3, Arg4, Arg5> : AbsRbAction
+    {
+        public Action<Arg1, Arg2, Arg3, Arg4, Arg5> action;
+        Arg1 arg1;
+        Arg2 arg2;
+        Arg3 arg3;
+        Arg4 arg4;
+        Arg5 arg5;
+        public RbAction5Arg(Action<Arg1, Arg2, Arg3, Arg4, Arg5> action, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5, RbSoundType sound = RbSoundType.Default)
+        {
+            this.action = action;
+            this.arg1 = arg1;
+            this.arg2 = arg2;
+            this.arg3 = arg3;
+            this.arg4 = arg4;
+            this.arg5 = arg5;
+            this.sound = sound;
+        }
+
+        public override void actionTrigger()
+        {
+            RbSoundSetup.Get(sound)?.play(enabled);
+            if (enabled)
+            {
+                action.Invoke(arg1, arg2, arg3, arg4, arg5);
             }
         }
     }

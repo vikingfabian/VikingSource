@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.NPC
         public ProgressNPC(GoArgs args)
             : base(args)
         {
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.war_veteran, 0f, 1f);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0f, 1f);
             postImageSetup();
             if (args.LocalMember)
             {

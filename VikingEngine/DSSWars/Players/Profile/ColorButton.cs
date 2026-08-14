@@ -1,0 +1,77 @@
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using VikingEngine.DSSWars.GameState.FlagEditor;
+using VikingEngine.Graphics;
+using VikingEngine.HUD;
+
+namespace VikingEngine.DSSWars.Players.Profile
+{
+    class ColorButtonGroup : OptionButtonGroup
+    {
+        public static ButtonGuiSettings ButtonGuiSettings;
+
+        public ColorButtonGroup(VectorRect paintArea, FlagAndColor profile)
+        {
+            ButtonGuiSettings = new ButtonGuiSettings(Color.White, 4f, Color.White, Color.Red);
+
+            Vector2 nextPos = VectorExt.AddX(paintArea.RightTop, Engine.Screen.SmallIconSize);
+
+            createButton(ProfileColorType.Main);
+            createButton(ProfileColorType.Detail1);
+            createButton(ProfileColorType.Detail2);
+
+            select(0);
+
+            void createButton(ProfileColorType type)
+            {
+                TextG name = new TextG(LoadedFont.Regular, 
+                    nextPos,
+                    Engine.Screen.TextSizeV2,
+                    Align.Zero,
+                     PaintFlagState.ProfileColorName(type), Color.White, ImageLayers.Lay2);
+                nextPos.Y += Engine.Screen.TextBreadHeight + ButtonGuiSettings.highlightThickness *2;
+                VectorRect area = new VectorRect(nextPos, Engine.Screen.IconSizeV2);
+
+                if (type == ProfileColorType.Main)
+                {
+                    area.Width *= 2f;
+                }
+
+                buttons.Add(new ColorButton(area, type));
+
+                nextPos.Y = area.Bottom + Engine.Screen.BorderWidth + ButtonGuiSettings.highlightThickness * 4;
+            }
+
+            refreshColors(profile);
+        }
+
+        public void refreshColors(FlagAndColor profile)
+        {
+            foreach (var m in buttons)
+            {
+                ((ColorButton)m).refeshColor(profile);
+            }
+        }
+    }
+
+    class ColorButton : AbsOptionButton
+    {
+        public ColorButton(VectorRect area, ProfileColorType opt)
+            : base(ColorButtonGroup.ButtonGuiSettings, opt)
+        {
+            this.area = area;
+
+            baseImage = new Image(SpriteName.WhiteArea,
+                area.Position, area.Size, ImageLayers.Lay0);
+
+            createHighlight();
+        }
+
+        public void refeshColor(FlagAndColor profile)
+        {
+            baseImage.Color = profile.getColor((ProfileColorType)option);
+        }
+    }
+}

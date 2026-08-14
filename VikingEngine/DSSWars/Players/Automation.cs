@@ -36,11 +36,11 @@ namespace VikingEngine.DSSWars.Players
 
         AutomationAction automationAction = AutomationAction.WaitForUpdate;
         City cityAction = null;
-        UnitType recruitType = UnitType.NULL;
+        UnitBuildType recruitType = UnitBuildType.NULL;
         int recruitCount = 0;
         IntVector2 subtilePos;
 
-        Build.BuildAndExpandType autoBuildType = Build.BuildAndExpandType.WorkerHuts;
+        Build.BuildAndExpandType autoBuildType = Build.BuildAndExpandType.WorkerHut;
 
         public Automation(Players.LocalPlayer player)
         {
@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Players
         //    return autoRecruit;
         //}
 
-        bool AutoBuildProperty(int index, bool set, bool value)
+        bool AutoBuildProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Players
             }
             return autoBuild;
         }
-        bool AutoBuildIntelligentProperty(int index, bool set, bool value)
+        bool AutoBuildIntelligentProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Players
             return autoBuild_intelligent;
         }
 
-        bool AutoExpandGuardProperty(int index, bool set, bool value)
+        bool AutoExpandGuardProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Players
             return autoExpandGuard;
         }
 
-        bool AutoRepairCityProperty(int index, bool set, bool value)
+        bool AutoRepairCityProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Players
             return autoRepair;
         }
 
-        bool AutoUpgradeLogisticsProperty(int index, bool set, bool value)
+        bool AutoUpgradeLogisticsProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -247,43 +247,27 @@ namespace VikingEngine.DSSWars.Players
             {
                 automationAction = AutomationAction.WaitForUpdate;
 
-                if (player.faction.MoneySecDiff() > 0)
+                if (player.pfaction.TryGetFaction(out var f) && f.GoldSecDiff() > 0)
                 {
-                    var citiesC = player.faction.cities.counter();
-
-                    for (CityType type = CityType.Factory; type >= CityType.Small; type--)
+                    //var citiesC = player.faction.cities.counter();
+                    for (CityType type = CityType.Capital; type >= CityType.Village; type--)
                     {
-                        citiesC.Reset();
-                        while (citiesC.Next())
+                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                        while (citiesC.Next(ref f.cities, DssRef.world.cities, out City citySel))
                         {
-                            if (citiesC.sel.CityType == type &&
-                                citiesC.sel.isMaxHomeUsers() )
-                                //&&
-                                //citiesC.sel.battleGroup == null)
+                            if (citySel.cityType == type &&
+                                citySel.isMaxHomeUsers() )
+                                
                             {
-                                if (autoRepair && citiesC.sel.damages.HasValue())
-                                {
-                                    cityAction = citiesC.sel;
-                                    automationAction = AutomationAction.Repair;
-                                    return;
-                                }
 
-                                if (autoUpgradeLogistics && citiesC.sel.autoUpgradeLogistics(IntVector2.Zero, false))
+                                if (autoUpgradeLogistics && citySel.autoUpgradeLogistics(IntVector2.Zero, false))
                                 {   
-                                    cityAction = citiesC.sel;
+                                    cityAction = citySel;
                                     automationAction = AutomationAction.UpgradeLogistics;
-                                    CityStructure.AutomationInstance.update(citiesC.sel, 0, 4);
-                                    subtilePos = CityStructure.AutomationInstance.EmptyLand.Last();
+                                   
+                                    CityStructure.AutomationInstance.NextEmptyLand(citySel, Ref.peRnd.Int(32), out subtilePos);//.EmptyLand.Last();
                                     return;
                                 }
-
-                                if (autoExpandGuard && citiesC.sel.canIncreaseGuardSize(1, true))
-                                {
-                                    cityAction = citiesC.sel;
-                                    automationAction = AutomationAction.GuardSize;
-                                    return;
-                                }
-
                             }
                         }
                     }
@@ -304,13 +288,13 @@ namespace VikingEngine.DSSWars.Players
                     cityAction.autoUpgradeLogistics(subtilePos, true);
                     break;
 
-                case AutomationAction.Repair:
-                    cityAction.buyRepair(true, true);
-                    break;
+                //case AutomationAction.Repair:
+                //    cityAction.buyRepair(true, true);
+                //    break;
 
-                case AutomationAction.GuardSize:
-                    cityAction.buyCityGuards(true, 1);
-                    break;
+                //case AutomationAction.GuardSize:
+                //    cityAction.buyCityGuards(true, 1);
+                //    break;
             }
 
             cityAction = null;
@@ -344,4 +328,6 @@ namespace VikingEngine.DSSWars.Players
         GuardSize,
         UpgradeLogistics,
     }
+
+    
 }

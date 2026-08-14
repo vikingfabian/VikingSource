@@ -9,6 +9,7 @@ using System.Text;
 using System.Reflection;
 using System.Globalization;
 using VikingEngine.Input;
+using System.Security.Cryptography;
 
 namespace VikingEngine
 {
@@ -20,9 +21,12 @@ namespace VikingEngine
 
         public const string EmptyString = "";
         public const string Error = "ERR";
+        public const string Unknown = "Unknown";
         const string MaxTwoDecimalsFormat = "0.##";
         public const string TextFileEnding = ".txt";
-        public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '^' };
+        
+        public const char ZeroWidthSpaceChar = '\u200B';
+        public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '\\', '^', ZeroWidthSpaceChar };
         //const char NewLineChar1 = '\n';
         //const char NewLineChar2 = '\r';
         public static readonly string NewLine = Environment.NewLine;
@@ -32,6 +36,50 @@ namespace VikingEngine
         public static NTStringBuilder TextLine = new NTStringBuilder();
         static NTStringBuilder test = new NTStringBuilder();
 
+        /// <summary>
+        /// Add ":"
+        /// </summary>
+        public static string LabelColon(string text)
+        {
+            return text + ":";
+        }
+        public static string ThaiConv(string text)
+        {
+            return text.Replace('|', ZeroWidthSpaceChar);
+        }
+        public static int GetDeterministicHashCode(this string str)
+        {
+            unchecked
+            {
+                int hash1 = (5381 << 16) + 5381;
+                int hash2 = hash1;
+
+                for (int i = 0; i < str.Length; i += 2)
+                {
+                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
+                    if (i == str.Length - 1)
+                        break;
+                    hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
+                }
+
+                return hash1 + (hash2 * 1566083941);
+            }
+        }
+
+        public static string GetStableHash(string input)
+        {
+            using (var sha = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(input);
+                var hashBytes = sha.ComputeHash(bytes);
+                var sb = new StringBuilder();
+
+                foreach (var b in hashBytes)
+                    sb.Append(b.ToString("x2"));
+
+                return sb.ToString(); // or use BitConverter.ToString(hashBytes) for a dash-separated version
+            }
+        }
         public static string Quote(string text)
         {
             return "\"" + text + "\"";
@@ -64,6 +112,25 @@ namespace VikingEngine
 
         public static string LargeNumber(int number)
         {
+            if (number == int.MinValue)
+            {
+                return Error;
+            }
+
+            if (Math.Abs(number) < 1000)
+            {
+                return number.ToString();
+            }
+            return number.ToString(NoDecimals, ThounsandSeperatorSpaceFormat).Trim();
+        }
+
+        public static string LargeNumber(long number)
+        {
+            //if (number < short.MinValue)
+            //{
+            //    return Error;
+            //}
+
             if (Math.Abs(number) < 1000)
             {
                 return number.ToString();
@@ -75,6 +142,16 @@ namespace VikingEngine
         public static string OneDecimal(double value)
         {
             string result = string.Format(OneDecimalFormat, value);
+
+            stringSafeDecimal(ref result);
+
+            return result;
+        }
+
+        public const string TwoDecimalFormat = "{0:0.00}";
+        public static string TwoDecimal(double value)
+        {
+            string result = string.Format(TwoDecimalFormat, value);
 
             stringSafeDecimal(ref result);
 
@@ -200,20 +277,28 @@ namespace VikingEngine
         //    }
         //}
 
-        public static string PercentText(float percent)
+        public static string PercentTextWithSymbol(float percent)
         {
             return Convert.ToInt32(percent * 100).ToString() + "%";
+        }
+        public static string PercentTextWithSymbol(int percent)
+        {
+            return percent.ToString() + "%";
+        }
+        public static string PercentText(float percent)
+        {
+            return Convert.ToInt32(percent * 100).ToString();
         }
 
         public static string PercentAddText(float percent)
         {
             if (percent < 0f)
             {
-                return PercentText(percent);
+                return PercentTextWithSymbol(percent);
             }
             else
             {
-                return "+" + PercentText(percent);
+                return "+" + PercentTextWithSymbol(percent);
             }
         }
 
@@ -239,6 +324,7 @@ namespace VikingEngine
         }
 
         public static string IndexToString(int index) { return (index + 1).ToString(); }
+        public static string AddIndexToString(string name, int index) { return name + " " + (index + 1).ToString(); }
 
         public static string CheckBadLanguage(string textString)
         {

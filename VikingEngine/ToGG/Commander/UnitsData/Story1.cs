@@ -72,7 +72,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
     class Story1_Catapult : CmdUnitData
     {
         public Story1_Catapult()
-            : base("Catapult", UnitMainType.Warmashine, UnitUnderType.Warmashine_Ballista, false, SpriteName.cmdUnitBallista,
+            : base("Catapult", UnitMainType.Warmashine, UnitUnderType.Warmachine_Ballista, false, SpriteName.cmdUnitBallista,
                     1, 0, 0, 5, 2, true)
         {
             modelSettings.facingRight = true;
@@ -85,7 +85,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
     class Story1_ElfCatapult : CmdUnitData
     {
         public Story1_ElfCatapult()
-            : base("Elf Catapult", UnitMainType.Warmashine, UnitUnderType.Warmashine_Ballista, false, SpriteName.cmdUnitBallista,
+            : base("Elf Catapult", UnitMainType.Warmashine, UnitUnderType.Warmachine_Ballista, false, SpriteName.cmdUnitBallista,
                     1, 0, 0, 5, 2, true)
         {
             modelSettings.facingRight = true;

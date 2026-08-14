@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -15,116 +17,166 @@ namespace VikingEngine.DSSWars.Conscript
     {
         public ConscriptProfile conscript;
         public float skillBonus;
+        public float mobileBonus_PercAdd;
 
         public SoldierConscriptProfile()
 
         {
             conscript = new ConscriptProfile();
             conscript.weapon = ItemResourceType.SharpStick;
-            skillBonus = 0;
+            skillBonus = 1;
+
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
             conscript.writeGameState(w);
-            SaveLib.WriteFloatMultiplier(skillBonus, w);
+            byte wrote = StreamLib.WriteFloatMultiplier(skillBonus, w);
+#if DEBUG
+            if (wrote == 0)
+            {
+                throw new Exception();
+            }
+            if (skillBonus == 0)
+            {
+                throw new Exception();
+            }
+#endif
         }
         public void readGameState(System.IO.BinaryReader r)
         {
             conscript.readGameState(r);
-            skillBonus = SaveLib.ReadFloatMultiplier(r);
+            skillBonus = StreamLib.ReadFloatMultiplier(r);
+#if DEBUG
+            if (skillBonus == 0)
+            {
+                throw new Exception();
+            }
+#endif
         }
 
-        public UnitType unitType()
+        public UnitBuildType unitType()
         {
-            if (conscript.specialization == SpecializationType.DarkLord)
+            if (conscript.vehicle != ItemResourceType.NONE)
             {
-                return UnitType.DarkLord;
+                switch (conscript.animal)
+                {
+                    case ItemResourceType.Elephant:
+                    case ItemResourceType.WarElephant:
+                    case ItemResourceType.Oliphant:
+                        return UnitBuildType.ConscriptBalkong;
+                }
+                return UnitBuildType.ConscriptWagon;
             }
-            switch (conscript.weapon)
-            {
-                case ItemResourceType.Ballista:
-                case ItemResourceType.Manuballista:
-                case ItemResourceType.Catapult:
-                case ItemResourceType.UN_BatteringRam:
-                case ItemResourceType.SiegeCannonBronze:
-                case ItemResourceType.ManCannonBronze:
-                case ItemResourceType.SiegeCannonIron:
-                case ItemResourceType.ManCannonIron:
-                    return UnitType.ConscriptWarmashine;
-                case ItemResourceType.KnightsLance:
-                    return UnitType.ConscriptCavalry;
 
-                default:
-                    return UnitType.Conscript;
+            if (conscript.animal != ItemResourceType.NONE &&
+                ItemPropertyColl.Get(conscript.animal).Filter_IsRidingAnimal)
+            {
+                //switch (conscript.animal)
+                //{
+                //    case ItemResourceType.Elephant:
+                //    case ItemResourceType.WarElephant:
+                //    case ItemResourceType.Oliphant:
+                //        if (conscript.vehicle != ItemResourceType.NONE)
+                //        { 
+                //            return UnitBuildType.ConscriptBalkong;
+                //        }
+                //        break;
+                //}
+                if (conscript.weapon == ItemResourceType.SiegeCannonBronze)
+                {
+                    return UnitBuildType.ConscriptWagon;
+                }
+
+                return UnitBuildType.ConscriptCavalry;
             }
+
+            switch (conscript.specialization)
+            {
+                default:
+                    return ItemPropertyColl.Get(conscript.weapon).Filter_IsWarMachine ? UnitBuildType.ConscriptWarmachine : UnitBuildType.Conscript;
+               
+                case SpecializationType.CityGuard:
+                    return UnitBuildType.CityGuard;
+            }
+
+                    
         }
 
-        public UnitFilterType filterType()
+        public UnitNameType filterType()
         {
             switch (conscript.specialization)
             {
                 default:
                     switch (conscript.weapon)
                     {
+                        case ItemResourceType.Settler:
+                            return UnitNameType.Settler;
                         case ItemResourceType.SharpStick:
-                            return UnitFilterType.SharpStick;
+                            return UnitNameType.SharpStick;
 
                         case ItemResourceType.BronzeSword:
                         case ItemResourceType.ShortSword:
                         case ItemResourceType.Sword:
-                            return UnitFilterType.Sword;
+                            return UnitNameType.Sword;
                         case ItemResourceType.LongSword:
-                            return UnitFilterType.LongSword;
+                            return UnitNameType.LongSword;
 
                         case ItemResourceType.Pike:
-                            return UnitFilterType.Pike;
+                            return UnitNameType.Pike;
                         case ItemResourceType.HandSpear:
-                            return UnitFilterType.SpearAndShield;
+                            return UnitNameType.Spear;
 
                         case ItemResourceType.Warhammer:
-                            return UnitFilterType.Warhammer;
+                            return UnitNameType.Warhammer;
                         case ItemResourceType.TwoHandSword:
-                            return UnitFilterType.TwohandSword;
-                        case ItemResourceType.KnightsLance:
-                            return UnitFilterType.Knight;
+                            return UnitNameType.TwohandSword;
+                        //case ItemResourceType.KnightsLance:
+                        //    return UnitFilterType.Knight;
                         case ItemResourceType.MithrilSword:
-                            return UnitFilterType.MithrilKnight;
+                            return UnitNameType.MithrilKnight;
 
                         case ItemResourceType.SlingShot:
-                            return UnitFilterType.Slingshot;
                         case ItemResourceType.ThrowingSpear:
-                            return UnitFilterType.Throwingspear;
+                            return UnitNameType.Skirmisher;
                         case ItemResourceType.Bow:
                         case ItemResourceType.LongBow:
-                            return UnitFilterType.Bow;
+                            return UnitNameType.Bow;
 
                         case ItemResourceType.Crossbow:
-                            return UnitFilterType.CrossBow;
+                            return UnitNameType.CrossBow;
                         case ItemResourceType.MithrilBow:
-                            return UnitFilterType.MithrilBow;
+                            return UnitNameType.MithrilBow;
 
                         case ItemResourceType.HandCannon:
                         case ItemResourceType.Rifle:
-                            return UnitFilterType.Rifle;
+                            return UnitNameType.Rifle;
                         case ItemResourceType.HandCulverin:
-                        case ItemResourceType.Blunderbus:
-                            return UnitFilterType.Shotgun;
+                        case ItemResourceType.Blunderbuss:
+                            return UnitNameType.Shotgun;
 
                         case ItemResourceType.Ballista:
-                            return UnitFilterType.Ballista;
+                            return UnitNameType.Ballista;
                         case ItemResourceType.Manuballista:
-                            return UnitFilterType.ManuBallista;
+                            return UnitNameType.ManuBallista;
                         case ItemResourceType.Catapult:
-                            return UnitFilterType.Catapult;
+                            return UnitNameType.Catapult;
                         case ItemResourceType.SiegeCannonBronze:
-                            return UnitFilterType.SiegeCannonBronze;
+                            return UnitNameType.SiegeCannonBronze;
                         case ItemResourceType.ManCannonBronze:
-                            return UnitFilterType.ManCannonBronze;
+                            return UnitNameType.ManCannonBronze;
                         case ItemResourceType.SiegeCannonIron:
-                            return UnitFilterType.SiegeCannonIron;
+                            return UnitNameType.SiegeCannonIron;
                         case ItemResourceType.ManCannonIron:
-                            return UnitFilterType.ManCannonIron;
+                            return UnitNameType.ManCannonIron;
+
+                        case ItemResourceType.RoseWarrior_dog:
+                            return UnitNameType.RoseWarrior;
+                        case ItemResourceType.RoseWarrior_soldier:
+                            return UnitNameType.RoseWarrior;
+                        case ItemResourceType.RoseWarrior_tank:
+                            return UnitNameType.RoseWarrior;
+
 
                         default:
                             throw new NotImplementedException();
@@ -132,431 +184,122 @@ namespace VikingEngine.DSSWars.Conscript
                     }
 
                 case SpecializationType.Green:
-                    return UnitFilterType.GreenSoldier;
+                    return UnitNameType.GreenSoldier;
                 case SpecializationType.HonorGuard:
-                    return UnitFilterType.HonourGuard;
+                    return UnitNameType.HonourGuard;
                 case SpecializationType.Viking:
-                    return UnitFilterType.Viking;
+                    return UnitNameType.Viking;
                 case SpecializationType.DarkLord:
-                    return UnitFilterType.DarkLord;
+                    return UnitNameType.DarkLord;
             }
         }
 
         public SpriteName Icon()
         {
-            return init(DssRef.profile.bannerman).icon;
+            return createSoldierData().icon;
         }
 
-        public SoldierData init(AbsSoldierProfile profile)
+        public SoldierData createSoldierData()
         {
-            if (skillBonus <= 0)
+//#if DEBUG
+//            if (skillBonus == 0)
+//            {
+//                throw new Exception();
+//            }
+//#endif
+
+            var weaponProperties = ItemPropertyColl.Get(conscript.weapon);
+            SoldierData soldierData = weaponProperties.soldierData;
+
+            //soldierData.applySkillBonus(skillBonus, mobileBonus_PercAdd);
+
+            var armorData = ItemPropertyColl.Get(conscript.armorLevel).soldierData;
+            
+            soldierData.modelData.armor = armorData.modelData.armor;
+
+            soldierData.modelData.shield = conscript.shield;
+            
+            soldierData.applySkillBonus(skillBonus, mobileBonus_PercAdd);
+
+            soldierData.modelData.specialization = conscript.specialization;
+
+            if (conscript.vehicle != ItemResourceType.NONE)
             {
-                skillBonus = 1;
+                var wagonProperties = Resource.ItemPropertyColl.Get(conscript.vehicle);
+                var animalProperties = Resource.ItemPropertyColl.Get(conscript.animal);
+
+                if (animalProperties.wagonPull == WagonPull.Balcon)
+                {
+                    soldierData.columnsDepth = animalProperties.soldierData.columnsDepth;
+                    soldierData.rowWidth = animalProperties.soldierData.rowWidth;                    
+                    soldierData.boundRadius = animalProperties.soldierData.boundRadius;
+                    soldierData.groupSpacing = animalProperties.soldierData.groupSpacing;
+                }
+                else
+                {
+                    soldierData.WagonSetup();
+                }
+                if (conscript.vehicle == ItemResourceType.Wagon4Wheel &&
+                   weaponProperties.Filter_IsWarMachine)
+                {
+                    soldierData.modelData.riding = true;
+                }
+                
+
+                soldierData.walkingSpeed = new IntervalF(animalProperties.soldierData.lightWagonSpeed, animalProperties.soldierData.heavyWagonSpeed).GetFromPercent(wagonProperties.soldierData.weightClass);
+
+                ridingAnimalSetup(conscript.animal, conscript.mountArmor, ref soldierData);
+                wagonSetup(conscript.vehicle, ref soldierData);
+
+                ConscriptUnitCount unitCount = new ConscriptUnitCount(conscript);
+                animalSetup(conscript.animal, unitCount.animalsPerUnit, ref soldierData);
+            }
+            else if (conscript.animal != ItemResourceType.NONE)
+            {
+                var animalProperties = Resource.ItemPropertyColl.Get(conscript.animal);
+                if (animalProperties.Filter_IsRidingAnimal)
+                {
+                    soldierData.modelData.riding = true;
+                    if (conscript.weapon != ItemResourceType.SiegeCannonBronze)
+                    {
+                        soldierData.columnsDepth = animalProperties.soldierData.columnsDepth;
+                        soldierData.rowWidth = animalProperties.soldierData.rowWidth;
+                    }
+                    soldierData.boundRadius = animalProperties.soldierData.boundRadius;
+                    soldierData.groupSpacing = animalProperties.soldierData.groupSpacing;
+
+                    soldierData.walkingSpeed = animalProperties.soldierData.walkingSpeed;
+
+                    ridingAnimalSetup(conscript.animal, conscript.mountArmor, ref soldierData);
+                }
+                else
+                {
+                    if (soldierData.UnitCount() == 1)
+                    {
+                        soldierData.rowWidth = 2;
+                    }
+                }
+                animalSetup(conscript.animal, 1, ref soldierData);
+            }
+            
+
+            if (conscript.weapon == ItemResourceType.Pike)
+            {
+                conscript.specialization = SpecializationType.AntiCavalry;
             }
 
-            SoldierData soldierData = profile.data;
-
-            soldierData.basehealth = ConscriptProfile.ArmorHealth(conscript.armorLevel);
-            soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon, out soldierData.attackSplashCount) * skillBonus);
-            soldierData.attackDamageStructure = soldierData.attackDamage;
-            soldierData.attackDamageSea = soldierData.attackDamage;
-
-            soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
-
-            switch (conscript.weapon)
-            {
-                case ItemResourceType.SharpStick:
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.03f;
-                    soldierData.modelName = LootFest.VoxelModelName.war_folkman;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Folkman;
-                    break;
-
-                case ItemResourceType.BronzeSword:
-                case ItemResourceType.ShortSword:
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.03f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_soldier;
-                    soldierData.modelVariationCount = 3;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Soldier;
-                    break;
-                case ItemResourceType.Sword:
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = DssConst.SwordAttackRange;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_soldier;
-                    soldierData.modelVariationCount = 3;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Soldier;
-                    break;
-
-                case ItemResourceType.LongSword:
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.05f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_longsword;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Longsword;
-                    break;
-
-                case ItemResourceType.Pike:
-                    soldierData.arrowWeakness = true;
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.055f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_piker;
-                    soldierData.modelVariationCount = 1;
-                    soldierData.modelScale *= 1.6f;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Pikeman;
-                    conscript.specialization = SpecializationType.AntiCavalry;
-                    break;
-
-                case ItemResourceType.HandSpear:
-                    soldierData.arrowWeakness = true;
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.05f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_spearman;
-                    soldierData.modelVariationCount = 1;
-                    soldierData.modelScale *= 1.0f;
-                    soldierData.icon = SpriteName.LittleUnitIconSpearman;
-                    soldierData.basehealth += DssConst.WeaponHealthAdd_Handspear;
-                    break;
-
-                case ItemResourceType.Warhammer:
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.04f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_hammer;
-                    soldierData.modelScale *= 1.14f;
-                    soldierData.icon = SpriteName.WarsResource_Warhammer;
-                    break;
-
-                case ItemResourceType.TwoHandSword:
-                    soldierData.arrowWeakness = true;
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.08f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_twohand;
-                    soldierData.modelVariationCount = 1;
-                    soldierData.modelScale *= 1.6f;
-                    soldierData.icon = SpriteName.WarsUnitIcon_TwoHand;
-                    break;
-
-                case ItemResourceType.KnightsLance:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
-                    soldierData.attackRange = 0.06f;
-                    soldierData.basehealth *= 3;
-                    soldierData.mainAttack = AttackType.Melee;
-                    //result.attackDamage = 120;
-                    soldierData.attackDamageStructure = Convert.ToInt32(30 * skillBonus);
-                    soldierData.attackDamageSea = Convert.ToInt32(20 * skillBonus);
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
-                    soldierData.modelName = LootFest.VoxelModelName.war_knight;
-                    soldierData.modelVariationCount = 3;
-                    soldierData.modelScale *= 1.5f;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Knight;
-                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
-
-                    soldierData.rowWidth = 4;
-                    soldierData.columnsDepth = 3;
-                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
-                    soldierData.workForcePerUnit = 2;
-                    soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                    //soldierData.ArmySpeedBonusLand = 0.8;
-                    break;
-
-                case ItemResourceType.MithrilSword:
-                    soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.055f;
-                    soldierData.modelScale *= 1.5f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_mithrilman;
-                    soldierData.icon = SpriteName.WarsUnitIcon_MithrilMan;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
-                    break;
-
-                case ItemResourceType.SlingShot:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
-                    soldierData.mainAttack = AttackType.SlingShot;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;//ArmyPlacement.Mid;
-                    soldierData.attackRange = 1.8f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_slingman;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Slingshot;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
-                    break;
-
-                case ItemResourceType.ThrowingSpear:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.3f;
-                    soldierData.mainAttack = AttackType.Javelin;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = .5f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_javelin;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Javelin;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 6f;
-                    break;
-
-                case ItemResourceType.Bow:
-                    soldierData.mainAttack = AttackType.Arrow;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = 1.3f;
-                    soldierData.modelName = LootFest.VoxelModelName.war_archer;
-                    soldierData.modelVariationCount = 2;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Archer;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
-                    break;
-
-                case ItemResourceType.LongBow:
-                    soldierData.mainAttack = AttackType.Arrow;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = 1.7f;
-                    soldierData.modelName = LootFest.VoxelModelName.war_archer;
-                    soldierData.modelVariationCount = 2;
-                    soldierData.icon = SpriteName.WarsUnitIcon_Archer;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
-                    break;
-
-                case ItemResourceType.Crossbow:
-                    soldierData.mainAttack = AttackType.Bolt;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = 1.7f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_crossbow;
-                    soldierData.modelVariationCount = 1;
-                    soldierData.icon = SpriteName.LittleUnitIconCrossBowman;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 15f;
-                    break;
-
-                case ItemResourceType.MithrilBow:
-                    soldierData.mainAttack = AttackType.Arrow;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = 2.5f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_mithrilarcher;
-                    soldierData.modelScale *= 1.3f;
-                    
-                    soldierData.icon = SpriteName.WarsUnitIcon_MithrilArcher;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 8f;
-                    break;
-
-
-                case ItemResourceType.HandCannon:
-                    soldierData.mainAttack = AttackType.GunShot;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = 1.2f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_handcannon;
-                    soldierData.modelVariationCount = 1;
-                    soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
-                    break;
-
-                case ItemResourceType.HandCulverin:
-                    soldierData.mainAttack = AttackType.GunBlast;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = 0.4f;
-                    //soldierData.attackSplashCount = 8;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_culvertin;
-                    soldierData.modelVariationCount = 1;
-                    soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
-                    break;
-
-                case ItemResourceType.Rifle:
-                    soldierData.mainAttack = AttackType.GunShot;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = 1.5f;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_handcannon;
-                    soldierData.modelVariationCount = 1;
-                    soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
-                    break;
-
-                case ItemResourceType.Blunderbus:
-                    soldierData.mainAttack = AttackType.GunBlast;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                    soldierData.attackRange = 0.5f;
-                    //soldierData.attackSplashCount = 8;
-                    soldierData.modelName = LootFest.VoxelModelName.wars_culvertin;
-                    soldierData.modelVariationCount = 1;
-                    soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
-                    break;
-
-                case ItemResourceType.Ballista:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-                    soldierData.attackRange = WarmashineProfile.BallistaRange;
-
-                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
-                    soldierData.mainAttack = AttackType.Ballista;
-                    //soldierData.attackSplashCount = 1;
-                    soldierData.attackDamageStructure = Convert.ToInt32(1500 * skillBonus);
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
-
-                    soldierData.modelName = LootFest.VoxelModelName.war_ballista;
-                    soldierData.modelVariationCount = 2;
-
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2f;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
-
-                    soldierData.icon = SpriteName.WarsUnitIcon_Ballista;
-
-                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
-
-                    soldierData.rowWidth = 3;
-                    soldierData.columnsDepth = 2;
-                    soldierData.workForcePerUnit = 2;
-
-                    soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
-                    break;
-
-                case ItemResourceType.Manuballista:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-                    soldierData.attackRange = 2;
-                    //soldierData.attackSplashCount = 1;
-
-                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
-                    soldierData.mainAttack = AttackType.Ballista;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
-
-                    soldierData.modelName = LootFest.VoxelModelName.wars_manuballista;
-
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 1.5f;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-
-                    soldierData.icon = SpriteName.WarsResource_Manuballista;
-                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
-
-                    soldierData.rowWidth = 3;
-                    soldierData.columnsDepth = 2;
-                    soldierData.workForcePerUnit = 2;
-
-                    soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
-                    break;
-
-                case ItemResourceType.Catapult:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-                    soldierData.attackRange = 2.6f;
-                    //soldierData.attackSplashCount = 3;
-
-                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
-                    soldierData.mainAttack = AttackType.Catapult;
-                    soldierData.attackDamageStructure = Convert.ToInt32(2000 * skillBonus);
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
-
-                    soldierData.modelName = LootFest.VoxelModelName.wars_catapult;
-
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2.3f;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
-
-                    soldierData.icon = SpriteName.WarsUnitIcon_Catapult;
-
-                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
-
-                    soldierData.rowWidth = 2;
-                    soldierData.columnsDepth = 2;
-                    soldierData.workForcePerUnit = 2;
-
-                    soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
-                    break;
-
-                case ItemResourceType.SiegeCannonBronze:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.3f;
-                    soldierData.attackRange = 2.4f;
-                    //soldierData.attackSplashCount = 12;
-
-                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
-                    soldierData.mainAttack = AttackType.MassiveCannonball;
-                    soldierData.attackDamageStructure = Convert.ToInt32(2000 * skillBonus);
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 50f;
-
-                    soldierData.modelName = LootFest.VoxelModelName.wars_bronzesiegecannon;
-
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 5f;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
-
-                    soldierData.icon = SpriteName.WarsUnitIcon_Catapult;
-
-                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
-
-                    soldierData.rowWidth = 1;
-                    soldierData.columnsDepth = 1;
-                    soldierData.workForcePerUnit = 6;
-
-                    soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
-                    break;
-
-                case ItemResourceType.ManCannonBronze:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-                    soldierData.attackRange = 2;
-                    //soldierData.attackSplashCount = 5;
-
-                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
-                    soldierData.mainAttack = AttackType.Cannonball;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 20f;
-
-                    soldierData.modelName = LootFest.VoxelModelName.wars_bronzemancannon;
-
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2f;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-
-                    soldierData.icon = SpriteName.WarsResource_BronzeManCannon;
-                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
-
-                    soldierData.rowWidth = 3;
-                    soldierData.columnsDepth = 2;
-                    soldierData.workForcePerUnit = 2;
-
-                    soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
-                    break;
-
-                case ItemResourceType.SiegeCannonIron:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-                    soldierData.attackRange = 2.2f;
-                    //soldierData.attackSplashCount = 2;
-
-                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
-                    soldierData.mainAttack = AttackType.Haubitz;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 20f;
-
-                    soldierData.modelName = LootFest.VoxelModelName.wars_ironsiegecannon;
-
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 1f;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Second;
-
-                    soldierData.icon = SpriteName.WarsResource_IronSiegeCannon;
-
-                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 4;
-
-                    soldierData.rowWidth = 3;
-                    soldierData.columnsDepth = 2;
-                    soldierData.workForcePerUnit = 2;
-
-                    soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
-                    break;
-
-                case ItemResourceType.ManCannonIron:
-                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-                    soldierData.attackRange = 2.4f;
-                    //soldierData.attackSplashCount = 6;
-
-                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
-                    soldierData.mainAttack = AttackType.Cannonball;
-                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 18;
-
-                    soldierData.modelName = LootFest.VoxelModelName.wars_ironmancannon;
-
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 1.7f;
-                    soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-
-                    soldierData.icon = SpriteName.WarsUnitIcon_IronManCannon;
-                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
-
-                    soldierData.rowWidth = 3;
-                    soldierData.columnsDepth = 2;
-                    soldierData.workForcePerUnit = 2;
-
-                    soldierData.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                    soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
-                    break;
-            }
+            soldierData.unitFilter = conscript.classify();//out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
             switch (conscript.specialization)
             {
+                case SpecializationType.CityGuard:
+                    
+                    soldierData.rowWidth = DssConst.SoldierGroup_GuardCount;
+                    soldierData.columnsDepth = 1;
+                    soldierData.groupSpacing *= 0.5f;
+                    soldierData.hasBannerMan = false;
+                    break;
+
                 case SpecializationType.Field:
                     soldierData.attackDamage = MathExt.AddPercentage(soldierData.attackDamage, DssConst.Conscript_SpecializePercentage);
                     soldierData.attackDamageSea = MathExt.SubtractPercentage(soldierData.attackDamageSea, DssConst.Conscript_SpecializePercentage);
@@ -565,7 +308,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case SpecializationType.Viking:
                 case SpecializationType.Sea:
-                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+                    
 
                     soldierData.attackDamage = MathExt.SubtractPercentage(soldierData.attackDamage, DssConst.Conscript_SpecializePercentage);
                     float seaDamagePerc = conscript.specialization == SpecializationType.Sea ?
@@ -573,7 +316,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.attackDamageSea = MathExt.AddPercentage(soldierData.attackDamageSea, seaDamagePerc);
                     soldierData.attackDamageStructure = MathExt.SubtractPercentage(soldierData.attackDamageStructure, DssConst.Conscript_SpecializePercentage);
 
-                    if (!ranged)
+                    if (!soldierData.unitFilter.Contains(UnitFilterType.Ranged))//ranged)
                     {
                         soldierData.modelName = LootFest.VoxelModelName.war_sailor;
                         soldierData.modelVariationCount = 2;
@@ -588,15 +331,15 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.HonorGuard:
-                    soldierData.modelScale = DssConst.Men_StandardModelScale * 1.2f;
-                    soldierData.energyPerSoldier = 0;
+                    soldierData.modelScale = DssConst.Men_ModCharacterScale * 1.2f;
+                    soldierData.upkeepMultiplier = 0;
                     soldierData.modelName = LootFest.VoxelModelName.little_hirdman;
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.WarsUnitIcon_Honorguard;
                     break;
 
                 case SpecializationType.Traditional:
-                    soldierData.energyPerSoldier *= 0.5f;
+                    soldierData.upkeepMultiplier *= 0.5f;
                     break;
 
                 case SpecializationType.Green:
@@ -608,32 +351,74 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.DarkLord:
-                    soldierData.modelScale = DssConst.Men_StandardModelScale;
+                    //soldierData.modelScale = DssConst.Men_StandardModelScale;
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed;
                     soldierData.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
                     soldierData.basehealth = DssConst.Soldier_DefaultHealth * 4;
                     soldierData.modelName = LootFest.VoxelModelName.wars_darklord;
+                    soldierData.factionColoredModel = false;
 
                     soldierData.workForcePerUnit = 0;
                     soldierData.rowWidth = 1;
                     soldierData.columnsDepth = 1;
-                    soldierData.upkeepPerSoldier = 0;
+                    //soldierData.upkeepPerSoldier = 0;
+
+                    soldierData.attackRange = 0.02f;
+                    soldierData.basehealth = DssConst.Soldier_DefaultHealth * 4;
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackDamage = 500;
+                    soldierData.attackDamageStructure = soldierData.attackDamage;
+                    soldierData.attackDamageSea = soldierData.attackDamage;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.5f;
+
+                    soldierData.modelName = LootFest.VoxelModelName.wars_darklord;
                     break;
             }
 
             soldierData.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);
             soldierData.attackTimePlusCoolDown /= 1f + skillBonus;
 
+            ShieldProperties.AddToConscript(ref soldierData, ref conscript);
+            if (conscript.armorLevel != ItemResourceType.NONE)
+            {
+                soldierData.basehealth += armorData.basehealth;
+            }
+            //ShieldProperties.AddToConscript(ref soldierData, ref conscript);
 
             return soldierData;
+
+            
+        }
+        void animalSetup(ItemResourceType animal, int unitAnimalCount, ref SoldierData soldierData)
+        {
+            var animalData = ItemPropertyColl.Get(animal).soldierData;
+            soldierData.animalFoodMultiplier = animalData.animalFoodMultiplier * unitAnimalCount;
+        }
+        void ridingAnimalSetup(ItemResourceType animal, ItemResourceType armor, ref SoldierData soldierData)
+        {
+            var animalData = ItemPropertyColl.Get(animal).soldierData;
+            soldierData.attackDamage += animalData.attackDamage;
+            soldierData.basehealth += animalData.basehealth;
+
+            if (armor != ItemResourceType.NONE)
+            {
+                soldierData.basehealth += ItemPropertyColl.Get(armor).soldierData.basehealth;
+            }
+        }
+        void wagonSetup(ItemResourceType wagon, ref SoldierData soldierData)
+        {
+            var wagonData = ItemPropertyColl.Get(wagon).soldierData;
+            soldierData.attackDamage += wagonData.attackDamage;
+            soldierData.basehealth += wagonData.basehealth;
+
         }
 
         public SoldierData bannermanSetup(SoldierData soldierData)
         {
-            soldierData.modelScale = DssConst.Men_StandardModelScale;
-            soldierData.canAttackCharacters = false;
-            soldierData.canAttackStructure = false;
+            soldierData.attackDamage /= 2;
+            soldierData.attackDamageStructure /= 2;
 
+            soldierData.factionColoredModel = true;
             soldierData.modelName = LootFest.VoxelModelName.war_bannerman;
             soldierData.modelVariationCount = 1;
 
@@ -642,21 +427,32 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void shipSetup(ref SoldierData soldierData)
         {
+            soldierData.hasBannerMan = false;
             soldierData.modelName = LootFest.VoxelModelName.NUM_NON;
 
             soldierData.walkingSpeed = DssConst.Men_StandardShipSpeed;
 
             soldierData.modelScale = DssConst.Men_StandardModelScale * 6f;
+            soldierData.boundRadius = DssVar.StandardBoundRadius * 6f;
 
             soldierData.modelToShadowScale = new Vector3(0.5f, 1f, 0.8f);
+            soldierData.basehealth = soldierData.basehealth * soldierData.rowWidth * soldierData.columnsDepth;
             soldierData.rowWidth = 1;
             soldierData.columnsDepth = 1;
+            soldierData.rotationSpeed = DssConst.ShipRotatingSpeed;
+            soldierData.modelData.modelType = ModelType.Ship;
+
 
             switch (conscript.specialization)
             {
+                case SpecializationType.Sea:
+                    soldierData.walkingSpeed *= 1.4f;
+                    soldierData.rotationSpeed *= 1.2f;
+                    break;
+
                 case SpecializationType.Viking:
-                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
-                    if (!ranged)
+                    //conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+                    if (!soldierData.unitFilter.Contains(UnitFilterType.Ranged))
                     {
                         soldierData.modelName = LootFest.VoxelModelName.wars_viking_ship;
 
@@ -665,6 +461,7 @@ namespace VikingEngine.DSSWars.Conscript
                         soldierData.attackRange = 1f;
                     }
                     soldierData.walkingSpeed *= 1.5f;
+                    soldierData.rotationSpeed *= 1.2f;
                     break;
 
                 case SpecializationType.DarkLord:
@@ -686,11 +483,16 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 switch (conscript.weapon)
                 {
+                    case ItemResourceType.Settler:
                     case ItemResourceType.SharpStick:
                     case ItemResourceType.UN_BatteringRam:
-                        soldierData.modelName = LootFest.VoxelModelName.wars_folk_ship;
 
+                    case ItemResourceType.RoseWarrior_soldier:
+                    case ItemResourceType.RoseWarrior_tank:
+                    case ItemResourceType.RoseWarrior_dog:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_folk_ship;
                         break;
+
                     case ItemResourceType.Pike:
                     case ItemResourceType.HandSpear:
                     case ItemResourceType.BronzeSword:
@@ -708,7 +510,7 @@ namespace VikingEngine.DSSWars.Conscript
                     case ItemResourceType.HandCannon:
                     case ItemResourceType.HandCulverin:
                     case ItemResourceType.Rifle:
-                    case ItemResourceType.Blunderbus:
+                    case ItemResourceType.Blunderbuss:
                         soldierData.modelName = LootFest.VoxelModelName.wars_archer_ship;
                         break;
 
@@ -725,14 +527,18 @@ namespace VikingEngine.DSSWars.Conscript
 
                     case ItemResourceType.Warhammer:
                     case ItemResourceType.TwoHandSword:
-                    case ItemResourceType.KnightsLance:
+                    //case ItemResourceType.KnightsLance:
                     case ItemResourceType.MithrilSword:
                     case ItemResourceType.MithrilBow:
                         soldierData.modelName = LootFest.VoxelModelName.wars_knight_ship;
                         break;
 
                     default:
+                        soldierData.modelName = LootFest.VoxelModelName.ErrorCube;
+#if DEBUG
                         throw new NotImplementedException();
+#endif
+                        break;
                 }
             }
         }

@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine
 {
-    interface ICirkleCounter
+    interface ICircleCounter
     {
         int Value { get; }
         int Max { get; }
@@ -20,7 +20,7 @@ namespace VikingEngine
     {
         public static readonly FrameStamp None = new FrameStamp(-1000000);
 
-        public int frame;
+        public double frame;
 
         public FrameStamp(int frame)
         {
@@ -43,39 +43,62 @@ namespace VikingEngine
         public static readonly TimeStamp None = new TimeStamp(-1000000);
 
         //const float SecToMs = 0.001f;
-        public float totalGameTimeStampSec;
+        public float totalTimeStampSec;
         
-        public TimeStamp(float totalGameTimeStampSec)
+        public TimeStamp(float totalTimeStampSec)
         {
-            this.totalGameTimeStampSec = totalGameTimeStampSec;
+            this.totalTimeStampSec = totalTimeStampSec;
         }
-
+        public bool HasTime()
+        {
+            return totalTimeStampSec > 0;
+        }
         public static TimeStamp Now()
         {
             return new TimeStamp(Ref.TotalTimeSec);
         }
 
+        public bool minPassed(float minutes)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec >= minutes * TimeExt.MinuteInSeconds;
+        }
         public bool secPassed(float seconds)
         {
-            return Ref.TotalTimeSec - totalGameTimeStampSec >= seconds;
+            return Ref.TotalTimeSec - totalTimeStampSec >= seconds;
         }
         public bool msPassed(float ms)
         {
-            return Ref.TotalTimeSec - totalGameTimeStampSec >= TimeExt.MsToSec * ms;
+            return Ref.TotalTimeSec - totalTimeStampSec >= TimeExt.MsToSec * ms;
+        }
+
+        public bool belowTime_sec(float seconds)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec < seconds;
+        }
+        public bool belowTime_ms(float ms)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;
         }
 
         public void setNow()
         {
-            this.totalGameTimeStampSec = Ref.TotalTimeSec;
+            this.totalTimeStampSec = Ref.TotalTimeSec;
         }
-
+        public void setTimeFromNow(float seconds)
+        {
+            this.totalTimeStampSec = Ref.TotalTimeSec + seconds;
+        }
+        public bool TimeOut()
+        {
+            return Ref.TotalTimeSec >= totalTimeStampSec;
+        }
         /// <summary>
         /// Time passed this frame
         /// </summary>
         public bool event_sec(float seconds)
         {
-            return Ref.PrevTotalTimeSec - totalGameTimeStampSec < seconds &&
-                Ref.TotalTimeSec - totalGameTimeStampSec >= seconds;
+            return Ref.PrevTotalTimeSec - totalTimeStampSec < seconds &&
+                Ref.TotalTimeSec - totalTimeStampSec >= seconds;
         }
 
         /// <summary>
@@ -88,17 +111,157 @@ namespace VikingEngine
 
         public float Hours
         {
-            get { return TimeExt.SecondsToHours(Ref.TotalTimeSec - totalGameTimeStampSec); }
+            get { return TimeExt.SecondsToHours(Ref.TotalTimeSec - totalTimeStampSec); }
         }
         public float Seconds
         {
-            get { return Ref.TotalTimeSec - totalGameTimeStampSec; }
+            get { return Ref.TotalTimeSec - totalTimeStampSec; }
         }
         public float MilliSec
         {
-            get { return TimeExt.SecondsToMS(Ref.TotalTimeSec - totalGameTimeStampSec); }
+            get { return TimeExt.SecondsToMS(Ref.TotalTimeSec - totalTimeStampSec); }
         }
-    }   
+    }
+
+    struct GameTimeStamp
+    {
+        public static readonly GameTimeStamp None = new GameTimeStamp(-1000000);
+
+        //const float SecToMs = 0.001f;
+        public float totalTimeStampSec;
+
+        public GameTimeStamp(float totalGameTimeStampSec)
+        {
+            this.totalTimeStampSec = totalGameTimeStampSec;
+        }
+
+        public void write_ushort(System.IO.BinaryWriter w)
+        {
+            //MAX 1000 hours
+            w.Write(Convert.ToUInt16(totalTimeStampSec));
+        }
+
+        public void read_ushort(System.IO.BinaryReader r)
+        {
+            totalTimeStampSec = r.ReadUInt16();
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(totalTimeStampSec);
+        }
+        
+        public void read(System.IO.BinaryReader r)
+        {
+            totalTimeStampSec = r.ReadSingle();
+        }
+        public void write_byte(System.IO.BinaryWriter w)
+        {
+            if (totalTimeStampSec > Ref.TotalGameTimeSec)
+            {
+                w.Write(Bound.Byte(Convert.ToInt32(Seconds)));
+            }
+            else
+            {
+                w.Write(byte.MinValue);
+            }
+        }
+        public void read_byte(System.IO.BinaryReader r)
+        {
+            totalTimeStampSec = r.ReadByte();
+            if (totalTimeStampSec == 0)
+            {
+                totalTimeStampSec = -1000;
+            }
+            else
+            {
+                totalTimeStampSec += Ref.TotalGameTimeSec;
+            }
+        }
+
+        public bool HasTime()
+        {
+            return totalTimeStampSec >= Ref.TotalGameTimeSec;
+        }
+
+        public static GameTimeStamp Now()
+        {
+            return new GameTimeStamp(Ref.TotalGameTimeSec);
+        }
+        public bool minPassed(float minutes)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec >= TimeExt.MinuteInSeconds * minutes;
+        }
+        public bool secPassed(float seconds)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
+        }
+        public bool msPassed(float ms)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec >= TimeExt.MsToSec * ms;
+        }
+
+        public bool belowTime_ms(float ms)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;
+        }
+
+        public bool TimeOut()
+        {
+            return Ref.TotalGameTimeSec >= totalTimeStampSec;
+                
+        }
+
+        public TimeSpan TimeSpan_Left()
+        {
+            return TimeSpan.FromSeconds(Bound.Min(totalTimeStampSec - Ref.TotalGameTimeSec, 0));
+        }
+
+        public void setNow()
+        {
+            this.totalTimeStampSec = Ref.TotalGameTimeSec;
+        }
+
+        public void setTimeFromNow(float seconds)
+        {
+            this.totalTimeStampSec = Ref.TotalGameTimeSec + seconds;
+        }
+
+        /// <summary>
+        /// Time passed this frame
+        /// </summary>
+        public bool event_sec(float seconds)
+        {
+            return Ref.PrevTotalTimeSec - totalTimeStampSec < seconds &&
+                Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
+        }
+
+        public void addTime(float seconds)
+        {
+            totalTimeStampSec += seconds;
+        }
+
+        /// <summary>
+        /// Time passed this frame
+        /// </summary>
+        public bool event_ms(float ms)
+        {
+            return event_sec(ms * TimeExt.MsToSec);
+        }
+
+        public float Hours
+        {
+            get { return TimeExt.SecondsToHours(-Ref.TotalGameTimeSec + totalTimeStampSec); }
+        }
+        public float Seconds
+        {
+            get { return -Ref.TotalGameTimeSec + totalTimeStampSec; }
+        }
+        public float MilliSec
+        {
+            get { return TimeExt.SecondsToMS(-Ref.TotalGameTimeSec + totalTimeStampSec); }
+        }
+    }
 
     struct AddFloatPerTime
     {
@@ -369,7 +532,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounter
+    struct CircleCounter
     {
         int value;
         public int Value
@@ -388,15 +551,17 @@ namespace VikingEngine
         public int Min
         { get { return min; } }
 
-        public CirkleCounter(int maxValue)
+        public int Length => max - min + 1;
+
+        public CircleCounter(int maxValue)
             : this(0, 0, maxValue)
         {
         }
-        public CirkleCounter(int startVal,int minValue, int maxValue)
+        public CircleCounter(int startVal,int minValue, int maxValue)
         {
             min = minValue;
             max = maxValue;
-            value = 0;
+            value = Bound.SetRollover(startVal, min, max);
         }
         public int Next(int dir)
         {
@@ -408,12 +573,28 @@ namespace VikingEngine
         {
             value = min;
         }
+
+        public CircleCounter AddBound(Range bounds)
+        {
+            CircleCounter copy = this;
+            if (copy.min < bounds.Min)
+            {
+                copy.min = bounds.Min;
+            }
+            if (copy.max > bounds.Max)
+            {
+                copy.max = bounds.Max;
+            }
+            copy.value = bounds.SetBounds(copy.Value);
+
+            return copy;
+        }
     }
 
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounterUp : ICirkleCounter
+    struct CircleCounterUp : ICircleCounter
     {
         public int value;
         public int Value
@@ -422,16 +603,16 @@ namespace VikingEngine
         public int Max
         { get { return max; } }
 
-        public CirkleCounterUp(int maxValue)
+        public CircleCounterUp(int maxValue)
             : this(0, maxValue)
         {
         }
-        public CirkleCounterUp(int startVal, int maxValue)
+        public CircleCounterUp(int startVal, int maxValue)
         {
             max = maxValue;
             value = startVal;
         }
-        public static CirkleCounterUp operator ++(CirkleCounterUp val)
+        public static CircleCounterUp operator ++(CircleCounterUp val)
         {
             val.Next();
             return val;
@@ -464,7 +645,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounterDown : ICirkleCounter
+    struct CircleCounterDown : ICircleCounter
     {
         public int value;
         public int Value
@@ -473,7 +654,7 @@ namespace VikingEngine
         public int Max
         { get { return max; } }
 
-        public CirkleCounterDown(int maxValue)
+        public CircleCounterDown(int maxValue)
         {
             max = maxValue;
             value = maxValue;
@@ -557,7 +738,7 @@ namespace VikingEngine
     /// <summary>
     /// Will count back n forward between bounds
     /// </summary>
-    public struct PingPongCounter
+    struct PingPongCounter
     {
         public int dir;
         public int Min;
@@ -756,7 +937,7 @@ namespace VikingEngine
         }
     }
    
-    public struct Percent
+    struct Percent
     {
         public const float MaxPercentage = 1;
         public const int MaxTextPercentage = 100;

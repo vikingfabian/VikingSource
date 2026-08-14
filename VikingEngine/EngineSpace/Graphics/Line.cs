@@ -18,6 +18,10 @@ namespace VikingEngine.Graphics
             set { this.Height = value; }
         }
 
+        public Line(float thickness, ImageLayers layer, Color color)
+            : this(thickness, layer, color, Vector2.Zero, Vector2.Zero, true)
+        { }
+
         public Line(float thickness, ImageLayers layer, Color color, Vector2 point1, Vector2 point2)
             : this(thickness, layer, color, point1, point2, true)
         { }

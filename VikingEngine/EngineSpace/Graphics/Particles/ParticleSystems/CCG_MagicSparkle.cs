@@ -14,7 +14,7 @@ namespace VikingEngine.Graphics
         protected override void InitializeSettings(ParticleSettings settings)
         {
             //settings.Texture = LoadedTexture.psmoke;
-            settings.Texture = LoadedTexture.square_particle;
+            settings.Texture = LoadedTexture.particle3;
 
             settings.MaxParticles = 6000;
 

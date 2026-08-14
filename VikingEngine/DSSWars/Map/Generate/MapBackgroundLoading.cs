@@ -5,36 +5,77 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
+    class MapGenerator_BackgroundLoading: MapBackgroundLoading
+    {
+        public MapGenerator_BackgroundLoading()
+            :base()
+        { }
+
+        public void generate(GenerateMapPass pass)
+        {
+            loadingState = LoadingState.StorageDone;
+            generateLoopUntilSuccess(null, pass, true);
+        }
+
+        protected override bool GenerateNewMap()
+        {
+            return true;
+        }
+    }
+
+
     class MapBackgroundLoading
     {
         WorldDataStorage storage;
-        LoadingState loadingState = 0;
+        protected LoadingState loadingState = 0;
         bool abort = false;
-        GenerateMap dataGenerate = null;
+        bool abortCompleted = false;
+
+        TimeStamp abortTime;
+        TimeStamp abortCompleteTime;
+
+
+        public GenerateMap dataGenerate = null;
         GenerateMap postGenerate;
         int failCount = 0;
         bool generateSuccess =false;
         CancellationTokenSource tokenSource;
-        SaveStateMeta loadMeta;
+        public SaveStateMeta loadMeta;
+        public MapGenerateSettings generateSettings = new MapGenerateSettings();
 
+        public MapBackgroundLoading()
+        { }
+        public MapBackgroundLoading(MapGenerateSettings generateSettings)
+        { 
+            this.generateSettings = generateSettings;
+            begin();
+        }
         public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
             this.loadMeta = loadMeta;
+            begin();
+        }
+
+        void begin()
+        {
             if (loadMeta != null)
             {
                 DssRef.storage.generateNewMaps = loadMeta.worldmeta.IsGenerated;
-                DssRef.storage.mapSize = loadMeta.worldmeta.mapSize;
+                DssRef.storage.ruleset.mapSize = loadMeta.worldmeta.mapSize;
             }
 
-            if (DssRef.storage.generateNewMaps)
+            if (GenerateNewMap())
             {
+
                 loadingState = LoadingState.StorageDone;
-                generateLoopUntilSuccess(loadMeta);
+                generateLoopUntilSuccess(loadMeta, GenerateMapPass.All, false);
             }
             else
             {
@@ -44,7 +85,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (loadMeta == null)
                 {
-                    worldMeta = new WorldMetaData(0, DssRef.storage.mapSize, loadingNumber);
+                    worldMeta = new WorldMetaData(0, DssRef.storage.ruleset.mapSize, loadingNumber);
                 }
                 else
                 {
@@ -56,56 +97,92 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (StartupSettings.SaveLoadSpecificMap.HasValue)
                 {
-                    DssRef.storage.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
+                    DssRef.storage.ruleset.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
                     loadingNumber = 1;
                 }
-                storage.loadMap(worldMeta);//DssRef.storage.mapSize, loadingNumber);
+                storage.loadMap(worldMeta);
             }
         }
 
-        void generateLoopUntilSuccess(SaveStateMeta loadMeta)
+
+        public WorldData WorldData()
+        { 
+            if (DssRef.world == null)
+                return null;
+
+            return DssRef.world;
+        }
+
+        protected void generateLoopUntilSuccess(SaveStateMeta loadMeta, GenerateMapPass generatePass, bool customEditorMap)
         {
+            generateSuccess = false;
             tokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = tokenSource.Token;
 
-            Task task = Task.Factory.StartNew(() =>
+            Task task = Task.Factory.StartNew(async () =>
             {
-                while (!abort)
+                try
                 {
-                    dataGenerate = new GenerateMap();
-
-                    WorldMetaData world;
-                    ushort seed;
-                    if (loadMeta != null)
+                    while (!abort && failCount < 10)
                     {
-                        world = loadMeta.worldmeta;
-                        //seed = loadMeta.world.seed;
-                    }
-                    else
-                    {
-                        world = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.mapSize, -1);
-                        seed = Ref.rnd.Ushort();
-                    }
+                        List<Task> extraTasks = new List<Task>();
 
-                    bool success = dataGenerate.Generate(false, world, new MapGenerateSettings());
-
-                    if (success)
-                    {
-                        if (!abort)
+                        if (dataGenerate == null ||
+                            generatePass == GenerateMapPass.All ||
+                            generatePass == GenerateMapPass.Clear ||
+                            generatePass == GenerateMapPass.AllTerrain)
                         {
-                            DssRef.world = dataGenerate.world;
+                            dataGenerate = new GenerateMap();
                         }
-                        generateSuccess = true;
-                        return;
-                    }
-                    else
-                    {
-                        failCount++;
+
+                        WorldMetaData worldmeta;
+                        ushort seed;
+                        if (loadMeta != null)
+                        {
+                            worldmeta = loadMeta.worldmeta;
+                        }
+                        else
+                        {
+                            worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.ruleset.mapSize, -1);
+                            worldmeta.customEditorMap = customEditorMap;
+                            seed = Ref.rnd.Ushort();
+                        }
+
+                        bool success;
+                        if (generatePass == GenerateMapPass.All)
+                        {
+                            List<Task> tasks = new List<Task>();
+                            success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks).Result;
+                            await Task.WhenAll(tasks);
+                        }
+                        else
+                        {
+                            success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass, extraTasks);
+                        }
+
+                        if (success)
+                        {
+                            if (!abort)
+                            {
+                                DssRef.world = dataGenerate.world;
+                            }
+                            generateSuccess = true;
+                            return;
+                        }
+                        else
+                        {
+                            failCount++;
+                        }
+
+                        await Task.WhenAll(extraTasks);
                     }
                 }
-            }, cancellationToken);
-
-            
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+                
+            }, cancellationToken);            
         }
 
         public void Update()
@@ -115,11 +192,18 @@ namespace VikingEngine.DSSWars.Map.Generate
                 return;
             }
 
-            if (DssRef.storage.generateNewMaps)
+            if (GenerateNewMap())
             {
                 if (generateSuccess)
                 {
-                    postGenerateUpdate();
+                    if (dataGenerate.world.generatePassCompleted >= GenerateMapPass.Countries)
+                    {
+                        postGenerateUpdate();
+                    }
+                    else
+                    {
+                        loadingState = LoadingState.Complete;
+                    }
                 }                
             }
             else
@@ -141,19 +225,22 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (loadingState <= LoadingState.StorageDone)
                 {
-                    loadingState = LoadingState.Post1Started;
-                    postGenerate = new Map.Generate.GenerateMap();
-                    postGenerate.postLoadGenerate_Part1(DssRef.world);
+                    //TODO WHY NULL
+                    if (dataGenerate != null)
+                    {
+                        loadingState = LoadingState.Post1Started;
+                        //postGenerate = new Map.Generate.GenerateMap();
+                        //postGenerate.generateSubTiles(dataGenerate.world);
+                    }
                 }
                 else if (loadingState == LoadingState.Post1Started)
                 {
-                    if (postGenerate.postComplete)
+                    //if (postGenerate.postComplete)
                     {
                         loadingState = LoadingState.Post2Started;
                         postGenerate = new Map.Generate.GenerateMap();
-                        postGenerate.postLoadGenerate_Part2(DssRef.world, loadMeta);
+                        postGenerate.postLoadGenerate_Part2(dataGenerate.world, loadMeta);
                     }
-                    //loadingState = LoadingState.Complete;
                 }
                 else if (loadingState == LoadingState.Post2Started)
                 {
@@ -169,14 +256,23 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
+        virtual protected bool GenerateNewMap()
+        {
+            return DssRef.storage.generateNewMaps || generateSettings.useGenerate;
+        }
+
         public void Abort()
         { 
             abort = true;
+            abortTime = TimeStamp.Now();
+
             if (storage != null)
             {
                 storage.worldData.abortLoad = true;
             }
             tokenSource?.Cancel();
+
+            System.Threading.Thread.Sleep(100);
         }
 
         public string ProgressString()
@@ -211,9 +307,15 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             if (loadingState == LoadingState.Complete)
             {
-                if (!DssRef.storage.generateNewMaps)
+                if (GenerateNewMap())
                 {
-                    DssRef.world = storage.worldData;
+                    if (!abort)
+                    { DssRef.world = dataGenerate.world; }
+                }
+                else
+                {
+                    if (!abort)
+                    { DssRef.world = storage.worldData; }
                 }
                 return true;
             }
@@ -223,7 +325,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
          
 
-        enum LoadingState
+        protected enum LoadingState
         { 
             StorageQue,
             Storage,

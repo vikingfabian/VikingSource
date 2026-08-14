@@ -13,7 +13,7 @@ namespace VikingEngine.Graphics
 
         public Image[] lines = null;
 
-        public RectangleLines(VectorRect rectangle, float thickness, float lineCenter, ImageLayers layer)
+        public RectangleLines(VectorRect rectangle, float thickness, float lineCenter, ImageLayers layer, bool addToRender = true)
         {
             this.rectangle = rectangle;
             this.thickness = thickness;
@@ -22,7 +22,7 @@ namespace VikingEngine.Graphics
             lines = new Image[4];
             for (int i = 0; i < lines.Length; ++i)
             {
-                lines[i] = new Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.One, layer, false);
+                lines[i] = new Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.One, layer, false, addToRender);
             }
 
             Refresh();
@@ -96,6 +96,14 @@ namespace VikingEngine.Graphics
             for (int i = 0; i < lines.Length; ++i)
             {
                 lines[i].ColorAndAlpha(col, alpha);
+            }
+        }
+
+        public void setOpacity(float alpha)
+        {
+            for (int i = 0; i < lines.Length; ++i)
+            {
+                lines[i].Opacity = alpha;
             }
         }
     }

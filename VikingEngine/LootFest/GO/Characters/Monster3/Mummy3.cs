@@ -19,7 +19,7 @@ namespace VikingEngine.LootFest.GO.Characters
             targetSearchDistanceTaunted = 32;
             Health = LfLib.LargeEnemyHealth;
             modelScale = ScaleRange.GetRandom();
-            createImage(VoxelModelName.mommy, modelScale, new Graphics.AnimationsSettings(7, 0.5f, 4));
+            createImage(VoxelModelName.NUM_NON, modelScale, new Graphics.AnimationsSettings(7, 0.5f, 4));
 
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickRectangleRotated2(new Vector3(0.24f * modelScale, 0.43f * modelScale, modelScale * 0.29f));
 

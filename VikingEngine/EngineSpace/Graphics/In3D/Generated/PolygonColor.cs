@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.ToggEngine.Map;
+using VikingEngine.Voxels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
@@ -124,7 +126,7 @@ namespace VikingEngine.Graphics
         {
 
             Graphics.Sprite file = DataLib.SpriteCollection.Get(sprite);// LootFest.LootfestLib.Images.TileIxToImgeFile[tileIx];
-            Face data = LootFest.Data.Block.GetVoxelObjFace(blockPos, facetype);
+            Face data = Block.GetVoxelObjFace(blockPos, facetype);
 
             V0sw = new VertexPositionColorTexture(data.Corner3, color, file.SourcePolygonLowLeft);
             V1nw = new VertexPositionColorTexture(data.Corner1, color, file.SourcePolygonTopLeft);
@@ -152,7 +154,7 @@ namespace VikingEngine.Graphics
 
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
 
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
 
             //VerticeData = new VertexPositionColorTexture[NumCorners]
             //{ 
@@ -170,7 +172,7 @@ namespace VikingEngine.Graphics
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
 
             //opta bort förflyttning av blockpos
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
             //VerticeData = new VertexPositionColorTexture[NumCorners]
             //{ 
             V0sw= new VertexPositionColorTexture(data.Corner3, 
@@ -213,7 +215,7 @@ namespace VikingEngine.Graphics
         public void ComplementPositionAndTileIx(IntVector3 blockPos, int tileIx, int facetype)
         {
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
 
              V0sw.TextureCoordinate = file.SourcePolygonLowLeft;
             V1nw.TextureCoordinate = file.SourcePolygonTopLeft;
@@ -310,27 +312,41 @@ namespace VikingEngine.Graphics
             return poly;
         }
 
+        //public static PolygonColor QuadXZ(Vector3 center, Vector2 halfsize, float rotation, SpriteName sprite, Dir4 spriteRot, Color color)
+        //{
+        //    Graphics.PolygonColor poly = new Graphics.PolygonColor();
+        //   // rotation = 0;
+        //    Vector2 brRot = -VectorExt.RotateVector(halfsize, rotation);
+
+        //    //Top left
+        //    poly.V0sw.Position = VectorExt.V2toV3XZ(brRot) + center;
+        //    //Top right
+        //    brRot = VectorExt.RotateVector90DegreeRight(brRot);
+        //    poly.V1nw.Position = VectorExt.V2toV3XZ(brRot) + center;
+        //    //Bottom right
+        //    brRot = VectorExt.RotateVector90DegreeRight(brRot);
+        //    poly.V3ne.Position = VectorExt.V2toV3XZ(brRot) + center;
+        //    //Bottom left
+        //    brRot = VectorExt.RotateVector90DegreeRight(brRot);
+        //    poly.V2se.Position = VectorExt.V2toV3XZ(brRot) + center;
+
+        //    poly.setSprite(sprite, spriteRot);
+
+        //    poly.V0sw.Color = color;
+        //    poly.V1nw.Color = color;
+        //    poly.V2se.Color = color;
+        //    poly.V3ne.Color = color;
+
+        //    return poly;
+        //}
+
         public static PolygonColor QuadXZ(Vector3 center, Vector2 halfsize, float rotation, SpriteName sprite, Dir4 spriteRot, Color color)
         {
             Graphics.PolygonColor poly = new Graphics.PolygonColor();
-           // rotation = 0;
-            Vector2 brRot = -VectorExt.RotateVector(halfsize, rotation);
-            //Vector3 topLeft = VectorExt.V2toV3XZ(-brRot) + center;
 
-            //TODO rotera bara offset
+            poly.quadXZPlacement(center, halfsize, rotation);
 
-            //Top left
-            poly.V0sw.Position = VectorExt.V2toV3XZ(brRot) + center;
-            //Top right
-            brRot = VectorExt.RotateVector90DegreeRight(brRot);
-            poly.V1nw.Position = VectorExt.V2toV3XZ(brRot) + center;
-            //Bottom right
-            brRot = VectorExt.RotateVector90DegreeRight(brRot);
-            poly.V3ne.Position = VectorExt.V2toV3XZ(brRot) + center;
-            //Bottom left
-            brRot = VectorExt.RotateVector90DegreeRight(brRot);
-            poly.V2se.Position = VectorExt.V2toV3XZ(brRot) + center;
-
+            // 4. Set properties
             poly.setSprite(sprite, spriteRot);
 
             poly.V0sw.Color = color;
@@ -339,6 +355,74 @@ namespace VikingEngine.Graphics
             poly.V3ne.Color = color;
 
             return poly;
+        }
+
+        public void quadXZPlacement(Vector3 center, Vector2 halfsize, float rotation)
+        {
+            // 1. Define only two adjacent unrotated corners
+            Vector2 sw = new Vector2(-halfsize.X, -halfsize.Y); // V0sw
+            Vector2 nw = new Vector2(halfsize.X, -halfsize.Y); // V1nw
+
+            // 2. Apply the rotation to just those two corners
+            Vector2 rotSw = VectorExt.RotateVector(sw, rotation);
+            Vector2 rotNw = VectorExt.RotateVector(nw, rotation);
+
+            // 3. Apply the positions. 
+            // The opposite corners (NE and SE) are exactly the negated vectors of SW and NW.
+            V0sw.Position = VectorExt.V2toV3XZ(rotSw) + center;
+            V1nw.Position = VectorExt.V2toV3XZ(rotNw) + center;
+            V3ne.Position = VectorExt.V2toV3XZ(-rotSw) + center; // Inverse of SW
+            V2se.Position = VectorExt.V2toV3XZ(-rotNw) + center; // Inverse of NW
+        }
+
+
+        /// <summary>
+        /// Add four sides to the quad and add them to the list, bottom Y is -height
+        /// </summary>
+        public void quadXZSides(float height, SpriteName sprite, Dir4 spriteRot, Color color, List<Graphics.PolygonColor> polygons)
+        {
+            Vector3 offset = new Vector3(0, -height, 0);
+
+            // Allocate the corners on the stack to avoid heap allocation and GC pressure
+            ReadOnlySpan<Vector3> topCorners = stackalloc Vector3[4]
+            {
+                V0sw.Position,
+                V1nw.Position,
+                V3ne.Position,
+                V2se.Position
+            };
+
+            // Iterate through the 4 edges
+            for (int i = 0; i < 4; i++)
+            {
+                // Get the top-left and top-right vertices of the current wall
+                Vector3 topLeft = topCorners[i];
+                Vector3 topRight = topCorners[(i + 1) % 4];
+
+                // Calculate bottom vertices by applying the height offset
+                Vector3 bottomLeft = topLeft + offset;
+                Vector3 bottomRight = topRight + offset;
+
+                // Create the new wall polygon
+                Graphics.PolygonColor side = new Graphics.PolygonColor();
+
+                // Assign positions
+                side.V0sw.Position = topLeft;//bottomLeft;
+                side.V1nw.Position = bottomLeft;//topLeft;
+                side.V2se.Position = topRight;//bottomRight;
+                side.V3ne.Position = bottomRight;//topRight;
+
+                // Apply properties
+                side.setSprite(sprite, spriteRot);
+
+                side.V0sw.Color = color;
+                side.V1nw.Color = color;
+                side.V2se.Color = color;
+                side.V3ne.Color = color;
+
+                // Add to the output list
+                polygons.Add(side);
+            }
         }
 
 

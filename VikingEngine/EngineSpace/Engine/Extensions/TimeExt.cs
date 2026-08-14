@@ -10,13 +10,14 @@ namespace VikingEngine
         public const int SecondToMs = 1000;
         public const float MsToSec = 1f / SecondToMs;
         public const int MinuteInSeconds = 60;
-        const int MinuteInMs = SecondToMs * MinuteInSeconds;
+        public const int MinuteInMs = SecondToMs * MinuteInSeconds;
         public const int HourInMinutes = 60;
+        public const int HourInSeconds = HourInMinutes * MinuteInSeconds;
 
 
-        public static float MinutesToMS(float min)
+        public static float MinutesToMS(float minutes)
         {
-            return min * MinuteInMs;
+            return minutes * MinuteInMs;
         }
 
         public static float SecondsToMS(float sec)
@@ -26,7 +27,12 @@ namespace VikingEngine
 
         public static float SecondsToHours(float sec)
         {
-            return sec / 3600;
+            return sec / HourInSeconds;
+        }
+
+        public static float SecondsToMinutes(float sec)
+        {
+            return sec / MinuteInSeconds;
         }
 
         public static float MillsSecToSec(float ms)

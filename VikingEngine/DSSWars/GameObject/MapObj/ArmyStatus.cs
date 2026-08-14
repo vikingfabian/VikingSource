@@ -3,34 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     class ArmyStatus
     {
-        public int[] typeCount = new int[(int)UnitFilterType.NUM];
+        public int[] typeCount = new int[(int)UnitNameType.NUM];
 
-        public Dictionary<UnitFilterType, int> getTypeCounts(Faction faction)
+        public Dictionary<UnitNameType, int> getTypeCounts(PFaction faction)
         {
-            Dictionary<UnitFilterType, int> result = new Dictionary<UnitFilterType, int>();
-            for (int i = 0; i < typeCount.Length; i++) 
-            {
-                if (typeCount[i] > 0)
-                {
-                    result.Add((UnitFilterType)i, typeCount[i]);
-                }
-            }
+            Dictionary<UnitNameType, int> result = new Dictionary<UnitNameType, int>();
 
-            if (result.Count >= Achievements.AllUnitTypesCount &&
-                faction.player.IsLocalPlayer())
+            if (typeCount != null && typeCount.Length > 0)
             {
-                DssRef.achieve.UnlockAchievement(AchievementIndex.all_unit_types);
+
+                for (int i = 0; i < typeCount.Length; i++)
+                {
+                    if (typeCount[i] > 0)
+                    {
+                        result.Add((UnitNameType)i, typeCount[i]);
+                    }
+                }
+
+                if (faction.TryGetPlayer(out var player) && player.IsLocalPlayer())
+                {
+                    if (result.ContainsKey(UnitNameType.MithrilKnight) && result.ContainsKey(UnitNameType.MithrilBow))
+                    {
+                        DssRef.achieve.UnlockAchievement(AchievementIndex.knights_of_lumini);
+                    }
+                }
             }
 
             return result;
         }
 
-        public List<KeyValuePair<UnitFilterType, int>> getTypeCounts_Sorted(Faction faction)
+        public List<KeyValuePair<UnitNameType, int>> getTypeCounts_Sorted(PFaction faction)
         {
             var counts = getTypeCounts(faction);
             var sortedList = counts.ToList();

@@ -9,7 +9,7 @@ namespace VikingEngine.PJ.Bagatelle
         Graphics.Image image;
         //Joust.Gamer gamer;
 
-        CirkleCounterUp frameIndex = new CirkleCounterUp(0, 5);
+        CircleCounterUp frameIndex = new CircleCounterUp(0, 5);
         //public bool endState = false;
         int frameTime = 0;
 

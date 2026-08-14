@@ -23,7 +23,7 @@ namespace VikingEngine.PJ.MiniGolf
             {
                 menu = new Gui(GuiStyle(), Screen.SafeArea, 0f, ImageLayers.Foreground7, Input.InputSource.DefaultPC);
 
-                Input.Mouse.LockToScreenArea = false;
+                Input.Mouse.SetMenuMode(true);
             }
         }
 
@@ -129,7 +129,7 @@ namespace VikingEngine.PJ.MiniGolf
         {
             var f = FieldStorage.file(true);
             f.FileName = "";
-            string[] files = DataStream.DataStreamHandler.SearchFilesInStorageDir(f, true);
+            string[] files = DataStream.FileToDiskManager.SearchFilesInStorageDir(f, true);
             new Timer.Action2ArgTrigger<int, string[]>(loadFilesComplete, pageId, files);
         }
 

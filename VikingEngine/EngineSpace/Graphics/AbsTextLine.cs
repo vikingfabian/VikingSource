@@ -106,7 +106,9 @@ namespace VikingEngine.Graphics
 
         public VectorRect GetArea()
         {
-            return new VectorRect(position, MeasureText());
+            var result = new VectorRect(position, MeasureText());
+            result.Position -= result.Size * this.origo;
+            return result;
         }
         public Timer.TextFeed TextFeed(int startTime)
         {

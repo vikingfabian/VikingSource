@@ -30,7 +30,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.ItemThrow
         }
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.card; }
+            get { return VoxelModelName.NUM_NON; }
         }
         public override GameObjectType Type
         {

@@ -18,7 +18,9 @@ namespace VikingEngine.Graphics
         {
             pixelTexture = new PixelTexture(texureSize);
             ImageSource = new Rectangle(0, 0, Texture.Width, Texture.Height);
-        }        
+        }
+
+        
     }
 
     class PixelTexture : Texture2D
@@ -30,7 +32,17 @@ namespace VikingEngine.Graphics
         {
             pixels = new Color[texureSize.X * texureSize.Y];
         }
+        public bool InBound(IntVector2 pos)
+        {
+            return pos.X >= 0 && pos.X < Width &&
+                 pos.Y >= 0 && pos.Y < Height;
+        }
 
+        public bool InBound_TwoPixels(IntVector2 pos)
+        {
+            return pos.X >= 0 && pos.X + 1 < Width &&
+                 pos.Y >= 0 && pos.Y + 1 < Height;
+        }
         public void SetPixel(IntVector2 pos, Color col)
         {
             pixels[pos.X + pos.Y * Width] = col;
@@ -41,6 +53,12 @@ namespace VikingEngine.Graphics
             pixels[x + y * Width] = col;
         }
 
+        public void SetTwoPixels(IntVector2 pos, Color col1, Color col2)
+        {
+            int index = pos.X + pos.Y * Width;
+            pixels[index] = col1;
+            pixels[index + 1] = col2;
+        }
 
         public void ApplyPixelsToTexture()
         {
@@ -50,6 +68,14 @@ namespace VikingEngine.Graphics
         {
             this.pixels = pixels;
             base.SetData(pixels);
+        }
+
+        public void ClearPixelArray(Color color)
+        {
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                pixels[i] = color;
+            }
         }
 
         public void SaveAsPNG(string path)

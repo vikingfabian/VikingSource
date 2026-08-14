@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -25,7 +26,7 @@ namespace VikingEngine.DSSWars.Map
             factions = DssRef.world.factions.counter();
             model = new Graphics.VoxelModel(false);
             model.Effect = ModelEffect;
-            model.AddToRender(DrawGame.TerrainLayer);
+            model.AddToRender(DrawGame.MidLayer);
             model.Visible = false;
         }
 
@@ -44,7 +45,7 @@ namespace VikingEngine.DSSWars.Map
                 }
             
                 processFactionCount = Bound.Min(DssRef.world.factions.Count / 10, 1);
-                factions.Reset();
+                factions = DssRef.world.factions.counter();
 
                 processing = true;
             }
@@ -56,6 +57,7 @@ namespace VikingEngine.DSSWars.Map
         {
             if (processing)
             {
+                
                 for (int i = 0; i < processFactionCount; ++i)
                 {
                     if (factions.Next())
@@ -63,18 +65,39 @@ namespace VikingEngine.DSSWars.Map
                         var faction_sp = factions.sel;
                         if (faction_sp != null)
                         {
+                            faction_sp.Colors(out Color main, out Color second);
+                            PolygonColor topPoly = new PolygonColor();
+                            topPoly.setSprite(SpriteName.WarsTextureGroupSquare, Dir4.N);
+                            topPoly.SetColor(main);
+
                             var armies = faction_sp.armies.counter();
                             while (armies.Next())
                             {
                                 var groups = armies.sel.groups.counter();
                                 while (groups.Next())
                                 {
-                                    var poly = Graphics.PolygonColor.QuadXZ(VectorExt.AddY(groups.sel.position, 0.02f),
-                                        new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians,
-                                        SpriteName.WhiteArea_LFtiles, Dir4.N,
-                                        faction_sp.Color());
+                                    Vector3 pos = groups.sel.position;
+                                    pos.Y += 0.07f;
 
-                                    polygons.Add(poly);
+                                    if (pos.Y < Tile.UnitQuadMinY)
+                                    {
+                                        pos.Y = Tile.UnitQuadMinY;
+                                    }
+
+                                    topPoly.quadXZPlacement(pos,
+                                        new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians - MathExt.TauOver4);
+                                    polygons.Add(topPoly);
+                                    
+                                    topPoly.quadXZSides(0.2f, SpriteName.WhiteArea_LFtiles, Dir4.N, second, polygons);
+
+                                    PolygonColor typeSymbol = topPoly;
+                                    typeSymbol.Move(new Vector3(0, 0.01f, 0));
+                                    typeSymbol.setSprite(SpriteName.WarsTextureGroupSquareMelee, Dir4.N);
+                                    typeSymbol.SetColor(second);
+
+                                    //polygons.Add(typeSymbol);
+
+
                                 }
                             }
                         }

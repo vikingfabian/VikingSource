@@ -28,9 +28,9 @@ namespace VikingEngine.Voxels
             //        SpriteName.IconBuildRemove,
             //        SpriteName.IconBuildSelection,
             //    };
-            
 
-            Input.Mouse.Visible = true;
+
+            Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
 
             Vector2 buttonSz = Engine.Screen.IconSizeV2;
             float spacing = Engine.Screen.BorderWidth * 2f;
@@ -88,7 +88,7 @@ namespace VikingEngine.Voxels
         }
         public void DeleteMe()
         {
-            Input.Mouse.Visible = false;
+            Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
 
             foreach (var m in buttons)
             {

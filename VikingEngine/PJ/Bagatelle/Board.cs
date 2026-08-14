@@ -23,7 +23,7 @@ namespace VikingEngine.PJ.Bagatelle
             this.state = state;
             state.board = this;
             cannon = new Cannon(activeArea, state);
-            Debug.Log("Board seed: " + seed.ToString());
+            //Debug.Log("Board seed: " + seed.ToString());
 
             PcgRandom rnd = new PcgRandom(seed);
 
@@ -199,7 +199,7 @@ namespace VikingEngine.PJ.Bagatelle
 
         public int NextItemIndex()
         {
-            Debug.Log("#Next index: " + nextItemIndex.ToString());
+            //Debug.Log("#Next index: " + nextItemIndex.ToString());
             return nextItemIndex++;
         }
         public int NextItemIndex(int range)

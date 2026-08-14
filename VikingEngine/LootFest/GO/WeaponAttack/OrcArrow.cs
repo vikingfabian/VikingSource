@@ -19,7 +19,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
 
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.orc_arrow; }
+            get { return VoxelModelName.NUM_NON; }
         }
         public override GameObjectType Type
         {

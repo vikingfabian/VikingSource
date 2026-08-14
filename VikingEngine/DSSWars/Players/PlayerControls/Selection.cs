@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Players;
@@ -19,118 +20,74 @@ namespace VikingEngine.DSSWars.Players
         AbsGameObject prevObj = null;
         public bool isNew = false;
 
-        //public Mesh frameModel;
-        public List<Mesh> groupModels;
+        public SelectionGroupModels groupModels_terrian, groupModels_detail;
         public Graphics.ImageGroup guiModels = new Graphics.ImageGroup(32);
         bool currentUnitDetailLayer = false;
+        Line targetLine;
+        PathVisuals groupPath;
         /// <summary>
         /// Only for controller input
         /// </summary>
-        public bool menuFocus = false;
+        //public bool menuFocus = false;
 
         int playerCam;
-        //public List<string> menuState = new List<string>();
-        //public Army sendUnitsToArmy;
-        //public bool menuStateChange = false;
+        bool isHover;
 
         public Selection(LocalPlayer player, bool isHover)
         {
+            this.isHover = isHover;
             playerCam = player.playerData.localPlayerIndex;
-            //frameModel = new Mesh(LoadedMesh.SelectSquareDotted, Vector3.Zero, Vector3.One,
-            //   TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-            //frameModel.AddToRender(DrawGame.TerrainLayer);
-            //frameModel.AddToRender(DrawGame.UnitDetailLayer);
-            //frameModel.setVisibleCamera(player.playerData.localPlayerIndex);
-            //frameModel.Visible = false;
-
+            
             subTile = new SelectedSubTile(player, isHover);
+            groupPath = new PathVisuals(player.playerData.localPlayerIndex);
+            groupModels_terrian = new SelectionGroupModels(playerCam, false);
+            groupModels_detail = new SelectionGroupModels(playerCam, true);
         }
 
         public void ClearSelectionModels()
         {
+            targetLine?.DeleteMe();
+            targetLine = null;
             guiModels.DeleteAll();
-            //frameModel.Visible = false;
+            groupPath.DeleteMe();
 
-            if (groupModels != null)
-            {
-                foreach (var gm in groupModels)
-                {
-                    gm.Visible = false;
-                }
-            }
+            groupModels_detail.clear();
+            groupModels_terrian.clear();
         }
 
-       
-
-        public void BeginGroupModel(bool unitDetail)
+        public void viewGroupPath(DetailWalkingPath path)
         {
-            if (currentUnitDetailLayer != unitDetail)
+            if (path != null)
             {
-                ClearSelectionModels();
-                currentUnitDetailLayer = unitDetail;
-            }
-
-            if (groupModels == null)
-            {
-                groupModels = new List<Mesh>();
+                groupPath.refresh(path, isHover);
             }
             else
             {
-                foreach (var m in groupModels)
-                { 
-                    m.Visible = false;
-                }
+                groupPath.DeleteMe();
             }
         }
 
-        public void setGroupModel(int index, Vector3 pos, Vector3 scale, bool hover, bool main, bool squareSelection)
+        public void TargetLine(ref Vector3 from, ref Vector3 to)
         {
-            LoadedMesh mesh;
-            if (squareSelection)
+            if (targetLine == null)
             {
-                mesh = hover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid;
-            }
-            else
-            {
-                mesh = hover ? LoadedMesh.SelectCircleDotted : LoadedMesh.SelectCircleSolid;
+                targetLine = new Line(2, HudLib.IngameUiLayer, Color.Pink);
             }
 
-            while (index >= groupModels.Count)
-            {                
-                var model = new Mesh(mesh, Vector3.Zero, scale,
-                TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-                model.AddToRender(currentUnitDetailLayer? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer);
-                model.setVisibleCamera(playerCam);
-                model.Visible = false;
+            targetLine.UpdateLine(Ref.draw.ActivePlayerScreens[playerCam].view.From3DToScreenPos(from), Ref.draw.ActivePlayerScreens[playerCam].view.From3DToScreenPos(to));
 
-                groupModels.Add(model);
-            }
-
-            var soldierModel = groupModels[index];
-            soldierModel.LoadedMeshType = mesh;
-            soldierModel.Visible = true;
-            soldierModel.position = pos;
-            soldierModel.scale = scale;
-
-
-            soldierModel.Color = main? Color.White : Color.LightGray;
         }
 
-        public void OneFrameModel(bool unitDetail, Vector3 pos, Vector3 scale, bool hover, bool squareSelection)
+        public void hideTargetLine()
         {
-            BeginGroupModel(unitDetail);
-            setGroupModel(0, pos, scale, hover, true, squareSelection);
+            targetLine?.DeleteMe();
+            targetLine = null;
         }
-
-        //public bool isNew_Detail()
-        //{
-        //    return detailObj != prevDetailObj;
-        //}
 
         public void begin(bool hover)
         {
             prevObj = obj;
-            //prevDetailObj = detailObj;
+
             if (hover)
             {
                 obj = null;
@@ -144,17 +101,10 @@ namespace VikingEngine.DSSWars.Players
 
         public bool clear()
         {
-            menuFocus = false;
             isNew = false;
-            //frameModel.Visible = false;
-            if (groupModels != null)
-            {
-                foreach (var model in groupModels)
-                { 
-                    model.DeleteMe();
-                }
-                groupModels = null;
-            }
+
+            groupModels_detail.clear();
+            groupModels_terrian.clear();
             guiModels.DeleteAll();
 
             if (obj != null)

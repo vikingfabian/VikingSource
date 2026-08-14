@@ -183,11 +183,11 @@ namespace VikingEngine.ToGG.MoonFall
 
         public void writeMapPos(System.IO.BinaryWriter w, Vector2 pos)
         {
-            SaveLib.WriteVector(w, mapToRelativePos(pos));
+            StreamLib.WriteVector(w, mapToRelativePos(pos));
         }
         public Vector2 readMapPos(System.IO.BinaryReader r)
         {
-            var pos = relativeToMapPos(SaveLib.ReadVector2(r));
+            var pos = relativeToMapPos(StreamLib.ReadVector2(r));
             return pos;
         }
 

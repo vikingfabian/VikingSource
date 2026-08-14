@@ -40,19 +40,19 @@ namespace VikingEngine.LootFest.Players
                             visualModeImage = null;
                             break;
                         case VisualMode.Build:
-                            visualModeImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.using_build, 1f, 0f, false);
+                            visualModeImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 1f, 0f, false);
                             break;
                         //case VisualMode.XboxGuide:
                         //    visualModeImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.using_guide, 1f, 0f, false);
                         //    break;
                         case VisualMode.SteamGuide:
-                            visualModeImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.using_steam, 1f, 0f, false);
+                            visualModeImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 1f, 0f, false);
                             break;
                         case VisualMode.Menu:
                             visualModeImage = new VoxelModelInstance(LfRef.Images.StandardModel_UsingMenu.GetMaster());
                             break;
                         case VisualMode.RC:
-                            visualModeImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.using_rc, 1f, 0f, false);
+                            visualModeImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 1f, 0f, false);
                             break;
                     }
 
@@ -154,7 +154,7 @@ namespace VikingEngine.LootFest.Players
         //    //{
         //    //    privateHomeIndex = LfRef.worldOverView.SetPrivateHomeOwner(this);
 
-        //    //    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.GivePrivateAreaIx, Network.PacketReliability.ReliableLasy);
+        //    //    System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.GivePrivateAreaIx, Network.PacketReliability.Reliable);
         //    //    w.Write(this.StaticNetworkId);
         //    //    w.Write((byte)privateHomeIndex);
 

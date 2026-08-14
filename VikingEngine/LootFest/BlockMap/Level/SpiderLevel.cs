@@ -298,7 +298,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, BossAreaLockId, GO.EnvironmentObj.AreaUnLockType.ThreeKeys,
-                goArgs.characterLevel, null, VoxelModelName.threelock, Dir4.W);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.W);
         }
 
         protected void createBoss(GoArgs goArgs)
@@ -350,12 +350,12 @@ namespace VikingEngine.LootFest.BlockMap.Level
         {
             var result = new List<VoxelModelName>
                 {
-                    VoxelModelName.DoorToLobby,
-                    VoxelModelName.uppath,
-                    VoxelModelName.downpath,
-                    VoxelModelName.farmhouse1,
-                    VoxelModelName.FarmTownHouse1,
-                    VoxelModelName.FenceYardWide,
+                    //VoxelModelName.DoorToLobby,
+                    //VoxelModelName.uppath,
+                    //VoxelModelName.downpath,
+                    //VoxelModelName.farmhouse1,
+                    //VoxelModelName.FarmTownHouse1,
+                    //VoxelModelName.FenceYardWide,
                 };
             result.AddRange(NormalDefaultModels);
             result.AddRange(DefaultDungeonModels);

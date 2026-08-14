@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
     class ElfKing : ElfKnight
     {
         public ElfKing(GoArgs args, BlockMap.AbsLevel level)
-            : base(args, VoxelModelName.elf_king, new IntervalF(6f, 6f), 0.4f, VoxelModelName.elf_king_shield, 3f,
+            : base(args, VoxelModelName.NUM_NON, new IntervalF(6f, 6f), 0.4f, VoxelModelName.NUM_NON, 3f,
                 new Effects.BouncingBlockColors(
                     Data.MaterialType.gray_75,
                     Data.MaterialType.gray_85))

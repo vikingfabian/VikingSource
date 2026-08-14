@@ -11,7 +11,7 @@ namespace VikingEngine.LootFest.GO.Characters
         static readonly IntervalF ScaleRange = new IntervalF(4f, 5.5f);
 
         public Hog3(GoArgs args)
-            : this(args, VoxelModelName.hog_v2_lvl1, ScaleRange)
+            : this(args, VoxelModelName.NUM_NON, ScaleRange)
         {
             if (args.LocalMember)
             {

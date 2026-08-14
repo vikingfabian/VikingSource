@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO.NPC
         public Miner(GoArgs args)
             :base(args)
         {
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.Miner, 0f, 1f);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0f, 1f);
             //loadImage();
             postImageSetup();
 
@@ -172,7 +172,7 @@ namespace VikingEngine.LootFest.GO.NPC
         {
             get
             {
-                return VoxelModelName.pickaxe;
+                return VoxelModelName.NUM_NON;
             }
         }
         

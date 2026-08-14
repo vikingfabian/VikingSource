@@ -28,7 +28,7 @@ namespace VikingEngine.LootFest.GO.Characters
 
         protected override void createSpiderImage()
         {
-            createImage(VoxelModelName.miner_spider, 5f, 0, new Graphics.AnimationsSettings(6, 0.8f, 1));
+            createImage(VoxelModelName.NUM_NON, 5f, 0, new Graphics.AnimationsSettings(6, 0.8f, 1));
         }
 
         protected override void handleDamage(WeaponAttack.DamageData damage, bool local)

@@ -11,7 +11,7 @@ namespace VikingEngine.LootFest.GO.Characters
     class GoblinLineman : AbsGoblin
     {
         public GoblinLineman(GoArgs args)
-            : this(args, VoxelModelName.goblin_lineman, 0.22f, VoxelModelName.goblin_shield, 1.2f, new Effects.BouncingBlockColors(
+            : this(args, VoxelModelName.NUM_NON, 0.22f, VoxelModelName.NUM_NON, 1.2f, new Effects.BouncingBlockColors(
                     Data.MaterialType.darker_yellow_orange,
                     Data.MaterialType.gray_85,
                     Data.MaterialType.gray_70))
@@ -23,7 +23,7 @@ namespace VikingEngine.LootFest.GO.Characters
         {
             const float Angle = -0.2f;
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-                VoxelModelName.goblin_spear,
+                VoxelModelName.NUM_NON,
                 new HandWeaponAttackSettings(
                     GameObjectType.GoblinLinemanSpearAttack, 0.8f, spearScale,
                     new Vector3(2, 2, 4.8f),//bounds

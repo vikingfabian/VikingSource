@@ -78,7 +78,7 @@ namespace VikingEngine.LootFest.GO.NPC
         {
             image = new Graphics.VoxelModelInstance(
                 LfRef.Images.StandardModel_Character);
-            new Process.LoadImage(this, VoxelModelName.Salesman, BasicPositionAdjust);
+            new Process.LoadImage(this, VoxelModelName.NUM_NON, BasicPositionAdjust);
         }
 
         public override string ToString()

@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars;
+using System.Collections.Concurrent;
+
 
 
 #if PCGAME
-using Valve.Steamworks;
+
+using Steamworks;//
 #endif
 namespace VikingEngine.SteamWrapping
 {
@@ -17,17 +20,17 @@ namespace VikingEngine.SteamWrapping
     struct SteamApplicationSettings
     {
         /* Fields */
-        public uint appId;
+        public AppId_t appId;
 
         /* Constructors */
         public SteamApplicationSettings(
-            uint appId)
+            AppId_t appId)
         {
             this.appId = appId;
         }
     }
 
-    class SteamManager
+    partial class SteamManager
     {
         public bool IsGameOverlayActive { get; private set; }
         public SteamAchievements Achievements = null;
@@ -35,24 +38,32 @@ namespace VikingEngine.SteamWrapping
         public SteamStats stats;
         public SteamLobbyMatchmaker LobbyMatchmaker = null;
         public SteamP2PManager P2PManager = null;
-        public SteamVOIP VOIP = null;
+        //public SteamVOIP VOIP = null;
         public SteamDLC DLC = null;
+        public SteamInputManager input = null;
 
         /* Fields */
         public bool isInitialized = false;
         public bool isNetworkInitialized = false;
         public bool statsInitialized = false;
-        public bool leaderboardsInitialized = false;
+        //public bool leaderboardsInitialized = false;
 
         public bool inOverlay = false;
         public SteamApplicationSettings applicationSettings;
 
         public string UserCloudPath = "unknown_user";
 
-        SteamCallback<GameOverlayActivated_t> gameOverlayActivatedCB;
-        SteamCallback<UserStatsReceived_t> UserStatsRecievedCallback;
-        SteamCallback<UserStatsStored_t> UserStatsStoredCallback;
-        SteamWarningMessageHookDelegate warningHook;
+        Callback<GameOverlayActivated_t> gameOverlayActivatedCB;
+        Callback<UserStatsReceived_t> UserStatsRecievedCallback;
+        Callback<UserStatsStored_t> UserStatsStoredCallback;
+        //SteamWarningMessageHookDelegate warningHook;
+
+        public bool initError = false;
+        public ESteamAPIInitResult steamInitResult;
+        public string steamInitErrorMsg;
+        public bool statsNeedUpdate = false;
+
+        
 
         static void SteamAPIDebugTextHook(int severity, StringBuilder builder)
         {
@@ -65,25 +76,66 @@ namespace VikingEngine.SteamWrapping
                 Debug.LogError(msg);
         }
 
+        public bool InOffGameOverlay()
+        {
+            return inOverlay && Ref.update.textInput == null;
+        }
+
         public SteamManager()
         {
             Ref.steam = this;
 
-            if (PlatformSettings.RunProgram == StartProgram.LootFest3)
+            if (PlatformSettings.SteamAPI)
             {
-                new LootFest.Data.GameStats();
-            }
-            else if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
-            {
+                if (SteamAPI.Init(out steamInitResult, out steamInitErrorMsg))
+                {
+                    isInitialized = true;
+
+                    applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
+
+                    SetupSubsystems(applicationSettings);
+                    UserCloudPath = SteamUser.GetSteamID().ToString();
+
+                    if (PlatformSettings.RunProgram == StartProgram.LootFest3)
+                    {
+                        new LootFest.Data.GameStats();
+                    }
+                    else if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
+                    {
 #if PJ
-                new PJ.PjEngine.GameStats();
+                        new PJ.PjEngine.GameStats();
 #endif
-            }
-            else if (PlatformSettings.RunProgram == StartProgram.DSS)
-            {
+                    }
+                    else if (PlatformSettings.RunProgram == StartProgram.DSS)
+                    {
 #if DSS
-                new DSSWars.Data.GameStats();
+                        new DSSWars.Data.GameStats();
 #endif
+                    }
+                    steamInitErrorMsg = null;
+                
+                }
+            
+                else
+                {
+                    initError = true;
+
+                }
+            }
+
+            if (!isInitialized)
+            {
+                alwaysInit();
+                
+            }
+        }
+
+        public void OnShutdown()
+        {
+            if (Ref.steam.isInitialized)
+            {
+                DisposeVoice();
+                SteamInput.Shutdown();
             }
         }
 
@@ -92,31 +144,31 @@ namespace VikingEngine.SteamWrapping
             isInitialized = false;
             isNetworkInitialized = false;
             statsInitialized = false;
-            leaderboardsInitialized = false;
+            //leaderboardsInitialized = false;
         }
 
         /// <summary>
         /// Returns false if an error occured
         /// </summary>
-        public bool Initialize()
-        {
-            applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
+        //public bool Initialize()
+        //{
+        //    applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
 
-            isInitialized = SteamAPI.Init(applicationSettings.appId);
+        //    //isInitialized = SteamAPI.Init(applicationSettings.appId);
            
-            if (!isInitialized)
-            {
-                Debug.LogError("SteamAPI_Init() failed.");
-                Debug.LogError("Next to the EXE, there must be steam_api.dll, steam_api64.dll & steam_appid.txt");
-                return false;
-            }
+        //    if (!isInitialized)
+        //    {
+        //        Debug.LogError("SteamAPI_Init() failed.");
+        //        Debug.LogError("Next to the EXE, there must be steam_api.dll, steam_api64.dll & steam_appid.txt");
+        //        return false;
+        //    }
 
-            SetupSubsystems(applicationSettings);
-            UserCloudPath = SteamAPI.SteamUser().GetSteamID().ToString();
-            
+        //    SetupSubsystems(applicationSettings);
+        //    //UserCloudPath = SteamAPI.SteamUser().GetSteamID().ToString();
+        //    UserCloudPath = SteamUser.GetSteamID().ToString();
 
-            return true;
-        }
+        //    return true;
+        //}
 
 
         SteamApplicationSettings SetupSteamApplicationSettings(StartProgram program)
@@ -126,22 +178,29 @@ namespace VikingEngine.SteamWrapping
             switch (program)
             {
                 case StartProgram.LootFest3:
-                    result = new SteamApplicationSettings(367030);
+                    result = new SteamApplicationSettings(new AppId_t(367030));
                     break;
                 case StartProgram.DSS:
-                    result = new SteamApplicationSettings(1223150);
-                    break;
-                case StartProgram.PartyJousting:
-                    result = new SteamApplicationSettings(437900);
-                    break;                    
-                case StartProgram.ToGG:
-                    if (PlatformSettings.Demo)
+                    if (PlatformSettings.STEAM_DEMO)
                     {
-                        result = new SteamApplicationSettings(878070);
+                        result = new SteamApplicationSettings(new AppId_t(3585100));
                     }
                     else
                     {
-                        result = new SteamApplicationSettings(629450);
+                        result = new SteamApplicationSettings(new AppId_t(1223150));
+                    }
+                    break;
+                case StartProgram.PartyJousting:
+                    result = new SteamApplicationSettings(new AppId_t(437900));
+                    break;                    
+                case StartProgram.ToGG:
+                    if (PlatformSettings.STEAM_DEMO)
+                    {
+                        result = new SteamApplicationSettings(new AppId_t(878070));
+                    }
+                    else
+                    {
+                        result = new SteamApplicationSettings(new AppId_t(629450));
                     }                   
                     break;
 
@@ -152,15 +211,8 @@ namespace VikingEngine.SteamWrapping
             return result;
         }
 
-        void SetupSubsystems(SteamApplicationSettings settings)
+        void alwaysInit()
         {
-            warningHook = SteamAPIDebugTextHook;
-            SteamAPI.SteamClient().SetWarningMessageHook(warningHook);
-            
-            gameOverlayActivatedCB = new SteamCallback<GameOverlayActivated_t>(OnGameOverlayActivated, false);
-            UserStatsRecievedCallback = new SteamCallback<UserStatsReceived_t>(OnUserStatsRecieved, false);
-            UserStatsStoredCallback = new SteamCallback<UserStatsStored_t>(OnUserStatsStored, false);
-
             if (PlatformSettings.RunProgram == StartProgram.LootFest3 ||
                 PlatformSettings.RunProgram == StartProgram.DSS ||
                 PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -168,12 +220,42 @@ namespace VikingEngine.SteamWrapping
             {
                 Achievements = new SteamAchievements();
             }
+            if (PlatformSettings.RunProgram == StartProgram.DSS)
+            {
+#if DSS
+                new DSSWars.Data.GameStats();
+#endif
+            }
+        }
+
+        public bool isDeck = false;
+
+        void SetupSubsystems(SteamApplicationSettings settings)
+        {
+            isDeck = SteamUtils.IsSteamRunningOnSteamDeck();
+       
+            if (isDeck)
+            {
+                if (Ref.gamesett != null && !Ref.gamesett.HasSaveFile)
+                {
+                    Ref.gamesett.SteamDeckSetup();
+                }
+            }
+
+            alwaysInit();
+
+            gameOverlayActivatedCB = new Callback<GameOverlayActivated_t>(OnGameOverlayActivated, false);
+            UserStatsRecievedCallback = new Callback<UserStatsReceived_t>(OnUserStatsRecieved, false);
+            UserStatsStoredCallback = new Callback<UserStatsStored_t>(OnUserStatsStored, false);
+            input = new SteamInputManager();
+
+            
             leaderBoards = new SteamLeaderBoard();
 
             AbsGameStats gamestats = null;
             if (PlatformSettings.RunProgram == StartProgram.LootFest3)
-            { 
-                gamestats = LootFest.LfRef.stats; 
+            {
+                gamestats = LootFest.LfRef.stats;
             }
             else if (PlatformSettings.RunProgram == StartProgram.DSS)
             {
@@ -197,56 +279,109 @@ namespace VikingEngine.SteamWrapping
                 PlatformSettings.RunProgram == StartProgram.DSS ||
                 PlatformSettings.RunProgram == StartProgram.ToGG)
             {
+                initMultiPlayer();
+            }
+
+            DLC = new SteamDLC();
+            
+        }
+
+        public void initMultiPlayer()
+        {
+            if (PlatformSettings.OnlineMultiplayer)
+            {
+                //InitVoice();
                 P2PManager = new SteamP2PManager();
                 LobbyMatchmaker = new SteamLobbyMatchmaker();
-                VOIP = new SteamVOIP();
 
                 isNetworkInitialized = true;
-            }
-            
-            DLC = new SteamDLC();
 
-            RequestStats();
+                ProcessSteamLaunchCommandLine();
+            }
         }
-        
-        public void Update()
+
+
+
+    void ProcessSteamLaunchCommandLine()
+    {
+        // Grab the command line string from Steam
+        int charsWritten = SteamApps.GetLaunchCommandLine(out string commandLine, 1024);
+
+        // The method returns the number of characters written. 
+        // If it's greater than 0, Steam passed us an argument.
+        if (charsWritten > 0)
+        {
+            Console.WriteLine($"Raw Steam Command Line: {commandLine}");
+
+            // Example parsing: Check if the string contains a lobby invite
+            if (commandLine.Contains("+connect_lobby"))
+            {
+                // Because it's a single raw string (e.g., "+connect_lobby 109775240987"), 
+                // you'll need to split it to extract the ID.
+                string[] parts = commandLine.Split(' ');
+
+                for (int i = 0; i < parts.Length - 1; i++)
+                {
+                    if (parts[i].ToLower() == "+connect_lobby")
+                    {
+                        if (ulong.TryParse(parts[i + 1], out ulong lobbyID))
+                        {
+                                // Trigger your network join logic here!
+                                //Console.WriteLine($"Joining Lobby: {lobbyID}");
+                                throw new Exception("join from command");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void Update()
         {
             if (isInitialized)
             {
                 SteamAPI.RunCallbacks();
                 
-                if (VOIP != null)
+                if (P2PManager != null)
                 {
-                    VOIP.Update();
-
                     P2PManager.update();
+                    UpdateVoice();
+                }
+
+                if (statsNeedUpdate)
+                {
+                    //Updated after achievements
+                    bool bSuccess = SteamUserStats.StoreStats();
+                    // If this failed, we never sent anything to the server, try
+                    // again later.
+                    statsNeedUpdate = !bSuccess;
                 }
             }
         }
 
-        bool RequestStats()
-        {
-            if (!Ref.steam.isInitialized || !SteamAPI.SteamUser().BLoggedOn())
-            {
-                return false;
-            }
+        //bool RequestStats()
+        //{
+        //    if (!Ref.steam.isInitialized || !SteamUser.BLoggedOn())
+        //    {
+        //        return false;
+        //    }
 
-            return SteamAPI.SteamUserStats().RequestCurrentStats();
-        }
+        //    return SteamUserStats.RequestCurrentStats();//SteamAPI.SteamUserStats().RequestCurrentStats();
+        //}
 
-        public void Shutdown()
-        {
-            if (isInitialized)
-            {
-                SteamGamepad.Shutdown();
-                isInitialized = false;
-            }
-        }
+        //public void Shutdown()
+        //{
+        //    if (isInitialized)
+        //    {
+        //        //SteamGamepad.Shutdown();
+        //        isInitialized = false;
+        //    }
+        //}
 
         bool initUserStats = false;
         void OnUserStatsRecieved(UserStatsReceived_t caller)
         {
-            if (caller.m_nGameID == SteamAPI.SteamUtils().GetAppID()) // Other games may be requesting...
+            if (Ref.steam.isInitialized && caller.m_nGameID == SteamUtils.GetAppID().m_AppId) // Other games may be requesting...
             {
                 if (caller.m_eResult == EResult.k_EResultOK)
                 {
@@ -260,11 +395,11 @@ namespace VikingEngine.SteamWrapping
                         {
                             Achievements.OnUserStatsRecieved(caller);
                         }
-                        if (leaderBoards != null)
-                        {
-                            leaderboardsInitialized = true;
-                            //leaderBoards.OnUserStatsRecieved(caller);
-                        }
+                        //if (leaderBoards != null)
+                        //{
+                        //    leaderboardsInitialized = true;
+                        //    //leaderBoards.OnUserStatsRecieved(caller);
+                        //}
                         if (stats != null)
                         {
                             stats.OnUserStatsRecieved(caller);
@@ -284,7 +419,7 @@ namespace VikingEngine.SteamWrapping
         /// </summary>
         void OnUserStatsStored(UserStatsStored_t caller)
         {
-            if (caller.m_nGameID == SteamAPI.SteamUtils().GetAppID())
+            if (caller.m_nGameID == SteamUtils.GetAppID().m_AppId)
             {
                 if (caller.m_eResult == EResult.k_EResultOK)
                 {
@@ -323,7 +458,7 @@ namespace VikingEngine.SteamWrapping
 
         public void debugInfoToMenu(HUD.GuiLayout layout)
         {
-            new HUD.GuiLabel("Leaderboards Init: " + Ref.steam.leaderboardsInitialized.ToString(), layout);
+            //new HUD.GuiLabel("Leaderboards Init: " + Ref.steam.leaderboardsInitialized.ToString(), layout);
             new HUD.GuiLabel("Stats Init: " + Ref.steam.statsInitialized.ToString(), layout);
         }
 
@@ -331,9 +466,9 @@ namespace VikingEngine.SteamWrapping
         {
             new DownloadAllUserStats();
         }
-        void downloadCrashReports()
+        public void downloadCrashReports()
         {
-            new DebugExtensions.DownloadSteamCrashReports();
+            new DebugExtensions.DownloadSteamCrashReports(true, null);
         }
     }
 

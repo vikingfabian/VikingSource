@@ -25,7 +25,9 @@ namespace VikingEngine.HUD.RichBox
 
         public NineSplitSettings artPrimaryButtonTex;
         public NineSplitSettings artSecondaryButtonTex;
+        public NineSplitSettings artGodPowerButtonTex;
         public NineSplitSettings artOutlineButtonTex;
+        public NineSplitSettings artGoldOutlineButtonTex;
         public NineSplitSettings artCheckButtonTex;
         public NineSplitSettings artOptionButtonTex;
         public NineSplitSettings artToggleButtonTex;

@@ -27,7 +27,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.ItemThrow
         }
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.ThrowingSpear; }
+            get { return VoxelModelName.NUM_NON; }
         }
         public override GameObjectType Type
         {

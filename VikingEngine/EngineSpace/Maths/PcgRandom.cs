@@ -5,7 +5,35 @@ using System;
 
 namespace VikingEngine
 {
-    public class PcgRandom
+    abstract public class AbsRandom
+    {
+        public abstract float Float();
+        public abstract float Float(float exMax);
+        public abstract float Float(float min, float exMax);
+        public abstract float Plus_MinusF(float range);
+        public abstract int Int();
+        public abstract int Int(int exMax);
+        public abstract int Int(int min, int exMax);
+        public abstract double Double();
+        public abstract double Double(double exMax);
+        public abstract double Double(double min, double exMax);
+
+        /// <summary>
+        /// Square shaped random 3D position
+        /// </summary>
+        public abstract Vector3 Vector3_Sq(Vector3 center, float range);
+        public abstract bool Bool();
+        //public abstract uint Uint();
+        //public abstract uint Uint(uint exMax);
+        public abstract byte Byte();
+        public abstract ushort Ushort();
+
+        abstract public float Rotation();
+        abstract public bool Chance(double chance);
+        abstract public bool Chance(int percent);
+    }
+
+    public class PcgRandom: AbsRandom
     {
         const double UintDiv = 1.0 / uint.MaxValue;
 
@@ -71,22 +99,37 @@ namespace VikingEngine
             Int();
         }
 
-        public int Int()
+        override public int Int()
         {
             int result = (int)Uint();
             if (result < 0) result = -result;
             return result;
         }
 
-        public ushort Ushort()
+        override public ushort Ushort()
         {
             return (ushort)Uint();
         }
 
-        public int Int(int exMax)
+        override public int Int(int exMax)
         {
+            // 1) handle bad input
+            if (exMax <= 0) return 0;
+
+            // 2) get a raw value
             int result = (int)Uint((uint)exMax);
-            if (result < 0) result = -result;
+
+            // 3) fix negatives, including int.MinValue
+            if (result < 0)
+            {
+                // int.MinValue cannot be negated; clamp it
+                if (result == int.MinValue) result = 0;
+                else result = -result;
+            }
+
+            // 4) enforce exclusive upper bound
+            if (result >= exMax) result = exMax - 1;
+
             return result;
         }
 
@@ -126,7 +169,7 @@ namespace VikingEngine
             }
         }
 
-        public int Int(int min, int exMax)
+        override public int Int(int min, int exMax)
         {
             return Int(exMax - min) + min;
         }
@@ -136,9 +179,15 @@ namespace VikingEngine
             return Int(incMax + 1 - min) + min;
         }
 
-        public byte Byte()
+        override public byte Byte()
         {
             return (byte)Uint(byte.MaxValue);
+        }
+
+
+        public uint Uint_LowDisp()
+        {
+            return Math.Min(Uint(), Uint());
         }
 
         public uint Uint()
@@ -172,45 +221,52 @@ namespace VikingEngine
 
         
 
-        public double Double()
+        override public double Double()
         {
             return Uint() * UintDiv;/// (double)uint.MaxValue;
         }
 
-        public double Double(double exMax)
+        override public double Double(double exMax)
         {
             return Uint() * UintDiv * exMax;/// (double)uint.MaxValue) * exMax;
         }
 
-        public double Double(double min, double exMax)
+        override public double Double(double min, double exMax)
         {
             double diff = exMax - min;
             var result = Uint();
             return (result * UintDiv * diff) + min;/// (double)uint.MaxValue) * diff + min;
         }
 
-        public float Float()
+        override public float Float()
         {
             return (float)(Uint() * UintDiv);/// (double)uint.MaxValue);
         }
 
-        public float Float(float exMax)
+        override public float Float(float exMax)
         {
             return (float)(Uint() * UintDiv * exMax);/// (double)uint.MaxValue) * exMax;
         }
 
-        public float Float(float min, float exMax)
+        override public float Float(float min, float exMax)
         {
             float diff = exMax - min;
             var result = Uint();
             return (float)(result * UintDiv * diff) + min;/// (double)uint.MaxValue) * diff + min;
         }
 
-        public bool Chance(double chance)
+        public float Float_LowDisp(float min, float exMax)
+        {
+            float diff = exMax - min;
+            var result = Uint_LowDisp();
+            return (float)(result * UintDiv * diff) + min;
+        }
+
+        override public bool Chance(double chance)
         {
             return Double() <= chance;
         }
-        public bool Chance(int percent)
+        override public bool Chance(int percent)
         {
             return Double() <= percent * 0.01;
         }
@@ -225,7 +281,7 @@ namespace VikingEngine
             return (int)Uint((uint)(range * 2 +1)) - range;
         }
 
-        public float Plus_MinusF(float range)
+        override public float Plus_MinusF(float range)
         {
             return (float)(-range + 2.0 * range * Double());
         }
@@ -243,7 +299,7 @@ namespace VikingEngine
         /// <summary>
         /// Square shaped random 3D position
         /// </summary>
-        public Vector3 Vector3_Sq(Vector3 center, float range)
+        override public Vector3 Vector3_Sq(Vector3 center, float range)
         {
             center.X += (float)(-range + Double() * 2.0 * range);
             center.Y += (float)(-range + Double() * 2.0 * range);
@@ -308,7 +364,7 @@ namespace VikingEngine
         }
 
         const uint UnitMidValue = uint.MaxValue / 2;
-        public bool Bool()
+        override public bool Bool()
         {
             return Uint() > UnitMidValue;
         }
@@ -318,9 +374,9 @@ namespace VikingEngine
             return Uint() > UnitMidValue ? 1 : -1;
         }
 
-        public float Rotation()
+        override public float Rotation()
         {
-            return (float)(Math.PI * 2.0 * Double());
+            return (float)(MathHelper.TwoPi * Double());
         }
 
         public override string ToString()

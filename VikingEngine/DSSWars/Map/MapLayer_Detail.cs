@@ -1,27 +1,27 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using System.Threading;
+using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
+using VikingEngine.ToGG.Commander.UnitsData;
+using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class MapLayer_Detail
+    class MapLayer_Detail: AbsMapLayer
     {
+        AutoResetEvent pauseEvent = new AutoResetEvent(false);
         ConcurrentStack<DetailMapTile> tilePool = new ConcurrentStack<DetailMapTile>();
-        List<DetailMapTile> tiles;
-       
+        SpottedArray<DetailMapTile> tiles;
 
-        List<DetailMapTile> processingTiles = new List<DetailMapTile>(800);
-        List<DetailMapTile> synchTiles = new List<DetailMapTile>(800);
-        public List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>(256);
-
-        Graphics.Mesh waterSurface;
-
-        Timer.Basic waterAnimTimer = new Timer.Basic(3000,true);
-        int waterFrame = 0;
-        double waterMoveCurve = 0;
+        const int MaxRemoveCount = 32;
+        int MaxSychToRenderCount;
+        public List<Graphics.PolygonColor> terrainPolygons = new List<Graphics.PolygonColor>(256);
+        public List<Graphics.PolygonColor> waterEdgePolygons = new List<Graphics.PolygonColor>(64);
 
         public static Graphics.CustomEffect_NoColor ModelEffect = new Graphics.CustomEffect_NoColor("FlatVerticeColor", false);
         
@@ -29,96 +29,137 @@ namespace VikingEngine.DSSWars.Map
         /// <summary>
         /// Trigger a reload of the map
         /// </summary>
-
         public bool oneSecondUpdate = false;
-        //public bool needReload = false;
+
         public MapLayer_Detail()
         {
             DssRef.state.detailMap = this;
-            tiles = new List<DetailMapTile>(128);
+            tiles = new SpottedArray<DetailMapTile>(1024);
 
-            Graphics.Mesh waterBottom;
-            MapLayer_Overview.WaterModel(out waterSurface, out waterBottom, true);
-            waterSurface.AddToRender(DrawGame.UnitDetailLayer);
-            waterBottom.AddToRender(DrawGame.UnitDetailLayer);
+            WaterModel(true);
 
-            //ModelEffect.SetColor(Color.Gray.ToVector4());   
-            //ModelEffect.TerrainShader();
+            refreshLoadSpeed();
+
         }
 
-        public void update()
+        //public OceanProcess createOceanProcess()
+        //{
+        //    return new OceanProcess(waterSurface);
+        //}
+
+        public void refreshLoadSpeed()
         {
-            if (waterAnimTimer.Update(Ref.DeltaGameTimeMs))
+            switch (Ref.gamesett.MapLoadingSpeed)
             {
-                if (++waterFrame >= DssRef.models.waterTextures.Length)
-                { 
-                    waterFrame = 0;
-                }
+                case ThreeOptions.Low:
+                    MaxSychToRenderCount = 40;
+                    break;
+                default:
+                    MaxSychToRenderCount = 300;
+                    break;
+                case ThreeOptions.High:
+                    MaxSychToRenderCount = 800;
+                    break;
 
-                waterSurface.texture = DssRef.models.waterTextures[waterFrame];
             }
+        }
 
-            waterMoveCurve += Ref.DeltaGameTimeSec * 0.5f;
-            waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
-            waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
+        public void updateAndDraw(bool depth, Effect shader, LightProjection light, int cameraIndex)
+        {
+            updateWaterTexture();
 
-            //while (synchTiles.TryPop(out var tile))
-            //{
-            //    if (!tile.synchToRender())
-            //    {
-            //        tilePool.Push(tile);
-            //    }
-            //}
-            if (synchTiles.Count > 0)
+            var tilesC = tiles.counter();
+            while (tilesC.Next())
             {
-                lock (synchTiles)
+                if (tilesC.sel.exitRender == DetailMapTileExitState.ExitRender)
                 {
-                    foreach (var m in synchTiles)
-                    {
+                    tilesC.sel.DeleteMe();
+                }
+                else if (tilesC.sel.renderState == DetailMapTileState.AddToRender)
+                {
+                    tilesC.sel.synchToRender();
+                }
 
-                        if (m.add)
-                        {
-                            m.synchToRender();
-                            
-                        }
-                        else
-                        {
-                            m.recycle();
-                            tilePool.Push(m);
-                        }
-                    }
-
-                    synchTiles.Clear();
+                if (tilesC.sel.renderState == DetailMapTileState.InRender)
+                {
+                    tilesC.sel.model.DrawDepthOnly(depth, shader, light, cameraIndex);
                 }
             }
+
+            // Signal the thread (each call resumes the thread *once*)
+            pauseEvent.Set();
+        }
+
+        public void drawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
+        {
+            var tilesC = tiles.counter();
+            while (tilesC.Next())
+            {
+
+                if (tilesC.sel.renderState == DetailMapTileState.InRender)
+                {
+                    tilesC.sel.model.DrawWithShadow(cameraIndex, camera, shader, light);
+                }
+            }
+        }
+
+        public void drawWaterEdges(int cameraIndex)
+        {
+            //LoadContent.Textures[(int)LoadedTexture.waterEdge] = texture;
+            WaveXzEffect.GetWaveSingletonSafe().beginDraw();
+
+            //ModelEffect.SetColor(Vector4.One);
+
+            var tilesC = tiles.counter();
+            while (tilesC.Next())
+            {
+                if (tilesC.sel.renderState == DetailMapTileState.InRender)
+                {
+                    var model = tilesC.sel.waterEdgeModel;
+                    if (model != null)
+                    {
+                        
+                        model.Draw(cameraIndex);
+                    }
+                }
+            }
+        }
+
+        public void Update_outOfFocus()
+        {
+            pauseEvent.Set();
         }
 
         public void asynchUpdate()
-        {           
-            for (int i = tiles.Count - 1; i >= 0; --i)
+        {
+            var tileC = tiles.counter();
+            while (tileC.Next())
             {
-                var tilePos = tiles[i].pos;
-                var tile = DssRef.world.tileGrid.Get(tilePos);
-                //Debug.Log("Tile Get(C) " + tilePos.ToString() + ", " + tile.ToString());
-                byte render = DssRef.state.culling.cullingStateA ? tile.bits_renderStateA : tile.bits_renderStateB;
-                if (render == Culling.NoRender || oneSecondUpdate)
+                if (tileC.sel.renderState == DetailMapTileState.InRender)
                 {
-                    tile.hasTileInRender = false;
-                    tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec; 
-                    DssRef.world.tileGrid.Set(tilePos, tile);
-                    //Debug.Log("Tile Set(C) " + tilePos.ToString() + ", " + tile.ToString());
-                    tiles[i].add = false;
-                    processingTiles.Add(tiles[i]);
-                    //synchTiles.Push(tiles[i]);
-                    tiles.RemoveAt(i);
+                    ref var worldtile = ref DssRef.world.tileGrid.GetRef(tileC.sel.pos);
+                    byte render = DssRef.state.culling.cullingStateA ? worldtile.bits_renderStateA : worldtile.bits_renderStateB;
+                    if (render == Culling.NoRender || (oneSecondUpdate && DssRef.world.tileGrid.Get(tileC.sel.pos).subtileVisualEdits > 0))
+                    {
+                        worldtile.hasTileInRender = false;
+                        worldtile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
+                        tileC.sel.exitRender = DetailMapTileExitState.Prepare;
 
-                    
+                        
+                    }
                 }
-            }            
+                else if (tileC.sel.renderState == DetailMapTileState.None)
+                {
+                    tilePool.Push(tileC.sel);
+                    tileC.RemoveAtCurrent();
+                }
+            }
+                       
+            int toRenderCount = 0;
 
             for (int pIx = 0; pIx < DssRef.state.culling.players.Length; ++pIx)
             {
-                if (DssRef.state.localPlayers[pIx].bUnitDetailLayer)
+                if (DssRef.state.localPlayers[pIx].mapLayersManager.DoUpdateDetailLayer())
                 {
                     var p = DssRef.state.culling.players[pIx];
 
@@ -135,25 +176,29 @@ namespace VikingEngine.DSSWars.Map
                         while (loop.Next())
                         {
                             var tile = DssRef.world.tileGrid.Get(loop.Position);
-                            //Debug.Log("Tile Get(B) " + loop.Position.ToString() + ", " + tile.ToString());
+
                             if (!tile.hasTileInRender)
                             {
                                 tile.hasTileInRender = true;
+                                tile.subtileVisualEdits = 0;
                                 DssRef.world.tileGrid.Set(loop.Position, tile);
 
                                 DetailMapTile maptile;
                                 if (!tilePool.TryPop(out maptile))
                                 {
-                                    maptile = new DetailMapTile();// loop.Position, tile);
+                                    maptile = new DetailMapTile();
                                 }
-                                maptile.add = true;
-                                maptile.polygonBlock(loop.Position, tile);
-                                processingTiles.Add(maptile);
-                               // synchTiles.Push(maptile);
-                               tiles.Add(maptile);
+                                //maptile.add = true;
+                                maptile.generateModel_async(loop.Position, tile);
+                                maptile.renderState = DetailMapTileState.AddToRender;
+                               
+                                tiles.Add(maptile);
 
-                                
-                                //Debug.Log("Tile Set(B) " + loop.Position.ToString() + ", " + tile.ToString());
+                                if (++toRenderCount > MaxSychToRenderCount)
+                                {
+                                    pauseEvent.WaitOne(); // Wait until signaled
+                                    toRenderCount = 0;
+                                }
                             }
                         }
                     }
@@ -161,12 +206,28 @@ namespace VikingEngine.DSSWars.Map
             }
 
             oneSecondUpdate = false;
+            int removeCount = 0;
 
-            lock (synchTiles)
+            tileC.Reset();
+            while (tileC.Next())
             {
-                synchTiles.AddRange(processingTiles);
+                if (tileC.sel.exitRender == DetailMapTileExitState.Prepare)
+                {
+                    tileC.sel.exitRender = DetailMapTileExitState.ExitRender;
+                    
+                    if (++removeCount > MaxRemoveCount)
+                    {
+                        pauseEvent.WaitOne(); // Wait until signaled
+                        removeCount = 0;
+                    }
+                }
             }
-            processingTiles.Clear();
         }
+
+        protected override Texture2D[] WaterTex()
+        {
+            return DssRef.models.waterTextures;
+        }
+        
     }
 }

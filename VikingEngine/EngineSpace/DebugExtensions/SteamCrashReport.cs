@@ -11,12 +11,12 @@ namespace VikingEngine.DebugExtensions
 {
     static class SteamCrashReport
     {
-        const bool PrintLineContent = true;
+        const bool PrintLineContent = false;
         public const string LeaderboardName = "Error";
         //const int MaxStackTrace = 3;
 
         static int crashReports = 0;
-
+        static string ProjectRoot = "C:\\Users\\vikin\\Documents\\VikingEngine\\Repo\\VikingSource\\VikingEngine";
         public static void uploadException(Exception e, TryMethodType methodType)
         {
             
@@ -24,7 +24,7 @@ namespace VikingEngine.DebugExtensions
             {
                 try
                 {
-                    if (Ref.steam.isInitialized && Ref.steam.leaderboardsInitialized)
+                    if (Ref.steam.isInitialized /*&& Ref.steam.leaderboardsInitialized*/)
                     {
                         exceptionToLeaderboard(e, methodType).BeginUpload();
                     }
@@ -42,13 +42,14 @@ namespace VikingEngine.DebugExtensions
             }
             
         }
-
+        const int Version = 22;
 
         static SteamWrapping.SteamLeaderBoardLocal exceptionToLeaderboard(Exception e, TryMethodType methodType)
         {
             SteamWrapping.SteamLeaderBoardLocal leaderboard = new SteamWrapping.SteamLeaderBoardLocal(LeaderboardName);
             
             leaderboard.score = SteamWrapping.SteamLeaderBoard.NowToScoreValue();
+            leaderboard.scoreDetails.Add(Version);
             leaderboard.scoreDetails.Add(CompressExceptionDetails(e, methodType));
             
             var stacktrace = new System.Diagnostics.StackTrace(e, true);
@@ -66,11 +67,16 @@ namespace VikingEngine.DebugExtensions
                 if (frameName != null)
                 {
                     var filename = System.IO.Path.GetFileName(frameName);
-                    var fileNameHash = filename.GetHashCode();
+                    filename = filename.Split('.').First();
+
+                    var fileNameHash = filename.ToLower().GetDeterministicHashCode();
+
+                    //var lobby = "lobbystate".GetHashCode();
                     //compressString(frameName, leaderboard.scoreDetails);
                     //frame
 
                     var line = frame.GetFileLineNumber();
+                    var col = frame.GetFileColumnNumber();
 
                     //if (i == 0)
                     //{
@@ -83,6 +89,7 @@ namespace VikingEngine.DebugExtensions
 
                     leaderboard.scoreDetails.Add(fileNameHash);
                     leaderboard.scoreDetails.Add(line);
+                    leaderboard.scoreDetails.Add(col);
                 }
 
                 //if (i == 0)
@@ -97,20 +104,35 @@ namespace VikingEngine.DebugExtensions
             return leaderboard;
         }
 
-       
-
-
         public static void printLeaderboardException(SteamWrapping.SteamLeaderBoardRemote leaderboard)
         {
+            var lines = readLeaderboardException(leaderboard);
+            foreach (var line in lines)
+            {
+                Debug.Log(line);
+            }
+        }
+
+
+        public static List<string> readLeaderboardException(SteamWrapping.SteamLeaderBoardRemote leaderboard)
+        {
+            //string stackFormat = 
+
+            List<string> result = new List<string>(64);
             //DateTime time = Year2000;
             var time = SteamWrapping.SteamLeaderBoard.ScoreToDate(leaderboard.score);//time.AddMinutes(leaderboard.score);
-            Debug.Log("EXCEPTION DATE: " + time.ToString());
-            Debug.Log("User: " + leaderboard.userName);
+            result.Add("EXCEPTION DATE: " + time.ToString());
+            result.Add("User: " + leaderboard.userName);
 
-            DecompressExceptionDetails(leaderboard.scoreDetails.UseNext());
+            int version = leaderboard.scoreDetails.UseNext();
+            if (version < 22)
+            {
+                return new List<string> { "--Outdated--" };
+            }
+            DecompressExceptionDetails(leaderboard.scoreDetails.UseNext(), result);
             //Debug.Log(((ExceptionType)scoreDetails[0]).ToString());
 
-            Debug.Log("--Stack trace--");
+            result.Add("--Stack trace--");
             List<string> hashMatch = new List<string>(4);
             int stackCount = leaderboard.scoreDetails.UseNext();
 
@@ -121,38 +143,51 @@ namespace VikingEngine.DebugExtensions
 
                 int line = leaderboard.scoreDetails.UseNext();
 
+                int col = 0;
+                if (Version >= 20)
+                {
+                    col = leaderboard.scoreDetails.UseNext();
+                }
+
                 //Debug.Log("@ " + name + " ::line " + line.ToString());
-                string ProjectRoot = "C:\\lootfest3\\VikingEngine";
+                
                 getClassTypeFromHash(fileHash, hashMatch, ProjectRoot);
+
+                string className;
 
                 if (hashMatch.Count > 0)
                 {
-                    Debug.Log(hashMatch[0] + " ::line " + line.ToString());
+                    result.Add($"{hashMatch[0]} ::line {line}, col {col}");
                     //Debug.Log("line " + line.ToString());
                     if (PrintLineContent)
                     {
                         var lines = DataLib.SaveLoad.LoadTextFile(hashMatch[0]);
                         if (lines.Count > line)
                         {
-                            Debug.Log(lines[line - 1]);
+                            result.Add(lines[line - 1]);
                         }
                     }
                     hashMatch.Clear();
                 }
                 else
                 {
-                    break;
+                    result.Add($"unknown ::line {line}, col {col}");
+                    //break;
                 }
             }
 
-            Debug.Log("----");
+            result.Add("----");
+
+            return result;
         }
 
         static int CompressExceptionDetails(Exception e, TryMethodType methodType)
         {
             EightBit bools = new EightBit();
-            bools.Set(0, Ref.steam.P2PManager.remoteGamers.Count > 0);
-            
+            if (Ref.steam.isNetworkInitialized)
+            {
+                bools.Set(0, Ref.steam.P2PManager.remoteGamers.Count > 0);
+            }
             FourBytes values = new FourBytes();
             values.Set(0, bools.bitArray);
             values.Set(1, (byte)Network.NetLib.PacketType);
@@ -162,12 +197,12 @@ namespace VikingEngine.DebugExtensions
             return values.Value;
         }
 
-        static void DecompressExceptionDetails(int value)
+        static void DecompressExceptionDetails(int value, List<string> lines)
         {
             FourBytes values = new FourBytes(value);
             EightBit bools = new EightBit(values.Get(0));
 
-            Debug.Log("Exception type: " + ((ExceptionType)values.Get(2)).ToString());
+            lines.Add("Exception type: " + ((ExceptionType)values.Get(2)).ToString());
 
             TryMethodType tryType = (TryMethodType)values.Get(3);
             string tryTypeName;
@@ -178,10 +213,10 @@ namespace VikingEngine.DebugExtensions
                 case TryMethodType.A: tryTypeName = "Asynch Update"; break;
                 default: tryTypeName = tryType.ToString(); break;
             }
-            Debug.Log(tryTypeName);
+            lines.Add(tryTypeName);
 
-            Debug.Log("In multiplayer: " + bools.Get(0).ToString());
-            Debug.Log("Last packet read: " + ((Network.PacketType)values.Get(1)).ToString());
+            lines.Add("In multiplayer: " + bools.Get(0).ToString());
+            lines.Add("Last packet read: " + ((Network.PacketType)values.Get(1)).ToString());
         }
 
         static byte GetExceptionType(Exception e)
@@ -190,33 +225,60 @@ namespace VikingEngine.DebugExtensions
 
             if (e is AbsVikingException)
                 type = ((AbsVikingException)e).Type;
-            if (e is NullReferenceException)
+            else if (e is NullReferenceException)
                 type = ExceptionType.NullRef;
             else if (e is NotImplementedException)
                 type = ExceptionType.NotImplemented;
             else if (e is IndexOutOfRangeException)
                 type = ExceptionType.IndexOutOfRange;
-
+            else if (e is Exception)
+                type = ExceptionType.Default;
             return (byte)type;
         }
 
         static void getClassTypeFromHash(int hash, List<string> result, string directory)
         {
+            string content = ProjectRoot + "\\Content";
+            string bin = ProjectRoot + "\\bin";
+            string lf = ProjectRoot + "\\LF2";
+            string pj = ProjectRoot + "\\PJ";
+            string TOGG = ProjectRoot + "\\ToGG";
+            string xbox = ProjectRoot + "\\XboxWrapping";
+
             var classes = System.IO.Directory.GetFiles(directory, "*.cs");
+
+            if (directory.Contains("GameState"))
+            {
+                lib.DoNothing();
+            }
+
+            //var lobby = "lobbystate".GetHashCode();
+
             foreach (var m in classes)
             {
-                if (hash == System.IO.Path.GetFileName(m).GetHashCode())
+                string filename = System.IO.Path.GetFileName(m);
+                filename = filename.Split('.').First();
+                int classHash = filename.ToLower().GetDeterministicHashCode();
+                if (hash == classHash)
                 {
                     result.Add(m);
                 }
+
+
             }
 
             var subfolders = System.IO.Directory.GetDirectories(directory);
+
+            
+
             foreach (var m in subfolders)
             {
-                if (m != "C:\\lootfest3\\VikingEngine\\Content" &&
-                    m != "C:\\lootfest3\\VikingEngine\\bin" &&
-                    m != "C:\\lootfest3\\VikingEngine\\packages")
+                if (m != content &&
+                    m != bin &&
+                    m != lf &&
+                    m != pj &&
+                    m != TOGG &&
+                    m != xbox)
                 {
                     getClassTypeFromHash(hash, result, m);
                 }
@@ -302,9 +364,14 @@ namespace VikingEngine.DebugExtensions
 
     class DownloadSteamCrashReports : AbsUpdateable
     {
-        public DownloadSteamCrashReports()
-            :base(true)
+        bool log;
+        public List<List<string>> reports = new List<List<string>>(8);
+        Action<DownloadSteamCrashReports> onComplete = null;
+        public DownloadSteamCrashReports(bool log, Action<DownloadSteamCrashReports> onComplete)
+            :base(false)
         {
+            this.onComplete = onComplete;
+            this.log = log;
             SteamWrapping.SteamLeaderBoardLocal leaderboard = new SteamWrapping.SteamLeaderBoardLocal(SteamCrashReport.LeaderboardName);
             leaderboard.BeginDownload(onDownload);
         }
@@ -312,14 +379,23 @@ namespace VikingEngine.DebugExtensions
         void onDownload(List<SteamWrapping.SteamLeaderBoardRemote> values)
         {
             Debug.CrashIfThreaded();
+
             foreach (var m in values)
             {
-                SteamCrashReport.printLeaderboardException(m);
+                if (log)
+                {
+                    SteamCrashReport.printLeaderboardException(m);
+                }
+                else
+                {
+                    reports.Add(SteamCrashReport.readLeaderboardException(m));
+                }
             }
 
             Debug.Log("Download crashes COMPLETE...");
 
             DeleteMe();
+            onComplete?.Invoke(this);
         }
 
         public override void Time_Update(float time_ms)

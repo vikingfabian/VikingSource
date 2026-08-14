@@ -5,23 +5,18 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
 using VikingEngine.DataStream;
-//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Players;
-using VikingEngine.LootFest.Data;
-using VikingEngine.PJ.Strategy;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
+
 
 namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
-        public const int Version = 11;
-        public const int SubVersion = 48; 
-        //public const int MergeVersion = 26;
+        public const int Version = 13;
+        public const int SubVersion = 133; 
+
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
         bool dataReady = false;
@@ -29,7 +24,7 @@ namespace VikingEngine.DSSWars.Data
         ObjectPointerCollection pointers;
         SaveStateMeta meta;
         public WorldData worldData;
-
+        public static int MainProgress = 0, LoopProgress = 0;
         public SaveGamestate(SaveStateMeta meta)
              : base(false)
         {
@@ -45,27 +40,34 @@ namespace VikingEngine.DSSWars.Data
 
             AddToUpdateList();
 
-            Task.Factory.StartNew(()=>
+            Task.Factory.StartNew(() =>
             {
-                var w = memoryStream.GetWriter();
-                writeGameState(w);
-                dataReady = true;   
+                try
+                {
+                    var w = memoryStream.GetWriter();
+                    writeGameState(w);
+                    dataReady = true;
+                }
+                catch (Exception e)
+                {
+                    DebugExtensions.BlueScreen.ThreadException = e;
+                }
             });
         }
 
         public void load()
         {
+            DssRef.difficulty.setting_gameMode = meta.gameMode;
+            DssRef.state.importedWorld = meta.importedWorld;
             DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
-
-        
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
             //TODO error handling
             if (save == false)
             {
-                pointers.SetPointer();
+                pointers?.SetPointer();
             }
 
             complete = true;
@@ -75,6 +77,8 @@ namespace VikingEngine.DSSWars.Data
         {
             meta.worldmeta.writeNet(w);
             DssRef.world.writeNet(w);
+
+            w.Write(Ref.TotalGameTimeSec);
         }
         public void readNet(System.IO.BinaryReader r)
         {
@@ -84,27 +88,32 @@ namespace VikingEngine.DSSWars.Data
             worldData.readNet(r);
             worldData.metaData = meta.worldmeta;
             DssRef.world = worldData;
+
+            Ref.TotalGameTimeSec = r.ReadSingle();
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            new SaveVersion(Version, SubVersion).write(w);
+            MainProgress = 0; LoopProgress = 0;
+            new SaveVersion(Version, SubVersion).write(w); MainProgress++;
 
             //META
-            meta.write(w);
+            meta.write(w); MainProgress++;
             Debug.WriteCheck(w);
 
             //WORLD
-            DssRef.world.writeMapFile(w);
+
+            DssRef.world.writeMapFile(w); MainProgress++;
 
             //STATE
-            DssRef.storage.write(w, true);
+
+            DssRef.storage.writeGameSetup(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.settings.writeGameState(w);
+            DssRef.settings.writeGameState(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.world.writeGameState(w);
+            DssRef.world.writeGameState(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.state.writeGameState(w);
+            DssRef.state.playstate().writeGameState(w); MainProgress++;
         }        
 
         public void readGameState(System.IO.BinaryReader r)
@@ -120,22 +129,37 @@ namespace VikingEngine.DSSWars.Data
             
             //WORLD
             worldData = new WorldData();
+            
             worldData.metaData = meta.worldmeta;
             worldData.readMapFile(r);
             DssRef.world = worldData;
             
 
-            DssRef.state.initGameState(false, pointers);
+            DssRef.state.playstate().initGameState(false, pointers);
+            
 
             //STATE
-            DssRef.storage.read(r, true);
+            if (version.sub < 79)
+            {
+                DssRef.storage.read(r, true);
+            }
+            else
+            {
+               DssRef.storage.readGameSetup(r);
+            }
+
+            MapObjMenu.InitGame();
             Debug.ReadCheck(r);
             DssRef.settings.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
-            DssRef.state.readGameState(r, version.sub, pointers);
             DssRef.time.setTotalTime(meta.playTime);
+            DssRef.state.playstate().readGameState(r, version.sub, pointers);
+
+            //Clean up
+            DssRef.state.events.loadCleanup();
+           
         }
 
         public override void Time_Update(float time_ms)
@@ -152,15 +176,16 @@ namespace VikingEngine.DSSWars.Data
     }
 
     class ObjectPointerCollection
-    { 
-        //public List<LocalPlayer> localPlayers = new List<LocalPlayer>();
+    {
+        public List<Faction>[] oldFactionTypes;
+
         public List<AbsObjectPointer> pointers = new List<AbsObjectPointer>();
 
         public void SetPointer()
         {
             foreach (var m in pointers)
             { 
-                m.SetPointer();
+                m.SetPointer(true);
             }
         }
     }
@@ -185,11 +210,11 @@ namespace VikingEngine.DSSWars.Data
                 switch (type)
                 {
                     case GameObjectType.Army:
-                        writeFaction(w, gameObject.GetFaction());
+                        writeFaction(w, gameObject.pfaction.GetFaction());
                         w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:
-                        w.Write((ushort)gameObject.GetCity().parentArrayIndex);
+                        w.Write((ushort)gameObject.GetCity().myIndex);
                         break;
                 }
             }
@@ -215,7 +240,7 @@ namespace VikingEngine.DSSWars.Data
 
         protected Faction GetFaction()
         {
-           return DssRef.world.factions.Array[factionIndex];
+           return DssRef.world.faction(factionIndex);
         }
 
         protected AbsGameObject GetObject()
@@ -246,7 +271,14 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeFaction(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.parentArrayIndex);
+            if (faction != null)
+            {
+                w.Write((ushort)faction.myIndex);
+            }
+            else
+            {
+                w.Write(ushort.MaxValue);
+            }
         }
 
         public int readFaction(System.IO.BinaryReader r)
@@ -254,7 +286,7 @@ namespace VikingEngine.DSSWars.Data
             return r.ReadUInt16();
         }
 
-        abstract public void SetPointer();
+        abstract public void SetPointer(bool localAction);
     }
 
     class ArmyAttackObjectPointer: AbsObjectPointer
@@ -277,7 +309,7 @@ namespace VikingEngine.DSSWars.Data
             ReadObjectPointer(r);
         }
 
-        public override void SetPointer()
+        public override void SetPointer(bool localAction)
         {
             var target = (AbsMapObject)GetObject();
 
@@ -285,7 +317,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 if (teleport)
                 {
-                    army.Order_Attack_Setup(target);
+                    army.Order_Attack_Setup(target, true);
                 }
                 else
                 {
@@ -294,27 +326,6 @@ namespace VikingEngine.DSSWars.Data
             }
         }
     }
-
-    //class BattleMemberObjectPointer: AbsObjectPointer
-    //{
-    //    //BattleGroup battle;
-
-    //    public BattleMemberObjectPointer(System.IO.BinaryWriter w, AbsGameObject target)
-    //    {
-    //        WriteObjectPointer(w, target);        
-    //    }
-
-    //    //public BattleMemberObjectPointer(BinaryReader r, BattleGroup battle)
-    //    //{
-    //    //    this.battle = battle;
-    //    //    ReadObjectPointer(r);
-    //    //}
-
-    //    //public override void SetPointer()
-    //    //{
-    //    //    battle.addPart((AbsMapObject)GetObject(), false);
-    //    //}
-    //}
 
     struct SaveVersion
     {

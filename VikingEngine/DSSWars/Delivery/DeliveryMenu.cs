@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Component;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Communication;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Delivery
 {
     class DeliveryMenu
     {
-        static readonly int[] BoundControls = { 10, 100, 1000 };
-        static readonly int[] BoundControls_Gold = { 100, 1000, 10000 };
+        static readonly float[] BoundControls = { 10, 100, 1000 };
+        static readonly float[] BoundControls_Gold = { 100, 1000, 10000 };
 
         City city;
         LocalPlayer player;
@@ -39,26 +44,41 @@ namespace VikingEngine.DSSWars.Delivery
                 DeliveryStatus currentStatus = get();
                 content.Add(new RbBeginTitle(1));
 
-                string typeName = currentStatus.IsRecruitment() ? DssRef.lang.BuildingType_Recruitment : DssRef.lang.BuildingType_Postal;
-                var title = new RbText(typeName + " " + currentStatus.idAndPosition.ToString());
-                title.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(title);
-                content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedDelivery = -1; }, SoundLib.menuBack));
-                
+
+                SpriteName icon;
+                string caption;
+                switch (currentStatus.GetFilterType())
+                {
+                    case ItemResourceType.RESOURCES:
+                        icon = SpriteName.WarsBuild_Postal;
+                        caption = DssRef.lang.BuildingType_Postal;
+                        break;
+                    case ItemResourceType.Men:
+                        icon = SpriteName.WarsBuild_Recruitment;
+                        caption = DssRef.lang.BuildingType_Recruitment;
+                        break;
+                    default:
+                        icon = SpriteName.WarsBuild_GoldDeliver;
+                        caption = DssRef.lang.BuildingType_GoldDelivery;
+                        break;
+
+                }
+              
+                HudLib.buildingMenuTitle(content, icon, caption, currentStatus.idAndPosition,
+                    city.selectedDelivery, city.deliveryServices.Count,
+                    () => { city.selectedDelivery = -1; },
+                    (int next) => {
+                        city.selectedDelivery = Bound.SetRollover(city.selectedDelivery + next, 0, city.deliveryServices.Count - 1);
+                    });
+
                 content.newParagraph();
 
-                if (!currentStatus.IsRecruitment())
+                if (currentStatus.IsPostal())
                 {
                     HudLib.Label(content, DssRef.lang.Resource);
                     content.space();
                     HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.BuildingType_Postal_Description));
-                    //{
-                    //    RichBoxContent content = new RichBoxContent();
-                    //    HudLib.Description(content, DssRef.lang.BuildingType_Postal_Description);
-                    //    //HudLib.Description(content, string.Format(DssRef.lang.Deliver_WillSendXInfo, DssConst.CityDeliveryChunkSize_Level1));
-                    //    player.hud.tooltip.create(player, content, true);
-                    //}));
+                   
                     content.newLine();
 
                     if (currentStatus.profile.type == ItemResourceType.AutomatedItem)
@@ -70,42 +90,47 @@ namespace VikingEngine.DSSWars.Delivery
                     else if (currentStatus.profile.type != ItemResourceType.NONE)
                     {
                         bool reachedBuffer = false;
-                        city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, false, ref reachedBuffer);
+                        city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, ref reachedBuffer);
                     }
                     content.newLine();
-                    for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+                    //for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+                    for (ResourceGroupType resourceGroup = 0; resourceGroup < ResourceGroupType.Mint; resourceGroup++)
                     {
                         var tabContent = new RichBoxContent();
                         //string text = null;
-                        switch (resourcesSubTab)
+                        switch (resourceGroup)
                         {
-                            case ResourcesSubTab.Overview_Resources:
-                                tabContent.Add(new RbText(DssRef.todoLang.Hud_category));
+                            case ResourceGroupType.Resources:
+                                tabContent.Add(new RbText(DssRef.lang.Hud_category));
                                 tabContent.space();
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                                 break;
 
-                            case ResourcesSubTab.Overview_Metals:
+                            case ResourceGroupType.Metals:
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
                                 break;
-                            case ResourcesSubTab.Overview_Weapons:
+                            case ResourceGroupType.Weapons:
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
                                 break;
 
-                            case ResourcesSubTab.Overview_Projectile:
+                            case ResourceGroupType.Projectile:
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
                                 break;
 
-                            case ResourcesSubTab.Overview_Armor:
+                            case ResourceGroupType.Armor:
                                 tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
                                 break;
+
+                            case ResourceGroupType.Animals:
+                                tabContent.Add(new RbImage(SpriteName.WarsResource_Pig));
+                                break;
                         }
-                        var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
+                        var subTab = new ArtButton(player.resourcesSubTab.resourceGroup == resourceGroup? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
                             tabContent,
-                            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                            new RbAction1Arg<ResourceGroupType>((ResourceGroupType resourcesSubTab) =>
                             {
-                                player.resourcesSubTab = resourcesSubTab;
-                            }, resourcesSubTab, SoundLib.menutab));
+                                player.resourcesSubTab.resourceGroup = resourcesSubTab;
+                            }, resourceGroup, RbSoundType.Tab));
                         
                         //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                         content.Add(subTab);
@@ -117,19 +142,19 @@ namespace VikingEngine.DSSWars.Delivery
                         var tabContent = new RichBoxContent();
                         tabContent.Add(new RbImage(SpriteName.AutomationGearIcon));
 
-                        var subTab = new ArtToggle(player.resourcesSubTab == ResourcesSubTab.Auto, tabContent,
-                            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                        var subTab = new ArtToggle(currentStatus.profile.type == ItemResourceType.AutomatedItem, tabContent,
+                            new RbAction1Arg<ResourceGroupType>((ResourceGroupType resourcesSubTab) =>
                             {
-                                player.resourcesSubTab = resourcesSubTab;
+                                player.resourcesSubTab.resourceGroup = resourcesSubTab;
                                 itemClick(ItemResourceType.AutomatedItem);
 
-                            }, ResourcesSubTab.Auto, SoundLib.menutab),
+                            }, ResourceGroupType.Auto, RbSoundType.Tab),
                             new RbTooltip((RichBoxContent content, object tag) =>
                             {
                                 //RichBoxContent content = new RichBoxContent();
 
                                 content.h2(DssRef.lang.Automation_Title);
-                                content.text(DssRef.todoLang.Delivery_AutoResourceDescription).overrideColor = HudLib.InfoYellow_Light;
+                                content.text(DssRef.lang.Delivery_AutoResourceDescription).overrideColor = HudLib.InfoYellow_Light;
 
                                 //player.hud.tooltip.create(player, content, true);
                             }));
@@ -138,43 +163,36 @@ namespace VikingEngine.DSSWars.Delivery
                         content.space();
                     }
 
-                    if (player.resourcesSubTab != ResourcesSubTab.Auto)
+                    if (player.resourcesSubTab.resourceGroup !=  ResourceGroupType.Auto)
                     {
 
                         content.Add(new RichBoxScale(1.6f));
                         content.newLine();
-                        ItemResourceType[] resourceTypes;
-
-                        switch (player.resourcesSubTab)
-                        {
-                            default: resourceTypes = City.MovableCityResource_Misc; break;
-                            case ResourcesSubTab.Overview_Metals: resourceTypes = City.MovableCityResource_Metals; break;
-                            case ResourcesSubTab.Overview_Weapons: resourceTypes = City.MovableCityResource_WeaponMelee; break;
-                            case ResourcesSubTab.Overview_Projectile: resourceTypes = City.MovableCityResource_WeaponRanged; break;
-                            case ResourcesSubTab.Overview_Armor: resourceTypes = City.MovableCityResource_Armor; break;
-                        }
+                        ItemResourceType[] resourceTypes = ResourceLib.ResourceGroupList(player.resourcesSubTab.resourceGroup);
 
                         foreach (var item in resourceTypes)
                         {
+                            IconName.Item(item, out SpriteName itemIcon, out string itemName);
+
                             var button = new ArtToggle(item == currentStatus.profile.type, new List<AbsRichBoxMember>{
-                                new RbImage(ResourceLib.Icon(item))   
+                                new RbImage(itemIcon)   
                             },
-                            new RbAction1Arg<ItemResourceType>(itemClick, item, SoundLib.menu),
+                            new RbAction1Arg<ItemResourceType>(itemClick, item, RbSoundType.Option),
                             new RbTooltip((RichBoxContent content, object tag) =>
                                 {
                                     //RichBoxContent content = new RichBoxContent();
 
                                     content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
                                     bool reachedBuffer = false;
-                                    bool safeGuard = city.foodSafeGuardIsActive(item);
+                                    //bool safeGuard = city.foodSafeGuardIsActive(item);
 
-                                    city.GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                    city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
 
                                     if (currentStatus.profile.toCity >= 0 && currentStatus.profile.toCity != DeliveryProfile.ToCityAuto)
                                     {
                                         content.newParagraph();
                                         content.h2(DssRef.lang.Hud_RecieveingCity).overrideColor = HudLib.TitleColor_Label;
-                                        DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                        DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
 
                                     }
 
@@ -191,225 +209,202 @@ namespace VikingEngine.DSSWars.Delivery
                 }
                 HudLib.Label(content, DssRef.lang.Hud_RecieveingCity);
                 content.newLine();
-                var cities_c = city.faction.cities.counter();
-                while (cities_c.Next())
-                {
-                    if (cities_c.sel != city && city.tilePos.SideLength(cities_c.sel.tilePos) <= DssConst.DeliveryMaxDistance)
-                    {
-                        var buttonContent = new RichBoxContent();
-                        cities_c.sel.tagToHud(buttonContent);
-                        if (buttonContent.Count > 0)
-                        {
-                            buttonContent.space();
-                        }
-                        buttonContent.Add(new RbText(cities_c.sel.TypeName()));
 
-                        var button = new ArtToggle(cities_c.sel.parentArrayIndex == currentStatus.profile.toCity, buttonContent, 
-                            new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), 
-                            new RbTooltip((RichBoxContent content, object tag /*City toCity*/) =>
-                            {
-                                City toCity = (City)tag;
-                                //RichBoxContent content = new RichBoxContent();
-                                content.h2(toCity.Name(out _)).overrideColor = HudLib.TitleColor_Label;
-                                var time = DeliveryProfile.DeliveryTime(city, toCity, currentStatus.level, out float distance);
-                                content.text(string.Format(DssRef.lang.Delivery_DistanceX, TextLib.OneDecimal(distance)));
-                                content.text(string.Format(DssRef.lang.Delivery_DeliveryTimeX, time.LongString()));
-
-                                if (currentStatus.profile.type != ItemResourceType.NONE &&
-                                    currentStatus.profile.type != ItemResourceType.AutomatedItem)
-                                {
-                                    content.newParagraph();
-                                    content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
-                                    bool reachedBuffer = false;
-                                    bool safeGuard = city.foodSafeGuardIsActive(currentStatus.profile.type);
-                                    city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, safeGuard, ref reachedBuffer);
-
-                                    //if (currentStatus.profile.toCity >= 0)
-                                    //{
-                                    content.newParagraph();
-                                    content.h2(DssRef.lang.Hud_RecieveingCity).overrideColor = HudLib.TitleColor_Label;
-                                    //if (currentStatus.profile.toCity == DeliveryProfile.ToCityAuto)
-                                    //{
-
-                                    //}
-                                    //else
-                                    //{
-                                    toCity.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, false, ref reachedBuffer);
-                                        //}
-                                    //}
-                                }
-                                //player.hud.tooltip.create(player, content, true);
-                            }, cities_c.sel));
-                        //button.setGroupSelectionColor(HudLib.RbSettings, cities_c.sel.parentArrayIndex == currentStatus.profile.toCity);
-                        content.Add(button);
-                        //content.space();
-                    }
-                }
+                int none = 0;
+                listCities(city.pfaction.GetFaction(), false, ref none);
 
                 //AUTO CITY
                 {
-                    var button = new ArtToggle(DeliveryProfile.ToCityAuto == currentStatus.profile.toCity, 
+
+                    var button = new ArtToggle(DeliveryProfile.ToCityAuto == currentStatus.profile.toCity,
                         new List<AbsRichBoxMember>{
                             new RbImage(SpriteName.AutomationGearIcon)
-                            }, 
-                            new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, SoundLib.menu), 
+                            },
+                            new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, RbSoundType.Option),
                             new RbTooltip((RichBoxContent content, object tag) =>
                             {
-                                //RichBoxContent content = new RichBoxContent();
                                 content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Name;
-                                content.text(DssRef.lang.Delivery_AutoReciever_Description).overrideColor = HudLib.InfoYellow_Light;
-                                //player.hud.tooltip.create(player, content, true);
+                                content.text(DssRef.lang.Delivery_AutoReceiver_Description).overrideColor = HudLib.InfoYellow_Light;
                             }));
-                    //button.setGroupSelectionColor(HudLib.RbSettings, DeliveryProfile.ToCityAuto == currentStatus.profile.toCity);
                     content.Add(button);
                 }
 
-                content.newParagraph();
-                //SEND CHUNK SIZE
-                HudLib.Label(content, DssRef.todoLang.Delivery_SendChunk);
+                /*
+                 //ALLY CITIES TEMP REMOVE
                 content.newLine();
-
-                List<int> sendChunkOptions = new List<int>(4);
-                if (currentStatus.IsGold())
+                content.Add(new RbText(DssRef.lang.Diplomacy_RelationType_Ally + ":", HudLib.TitleColor_Label2));
+                content.newLine();
+                int alliedCities = 0;
+                RelationsLoop allies = new RelationsLoop(city.pfaction);
+                while (allies.nextAlly())
                 {
-                    sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Mini);
-                    sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level1);
+                    if (allies.OtherFaction(out Faction ally))
+                    {
+                        listCities(ally, true, ref alliedCities);
+                    } 
+                }
+                if (alliedCities == 0)
+                {
+                    content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
+                }
+                */
 
-                    if (currentStatus.level >= 2)
+                void listCities(Faction faction, bool ally, ref int count)
+                {
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level2);
+                        if (citySel != city && city.tilePos.SideLength(citySel.tilePos) <= DssConst.DeliveryMaxDistance)
+                        {
+                            count++;
+                            var buttonContent = new RichBoxContent();
+                            if (ally)
+                            {
+                                buttonContent.Add(faction.FlagTextureToHud());
+                            }
+                            citySel.tagToHud(buttonContent);
+                            if (buttonContent.Count > 0)
+                            {
+                                buttonContent.hspace();
+                            }
+                            buttonContent.Add(new RbText(citySel.TypeName()));
+
+                            var button = new ArtToggle(citySel.myIndex == currentStatus.profile.toCity, buttonContent,
+                                new RbAction1Arg<int>(cityClick, citySel.myIndex, RbSoundType.Option),
+                                new RbTooltip((RichBoxContent content, object tag) =>
+                                {
+                                    City toCity = (City)tag;
+                                    content.h2(toCity.Name(out _), HudLib.TitleColor_Name);
+                                    if (ally)
+                                    {
+                                        content.newLine();
+                                        content.Add(faction.FlagTextureToHud());
+                                        content.hspace();
+                                        toCity.ownerToHud(new ObjectHudArgs(content, player, false), false);
+                                    }
+                                    TimeLength time = DeliveryProfile.DeliveryTime(city, toCity, currentStatus.level, out float distance);
+                                    content.text(string.Format(DssRef.lang.Delivery_DistanceX, TextLib.OneDecimal(distance)));
+                                    content.text(string.Format(DssRef.lang.Delivery_DeliveryTimeX, time.LongString()));
+
+                                    if (currentStatus.profile.type != ItemResourceType.NONE &&
+                                        currentStatus.profile.type != ItemResourceType.AutomatedItem)
+                                    {
+                                        content.newParagraph();
+                                        content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
+                                        bool reachedBuffer = false;
+                                        city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, ref reachedBuffer);
+
+                                        content.newParagraph();
+                                        content.h2(DssRef.lang.Hud_RecieveingCity).overrideColor = HudLib.TitleColor_Label;
+                                        toCity.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, ref reachedBuffer);
+                                    }
+                                }, citySel));
+                            content.Add(button);
+                        }
                     }
-                    if (currentStatus.level >= 3)
+                }
+
+               
+
+                content.newParagraph();
+
+                if (currentStatus.profile.toCity >= 0)
+                {
+                    //SEND CHUNK SIZE
+                    HudLib.Label(content, DssRef.lang.Delivery_SendChunk);
+                    content.newLine();
+
+                    List<int> sendChunkOptions = new List<int>(4);
+                    if (currentStatus.IsGold())
                     {
-                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level3);
+                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Mini);
+                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level1);
+
+                        if (currentStatus.level >= 2)
+                        {
+                            sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level2);
+                        }
+                        if (currentStatus.level >= 3)
+                        {
+                            sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level3);
+                        }
                     }
+                    else
+                    {
+                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Mini);
+                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level1);
+
+                        if (currentStatus.level >= 2)
+                        {
+                            sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level2);
+                        }
+                        if (currentStatus.level >= 3)
+                        {
+                            sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level3);
+                        }
+                    }
+
+                    foreach (int amount in sendChunkOptions)
+                    {
+                        var button = new ArtToggle(amount == currentStatus.profile.SendAmount, new List<AbsRichBoxMember> { new RbText(amount.ToString()) },
+                            new RbAction(() =>
+                            {
+                                DeliveryStatus currentStatus = get();
+                                currentStatus.profile.SendAmount = amount;
+                                set(currentStatus);
+                            }, RbSoundType.Option));
+
+                        content.Add(button);
+                    }
+
+                    if (currentStatus.profile.type != ItemResourceType.AutomatedItem)
+                    {
+                        content.newParagraph();
+
+                        var minLabel = new RbText(DssRef.lang.Delivery_SenderMinimumCap + ":");
+                        minLabel.overrideColor = HudLib.TitleColor_Label_Dark;
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { minLabel },
+                            UseSenderMinProperty));
+                        boundsToHud(content, currentStatus, true);
+                    }
+                    content.newParagraph();
+
+                    var maxLabel = new RbText(DssRef.lang.Delivery_ReceiverMaximumCap + ":");
+                    maxLabel.overrideColor = HudLib.TitleColor_Label_Dark;
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { maxLabel },
+                        UseRecieverMaxProperty));
+                    boundsToHud(content, currentStatus, false);
                 }
                 else
                 {
-                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Mini);
-                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level1);
-
-                    if (currentStatus.level >= 2)
-                    {
-                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level2);
-                    }
-                    if (currentStatus.level >= 3)
-                    {
-                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level3);
-                    }
+                    content.Add(new RbSeperationLine());
                 }
-
-                foreach (int amount in sendChunkOptions)
-                {
-                    var button = new ArtToggle( amount == currentStatus.profile.SendAmount,new List<AbsRichBoxMember> { new RbText(amount.ToString()) },
-                        new RbAction(() =>
-                        {
-                            DeliveryStatus currentStatus = get();
-                            currentStatus.profile.SendAmount = amount;
-                            set(currentStatus);
-                        }, SoundLib.menu));
-
-                    //button.setGroupSelectionColor(HudLib.RbSettings, amount == currentStatus.profile.SendAmount);
-
-                    content.Add(button);
-                    //content.space();
-                }
-
-                if (currentStatus.profile.type != ItemResourceType.AutomatedItem)
-                {
-                    content.newParagraph();
-
-                    var minLabel = new RbText(DssRef.lang.Delivery_SenderMinimumCap + ":");
-                    minLabel.overrideColor = HudLib.TitleColor_Label_Dark;
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { minLabel },
-                        UseSenderMinProperty));
-                    boundsToHud(content, currentStatus, true);
-                }
-                content.newParagraph();
-
-                var maxLabel = new RbText(DssRef.lang.Delivery_RecieverMaximumCap + ":");
-                maxLabel.overrideColor = HudLib.TitleColor_Label_Dark;
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { maxLabel },
-                    UseRecieverMaxProperty));
-                boundsToHud(content, currentStatus, false);
 
                 if (currentStatus.profile.toCity >= 0)
                 {
                     content.newParagraph();
-                    que.toHud(player, content, queClick, currentStatus.que, Conscript.BarracksStatus.MaxQue, true);
+                    que.labelToHud(content);
+                    progress(currentStatus);
+                    que.buttonsToHud(player, content, queClick, currentStatus.que, Conscript.BarracksStatus.MaxQue, true);
                 }
 
                 content.newParagraph();
-                content.Add(new RbImage(player.input.Copy.Icon));
-                content.Add(new ArtButton(  RbButtonStyle.Primary,new List<AbsRichBoxMember> {
-                    //new RbImage(player.input.Copy.Icon),
-                    //new RbSpace(0.5f),
-                    new RbText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menuCopy)));
 
-                content.space();
-                content.Add(new RbImage(player.input.Paste.Icon));
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                    //new RbImage(player.input.Paste.Icon),
-                    //new RbSpace(0.5f),
-                    new RbText(DssRef.lang.Hud_Paste)
-                },
-                new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menuPaste)));
-
-                bool isSending = currentStatus.active == DeliveryActiveStatus.Delivering;
-
-                if (isSending || currentStatus.que > 0)
-                {
-
-                    //content.newParagraph();
-                    content.Add(new RbSeperationLine());
-                    {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        var text = new RbText(DssRef.lang.Delivery_ItemsReady);
-                        bool ready = isSending || currentStatus.CanSend(city, out currentStatus.inProgress.type);
-                        text.overrideColor = ready? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        content.Add(text);
-
-                        if (ready)
-                        {
-                            content.newLine();
-                            content.Add(new RbImage(ResourceLib.Icon(currentStatus.inProgress.type)));
-                            content.space();
-                            content.Add(new RbText(LangLib.Item(currentStatus.inProgress.type) + ": " + currentStatus.inProgress.SendAmount.ToString()));
-                        }
-                    }
-                    {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        var text = new RbText(DssRef.lang.Delivery_RecieverReady);
-                        text.overrideColor = isSending || currentStatus.CanRecieve(currentStatus.inProgress.type) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        content.Add(text);
-
-                        if (isSending && currentStatus.inProgress.toCity == DeliveryProfile.ToCityAuto)
-                        {
-                            content.Add(new RbText(" - " + DssRef.world.cities[currentStatus.inProgress.autoCity].TypeName()));
-                        }
-                    }
-
-                    if (isSending)
-                    {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(currentStatus.longTimeProgress(city)));
-                    }
-                }
+                HudLib.copyPaste(content, player,
+                    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy),
+                    new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste),
+                    currentStatus.fullSetup(), city.getDeliveryCopyRef(player, currentStatus.profile.type).fullSetup());
+                
             }
             else
             {
-
-                content.h2(DssRef.lang.Delivery_ListTitle).overrideColor = HudLib.TitleColor_Action;
+               
                 if (city.deliveryServices.Count == 0)
                 {
                     //EMPTY
-                    content.text(DssRef.lang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
+                    content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
                     content.newParagraph();
-                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement, HudLib.TitleColor_Label);
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsBuild_Postal));
                     content.space();
@@ -423,34 +418,215 @@ namespace VikingEngine.DSSWars.Delivery
                 }
                 else
                 {
+                    bool hasRecruit = false;
+                    bool hasGoldDeliver = false;
+                    bool hasPostal = false;
+
+                    for (int i = 0; i < city.deliveryServices.Count; ++i)
+                    {
+                        DeliveryStatus currentProfile = city.deliveryServices[i];
+
+                        if (currentProfile.IsRecruitment())
+                        {
+                            hasRecruit = true;
+                        }
+                        else if (currentProfile.IsGold())
+                        {
+                            hasGoldDeliver = true;
+                        }
+                        else
+                        {
+                            hasPostal = true;
+                        }
+                    }
+
+                    int typeCount = 0;
+                    if (hasRecruit) { typeCount++; }
+                    if (hasGoldDeliver) { typeCount++; }
+                    if (hasPostal) { typeCount++; }
+
+
+                    //Apply to all options
+                    content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Action);
+                    HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
+                    que.listToHud(player, content, queueToAll, true);
+
+                    if (player.deliverySupTab != ItemResourceType.NUM || typeCount == 1)
+                    {
+                        content.newLine();
+                        player.gameControls.input.Paste.ToRichContent(content);
+                        content.hspace();
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsHudIconPaste),
+                            new RbSpace(),
+                            new RbText(DssRef.lang.Hud_Paste) 
+                        },
+                            new RbAction1Arg<LocalPlayer>(city.pasteDeliveryToAll, player, RbSoundType.Paste)));
+                    }
+                    content.Add(new RbSeperationLine());
+                    content.h2(DssRef.lang.Delivery_ListTitle, HudLib.TitleColor_Action);
+
+                    if (typeCount > 1)
+                    {
+                        content.newLine();
+                        SubTab(ItemResourceType.NUM);
+
+                        if (hasRecruit) { SubTab(ItemResourceType.Men); }
+                        if (hasGoldDeliver) { SubTab(ItemResourceType.Gold); }
+                        if (hasPostal) { SubTab(ItemResourceType.RESOURCES); }
+
+                        void SubTab(ItemResourceType filter)
+                        {
+                            List<AbsRichBoxMember> tabContent = new List<AbsRichBoxMember>(1);
+                            switch (filter)
+                            {
+                                case ItemResourceType.NUM:
+                                    tabContent.Add(new RbText(DssRef.lang.Hud_All));
+                                    break;
+                                case ItemResourceType.Men:
+                                    tabContent.Add(new RbText(DssRef.lang.BuildingType_Recruitment));
+                                    break;
+                                case ItemResourceType.Gold:
+                                    tabContent.Add(new RbText(DssRef.lang.BuildingType_GoldDelivery));
+                                    break;
+                                default:
+                                    tabContent.Add(new RbText(DssRef.lang.BuildingType_Postal));
+                                    break;
+                            }
+
+                            var subTab = new ArtButton(player.deliverySupTab == filter ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                                tabContent,
+                               new RbAction1Arg<ItemResourceType>((ItemResourceType filter) =>
+                               {
+                                   player.deliverySupTab = filter;
+                               }, filter, RbSoundType.Tab));
+                            content.Add(subTab);
+                        }
+                    }
+                    else
+                    {
+                        player.deliverySupTab = ItemResourceType.NUM;
+                    }
+
                     for (int i = 0; i < city.deliveryServices.Count; ++i)
                     {
                         content.newLine();
 
                         DeliveryStatus currentProfile = city.deliveryServices[i];
+                        bool fitFilter = player.deliverySupTab == ItemResourceType.NUM;
 
                         string title;
+                        SpriteName icon;
                         if (currentProfile.IsRecruitment())
                         {
+                            fitFilter |= player.deliverySupTab == ItemResourceType.Men;
+                            icon = SpriteName.WarsWorker;
                             title = DssRef.lang.BuildingType_Recruitment;
+                        }
+                        else if (currentProfile.IsGold())
+                        {
+                            fitFilter |= player.deliverySupTab == ItemResourceType.Gold;
+                            icon = SpriteName.WarsResource_Gold;
+                            title = DssRef.lang.BuildingType_GoldDelivery;
                         }
                         else
                         {
+                            fitFilter |= player.deliverySupTab == ItemResourceType.RESOURCES;
+                            IconName.Item(currentProfile.profile.type, out icon, out string itemName);
                             title = DssRef.lang.BuildingType_Postal + ": " + currentProfile.profile.type.ToString();
                         }
+                        if (fitFilter)
+                        {
 
-                        var caption = new RbText(
-                                title
-                            );
-                        caption.overrideColor = HudLib.TitleColor_Name;
+                            var caption = new RbText(title);
+                            caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>(){
-                        new RbBeginTitle(2),
-                        caption,
-                        new RbNewLine(),
-                        new RbText(currentProfile.shortActiveString())
-                    }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
+                            var buttonContent = new List<AbsRichBoxMember>(){
+                            new RbBeginTitle(2),
+                            caption,
+                            new RbNewLine(),
+                            new RbText(currentProfile.shortActiveString(),  HudLib.InfoYellow_Dark)
+                        };
 
+                            if (icon != SpriteName.NO_IMAGE)
+                            {
+                                buttonContent.Insert(1, new RbImage(icon));
+                            }
+
+                            content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,
+                                new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
+                        }
+                    }
+                    
+                }
+            }
+
+            void queueToAll(int count)
+            {
+                for (int i = 0; i < city.deliveryServices.Count; ++i)
+                {
+                    if (player.deliverySupTab == ItemResourceType.NUM ||
+                        player.deliverySupTab == city.deliveryServices[i].GetFilterType())
+                    {
+                        var status = city.deliveryServices[i];
+                        if (count == 1)
+                        {
+                            status.que++;
+                        }
+                        else
+                        {
+                            status.que = count;
+                        }
+                        city.deliveryServices[i] = status;
+                    }
+                }
+            }
+
+            void progress(DeliveryStatus currentStatus)
+            {
+                bool isSending = currentStatus.active == DeliveryActiveStatus.Delivering;
+
+                if (isSending || currentStatus.que > 0)
+                {
+
+                    //content.newParagraph();
+                    content.Add(new RbSeperationLine());
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        var text = new RbText(DssRef.lang.Delivery_ItemsReady);
+                        bool ready = isSending || currentStatus.CanSend(city, out currentStatus.inProgress.type);
+                        text.overrideColor = ready ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        content.Add(text);
+
+                        if (ready)
+                        {
+                            IconName.Item(currentStatus.inProgress.type, out SpriteName itemIcon, out string itemName);
+                            content.newLine();
+                            content.Add(new RbImage(itemIcon));
+                            content.space();
+                            content.Add(new RbText(itemName + ": " + currentStatus.inProgress.SendAmount.ToString()));
+                        }
+                    }
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        var text = new RbText(DssRef.lang.Delivery_ReceiverReady);
+                        text.overrideColor = isSending || currentStatus.CanRecieve(currentStatus.inProgress.type) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        content.Add(text);
+
+                        if (isSending && currentStatus.inProgress.toCity == DeliveryProfile.ToCityAuto)
+                        {
+                            content.Add(new RbText(" - " + DssRef.world.cities[currentStatus.inProgress.autoCity].TypeName()));
+                        }
+                    }
+
+                    string timeString = currentStatus.longTimeProgress(city, out bool hasTime);
+                    if (hasTime)
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(timeString, isSending ? null : HudLib.SecondaryTextColor));
                     }
                 }
             }
@@ -475,35 +651,14 @@ namespace VikingEngine.DSSWars.Delivery
                 current = currentStatus.recieverMax;
             }
 
-            List<int> bounds = new List<int>( currentStatus.IsGold() ? BoundControls_Gold : BoundControls);
+            List<float> bounds = new List<float>( currentStatus.IsGold() ? BoundControls_Gold : BoundControls);
 
             RbDragButton.RbDragButtonGroup(content, bounds, new DragButtonSettings(0, 10000, bounds[0]),
-               minCap ? MinProperty : MaxProperty );
+               minCap ? MinProperty : MaxProperty , true);
 
-            //content.newLine();
-            //for (int i = bounds.Length - 1; i >= 0; i--)
-            //{
-            //    int change = -bounds[i];
-            //    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
-            //        new RbAction2Arg<int, bool>(changeResourcePrice, change, minCap)));
-
-            //    content.space();
-            //}
-
-            //content.Add(new RbText(current.ToString()));
-            //content.space();
-
-            //for (int i = 0; i < bounds.Length; i++)
-            //{
-            //    int change = bounds[i];
-            //    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
-            //        new RbAction2Arg<int, bool>(changeResourcePrice, change, minCap)));
-
-            //    content.space();
-            //}
         }
 
-        bool UseSenderMinProperty(int index, bool _set, bool value)
+        bool UseSenderMinProperty(object tag, bool _set, bool value)
         {
             DeliveryStatus currentStatus = get();
             if (_set)
@@ -514,7 +669,7 @@ namespace VikingEngine.DSSWars.Delivery
             return currentStatus.useSenderMin;
         }
 
-        bool UseRecieverMaxProperty(int index, bool _set, bool value)
+        bool UseRecieverMaxProperty(object tag, bool _set, bool value)
         {
             DeliveryStatus currentStatus = get();
             if (_set)
@@ -535,7 +690,7 @@ namespace VikingEngine.DSSWars.Delivery
             set(currentStatus);
         }
 
-        int MaxProperty(bool _set, int value)
+        int MaxProperty(object tag, bool _set, int value)
         {
             var currentStatus = get();
             if (_set)
@@ -545,7 +700,7 @@ namespace VikingEngine.DSSWars.Delivery
             }
             return currentStatus.recieverMax;
         }
-        int MinProperty(bool _set, int value)
+        int MinProperty(object tag, bool _set, int value)
         {
             var currentStatus = get();
             if (_set)

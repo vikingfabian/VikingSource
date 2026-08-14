@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Steamworks;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
+using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
-using System.Threading;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.Network
 {
@@ -29,6 +33,9 @@ namespace VikingEngine.Network
         public bool AllowVoiceChat = true;
         public int maxLocalGamers = 4;
 
+        public ConcurrentQueue<SteamWriter> packetsPool = new ConcurrentQueue<SteamWriter>();
+        public ConcurrentQueue<SteamWriter> packetsQueue = new ConcurrentQueue<SteamWriter>();
+
         public Dictionary<int, SteamWrapping.SteamLargePacketWriter> largePackets = new Dictionary<int, SteamWrapping.SteamLargePacketWriter>(2); 
 
         /// <summary>
@@ -40,10 +47,10 @@ namespace VikingEngine.Network
             get
             {
 #if PCGAME
-                ulong lobbyId = Ref.steam.LobbyMatchmaker.currentLobbyID;
-                if (lobbyId != 0 && Ref.steam.P2PManager.localPeer != null)
+                CSteamID lobbyId = Ref.steam.LobbyMatchmaker.currentLobbyID;
+                if (lobbyId != CSteamID.Nil && Ref.steam.P2PManager.localPeer != null)
                 {
-                    return Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyOwner(lobbyId) == Ref.steam.P2PManager.localPeer.fullId;
+                    return Steamworks.SteamMatchmaking.GetLobbyOwner(lobbyId) == Ref.steam.P2PManager.localPeer.SteamID;
                 }
 #endif
                 return false;
@@ -70,7 +77,7 @@ namespace VikingEngine.Network
             get
             {
 #if PCGAME
-                return Ref.steam.isNetworkInitialized && (Ref.steam.LobbyMatchmaker.currentLobbyID != 0 || InMultiplayerSession);
+                return Ref.steam.isNetworkInitialized && (Ref.steam.LobbyMatchmaker.currentLobbyID != CSteamID.Nil || InMultiplayerSession);
 #else
                 return false;
 #endif
@@ -139,6 +146,21 @@ namespace VikingEngine.Network
             } }
 
         /// <summary>
+        /// In active multiplayer session and hosting it
+        /// </summary>
+        public bool IsHostingMultiplayer
+        {
+            get
+            {
+#if PCGAME
+                return Ref.steam.isNetworkInitialized && Ref.steam.LobbyMatchmaker.hostLobby && Ref.steam.P2PManager.remoteGamers.Count > 0; ;
+#else
+                return false;
+#endif
+            }
+        }
+
+        /// <summary>
         /// Har joinat MP grupp
         /// </summary>
         public bool IsClient { get { return InMultiplayerSession && !IsHost; } }
@@ -159,18 +181,34 @@ namespace VikingEngine.Network
 
                 Ref.steam.LobbyMatchmaker.disconnect();
                 Ref.steam.P2PManager.disconnectSession();
+                Ref.steam.StopRecording();
 
                 Ref.NetUpdateReciever().NetEvent_ConnectionLost(reason);
             }
 #endif
         }
 
+        SteamWriter GetWriter()
+        {
+            if (packetsPool.TryDequeue(out SteamWriter result))
+            {
+                if (result.memoryLength > 0)
+                {
+                    lib.DoNothing();
+                    result.Clear();
+                }
+                return result;
+            }
+
+            return new SteamWriter();
+        }
+
         public void kickFromNetwork(AbsNetworkPeer peer)
         {
+            Ref.steam.P2PManager.RemovePeer(peer);
             writeKick(peer);
-            peer.approved = false;
 
-            Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
+            //Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
         }
 
         public void writeKick(AbsNetworkPeer kickPeer)
@@ -183,9 +221,9 @@ namespace VikingEngine.Network
         public void Invite()
         {
 #if PCGAME
-            if (Ref.steam.LobbyMatchmaker.currentLobbyID != 0)
+            if (Ref.steam.LobbyMatchmaker.currentLobbyID != CSteamID.Nil)
             {
-                Valve.Steamworks.SteamAPI.SteamFriends().ActivateGameOverlayInviteDialog(
+                Steamworks.SteamFriends.ActivateGameOverlayInviteDialog(
                     Ref.steam.LobbyMatchmaker.currentLobbyID);
             }
 #endif
@@ -234,7 +272,7 @@ namespace VikingEngine.Network
         public AbsNetworkPeer GetPeer(ulong fullId)
         {
 #if PCGAME
-            return Ref.steam.P2PManager.GetPeer(fullId);
+            return Ref.steam.P2PManager.GetPeer(new CSteamID( fullId));
 #else
             return null;
 #endif
@@ -242,31 +280,31 @@ namespace VikingEngine.Network
 
         }
 
-        public LobbyPublicity LobbyPublicity
-        {
-            get
-            {
-#if PCGAME
-                if (Ref.steam.isNetworkInitialized)
-                    return Ref.steam.LobbyMatchmaker.lobbyPublicity;
-                else
-                    return LobbyPublicity.ERROR;
-#else
-                return LobbyPublicity.ERROR;
-#endif
-            }
+//        public LobbyPublicity LobbyPublicity
+//        {
+//            get
+//            {
+//#if PCGAME
+//                if (Ref.steam.isNetworkInitialized)
+//                    return Ref.netsett.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity;
+//                else
+//                    return LobbyPublicity.ERROR;
+//#else
+//                return LobbyPublicity.ERROR;
+//#endif
+//            }
 
-            set
-            {
-#if PCGAME
-                Ref.steam.LobbyMatchmaker.SetLobbyPublicity(value);
-#else
-                throw new NotImplementedException();
-#endif
-            }
-        }
+//            set
+//            {
+//#if PCGAME
+//                Ref.steam.LobbyMatchmaker.SetLobbyPublicity(value);
+//#else
+//                throw new NotImplementedException();
+//#endif
+//            }
+//        }
 
-        public bool joinableStatus = true;
+        public bool joinableStatus = Ref.netsett.hostNetwork;
 
         public void setLobbyJoinable(bool canJoin)
         {
@@ -296,10 +334,18 @@ namespace VikingEngine.Network
         
         public System.IO.BinaryWriter BeginWritingPacket_Asynch(PacketType type, PacketReliability relyability, out SteamWrapping.SteamWriter packet)
         {
-            packet = new SteamWrapping.SteamWriter(relyability, false, SendPacketTo.All, 0);
+            packet = GetWriter();
+            packet.init(relyability, false, SendPacketTo.All, 0);
             return packet.writeHead(type, null);
         }
-        
+
+        public System.IO.BinaryWriter BeginWritingPacket_Asynch(PacketType type, PacketReliability relyability, SendPacketTo sendPacketTo, ulong specificGamerID, out SteamWrapping.SteamWriter packet)
+        {
+            packet = GetWriter();
+            packet.init(relyability, false, sendPacketTo, specificGamerID);
+            return packet.writeHead(type, null);
+        }
+
         public System.IO.BinaryWriter BeginWritingPacket(PacketType Type, PacketReliability relyability)
         {
             return BeginWritingPacket(Type, relyability, null);
@@ -308,7 +354,7 @@ namespace VikingEngine.Network
 
         public System.IO.BinaryWriter BeginWritingPacket(PacketType type, SendPacketToOptions to, PacketReliability relyability, int? player)
         {
-            return BeginWritingPacket(type, to.To, to.SpecificGamerID, relyability, player);
+            return BeginWritingPacket(type, relyability, to.To, to.SpecificGamerID, player);
         }
 
         public System.IO.BinaryWriter BeginWritingPacket(PacketType type, ulong? to, PacketReliability relyability, int? player)
@@ -324,24 +370,28 @@ namespace VikingEngine.Network
                 sendToType = Network.SendPacketTo.OneSpecific;
                 toGamer = to.Value;
             }
-            return BeginWritingPacket(type, sendToType, toGamer, relyability, player);
+            return BeginWritingPacket(type, relyability, sendToType, toGamer, player);
         }
 
 
         public System.IO.BinaryWriter BeginWritingPacket(PacketType type, PacketReliability relyability, int? player)
         {
-            return BeginWritingPacket(type, SendPacketTo.All, 0, relyability, player);
+            return BeginWritingPacket(type, relyability, SendPacketTo.All, 0,  player);
         }
-        public System.IO.BinaryWriter BeginWritingPacket(PacketType type, SendPacketTo to, ulong specificGamerID, 
-            PacketReliability relyability, int? sender)
+        public System.IO.BinaryWriter BeginWritingPacket(PacketType type, PacketReliability relyability, SendPacketTo to, ulong specificGamerID, 
+             int? sender)
         {
-            SteamWrapping.SteamWriter stream = new SteamWrapping.SteamWriter(relyability, true, to, specificGamerID);
-            return stream.writeHead(type, sender);
+#if DEBUG
+            Debug.CrashIfThreaded();
+#endif
+            SteamWrapping.SteamWriter packet = GetWriter();
+            packet.init(relyability, true, to, specificGamerID);
+            return packet.writeHead(type, sender);
         }
 
         public System.IO.BinaryWriter BeginWritingPacketToHost(PacketType Type, PacketReliability relyability, int? player)
         {
-            return BeginWritingPacket(Type, SendPacketTo.Host, 0, relyability, player);
+            return BeginWritingPacket(Type, relyability, SendPacketTo.Host, 0, player);
         }
 
         public void SendAllQuedPackets()
@@ -352,14 +402,14 @@ namespace VikingEngine.Network
         public void setLobbyData(string key, int data)
         {
 #if PCGAME
-            Valve.Steamworks.SteamAPI.SteamMatchmaking().SetLobbyData(Ref.steamlobby.currentLobbyID, key, data.ToString());
+            Steamworks.SteamMatchmaking.SetLobbyData(Ref.steamlobby.currentLobbyID, key, data.ToString());
 #endif
         }
 
         public int getLobbyIntData(string key, ulong lobbyID)
         {
 #if PCGAME
-            string data = Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyData(lobbyID, key);
+            string data = Steamworks.SteamMatchmaking.GetLobbyData(new CSteamID(lobbyID), key);
             return Convert.ToInt32(data);
 #else
             return int.MinValue;
@@ -372,7 +422,7 @@ namespace VikingEngine.Network
 
         public void Time_Update(float time)
         {
-            if (Ref.netSession.InMultiplayerSession)
+            if (InMultiplayerSession)
             {
                 nextNetUpdateTime += Ref.DeltaTimeMs;
                 if (nextNetUpdateTime >= netUpdateRate)
@@ -382,17 +432,27 @@ namespace VikingEngine.Network
 
                     if (count >= 32)
                     {
-                        netUpdateRate = 300;
+                        netUpdateRate = 240;
                     }
                     else if (count >= 8)
                     {
-                        netUpdateRate = 200;
+                        netUpdateRate = 120;
                     }
                     else
                     {
-                        netUpdateRate = 120;
+                        netUpdateRate = 60;
                     }
                     Ref.gamestate.NetUpdate();
+                }
+            }
+
+            while (Ref.netSession.packetsQueue.TryDequeue(out SteamWriter packet))
+            {
+                packet.send();
+                if (!packet.lockedFromPooling)
+                {
+                    packet.Clear();
+                    packetsPool.Enqueue(packet);
                 }
             }
         }
@@ -488,9 +548,9 @@ namespace VikingEngine.Network
     enum PacketReliability
     {
         Reliable,
-        ReliableLasy,
+        //ReliableLasy,
         Unrelyable,
-        Chat,
+        //Chat,
         NUM
     }
 }

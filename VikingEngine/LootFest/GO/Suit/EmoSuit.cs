@@ -22,7 +22,7 @@ namespace VikingEngine.LootFest.GO
         WeaponAttack.HandWeaponAttackSettings dashAttack;
 
         public EmoSuit(Players.AbsPlayer user)
-            : base(user, VoxelModelName.emo_sword)
+            : base(user, VoxelModelName.NUM_NON)
         {
             WeaponAttack.DamageData damage = new WeaponAttack.DamageData(LfLib.HeroNormalAttack, WeaponAttack.WeaponUserType.Player,
                         user.hero.ObjOwnerAndId, Magic.MagicElement.NUM, SpecialDamage.ShieldBreakAttack, false);

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace VikingEngine
 {
     public struct IntVector2 : IBinaryIOobj, IComparable
-    {
+    {        
         public static readonly IntVector2[] Dir4Array = new IntVector2[] {
             new IntVector2(0, -1),
             new IntVector2(1, 0),
@@ -315,12 +315,27 @@ namespace VikingEngine
             int l = SideLength();
             return new IntVector2(X / l, Y / l);
         }
-        public IntVector2 Normal_RoundUp()
+        public IntVector2 Normal_Round()
         {
             float l = SideLength();
             return new IntVector2(X / l, Y / l);
         }
-        
+
+        public IntVector2 Normal_Ceiling()
+        {            
+            IntVector2 result = IntVector2.Zero;
+            if (X != 0)
+            {
+                result.X = X > 0 ? 1 : -1;
+            }
+            if (Y != 0)
+            {
+                result.Y = Y > 0 ? 1 : -1;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Using geometric similarity
         /// </summary>
@@ -640,6 +655,28 @@ namespace VikingEngine
             X = r.ReadUInt16(); Y = r.ReadUInt16();
         }
 
+        public void WriteUInt24(System.IO.BinaryWriter w)
+        {
+            // Write 3 bytes for X
+            w.Write((byte)(X & 0xFF));         // 1st byte (Lowest 8 bits)
+            w.Write((byte)((X >> 8) & 0xFF));  // 2nd byte (Middle 8 bits)
+            w.Write((byte)((X >> 16) & 0xFF)); // 3rd byte (Highest 8 bits of our 24)
+
+            // Write 3 bytes for Y
+            w.Write((byte)(Y & 0xFF));
+            w.Write((byte)((Y >> 8) & 0xFF));
+            w.Write((byte)((Y >> 16) & 0xFF));
+        }
+
+        public void ReadUInt24(System.IO.BinaryReader r)
+        {
+            // Reconstruct X from 3 bytes
+            X = r.ReadByte() | (r.ReadByte() << 8) | (r.ReadByte() << 16);
+
+            // Reconstruct Y from 3 bytes
+            Y = r.ReadByte() | (r.ReadByte() << 8) | (r.ReadByte() << 16);
+        }
+
         public void writeShort(System.IO.BinaryWriter w)
         {
             w.Write((short)X); w.Write((short)Y);
@@ -673,7 +710,12 @@ namespace VikingEngine
             result.readByte(r);
             return result;
         }
-
+        public static IntVector2 FromReadShort(System.IO.BinaryReader r)
+        {
+            IntVector2 result = IntVector2.Zero;
+            result.readShort(r);
+            return result;
+        }
         public static IntVector2 FromReadUshort(System.IO.BinaryReader r)
         {
             IntVector2 result = IntVector2.Zero;
@@ -730,5 +772,6 @@ namespace VikingEngine
 
         }
     }
-    
+
+
 }

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Steamworks;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Input;
-using VikingEngine.PJ.Display;
 using VikingEngine.Network;
-using VikingEngine.PJ.PjEngine;
+using VikingEngine.PJ.Display;
 using VikingEngine.PJ.Lobby;
+using VikingEngine.PJ.PjEngine;
 
 namespace VikingEngine.PJ
 {
@@ -65,12 +66,16 @@ namespace VikingEngine.PJ
         public LobbyState(bool host = true)
             : base(false)
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Menus);
+            }
             PjRef.host = host;
 
             searchLobbiesTimer.TimeLeft = TimeExt.SecondsToMS(3);
             PjRef.LobbySong.PlayStored();
 
-            Input.Mouse.Visible = true;
+            Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
             this.joinedLocalGamers = new List2<GamerData>();
             refreshControllersInUse();
 
@@ -103,7 +108,7 @@ namespace VikingEngine.PJ
 
                     //if (PjRef.hasAllContentDLC)
                     //{
-                        Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity = PjRef.storage.lobbyPublicity;
+                        //Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity = PjRef.storage.lobbyPublicity;
 
 #if PCGAME
                         //Ref.steam.LobbyMatchmaker.CreateLobbyIfNotInOne();
@@ -220,7 +225,7 @@ namespace VikingEngine.PJ
 
                 monitorOptions = new OptionsGroup();
 
-                if (Engine.Screen.PcTargetFullScreen == false &&
+                if (Engine.Screen.PcDisplayMode == Engine.WindowDisplayMode.Windowed/*PcTargetFullScreen == false*/ &&
                     Engine.Screen.MonitorCount > 1)
                 {
 
@@ -258,7 +263,7 @@ namespace VikingEngine.PJ
 
         void refreshScreenOptionsButtons()
         {
-            windowToggleButton.iconImg.SetSpriteName(Engine.Screen.PcTargetFullScreen ? SpriteName.MenuIconMonitorArrowsIn : SpriteName.MenuIconMonitorArrowsOut);
+            //windowToggleButton.iconImg.SetSpriteName(Engine.Screen.PcTargetFullScreen ? SpriteName.MenuIconMonitorArrowsIn : SpriteName.MenuIconMonitorArrowsOut);
         }
 
 
@@ -326,7 +331,7 @@ namespace VikingEngine.PJ
         {
             PjRef.storage.lobbyPublicity = (LobbyPublicity)index;
             refreshLobbyPublicity();
-            Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.SetLobbyPublicity(PjRef.storage.lobbyPublicity);
+            //Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.SetLobbyPublicity(PjRef.storage.lobbyPublicity);
             PjRef.PublicNetwork = PjRef.storage.lobbyPublicity == LobbyPublicity.Public;
 
             netwriteLobbyStatus();
@@ -819,7 +824,7 @@ namespace VikingEngine.PJ
                 {
                     if (windowToggleButton.update())
                     {
-                        Ref.gamesett.fullscreenProperty(0, true, !Engine.Screen.PcTargetFullScreen);
+                        //Ref.gamesett.fullscreenProperty(0, true, !Engine.Screen.PcTargetFullScreen);
                     }
                     if (monitorOptions.update())
                     {
@@ -1252,9 +1257,9 @@ namespace VikingEngine.PJ
             }
         }
 
-        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions, List<AbsAvailableSession> prevAvailableSessionsList)
+        public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
         {           
-            base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
+            base.NetEvent_SessionsFound(availableSessions);
 
             //if (PjRef.hasAllContentDLC == false)
             //{
@@ -1416,6 +1421,11 @@ namespace VikingEngine.PJ
                 }
 
                 MediaPlayer.Stop();
+
+                if (Ref.steam.isInitialized)
+                {
+                    SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Staging);
+                }
 
                 switch (PjRef.storage.Mode)
                 {

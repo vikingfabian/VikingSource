@@ -28,7 +28,7 @@ namespace VikingEngine.LootFest
             
             if (physicsStatusFalling)
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 { parent.Velocity.Y += Gravity; }
                 return new GroundWithSlopesData(pos.Y + parent.Velocity.Y);
             }

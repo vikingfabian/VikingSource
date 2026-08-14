@@ -35,7 +35,7 @@ namespace VikingEngine.ToGG
                 }
                 DrawGenerated(0, 0);
                 Draw3d(0, 0);
-                ParticleHandler.Draw();
+                ParticleHandler.Draw(Camera);
 
                 clearDepthBuffer();
                 Draw3d(Draw3dOverlay_Layer, 0);

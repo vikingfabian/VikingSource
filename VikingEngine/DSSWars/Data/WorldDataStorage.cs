@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Valve.Steamworks;
+
 
 namespace VikingEngine.DSSWars
 {
-    class WorldDataStorage: DataStream.IStreamIOCallback
+    
+
+
+    class WorldDataStorage: IStreamIOCallback
     {
         public WorldData worldData;
         public bool loadComplete = false;
         public bool started = false;
         DataStream.ReadBinaryIO readTask;
-        public void saveMap(WorldData data)
+
+        virtual public void saveMap(WorldData data)
         {
             this.worldData = data;
             var filePath = mapfilePath(data.metaData.mapSize, data.metaData.saveIndex, true);
@@ -20,7 +24,7 @@ namespace VikingEngine.DSSWars
             new DataStream.WriteBinaryIO(filePath, data.writeMapFile, null);
         }
 
-        public void loadMap(Data.WorldMetaData worldMeta)//MapSize size, int mapIndex)
+        public void loadMap(Data.WorldMetaData worldMeta)
         {
             this.worldData = new WorldData();
             this.worldData.metaData = worldMeta;

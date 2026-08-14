@@ -12,6 +12,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
         VectorRect bgArea;
         public ArtImageButton(List<AbsRichBoxMember> content, AbsRbAction click, AbsRbAction enter = null, bool enabled = true)
         {
+            //this.AddXRadius = 1;
             this.content = content;
             this.click = click;
             this.enter = enter;
@@ -42,6 +43,11 @@ namespace VikingEngine.HUD.RichBox.Artistic
             {
                 //overrideBgColor = settings.buttonSecondary.BgColor;
             }
+        }
+
+        override protected float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
+        {
+            return 2;
         }
     }
 }

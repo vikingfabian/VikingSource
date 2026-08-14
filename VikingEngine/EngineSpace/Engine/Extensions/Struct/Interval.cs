@@ -48,7 +48,7 @@ namespace VikingEngine
     //}
     
     
-    public struct Range
+    struct Range
     {
         public static readonly Range Zero = new Range();
 

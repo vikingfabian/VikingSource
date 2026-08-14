@@ -1,19 +1,50 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.Input;
 
 namespace VikingEngine.HUD.RichMenu
 {
+    interface IRichMenuInputMap
+    {
+        MouseInstance RbMouseInstance();
+        IButtonMap RbClick();
+        IDirectionalMap RbScroll();
+        IntVector2 RbMoveSteps();
+        bool RbControllerMode { get; }
+        bool RbHasController { get; }
+    }
+
+    class DefaultRichMenuInputMap : IRichMenuInputMap
+    { 
+        public static DefaultRichMenuInputMap Singleton = new DefaultRichMenuInputMap();
+
+        public MouseInstance RbMouseInstance() { return Input.Mouse.Instances[0]; }
+        public IButtonMap RbClick() { return new MouseButtonMap(MouseButton.Left); }
+        public IDirectionalMap RbScroll() { return new DirectionalMouseScrollMap(); }
+
+        public IntVector2 RbMoveSteps() { return IntVector2.Zero; }
+        public bool RbControllerMode => false;
+        public bool RbHasController => false;
+    }
+    //interface IContainsRichMenu
+    //{
+
+    //}
+
     /// <summary>
     /// Creates a scrollable container of richbox content. Will update input, and create tooltips.
     /// </summary>
@@ -24,7 +55,7 @@ namespace VikingEngine.HUD.RichMenu
         public RichBoxGroup richBox;
         protected RichBoxContent content = new RichBoxContent();
         
-        NineSplitAreaTexture backgroundTextures;
+        public NineSplitAreaTexture backgroundTextures;
         public VectorRect backgroundArea, edgeArea, renderArea, richboxArea, mouseScrollArea;
         Vector2 renderEdge;
         public RbInteraction interaction = null;
@@ -36,18 +67,22 @@ namespace VikingEngine.HUD.RichMenu
 
         float scrollerWidth;
         RichScrollbar scrollBar;
-        ImageLayers layer;
+        public ImageLayers layer;
         public PlayerData playerData;
         RichTooltip tooltip = null;
         public string activeDropDown = null;
         public bool needRefresh = false;
         public List<string> menuStack = new List<string>();
 
+        public Action OnPageDelete = null;
+        public bool blockToolTip = false;
+
         public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, Vector2 renderEdge, ImageLayers layer, PlayerData playerData)
         { 
             this.playerData = playerData;
             this.layer = layer;
             this.settings = settings;
+            edgeArea.Size = Bound.Min(edgeArea.Size, new Vector2(20));
             this.edgeArea = edgeArea;
             backgroundArea = edgeArea;
             renderArea = edgeArea;
@@ -62,7 +97,11 @@ namespace VikingEngine.HUD.RichMenu
             scrollerWidth = Screen.MinClickSize;
 
             renderList = new RenderTargetDrawContainer(renderArea.Position, renderArea.Size, layer, new List<AbsDraw>());
-            
+#if DEBUG
+            renderList.DebugName = "RichMenu target";
+#endif
+
+
             scrollBar = new RichScrollbar(HudLib.HudMenuScollButton, HudLib.HudMenuScollBackground, edgeArea, scrollerWidth, layer -2);
             mouseScrollArea = scrollBar.IncludeScrollArea(edgeArea);
         }
@@ -98,8 +137,11 @@ namespace VikingEngine.HUD.RichMenu
             //Debug.Log("deleteTooltip: add");
             deleteTooltip();
             //Debug.Log("add Tooltip");
-            buttonArea.Position += renderList.position;
-            tooltip = new RichTooltip(content, HudLib.TooltipSettings, buttonArea, playerData.view.safeScreenArea, layer -5);
+            if (!blockToolTip)
+            {
+                buttonArea.Position += renderList.position;
+                tooltip = new RichTooltip(content, HudLib.TooltipSettings, buttonArea, playerData.view.safeScreenArea, layer - 5);
+            }
         }
 
         public void deleteTooltip()
@@ -154,18 +196,39 @@ namespace VikingEngine.HUD.RichMenu
             backgroundArea.Height = richBox.area.Size.Y + edgeThickness * 3;
         }
 
+        public void updateHeightFromContent(float maxBottom, bool resetFirst = true)
+        {
+            updateHeightFromContent(resetFirst);
+            if (backgroundArea.Bottom > maxBottom)
+            {
+                backgroundArea.SetBottom(maxBottom, true);
+            }
+        }
+
 
         public NineSplitAreaTexture addBackground(NineSplitSettings texture, ImageLayers layer)
         {
+            backgroundTextures?.DeleteMe();
             backgroundTextures = new NineSplitAreaTexture(texture, backgroundArea, layer + 1);
             return backgroundTextures;
         }
 
-        public void OpenMenu(string menuName, bool stack)
+        public Graphics.Image addBackground_Flat(Color color, float opacity)
         {
-            if (!stack)
+            Graphics.Image bg = new Image( SpriteName.WhiteArea, backgroundArea.Position, backgroundArea.Size,  layer + 1);
+            bg.ColorAndAlpha(color, opacity);
+            return bg;
+        }
+
+        public void OpenMenu(string menuName, StackOption stack)
+        {
+            if (stack == StackOption.ClearStack)
             {
                 menuStack.Clear();
+            }
+            else if (stack == StackOption.ReplaceLast)
+            {
+                arraylib.RemoveLast(menuStack);
             }
             menuStack.Add(menuName);
             needRefresh = true;
@@ -174,10 +237,41 @@ namespace VikingEngine.HUD.RichMenu
         public void OpenMenu(RichBoxContent content, string menuName)
         {
             menuStack.Add(menuName);
-            Refresh(content);
+            Refresh(content, null);
         }
 
-        public void Refresh(RichBoxContent content)
+        public void clearState()
+        {
+            menuStack.Clear();
+            needRefresh = true;
+        }
+        //public void SetMenuState(string state)
+        //{
+        //    menuState.Add(state);
+        //    menuStateHasChange = true;
+        //}
+
+        //public bool HasMenuState(string state)
+        //{
+        //    return menuState.Contains(state);
+        //}
+        public void menuBack()
+        {
+            arraylib.RemoveLast(menuStack);
+            needRefresh = true;
+        }
+
+        //void menuMoveRefreshOnStateChange()
+        //{
+        //    if (input.RichboxGuiUseMove && movePos_part >= 0)
+        //    {
+        //        beginMove(movePos_part);
+        //    }
+        //}
+
+        public string CurrentMenuState => menuStack.LastOrDefault();
+
+        public void Refresh(RichBoxContent content, RichMenuControllerPointer pointer = null)
         {
             //Debug.Log("Rich menu REFRESH");
             deleteContent();
@@ -196,7 +290,7 @@ namespace VikingEngine.HUD.RichMenu
             //updateContentScroll();
             if (interaction == null || interaction.drawContainer != renderList)
             {
-                interaction = new RbInteraction(content, layer, new Input.MouseButtonMap(MouseButton.Left));
+                interaction = new RbInteraction(content, layer, playerData.inputMap== null? DefaultRichMenuInputMap.Singleton: playerData.inputMap);
 
                 interaction.drawContainer = renderList;
             }
@@ -211,44 +305,91 @@ namespace VikingEngine.HUD.RichMenu
 
             if (hadSelection)
             {
-                
+
                 //interaction.inherit(prevInteract);
                 //deleteTooltip();
-                interaction.update(-renderArea.Position, this, false, out _);
+                if (pointer == null)
+                {
 
+                    interaction.update(-renderArea.Position, this, false, out _, out _);
+                }
+                else
+                {
+                    interaction.refreshControllerHover(pointer);
+                }
                 tooltip?.view();
 
                 //interaction.update(-renderArea.Position, this, false, out _);
             }
         }
 
+        //public void Queue_Refresh(RichBoxContent content)
+        //{
+        //    Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(Refresh, content));
+        //}
+
         void deleteContent()
         {
+            OnPageDelete?.Invoke();
+            OnPageDelete = null;
             renderList.renderList.Clear();
         }
 
         public void DeleteMe()
         {
             renderList.DeleteMe();
-            backgroundTextures.DeleteMe();
+            backgroundTextures?.DeleteMe();
             //Debug.Log("deleteTooltip: del menu");
             deleteTooltip();
             scrollBar.DeleteMe();
         }
 
-        public void updateMouseInput(ref bool mouseOver)
+        public IRichMenuInputMap InputMap()
         {
+            if (playerData.inputMap != null)
+            {
+                return playerData.inputMap;
+            }
+            return DefaultRichMenuInputMap.Singleton;
+        }
+
+        //public MouseInstance Mouse()
+        //{
+        //    if (playerData.inputMap != null &&
+        //        playerData.inputMap.mouse != null)
+        //    {
+        //        return playerData.inputMap.mouse;
+        //    }
+        //    return Input.Mouse.Instances[0];
+        //}
+        //public IButtonMap MouseClick()
+        //{
+        //    if (playerData.inputMap != null)
+        //    {
+        //        return playerData.inputMap.MenuClick;
+        //    }
+        //    return new MouseButtonMap(MouseButton.Left);
+        //}
+
+        public bool intersectCursor()
+        {
+            return backgroundArea.IntersectPoint(InputMap().RbMouseInstance().Position)
+                     ||
+                     interaction.interactionStack != null;
+        }
+
+        public void updateMouseInput(ref bool mouseOver)
+        {     
             if (interaction != null)
             {      
-                if (backgroundArea.IntersectPoint(Input.Mouse.Position)
-                    ||
-                    interaction.interactionStack != null)
+                if (intersectCursor())
                 {
                     mouseOver = true;
-                    if (interaction.update(-renderArea.Position, this, true, out _))
+                    if (interaction.update(-renderArea.Position, this, true, out bool interactRefresh, out _))
                     {
                         needRefresh = true;
                     }
+                    needRefresh |= interactRefresh;
                 }
                 else
                 {
@@ -257,23 +398,73 @@ namespace VikingEngine.HUD.RichMenu
                     interaction.clearSelection();
                 }
 
-                if (scrollBar.IsVisible() && mouseScrollArea.IntersectPoint(Input.Mouse.Position))
+                if (scrollBar.IsVisible() && ( mouseScrollArea.IntersectPoint(InputMap().RbMouseInstance().Position) || scrollBar.mouseDown))
                 {
                     mouseOver = true;
-                    if (interaction.interactionStack == null && scrollBar.updateMouseInput())
+                    if (interaction.interactionStack == null && scrollBar.updateMouseInput(InputMap()))
                     {
                         updateContentScroll();
                     }
-                    if (scrollBar.updateScrollWheel())
+                    if (scrollBar.updateScrollWheel(InputMap()))
                     {
                         updateContentScroll();
                     }
                 }
+                else
+                {
+                    scrollBar.updateOutOfFocus();
+                }
             }
+        }
+
+        public void updateControllerInput(RichMenuControllerPointer pointer)
+        {
+            if (interaction != null)
+            {
+                
+
+                if (interaction.updateController(pointer, this, false, out needRefresh, out _, out float pushScroll))
+                {
+                    needRefresh = true;
+                }
+
+                if (scrollBar.IsVisible())
+                {
+                    if (scrollBar.updateScrollWheel(pointer.inputMap))
+                    {
+                        updateContentScroll();
+                    }
+                    else if (pushScroll != 0)
+                    {
+                        float scroll = scrollBar.scrollInput(-pushScroll);
+                        if (scroll != 0)
+                        {
+                            pointer.pointer.position.Y -= scroll;
+                            updateContentScroll();
+                        }
+                    }
+                }
+                
+
+                this.needRefresh |= needRefresh;
+            }
+        }
+
+        public bool HasToolTip(int id)
+        {
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+            return tooltip != null && Tooltip.tooltip_id == id && (Ref.TotalTimeSec- Tooltip.tooltip_id_timestampsec) >= 1f;
         }
 
         public bool BlockRefresh()
         {
+            if (interaction == null)
+            {
+                return false;
+            }
             return interaction.interactionStack != null;
         }
 
@@ -282,5 +473,12 @@ namespace VikingEngine.HUD.RichMenu
 
             richBox.SetOffset( new Vector2(renderEdge.X, renderEdge.Y + scrollBar.scrollResult));
         }
+    }
+
+    enum StackOption
+    { 
+        Stack,
+        ClearStack,
+        ReplaceLast,
     }
 }

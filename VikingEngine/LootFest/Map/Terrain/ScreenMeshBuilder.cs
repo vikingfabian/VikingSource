@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Voxels;
+
 
 namespace VikingEngine.LootFest.Map.Terrain
 {
@@ -181,7 +183,7 @@ namespace VikingEngine.LootFest.Map.Terrain
         void AddFace(int faceIndex, int tileIndex, Vector4 normal)
         {
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIndex];
-            Graphics.Face data = LootFest.Data.Block.GetTerrainFace(gridPos, faceIndex);
+            Graphics.Face data = Block.GetTerrainFace(gridPos, faceIndex);
 
             addVertices(data, file, normal);
 

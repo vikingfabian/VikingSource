@@ -1,25 +1,31 @@
 ﻿//#define VISUAL_NODES
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Net;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Command;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
-using VikingEngine.PJ.CarBall;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.ToGG.MoonFall.GO;
-using VikingEngine.ToGG.ToggEngine.Map;
-using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.PJ.MiniGolf;
+using VikingEngine.ToGG.HeroQuest.Gadgets;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -33,159 +39,183 @@ namespace VikingEngine.DSSWars.GameObject
 
     partial class SoldierGroup : AbsGroup
     {
+
         public static Physics.CircleBound OtherBound;
         public static Physics.CircleBound WalkDirBound;
         static float WalkDirCheckLength;
         public static void Init()
         {
-            //GroupBound = new Physics.CircleBound(DssVar.SoldierGroup_CollisionRadius);
             OtherBound = new Physics.CircleBound(DssVar.SoldierGroup_CollisionRadius);
             WalkDirBound = new Physics.CircleBound(DssVar.SoldierGroup_MoveCollisionRadius);
             WalkDirCheckLength = DssVar.SoldierGroup_CollisionRadius * 0.9f;
         }
 
-        //public const int GroupObjective_FollowArmyObjective = 0;
-        //public const int GroupObjective_IsSplit = 1;
-        //public const int GroupObjective_ReGrouping = 2;
-        //public const int GroupObjective_FindArmyPlacement = 3;
-
         bool isWalkingIntoOtherGroup = false;
-
-        //int skirmishCount;
-
+        public bool restingGuardMode = false;
+        public float soldierAttackRangeBonus = 0;
+        public int soldierAttackDamageBonus = 0;
         public float halfColDepth;
 
-        public int soldierCount = 0;
+        int soldierCountValue = 1;
+        public int soldierCount
+        {
+            get { return soldierCountValue; }
+            set { 
+                soldierCountValue = value;
+                if (soldierCountValue <= 0)
+                {
+                    lib.DoNothing();
+                }
+            }
+        }
         int shipHealth;
         public SpottedArray<AbsSoldierUnit> soldiers = null;
 
-        public Army army;
+        public WeakReference<AbsArmy> army;
 
-        //public bool groupIsIdle = false;
-        //public bool allInduvidualsAreIdle = false;
-        //public SpriteName icon;
-        //public bool needWalkPathCheck = false;
-        //public SoldierWalkingPath walkingPath = null;
-
-        public Vector3 goalWp;
+        public Vector3 goalWp, armyPlacementWp;
 
         int followsGoalId = int.MinValue;
 
         public IntVector2 tilePos;
-
-        //center, left, right / scout, front, second, behind
-        //public IntVector2 armyLocalPlacement = IntVector2.Zero;
         public IntVector2 armyGridPlacement2 = IntVector2.Zero;
-
-        //public UnitType type;
-        //public bool lockMovement = false;
         public Rotation1D rotation;
 
         public float terrainSpeedMultiplier = 1.0f;
-        public float walkSpeed = DssConst.Men_StandardWalkingSpeed;
+        public float walkSpeed_peace = DssConst.Men_StandardWalkingSpeed;
         float rotateSpeed;
 
-        public AbsGroup attacking_soldierGroupOrCity = null;
-        //public AggressionCommand aggression = AggressionCommand.Normal;
+        //public WeakReference<AbsGroup> attackTarget_soldierGroupOrCity = null;
 
-
-        //bool armyLocalPlacementInitialized = false;
-        //public const int LifeState_New = 0;
-        //public const int LifeState_GainedLocalPositon = 1;
-        //public const int LifeState_GainedYpos = 2;
-
-        //public int lifeState = LifeState_New;
-
+        public PGameObject attackTarget_soldierGroupOrCity = PGameObject.Empty;
+        GameTimeStamp attackTargetTimeLock = GameTimeStamp.None;
+        
         public GroupState state = GroupState.Idle;
-        //public int groupObjective = GroupObjective_FollowArmyObjective;
-        //public bool attackState = false;
-        //bool isRecruit;
-        public bool inShipTransform = false;
+        
+        public bool inShipOrGuardTransform = false;
+        public float damageBlockChance_fromTerrain = 0;
 
-        public AbsSoldierProfile typeCurrentData;
-        public AbsSoldierProfile typeSoldierData;
-        public AbsSoldierProfile typeShipData;
+        public UnitBuildType currentBuilder;
+        public UnitBuildType landBuilder;
+        public UnitBuildType shipBuilder;
 
         public SoldierConscriptProfile soldierConscript;
-        //float energyPerSoldier;
+        
         public SoldierData soldierData;
+        public SoldierData soldierData_soldier;
         public bool isShip = false;
+        public TimeStamp lastNetUpdate = new TimeStamp();
 
 #if VISUAL_NODES
         Graphics.Mesh collisionModel;
 #endif
-        WalkingPath path = null;
-        DetailWalkingPath detailPath = null;
-        float waitTime = 0;
 
-        public SoldierGroup(Army army, SoldierConscriptProfile conscript, Vector3 startPos)
+        public WalkingPath path = null;
+        public DetailWalkingPath detailPath = null;
+        float waitTime = 0;
+        public AbsCommand command = null;
+        GameTimeStamp enterBattleStateTime = GameTimeStamp.None;
+
+        public SoldierGroup(AbsArmy tArmy, SoldierConscriptProfile conscript, Vector3 startPos)
         {
-            this.army = army;
+            //if (tArmy.IsCity())
+            //{
+            //    lib.DoNothing();
+            //}
+
+            this.army =new WeakReference<AbsArmy>( tArmy);
+            this.pfaction = tArmy.pfaction;
             soldierConscript = conscript;
-            initPart1();
+            initPart1(tArmy);
 
             position = startPos;
+            goalWp = startPos;
             tilePos = WP.ToTilePos(position);
 
-            initPart2(typeCurrentData);
+            initPart2();
 
-            soldierCount = soldierData.rowWidth * soldierData.columnsDepth;
-            soldierData = soldierConscript.init(typeCurrentData);
+            soldierCount = soldierData.UnitCount();
+            if (soldierCount <= 0)
+            {
+                lib.DoNothing();
+            }
+            soldierData = soldierConscript.createSoldierData();
 
-            initPart3(typeCurrentData);
+            initPart3(tArmy);
 
-            if (army.inRender_detailLayer)
+            if (tArmy.inRender_detailLayer)
             {
                 setDetailLevel(true);
             }
 
-            if (army.faction.player.IsLocalPlayer())
+            if (pfaction.TryGetPlayer(out var player) && player.IsLocalPlayer())
             {
-                army.faction.player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
+                player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
             }
         }
 
-        private void initPart1()
+        public PSoldierGroup pointer()
+        {
+            if (army.TryGetTarget(out var target))
+            {
+                return new PSoldierGroup(target.mapObjPointer(), myIndex);
+            }
+            return PSoldierGroup.Empty;
+        }
+        public override PGameObject goPointer()
+        {
+            if (army.TryGetTarget(out var tarmy))
+            {
+                return new PGameObject(tarmy.gameobjectType(), GameObjectType.SoldierGroup, pfaction, tarmy.myIndex, myIndex);
+            }
+            return PGameObject.Empty;
+        }
+        private void initPart1(AbsArmy tArmy)
         {
 #if VISUAL_NODES
             collisionModel = new Graphics.Mesh(LoadedMesh.SelectCircleSolid, position, new Vector3(WalkDirBound.radius * 2f), TextureEffectType.Flat, SpriteName.WhiteArea, Color.HotPink, false);
             collisionModel.AddToRender(DrawGame.UnitDetailLayer);
 #endif
             var type = soldierConscript.unitType();
-            typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
-            typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
-            soldierData = soldierConscript.init(typeSoldierData);
-            typeCurrentData = typeSoldierData;
+            landBuilder = type;
+            shipBuilder = DssRef.units.Get(landBuilder).ShipType();
 
-            armyGridPlacement2 = army.nextArmyPlacement(soldierData.defaultArmyPlacement);//soldierConscript.conscript.DefaultArmyRow());
+            soldierData_soldier = soldierConscript.createSoldierData();
+            soldierData = soldierData_soldier;
+            currentBuilder = landBuilder;
+
+            armyGridPlacement2 = tArmy.nextArmyPlacement(soldierData_soldier.defaultArmyPlacement);
 
         }
 
-        void initPart2(AbsSoldierProfile typeData)
+        void initPart2()
         {
-            //count = soldierData.rowWidth * soldierData.columnsDepth;
-
-
             halfColDepth = soldierData.columnsDepth * -0.5f;
-
-            //skirmishCount = MathExt.MultiplyInt(0.3, count);
 
             groupRadius = 0.2f;
         }
 
-        void initPart3(AbsSoldierProfile typeData)
+        void initPart3(AbsArmy tArmy)
         {
-            refreshAttackRadius(typeData);
+            refreshAttackRadius();
             refreshRotateSpeed();
 
-            army.AddSoldierGroup(this);
-            rotation = army.rotation;
+            if (myIndex < 0)
+            {
+                tArmy.AddSoldierGroup(this);
+            }
+            rotation = tArmy.rotation;
         }
-
-        public SoldierGroup(Army army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public SoldierGroup(AbsArmy army)
         {
-            this.army = army;
-            readGameState(r, version, pointers);
+            this.army = new WeakReference<AbsArmy>( army);
+            pfaction = army.pfaction;
+        }
+        public SoldierGroup(AbsArmy tArmy, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            this.army = new WeakReference<AbsArmy>( tArmy);
+            this.pfaction = tArmy.pfaction;
+            readGameState(tArmy, r, version, true, true, pointers);
         }
 
         public void setDetailLevel(bool unitDetailView)
@@ -215,18 +245,29 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        
+        override public SpottedArray<AbsSoldierUnit> Soldiers()
+        {
+            return soldiers;
+        }
+
         void createSoldierObjects(bool create, bool models)
         {
+
             if (create)
             {
                 if (soldiers == null)
                 {
                     if (soldierCount > 0)
                     {
-                        createAllSoldiers(typeCurrentData, soldierCount, models);
-                        if (typeCurrentData.IsShip())
+                        createAllSoldiers(currentBuilder, soldierCount, models);
+                        if (DssRef.units.IsShip(currentBuilder))
                         {
-                            FirstSoldier().health = shipHealth;
+                            var first = FirstSoldier();
+                            if (first != null)
+                            {
+                               first.health = shipHealth;
+                            }
                         }
                     }
                     else
@@ -247,12 +288,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (soldiers != null)
                 {
-                    if (typeCurrentData.IsShip())
+                    if (DssRef.units.IsShip(currentBuilder))
                     {
                         var first = FirstSoldier();
                         if (first != null)
                         {
-                            shipHealth = first.health;
+                            shipHealth = Bound.Min( first.health, 1);
                         }
                     }
                     deleteAllSoldiers(DeleteReason.CameraCulling);
@@ -260,94 +301,218 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public bool enterRender_detailLayer_async = false;
-        //public bool inRender_detailLayer = false;
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            //if (pfaction.TryGetLocalPlayer(out _))
+            //{
+            //    lib.DoNothing();
+            //}
+            var wState = state;
+            w.Write((byte)wState);
+            //Debug.WriteCheck(w);
+ 
+            writeGameState(w, wState <= GroupState.FindArmyPlacement);
+            //Debug.WriteCheck(w);
 
-        //public void asynchCullingUpdate(bool bStateA)
-        //{
-        //    bool enterRender_overviewLayer_async
-        //    DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
-        //}
+            switch (wState)
+            {
+                case GroupState.CityCapture:
+                case GroupState.FindArmyPlacement:
+                    WP.WritePosXZPercentU16(w, goalWp);
+                    break;
+                case GroupState.FollowCommand:
+                    WP.WritePosXZPercentU16(w, position);
 
-        ////        //SoldierGroup write
+                    Vector3 goal = Vector3.Zero;
 
-        ////        soldierConscript.writeGameState(w);
-        ////w.Write(IsShip());
+                    var command_sp = command;
+                    if (command_sp != null)
+                    {
+                        if (!command_sp.haltCommand && command_sp.hasPathCommand(out bool towardsUnit))
+                        {
+                            goal = towardsUnit ? command_sp.AttackTarget().position : command_sp.GoalPosition();
+                        }
+                    }
 
-        ////armyLocalPlacement.writeShort(w);
+                    WP.WritePosXZPercentU16(w, goal);
+                    break;
+                case GroupState.Battle:
+                    WP.WritePosXZPercentU16(w, position);
 
-        ////bool lockedInArmyGrid = army.IdleObjetive() && groupObjective == GroupObjective_FollowArmyObjective;
-        ////        w.Write(lockedInArmyGrid);
+                    attackTarget_soldierGroupOrCity.write(w);
+                    //attackTargetTimeLock.write_byte(w);
+                    break;
+            }
+            Debug.WriteCheck(w);
+        }
+        public void readNet(AbsArmy tArmy, System.IO.BinaryReader r, bool needInit)
+        {
+            GroupState rState = (GroupState)r.ReadByte();
+            state = rState;
+            //Debug.ReadCheck(r);
 
-        ////if (!lockedInArmyGrid)
-        ////{
-        ////    WP.writePosXZ(w, position);
-        ////    w.Write(rotation.ByteDir);
-        ////}
+            readGameState(tArmy, r, int.MaxValue, needInit, rState <= GroupState.FindArmyPlacement, null);
+            //Debug.ReadCheck(r);
+            setGroundY();
+            
 
-        ////    w.Write((byte) groupObjective);
+            //Debug.Log("## Soldiergroup read Net, state: " + state.ToString());
+            //Debug.Log($"goal: {goalWp}, pos: {position}" );
 
-        ////w.Write((byte) soldiers.Count);
-        ////bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
-        ////if (!soldiersLockedInGroup)
-        ////{
-        ////    var soldiersC = soldiers.counter();
-        ////    while (soldiersC.Next())
-        ////    { 
-        ////        soldiersC.sel.writeGameState(w);
-        ////    }
-        ////}
+            switch (rState)
+            {
+                default:
+                    goalWp = position;
+                    break;
+                case GroupState.CityCapture:
+                case GroupState.FindArmyPlacement:
+                    {
+                        if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
+                        {
+                           goalWp = newGoalWp;
+                           armyPlacementWp = goalWp;
+                        }
+                    }
+                    break;
+                case GroupState.FollowCommand:
+                    {
+                        WP.ReadPosXZPercentU16(r, out position, out tilePos);
+                        if (VectorExt.PlaneXZDistance(ref position, ref goalWp) > WorldData.SubTileWidth)
+                        {
+                            goalWp = position;
+                        }
+                        
+                        if (WP.ReadPosXZPercentU16_ZeroCheck(r, out var newGoalWp, out _))
+                        {
+                            var command_sp = command;
+                            if (command_sp == null)
+                            {
+                                if (VectorExt.PlaneXZDistance(ref position, ref newGoalWp) > WorldData.SubTileWidth)
+                                {
+                                    command = new NetClientCommand(this, newGoalWp);
+                                }
+                            }
+                            else
+                            {
+                                command_sp.refreshGoal(newGoalWp);
+                            }
+                        }
+                        else
+                        {
+                            cancelCommand();
+                        }
+                    }
+                    break;
+                case GroupState.Battle:
+                    
+                    WP.ReadPosXZPercentU16(r, out var rPosition, out tilePos);
 
-        public void writeGameState(System.IO.BinaryWriter w)
+                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth * 8)
+                    {
+                        position = rPosition;
+                    }
+                    attackTarget_soldierGroupOrCity.read(r);
+                    //attackTargetTimeLock.read_byte(r);
+                    break;
+            }
+            Debug.ReadCheck(r);
+            //Debug.Log($"new goal: {goalWp}");
+
+        }
+
+        public void net_onUpdate()
+        {
+            lastNetUpdate.setNow();
+        }
+
+        public void net_updateclient(bool playerDetailView)
+        {
+            //bool visible = playerDetailView && !lastNetUpdate.secPassed(30);
+            //createSoldierObjects(visible, true);
+            //updateDetailLevel();
+
+            if (soldiers != null)
+            {
+                var soldiersC = soldiers.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.update_client();
+                }
+            }
+        }
+
+        virtual public void writeGameState(System.IO.BinaryWriter w, bool includePosition)
         {
             soldierConscript.writeGameState(w);
             w.Write(isShip);
 
-            armyGridPlacement2.writeShort(w);
-            WP.writePosXZ(w, position);
-            w.Write(rotation.ByteDir);
+            if (includePosition)
+            {
+                armyGridPlacement2.writeShort(w);
+                WP.WritePosXZPercentU16(w, position);
+                w.Write(rotation.ByteDir);
+            }
 
             w.Write((byte)soldierCount);
             w.Write(shipHealth);
         }
 
-        public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        virtual public void readGameState(AbsArmy tArmy, System.IO.BinaryReader r, int subVersion, bool needInit, bool includePosition, ObjectPointerCollection pointers)
         {
-            //if (subVersion < 40)
-            //{
-            //    readGameState_old(r, subVersion);
-            //    return;
-            //}
-
             soldierConscript.readGameState(r);
 
-            initPart1();
+            if (needInit)
+            {
+                initPart1(tArmy);
+            }
 
             isShip = r.ReadBoolean();
-            typeCurrentData = isShip ? typeShipData : typeSoldierData;
+            if (isShip)
+            {
+                lib.DoNothing();
+            }
+            currentBuilder = isShip ? shipBuilder : landBuilder;
 
-            armyGridPlacement2.readShort(r);
+            if (includePosition)
+            {
+                armyGridPlacement2.readShort(r);
 
-            WP.readPosXZ(r, out position, out tilePos);
-            rotation.ByteDir = r.ReadByte();
+                if (subVersion < 62)
+                {
+                    WP.readPosXZ_old(r, out position, out tilePos);
+                }
+                else
+                {
+                    WP.ReadPosXZPercentU16(r, out position, out tilePos);
+                }
+                rotation.ByteDir = r.ReadByte();
+            }
 
             soldierCount = r.ReadByte();
-            shipHealth = r.ReadInt32();
+            shipHealth = Bound.Min( r.ReadInt32(), 1);
 
-            initPart2(typeCurrentData);
+            if (soldierCount <= 0)
+            {
+                lib.DoNothing();
+            }
 
-            initPart3(typeCurrentData);
+            if (needInit)
+            {
+                initPart2();
+
+                initPart3(tArmy);
+            }
         }
 
-        public void readGameState_old(System.IO.BinaryReader r, int version)
+        public void readGameState_old(AbsArmy tArmy, System.IO.BinaryReader r, int version)
         {
             soldierConscript.readGameState(r);
 
-            initPart1();
+            initPart1(tArmy);
 
             bool isShip = r.ReadBoolean();
-            typeCurrentData = isShip ? typeShipData : typeSoldierData;
+            currentBuilder = isShip ? shipBuilder : landBuilder;
 
 
             armyGridPlacement2.readShort(r);
@@ -356,21 +521,25 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (lockedInArmyGrid)
             {
-                position = army.position;
-                rotation = army.rotation;
+                position = tArmy.position;
+                rotation = tArmy.rotation;
             }
             else
             {
-                WP.readPosXZ(r, out position, out tilePos);
+                WP.readPosXZ_old(r, out position, out tilePos);
                 rotation.ByteDir = r.ReadByte();
             }
 
             var groupObjective = r.ReadByte();
 
             soldierCount = r.ReadByte();
+            if (soldierCount <= 0)
+            {
+                lib.DoNothing();
+            }
             bool soldiersLockedInGroup = groupObjective == 0;//GroupObjective_FollowArmyObjective;
 
-            initPart2(typeCurrentData);
+            initPart2();
 
             //createAllSoldiers(typeCurrentData, soldiersCount);
 
@@ -382,19 +551,13 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            initPart3(typeCurrentData);
+            initPart3(tArmy);
         }
 
-        public void writeNet(System.IO.BinaryWriter w)
-        {
+        
 
-        }
-        public void readNet(System.IO.BinaryReader r)
-        {
 
-        }
-
-        void refreshAttackRadius(AbsSoldierProfile typeData)
+        void refreshAttackRadius()
         {
             //var first = FirstSoldier();
             //if (first != null)
@@ -407,53 +570,133 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 attackRadius = groupRadius + soldierData.attackRange;
             }
+
+            attackRadius += 1f;
             //}
         }
 
-        private void createAllSoldiers(AbsSoldierProfile typeProfile, int count, bool createModels)
+        virtual protected void createAllSoldiers(UnitBuildType type, int count, bool createModels)
         {
-            soldiers = new SpottedArray<AbsSoldierUnit>(count);
-            soldierData = soldierConscript.init(typeProfile);
-            //energyPerSoldier = soldierData.energyPerSoldier;
-            if (typeProfile.IsShip())
+            AbsSoldierBuilder builder = DssRef.units.Get(type);
+
+            soldiers = new SpottedArray<AbsSoldierUnit>(count +1);
+            soldierData = soldierConscript.createSoldierData();
+
+            int xStart;
+
+            if (builder.IsShip())
             {
                 soldierConscript.shipSetup(ref soldierData);
+                xStart = 0;
+                create(0, 0, false, builder, ref soldierData);
             }
-
-            int xStart = -soldierData.rowWidth / 2;
-            IntVector2 bannerPos = bannerManPos();
-
-            int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
-
-            for (int x = 0; x < soldierData.rowWidth; ++x)
+            else
             {
-                //int leadUnit = -1;
-                for (int y = 0; y < columnDepth; ++y)
+                xStart = -soldierData.rowWidth / 2;
+                IntVector2 bannerPos = bannerManPos();
+
+                int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
+
+
+                switch (soldierConscript.conscript.animal)
                 {
-                    AbsSoldierUnit unit;
-                    if (bannerPos.Equals(x, y))
-                    {
-                        var bannerData = soldierConscript.bannermanSetup(soldierData);
-                        unit = createUnit(DssRef.profile.bannerman, new IntVector2(x + xStart, y), tilePos, ref bannerData, createModels);
-                    }
-                    else
-                    {
-                        unit = createUnit(typeProfile, new IntVector2(x + xStart, y), tilePos, ref soldierData, createModels);
-                    }
+                    default:
+                        for (int y = 0; y < columnDepth; ++y)
+                        {
+                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            {
+                                if (!create(x, y, bannerPos.Equals(x, y), builder, ref soldierData))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        break;
 
+                    case ItemResourceType.Dog:
+                    case ItemResourceType.Hound:
+                    case ItemResourceType.Pig:
 
-                    //unit.following = leadUnit;
-                    unit.firstUpdate();
-                    //leadUnit = unit.parentArrayIndex;
+                        AbsSoldierBuilder houndbuilder = DssRef.units.Get(UnitBuildType.ConscriptHound);
+                        var houndSoldierData = ItemPropertyColl.Get(soldierConscript.conscript.animal).soldierData;
 
-                    if (--count <= 0)
-                    {
+                        if (soldierData.columnsDepth == 1)
+                        {
+                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            {
+                                if (!create(x, 0, bannerPos.Equals(x, 0), lib.IsEven(x) ? builder : houndbuilder, ref soldierData))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int houndColumnExMax = soldierData.columnsDepth / 2;
 
-                        return;
-                    }
+                            for (int y = houndColumnExMax; y < columnDepth; ++y)
+                            {
+                                for (int x = 0; x < soldierData.rowWidth; ++x)
+                                {
+                                    if (!create(x, y, bannerPos.Equals(x, y), builder, ref soldierData))
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+
+                            
+                            for (int y = 0; y < houndColumnExMax; ++y)
+                            {
+                                for (int x = 0; x < soldierData.rowWidth; ++x)
+                                {
+                                    if (!create(x, y, false, houndbuilder, ref houndSoldierData))
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+                           
+                        }
+                        break;
                 }
+                
             }
 
+            bool create(int x, int y, bool banner, AbsSoldierBuilder builder, ref SoldierData soldierData)
+            {
+                AbsSoldierUnit unit = createUnit(builder, new IntVector2(x + xStart, y),
+                        banner, tilePos, ref soldierData, createModels);
+
+                if (unit == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    unit.firstUpdate();                    
+                }
+
+                return --count > 0;
+            }
+
+
+            //AbsSoldierUnit unit = createUnit(typeProfile, new IntVector2(x + xStart, y), 
+            //    bannerPos.Equals(x, y), tilePos, ref soldierData, createModels);
+
+            //if (unit == null)
+            //{
+            //    return;
+            //}
+            //else
+            //{
+            //    unit.firstUpdate();
+            //}
+
+            //if (--count <= 0)
+            //{
+            //    return;
+            //}
         }
 
         void deleteAllSoldiers(DeleteReason reason)
@@ -471,13 +714,13 @@ namespace VikingEngine.DSSWars.GameObject
         void refreshRotateSpeed()
         {
             float muliply = 1.6f - 0.15f * (int)soldierConscript.conscript.training;
-            rotateSpeed = (float)Math.Abs(Math.Atan2(walkSpeed * muliply, groupRadius));
+            rotateSpeed = (float)Math.Abs(Math.Atan2(walkSpeed_peace * muliply, groupRadius));
         }
 
         IntVector2 bannerManPos()
         {
             IntVector2 bannerPos;
-            if (typeCurrentData.hasBannerMan)
+            if (soldierData.hasBannerMan)//typeCurrentData.hasBannerMan)
             {
                 bannerPos = new IntVector2(soldierData.rowWidth / 2, soldierData.columnsDepth - 1);
             }
@@ -489,103 +732,183 @@ namespace VikingEngine.DSSWars.GameObject
             return bannerPos;
         }
 
-        public void completeTransform(SoldierTransformType transformType)
+        virtual public void completeTransform(SoldierTransformType transformType, int positionId)
         {
             if (isDeleted) return;
 
-            if (isShip != (transformType == SoldierTransformType.ToShip))
+            switch (transformType)
             {
-                isShip = transformType == SoldierTransformType.ToShip;
+                case SoldierTransformType.ToShip:
+                case SoldierTransformType.FromShip:
 
-                if (isShip)
+                    if (isShip != (transformType == SoldierTransformType.ToShip))
+                    {
+                        isShip = transformType == SoldierTransformType.ToShip;
+
+                        if (isShip)
+                        {
+                            shipHealth = soldierData_soldier.basehealth * soldierCount;
+                            soldierCount = 1;
+                            currentBuilder = shipBuilder;
+                            soldierData = soldierConscript.createSoldierData();
+                        }
+                        else
+                        {
+                            soldierCount = shipHealth / soldierData_soldier.basehealth;
+                            if (soldierCount <= 0)
+                            {
+                                lib.DoNothing();
+                            }
+                            currentBuilder = landBuilder;
+                            soldierData = soldierConscript.createSoldierData();
+                        }
+
+                        var soldiers_sp = soldiers;
+                        if (soldiers_sp != null)
+                        {
+                            int totalHealth = 0;
+
+                            var soldiersC = soldiers_sp.counter();
+                            while (soldiersC.Next())
+                            {
+                                totalHealth += soldiersC.sel.health;
+                                soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
+                            }
+                            soldiers_sp.Clear();
+
+                            if (transformType == SoldierTransformType.ToShip)
+                            {
+                                var shipData = soldierData;
+                                soldierConscript.shipSetup(ref shipData);
+
+                                var ship = createUnit(DssRef.units.Get(shipBuilder), IntVector2.Zero, false, WP.ToTilePos(position), ref shipData, true);
+
+                                if (ship != null)
+                                {
+                                    ship.position = position;
+                                    ship.health = shipHealth;
+                                    ship.refreshShipCarryCount();
+                                }
+                            }
+                            else
+                            {
+                                //int count = (int)Math.Ceiling(totalHealth / (double)soldierData.basehealth);
+                                shipHealth = Bound.Min(totalHealth, 1);
+                                createAllSoldiers(currentBuilder, soldierCount, true);
+                            }
+
+                            refreshAttackRadius();
+                        }
+
+                        state = GroupState.FindArmyPlacement;
+
+                    }
+                    break;
+            }
+
+            inShipOrGuardTransform = false;
+        }
+
+
+        public AbsSoldierUnit createUnit(AbsSoldierBuilder typeProfile, IntVector2 gridPlacement, bool bBannerPos, IntVector2 area, ref SoldierData data, bool models)
+        {
+            var soldiers_sp = soldiers;
+
+            if (soldiers_sp != null)
+            {
+                AbsSoldierUnit s;
+
+                s = typeProfile.CreateUnit(bBannerPos);
+                s.pfaction = this.pfaction;
+                s.unitBuildType = typeProfile.unitBuildType;
+
+                s.isBannerMan = bBannerPos;
+
+                if (bBannerPos && typeProfile.unitBuildType == UnitBuildType.Conscript)
                 {
-                    shipHealth = soldierData.basehealth * soldierCount;
-                    soldierCount = 1;
-                    typeCurrentData = typeShipData;
-                    soldierData = soldierConscript.init(typeCurrentData);
+                    s.soldierData = soldierConscript.bannermanSetup(data);
                 }
                 else
                 {
-                    soldierCount = shipHealth / soldierData.basehealth;
-                    typeCurrentData = typeSoldierData;
-                    soldierData = soldierConscript.init(typeCurrentData);
+                    s.soldierData = data;
                 }
 
-                if (soldiers != null)
+                s.InitLocal(position, gridPlacement, area, this);
+                s.position = WP.ToWorldPos(area); //temp pos
+                s.myIndex = soldiers_sp.Add(s);
+
+                if (army != null && army.TryGetTarget(out var tArmy) &&
+                    tArmy.inRender_detailLayer && models)
                 {
-                    int totalHealth = 0;
-
-                    var soldiersC = soldiers.counter();
-                    while (soldiersC.Next())
-                    {
-                        totalHealth += soldiersC.sel.health;
-                        soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
-                    }
-                    soldiers.Clear();
-
-                    if (transformType == SoldierTransformType.ToShip)
-                    {
-                        var shipData = soldierData;
-                        soldierConscript.shipSetup(ref shipData);
-
-                        var ship = createUnit(typeShipData, IntVector2.Zero, WP.ToTilePos(position), ref shipData, true);
-                        ship.position = position;
-                        ship.health = shipHealth;
-                        ship.refreshShipCarryCount();
-                    }
-                    else
-                    {
-                        //int count = (int)Math.Ceiling(totalHealth / (double)soldierData.basehealth);
-                        shipHealth = totalHealth;
-                        createAllSoldiers(typeCurrentData, soldierCount, true);
-                    }
-
-                    refreshAttackRadius(typeCurrentData);
+                    s.setDetailLevel(true);
                 }
 
-                state = GroupState.FindArmyPlacement;
+                if (soldiers == null)
+                {
+                    s.DeleteMe(DeleteReason.CameraCulling, false);
+                }
+                else
+                {
+                    return s;
+                }
+                
             }
-
-            inShipTransform = false;
+            return null;
         }
 
-        //public Vector3 armyPlacement(Vector3 center)
-        //{
-        //    Vector2 offset = VectorExt.RotateVector(new Vector2(
-        //        armyLocalPlacement.X * DssVar.SoldierGroup_Spacing,
-        //        armyLocalPlacement.Y * DssVar.SoldierGroup_Spacing),
-        //        army.rotation.radians);
-
-        //    center.X += offset.X;
-        //    center.Z += offset.Y;
-
-        //    DssRef.world.unitBounds.KeepPointInsideBound_Position(ref center.X, ref center.Z);
-
-        //    return center;
-        //}
-
-        public AbsSoldierUnit createUnit(AbsSoldierProfile typeProfile, IntVector2 gridPlacement, IntVector2 area, ref SoldierData data, bool models)
+        void walking_Peace(AbsArmy tArmy, float time, Vector3 goalWp, bool induvidualSpeed, out bool complete, ref float groupWalkSpeed)
         {
-            AbsSoldierUnit s;
+            waitTime += time;
 
-            s = typeProfile.CreateUnit();
-            s.UnitType = typeProfile.unitType;
-            s.soldierData = data;
+            bool move = true;
 
-
-            s.InitLocal(position, gridPlacement, area, this);
-            s.position = WP.ToWorldPos(area); //temp pos
-            s.parentArrayIndex = soldiers.Add(s);
-
-            if (army.inRender_detailLayer && models)
+            if (isWalkingIntoOtherGroup)
             {
-                s.setDetailLevel(true);
-                s.update(1f, true);
+                //queueu, holding position
+                if (waitTime > 10000)
+                {
+                    waitTime = 0;
+                }
+                else if (waitTime > 3000)
+                {
+                    waitTime = -8000;
+                }
+                else if (waitTime < 0)
+                {
+                    move = true;
+                }
+                else
+                {
+                    move = false;
+                }
             }
-            return s;
+            //else
+            //{
+            //    waitTime = 0;
+            //}
+
+            if (move)
+            {
+                Vector3 goal = walkingGoalWp(goalWp, out bool waterNode, out bool ready);
+                complete = updateWalking(goal, true, true, induvidualSpeed, tArmy.armyGoalRotation, time, out groupWalkSpeed);
+                if (ready)
+                {
+                    if (waterNode != isShip)
+                    {
+                        if (!inShipOrGuardTransform)
+                        {
+                            new ShipTransform(this, true);
+                        }
+                    }
+                }
+            }
+            else
+            { 
+                complete = false;
+            }
         }
 
-        Vector3 walkingGoalWp(out bool waterNode, out bool pathIsReady)
+        Vector3 walkingGoalWp(Vector3 goalWp, out bool waterNode, out bool pathIsReady)
         {
             var path_sp = detailPath;
             if (path_sp != null)
@@ -602,39 +925,128 @@ namespace VikingEngine.DSSWars.GameObject
                 pathIsReady = false;
             }
 
-            waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();            
+            if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+            {
+                waterNode = tile.IsWater();
+            }
+            else
+            {
+                waterNode = isShip;
+            }
             return goalWp;
         }
 
-        Vector3 walkingGoalAttackTarget(AbsGroup target, out bool shiptransform)
+        Vector3 walkingGoalAttackTarget(AbsGroup target, out bool waterNode)
         {
             var path_sp = detailPath;
             if (path_sp != null && path_sp.NodeCountLeft() > 1)
             {
-                Vector3 result = path_sp.NextNodeWp(position, out bool complete, out shiptransform);
+                Vector3 result = path_sp.NextNodeWp(position, out bool complete, out waterNode);
+                if (waterNode != isShip)
+                {
+                    if (!inShipOrGuardTransform)
+                    {
+                        new ShipTransform(this, true);
+                    }
+                }
+
                 return result;
             }
 
-            shiptransform = isShip;
+            
+            waterNode = isShip;
             return target.position;
         }
 
-        void enterBattleState(bool enter)
+        public void enterBattleState(bool enter, bool localAction, AbsArmy tarmy, AbsGroup targetObject)
         {
-            if (enter)
+            if (enter != (state == GroupState.Battle))
             {
-                state = GroupState.Battle;
-                createSoldierObjects(enter, false);
-            }
-            else
-            {
-                state = GroupState.FindArmyPlacement;
-            }
+                if (enter)
+                {
+                    enterBattleStateTime = GameTimeStamp.Now();
 
-            var soldiersC = soldiers.counter();
-            while (soldiersC.Next())
+                    state = GroupState.Battle;
+                    createSoldierObjects(enter, false);
+
+
+                    if (tarmy.IsNetHosted && tarmy.lastNetUpdate.secPassed(15) &&
+                           (!localAction || attackTarget_soldierGroupOrCity.pfaction.TryGetRemotePlayer(out _))) //Targeted by remote player
+                    {
+                        if (tarmy.IsArmy())
+                        {
+                            Army.NetFullArmyStatus(tarmy.GetArmy(), Network.PacketReliability.Unrelyable, false);
+                        }
+                        else
+                        {
+                            int packetCount = 0;
+                            tarmy.netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount, false);
+                            tarmy.lastNetUpdate.setNow();
+                        }
+                    }
+
+                    if (localAction && 
+                        (!tarmy.IsNetHosted || (targetObject != null && targetObject.pfaction.TryGetRemotePlayer(out _))))
+                    {
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEnterBattle, Network.PacketReliability.Reliable, out var packet);
+                        {
+                            Net.ObjectId.WriteSoldierGroup(w, this);
+
+                            attackTarget_soldierGroupOrCity.write(w);
+                        }
+                        packet.EndWrite_Asynch();
+                    }
+                }
+                else
+                {
+                    //if (pfaction.TryGetLocalPlayer(out _))
+                    //{
+                    //    Debug.Log($">End battle state, time {enterBattleStateTime.Seconds}");
+                    //}
+                    if (!enterBattleStateTime.secPassed(5))
+                    {
+                        return;
+                    }
+
+                    highTargetValueToOpponent = float.MaxValue;
+                    state = GroupState.FindArmyPlacement;      
+                }
+
+                var soldiers_sp = soldiers;
+                if (soldiers_sp != null)
+                {
+                    var soldiersC = soldiers_sp.counter();
+                    while (soldiersC.Next())
+                    {
+                        soldiersC.sel.enterBattleState(enter);
+                    }
+                }
+            }
+        }
+
+        public static void NetReadEnterBattle(System.IO.BinaryReader r)
+        {
+            //var group = ObjectId.ReadSoldierGroup(r, true, out _);
+            PSoldierGroup pSoldierGroup = new PSoldierGroup(r);
+            var target = new PGameObject(r);
+            //GameTimeStamp time = GameTimeStamp.None;
+            //time.read_byte(r);
+
+            //if (target.objectType == GameObjectType.SoldierGroup)
+            //{
+            //    SoldierGroup targetObject = ObjectId.GetSoldierGroup(
+            //        target.GetSoldierGroupPointer(),
+            //        true, out var tarmy);
+            //    targetObject?.readNet(tarmy, r, false);
+            //}
+
+            var group = ObjectId.GetSoldierGroup(pSoldierGroup, false, out var absArmy);
+
+            if (group != null && group.state != GroupState.Battle)
             {
-                soldiersC.sel.enterBattleState(enter);
+                group.attackTarget_soldierGroupOrCity = target;
+                //group.attackTargetTimeLock = time;
+                group.enterBattleState(true, false, absArmy, null);
             }
         }
 
@@ -643,439 +1055,613 @@ namespace VikingEngine.DSSWars.GameObject
             position = goalWp;
             tilePos = WP.ToTilePos(position);
             setGroundY();
-
-            //state = GroupState.GameStart;
         }
 
-        public void update(float time, bool fullUpdate)
+        //static readonly float FlankDistAdd = WorldData.SubTileWidth * 0.6f;
+
+        void updateMoveAndAttackTarget(float time, bool fullUpdate, AbsGroup attack_sp, ref float groupWalkSpeed)
         {
-            if (debugTagged)
-            {
-                lib.DoNothing();
-            }
-
-            if (inShipTransform)
-            {
-                return;
-            }
-
-            var attack_sp = attacking_soldierGroupOrCity;
-
-            if (attack_sp != null)
-            {
-                if (state != GroupState.Battle)
-                {
-                    enterBattleState(true);
-                }
-
-                Vector2 diff = new Vector2(
+            Vector2 diff = new Vector2(
                     attack_sp.position.X - position.X,
                     attack_sp.position.Z - position.Z);
 
-                //float speed = walkSpeed * terrainSpeedMultiplier * time;
-
-                if (diff.Length() - attack_sp.groupRadius < attackRadius)
+            if (diff.Length() - attack_sp.groupRadius < attackRadius)
+            {
+                //Attack
+                if (soldiers != null)
                 {
-                    //Attack
-                    if (soldiers != null)
+                    var soldiersC = soldiers.counter();
+
+                    if (Ref.peRnd.Chance(0.1))
                     {
-                        var soldiersC = soldiers.counter();
+                        Vector3 posSum = Vector3.Zero;
+                        int posCount = 0;
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2_battle_attack(time, fullUpdate);
+                            soldiersC.sel.update2_battle_attack(time, fullUpdate, groupWalkSpeed); //same
+                            posSum += soldiersC.sel.position;
+                            ++posCount;
+                        }
+
+                        if (posCount > 0)
+                        {
+                            position = posSum / posCount;
                         }
                     }
-                }
-                else
-                {
-                    //Battle update
-                    updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, 0, time);
-                    
-                    if (soldiers != null)
+                    else
                     {
-                        var soldiersC = soldiers.counter();
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2_battle_move(time, fullUpdate);
-
+                            soldiersC.sel.update2_battle_attack(time, fullUpdate, groupWalkSpeed); //same
                         }
                     }
                 }
             }
             else
             {
-                if (state == GroupState.Battle)
+                //Battle update
+                updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, true, 0, time, out groupWalkSpeed);
+
+                if (soldiers != null)
                 {
-                    enterBattleState(false);
+                    var soldiersC = soldiers.counter();
+                    while (soldiersC.Next())
+                    {
+                        soldiersC.sel.update2_battle_move(time, fullUpdate, groupWalkSpeed);
+
+                    }
                 }
+            }
+        }
 
-                switch (state)
+        void updateStaticAttack(float time, bool fullUpdate, AbsGroup attack_sp)
+        {
+            Vector2 diff = new Vector2(
+                    attack_sp.position.X - position.X,
+                    attack_sp.position.Z - position.Z);
+
+            if (diff.Length() - attack_sp.groupRadius < attackRadius)
+            {
+                //Attack
+                if (soldiers != null)
                 {
-                    case GroupState.Idle:
-                        waitTime += time;
-                        if (waitTime >= 5000)
-                        {
-                            waitTime = 0f;
-                            if ((goalWp - position).PlaneXZLength() > WorldData.SubTileHalfWidth)
-                            {
-                                state = GroupState.FindArmyPlacement;
-                                wakeupSoldiers();
-                            }
-                        }
-
-                        break;
-
-                    case GroupState.FindArmyPlacement:
-                        waitTime += time;
-
-                        bool move = true;
-
-                        if (isWalkingIntoOtherGroup)
-                        {
-                            //queueu, holding position
-                            if (waitTime > 3000)
-                            {
-                                waitTime = -2000;
-                            }
-                            else if (waitTime < 0)
-                            {
-                                move = true;
-                            }
-                            else
-                            {
-                                move = false;
-                            }
-                        }
-                        else
-                        {
-                            waitTime = 0;
-                        }
-
-                        if (move)
-                        {
-                            Vector3 goal = walkingGoalWp(out bool waterNode, out bool ready);
-                            bool complete = updateWalking(goal, ready, true, army.armyGoalRotation, time);
-                            if (ready)
-                            {
-                                if (complete)
-                                {
-                                    state = GroupState.GoingIdle;
-                                    waitTime = 0;
-                                }
-
-                                if (waterNode != isShip)
-                                {
-                                    if (!inShipTransform)
-                                    {
-                                        inShipTransform = true;
-                                        new ShipTransform(this, true);
-                                    }
-                                } 
-                            }
-                        }
-                        break;
-                    case GroupState.GoingIdle:
-                        waitTime += time;
-                        break;
+                    var soldiersC = soldiers.counter();
+                    while (soldiersC.Next())
+                    {
+                        soldiersC.sel.update2_battle_attack_static(time, fullUpdate, 0);
+                    }
                 }
+            }
+        }
 
-                bool allIdle = true;
-
-                if (state == GroupState.Idle)
+        public void cancelCommand()
+        {
+            if (command != null)
+            {
+                if (command.nextCommand != null)
                 {
-                    //Passive check of souroundings
+                    command = command.nextCommand;
+                    command.begin(this);
                 }
                 else
                 {
-                    if (soldiers != null)
+                    command = null;
+                    if (state == GroupState.FollowCommand)
                     {
-                        var soldiersC = soldiers.counter();
+                        state = GroupState.GoingIdle;
+                    }
+                }
+            }
+        }
+
+        const double CaptureCheckChance = 0.1;
+        const float CaptureCheckMulti = (float)(1 / CaptureCheckChance);
+        const float CaptureAddPerMs = 0.1f * CaptureCheckMulti;
+        const float CaptureDistance = 0.4f;
+        
+        virtual public void update(float time, bool fullUpdate)
+        {
+            //if (pfaction.TryGetLocalPlayer(out _))
+            //{
+            //     lib.DoNothing();
+            //}
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
+
+            if (inShipOrGuardTransform)
+            {
+                return;
+            }
+
+            if (!army.TryGetTarget(out var tArmy) || (soldierCount == 0 && tArmy.IsNetHosted))
+            {
+                if (fullUpdate)
+                {
+                    DeleteMe(DeleteReason.EmptyGroup, true);
+                }
+                else
+                {
+                    Ref.update.AddSyncAction(new SyncAction2Arg<DeleteReason, bool>(DeleteMe, DeleteReason.EmptyGroup, true));
+                }
+                return;
+            }
+
+
+            //AbsGroup attack_sp = null;
+            //attackTarget_soldierGroupOrCity?.TryGetTarget(out attack_sp);
+
+            var command_sp = command;
+            float groupWalkSpeedTime = soldierData.walkingSpeed * time;
+            
+            if (attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var attack_sp))
+            {
+                if (IsArmyGroup())
+                {
+                    lib.DoNothing();
+                }
+
+                if (state != GroupState.Battle)
+                {
+                    enterBattleState(true, true, tArmy, attack_sp);
+                }
+                enterBattleStateTime.setNow();
+
+                if (command_sp != null)
+                {
+                    if (Ref.peRnd.Chance(0.1))
+                    {
+
+                        Vector2 diff = new Vector2(
+                           attack_sp.position.X - position.X,
+                           attack_sp.position.Z - position.Z);
+
+                        if (diff.Length() < groupRadius)
+                        {
+                            cancelCommand();
+                        }
+
+                        var goalTarget = command_sp.AttackTarget();
+                        if (goalTarget != null && distance(goalTarget) < attackRadius)
+                        {
+                            attackTarget_soldierGroupOrCity = goalTarget.goPointer();
+                            goalTarget.OnBecomeAttackTarget(this);
+                            cancelCommand();
+                            updateMoveAndAttackTarget(time, fullUpdate, goalTarget, ref groupWalkSpeedTime);
+                        }
+                    }
+                    if (command_sp.hasPathCommand(out bool towardsUnit))
+                    {
+                        Vector3 nodePos = towardsUnit ? walkingGoalAttackTarget(command_sp.AttackTarget(), out _) : walkingGoalWp(command_sp.GoalPosition(), out _, out _);
+                        if (updateWalking(nodePos, true, false, true, 0, time, out groupWalkSpeedTime))
+                        {
+                            cancelCommand();
+                        }
+
+                        if (soldiers != null)
+                        {
+                            var soldiersC = soldiers.counter();
+                            while (soldiersC.Next())
+                            {
+                                soldiersC.sel.update2_battle_move(time, fullUpdate, groupWalkSpeedTime);
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    if (InGuardPost())
+                    {
+                        updateStaticAttack(time, fullUpdate, attack_sp);
+                    }
+                    else
+                    {
+                        updateMoveAndAttackTarget(time, fullUpdate, attack_sp, ref groupWalkSpeedTime);
+                    }
+                }
+            }
+            else //No attack target is found
+            {
+                
+                
+
+                switch (state)
+                {
+                    case GroupState.Battle:
+                        {
+                            //if (pfaction.TryGetLocalPlayer(out _))
+                            //{
+                            //    Debug.Log($"Exit battle, time {enterBattleStateTime.Seconds}");
+                            //}
+                            if (enterBattleStateTime.secPassed(fullUpdate? 5 :20))
+                            {
+                                //Capture city here
+                                if (tArmy.IsArmy())
+                                {
+                                    if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+                                    {
+                                        var city = tile.City();
+                                        if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
+                                        {
+                                            if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
+                                            {
+                                                goalWp = WP.ToWorldPos(city.tilePos);
+                                                state = GroupState.CityCapture;
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+
+                            
+                                enterBattleState(false, true, tArmy, null);
+                            }
+                            
+                        }
+                        break;
+
+                    case GroupState.CityCapture:
+                        if (command == null)
+                        {
+                            walking_Peace(tArmy, time, goalWp, true, out bool complete, ref groupWalkSpeedTime);
+
+                            if (Ref.peRnd.Chance(0.1))
+                            {
+                                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+                                {
+                                    var city = tile.City();
+                                    if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
+                                    {
+                                        goalWp = WP.ToWorldPos(city.tilePos);
+
+                                        if (VectorExt.PlaneXZLength(goalWp - position) < CaptureDistance)
+                                        {
+                                            city.capturePoints += CaptureAddPerMs * time;
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        goalWp = armyPlacementWp;
+                                        state = GroupState.Battle;
+                                    }
+                                }
+                            }
+
+                            goto UpdateInduviduals;
+                        }
+                        break;
+                }
+
+                if (command_sp != null)
+                {
+                    if (command_sp.hasPathCommand(out bool towardsUnit))
+                    {
+                        walking_Peace(tArmy, time, towardsUnit? command_sp.AttackTarget().position : command_sp.GoalPosition(), false, out bool complete, ref groupWalkSpeedTime);
+                        if (complete)
+                        {
+                            command_sp.OnMovePathComplete(this);
+                        }
+                        state = GroupState.FollowCommand;
+                    }
+                    else if (command_sp.haltCommand)
+                    {
+                        if (state != GroupState.Idle)
+                        {
+                            state = GroupState.GoingIdle;
+                            waitTime += time;
+                        }
+                    }
+                }
+                else
+                {
+
+                    switch (state)
+                    {
+                        case GroupState.Idle:
+                            waitTime += time;
+                            if (waitTime >= 5000)
+                            {
+                                waitTime = 0f;
+                                if ((goalWp - position).PlaneXZLength() > WorldData.SubTileHalfWidth)
+                                {
+                                    state = GroupState.FindArmyPlacement;
+                                    wakeupSoldiers();
+                                }
+                            }
+                            break;
+
+                        case GroupState.FindArmyPlacement:
+                            walking_Peace(tArmy, time, goalWp, false, out bool complete, ref groupWalkSpeedTime);
+                            if (complete)
+                            {
+                                state = GroupState.GoingIdle;
+                                waitTime = 0;
+                            }
+                            break;
+
+                        case GroupState.GoingIdle:
+                            waitTime += time;
+                            break;
+                    }
+                }
+
+            UpdateInduviduals:
+                bool allIdle = true;
+
+            
+                if (state == GroupState.Idle)
+                {
+                    //Passive check of souroundings
+                    if (Ref.peRnd.ChanceF(0.2f))
+                    {
+                        var soldiers_sp = soldiers;
+                        if (soldiers_sp != null)
+                        {
+                            var soldiersC = soldiers_sp.counter();
+                            while (soldiersC.Next())
+                            {
+                                soldiersC.sel.updateGroudY(true);
+
+                                soldiersC.sel.model?.update(soldiersC.sel);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var soldiers_sp = soldiers;
+                    if (soldiers_sp != null)
+                    {
+                        var soldiersC = soldiers_sp.counter();
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2(time);
+                            soldiersC.sel.update2(time, fullUpdate, groupWalkSpeedTime);
                             allIdle &= soldiersC.sel.state2 == SoldierState2.idle;
                         }
                     }
                 }
 
                 if (allIdle &&
+                    HasIdleCommand() &&
                     state == GroupState.GoingIdle &&
                     waitTime >= 5000)
                 {
                     state = GroupState.Idle;
                 }
             }
+        }
 
-            //return;
-
-            ////OLD
-            //if (debugTagged)//groupId == 1611)
-            //{
-            //    lib.DoNothing();
-            //}
-
-            //if (soldiers.Count > 0)
-            //{
-            //    if (!lockMovement)
-            //    {
-            //        var battleGroup_sp = army.battleGroup;
-            //        if (battleGroup_sp != null &&
-            //            battleGroup_sp.battleState != Battle.BattleState.Battle)
-            //        {
-            //            update_battlePreparations(time, fullUpdate);
-            //            return;
-            //        }
-
-
-            //        //UPDATE OBJECTIVE
-            //        {
-            //            bool newIdleGroup = false;
-
-            //            int newObjective = groupObjective;
-            //            bool newAttackState = false;
-            //            bool induvidualUpdate;
-            //            bool walking = false;
-            //            if (groupObjective == GroupObjective_IsSplit)
-            //            {
-            //                induvidualUpdate = true;
-
-            //                if (//attacking_soldierGroupOrCity == null &&
-            //                    army.battleGroup == null)//dont regroup in battle (start spinning)
-            //                {
-            //                    refreshGroupPositions();
-
-            //                    if (fullUpdate)
-            //                    {
-            //                        var soldiersC = soldiers.counter();
-            //                        while (soldiersC.Next())
-            //                        {
-            //                            soldiersC.sel.setReGroupState();
-            //                        }
-
-            //                        newObjective = GroupObjective_ReGrouping;
-            //                    }
-            //                    else
-            //                    {
-            //                        induvidualUpdate = false;
-            //                        newObjective = GroupObjective_FindArmyPlacement;
-            //                    }
-            //                }
-            //            }
-            //            else if (groupObjective == GroupObjective_ReGrouping)
-            //            {
-            //                if (fullUpdate)
-            //                {
-            //                    induvidualUpdate = true;
-
-            //                    if (allInduvidualsAreIdle)
-            //                    {
-            //                        //LOCK in place
-            //                        newObjective = GroupObjective_FindArmyPlacement;
-
-            //                        var soldiersC = soldiers.counter();
-            //                        while (soldiersC.Next())
-            //                        {
-            //                            soldiersC.sel.clearAttack();
-            //                            soldiersC.sel.aiState = SoldierAiState.GroupLock;
-            //                        }
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    induvidualUpdate = false;
-            //                    newObjective = GroupObjective_FindArmyPlacement;
-            //                }
-            //            }
-            //            else
-            //            { //Moving like a group
-
-            //                induvidualUpdate = false;
-            //                var closest_sp = attacking_soldierGroupOrCity;
-            //                if (closest_sp != null)
-            //                {
-            //                    if (groupCollisionDistance(closest_sp) < 0.02f)
-            //                    {
-            //                        //SPLIT GROUP
-            //                        newObjective = GroupObjective_IsSplit;
-            //                        newAttackState = true;
-
-            //                        var soldiersC = soldiers.counter();
-            //                        while (soldiersC.Next())
-            //                        {
-            //                            soldiersC.sel.setAttackState();
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        //Group attack move
-            //                        walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
-            //                    }
-            //                }
-            //                else if (army.battleGroup != null)
-            //                {
-            //                    walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
-            //                }
-            //                else if (groupObjective == GroupObjective_FindArmyPlacement)
-            //                {
-            //                    if (updateWalking(goalWp, true, army.rotation, time))
-            //                    {
-            //                        newObjective = GroupObjective_FollowArmyObjective;
-            //                        newIdleGroup = true;
-            //                    }
-            //                    else
-            //                    {
-            //                        walking = true;
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    if (army.objective == ArmyObjective.MoveTo ||
-            //                        army.objective == ArmyObjective.Attack)
-            //                    {
-            //                        if (updateWalking(goalWp, true, army.rotation, time))
-            //                        {
-            //                            newIdleGroup = true;
-            //                        }
-            //                        else
-            //                        {
-            //                            walking = true;
-            //                        }
-            //                        newObjective = GroupObjective_FindArmyPlacement;
-            //                    }
-            //                    else
-            //                    {
-            //                        lib.DoNothing();
-            //                    }
-            //                    //Follow army
-
-            //                }
-
-            //            }
-
-            //            if (induvidualUpdate)
-            //            {
-            //                var soldiersC = soldiers.counter();
-            //                while (soldiersC.Next())
-            //                {
-            //                    soldiersC.sel.update(time, fullUpdate);
-            //                }
-            //            }
-            //            else
-            //            {
-            //                var soldiersC = soldiers.counter();
-            //                while (soldiersC.Next())
-            //                {
-            //                    soldiersC.sel.update_GroupLocked(walking);
-            //                }
-            //            }
-
-            //            groupIsIdle = newIdleGroup;
-
-            //            if (newObjective != groupObjective)
-            //            {
-            //                groupObjective = newObjective;
-            //            }
-            //            attackState = newAttackState;
-            //        }
-            //    }
-
-            //}
-            //else
-            //{
-            //    if (!inShipTransform)
-            //    {
-            //        if (fullUpdate)
-            //        {
-            //            DeleteMe(DeleteReason.EmptyGroup, true);
-            //        }
-            //        else
-            //        {
-            //            Ref.update.AddSyncAction(new SyncAction2Arg<DeleteReason, bool>(DeleteMe, DeleteReason.EmptyGroup, true));
-            //        }
-            //    }
-            //}
+        public void clientPauseUpdate()
+        {
+            var soldiers_sp = soldiers;
+            if (soldiers_sp != null)
+            {
+                var soldiersC = soldiers_sp.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.clientPauseUpdate();
+                }
+            }
         }
 
 
 
-
-        public override void toHud(ObjectHudArgs args)
+        public override void OnBecomeAttackTarget(AbsGroup attacker)
         {
-            //var typeData = typeSoldierData..conscript;
-
-            args.content.h2(soldierConscript.conscript.TypeName() + " " + DssRef.lang.UnitType_SoldierGroup + " (" + parentArrayIndex.ToString() + ")").overrideColor = HudLib.TitleColor_TypeName;
-            args.content.newLine();
-
-#if DEBUG
-            debugTagButton(args.content);
-
-            HudLib.Label(args.content, DssRef.todoLang.ArmyStructure_ColumnWidth);
-            args.content.newLine();
-            for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+            if (army.TryGetTarget(out var tArmy))
             {
-                var button = new RbButton(new List<AbsRichBoxMember> { new RbText(w.ToString()) },
-                    new RbAction1Arg<int>(army.armyColumnWidthClick, w, SoundLib.menu));
-                button.setGroupSelectionColor(HudLib.RbSettings, w == army.armyColumnWidth);
-                args.content.Add(button);
+                enterBattleState(true, true, tArmy, attacker);
+            }
+        }
+
+        public bool HasIdleCommand()
+        {
+            var command_sp = command;
+            if (command_sp != null)
+            {
+                return command_sp.haltCommand;
+            }
+            return true;
+        }
+
+        public bool HasIdleState()
+        {
+            var command_sp = command;
+            if (command_sp != null)
+            {
+                return command_sp.haltCommand;
+            }
+
+            return state == GroupState.Idle || state == GroupState.GoingIdle;
+        }
+
+
+        void SoldiersPresentationHud(ObjectHudArgs args, bool tooltipOrGroup, bool compact)
+        {
+            var faction = pfaction.GetFaction();
+            //if (faction == null)
+            //{ return; }
+
+
+
+            if (pfaction != args.player.pfaction &&
+                args.player.gameControls.map.selection.obj != null &&
+                args.player.gameControls.map.selection.obj.IsSoldiers() &&
+                !DssRef.world.diplomacy.GetRelation(pfaction, args.player.pfaction).InWar())
+            {
+                args.content.Add(new RbImage(SpriteName.RedErrorCross));
+                args.content.hspace();
+                args.content.Add(new RbText(DssRef.lang.Battle_DeclarWarReminder, HudLib.NotAvailableColor));
+                args.content.Add(new RbSeperationLine());
+            }
+
+            args.content.Add(new RbBeginTitle(tooltipOrGroup? 2 : 1));
+            args.content.Add(faction.FlagTextureToHud());
+            args.content.hspace();
+
+            if (pfaction != args.player.pfaction)
+            {
+                IconName.Relation(DssRef.world.diplomacy.GetRelation(pfaction, args.player.pfaction).Relation, out SpriteName relIcon, out string relName);
+                args.content.Add(new RbImage(relIcon));
                 args.content.space();
             }
 
+            TypeIcon(args.content);
+            args.content.hspace();
+            args.content.Add(new RbText(soldierConscript.conscript.TypeName(), tooltipOrGroup ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+
+            args.content.space();
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
+
+
+            if (args.selected && IsArmyGroup() && pfaction == args.player.pfaction && army.TryGetTarget(out var tArmy))
+            {
+                RichBoxContent armyContent = new RichBoxContent();
+                tArmy.toButtonContent(armyContent, false);
+                args.content.Add(new ArtButton(RbButtonStyle.Outline, armyContent,
+                    new RbAction1Arg<AbsArmy>(args.player.gameControls.mapSelect, tArmy), new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput)));
+            }
+
             args.content.newLine();
-            //args.content.text($"column {armyGridPlacement2.X}");
-            //args.content.text($"row {armyGridPlacement2.Y}");
+            soldierConscript.conscript.toHud(args.content, compact);
+            args.content.newLine();
+            
+            args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            args.content.hspace();
+            args.content.Add(new RbText(TextLib.TwoDecimal(strengthValue())));
+
+            args.content.space(2);
+            args.content.Add(new RbImage(SpriteName.WarsMobilityIcon));
+            args.content.hspace();
+            args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
+        }
+
+        public override void toTooltip(ObjectHudArgs args)
+        {
+            SoldiersPresentationHud(args, true, true);
+        }
+
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
+        {
+            secondMenuContent = null;
+            if (!army.TryGetTarget(out var tArmy))
+            {
+                return;
+            }
+
+            SoldiersPresentationHud(args, false, false);
             args.content.Add(new RbSeperationLine());
 
-            for (int y = 0; y < ArmyPlacementGrid.RowsCount; y++)
+            soldierData.StatsToHud(args.content);
+            args.content.Add(new RbSeperationLine());
+            int tabSel = 0;
+
+            var tabs = new List<ArtTabMember>((int)MenuTab.NUM_NONE);
+
+            List<MenuTab> availableTabs = args.player.AvailableArmyTabs();
+            for (int i = 0; i < availableTabs.Count; ++i)
             {
-                int rowY = y - ArmyPlacementGrid.PosYAdd;
+                var text = new RbText(LangLib.Tab(availableTabs[i], out string description, out _));
+                text.overrideColor = HudLib.RbSettings.tabSelected.Color;
 
-                string name;
-                switch (rowY)
+                AbsRbAction enter = null;
+                if (description != null)
                 {
-                    case ArmyPlacementGrid.Row_Front:
-                        name = DssRef.todoLang.ArmyStructure_Row_Front;
-                        break;
-                    default:
-                        name = DssRef.todoLang.ArmyStructure_Row_Body;
-                        break;
-                    case ArmyPlacementGrid.Row_Second:
-                        name = DssRef.todoLang.ArmyStructure_Row_Second;
-                        break;
-                    case ArmyPlacementGrid.Row_Behind:
-                        name = DssRef.todoLang.ArmyStructure_Row_Behind;
-                        break;
+                    enter = new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.text(description).overrideColor = HudLib.InfoYellow_Light;
 
+                        args.player.hud.tooltip.create(args.player, content, true);
+                    });
                 }
 
-                args.content.newLine();
-                args.content.Add(new RbText(name));
-                args.content.Add(new RbTab(0.3f));
-                for (int x = 0; x < ArmyPlacementGrid.ColsCount; x++)
+                tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
+                            {
+                                text
+                            }, enter));
+
+                if (availableTabs[i] == args.player.armyTab)
                 {
-                    args.content.space();
+                    tabSel = i;
+                }
+            }
+#if DEBUG
+            args.content.newLine();
+            debugTagButton(args.content);
+#endif
+            if (tArmy.IsArmy())
+            {
+                //HudLib.Label(args.content, DssRef.lang.ArmyStructure_ColumnWidth);
+                //args.content.newLine();
+                //for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+                //{
+                //    var button = new ArtOption(w == tArmy.armyColumnWidth, 
+                //        new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                //        new RbAction1Arg<int>(tArmy.armyColumnWidthClick, w, RbSoundType.Option));
 
-                    int colX = x - ArmyPlacementGrid.PosXAdd;
+                //    args.content.Add(button);
+                //}
+                MapObjMenu.ColumnWidth(args.content, tArmy);
 
-                    string caption = colX == 0 ? " C " : TextLib.PlusMinus(colX);
-                    var button = new RbButton(new List<AbsRichBoxMember> {
+                args.content.newParagraph();
+
+                HudLib.Label(args.content, DssRef.lang.ArmyStructure_ArmyPlacement);
+                args.content.Add(new RbSeperationLine());
+
+                for (int y = 0; y < ArmyPlacementGrid.RowsCount; y++)
+                {
+                    int rowY = y - ArmyPlacementGrid.PosYAdd;
+
+                    string name;
+                    switch (rowY)
+                    {
+                        case ArmyPlacementGrid.Row_Front:
+                            name = DssRef.lang.ArmyStructure_Row_Front;
+                            break;
+                        default:
+                            name = DssRef.lang.ArmyStructure_Row_Body;
+                            break;
+                        case ArmyPlacementGrid.Row_Second:
+                            name = DssRef.lang.ArmyStructure_Row_Second;
+                            break;
+                        case ArmyPlacementGrid.Row_Behind:
+                            name = DssRef.lang.ArmyStructure_Row_Behind;
+                            break;
+
+                    }
+
+                    args.content.newLine();
+                    args.content.Add(new RbText(name, HudLib.TitleColor_TypeName));
+                    args.content.Add(new RbTab(0.3f));
+                    for (int x = 0; x < ArmyPlacementGrid.ColsCount; x++)
+                    {
+                        //args.content.space();
+
+                        int colX = x - ArmyPlacementGrid.PosXAdd;
+
+                        string caption = colX == 0 ? " C " : TextLib.PlusMinus(colX);
+                        var button = new ArtToggle(armyGridPlacement2.X == colX && armyGridPlacement2.Y == rowY, new List<AbsRichBoxMember> {
                         new RbText(caption)
                     },
-                    new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY), null);
+                        new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY, RbSoundType.Option), null);
 
-                    button.setGroupSelectionColor(HudLib.RbSettings, armyGridPlacement2.X == colX && armyGridPlacement2.Y == rowY);
-                    args.content.Add(button);
+                        args.content.Add(button);
+                    }
+
                 }
-
+                args.content.Add(new RbSeperationLine());
             }
-            args.content.Add(new RbSeperationLine());
-            //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
-#endif
-            soldierConscript.conscript.toHud(args.content);
+            
             args.content.newLine();
-            //if (args.selected && GetFaction() == args.player.faction)
-            //{
-            //    new Display.GroupMenu(args.player, this, args.content);
-            //}
+
+            if (soldierConscript.conscript.weapon == ItemResourceType.Settler)
+            {
+                MapObjMenu.settlerButton(args.player, args.content, this);
+            }
         }
 
         void setNewArmyPlacement(int colX, int rowY)
@@ -1083,7 +1669,10 @@ namespace VikingEngine.DSSWars.GameObject
             armyGridPlacement2.X = colX;
             armyGridPlacement2.Y = rowY;
 
-            army.refreshPositions(false);
+            if (army.TryGetTarget(out var tArmy))
+            {
+                tArmy.GetArmy().refreshPositions(false);
+            }
         }
 
         //public bool soldiersShouldFollowWalkingOrder()
@@ -1091,11 +1680,15 @@ namespace VikingEngine.DSSWars.GameObject
         //    return groupObjective == GroupObjective_FollowArmyObjective;//hasWalkingOrder && attacking.Count == 0;
         //}
 
-        public void EnterPeaceEvent()
-        {
-            attacking_soldierGroupOrCity = null;
-            //groupObjective = GroupObjective_IsSplit;
-        }
+        //public void EnterPeaceEvent()
+        //{
+        //    if (pfaction.TryGetLocalPlayer(out _))
+        //    {
+        //        lib.DoNothing();
+        //    }
+        //    attackTarget_soldierGroupOrCity =  PGameObject.Empty;
+        //    //groupObjective = GroupObjective_IsSplit;
+        //}
 
         //void refreshGroupPositions()
         //{
@@ -1201,13 +1794,22 @@ namespace VikingEngine.DSSWars.GameObject
         //}
 
         static readonly float GoalCompleteDistance = WorldData.SubTileWidth * 0.2f;
-        bool updateWalking(Vector3 walkTowards, bool walk, bool rotate, Rotation1D finalRotation, float time)
+        bool updateWalking(Vector3 walkTowards, bool walk, bool rotate, bool induvidualSpeed, Rotation1D finalRotation, float time, out float speed)
         {
             Vector2 diff = new Vector2(
                 walkTowards.X - position.X,
                 walkTowards.Z - position.Z);
 
-            float speed = walkSpeed * terrainSpeedMultiplier * time;
+            //float speed;
+
+            if (induvidualSpeed)
+            {
+                speed = soldierData.walkingSpeed * terrainSpeedMultiplier * time;
+            }
+            else
+            {
+                speed = walkSpeed_peace * terrainSpeedMultiplier * time;
+            }
             float l = diff.Length();
             if (l > Math.Max(speed, GoalCompleteDistance))
             {
@@ -1222,7 +1824,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-            else if (l > walkSpeed)
+            else if (l > walkSpeed_peace)
             {
                 position.X = walkTowards.X;
                 position.Z = walkTowards.Z;
@@ -1230,10 +1832,19 @@ namespace VikingEngine.DSSWars.GameObject
             else if (rotate)
             {
                 //final adjust when reached goal
-                if (rotateTowardsAngle(finalRotation, time))
+                if (command != null && command.goalRotation != float.MinValue)
                 {
-                    //hasWalkingOrder = false;
-                    return true;
+                    if (rotateTowardsAngle(command.goalRotation, time))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (rotateTowardsAngle(finalRotation, time))
+                    {
+                        return true;
+                    }
                 }
             }
             else
@@ -1382,23 +1993,23 @@ namespace VikingEngine.DSSWars.GameObject
             return VectorExt.Length(group.position.X - position.X, group.position.Z - position.Z);
         }
 
-        public void addAttackTarget(AbsGroup newTarget)
-        {
-            refreshAttacking();
+        //public void addAttackTarget(AbsGroup newTarget)
+        //{
+        //    refreshAttackTarget();
 
-            if (!newTarget.defeatedBy(army.faction) && newTarget != attacking_soldierGroupOrCity)
-            {
-                if (attacking_soldierGroupOrCity != null)
-                {
-                    //Compare distance
-                    if (distanceValueTo(attacking_soldierGroupOrCity, float.MaxValue) <= distanceValueTo(newTarget, float.MaxValue))
-                    {
-                        return;
-                    }
-                }
-                attacking_soldierGroupOrCity = newTarget;
-            }
-        }
+        //    if (!newTarget.defeatedBy(army.faction) && newTarget != attackTarget_soldierGroupOrCity)
+        //    {
+        //        if (attackTarget_soldierGroupOrCity != null)
+        //        {
+        //            //Compare distance
+        //            if (distanceValueTo(attackTarget_soldierGroupOrCity, float.MaxValue) <= distanceValueTo(newTarget, float.MaxValue))
+        //            {
+        //                return;
+        //            }
+        //        }
+        //        attackTarget_soldierGroupOrCity = newTarget;
+        //    }
+        //}
 
         void recyclePath(bool large, bool detail, int pathThreadIndex)
         {
@@ -1421,15 +2032,22 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void refreshAttacking()
+        void refreshAttackTarget()
         {
-            if (attacking_soldierGroupOrCity != null && 
-                    (attacking_soldierGroupOrCity.defeated() || 
-                    !DssRef.diplomacy.InWar(army.faction, attacking_soldierGroupOrCity.GetFaction()) ||
-                    distance(attacking_soldierGroupOrCity) > 4)
-               )
+            if (!attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var target) ||                    
+
+                (target.defeated() || 
+                !DssRef.world.diplomacy.GetRelation(pfaction, target.pfaction).InWar() ||
+                distance(target) > 4)
+            )
             {
-                attacking_soldierGroupOrCity = null;
+                attackTargetTimeLock = GameTimeStamp.None;
+                attackTarget_soldierGroupOrCity = PGameObject.Empty;
+
+                //if (pfaction.TryGetPlayer(out var player) && player.IsRemotePlayer())
+                //{
+                //    lib.DoNothing();
+                //}
             }
         }
 
@@ -1440,65 +2058,104 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 lib.DoNothing();
             }
+            if (attackTarget_soldierGroupOrCity.HasValue() && pfaction.TryGetLocalPlayer(out _))
+            {
+                lib.DoNothing();
+            }
 
-            DssRef.world.unitCollAreaGrid.collectOpponentGroups(army.faction, tilePos, out  List<GameObject.SoldierGroup> groups, out List<City> cities);
+            if (!army.TryGetTarget(out var tArmy))
+            { return; }
 
-            refreshAttacking();
+            if (Ref.peRnd.Chance(0.05))
+            {
+                highTargetValueToOpponent = float.MaxValue;
+            }
+                        
+            refreshAttackTarget();
 
-            //if (attacking_soldierGroupOrCity == null)
-            //{
-                AbsGroup nearest = null;
-                float distanceValue = float.MaxValue;
+            if (attackTarget_soldierGroupOrCity.HasValue() && attackTargetTimeLock.HasTime())//attackTargetTimeLock > Ref.TotalGameTimeSec)
+            {
+                return;
+            }
 
-                foreach (var opponent in groups)
+            if (attackTarget_soldierGroupOrCity.HasValue())
+            {
+                lib.DoNothing();
+            }
+            DssRef.world.unitCollAreaGrid.collectOpponentGroups(pfaction, tilePos, out  List<GameObject.SoldierGroup> groups, out List<City> cities);
+
+            AbsGroup nearest = null;
+            float distanceValue = float.MaxValue;
+
+            foreach (var opponent in groups)
+            {
+                var group = opponent?.GetGroup();
+                if (group != null &&
+                    group.soldierCount > 0 && 
+                    opponent.army.TryGetTarget(out var tOpponentArmy))
                 {
+                    var dist = distanceValueTo(group, aggroRange(tOpponentArmy));
 
-                    var group = opponent.GetGroup();
-                    if (group.soldierCount > 0)
+                    if (dist < distanceValue)
                     {
-                        var dist = distanceValueTo(group, aggroRange(opponent.army));
+                        distanceValue = dist;
+                        nearest = group;
+                    }
+                }
 
-                        if (dist < distanceValue)
+            }
+
+            if (nearest == null)
+            {
+                attackTarget_soldierGroupOrCity = PGameObject.Empty;
+                foreach (var opponent in cities)
+                {
+                    //if (opponent.guardCount > 0)
+                    {
+                        var score = distanceValueTo(opponent, aggroRange(opponent));
+
+                        if (score < distanceValue)
                         {
-                            distanceValue = dist;
-                            nearest = group;
+                            distanceValue = score;
+                            nearest = opponent;
+                        }
+                    }
+                }
+            }
+
+            if (nearest != null)
+            {
+                var pNearest = nearest.goPointer();
+                //var target = RefExt.Target_safe(attackTarget_soldierGroupOrCity);
+                if (!nearest.defeatedBy(pfaction) && pNearest != attackTarget_soldierGroupOrCity)
+                {
+                    if (attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var target))//target != null)
+                    {
+                        //Compare distance
+                        if (distanceValueTo(target, float.MaxValue) * 2f <= distanceValueTo(nearest, float.MaxValue))
+                        {
+                            return;
                         }
                     }
 
+                    attackTargetTimeLock.setTimeFromNow(2f + distanceValue);//Ref.TotalGameTimeSec + 2f + distanceValue;
+                    attackTarget_soldierGroupOrCity =pNearest;
+                    nearest.OnBecomeAttackTarget(this);
                 }
+            }
 
-                if (nearest == null)
+
+            float aggroRange(AbsMapObject target)
+            {
+                if (tArmy.IsArmy() &&
+                    target == tArmy.GetArmy().attackTarget)
                 {
-                    foreach (var opponent in cities)
-                    {
-                        if (opponent.guardCount > 0)
-                        {
-                            var score = distanceValueTo(opponent, aggroRange(opponent));
-
-                            if (score < distanceValue)
-                            {
-                                distanceValue = score;
-                                nearest = opponent;
-                            }
-                        }
-                    }
+                    return 4.5f;
                 }
+                return 3.5f;
+            }
 
-                if (nearest != null)
-                {
-                    addAttackTarget(nearest);
-                }
-
-
-                float aggroRange(AbsMapObject target)
-                {
-                    if (target == army.attackTarget)
-                    {
-                        return 4;
-                    }
-                    return 3;
-                }
-            //}
+            command?.asyncUpdate(this);
         }
 
         float distanceValueTo(AbsGroup toGroup, float maxRange)
@@ -1511,15 +2168,26 @@ namespace VikingEngine.DSSWars.GameObject
                 return float.MaxValue;
             }
 
-            const float AngleWeight = 4f;
+            const float AngleWeight = 30f;
 
             float dir = lib.V2ToAngle(diff);
             float aDiff = Rotation1D.AngleDifference_Absolute(rotation.radians, dir);
             float anglePercDiff = aDiff / MathF.PI;
 
-            float value = l + l * anglePercDiff * AngleWeight;
+            float rawValue = l + l * anglePercDiff * AngleWeight;
+            float value = rawValue;
 
-            if (toGroup == attacking_soldierGroupOrCity)
+            if (rawValue <= toGroup.highTargetValueToOpponent)
+            {
+                toGroup.highTargetValueToOpponent = rawValue;
+                toGroup.highTargetValueToOpponent_tagId = this.myIndex;
+            }
+            else if (toGroup.highTargetValueToOpponent_tagId != this.myIndex)
+            {
+                value *= 2;
+            }
+
+            if ( toGroup.goPointer() == attackTarget_soldierGroupOrCity)
             {
                 value *= 0.5f;
             }
@@ -1527,9 +2195,7 @@ namespace VikingEngine.DSSWars.GameObject
             return value;
         }
 
-        //static List<GameObject.Army> ArmiesColl_asyncupdate = new List<Army>();
-
-        void collsionUpate_async(int pathThreadIndex)
+        void groupToGroupCollsionUpate_async(int pathThreadIndex)
         {
             Vector2 diff = new Vector2(
                 goalWp.X - position.X,
@@ -1546,7 +2212,7 @@ namespace VikingEngine.DSSWars.GameObject
                 collisionModel.Color = Color.HotPink;
                 collisionModel.position = VectorExt.V2toV3XZ(WalkDirBound.center, position.Y);
 #endif
-                List<GameObject.Army> ArmiesColl_asyncupdate = DssRef.state.pathUpdates[pathThreadIndex].ArmiesColl_asyncupdate;
+                List<AbsArmy> ArmiesColl_asyncupdate = DssRef.state.pathUpdates[pathThreadIndex].ArmiesColl_asyncupdate;
                 DssRef.world.unitCollAreaGrid.collectArmies(tilePos, ArmiesColl_asyncupdate);
                 foreach (var army in ArmiesColl_asyncupdate)
                 {
@@ -1582,76 +2248,126 @@ namespace VikingEngine.DSSWars.GameObject
             isWalkingIntoOtherGroup = false;
         }
 
-        public void asyncBattleUpdate()
+        public void asyncBattleUpdate(ref InBattleWith battles)
         {
-            var attack_sp = attacking_soldierGroupOrCity;
-                        
-            if (soldiers != null)
+            if (state == GroupState.Battle)
             {
-                var counter = soldiers.counter();
+                battles.groupsInBattle++;
+
+                var target_sp = attackTarget_soldierGroupOrCity;
+                if (target_sp.TryGetGroup(out var tMapObj))
+                {
+                    battles.factions.TryAddIfNotContains(tMapObj.pfaction);
+                    battles.attackingCity |= tMapObj.IsGuardGroup();
+                }
+            }
+            
+            var soldiers_sp = soldiers;        
+            if (soldiers_sp != null)
+            {
+                var counter = soldiers_sp.counter();
                 while (counter.Next())
                 {
-                    counter.sel.asyncBattleUpdate();
+                    counter.sel.asyncBattleUpdate();                    
                 }
-            }            
+            }
+            tilePos = WP.ToTilePos(position);
+            if (DssRef.world.tileBounds.IntersectPoint(tilePos))
+            {
+                position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY();
+            }
         }
 
         public void asyncPathUpdate(int pathThreadIndex)
         {
-
-        //}
-
-        //public void asynchUpdate()
-        //{
 #if VISUAL_NODES
             collisionModel.Visible = false; 
 #endif
-            //asynchNearObjectsUpdate();
 
-            var attack_sp = attacking_soldierGroupOrCity;
+            //AbsGroup attack_sp = null;
+            attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var attack_sp);
+            var command_sp = command;
 
-            if (attack_sp != null)
+            if (command_sp != null && command_sp.hasPathCommand(out bool towardsUnit))
+            {
+                if (command_sp.clearOldPath)
+                {
+                    command_sp.clearOldPath = false;
+                    recyclePath(true, true, pathThreadIndex);
+                }
+
+                if (command_sp.haltCommand)
+                {
+                    return;
+                }
+                else if (towardsUnit)
+                {
+                    pathTowardsTarget(command_sp.AttackTarget());
+                }
+                else
+                {
+                    pathTowardsPosition(command_sp.GoalPosition());
+                }
+            }
+            else if (attack_sp != null)
+            {
+                if (InGuardPost())
+                {
+                    recyclePath(true, true, pathThreadIndex);
+                }
+                else
+                {
+                    pathTowardsTarget(attack_sp);
+                }
+            }
+            else
+            {
+                if (army.TryGetTarget(out var tArmy))
+                {
+                    if (followsGoalId != tArmy.goalId)
+                    {
+                        followsGoalId = tArmy.goalId;
+
+                        recyclePath(true, true, pathThreadIndex);
+
+                        if (state <= GroupState.GoingIdle)
+                        {
+                            state = GroupState.FindArmyPlacement;
+                            wakeupSoldiers();
+                        }
+                    }
+
+                    if (state != GroupState.Idle)
+                    {
+                        pathTowardsPosition(goalWp);
+                    }
+                }
+            }
+
+            void pathTowardsTarget(AbsGroup target)
             {
                 if (soldiers != null)
                 {
                     tilePos = WP.ToTilePos(position);
                     setGroundY();
 
-                    IntVector2 goalSubTile = WP.ToSubTilePos(attack_sp.position);
+                    IntVector2 goalSubTile = WP.ToSubTilePos(target.position);
                     var detailPath_sp = detailPath;
                     if (detailPath_sp == null || detailPath_sp.goal != goalSubTile)
                     {
                         pathCalulate_detail(goalSubTile, true, pathThreadIndex);
                     }
-
-                    //var counter = soldiers.counter();
-                    //while (counter.Next())
-                    //{
-                    //    counter.sel.asyncBattleUpdate();
-                    //}
                 }
             }
-            else
+
+            void pathTowardsPosition(Vector3 goalWp)
             {
-                if (followsGoalId != army.goalId)
-                {
-                    followsGoalId = army.goalId;
-                    //path = null;
-                    //detailPath = null;
-                    recyclePath(true, true, pathThreadIndex);
-
-                    if (state <= GroupState.GoingIdle)
-                    {
-                        state = GroupState.FindArmyPlacement;
-                        wakeupSoldiers();
-                    }
-                }
-
-                if (state != GroupState.Idle)
+                if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z) &&
+                    DssRef.world.unitBounds.IntersectPoint(goalWp.X, goalWp.Z))
                 {
                     tilePos = WP.ToTilePos(position);
                     setGroundY();
-                    collsionUpate_async(pathThreadIndex);
+                    groupToGroupCollsionUpate_async(pathThreadIndex);
 
                     const float DetailMaxLength = 3.5f;
                     Vector3 diff = goalWp - position;
@@ -1662,7 +2378,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (path == null)
                         {
-                            pathCalulate(pathThreadIndex);
+                            pathCalulate(pathThreadIndex, goalWp);
                         }
 
                         //pick three tiles ahead
@@ -1682,75 +2398,22 @@ namespace VikingEngine.DSSWars.GameObject
                         goalSubTile = WP.ToSubTilePos(goalWp);
                     }
 
-                    if (l >= WorldData.SubTileWidth && 
+                    if (l >= WorldData.SubTileWidth &&
                         (detailPath == null || detailPath.goal != goalSubTile))
                     {
                         pathCalulate_detail(goalSubTile, isTravelNode, pathThreadIndex);
                     }
                 }
             }
-            
-            //return;
-
-            //int soldiersWithWalkingOrder = 0;
-            //int idleSoldiers = 0;
-            //int soldierCount = 0;
-
-
-            //Vector3 sumPos = Vector3.Zero;
-            //{
-            //    var counter = soldiers.counter();
-            //    while (counter.Next())
-            //    {
-            //        var soldier = counter.sel;
-            //        soldier.asynchUpdate();
-
-            //        sumPos += soldier.position;
-            //        soldierCount++;
-
-            //        if (soldier.hasWalkingOrder)
-            //        {
-            //            soldiersWithWalkingOrder++;
-            //        }
-            //        if (soldier.state.idle)
-            //        {
-            //            idleSoldiers++;
-            //        }
-            //    }
-            //}
-
-
-            //if (soldierCount == 0)
-            //{
-            //    //groupObjective = GroupObjective.Destroyed;
-            //    return;
-            //}
-
-            ////updateObjective();
-
-            //if (groupObjective == GroupObjective_IsSplit || position.X<=0)
-            //{
-            //    position = sumPos / soldierCount;
-            //}
-
-            //tilePos = WP.ToTilePos(position);
-
-            //Map.Tile tile;
-            //if ( DssRef.world.tileGrid.TryGet(tilePos, out tile))
-            //{
-            //    terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip) * 0.4f + army.terrainSpeedMultiplier * 0.6f;
-            //    position.Y = tile.UnitGroundY();
-            //}
-            //allInduvidualsAreIdle = idleSoldiers == soldierCount;
         }
 
-        void pathCalulate(int pathThreadIndex)
+        void pathCalulate(int pathThreadIndex, Vector3 goalWp)
         {
             recyclePath(true, false, pathThreadIndex);
 
             PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
             { 
-                path = pf.FindPath(pathThreadIndex, tilePos, rotation, WP.ToTilePos( goalWp), isShip);
+                path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), WP.ToTilePos( goalWp), isShip);
             }
             DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
         }
@@ -1764,12 +2427,17 @@ namespace VikingEngine.DSSWars.GameObject
             
             //bool endAsShip = DssRef.world.tileGrid.Get(army.adjustedWalkGoal).IsWater();
 
+            if (!army.TryGetTarget(out var tArmy) || position.X <= 0)
+            {
+                return;
+            }
+
             recyclePath(false, true, pathThreadIndex);
 
             DetailPathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetPf();
             {
                 detailPath = pf.FindPath(pathThreadIndex, WP.ToSubTilePos(position), rotation, goal,
-                    isShip, army.walkGoalAsShip, isTravelNode);
+                    isShip, tArmy.walkGoalAsShip, isTravelNode);
             }
             DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.Return(pf);
 
@@ -1788,6 +2456,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        virtual public float GroupMoveBoundRadius()
+        {
+            return DssVar.SoldierGroup_Spacing_Radius;
+        }
+
         //void setObjective(int objective)
         //{
         //    if (objective != groupObjective)
@@ -1802,10 +2475,10 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        public void DrawOverviewIcon(int cameraIndex)
-        {
+        //public void DrawOverviewIcon(int cameraIndex)
+        //{
 
-        }
+        //}
 
         //public void setWalkNode(IntVector2 area,
         //    bool nextIsFootTransform, bool nextIsShipTransform)
@@ -1839,15 +2512,12 @@ namespace VikingEngine.DSSWars.GameObject
         //    goalWp = armyPlacement(areaCenter);
         //}
 
-        public void setGroundY()
+        virtual public void setGroundY()
         {
-            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
-            //var counter = soldiers.counter();
-            //while (counter.Next())
-            //{
-            //    counter.sel.firstUpdate();
-            //}
-            //++lifeState;
+            if (DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
+            {
+                position.Y = tile.GroundY_aboveWater();
+            }
         }
 
         //public void OrderHalt()
@@ -1876,17 +2546,28 @@ namespace VikingEngine.DSSWars.GameObject
         public void remove(AbsSoldierUnit soldier)
         {
             //Debug.CrashIfThreaded();
-           
-            soldiers.RemoveAt_EqualSafeCheck(soldier, soldier.parentArrayIndex);
-            soldierCount = soldiers.Count;
 
-            if (soldiers.Count <= 0)
+            if (soldiers != null)
             {
-                DeleteMe(DeleteReason.EmptyGroup, true);
+                soldiers.RemoveAt_EqualSafeCheck(soldier, soldier.myIndex);
+                soldierCount = soldiers.Count;
+
+                if (soldiers.Count <= 0)
+                {
+                    DeleteMe(DeleteReason.EmptyGroup, true);
+                }
             }
         }
 
-       
+        public void removeOneSoldier()
+        {
+            if (--soldierCount <= 0)
+            {
+                DeleteMe(DeleteReason.EmptyGroup, true);
+            }            
+        }
+
+
 
         public void onDisband(bool deserter)
         {
@@ -1896,12 +2577,11 @@ namespace VikingEngine.DSSWars.GameObject
             RotationQuarterion rot;
             if (closestCity != null)
             {
-                double dist = WP.birdDistance(closestCity, tilePos);
-                double keep = lib.ValueOnPercentScale(12, 3, dist, true) * 0.7 + 0.1;
+                double keep = 0.8;
 
-                if (deserter && closestCity.faction == this.GetFaction())
+                if (deserter && closestCity.pfaction == this.pfaction)
                 { 
-                    keep *= 0.6;
+                    keep = 0.5;
                 }
                 
                 double immigrants = soldierCount * keep;
@@ -1918,19 +2598,62 @@ namespace VikingEngine.DSSWars.GameObject
                 rot = WP.ToQuaterion(rotation.radians);
             }
 
-            if (army.inRender_detailLayer)
+            if (army.TryGetTarget(out var tArmy) && tArmy.inRender_detailLayer)
             {
                 Vector3 moveDir_dir = VectorExt.V2toV3XZ(dir);
 
-                var soldiersC = soldiers.counter();
-                while (soldiersC.Next())
+                var soldiers_sp = soldiers;
+
+                if (soldiers_sp != null)
                 {
-                    new DeserterAnimation(soldiersC.sel, moveDir_dir, rot);
+                    var soldiersC = soldiers_sp.counter();
+                    while (soldiersC.Next())
+                    {
+                        new DeserterAnimation(soldiersC.sel, moveDir_dir, rot);
+                    }
                 }
             }
         }
 
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
+        {
+            //Vector3 scale = new Vector3(radius * 2f);
 
+            var soldiers_sp = soldiers;
+
+            if (soldiers_sp != null)
+            {
+                var soldiersC = soldiers_sp.counter();
+                int i = 0;
+
+                selection.groupModels_detail.BeginGroupModel();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.selectionFramePlacement(out var pos, out var scale);
+                    selection.groupModels_detail.setGroupModel(i, pos, scale, hover, true, false);
+                    ++i;
+                }
+
+                var target_sp = GetAttackTarget();
+                if (player.pfaction == pfaction && target_sp != null)
+                {
+                    selection.TargetLine(ref position, ref target_sp.position);
+                }
+                else
+                {
+                    selection.hideTargetLine();
+                }
+
+                if (HasIdleState())
+                {
+                    selection.viewGroupPath(null);
+                }
+                else
+                {
+                    selection.viewGroupPath(detailPath);
+                }
+            }
+        }
         //public bool inBattle()
         //{
         //    var soldiersC = soldiers.counter();
@@ -1943,28 +2666,27 @@ namespace VikingEngine.DSSWars.GameObject
         //    return false;
         //}
 
-        public float strengthValue()
-        {
-            //float result = 0;
-            return soldierData.DPS_land() * soldierCount;
-            //var soldiersC = soldiers.counter();
-            //while (soldiersC.Next())
-            //{
-            //    result += soldiersC.sel.DPS();
-            //}
+        
 
-            //return result;
+        public float strengthValue()
+        {            
+            return AllUnits.GroupStrengh(soldierCount, ref soldierData, !isShip);   
+        }
+
+        public float mobilityValue()
+        {
+            return soldierData.mobilityValue();
         }
 
         public AbsSoldierUnit FirstSoldier()
         {
-            return soldiers.First();
+            return soldiers?.First();
         }
 
         public override void AddDebugTag()
         {
             base.AddDebugTag();
-            army.AddDebugTag();
+            RefExt.Target( army)?.AddDebugTag();
         }
 
         //override public bool isMelee()
@@ -2003,15 +2725,44 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void Upkeep(ref float energy, ref float moneyCarry)
+        public void Upkeep(bool casual, ref SoldierUpkeep upkeep, ref float moneyCarry)
         {
-            energy += soldierData.energyPerSoldier * soldierCount;
+            float upkeepCount = soldierData.upkeepMultiplier * soldierCount;
+
+            upkeep.food += upkeepCount * DssRef.storage.ruleset_instance.manFoodUpkeep +
+                 soldierData.animalFoodUpkeep(soldierCount);//soldierData.animalFoodMultiplier * DssRef.difficulty.mountFoodUpkeep;
+
+            if (casual)
+            {
+                upkeep.copper += upkeepCount * DssConst.CasualSoldierDefaultCost_Copp;
+            }
+            else
+            {
+                upkeep.copper += upkeepCount * soldierConscript.conscript.copperUpkeepPerSoldier();//soldierData.copperUpkeepPerSoldier;
+            }
             moneyCarry += soldierCount * DssConst.MoneyCarryPerSoldier;
         }
+
+        //public static float copperUpkeepPerSoldier(ConscriptProfile conscript)
+        //{
+        //    var result = DssConst.TrainingGoldUpkeep[(int)conscript.training];
+        //    if (conscript.man == ItemResourceType.NobelMen)
+        //    {
+        //        result += DssConst.Nobel_GoldUpkeep;
+        //    }
+        //}
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
         {
             isDeleted = true;
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
+            if (army.TryGetTarget(out var tArmy2) && tArmy2.IsNetHosted)
+            {
+                lib.DoNothing();
+            }
 
             if (reason == DeleteReason.Disband)
             {
@@ -2031,23 +2782,26 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (removeFromParent)
+            if (removeFromParent &&
+                army.TryGetTarget(out var tArmy))
             {
-                army.remove(this);
+                tArmy.remove(this);
             }
         }
 
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(PFaction attackerFaction)
         {
             return soldierCount <= 0;
         }
-        public override bool aliveAndBelongTo(int faction)
+        public override bool aliveAndBelongTo(PFaction faction)
         {
-
             return soldierCount > 0;
         }
-
+        public override bool defeated()
+        {
+            return soldierCount <= 0;
+        }
         public bool canMoveTo(IntVector2 from, IntVector2 to)
         {
             return true;
@@ -2062,19 +2816,22 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return GameObject.GameObjectType.SoldierGroup;
         }
-
+        public override Vector3 WorldPos()
+        {
+            return position;
+        }
         public override void stateDebugText(RichBoxContent content)
         {
-            content.newLine();
-            //content.text("Objective: " + groupObjective.ToString());
+            if (!army.TryGetTarget(out var tArmy))
+                { return; }
 
-            if (attacking_soldierGroupOrCity!=null)
+            content.newLine();
+            content.text("Group State: " + state.ToString());
+            content.text("target string: " + attackTarget_soldierGroupOrCity.ToString());
+            if (attackTarget_soldierGroupOrCity.Clone().TryGetGroup(out var target))
             {
-                //var c = attacking.counter();
-                //while (c.Next())
-                //{
-                    content.text("attacking: " + attacking_soldierGroupOrCity.TypeName());
-                //}
+                content.text("attacking: " + target.TypeName());
+                
             }
             else
             {
@@ -2082,38 +2839,65 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             content.Add(new RbNewLine(true));
-            content.text(army.TypeName());
-            army.stateDebugText(content);
+            content.text(tArmy.TypeName());
+            tArmy.stateDebugText(content);
         }
 
-        public void setArmyPlacement2(Vector3 wp, bool telePort)
+        public void setArmyPlacement2(Vector3 wp, bool resetCommand, bool telePort, bool hostedAction)
         {
             goalWp = wp;
+            armyPlacementWp = goalWp;
 
             if (telePort)
             {
                 position = wp;
                 tilePos = WP.ToTilePos(position);
                 setGroundY();
-                rotation = army.rotation;
+
+                if (army.TryGetTarget(out var tArmy))
+                {
+                    rotation = tArmy.rotation;
+                }
                 //state = GroupState.Idle;
 
-                bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
-                if (waterNode != isShip)
+                if (hostedAction && DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
                 {
-                    completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip);
+                    bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
+                    if (waterNode != isShip)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction2Arg<SoldierTransformType, int>(completeTransform, waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1));
+                        //completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+                    }
                 }
+                teleportSoldiers();
             }
             else
             {
+                if (resetCommand)
+                {
+                    cancelCommand();
+                }
+
                 wakeupSoldiers();
-            
+                
                 state = GroupState.FindArmyPlacement;
             }
             
         }
 
-        void wakeupSoldiers()
+        public AbsGroup GetAttackTarget()
+        {
+            if (command != null)
+            {
+                return command.AttackTarget();
+            }
+            else
+            {
+                return attackTarget_soldierGroupOrCity.Clone().Get() as AbsGroup;
+            }
+        }
+
+        public void wakeupSoldiers()
         {
             var soldiers_sp = soldiers; 
             if (soldiers_sp != null)
@@ -2127,7 +2911,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-       
+        void teleportSoldiers()
+        {
+            var soldiers_sp = soldiers;
+            if (soldiers_sp != null)
+            {
+                var soldiersC = soldiers_sp.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.teleport();
+                }
+
+            }
+        }
 
         //public void SetArmyPlacement(IntVector2 newLocalPlacement, bool onPurchase)
         //{
@@ -2150,14 +2946,15 @@ namespace VikingEngine.DSSWars.GameObject
         //    }            
         //}
 
-        public override Faction GetFaction()
-        {
-            return army.faction;
-        }
+        //public override Faction GetFaction()
+        //{
+        //    return army.faction;
+        //}
 
         public override AbsMapObject RelatedMapObject()
         {
-            return army;
+            army.TryGetTarget(out var result);
+            return result;
         }
 
 
@@ -2183,16 +2980,24 @@ namespace VikingEngine.DSSWars.GameObject
 
         //    return typeCurrentData;//DssRef.unitsdata.Get(type);
         //}
-
+        
         public override string TypeName()
         {
-            return soldierConscript.conscript.TypeName() + " Group(" + parentArrayIndex.ToString() + ")";
+            return soldierConscript.conscript.TypeName(); //+ " Group(" + parentArrayIndex.ToString() + ")";
         }
 
+        virtual public bool IsArmyGroup()
+        {
+            return true;
+        }
+        
         //public override SpriteName TypeIcon()
         //{
         //    return AllUnits.UnitFilterIcon( soldierConscript.filterType());
         //}
+
+        virtual public Defence.GuardGroup GetGuardGroup()
+        { throw new NotImplementedException(); }
 
         public override void TypeIcon(RichBoxContent content)
         {
@@ -2202,7 +3007,55 @@ namespace VikingEngine.DSSWars.GameObject
         public override string ToString()
         {
             var type = soldierConscript.unitType();
-            return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + parentArrayIndex.ToString();
+            return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + myIndex.ToString();
+        }
+
+        virtual public bool InGuardPost()
+        {
+            return false;
+        }
+
+        public override bool IsSoldiers()
+        {
+            return true;
+        }
+
+        public override bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
+        {
+            var soldiers_sp = soldiers;
+            if (soldiers_sp != null)
+            {
+                var soldiersC = soldiers_sp.counter();
+                while (soldiersC.Next())
+                {
+                    if (soldiersC.sel.rectangleCollision(rectangle))
+                    { 
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public void toGroupHud(ObjectHudArgs args)
+        {
+            //string name = Name(out _);
+
+            //if (name != null)
+            //{
+            //    content.text(name).overrideColor = Color.LightYellow;
+            //    content.newLine();
+            //}
+
+            //content.Add(new RbBeginTitle());
+            //content.Add(GetFaction().FlagTextureToHud());
+            //content.space(0.5f);
+            //content.Add(new RbText(soldierConscript.conscript.TypeName(), HudLib.TitleColor_TypeName));
+            //content.space(0.5f);
+            //content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
+            SoldiersPresentationHud(args, true, true);
+            
         }
     }    
 
@@ -2218,7 +3071,8 @@ namespace VikingEngine.DSSWars.GameObject
         GoingIdle,
         FindArmyPlacement,
         Battle,
-
+        FollowCommand,
+        CityCapture,
         //GameStart,
         //Rotate,
     }

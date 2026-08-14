@@ -13,7 +13,7 @@ namespace VikingEngine.LootFest.GO.Characters
         static readonly IntervalF ArcherScaleRange = OrcScaleRange * 0.9f;
 
         public OrcArcher(GoArgs args)
-            : base(args, VoxelModelName.orc_archer, ArcherScaleRange)
+            : base(args, VoxelModelName.NUM_NON, ArcherScaleRange)
         {
             aggresivity = HumanoidEnemyAgressivity.Careful_2;
             hasRangedWeapon = true;
@@ -24,7 +24,7 @@ namespace VikingEngine.LootFest.GO.Characters
             projectileRate.Seconds = 2;
 
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-                VoxelModelName.orc_sword1,
+                VoxelModelName.NUM_NON,
                 new HandWeaponAttackSettings(
                     GameObjectType.OrcArcherSwordAttack, 0.8f, 0.12f,
                     new Vector3(
@@ -51,7 +51,7 @@ namespace VikingEngine.LootFest.GO.Characters
 
         protected override void createPreRangedAttackEffect()
         {
-            preRangedAttackWeaponEffect = new Effects.HumanoidEnemyPreBowEffect(VoxelModelName.orcbow,
+            preRangedAttackWeaponEffect = new Effects.HumanoidEnemyPreBowEffect(VoxelModelName.NUM_NON,
                 new Vector3(0.1f, 0.3f, 0.3f) * modelScale, this);
         }
         protected override void createRangedAttack()

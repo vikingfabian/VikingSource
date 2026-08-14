@@ -117,6 +117,12 @@ namespace VikingEngine
             return value;
         }
 
+        public static IntVector3 AddX(IntVector3 value, int add)
+        {
+            value.X += add;
+            return value;
+        }
+
         public static IntVector2 AddY(IntVector2 value, int add)
         {
             value.Y += add;
@@ -164,6 +170,12 @@ namespace VikingEngine
             return value;
         }
 
+        public static IntVector3 AddZ(IntVector3 value, int add)
+        {
+            value.Z += add;
+            return value;
+        }
+
         public static Vector3 AddXZ(Vector3 value, Vector2 xz)
         {
             value.X += xz.X;
@@ -205,6 +217,23 @@ namespace VikingEngine
             {
                 value.X -= add;
             }
+            return value;
+        }
+
+        public static Vector2 FlipX(Vector2 value)
+        {
+            value.X = -value.X;
+            return value;
+        }
+        public static Vector2 FlipY(Vector2 value)
+        {
+            value.Y = -value.Y;
+            return value;
+        }
+
+        public static Vector3 FlipX(Vector3 value)
+        {
+            value.X = -value.X;
             return value;
         }
 
@@ -377,10 +406,24 @@ namespace VikingEngine
             float length = value.Length();
             if (length > maxLength)
             {
-                //value.Normalize();
-                //value *= maxLength;
                 value *= 1f / length * maxLength;
             }
+
+            return value;
+        }
+
+        public static Vector2 SetMaxSideLength(Vector2 value, float maxLength)
+        {
+
+            if (Math.Abs(value.X) > maxLength)
+            {
+                value.X = value.X > 0 ? maxLength : -maxLength;
+            }
+            if (Math.Abs(value.Y) > maxLength)
+            {
+                value.Y = value.Y > 0 ? maxLength : -maxLength;
+            }
+
 
             return value;
         }
@@ -437,10 +480,23 @@ namespace VikingEngine
 
         public static Vector2 Normalize(Vector2 vector, out float length)
         {
+            if (vector.X == 0 && vector.Y == 0)
+            {
+                length = 0;
+                return vector;
+            }
             length = vector.Length();
             vector.X /= length;
             vector.Y /= length;
             return vector;
+        }
+
+        public static Vector2 Normalize(float x, float y, out float length)
+        {
+            length = (float)Math.Sqrt(x * x + y * y);
+            x /= length;
+            y /= length;
+            return new Vector2(x, y);
         }
 
         public static Vector3 Normalize(Vector3 vector, out float length)
@@ -553,10 +609,25 @@ namespace VikingEngine
 
         public static Vector2 RotateVector(Vector2 vector, float rotation)
         {
+            if (rotation == 0)
+            { 
+                return vector;
+            }
+
             Vector2 result = new Vector2(
                 (float)(Math.Cos(rotation) * vector.X - Math.Sin(rotation) * vector.Y),
                 (float)(Math.Sin(rotation) * vector.X + Math.Cos(rotation) * vector.Y));
             return result;
+        }
+
+        public static Vector2 Reflect(Vector2 inDirection, Vector2 inNormal)
+        {
+            //vectorB = vectorA - 2(vectorA dot normal)
+
+            //return vectorA - Vector2.Dot(vectorA, normal);
+            //return 2 * Vector2.Dot(v, axis) * axis - v;
+
+            return inDirection - 2 * inNormal * Vector2.Dot(inDirection, inNormal);
         }
 
         public static Vector2 RotateVector(Vector2 vector, float rotation, Vector2 addToOrigo)

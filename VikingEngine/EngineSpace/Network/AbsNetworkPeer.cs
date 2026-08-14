@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Audio;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.Network
 {
@@ -51,6 +53,10 @@ namespace VikingEngine.Network
         public ulong fullId;
 
         public float roundTripTime = 0;
+        public int maxPacketCount = 1;
+        public float packetLoad = 0;
+        public float potensialLoad = 0;
+        //public int usedPacketCount = 0;
         public int localGamersCount = 1;
         public float lastHeardFrom;// = Ref.TotalTimeSec;
 
@@ -63,7 +69,40 @@ namespace VikingEngine.Network
         /// player class object
         /// </summary>
         public object Tag = null;
+        public StoredNetworkGamer storedData;
 
+        public bool isFriend = false;
+        public bool isRecording = false;
+        public TimeStamp lastvoice;
+        public DynamicSoundEffectInstance _audioPlayback = null;
+
+        public bool lowLoad()
+        {
+            return packetLoad + potensialLoad < maxPacketCount;
+        }
+
+        public void unload()
+        {
+            _audioPlayback?.Stop();
+            _audioPlayback?.Dispose();
+        }
+
+        public bool lowPotensialLoad(float add)
+        {
+            bool result = packetLoad + potensialLoad < maxPacketCount;
+            potensialLoad += add;
+            return result;
+        }
+
+        public bool highLoad()
+        {
+            return packetLoad + potensialLoad >= maxPacketCount;
+        }
+
+        public int packetsLeft()
+        {
+           return Bound.Min((int)(maxPacketCount - packetLoad - potensialLoad), 0);
+        }
         //abstract public void kickFromNetwork();
 
         public override bool Equals(object obj)
@@ -79,6 +118,11 @@ namespace VikingEngine.Network
             return Gamertag + (IsLocal ? "(L)" : "(R)") + ": Id(" + id.ToString() + "), Tag(" + TextLib.ToString_Safe(Tag) + ")";
         }
 
+        public string NetPingString()
+        {
+            return $"Ping {(int)roundTripTime}, Load {TextLib.OneDecimal(packetLoad)} (potensial {TextLib.OneDecimal(packetLoad + potensialLoad)}) / {maxPacketCount}";
+        }
+
         public void initInstancePeers()
         {
             instancePeers = new NetworkInstancePeer[localGamersCount];
@@ -90,6 +134,8 @@ namespace VikingEngine.Network
 
         public byte Id { get { return id; } }
         public ulong FullId { get { return fullId; } }
+
+        abstract public CSteamID SteamID { get; } 
         public float SendTime { get { return roundTripTime * 0.5f; } }
         abstract public string Gamertag { get; }
         abstract public bool IsLocal { get; }
@@ -122,6 +168,8 @@ namespace VikingEngine.Network
 
         public override bool IsPlaceHolder => true;
 
+        public override CSteamID SteamID => CSteamID.Nil;
+
     }
 
     class OfflinePeer: AbsNetworkPeer
@@ -130,6 +178,8 @@ namespace VikingEngine.Network
 
         public override bool IsLocal => true;
         public override bool Connected => false;
+
+        public override CSteamID SteamID => CSteamID.Nil;
     }
 
     class LocalInstancePeer : AbsNetworkPeer
@@ -150,6 +200,8 @@ namespace VikingEngine.Network
         public override bool IsLocal => true;
 
         public override bool IsInstance => true;
+
+        public override CSteamID SteamID => localPeer.SteamID;
     }
 
     class StoredPeer : AbsNetworkPeer
@@ -165,13 +217,13 @@ namespace VikingEngine.Network
         public StoredPeer(System.IO.BinaryReader r)
         {
             fullId = r.ReadUInt64();
-            name = SaveLib.ReadString_safe(r);
+            name = StreamLib.ReadString_safe(r);
         }
 
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(fullId);
-            SaveLib.WriteString(w, name);
+            StreamLib.WriteString(w, name);
         }
 
         public override bool Equals(object obj)
@@ -180,6 +232,8 @@ namespace VikingEngine.Network
         }
 
         public override string Gamertag => name;
+
+        public override CSteamID SteamID => new CSteamID(fullId);
 
         public override bool IsLocal => false;
         public override bool Connected => false;

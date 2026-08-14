@@ -70,7 +70,7 @@ namespace VikingEngine.PJ.Strategy
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(toArea.index);
-            SaveLib.WriteVector(w, arrowPos / Map.MapScale);
+            StreamLib.WriteVector(w, arrowPos / Map.MapScale);
             w.Write(arrowRotation.Radians);
             w.Write(waterPassage);
         }
@@ -79,7 +79,7 @@ namespace VikingEngine.PJ.Strategy
         {
             int adjIx = r.ReadInt32();
             toArea = areas[adjIx];
-            arrowPos = SaveLib.ReadVector2(r) * Map.MapScale;
+            arrowPos = StreamLib.ReadVector2(r) * Map.MapScale;
             arrowRotation.Radians = r.ReadSingle();
             waterPassage = r.ReadBoolean();
         }

@@ -1,26 +1,16 @@
 ﻿#if PCGAME
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Valve.Steamworks;
+using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.Network;
 
 
 namespace VikingEngine.SteamWrapping
 {
-    enum LobbyDatas
-    {
-        LobbyName,
-        LobbyDebugState,
-        LobbyGameVersion
-    }
 
-    //enum LobbyDebugState
-    //{
-    //    DEBUG,
-    //    RELEASE
-    //}
     /*
         4. Users stay in a lobby until there are enough players ready to launch the game. Data is communicated between the lobby members about which character they want to play, or other per-user settings. If there are some rules that need to be enforced in the lobby (for example, only one user can play as a certain character), there is one and only one lobby owner who you can use to arbritrate that.
         5. There may or may not be a user interface associated with the lobby; if there is, the lobby data communications functions can be used to send chat messages between lobby members. Voice data can also be sent, but needs to sent using the peer-to-peer networking API.
@@ -28,55 +18,36 @@ namespace VikingEngine.SteamWrapping
     */
     class SteamLobbyMatchmaker
     {
-        public const string LobbyTimeKey = "TIME";
-        const string LobbyMetaDataKey = "META";
-
-        public const int MAX_LOBBY_MEMBERS =
-#if CCG
-            2;
-#elif DSS
-            16;
-#elif PJ
-            9;
-#else
-            4;
-#endif
-
-        
-        /* Fields */
-        public ulong currentLobbyID = 0;
-        public ulong inviteFromLobby = 0;
+        public CSteamID currentLobbyID = CSteamID.Nil;
+        public CSteamID inviteFromLobby = CSteamID.Nil;
         public bool hostLobby = false;
        
-        public bool InLobby { get { return currentLobbyID != 0; } }
-        public bool HostingLobby => currentLobbyID != 0 && hostLobby;
+        public bool InLobby { get { return currentLobbyID != CSteamID.Nil; } }
+        public bool HostingLobby => currentLobbyID != CSteamID.Nil && hostLobby;
 
-        SteamCallResult<LobbyMatchList_t> callResultLobbyMatchList;
-        SteamCallResult<LobbyCreated_t> callResultLobbyCreated;
+        CallResult<LobbyMatchList_t> callResultLobbyMatchList;
+        CallResult<LobbyCreated_t> callResultLobbyCreated;
 
-        SteamCallback<GameLobbyJoinRequested_t> callbackJoinRequest;
+        Callback<GameLobbyJoinRequested_t> callbackJoinRequest;
         
-        SteamCallResult<LobbyEnter_t> callResultLobbyEnter;
-        SteamCallback<LobbyChatMsg_t> callbackLobbyChatMsg;
-        SteamCallback<LobbyChatUpdate_t> callbackLobbyChatUpdate;
-        SteamCallback<LobbyDataUpdate_t> callbackLobbyDataUpdate;
+        CallResult<LobbyEnter_t> callResultLobbyEnter;
+        Callback<LobbyChatMsg_t> callbackLobbyChatMsg;
+        Callback<LobbyChatUpdate_t> callbackLobbyChatUpdate;
+        Callback<LobbyDataUpdate_t> callbackLobbyDataUpdate;
 
         List<string> unresponsiveLobbies = new List<string>();
-        public LobbyPublicity lobbyPublicity = LobbyPublicity.FriendsOnly;
-        
-
-        /* Constructor */
+       
         public SteamLobbyMatchmaker()
         {
-            callResultLobbyMatchList = new SteamCallResult<LobbyMatchList_t>(OnLobbyMatchList);
-            callResultLobbyCreated = new SteamCallResult<LobbyCreated_t>(OnLobbyCreated);
-            callResultLobbyEnter = new SteamCallResult<LobbyEnter_t>(OnLobbyJoined);
+            callResultLobbyMatchList = new CallResult<LobbyMatchList_t>(OnLobbyMatchList);
+            callResultLobbyCreated = new CallResult<LobbyCreated_t>(OnLobbyCreated);
+            callResultLobbyEnter = new CallResult<LobbyEnter_t>(OnLobbyJoined);
 
-            callbackJoinRequest = new SteamCallback<GameLobbyJoinRequested_t>(onInvite, false);
+            callbackJoinRequest = new Callback<GameLobbyJoinRequested_t>(onInvite, false);
             
-            callbackLobbyChatMsg = new SteamCallback<LobbyChatMsg_t>(OnLobbyChatMessage, false);
-            callbackLobbyChatUpdate = new SteamCallback<LobbyChatUpdate_t>(OnLobbyChatUpdate, false);
-            callbackLobbyDataUpdate = new SteamCallback<LobbyDataUpdate_t>(OnLobbyDataUpdate, false);            
+            callbackLobbyChatMsg = new Callback<LobbyChatMsg_t>(OnLobbyChatMessage, false);
+            callbackLobbyChatUpdate = new Callback<LobbyChatUpdate_t>(OnLobbyChatUpdate, false);
+            callbackLobbyDataUpdate = new Callback<LobbyDataUpdate_t>(OnLobbyDataUpdate, false);            
         }
 
         public void SetLobbyFilters()
@@ -84,31 +55,31 @@ namespace VikingEngine.SteamWrapping
             // 1. Usually recommended to let user decide on whom to play with etc and set up some options, but we skip this for now.
             // SteamMatchmaking()->AddRequestLobbyListFilter*() functions would be called here, before a call to FindLobbies
 
-            SteamAPI.SteamMatchmaking().AddRequestLobbyListStringFilter(LobbyDatas.LobbyGameVersion.ToString(), PlatformSettings.SteamNetworkVersion.ToString(), ELobbyComparison.k_ELobbyComparisonEqual);
+            //SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyDatas.LobbyGameVersion.ToString(), PlatformSettings.SteamNetworkVersion.ToString(), ELobbyComparison.k_ELobbyComparisonEqual);
         }
 
         public void InviteSteamUserToLobbyDialog()
         {
-            SteamAPI.SteamFriends().ActivateGameOverlay("LobbyInvite");
+            SteamFriends.ActivateGameOverlay("LobbyInvite");
         }
 
-        public void SetLobbyPublicity(LobbyPublicity value)
-        {
-            var oldValue = lobbyPublicity;
-            lobbyPublicity = value;
+        //public void SetLobbyPublicity(LobbyPublicity value)
+        //{
+        //    var oldValue = lobbyPublicity;
+        //    lobbyPublicity = value;
 
-            if (value != oldValue)
-            {
-                if (IsPublicNetwork(value) != IsPublicNetwork(oldValue))
-                {
-                    Ref.netSession.Disconnect("Lobby Publicity reset");
-                }
-                else
-                {
-                    setMetaData();
-                }
-            }
-        }
+        //    if (value != oldValue)
+        //    {
+        //        if (IsPublicNetwork(value) != IsPublicNetwork(oldValue))
+        //        {
+        //            Ref.netSession.Disconnect("Lobby Publicity reset");
+        //        }
+        //        else
+        //        {
+        //            refreshMetaData();
+        //        }
+        //    }
+        //}
 
         static bool IsPublicNetwork(LobbyPublicity publicity)
         {
@@ -117,32 +88,89 @@ namespace VikingEngine.SteamWrapping
 
         public void CreateLobbyIfNotInOne()
         {
-            if (currentLobbyID == 0 && Ref.steam.P2PManager.disconnectTime.TimeOut)
+            if (currentLobbyID == CSteamID.Nil && Ref.steam.P2PManager.disconnectTime.TimeOut)
             {
                 CreateLobby();
             }
         }
 
+        ELobbyType lobbyType(LobbyPublicity lobbyPublicity)
+        {
+            ELobbyType type;
+            switch (lobbyPublicity)//Ref.netsett.lobbyPublicity)
+            {
+                default:
+                case LobbyPublicity.Private:
+                    type = ELobbyType.k_ELobbyTypePrivate;
+                    break;
+                case LobbyPublicity.FriendsOnly:
+                    type = ELobbyType.k_ELobbyTypeFriendsOnly;
+                    break;
+                case LobbyPublicity.Public:
+                    type = ELobbyType.k_ELobbyTypePublic;
+                    break;
+            }
+            return type;
+        }
+
         public void CreateLobby()
         {
-            if (currentLobbyID != 0)
+            //if (Ref.netsett.hostNetwork && PlatformSettings.DebugLevel == BuildDebugLevel.Dev)
             {
-                Debug.LogWarning("Replacing already existing lobby");
-                LeaveCurrentLobby();
+                if (currentLobbyID != CSteamID.Nil)
+                {
+                    Debug.LogWarning("Replacing already existing lobby");
+                    LeaveCurrentLobby();
+                }
+
+                ELobbyType type= lobbyType(Ref.steam.P2PManager.SessionLobbyPublicity());
+                //switch ( LobbyPublicity.Public)//Ref.netsett.lobbyPublicity)
+                //{
+                //    default:
+                //    case LobbyPublicity.Private:
+                //        type = ELobbyType.k_ELobbyTypePrivate;
+                //        break;
+                //    case LobbyPublicity.FriendsOnly:
+                //        type = ELobbyType.k_ELobbyTypeFriendsOnly;
+                //        break;
+                //    case LobbyPublicity.Public:
+                //        type = ELobbyType.k_ELobbyTypePublic;
+                //        break;
+                //}
+                //ELobbyType type = IsPublicNetwork(lobbyPublicity) ? ELobbyType.k_ELobbyTypePublic : ELobbyType.k_ELobbyTypePrivate;
+
+                Debug.Log($"Creating lobby... ({type})");
+                SteamAPICall_t result = SteamMatchmaking.CreateLobby(type, Ref.netsett.maxPlayerCount);
+                callResultLobbyCreated.Set(result, OnLobbyCreated);
             }
+        }
+        public void RefreshLobbyVisibility()
+        {
+            RefreshLobbyVisibility(Ref.steam.P2PManager.SessionLobbyPublicity());
+        }
+        public void RefreshLobbyVisibility(LobbyPublicity publicity)
+        {
+            // The lobby type can only be changed by the lobby owner
+            if (SteamMatchmaking.GetLobbyOwner(currentLobbyID) == SteamUser.GetSteamID())
+            {
+                bool success = SteamMatchmaking.SetLobbyType(currentLobbyID, lobbyType(publicity));
 
-            ELobbyType type = IsPublicNetwork(lobbyPublicity) ? ELobbyType.k_ELobbyTypePublic : ELobbyType.k_ELobbyTypePrivate;
-
-            Debug.Log("Creating lobby...");
-            ulong result = SteamAPI.SteamMatchmaking().CreateLobby(type, MAX_LOBBY_MEMBERS);
-            callResultLobbyCreated.Set(result, OnLobbyCreated);
+                if (success)
+                {
+                    Debug.Log("Successfully updated the lobby type");
+                }
+                else
+                {
+                    Debug.Log("Failed to update lobby type (usually means the lobby ID is invalid or connection to Steam was lost)");
+                }
+            }
         }
 
         public void setJoinable(bool joinable)
         {
-            if (currentLobbyID != 0)
+            if (currentLobbyID != CSteamID.Nil)
             {
-                SteamAPI.SteamMatchmaking().SetLobbyJoinable(currentLobbyID, joinable);
+                SteamMatchmaking.SetLobbyJoinable(currentLobbyID, joinable);
             }
         }
 
@@ -157,13 +185,13 @@ namespace VikingEngine.SteamWrapping
 
             statusMessage(Network.NetworkStatusMessage.Created_Lobby);
 
-            currentLobbyID = lobbyCreated.m_ulSteamIDLobby;
+            currentLobbyID = new CSteamID( lobbyCreated.m_ulSteamIDLobby);
             hostLobby = true;
 
-            string userName = SteamAPI.SteamFriends().GetPersonaName();
-            SteamAPI.SteamMatchmaking().SetLobbyData(currentLobbyID, LobbyDatas.LobbyName.ToString(), userName);
-            SteamAPI.SteamMatchmaking().SetLobbyOwner(currentLobbyID, SteamAPI.SteamUser().GetSteamID());
-            SteamAPI.SteamMatchmaking().SetLobbyData(currentLobbyID, LobbyDatas.LobbyGameVersion.ToString(), PlatformSettings.SteamNetworkVersion.ToString());
+            SteamMatchmaking.SetLobbyOwner(currentLobbyID, SteamUser.GetSteamID());
+
+            refreshMetaData();
+
             setJoinable(Ref.netSession.joinableStatus);
 
             if (Ref.p2p.hostSession)
@@ -173,42 +201,25 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        
+
         public void updateLobbyTime(bool connected)
         {
             uint time = 0;
             if (connected)
             {
-                time = SteamAPI.SteamUtils().GetServerRealTime();
+                time = SteamUtils.GetServerRealTime();
             }
-            SteamAPI.SteamMatchmaking().SetLobbyData(currentLobbyID, LobbyTimeKey, time.ToString());
+            SteamMatchmaking.SetLobbyData(currentLobbyID, AbsLobbyMetaData.LobbyTimeDataKey, time.ToString());
         }
 
-        public long lobbyTimeDelta()
+        public void refreshMetaData()
         {
-            long lobbyTime = GetLobbyTimeStamp(currentLobbyID);
-            long serverTime = SteamAPI.SteamUtils().GetServerRealTime();
-
-            return lobbyTime - serverTime;
-        }
-
-        void setMetaData()
-        {
-            int publicType = (int)lobbyPublicity;
-
-            SteamAPI.SteamMatchmaking().SetLobbyData(currentLobbyID, LobbyMetaDataKey, publicType.ToString());
-        }
-
-        public void getMetaData(ulong lobbyID, out LobbyPublicity publicity)
-        {
-            publicity = LobbyPublicity.ERROR;
-
-            string data = SteamAPI.SteamMatchmaking().GetLobbyData(lobbyID, LobbyMetaDataKey);
-
-            if (data != null && data.Length > 0)
+            var meta = Ref.NetUpdateReciever().NetEvent_StartLobbyMetaData();
+            meta.CollectValues();
+            var keys = meta.GetKeys();
+            for (int i = 0; i < keys.Length; i++)
             {
-                int ptype = Convert.ToInt32(data);
-                publicity = (LobbyPublicity)ptype;
+                SteamMatchmaking.SetLobbyData(currentLobbyID, keys[i], meta.Values[i]);
             }
         }
 
@@ -223,7 +234,7 @@ namespace VikingEngine.SteamWrapping
 
         public void FindLobbies()
         {
-            if (currentLobbyID == 0)
+            if (currentLobbyID == CSteamID.Nil)
             {
                 Debug.LogWarning("FindLobbies - you got no lobby");
             }
@@ -232,7 +243,7 @@ namespace VikingEngine.SteamWrapping
             statusMessage(Network.NetworkStatusMessage.Searching_Session);
 
             // this call can take from 300ms to 5 seconds to complete, with a timeout of 20 seconds.
-            ulong lobbyRequest = SteamAPI.SteamMatchmaking().RequestLobbyList();
+            SteamAPICall_t lobbyRequest = SteamMatchmaking.RequestLobbyList();
             callResultLobbyMatchList.Set(lobbyRequest, OnLobbyMatchList);
         }
 
@@ -250,106 +261,171 @@ namespace VikingEngine.SteamWrapping
             
         }
 
-        List<AbsAvailableSession> prevAvailableSessionsList = null;
+        List<AbsAvailableSession> availableSessionsList = new List<AbsAvailableSession>();
         void sortFoundLobbies(LobbyMatchList_t lobbyMatchList)
         {
             SteamAvailableSession.RefreshServerTime();
-            //long serverTime = SteamAPI.SteamUtils().GetServerRealTime();
-            List<AbsAvailableSession> availableSessionsList = null;
 
             int count = (int)lobbyMatchList.m_nLobbiesMatching;
-            if (count > 0)
+            if (count == 0)
             {
-                var rawList = new List<AbsAvailableSession>(count);
+                availableSessionsList.Clear();
+            }
+            else
+            {
+                var rawList = new Dictionary<ulong, AbsAvailableSession>(count);
                 for (int i = 0; i < count; ++i)
                 {
-                    ulong lobbyID = SteamAPI.SteamMatchmaking().GetLobbyByIndex((int)i);
+                    CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex((int)i);
 
                     if (lobbyID != VikingEngine.Ref.steam.LobbyMatchmaker.currentLobbyID)
                     {
                         SteamAvailableSession session = new SteamAvailableSession(lobbyID);
                         bool canBeListed = true;
 
-                        if (unresponsiveLobbies.Contains(session.name))
+                        if (unresponsiveLobbies.Contains(session.metaData.name))
                         {
                             canBeListed = false;
                         }
-
-                        if (session.publicity == LobbyPublicity.FriendsOnly && session.friend == false)
+                        else if (session.metaData.lobbyPublicity == LobbyPublicity.Private ||
+                            (session.metaData.lobbyPublicity == LobbyPublicity.FriendsOnly && session.friend == false))
                         { //has locked out anyone that is not friend
                             canBeListed = false;
                         }
-
-                        if (session.refreshAvailable() == false)
+                        else if (Ref.netsett.IsBanned(session.metaData.host.m_SteamID) == BanStatus.Banned)
+                        {
+                            canBeListed = false;
+                        }
+                        else if (session.refreshAvailable() == false)
                         {
                             canBeListed = false;
                         }
 
                         if (canBeListed)
                         {
-                            rawList.Add(session);
+                            rawList.Add(lobbyID.m_SteamID, session);
                         }   
                     }
                 }
 
-                //Sort, clear out doublettes
-                availableSessionsList = new List<AbsAvailableSession>(rawList.Count);
-                foreach (var unsortedMember in rawList)
+                for (int i = availableSessionsList.Count -1; i>= 0; --i)//foreach (var prev in availableSessionsList)
                 {
-                    bool contains = false;
-                    foreach (var sortedMember in availableSessionsList)
+                    var prev = availableSessionsList[i];
+                    if (rawList.TryGetValue(prev.lobbyId, out var availableSession))
                     {
-                        if (sortedMember.Equals(unsortedMember))
-                        {
-                            contains = true;
-                            break;
-                        }
+                        availableSessionsList[i] = availableSession;
+                        rawList.Remove(prev.lobbyId);
                     }
-
-                    if (!contains)
+                    else
                     {
-                        availableSessionsList.Add(unsortedMember);
+                        
+                        prev.IsAvailable = false;
+                        availableSessionsList.RemoveAt(i);
                     }
                 }
+
+                foreach (var kv in rawList)
+                {
+                    availableSessionsList.Add(kv.Value);
+                }
+
+                //Sort, clear out doublettes
+                //availableSessionsList = new List<AbsAvailableSession>(rawList.Count);
+                //foreach (var unsortedMember in rawList)
+                //{
+                //    bool contains = false;
+                //    foreach (var sortedMember in availableSessionsList)
+                //    {
+                //        if (sortedMember.Equals(unsortedMember))
+                //        {
+                //            contains = true;
+                //            break;
+                //        }
+                //    }
+
+                //    if (!contains)
+                //    {
+                //        availableSessionsList.Add(unsortedMember);
+                //    }
+                //}
+
+                
 
                 Debug.Log("Lobby sorted count: " + availableSessionsList.Count.ToString());
             }
 
 
-            if (availableSessionsList != null && availableSessionsList.Count > 0)
+            if (availableSessionsList.Count > 0)
             {
                 statusMessage(Network.NetworkStatusMessage.Found_Session);
-                Ref.NetUpdateReciever().NetEvent_SessionsFound(availableSessionsList, prevAvailableSessionsList);
+                
             }
             else
             {
-                statusMessage(NetworkStatusMessage.Found_No_Session); 
-                Ref.NetUpdateReciever().NetEvent_SessionsFound(null, prevAvailableSessionsList);
+                statusMessage(NetworkStatusMessage.Found_No_Session);
+                //Ref.NetUpdateReciever().NetEvent_SessionsFound(null, this.availableSessionsList);
             }
+            Ref.NetUpdateReciever().NetEvent_SessionsFound(availableSessionsList);
 
-            prevAvailableSessionsList = availableSessionsList;
+            //this.availableSessionsList = availableSessionsList;
         }
 
-        public bool lobbyIsFriend(ulong lobbyId, out ulong steamIDFriend)
+        //public bool lobbyIsFriend(CSteamID lobbyId, out CSteamID steamIDFriend)
+        //{
+        //    steamIDFriend = CSteamID.Nil;
+
+        //    int cFriends = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagImmediate);
+        //    for (int i = 0; i < cFriends; i++)
+        //    {
+        //        FriendGameInfo_t friendGameInfo;
+        //        steamIDFriend = SteamFriends.GetFriendByIndex(i, EFriendFlags.k_EFriendFlagImmediate);
+
+        //        SteamFriends.GetFriendGamePlayed(steamIDFriend, out friendGameInfo);
+
+        //        if (friendGameInfo.m_steamIDLobby == lobbyId)
+        //        {
+        //            return true;
+        //        }
+        //    }
+
+        //    return false;
+        //}
+        public bool lobbyIsFriend(CSteamID lobbyOwner)
         {
-            steamIDFriend = 0;
-
-            int cFriends = SteamAPI.SteamFriends().GetFriendCount((int)EFriendFlags.k_EFriendFlagImmediate);
-            for (int i = 0; i < cFriends; i++)
+            if (lobbyOwner == SteamUser.GetSteamID())
             {
-                FriendGameInfo_t friendGameInfo;
-                steamIDFriend = SteamAPI.SteamFriends().GetFriendByIndex(i, (int)EFriendFlags.k_EFriendFlagImmediate);
-
-                SteamAPI.SteamFriends().GetFriendGamePlayed(steamIDFriend, out friendGameInfo);
-
-                if (friendGameInfo.m_steamIDLobby == lobbyId)
-                {
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            bool isFriend = SteamFriends.HasFriend(lobbyOwner, EFriendFlags.k_EFriendFlagImmediate);
+
+            return isFriend;
         }
+        //public bool lobbyIsFriend(CSteamID lobbyOwner)
+        //{
+        //    // Get the total number of accepted friends
+        //    int friendCount = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagImmediate);
+
+        //    for (int i = 0; i < friendCount; i++)
+        //    {
+        //        // Get the friend's Steam ID
+        //        CSteamID friendId = SteamFriends.GetFriendByIndex(i, EFriendFlags.k_EFriendFlagImmediate);
+
+        //        // Check if they are currently playing a game
+        //        FriendGameInfo_t friendGameInfo;
+        //        if (SteamFriends.GetFriendGamePlayed(friendId, out friendGameInfo))
+        //        {
+        //            // If their current lobby matches the lobby we are checking
+        //            if (friendGameInfo.m_steamIDLobby == lobbyId)
+        //            {
+        //                lobbyOwner = friendId;
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //    lobbyOwner = CSteamID.Nil;
+        //    return false;
+        //}
 
         void onInvite(GameLobbyJoinRequested_t args)
         {
@@ -358,19 +434,19 @@ namespace VikingEngine.SteamWrapping
             JoinLobby(args.m_steamIDLobby);
         }
 
-        public static string lobbyName(ulong lobbyID)
-        {
-            return SteamAPI.SteamMatchmaking().GetLobbyData(lobbyID, LobbyDatas.LobbyName.ToString());
-        }
+        //public static string lobbyName(CSteamID lobbyID)
+        //{
+        //    return SteamMatchmaking.GetLobbyData(lobbyID, LobbyDatas.LobbyName.ToString());
+        //}
         
-        public void JoinLobby(ulong lobbyID)
+        public void JoinLobby(CSteamID lobbyID)
         {
             LeaveCurrentLobby();
 
-            string name = SteamAPI.SteamMatchmaking().GetLobbyData(lobbyID, LobbyDatas.LobbyName.ToString());
+            //string name = SteamMatchmaking.GetLobbyData(lobbyID, LobbyDatas.LobbyName.ToString());
 
-            Debug.Log("Attempting to join lobby (" + name + ")");
-            ulong result = SteamAPI.SteamMatchmaking().JoinLobby(lobbyID);
+            Debug.Log("Attempting to join lobby (" + lobbyID.ToString() + ")");
+            SteamAPICall_t result = SteamMatchmaking.JoinLobby(lobbyID);
 
             //isHost = false;
 
@@ -388,15 +464,15 @@ namespace VikingEngine.SteamWrapping
             Ref.steam.P2PManager.endSession();
             //Ref.steam.P2PManager.remoteGamers.Clear();
             //currentLobbyID = lobbyEnter.m_ulSteamIDLobby;
-            ConnectToLobbyMembers(lobbyEnter.m_ulSteamIDLobby);
-            ulong lobbyHost = SteamAPI.SteamMatchmaking().GetLobbyOwner(lobbyEnter.m_ulSteamIDLobby);
-            string name = SteamAPI.SteamMatchmaking().GetLobbyData(lobbyEnter.m_ulSteamIDLobby, LobbyDatas.LobbyName.ToString());
+            ConnectToLobbyMembers(new CSteamID( lobbyEnter.m_ulSteamIDLobby));
+            CSteamID lobbyHost = SteamMatchmaking.GetLobbyOwner(new CSteamID( lobbyEnter.m_ulSteamIDLobby));
+            string name = lobbyEnter.m_ulSteamIDLobby.ToString();//SteamMatchmaking.GetLobbyData(new CSteamID(lobbyEnter.m_ulSteamIDLobby), LobbyDatas.LobbyName.ToString());
 
-            bool fromInvite = lobbyEnter.m_ulSteamIDLobby == inviteFromLobby;
-            Ref.NetUpdateReciever().NetEvent_JoinedLobby(name, lobbyHost, fromInvite);
+            bool fromInvite = lobbyEnter.m_ulSteamIDLobby == inviteFromLobby.m_SteamID;
+            Ref.NetUpdateReciever().NetEvent_JoinedLobby(name, lobbyHost.m_SteamID, fromInvite);
             Ref.netSession.BeginWritingPacket(Network.PacketType.Steam_SuccesfulJoinPing, Network.PacketReliability.Reliable);
 
-            currentLobbyID = lobbyEnter.m_ulSteamIDLobby;
+            currentLobbyID = new CSteamID( lobbyEnter.m_ulSteamIDLobby);
             //refreshHostStatus();
             statusMessage(Network.NetworkStatusMessage.Joining_session);
 
@@ -417,16 +493,25 @@ namespace VikingEngine.SteamWrapping
             Ref.netSession.BeginWritingPacket(PacketType.Steam_InviteAccepted, PacketReliability.Reliable);
         }
 
-        void ConnectToLobbyMembers(ulong currentLobbyID)
+        void ConnectToLobbyMembers(CSteamID currentLobbyID)
         {
+            //CSteamID lobbyHost = SteamMatchmaking.GetLobbyOwner(currentLobbyID);
+            //CSteamID myID = SteamUser.GetSteamID();
+
             // User info
-            int memberCount = SteamAPI.SteamMatchmaking().GetNumLobbyMembers(currentLobbyID);
+            int memberCount = SteamMatchmaking.GetNumLobbyMembers(currentLobbyID);
             for (int i = 0; i < memberCount; ++i)
             {
-                ulong userID = SteamAPI.SteamMatchmaking().GetLobbyMemberByIndex(currentLobbyID, i);
-                if (userID != 0)
+                CSteamID userID = SteamMatchmaking.GetLobbyMemberByIndex(currentLobbyID, i);
+                if (userID != CSteamID.Nil)
                 {
-                    Debug.Log("Lobby member: " + SteamAPI.SteamFriends().GetFriendPersonaName(userID));
+                    //if (!hostLobby && userID == lobbyHost && userID != myID)
+                    //{
+                    //    // Here is where you call SteamNetworkingSockets.ConnectP2P()
+                    //    // Example: Ref.p2p.ConnectToServer(userID); 
+                    //    // That method should return and store your HSteamNetConnection handle.
+                    //}
+                    Debug.Log("Lobby member: " + SteamFriends.GetFriendPersonaName(userID));
                     Ref.p2p.AddPeer(userID);
                 }
             }
@@ -441,25 +526,25 @@ namespace VikingEngine.SteamWrapping
 
         public void LeaveCurrentLobby()
         {
-            if (currentLobbyID != 0)
+            if (currentLobbyID != CSteamID.Nil)
             {
                 if (hostLobby)
                 {
-                    Ref.steamlobby.updateLobbyTime(false);
+                    SteamMatchmaking.SetLobbyData(currentLobbyID, AbsLobbyMetaData.LobbyAliveDataKey, bool.FalseString);
                 }
                 Debug.Log("Leaving current lobby");
-                SteamAPI.SteamMatchmaking().LeaveLobby(currentLobbyID);
-                //Ref.NetUpdateReciever().NetEvent_ConnectionLost();
-                currentLobbyID = 0;
+                SteamMatchmaking.LeaveLobby(currentLobbyID);
+                currentLobbyID.Clear();
 
             }
         }
 
         public void SetLobbyAsUnresponsive()
         {
-            if (currentLobbyID != 0)
+            if (currentLobbyID != CSteamID.Nil)
             {
-                string lobbyname = SteamAPI.SteamMatchmaking().GetLobbyData(currentLobbyID, LobbyDatas.LobbyName.ToString());
+                //string lobbyname = SteamMatchmaking.GetLobbyData(currentLobbyID, LobbyDatas.LobbyName.ToString());
+                string lobbyname = currentLobbyID.ToString();
                 Debug.Log("Adding unresponsive lobby: " + lobbyname);
                 unresponsiveLobbies.Add(lobbyname);
             }
@@ -471,7 +556,7 @@ namespace VikingEngine.SteamWrapping
 
             byte[] bytes = EncodeString(msg);
 
-            if (SteamAPI.SteamMatchmaking().SendLobbyChatMsg(currentLobbyID, bytes, bytes.Length))
+            if (SteamMatchmaking.SendLobbyChatMsg(currentLobbyID, bytes, bytes.Length))
             {
                 Debug.Log("Broadcasted MSG:[" + msg + "]");
             }
@@ -483,11 +568,11 @@ namespace VikingEngine.SteamWrapping
 
         void OnLobbyChatMessage(LobbyChatMsg_t lobbyChatMsg)
         {
-            ulong sendingUserID;
+            CSteamID sendingUserID;
             int maxMsgByteCount = 4096;
             byte[] msgArena = new byte[4096];
             EChatEntryType chatEntryType;
-            int bytesUsed = SteamAPI.SteamMatchmaking().GetLobbyChatEntry(currentLobbyID, (int)lobbyChatMsg.m_iChatID, out sendingUserID, msgArena, maxMsgByteCount, out chatEntryType);
+            int bytesUsed = SteamMatchmaking.GetLobbyChatEntry(currentLobbyID, (int)lobbyChatMsg.m_iChatID, out sendingUserID, msgArena, maxMsgByteCount, out chatEntryType);
 
             string msg = DecodeString(msgArena, bytesUsed);
 
@@ -496,13 +581,13 @@ namespace VikingEngine.SteamWrapping
 
         void OnLobbyChatUpdate(LobbyChatUpdate_t lobbyChatUpdate)
         {
-            if (lobbyChatUpdate.m_ulSteamIDLobby == currentLobbyID)
+            if (lobbyChatUpdate.m_ulSteamIDLobby == currentLobbyID.m_SteamID)
             {
                 //ulong changedGamerID = lobbyChatUpdate.m_ulSteamIDUserChanged;
                 ////ulong changerID = new ulong(lobbyChatUpdate.m_ulSteamIDMakingChange);
                 //uint changeFlags = lobbyChatUpdate.m_rgfChatMemberStateChange;
 
-                //string changedName = SteamAPI.SteamFriends().GetFriendPersonaName(changedGamerID);
+                //string changedName = SteamFriends.GetFriendPersonaName(changedGamerID);
                 ////string changerName = SteamFriends.GetFriendPersonaName(changerID);
 
                 //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeBanned & changeFlags) != 0)
@@ -533,9 +618,9 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        public long GetLobbyTimeStamp(ulong lobbyId)
+        public long GetLobbyTimeStamp(CSteamID lobbyId)
         {
-            string time = SteamAPI.SteamMatchmaking().GetLobbyData(lobbyId, LobbyTimeKey);
+            string time = SteamMatchmaking.GetLobbyData(lobbyId, AbsLobbyMetaData.LobbyTimeDataKey);
             if (TextLib.IsEmpty(time))
             {
                 return 0;

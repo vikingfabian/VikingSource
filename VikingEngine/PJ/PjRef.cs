@@ -52,7 +52,7 @@ namespace VikingEngine.PJ
                 if (dlc != null)
                 {
                     //Dlc1Characters = dlc.JoustingCharacterPack;
-                    Dlc2BETA = dlc.JoustingBlingPack;
+                    //Dlc2BETA = dlc.JoustingBlingPack;
                     //DlcZombie = dlc.JoustingZombiePack;
 
                     //if (PlatformSettings.DevBuild)

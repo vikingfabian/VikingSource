@@ -32,9 +32,8 @@ namespace VikingEngine.Graphics
         public ImageAdvanced(SpriteName SpriteName, Vector2 pos, Vector2 sz, ImageLayers layer, bool centerMidpoint, bool addToRender)
             :base(SpriteName, pos, sz, layer, centerMidpoint, addToRender)
         {
-            ImageSource = DataLib.SpriteCollection.Sprites[spriteIndex].Source;
-            Texture = DataLib.SpriteCollection.Sprites[spriteIndex].Texture();
         }
+
         public override void InitFromFile(Vector2 ImagePos, Vector2 ImageSize, SpriteName name, float pLayer)
         {
             base.InitFromFile(ImagePos, ImageSize, name, pLayer);
@@ -44,16 +43,20 @@ namespace VikingEngine.Graphics
 
         public override void SetSpriteName(SpriteName sprite)
         {
-            spriteIndex = (int)sprite;
-            ImageSource = DataLib.SpriteCollection.Sprites[spriteIndex].Source;
-            Texture = DataLib.SpriteCollection.Sprites[spriteIndex].Texture();
+            if (sprite != SpriteName.NO_IMAGE)
+            {
+                spriteIndex = (int)sprite;
+                ImageSource = DataLib.SpriteCollection.Sprites[spriteIndex].Source;
+                Texture = DataLib.SpriteCollection.Sprites[spriteIndex].Texture();
+            }
         }
-
-        
 
         public void SetFullTextureSource()
         {
-            ImageSource = new Rectangle(0, 0, Texture.Width, Texture.Height);
+            if (Texture != null)
+            {
+                ImageSource = new Rectangle(0, 0, Texture.Width, Texture.Height);
+            }
         }
 
         public override int SourceX
@@ -110,7 +113,7 @@ namespace VikingEngine.Graphics
 
         public override void Draw(int cameraIndex)
         {
-            if (visible)
+            if (visible && Texture != null)
             {
                 drawScale.X = size.X / ImageSource.Width;
                 drawScale.Y = size.Y / ImageSource.Height;

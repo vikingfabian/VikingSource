@@ -2,12 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsGroup : AbsWorldObject
     {           
         public float groupRadius, attackRadius;
+
+        public float highTargetValueToOpponent = float.MaxValue;
+        public int highTargetValueToOpponent_tagId = -1;
         //public IntVector2 battleGridPos, prevBattleGridPos;
 
         virtual public Vector2 WorldPositionXZ()
@@ -16,7 +20,12 @@ namespace VikingEngine.DSSWars.GameObject
         }
         virtual public SoldierGroup GetGroup() { return null; }
         
-        
+        virtual public SpottedArray<AbsSoldierUnit> Soldiers()
+        {
+            return null;
+        }
+
+        virtual public void OnBecomeAttackTarget(AbsGroup attacker) { }
 
         //abstract public bool isMelee();
     }

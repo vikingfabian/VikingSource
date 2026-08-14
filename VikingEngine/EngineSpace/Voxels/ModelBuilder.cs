@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map.HDvoxel;
 
@@ -22,6 +23,15 @@ namespace VikingEngine.Voxels
         public ModelBuilder()
         { }
 
+        public Graphics.VoxelModel BuildFromGrid(VoxelObjGridDataAnimHD grid)
+        {
+            var centerAdjust = grid.Frame(0).BottomCenterAdj();
+            buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
+            Graphics.VoxelModel model = modelFromVertices();
+
+            return model;
+        }
+
         public void buildVerticeDataHD_ColorNormal(List<VoxelObjGridDataHD> grids, Vector3 posAdjust)
         {
 
@@ -31,7 +41,7 @@ namespace VikingEngine.Voxels
 
             foreach (VoxelObjGridDataHD grid in grids)
             {
-                Frame frameData = LootFest.Editor.VoxelObjBuilder.VoxelGridToVerticesHD(
+                Frame frameData = VoxelObjBuilder.VoxelGridToVerticesHD(
                     grid, posAdjust, ref vertices, ref indexDrawOrder);
                 framesData.Add(frameData);
             }
@@ -52,7 +62,7 @@ namespace VikingEngine.Voxels
 
             foreach (VoxelObjGridDataHD grid in grids)
             {
-                Frame frameData = LootFest.Editor.VoxelObjBuilder.VoxelGridToVerticesHD(
+                Frame frameData = VoxelObjBuilder.VoxelGridToVerticesHD(
                     grid, posAdjust, ref vertices, ref indexDrawOrder);
                 framesData.Add(frameData);
             }

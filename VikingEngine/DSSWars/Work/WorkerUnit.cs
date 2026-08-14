@@ -1,17 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Sound;
 using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.Work
@@ -19,7 +24,7 @@ namespace VikingEngine.DSSWars.Work
     class WorkerUnit : AbsGameObject
     {
         WalkingAnimation walkingAnimation;
-        protected WorkerStatus status;
+        //protected WorkerStatus status;
 
         public Graphics.AbsVoxelObj model;
         Graphics.Mesh resourceModel;
@@ -27,34 +32,47 @@ namespace VikingEngine.DSSWars.Work
         WorkerUnitState state = WorkerUnitState.None;
         Vector3 goalPos;
         Vector3 walkDir;
-        AbsMapObject parentMapObject;
+        AbsArmy parentMapObject;
         float finalizeWorkTime;
         GameTimer workAnimation = new GameTimer(1f, true, true);
         bool isShip = false;
         int prevX, prevZ;
         float walkDist_beforeRefresh = 0f;
+        AbsWorkEffect workEffect = null;
+        PFaction pFaction;
 
-        public WorkerUnit(AbsMapObject mapObject, WorkerStatus status, int statusIndex)
+        public WorkerUnit(AbsArmy mapObject, WorkerStatus status, int statusIndex)
         {
             parentMapObject = mapObject;
-            this.status = status;
-            parentArrayIndex = statusIndex;
-            model = mapObject.GetFaction().AutoLoadModelInstance(
-                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
+            pfaction = mapObject.pfaction;//factionIndex = mapObject.factionIndex;
+            //this.status = status;
+            myIndex = statusIndex;
+            model = mapObject.pfaction.GetFaction().AutoLoadModelInstance_batched(
+                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
+#if DEBUG
+            if (Debug.CorruptValue(model.position))
+            {
+                throw new Exception();      
+            }
+#endif
             checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
+            refreshCarryModel();
         }
 
-        public void update(City city)
+        public bool update(City city)
         {
-            if (parentArrayIndex == 6)
-            {
-                lib.DoNothing();
-            }
+
+            //if (myIndex == 6)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
 
             switch (state)
             {
@@ -72,22 +90,39 @@ namespace VikingEngine.DSSWars.Work
                     {
                         model.position.X = goalPos.X;
                         model.position.Z = goalPos.Z;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         WP.Rotation1DToQuaterion(model, 2.8f);
-                        state = WorkerUnitState.FinalizeWork;
+                        //state = WorkerUnitState.FinalizeWork;
+                       
                         model.Frame = 0;
                         updateGroudY(true);
 
-                        if ((status.work == WorkType.Build || status.work == WorkType.Upgrade || status.work == WorkType.Demolish) && 
+                        if ((status.work == WorkType.Build || status.work == WorkType.Upgrade || status.work == WorkType.Demolish) &&
                             !status.orderIsActive(city))
                         {
                             state = WorkerUnitState.None;
                             status.cancelWork();
-                            parentMapObject.setWorkerStatus(parentArrayIndex, ref status);
+                            parentMapObject.setWorkerStatus(myIndex, ref status);
+                        }
+                        else
+                        {
+                            beginWork();
                         }
                     }
                     else
                     {
                         model.position += walkDir * speed;
+#if DEBUG
+                        if (Debug.CorruptValue(model.position))
+                        {
+                            throw new Exception();
+                        }
+#endif
                         updateGroudY(false);
 
                         if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
@@ -105,9 +140,18 @@ namespace VikingEngine.DSSWars.Work
                             }
                         }
 
-                        if (!isShip)
+                        if (isShip)
                         {
-                            walkingAnimation.update(speed, model);
+                            if (/*Ref.TimePassed16ms &&*/ Ref.peRnd.ChanceF(0.3f/Ref.UpdateTimes60FPS))
+                            {
+                                Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterSurfaceY),
+                                    DssConst.Men_StandardModelScale * 0.2f, 4);
+                            }
+                        }
+                        else
+                        {
+                            walkingAnimation.update(speed, model, out _);
+                           
                         }
 
                     }
@@ -115,38 +159,49 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case WorkerUnitState.FinalizeWork:
-
+                    workEffect?.update();
                     switch (status.work)
                     {
                         case WorkType.GatherFoil:
                             if (workAnimation_soundframe())
                             {
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-
-                                switch ((TerrainSubFoilType)subTile.subTerrain)
+                                workEffect?.onSoundAnimation();
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainSubFoilType.DryWood:
-                                    case TerrainSubFoilType.TreeSoft:
-                                    case TerrainSubFoilType.TreeHard:
-                                        SoundLib.woodcut.Play(model.position);
-                                        break;
-                                    case TerrainSubFoilType.WheatFarm:
-                                    case TerrainSubFoilType.WheatFarmUpgraded:
-                                    case TerrainSubFoilType.LinenFarm:
-                                    case TerrainSubFoilType.LinenFarmUpgraded:
-                                    case TerrainSubFoilType.RapeSeedFarm:
-                                    case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                                    case TerrainSubFoilType.HempFarm:
-                                    case TerrainSubFoilType.HempFarmUpgraded:
-                                        SoundLib.scythe.Play(model.position);
-                                        break;
-                                    case TerrainSubFoilType.StoneBlock:
-                                        SoundLib.pickaxe.Play(model.position);
-                                        break;
-                                    case TerrainSubFoilType.BogIron:
-                                    case TerrainSubFoilType.Stones:
-                                        SoundLib.dig.Play(model.position);
-                                        break;
+                                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                                    {
+                                        case TerrainSubFoilType.DryWood:
+                                        case TerrainSubFoilType.TreeSoft:
+                                        case TerrainSubFoilType.TreeHard:
+                                            SoundLib.woodcut.Play(model.position);
+                                            break;
+                                        case TerrainSubFoilType.TreeApple:
+                                        case TerrainSubFoilType.TreeBanana:
+                                        case TerrainSubFoilType.WheatFarm:
+                                        case TerrainSubFoilType.WheatFarmUpgraded:
+                                        case TerrainSubFoilType.LinenFarm:
+                                        case TerrainSubFoilType.LinenFarmUpgraded:
+                                        case TerrainSubFoilType.RapeSeedFarm:
+                                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                                        case TerrainSubFoilType.HempFarm:
+                                        case TerrainSubFoilType.HempFarmUpgraded:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.scythe.Play(model.position);
+                                            }
+                                            break;
+                                        case TerrainSubFoilType.StoneBlock:
+                                            SoundLib.pickaxe.Play(model.position);
+                                            break;
+                                        case TerrainSubFoilType.ClayPit:
+                                        case TerrainSubFoilType.BogIron:
+                                        case TerrainSubFoilType.Stones:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.dig.Play(model.position);
+                                            }
+                                            break;
+                                    }
                                 }
                             }
                             break;
@@ -157,33 +212,36 @@ namespace VikingEngine.DSSWars.Work
                             }
                             break;
                         case WorkType.Plant:
-                            if (workAnimation_soundframe())
+                            if (workAnimation_soundframe() && SoundStackManager.RareAvailable())
                             {
                                 SoundLib.dig.Play(model.position);
                             }
                             break;
-                        //case WorkType.Till:
-                        //    if (workAnimation_soundframe())
-                        //    {
-                        //        SoundLib.dig.Play(model.position);
-                        //    }
-                        //    break;
+                        
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                                var building = (TerrainBuildingType)subTile.subTerrain;
-
-                                switch (building)
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainBuildingType.Brewery:
-                                    case TerrainBuildingType.Work_Bench:
-                                    case TerrainBuildingType.Work_Cook:
-                                        SoundLib.genericWork.Play(model.position);
-                                        break;
-                                    case TerrainBuildingType.Work_Smith:
-                                        SoundLib.anvil.Play(model.position);
-                                        break;
+                                    var building = (TerrainBuildingType)subTile.subTerrain;
+
+                                    switch (building)
+                                    {
+                                        case TerrainBuildingType.Brewery:
+                                        case TerrainBuildingType.Work_Bench:
+                                        case TerrainBuildingType.Work_Cook:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.genericWork.Play(model.position);
+                                            }
+                                            break;
+                                        case TerrainBuildingType.Work_Smith:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.anvil.Play(model.position);
+                                            }
+                                            break;
+                                    }
                                 }
                             }
 
@@ -201,7 +259,7 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Upgrade:
                         case WorkType.Demolish:
                         case WorkType.School:
-                            if (workAnimation_soundframe())
+                            if (workAnimation_soundframe() && SoundStackManager.RareAvailable())
                             {
                                 SoundLib.hammer.Play(model.position);
                             }
@@ -211,31 +269,50 @@ namespace VikingEngine.DSSWars.Work
                     finalizeWorkTime -= Ref.DeltaGameTimeSec;
                     if (finalizeWorkTime <= 0)
                     {
+                        workEffect = null;
+
                         switch (status.work)
                         {
                             case WorkType.GatherFoil:
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                                switch ((TerrainSubFoilType)subTile.subTerrain)
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainSubFoilType.DryWood:
-                                    case TerrainSubFoilType.TreeSoft:
-                                    case TerrainSubFoilType.TreeHard:
-                                        SoundLib.tree_falling.Play(model.position);
-                                        break;
+                                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                                    {
+                                        case TerrainSubFoilType.DryWood:
+                                        case TerrainSubFoilType.TreeSoft:
+                                        case TerrainSubFoilType.TreeHard:
+                                            SoundLib.tree_falling.Play(model.position);
+                                            break;
 
-                                    case TerrainSubFoilType.Stones:
-                                        SoundLib.pickup.Play(model.position);
-                                        break;
+                                        case TerrainSubFoilType.Stones:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.pickup.Play(model.position);
+                                            }
+                                            break;
+                                    }
+                                    EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 }
                                 break;
                             case WorkType.Plant:
+                                int waterCost;
+                                switch ((TerrainSubFoilType)DssRef.world.subTileGrid.Get(status.subTileEnd).subTerrain)
+                                {
+                                    case TerrainSubFoilType.TreeApple:
+                                    case TerrainSubFoilType.TreeBanana:
+                                        waterCost = DssConst.OrchardWaterCost;
+                                        break;
+                                    default:
+                                        waterCost = DssConst.PlantWaterCost;
+                                        break;
+                                }
                                 SoundLib.drop_item.Play(model.position);
-                                new ResourceEffect(ItemResourceType.Water_G, -DssConst.PlantWaterCost, model.position, ResourceEffectType.Add);
+                                /*new ResourceEffect*/
+                                SpriteText3D.GetOrCreate().init(ItemResourceType.Water_G, -waterCost, model.position, ResourceEffectType.Add);
+                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 break;
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);
-
-
                                 break;
                             case WorkType.LocalTrade:
                                 SoundLib.buy.Play(model.position);
@@ -255,18 +332,32 @@ namespace VikingEngine.DSSWars.Work
                                 break;
                         }
 
-                        status.WorkComplete(parentMapObject, true);
-                        parentMapObject.setWorkerStatus(parentArrayIndex, ref status);
+//#if !DEBUG
+//                        try
+//                        {
+//#endif
+                            status.WorkComplete(parentMapObject, true);
+//#if !DEBUG
+//                        }
+//                        catch
+//                        {
+//                            //muted
+//                            lib.DoNothing();
+//                        }
+//#endif
+                        //parentMapObject.setWorkerStatus(myIndex, ref status);
                         state = WorkerUnitState.None;
                         refreshCarryModel();
                     }
                     break;
 
                 case WorkerUnitState.None:
-                    parentMapObject.getWorkerStatus(parentArrayIndex, ref status);
+                    //parentMapObject.getWorkerStatus(myIndex, ref status);
                     checkForGoal(false, city);
                     break;
             }
+
+            return model.IsDeleted;
         }
 
         bool workAnimation_soundframe()
@@ -280,8 +371,58 @@ namespace VikingEngine.DSSWars.Work
             return false;
         }
 
+        void beginWork()
+        {
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
+            state = WorkerUnitState.FinalizeWork;
+
+            switch (status.work)
+            {
+                case WorkType.Craft:
+                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                    {
+                        var building = (TerrainBuildingType)subTile.subTerrain;
+
+                        switch (building)
+                        {
+                            case TerrainBuildingType.Work_Cook:
+                                workEffect = new CookingWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Work_CoalPit:
+                                workEffect = new CoalPitWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Work_Smith:
+                                workEffect = new SmithWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Smelter:
+                                workEffect = new SmelterWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Foundry:
+                                workEffect = new FoundryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Brewery:
+                                workEffect = new BreweryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Pottery:
+                                workEffect = new PotteryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Butcher:
+                                workEffect = new ButcherWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Smoker:
+                                workEffect = new SmokingWorkEffect(status.subTileEnd);
+                                break;
+
+                        }
+                        
+                    }
+                    break;
+            }
+        }
+
         protected void checkForGoal(bool onInit, City city)
         {
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             if (status.work > WorkType.Idle)
             {
                 if (!model.Visible)
@@ -289,12 +430,18 @@ namespace VikingEngine.DSSWars.Work
                     //remove hidden status
                     model.Visible = true;
                     model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+#if DEBUG
+                    if (Debug.CorruptValue(model.position))
+                    {
+                        throw new Exception();
+                    }
+#endif
                 }
 
                 if (status.subTileEnd == status.subTileStart)
                 {
                     finalizeWorkTime = status.finalizeWorkTime(city);
-                    state = WorkerUnitState.FinalizeWork;
+                    beginWork();
                 }
                 else
                 {
@@ -305,16 +452,37 @@ namespace VikingEngine.DSSWars.Work
                     if (onInit)
                     {
                         float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                        float walkingPerc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
+                        float walkTime = status.processTimeLengthSec - finalizeWorkTime;
+                        float walkingPerc;
+                        if (walkTime < 1)
+                        {
+                            walkingPerc = 1;
+                        }
+                        else
+                        {
+                            walkingPerc = timePassed / walkTime;
+                        }
 
                         if (walkingPerc >= 1)
                         {
                             model.position = goalPos;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                             finalizeWorkTime = status.processTimeLengthSec - timePassed;
                         }
                         else
                         {
                             model.position = model.position * (1 - walkingPerc) + goalPos * walkingPerc;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
 
@@ -348,10 +516,11 @@ namespace VikingEngine.DSSWars.Work
 
         void refreshGoalDir()
         {
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             walkDist_beforeRefresh = 0;
             goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
             goalPos.X += WorldData.SubTileWidth * 0.25f;
-            goalPos.Z += WorldData.SubTileWidth * 0.5f;
+            goalPos.Z += WorldData.SubTileWidth * 0.1f;
 
             walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
             WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
@@ -359,18 +528,21 @@ namespace VikingEngine.DSSWars.Work
 
         void refreshCarryModel()
         {
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             SpriteName sprite = SpriteName.NO_IMAGE;
             bool hasImage;
             if (status.carry.amount > 0)
             {
                 hasImage = true;
-                sprite = Resource.ResourceLib.Icon(status.carry.type);
+                IconName.Item(status.carry.type, out sprite, out var name);
+                //sprite = Resource.ResourceLib.Icon(status.carry.type);
             }
             else if (status.work == WorkType.Craft && state == WorkerUnitState.FinalizeWork)
             {
                 hasImage = true;
                 ItemResourceType item = (ItemResourceType)status.workSubType;
-                sprite = ResourceLib.Icon(item);
+                IconName.Item(item, out sprite, out var name);
+                //sprite = ResourceLib.Icon(item);
             }
             else
             {
@@ -383,6 +555,9 @@ namespace VikingEngine.DSSWars.Work
                 {
                     resourceModel = new Graphics.Mesh(LoadedMesh.plane, Vector3.Zero,
                         new Vector3(DssConst.Men_StandardModelScale * 0.6f), Graphics.TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
+#if DEBUG
+                    resourceModel.DebugName = "resourceModel";
+#endif
                     resourceModel.AddToRender(DrawGame.UnitDetailLayer);
                     resourceModel.Rotation = DssLib.FaceCameraRotation;
                 }
@@ -396,12 +571,12 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-        const float ModelGroundYAdj = 0.06f;
+        const float ModelGroundYAdj = 0.01f;
         protected void updateGroudY(bool set)
         {
             if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))
             {
-                float y = DssRef.world.SubTileHeight(model.position) + ModelGroundYAdj;
+                float y = DssRef.world.SubTileHeight(model.position) + 0.01f;//ModelGroundYAdj;
 
                 if (y < Tile.UnitMinY)
                 {
@@ -424,6 +599,12 @@ namespace VikingEngine.DSSWars.Work
                         else
                         {
                             model.position.Y += diff * 0.06f;
+#if DEBUG
+                            if (Debug.CorruptValue(model.position))
+                            {
+                                throw new Exception();
+                            }
+#endif
                         }
                     }
                 }
@@ -441,13 +622,30 @@ namespace VikingEngine.DSSWars.Work
                 DssVar.WorkerUnit_ResourcePosDiff, model.position);
         }
 
-
-        public override void toHud(ObjectHudArgs args)
+        void WorkerPresentationHud(ObjectHudArgs args, bool tooltip)
         {
+            args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
+            args.content.Add(pfaction.GetFaction().FlagTextureToHud());
+            args.content.space(0.5f);
+            args.content.Add(new RbImage(SpriteName.WarsWorker));
+            args.content.space(0.5f);
+            args.content.Add(new RbText(DssRef.lang.UnitType_Worker, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
-            args.content.h2(Name(out _)).overrideColor = Color.LightYellow;
+            args.content.space();
+            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
+
+            args.content.newLine();
+            ownerToHud(args, false);
+        }
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
+        {
+            secondMenuContent = null;
+            WorkerStatus status = parentMapObject.getWorkerStatus(myIndex);
+            WorkerPresentationHud(args, false);
+            //args.content.h2(Name(out _)).overrideColor = Color.LightYellow;
             args.content.text(string.Format(DssRef.lang.WorkerHud_WorkType, status.workString()));
-
+            
+            args.content.Add(new RbSeperationLine());
             status.xpToHud(args.content);
 
             if (status.carry.amount > 0)
@@ -455,34 +653,96 @@ namespace VikingEngine.DSSWars.Work
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsWorkMove));
                 args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type))));
+                IconName.Item(status.carry.type, out var icon, out var name);
+                args.content.Add(new RbText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, name)));
             }
 
             args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
 
-#if DEBUG
-            args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
-            args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
-            args.content.text(string.Format("XP3: {0} {1}", status.xpType3, status.xp3));
-#endif
+            if (DssRef.difficulty.GodPowers() && GetCity() != null)
+            {
+                args.content.newParagraph();
+                Color? fontColor = DssRef.difficulty.GodPowers()? HudLib.GodPower_Color : null;
+                foreach (var exp in XpLib.ExperienceTypes)
+                {
+                    LangLib.ExperienceType(exp, out string text, out SpriteName icon);
+                    
+
+                    var buttonContent = new List<AbsRichBoxMember>()
+                    {
+                        new RbImage(icon),
+                        new RbSpace(),
+                        new RbText(text, fontColor),
+                    };
+
+                    args.content.Add(new ArtButton(RbButtonStyle.GodPower, buttonContent, new RbAction1Arg<WorkExperienceType>(
+                        (WorkExperienceType xp) =>
+                    {
+                        var current = status.getXpFor(xp);
+                        int maxAdd = DssConst.WorkLevel_Master - current.xp;
+
+                        if (maxAdd > 0)
+                        {
+                            status.addExperience(xp, args.player.gameControls.map.selection.obj.GetCity(), (byte)Bound.Max(DssConst.WorkLevel_Master, maxAdd));
+                        }
+                    }, exp)));
+                    args.content.space();
+                    // var button = new ArtOption(exp == currentStatus.learnExperience, buttonContent,
+                    //    new RbAction1Arg<WorkExperienceType>(experienceClick, exp, RbSoundType.Option),
+                    //new RbTooltip(expTooltip, exp));
+                    // //button.setGroupSelectionColor(HudLib.RbSettings, );
+                    // content.Add(button);
+                    //content.space();
+                }
+
+                //args.content.newLine();
+                //HudLib.Label(args.content, DssRef.lang.GeneralSetting_SetAll);
+                //args.content.space();
+                //args.content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> {
+                //    new RbImage(SpriteName.WarsUnitLevelMinimal),  new RbSpace(), new RbText(DssRef.lang.ExperienceLevel_1, HudLib.GodPower_Color),  
+                //},
+                //    new RbAction(() => {
+                        
+                //        status.xp1 = 0;
+                //        status.xp2 = 0;
+                //        status.xp3 = 0;
+
+                //    })));
+            }
+
+            args.content.text("status ix: " + myIndex.ToString(), HudLib.SecondaryTextColor);
+            args.content.text("xp ix: " + status.XpEntityIndex.ToString(), HudLib.SecondaryTextColor);
+
+//#if DEBUG
+//            args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
+//            args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
+//            args.content.text(string.Format("XP3: {0} {1}", status.xpType3, status.xp3));
+//#endif
         }
 
-        public void toolTip(RichBoxContent content)
+        //public void toolTip(RichBoxContent content)
+        //{
+        //    WorkerPresentationHud(content, true);
+        //    status.xpToHud(content);
+        //}
+        public override void toTooltip(ObjectHudArgs args)
         {
-            status.xpToHud(content);
+            WorkerStatus status = parentMapObject.getWorkerStatus(myIndex);
+            WorkerPresentationHud(args, true);
+            status.xpToHud(args.content);
         }
 
-        public override void selectionFrame(bool hover, Selection selection)
+        public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
         {
             Vector3 scale = new Vector3(DssVar.StandardBoundRadius * 2f);
-            selection.BeginGroupModel(true);
-            selection.setGroupModel(0, model.position, scale, hover, true, false);
+            selection.groupModels_detail.BeginGroupModel();
+            selection.groupModels_detail.setGroupModel(0, model.position, scale, hover, true, false);
 
         }
 
         public void DeleteMe()
         {
-            model.DeleteMe();
+            model.preRemoveFromDrawBatch();//.DeleteMe();
             resourceModel?.DeleteMe();
         }
 
@@ -490,21 +750,28 @@ namespace VikingEngine.DSSWars.Work
         {
             return GameObjectType.Worker;
         }
-
-        public override Faction GetFaction()
+        //public override Faction GetFaction()
+        //{
+        //    return parentMapObject.GetFaction();
+        //}
+        public override City GetCity()
         {
-            return parentMapObject.GetFaction();
+            return parentMapObject.GetCity();
         }
+        //public override Faction GetFaction()
+        //{
+        //    return parentMapObject.GetFaction();
+        //}
 
         public override Vector3 WorldPos()
         {
             return model.position;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
-        {
-            return faction == parentMapObject.GetFaction();
-        }
+        //public override bool aliveAndBelongTo(Faction faction)
+        //{
+        //    return faction == parentMapObject.GetFaction();
+        //}
 
         public override WorkerUnit GetWorker()
         {
@@ -514,7 +781,7 @@ namespace VikingEngine.DSSWars.Work
         public override string Name(out bool mayEdit)
         {
             mayEdit = false;
-            return parentMapObject.TypeName() + " " + DssRef.lang.UnitType_Worker + " (" + parentArrayIndex.ToString() + ")";
+            return parentMapObject.TypeName() + " " + DssRef.lang.UnitType_Worker + " (" + myIndex.ToString() + ")";
         }
 
         enum WorkerUnitState

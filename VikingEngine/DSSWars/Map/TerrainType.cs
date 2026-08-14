@@ -34,17 +34,26 @@ namespace VikingEngine.DSSWars.Map
         TallGrass,
         Stones,
         StoneBlock,
-        WheatFarm,
-        LinenFarm,
-        BogIron,
-        HempFarm,
-        RapeSeedFarm,
 
+        WheatFarm,
         WheatFarmUpgraded,
+        LinenFarm,
         LinenFarmUpgraded,
+        HempFarm,
         HempFarmUpgraded,
+        RapeSeedFarm,
         RapeSeedFarmUpgraded,
 
+        
+        TreeApple,
+        TreeBanana,
+        //TreeAppleSprout,
+        //TreeBananaSprout,
+
+        BogIron,
+        ClayPit,
+        SaltPit,
+       
         NUM_NONE
     }
 
@@ -60,19 +69,20 @@ namespace VikingEngine.DSSWars.Map
     }
 
     enum TerrainBuildingType
-    {
-        _RESERVE1,//DirtWall,
-        _RESERVE2,//DirtTower,
-        _RESERVE3,//WoodWall,
-        _RESERVE4,//WoodTower,
-        _RESERVE5,//StoneWall,
-        _RESERVE6,//StoneTower,
-        StoneHall,
-        SmallHouse,
-        BigHouse,
-        Square,
-        CobbleStones,
+    {   
+        CityHall_Village,
+        CityHall_Town,
+        CityHall_Capital,
+
         WorkerHut,
+        WorkerHutLarge,
+
+        ServiceMenHouse_small,
+        ServiceMenHouse_Large,
+
+        GuardHouse_Small,
+        GuardHouse_Large,
+
         Brewery,
         Work_Cook,
         Work_Bench,
@@ -81,9 +91,26 @@ namespace VikingEngine.DSSWars.Map
         PigPen,
         HenPen,
         Tavern,
+        
         Postal,
+        PostalLevel2,
+        PostalLevel3,
+
         Recruitment,
+        RecruitmentLevel2,
+        RecruitmentLevel3,
+
+        GoldDeliveryLevel1,
+        GoldDeliveryLevel2,
+        GoldDeliveryLevel3,
+
         SoldierBarracks,
+        ArcherBarracks,
+        WarmachineBarracks,
+        GunBarracks,
+        CannonBarracks,
+        //KnightsBarracks,
+
         Carpenter,
         Nobelhouse,
         Storehouse,
@@ -96,23 +123,70 @@ namespace VikingEngine.DSSWars.Map
         StoneCutter,
         Embassy,
         WaterResovoir,
-        ArcherBarracks,
-        WarmashineBarracks,
-        GunBarracks,
-        CannonBarracks,
-        KnightsBarracks,
+        
         Foundry,
         Armory,
         Chemist,
         Gunmaker,
         School,
-        PostalLevel2,
-        PostalLevel3,
-        RecruitmentLevel2,
-        RecruitmentLevel3,
-        GoldDeliveryLevel1,
-        GoldDeliveryLevel2,
-        GoldDeliveryLevel3,
+        ResearchCenter,
+        BookPress,
+        ImmigrationTent,
+
+        WorkerTent,
+        CityHall_Unclaimed,
+        CityHall_Tent,
+        ManorLord,
+
+        //NEW
+        GreatHall,
+        Pottery,
+        DryingPan,
+        Butcher,
+        Smoker,
+        Dryer,
+        ShieldMaker,
+
+        MaterialStorage, FoodStorage, WeaponStorage, ArmorStorage, AnimalStorage,
+        Cesspit,
+
+        OxenPen,
+        KineOxenPen,
+
+        DogCage,
+        HoundCage,
+
+        PonyPen,
+        HorsePen,
+        WarHorsePen,
+        DraftHorsePen,
+        WildPigPen,
+        WildHogPen,
+        WarHogPen,
+        StagHogPen,
+        WolfCage,
+        WargCage,
+        AlphaWargCage,
+        WildCatCage,
+        LionCage,
+        WarLionCage,
+        ElephantCage,
+        WarElephantCage,
+        OliphantCage,
+
+        TrappersHut,
+
+        FowlPen,
+        BoarPen,
+
+        FowlHabitat,
+        BoarHabitat,
+        DogHabitat,
+        OxHabitat,
+        PonyHabitat,
+        WolfHabitat,
+        CatHabitat,
+        ElephantHabitat,
 
         NUM_NONE
     }
@@ -130,11 +204,15 @@ namespace VikingEngine.DSSWars.Map
         StoneWallWoodHouse,
         StoneGate,
         StoneHouse,
+        Palisade,
         NUM_NONE
     }
 
     enum TerrainDecorType
     {
+        Square,
+        CobbleStones,
+
         Pavement,
         PavementFlower,
         Statue_ThePlayer,
@@ -161,6 +239,12 @@ namespace VikingEngine.DSSWars.Map
         FlagPole_FlagLarge,
         FlagPole_Streamer,
         FlagPole_Triangle,
+
+        DiplomaticStatue_ThumbsUpWest,
+        DiplomaticStatue_ThumbsUpEast,
+        DiplomaticStatue_InsultWest,
+        DiplomaticStatue_InsultEast,
+        DiplomaticStatue_GoldenPoop,
         NUM_NONE
     }
 
@@ -172,7 +256,7 @@ namespace VikingEngine.DSSWars.Map
 
     enum TerrainMineType
     {
-        Stones,
+        Salt,
         Coal,
         StoneBlock,
         IronOre,

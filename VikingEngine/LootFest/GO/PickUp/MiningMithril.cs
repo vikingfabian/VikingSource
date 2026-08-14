@@ -31,7 +31,7 @@ namespace VikingEngine.LootFest.GO.PickUp
 
         protected override VoxelModelName imageType
         {
-            get { return VoxelModelName.mithril_ingot; }
+            get { return VoxelModelName.NUM_NON; }
         }
         ////static readonly Data.TempBlockReplacementSett TempImage = new Data.TempBlockReplacementSett(Color.LightBlue, new Vector3(1, 0.5f, 0.6f));
         //protected override Data.TempBlockReplacementSett tempImage

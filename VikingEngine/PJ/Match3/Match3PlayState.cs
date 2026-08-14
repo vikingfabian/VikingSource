@@ -153,7 +153,7 @@ namespace VikingEngine.PJ.Match3
         {
             exitButton = Display.MenuButton.ExitToLobbyButton();
 
-            Input.Mouse.Visible = true;
+            Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
         }
 
         void updateBlockMove()

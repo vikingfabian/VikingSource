@@ -251,7 +251,7 @@ namespace VikingEngine.LootFest.Director
             {
                 if (hosted)
                 {
-                    Debug.Log("--List hosted gameobjects--");
+                    //Debug.Log("--List hosted gameobjects--");
 
                     localMembersPrivateUpdateCounter.Reset();
 
@@ -266,7 +266,7 @@ namespace VikingEngine.LootFest.Director
                 }
                 else
                 {
-                    Debug.Log("--List client gameobjects--");
+                    //Debug.Log("--List client gameobjects--");
 
                     clientMembersUpdateCounter.Reset();
 
@@ -312,7 +312,7 @@ namespace VikingEngine.LootFest.Director
                         Debug.LogWarning("Requesting lost game obj");
                     }
                     System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.LostClientObj, 
-                         Network.SendPacketTo.OneSpecific, id.X, Network.PacketReliability.ReliableLasy, null);
+                         Network.PacketReliability.Reliable, Network.SendPacketTo.OneSpecific, id.X,  null);
                     w.Write(id.Y);
                 }
             }

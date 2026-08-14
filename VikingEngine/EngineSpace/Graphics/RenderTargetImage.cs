@@ -56,6 +56,13 @@ namespace VikingEngine.Graphics
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetRenderTarget(null);
         }
 
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+            renderTarget?.Dispose();
+            renderTarget = null;
+        }
+
         public override bool ViewArea(VectorRect area, bool dimOut)
         {
             return true;

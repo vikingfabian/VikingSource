@@ -12,6 +12,7 @@ namespace VikingEngine.Voxels
     static class VoxelLib
     {
         public const string VoxelObjByteArrayEnding = ".vox";
+        public const string VoxelProjectEnding = ".voxproj";
         public static readonly byte AntiBlock = (byte)VikingEngine.LootFest.Data.MaterialType.AntiBlock;
         public const int FaceTopDir = 1;
         public const int FaceFrontDir = 1;
@@ -113,7 +114,7 @@ namespace VikingEngine.Voxels
             w.Write((ushort)materialAndReps.Count); //how many repeating parts
             foreach (IntVector2 val in materialAndReps)
             {
-                DataStream.DataStreamLib.WriteGrowingBitShiftValue(w, val.Y); //write repetitions
+                StreamLib.WriteGrowing_Byte_Bit(w, val.Y); //write repetitions
             }
             //Divitions
             int numDivitions;
@@ -183,7 +184,7 @@ namespace VikingEngine.Voxels
 
             for (int i = 0; i < numRepetitionParts; i++)
             {
-                repetionsList[i]= DataStream.DataStreamLib.ReadGrowingBitShiftValue(r);
+                repetionsList[i]= StreamLib.ReadGrowing_Byte_Bit(r);
             }
 
             int numDivitions;
@@ -314,9 +315,9 @@ namespace VikingEngine.Voxels
             }
         }
 
-        public static void WriteVoxelObjAnimHD(System.IO.BinaryWriter w, ushort[,,] grid)
+        public static void WriteVoxelObjAnimHD(System.IO.BinaryWriter w, Grid3D_L<ushort> grid)
         {
-            writeVoxelObjPrefix(w, new IntVector3(grid.GetLength(0), grid.GetLength(1), grid.GetLength(2)), 1);
+            writeVoxelObjPrefix(w, grid.Size, 1);
             CompressGridHD(grid, w);
         }
         public static void WriteVoxelObjAnimHD(System.IO.BinaryWriter w, List<VoxelObjGridDataHD> grids)
@@ -325,7 +326,7 @@ namespace VikingEngine.Voxels
 
             for (int frame = 0; frame < grids.Count; frame++)
             {
-                CompressGridHD(grids[frame].MaterialGrid, w);
+                CompressGridHD(grids[frame], w);
             }
         }
         public static List<VoxelObjGridDataHD> ReadVoxelObjectAnimHD(System.IO.BinaryReader r)
@@ -360,10 +361,11 @@ namespace VikingEngine.Voxels
             {
                 for (int frame = 0; frame < numFrames; frame++)
                 {
-                    ushort[, ,] grid = new ushort[size.X, size.Y, size.Z];
+                    //ushort[, ,] grid = new ushort[size.X, size.Y, size.Z];
+                    var grid = new VoxelObjGridDataHD(size);
                     DeCompressGridHD(grid, r);
 
-                    grids.Add(new VoxelObjGridDataHD(grid));
+                    grids.Add(grid);
                 }
             }
 
@@ -681,15 +683,15 @@ namespace VikingEngine.Voxels
         //    var col = colors[texpos.X + texpos.Y * texW];
         //    return BlockHD.ToBlockValue(col, BlockHD.UnknownMaterial);//new BlockHD(col);
         //}
-        
 
-        public static void CompressGridHD(ushort[, ,] grid, System.IO.BinaryWriter w)
+
+        public static void CompressGridHD(Grid3D_L<ushort> grid, System.IO.BinaryWriter w)
         {
             ushort currentColor = 0;
             int repeatCount = 0;
 
             IntVector3 pos = IntVector3.Zero;
-            var sz = new IntVector3(grid.GetLength(0), grid.GetLength(1), grid.GetLength(2));
+            var sz = grid.Size;
 
             for (pos.Y = 0; pos.Y < sz.Y; ++pos.Y)
             {
@@ -698,7 +700,7 @@ namespace VikingEngine.Voxels
                     for (pos.X = 0; pos.X < sz.X; ++pos.X)
                     {
                         if (repeatCount < byte.MaxValue &&
-                            grid[pos.X, pos.Y, pos.Z] == currentColor)
+                            grid.Get(pos.X, pos.Y, pos.Z) == currentColor)
                         {
                             ++repeatCount;
                         }
@@ -706,11 +708,11 @@ namespace VikingEngine.Voxels
                         {
                             if (repeatCount > 0)
                             {
-                                w.Write(currentColor);//currentColor.write(w);
+                                w.Write(currentColor);
                                 w.Write((byte)repeatCount);
                             }
 
-                            currentColor = grid[pos.X, pos.Y, pos.Z];
+                            currentColor = grid.Get(pos.X, pos.Y, pos.Z);
                             repeatCount = 1;
 
                         }
@@ -720,26 +722,23 @@ namespace VikingEngine.Voxels
 
             if (repeatCount > 0)
             {
-                w.Write(currentColor);//currentColor.write(w);
+                w.Write(currentColor);
                 w.Write((byte)repeatCount);
             }
 
             w.Write(BlockHD.EmptyBlock);
             w.Write(byte.MinValue);
-            //BlockHD.EndBlock.write(w);
         }
 
-        public static void DeCompressGridHD(ushort[, ,] grid, System.IO.BinaryReader r)
+        public static void DeCompressGridHD(Grid3D_L<ushort> grid, System.IO.BinaryReader r)
         {
-            var sz = new IntVector3(grid.GetLength(0), grid.GetLength(1), grid.GetLength(2));
+            var sz = grid.Size;
             IntVector3 pos = IntVector3.Zero;
-            ushort block = ushort.MinValue;//BlockHD.EndBlock;
+            ushort block = ushort.MinValue;
             int repeatCount = 0;
 
             while (true)
             {
-                //block.read(r);
-                //if (block.material == BlockHD.EndBlockMaterial) return;
                 block = r.ReadUInt16();
                 repeatCount = r.ReadByte();
 
@@ -755,10 +754,7 @@ namespace VikingEngine.Voxels
                 {
                     for (int i = 0; i < repeatCount; ++i)
                     {
-                        //if (pos.Y < sz.Y)
-                        //{
-                            grid[pos.X, pos.Y, pos.Z] = block;
-                        //}
+                        grid.Set(pos.X, pos.Y, pos.Z, block);
                         NextBlock(ref pos, sz);
                     }
                 }
@@ -1110,19 +1106,18 @@ namespace VikingEngine.Voxels
         public Color Col3;
 
         public FaceCornerColor(float whiteness, Vector3 color, float corner0, float corner1, float corner2, float corner3)
-        {
-            
-                float w = whiteness * corner0;
-                Col0 = new Color(w * color.X, w * color.Y, w * color.Z);
+        {            
+            float w = whiteness * corner0;
+            Col0 = new Color(w * color.X, w * color.Y, w * color.Z);
 
-                w = whiteness * corner1;
-                Col1 = new Color(w * color.X, w * color.Y, w * color.Z);
+            w = whiteness * corner1;
+            Col1 = new Color(w * color.X, w * color.Y, w * color.Z);
 
-                w = whiteness * corner2;
-                Col2 = new Color(w * color.X, w * color.Y, w * color.Z);
+            w = whiteness * corner2;
+            Col2 = new Color(w * color.X, w * color.Y, w * color.Z);
 
-                w = whiteness * corner3;
-                Col3 = new Color(w * color.X, w * color.Y, w * color.Z);
+            w = whiteness * corner3;
+            Col3 = new Color(w * color.X, w * color.Y, w * color.Z);
         }
 
     }

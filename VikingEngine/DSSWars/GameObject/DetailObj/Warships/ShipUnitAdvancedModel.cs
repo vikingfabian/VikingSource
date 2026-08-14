@@ -4,13 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     class ShipUnitAdvancedModel : AbsDetailUnitAdvancedModel
     {
+        static int FoamModelIndex = 0;
+
         Graphics.AbsVoxelObj captain, leftcrew, rightcrew;
+        Mesh foamModel;
         Vector3 captainPosDiff, leftCrewPosDiff, rightCrewPosDiff;
+        
+        GameTimeStamp soundStamp = GameTimeStamp.None;
+
         public ShipUnitAdvancedModel()
         { }
 
@@ -53,19 +61,47 @@ namespace VikingEngine.DSSWars.GameObject
 
             float crewScale = DssConst.Men_StandardModelScale * 1.6f;
 
-            captain = soldier.group.army.faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_captain, DssConst.Men_StandardModelScale * 0.7f, true);
+            var faction = soldier.pfaction.GetFaction();
 
-            leftcrew = soldier.group.army.faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_shipcrew, crewScale, true);
+            if (faction == null)
+            {
+                return;
+            }
 
-            rightcrew = soldier.group.army.faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_shipcrew, crewScale, true);
+            captain = faction.AutoLoadModelInstance_batched(
+                LootFest.VoxelModelName.wars_captain, DssConst.Men_StandardModelScale * 0.7f);
+
+            leftcrew = faction.AutoLoadModelInstance_batched(
+                LootFest.VoxelModelName.wars_shipcrew, crewScale);
+
+            rightcrew = faction.AutoLoadModelInstance_batched(
+                LootFest.VoxelModelName.wars_shipcrew, crewScale);
+
+            if (Ref.gamesett.waterFoam)
+            {
+                if (!DssRef.models.shipWaveModels.TryPop(out foamModel))
+                {
+                    foamModel = new Mesh(LoadedMesh.plane, Vector3.Zero, DssConst.Men_StandardModelScale * 3f * new Vector3(0.96f, 1, 2), TextureEffectType.Flat,
+                        SpriteName.WaterEdgeMask_ship, Color.White, false);
+                    foamModel.Opacity = WaterEdgeBuilder.Opacity;
+                    foamModel.position.Y = Tile.WaterFoamY - 0.005f;
+#if DEBUG
+                    FoamModelIndex++;
+                    foamModel.DebugName = "Foam model " + FoamModelIndex.ToString();
+#endif
+                }
+
+                foamModel.AddToRender(DrawGame.WaterEffectLayer);
+            }
         }
 
         public override void update(AbsSoldierUnit soldier)
         {
+            if (model == null)
+            { return; }
+                
             base.update(soldier);
+           
             model.position.Y -= 0.02f;
             WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);
 
@@ -81,24 +117,61 @@ namespace VikingEngine.DSSWars.GameObject
             rightcrew.position = model.Rotation.TranslateAlongAxis(
                 rightCrewPosDiff, model.position);
 
+            if (foamModel != null)
+            {
+                foamModel.position.X = model.position.X;
+                foamModel.position.Z = model.position.Z;
+                foamModel.Rotation = model.Rotation;
+            }
+
+            if (soldier.state.walking )
+            {
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+                {
+                    Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterFoamY),
+                    DssConst.Men_StandardModelScale * 0.8f, 5);
+                }
+            }
+
+            if (soundStamp.TimeOut())
+            {
+                soundStamp.setTimeFromNow(DssConst.ShipSoundTimeSec.PeRandom());
+                if (Ref.peRnd.ChanceF(DssConst.SoundChanceShip))
+                {
+                    SoundLib.ship_knirr.Play(model.position);
+                }
+            }
         }
 
         public override void displayHealth(float percHealth)
         {
-            int viewCount = (int)Math.Ceiling(12 * percHealth);
-            int left = viewCount / 2;
-            int right = viewCount-left;
+            if (captain != null)
+            {
+                int viewCount = (int)Math.Ceiling(12 * percHealth);
+                int left = viewCount / 2;
+                int right = viewCount - left;
 
-            leftcrew.Frame = 6 - left;
-            rightcrew.Frame = 6 - right;
+                leftcrew.Frame = 6 - left;
+                rightcrew.Frame = 6 - right;
+            }
         }
 
         public override void DeleteMe()
         {
             base.DeleteMe();
-            captain.DeleteMe();
-            leftcrew.DeleteMe();
-            rightcrew.DeleteMe();
+
+            if (captain != null)
+            {
+                captain.DeleteMe();
+                leftcrew.DeleteMe();
+                rightcrew.DeleteMe();
+                if (foamModel != null)
+                {
+                    foamModel.DeleteMe();
+                    DssRef.models.shipWaveModels.Push(foamModel);
+                    foamModel = null;
+                }
+            }
         }
 
     }

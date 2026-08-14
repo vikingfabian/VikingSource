@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -16,6 +17,11 @@ namespace VikingEngine.DSSWars
         public static readonly Vector2 TileScaleV2 = new Vector2(TileDrawScale);
         static readonly Vector2 TileHalfScaleV2 = TileScaleV2 * PublicConstants.Half;
 
+        //public bool InBound(Vector3 position)
+        //{ 
+        //    return DssRef.world.unitBounds.in
+        //}
+
         public static Vector2 ToWorldPosXZ(IntVector2 tile)
         {
             return tile.Vec * TileScaleV2;
@@ -30,10 +36,12 @@ namespace VikingEngine.DSSWars
         {
             return new IntVector2(pos.X, pos.Z);
         }
+
         public static IntVector2 ToTilePos(Vector2 pos)
         {
             return new IntVector2(pos.X, pos.Y);
         }
+
         public static IntVector2 ToSubTilePos(Vector3 pos)
         {
             return new IntVector2((pos.X - WorldData.SubTileHalfWidth) * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions , (pos.Z - WorldData.SubTileHalfWidth) * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions );
@@ -48,6 +56,12 @@ namespace VikingEngine.DSSWars
             return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Y * WorldData.TileSubDivitions);
         }
 
+        public static Rectangle2 ToSubTilePos(Rectangle2 area)
+        {
+            area *= WorldData.TileSubDivitions;
+            return area;
+        }
+
         public static Vector3 SubtileToWorldPosXZ(IntVector2 subtilePos)
         {
             return new Vector3(subtilePos.X * WorldData.SubTileWidth - WorldData.TileHalfWidth, 0, subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth);
@@ -59,6 +73,15 @@ namespace VikingEngine.DSSWars
                 subtilePos.X * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth, 
                 0, 
                 subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth);
+        }
+
+        public static Vector3 WorldPosToClosestSubtile_Centered(Vector3 worldPos)
+        {
+            var subtile = ToSubTilePos(worldPos);
+            worldPos = SubtileToWorldPosXZ_Centered(subtile);
+            worldPos.Y = DssRef.world.subTileGrid.Get(subtile).groundY;
+
+            return worldPos;
         }
 
         public static Vector3 SubtileToWorldPosXZgroundY_Centered(IntVector2 subtilePos)
@@ -98,16 +121,32 @@ namespace VikingEngine.DSSWars
                 DssRef.world.subTileGrid.Get(tilePos).groundY,
                 tilePos.Y * WorldData.SubTileWidth + WorldData.SubTileHalfWidth);
         }
+        
+        /// <summary>
+        /// Picks ground height from subtiles, not bound safe
+        /// </summary>
+        public static float GroundY(Vector3 wp)
+        {
+            return DssRef.world.subTileGrid.Get(
+                Convert.ToInt32(wp.X * WorldData.TileSubDivitions + 3.5f),
+                Convert.ToInt32(wp.Z * WorldData.TileSubDivitions + 3.5f)).groundY;
+        }
 
         public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);            
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);
+            }
         }
 
         public static void Rotation1DToQuaterion(Graphics.AbsVoxelObj mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.Identity;
-            mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.Identity;
+                mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            }
         }
 
         public static RotationQuarterion ToQuaterion(float rotation)
@@ -138,12 +177,19 @@ namespace VikingEngine.DSSWars
             return result;
         }
 
-        public static void writePosXZ(System.IO.BinaryWriter w, Vector3 position)
+        public static void writeSubTilePos(System.IO.BinaryWriter w, IntVector2 position)
         {
-            w.Write((Half)position.X);
-            w.Write((Half)position.Z);
+            position.WriteUInt24(w);
         }
-        public static void readPosXZ(System.IO.BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+
+        public static IntVector2 readSubTilePos(System.IO.BinaryReader r)
+        {
+            var result = IntVector2.Zero;
+            result.ReadUInt24(r);
+            return result;
+        }
+
+        public static void readPosXZ_old(System.IO.BinaryReader r, out Vector3 position, out IntVector2 tilePos)
         {
             position = Vector3.Zero;
             position.X = (float)r.ReadHalf();
@@ -151,5 +197,32 @@ namespace VikingEngine.DSSWars
 
             tilePos = new IntVector2(position.X, position.Z);
         }
+
+        public static void WritePosXZPercentU16(BinaryWriter w, Vector3 position)
+        {
+            StreamLib.WriteFloatAsPercentU16(w, position.X, DssRef.world.Size.X);
+            StreamLib.WriteFloatAsPercentU16(w, position.Z, DssRef.world.Size.Y);
+        }
+
+        public static void ReadPosXZPercentU16(BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        {
+            position = Vector3.Zero;
+            position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
+            position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
+
+            tilePos = new IntVector2(position.X, position.Z);
+        }
+
+        public static bool ReadPosXZPercentU16_ZeroCheck(BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        {
+            position = Vector3.Zero;
+            position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
+            position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
+
+            tilePos = new IntVector2(position.X, position.Z);
+
+            return position.X > 0;
+        }
+
     }
 }

@@ -14,7 +14,7 @@ namespace VikingEngine.LootFest.GO
             WorldPos = args.startWp;
 
             animSettings = new Graphics.AnimationsSettings(2, 100f, 0);
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.butterfly,
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 0.8f, 1, false);
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickBoundingBox(0.8f);
             image.position = WorldPos.PositionV3;

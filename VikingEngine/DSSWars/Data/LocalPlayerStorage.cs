@@ -3,26 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.Input;
 
 namespace VikingEngine.DSSWars.Data
 {
     class LocalPlayerStorage
     {
+        public InputSource prevInputSource = InputSource.Empty;
         public InputSource inputSource;
         public int controllerIndex = 0;
         public int screenIndex = 0;
-        public int flagDesignIndex;
+        public int profileIndex;
         public int index;
         public LocalPlayerStorage(int index)
         {
             this.index = index;
             inputSource = index == 0 ? InputSource.DefaultPC : InputSource.Empty;
-            //controllerIndex = index - 1;
+            
             screenIndex = index;
-            flagDesignIndex = index;
+            profileIndex = index;
         }
 
+        public bool SimulateMouseProperty(object tag, bool set, bool value)
+        {            
+            if (set)
+            {
+                inputSource.useTouchAsMouseSim = value;
+                DssRef.storage.Save(null);
+            }
+
+            return inputSource.useTouchAsMouseSim;
+        }
+
+        public PlayerProfile Profile()
+        {
+            var profile = DssRef.storage.profileStorage.profiles[profileIndex];
+            return profile;
+        }
+
+        public FlagAndColor Flag()
+        {
+            var profile = DssRef.storage.profileStorage.profiles[profileIndex];
+            return profile.flag;
+        }
         public void checkDoublette(int myIndex, LocalPlayerStorage[] localPlayers)
         {
             if (checkDoublette_input(myIndex, localPlayers))
@@ -32,10 +56,10 @@ namespace VikingEngine.DSSWars.Data
 
             if (checkDoublette_profile(myIndex, localPlayers))
             {
-                flagDesignIndex = 0;
+                profileIndex = 0;
                 while (checkDoublette_profile(myIndex, localPlayers))
                 {
-                    flagDesignIndex++;
+                    profileIndex++;
                 }
             }
 
@@ -50,7 +74,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public bool checkDoublette_input(int myIndex, LocalPlayerStorage[] localPlayers)
         {
-            if (inputSource.sourceType != InputSourceType.Num_Non)
+            if (inputSource.sourceType != InputSourceType.Num_None)
             {
                 for (int i = 0; i < localPlayers.Length; ++i)
                 {
@@ -85,7 +109,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 if (i != myIndex)
                 {
-                    if (localPlayers[i].flagDesignIndex == flagDesignIndex)
+                    if (localPlayers[i].profileIndex == profileIndex)
                     {
                         return true;
                     }
@@ -97,12 +121,17 @@ namespace VikingEngine.DSSWars.Data
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(screenIndex);
-            w.Write(flagDesignIndex);
+            w.Write(profileIndex);
+            inputSource.write(w);
         }
         public void read(System.IO.BinaryReader r, int version)
         {
             screenIndex = r.ReadInt32();
-            flagDesignIndex = r.ReadInt32();
+            profileIndex = Bound.Max(r.ReadInt32(), DssRef.storage.profileStorage.profiles.Count - 1);
+            if (version >= 35)
+            {
+                prevInputSource.read(r);
+            }
         }
     }
 }

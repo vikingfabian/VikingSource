@@ -31,7 +31,7 @@ namespace VikingEngine
         public static readonly IntVector2 CballGoalTextSz = new IntVector2(2, 5);
 
         public static readonly IntVector2 CballGoliePaddleSz = new IntVector2(10, 46);
-
+        
         public static readonly IntVector2 DSSCardSz = new IntVector2(6, 8);
 
         public static readonly IntVector2 PjModeSz = new IntVector2(112, 64);
@@ -44,6 +44,8 @@ namespace VikingEngine
 
         public SpriteSheet()
         {
+            addTexture(SpriteName.WaterEdgeMask_coast, 32, 32, LoadedTexture.waterEdge);
+
             this.Settings(4096, 128);
             this.TileSheetIx = LoadedTexture.SpriteSheet;
 
@@ -476,166 +478,27 @@ namespace VikingEngine
             add(SpriteName.Mouse, currentIndex, 2, 2);
 
             currentIndex = numTilesWidth * 17;
-            add(SpriteName.cgCrocodile, currentIndex, 3, 3);
-            add(SpriteName.cgGoblinScout, currentIndex, 3, 3);
-            add(SpriteName.cgGoblinLineman, currentIndex, 3, 3);
-            add(SpriteName.cgGoblinKing, currentIndex, 3, 3);
-            add(SpriteName.cgFatBird2, currentIndex, 3, 3);
-            add(SpriteName.cgFatBird, currentIndex, 3, 3);
-            add(SpriteName.cgStatueBoss, currentIndex, 3, 3);
-            add(SpriteName.cgBee, currentIndex, 3, 3);
-            add(SpriteName.cgSkeletonBoss, currentIndex, 3, 3);
-            add(SpriteName.cgSkeleton, currentIndex, 3, 3);
-            add(SpriteName.cgZombie, currentIndex, 3, 3);
-            add(SpriteName.cgHen, currentIndex, 3, 3);
-            add(SpriteName.cgSpitBird, currentIndex, 3, 3);
-            add(SpriteName.cgSheep, currentIndex, 3, 3);
-            add(SpriteName.cgPitbull, currentIndex, 3, 3);
-            add(SpriteName.cgPig, currentIndex, 3, 3);
-            add(SpriteName.cgLizard, currentIndex, 3, 3);
-            add(SpriteName.cgOrcArcher, currentIndex, 3, 3);
-            add(SpriteName.cgOldHog, currentIndex, 3, 3);
-            add(SpriteName.cgHorseWhite, currentIndex, 3, 3);
-            add(SpriteName.cgHorseRed, currentIndex, 3, 3);
-            add(SpriteName.cgHorseBrown, currentIndex, 3, 3);
-            add(SpriteName.cgHog, currentIndex, 3, 3);
-            add(SpriteName.cgHogBaby, currentIndex, 3, 3);
-            add(SpriteName.cgHarpy, currentIndex, 3, 3);
-            add(SpriteName.cgGoblinWolfrider, currentIndex, 3, 3);
-            add(SpriteName.cgBat2, currentIndex, 3, 3);
-            add(SpriteName.cgBat1, currentIndex, 3, 3);
-            add(SpriteName.cgSlime, currentIndex, 3, 3);
-            add(SpriteName.cgBigOrcBoss, currentIndex, 3, 3);
-            add(SpriteName.cgFrog, currentIndex, 3, 3);
-            add(SpriteName.cgGoblinBerserk, currentIndex, 3, 3);
-            add(SpriteName.cgElfWardancer, currentIndex, 3, 3);
-            add(SpriteName.cgElfKnight, currentIndex, 3, 3);
-            add(SpriteName.cgElfArcher, currentIndex, 3, 3);
-            add(SpriteName.cgOrcLineman, currentIndex, 3, 3);
-            add(SpriteName.cgOrcKnight, currentIndex, 3, 3);
-            add(SpriteName.cgOrcRider, currentIndex, 3, 3);
-            add(SpriteName.cgZombieLeader, currentIndex, 3, 3);
-            add(SpriteName.cgMummy, currentIndex, 3, 3);
-            add(SpriteName.cgGhost, currentIndex, 3, 3);
-            add(SpriteName.cgUnderConstruction, currentIndex, 3, 3);
-
-            currentIndex = numTilesWidth * 20;
-
-            add(SpriteName.LFAppearHatTypeCap, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeWitch, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeFootball, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypePirate1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypePirate2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypePirate3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeSanta1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeSanta2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeSanta3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeBaby1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeBaby2, currentIndex, 2, 2);
-
-            add(SpriteName.LFAppearHatTypeArrow, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeBucket, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeCoif1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeCoif2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeHigh1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeHigh2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeHunter1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeHunter2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeHunter3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeLow1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeLow2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeMini1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeMini2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeMini3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeTurban1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeTurban2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeHeadband1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeHeadband2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeHeadband3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypecrown1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypecrown2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypecrown3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeprincess1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeprincess2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeMaskTurtle1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeMaskZorro1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeMaskZorro2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHatTypeZelda, currentIndex, 2, 2);
-
-            add(SpriteName.LFAppearHairTypeNormal, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeSpiky1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeSpiky2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeRag1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeRag2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeBald1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeBald2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeGirlyShort1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeGirlyShort2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeGirlyLong1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeGirlyLong2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeEmo1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeEmo2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearHairTypeEmo3, currentIndex, 2, 2);
-
-            add(SpriteName.LFAppearMouthTypeNoMouth, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeSmile, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeBigSmile, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeSideSmile1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeSideSmile2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeWideSmile, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeopen_smile, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeLoony, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeStraight, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeteeth1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeteeth2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeteeth3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeOMG, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeHmm, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeSour, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypesouropen, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeOrc, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypevampire, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeGasp, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeLaugh, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeGirly1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeGirly2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypePirate, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeBaby1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearMouthTypeBaby2, currentIndex, 2, 2);
-
-            add(SpriteName.LFAppearEyeTypeNoEyes, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeNormal, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSunshine, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeWink, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeLoony, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSlim, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeFrown, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeHardShut, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeEvil, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeRed, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSleepy, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSleepyCross, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeCross, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeCrossed1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeCrossed2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeCrossed3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeCrossed4, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeCrossed5, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSad1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSad2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSad3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSad4, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSad5, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeCyclops, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeVertical, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeGirly1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeGirly2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeGirly3, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypePirate, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSunGlasses1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeSunGlasses2, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeEmo1, currentIndex, 2, 2);
-            add(SpriteName.LFAppearEyeTypeEmo2, currentIndex, 2, 2);
+            add(SpriteName.ButtonL4, 2, 2);
+            add(SpriteName.ButtonR4, 2, 2);
+            add(SpriteName.ButtonL5, 2, 2);
+            add(SpriteName.ButtonR5, 2, 2);
+            add(SpriteName.ButtonSwitchMinus, 2, 2);
+            add(SpriteName.ButtonSwitchPlus, 2, 2);
+            add(SpriteName.DeckTouchL_Up, 2, 2);
+            add(SpriteName.DeckTouchR_Up, 2, 2);
+            add(SpriteName.DeckTouchL_Down, 2, 2);
+            add(SpriteName.DeckTouchR_Down, 2, 2);
+            add(SpriteName.DeckTouchL_Left, 2, 2);
+            add(SpriteName.DeckTouchR_Left, 2, 2);
+            add(SpriteName.DeckTouchL_Right, 2, 2);
+            add(SpriteName.DeckTouchR_Right, 2, 2);
+            add(SpriteName.DeckTouchL_Click, 2, 2);
+            add(SpriteName.DeckTouchR_Click, 2, 2);
+            add(SpriteName.DeckTouchL, 2, 2);
+            add(SpriteName.DeckTouchR, 2, 2);
+            add(SpriteName.ButtonRZ, 2, 2);
+            add(SpriteName.ButtonLZ, 2, 2);
+                        
 
             //BIRD TILES
             currentIndex = numTilesWidth * 24;
@@ -2077,7 +1940,40 @@ namespace VikingEngine
                     add(SpriteName.hqAlarmBell, 2, 3);
 
                     add(SpriteName.WarsRelationFlagOutline, 2, 3);
-                    add(SpriteName.WarsRelationFlag, 2, 3);                            
+                    add(SpriteName.WarsRelationFlag, 2, 3);
+
+                    add(SpriteName.WarsBuild_TentHut, 3, 3);
+
+                    add(SpriteName.WarsBuild_WildPigPen, 3, 3);
+                    add(SpriteName.WarsBuild_WildHogPen, 3, 3);
+                    add(SpriteName.WarsBuild_WarHogPen, 3, 3);
+                    add(SpriteName.WarsBuild_StagHogPen, 3, 3);
+
+                    add(SpriteName.WarsBuild_WolfPen, 3, 3);
+                    add(SpriteName.WarsBuild_WargPen, 3, 3);
+                    add(SpriteName.WarsBuild_AlphaWargPen, 3, 3);
+
+                    add(SpriteName.WarsBuild_WildCatPen, 3, 3);
+                    add(SpriteName.WarsBuild_LionPen, 3, 3);
+                    add(SpriteName.WarsBuild_WarLionPen, 3, 3);
+
+                    add(SpriteName.WarsBuild_ElephantPen, 3, 3);
+                    add(SpriteName.WarsBuild_WarElephantPen, 3, 3);
+                    add(SpriteName.WarsBuild_OliphantPen, 3, 3);
+
+                    currentIndex += 9;
+                    add(SpriteName.warsCannonphantPromo, 3, 3);
+
+                    add(SpriteName.WarsBuild_DiplomaticStatue_ThumbsUpWest, 3, 3);
+                    add(SpriteName.WarsBuild_DiplomaticStatue_InsultEast, 3, 3);
+                    add(SpriteName.WarsBuild_DiplomaticStatue_GoldenPoop, 3, 3);
+                    add(SpriteName.WarsBuild_DiplomaticStatue_ThumbsUpEast, 3, 3);
+                    add(SpriteName.WarsBuild_DiplomaticStatue_InsultWest, 3, 3);
+
+                    addWithSizeDef(SpriteName.GooBannerHighlight, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.GooBanner, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.SupportDlcBanner, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
+                    addWithSizeDef(SpriteName.SupportDlcBannerHighlight, currentIndex, DoomBannerSize.X, DoomBannerSize.Y);
                 }
             }
 
@@ -2158,12 +2054,326 @@ namespace VikingEngine
                 }
 
 
-                //currentIndex = numTilesWidth * 85;
-                //{
-                //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
-                //}
             }
 
+            currentIndex = numTilesWidth * 85;
+            currentIndex += 12;
+            {
+                add(SpriteName.WarsIcon_WorkQueueTotal);
+                add(SpriteName.WarsIcon_WorkQueueIdle);
+                add(SpriteName.WarsIcon_WorkQueueActive);
+                add(SpriteName.WarsSettler);
+                add(SpriteName.WarsSettlerAdd);
+                add(SpriteName.warsBuildCategoryFarm);
+
+                add(SpriteName.HudPin_Falcon0);
+                add(SpriteName.HudPin_Falcon1);
+                add(SpriteName.HudPin_Falcon2);
+                add(SpriteName.HudPin_Falcon3);
+                add(SpriteName.HudPin_Falcon4);
+                add(SpriteName.HudPin_Falcon5);
+                add(SpriteName.HudPin_Falcon6);
+                add(SpriteName.HudPin_Falcon7);
+                add(SpriteName.HudPin_Falcon8);
+                add(SpriteName.HudPin_Falcon9);
+                add(SpriteName.HudPin_Falcon_);
+
+                add(SpriteName.HudPin_Castle0);
+                add(SpriteName.HudPin_Castle1);
+                add(SpriteName.HudPin_Castle2);
+                add(SpriteName.HudPin_Castle3);
+                add(SpriteName.HudPin_Castle4);
+                add(SpriteName.HudPin_Castle5);
+                add(SpriteName.HudPin_Castle6);
+                add(SpriteName.HudPin_Castle7);
+                add(SpriteName.HudPin_Castle8);
+                add(SpriteName.HudPin_Castle9);
+                add(SpriteName.HudPin_Castle_);
+
+                add(SpriteName.HudPin_Horse0);
+                add(SpriteName.HudPin_Horse1);
+                add(SpriteName.HudPin_Horse2);
+                add(SpriteName.HudPin_Horse3);
+                add(SpriteName.HudPin_Horse4);
+                add(SpriteName.HudPin_Horse5);
+                add(SpriteName.HudPin_Horse6);
+                add(SpriteName.HudPin_Horse7);
+                add(SpriteName.HudPin_Horse8);
+                add(SpriteName.HudPin_Horse9);
+                add(SpriteName.HudPin_Horse_);
+
+                add(SpriteName.HudPin_Ship0);
+                add(SpriteName.HudPin_Ship1);
+                add(SpriteName.HudPin_Ship2);
+                add(SpriteName.HudPin_Ship3);
+                add(SpriteName.HudPin_Ship4);
+                add(SpriteName.HudPin_Ship5);
+                add(SpriteName.HudPin_Ship6);
+                add(SpriteName.HudPin_Ship7);
+                add(SpriteName.HudPin_Ship8);
+                add(SpriteName.HudPin_Ship9);
+                add(SpriteName.HudPin_Ship_);
+
+                add(SpriteName.HudPin_Cannon0);
+                add(SpriteName.HudPin_Cannon1);
+                add(SpriteName.HudPin_Cannon2);
+                add(SpriteName.HudPin_Cannon3);
+                add(SpriteName.HudPin_Cannon4);
+                add(SpriteName.HudPin_Cannon5);
+                add(SpriteName.HudPin_Cannon6);
+                add(SpriteName.HudPin_Cannon7);
+                add(SpriteName.HudPin_Cannon8);
+                add(SpriteName.HudPin_Cannon9);
+                add(SpriteName.HudPin_Cannon_);
+
+                //currentIndex++;
+                add(SpriteName.WarsLocationPin);
+                add(SpriteName.WarsHudRoundButtonDisabled);
+                add(SpriteName.WarsHudGoldOutline);
+                add(SpriteName.WarsHudGoldOutline_Gray);
+                add(SpriteName.VoiceSoundOn);
+                add(SpriteName.VoiceSoundOff);
+                add(SpriteName.VoiceDisabled);
+                add(SpriteName.TextChatLetter);
+                add(SpriteName.WarsHudCasualMode);
+                add(SpriteName.WarsHudCasualModeDisabled);
+                add(SpriteName.WarsHudIconHandicap);
+                add(SpriteName.WarsHudIconDistanceOnMap);
+                add(SpriteName.cmdClientPointerMetallic);
+
+                add(SpriteName.WarsHudIconMultiplayer);
+                
+                add(SpriteName.WarsHudIconClient);
+                add(SpriteName.WarsHudIconHost);
+                add(SpriteName.WarsHudIconPlayerCount);
+
+                add(SpriteName.WarsHudIconBlockedPlayer);
+                add(SpriteName.WarsRelationMobilizing);
+                add(SpriteName.WarsHudIconMultiplayerJoin, 2, 1);
+
+            }
+
+
+            currentIndex = numTilesWidth * 85;
+            {
+                currentIndex += 5;
+                add(SpriteName.WarsWorker);
+                add(SpriteName.WarsWorkerAdd);
+                add(SpriteName.WarsWorkerSub);
+                add(SpriteName.WarsSoldierMan);
+                add(SpriteName.WarsSoldierGroup);
+                add(SpriteName.WarsNobelman);
+                add(SpriteName.WarsResource_RawFoodRemove);
+
+            }
+
+            currentIndex = numTilesWidth * 86;
+            {
+                add(SpriteName.WarsHudPopUpButton);
+                add(SpriteName.warsBuildCategoryUpgrades);
+
+                add(SpriteName.WarsHudIconReturn);
+                add(SpriteName.VoxelEditorColorCube);
+                add(SpriteName.VoxelEditorTint);
+                add(SpriteName.VoxelEditorBucket);
+                add(SpriteName.VoxelEditorSortTime);
+                add(SpriteName.VoxelEditorSortName);
+                add(SpriteName.VoxelEditorSortUp);
+                add(SpriteName.VoxelEditorSortDown);
+                add(SpriteName.VoxelEditorMoveFrameL);
+                add(SpriteName.VoxelEditorMoveFrameR);
+                add(SpriteName.VoxelEditorFrameSelected);
+                add(SpriteName.VoxelEditorFrame);
+                add(SpriteName.VoxelEditorFrameLocked);
+                add(SpriteName.VoxelEditorFrameToFirst);
+                add(SpriteName.VoxelEditorFramePrevious);
+                add(SpriteName.VoxelEditorFrameNext);
+                add(SpriteName.VoxelEditorFrameToLast);
+                add(SpriteName.WarsHudIconSave);
+                add(SpriteName.VoxelEditorFrameAddEmpty);
+                add(SpriteName.VoxelEditorFrameAddCopy);
+                add(SpriteName.VoxelEditorFrameRemove);
+                add(SpriteName.VoxelEditorFlipLyingStanding);
+                add(SpriteName.VoxelEditorMoveFrameToEndL);
+                add(SpriteName.VoxelEditorMoveFrameToEndR);
+                add(SpriteName.WarsHudIconPaste);
+                add(SpriteName.WarsHudIconCopy);
+                add(SpriteName.VoxelEditorMaterialCube);
+                add(SpriteName.WarsHudIconCut);
+                add(SpriteName.VoxelEditorAllFrames);
+                add(SpriteName.VoxelEditorEmptyCube);
+
+                add(SpriteName.VoxelEditorFrameRemoveAll);
+                add(SpriteName.EditorLayer);
+                add(SpriteName.EditorAllLayer);
+                add(SpriteName.EditorLayerAdd);
+                add(SpriteName.EditorLayerRemove);
+                add(SpriteName.WarsHudIconCrop);
+                add(SpriteName.WarsHudIconSaveProject);
+                add(SpriteName.WarsHudIconOpenProject);
+                add(SpriteName.EditorLayerMergeDown);
+                add(SpriteName.WarsUnitIcon_Immigrant_RemoveTime);
+                add(SpriteName.WarsUnitIcon_Immigrant);
+
+                add(SpriteName.WarsResource_CopperCoin);
+                add(SpriteName.WarsResource_ElfCoin);
+                add(SpriteName.WarsResource_BonzeCoin);
+                add(SpriteName.WarsResource_SilverCoin);
+
+                add(SpriteName.WarsWorkSmelting);
+                add(SpriteName.HudPinIcon);
+                add(SpriteName.warsBuildCategoryAdvanced);
+                add(SpriteName.warsBuildCategorySearch);
+                add(SpriteName.WarsHudGodPowerButton);
+                add(SpriteName.WarsGodPowerIcon);
+                add(SpriteName.WarsConstructBuildingIcon);                
+                add(SpriteName.WarsHudIconPrevious);
+                add(SpriteName.WarsHudIconNext);
+                add(SpriteName.WarsHudIconProgress);
+                add(SpriteName.WarsRelationServant);
+                                
+                add(SpriteName.WarsMapFilterFactions);
+                add(SpriteName.WarsMapFilterWorkers);
+                add(SpriteName.WarsMapFilterMinimap);
+                add(SpriteName.WarsMapFilterStrength);
+                add(SpriteName.WarsMapFilterTerrain);
+
+                add(SpriteName.WarsRelationArrowAlly);
+                add(SpriteName.WarsRelationArrowWar);
+                add(SpriteName.WarsHudMinimapBorder);
+
+                add(SpriteName.WarsHudFlapMinimize);
+                add(SpriteName.WarsHudFlapMaximize);
+
+                add(SpriteName.WarsIcon_Resources);
+                add(SpriteName.WarsMapFilterResources);
+
+                add(SpriteName.WarsBluePrint);
+
+                add(SpriteName.WarsHudIconSpeed_Pause);
+                add(SpriteName.WarsHudIconSpeed_Low);
+                add(SpriteName.WarsHudIconSpeed_High);
+                add(SpriteName.WarsHudIconSpeed_Medium);
+                add(SpriteName.UpdatePromo_SnowFlake);
+
+                add(SpriteName.WarsResource_Brick);
+                add(SpriteName.WarsResource_Clay);
+                add(SpriteName.WarsResource_ConservedFood);
+                add(SpriteName.WarsResource_Container);
+                add(SpriteName.WarsResource_Salt);
+
+                add(SpriteName.WarsResource_Hen);
+                add(SpriteName.WarsResource_Pig);
+                add(SpriteName.WarsResource_Oxen);
+                add(SpriteName.WarsResource_KineOxen);
+
+                add(SpriteName.WarsResource_Dog);
+                add(SpriteName.WarsResource_Hound);
+
+                add(SpriteName.WarsResource_Pony);
+                add(SpriteName.WarsResource_Horse);
+                add(SpriteName.WarsResource_WarHorse);
+                add(SpriteName.WarsResource_DraftHorse);
+
+                add(SpriteName.WarsResource_WildPig);
+                add(SpriteName.WarsResource_WildHog);
+                add(SpriteName.WarsResource_WarHog);
+                add(SpriteName.WarsResource_StagHog);
+
+                add(SpriteName.WarsResource_Wolf);
+                add(SpriteName.WarsResource_Warg);
+                add(SpriteName.WarsResource_AlphaWarg);
+
+                add(SpriteName.WarsResource_WildCat);
+                add(SpriteName.WarsResource_Lion);
+                add(SpriteName.WarsResource_WarLion);
+
+                add(SpriteName.WarsResource_Elephant);
+                add(SpriteName.WarsResource_WarElephant);
+                add(SpriteName.WarsResource_Oliphant);
+
+                add(SpriteName.WarsResource_MountPaddedArmor);
+                add(SpriteName.WarsResource_MountHeavyPaddedArmor);
+                add(SpriteName.WarsResource_MountBronzeArmor);
+                add(SpriteName.WarsResource_MountIronArmor);
+                add(SpriteName.WarsResource_MountHeavyIronArmor);
+                add(SpriteName.WarsResource_MountLightPlateArmor);
+                add(SpriteName.WarsResource_MountFullPlateArmor);
+                add(SpriteName.WarsResource_MountMithrilArmor);
+                add(SpriteName.WarsResource_HeaterShield);
+                add(SpriteName.WarsResource_WagonClosed);
+                add(SpriteName.WarsResource_WagonIron);
+                add(SpriteName.WarsResource_WagonSteel);
+
+                add(SpriteName.WarsSlaughter);
+                add(SpriteName.WarsStockpileLimit);
+
+                add(SpriteName.WarsResource_Boar);
+                add(SpriteName.WarsResource_Fowl);
+
+                add(SpriteName.WarsAttackSpeedIcon);
+                add(SpriteName.WarsMobilityIcon);
+                add(SpriteName.WarsOverviewCityHover);
+                add(SpriteName.WarsOverviewCitySelect);
+
+                add(SpriteName.WarsGiftedAwardDisabled);
+                add(SpriteName.WarsGiftedAward);
+                add(SpriteName.WarsHudIconNetwork);
+                add(SpriteName.WarsHudIconNetworkSettings);
+            }
+
+            currentIndex = numTilesWidth * 87;
+            {
+                add(SpriteName.WarsBuild_WoodWall, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_WoodTower, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_CitySquare, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_SmallServiceHouse, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_BigServiceHouse, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Palisade, currentIndex, 3, 3);
+                var steamIx = currentIndex;
+                add(SpriteName.SteamIcon, steamIx, 3, 3);
+                add(SpriteName.SteamIconAndName, steamIx, 8, 3);
+                add(SpriteName.WarsBuild_Tent, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Bookpress, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ResearchCenter, currentIndex, 3, 3);
+                
+                add(SpriteName.WarsBuild_TreeHard, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeSoft, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeSeedlingHard, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeSeedlingSoft, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeApple, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeBanana, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ManorLord, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_MaterialStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_FoodStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_WeaponStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ArmorStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_AnimalStorage, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_Smoker, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Pottery, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Butcher, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_DryingPan, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Shieldmaker, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Dryer, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_OxenPen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_KineOxenPen, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_DogCage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_HoundCage, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_PonyPen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_HorsePen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_WarHorsePen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_DraftHorsePen, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_GreatHall, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Cesspit, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_BoarPen, 3, 3);
+                add(SpriteName.WarsBuild_FowlPen, 3, 3);
+                add(SpriteName.WarsBuild_Trapper, 3, 3);
+            }
             currentIndex = numTilesWidth * 90;
             {
                 add(SpriteName.WarsBuild_School, currentIndex, 3, 3);
@@ -2191,7 +2401,7 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_GardenBird, 3, 3);
                 add(SpriteName.WarsBuild_PavementLamp, 3, 3);
                 add(SpriteName.WarsBuild_PavemenFountain, 3, 3);
-                add(SpriteName.WarsBuild_PavementRectFlower, 3, 3);
+                add(SpriteName.WarsBuild_PavementFlowers, 3, 3);
                 add(SpriteName.WarsBuild_StoneWall, 3, 3);
                 add(SpriteName.WarsBuild_StoneWallGreen, 3, 3);
                 add(SpriteName.WarsBuild_StoneWallBlueRoof, 3, 3);
@@ -2204,6 +2414,17 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_Statue_Leader, 3, 3);
                 add(SpriteName.WarsBuild_Statue_Horse, 3, 3);
                 add(SpriteName.WarsBuild_Statue_Pillar, 3, 3);
+
+
+                add(SpriteName.WarsBuild_CobbleStones, 3, 3);
+                add(SpriteName.WarsBuild_WorkerHutLarge, 3, 3);
+                add(SpriteName.WarsBuild_GuardOffice, 3, 3);
+                add(SpriteName.WarsBuild_GuardOfficeLarge, 3, 3);
+                add(SpriteName.WarsBuild_DirtTower, 3, 3);
+                add(SpriteName.WarsBuild_DirtWall, 3, 3);
+                
+                
+
             }
 
             if (PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -2331,7 +2552,8 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Japanese, 8, 2);
                     add(SpriteName.LangButton_Frensh, 8, 2);
                     add(SpriteName.LangButton_Chinese, 8, 2);
-                    add(SpriteName.WarsBluePrint, 2, 2);
+                    //add(SpriteName.WarsBluePrint_old, 2, 2);
+                    currentIndex += 2;
                     add(SpriteName.WarsUnitIcon_TwoHand, 2, 2);
                     add(SpriteName.WarsBattleIcon, 2, 2);
                     add(SpriteName.WarsWorker, 2, 2);
@@ -2375,7 +2597,13 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Bow);
                     add(SpriteName.WarsResource_Longbow);
                     add(SpriteName.WarsResource_Mithrilbow);
-                    currentIndex += 6;
+                    currentIndex += 2;
+                    add(SpriteName.WarsResource_BucklerShield); 
+                    add(SpriteName.WarsResource_RoundShield); 
+                    add(SpriteName.WarsResource_TowerShield);
+
+
+                    add(SpriteName.WarsResource_Pike);
                     add(SpriteName.WarsDelivery);
                     add(SpriteName.WarsTrade);
                     add(SpriteName.WarsResource_Beer);
@@ -2458,7 +2686,14 @@ namespace VikingEngine
 
                     add(SpriteName.warsResourceChunkAvailable);
                     add(SpriteName.warsResourceChunkNotAvailable);
+                                        
+                    add(SpriteName.warsBuildCategoryMilitaryWall);
+                    add(SpriteName.warsBuildCategoryHouse);
+                    add(SpriteName.warsBuildCategoryDecorTree);
+                    add(SpriteName.warsBuildCategoryAutomation);
+                    add(SpriteName.warsCraftAvailableCount);
 
+                    add(SpriteName.WarsHudIconTutorial);
                 }
 
                 currentIndex = numTilesWidth * 97;
@@ -2482,7 +2717,7 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_WorkBench, 3, 3);
                     add(SpriteName.WarsBuild_CoalPit, 3, 3);
                     add(SpriteName.WarsBuild_Pavement, 3, 3);
-                    add(SpriteName.WarsBuild_PavementFlowers, 3, 3);
+                    add(SpriteName.WarsBuild_PavementRectFlower, 3, 3);
                     add(SpriteName.WarsBuild_Bank, 3, 3);
                     add(SpriteName.WarsBuild_Storehouse, 3, 3);
                     add(SpriteName.WarsCityHall, 3, 3);
@@ -2505,7 +2740,7 @@ namespace VikingEngine
 
                     add(SpriteName.WarsBuild_SoldierBarracks, 3, 3);
                     add(SpriteName.WarsBuild_ArcherBarracks, 3, 3);
-                    add(SpriteName.WarsBuild_WarmashineBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_WarmachineBarracks, 3, 3);
                     add(SpriteName.WarsBuild_GunBarracks, 3, 3);
                     add(SpriteName.WarsBuild_CannonBarracks, 3, 3);
 
@@ -2588,7 +2823,7 @@ namespace VikingEngine
                     add(SpriteName.WarsTechnology_Unlocked);
                     add(SpriteName.WarsTechnology_Locked);
                     add(SpriteName.WarsFletcherArrowIcon);
-                    add(SpriteName.WarsWorkSmelting);
+                    add(SpriteName.WarsWorkCasting);
                     add(SpriteName.WarsIncreaseArrowUp);
                     add(SpriteName.WarsDecreaseArrowDown);
 
@@ -2631,7 +2866,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudDropDownArrow);
                     add(SpriteName.WarsHudYellowDot);
                     add(SpriteName.WarsHudBrownDot);
-                    add(SpriteName.WarsHudRoundButtonNotSelected);
+                    add(SpriteName.WarsHudRoundButtonSecondary);
                     add(SpriteName.WarsHudListArrowSelected);
                     add(SpriteName.WarsHudListArrowDefault);
                     add(SpriteName.WarsHudListArrowNotSelected);
@@ -2649,6 +2884,26 @@ namespace VikingEngine
                     add(SpriteName.WarsHudSubTabSelected);
                     add(SpriteName.WarsHudSubTabNotSelected);
                     add(SpriteName.WarsHudToggleNotSelected);
+
+                    add(SpriteName.ToolPaintShape_Free);
+                    add(SpriteName.ToolPaintShape_Line);
+                    add(SpriteName.ToolPaintShape_Area);
+                    add(SpriteName.ToolPaintShape_LShape);
+                    add(SpriteName.ToolPaintShape_Path);
+
+                    add(SpriteName.WarsHudIconExport);
+                    add(SpriteName.WarsHudIconImport);
+                    add(SpriteName.warsBulletSeperationPoint);
+                    add(SpriteName.WarsGuardPostIcon);
+                    add(SpriteName.WarsServiceMen);
+                    add(SpriteName.WarsHudIconChildArrow);
+                    add(SpriteName.WarsServiceMenTotal);
+                    add(SpriteName.WarsHudIconExtraModes);
+                    add(SpriteName.WarsResource_Palisade);
+                    add(SpriteName.WarsHudRoundButtonNotSelected);
+                    add(SpriteName.WarsHudIconCollection);
+
+                    
                 }
 
                 currentIndex = numTilesWidth * 101;
@@ -2670,6 +2925,25 @@ namespace VikingEngine
                     add(SpriteName.WarsHudFlagBorder, 2, 2);
                     add(SpriteName.WarsHudHeadBarBg, 2, 2);
                     add(SpriteName.WarsHudToolUpButton, 1, 2);
+                    add(SpriteName.WarsHudTutorialBg, 2, 2);
+
+                    add(SpriteName.WarsArmy, 2, 2);
+
+                    add(SpriteName.WarsTutorialArmy, 2, 2);
+                    add(SpriteName.WarsTutorialCity, 2, 2);
+                    add(SpriteName.WarsTutorialSoldiers, 2, 2);
+                    add(SpriteName.WarsRelationEnemy, 2, 2);
+                    add(SpriteName.LangButton_Turkish, 8, 2);
+                    add(SpriteName.LangButton_Italian, 8, 2);
+                    add(SpriteName.LangButton_Korean, 8, 2);
+
+                    add(SpriteName.WaterEdgeMask_ship, 1, 2);
+                    
+                    add(SpriteName.MenuIconPerformanceCold, 2, 2);
+                    add(SpriteName.MenuIconPerformanceHot, 2, 2);
+                    add(SpriteName.LangButton_Polish, 8, 2);
+                    add(SpriteName.LangButton_Thai, 8, 2);
+                    add(SpriteName.WarsClayPit, 2, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 
@@ -2738,7 +3012,8 @@ namespace VikingEngine
                     currentIndex += 4;
                     addWithSizeDef(SpriteName.cmdTutVideo_BoardTile, currentIndex, 48, 48);
 
-                    
+                    addWithSizeDef(SpriteName.WarsTextureGroupSquare, currentIndex, 64, 48);
+                    addWithSizeDef(SpriteName.WarsTextureGroupSquareMelee, currentIndex, 64, 48);
                 }
             }
 
@@ -2828,20 +3103,21 @@ namespace VikingEngine
                 add(SpriteName.LfAchievementAllCards_lock, currentIndex, 2, 2);
                 add(SpriteName.cgSacrificeForCards, currentIndex, 4, 2);
                 add(SpriteName.cgSacrificeForMana, currentIndex, 4, 2);
+                currentIndex += 2;
                 add(SpriteName.birdSkyTex, currentIndex, 2, 2);
-                currentIndex += 16;
+                currentIndex += 14;
                 add(SpriteName.EditorPencilCube, 2, 2);
                 add(SpriteName.EditorFillAreaTexture, 2, 2);
 
                 add(SpriteName.cmdTileOpenWater, currentIndex, 2, 2);
-                add(SpriteName.cmdTileCastle, currentIndex, 2, 2);
+                //add(SpriteName.cmdTileCastle, currentIndex, 2, 2);
                 add(SpriteName.cmdTilePalisad, currentIndex, 2, 2);
                 add(SpriteName.cmdTilePavedRoad, currentIndex, 2, 2);
                 add(SpriteName.cmdTileStoneWall, currentIndex, 2, 2);
                 add(SpriteName.cmdTileStoneGate, currentIndex, 2, 2);
 
-                add(SpriteName.cmdTileDungeonGround, currentIndex, 2, 2);
-                add(SpriteName.cmdTileDungeonWall, currentIndex, 2, 2);
+                //add(SpriteName.cmdTileDungeonGround, currentIndex, 2, 2);
+                //add(SpriteName.cmdTileDungeonWall, currentIndex, 2, 2);
 
                 add(SpriteName.cmdIconButtonReadyCheckGray, currentIndex, 2, 2);
                 add(SpriteName.cmdIconButtonReadyCheck, currentIndex, 2, 2);

@@ -1,181 +1,233 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.GameObject;
+﻿//using Microsoft.Xna.Framework;
+//using System;
+//using System.Collections.Generic;
+//using System.Text;
+//using VikingEngine.DSSWars.Conscript;
+//using VikingEngine.DSSWars.GameObject;
+//using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+//using VikingEngine.DSSWars.Resource;
 
-namespace VikingEngine.DSSWars.GameObject
-{
-    partial class AbsDetailUnit
-    {
-        //public AbsDetailUnit soldier;
+//namespace VikingEngine.DSSWars.GameObject
+//{
+//    partial class AbsDetailUnit
+//    {
+//        public float prevAttackTime;
+//        public Time attackCooldownTime = 0;
+//        Time attackFrameTime;
 
-        public float prevAttackTime;
-        public Time attackCooldownTime = 0;
-        Time attackFrameTime;
-        //public int attackSetIndex;
+//        public Rotation1D attackDir;
 
-        public Rotation1D attackDir;
+//        public void updateAttack(float time)
+//        {
+//            if (attackCooldownTime.CountDown(time) == false)
+//            {
+//                if (IsSoldierUnit())
+//                {
+//                    attackFrameTime.CountDown(time);
+//                }
+//            }
+//        }
 
-        //public AttackAnimation(AbsDetailUnit soldier)
-        //{
-        //    this.soldier = soldier;
-        //}
+//        public bool inAttackAnimation()
+//        {
+//            return attackFrameTime.HasTime;
+//        }
 
-        public void updateAttack(float time)
-        {
-            if (attackCooldownTime.CountDown(time) == false)
-            {
-                if (IsSoldierUnit())
-                {
-                    attackFrameTime.CountDown(time);
-                }
-            }
+//        protected int startMultiAttack(bool fullUpdate, AbsDetailUnit target, bool mainAttack, int attackCount, bool local)
+//        {
+//            int hitCount = 0;
 
-            //if (attackCooldownTime.MilliSeconds
-        }
+//            if (target != null)
+//            {
+//                if (target.IsSingleTarget())
+//                {
+//                    for (int i = 0; i < attackCount; i++)
+//                    {
+//                        startAttack(fullUpdate, target, mainAttack, local);
+//                    }
 
-        public bool inAttackAnimation()
-        {
-            return attackFrameTime.HasTime;
-        }
+//                    hitCount = attackCount;
+//                }
+//                else
+//                {
+//                    attackCount += 1;
+//                    for (int i = 0; i < attackCount; i++)
+//                    {
+//                        var groupTarget = target.group.soldiers?.GetRandomUnsafe(Ref.peRnd);
+//                        if (groupTarget != null)
+//                        {
+//                            startAttack(fullUpdate, groupTarget, mainAttack, local);
+//                            ++hitCount;
+//                        }
+//                    }
+//                }
+//            }
 
-        protected int startMultiAttack(bool fullUpdate, AbsDetailUnit target, bool mainAttack, int attackCount, bool local)
-        {
-            int hitCount=0;
+//            return hitCount;
+//        }
 
-            if (attackTarget.IsSingleTarget())
-            {
-                for (int i = 0; i < attackCount; i++)
-                {
-                    startAttack(fullUpdate, target, mainAttack, local);
-                }
-
-                hitCount = attackCount;
-            }
-            else
-            {
-                attackCount += 1;
-                for (int i = 0; i < attackCount; i++)
-                {
-                    var groupTarget = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
-                    if (groupTarget != null)
-                    {
-                        startAttack(fullUpdate, groupTarget, mainAttack, local);
-                        ++hitCount;
-                    }
-                }
-            }
-
-            return hitCount;
-        }
-
-        protected void startAttack(bool fullUpdate, AbsDetailUnit target, bool mainAttack, bool local)
-        {
-            if (target != null)
-            {
-                attackCooldownTime.MilliSeconds = soldierData.attackTimePlusCoolDown;
-                prevAttackTime = attackCooldownTime.MilliSeconds;
-                attackFrameTime.MilliSeconds = Profile().attackFrameTime;
+//        protected void startAttack(bool fullUpdate, AbsDetailUnit target, bool mainAttack, bool local)
+//        {
+//            if (target != null)
+//            {
+//                attackCooldownTime.MilliSeconds = soldierData.attackTimePlusCoolDown;
+//                prevAttackTime = attackCooldownTime.MilliSeconds;
+//                attackFrameTime.MilliSeconds = Profile().attackFrameTime;
                                
 
-                int damage;
-                if (mainAttack)
-                {
-                    if (target.DetailUnitType() == UnitType.City)
-                    {
-                        damage = soldierData.attackDamageStructure;
-                    }
-                    else
-                    {
-                        damage = soldierData.attackDamage;
+//                int damage;
+//                float blockReduce = soldierData.blockReducingAttack_Inv;
 
-                        if (group != null &&
-                            group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry && 
-                            target.DetailUnitType() == UnitType.ConscriptCavalry)
-                        {
-                            damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
-                        }
-                    }
-                }
-                else
-                {
-                    damage = soldierData.secondaryAttackDamage;
-                }
+//                //Height advantage
+//                if (group.position.Y + position.Y - Map.Settings.Height.DefaultGroundYoffset >= target.group.position.Y + target.position.Y &&
+//                    !IsShipType())
+//                {
+//                    blockReduce *= DssConst.HeightAdvantageBlockReduce_multiply;
+//                    if (fullUpdate)
+//                    {
+//                        Vector3 pos = position;
+//                        pos.Y += DssConst.Men_StandardModelScale * 0.8f;
+//                        Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.GoldenSparkle, pos, DssConst.Men_StandardModelScale * 0.3f, 6);
+//                    }
+//                }
 
-                if (soldierData.mainAttack == AttackType.Melee && mainAttack)
-                {
-                    attackDir = angleToUnit(target);
+//                if (mainAttack)
+//                {
+//                    damage = soldierData.attackDamage;
 
-                    if (fullUpdate && IsShipType())
-                    {
-                        new ShipMeleeAttack(GetSoldierUnit(), attackDir);
-                    }
-                    target.takeDamage(damage, this, attackDir, GetFaction(), fullUpdate);
-                }
-                else
-                {
-                    if (target.soldierData.arrowWeakness)
-                    {
-                        damage = MathExt.MultiplyInt(DssConst.ArrowWeaknessBonusMultiply, damage);
-                    }
+//                    if (group != null &&
+//                        group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry)
+//                    {
+//                        switch (target.DetailUnitType())
+//                        {
+//                            case UnitBuildType.ConscriptCavalry:
+//                            case UnitBuildType.ConscriptBalkong:
+//                                damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
+//                                break;
+//                        }
+//                    }
+//                }
+//                else
+//                {
+//                    damage = soldierData.secondaryAttackDamage;
+//                }
 
-                    if (mainAttack)
-                    {
-                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage, soldierData.attackSplashCount);
-                    }
-                    else
-                    {
-                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage, soldierData.attackSplashCount);
-                    }
-                }
-            }
-        }
+//                damage += damage * group.soldierAttackDamageBonus;
 
-        //public bool mustCompleteAttackSet()
-        //{
-        //    return attackSetIndex > 0;
-        //}
+//                attackDir = angleToUnit(target);
 
-        public bool IsAttacking
-        {
-            get { return attackCooldownTime.HasTime; }
-        }
+//                if (soldierData.mainAttack == AttackType.Melee && mainAttack)
+//                {
+//                    if (fullUpdate)
+//                    {
+//                        if (IsShipType())
+//                        {
+//                            new ShipMeleeAttack(GetSoldierUnit(), attackDir);
+//                        }
 
-        public void clearAttack()
-        {
-            attackFrameTime.setZero();
-        }
-    }
+//                        if (Ref.peRnd.ChanceF(DssConst.SoundChanceSword))
+//                        {
+//                            switch (group.soldierConscript.conscript.weapon)
+//                            {
+//                                case Resource.ItemResourceType.HandSpear:
+//                                case Resource.ItemResourceType.Pike:
+//                                case Resource.ItemResourceType.SharpStick:
+//                                    SoundLib.spear_whoosh.Play(position);
 
-    enum AttackType
-    {
-        Melee,
-        Arrow,
-        Bolt,
-        RocketArrow,
-        Ballista,
-        Catapult,
-        Haubitz,
-        Cannonball,
-        MassiveCannonball,
-        FireBomb,
-        SlingShot,
-        KnifeThrow,
-        SecondaryJavelin,
-        Javelin,
+//                                    break;
 
-        GunShot,
-        GunBlast,
-        NUM_NON
-    }
+//                                case Resource.ItemResourceType.BronzeSword:
+//                                case Resource.ItemResourceType.ShortSword:
+//                                    SoundLib.blade_light.Play(position);
+//                                    break;
 
-    enum HasTargetInReach
-    {
-        InReach,
-        MustWalk,
-        MustRotate,
-        NoTarget,
-        UseBlankTarget,
-    }
-}
+//                                case Resource.ItemResourceType.Sword:
+//                                case Resource.ItemResourceType.LongSword:
+//                                    SoundLib.blade_medium.Play(position);
+//                                    break;
+
+//                                case Resource.ItemResourceType.TwoHandSword:
+//                                case Resource.ItemResourceType.MithrilSword:
+//                                    SoundLib.blade_heavy.Play(position);
+//                                    break;
+
+//                                default:
+//                                    SoundLib.sword.Play(position);
+//                                    break;
+//                            }
+
+//                        }
+//                    }
+
+//                    target.takeDamage(damage, blockReduce, this, attackDir, GetFaction(), fullUpdate, out _);
+//                }
+//                else
+//                {
+//                    if (target.soldierData.arrowWeakness)
+//                    {
+//                        damage = MathExt.MultiplyInt(DssConst.ArrowWeaknessBonusMultiply, damage);
+//                    }
+
+//                    if (mainAttack)
+//                    {
+//                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage, blockReduce, soldierData.attackSplashCount);
+//                    }
+//                    else
+//                    {
+//                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage, blockReduce, soldierData.attackSplashCount);
+//                    }
+//                }
+
+//                var f = this.GetFaction();
+//                if (f != null && f.player.IsLocalPlayer())
+//                {
+//                    if (group.soldierConscript.conscript.isKnight())
+//                    {
+//                        DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
+//                    }
+//                }
+//            }
+//        }
+
+//        public bool IsAttacking
+//        {
+//            get { return attackCooldownTime.HasTime; }
+//        }
+
+//        public void clearAttack()
+//        {
+//            attackFrameTime.setZero();
+//        }
+//    }
+
+//    enum AttackType
+//    {
+//        Melee,
+//        Arrow,
+//        Bolt,
+//        RocketArrow,
+//        Ballista,
+//        Catapult,
+//        Haubitz,
+//        Cannonball,
+//        MassiveCannonball,
+//        FireBomb,
+//        SlingShot,
+//        KnifeThrow,
+//        SecondaryJavelin,
+//        Javelin,
+
+//        GunShot,
+//        GunBlast,
+//        NUM_NON
+//    }
+
+//    enum HasTargetInReach
+//    {
+//        InReach,
+//        MustWalk,
+//        MustRotate,
+//        NoTarget,
+//        UseBlankTarget,
+//    }
+//}

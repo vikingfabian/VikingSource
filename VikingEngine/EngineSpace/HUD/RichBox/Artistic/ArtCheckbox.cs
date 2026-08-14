@@ -8,11 +8,12 @@ namespace VikingEngine.HUD.RichBox.Artistic
 {
     class ArtCheckbox : ArtButton
     {
-        BoolGetSet property;
+        BoolGetSet_Tag property;
         RbImage checkImage = null;
         SpriteName checkOn, checkOff;
-        public ArtCheckbox(List<AbsRichBoxMember> content, BoolGetSet property, AbsRbAction enter=null)
-            :base(RbButtonStyle.CheckBox, content, null, enter)
+        public object propertyTag = null;
+        public ArtCheckbox(List<AbsRichBoxMember> buttonContent, BoolGetSet_Tag property, AbsRbAction enter=null)
+            :base(RbButtonStyle.CheckBox, buttonContent, null, enter)
         {
             this.property = property;
             this.enabled = true;
@@ -20,8 +21,10 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
         public override void onClick(RichMenu.RichMenu menu)
         {
-            bool value = !property.Invoke(0, false, false);
-            property.Invoke(0, true, value);
+            bool value = !property.Invoke(propertyTag, false, false);
+            property.Invoke(propertyTag, true, value);
+
+            (value? DSSWars.SoundLib.option_select : DSSWars.SoundLib.option_deselect).Play();
 
             if (checkImage != null)
             {
@@ -36,11 +39,11 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
             if (this.property != null)
             {
-                bool value = property.Invoke(0, false, false);
+                bool value = property.Invoke(propertyTag, false, false);
 
                 checkImage = new RbImage(value ? checkOn : checkOff, 0.76f);
                 checkImage.Create(group);
-                group.position.X += 4;
+                group.carriage.position.X += 6;
             }
         }
 

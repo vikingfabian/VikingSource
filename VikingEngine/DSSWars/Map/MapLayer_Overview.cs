@@ -1,13 +1,143 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class MapLayer_Overview : Point3D
+    abstract class AbsMapLayer : Point3D
+    {
+        Timer.Basic waterAnimTimer = new Timer.Basic(3000, true);
+        int waterFrame = 0;
+        //int waterEdgeFrame = 0;
+        double waterMoveCurve = 0;
+
+        protected Graphics.Mesh waterSurface, waterBottom;
+        protected void WaterModel(bool detailLayer)
+        {
+            //Graphics.Mesh waterBottom;
+
+            var vol = WaterModelVolume();
+
+            waterBottom = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
+                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.DarkBlue, false);
+            waterBottom.Y -= 0.6f;
+            waterBottom.Scale = vol.Scale;
+
+            waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
+                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,
+                false);
+
+            //if (highDetail)
+            //{
+            waterSurface.texture = WaterTex()[0];
+            int repeatCount = detailLayer ? 2 : 1;
+            waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.Size * repeatCount);
+            //}
+            //else
+            //{
+            //    waterSurface.effectType = TextureEffectType.SeaNoise;
+
+            //    waterSurface.Color = WorldData.WaterCol;//new Color(14, 155, 246);
+            //    //new Color(4.3f, 48.6f,77.3f);
+            //}
+            waterSurface.Scale = vol.Scale;
+            const float SurfaceTrans = 0.8f;
+            waterSurface.Opacity = SurfaceTrans;
+
+            int drawLayer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
+            //if (!detailLayer)
+            {
+                waterSurface.AddToRender(drawLayer);
+            }
+            waterBottom.AddToRender(drawLayer);
+            //waterSurface.Visible = true;
+        }
+
+        abstract protected Texture2D[] WaterTex();
+
+        public static VectorVolume WaterModelVolume()
+        {
+            Vector3 surfacePos = new Vector3(DssRef.world.Size.X * 0.5f - 0.5f, Tile.WaterSurfaceY, DssRef.world.Size.Y * 0.5f - 0.5f);
+            Vector3 waterScale = new Vector3(DssRef.world.Size.X, 1f, DssRef.world.Size.Y);
+
+            return new VectorVolume(surfacePos, waterScale);
+        }
+
+        protected void updateWaterTexture()
+        {
+            if (waterAnimTimer.Update(Ref.DeltaGameTimeMs))
+            {
+                if (++waterFrame >= WaterTex().Length)
+                {
+                    waterFrame = 0;
+                }
+
+                //if (++waterEdgeFrame >= DssRef.models.waterEdgeTextures.Length)
+                //{ 
+                //    waterEdgeFrame = 0;
+                //}
+
+                waterSurface.texture = WaterTex()[waterFrame];
+            }
+
+            waterMoveCurve += Ref.DeltaGameTimeSec * 0.5f;
+            waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
+            waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
+        }
+
+        //public Texture2D waterEdgeTex()
+        //{
+        //    return DssRef.models.waterEdgeTextures[waterEdgeFrame];
+        //}
+
+        #region DRAW
+
+        public override DrawObjType DrawType
+        {
+            get { return DrawObjType.MeshGenerated; }
+        }
+        public override void copyAllDataFrom(Graphics.AbsDraw clone)
+        {
+            throw new NotImplementedException();
+        }
+        public override Graphics.AbsDraw CloneMe()
+        {
+            throw new NotImplementedException();
+        }
+        public override Color Color
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public override float Opacity
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public override void UpdateCulling()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+    }
+
+    class MapLayer_Overview : AbsMapLayer
     {
         public Map.Borders borders;
         public UnitMiniModels unitMiniModels;
@@ -21,61 +151,25 @@ namespace VikingEngine.DSSWars.Map
         public MapLayer_Overview(Map.MapLayer_Factions factionsMap)
         {
             this.factionsMap = factionsMap;
-            Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
+            Ref.draw.CurrentRenderLayer = DrawGame.MidLayer;
 
             createModel(generateTerrain());
 
-            Graphics.Mesh waterSurface, waterBottom;
-            WaterModel(out waterSurface, out waterBottom, false);
-            waterSurface.AddToRender(DrawGame.TerrainLayer);
-            waterBottom.AddToRender(DrawGame.TerrainLayer);
+            WaterModel(false);
+            
             waterBottom.Y = waterSurface.Y - 0.1f;
 
-            
-            borders = new Map.Borders();
+            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            {
+                borders = new Map.Borders();
+            }
             Ref.draw.CurrentRenderLayer = 0;
 
             unitMiniModels = new UnitMiniModels();
         }
-
-        public static void WaterModel(out Graphics.Mesh waterSurface, out Graphics.Mesh waterBottom, bool highDetail)
+        public void update()
         {
-            //Graphics.Mesh waterBottom;
-
-            var vol = WaterModelVolume();
-
-            waterBottom = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f), 
-                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.DarkBlue, false);
-            waterBottom.Y -= 0.6f;
-            waterBottom.Scale = vol.Scale;
-
-            waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f), 
-                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,//Color.CornflowerBlue,
-                false);
-
-            if (highDetail)
-            {
-                waterSurface.texture = DssRef.models.waterTextures[0];
-                waterSurface.repeatingTextureSource(DssRef.models.waterTextures[1], DssRef.world.Size * 2);
-            }
-            else
-            {
-                waterSurface.Color = WorldData.WaterCol;//new Color(14, 155, 246);
-                //new Color(4.3f, 48.6f,77.3f);
-            }
-            waterSurface.Scale = vol.Scale;
-            const float SurfaceTrans = 0.8f;
-            waterSurface.Opacity = SurfaceTrans;
-
-            //waterSurface.Visible = true;
-        }
-
-        public static VectorVolume WaterModelVolume()
-        {
-            Vector3 surfacePos = new Vector3(DssRef.world.Size.X * 0.5f - 0.5f, Tile.WaterSurfaceY, DssRef.world.Size.Y * 0.5f - 0.5f);
-            Vector3 waterScale = new Vector3(DssRef.world.Size.X, 1f, DssRef.world.Size.Y);
-
-            return new VectorVolume(surfacePos, waterScale);
+            updateWaterTexture();
         }
 
         public void refresh_async()
@@ -127,7 +221,7 @@ namespace VikingEngine.DSSWars.Map
                     Tile tile = DssRef.world.tileGrid.Get(pos);
                     if (tile.heightLevel != Height.DeepWaterHeight)
                     {
-                        Color terrainCol = DssRef.map.bioms.bioms[(int)tile.biom].Color(tile).Color;
+                        Color terrainCol = tile.BiomColor();//DssRef.map.bioms.bioms[(int)tile.biom].Color(tile).Color;
                         //Tile.TerrainTypes[tile.biom, tile.heightLevel].color;
 
                         center.X = pos.X;
@@ -158,7 +252,7 @@ namespace VikingEngine.DSSWars.Map
                         //move out the texture source 
                         imgCoords.UpdateSourcePolygon(false);
 
-                        if (tile.IsLand())
+                        if (tile.heightLevel > Height.LowerWaterHeight)
                         {
                             float h = Bound.Max(TileSideHeight, center.Y + 0.5f); 
 
@@ -196,7 +290,7 @@ namespace VikingEngine.DSSWars.Map
             heightMapModel?.DeleteMe();
             heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
                 polygons, null), LoadedTexture.SpriteSheet, false);
-            heightMapModel.AddToRender(DrawGame.TerrainLayer);
+            heightMapModel.AddToRender(DrawGame.MidLayer);
         }
 
 
@@ -224,11 +318,14 @@ namespace VikingEngine.DSSWars.Map
         {
             if (state_Processing_Sych_Complete == 2 && DssRef.world.BordersUpdated)
             {
+                DssRef.world.BordersUpdated = false;
                 state_Processing_Sych_Complete = 0;
 
-                borders.quedEvent();
-                factionsMap.asyncTask();
-
+                borders?.quedEvent();
+                if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+                {
+                    factionsMap.asyncTask();
+                }
                 state_Processing_Sych_Complete = 1;
             }
         }
@@ -237,56 +334,16 @@ namespace VikingEngine.DSSWars.Map
             if (DssLib.UpdateBorders && 
                 state_Processing_Sych_Complete == 1)
             {
-                DssRef.world.BordersUpdated = false;
-                borders.SetNewModel();
-                factionsMap.syncTask();
-
+                borders?.SetNewModel();
                 state_Processing_Sych_Complete = 2;
             }
 
             unitMiniModels.update();
         }
+        protected override Texture2D[] WaterTex()
+        {
+            return DssRef.models.seaTextures;
+        }
 
-#region DRAW
-        
-        public override DrawObjType DrawType
-        {
-            get { return DrawObjType.MeshGenerated; }
-        }
-        public override void copyAllDataFrom(Graphics.AbsDraw clone)
-        {
-            throw new NotImplementedException();
-        }
-        public override Graphics.AbsDraw CloneMe()
-        {
-            throw new NotImplementedException();
-        }
-        public override Color Color
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-        public override float Opacity
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-        public override void UpdateCulling()
-        {
-            throw new NotImplementedException();
-        }
-#endregion
     }
 }

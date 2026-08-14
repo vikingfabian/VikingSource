@@ -3,19 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.Data
 {
     class GameStats : AbsGameStats
     {
+        public int guardsRecruited = 0;
+
+        #region DEMO_ONLY
+        public StatsInt startNewDemo = new StatsInt("startnew_demo");
+        public StatsInt completeDemo = new StatsInt("complete_demo");
+        //public StatsInt startNewBattleDemo = new StatsInt("startnew_battledemo");//new
+        //public StatsInt completeBattleDemo = new StatsInt("complete_battledemo");//new
+        #endregion
+
+        public StatsInt startUp = new StatsInt("startup");
+
+        //English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
+        public StatsInt pickLanguageStart = new StatsInt("pick_language_start");
+        public StatsInt language_english = new StatsInt("language_english");
+        public StatsInt language_simplified_chinese = new StatsInt("language_simplified_chinese");
+        public StatsInt language_japanese = new StatsInt("language_japanese");
+        public StatsInt language_russian = new StatsInt("language_russian");
+        public StatsInt language_spanish = new StatsInt("language_spanish");
+        public StatsInt language_german = new StatsInt("language_german");
+        public StatsInt language_french = new StatsInt("language_french");
+        public StatsInt language_turkish = new StatsInt("language_turkish");
+        public StatsInt language_brazilian_portuguese = new StatsInt("language_brazilian_portuguese");
+        public StatsInt language_italian = new StatsInt("language_italian");
+        public StatsInt language_korean = new StatsInt("language_korean");
+        public StatsInt language_polish = new StatsInt("language_polish");
+        public StatsInt language_thai = new StatsInt("language_thai");
+
+        public StatsInt blueScreen = new StatsInt("bluescreen");
         public StatsInt startTutorial = new StatsInt("start_tutorial");
         public StatsInt completeTutorial = new StatsInt("complete_tutorial");
         public StatsInt skipTutorial = new StatsInt("skip_tutorial");
+        public StatsInt skip_advisor = new StatsInt("skip_advisor");
 
         public StatsInt startNewStory = new StatsInt("startnew_story");
-        public StatsInt startNewSandbox = new StatsInt("startnew_sandbox");
-        public StatsInt startNewPeaceful = new StatsInt("startnew_peaceful");
+        public StatsInt startNewQuickBoss = new StatsInt("startnew_quickboss");
+        public StatsInt startQuickMatch = new StatsInt("startnew_quickmatch");
+        public StatsInt startnew_casual = new StatsInt("startnew_casual");
+        public StatsInt startNewSandbox = new StatsInt("startNewSandbox");
+        public StatsInt startNewPeaceful = new StatsInt("startNewPeaceful");
+        public StatsInt startNewSpectator = new StatsInt("startNewSpectator");
+
+        public StatsInt startnewsize_full = new StatsInt("startnewsize_full");
+        public StatsInt startnewsize_onecity = new StatsInt("startnewsize_onecity");
+        public StatsInt startnewsize_settler = new StatsInt("startnewsize_settler");
+
         public StatsInt keyboard_user = new StatsInt("keyboard_user");
         public StatsInt controller_user = new StatsInt("controller_user");
 
@@ -27,6 +66,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt startNew150perc = new StatsInt("startnew_150perc");
         public StatsInt startNew175perc = new StatsInt("startnew_175perc");
         public StatsInt startNew200perc = new StatsInt("startnew_200perc");
+        public StatsInt startNew300perc = new StatsInt("startnew_300perc");
 
         public StatsInt startNew_MapSmall = new StatsInt("startnew_map_small");
         public StatsInt startNew_MapLarge = new StatsInt("startnew_map_large");
@@ -35,6 +75,28 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt startNewLocalMultiplayer = new StatsInt("startnew_localmp");
 
         public StatsInt saveCustomFlag = new StatsInt("save_flag");
+        public StatsInt start_voxeleditor = new StatsInt("start_voxeleditor");
+        public StatsInt start_mapgenerator = new StatsInt("start_mapgenerator");
+        public StatsInt start_character_creator = new StatsInt("start_character_creator");
+        public StatsInt start_battle_lab = new StatsInt("start_battle_lab");
+        public StatsInt battle_lab_newbattle = new StatsInt("battle_lab_newbattle");
+        public StatsInt start_commander = new StatsInt("start_commander");
+        public StatsInt commander_won = new StatsInt("commander_won");
+        public StatsInt commander_lost = new StatsInt("commander_lost");
+
+        public StatsInt startHostingMultiplayer_2 = new StatsInt("startHostingMultiplayer_2");
+        public StatsInt startHostingMultiplayer_3 = new StatsInt("startHostingMultiplayer_3");
+        public StatsInt startHostingMultiplayer_4 = new StatsInt("startHostingMultiplayer_4");
+        public StatsInt startHostingMultiplayer_10 = new StatsInt("startHostingMultiplayer_10");
+
+        public StatsInt joinMultiplayer = new StatsInt("joinMultiplayer");
+        public StatsInt playerToPlayerAlly = new StatsInt("playerToPlayerAlly");
+        public StatsInt playerToPlayerWar = new StatsInt("playerToPlayerWar");
+
+        public StatsInt startMultiplayer_AllowPublic = new StatsInt("startMultiplayer_AllowPublic");
+        public StatsInt startMultiplayer_AllowPvp = new StatsInt("startMultiplayer_AllowPvp");
+        public StatsInt startMultiplayer_BlockPublic = new StatsInt("startMultiplayer_BlockPublic");
+        public StatsInt startMultiplayer_BlockPvp = new StatsInt("startMultiplayer_BlockPvp");
 
         public StatsInt won25perc = new StatsInt("won_25perc");
         public StatsInt won50perc = new StatsInt("won_50perc");
@@ -44,6 +106,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt won150perc = new StatsInt("won_150perc");
         public StatsInt won175perc = new StatsInt("won_175perc");
         public StatsInt won200perc = new StatsInt("won_200perc");
+        public StatsInt won300perc = new StatsInt("won_300perc");
 
         public StatsInt lost25perc = new StatsInt("lost_25perc");
         public StatsInt lost50perc = new StatsInt("lost_50perc");
@@ -53,6 +116,8 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt lost150perc = new StatsInt("lost_150perc");
         public StatsInt lost175perc = new StatsInt("lost_175perc");
         public StatsInt lost200perc = new StatsInt("lost_200perc");
+        public StatsInt lost300perc = new StatsInt("lost_300perc");
+
 
         StatsInt gameLength_passed5min = new StatsInt("lenght_5min");
         StatsInt gameLength_passed15min = new StatsInt("lenght_15min");
@@ -63,6 +128,66 @@ namespace VikingEngine.DSSWars.Data
         StatsInt gameLength_passed10hour = new StatsInt("lenght_10h");
         StatsInt gameLength_passed20hour = new StatsInt("lenght_20h");
         StatsInt gameLength_passed30hour = new StatsInt("lenght_30h");
+        StatsInt gameLength_passed100hour = new StatsInt("lenght_100h");
+
+        public StatsInt Gifted_WhiteKnight = new StatsInt("Gifted_WhiteKnight");
+        public StatsInt Gifted_HeroComplexSaviorComplex = new StatsInt("Gifted_HeroComplexSaviorComplex");
+        public StatsInt Gifted_CryBaby = new StatsInt("Gifted_CryBaby");
+        public StatsInt Gifted_KingMaker = new StatsInt("Gifted_KingMaker");
+        public StatsInt Gifted_Turtle = new StatsInt("Gifted_Turtle");
+        public StatsInt Gifted_MetaPlayer = new StatsInt("Gifted_MetaPlayer");
+        public StatsInt Gifted_Tryhard = new StatsInt("Gifted_Tryhard");
+        public StatsInt Gifted_DidPracticeInSecret = new StatsInt("Gifted_DidPracticeInSecret");
+        public StatsInt Gifted_TheEncyclopedia = new StatsInt("Gifted_TheEncyclopedia");
+        public StatsInt Gifted_WarCriminal = new StatsInt("Gifted_WarCriminal");
+        public StatsInt Gifted_FarmerRush = new StatsInt("Gifted_FarmerRush");
+        public StatsInt Gifted_Politian = new StatsInt("Gifted_Politian");
+        public StatsInt Gifted_Socializer = new StatsInt("Gifted_Socializer");
+        public StatsInt Gifted_OverAchiever = new StatsInt("Gifted_OverAchiever");
+        public StatsInt Gifted_Noob = new StatsInt("Gifted_Noob");
+        public StatsInt Gifted_SwedishNeutrality = new StatsInt("Gifted_SwedishNeutrality");
+        public StatsInt Gifted_TroubleMaker = new StatsInt("Gifted_TroubleMaker");
+        public StatsInt Gifted_ScorchedEarth = new StatsInt("Gifted_ScorchedEarth");
+        public StatsInt Gifted_WarMonger = new StatsInt("Gifted_WarMonger");
+        public StatsInt Gifted_LivingInABobble = new StatsInt("Gifted_LivingInABobble");
+        public StatsInt Gifted_Bully = new StatsInt("Gifted_Bully");
+        public StatsInt Gifted_ControlFreak = new StatsInt("Gifted_ControlFreak");
+        public StatsInt Gifted_RandomNothingMakesSense = new StatsInt("Gifted_RandomNothingMakesSense");
+        public StatsInt Gifted_Hoarder = new StatsInt("Gifted_Hoarder");
+        public StatsInt Gifted_Scatterbrained = new StatsInt("Gifted_Scatterbrained");
+        public StatsInt Gifted_NearSighted = new StatsInt("Gifted_NearSighted");//
+        public StatsInt Gifted_AutomationAbuser = new StatsInt("Gifted_AutomationAbuser");
+        public StatsInt Gifted_Troll = new StatsInt("Gifted_Troll");
+        public StatsInt Gifted_MemeLord = new StatsInt("Gifted_MemeLord");
+        public StatsInt Gifted_SupportSlave = new StatsInt("Gifted_SupportSlave");
+        public StatsInt Gifted_DarkSidePlayer = new StatsInt("Gifted_DarkSidePlayer");
+        public StatsInt Gifted_SlaughterHouse = new StatsInt("Gifted_SlaughterHouse");
+        public StatsInt Gifted_AnimalCruelty = new StatsInt("Gifted_AnimalCruelty");
+        public StatsInt Gifted_LuckyBastard = new StatsInt("Gifted_LuckyBastard");
+        public StatsInt Gifted_Cursed = new StatsInt("Gifted_Cursed");
+        public StatsInt Gifted_Backstabber = new StatsInt("Gifted_Backstabber");
+        public StatsInt Gifted_Oathbreaker = new StatsInt("Gifted_Oathbreaker");
+        public StatsInt Gifted_Wormtongue = new StatsInt("Gifted_Wormtongue");
+        public StatsInt Gifted_ArmchairGeneral = new StatsInt("Gifted_ArmchairGeneral");
+        public StatsInt Gifted_Salty = new StatsInt("Gifted_Salty");
+        public StatsInt Gifted_SaltMiner = new StatsInt("Gifted_SaltMiner");
+        public StatsInt Gifted_PuppetMaster = new StatsInt("Gifted_PuppetMaster");
+        public StatsInt Gifted_TheCarry = new StatsInt("Gifted_TheCarry");
+        public StatsInt Gifted_OneManArmy = new StatsInt("Gifted_OneManArmy");
+        public StatsInt Gifted__4DChessPlayer = new StatsInt("Gifted__4DChessPlayer");
+        public StatsInt Gifted_SpreadsheetWarrior = new StatsInt("Gifted_SpreadsheetWarrior");
+        public StatsInt Gifted_MeatShield = new StatsInt("Gifted_MeatShield");
+        public StatsInt Gifted_InDebt = new StatsInt("Gifted_InDebt");
+        public StatsInt Gifted_OnLifeSupport = new StatsInt("Gifted_OnLifeSupport");
+        public StatsInt Gifted_LoneWolf = new StatsInt("Gifted_LoneWolf");
+        public StatsInt Gifted_ShaggyTooDopeAlwaysChilling = new StatsInt("Gifted_ShaggyTooDopeAlwaysChilling");
+        public StatsInt Gifted_BadInfluence = new StatsInt("Gifted_BadInfluence");
+        public StatsInt Gifted_HindsightTactician = new StatsInt("Gifted_HindsightTactician");
+        public StatsInt Gifted_Houseplant = new StatsInt("Gifted_Houseplant");
+        public StatsInt Gifted_Sheep = new StatsInt("Gifted_Sheep");
+        public StatsInt Gifted_GlitchRider = new StatsInt("Gifted_GlitchRider");
+        public StatsInt Gifted_ChickenShit = new StatsInt("Gifted_ChickenShit");
+        public StatsInt Gifted_TheLeakyCanteen = new StatsInt("Gifted_TheLeakyCanteen");
 
         public GameStats()
         {
@@ -76,175 +201,194 @@ namespace VikingEngine.DSSWars.Data
             };
         }
 
+
+
         public override List<IStatsValue> listGlobalStats()
         {
             return new List<IStatsValue>
-            {
-            startTutorial,
-            completeTutorial,
-            skipTutorial,
+                {
+                    startUp,
+                    blueScreen,
+                    startTutorial,
+                    completeTutorial,
+                    skipTutorial,
+                    skip_advisor,
 
-            startNewStory,
-            startNewSandbox,
-            startNewPeaceful,
-            keyboard_user,
-            controller_user,
+                    keyboard_user,
+                    controller_user,
 
-            startNew25perc,
-            startNew50perc,
-            startNew75perc,
-            startNew150perc,
-            startNew175perc,
-            startNew200perc,
+                    saveCustomFlag,
+            #if DEMO
+                    startNewDemo,
+                    completeDemo,
+            #else
+                    startNewStory,
+                    startNewQuickBoss,
+                    startQuickMatch,
+                    startnew_casual,
+                    startNewSandbox,
+                    startNewPeaceful,
+                    startNewSpectator,
 
-            startNew_MapSmall,
-            startNew_MapLarge,
-            startNew_MapHuge,
+                    startNew25perc,
+                    startNew50perc,
+                    startNew75perc,
+                    startNew100perc,
+                    startNew125perc,
+                    startNew150perc,
+                    startNew175perc,
+                    startNew200perc,
+                    startNew300perc,
 
-            startNewLocalMultiplayer,//"startnew_localmp");
+                    startNew_MapSmall,
+                    startNew_MapLarge,
+                    startNew_MapHuge,
 
-            saveCustomFlag,//"save_flag");
+                    startNewLocalMultiplayer,
 
-            won25perc,//"won_25perc");
-            won50perc,//"won_50perc");
-            won75perc,//"won_75perc");
-            won100perc,//"won_100perc");
-            won125perc,//"won_125perc");
-            won150perc,//"won_150perc");
-            won175perc,//"won_175perc");
-            won200perc,//"won_200perc");
+                    startHostingMultiplayer_2,
+                    startHostingMultiplayer_3,
+                    startHostingMultiplayer_4,
+                    startHostingMultiplayer_10,
+                    joinMultiplayer,
+                    playerToPlayerAlly,
+                    playerToPlayerWar,
+                    startMultiplayer_AllowPublic,
+                    startMultiplayer_AllowPvp,
+                    startMultiplayer_BlockPublic,
+                    startMultiplayer_BlockPvp,
 
-            lost25perc,//"lost_25perc");
-            lost50perc,//"lost_50perc");
-            lost75perc,//"lost_75perc");
-            lost100perc,//"lost_100perc");
-            lost125perc,//"lost_125perc");
-            lost150perc,//"lost_150perc");
-            lost175perc,//"lost_175perc");
-            lost200perc,//"lost_200perc");
+                    
 
-            gameLength_passed5min,//"lenght_5min");
-            gameLength_passed15min,//"lenght_15min");
-            gameLength_passed30min,//"lenght_30min");
-            gameLength_passed1hour,//"lenght_1h");
-            gameLength_passed2hour,//"lenght_2h");
-            gameLength_passed5hour,//"lenght_5h");
-            gameLength_passed10hour,//"lenght_10h");
-            gameLength_passed20hour,//"lenght_20h");
-            gameLength_passed30hour
-            };
+                    start_voxeleditor,
+                    start_mapgenerator,
+                    start_character_creator,
+
+                    start_battle_lab,
+                    battle_lab_newbattle,
+                    start_commander,
+                    commander_won,
+                    commander_lost,
+
+                    won25perc,
+                    won50perc,
+                    won75perc,
+                    won100perc,
+                    won125perc,
+                    won150perc,
+                    won175perc,
+                    won200perc,
+                    won300perc,
+
+                    lost25perc,
+                    lost50perc,
+                    lost75perc,
+                    lost100perc,
+                    lost125perc,
+                    lost150perc,
+                    lost175perc,
+                    lost200perc,
+                    lost300perc,
+            #endif
+                    gameLength_passed5min,
+                    gameLength_passed15min,
+                    gameLength_passed30min,
+                    gameLength_passed1hour,
+            #if !DEMO
+                    gameLength_passed2hour,
+                    gameLength_passed5hour,
+                    gameLength_passed10hour,
+                    gameLength_passed20hour,
+                    gameLength_passed30hour,
+                    gameLength_passed100hour,
+
+                    pickLanguageStart,
+                    language_english,
+                    language_simplified_chinese,
+                    language_japanese,
+                    language_russian,
+                    language_spanish,
+                    language_german,
+                    language_french,
+                    language_turkish,
+                    language_brazilian_portuguese,
+                    language_italian,
+                    language_korean,
+                    language_polish,
+                    language_thai,
+
+                    Gifted_WhiteKnight,
+                    Gifted_HeroComplexSaviorComplex,
+                    Gifted_CryBaby,
+                    Gifted_KingMaker,
+                    Gifted_Turtle,
+                    Gifted_MetaPlayer,
+                    Gifted_Tryhard,
+                    Gifted_DidPracticeInSecret,
+                    Gifted_TheEncyclopedia,
+                    Gifted_WarCriminal,
+                    Gifted_FarmerRush,
+                    Gifted_Politian,
+                    Gifted_Socializer,
+                    Gifted_OverAchiever,
+                    Gifted_Noob,
+                    Gifted_SwedishNeutrality,
+                    Gifted_TroubleMaker,
+                    Gifted_ScorchedEarth,
+                    Gifted_WarMonger,
+                    Gifted_LivingInABobble,
+                    Gifted_Bully,
+                    Gifted_ControlFreak,
+                    Gifted_RandomNothingMakesSense,
+                    Gifted_Hoarder,
+                    Gifted_Scatterbrained,
+                    Gifted_NearSighted,
+                    Gifted_AutomationAbuser,
+                    Gifted_Troll,
+                    Gifted_MemeLord,
+                    Gifted_SupportSlave,
+                    Gifted_DarkSidePlayer,
+                    Gifted_SlaughterHouse,
+                    Gifted_AnimalCruelty,
+                    Gifted_LuckyBastard,
+                    Gifted_Cursed,
+                    Gifted_Backstabber,
+                    Gifted_Oathbreaker,
+                    Gifted_Wormtongue,
+                    Gifted_ArmchairGeneral,
+                    Gifted_Salty,
+                    Gifted_SaltMiner,
+                    Gifted_PuppetMaster,
+                    Gifted_TheCarry,
+                    Gifted_OneManArmy,
+                    Gifted__4DChessPlayer,
+                    Gifted_SpreadsheetWarrior,
+                    Gifted_MeatShield,
+                    Gifted_InDebt,
+                    Gifted_OnLifeSupport,
+                    Gifted_LoneWolf,
+                    Gifted_ShaggyTooDopeAlwaysChilling,
+                    Gifted_BadInfluence,
+                    Gifted_HindsightTactician,
+                    Gifted_Houseplant,
+            #endif
+                };
         }
 
         public override void getStats()
         {
-            startTutorial.getStat();
-            completeTutorial.getStat(); 
-            skipTutorial.getStat();
-
-            startNewStory.getStat();
-            startNewSandbox.getStat();
-            startNewPeaceful.getStat();                
-            keyboard_user.getStat();
-            controller_user.getStat();
-
-            startNew25perc.getStat();
-            startNew50perc.getStat();
-            startNew75perc.getStat();
-            startNew150perc.getStat();
-            startNew175perc.getStat();
-            startNew200perc.getStat();
-
-            startNew_MapSmall.getStat();
-            startNew_MapLarge.getStat();
-            startNew_MapHuge.getStat();
-
-            startNewLocalMultiplayer.getStat();//"startnew_localmp");
-
-            saveCustomFlag.getStat();//"save_flag");
-
-            won25perc.getStat();//"won_25perc");
-            won50perc.getStat();//"won_50perc");
-            won75perc.getStat();//"won_75perc");
-            won100perc.getStat();//"won_100perc");
-            won125perc.getStat();//"won_125perc");
-            won150perc.getStat();//"won_150perc");
-            won175perc.getStat();//"won_175perc");
-            won200perc.getStat();//"won_200perc");
-
-            lost25perc.getStat();//"lost_25perc");
-            lost50perc.getStat();//"lost_50perc");
-            lost75perc.getStat();//"lost_75perc");
-            lost100perc.getStat();//"lost_100perc");
-            lost125perc.getStat();//"lost_125perc");
-            lost150perc.getStat();//"lost_150perc");
-            lost175perc.getStat();//"lost_175perc");
-            lost200perc.getStat();//"lost_200perc");
-
-            gameLength_passed5min.getStat();//"lenght_5min");
-            gameLength_passed15min.getStat();//"lenght_15min");
-            gameLength_passed30min.getStat();//"lenght_30min");
-            gameLength_passed1hour.getStat();//"lenght_1h");
-            gameLength_passed2hour.getStat();//"lenght_2h");
-            gameLength_passed5hour.getStat();//"lenght_5h");
-            gameLength_passed10hour.getStat();//"lenght_10h");
-            gameLength_passed20hour.getStat();//"lenght_20h");
-            gameLength_passed30hour.getStat();//"lenght_30h");
+            foreach (var stat in listGlobalStats())
+            {
+                stat.getStat();
+            }
         }
 
         public override void initAndSetStats()
         {
-            startTutorial.set(1);
-            completeTutorial.set(1);
-            skipTutorial.set(1);
-
-            startNewStory.set(1);
-            startNewSandbox.set(1);
-            startNewPeaceful.set(1);
-            keyboard_user.set(1);
-            controller_user.set(1);
-
-            startNew25perc.set(1);
-            startNew50perc.set(1);
-            startNew75perc.set(1);
-            startNew150perc.set(1);
-            startNew175perc.set(1);
-            startNew200perc.set(1);
-
-            startNew_MapSmall.set(1);
-            startNew_MapLarge.set(1);
-            startNew_MapHuge.set(1);
-
-            startNewLocalMultiplayer.set(1);//"startnew_localmp");
-
-            saveCustomFlag.set(1);//"save_flag");
-
-            won25perc.set(1);//"won_25perc");
-            won50perc.set(1);//"won_50perc");
-            won75perc.set(1);//"won_75perc");
-            won100perc.set(1);//"won_100perc");
-            won125perc.set(1);//"won_125perc");
-            won150perc.set(1);//"won_150perc");
-            won175perc.set(1);//"won_175perc");
-            won200perc.set(1);//"won_200perc");
-
-            lost25perc.set(1);//"lost_25perc");
-            lost50perc.set(1);//"lost_50perc");
-            lost75perc.set(1);//"lost_75perc");
-            lost100perc.set(1);//"lost_100perc");
-            lost125perc.set(1);//"lost_125perc");
-            lost150perc.set(1);//"lost_150perc");
-            lost175perc.set(1);//"lost_175perc");
-            lost200perc.set(1);//"lost_200perc");
-
-            gameLength_passed5min.set(1);//"lenght_5min");
-            gameLength_passed15min.set(1);//"lenght_15min");
-            gameLength_passed30min.set(1);//"lenght_30min");
-            gameLength_passed1hour.set(1);//"lenght_1h");
-            gameLength_passed2hour.set(1);//"lenght_2h");
-            gameLength_passed5hour.set(1);//"lenght_5h");
-            gameLength_passed10hour.set(1);//"lenght_10h");
-            gameLength_passed20hour.set(1);//"lenght_20h");
-            gameLength_passed30hour.set(1);//"lenght_30h");
+            foreach (var stat in listGlobalStats())
+            {
+                stat.initAndSet();
+            }
         }
 
         public override void collectValues(float prevTotalTimeSec)
@@ -289,7 +433,196 @@ namespace VikingEngine.DSSWars.Data
                 {
                     gameLength_passed30hour.addOne_ifUnset();
                 }
+                if (gametime.TotalHours >= 100)
+                {
+                    gameLength_passed100hour.addOne_ifUnset();
+                }
             }
         }
+
+        public void onSendGift(GiftedAchievementType type)
+        {
+            switch (type)
+            {
+                case GiftedAchievementType.WhiteKnight:
+                    Gifted_WhiteKnight.add(1);
+                    break;
+                case GiftedAchievementType.HeroComplexSaviorComplex:
+                    Gifted_HeroComplexSaviorComplex.add(1);
+                    break;
+                case GiftedAchievementType.CryBaby:
+                    Gifted_CryBaby.add(1);
+                    break;
+                case GiftedAchievementType.KingMaker:
+                    Gifted_KingMaker.add(1);
+                    break;
+                case GiftedAchievementType.Turtle:
+                    Gifted_Turtle.add(1);
+                    break;
+                case GiftedAchievementType.MetaPlayer:
+                    Gifted_MetaPlayer.add(1);
+                    break;
+                case GiftedAchievementType.Tryhard:
+                    Gifted_Tryhard.add(1);
+                    break;
+                case GiftedAchievementType.DidPracticeInSecret:
+                    Gifted_DidPracticeInSecret.add(1);
+                    break;
+                case GiftedAchievementType.TheEncyclopedia:
+                    Gifted_TheEncyclopedia.add(1);
+                    break;
+                case GiftedAchievementType.WarCriminal:
+                    Gifted_WarCriminal.add(1);
+                    break;
+                case GiftedAchievementType.FarmerRush:
+                    Gifted_FarmerRush.add(1);
+                    break;
+                case GiftedAchievementType.Politian:
+                    Gifted_Politian.add(1);
+                    break;
+                case GiftedAchievementType.Socializer:
+                    Gifted_Socializer.add(1);
+                    break;
+                case GiftedAchievementType.OverAchiever:
+                    Gifted_OverAchiever.add(1);
+                    break;
+                case GiftedAchievementType.Noob:
+                    Gifted_Noob.add(1);
+                    break;
+                case GiftedAchievementType.SwedishNeutrality:
+                    Gifted_SwedishNeutrality.add(1);
+                    break;
+                case GiftedAchievementType.TroubleMaker:
+                    Gifted_TroubleMaker.add(1);
+                    break;
+                case GiftedAchievementType.ScorchedEarth:
+                    Gifted_ScorchedEarth.add(1);
+                    break;
+                case GiftedAchievementType.WarMonger:
+                    Gifted_WarMonger.add(1);
+                    break;
+                case GiftedAchievementType.LivingInABobble:
+                    Gifted_LivingInABobble.add(1);
+                    break;
+                case GiftedAchievementType.Bully:
+                    Gifted_Bully.add(1);
+                    break;
+                case GiftedAchievementType.ControlFreak:
+                    Gifted_ControlFreak.add(1);
+                    break;
+                case GiftedAchievementType.RandomNothingMakesSense:
+                    Gifted_RandomNothingMakesSense.add(1);
+                    break;
+                case GiftedAchievementType.Hoarder:
+                    Gifted_Hoarder.add(1);
+                    break;
+                case GiftedAchievementType.Scatterbrained:
+                    Gifted_Scatterbrained.add(1);
+                    break;
+                case GiftedAchievementType.NearSighted:
+                    Gifted_NearSighted.add(1);
+                    break;
+                case GiftedAchievementType.AutomationAbuser:
+                    Gifted_AutomationAbuser.add(1);
+                    break;
+                case GiftedAchievementType.Troll:
+                    Gifted_Troll.add(1);
+                    break;
+                case GiftedAchievementType.MemeLord:
+                    Gifted_MemeLord.add(1);
+                    break;
+                case GiftedAchievementType.SupportSlave:
+                    Gifted_SupportSlave.add(1);
+                    break;
+                case GiftedAchievementType.DarkSidePlayer:
+                    Gifted_DarkSidePlayer.add(1);
+                    break;
+                case GiftedAchievementType.SlaughterHouse:
+                    Gifted_SlaughterHouse.add(1);
+                    break;
+                case GiftedAchievementType.AnimalCruelty:
+                    Gifted_AnimalCruelty.add(1);
+                    break;
+                case GiftedAchievementType.LuckyBastard:
+                    Gifted_LuckyBastard.add(1);
+                    break;
+                case GiftedAchievementType.Cursed:
+                    Gifted_Cursed.add(1);
+                    break;
+                case GiftedAchievementType.Backstabber:
+                    Gifted_Backstabber.add(1);
+                    break;
+                case GiftedAchievementType.Oathbreaker:
+                    Gifted_Oathbreaker.add(1);
+                    break;
+                case GiftedAchievementType.Wormtongue:
+                    Gifted_Wormtongue.add(1);
+                    break;
+                case GiftedAchievementType.ArmchairGeneral:
+                    Gifted_ArmchairGeneral.add(1);
+                    break;
+                case GiftedAchievementType.Salty:
+                    Gifted_Salty.add(1);
+                    break;
+                case GiftedAchievementType.SaltMiner:
+                    Gifted_SaltMiner.add(1);
+                    break;
+                case GiftedAchievementType.PuppetMaster:
+                    Gifted_PuppetMaster.add(1);
+                    break;
+                case GiftedAchievementType.TheCarry:
+                    Gifted_TheCarry.add(1);
+                    break;
+                case GiftedAchievementType.OneManArmy:
+                    Gifted_OneManArmy.add(1);
+                    break;
+                case GiftedAchievementType._4DChessPlayer:
+                    Gifted__4DChessPlayer.add(1);
+                    break;
+                case GiftedAchievementType.SpreadsheetWarrior:
+                    Gifted_SpreadsheetWarrior.add(1);
+                    break;
+                case GiftedAchievementType.MeatShield:
+                    Gifted_MeatShield.add(1);
+                    break;
+                case GiftedAchievementType.InDebt:
+                    Gifted_InDebt.add(1);
+                    break;
+                case GiftedAchievementType.OnLifeSupport:
+                    Gifted_OnLifeSupport.add(1);
+                    break;
+                case GiftedAchievementType.LoneWolf:
+                    Gifted_LoneWolf.add(1);
+                    break;
+                case GiftedAchievementType.ShaggyTooDopeAlwaysChilling:
+                    Gifted_ShaggyTooDopeAlwaysChilling.add(1);
+                    break;
+                case GiftedAchievementType.BadInfluence:
+                    Gifted_BadInfluence.add(1);
+                    break;
+                case GiftedAchievementType.HindsightTactician:
+                    Gifted_HindsightTactician.add(1);
+                    break;
+                case GiftedAchievementType.Houseplant:
+                    Gifted_Houseplant.add(1);
+                    break;
+                case GiftedAchievementType.Sheep:
+                    Gifted_Sheep.add(1);
+                    break;
+                case GiftedAchievementType.GlichRider:
+                    Gifted_GlitchRider.add(1);
+                    break;
+                case GiftedAchievementType.ChickenShit:
+                    Gifted_ChickenShit.add(1);
+                    break;
+                case GiftedAchievementType.TheLeakyCanteen:
+                    Gifted_TheLeakyCanteen.add(1);
+                    break;
+                case GiftedAchievementType.NUM:
+                default:
+                    break;
+            }
+        }
+
     }
 }

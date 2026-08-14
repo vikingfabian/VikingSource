@@ -68,40 +68,48 @@ namespace VikingEngine.DSSWars.Resource
     enum ItemResourceType
     {
         NONE,
-
-        Hen,
-        Pig,
-        UN_Goat,
-        Ox,
+                
         Egg,
-        UN_Milk,
-        UN_Cheese,
         Meat,
 
-        UN_RawLeather,
-        Leather,
+        Wheat,
+        Beer,
+        Food_G,
+        ConservedFood,
 
-        UN_WoodShoe,
-        UN_LeatherShoe,
+        Water_G,
+        Fuel_G,
+
+        Leather,
+        Stone_G,
+        Clay,
+        Brick,
 
         SoftWood,
         HardWood,
         DryWood,
-        UN_Planks,
-        UN_Barrel,
-        UN_Box,
+        WoodContainer,
+        PotContainer,
+        Container,
         Wagon2Wheel,
         Wagon4Wheel,
+        WagonClosed,
+        WagonIron,
+        WagonSteel,
+        Toolkit,
+        CoolingFluid,
+
+        Wood_Group,
+        RawFood_Group,
+        SkinLinen_Group,
+        
+        Rapeseed,
+        Hemp,
+        Linen,
+
+        Salt,
         Coal,
         BogIron,
-
-        Linen,
-        UN_Wool,
-        UN_Rope,
-        UN_Cloth,
-        UN_Clothes,
-        UN_Bag,
-
         IronOre_G,
         TinOre,
         CopperOre,
@@ -125,37 +133,30 @@ namespace VikingEngine.DSSWars.Resource
         Sword,
         Pike,
 
+        BucklerShield, RoundShield, HeaterShield, TowerShield,
+
+
+        BronzeArmor,
         PaddedArmor,
+        HeavyPaddedArmor,
         IronArmor,
         HeavyIronArmor,
+        LightPlateArmor,
+        FullPlateArmor,
+        MithrilArmor,
 
-        UN_StoneBlock,
-        Stone_G,
-        UN_Clay,
-        UN_Brick,
-        UN_Pot,
-
-        Wheat,
-        UN_Bread,
-        Beer,
-        Food_G,
-
-        Water_G,
-        UN_SaltWater,
-
-        Fuel_G,
-        UN_Poop,
+        MountBronzeArmor,
+        MountPaddedArmor,
+        MountHeavyPaddedArmor,
+        MountIronArmor,
+        MountHeavyIronArmor,
+        MountLightPlateArmor,
+        MountFullPlateArmor,
+        MountMithrilArmor,
 
         Ballista,
-        KnightsLance,
+        //KnightsLance,
         TwoHandSword,
-
-        Wood_Group,
-        RawFood_Group,
-        SkinLinen_Group,
-        Men,
-        Rapeseed,
-        Hemp,
 
         BronzeSword,
         ShortSword,
@@ -167,9 +168,6 @@ namespace VikingEngine.DSSWars.Resource
         ThrowingSpear,
         Crossbow,
         MithrilBow,
-
-        Toolkit,
-        CoolingFluid,
 
         Sulfur,
         LeadOre,
@@ -183,7 +181,7 @@ namespace VikingEngine.DSSWars.Resource
         HandCulverin,
         HandCannon,
         Rifle,
-        Blunderbus,
+        Blunderbuss,
 
         Manuballista,
         Catapult,
@@ -193,123 +191,92 @@ namespace VikingEngine.DSSWars.Resource
         ManCannonBronze,
         SiegeCannonIron,
         ManCannonIron,
-
-        BronzeArmor,
-        HeavyPaddedArmor,
-        LightPlateArmor,
-        FullPlateArmor,
-        MithrilArmor,
-
-        CupperCoin,
+        
+        CopperCoin,
         BronzeCoin,
         SilverCoin,
         ElfCoin,
 
         AutomatedItem,
 
-        NUM,
+        RoseWarrior_soldier,
+        RoseWarrior_tank,
+        RoseWarrior_dog,
 
+        Men,
+        NobleMen,
+        ServiceMen,
+
+        Hen,
+        Pig,
+        Oxen,
+        KineOxen,
+
+        Dog,
+        Hound,
+
+        Pony,
+        Horse,
+        WarHorse,
+        DraftHorse,
+
+        WildPig,
+        WildHog,
+        WarHog,
+        StagHog,
+
+        Wolf,
+        Warg,
+        AlphaWarg,
+
+        WildCat,
+        Lion,
+        WarLion,
+
+        Elephant,
+        WarElephant,
+        Oliphant,
+
+        SlaughterHen,
+        SlaughterPig,
+        SlaughterOxen,
+        SlaughterKineOxen,
+
+        SlaughterPony,
+        SlaughterHorse,
+        SlaughterWarHorse,
+        SlaughterDraftHorse,
+
+        SlaughterWildPig,
+        SlaughterWildHog,
+        SlaughterWarHog,
+        SlaughterStagHog,
+
+        SlaughterWolf,
+        SlaughterWarg,
+        SlaughterAlphaWarg,
+
+        SlaughterWildCat,
+        SlaughterLion,
+        SlaughterWarLion,
+
+        SlaughterElephant,
+        SlaughterWarElephant,
+        SlaughterOliphant,
+
+        Palisade,
+        //WorkerTent,
+        Settler,
         
+        Fowl,
+        SlaughterFowl,
+        Boar,
+        SlaughterBoar,
+
+        NUM,
+        RESOURCES,
+
+        Pheasant,
     }
 
-    //enum ItemResourceType
-    //{
-    //    NONE,
-
-    //    Hen,
-    //    Pig,
-    //    Goat,
-    //    Ox,
-    //    Egg,
-    //    Milk,
-    //    Cheese,
-    //    Meat,
-
-    //    RawLeather, 
-    //    Leather,
-
-    //    WoodShoe,
-    //    LeatherShoe,
-
-    //    SoftWood,
-    //    HardWood,
-    //    DryWood,
-    //    Planks,
-    //    Barrel,
-    //    Box,
-    //    Wheel,
-    //    Wagon,
-    //    Coal, 
-    //    Tar,
-
-    //    Linen,
-    //    Wool,
-    //    Rope,
-    //    Cloth,
-    //    Clothes,
-    //    Bag,
-
-    //    IronOre_G,
-    //    TinOre,
-    //    CupperOre,
-    //    SilverOre,
-    //    GoldOre,
-    //    MithrilOre,
-
-    //    Iron_G,
-    //    Steel,
-    //    Tin,
-    //    Cupper,
-    //    LongBow,
-    //    Silver,
-    //    Gold,
-    //    Mithril,
-
-    //    Bow,
-
-
-    //    SharpStick,
-    //    Sword,
-    //    Shield,
-
-    //    LightArmor,
-    //    MediumArmor,
-    //    HeavyArmor,
-    //    //Padding,
-    //    //Gambeson,
-    //    //Brigandine,
-    //    //PlateArmor,
-
-    //    StoneBlock,
-    //    Stone_G,
-    //    Clay,
-    //    Brick,
-
-    //    Hemp,
-
-    //    Wheat,
-    //    Rapeseed,
-    //    RES_,
-    //    Beer,
-    //    Food_G,
-
-    //    Water_G,
-    //    SaltWater,
-
-    //    Fuel_G,
-    //    Poop,
-
-    //    Ballista,
-    //    KnightsLance,
-    //    TwoHandSword,
-
-    //    Wood_Group,
-    //    RawFood_Group,
-    //    SkinLinen_Group,
-    //    Men,
-
-
-
-    //    NUM,
-    //}
 }

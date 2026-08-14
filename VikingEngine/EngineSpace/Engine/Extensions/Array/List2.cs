@@ -23,7 +23,8 @@ namespace VikingEngine
 
         public List2(IEnumerable<T> collection)
             : base(collection)
-        { }
+        {  
+        }
 
         public bool SelectItem(T selectItem)
         {
@@ -42,6 +43,7 @@ namespace VikingEngine
 
         public void SelectIndex(int index)
         {
+
             sel = this[index];
             selIndex = index;
         }
@@ -201,6 +203,8 @@ namespace VikingEngine
         public bool IsLast => selIndex == Count - 1;
 
         public T First => this[0];
+
+        public T Selection() {return this[selIndex]; } 
         public T Last => this[this.Count - 1];
         
         public void Unselect()

@@ -21,7 +21,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
 
             modelScale = 3f;
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.goldchest, modelScale, 0, false);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, modelScale, 0, false);
             image.position = WorldPos.PositionV3 + Vector3.Up * 0.5f;
 
             CollisionAndDefaultBound = new Bounds.ObjectBound(Bounds.BoundShape.Box1axisRotation, Vector3.Zero,

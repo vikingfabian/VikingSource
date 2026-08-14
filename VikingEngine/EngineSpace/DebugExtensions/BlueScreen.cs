@@ -6,9 +6,14 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
-using Valve.Steamworks;
+
 using VikingEngine.SteamWrapping;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars;
+using Microsoft.CodeAnalysis;
+using System.Diagnostics;
+using System.Linq;
 
 #if PCGAME
 //using System.Windows.Forms;
@@ -24,8 +29,10 @@ namespace VikingEngine.DebugExtensions
 
         protected Gui menu;
         public static Exception ThreadException = null;
+        public static string AttachMessage = null;
         Time flashTimer = Time.Zero;
         bool redFlash = true;
+        
 
         public BlueScreen()
         {
@@ -36,36 +43,9 @@ namespace VikingEngine.DebugExtensions
         {
             cleanUp();
 
-            logError(errorMessageDetailed);
-            //if (PlatformSettings.PC_platform)
-            //{
-            //    try
-            //    {
-            //        var now = DateTime.Now;
-
-            //        var logFilePath = new DataStream.FilePath(
-            //             "Logs",
-            //             string.Format("{0}_{1}_{2}__{3}_{4}", now.Year, now.Month, now.Day, now.Hour, now.Minute),
-            //             ".txt", true, false);
-
-            //        System.IO.Directory.CreateDirectory(logFilePath.CompleteDirectory);
-
-            //        //create a log file
-            //        logFullPath = logFilePath.CompletePath(true);
-            //        DataLib.SaveLoad.CreateTextFile(logFullPath, new List<string>
-            //        {
-            //            PlatformSettings.SteamVersion,
-            //            errorMessageDetailed,
-            //        });
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Debug.LogError(e.Message);
-            //    }
-            //}
-
-
-            errorMessageDetailed = Engine.LoadContent.SteamVersion + compressText(errorMessageDetailed);
+            logError(Engine.LoadContent.EngineVersion + (AttachMessage== null? string.Empty : AttachMessage + Environment.NewLine) + errorMessageDetailed);
+            
+            errorMessageDetailed = Engine.LoadContent.EngineVersion + errorMessageDetailed;
 
 
             Engine.StateHandler.ReplaceGamestate(this);
@@ -74,18 +54,9 @@ namespace VikingEngine.DebugExtensions
             {
                 detailedText = errorMessageDetailed;
 
-                //Ref.draw.ClrColor = Color.DarkBlue;
-
-                //float t = 0.075f;
-                //float t_w = (1 - 2 * t);
-                //VectorRect rect = new VectorRect(t * Ref.draw.ScreenWidth, t * Ref.draw.ScreenHeight, t_w * Ref.draw.ScreenWidth, t_w * Ref.draw.ScreenHeight);
-                //var style = new GuiStyle(rect.Width, 5, SpriteName.WhiteArea);
-                //style.headBar = false;
-                //menu = new Gui(style, rect, 0, ImageLayers.AbsoluteBottomLayer, Input.InputSource.DefaultPC);
-                //GuiLayout layout = new GuiLayout("Game Crashed!", menu);
+               
                 GuiLayout layout = createMenu("Game Crashed!");
                 {
-                    //new GuiLabel("You would really help us out if you sent us a screenshot of the message below, so we can stop this from happening again. Thank you for helping us!", layout);
                     if (PlatformSettings.PC_platform)
                     {
                         new GuiLabel("A file with the crash details is created, see " + logFullPath, layout);
@@ -97,6 +68,10 @@ namespace VikingEngine.DebugExtensions
                     {
                         new GuiIconTextButton(SpriteName.ButtonA, "RESTART", null, restart, false, layout);
                     }
+                    if (AttachMessage != null)
+                    {
+                        new GuiLabel(Engine.LoadContent.CheckCharsSafety(AttachMessage, menu.style.textFormat.Font), true, menu.style.textFormat, layout);
+                    }
                     new GuiLabel(Engine.LoadContent.CheckCharsSafety(detailedText, menu.style.textFormat.Font), true, menu.style.textFormat, layout);
                 }
                 layout.End();
@@ -106,6 +81,17 @@ namespace VikingEngine.DebugExtensions
                 Engine.Draw.graphicsDeviceManager.ApplyChanges();
                 Ref.main.Exit();
             }
+
+            if (PlatformSettings.RunProgram == StartProgram.DSS)
+            {  
+                if (Ref.steam != null && Ref.steam.statsInitialized)
+                {
+                    DssRef.stats?.blueScreen.addOne();
+                    Ref.steam.stats.upload();
+                }
+            }
+
+            AttachMessage = null;
         }
 
         protected void cleanUp()
@@ -119,6 +105,8 @@ namespace VikingEngine.DebugExtensions
 
         protected void logError(string errorMessageDetailed)
         {
+            Ref.sentry?.sendReport(errorMessageDetailed);
+
             if (PlatformSettings.PC_platform)
             {
                 try
@@ -164,11 +152,11 @@ namespace VikingEngine.DebugExtensions
 
         string compressText(string error)
         {
-            error = error.Replace("VikingEngine.LootFest.", "");
-            error = error.Replace("VikingEngine.", "");
-            error = error.Replace("VikingEngine.", "");
-            error = error.Replace("..ctor", "");
-            error = error.Replace(" at", " ");
+            //error = error.Replace("VikingEngine.LootFest.", "");
+            //error = error.Replace("VikingEngine.", "");
+            //error = error.Replace("VikingEngine.", "");
+            //error = error.Replace("..ctor", "");
+            //error = error.Replace(" at", " ");
 
             string result = "";
             bool addChar = true;
@@ -242,16 +230,12 @@ namespace VikingEngine.DebugExtensions
 
         public static void TryCatch(Action method, TryMethodType methodType)
         {
-            if (PlatformSettings.BlueScreen || Engine.Screen.PcTargetFullScreen)
+            if (PlatformSettings.BlueScreen || Engine.Screen.PcDisplayMode == WindowDisplayMode.HardwareFullscreen)
             {
                 try
                 {
                     method();
-                }
-                catch (AbsSteamException e) 
-                {
-                    new SteamBlueScreen(ErrorMessage(e, methodType));
-                }
+                }                
                 catch (Exception e)
                 {
                     new BlueScreen(ErrorMessage(e, methodType));
@@ -270,6 +254,12 @@ namespace VikingEngine.DebugExtensions
         {
             if (ThreadException != null)
             {
+#if DEBUG
+                if (!PlatformSettings.BlueScreen)
+                {
+                    throw new Exception();
+                }
+#endif
                 if (Ref.gamestate is BlueScreen == false)
                 {
                     new BlueScreen(ErrorMessage(ThreadException, TryMethodType.A));
@@ -277,7 +267,7 @@ namespace VikingEngine.DebugExtensions
                 ThreadException = null;
             }
         }
-        
+
         public static string ErrorMessage(Exception e, TryMethodType methodType)
         {
             string gametypeCode = "-";
@@ -304,8 +294,35 @@ namespace VikingEngine.DebugExtensions
             {
                 type += " N" + ((int)Network.NetLib.PacketType).ToString();
             }
+            if (!Ref.steam.isInitialized)
+            {
+                type += "-P";
+            }
 
-            return type + ": " + e.ToString() + "; " + e.Message + " @" + e.StackTrace;
+            string stacktrace = string.Empty;
+            var stackFrames = new StackTrace(e, fNeedFileInfo: true).GetFrames();
+            foreach (var frame in stackFrames)
+            {
+                string fileName = frame.GetFileName();
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    fileName = TextLib.Unknown;
+                }
+                else
+                {
+                    fileName = fileName.Split("VikingEngine").Last();
+                }
+                stacktrace += $"{fileName} ::line {frame.GetFileLineNumber()}, col {frame.GetFileColumnNumber()}" + Environment.NewLine;
+                var m = frame.GetMethod();
+                if (m != null)
+                {
+                    stacktrace += m + Environment.NewLine;
+                }
+
+                stacktrace += Environment.NewLine;
+            }
+
+            return type + "; " + e.Message + " @" + stacktrace;
         }
 
 

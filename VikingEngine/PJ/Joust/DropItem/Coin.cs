@@ -18,7 +18,7 @@ namespace VikingEngine.PJ.Joust.DropItem
             SpriteName.birdCoin6,
         };
 
-        CirkleCounterUp animFrame = new CirkleCounterUp(0, Animation.Length - 1);
+        CircleCounterUp animFrame = new CircleCounterUp(0, Animation.Length - 1);
         Timer.Basic animationTime = new Timer.Basic(132, true);
 
         public Coin(Vector2 startPos, float velocityY)

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.Engine
 {
@@ -55,10 +56,14 @@ namespace VikingEngine.Engine
                 Graphics.ParticleSystemType[] use = new Graphics.ParticleSystemType[]
                 {
                     Graphics.ParticleSystemType.BulletTrace,
+                    Graphics.ParticleSystemType.WaterFoam,
                     Graphics.ParticleSystemType.GoldenSparkle,
                     Graphics.ParticleSystemType.Fire,
+                    Graphics.ParticleSystemType.ExplosionFire,
                     Graphics.ParticleSystemType.Smoke,
+                    Graphics.ParticleSystemType.Dust,
                     Graphics.ParticleSystemType.DssDamage,
+                    Graphics.ParticleSystemType.WeaponSparks,
                     Graphics.ParticleSystemType.CommanderDamage,
                 };
                 foreach (Graphics.ParticleSystemType type in use)
@@ -77,15 +82,15 @@ namespace VikingEngine.Engine
 #endif
         }
 
-        public static void Draw()
+        public static void Draw(AbsCamera camera)
         {
-            //lock (active)
-            //{
+            if (Ref.gamesett.ParticlesEffect)
+            {
                 foreach (ParticleSystemData system in active)
                 {
-                    system.Draw();
+                    system.Draw(camera);
                 }
-            //}
+            }
 
         }
 
@@ -119,9 +124,21 @@ namespace VikingEngine.Engine
             ParticleSystemData sys = particleSystems[(int)type];
             for (int i = 0; i < numParticles; i++)
             {
-                sys.AddParticles(new Graphics.ParticleInitData(Ref.rnd.Vector3_Sq(center, radius)));
+                sys.AddParticles(new Graphics.ParticleInitData(Ref.peRnd.Vector3_Sq(center, radius)));
             }
             #endif
+        }
+
+        public static void AddParticleAreaFlat(Graphics.ParticleSystemType type, Vector3 center, float radius, int numParticles)
+        {
+#if USE_PARTICLES
+            addSystem(type);
+            ParticleSystemData sys = particleSystems[(int)type];
+            for (int i = 0; i < numParticles; i++)
+            {
+                sys.AddParticles(new Graphics.ParticleInitData(Ref.peRnd.Vector3_SqXZ(center, radius)));
+            }
+#endif
         }
 
         public static void AddParticleSphere(Graphics.ParticleSystemType type, Vector3 center, float radius, int numParticles)
@@ -218,8 +235,11 @@ namespace VikingEngine.Engine
                case Graphics.ParticleSystemType.GoldenSparkle:
                     System = new Graphics.GoldenSpark();
                     break;
-               case Graphics.ParticleSystemType.BulletTrace:
+                case Graphics.ParticleSystemType.BulletTrace:
                     System = new Graphics.BulletTrace();
+                    break;
+                case Graphics.ParticleSystemType.WaterFoam:
+                    System = new Graphics.WaterFoam();
                     break;
                 case Graphics.ParticleSystemType.RunningSmoke:
                     System = new Graphics.RunningSmoke();
@@ -268,7 +288,7 @@ namespace VikingEngine.Engine
         /// <returns>If it is time to remove the system from update</returns>
         public bool Update(float time)
         {
-            System.Time_Update(time);
+            System.Update();
             Time -= time;
             if (Time <= 0)
             {
@@ -277,9 +297,9 @@ namespace VikingEngine.Engine
             }
             return false;
         }
-        public void Draw()
+        public void Draw(AbsCamera camera)
         {
-            System.SetCamera();
+            System.SetCamera(camera);
             System.Draw();
         }
     }

@@ -1,137 +1,128 @@
-﻿BETA UPDATE
--Change Log-
 
-! soldier ai is very passive in battles
-! the menues can look a bit funny
-! there are half-finished buildings in build options 
+Change log:
+* Handles failure to join, no available faction 
+* Black market limit: I added 500 as limit, it grows with 50 for each city capture
+* A hover button for all city resources
+* Can pick army or guards on automation
+* Will set captured cities to auto
+* Ultra wide support - adjustable ui placement
+* Compressed headbar Ui
+* Tabs have environmental sounds
+* Theme music added to playlist
+* All relation actions will trigger messages
+* A UI easter egg
+* improved pony model
 
+* Increased the byte size boundaries on player saves 
 
-! skicka bara data om spelaren passerar 15min
+* Using linear arrays for the map, and voxel data
+Sound
+* Tabs have environmental sounds
+* Theme music added to playlist
+* new event sounds
 
-
-#OPT#
-culling av worker
-//stanna musik spelaren
-
-monogame fork? DrawUserPrimitives opt, titta på OGG filer
-//försöka återvinna class DetailMapTile
-
-# WORKER PATH #
-Ha en loop som går! igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
-Plus räkna tid att passera i verti hori riktning (gör en path som fram, diagonal up ner, till har gått 4 tiles - kanske upp ner)
-Gissat avstånd är lägsta av att passera centrum eller snabbast verti hori
-Alternativt ha en hash dictionary mellan alla tiles i en stad
-Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
-
-#Todo#
--drag button
--Full automation
--build prio
--build placement bonus
-
-(-house variants)
-+  ports can speed up how much u can send or recieve
-* annoyed by the deliveries being inefficient
--Embassy expansion för att unlocka diplomacy
-* soldier level
-* Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
-* wall crusher
-* diplomat, med politic / spy upgrade
-* horse farm
-* ox farm, also incread farming area
-* go legendary, bonus building
- farm - apple tree
-* refugee tent, samlar på invandrare (60) half food cost, auto build homes?
-* vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
--kanske en som delar sin progress med alla kopplade
-* faction resources per second current/produced/consumed 
-
-#Todo (xmas patch)#
-krig varning på ally
-new maps
-dölj carry amount
-
-lamps - förbättrar produktion i area, måste fyllas med fuel
-förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
+* Steam timeline
 
 
---Efter release polish--
--war icon
-pilar med resurser från delivery
-Factories modeller
-city economy
-visa antal byggnader i bygg meny
-menu scroll
+X timeline checkbox on steamworks
+
+Performance
+* Removed all unessesary faction references
+* Removed refences from the aria unit grid
+
+#MAP 2.0
+* Cubic far group models
+
+## QoL ##
+* Build priority - apply to all button
+
+* More efficient unit filter system
+* New reassign menu for soldiers
+* Fixed: food will also follow army split
+
+* Added game manual section in pause menu, the menu will also remember the page you are on
+* Removed city help tab
+* Added "open game manual" as second mission in tutorial
+
+KNOWN ISSUES
+x reassign dont work with controller
+
+##ICONS TODO
+* all cities icon
+* gray rounded button
+
+#MOUNTED TODO
+* 
+
+## MOUNTED POST CONTENT UPDATE ##
+(x 3k self dying cities)
 
 
-Error
--back button in menues 
-
-Retreat system
--retreat av de sista motståndarna
--light taunt units (slingers, light cavalry)
--reassemble av flydd arme
-
-
-Polish
-- full auto option
-
--döda av faktion som bara har en soldat kvar
--Missing file error på load
--(mercenaries cost increase bort)
--cost mercenaries på tooltip
--I should improve the diplomacy so peace agreements are shared with allies
--större radie på köpa till armeer
--attack warning -Battle notification
--diplomacy toggle/relation heatmap/units
--AI sök fiende armeer som passerar
--krig icon på karta
--the horses dont load when paused, plus rotation error
--dölj move path OnHud 
--attack ally yes/no warning
-
-#Art
-main menu icons:
-exit
-new game
-continue
-load
-start
-
-placement bonus icon
-work skill icons (carpenting)
-
-#Voxel
-
+#Event timers (are slightly random)#
+- Bot delay: 8 minutes
+- Bot peace time: 30 min
+- The first attack: 35min
+- War manager start: 40min
+- Barbarians: 1.5 hours
+- Mercenaries: 4 hours (total 7 hours by now)
+- The cohalition: 6 hours (or when the player grabs 5 to 7 cities)
+- Boss warning: 12 hours
+- Boss; 1 hour
+Plus the boss fight: about 10 hours
+(total: about 45 hours)
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish
+English, Simplified Chinese, Japanese, Korean, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian, Polish, Thai
+
+Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
+Brazilians are used to English in gaming, use a “hybrid” translation.
+Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
+The game is a strategy wargame, with medieval and low fantasy theme.
+
+Where English is used in gaming, use a “hybrid” translation.
+For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
 
 
-#Todo (DSS 2)#
-1. better presentation
-2. 50 hour playtime
-3. maybe multiplayer
+##
+Translate all strings to French.
+Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
+The game is a strategy wargame, with medieval and low fantasy theme.
+Where English is used in gaming, use a “hybrid” translation.
+For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
 
--Select leader type
--Free build of city walls, towers
--Better looking start cities
--Nicer menu
--Dynamic shadows shader
--New end boss
--Lots of named factions
+
 https://discord.com/verification
 
--steam stats
--Min 7K wishlists
--oktober next fest, demo måste vara redo senast september
--stor grön knapp (special settings)
-https://piratepr.com/treasure-trove/how-to-get-your-download-demo-button-visible-in-green-on-your-steam-page/
--hör av till 300 streamers om demo, lägg screens i mailet
--wishlist länk i spelet måste finnas i alla menyer (använd steam API)
+Pigeon bombs
+https://discord.com/channels/405016249127665664/405016249660211213/1398608516767420548
 
--description gifs ska vara 3st "three pillars, what you do in the game"
 
-VertexPositionColorNormal
-VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
 
+#Shaders
+Dimma
+https://www.shadertoy.com/view/4ltcRB
+
+Most of what I use can be found here: 
+https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
+
+Pixel perfect font:
+https://github.com/FontStashSharp/FontStashSharp/wiki/Using-FontStashSharp-in-MonoGame-or-FNA
+
+#Export
+cd VikingEngine
+dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+
+old:
+dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+
+#LINUX
+dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+
+(högerklick i Publish "open git bash here")
+chmod +x VikingEngine
+
+tar -czf VikingEngine-linux-x64.tar.gz -C bin/Release/net8.0/linux-x64/publish .
+(hamnar i Repo\VikingSource\VikingEngine)
+
+
+"cross of SIM City & RTSs and Hearts of Iron IV"

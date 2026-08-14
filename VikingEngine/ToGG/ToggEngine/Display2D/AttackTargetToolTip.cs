@@ -109,14 +109,14 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
                 new Vector2(attCount.MeasureRightPos() + spacing, attIcon.Ypos),
                 iconSz, ImageLayers.Lay1);
             Graphics.TextG hitChanceTxt = new Graphics.TextG(LoadedFont.Regular, hitSymb.RightCenter, attCount.Size,
-                Graphics.Align.CenterHeight, TextLib.PercentText(attacks.hitChance), Color.White, ImageLayers.Lay1);
+                Graphics.Align.CenterHeight, TextLib.PercentTextWithSymbol(attacks.hitChance), Color.White, ImageLayers.Lay1);
             hitChanceTxt.SetHeight(hitSymb.Height * 0.84f);
 
             Graphics.Image retreatSymb = new Graphics.Image(SpriteName.cmdRetreatFlatSymbol,
               new Vector2(hitChanceTxt.MeasureRightPos() + spacing, hitSymb.Ypos),
                 iconSz, ImageLayers.Lay1);
             Graphics.TextG retreatChanceTxt = new Graphics.TextG(LoadedFont.Regular, retreatSymb.RightCenter, hitChanceTxt.Size,
-                Graphics.Align.CenterHeight, TextLib.PercentText(attacks.retreatChance), Color.White, ImageLayers.Lay1);
+                Graphics.Align.CenterHeight, TextLib.PercentTextWithSymbol(attacks.retreatChance), Color.White, ImageLayers.Lay1);
 
             Add(attIcon);
             Add(attCount);

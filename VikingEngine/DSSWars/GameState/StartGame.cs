@@ -1,56 +1,140 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
 using VikingEngine.ToGG.HeroQuest;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars
 {
-    class StartGame : Engine.GameState
+    abstract class AbsStartPlayState : Engine.GameState
     {
         Graphics.TextG loadingStatusText;
-        NetworkLobby netLobby;
+        protected MapBackgroundLoading loading;
+
+        public AbsStartPlayState()
+            :base(false)
+        {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_LoadingScreen);
+            }
+            loadingStatusText = new Graphics.TextG(LoadedFont.Regular,
+               new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
+               new Vector2(Engine.Screen.TextSize * 2f),
+               Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
+            
+            Ref.music.stop(true);
+            Ref.music.DelayBetweenSongs_minutes = new IntervalF(5, 8);
+            Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
+
+            new PlaySettings();
+
+            DssRef.storage.meta.gameOverResultCollection = null;
+        }
+
+        public override void Time_Update(float time)
+        {
+
+            base.Time_Update(time);
+
+            if (loading != null)
+            {
+                loading.Update();
+                loadingStatusText.TextString = loading.ProgressString();
+
+                if (loading.Complete())
+                {
+                    onLoadComplete();
+                }
+
+                if (Ref.music != null)
+                {
+                    Ref.music.Update();
+                }
+            }
+        }
+
+        abstract protected void onLoadComplete();
+
+    }
+
+    class StartGame : AbsStartPlayState
+    {
+        TimeStamp joinRequestTime;
+        int joinTrials = 0;
+        //NetworkLobby netLobby;
         WorldDataStorage storage;
         int map_start_process_done = 0;
-        MapBackgroundLoading loading;
+        
         PlayState state = null;
         SaveStateMeta loadMeta;
         bool host;
         
-        public StartGame(bool host, NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
-            :base(false)
+        public StartGame(bool host, /*NetworkLobby netLobby,*/ SaveStateMeta loadMeta, MapBackgroundLoading loading)
+            :base()
         {
+            DssRef.settings.playType = PlayStateType.Play;
             this.host = host;
-            loadingStatusText = new Graphics.TextG(LoadedFont.Regular,
-                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
-                new Vector2(Engine.Screen.TextSize * 2f),
-                Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
-
             this.loadMeta = loadMeta;
-            Ref.music.stop(true);
-            new PlaySettings();
+
+            var pStorage = DssRef.storage.localPlayers[0];
+            if (DssRef.storage.profileStorage.profiles[pStorage.profileIndex].casualControls)
+            {
+                DssRef.stats.startnew_casual.addOne();
+            }
 
             if (loadMeta == null)
             {
                 // new game
+
+                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize) == false)
+                {
+                    DssRef.storage.runTutorial = false;
+                }
+                                    
                 switch (DssRef.difficulty.setting_gameMode)
                 {
-                    case GameMode.FullStory:
+                    case GameModeMainType.FullStory:
                         DssRef.stats.startNewStory.addOne();
                         break;
-                    case GameMode.Sandbox:
+                    case GameModeMainType.QuickBoss:
+                        DssRef.stats.startNewQuickBoss.addOne();
+                        break;
+                    case GameModeMainType.QuickMatch:
+                        DssRef.stats.startQuickMatch.addOne();
+                        break;
+                    case GameModeMainType.Sandbox:
                         DssRef.stats.startNewSandbox.addOne();
                         break;
-                    case GameMode.Peaceful:
+                    case GameModeMainType.Peaceful:
                         DssRef.stats.startNewPeaceful.addOne();
+                        break;
+                    case GameModeMainType.Spectator:
+                        DssRef.stats.startNewSpectator.addOne();
+                        break;
+                }
+
+                switch (DssRef.storage.ruleset.factionStartSize)
+                {
+                    case FactionStartSize.Full:
+                        DssRef.stats.startnewsize_full.addOne();
+                        break;
+                    case FactionStartSize.OneCity:
+                        DssRef.stats.startnewsize_onecity.addOne();
+                        break;
+                    case FactionStartSize.Settler:
+                        DssRef.stats.startnewsize_settler.addOne();
                         break;
                 }
 
@@ -80,12 +164,22 @@ namespace VikingEngine.DSSWars
                     case 200:
                         DssRef.stats.startNew200perc.addOne();
                         break;
+                    case 300:
+                        DssRef.stats.startNew300perc.addOne();
+                        break;
 
                 }
 
-                if (DssRef.storage.runTutorial)
+                if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
-                    DssRef.stats.startTutorial.addOne();
+                    if (DssRef.storage.runTutorial)
+                    { 
+                        DssRef.stats.startTutorial.addOne();
+                    }
+                    else if (PlatformSettings.STEAM_DEMO)
+                    {
+                        DssRef.stats.startNewDemo.addOne();
+                    }
                 }
 
                 if (DssRef.storage.playerCount > 1)
@@ -93,7 +187,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.startNewLocalMultiplayer.addOne();
                 }
 
-                if (DssRef.storage.localPlayers[0].inputSource.IsController)
+                if (DssRef.storage.localPlayers[0].inputSource.HasControllerInput)
                 {
                     DssRef.stats.controller_user.addOne();
                 }
@@ -102,7 +196,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.keyboard_user.addOne();
                 }
 
-                switch (DssRef.storage.mapSize)
+                switch (DssRef.storage.ruleset.mapSize)
                 {
                     case MapSize.Tiny:
                     case MapSize.Small:
@@ -125,41 +219,61 @@ namespace VikingEngine.DSSWars
 
                 if (loading == null)
                 {
-                    Ref.netSession.LobbyPublicity = Network.LobbyPublicity.Public;
-                    loading = new MapBackgroundLoading(null);
+                    //Ref.netSession.LobbyPublicity = Network.LobbyPublicity.Public;
+                    loading = new MapBackgroundLoading(null as SaveStateMeta);
                 }
 
                 this.loading = loading;
-                this.netLobby = netLobby;
+                //this.netLobby = netLobby;
 
                 Ref.lobby.startCreateLobby(true);
             }
             else
             {
+                joinRequest();
+                //if (Ref.netSession.Host() != null)
+                //{
+                //    var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
+                //        Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
+                //}
+            }
+        }
+
+        void joinRequest()
+        {
+            joinRequestTime.setNow();
+            if (Ref.netSession.Host() != null)
+            {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
                     Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
+                StreamLib.WriteColorStream_3B(w, DssRef.storage.profileStorage.Selected().flag.col0_Main);
             }
         }
 
         public override void Time_Update(float time)
         {
-
             base.Time_Update(time);
-
-            if (loading != null)
+            if (!host)
             {
-                loading.Update();
-                loadingStatusText.TextString = loading.ProgressString();
-
-                if (loading.Complete() && state == null)
+                if (joinRequestTime.secPassed(3))
                 {
-                    state = new PlayState(host, loadMeta, null);
+                    if (++joinTrials >= 3)
+                    {
+                        new ExitToLobby(false);
+                    }
+                    else
+                    {
+                        joinRequest();
+                    }
                 }
+            }
+        }
 
-                if (Ref.music != null)
-                {
-                    Ref.music.Update();
-                }
+        protected override void onLoadComplete()
+        {
+            if (state == null)
+            {
+                state = new PlayState(host, loadMeta, null);
             }
         }
 

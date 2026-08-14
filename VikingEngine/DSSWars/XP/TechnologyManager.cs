@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -17,17 +19,25 @@ namespace VikingEngine.DSSWars.XP
             {
                 Task.Factory.StartNew(() =>
                 {
-                    var factionsCounter = DssRef.world.factions.counter();
-                    while (factionsCounter.Next())
+                    try
                     {
-                        var citiesC = factionsCounter.sel.cities.counter();
-                        while (citiesC.Next())
+                        var factionsCounter = DssRef.world.factions.counter();
+                        while (factionsCounter.Next())
                         {
-                            citiesC.sel.technology.addFactionUnlocked(factionsCounter.sel.technology, true, true);
+                            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                            while (citiesC.Next(ref factionsCounter.sel.cities, DssRef.world.cities, out City citySel))
+                            {
+                                citySel.technology.addFactionUnlocked(factionsCounter.sel.technology, true, true);
+                            }
                         }
-                    }
 
-                    asyncOneMinuteUpdate(false);
+                        asyncOneMinuteUpdate(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                    
                 });
             }
         }
@@ -40,27 +50,37 @@ namespace VikingEngine.DSSWars.XP
             {
                 foreach (var city in DssRef.world.cities)
                 {
-                    if (city.debugTagged)
+                    if (city.IsNetHosted)
                     {
-                        lib.DoNothing();
-                    }
-                    foreach (var ni in city.neighborCities)
-                    {
-                        var nCity = DssRef.world.cities[ni];
-                        if (city.faction == nCity.faction)
+                        if (city.debugTagged || city.myIndex == 192)
                         {
-                            city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
+                            lib.DoNothing();
                         }
-                        else
+                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var ni in city.neighborCities)
                         {
-                            switch (DssRef.diplomacy.GetRelationType(city.faction, nCity.faction))
+                            
+                            //var nCity = DssRef.world.cities[ni];
+                            if (city.pfaction == nCity.pfaction)
                             {
-                                case RelationType.RelationType2_Good:
-                                    city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
-                                    break;
-                                case RelationType.RelationType3_Ally:
-                                    city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
-                                    break;
+                                TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
+                                //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
+                            }
+                            else
+                            {
+                                switch (DssRef.world.diplomacy.GetRelation(city.pfaction, nCity.pfaction).Relation)
+                                {
+                                    case RelationType.RelationType2_Good:
+                                        TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
+
+                                        //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
+                                        break;
+                                    case RelationType.RelationType3_Ally:
+                                        TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
+
+                                        //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
+                                        break;
+                                }
                             }
                         }
                     }
@@ -72,20 +92,38 @@ namespace VikingEngine.DSSWars.XP
             var factionsC = DssRef.world.factions.counter();
             while (factionsC.Next())
             {
-                TechnologyTemplate factionTech = new TechnologyTemplate();
-                factionTech.zero();
-                factionTech.addFactionUnlocked(factionsC.sel.technology, false, false);
-
-
-                var citiesC = factionsC.sel.cities.counter();
-                while (citiesC.Next())
+                if (factionsC.sel.IsNetHosted())
                 {
-                    citiesC.sel.workTemplate.applyUnlock(citiesC.sel.technology.GetUnlocks(false));
-                    factionTech.countUnlocks(citiesC.sel.technology);
-                }
+                    TechnologyTemplate factionTech = new TechnologyTemplate();
+                    factionTech.zero();
+                    factionTech.addFactionUnlocked(factionsC.sel.technology, false, false);
 
-                factionsC.sel.technology = factionTech;
-                factionsC.sel.workTemplate.applyUnlock(factionTech.GetUnlocks(true));
+#if DEBUG
+                    if (StartupSettings.UnlockAllProgress && factionsC.sel.player.IsLocalPlayer())
+                    {
+                        SpottedPointerArrayCounter unlockCities = new SpottedPointerArrayCounter();
+                        while (unlockCities.Next(ref factionsC.sel.cities, DssRef.world.cities, out City citySel))
+                        {
+                            citySel.technology.unlockAll_debug();
+                        }
+                    }
+#endif
+
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref factionsC.sel.cities, DssRef.world.cities, out City citySel))
+                    {
+                        var unlocks = citySel.technology.GetUnlocks(false);
+                        citySel.workTemplate.applyUnlock(unlocks);
+                        factionTech.countUnlocks(citySel.technology);
+                        if (unlocks.allUnlocked && factionsC.sel.player.IsLocalPlayer())
+                        {
+                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.techtree);
+                        }
+                    }
+
+                    factionsC.sel.technology = factionTech;
+                    factionsC.sel.workTemplate.applyUnlock(factionTech.GetUnlocks(true));
+                }
             }
         }
     }

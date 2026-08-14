@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.PJ.Match3;
 
 namespace VikingEngine.HUD.RichBox
 {
     abstract class AbsRbInteraction
     {
-        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool endInteraction);
+        abstract public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll);
+        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
+        abstract public void end(float pointerX, out bool needRefresh);
     }
     class RbInteraction: AbsRbInteraction
     {
@@ -20,14 +25,14 @@ namespace VikingEngine.HUD.RichBox
         public ImageLayers layer;
 
         Graphics.RectangleLines selectionOutline = null;
-        Input.IButtonMap clickInput;
+        IRichMenuInputMap inputMap;
         public RenderTargetDrawContainer drawContainer = null;
         public AbsRbInteraction interactionStack = null;
 
-        public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer,  Input.IButtonMap clickInput)
+        public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer, IRichMenuInputMap inputMap)
         {
             this.layer = layer;
-            this.clickInput = clickInput;
+            this.inputMap = inputMap;
 
             //foreach (var m in content)
             //{
@@ -46,26 +51,106 @@ namespace VikingEngine.HUD.RichBox
         }
 
        
+        override public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll)
+        {
+            pushScroll = 0;
+            if (interactionStack == null)
+            {
+                var moveInput = pointer.inputMap.move.direction;
+                pointer.pointer.position += pointer.accelerateInput(moveInput);
+                pointer.pointer.position = pointer.menu.renderArea.KeepPointInsideBound_Position(pointer.pointer.position);
 
-        //public void inherit(RbInteraction prev)
-        //{
-        //    hover = prev.hover;
-        //    selectionOutline = prev.selectionOutline;
-        //}
+                if (moveInput.Y < 0)
+                { 
+                    float scrollTop = pointer.menu.renderArea.Position.Y + Engine.Screen.IconSize * 2;
+                    if (pointer.pointer.position.Y < scrollTop)
+                    {
+                        pushScroll = pointer.pointer.position.Y - scrollTop;
+                    }
+                }
+                else if (moveInput.Y > 0)
+                {
+                    float scrollBottom = pointer.menu.renderArea.Bottom - Engine.Screen.IconSize * 2;
+                    if (pointer.pointer.position.Y > scrollBottom)
+                    {
+                        pushScroll = pointer.pointer.position.Y - scrollBottom;
+                    }
+                }
+
+                refreshControllerHover(pointer);
+                needRefresh = false;
+                endInteraction = false;
+                return clickUpdate(pointer.menu, true);
+            }
+            else
+            {
+                var result = interactionStack.updateController(pointer, menu, useClickInput, out needRefresh, out endInteraction, out pushScroll);
+                if (endInteraction)
+                {
+                    interactionStack.end(pointer.pointer.Xpos, out needRefresh);
+                    interactionStack = null;
+                }
+                return result;
+            }
+        }
+
+        public void refreshControllerHover(RichMenuControllerPointer pointer)
+        {
+            Vector2 pos = pointer.pointer.position - pointer.menu.renderArea.Position;
+
+            VectorRect area = VectorRect.Zero;
+            AbsRbButton prev = hover;
+            hover = null;
+            float distance = float.MaxValue;
+            foreach (var m in buttons)
+            {
+                area = m.area();
+                float arDist = area.distanceTo(pos);
+                if (arDist <= 0)
+                {
+                    hover = m;
+                    distance = 0;
+                    break;
+                }
+                else
+                {
+                    if (arDist < distance && arDist < pointer.maxInteractDistance)
+                    {
+                        distance = arDist;
+                        hover = m;
+                    }
+                }
+            }
+
+            hoverUpdate(pointer.menu, prev);
+        }
+
 
         /// <returns>Any interaction happened (to avoid multiple)</returns>
-        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool unused1)
+        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool unused1)
         {
             //Debug.Log("Interaction UPDATE");
             //Debug.Log($"Mouse offset: {mousePosOffSet}");
             //Debug.Log($"Menu bg pos: {menu.backgroundArea.Position}");
             //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
             unused1 = false;
+            needRefresh = false;
+            Input.MouseInstance mouse;
+            if (menu != null)
+            {
+                mouse = menu.InputMap().RbMouseInstance();
+            }
+            else
+            {
+                mouse = DssRef.state.LocalHost().gameControls.input.mouse;
+            }
+
             if (interactionStack != null)
             {
-                var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out bool endInteraction);
+                var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
                 if (endInteraction)
                 {
+                    interactionStack.end(mouse.Position.X, out needRefresh);
                     interactionStack = null;
                 }
                 return result;
@@ -76,9 +161,9 @@ namespace VikingEngine.HUD.RichBox
             VectorRect area = VectorRect.Zero;
             //VectorRect area2 = VectorRect.Zero;
             //int hoverIx = 0;
-            if (clickInput.IsMouse)
+            //if (clickInput.IsMouse)
             {
-                Vector2 pos = Input.Mouse.Position + mousePosOffSet;
+                Vector2 pos = mouse.Position + mousePosOffSet;
                 //Debug.Log($"mouse pos: {pos}");
                 hover = null;
                 
@@ -88,37 +173,22 @@ namespace VikingEngine.HUD.RichBox
                     area = m.area();
                     if (area.IntersectPoint(pos))
                     {
-                        //if (Input.Keyboard.Ctrl && m != prev)
-                        //{
-                        //    lib.DoNothing();
-                        //}
                         hover = m;
-                        //area2 = hover.area();
                         break;
                     }
                     ++buttonIndex;
                 }
             }
 
+            hoverUpdate(menu, prev);
+
+            return clickUpdate(menu, useClickInput);
+        }
+
+        void hoverUpdate(RichMenu.RichMenu menu, AbsRbButton prev)
+        { 
             if (hover != prev)
             {
-                
-                //Debug.Log("hover != prev");
-
-                //Debug.Log($"Mouse offset: {mousePosOffSet}");
-                //Debug.Log($"Mouse pos: {Input.Mouse.Position}");
-                //Debug.Log($"First button: {buttons[0].area()}");
-                //Debug.Log($"Menu render pos: {menu.renderList.position}");
-
-                //if (hover == null)
-                //{
-                //    Debug.Log($"Hover: null");
-                //}
-                //else
-                //{
-                //    Debug.Log($"Hover, ix{buttonIndex}: {hover.area()}");
-                //}
-
                 if (prev != null)
                 {
                     prev.clickAnimation(false);
@@ -129,22 +199,31 @@ namespace VikingEngine.HUD.RichBox
                 
                 hover?.onEnter(menu);
             }
+        }
 
+        bool clickUpdate(RichMenu.RichMenu menu, bool useClickInput)
+        {
             if (hover != null)
             {
-                if (clickInput.DownEvent && useClickInput)
+                if (inputMap.RbClick().DownEvent/*clickInput.DownEvent*/ && useClickInput)
                 {
                     hover.onClick(menu);
-                    hover.clickAnimation(true);
+                    hover?.clickAnimation(true);
                     return true;
                 }
-                else if (clickInput.UpEvent)
+                else if (inputMap.RbClick().UpEvent/*clickInput.UpEvent*/)
                 {
                     hover.clickAnimation(false);
                 }
             }
 
             return false;
+        }
+
+        public override void end(float pointerX, out bool needRefresh)
+        {
+            needRefresh = false;
+            //throw new NotImplementedException();
         }
 
         public void refreshSelectOutline()

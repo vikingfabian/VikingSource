@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
 
 
@@ -10,14 +11,6 @@ namespace VikingEngine.Graphics
 {
     class Point3D : Abs3DModel, IRotationCallBack
     {
-        /* Properties */
-       
-
-        /* Fields */
-        //protected Vector3 position;
-        //protected Vector3 scale = Vector3.Zero;
-
-        /* Constructors */
         public Point3D(Vector3 pos, Vector3 size, bool addToRender)
             : base(addToRender)
         { 
@@ -42,9 +35,9 @@ namespace VikingEngine.Graphics
         }
         public override void Draw(int cameraIndex)
         { }
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        { }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{ }
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         { }
         public override void copyAllDataFrom(AbsDraw master)
         {
@@ -61,19 +54,6 @@ namespace VikingEngine.Graphics
             inRenderList = true;
         }
 
-        //public override float GetPositionX
-        //{
-        //    get { return Position.X; }
-        //}
-        //public override float GetPositionZ
-        //{
-        //    get { return Position.Z; }
-        //}
-        //public override float Opacity
-        //{
-        //    get { return 0; }
-        //    set { }
-        //}
         public override DrawObjType DrawType { get { return DrawObjType.Mesh; } }
 
         public virtual Vector3 Position

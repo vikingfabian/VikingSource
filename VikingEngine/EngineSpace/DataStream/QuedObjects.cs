@@ -6,18 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.DataStream
 {
-    //abstract class DataStreamQuedObj : IQuedObject
-    //{
-    //    protected FilePath file;
-    //    public DataStreamQuedObj(FilePath file)
-    //    {
-    //        this.file = file;
-    //    }
-    //    protected void start()
-    //    { Engine.Storage.AddToSaveQue(StartQuedProcess, true); }
-    //    abstract public void runQuedTask(MultiThreadType threadType);
-    //}
-
     class UserRemoveFile : StorageTask
     {
        // DataStreamFile file;
@@ -34,10 +22,10 @@ namespace VikingEngine.DataStream
 
         public override void runQuedStorageTask()
         {
-            List<string> files = DataStreamHandler.GetTimeMarkedStoragePaths(filePath);
+            List<string> files = FileToDiskManager.GetTimeMarkedStoragePaths(filePath);
             foreach (string s in files)
             {
-                DataStreamHandler.RemoveFile(s);
+                FileToDiskManager.RemoveFile(s);
             }
         }
     }
@@ -57,10 +45,6 @@ namespace VikingEngine.DataStream
         FilePath path;
         Action failureEvent = null;
 
-        //public OpenAndSendFile(FilePath path, Network.PacketType packetType, WriteBinaryStream prefix, 
-        //    Network.SendPacketTo to, ulong toSpecific, Network.PacketReliability rely)
-        //    : this(path, packetType, prefix, to, toSpecific, rely, null)
-        //{ }
         public OpenAndSendFile(FilePath path, Network.PacketType packetType, WriteBinaryStream prefix, 
             Network.SendPacketTo to, ulong toSpecific, Network.PacketReliability rely, Action failureEvent)
             : base()
@@ -78,27 +62,14 @@ namespace VikingEngine.DataStream
         }
         public override void runQuedStorageTask()
         {
-            data = DataStreamHandler.Read(path);
-            //if (data != null)
-            //{
-            //    bMainThreadTask;
-            //}
-            //else
-            //{
-            //    Debug.LogError("OpenAndSendFile2, empty file");
-            //    if (failureEvent != null)
-            //    {
-            //        new Timer.Action0ArgTrigger(failureEvent);
-            //    }
-            //    return false;
-            //}
-
+            data = FileToDiskManager.Read(path);
+         
         }
         public override void onStorageComplete()
         {
             if (data != null && data.Length > 0)
             {
-                System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(packetType, Network.SendPacketTo.All/*to*/, toSpecific, rely,
+                System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(packetType, rely, Network.SendPacketTo.All, toSpecific,
                      null);
 
                 prefix?.Invoke(w);                
@@ -112,24 +83,4 @@ namespace VikingEngine.DataStream
         }
 
     }
-
-    //class CorruptFile : DataStreamQuedObj
-    //{
-    //    bool leaveBackup;
-    //    public CorruptFile(FilePath file, bool leaveBackup)
-    //        : base(file)
-    //    {
-    //        this.leaveBackup = leaveBackup;
-    //        start();
-    //    }
-    //    public override void runQuedTask(MultiThreadType threadType)
-    //    {
-    //        if (leaveBackup)
-    //            file.NumVersionsStacking = Bound.SetMinVal(file.NumVersionsStacking, 2);
-    //        else
-    //            file.NumVersionsStacking = 1;
-
-    //        DataStreamHandler.Write(file, new byte[] { });
-    //    }
-    //}
 }

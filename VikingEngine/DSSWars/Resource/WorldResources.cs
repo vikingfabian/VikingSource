@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -17,8 +18,8 @@ namespace VikingEngine.DSSWars.Resource
         SpottedArrayCounter_Resource registerCounter;
 
         TerrainContent terrainContent = new TerrainContent();
-        public ConcurrentStack<EditSubTile> editSubTilesStack = new ConcurrentStack<EditSubTile>();
-
+        public ConcurrentQueue<EditSubTile> editSubTiles = new ConcurrentQueue<EditSubTile>();
+        public ConcurrentQueue<AbsRbAction> editSubTilesActionQueue = new ConcurrentQueue<AbsRbAction>();
         public WorldResources()
         {
             registerCounter = new SpottedArrayCounter_Resource(resourceRegister);
@@ -64,6 +65,8 @@ namespace VikingEngine.DSSWars.Resource
             }
             else
             {
+                resourceRegister.adjustMinimumLength(collIndex +1);
+
                 var chunk = resourceRegister.Array[collIndex];
                 chunk.Add(resource);
                 resourceRegister.Array[collIndex] = chunk;
@@ -72,7 +75,11 @@ namespace VikingEngine.DSSWars.Resource
 
         public ResourceChunk get(int index)
         {
-            return resourceRegister.Array[index];
+            if (index < resourceRegister.Array.Length)
+            {
+                return resourceRegister.Array[index];
+            }
+            return ResourceChunk.Empty;
         }
 
         public void update(int index, ref ResourceChunk resourceChunk)
@@ -87,29 +94,34 @@ namespace VikingEngine.DSSWars.Resource
 
             while (loop.Next())
             {
-                while (editSubTilesStack.TryPop(out var edit))
+                while (editSubTiles.TryDequeue(out var edit))
                 {
                     edit.ExecuteEdit();
                 }
 
-                var subtile = DssRef.world.subTileGrid.Get(loop.Position);
+                ref var subtile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
 
                 if (subtile.mainTerrain == TerrainMainType.Foil)
                 {
-                    terrainContent.asyncFoilGroth(loop.Position, subtile);
+                    terrainContent.asyncFoilGroth(loop.Position, ref subtile);
                 }
                 else if (subtile.mainTerrain == TerrainMainType.Building)
                 {
-                    terrainContent.asyncCityProduce(loop.Position, subtile);
+                    terrainContent.asyncCityProduce(loop.Position, ref subtile);
                 }
             }
         }
 
         public void asyncEditTiles()
         {
-            while (editSubTilesStack.TryPop(out var edit))
+            while (editSubTiles.TryDequeue(out var edit))
             {
                 edit.ExecuteEdit();
+            }
+
+            while (editSubTilesActionQueue.TryDequeue(out var action))
+            {
+                action.actionTrigger();
             }
         }
 

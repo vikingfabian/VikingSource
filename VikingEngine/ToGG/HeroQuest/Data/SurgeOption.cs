@@ -28,7 +28,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data
         {
             for (int i = 0; i < surgeCost; ++i)
             {
-                richbox.Add(new RbImage(SpriteName.cmdIconSurge, 1f, -0.2f, -0.2f));                        
+                richbox.Add(new RbImage(SpriteName.cmdIconSurge, 1f, null, -0.2f, -0.2f));                        
             }
 
             richbox.Add(new RbImage(SpriteName.cmdConvertArrow, HudLib.ConvertArrowScale));

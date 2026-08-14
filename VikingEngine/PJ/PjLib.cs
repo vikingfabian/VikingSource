@@ -178,7 +178,7 @@ namespace VikingEngine.PJ
 #if PCGAME
             if (Ref.steam != null && Ref.steam.DLC != null)
             {
-                Ref.steam.DLC.OpenDlcStore(dlcIndex);
+                //Ref.steam.DLC.OpenDlcStore(dlcIndex);
             }
 #endif
         }

@@ -98,7 +98,7 @@ namespace VikingEngine.PJ
 
                 new GuiSectionSeparator(layout);
                 resolutionOptions(layout);
-                new GuiImageCheckbox(SpriteName.MenuIconMonitorArrowsOut, null, Ref.gamesett.fullscreenProperty, layout);
+                //new GuiImageCheckbox(SpriteName.MenuIconMonitorArrowsOut, null, Ref.gamesett.fullscreenProperty, layout);
 
                 new GuiSectionSeparator(layout);
                 new GuiTextButton("*Debug Controls*", null, controlDebugScreen, true, layout);
@@ -108,9 +108,9 @@ namespace VikingEngine.PJ
 
         void quickOptions(GuiLayout layout)
         {
-            new GuiFloatSlider(SpriteName.MenuIconMusicVol, null, Ref.gamesett.musicVolProperty, new IntervalF(0, 1), false, layout);
-            new GuiFloatSlider(SpriteName.MenuIconSoundVol, null, Ref.gamesett.soundVolProperty, new IntervalF(0, 1), false, layout);
-            new GuiIntSlider(SpriteName.ControllerVibration, null, vibrationProperty, new IntervalF(0, 200), false, layout);
+            //new GuiFloatSlider(SpriteName.MenuIconMusicVol, null, Ref.gamesett.musicVolProperty, new IntervalF(0, 1), false, layout);
+            //new GuiFloatSlider(SpriteName.MenuIconSoundVol, null, Ref.gamesett.soundVolProperty, new IntervalF(0, 1), false, layout);
+            //new GuiIntSlider(SpriteName.ControllerVibration, null, vibrationProperty, new IntervalF(0, 200), false, layout);
         }
 
         int vibrationProperty(bool set, int value)
@@ -150,7 +150,7 @@ namespace VikingEngine.PJ
                 optionsList.Add(new GuiOption<int>(m.ToString() + "%", m));
             }
 
-            new GuiIconOptionsList<int>(SpriteName.MenuIconScreenResolution, "R", optionsList, Ref.gamesett.resolutionPercProperty, layout);
+            //new GuiIconOptionsList<int>(SpriteName.MenuIconScreenResolution, "R", optionsList, Ref.gamesett.windowScaleProperty, layout);
             new GuiIconTextButton(SpriteName.MenuIconScreenResolution, "Youtube", null, recordingResolutionOptions, true, layout);
         }
 

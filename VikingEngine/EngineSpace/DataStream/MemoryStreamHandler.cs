@@ -8,6 +8,7 @@ namespace VikingEngine.DataStream
 {
     class MemoryStreamHandler: DataLib.ISaveByteArrayObj
     {
+
         System.IO.MemoryStream s;
         System.IO.BinaryWriter w;
         
@@ -21,6 +22,11 @@ namespace VikingEngine.DataStream
         public MemoryStreamHandler(byte[] data)
         {
             SetByteArray(data);
+        }
+
+        public void Clear()
+        { 
+            s?.SetLength(0);
         }
 
         public void readToMemory(System.IO.BinaryReader r)
@@ -39,8 +45,21 @@ namespace VikingEngine.DataStream
 
         public System.IO.BinaryWriter GetWriter()
         {
-            s = new System.IO.MemoryStream();
-            w = new System.IO.BinaryWriter(s);
+            if (w == null)
+            {
+                s = new System.IO.MemoryStream();
+                w = new System.IO.BinaryWriter(s);
+            }
+            return w;
+        }
+
+        public System.IO.BinaryWriter GetWriter(int capacity)
+        {
+            if (w == null)
+            {
+                s = new System.IO.MemoryStream(capacity);
+                w = new System.IO.BinaryWriter(s);
+            }
             return w;
         }
 
@@ -71,12 +90,13 @@ namespace VikingEngine.DataStream
             w.Write(s.ToArray());
         }
 
-        public byte[] ByteArray()
+        public byte[] ByteArray(out long length)
         {
-            return s.ToArray();
+            length = s.Length;
+            return s.GetBuffer();//s.ToArray();
         }
 
-        public byte[] ByteArraySaveData { get { return ByteArray(); } set { SetByteArray(value); } }
+        public byte[] ByteArraySaveData { get { return s.ToArray(); } set { SetByteArray(value); } }
 
         public void SetByteArray(byte[] data)
         {
@@ -226,13 +246,13 @@ namespace VikingEngine.DataStream
 
         public void Save(FilePath path)
         {
-            DataStreamHandler.Write(path, s.ToArray());
+            FileToDiskManager.Write(path, s.ToArray());
         }
 
         ulong dataSumValue(byte[] data, int dataLenght)
         {
             ulong sum = 0;
-            CirkleCounterUp primIx = new CirkleCounterUp(0, Primes.Length - 1);
+            CircleCounterUp primIx = new CircleCounterUp(0, Primes.Length - 1);
             for (int i = 0; i < dataLenght; ++i)
             {
                 sum += (ulong)(data[i] * Primes[primIx.Next()]);

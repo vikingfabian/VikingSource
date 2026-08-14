@@ -8,7 +8,7 @@ namespace VikingEngine.PJ
 {
     class Storage
     {
-        const int Version = 4;
+        const int Version = 5;
 
         public List<GamerData> joinedGamersSetup = null;
         public List<GamerData> startingRemoteGamers = null;
@@ -42,7 +42,7 @@ namespace VikingEngine.PJ
         {
             w.Write(Version);
 
-            Ref.gamesett.writeEmbeddedSettingsAndVersion(w);
+            //Ref.gamesett.writeEmbeddedSettingsAndVersion(w);
 
             w.Write((byte)mode);
             DataStream.SafeStream safeStream = new DataStream.SafeStream(w);
@@ -60,20 +60,21 @@ namespace VikingEngine.PJ
                     m.write(sw);
                 }
             }
+
             safeStream.endWriteChunk();
 
-            w.Write((byte)lobbyPublicity);
+            //w.Write((byte)lobbyPublicity);
         }
 
         void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
 
-            if (version <4)
+            if (version <5)
             {
                 return;
             }
-            Ref.gamesett.readEmbeddedSettingsAndVersion(r);
+            //Ref.gamesett.readEmbeddedSettingsAndVersion(r);
 
             mode = (PartyGameMode)r.ReadByte();
             modeSettings = new GameModeSettings(mode);
@@ -92,10 +93,10 @@ namespace VikingEngine.PJ
             }
             safeStream.endReadChunk(PlatformSettings.DevBuild);
 
-            if (version >= 1)
-            {
-                lobbyPublicity = (Network.LobbyPublicity)r.ReadByte();
-            }
+            //if (version >= 1)
+            //{
+            //    lobbyPublicity = (Network.LobbyPublicity)r.ReadByte();
+            //}
         }
 
         public PartyGameMode Mode

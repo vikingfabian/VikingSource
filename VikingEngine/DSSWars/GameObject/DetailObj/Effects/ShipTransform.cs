@@ -1,36 +1,111 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.GO.NPC;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class ShipTransform : AbsInGameUpdateable
+    abstract class AbsSoldierStateTransform : AbsInGameUpdateable
     {
-        SoldierGroup group;
-        bool lookingForTerrain = true;
-        bool toShip;
-        Time transformTimer;
-        //Graphics.Mesh transformIcon;
+        protected SoldierGroup group;
+        protected bool lookingForTerrain = true;
+        
+        protected Time transformTimer;
         VoxelModelInstance transformModel, loadingModel;
         bool transformEffect = false;
 
-        public ShipTransform(SoldierGroup group, bool immediet)
-            :base(false)
+        public AbsSoldierStateTransform(SoldierGroup group, bool immediet)
+            : base(false)
         {
-
             this.group = group;
-            
-            toShip = !group.isShip;
+            group.inShipOrGuardTransform = true;
 
-            transformTimer.Seconds = (toShip ? DssLib.ShipBuildTimeSec : DssLib.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
+            init(out float timeSec);
+            transformTimer.Seconds = timeSec;
+            //toShip = !group.isShip;
+            //transformTimer.Seconds = (toShip ? DssLib.ShipBuildTimeSec : DssLib.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
 
             AddToUpdateList();
 
             if (immediet)
             { begin(); }
+        }
+
+        abstract protected void init(out float timeSec);
+        
+
+        public override void Time_Update(float time_ms)
+        {
+            updateEffect();
+        }
+
+        protected void begin()
+        {
+            transformEffect = true;
+            lookingForTerrain = false;
+        }
+
+        void updateEffect()
+        {
+            if (group.isDeleted)
+            {
+                DeleteMe();
+            }
+            else if (transformEffect && group.army.TryGetTarget(out var tArmy) && tArmy.inRender_detailLayer)
+            {
+                if (transformModel == null)
+                {
+                    transformModel = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_shipbuild, DssConst.Men_StandardModelScale * 2f);
+
+                    loadingModel = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_loading_anim, DssConst.Men_StandardModelScale * 2f);
+                    transformModel.Frame = modelFrame();
+
+
+                    loadingModel.position = group.position;
+                    loadingModel.position.Y += 0.15f;
+
+                    transformModel.position = loadingModel.position;
+                    transformModel.position.Y += 0.04f;
+
+                }
+
+                loadingModel.Rotation.RotateWorldX(MathExt.Tau * Ref.DeltaTimeSec * -0.25f);
+            }
+        }
+
+
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+
+            transformModel?.preRemoveFromDrawBatch();
+            loadingModel?.preRemoveFromDrawBatch();
+            //DssRef.models.recycle(ref transformModel, true);
+            //DssRef.models.recycle(ref loadingModel, true);
+
+            completeTransform();
+        }
+        abstract protected int modelFrame();
+        abstract protected void completeTransform();
+    }
+
+    class ShipTransform : AbsSoldierStateTransform
+    {
+        bool toShip;
+
+        public ShipTransform(SoldierGroup group, bool immediet)
+            :base(group, immediet)
+        { }
+
+        protected override void init(out float timeSec)
+        {
+            toShip = !group.isShip;
+            timeSec = (toShip ? DssConst.ShipBuildTimeSec : DssConst.ShipExitTimeSec) * 
+                DssRef.units.Get(group.currentBuilder).ShipBuildTimeMultiplier;
+
         }
 
         public override void Time_Update(float time_ms)
@@ -52,68 +127,120 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            updateEffect();
+            base.Time_Update(time_ms);
         }
 
-        void begin()
+        override protected int modelFrame()
         { 
-            transformEffect = true;                    
-            lookingForTerrain = false;
-            //group.lockMovement = true;
+            return toShip ? 0 : 1;
         }
 
-        void updateEffect()
+        protected override void completeTransform()
         {
-            if (group.isDeleted)
+            group.completeTransform(toShip ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+        }
+    }
+
+    class GuardPostTransform : AbsSoldierStateTransform
+    {
+        bool toGuard;
+        int postIdAndPosition;
+        public GuardPostTransform(SoldierGroup group, int postIdAndPosition, bool immediet)
+            : base(group, immediet)
+        {
+            this.postIdAndPosition = postIdAndPosition;
+        }
+
+        protected override void init(out float timeSec)
+        {
+            toGuard = !group.InGuardPost();
+            timeSec = toGuard ? DssConst.GuardPostEnter_TimeSec : DssConst.GuardPostExit_TimeSec;
+
+
+        }
+
+        public override void Time_Update(float time_ms)
+        {
+            if (lookingForTerrain)
+            {
+                begin();
+            }
+            else
+            {
+                if (transformTimer.CountDownGameTime())
+                {
+                    DeleteMe();
+                    return;
+                }
+            }
+
+            base.Time_Update(time_ms);
+        }
+
+        override protected int modelFrame()
+        {
+            return toGuard ? 2 : 3;
+        }
+
+        protected override void completeTransform()
+        {
+            group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
+        }
+    }
+
+    class SettlerTransform : AbsSoldierStateTransform
+    {
+        IntVector2 subTile;
+        public SettlerTransform(SoldierGroup group, IntVector2 subTile)
+            : base(group, true)
+        {
+            this.subTile = subTile;
+        }
+
+        protected override void init(out float timeSec)
+        {            
+            timeSec = DssConst.SettlerTransform_TimeSec;
+        }
+
+        public override void Time_Update(float time_ms)
+        {
+            
+            if (transformTimer.CountDownGameTime())
             {
                 DeleteMe();
+                return;
             }
-            else if (transformEffect && group.army.inRender_detailLayer)
-            {
-                if (transformModel == null)
-                {
-                    transformModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipbuild, true, DssConst.Men_StandardModelScale * 2f, true);
-
-                    //transformIcon = new Graphics.Mesh(LoadedMesh.cube_repeating, group.position,
-                    //    new Vector3(AbsDetailUnitData.StandardModelScale * 2f), Graphics.TextureEffectType.Flat,
-                    //        SpriteName.WhiteArea, Color.Brown, false);
-                    
-
-                    loadingModel = DssRef.models.ModelInstance( LootFest.VoxelModelName.wars_loading_anim,true, DssConst.Men_StandardModelScale * 2f, true);
-                    transformModel.Frame = toShip? 0 : 1;
-                    
-
-                    loadingModel.position = group.position;
-                    loadingModel.position.Y += 0.15f;
-
-                    transformModel.position = loadingModel.position;
-                    transformModel.position.Y += 0.04f;
-
-                    //transformModel.AddToRender(DrawGame.UnitDetailLayer);
-                    //loadingModel.AddToRender(DrawGame.UnitDetailLayer);
-                    //new Graphics.Motion3d(Graphics.MotionType.ROTATE, loadingModel,
-                    //    new Vector3(MathExt.Tau, 0, 0), Graphics.MotionRepeate.Loop, 1000, true);
-                }
-
-                loadingModel.Rotation.RotateWorldX(MathExt.Tau * Ref.DeltaTimeSec * -0.25f);
-            }
+            
+            base.Time_Update(time_ms);
         }
 
+        //override protected int modelFrame()
+        //{
+        //    return 0;
+        //}
 
-        public override void DeleteMe()
+        protected override void completeTransform()
         {
-            base.DeleteMe();
+            
+            var city = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTile)).City();
 
-            DssRef.models.recycle(ref transformModel, true);
-            DssRef.models.recycle(ref loadingModel, true);
-            //if (transformModel != null)
-            //{
-            //    transformModel?.DeleteMe();
-            //}
-            //loadingModel?.DeleteMe();
-            //group.inShipTransform = null;
-            //group.lockMovement = false;
-            group.completeTransform(toShip? SoldierTransformType.ToShip : SoldierTransformType.FromShip);
+            if (group.soldierCount > 0 &&
+                city.cityType == CityType.UnClaimed)
+            {
+                if (city.claimCity(group.pfaction.GetFaction(), subTile))
+                {
+                    group.DeleteMe(DeleteReason.Transform, true);
+                    return;
+                }
+            }
+
+            //Fail
+            group.completeTransform(SoldierTransformType.Canceled, -1);
+        }
+
+        override protected int modelFrame()
+        {
+            return 4;
         }
     }
 }

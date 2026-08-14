@@ -59,16 +59,16 @@ namespace VikingEngine.LootFest.GO.PickUp
                 {
                     case Gadgets.ItemType.NUM_NON:
                         return VoxelModelName.NUM_NON;
-                    case Gadgets.ItemType.Apple:
-                        return VoxelModelName.itembox_apple;
-                    case Gadgets.ItemType.ApplePie:
-                        return VoxelModelName.itembox_pie;
-                    case Gadgets.ItemType.Bone:
-                        return VoxelModelName.itembox_bone;
-                    case Gadgets.ItemType.Card:
-                        return VoxelModelName.cardcollection;
-                    case Gadgets.ItemType.PickAxe:
-                        return VoxelModelName.itembox_pickaxe;
+                    //case Gadgets.ItemType.Apple:
+                    //    return VoxelModelName.itembox_apple;
+                    //case Gadgets.ItemType.ApplePie:
+                    //    return VoxelModelName.itembox_pie;
+                    //case Gadgets.ItemType.Bone:
+                    //    return VoxelModelName.itembox_bone;
+                    //case Gadgets.ItemType.Card:
+                    //    return VoxelModelName.cardcollection;
+                    //case Gadgets.ItemType.PickAxe:
+                    //    return VoxelModelName.itembox_pickaxe;
                     default:
                         throw new NotImplementedException("ItemBox voxelimage: " + item.ToString()); 
                 }

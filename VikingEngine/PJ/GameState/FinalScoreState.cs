@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Steamworks;
+using System;
+using System.Collections.Generic;
 
 namespace VikingEngine.PJ
 {
@@ -20,8 +21,22 @@ namespace VikingEngine.PJ
         public FinalScoreState()
             : base()
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Staging);
+
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                        "🏆",// Title in UI
+                       null, // Description in UI
+                       "steam_trophy", // Built-in Steam icon 
+                       6, // Priority (0 = default, max= 1000)
+                       0f,// Offset in seconds
+                       ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+               );
+            }
             
-            Input.Mouse.Visible = true;
+
+            Input.Mouse.ViewAll();//Input.Mouse.Hide();//Input.Mouse.Visible = true;
             draw.ClrColor = new Color(137, 191, 245);//Color.CornflowerBlue;
 
             //Calc order

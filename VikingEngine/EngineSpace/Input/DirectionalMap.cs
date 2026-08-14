@@ -36,6 +36,37 @@ namespace VikingEngine.Input
         void read(System.IO.BinaryReader r);
     }
 
+    struct EmptyDirectionalMap : IDirectionalMap
+    {
+        // Properties
+        public bool plusKeyIsDown => false;
+        public Vector2 direction => Vector2.Zero;
+        public Vector2 directionAndTime => Vector2.Zero;
+        public IntVector2 stepping => IntVector2.Zero;
+        public string directionsName => "None";
+        public InputSourceType inputSource => InputSourceType.Num_None; 
+        public int ControllerIndex { get; set; }
+
+        public SpriteName Icon => SpriteName.NO_IMAGE;
+
+        // Methods
+        public void ListIcons(List<SpriteName> list, out SpriteName plusKey, bool includeAlternative)
+        {
+            plusKey = SpriteName.NO_IMAGE;
+            // Do nothing, as there are no icons to list
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            // No data to persist for an empty map
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            // No data to retrieve
+        }
+    }
+
     struct AlternativeDirectionalMap : IDirectionalMap
     {
         public IDirectionalMap dirMap1, dirMap2;
@@ -525,7 +556,11 @@ namespace VikingEngine.Input
             get
             {
                 Vector2 result = Vector2.Zero;
-                result.Y = Input.XInput.Instance(controllerIx).RightTrigger - Input.XInput.Instance(controllerIx).LeftTrigger;
+                var ins = Input.XInput.Instance(controllerIx);
+                if (ins != null)
+                {
+                    result.Y = ins.RightTrigger - ins.LeftTrigger;
+                }
                 return result;
             }
         }

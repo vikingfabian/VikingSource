@@ -6,57 +6,57 @@ namespace VikingEngine.Graphics
 {
     class BulletTrace : ParticleSystem
     {
-        const float StartScale =
-#if DSS
-            0.1f;//10f * DSSWars.GameObject.AbsDetailUnit.StandardModelScale;
-#else
-            0.4f;
-#endif
-        const float EndScale = StartScale * 0.1f;
+//        const float StartScale =
+//#if DSS
+//            0.1f;
+//#else
+//            0.4f;
+//#endif
+//        const float EndScale = StartScale * 0.1f;
 
 
         public BulletTrace()
             : base()
         { }
 
-        static readonly Color MaxCol = new Color(1, 1, 1, 0.5f);
-        static readonly Color MinCol = new Color(1, 1, 1, 0.4f);
+        
         
         protected override void InitializeSettings(ParticleSettings settings)
         {
-            settings.Texture = LoadedTexture.WhiteArea;
+            settings.Texture = LoadedTexture.particle3;
+            settings.MaxParticles = 30000;
 
-            settings.MaxParticles = 600;
+            settings.Duration = TimeSpan.FromSeconds(3f);
+            settings.DurationRandomness = 0.1f;
 
-            settings.Duration = TimeSpan.FromSeconds(0.45);//0.5
+            //settings.Gravity = new Vector3(0.0f, -0.02f, 0.0f);
 
-            settings.MinHorizontalVelocity = 0;
-            settings.MaxHorizontalVelocity = 0;
+            const float Speed = 0.001f;
+            settings.MinHorizontalVelocity = -Speed;
+            settings.MaxHorizontalVelocity = Speed;
 
-            settings.MinVerticalVelocity = 0;
-            settings.MaxVerticalVelocity = 0;
-
-            settings.Gravity = Vector3.Zero;
+            settings.MinVerticalVelocity = -Speed;
+            settings.MaxVerticalVelocity = Speed;
 
             settings.EndVelocity = 0;
 
-            settings.MinRotateSpeed = -1;
-            settings.MaxRotateSpeed = 1;
+            const float Rotate = 1.6f;
+            settings.MinRotateSpeed = -Rotate;
+            settings.MaxRotateSpeed = Rotate;
 
-            //const float StartScale = 0.2f;
-            //const float EndScale = StartScale * 1.5f;
-            
+            const float MinSize = 0.006f;
+            const float MaxSize = MinSize * 1.4f;
+            settings.MinStartSize = MinSize;
+            settings.MaxStartSize = MaxSize;
 
-            settings.MinStartSize = StartScale;
-            settings.MaxStartSize = StartScale;
+            settings.MinEndSize = MinSize;
+            settings.MaxEndSize = MaxSize;
 
-            settings.MinEndSize = EndScale;
-            settings.MaxEndSize = EndScale;
 
-            settings.MinColor = MinCol;
-            settings.MaxColor = MaxCol;
+            settings.Gravity = Vector3.Zero;
 
-            //settings.BlendState = BlendState.Additive;
+            settings.MinColor = new Color(1, 1, 1, 0.4f);
+            settings.MaxColor = new Color(1, 1, 1, 0.5f);
         }
     }
 }

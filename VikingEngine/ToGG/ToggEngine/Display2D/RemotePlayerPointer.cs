@@ -37,6 +37,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
             new SteamWrapping.LoadGamerIcon(pointerGamerIcon, peer, false);
         }
 
+
         public void Update()
         {
             pointer.Position += pointerSpeed;
@@ -48,12 +49,12 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
         {
             //Använder % screen pos
             pos /= Engine.Screen.Area.Size;
-            SaveLib.WriteVector(w, pos);
+            StreamLib.WriteVector(w, pos);
         }
 
         public void netRead(System.IO.BinaryReader r)
         {
-            Vector2 pointerPos = SaveLib.ReadVector2(r);
+            Vector2 pointerPos = StreamLib.ReadVector2(r);
 
             if (inGame)
             {

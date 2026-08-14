@@ -54,10 +54,19 @@ namespace VikingEngine
         public static Color ChangeBrighness(Color col, int change)
         {
             col.Deconstruct(out byte r, out byte g, out byte b);
-            //col.R = Bound.Byte(col.R + change);
-            //col.G = Bound.Byte(col.G + change);
-            //col.B = Bound.Byte(col.B + change);
             return new Color(r+change, g+change, b+change);
+        }
+
+        public static int ValueDifference(Color col1, Color col2)
+        {
+            return Math.Abs(col1.R - col2.R) + Math.Abs(col1.G - col2.G) + Math.Abs(col1.B - col2.B);
+        }
+
+        public static Color ChangeYellow(Color col, int change)
+        {
+            col.Deconstruct(out byte r, out byte g, out byte b);
+            
+            return new Color(r + change, g + change, b);
         }
 
         public static float GetBrightNess(Color col)
@@ -69,27 +78,46 @@ namespace VikingEngine
 
         public static Color ChangeColor(Color col, int addR, int addG, int addB)
         {
-            addR += col.R;
-            if (addR <= byte.MinValue) { col.R = byte.MinValue; }
-            else if (addR >= byte.MaxValue) { col.R = byte.MaxValue; }
-            else { col.R = (byte)addR; }
-
-            addG += col.G;
-            if (addG <= byte.MinValue) { col.G = byte.MinValue; }
-            else if (addG >= byte.MaxValue) { col.G = byte.MaxValue; }
-            else { col.G = (byte)addG; }
-
-            addB += col.B;
-            if (addB <= byte.MinValue) { col.B = byte.MinValue; }
-            else if (addB >= byte.MaxValue) { col.B = byte.MaxValue; }
-            else { col.B = (byte)addB; }
-
-            return col;
+            col.Deconstruct(out byte r, out byte g, out byte b);
+            return new Color(r + addR, g + addG, b + addB);
         }
 
         public static float Alpha(this Color value)
         {
             return value.A * PublicConstants.ByteToPercent;
         }
+
+        /// <summary>
+        /// Returns a color from white → yellow → red → dark red based on a 0–1 value.
+        /// </summary>
+        public static Color HeatColor_Inferno(float value)
+        {
+            value = MathHelper.Clamp(value, 0f, 1f);
+
+            if (value < 0.33f)
+            {
+                if (value <= 0)
+                { 
+                    return Color.Gray;
+                }
+                // 0.0 → 0.33 : white → yellow
+                float t = value / 0.33f;
+                return new Color(1f, 1f, 1f - t); // RGB: (1, 1, 1−t)
+            }
+            else if (value < 0.66f)
+            {
+                // 0.33 → 0.66 : yellow → red
+                float t = (value - 0.33f) / 0.33f;
+                return new Color(1f, 1f - t, 0f); // RGB: (1, 1−t, 0)
+            }
+            else
+            {
+                // 0.66 → 1.0 : red → dark red
+                float t = (value - 0.66f) / 0.34f;
+                // Interpolate from red (1,0,0) to dark red (0.4,0,0)
+                return new Color(1f - 0.6f * t, 0f, 0f);
+            }
+        }
+
     }
 }

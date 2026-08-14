@@ -52,7 +52,7 @@ namespace VikingEngine.LootFest.Effects
             }
             else
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 { Engine.ParticleHandler.AddExpandingParticleArea(ParticleSystemType.GoldenSparkle, model.position + partickeLocalPos, 1, 2, 2f); }
             }
         }

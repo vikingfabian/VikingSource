@@ -30,7 +30,7 @@ namespace VikingEngine.ToGG
 
         public void OpenMenu(bool inGame)
         {
-            Input.Mouse.LockToScreenArea = false;
+            Input.Mouse.SetMenuMode(true);
 
             if (menu == null)
             {
@@ -74,7 +74,7 @@ namespace VikingEngine.ToGG
         }
         public void CloseMenu()
         {
-            Input.Mouse.LockToScreenArea = true;
+            Input.Mouse.SetMenuMode(false);
 
             if (menu != null)
             {
@@ -173,6 +173,7 @@ namespace VikingEngine.ToGG
 
         public void quitToMenuButton(GuiLayout layout)
         {
+            openManualButton(layout);
             new GuiTextButton("Quit to Menu", null, quitToMenu, false, layout);
 
 
@@ -180,7 +181,8 @@ namespace VikingEngine.ToGG
 
         public void quitToMenu()
         {
-            new DSSWars.LobbyState();
+            new DSSWars.GameState.ExitToLobby(false);
+            //new DSSWars.LobbyState();
             //new GameState.ExitState();
             //new GameState.MainMenuState();
         }
@@ -197,11 +199,11 @@ namespace VikingEngine.ToGG
                     //new GuiTextButton("*Reset progress*", "Will remove all progress", lib.Combine(cmdRef.storage.debugResetProgress, resetGameAndSave), false, layout);
                 }
                 new GuiLabel("*There is currently no Sound or Music", layout);
-                Ref.gamesett.optionsMenu(layout);
-                if (Ref.gamesett.bannedPeers.HasMembers)
-                {
-                    new GuiTextButton("Banned players", null, listBlockedPlayers, true, layout);
-                }
+                //Ref.gamesett.optionsMenu(layout);
+                //if (Ref.gamesett.bannedPeers.HasMembers)
+                //{
+                //    new GuiTextButton("Banned players", null, listBlockedPlayers, true, layout);
+                //}
                 //resolutionOptions(layout);
 
             }
@@ -214,8 +216,9 @@ namespace VikingEngine.ToGG
         {
             GuiLayout layout = new GuiLayout("Blocked players", menu);
             {
-                Ref.gamesett.bannedPeers.toMenu(layout, onBanRemove);
-                //new GuiLabel("Click to remove block", layout);
+                //Ref.gamesett.bannedPeers.toMenu(layout, onBanRemove);
+                
+               //new GuiLabel("Click to remove block", layout);
                 //foreach (var m in Ref.netSession.blockedUsers.members)
                 //{
                 //    new GuiTextButton(m.name, "Unblock: " + m.ToString(),
@@ -304,14 +307,22 @@ namespace VikingEngine.ToGG
         void openManual()
         {
 #if PCGAME
-            GuiLayout layout = new GuiLayout("Loading Manual", toggRef.menu.menu);
+            GuiLayout layout = new GuiLayout("Manual", toggRef.menu.menu);
             {
-                new GuiLabel("Attempting to open manual in a seperate window", layout);
+                new GuiTitle("The four phases of a turn", layout);
+                new GuiLabel("1. Select strategy", layout);
+                new GuiLabel("2. Order: select which units to activate", layout);
+                new GuiLabel("3. Move", layout);
+                new GuiLabel("4. Attack", layout);
+                new GuiLabel("- Rest: Activated units must rest one turn", layout);
+                new GuiLabel("- Backstab: Moving past opponets will give them a free attack", layout);
+                new GuiLabel("- Support: Units will help eachother when attacking", layout);
+
                 new GuiTextButton("Ok", null, toggRef.menu.menu.PopLayout, true, layout);
             }
             layout.End();
-            string contentPath = Environment.CurrentDirectory + DataStream.FilePath.Dir + Ref.main.Content.RootDirectory + DataStream.FilePath.Dir + toggLib.ContentFolder + "Manual.rtf";
-            System.Diagnostics.Process.Start(contentPath);
+            //string contentPath = Environment.CurrentDirectory + DataStream.FilePath.Dir + Ref.main.Content.RootDirectory + DataStream.FilePath.Dir + toggLib.ContentFolder + "Manual.rtf";
+            //System.Diagnostics.Process.Start(contentPath);
 #endif
         }
 
@@ -414,8 +425,8 @@ namespace VikingEngine.ToGG
         void hitChanceLabel(string attackType, float hit, float retreat, GuiLayout layout)
         {
             new GuiLabel("Basic " + attackType + " attack: " +
-                        TextLib.PercentText(hit) + " Hit, " +
-                        TextLib.PercentText(retreat) + " Retreat chance", true, layout.gui.style.textFormat, layout); 
+                        TextLib.PercentTextWithSymbol(hit) + " Hit, " +
+                        TextLib.PercentTextWithSymbol(retreat) + " Retreat chance", true, layout.gui.style.textFormat, layout); 
         }
 
         void ListTerrainMenu()

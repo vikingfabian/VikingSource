@@ -6,121 +6,27 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.EntityComponent;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.PJ.Joust;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-
-        public static readonly ItemResourceType[] MovableCityResource_Misc =
-        {
-            ItemResourceType.Food_G,
-             ItemResourceType.Fuel_G,
-             ItemResourceType.Beer,
-             ItemResourceType.CoolingFluid,
-             ItemResourceType.SkinLinen_Group,
-             ItemResourceType.RawFood_Group,
-             ItemResourceType.Wood_Group,
-             ItemResourceType.Stone_G,
-             ItemResourceType.Toolkit,
-            ItemResourceType.Wagon2Wheel,
-            ItemResourceType.Wagon4Wheel,
-            ItemResourceType.BlackPowder,
-            ItemResourceType.GunPowder,
-            ItemResourceType.LedBullet,
-        };
-        public static readonly ItemResourceType[] MovableCityResource_Metals =
-       {
-             ItemResourceType.IronOre_G,
-             ItemResourceType.TinOre,
-             ItemResourceType.CopperOre,
-             ItemResourceType.LeadOre,
-             ItemResourceType.SilverOre,
-
-             ItemResourceType.Iron_G,
-             ItemResourceType.Tin,
-            ItemResourceType.Copper,
-            ItemResourceType.Lead,
-            ItemResourceType.Silver,
-            ItemResourceType.RawMithril,
-            ItemResourceType.Sulfur,
-
-            ItemResourceType.Bronze,
-            ItemResourceType.CastIron,
-            //ItemResourceType.BloomeryIron,
-            ItemResourceType.Mithril,
-        };
-        public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
-       {
-            
-            ItemResourceType.ShortSword,
-            ItemResourceType.Sword,
-            ItemResourceType.LongSword,
-            ItemResourceType.HandSpear,
-
-            ItemResourceType.Warhammer,
-             ItemResourceType.TwoHandSword,
-             ItemResourceType.KnightsLance,
-            ItemResourceType.MithrilSword,
-
-            ItemResourceType.SharpStick,
-            ItemResourceType.BronzeSword,
-        };
-
-        public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
-         {   
-             ItemResourceType.Bow,
-             ItemResourceType.LongBow,
-            ItemResourceType.Crossbow,
-           ItemResourceType.MithrilBow,
-
-            ItemResourceType.HandCannon,
-            ItemResourceType.HandCulverin,
-            ItemResourceType.Rifle,
-            ItemResourceType.Blunderbus,
-
-            ItemResourceType.Ballista,
-            ItemResourceType.Manuballista,
-            ItemResourceType.SiegeCannonBronze,
-            ItemResourceType.ManCannonBronze,
-            ItemResourceType.SiegeCannonIron,
-            ItemResourceType.ManCannonIron,
-
-            ItemResourceType.SlingShot,
-             ItemResourceType.ThrowingSpear,
-
-        };
-
-        public static readonly ItemResourceType[] MovableCityResource_Armor =
-         {
-             
-             ItemResourceType.BronzeArmor,
-             ItemResourceType.IronArmor,
-             ItemResourceType.HeavyIronArmor,
-             ItemResourceType.LightPlateArmor,
-             ItemResourceType.FullPlateArmor,
-
-             ItemResourceType.PaddedArmor,
-             ItemResourceType.HeavyPaddedArmor,
-        };
-
         MinuteStats blackMarketCosts_food = new MinuteStats();
-        public MinuteStats foodProduction = new MinuteStats();
-        public MinuteStats foodSpending = new MinuteStats();
+        
         public MinuteStats soldResources = new MinuteStats();
-
-        //public int water = Maxwater;
-        int waterBuffer = 2;
-        int waterSpendOrders = 0;
 
         public int maxWaterBase = DssConst.Maxwater;
         public int maxWaterTotal = DssConst.Maxwater;
@@ -128,882 +34,348 @@ namespace VikingEngine.DSSWars.GameObject
         public float waterAddPerSec;
         static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
-        public int gold = 5;
+        
         public GroupedResource res_water = new GroupedResource();
-        public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
-        public GroupedResource res_fuel = new GroupedResource() { amount = 100, goalBuffer = 300 };
-        public GroupedResource res_stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
-        public GroupedResource res_rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
-        public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
-        public GroupedResource res_beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
-        public GroupedResource res_coolingfluid = new GroupedResource() { amount = 0, goalBuffer = 200 };
-        public GroupedResource res_skinLinnen = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_TinOre = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_CupperOre = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_LeadOre = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_SilverOre = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_iron = new GroupedResource() { amount = 10, goalBuffer = 100 };
-        public GroupedResource res_Tin = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Cupper = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Lead = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Silver = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_RawMithril = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Sulfur = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_Bronze = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Steel = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_CastIron = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_BloomeryIron = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Mithril = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_Toolkit = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Wagon2Wheel = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Wagon4Wheel = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_BlackPowder = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_GunPowder = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_LedBullet = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
-        public GroupedResource res_BronzeSword = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_shortsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_Sword = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_LongSword = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_HandSpear = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_MithrilSword = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_Warhammer = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_twohandsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_knightslance = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_SlingShot = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ThrowingSpear = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_longbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_crossbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_MithrilBow = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_HandCannon = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_HandCulvertin = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Rifle = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Blunderbus = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_BatteringRam = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_Manuballista = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_Catapult = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_SiegeCannonBronze = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ManCannonBronze = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_SiegeCannonIron = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ManCannonIron = new GroupedResource() { goalBuffer = 100 };
-
-        public GroupedResource res_paddedArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
-        public GroupedResource res_HeavyPaddedArmor = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_BronzeArmor = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_mailArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
-        public GroupedResource res_heavyMailArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_LightPlateArmor = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_FullPlateArmor = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_MithrilArmor = new GroupedResource() { goalBuffer = 100 };
+        
 
         public bool res_food_safeguard = true;
+        public int resourceComponentStartIndex;
 
-        public bool foodSafeGuardIsActive(ItemResourceType item)
+        bool followFaction_Stockpile_Resources = true;
+        bool followFaction_Stockpile_Metals = true;
+        bool followFaction_Stockpile_Weapons = true;
+        bool followFaction_Stockpile_Projectile = true;
+        bool followFaction_Stockpile_Armor = true;
+
+        public int resourceAmount(int cityResourceIndex)
+        { 
+            return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].amount;
+        }
+
+        public void resourceAmountSet(int cityResourceIndex, int amount)
         {
-            bool food = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
-            switch (item)
+            ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+            resource.amount = amount;
+        }
+
+        public void resourceAmountSet_Minimum(int cityResourceIndex, int amount)
+        {
+            ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+            if (resource.amount < amount)
             {
-                case ItemResourceType.Food_G:
-                    return food;
-                case ItemResourceType.Fuel_G:
-                    return fuelSafeGuard;
-                case ItemResourceType.RawFood_Group:
-                    return rawFoodSafeGuard;
-                case ItemResourceType.Wood_Group:
-                    return woodSafeGuard;
+                resource.amount = amount;
+            }
+        }
+
+        override public bool lowFood()
+        {
+            return resourceAmount(CityResourceIndex.food) <= workForce.amount;//DssConst.WorkSafeGuardAmount;
+        }
+
+
+        public const int DefaultFoodBuffer = 500;
+       
+        public void defaultResourceBuffer(WorldData world)
+        {
+            
+            runList(ResourceLib.MovableCityResource_Misc);
+            runList(ResourceLib.MovableCityResource_Metals);
+            runList(ResourceLib.MovableCityResource_WeaponMelee);
+            runList(ResourceLib.MovableCityResource_WeaponRanged);
+            runList(ResourceLib.MovableCityResource_Armor);
+            
+            void runList(ItemResourceType[] items)
+            {
+                foreach (ItemResourceType item in items)
+                {
+                    var properties = ItemPropertyColl.Get(item);
+                    if (properties.cityResourceIndex >= 0)
+                    {
+                        ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
+                        
+                    }
+                }
+            }
+        }
+        public void AddGroupedResource(ItemResourceType type, int add)
+        {
+//#if DEBUG
+//            if (type == ItemResourceType.ShortSword)
+//            {
+//                lib.DoNothing();
+//            }
+//#endif
+
+            int itemIndex = ItemPropertyColl.CityIndex(type);
+
+            if (itemIndex < 0) 
+            {
+                var faction = pfaction.GetFaction();
+
+                if (faction == null)
+                {
+                    return;
+                }
+
+                switch (type)
+                {
+                    case ItemResourceType.Gold:
+                    case ItemResourceType.CopperCoin:
+                    case ItemResourceType.BronzeCoin:
+                    case ItemResourceType.SilverCoin:
+                    case ItemResourceType.ElfCoin:
+                        faction.addGold(add, this);
+                        return;
+
+                    case ItemResourceType.ServiceMen:
+                        freeServiceMen.amount += add;
+                        return;
+
+                    case ItemResourceType.Men:
+                        workForce.amount += add;
+                        return;
+
+                    case ItemResourceType.NobleMen:
+                        freeNobelMen.amount += add;
+                        return;
+
+                    case ItemResourceType.Water_G:
+                        res_water.amount += add;
+                        return;
+
+                    case ItemResourceType.NONE:
+                        return;
+
+                    default: throw new ArgumentOutOfRangeException("AddGroupedResource " + type.ToString());
+                }
+            }
+            AddGroupedResource(itemIndex, add, false);
+           
+        }
+
+        public StorageSize GetStorage(StorageType storageType)
+        {
+            return DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType];
+        }
+
+        public ref StorageSize GetRefStorage(StorageType storageType)
+        {
+            return ref DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType];
+        }
+
+        void refreshStorageSize(StorageType storageType)
+        {
+            DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType].refreshCapacity(this, storageType);
+        }
+
+        void addStorageBuilding(StorageType storageType, bool add)
+        {
+            DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType].addStorage(this, storageType, add);
+        }
+
+        void AddGroupedResource(WorldData world, int itemIndex, int add)
+        {
+#if DEBUG
+            //if (factionIndex < 0)
+            //{
+            //    throw new Exception();
+            //}
+            if (resourceComponentStartIndex + itemIndex >= world.cityResouces.Length)
+            {
+                throw new Exception();
+            }
+            if (itemIndex + pfaction.factionIndex * CityResourceIndex.COUNT >= world.factionResourceOverviews.Length)
+            {
+                throw new Exception();
+            }
+#endif
+
+            ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + itemIndex];
+            resource.amount += add;
+            
+        }
+
+
+        public void AddGroupedResource(int itemIndex, int add, bool respectLimit)
+        {
+            if (pfaction.factionIndex < 0)
+            {
+                return;
+            }
+#if DEBUG
+            if (pfaction.factionIndex < 0)
+            {
+                throw new Exception();
+            }
+            if (resourceComponentStartIndex + itemIndex >= DssRef.world.cityResouces.Length)
+            {
+                throw new Exception();
+            }
+            if (itemIndex + pfaction.factionIndex * CityResourceIndex.COUNT >= DssRef.world.factionResourceOverviews.Length)
+            {
+                throw new Exception();
+            }
+#endif
+
+            ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
+            resource.amount += add;
+            if (resource.amount >= resource.MaxLimit())
+            {
+                if (resource.hasCesspit)
+                {
+                    int remove = resource.amount - resource.MaxLimit() + 10;
+                    resource.amount -= remove;
+                    if (Ref.peRnd.ChanceF(DssConst.CessPitConvertToFuelPercentage))
+                    {
+                        AddGroupedResource(CityResourceIndex.fuel, remove, true);
+                    }
+                }
+                //else
+                //{
+                //    int remove = resource.amount - resource.stockPileLimit;
+                //    add -= remove;
+                //    resource.amount = resource.stockPileLimit;
+                //}
+            }
+            resource.changeRate.onChange(add);
+
+        }
+
+        public bool payResource(int itemIndex, int cost, bool allowNegative)
+        {
+            ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
+            if (allowNegative || resource.amount >= cost)
+            {
+                resource.amount -= cost;
+                return true;
             }
 
             return false;
         }
 
-        public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
+        public GroupedResource GetGroupedResource(int cityResourceIndex)
         {
-            if (res_food_safeguard && res_food.amount <= DssConst.WorkSafeGuardAmount)
+            return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+        }
+        public ref GroupedResource GetRefGroupedResource(int cityResourceIndex)
+        {
+            return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+        }
+        public GroupedResource GetGroupedResource(ItemResourceType type)
+        {
+            int cityResourceIndex = ItemPropertyColl.CityIndex(type);
+
+            if (cityResourceIndex < 0)
             {
-                fuelSafeGuard = res_fuel.amount <= DssConst.WorkSafeGuardAmount;
-                rawFoodSafeGuard = res_rawFood.amount <= DssConst.WorkSafeGuardAmount;
-                woodSafeGuard = fuelSafeGuard && res_wood.amount <= DssConst.WorkSafeGuardAmount;
-                return true;
+                switch (type)
+                {
+                    case ItemResourceType.Gold:
+                        int amount;
+                        if (DssRef.storage.ruleset_instance.centralGold)
+                        {
+                            var faction = pfaction.GetFaction();
+                            if (faction != null)
+                            {
+                                amount = faction.money.GetGold32();
+                            }
+                            else
+                            {
+                                amount = 0;
+                            }
+                        }
+                        else
+                        {
+                            amount = money.GetGold32();
+                        }
+
+                        return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue };
+                    case ItemResourceType.Men:
+                        return workForce;
+                    case ItemResourceType.NobleMen:
+                        return freeNobelMen;
+                    case ItemResourceType.ServiceMen:
+                        return freeServiceMen;
+
+                    case ItemResourceType.Water_G: return res_water;
+                    case ItemResourceType.NONE: return Res_Nothing;
+
+                }
             }
-            else
+
+            return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+        }
+
+        public ref GroupedResource GetRefGroupedResource(ItemResourceType type)
+        {
+            int cityResourceIndex = ItemPropertyColl.CityIndex(type);
+#if DEBUG
+            if (cityResourceIndex < 0)
             {
-                fuelSafeGuard = false;
-                rawFoodSafeGuard = false;
-                woodSafeGuard = false;
-                return false;
+                //throw new NotImplementedException();
             }
+#endif
+            ItemPropertyColl.CityIndex(type);
+            return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+        }
+
+        public void SetGroupedResource(ItemResourceType type, GroupedResource resource)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(type);
+            if (itemIndex < 0)
+            {
+                return;
+            }
+
+            DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex] = resource;
+        }
+
+        public void SetGroupedResource(ItemResourceType type, int amount)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(type);
+            if (itemIndex < 0)
+            {
+                return;
+            }
+
+            DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex].amount = amount;
         }
 
 
-        public TradeTemplate tradeTemplate = new TradeTemplate();
-        public const int DefaultFoodBuffer = 500;
-        public const int Logistics1FoodStorage = 300;
-        public void defaultResourceBuffer()
+        public bool needMore(ItemResourceType type)
         {
-            res_wood.goalBuffer = 300;
-            res_fuel.goalBuffer = 300;
-            res_stone.goalBuffer = 200;
-            res_rawFood.goalBuffer = 200;
-            res_food.goalBuffer = DefaultFoodBuffer;
-            res_beer.goalBuffer = 200;
-            res_skinLinnen.goalBuffer = 100;
-
-            res_ironore.goalBuffer = 100;
-            res_TinOre.goalBuffer = 100;
-            res_CupperOre.goalBuffer = 100;
-            res_LeadOre.goalBuffer = 100;
-            res_SilverOre.goalBuffer = 100;
-
-            res_iron.goalBuffer = 100;
-            res_Tin.goalBuffer = 100;
-            res_Cupper.goalBuffer = 100;
-            res_Lead.goalBuffer = 100;
-            res_Silver.goalBuffer = 100;
-            res_RawMithril.goalBuffer = 100;
-            res_Sulfur.goalBuffer = 100;
-
-            res_Steel.goalBuffer = 100;
-            res_Bronze.goalBuffer = 100;
-            res_CastIron.goalBuffer = 100; 
-            res_BloomeryIron.goalBuffer = 100; 
-            res_Mithril.goalBuffer = 100;
-
-            res_sharpstick.goalBuffer = 100;
-            res_shortsword.goalBuffer = 100;
-            res_Sword.goalBuffer = 100;
-            res_LongSword.goalBuffer = 100;
-            res_HandSpear.goalBuffer = 100;
-
-            res_Warhammer.goalBuffer = 100;
-            res_twohandsword.goalBuffer = 100;
-            res_knightslance.goalBuffer = 100;
-
-            res_SlingShot.goalBuffer = 100;
-            res_ThrowingSpear.goalBuffer = 100;
-            res_bow.goalBuffer = 100;
-            res_longbow.goalBuffer = 100;
-            res_crossbow.goalBuffer = 100;
-            res_MithrilBow.goalBuffer = 100;
-            
-            res_HandCannon.goalBuffer = 100;
-            res_HandCulvertin.goalBuffer = 100;
-            res_Rifle.goalBuffer = 100;
-            res_Blunderbus.goalBuffer = 100;
-
-            res_ballista.goalBuffer = 100;
-            res_Manuballista.goalBuffer = 100;
-            res_Catapult.goalBuffer = 100;
-            res_BatteringRam.goalBuffer = 100;
-
-            res_SiegeCannonBronze.goalBuffer = 100;
-            res_ManCannonBronze.goalBuffer = 100;
-            res_SiegeCannonIron.goalBuffer = 100;
-            res_ManCannonIron.goalBuffer = 100;
-
-            res_paddedArmor.goalBuffer = 100;
-            res_HeavyPaddedArmor.goalBuffer = 100;
-            res_BronzeArmor.goalBuffer = 100;
-            res_mailArmor.goalBuffer = 100;
-            res_heavyMailArmor.goalBuffer = 100;
-            res_LightPlateArmor.goalBuffer = 100;
-            res_FullPlateArmor.goalBuffer = 100;
-
-        }
-
-        public void AddGroupedResource(ItemResourceType type, int add)
-        {
-            if (add == 0)
-            {
-                lib.DoNothing();
-            }
-
-            switch (type)
-            {
-                case ItemResourceType.Gold:
-                    faction.gainMoney(add, this);
-                    break;
-                case ItemResourceType.Water_G:
-                    res_water.amount += add;
-                    break;
-                case ItemResourceType.Food_G:
-                    res_food.amount += add;
-                    faction.res_food.onChange(add);
-                    break;
-                case ItemResourceType.Beer:
-                    res_beer.amount += add;
-                    faction.res_beer.onChange(add);
-                    break;
-                case ItemResourceType.CoolingFluid:
-                    res_coolingfluid.amount += add;
-                    faction.res_coolingfluid.onChange(add);
-                    break;
-                case ItemResourceType.Stone_G:
-                    res_stone.amount += add;
-                    faction.res_stone.onChange(add);
-                    break;
-                case ItemResourceType.Wood_Group:
-                    res_wood.amount += add;
-                    faction.res_wood.onChange(add);
-                    break;
-                case ItemResourceType.Fuel_G:
-                    res_fuel.amount += add;
-                    faction.res_fuel.onChange(add);
-                    break;
-                case ItemResourceType.RawFood_Group:
-                    res_rawFood.amount += add;
-                    faction.res_rawFood.onChange(add);
-                    break;
-                case ItemResourceType.SkinLinen_Group:
-                    res_skinLinnen.amount += add;
-                    faction.res_skinLinnen.onChange(add);
-                    break;
-                case ItemResourceType.Toolkit:
-                    res_Toolkit.amount += add;
-                    faction.res_Toolkit.onChange(add);
-                    break;
-                case ItemResourceType.Wagon2Wheel:
-                    res_Wagon2Wheel.amount += add;
-                    faction.res_Wagon2Wheel.onChange(add);
-                    break;
-                case ItemResourceType.Wagon4Wheel:
-                    res_Wagon4Wheel.amount += add;
-                    faction.res_Wagon4Wheel.onChange(add);
-                    break;
-                case ItemResourceType.BlackPowder:
-                    res_BlackPowder.amount += add;
-                    faction.res_BlackPowder.onChange(add);
-                    break;
-                case ItemResourceType.GunPowder:
-                    res_GunPowder.amount += add;
-                    faction.res_GunPowder.onChange(add);
-                    break;
-                case ItemResourceType.LedBullet:
-                    res_LedBullet.amount += add;
-                    faction.res_LedBullet.onChange(add);
-                    break;
-                case ItemResourceType.IronOre_G:
-                    res_ironore.amount += add;
-                    faction.res_ironore.onChange(add);
-                    break;
-                case ItemResourceType.TinOre:
-                    res_TinOre.amount += add;
-                    faction.res_TinOre.onChange(add);
-                    break;
-                case ItemResourceType.CopperOre:
-                    res_CupperOre.amount += add;
-                    faction.res_CupperOre.onChange(add);
-                    break;
-                case ItemResourceType.LeadOre:
-                    res_LeadOre.amount += add;
-                    faction.res_LeadOre.onChange(add);
-                    break;
-                case ItemResourceType.SilverOre:
-                    res_SilverOre.amount += add;
-                    faction.res_SilverOre.onChange(add);
-                    break;
-                case ItemResourceType.Iron_G:
-                    res_iron.amount += add;
-                    faction.res_iron.onChange(add);
-                    break;
-                case ItemResourceType.Tin:
-                    res_Tin.amount += add;
-                    faction.res_Tin.onChange(add);
-                    break;
-                case ItemResourceType.Copper:
-                    res_Cupper.amount += add;
-                    faction.res_Cupper.onChange(add);
-                    break;
-                case ItemResourceType.Lead:
-                    res_Lead.amount += add;
-                    faction.res_Lead.onChange(add);
-                    break;
-                case ItemResourceType.Silver:
-                    res_Silver.amount += add;
-                    faction.res_Silver.onChange(add);
-                    break;
-                case ItemResourceType.RawMithril:
-                    res_RawMithril.amount += add;
-                    faction.res_RawMithril.onChange(add);
-                    break;
-                case ItemResourceType.Sulfur:
-                    res_Sulfur.amount += add;
-                    faction.res_Sulfur.onChange(add);
-                    break;
-                case ItemResourceType.Steel:
-                    res_Steel.amount += add;
-                    faction.res_Steel.onChange(add);
-                    break;
-                case ItemResourceType.Bronze:
-                    res_Bronze.amount += add;
-                    faction.res_Bronze.onChange(add);
-                    break;
-                case ItemResourceType.CastIron:
-                    res_CastIron.amount += add;
-                    faction.res_CastIron.onChange(add);
-                    break;
-                case ItemResourceType.BloomeryIron:
-                    res_BloomeryIron.amount += add;
-                    faction.res_BloomeryIron.onChange(add);
-                    break;
-                case ItemResourceType.Mithril:
-                    res_Mithril.amount += add;
-                    faction.res_Mithril.onChange(add);
-                    break;
-                case ItemResourceType.SharpStick:
-                    res_sharpstick.amount += add;
-                    faction.res_sharpstick.onChange(add);
-                    break;
-                case ItemResourceType.BronzeSword:
-                    res_BronzeSword.amount += add;
-                    faction.res_BronzeSword.onChange(add);
-                    break;
-                case ItemResourceType.ShortSword:
-                    res_shortsword.amount += add;
-                    faction.res_shortsword.onChange(add);
-                    break;
-                case ItemResourceType.Sword:
-                    res_Sword.amount += add;
-                    faction.res_Sword.onChange(add);
-                    break;
-                case ItemResourceType.LongSword:
-                    res_LongSword.amount += add;
-                    faction.res_LongSword.onChange(add);
-                    break;
-                case ItemResourceType.HandSpear:
-                    res_HandSpear.amount += add;
-                    faction.res_HandSpear.onChange(add);
-                    break;
-                case ItemResourceType.Warhammer:
-                    res_Warhammer.amount += add;
-                    faction.res_Warhammer.onChange(add);
-                    break;
-                case ItemResourceType.TwoHandSword:
-                    res_twohandsword.amount += add;
-                    faction.res_twohandsword.onChange(add);
-                    break;
-                case ItemResourceType.KnightsLance:
-                    res_knightslance.amount += add;
-                    faction.res_knightslance.onChange(add);
-                    break;
-                case ItemResourceType.SlingShot:
-                    res_SlingShot.amount += add;
-                    faction.res_SlingShot.onChange(add);
-                    break;
-                case ItemResourceType.ThrowingSpear:
-                    res_ThrowingSpear.amount += add;
-                    faction.res_ThrowingSpear.onChange(add);
-                    break;
-                case ItemResourceType.Bow:
-                    res_bow.amount += add;
-                    faction.res_bow.onChange(add);
-                    break;
-                case ItemResourceType.LongBow:
-                    res_longbow.amount += add;
-                    faction.res_longbow.onChange(add);
-                    break;
-                case ItemResourceType.Crossbow:
-                    res_crossbow.amount += add;
-                    faction.res_crossbow.onChange(add);
-                    break;
-                case ItemResourceType.MithrilBow:
-                    res_MithrilBow.amount += add;
-                    faction.res_MithrilBow.onChange(add);
-                    break;
-                case ItemResourceType.Ballista:
-                    res_ballista.amount += add;
-                    faction.res_ballista.onChange(add);
-                    break;
-                case ItemResourceType.Manuballista:
-                    res_Manuballista.amount += add;
-                    faction.res_Manuballista.onChange(add);
-                    break;
-                case ItemResourceType.Catapult:
-                    res_Catapult.amount += add;
-                    faction.res_Catapult.onChange(add);
-                    break;
-                case ItemResourceType.UN_BatteringRam:
-                    res_BatteringRam.amount += add;
-                    faction.res_BatteringRam.onChange(add);
-                    break;
-                case ItemResourceType.SiegeCannonBronze:
-                    res_SiegeCannonBronze.amount += add;
-                    faction.res_SiegeCannonBronze.onChange(add);
-                    break;
-                case ItemResourceType.ManCannonBronze:
-                    res_ManCannonBronze.amount += add;
-                    faction.res_ManCannonBronze.onChange(add);
-                    break;
-                case ItemResourceType.SiegeCannonIron:
-                    res_SiegeCannonIron.amount += add;
-                    faction.res_SiegeCannonIron.onChange(add);
-                    break;
-                case ItemResourceType.ManCannonIron:
-                    res_ManCannonIron.amount += add;
-                    faction.res_ManCannonIron.onChange(add);
-                    break;
-                case ItemResourceType.PaddedArmor:
-                    res_paddedArmor.amount += add;
-                    faction.res_paddedArmor.onChange(add);
-                    break;
-                case ItemResourceType.HeavyPaddedArmor:
-                    res_HeavyPaddedArmor.amount += add;
-                    faction.res_HeavyPaddedArmor.onChange(add);
-                    break;
-                case ItemResourceType.BronzeArmor:
-                    res_BronzeArmor.amount += add;
-                    faction.res_BronzeArmor.onChange(add);
-                    break;
-                case ItemResourceType.IronArmor:
-                    res_mailArmor.amount += add;
-                    faction.res_mailArmor.onChange(add);
-                    break;
-                case ItemResourceType.HeavyIronArmor:
-                    res_heavyMailArmor.amount += add;
-                    faction.res_heavyMailArmor.onChange(add);
-                    break;
-                case ItemResourceType.LightPlateArmor:
-                    res_LightPlateArmor.amount += add;
-                    faction.res_LightPlateArmor.onChange(add);
-                    break;
-                case ItemResourceType.FullPlateArmor:
-                    res_FullPlateArmor.amount += add;
-                    faction.res_FullPlateArmor.onChange(add);
-                    break;
-
-                case ItemResourceType.NONE:
-                    return;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-
-
-
-        public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
-        {
-            usesSafeGuard = false;
             switch (type)
             {
                 case ItemResourceType.RawFood_Group:
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
-                case ItemResourceType.Hen:
-                    if (rawfoodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
-                    return res_rawFood.needMore();
-
-                case ItemResourceType.Pig:
-                    if (rawfoodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
-                    return res_food.needMore() || res_skinLinnen.needMore();
+                    return needMore(CityResourceIndex.rawFood);
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
-                    if (woodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
-                    return res_wood.needMore();
+                    return needMore(CityResourceIndex.wood);
 
                 case ItemResourceType.NONE:
                     return false;
 
                 default:
-//#if DEBUG
                     return GetGroupedResource(type).needMore();
-                    //throw new NotImplementedException();
-//#else
-//                    return false;
-//#endif
             }
+
+            
         }
-
-
-        public GroupedResource GetGroupedResource(ItemResourceType type)
+        public bool needMore(int cityResourceIndex)
         {
-            switch (type)
-            {
-                case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = DssRef.storage.centralGold? faction.gold : gold };
-                case ItemResourceType.GoldOre:
-                    return new GroupedResource() { amount = 1 };
-                case ItemResourceType.Men:
-                    return workForce;
-
-                case ItemResourceType.Water_G: return res_water;
-
-                case ItemResourceType.Beer: return res_beer;
-                case ItemResourceType.CoolingFluid: return res_coolingfluid;
-                case ItemResourceType.Food_G: return res_food;
-                case ItemResourceType.Stone_G: return res_stone;
-                case ItemResourceType.Wood_Group: return res_wood;
-                case ItemResourceType.Fuel_G: return res_fuel;
-                case ItemResourceType.RawFood_Group: return res_rawFood;
-                case ItemResourceType.SkinLinen_Group: return res_skinLinnen;
-
-                case ItemResourceType.Toolkit: return res_Toolkit;
-                case ItemResourceType.Wagon2Wheel: return res_Wagon2Wheel;
-                case ItemResourceType.Wagon4Wheel: return res_Wagon4Wheel;
-                case ItemResourceType.BlackPowder: return res_BlackPowder;
-                case ItemResourceType.GunPowder: return res_GunPowder;
-                case ItemResourceType.LedBullet: return res_LedBullet;
-
-                case ItemResourceType.IronOre_G: return res_ironore;
-                case ItemResourceType.TinOre: return res_TinOre;
-                case ItemResourceType.CopperOre: return res_CupperOre;
-                case ItemResourceType.LeadOre: return res_LeadOre;
-                case ItemResourceType.SilverOre: return res_SilverOre;
-
-                case ItemResourceType.Iron_G: return res_iron;
-                case ItemResourceType.Tin: return res_Tin;
-                case ItemResourceType.Copper: return res_Cupper;
-                case ItemResourceType.Lead: return res_Lead;
-                case ItemResourceType.Silver: return res_Silver;
-                case ItemResourceType.RawMithril: return res_RawMithril;
-                case ItemResourceType.Sulfur: return res_Sulfur;
-
-                case ItemResourceType.Steel: return res_Steel;
-                case ItemResourceType.Bronze: return res_Bronze;
-                case ItemResourceType.CastIron: return res_CastIron;
-                case ItemResourceType.BloomeryIron: return res_BloomeryIron;
-                case ItemResourceType.Mithril: return res_Mithril;
-
-                case ItemResourceType.SharpStick: return res_sharpstick;
-                case ItemResourceType.BronzeSword: return res_BronzeSword;
-                case ItemResourceType.ShortSword: return res_shortsword;
-                case ItemResourceType.Sword: return res_Sword;
-                case ItemResourceType.LongSword: return res_LongSword;
-                case ItemResourceType.HandSpear: return res_HandSpear;
-                case ItemResourceType.MithrilSword: return res_MithrilSword;
-
-                case ItemResourceType.Warhammer: return res_Warhammer;
-                case ItemResourceType.TwoHandSword: return res_twohandsword;
-                case ItemResourceType.KnightsLance: return res_knightslance;
-
-                case ItemResourceType.SlingShot: return res_SlingShot;
-                case ItemResourceType.ThrowingSpear: return res_ThrowingSpear;
-                case ItemResourceType.Bow: return res_bow;
-                case ItemResourceType.LongBow: return res_longbow;
-                case ItemResourceType.Crossbow: return res_crossbow;
-                case ItemResourceType.MithrilBow: return res_MithrilBow;
-
-                case ItemResourceType.HandCannon: return res_HandCannon;
-                case ItemResourceType.HandCulverin: return res_HandCulvertin;
-                case ItemResourceType.Rifle: return res_Rifle;
-                case ItemResourceType.Blunderbus: return res_Blunderbus;
-
-                case ItemResourceType.Ballista: return res_ballista;
-                case ItemResourceType.Manuballista: return res_Manuballista;
-                case ItemResourceType.Catapult: return res_Catapult;
-                case ItemResourceType.UN_BatteringRam: return res_BatteringRam;
-
-                case ItemResourceType.SiegeCannonBronze: return res_SiegeCannonBronze;
-                case ItemResourceType.ManCannonBronze: return res_ManCannonBronze;
-                case ItemResourceType.SiegeCannonIron: return res_SiegeCannonIron;
-                case ItemResourceType.ManCannonIron: return res_ManCannonIron;
-
-                case ItemResourceType.PaddedArmor: return res_paddedArmor;
-                case ItemResourceType.HeavyPaddedArmor: return res_HeavyPaddedArmor;
-                case ItemResourceType.BronzeArmor: return res_BronzeArmor;
-                case ItemResourceType.IronArmor: return res_mailArmor;
-                case ItemResourceType.HeavyIronArmor: return res_heavyMailArmor;
-                case ItemResourceType.LightPlateArmor: return res_LightPlateArmor;
-                case ItemResourceType.FullPlateArmor: return res_FullPlateArmor;
-                case ItemResourceType.MithrilArmor: return res_MithrilArmor;
-
-                case ItemResourceType.NONE: return Res_Nothing;
-
-                default:
-                     throw new NotImplementedException();
-            }
-        }
-
-
-        public void SetGroupedResource(ItemResourceType type, GroupedResource resource)
-        {
-            switch (type)
-            {
-                case ItemResourceType.Water_G:
-                    res_water = resource;
-                    break;
-                case ItemResourceType.Food_G:
-                    res_food = resource;
-                    break;
-                case ItemResourceType.Beer:
-                    res_beer = resource;
-                    break;
-                case ItemResourceType.CoolingFluid:
-                    res_coolingfluid = resource;
-                    break;
-                case ItemResourceType.Stone_G:
-                    res_stone = resource;
-                    break;
-                case ItemResourceType.Wood_Group:
-                    res_wood = resource;
-                    break;
-                case ItemResourceType.Fuel_G:
-                    res_fuel = resource;
-                    break;
-                case ItemResourceType.RawFood_Group:
-                    res_rawFood = resource;
-                    break;
-                case ItemResourceType.SkinLinen_Group:
-                    res_skinLinnen = resource;
-                    break;
-                case ItemResourceType.Toolkit:
-                    res_Toolkit = resource;
-                    break;
-                case ItemResourceType.Wagon2Wheel:
-                    res_Wagon2Wheel = resource;
-                    break;
-                case ItemResourceType.Wagon4Wheel:
-                    res_Wagon4Wheel = resource;
-                    break;
-                case ItemResourceType.BlackPowder:
-                    res_BlackPowder = resource;
-                    break;
-                case ItemResourceType.GunPowder:
-                    res_GunPowder = resource;
-                    break;
-                case ItemResourceType.LedBullet:
-                    res_LedBullet = resource;
-                    break;
-                case ItemResourceType.IronOre_G:
-                    res_ironore = resource;
-                    break;
-                case ItemResourceType.TinOre:
-                    res_TinOre = resource;
-                    break;
-                case ItemResourceType.CopperOre:
-                    res_CupperOre = resource;
-                    break;
-                case ItemResourceType.LeadOre:
-                    res_LeadOre = resource;
-                    break;
-                case ItemResourceType.SilverOre:
-                    res_SilverOre = resource;
-                    break;
-                case ItemResourceType.Iron_G:
-                    res_iron = resource;
-                    break;
-                case ItemResourceType.Tin:
-                    res_Tin = resource;
-                    break;
-                case ItemResourceType.Copper:
-                    res_Cupper = resource;
-                    break;
-                case ItemResourceType.Lead:
-                    res_Lead = resource;
-                    break;
-                case ItemResourceType.Silver:
-                    res_Silver = resource;
-                    break;
-                case ItemResourceType.RawMithril:
-                    res_RawMithril = resource;
-                    break;
-                case ItemResourceType.Sulfur:
-                    res_Sulfur = resource;
-                    break;
-                case ItemResourceType.Steel:
-                    res_Steel = resource;
-                    break;
-                case ItemResourceType.Bronze:
-                    res_Bronze = resource;
-                    break;
-                case ItemResourceType.CastIron:
-                    res_CastIron = resource;
-                    break;
-                case ItemResourceType.BloomeryIron:
-                    res_BloomeryIron = resource;
-                    break;
-                case ItemResourceType.Mithril:
-                    res_Mithril = resource;
-                    break;
-                case ItemResourceType.SharpStick:
-                    res_sharpstick = resource;
-                    break;
-                case ItemResourceType.BronzeSword:
-                    res_BronzeSword = resource;
-                    break;
-                case ItemResourceType.ShortSword:
-                    res_shortsword = resource;
-                    break;
-                case ItemResourceType.Sword:
-                    res_Sword = resource;
-                    break;
-                case ItemResourceType.LongSword:
-                    res_LongSword = resource;
-                    break;
-                case ItemResourceType.HandSpear:
-                    res_HandSpear = resource;
-                    break;
-                case ItemResourceType.MithrilSword:
-                    res_MithrilSword = resource;
-                    break;
-                case ItemResourceType.Warhammer:
-                    res_Warhammer = resource;
-                    break;
-                case ItemResourceType.TwoHandSword:
-                    res_twohandsword = resource;
-                    break;
-                case ItemResourceType.KnightsLance:
-                    res_knightslance = resource;
-                    break;
-                case ItemResourceType.SlingShot:
-                    res_SlingShot = resource;
-                    break;
-                case ItemResourceType.ThrowingSpear:
-                    res_ThrowingSpear = resource;
-                    break;
-                case ItemResourceType.Bow:
-                    res_bow = resource;
-                    break;
-                case ItemResourceType.LongBow:
-                    res_longbow = resource;
-                    break;
-                case ItemResourceType.Crossbow:
-                    res_crossbow = resource;
-                    break;
-                case ItemResourceType.MithrilBow:
-                    res_MithrilBow = resource;
-                    break;
-                case ItemResourceType.HandCannon:
-                    res_HandCannon = resource;
-                    break;
-                case ItemResourceType.HandCulverin:
-                    res_HandCulvertin = resource;
-                    break;
-                case ItemResourceType.Rifle:
-                    res_Rifle = resource;
-                    break;
-                case ItemResourceType.Blunderbus:
-                    res_Blunderbus = resource;
-                    break;
-                case ItemResourceType.Ballista:
-                    res_ballista = resource;
-                    break;
-                case ItemResourceType.Manuballista:
-                    res_Manuballista = resource;
-                    break;
-                case ItemResourceType.Catapult:
-                    res_Catapult = resource;
-                    break;
-                case ItemResourceType.UN_BatteringRam:
-                    res_BatteringRam = resource;
-                    break;
-                case ItemResourceType.SiegeCannonBronze:
-                    res_SiegeCannonBronze = resource;
-                    break;
-                case ItemResourceType.ManCannonBronze:
-                    res_ManCannonBronze = resource;
-                    break;
-                case ItemResourceType.SiegeCannonIron:
-                    res_SiegeCannonIron = resource;
-                    break;
-                case ItemResourceType.ManCannonIron:
-                    res_ManCannonIron = resource;
-                    break;
-                case ItemResourceType.PaddedArmor:
-                    res_paddedArmor = resource;
-                    break;
-                case ItemResourceType.HeavyPaddedArmor:
-                    res_HeavyPaddedArmor = resource;
-                    break;
-                case ItemResourceType.BronzeArmor:
-                    res_BronzeArmor = resource;
-                    break;
-                case ItemResourceType.IronArmor:
-                    res_mailArmor = resource;
-                    break;
-                case ItemResourceType.HeavyIronArmor:
-                    res_heavyMailArmor = resource;
-                    break;
-                case ItemResourceType.LightPlateArmor:
-                    res_LightPlateArmor = resource;
-                    break;
-                case ItemResourceType.FullPlateArmor:
-                    res_FullPlateArmor = resource;
-                    break;
-                case ItemResourceType.NONE:
-                case ItemResourceType.Gold:
-                    // No action needed for these types
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        public int SellCost(ItemResourceType itemResourceType)
-        {
-            TradeResource resource;
-            switch (itemResourceType)
-            {
-                case ItemResourceType.HardWood:
-                case ItemResourceType.SoftWood:
-                    resource = tradeTemplate.wood;
-                    break;
-                case ItemResourceType.Stone_G:
-                    resource = tradeTemplate.stone;
-                    break;
-                case ItemResourceType.Food_G:
-                    resource = tradeTemplate.food;
-                    break;
-                case ItemResourceType.Iron_G:
-                    resource = tradeTemplate.iron;
-                    break;
-
-                default:
-                    throw new NotImplementedException();
-            }
-
-            int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.price);
-
-            return goldCost;
+            return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].needMore();
         }
 
         public ItemResource MakeTrade(ItemResourceType itemResourceType, int payment, float maxWeight = 1f)
         {
             int carry = ItemPropertyColl.CarryAmount(itemResourceType, maxWeight);
-            switch (itemResourceType)
-            {
-                case ItemResourceType.SoftWood:
-                    res_wood.amount -= carry;
-                    break;
-                case ItemResourceType.Stone_G:
-                    res_stone.amount -= carry;
-                    break;
-                case ItemResourceType.Food_G:
-                    res_food.amount -= carry;
-                    break;
-                case ItemResourceType.Iron_G:
-                    res_iron.amount -= carry;
-                    break;
 
-                default:
-                    throw new NotImplementedException();
-            }
-
+            AddGroupedResource(itemResourceType, -carry);
+            
             return new ItemResource(itemResourceType, 1, payment, carry);
         }
 
@@ -1026,56 +398,47 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.Wheat:
                     convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.WheatFoodAmount;
+                    //convert1.amount = DssConst.WheatFoodAmount;
                     break;
 
                 case ItemResourceType.Egg:                                   
-                case ItemResourceType.Hen:
+                //case ItemResourceType.Hen:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.HenRawFoodAmout;
-                    animalResourceBonus(ref item);
+                    //animalResourceBonus(ref item);
                     break;
 
-                case ItemResourceType.Pig:
-                    convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.PigRawFoodAmout;
-                    animalResourceBonus(ref item);
+                //case ItemResourceType.Pig:
+                //    convert1.type = ItemResourceType.RawFood_Group;
+                //    convert1.amount = DssConst.PigRawFoodAmout;
+                //    //animalResourceBonus(ref item);
 
-                    convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, DssConst.PigSkinAmount);
-                    break;
+                //    convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, DssConst.PigSkinAmount);
+                //    break;
 
                 case ItemResourceType.Linen:
                     convert1.type = ItemResourceType.SkinLinen_Group;
-                    convert1.amount = DssConst.LinenHarvestAmount;
+                    //convert1.amount = DssConst.LinenHarvestAmount;
                     break;
 
                 case ItemResourceType.Rapeseed:
                     convert1.type = ItemResourceType.Fuel_G;
-                    convert1.amount = DssConst.RapeSeedFuelAmount;
+                    //convert1.amount = DssConst.RapeSeedFuelAmount;
                     break;
 
                 case ItemResourceType.Hemp:
                     convert1.type = ItemResourceType.SkinLinen_Group;
-                    convert1.amount = DssConst.HempLinenAndFuelAmount;
+                    //convert1.amount = DssConst.HempLinenAndFuelAmount;
 
                     convert2.type = ItemResourceType.Fuel_G;
-                    convert2.amount = DssConst.HempLinenAndFuelAmount;
+                    convert2.amount = convert1.amount;//DssConst.HempLinenAndFuelAmount;
                     break;
 
-                case ItemResourceType.GoldOre:
-                    {
-                        var price = convert1.amount * DssConst.GoldOreSellValue;
-                        faction.gainMoney( price, this);
-                        soldResources.add(price);
-
-                        convert1.type = ItemResourceType.Gold;
-                        convert1.amount = price;
-                    }
-                    break;
+               
             }
 
-            if (Ref.rnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
-                faction.player.IsAi())
+            if (Ref.peRnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
+                pfaction.GetPlayer().IsBot())
             {
                 if (DssRef.difficulty.resourceMultiplyDecrease)
                 {
@@ -1095,218 +458,30 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void animalResourceBonus(ref ItemResource item)
-        {
-            if (Culture == CityCulture.AnimalBreeder)
-            {
-                item.amount *= 2;
-            }
-        }
-        
         public void tradeTab()
         { 
             
         }
 
-        public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
+        public void blackMarketPurchase(ItemResourceType resourceType, int count, Money cost)
         {
-            if (faction.payMoney(cost * count, false, this))
+            if (pfaction.TryGetFactionAndPlayer(out var faction, out var player))
             {
-                AddGroupedResource(resourceType, count);
+                ref Money money = ref faction.GetRefMoney(this);
+                if (money.pay(cost * count, false, player))
+                {
+                    AddGroupedResource(resourceType, count);
+                    if (player.IsLocalPlayer())
+                    {
+                        var lp = player.GetLocalPlayer();
+                        lp.tutorial?.onBuyFromBlackMarket(resourceType);
+
+                        lp.BlackMarketCount = Bound.Min(lp.BlackMarketCount - count, 0);
+                    }
+                }
             }
+            
         }
     }   
-
-
-    struct GroupedResource
-    {
-        public int amount;
-        //public int backOrder;
-        public int goalBuffer;
-        //public int orderQueCount;
-        public int deliverCount;
-
-        public void writeGameState(System.IO.BinaryWriter w)
-        {
-            w.Write(amount);
-            w.Write((ushort)goalBuffer);
-        }
-        public void readGameState(System.IO.BinaryReader r, int subversion)
-        {
-            amount = r.ReadInt32();
-            goalBuffer = r.ReadUInt16();
-        }
-
-        //public int freeAmount()
-        //{ 
-        //    return amount - backOrder;
-        //}
-
-        public bool needMore()
-        {
-            return amount < goalBuffer;
-        }
-
-        public bool reachedBuffer()
-        {
-            return amount >= goalBuffer;
-        }
-
-        public bool needToImport()
-        {
-            return amount < goalBuffer;
-        }
-
-        public bool canTradeAway()
-        {
-            return amount >= goalBuffer;
-        }
-
-        public int amountPlusDelivery()
-        {
-            return amount + deliverCount;
-        }
-
-        public void add(ItemResource item, int multiply = 1)
-        {
-            amount += item.amount * multiply;
-        }
-
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
-        {
-            content.newLine();
-            
-            content.Add(new RbImage(ResourceLib.Icon(item)));
-            content.space();
-            content.Add(new RbText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
-
-            if (item != ItemResourceType.Water_G && 
-                item != ItemResourceType.Gold &&
-                item != ItemResourceType.Men)
-            {
-                bool reached = amount >= goalBuffer;
-                reachedBuffer |= reached;
-                SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
-                {
-                    stockIcon = SpriteName.WarsStockpileStop;
-                }
-                else
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd;
-                }
-                var icon = new RbImage(stockIcon);
-                content.Add(icon);
-            }
-            
-        }
-
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
-        {
-            content.newLine();
-
-            content.Add(new RbImage(ResourceLib.Icon(item)));
-            content.space();
-            content.Add(new RbText(LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
-
-            if (item != ItemResourceType.Water_G &&
-                    item != ItemResourceType.Gold &&
-                    item != ItemResourceType.Men)
-            {
-                bool reached = amount >= goalBuffer;
-                reachedBuffer |= reached;
-                SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
-                {
-                    stockIcon = SpriteName.WarsStockpileStop;
-                }
-                else
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd;
-                }
-                var icon = new RbImage(stockIcon);
-
-                if (player == null)
-                {
-                    content.Add(icon);
-                }
-                else
-                {
-                    var infoContent = new RichBoxContent();
-                    infoContent.Add(icon);
-                   
-                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, 
-                        new RbAction(()=> 
-                        {
-                            player.resourcesSubTab = stockpileLink;  
-                        }),                        
-                        new RbTooltip((RichBoxContent content, object tag) =>
-                        {
-                            //RichBoxContent content = new RichBoxContent();
-                            HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
-                            content.newLine();
-                            content.Add(new RbImage(stockIcon));
-                            content.space();
-                            content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
-                        
-
-                            //player.hud.tooltip.create(player, content, true);
-                        }));
-
-                    //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
-                    content.space();
-                    content.Add(infoButton);
-                }
-                
-            }
-
-            
-        }
-
-        public static void BufferIconInfo(RichBoxContent content, bool safeguard)
-        {
-            content.newLine();
-            SpriteName sprite;
-            string textstring;
-            if (safeguard)
-            {
-                sprite = SpriteName.WarsStockpileAdd_Protected;
-                textstring = DssRef.lang.Resource_FoodSafeGuard_Active;
-            }
-            else
-            {
-                sprite = SpriteName.WarsStockpileStop;
-                textstring = DssRef.lang.Resource_ReachedStockpile;
-            }
-
-
-            var icon = new RbImage(sprite);
-            content.Add(icon);
-
-            var text = new RbText(": " + textstring);
-            text.overrideColor = HudLib.InfoYellow_Light;
-            content.Add(text);
-        }
-
-        //public void clearOrders()
-        //{ 
-        //    backOrder = 0;
-        //    //orderQueCount = 0;
-        //}
-
-        public override string ToString()
-        {
-            return $"Grouped resource {amount}/{goalBuffer}";
-        }
-    }
-
-    
+        
 }

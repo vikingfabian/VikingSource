@@ -60,7 +60,7 @@ namespace VikingEngine.LootFest.Effects
             public Coin(Vector3 startPos, Rotation1D heroDir)
                 : base(true)
             {
-                model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.Coin, 0.1f, 0, true, true);
+                model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0.1f, 0, true, true);
                 model.position = startPos;
                 model.Rotation = RotationQuarterion.Random;
                 heroDir.Add(Ref.rnd.Plus_MinusF(2f));
@@ -72,7 +72,7 @@ namespace VikingEngine.LootFest.Effects
 
             public override void Time_Update(float time_ms)
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     v.Y += Gravity;
                 }

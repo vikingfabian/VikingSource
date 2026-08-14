@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -7,8 +8,8 @@ namespace VikingEngine.LootFest
 {
     static class SoundLib
     {
-        public const string SoundDir = LfLib.ContentFolder + "Sound\\";
-        public const string NewSoundDir = SoundDir + "NEW\\";
+        public static readonly string SoundDir = LfLib.ContentFolder + "Sound" + Path.DirectorySeparatorChar;
+        public static readonly string NewSoundDir = SoundDir + "NEW" + Path.DirectorySeparatorChar;
 
         public static readonly Sound.SoundSettings UnavailableActionSound = new Sound.SoundSettings(LoadedSound.out_of_ammo);
         public static readonly Sound.SoundSettings SmallSuccessSound = new Sound.SoundSettings(LoadedSound.CraftSuccessful);
@@ -22,27 +23,27 @@ namespace VikingEngine.LootFest
 
             Ref.music.SetPlaylist(new List<Sound.SongData>
                 {
-                    new Sound.SongData(MusicFolder + "AgriculturalHuts", "Agricultural Huts", true, 1f),
-                    new Sound.SongData(MusicFolder + "Apple Pie Sensation_loop", "Apple Pie Sensation", true, 1f),
-                    new Sound.SongData(MusicFolder + "BabyBadgersAndABird", "Baby Badgers And A Bird", true, 1f),
-                    new Sound.SongData(MusicFolder + "BunnyMassacre", "Bunny Massacre", true, 1f),
-                    new Sound.SongData(MusicFolder + "Clumsy_Lord_HQ","Clumsy Lord", true, 1f),
-                    new Sound.SongData(MusicFolder + "DungeonKeepersKey_HQ", "Dungeon Keepers Key", true, 1f),
-                    new Sound.SongData(MusicFolder + "Endless Plains", "Endless Plains", true, 1f),
-                    new Sound.SongData(MusicFolder + "Gargoyle_HQ", "Gargoyle", true, 1f),
-                    new Sound.SongData(MusicFolder + "Immortals","Immortals", false, 1f),
-                    new Sound.SongData(MusicFolder + "King_Of_Sleepers_HQ", "King Of Sleepers", true, 1f),
-                    new Sound.SongData(MusicFolder + "MissingCardinals", "Missing Cardinals", true, 1f),
-                    new Sound.SongData(MusicFolder + "Mother_loop","Mother", false, 1f),
-                    new Sound.SongData(MusicFolder + "Mysterious Grotto","Mysterious Grotto", false, 1.6f),
-                    new Sound.SongData(MusicFolder + "Night_HQ", "Night", true, 1f),
-                    new Sound.SongData(MusicFolder + "Restart_loop", "Restart", true, 1f), //new
-                    new Sound.SongData(MusicFolder + "Sad_Porcupine", "Sad Porcupine", true, 1f),
-                    new Sound.SongData(MusicFolder + "Solitary_Comfort_HQ", "Solitary Comfort", false, 1f),
-                    new Sound.SongData(MusicFolder + "TheBeetles_HQ", "The Beetles", true, 1f),
-                    new Sound.SongData(MusicFolder + "TheLazyFrogHQ","The Lazy Frog", true, 1f),
-                    new Sound.SongData(MusicFolder + "TheOldPhilosopherHQ","The Old Philosopher", true, 1f),
-                    new Sound.SongData(MusicFolder + "YesIAmYourGodHQ","Yes I Am Your God", true, 1f),
+                    //new Sound.SongData(MusicFolder + "AgriculturalHuts", "Agricultural Huts", true, 1f),
+                    //new Sound.SongData(MusicFolder + "Apple Pie Sensation_loop", "Apple Pie Sensation", true, 1f),
+                    //new Sound.SongData(MusicFolder + "BabyBadgersAndABird", "Baby Badgers And A Bird", true, 1f),
+                    //new Sound.SongData(MusicFolder + "BunnyMassacre", "Bunny Massacre", true, 1f),
+                    //new Sound.SongData(MusicFolder + "Clumsy_Lord_HQ","Clumsy Lord", true, 1f),
+                    //new Sound.SongData(MusicFolder + "DungeonKeepersKey_HQ", "Dungeon Keepers Key", true, 1f),
+                    //new Sound.SongData(MusicFolder + "Endless Plains", "Endless Plains", true, 1f),
+                    //new Sound.SongData(MusicFolder + "Gargoyle_HQ", "Gargoyle", true, 1f),
+                    //new Sound.SongData(MusicFolder + "Immortals","Immortals", false, 1f),
+                    //new Sound.SongData(MusicFolder + "King_Of_Sleepers_HQ", "King Of Sleepers", true, 1f),
+                    //new Sound.SongData(MusicFolder + "MissingCardinals", "Missing Cardinals", true, 1f),
+                    //new Sound.SongData(MusicFolder + "Mother_loop","Mother", false, 1f),
+                    //new Sound.SongData(MusicFolder + "Mysterious Grotto","Mysterious Grotto", false, 1.6f),
+                    //new Sound.SongData(MusicFolder + "Night_HQ", "Night", true, 1f),
+                    //new Sound.SongData(MusicFolder + "Restart_loop", "Restart", true, 1f), //new
+                    //new Sound.SongData(MusicFolder + "Sad_Porcupine", "Sad Porcupine", true, 1f),
+                    //new Sound.SongData(MusicFolder + "Solitary_Comfort_HQ", "Solitary Comfort", false, 1f),
+                    //new Sound.SongData(MusicFolder + "TheBeetles_HQ", "The Beetles", true, 1f),
+                    //new Sound.SongData(MusicFolder + "TheLazyFrogHQ","The Lazy Frog", true, 1f),
+                    //new Sound.SongData(MusicFolder + "TheOldPhilosopherHQ","The Old Philosopher", true, 1f),
+                    //new Sound.SongData(MusicFolder + "YesIAmYourGodHQ","Yes I Am Your God", true, 1f),
                 },
                 PlatformSettings.PlayMusic);
         }
@@ -73,7 +74,7 @@ namespace VikingEngine.LootFest
             Engine.LoadContent.LoadSound(LoadedSound.EnemyProj2, SoundDir + "enemyproj2");
 
             Engine.LoadContent.LoadSound(LoadedSound.door, SoundDir + "door");
-            Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
+           
 
             Engine.LoadContent.LoadSound(LoadedSound.express_anger, SoundDir + "express_anger");
             Engine.LoadContent.LoadSound(LoadedSound.express_hi1, SoundDir + "express_hi1");
@@ -84,6 +85,8 @@ namespace VikingEngine.LootFest
             Engine.LoadContent.LoadSound(LoadedSound.express_teasing2, SoundDir + "express_teasing2");
             Engine.LoadContent.LoadSound(LoadedSound.express_thumbup1, SoundDir + "express_thumbup1");
             Engine.LoadContent.LoadSound(LoadedSound.express_thumbup2, SoundDir + "express_thumbup2");
+
+            Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
             Engine.LoadContent.LoadSound(LoadedSound.player_enters, SoundDir + "player_enters");
             Engine.LoadContent.LoadSound(LoadedSound.enter_build, SoundDir + "enter_build");
            

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Players.Orders
@@ -16,7 +17,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         static int NextId = 1;
         public int id;
 
-        virtual public void onAdd()
+        virtual public void onAdd(int playerIx)
         { }
 
         public void baseInit(int priority)
@@ -24,8 +25,6 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.priority = priority;
             id = NextId++;
         }
-
-        
 
         virtual public bool BuildQueue(City city)
         {
@@ -46,15 +45,16 @@ namespace VikingEngine.DSSWars.Players.Orders
             throw new NotImplementedException();
         }
 
-        virtual public bool refreshAvailable(Faction faction) { return true; }
+        virtual public bool refreshAvailable(PFaction faction) { return true; }
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write((byte)priority);
         }
-        virtual public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        virtual public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             priority = r.ReadByte();
+            id = NextId++;
         }
 
         virtual public DemolishOrder GetDemolish()
@@ -70,7 +70,13 @@ namespace VikingEngine.DSSWars.Players.Orders
             return OrderType.NONE;
         }
 
-        
+        virtual public void cullingUpdate(bool bStateA, int playerIx)
+        { 
+            
+        }
+
+        abstract public OrderType Type();
+
     }
 
     enum OrderType

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -18,10 +18,17 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
-            return new SoldierUnitAdvancedModel(this);
+            if (bannerman)
+            {
+                return new BannerManModel(this);
+            }
+            else
+            {
+                return new SoldierUnitAdvancedModel(this);
+            }
         }
 
         public override bool IsSingleTarget()

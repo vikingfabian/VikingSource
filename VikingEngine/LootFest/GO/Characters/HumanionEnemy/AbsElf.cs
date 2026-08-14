@@ -32,7 +32,7 @@ namespace VikingEngine.LootFest.GO.Characters.HumanionEnemy
         protected void elfSword()
         {
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-                VoxelModelName.elf_sword1,
+                VoxelModelName.NUM_NON,
                 new HandWeaponAttackSettings(
                     GameObjectType.ElfSword, 0.8f, 0.21f,
                     new Vector3(
@@ -61,7 +61,7 @@ namespace VikingEngine.LootFest.GO.Characters.HumanionEnemy
 
         protected override void createPreRangedAttackEffect()
         {
-            preRangedAttackWeaponEffect = new Effects.PreRangedAttackWeaponEffect(VoxelModelName.goblin_spear,
+            preRangedAttackWeaponEffect = new Effects.PreRangedAttackWeaponEffect(VoxelModelName.NUM_NON,
                 GoblinJavelin.Scale * 0.1f, GoblinJavelin.Scale * 0.7f, aiStateTimer.MilliSeconds * 0.6f,
                 new Vector3(5f, 9f, 1f) * image.Scale1D, this);
         }

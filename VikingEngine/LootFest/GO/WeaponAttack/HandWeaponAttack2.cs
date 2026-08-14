@@ -112,7 +112,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
                 }
                 CollisionAndDefaultBound.UpdatePosition2(angle, attackAngle.TranslateAlongAxis(moveBoundOutward, attackPos));
 
-                if (Ref.TimePassed16ms && sett.swingTime > 0)
+                if (/*Ref.TimePassed16ms && */sett.swingTime > 0)
                 {
                     Vector3 particleCenter = this.particleCenter(attackAngle);
                     Engine.ParticleHandler.AddParticleArea(ParticleSystemType.BulletTrace, particleCenter, 0.25f, 4);

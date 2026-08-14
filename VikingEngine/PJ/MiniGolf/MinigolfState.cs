@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -202,6 +203,17 @@ namespace VikingEngine.PJ.MiniGolf
 
         public void onHoleDrop()
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                     "⛳",// Title in UI
+                    null, // Description in UI
+                    "steam_flag", // Built-in Steam icon 
+                    15, // Priority (0 = default, max= 1000)
+                    0f,// Offset in seconds
+                    ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                );
+            }
             Ref.music.stop(true);
             phase = GamePhase.Ending;
 

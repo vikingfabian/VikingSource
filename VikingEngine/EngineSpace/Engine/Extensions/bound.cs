@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,30 @@ namespace VikingEngine
 {
     static class Bound
     {
+        public static float ResetOffBounds(float value, float offBoundsResetValue, IntervalF range)
+        {
+            if (range.IsWithinRange(value))
+            {
+                return value;
+            }
+            else
+            { 
+                return offBoundsResetValue;
+            }
+        }
+
+        public static int ResetOffBounds(int value, int offBoundsResetValue, Range range)
+        {
+            if (range.IsWithinRange(value))
+            {
+                return value;
+            }
+            else
+            {
+                return offBoundsResetValue;
+            }
+        }
+
         public static bool IsWithin(int value, int min, int max)
         {
             return value >= min && value <= max;
@@ -50,6 +75,35 @@ namespace VikingEngine
 
             return (byte)value;
         }
+        public static bool IsWithin_Byte(int value)
+        {
+            return value >= byte.MinValue && value <= byte.MaxValue;
+        }
+
+        public static ushort UShort(double value)
+        {
+            return UShort((int)value);
+        }
+
+        public static ushort UShort(int value)
+        {
+            if (value < ushort.MinValue)
+                return ushort.MinValue;
+            if (value > ushort.MaxValue)
+                return ushort.MaxValue;
+
+            return (ushort)value;
+        }
+
+        public static short Short(int value)
+        {
+            if (value < short.MinValue)
+                return short.MinValue;
+            if (value > short.MaxValue)
+                return short.MaxValue;
+
+            return (short)value;
+        }
 
         public static byte Byte_OutIsMaxVal(int value)
         {
@@ -60,6 +114,12 @@ namespace VikingEngine
         }
 
         public static int Min(int value, int min)
+        {
+            if (value < min) { return min; }
+            return value;
+        }
+
+        public static double Min(double value, double min)
         {
             if (value < min) { return min; }
             return value;
@@ -79,6 +139,12 @@ namespace VikingEngine
             return value;
         }
         public static float Max(float value, float max)
+        {
+            if (value > max) { return max; }
+            return value;
+        }
+
+        public static double Max(double value, double max)
         {
             if (value > max) { return max; }
             return value;
@@ -105,7 +171,12 @@ namespace VikingEngine
             if (value < min) { return min; }
             return value;
         }
-
+        public static Vector2 Min(Vector2 value, Vector2 min)
+        {
+            if (value.X < min.X) { value.X = min.X; }
+            if (value.Y < min.Y) { value.Y = min.Y; }
+            return value;
+        }
 
         /// <summary>
         /// Set minimum bound

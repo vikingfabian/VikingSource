@@ -17,7 +17,7 @@ namespace VikingEngine.Engine
 {
     static class LoadContent
     {
-        public static string SteamVersion = "-"; 
+        public static string EngineVersion = "-"; 
         public static bool BaseContentLoaded = false;
         public static ContentManager Content;
         public static Texture2D[] Textures = new Texture2D[(int)LoadedTexture.NUM];
@@ -27,8 +27,8 @@ namespace VikingEngine.Engine
         public static Model[] Models = new Model[(int)LoadedMesh.NUM];//Dictionary<LoadedMesh, Model> modelList = new Dictionary<LoadedMesh, Model>();
         static Effect[] effectList = new Effect[(int)LoadedEffect.NUM_NoEffect];
 
-        public const string TexturePath = "Texture\\";
-        public const string ModelPath = "Model\\";
+        public static readonly string TexturePath = "Texture" + Path.DirectorySeparatorChar;
+        public static readonly string ModelPath = "Model" + Path.DirectorySeparatorChar;
 
         //static SpriteFont regular, bold, console;
         static FontLanguage currentFontLanguage = FontLanguage.NONE;
@@ -44,18 +44,22 @@ namespace VikingEngine.Engine
             return retrievedColor;
         }
 
-        public static void Init(ContentManager inContent)
+        public static void Init(ContentManager contentManager)
+        { 
+            Content = contentManager;
+        }
+
+        public static void LoadConsoleFont()
+        { 
+            var console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "Console");
+            Fonts[(int)LoadedFont.Console] = console;
+        }
+
+        public static void BaseContentLoad()
         {
-            Content = inContent;
             
             //Load fonts
-            Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
-
-            //regular = Content.Load<SpriteFont>("Font\\Regular");
-            //bold = Content.Load<SpriteFont>("Font\\Bold");
-            //console = Content.Load<SpriteFont>("Font\\Console");
-
-            
+            //Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
 
             setFontLanguage(FontLanguage.Western);
 
@@ -65,6 +69,7 @@ namespace VikingEngine.Engine
             Textures[0] = Content.Load<Texture2D>(TexturePath + "noimage");
             Textures[(int)LoadedTexture.TargetColor0] = Content.Load<Texture2D>(TexturePath + "noimage");
             Textures[(int)LoadedTexture.WhiteArea] = Content.Load<Texture2D>(TexturePath + "whitearea256");
+            Textures[(int)LoadedTexture.TestTexture] = Content.Load<Texture2D>(TexturePath + "test_texture");
             effectList[(int)LoadedEffect.ParticleEffect] = LoadShader(LoadedEffect.ParticleEffect.ToString());
             BaseContentLoaded = true;
         }
@@ -77,18 +82,18 @@ namespace VikingEngine.Engine
                 switch (fontLanguage)
                 {
                     case FontLanguage.Western:
-                        var regular = Content.Load<SpriteFont>("Font\\Regular");
-                        var bold = Content.Load<SpriteFont>("Font\\Bold");
-                        var console = Content.Load<SpriteFont>("Font\\Console");
+                        var regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "Regular");
+                        var bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "Bold");
+                        var console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "Console");
 
                         Fonts[(int)LoadedFont.Regular] = regular;
                         Fonts[(int)LoadedFont.Bold] = bold;
                         Fonts[(int)LoadedFont.Console] = console;
                         break;
                     case FontLanguage.Chinese:
-                        var chinese_regular = Content.Load<SpriteFont>("Font\\ChineseRegular");
-                        var chinese_bold = Content.Load<SpriteFont>("Font\\ChineseBold");
-                        var chinese_console = Content.Load<SpriteFont>("Font\\ChineseConsole");
+                        var chinese_regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ChineseRegular");
+                        var chinese_bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ChineseBold");
+                        var chinese_console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ChineseConsole");
 
                         Fonts[(int)LoadedFont.Regular] = chinese_regular;
                         Fonts[(int)LoadedFont.Bold] = chinese_bold;
@@ -96,13 +101,33 @@ namespace VikingEngine.Engine
                         break;
 
                     case FontLanguage.Japanese:
-                        var japanese_regular = Content.Load<SpriteFont>("Font\\JapaneseRegular");
-                        var japanese_bold = Content.Load<SpriteFont>("Font\\JapaneseBold");
-                        var japanese_console = Content.Load<SpriteFont>("Font\\JapaneseConsole");
+                        var japanese_regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "JapaneseRegular");
+                        var japanese_bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "JapaneseBold");
+                        var japanese_console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "JapaneseConsole");
 
                         Fonts[(int)LoadedFont.Regular] = japanese_regular;
                         Fonts[(int)LoadedFont.Bold] = japanese_bold;
                         Fonts[(int)LoadedFont.Console] = japanese_console;
+                        break;
+
+                    case FontLanguage.Thai:
+                        var thai_regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ThaiRegular");
+                        var thai_bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ThaiBold");
+                        var thai_console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ThaiConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = thai_regular;
+                        Fonts[(int)LoadedFont.Bold] = thai_bold;
+                        Fonts[(int)LoadedFont.Console] = thai_console;
+                        break;
+
+                    case FontLanguage.Korean:
+                        var korean_regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "KoreanRegular");
+                        var korean_bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "KoreanBold");
+                        var korean_console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "KoreanConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = korean_regular;
+                        Fonts[(int)LoadedFont.Bold] = korean_bold;
+                        Fonts[(int)LoadedFont.Console] = korean_console;
                         break;
                 }
             }
@@ -129,10 +154,10 @@ namespace VikingEngine.Engine
 
         public static void LoadSteamVersion()
         {
-            var versionFile = DataLib.SaveLoad.LoadTextFile(Engine.LoadContent.Content.RootDirectory + "\\Version Number.txt");
+            var versionFile = DataLib.SaveLoad.LoadTextFile(Engine.LoadContent.Content.RootDirectory + Path.DirectorySeparatorChar + "Version Number.txt");
             if (versionFile != null && versionFile.Count > 0)
             {
-                SteamVersion = versionFile[0];
+                EngineVersion = versionFile[0];
                 //PlatformSettings.SteamVersion = "Version " + versionFile[0];
             }
         }
@@ -141,7 +166,7 @@ namespace VikingEngine.Engine
        {
             foreach (LoadedTexture loadThis in loadThese)
             {
-                Textures[(int)loadThis] = Content.Load<Texture2D>("Texture//" + loadThis.ToString());
+                Textures[(int)loadThis] = Content.Load<Texture2D>("Texture" + Path.DirectorySeparatorChar + loadThis.ToString());
             }
         }
 
@@ -194,7 +219,10 @@ namespace VikingEngine.Engine
 
         public static void LoadSound(LoadedSound sound, string dir)
         {
-            SoundEffects[(int)sound] = Content.Load<SoundEffect>(dir);
+            if (VikingEngine.Sound.SoundManager.SoundInitializeSuccess)
+            {
+                SoundEffects[(int)sound] = Content.Load<SoundEffect>(dir);
+            }
         }
         
         public static void SetTextureFromTarget(Texture2D texture, LoadedTexture name)
@@ -227,7 +255,7 @@ namespace VikingEngine.Engine
 
         public static Effect LoadShader(string name)
         { 
-            return Content.Load<Effect>("Shaders\\" + name);
+            return Content.Load<Effect>("Shaders" + Path.DirectorySeparatorChar + name);
         }
     }
     
@@ -275,10 +303,11 @@ namespace VikingEngine
         TargetColor0,
         ptrace,
         WhiteArea,
-        square_particle,
+        TestTexture,
+        particle3,
         ccg_piece_particle,
         realistic_particle,
-
+        waterEdge,
 
         BirdJoustBG,
         cmdTiles,
@@ -292,5 +321,7 @@ namespace VikingEngine
         Western,
         Chinese,
         Japanese,
+        Thai,
+        Korean,
     }
 }

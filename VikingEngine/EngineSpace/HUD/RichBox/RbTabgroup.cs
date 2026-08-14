@@ -15,12 +15,12 @@ namespace VikingEngine.HUD.RichBox
     {
         List<RbTabMember> members;
         public Image pointer;
-        public RbTabgroup(List<RbTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundProfile clickSound = null, RbSoundProfile hoverSound = null, Color? overrideBgColor = null)
+        public RbTabgroup(List<RbTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundType clickSound =  RbSoundType.Tab, Color? overrideBgColor = null)
         {
             this.members = members;
             for (int i = 0; i < members.Count; i++)
             {   
-                members[i].initGroup(i, selected, click, enter, clickSound, hoverSound, overrideBgColor);
+                members[i].initGroup(i, selected, click, enter, clickSound, overrideBgColor);
             }            
         }
 
@@ -31,7 +31,7 @@ namespace VikingEngine.HUD.RichBox
                 m.Create(group);
             }
 
-            Vector2 pos = new Vector2(group.area.X -2, group.position.Y + group.lineSpacingHalf -2);
+            Vector2 pos = new Vector2(group.area.X -2, group.carriage.position.Y + group.lineSpacingHalf -2);
             pointer = new Image(SpriteName.WhiteArea, pos,
                 new Vector2(group.boxWidth +4, 4), group.layer, false, group.addToRender);
             pointer.Color = group.settings.tabSelected.BgColor;
@@ -62,7 +62,7 @@ namespace VikingEngine.HUD.RichBox
             this.enter = enterAction;
         }
 
-        public void initGroup(int index, int selectedIx, Action<int> click, Action<int> enter, RbSoundProfile clickSound, RbSoundProfile hoverSound, Color? overrideBgColor)
+        public void initGroup(int index, int selectedIx, Action<int> click, Action<int> enter, RbSoundType clickSound, Color? overrideBgColor)
         { 
             this.selected = index == selectedIx;
             this.overrideBgColor = overrideBgColor;
@@ -71,14 +71,14 @@ namespace VikingEngine.HUD.RichBox
             {
                 this.click = new RbAction1Arg<int>(click, index, clickSound);
             }
-            if (enter != null)
-            {
-                this.enter = new RbAction1Arg<int>(enter, index, hoverSound);
-            }
-            else
-            { 
-                this.enter = new RbSoundAction(hoverSound);
-            }
+            //if (enter != null)
+            //{
+            //    this.enter = new RbAction1Arg<int>(enter, index, hoverSound);
+            //}
+            //else
+            //{ 
+            //    this.enter = new RbSoundAction(hoverSound);
+            //}
         }
 
         public override void Create(RichBoxGroup group)
@@ -93,7 +93,7 @@ namespace VikingEngine.HUD.RichBox
                 bgPointer.Color = group.settings.tabNotSelected.BgColor;
             }
 
-            group.position.X += group.imageHeight * 0.3f;
+            group.carriage.position.X += group.imageHeight * 0.3f;
         }
 
         //public override void onEnter()

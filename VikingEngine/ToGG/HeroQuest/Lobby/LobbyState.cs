@@ -13,7 +13,7 @@ using VikingEngine.ToGG.ToggEngine.Display2D;
 
 namespace VikingEngine.ToGG.HeroQuest.Lobby
 {
-    class LobbyState : AbsToggState, DataStream.IStreamIOCallback
+    class LobbyState : AbsToggState, IStreamIOCallback
     {
         HeroSelectScreen selectScreen;
         bool host;
@@ -137,7 +137,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
                 }
                 new GuiTextButton("Pick hero", null, pickHero, true, layout);
                 
-                if (!PlatformSettings.Demo)
+                if (!PlatformSettings.STEAM_DEMO)
                 {
                     new GuiTextButton("**Debug**", null, debugMenu, false, layout);
                 }
@@ -192,10 +192,10 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
 
         void removePlayerOk(AbsNetworkPeer peer, bool ban)
         {
-            if (ban)
-            {
-                Ref.gamesett.bannedPeers.add(peer);                
-            }
+            //if (ban)
+            //{
+            //    Ref.gamesett.bannedPeers.add(peer);                
+            //}
 
             Ref.netSession.kickFromNetwork(peer);
 
@@ -244,12 +244,12 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
         {
             if (host && !filemanager.lockedInSaving)
             {
-                var w = Ref.netSession.BeginWritingPacket(PacketType.hqQuestSetup, PacketReliability.ReliableLasy);
+                var w = Ref.netSession.BeginWritingPacket(PacketType.hqQuestSetup, PacketReliability.Reliable);
                 hqRef.setup.netWrite(w);
 
                 if (hqRef.setup.quest == QuestName.Custom)
                 {
-                    SaveLib.WriteString(w, hqRef.setup.customName);
+                    StreamLib.WriteString(w, hqRef.setup.customName);
 
                     filemanager.data.memory.WriteSaveFile(w);
                 }

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
 
 namespace VikingEngine.PJ.CarBall
 {
@@ -111,7 +112,7 @@ namespace VikingEngine.PJ.CarBall
                     {
                         pitchUpdate.MilliSeconds = Ref.rnd.Float(150, 250);
                         driveSound.Pitch = -0.5f + 1f * PercMaxSpeed + Ref.rnd.Float(0.1f);
-                        driveSound.Volume = (0.1f + 0.1f * PercMaxSpeed) * Engine.Sound.SoundVolume; 
+                        driveSound.Volume = (0.1f + 0.1f * PercMaxSpeed) * Ref.gamesett.SoundVol(); 
                         Engine.Sound.SetInstancePan(driveSound, image.position);
                     }
                 }
@@ -282,7 +283,7 @@ namespace VikingEngine.PJ.CarBall
             }
 
             sumVelocity = Velocity + pushForce;
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
             {
                 if (pushForce.Length() < minSpeed * 0.1f)
                 {
@@ -504,6 +505,17 @@ namespace VikingEngine.PJ.CarBall
 
         public void takeHit()
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                 "💀",// Title in UI
+                null, // Description in UI
+                "steam_death", // Built-in Steam icon 
+                2, // Priority (0 = default, max= 1000)
+                0f,// Offset in seconds
+                ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+            );
+            }
             driveSound.Pause();
 
             destroyed = true;

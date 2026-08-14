@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine;
+using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.PJ.Joust;
 
 
 namespace VikingEngine.DSSWars.GameObject
@@ -15,133 +20,210 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setAsStartArmy()
         {
-            //IntVector2 start = tilePos;
-            //tilePos.Y -= 1;
-            //OnSoldierPurchaseCompleted();
-
-            //var groupsC = groups.counter();
-            //while (groupsC.Next())
-            //{
-            //    groupsC.sel.setAsStartArmy();
-            //}
-            ////Order_MoveTo(start);
-            //position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
-            //refreshPositions(true);
-            refreshGroupPlacements2(tilePos, true, false);
-            //var groupsC = groups.counter();
-            //while (groupsC.Next())
-            //{
-            //    groupsC.sel.setAsStartArmy();
-            //}
-            //updateArmyMovement(1);
-
+           
+            refreshGroupPlacements2(tilePos, false, true, false);
             setMaxFood();
-            //tilePos = start;
-            //updateModelsPosition();
+        }
+
+        public void setMassiveFood()
+        {
+            setMaxFood();
+            food *= 10;
+            conservedFood *= 10;
         }
 
         public void setMaxFood()
         {
-            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
-            float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
+            //float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            //float minuteEnergy = TimeExt.MinuteInSeconds * energy;
+            //float bufferGoalFood = friendlyAreaFoodBuffer_minutes * minuteEnergy;
+            //float bufferGoalConservedFood = friendlyAreaConservedFoodBuffer_minutes * minuteEnergy;
+            getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood);
+            //#if DEBUG
+            //            if (Debug.CorruptValue(food))
+            //            {
+            //                lib.DoNothing();
+            //            }
+            //#endif
             food = bufferGoalFood;
+            conservedFood = bufferGoalConservedFood;
         }
 
-        public void async_workUpdate(float seconds)
+        void getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood)
         {
-            if (seconds > 0)
+            const float FoodBuffer_minutes = 15f;
+            const float ConservedFoodBuffer_minutes = FoodBuffer_minutes * 2f;
+
+            float energy = DssConst.ManDefaultEnergyCost / DssRef.storage.ruleset_instance.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            float minuteEnergy = TimeExt.MinuteInSeconds * energy;
+            bufferGoalFood = FoodBuffer_minutes * minuteEnergy;
+            bufferGoalConservedFood = ConservedFoodBuffer_minutes * minuteEnergy;
+        }
+
+        public void async_workUpdate(Faction faction, float seconds)
+        {
+            if ( pfaction.HasValue())
             {
-                if (debugTagged)
-                {
-                    lib.DoNothing();
-                }
+                bool casual = GetCasual();
 
-                if (foodBackOrderTimeSec > 0)
+                if (seconds > 0)
                 {
-                    foodBackOrderTimeSec -= seconds;
-                }
-                else
-                {
-                    //Order new food
-                    City city = DssRef.world.tileGrid.Get(tilePos).City();
-                    if (city != null)
+                    
+                    goldUpkeepUpdate_async(seconds);
+
+                    if (!casual)
                     {
-                        float bufferGoal_minutes = -1;
-                        if (city.faction == faction)
+                        foodUpkeepUpdate_async(faction, seconds);
+                    }
+                }
+
+                if (!casual && !inRender_detailLayer)
+                {
+                    processAsynchWork(ref workerStatuses);
+                }
+            }        
+        }
+
+        void goldUpkeepUpdate_async(float seconds)
+        {
+
+        }
+
+        public static float ManUpkeepToFoodUpkeep(float manUpkeep)
+        {
+            float energyUpkeep = manUpkeep * DssConst.ManDefaultEnergyCost;
+            float foodUpkeep = energyUpkeep / DssRef.storage.ruleset_instance.FoodEnergySett;
+            return foodUpkeep;
+        }
+
+        void foodUpkeepUpdate_async(Faction faction, float seconds)
+        {
+
+            //if (debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            //float energyUpkeep = totalUpkeep * DssConst.ManDefaultEnergyCost;
+            //float foodUpkeep = energyUpkeep * DssRef.difficulty.FoodEnergySett;
+            //float foodUpkeep = //ManUpkeepToFoodUpkeep(totalCopperUpkeep);
+
+            if (foodBackOrderTimeSec > 0)
+            {
+                foodBackOrderTimeSec -= seconds;
+            }
+            else
+            {
+                //Order new food
+                City city = DssRef.world.tileGrid.Get(tilePos).City();
+                if (city != null && city.pfaction.TryGetFaction(out _))
+                {
+                    float bufferGoal_percentage = -1;
+                    int goldCostMulti = 1;
+                    if (city.pfaction == pfaction)
+                    {
+                        bufferGoal_percentage = 1f;
+                        goldCostMulti = 0;
+                    }
+                    else if (!DssRef.world.diplomacy.GetRelation(city.pfaction, pfaction).InWar())
+                    {
+                        bufferGoal_percentage = 0.5f;
+                    }
+
+                    //float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * totalUpkeep.food;
+                    if (bufferGoal_percentage > 0)
+                    {
+                        getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood);
+                        bufferGoalFood *= bufferGoal_percentage;
+                        bufferGoalConservedFood *= bufferGoal_percentage;
+
+                        if (Ref.peRnd.ChanceF(0.6f))
                         {
-                            bufferGoal_minutes = friendlyAreaFoodBuffer_minutes;
+                            orderMissingFood(food, bufferGoalFood, city.resourceAmount(EntityComponent.CityResourceIndex.food), DssConst.FoodGoldValue * goldCostMulti, ItemResourceType.Food_G);
                         }
-                        else if (!DssRef.diplomacy.InWar(city.faction, faction))
+                        else
                         {
-                            bufferGoal_minutes = foodBuffer_minutes;
+                            orderMissingFood(conservedFood, bufferGoalConservedFood, city.resourceAmount(EntityComponent.CityResourceIndex.ConservedFood), DssConst.ConservedFoodGoldValue * goldCostMulti, ItemResourceType.ConservedFood);
                         }
 
-                        float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
-
-                        if (bufferGoal_minutes > 0 && food < bufferGoalFood && city.res_food.amount >= ItemPropertyColl.CarryFood)
+                        void orderMissingFood(float hasAmount, float goalAmount, int cityAmount, int goldValue, ItemResourceType foodType)
                         {
-                            int statusIx = getOrCreateFreeWorker();
-                            var status = workerStatuses[statusIx];
-                            status.createWorkOrder(WorkType.TrossCityTrade, -1, 0, XP.WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
-                            if (city.faction != faction)
+                            goldValue *= ItemPropertyColl.CarryFood;
+
+                            if (
+                                hasAmount < goalAmount &&
+                                cityAmount >= ItemPropertyColl.CarryFood &&
+                                faction.payGold(goldValue, false, this))
                             {
-                                foodCosts_import.add(status.carry.amount);
-                            }
-                            workerStatuses[statusIx] = status;
+                                int statusIx = getOrCreateFreeWorker();
+                                var status = workerStatuses[statusIx];
+                                status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
+                                if (goldValue > 0)
+                                {
+                                    foodCosts_import.add(status.carry.amount);
+                                }
+                                workerStatuses[statusIx] = status;
 
-                            //Calc backorder 
-                            float foodOrderSize = ItemPropertyColl.CarryFood * DssConst.Worker_TrossWorkerCarryWeight;
-                            float perc = (foodOrderSize + food) / bufferGoalFood;
+                                //Calc backorder 
+                                float perc = (ItemPropertyColl.ArmyFoodOrderSize + hasAmount) / goalAmount;
 
-                            if (perc > 0)
-                            {
-                                foodBackOrderTimeSec += status.processTimeLengthSec * perc * 0.8f;
-                            }
-                        }
-                    }
+                                if (perc > 0)
+                                {
+                                    foodBackOrderTimeSec += status.processTimeLengthSec * perc * 0.8f;
+                                }
+                            } }
+                    } }
 
-                   
-                }
 
-                float minBuffer = foodUpkeep * 2;
-
-                if (food < minBuffer)
-                {
-                    if (faction.player.IsLocalPlayer())
-                    {
-                        Ref.update.AddSyncAction(new SyncAction(() =>
-                        {
-                            faction.player.GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
-                        }));
-                    }
-
-                    //black market trade
-                    var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food));
-
-                    if (payMoney(cost))
-                    {
-                        foodCosts_blackmarket.add(cost);
-                        food = minBuffer;
-                    }
-                }
             }
 
-            if (!inRender_detailLayer)
-            {
-                processAsynchWork(workerStatuses);
-            }
+            foodMarketCheck();
 
             int getOrCreateFreeWorker()
             {
+                var worker = new WorkerStatus(true) { subTileEnd = WP.ToSubTilePos_Centered(tilePos) };
                 for (int i = 0; i < workerStatuses.Count; i++)
                 {
-                    if (workerStatuses[i].work == WorkType.IsDeleted)
+                    if (workerStatuses.array[i].work == WorkType.IsDeleted)
                     {
+                        workerStatuses.array[i] = worker;
                         return i;
                     }
                 }
-                workerStatuses.Add(new WorkerStatus() { subTileEnd = WP.ToSubTilePos_Centered(tilePos)});
-                return workerStatuses.Count -1;
+                workerStatuses.Add(worker);
+                return workerStatuses.Count - 1;
+            }
+        }
+
+        public void foodMarketCheck()
+        {
+            float minBuffer = totalUpkeep.food * 2;
+
+            if (food + conservedFood < minBuffer)
+            {
+                bool allowDept = false;
+
+                if (pfaction.TryGetLocalPlayer(out var lp))
+                {
+                    //goNegative = false;
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        lp.hud.messages.armyLowFoodMessage(this);
+                    }));
+                }
+                else if (!DssRef.storage.ruleset_instance.centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
+                {
+                    allowDept = true;
+                }
+
+                var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food - conservedFood));
+
+                if (payGold(cost, allowDept))
+                {
+                    foodCosts_blackmarket.add(cost);
+                    food = minBuffer;
+                    conservedFood = 0;
+                }
             }
         }
 

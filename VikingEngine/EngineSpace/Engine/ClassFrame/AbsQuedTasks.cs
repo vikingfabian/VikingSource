@@ -1,4 +1,5 @@
 ﻿using System;
+using VikingEngine.DebugExtensions;
 
 namespace VikingEngine
 {
@@ -95,11 +96,19 @@ namespace VikingEngine
                 case MultiThreadType.Asynch:
                     task = System.Threading.Tasks.Task.Factory.StartNew(() =>
                         {
-                            runQuedAsynchTask();//runQuedTask(MultiThreadType.Asynch);
-                            if (bMainThreadTask)
+                            try
                             {
-                                addToSyncedUpdate();//isMainThreadTaskReady = true;
+                                runQuedAsynchTask();//runQuedTask(MultiThreadType.Asynch);
+                                if (bMainThreadTask)
+                                {
+                                    addToSyncedUpdate();//isMainThreadTaskReady = true;
+                                }
                             }
+                            catch (Exception ex)
+                            {
+                                BlueScreen.ThreadException = ex;
+                            }
+                            
                         }
                     );
 

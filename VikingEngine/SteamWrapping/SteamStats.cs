@@ -1,10 +1,7 @@
 ﻿#if PCGAME
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Valve.Steamworks;
+using Steamworks;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -13,7 +10,7 @@ namespace VikingEngine.SteamWrapping
         //TimeStamp prevCollectTime;
         float prevTotalTimeSec;
         public AbsGameStats gamestats;
-        SteamCallResult<GlobalStatsReceived_t> globalStatsReceivedCallback;        
+        CallResult<GlobalStatsReceived_t> globalStatsReceivedCallback;        
 
         public SteamStats(AbsGameStats gamestats)
         {
@@ -45,7 +42,7 @@ namespace VikingEngine.SteamWrapping
             {
                 m.setStat();
             }
-            SteamAPI.SteamUserStats().StoreStats();
+            SteamUserStats.StoreStats();
         }
 
         public void initializeAllStatsOnSteam()
@@ -57,22 +54,21 @@ namespace VikingEngine.SteamWrapping
 
         public void beginRequestGlobalStats()
         {
-            //funkar ej
-            globalStatsReceivedCallback = new SteamCallResult<GlobalStatsReceived_t>(onGlobalStatsReceived);
-            var apiCall = SteamAPI.SteamUserStats().RequestGlobalStats(30);
+            globalStatsReceivedCallback = new CallResult<GlobalStatsReceived_t>(onGlobalStatsReceived);
+            var apiCall = SteamUserStats.RequestGlobalStats(30);
             globalStatsReceivedCallback.Set(apiCall);
         }
 
         void onGlobalStatsReceived(GlobalStatsReceived_t caller, bool ioFailure)
         {
             //long global = 0;
-            //bool succeed = SteamAPI.SteamUserStats().GetGlobalStat("startnew_story", out global);
+            //bool succeed = SteamUserStats.GetGlobalStat("startnew_story", out global);
 
             var globalStats = gamestats.listGlobalStats();
             Debug.Log("##STEAM STATS##");
             foreach (var m in globalStats)
             {
-                bool succeed = SteamAPI.SteamUserStats().GetGlobalStat(m.Name, out long global);
+                bool succeed = SteamUserStats.GetGlobalStat(m.Name, out long global);
                 if (succeed)
                 {
                     Debug.Log(m.Name + ": " + global.ToString());
@@ -128,7 +124,9 @@ namespace VikingEngine.SteamWrapping
     {
         bool getStat();
         bool setStat();
-        bool getUserStats(ulong user);
+        bool getUserStats(CSteamID user);
+
+        void initAndSet();
 
         public string Name { get; }
     }
@@ -151,6 +149,12 @@ namespace VikingEngine.SteamWrapping
         public void set(int value)
         {
             this.value = value;
+            setStat();
+        }
+
+        public void initAndSet()
+        {
+            this.value = 1;
             setStat();
         }
 
@@ -179,7 +183,7 @@ namespace VikingEngine.SteamWrapping
         {
             if (Ref.steam.isInitialized)
             {
-                bool result = SteamAPI.SteamUserStats().GetStat_Int(name, ref value);
+                bool result = SteamUserStats.GetStat(name, out value);
                 valueAtGameStart = value;
                 return result;
             }
@@ -195,17 +199,17 @@ namespace VikingEngine.SteamWrapping
                 return false;
             }
 #endif
-            //return SteamAPI.SteamUserStats().SetStat_Int(name, value);
+            //return SteamUserStats.SetStat_Int(name, value);
             if (Ref.steam.isInitialized)
             {
-                return SteamAPI.SteamUserStats().SetStat_Int(name, value);
+                return SteamUserStats.SetStat(name, value);
             }
             return false;
         }
 
-        public bool getUserStats(ulong user)
+        public bool getUserStats(CSteamID user)
         {
-            return SteamAPI.SteamUserStats().GetUserStat_Int(user, name, ref value);
+            return SteamUserStats.GetUserStat(user, name, out value);
         }
 
         public void addToStartValue(int add)
@@ -241,7 +245,11 @@ namespace VikingEngine.SteamWrapping
             this.value = value;
             setStat();
         }
-
+        public void initAndSet()
+        {
+            this.value = 1;
+            setStat();
+        }
         public void add(float add)
         {
             this.value += add;
@@ -252,7 +260,7 @@ namespace VikingEngine.SteamWrapping
         {
             if (Ref.steam.isInitialized)
             {
-                return SteamAPI.SteamUserStats().GetStat_Float(name, ref value);
+                return SteamUserStats.GetStat(name, out value);
             }
             return false;
         }
@@ -265,17 +273,17 @@ namespace VikingEngine.SteamWrapping
                 return false;
             }
 #endif
-            //return SteamAPI.SteamUserStats().SetStat_Float(name, value);
+            //return SteamUserStats.SetStat_Float(name, value);
             if (Ref.steam.isInitialized)
             {
-                return SteamAPI.SteamUserStats().SetStat_Float(name, value);
+                return SteamUserStats.SetStat(name, value);
             }
             return false;
         }
 
-        public bool getUserStats(ulong user)
+        public bool getUserStats(CSteamID user)
         {
-            bool result = SteamAPI.SteamUserStats().GetUserStat_Float(user, name, ref value);
+            bool result = SteamUserStats.GetUserStat(user, name, out value);
             valueAtGameStart = value;
             return result;
         }

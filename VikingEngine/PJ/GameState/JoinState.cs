@@ -11,7 +11,7 @@ namespace VikingEngine.PJ.GameState
         Time timeout = new Time(5, TimeUnit.Seconds);
         Graphics.Image[] searchingBar;
         Timer.Basic searchBarTimer = new Timer.Basic(100, true);
-        CirkleCounterUp searchBarCount = new CirkleCounterUp(0, SearchingBarDotCount - 1);
+        CircleCounterUp searchBarCount = new CircleCounterUp(0, SearchingBarDotCount - 1);
 
         public JoinState(Network.AbsAvailableSession session)
             :base()
@@ -87,7 +87,7 @@ namespace VikingEngine.PJ.GameState
             float darken = 0.2f;
             const int DarkenCount = 3;
 
-            CirkleCounterDown count = new CirkleCounterDown(searchBarCount.Max);
+            CircleCounterDown count = new CircleCounterDown(searchBarCount.Max);
             count.value = searchBarCount.Next();
 
             //searchBarCount.Next();

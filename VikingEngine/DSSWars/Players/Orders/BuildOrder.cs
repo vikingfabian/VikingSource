@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -18,17 +19,17 @@ namespace VikingEngine.DSSWars.Players.Orders
 {
     abstract class AbsBuildOrder : AbsOrder
     {
-        protected City city;
+        public City city;
         protected IntVector2 subTile;
         protected VoxelModelInstance model;
 
-        protected void createModel(int frame)
+        protected void createModel(int frame, int playerIx)
         {
-            Debug.CrashIfThreaded();
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, true, WorldData.SubTileWidth * 1.4f, true, true, false);
+            //Debug.CrashIfThreaded();
+            model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f);
             model.Frame = frame;
-            //model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
+            model.setVisibleCamera(playerIx);
         }
 
         public override bool IsBuildOnSubTile(IntVector2 subTile)
@@ -43,9 +44,18 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void DeleteMe()
         {
-            //model.DeleteMe();
-            DssRef.models.recycle(ref model, true);
+            //DssRef.models.recycle(ref model, true);
+            model.preRemoveFromDrawBatch();
             base.DeleteMe();
+        }
+
+        public override void cullingUpdate(bool bStateA, int playerIx)
+        {
+            if (model != null)
+            {
+                IntVector2 tilepos = WP.SubtileToTilePos(subTile);
+                model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref tilepos);
+            }
         }
     }
 
@@ -66,23 +76,23 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.subTile = subTile;
             this.buildingType = buildingType;
             this.upgrade = upgrade;
-
-            //if (bLocalPlayer)
-            //{
-            //    init();
-            //}
         }
 
-        public override void onAdd()
+
+
+        public override void onAdd(int playerIx)
         {
 
-            createModel(0);
+            createModel(0, playerIx);
 
-             Vector3 iconPos = model.position;
+            Vector3 iconPos = model.position;
             iconPos.Y += model.scale.Y * 6f;
-            iconPos.Z += model.scale.Y * 0.15f;
+            iconPos.Z += model.scale.Y * 0.3f;
 
             icon = new Mesh(LoadedMesh.plane, iconPos, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].sprite, Color.White, false);
+#if DEBUG
+            icon.DebugName = "BuildOrder icon";
+#endif
             icon.Opacity = 0.8f;
             icon.Rotation = DssLib.FaceForwardRotation;
             icon.AddToRender(DrawGame.UnitDetailLayer);
@@ -90,9 +100,17 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override RichBoxContent ToHud()
         {
+           
             RichBoxContent content = new RichBoxContent();
-            content.h2(upgrade? DssRef.todoLang.Upgrade_Order : DssRef.lang.Build_Order);
+            content.h2(SpriteName.WarsConstructBuildingIcon, upgrade ? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
             BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city, upgrade);
+
+            content.newLine();
+            HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
+            content.space();
+            content.Add(new RbText(priority.ToString()));
+
+            BuildControls.buildTooltip_YouOwn(city, content, buildingType);
 
             return content;
         }
@@ -101,20 +119,27 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             base.writeGameState(w);
 
-            w.Write((ushort)city.parentArrayIndex);
-            subTile.write(w);
+            w.Write((ushort)city.myIndex);
+            //subTile.write(w);
+            WP.writeSubTilePos(w, subTile);
             w.Write((byte)buildingType);
         }
-        override public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        override public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, subversion, pointers);
+            base.readGameState(playerIx, r, subversion, pointers);
 
             city = DssRef.world.cities[r.ReadUInt16()];
-            subTile.read(r);
+            if (subversion >= 132)
+            {
+                subTile = WP.readSubTilePos(r);
+            }
+            else
+            {
+                subTile.read(r);
+            }
             buildingType = (BuildAndExpandType)r.ReadByte();
 
-            onAdd();
-            //init();
+            onAdd(playerIx);
         }
 
         override public void DeleteMe()
@@ -148,9 +173,9 @@ namespace VikingEngine.DSSWars.Players.Orders
 
       
 
-        public override bool refreshAvailable(Faction faction)
+        public override bool refreshAvailable(PFaction faction)
         {
-            return city.faction == faction;
+            return city.pfaction == faction;
         }
 
         override public OrderType GetWorkType(City city)
@@ -160,6 +185,11 @@ namespace VikingEngine.DSSWars.Players.Orders
                 return OrderType.Build;
             }
             return OrderType.NONE;
+        }
+
+        public override OrderType Type()
+        {
+            return OrderType.Build;
         }
     }
 
