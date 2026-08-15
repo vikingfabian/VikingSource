@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
 
 namespace VikingEngine.PJ.CarBall
 {
@@ -504,6 +505,17 @@ namespace VikingEngine.PJ.CarBall
 
         public void takeHit()
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                 "💀",// Title in UI
+                null, // Description in UI
+                "steam_death", // Built-in Steam icon 
+                2, // Priority (0 = default, max= 1000)
+                0f,// Offset in seconds
+                ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+            );
+            }
             driveSound.Pause();
 
             destroyed = true;

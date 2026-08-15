@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars;
 using VikingEngine.PJ.Joust.DropItem;
 
 namespace VikingEngine.PJ.Joust
@@ -1175,7 +1177,17 @@ namespace VikingEngine.PJ.Joust
             {
                 onGroundTimer.DeleteMe();
             }
-//#if !MAH
+
+            SteamTimeline.AddInstantaneousTimelineEvent(
+                 "💀",// Title in UI
+                null, // Description in UI
+                "steam_death", // Built-in Steam icon 
+                2, // Priority (0 = default, max= 1000)
+                0f,// Offset in seconds
+                ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+            );
+
+            //#if !MAH
             new DeathFlash();
 //#endif
             

@@ -549,7 +549,7 @@ namespace VikingEngine.Graphics
                         //Debug.Log("start < end");
                         // If the active particles are all in one consecutive range,
                         // we can draw them all in a single call.
-                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(
+                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives/*_trianglelist_Unsafe*/(PrimitiveType.TriangleList,
                             0, start * 6, (end - start) * 2);
                             //.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
                             //                         start * 6, (end - start) * 2);
@@ -558,12 +558,12 @@ namespace VikingEngine.Graphics
                     {
                         // If the active particle range wraps past the end of the queue
                         // back to the start, we must split them over two draw calls.
-                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(0,
+                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives/*_trianglelist_Unsafe*/(PrimitiveType.TriangleList, 0,
                                                      start * 6, (settings.MaxParticles - start) * 2);
 
                         if (end > 0)
                         {
-                            Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(0,
+                            Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives/*_trianglelist_Unsafe*/(PrimitiveType.TriangleList, 0,
                                                          //0, end * 4,
                                                          0, end * 2);
                         }

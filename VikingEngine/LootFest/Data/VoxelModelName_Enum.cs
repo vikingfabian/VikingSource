@@ -314,7 +314,7 @@ namespace VikingEngine.LootFest
         cannonwagon_ballista,
         cannonwagon_manbronze,
         cannonwagon_maniron,
-        cannon4wagon_maniron,
+        cannon4wagon_iron,
         cannoncoach_maniron,
         cannoncoach_manbronze,
         cannoncoach_siegeiron,

@@ -5,6 +5,7 @@
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
+	<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <Configurations>Debug;Release;Linux ARM;Linux x64</Configurations>
     <Platforms>AnyCPU;ARM64;x64</Platforms>
   </PropertyGroup>
@@ -13,25 +14,25 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;DSS</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;DSS</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;DSS</DefineConstants>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;DSS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;DSS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;DSS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux ARM|AnyCPU'">
     <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
@@ -58,11 +59,8 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Content\DSS\Map\**" />
     <Compile Remove="LF2\**" />
-    <EmbeddedResource Remove="Content\DSS\Map\**" />
     <EmbeddedResource Remove="LF2\**" />
-    <None Remove="Content\DSS\Map\**" />
     <None Remove="LF2\**" />
   </ItemGroup>
   <ItemGroup>
@@ -70,17 +68,10 @@
     <Compile Remove="EngineSpace\Translation\OptionsLanguage_Swedish.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Content\DSS\Music\Endless Plains.mp3" />
-    <None Remove="Content\Modding\ModConst.txt" />
-    <None Remove="Content\Shaders\OceanEffect.fx" />
-    <None Remove="Content\Shaders\OceanShaderTest.fx" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
     <None Remove="steam_api64.dll" />
     <None Remove="VikingEngine-linux-x64.tar.gz" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Content\Modding\ModConst.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
@@ -97,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.3" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
     <PackageReference Include="Sentry" Version="5.7.0" />
   </ItemGroup>
@@ -109,9 +99,6 @@
       <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\VoxelModel\Temp\" />
-  </ItemGroup>
   
   <PropertyGroup>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
@@ -121,4 +108,5 @@
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
+    <Import Project="..\VikingBuilder\BuildContent.targets" />
 </Project>

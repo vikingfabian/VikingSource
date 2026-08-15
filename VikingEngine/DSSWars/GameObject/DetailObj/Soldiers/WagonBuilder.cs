@@ -134,31 +134,31 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                         case Resource.ItemResourceType.ManCannonIron:
                             wagonMScale = 3.5f;
                             MGoalDistance = 0.9f;
-                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            wagonModelName = VoxelModelName.cannon4wagon_iron;
                             manType = WagonManType.Coach;
                             break;
                         case Resource.ItemResourceType.ManCannonBronze:
                             wagonMScale = 3.5f;
                             MGoalDistance = 0.9f;
-                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            wagonModelName = VoxelModelName.cannon4wagon_iron;
                             manType = WagonManType.Coach;
                             break;
                         case Resource.ItemResourceType.Ballista:
                             wagonMScale = 3.5f;
                             MGoalDistance = 0.9f;
-                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            wagonModelName = VoxelModelName.cannon4wagon_iron;
                             manType = WagonManType.Coach;
                             break;
                         case Resource.ItemResourceType.Manuballista:
                             wagonMScale = 3.5f;
                             MGoalDistance = 0.9f;
-                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            wagonModelName = VoxelModelName.cannon4wagon_iron;
                             manType = WagonManType.Coach;
                             break;
                         case Resource.ItemResourceType.Catapult:
                             wagonMScale = 3.5f;
                             MGoalDistance = 0.9f;
-                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            wagonModelName = VoxelModelName.cannon4wagon_iron;
                             manType = WagonManType.Coach;
                             break;
 

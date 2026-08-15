@@ -107,7 +107,7 @@ namespace VikingEngine.SteamWrapping
         public void StopRecording()
         {
             recordingOn = false;
-            if (P2PManager.localPeer != null)
+            if (P2PManager != null && P2PManager.localPeer != null)
             {
                 P2PManager.localPeer.isRecording = recordingOn;
             }

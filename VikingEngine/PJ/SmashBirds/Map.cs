@@ -30,48 +30,50 @@ namespace VikingEngine.PJ.SmashBirds
             SmashRef.map = this;
             Ref.draw.ClrColor = Color.CornflowerBlue;
 
-            tileCount.Y = 20;
-            tileWidth = (int)(Engine.Screen.SafeArea.Height / tileCount.Y);
-            tileCount.Y += 2;
+            tileCount.X = 31;
 
-            tileCount.X = 41;
+            
+            tileWidth = (int)(Engine.Screen.SafeArea.Width / tileCount.X);
+            tileCount.Y = 16;
+
             tilesTotalSz = tileCount.Vec * tileWidth;
             
-            tilesTopLeft = Engine.Screen.SafeArea.CenterTop;
+            tilesTopLeft = Engine.Screen.SafeArea.CenterBottom;
             tilesTopLeft.X -= tilesTotalSz.X * 0.5f;
-
+            tilesTopLeft.Y -= tilesTotalSz.Y;
             tilesTopLeft = VectorExt.Round(tilesTopLeft);
 
             baseArea = new VectorRect(tilesTopLeft, new Vector2(tileWidth));
-
+            
             physicsSetup();
 
             tileGrid = new Grid2D<Tile>(tileCount);
             
-            for (int x = 2; x < tileCount.X - 2; ++x)
+            for (int x = 1; x < tileCount.X - 1; ++x)
             {
-                new Tile(new IntVector2(x, tileCount.Y - 2));
+                //new Tile(new IntVector2(x, tileCount.Y - 2));
                 new Tile(new IntVector2(x, tileCount.Y - 1));
             }
 
+            //Side walls
             for (int y = 0; y < tileCount.Y; ++y)
             {
                 new Tile(new IntVector2(0, y));
-                new Tile(new IntVector2(1, y));
+               // new Tile(new IntVector2(1, y));
 
-                new Tile(new IntVector2(tileCount.X - 2, y));
+                //new Tile(new IntVector2(tileCount.X - 2, y));
                 new Tile(new IntVector2(tileCount.X - 1, y));
             }
 
             //Platform
-            int platformY = 11;
-            for (int x = 9; x < tileCount.X - 9; ++x)
+            int platformY = 9;
+            for (int x = 7; x < tileCount.X - 7; ++x)
             {
                 int center = tileCount.X / 2;
                 if (Math.Abs(center - x) > 4)
                 {
                     new Tile(new IntVector2(x, platformY));
-                    new Tile(new IntVector2(x, platformY + 1));
+                    //new Tile(new IntVector2(x, platformY + 1));
                 }
             }
 

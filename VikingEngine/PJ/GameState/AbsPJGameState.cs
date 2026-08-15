@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Input;
-using VikingEngine.SteamWrapping;
 using VikingEngine.Input;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework;
+using VikingEngine.PJ.Lobby;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
@@ -20,20 +22,35 @@ namespace VikingEngine.PJ
         public List2<GamerData> joinedLocalGamers;
         public int matchCount;
         public float timeSinceInput = 0;
+              
 
         public AbsPJGameState(bool isPlayState)
             : base()
         {
+
             this.isPlayState = isPlayState;
             Ref.isPaused = false;
             activeScreenArea = Engine.Screen.Area;
             activeScreenSafeArea = Engine.Screen.SafeArea;
 #if PCGAME
-            if (isPlayState && Ref.steam.statsInitialized)
+            if (isPlayState)
             {
-                Ref.steam.stats.upload();
+                if (Ref.steam.isInitialized)
+                {
+                    SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Playing);
+
+                    if (Ref.steam.statsInitialized)
+                    {
+                        Ref.steam.stats.upload();
+                    }
+                }
             }
 #endif
+            if (Ref.lobby == null)
+            {
+                new NetLobby();
+            }
+            Ref.lobby.EnterLobby(!isPlayState);
         }
 
         protected void set1080pScreenArea()
@@ -289,7 +306,13 @@ namespace VikingEngine.PJ
             base.NetEvent_PeerJoined(gamer);
             PjLib.checkHostStatus();
         }
-        
+
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+            Ref.lobby?.update();
+        }
+
         virtual protected void setMenuLayer()
         { }
 
