@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steamworks;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace VikingEngine.DSSWars.GameState
         protected SpottedArrayCounter<Players.RemotePlayer> remotePlayersCounter;
         public List<Players.LocalPlayer> localPlayers;
         public EventManager events;
-        public Progress progress = new Progress();
+        //public Progress progress = new Progress();
         public int NextArmyId = 0;
         protected int stepFramesCount = 0;
         public Ambience ambience;
@@ -67,6 +68,7 @@ namespace VikingEngine.DSSWars.GameState
         public AbsPlayState() 
             :base() 
         {
+            
             remotePlayers = new SpottedArray<Players.RemotePlayer>();
             remotePlayersCounter = new SpottedArrayCounter<RemotePlayer>(remotePlayers);
 
@@ -292,7 +294,7 @@ namespace VikingEngine.DSSWars.GameState
             return exitThreads;
         }
 
-        virtual protected bool UpdateReady()
+        virtual public bool UpdateReady()
         {
             return cutScene == null;
         }

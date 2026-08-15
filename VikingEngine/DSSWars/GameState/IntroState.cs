@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleDotted, Engine.LoadContent.ModelPath + "SelectCircleDotted");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleSolid, Engine.LoadContent.ModelPath + "SelectCircleSolid");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleThick, Engine.LoadContent.ModelPath + "SelectCircleThick");
-            EffectVertexColorShadow.LoadContent();
+            //EffectVertexColorShadow.LoadContent();
             part++;
 
             SoundLib.LoadContent();

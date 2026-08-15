@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Steamworks;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -50,8 +51,11 @@ namespace VikingEngine.SteamWrapping
     abstract class AbsSteamLeaderBoardInstance
     {
         protected const int MaxScoreDetails = 64;
+        //const int CasualDetailIndex = 5;
         public int score;
+        
         public StaticList<int> scoreDetails = new StaticList<int>(MaxScoreDetails);
+       
     }
 
     class SteamLeaderBoardLocal : AbsSteamLeaderBoardInstance

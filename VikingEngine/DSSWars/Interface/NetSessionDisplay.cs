@@ -323,6 +323,12 @@ namespace VikingEngine.DSSWars.Interface
         public void clientToHud(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
 
+            if (!DssRef.state.UpdateReady())
+            {
+                content.icontext(SpriteName.IconSandGlass, DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light);
+                return;
+            }
+
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
                     new RbSpace(),

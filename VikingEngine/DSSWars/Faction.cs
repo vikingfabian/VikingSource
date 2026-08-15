@@ -906,7 +906,7 @@ namespace VikingEngine.DSSWars
                                 new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city, RbSoundType.Default))
                             { fillWidth = true });
 
-                            localplayer.hud.messages.Add(content);
+                            localplayer.hud.messages.Add(content, SoundLib.eventLost.Play());
                         }
                     }));
                 }

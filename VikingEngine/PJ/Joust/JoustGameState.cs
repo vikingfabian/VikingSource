@@ -35,6 +35,9 @@ namespace VikingEngine.PJ.Joust
         public JoustGameState(List2<GamerData> joinedGamers, int matchCount)
             : base(true)
         {
+
+
+
             JoustRef.gamestate = this;
             Ref.draw.ClrColor = PjLib.ClearColor;
             //Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);

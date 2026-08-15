@@ -177,11 +177,18 @@ namespace VikingEngine.DSSWars
             return result;
         }
 
-        //public static void writePosXZ(System.IO.BinaryWriter w, Vector3 position)
-        //{
-        //    w.Write((Half)position.X);
-        //    w.Write((Half)position.Z);
-        //}
+        public static void writeSubTilePos(System.IO.BinaryWriter w, IntVector2 position)
+        {
+            position.WriteUInt24(w);
+        }
+
+        public static IntVector2 readSubTilePos(System.IO.BinaryReader r)
+        {
+            var result = IntVector2.Zero;
+            result.ReadUInt24(r);
+            return result;
+        }
+
         public static void readPosXZ_old(System.IO.BinaryReader r, out Vector3 position, out IntVector2 tilePos)
         {
             position = Vector3.Zero;

@@ -191,7 +191,8 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public void writeGameState(BinaryWriter w)
         {
-            w.Write((ushort)orders.Count);
+            //w.Write((ushort)orders.Count);
+            StreamLib.WriteGrowing_UShort_Add(w, orders.Count);
             foreach (var order in orders)
             {
                 w.Write((byte)order.Type());
@@ -202,8 +203,20 @@ namespace VikingEngine.DSSWars.Players.Orders
         }
 
         public void readGameState(int playerIx, BinaryReader r, int subversion, ObjectPointerCollection pointers)
-        {            
-            int ordersCount = r.ReadUInt16();
+        {
+            int ordersCount;
+            if (subversion >= 133)
+            {
+                ordersCount = StreamLib.ReadGrowing_UShort_Add(r);
+            }
+            else
+            {
+                ordersCount = r.ReadUInt16();
+            }
+//#if DEBUG
+//            ordersCount += ushort.MaxValue + 1;
+//#endif
+
             for (int i = 0; i < ordersCount; i++)
             {
                 OrderType type = OrderType.Build;

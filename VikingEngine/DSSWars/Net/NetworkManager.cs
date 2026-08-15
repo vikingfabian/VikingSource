@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -382,6 +383,20 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
+                case PacketType.DssAssignFaction_Failed:
+                    if (!DssRef.state.UpdateReady())
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.icontext(SpriteName.RedErrorCross, DssRef.todoLang.JoinFailure_NoAvailableFaction);
+                        LocalHost().hud.messages.Add(content, SoundLib.wrong);
+
+                        new Timer.ActionEventTimedTrigger(() =>
+                        {
+                            DssRef.state.beginExit();
+                        }, new Time(5, TimeUnit.Seconds));
+                    }
+                    break;
+
                 case PacketType.DssAssignFaction:
                     {
                         var tplayer = NetReadPlayer(packet.r);
@@ -547,6 +562,18 @@ namespace VikingEngine.DSSWars
                         content.icontext(SpriteName.TextChatLetter, message.message);
 
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+
+                        if (Ref.steam.isInitialized)
+                        {
+                            SteamTimeline.AddInstantaneousTimelineEvent(
+                                        string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.InputActionName_TextChat, sender.Name),               // Title in UI
+                                        DssRef.lang.Multiplayer_Title, // Description in UI
+                                        "steam_chat",                 // Built-in Steam icon 
+                                        0,                              // Priority (0 = default, max= 1000)
+                                        0f,                             // Offset in seconds
+                                        ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                    );
+                        }
                     }
                     break;
                 case PacketType.DssGiftAchievement:
@@ -687,7 +714,19 @@ namespace VikingEngine.DSSWars
                                 new RbAction1Arg<AbsGameObject>(LocalHost().hud.messages.goToMapObject, pin, RbSoundType.Default))
                             { fillWidth = true });
 
-                            LocalHost().hud.messages.Add(content, SoundLib.message_loud);
+                            LocalHost().hud.messages.Add(content, SoundLib.ping);
+
+                            if (Ref.steam.isInitialized)
+                            {
+                                SteamTimeline.AddInstantaneousTimelineEvent(
+                                            string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.ObjectType_LocationPin_Ping, sender.Name),               // Title in UI
+                                            DssRef.lang.ObjectType_LocationPin, // Description in UI
+                                            "steam_marker",                 // Built-in Steam icon 
+                                            1,                              // Priority (0 = default, max= 1000)
+                                            0f,                             // Offset in seconds
+                                            ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                        );
+                            }
                         }
                     }
                     break;
@@ -880,7 +919,7 @@ namespace VikingEngine.DSSWars
                 sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
 
                 sender.profile.casualControls = packet.r.ReadBoolean();
-                //Faction faction = Net.ObjectId.ReadFaction(packet.r, out sender.assignedFaction);
+               
                 var pfaction = new PFaction(packet.r);
                 if (pfaction.HasValue())
                 {
@@ -895,7 +934,17 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 sender.addNetGamerToHud(content, true, false);
                 LocalHost().hud.messages.Add(content, SoundLib.netJoined);
-
+                if (Ref.steam.isInitialized)
+                {
+                    SteamTimeline.AddInstantaneousTimelineEvent(
+                                string.Format( DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Multiplayer_PlayerJoined, sender.Name),               // Title in UI
+                                DssRef.lang.Multiplayer_Title, // Description in UI
+                                "steam_group",                 // Built-in Steam icon 
+                                10,                              // Priority (0 = default, max= 1000)
+                                0f,                             // Offset in seconds
+                                ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                            );
+                }
 
                 if (host)
                 {
@@ -941,6 +990,20 @@ namespace VikingEngine.DSSWars
                                     Ref.steam.P2PManager.OnSendingLargeDataChunk();
 
                                     factionHandovers.Enqueue(new FactionHandover(packet.sender, faction, firstEnterSetup, true));
+                                }));
+                            }
+                            else
+                            {                                
+
+                                Ref.update.AddSyncAction(new SyncAction(() =>
+                                {
+                                    Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction_Failed, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
+                                    RichBoxContent content = new RichBoxContent();
+                                    content.icontext(SpriteName.RedErrorCross, DssRef.todoLang.JoinFailure_NoAvailableFaction);
+                                    sender.addNetGamerToHud(content, false, false);
+                                    LocalHost().hud.messages.Add(content, SoundLib.wrong);
+
+                                    
                                 }));
                             }
                         }
@@ -1080,6 +1143,7 @@ namespace VikingEngine.DSSWars
         int maxPlayerCount = 1;
         public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
         {
+           
             base.NetEvent_PeerJoined(peer);
             var player = GetOrCreateRemotePlayer(peer, 0);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars.Data
 {
@@ -45,6 +46,18 @@ namespace VikingEngine.DSSWars.Data
                     name = readname;
                     custom = true;
                 }
+            }
+        }
+
+        public string GetName()
+        {
+            if (custom)
+            {
+                return LoadContent.CheckCharsSafety(name, LoadedFont.Regular);
+            }
+            else
+            {
+                return name;
             }
         }
     }

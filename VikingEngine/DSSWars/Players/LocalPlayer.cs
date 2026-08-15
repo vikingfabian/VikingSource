@@ -131,9 +131,10 @@ namespace VikingEngine.DSSWars.Players
         public Profile.ObjectHudSettings cityHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings armyHudSettings = new Profile.ObjectHudSettings();
         public Profile.ObjectHudSettings pinHudSettings = new Profile.ObjectHudSettings();
-     
 
-        public int firstAttacker = ushort.MaxValue;
+
+        // public int firstAttacker = ushort.MaxValue;
+        public PFaction firstAttacker = PFaction.Empty;
         public int nextDominationSize;
         public int factionsTerminated = 0;
         public bool barbarianKiller = false;
@@ -399,7 +400,7 @@ namespace VikingEngine.DSSWars.Players
 
             automation.writeGameState(w);
 
-            w.Write(int.MinValue);
+            Debug.WriteCheck(w);
 
             tutorial_writeGameState(w);
             orders.writeGameState(w);
@@ -407,7 +408,8 @@ namespace VikingEngine.DSSWars.Players
             cityHudSettings.write(w);   
             armyHudSettings.write(w);
 
-            w.Write((ushort)firstAttacker);
+            firstAttacker.write(w);
+            //w.Write((ushort)firstAttacker);
             w.Write((ushort)nextDominationSize);
             w.Write(cohalitionEvent);
             w.Write(barbarianKiller);
@@ -482,8 +484,15 @@ namespace VikingEngine.DSSWars.Players
 
             automation.readGameState(r, subversion);
 
-            var none1 = r.ReadInt32();
-
+            // Debug.ReadCheck(r);//TEMP!
+            if (subversion >= 133)
+            {
+                Debug.ReadCheck(r);
+            }
+            else
+            {
+                var none1 = r.ReadInt32();
+            }
             tutorial_readGameState(r, subversion);
 
             orders.readGameState(playerData.localPlayerIndex, r, subversion, pointers);
@@ -501,7 +510,8 @@ namespace VikingEngine.DSSWars.Players
 
             if (subversion >= 73)
             {
-                firstAttacker = r.ReadUInt16();
+                firstAttacker.read(r);
+                //firstAttacker = r.ReadUInt16();
             }
             nextDominationSize = r.ReadUInt16();
             if (subversion < 72)
@@ -759,6 +769,18 @@ namespace VikingEngine.DSSWars.Players
             gameControls.map.selection.obj = pin;
             hud.needRefresh = true;
 
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                            DssRef.lang.ObjectType_LocationPin_Ping,               // Title in UI
+                            DssRef.lang.ObjectType_LocationPin, // Description in UI
+                            "steam_marker",                 // Built-in Steam icon 
+                            4,                              // Priority (0 = default, max= 1000)
+                            0f,                             // Offset in seconds
+                            ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                        );
+            }
+
             return pin;
         }        
 
@@ -816,34 +838,95 @@ namespace VikingEngine.DSSWars.Players
 
             if (otherPFaction.TryGetFaction(out var otherFaction))
             {
-                if ((rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
-                    otherFaction.factiontype != FactionType.SouthHara)
-                    ||
-                    (otherFaction.player != null && otherFaction.player.IsHumanPlayer()))
+                if (otherFaction.factiontype != FactionType.SouthHara)
+                //(rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
+                //otherFaction.factiontype != FactionType.SouthHara)
+                //||
+                //(otherFaction.player != null && otherFaction.player.IsHumanPlayer()))
                 {
 
-                    if (rel.Relation >= RelationType.RelationType0_Neutral)
+                    switch (rel.Relation)
                     {
-                        message(DssRef.lang.Diplomacy_RelationType);
+                        case RelationType.RelationType3_Ally:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationAlly.Play());
+                            break;
+                        case RelationType.RelationType2_Good:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationGood.Play());
+                            break;
+                        case RelationType.RelationType1_Peace:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationGood.Play());
+                            break;
+                        case RelationType.RelationType0_Neutral:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN1_Enemies:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN2_Truce:
+                            message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationEnemy.Play());
+                            break;
+                        case RelationType.RelationTypeN3_Mobilization:
+                        case RelationType.RelationTypeN4_War:
+                            if (previousRelation == RelationType.RelationTypeN2_Truce)
+                            {
+                                message(DssRef.lang.Diplomacy_TruceEndTitle, SoundLib.eventRelationWar.Play());
+                            }
+                            else
+                            {
+                                message(DssRef.lang.Diplomacy_WarDeclarationTitle, SoundLib.eventRelationWar.Play());
+                                Ref.music.OnGameEvent();
+                            }
+                            break;
+                       
+                        case RelationType.RelationTypeN5_TotalWar:
+                            if (previousRelation == RelationType.RelationTypeN2_Truce)
+                            {
+                                message(DssRef.lang.Diplomacy_TruceEndTitle, SoundLib.eventRelationTotalWar.Play());
+                            }
+                            else
+                            {
+                                message(DssRef.lang.Diplomacy_WarDeclarationTitle, SoundLib.eventRelationTotalWar.Play());
+                                Ref.music.OnGameEvent();
+                            }
+                            break;
+
                     }
-                    else if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
+
+                    //if (rel.Relation >= RelationType.RelationType0_Neutral)
+                    //{
+                    //    message(DssRef.lang.Diplomacy_RelationType);
+                    //}
+                    //else if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
+                    //{
+                    //    if (previousRelation == RelationType.RelationTypeN2_Truce)
+                    //    {
+                    //        message(DssRef.lang.Diplomacy_TruceEndTitle);
+                    //    }
+                    //    else
+                    //    {
+                    //        message(DssRef.lang.Diplomacy_WarDeclarationTitle);
+                    //        Ref.music.OnGameEvent();
+                    //    }
+                    //}
+
+                    void message(string title, SoundContainerBase sound)
                     {
-                        if (previousRelation == RelationType.RelationTypeN2_Truce)
+                        if (Ref.steam.isInitialized)
                         {
-                            message(DssRef.lang.Diplomacy_TruceEndTitle);
+                            SteamTimeline.AddInstantaneousTimelineEvent(
+                                        title,               // Title in UI
+                                        DssRef.lang.Diplomacy_RelationType, // Description in UI
+                                        "steam_scroll",                 // Built-in Steam icon 
+                                        (uint)(-(int)rel.Relation + 5),                              // Priority (0 = default, max= 1000)
+                                        0f,                             // Offset in seconds
+                                        ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                                    );
                         }
-                        else
-                        {
-                            message(DssRef.lang.Diplomacy_WarDeclarationTitle);
-                            Ref.music.OnGameEvent();
-                        }
-                    }
-                    void message(string title)
-                    {
+                        //SoundContainerBase sound = 
                         RichBoxContent content = new RichBoxContent();
                         MessageGroup_Ingame.Title(content, title);
                         DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content, true);
-                        Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, SoundLib.message_loud, true));
+                        Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, sound, true));
                     }
 
                 }

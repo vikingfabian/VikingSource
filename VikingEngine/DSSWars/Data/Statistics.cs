@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sentry;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -118,17 +119,18 @@ namespace VikingEngine.DSSWars.Data
             w.Write(FriendlySoldiersLost);
             w.Write(EnemySoldiersKilled);
 
-            w.Write((ushort)CitiesCaptured);
-            w.Write((ushort)CitiesLost);
-            w.Write((ushort)BattlesWon);
-            w.Write((ushort)BattlesLost);
-            w.Write((ushort)WarsStartedByYou);
-            w.Write((ushort)WarsStartedByEnemy);
-            w.Write((ushort)AlliedFactions);
-            w.Write((ushort)ServantFactions);
 
-            w.Write((ushort)decorBuilt);
-            w.Write((ushort)statuesBuilt);
+            w.Write(CitiesCaptured);
+            w.Write(CitiesLost);
+            w.Write(BattlesWon);
+            w.Write(BattlesLost);
+            w.Write(WarsStartedByYou);
+            w.Write(WarsStartedByEnemy);
+            w.Write(AlliedFactions);
+            w.Write(ServantFactions);
+
+            w.Write(decorBuilt);
+            w.Write(statuesBuilt);
             w.Write((ushort)foundCities);
         }
 
@@ -138,17 +140,31 @@ namespace VikingEngine.DSSWars.Data
             FriendlySoldiersLost = r.ReadInt32();
             EnemySoldiersKilled = r.ReadInt32();
 
-            CitiesCaptured = r.ReadUInt16();
-            CitiesLost = r.ReadUInt16();
-            BattlesWon = r.ReadUInt16();
-            BattlesLost = r.ReadUInt16();
-            WarsStartedByYou = r.ReadUInt16();
-            WarsStartedByEnemy = r.ReadUInt16();
-            AlliedFactions = r.ReadUInt16();
-            ServantFactions = r.ReadUInt16();
-
-            if (subVersion >= 17)
+            if (subVersion >= 133)
             {
+                CitiesCaptured = r.ReadInt32();
+                CitiesLost = r.ReadInt32();
+                BattlesWon = r.ReadInt32();
+                BattlesLost = r.ReadInt32();
+                WarsStartedByYou = r.ReadInt32();
+                WarsStartedByEnemy = r.ReadInt32();
+                AlliedFactions = r.ReadInt32();
+                ServantFactions = r.ReadInt32();
+
+                decorBuilt = r.ReadInt32();
+                statuesBuilt = r.ReadInt32();
+            }
+            else
+            {
+                CitiesCaptured = r.ReadUInt16();
+                CitiesLost = r.ReadUInt16();
+                BattlesWon = r.ReadUInt16();
+                BattlesLost = r.ReadUInt16();
+                WarsStartedByYou = r.ReadUInt16();
+                WarsStartedByEnemy = r.ReadUInt16();
+                AlliedFactions = r.ReadUInt16();
+                ServantFactions = r.ReadUInt16();
+
                 decorBuilt = r.ReadUInt16();
                 statuesBuilt = r.ReadUInt16();
             }

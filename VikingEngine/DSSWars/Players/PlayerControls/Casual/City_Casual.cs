@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
@@ -203,6 +204,26 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return casualProgress;
+        }
+
+        public void CheckCasual(AbsPlayer player)
+        {
+            if (player != null)
+            {
+                if (player.IsLocalPlayer())
+                {
+                    if (player.profile.casualControls)
+                    {
+                        automateCity = false;
+                    }
+                    else
+                    {
+                        casualProgress = null;
+                    }
+                }
+
+                casualProgress?.clearAll();
+            }
         }
 
         public int casualRecruitTime_sec(CasualSoldierType soldierType)

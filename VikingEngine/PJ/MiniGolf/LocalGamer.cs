@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Steamworks;
+using System;
+using System.Collections.Generic;
 
 namespace VikingEngine.PJ.MiniGolf
 {
@@ -121,6 +122,18 @@ namespace VikingEngine.PJ.MiniGolf
         {
             if (stunned == null)
             {
+                if (Ref.steam.isInitialized)
+                {
+                    SteamTimeline.AddInstantaneousTimelineEvent(
+                     "💫",// Title in UI
+                    null, // Description in UI
+                    "steam_death", // Built-in Steam icon 
+                    2, // Priority (0 = default, max= 1000)
+                    0f,// Offset in seconds
+                    ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                );
+                }
+
                 removeClub();
                 stunned = new Effect.Stunned(ball);
 

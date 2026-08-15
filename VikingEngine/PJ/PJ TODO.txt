@@ -1,6 +1,12 @@
 ﻿
-debug text synlig i en video
-mapread crash, read generic buttonmap
+* steam timeline
+
+X acceleration error in golf (FPS lock?)
+x no sound in setting
+x error icon in lobby
+x misplaced image in lobby bg
+x steam input, action file
+
 
 Kolla "nano golf", kopiera :)
 

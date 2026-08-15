@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Steamworks;
+using System;
+using System.Collections.Generic;
 
 namespace VikingEngine.PJ.CarBall
 {
@@ -170,6 +171,18 @@ namespace VikingEngine.PJ.CarBall
 
         public void onGoal(FieldHalf field)
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                     "🥅",// Title in UI
+                    null, // Description in UI
+                    "steam_star", // Built-in Steam icon 
+                    6, // Priority (0 = default, max= 1000)
+                    0f,// Offset in seconds
+                    ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+                );
+            }
+
             field.opposite.scorePoint();
             new GoalFieldBeemEffect(field.leftHalf);
             new BounceEffect(field.goalImg);
@@ -186,6 +199,17 @@ namespace VikingEngine.PJ.CarBall
 
         public void onFinalGoal(bool leftTeamWinner)
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                    "🥅",// Title in UI
+                   null, // Description in UI
+                   "steam_star", // Built-in Steam icon 
+                   6, // Priority (0 = default, max= 1000)
+                   0f,// Offset in seconds
+                   ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
+               );
+            }
             state_0intro_1play_2ending = 2;
 
             cballRef.sounds.winner.PlayFlat();
