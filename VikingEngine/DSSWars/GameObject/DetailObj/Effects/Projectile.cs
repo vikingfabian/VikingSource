@@ -284,7 +284,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             
 
-            if (Ref.GameTimePassed16ms > 0)
+            if (Ref.GameTimePassed33ms > 0)
             {
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.BulletTrace, model.position);
                 //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.DssDamage, model.position);

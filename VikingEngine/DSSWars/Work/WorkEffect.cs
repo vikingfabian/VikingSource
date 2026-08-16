@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
             {
                 if (Ref.peRnd.Chance(0.5))
                 {
@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
             {
                 if (Ref.peRnd.Chance(0.2))
                 {
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, AreaSz));
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, AreaSz));
@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
             {
                 if (/*Ref.TimePassed16ms &&*/ Ref.peRnd.Chance(0.5))
                 {
@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
             {
                 if (Ref.peRnd.Chance(0.5))
                 {
@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
             {
                 if (Ref.peRnd.Chance(0.5))
                 {
@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
             {
                 if (Ref.peRnd.Chance(0.5))
                 {

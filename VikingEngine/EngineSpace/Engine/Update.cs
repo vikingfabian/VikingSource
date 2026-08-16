@@ -24,8 +24,10 @@ namespace VikingEngine.Engine
         public LasyUpdatePart LasyUpdatePart = LasyUpdatePart.Part1;
         public float LazyUpdateTime = 0;
         //float time_16msCountDown = 0;
-        float gametime_16msCountDown = 0;
-        float time_16msCountDown = 0;
+        float gametime_33msCountDown = 0;
+        float time_33msCountDown = 0;
+        float gametime_8msCountDown = 0;
+        float time_8msCountDown = 0;
         public float TotalGameTime = 0;
         public bool exitApplication = false;
         public TextInput textInput = null;
@@ -144,9 +146,10 @@ namespace VikingEngine.Engine
         }
 
         float lazyUpdateAccumulatedTime_next = 0;
-        public const float Time16ms = 1000f / 30f;
-        public const float Time16msInSeconds = 1f / 30f;
+        public const float Time33ms = 1000f / 30f;
+        public const float Time33msInSeconds = 1f / 30f;
         public const float Time60Fps = 1000f / 60f;
+        public const float Time8ms = 1000f / 120f;
 
         void Time_Update(float time)
         {
@@ -166,26 +169,49 @@ namespace VikingEngine.Engine
             //    }
             //}
 
-            {//Calc Ref.GameTimePassed16ms
-                Ref.GameTimePassed16ms = 0;
+            {//Calc Ref.GameTimePassed33ms
+                Ref.GameTimePassed33ms = 0;
 
-                gametime_16msCountDown += Ref.DeltaGameTimeMs;
+                gametime_33msCountDown += Ref.DeltaGameTimeMs;
 
-                while(gametime_16msCountDown >= Time16ms)
+                while(gametime_33msCountDown >= Time33ms)
                 {
-                    gametime_16msCountDown -= Time16ms;
-                    ++Ref.GameTimePassed16ms;
+                    gametime_33msCountDown -= Time33ms;
+                    ++Ref.GameTimePassed33ms;
                 }
             }
-            {//Calc Ref.GameTimePassed16ms
-                Ref.GameTimePassed16ms = 0;
+            {//Calc Ref.GameTimePassed33ms
+                Ref.TimePassed33ms = 0;
 
-                time_16msCountDown += Ref.DeltaTimeMs;
+                time_33msCountDown += Ref.DeltaTimeMs;
 
-                while (time_16msCountDown >= Time16ms)
+                while (time_33msCountDown >= Time33ms)
                 {
-                    time_16msCountDown -= Time16ms;
-                    ++Ref.TimePassed16ms;
+                    time_33msCountDown -= Time33ms;
+                    ++Ref.TimePassed33ms;
+                }
+            }
+
+            {//Calc Ref.GameTimePassed8ms
+                Ref.GameTimePassed8ms = 0;
+
+                gametime_8msCountDown += Ref.DeltaGameTimeMs;
+
+                while (gametime_8msCountDown >= Time8ms)
+                {
+                    gametime_8msCountDown -= Time8ms;
+                    ++Ref.GameTimePassed8ms;
+                }
+            }
+            {//Calc Ref.GameTimePassed8ms
+                Ref.TimePassed8ms = 0;
+
+                time_8msCountDown += Ref.DeltaTimeMs;
+
+                while (time_8msCountDown >= Time8ms)
+                {
+                    time_8msCountDown -= Time8ms;
+                    ++Ref.TimePassed8ms;
                 }
             }
 

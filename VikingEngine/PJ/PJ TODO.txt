@@ -1,10 +1,12 @@
 ﻿
-* steam timeline
+* Updated to the latest VikingEngine, Monogame framework and Steam API
+* Steam timeline markers
+* The physics simulation will run in 120 FPS instead of 30
 
+X block golf bump for 400 after launch
 X acceleration error in golf (FPS lock?)
 x no sound in setting
 x error icon in lobby
-x misplaced image in lobby bg
 x steam input, action file
 
 

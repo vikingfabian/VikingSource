@@ -67,7 +67,7 @@ namespace VikingEngine.PJ.Bagatelle
             CoinScale = BallScale * 0.45f;
             CoinPegScale = PegScale;
             shadowOffset = new Vector2(0.05f, 0.053f) * BallScale;
-            Gravity = 0.0001f * activeScreenArea.Height;
+            Gravity = 0.00005f * activeScreenArea.Height;
             BumbCollisionSpeedAdd = Gravity * 40;
                        
 

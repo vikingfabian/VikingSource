@@ -52,12 +52,12 @@ namespace VikingEngine.Graphics
             if (realTime)
             {
                 time = Ref.DeltaTimeMs;
-                gravityUpdate = Ref.GameTimePassed16ms > 0;
+                gravityUpdate = Ref.GameTimePassed33ms > 0;
             }
             else
             {
                 time = Ref.DeltaGameTimeMs;
-                gravityUpdate = Ref.GameTimePassed16ms > 0;
+                gravityUpdate = Ref.GameTimePassed33ms > 0;
             }
         }
 

@@ -99,14 +99,16 @@ namespace VikingEngine
         /// </summary>
         public static float UpdateTimes60FPS;
 
+        /// <summary>For 30fps or more, how many times * 30fps game runs</summary>
+        public static int GameTimePassed33ms = 0;
 
-        /// <summary>For 60fps, acceleration and other processes sensitive to change in FPS</summary>
-        //public static bool TimePassed16ms = false;
+        public static int TimePassed33ms = 0;
 
-        /// <summary>For 60fps or more, how many times * 60fps game runs, IN GAME TIME</summary>
-        public static int GameTimePassed16ms = 0;
 
-        public static int TimePassed16ms = 0;
+        /// <summary>For 120fps or more, how many times * 120fps game runs</summary>
+        public static int GameTimePassed8ms = 0;
+
+        public static int TimePassed8ms = 0;
 
         public static void ClearGarbage()
         {

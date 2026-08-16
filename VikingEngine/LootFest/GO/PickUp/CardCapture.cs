@@ -94,7 +94,7 @@ namespace VikingEngine.LootFest.GO.PickUp
         public override void Time_Update(float time)
         {
             model.Scale1D += scaleSpeed * Ref.DeltaTimeSec;
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 scaleSpeed += scaleAccelerate;
                 Engine.ParticleHandler.AddExpandingParticleArea(Graphics.ParticleSystemType.WeaponSparks, model.position, 4f, 8, -0.5f);

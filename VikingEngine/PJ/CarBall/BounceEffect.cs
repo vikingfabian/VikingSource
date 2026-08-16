@@ -36,7 +36,7 @@ namespace VikingEngine.PJ.CarBall
             else
             {
                 image.size = scaleAdd * MathExt.Sinf(time) + startScale;
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     scaleAdd *= 0.86f;
                 }

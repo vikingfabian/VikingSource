@@ -3103,7 +3103,7 @@ namespace VikingEngine
                 add(SpriteName.LfAchievementAllCards_lock, currentIndex, 2, 2);
                 add(SpriteName.cgSacrificeForCards, currentIndex, 4, 2);
                 add(SpriteName.cgSacrificeForMana, currentIndex, 4, 2);
-                currentIndex += 2;
+                //currentIndex += 2;
                 add(SpriteName.birdSkyTex, currentIndex, 2, 2);
                 currentIndex += 14;
                 add(SpriteName.EditorPencilCube, 2, 2);

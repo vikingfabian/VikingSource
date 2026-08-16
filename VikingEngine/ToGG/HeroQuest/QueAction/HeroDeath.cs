@@ -29,7 +29,7 @@ namespace VikingEngine.ToGG.HeroQuest.QueAction
 
         protected bool updateSkull()
         {
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 Vector2 diff = hqRef.playerHud.doombar.nextSkullPos - skull.Position;
                 skull.Position += diff * 0.16f;

@@ -83,7 +83,7 @@ namespace VikingEngine.PJ
             //Background
             const float SkySzAdd = 20;
             Graphics.Image sky = new Graphics.Image(SpriteName.birdSkyTex, new Vector2(-SkySzAdd), Engine.Screen.ResolutionVec + new Vector2(SkySzAdd * PublicConstants.Twice), ImageLayers.Background9);
-            sky.Opacity = 0.2f;
+            sky.Opacity = 0.4f;
 
             initTopBar();
             initBottomMenu();
@@ -218,7 +218,9 @@ namespace VikingEngine.PJ
                 monitorOptionSz = buttonSz * 0.7f;
 
                 VectorRect area = new VectorRect(menuButton.area.Right + bigButtonsSize.X, Engine.Screen.SafeArea.Bottom - buttonSz.Y, buttonSz.X, buttonSz.Y);
-                windowToggleButton = new MenuButton(area, true, SpriteName.NO_IMAGE, HudLib.LayButtons, HudLib.ButtonSettings);
+                windowToggleButton = new MenuButton(area, true, 
+                    Engine.Screen.PcDisplayMode == Engine.WindowDisplayMode.Windowed? SpriteName.MenuIconMonitorArrowsOut : SpriteName.MenuIconMonitorArrowsIn, 
+                    HudLib.LayButtons, HudLib.ButtonSettings);
                 windowToggleButton.iconScaleDown = 0.2f;
                 windowToggleButton.refreshIconSz();
 
@@ -824,6 +826,7 @@ namespace VikingEngine.PJ
                 {
                     if (windowToggleButton.update())
                     {
+                      Ref.gamesett.SetDisplayMode(Engine.Screen.PcDisplayMode == Engine.WindowDisplayMode.Windowed? Engine.WindowDisplayMode.BorderlessFullscreen : Engine.WindowDisplayMode.Windowed);
                         //Ref.gamesett.fullscreenProperty(0, true, !Engine.Screen.PcTargetFullScreen);
                     }
                     if (monitorOptions.update())

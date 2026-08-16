@@ -390,7 +390,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
 
             if (exdrudedState)
             {
-                for(int i = 0; i < Ref.GameTimePassed16ms; ++i)//f (Ref.TimePassed16ms)
+                for(int i = 0; i < Ref.GameTimePassed33ms; ++i)//f (Ref.TimePassed16ms)
                 {
                     Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.BulletTrace, damageBound.center, 0.5f, 4);
                 }
@@ -410,7 +410,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
                 if (!smokeTimer.TimeOut)
                 {
                     smokeTimer.CountDown();
-                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                    for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                     {
                         Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.Smoke, collisionBound.center, 0.5f, 4);
                     }

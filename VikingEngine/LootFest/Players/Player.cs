@@ -820,7 +820,7 @@ namespace VikingEngine.LootFest.Players
 
         public void updateCameraTargetChasing()
         {
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 const float TargetInfront = 1f / AngleSamplesCount;
                 if (hero != null)

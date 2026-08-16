@@ -64,7 +64,7 @@ namespace VikingEngine.PJ.CarBall
 
         public override void Time_Update(float time_ms)
         {
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 if (images.Count > 0)
                 {

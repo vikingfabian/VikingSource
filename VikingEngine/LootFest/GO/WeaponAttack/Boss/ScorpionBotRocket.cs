@@ -46,7 +46,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Boss
             rotateTowardsObject(target, 0.002f * homingSpeed);
             Velocity.Set(rotation, speed);
 
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 const float YspeedMulti = 2f;
 

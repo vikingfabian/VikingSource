@@ -311,21 +311,24 @@ namespace VikingEngine.PJ.Bagatelle
 
             if (localMember || isShadowBall)
             {
-                velocity.Y += state.Gravity;
-                image.Position += velocity;
-                bound.Center = image.Position;
-    
-                if (localMember)
+                for (int i = 0; i < Ref.GameTimePassed8ms; ++i)
                 {
-                    foreach (var m in state.gameobjects.list)
-                    {
-                        if (m != this)
-                        {
-                            checkCollisionWith(m, true);
-                        }
-                    }
+                    velocity.Y += state.Gravity;
+                    image.Position += velocity;
+                    bound.Center = image.Position;
 
-                    outerBoundsCollision();
+                    if (localMember)
+                    {
+                        foreach (var m in state.gameobjects.list)
+                        {
+                            if (m != this)
+                            {
+                                checkCollisionWith(m, true);
+                            }
+                        }
+
+                        outerBoundsCollision();
+                    }
                 }
             }
             else
@@ -439,10 +442,10 @@ namespace VikingEngine.PJ.Bagatelle
 
         void checkCollisionWith(AbsGameObject obj, bool primaryCheck)
         {
-            if (obj.bound.Type == Physics.Bound2DType.Rectangle && Input.Keyboard.Ctrl)
-            {
-                lib.DoNothing();
-            }
+            //if (obj.bound.Type == Physics.Bound2DType.Rectangle && Input.Keyboard.Ctrl)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (obj.isDeleted)
             {

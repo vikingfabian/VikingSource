@@ -11,7 +11,7 @@ namespace VikingEngine.PJ.Bagatelle
         static readonly Color PegFlashCol = new Color(255, 174, 254);
         static readonly Color SnakePegFlashCol = new Color(201, 254, 174);
 
-        public const float PegElasticity = 0.7f;
+        public const float PegElasticity = 0.85f;
         const int PegHealth = 5;
         int health = PegHealth;
 

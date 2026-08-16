@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (bounces <= 1)
                 {
-                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                    for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                     {
                         velocity.Y += Blood_Gravity;
                     }
@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //State 2: sliding
                     velocity.Y = 0;
 
-                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                    for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                     {
                         velocity.Value *= 0.9f;
                         if (velocity.PlaneLength() < Blood_MinSpeed)

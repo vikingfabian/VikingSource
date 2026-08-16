@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (soldier.state.walking )
             {
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
                 {
                     Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterFoamY),
                     DssConst.Men_StandardModelScale * 0.8f, 5);

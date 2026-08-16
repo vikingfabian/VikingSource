@@ -13,7 +13,7 @@ namespace VikingEngine.PJ.MiniGolf
         public int typeIndex = 0;
 
         public Graphics.TextG editorText = null;
-        public const float DefaultFriction = 0.985f;
+        public const float DefaultFriction = 0.997f;//0.985f;
         const float SandFriction = DefaultFriction * 0.8f;
 
         public string SquareText()

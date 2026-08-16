@@ -55,7 +55,7 @@ namespace VikingEngine.LootFest
             if (falling)
             {
                  //if (Ref.TimePassed16ms)
-                { parent.Velocity.Y += Gravity * Engine.Update.Time16ms; }
+                { parent.Velocity.Y += Gravity * Engine.Update.Time33ms; }
                 float newYpos = heroPos.Y + parent.Velocity.Y * Ref.DeltaTimeMs;
 
                 

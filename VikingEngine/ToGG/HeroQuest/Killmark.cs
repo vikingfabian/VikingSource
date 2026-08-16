@@ -121,7 +121,7 @@ namespace VikingEngine.ToGG.HeroQuest
         public override void Time_Update(float time_ms)
         {
             //Slide upwards
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 float diff = groundY - model.position.Y;
                 model.position.Y += diff * 0.15f;

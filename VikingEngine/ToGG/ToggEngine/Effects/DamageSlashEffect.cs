@@ -55,7 +55,7 @@ namespace VikingEngine.ToGG.Effects
         {
             if (delay.CountDown() /*&& Ref.TimePassed16ms*/)
             {
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
                 {
                     update++;
 

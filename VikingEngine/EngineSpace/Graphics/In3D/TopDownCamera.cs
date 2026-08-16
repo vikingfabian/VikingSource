@@ -34,7 +34,7 @@ namespace VikingEngine.Graphics
             const float BASE_CHASE_SPEED = 0.05f;
             if (l > BASE_CHASE_SPEED)
             {
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     currentChaseLength = l * positionChaseLengthPercentage;
 
