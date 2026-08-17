@@ -643,6 +643,8 @@ namespace VikingEngine
             addFullQtile(SpriteName.spaceWarStarWhite, SpriteName.golfChickenFlagFeather,
                  SpriteName.m3GameSpeedArrow, SpriteName.m3GameSpeedArrowGray);
 
+            add(SpriteName.DKbarrel);
+            add(SpriteName.DKbarrel_full);
             //--
 
 

@@ -109,15 +109,18 @@ namespace VikingEngine.DataStream
                     else
                         result += Dir + LocalDirectoryPath;
                 }
-
+#if DEBUG 
                 if (result == "\\")
                     throw new Exception();
-
+#endif
                 return result;
             }
         }
 
-
+        public void CreateDirectory()
+        {
+            Directory.CreateDirectory(CompleteDirectory);
+        }
         
 
         

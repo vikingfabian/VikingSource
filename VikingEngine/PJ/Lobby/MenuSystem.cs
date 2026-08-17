@@ -8,18 +8,21 @@ using VikingEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Input;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.PJ
 {
     class MenuSystem
     {
-        public Gui menu;
+        //public Gui menu;
+        RichMenu richMenu;
         LobbyState lobby;
 
         public MenuSystem(InputSource input)
         {
-            menu = new Gui(GuiStyle(), Screen.SafeArea, 0f, HudLib.LayMenu, input);
-            menu.useAnyControllerInput = true;
+            //menu = new Gui(GuiStyle(), Screen.SafeArea, 0f, HudLib.LayMenu, input);
+            //menu.useAnyControllerInput = true;
+
         }
 
         public MenuSystem(LobbyState lobby, InputSource input)

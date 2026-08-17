@@ -27,7 +27,8 @@ namespace VikingEngine.PJ.GameObject
 
         public override void Time_Update(float time_ms)
         {
-            velocity.Y += gravity; //* Ref.DeltaTimeMs;
+            
+            velocity.Y += gravity * Ref.GameTimePassed8ms; //* Ref.DeltaTimeMs;
 
             image.Position += velocity * Ref.DeltaTimeMs;
 

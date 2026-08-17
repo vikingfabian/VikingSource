@@ -32,9 +32,9 @@ namespace VikingEngine.PJ.Joust
         public static void Init()
         {
             ImageScale = Engine.Screen.Height * 0.11f;
-            Gravity = 0.0003652f * ImageScale;
-            AirTrickFallSpeed = Gravity * 16;
-            FlapUpForce = -Gravity * 28f;
+            Gravity = 0.0003652f * 0.5f * ImageScale;
+            AirTrickFallSpeed = Gravity * 16 * 2;
+            FlapUpForce = -Gravity * 28f * 2;
             SpeedX = 0.003f * ImageScale;
             BlockSpeedUp = SpeedX * 1.5f;
             FallBoostSpeedUp = SpeedX * 1.4f;
@@ -465,7 +465,7 @@ namespace VikingEngine.PJ.Joust
 
             if (isDiveBomb)
             {
-                velocity.Y = FlapUpForce * 0.25f;
+                velocity.Y = FlapUpForce * 0.4f;
                 endDiveBomb();
             }
             else
@@ -580,7 +580,7 @@ namespace VikingEngine.PJ.Joust
                 if (isDiveBomb)
                 {
                     createDiveBombFire();
-                    velocity.Y = Gravity * 36;
+                    velocity.Y = Gravity * 60;
                 }
                 else if (airTrick.HasTime)
                 {
@@ -590,8 +590,9 @@ namespace VikingEngine.PJ.Joust
                 {
                     float prevVelocity = velocity.Y;
 
-                    velocity.Y += Gravity;
-
+                    
+                    velocity.Y += Gravity * Ref.GameTimePassed8ms;
+                    
                     checkAirTrickInput(prevVelocity);
                 }
             }
@@ -684,7 +685,7 @@ namespace VikingEngine.PJ.Joust
             for (int i = 0; i < count; ++i)
             {
                 Rotation1D dir = new Rotation1D(Ref.rnd.Plus_MinusF(MathExt.TauOver8));
-                Vector2 speed = dir.Direction(Gravity * 5f);
+                Vector2 speed = dir.Direction(Gravity * 10f);
 
                 Graphics.ParticleImage part = new Graphics.ParticleImage(SpriteName.WhiteCirkle,
                     image.position + Ref.rnd.vector2_cirkle(ImageScale * 0.2f),
@@ -708,7 +709,7 @@ namespace VikingEngine.PJ.Joust
             for (int i = 0; i < count; ++i)
             {
                 Rotation1D dir = new Rotation1D(Ref.rnd.Plus_MinusF(MathExt.TauOver8));
-                Vector2 speed = dir.Direction(Gravity * 2f);
+                Vector2 speed = dir.Direction(Gravity * 4f);
 
                 Graphics.ParticleImage part = new Graphics.ParticleImage(SpriteName.WhiteCirkle,
                     image.position + Ref.rnd.vector2_cirkle(ImageScale * 0.2f),
@@ -1097,12 +1098,17 @@ namespace VikingEngine.PJ.Joust
                 {
                     weapons[i].OnTakeDamage();
                 }
+                bool wasDiveBomb = isDiveBomb;
                 clearAllStates();
 
                 if (status == JoustPlayerStatus.Flying)
                 {
                     shieldImage.Visible = false;
                     health--;
+                    if (wasDiveBomb)
+                    {
+                        health =Bound.Min(health - 1, 0);
+                    }
                     if (health <= 0)
                     {//destroyed
                         onDestroyed();

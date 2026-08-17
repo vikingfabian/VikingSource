@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using VikingEngine.DataStream;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.PJ
 {
@@ -34,6 +36,12 @@ namespace VikingEngine.PJ
                 "PartyJoustingSettings", ".sav",
                 true,
                 false);
+            
+            
+            if (save)
+            {
+                filePath.CreateDirectory();
+            }
             
             new FileIO_2(save, filePath, write, read, startThread);
         }

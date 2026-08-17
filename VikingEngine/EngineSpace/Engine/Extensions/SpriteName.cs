@@ -2213,6 +2213,10 @@ namespace VikingEngine
         golfBugHideN2,
         golfBugDead,
 
+        DKbarrel,
+        DKbarrel_full,
+
+
         m3BrickYellow,
         m3BrickRed,
         m3BrickOrange,

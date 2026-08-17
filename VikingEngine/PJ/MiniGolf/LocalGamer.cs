@@ -19,7 +19,7 @@ namespace VikingEngine.PJ.MiniGolf
         protected Graphics.Image border, animal, controllerIcon;
         protected Graphics.ImageAdvanced button;
         Display.SpriteText scoreText;
-
+        public GameTimeStamp fireTimeStamp = GameTimeStamp.None;
         public int score = 0;
 
         public LocalGamer(GamerData gamerdata, VectorRect hudArea)
@@ -159,6 +159,7 @@ namespace VikingEngine.PJ.MiniGolf
         {
             if (club != null)
             {
+                fireTimeStamp.setNow();
                 club.DeleteMe();
                 club = null;
             }
@@ -185,7 +186,7 @@ namespace VikingEngine.PJ.MiniGolf
         void updateRolling()
         {
             idleTimer = 0;
-            if (power != null && gamerdata.button.DownEvent)
+            if (power != null && gamerdata.button.DownEvent && fireTimeStamp.msPassed(200))
             {
                 if (power.activate(ball))
                 {
