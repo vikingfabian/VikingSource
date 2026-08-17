@@ -33,14 +33,14 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             else
             {
-                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * addHeight), Generator3.Height_WaterBottom);
+                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * addHeight), Map2Generator.Height_WaterBottom);
             }
             //centerHeight = addHeight;
         }
 
         public void adjustHeight(float add)
         {
-            if (centerHeight + add > Generator3.Height_LowGround)
+            if (centerHeight + add > Map2Generator.Height_LowGround)
             {
                 centerHeight += add;
                 edgeHeight += add;

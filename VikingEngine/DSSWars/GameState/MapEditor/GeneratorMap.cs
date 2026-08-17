@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
         }
 
-        public void generate2(Map.Map2.WorldData2 world)
+        public void generate2(Map.Map2.IconWorldData world)
         {
             texture.texture = new Graphics.PixelTexture(world.iconGrid.Size);
 

@@ -15,7 +15,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
     {
         MapEditor2Display display;
         bool loadingState = false;
-        Generator3 generator = new Generator3();
+        Map2Generator generator = new Map2Generator();
+        Map2GenerateSettings generateSettings = new Map2GenerateSettings();
         GeneratorMap map;
         public bool iconState = true;
         public MapEditor2_Scene()
@@ -44,7 +45,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 {
                     loadingState = false;
                     display.loadingDisplay.Hide();
-                    map.generate2(generator.world);
+                    map.generate2(generator.iconWorld);
                 }
             }
             else
@@ -60,7 +61,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         {
             loadingState = true;
             display.loadingDisplay.Show();
-            generator.generate();
+            generator.generate(generateSettings);
             //if (pass == GenerateMapPass.Clear || pass == GenerateMapPass.AllTerrain)
             //{
             //    mapBackgroundLoading = new MapGenerator_BackgroundLoading();
