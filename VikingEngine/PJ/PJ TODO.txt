@@ -1,5 +1,8 @@
 ﻿
 * steam timeline
+* updated to the latest monogame framework
+* updated to .NET10 which should be slightly faster
+
 
 X acceleration error in golf (FPS lock?)
 x no sound in setting
