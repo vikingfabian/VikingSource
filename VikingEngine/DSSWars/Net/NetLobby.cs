@@ -97,6 +97,5 @@ namespace VikingEngine.DSSWars.Net
             public AbsAvailableSession session;
         }
 
-        
     }
 }

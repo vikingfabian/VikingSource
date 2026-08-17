@@ -21,6 +21,8 @@ namespace VikingEngine.PJ
         public FinalScoreState()
             : base()
         {
+
+            Input.Mouse.ViewAll();//Input.Mouse.Hide();//Input.Mouse.Visible = true;
             if (Ref.steam.isInitialized)
             {
                 SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Staging);

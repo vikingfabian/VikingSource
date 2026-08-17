@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars
             goodNews = new SoundContainerSingle(StingerDir + "Good News", 1f);
             storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 1f);
             warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 1f);
-            saving = new SoundContainerSingle(StingerDir + "Saving game", 0.6f);
+            saving = new SoundContainerSingle(StingerDir + "Saving game", 0.4f);
             recievedGift = new MessageTimer(new SoundContainerSingle(StingerDir + "Received gifts"));
 
         }

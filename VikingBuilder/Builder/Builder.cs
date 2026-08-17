@@ -1,4 +1,4 @@
-﻿#define PJ
+﻿#define DSS
 
 /// <summary>
 /// Entry point for the Content Builder project, 
@@ -107,7 +107,7 @@ public class Builder : ContentBuilder
 #if PJ
         contentCollection.Exclude<WildcardRule>("DSS/**");
 #endif
-
+        contentCollection.Include<WildcardRule>("*.wav", new WavImporter());
         contentCollection.Exclude<WildcardRule>("Shaders/DeferredRenderer/*.*");
         contentCollection.Exclude<WildcardRule>("Shaders/Old/*.*");
         

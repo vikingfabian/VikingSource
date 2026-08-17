@@ -6,7 +6,7 @@
       <ContentArgs>build -p $(MonoGamePlatform) -s VikingBuilder/Assets -o $(ContentOutput) -i $(ContentTemp)</ContentArgs>
       <ContentCommand>$(MSBuildThisFileDirectory)bin\Debug\VikingBuilder</ContentCommand>
     </PropertyGroup>
-    <MSBuild Projects="$(MSBuildThisFileDirectory)VikingBuilder.csproj" Targets="Build" RemoveProperties="Configuration;TargetFramework;RuntimeIdentifier;RuntimeIdentifiers" />
+    <MSBuild Projects="$(MSBuildThisFileDirectory)VikingBuilder.csproj" Targets="Restore;Build" RemoveProperties="Configuration;TargetFramework;RuntimeIdentifier;RuntimeIdentifiers;Platform" />
     <Exec Command="$(ContentCommand) $(ContentArgs)" WorkingDirectory="$(MSBuildThisFileDirectory)..\" CustomErrorRegularExpression="\[E\] .+" CustomWarningRegularExpression="\[W\] .+" />
    </Target>
   <Target Name="AddGeneratedContentAssets"
