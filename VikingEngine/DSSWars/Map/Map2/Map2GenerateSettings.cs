@@ -15,6 +15,11 @@ namespace VikingEngine.DSSWars.Map.Map2
         public bool bCustomSize = false;
         public IntVector2 customMapSize = new IntVector2(WorldData.CustomMapSize_Min);
         public MapSize mapSize = MapSize.Medium;
+        
+        /// <summary>
+        /// Compared to medium map 
+        /// </summary>
+        public float scale = 1.0f;
 
         public bool CustomSizeProperty(object tag, bool set, bool value)
         {
@@ -31,16 +36,15 @@ namespace VikingEngine.DSSWars.Map.Map2
             return bCustomSize ? customMapSize : WorldData.SizeDimentions(mapSize);
         }
 
-        //public bool CleanUpProperty(object tag, bool set, bool value)
-        //{
-        //    if (set)
-        //    {
-        //        cleanUpSingleTiles = value;
-        //        (value ? SoundLib.click : SoundLib.back).Play();
-        //    }
-        //    return cleanUpSingleTiles;
-        //}
+        public int loopCount(PcgRandom rnd, int mediumCount)
+        {
+            double count = mediumCount * scale;
 
+            double rndAdd = Bound.Min(count * 0.2, 1);
+
+            return Convert.ToInt32(count + rnd.Plus_MinusD(rndAdd));
+        }
+       
         public int MapXProperty(object tag, bool set, int value)
         {
             if (set)

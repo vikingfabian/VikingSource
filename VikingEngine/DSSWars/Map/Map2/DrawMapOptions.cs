@@ -10,6 +10,8 @@ namespace VikingEngine.DSSWars.Map.Map2
     {
         public bool add;
         public float addHeight;
+
+        public float? heightCap;
         public float centerHeight;
         public float edgeHeight;
 
