@@ -46,20 +46,24 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             texture.initTexture();
             texture.filter = arraylib.HasMembers(DssRef.world.cities)? FactionMapFilter.FactionCols : FactionMapFilter.Terrain;
             texture.refreshWorld();
-            //if (arraylib.HasMembers( DssRef.world.cities))
-            //{
-            //    texture.RefreshWorld_FactionCol();
-            //}
-            //else
-            //{
-            //    texture.RefreshWorld_TerrainCol();
-            //}
+           
             image.Texture = texture.texture;
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
         }
 
-        public void generate2(Map.Map2.IconWorldData world)
+
+        public void generateNodes(Map.Map2.NodeMap map)
+        {
+            
+            texture.texture = map.texture;
+            image.Texture = map.texture;
+            image.SetFullTextureSource();
+            textureSize = new Vector2(texture.texture.Width, texture.texture.Height) * Map.Map2.NodeMap.NodePixWidth;
+            image.Visible = true;
+        }
+
+        public void generateIcon(Map.Map2.IconWorldData world)
         {
             texture.texture = new Graphics.PixelTexture(world.iconGrid.Size);
 
@@ -68,24 +72,19 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             {
                 var t = world.iconGrid.Get(loop.Position);
                 texture.texture.SetPixel(loop.Position, t.color);
-
-                //texture.texture.SetPixel(loop.Position, Color.Beige);
             }
 
-
-
             texture.texture.ApplyPixelsToTexture();
-            //if (arraylib.HasMembers(DssRef.world.cities))
-            //{
-            //    texture.RefreshWorld_FactionCol();
-            //}
-            //else
-            //{
-            //    texture.RefreshWorld_TerrainCol();
-            //}
+            
             image.Texture = texture.texture;
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
+            image.Visible = true;
+        }
+
+        public void hide()
+        {
+            image.Visible = false;
         }
     }
 }

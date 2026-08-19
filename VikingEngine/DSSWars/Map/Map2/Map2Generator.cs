@@ -8,21 +8,37 @@ using VikingEngine.EngineSpace.Maths;
 
 namespace VikingEngine.DSSWars.Map.Map2
 {
+    enum Map2Pass
+    {
+        Empty,
+        NewWorld,
+        NodeGrid,
+        Icon,
+        IconNoise,
+        ScaleUp,
+        PostNoise,
+
+        NUM
+    }
+
     class Map2Generator
     {
         const float Height_WaterPlane = 0;
         public const float Height_WaterBottom = Height_WaterPlane - 0.3f;
         public const float Height_LowGround = Height_WaterPlane + 0.1f;
         const float Height_DefaultGround = Height_WaterPlane + 0.2f;
-        const float Height_MountainStart = Height_DefaultGround + 0.3f;
+        public const float Height_MountainStart = Height_DefaultGround + 0.3f;
         const float Height_MountainPeek = Height_DefaultGround + 0.6f;
 
         const float LayerAddHeight = 0.15f;
         const float Height_PostNoise = LayerAddHeight * 2.4f;
 
         LoadingState loadingState = LoadingState.None;
+
+        public Map2Pass currentPass = 0;
         public IconWorldData iconWorld;
         public WorldData2 world;
+        public NodeMap nodeMap;
         Grid2D_L<GenTile> dataGrid;
         List<Task> tasks = new List<Task>(64);
         //List<Vector2> connectPoints = null;
@@ -44,15 +60,14 @@ namespace VikingEngine.DSSWars.Map.Map2
                 {
 
                     newWorldPass(generateSettings);
-
-                    //await defaultWorldPass();
-                    await nodeGridPass();
+                     
+                    await nodeTerrainPass(generateSettings);
 
                     addNoiseTexture();
 
                     //world = new WorldData2(iconWorld);
                     //todo clone
-                    scaleUp16x();
+                    //scaleUp16x();
 
                     postProcessPixels();
 
@@ -62,107 +77,102 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
         }
 
-        private async Task nodeGridPass()
+        public void generatePass(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end)
         {
-            const int NodePixWidth = 8;
 
-            int start = NodePixWidth / 2;
-            IntVector2 gridSz = new IntVector2(iconWorld.iconGrid.Width / NodePixWidth - 1, iconWorld.iconGrid.Height / NodePixWidth - 1);
-
-            float fillPerc = 0.25f;
-            Grid2D_L<bool> nodeGrid = new Grid2D_L<bool>(gridSz);
-            int fillCount = (int)(gridSz.Area() * fillPerc);
-
-            while (fillCount > 0)
+            loadingState = LoadingState.Pass;
+            if (currentPass < start)
             {
-                
-                setPos(iconWorld.rnd.intvector2(gridSz));
-                
-
-                void setPos(IntVector2 pos)
-                {
-                    if (!nodeGrid.Get(pos))
-                    {
-                        nodeGrid.Set(pos, true);
-                        fillCount--;
-
-
-                        double rand = iconWorld.rnd.Double();
-
-                        if (rand < 0.45)
-                        {
-                            foreach (var dir in IntVector2.Dir8Array)
-                            {
-                                if (iconWorld.rnd.Chance(0.6))
-                                {
-                                    if (nodeGrid.TryGet(pos + dir, out var value) && !value)
-                                    {
-                                        setPos(pos + dir);
-                                    }
-                                }
-                            }
-                        }
-                        else if (rand < 0.9)
-                        {
-                            //Try connect
-                            for (int i = 0; i < 2; i++)
-                            {
-                                IntVector2 rndDir = arraylib.RandomListMember(IntVector2.Dir8Array, iconWorld.rnd);
-
-                                IntVector2 check = pos + rndDir;
-                                if (nodeGrid.TryGet(check, out var value) && !value)
-                                {
-                                    int neighborCount = 0;
-                                    foreach (var dir in IntVector2.Dir8Array)
-                                    {
-                                        if (nodeGrid.TryGet(pos + dir, out var nvalue) && nvalue)
-                                        {
-                                            if (++neighborCount >= 2)
-                                            {
-                                                setPos(pos + dir);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                start = currentPass +1;
             }
 
+            Task.Run(async () =>
+            {
+                if (start >= Map2Pass.Icon)
+                {
+                    clearMap();
+                }
+
+
+                for (Map2Pass pass = start; pass <= end; pass++)
+                {
+                    switch (pass)
+                    {
+                        case Map2Pass.NewWorld:
+                            newWorldPass(generateSettings);
+                            break;
+                        case Map2Pass.NodeGrid:
+                            nodeMap = new NodeMap();
+                            nodeMap.Generate(iconWorld, generateSettings);
+                            break;
+                        case Map2Pass.Icon:
+                            nodeTerrainPass(generateSettings).Wait();
+                            break;
+                        case Map2Pass.IconNoise:
+                            addNoiseTexture();
+                            break;
+                        case Map2Pass.ScaleUp:
+                            scaleUp16x();
+                            break;
+                        case Map2Pass.PostNoise:
+                            postNoise();
+                            break;
+                    }
+                }
+
+                currentPass = end;
+
+                if (end < Map2Pass.Icon)
+                {
+                    nodeMap.GenerateTexture();
+                }
+                else
+                {
+                    postProcessPixels();
+                }
+
+                loadingState = LoadingState.Complete;
+            });
+        }
+        
+
+        private async Task nodeTerrainPass(Map2GenerateSettings generateSettings)
+        {
             //DEBUG : Visualize the node grid for testing
+
             
 
-            float placeDiff = NodePixWidth * 0.25f;
-            float largeIslandR = NodePixWidth * 2f;
+            List<Vector2> mountains = new List<Vector2>(128);
+            float placeDiff = NodeMap.NodePixWidth * 0.25f;
+            float largeIslandR = NodeMap.NodePixWidth * 2f;
 
-            for (int x = 0; x < gridSz.X; x++)//Parallel.For(0, gridSz.X, x =>
+            for (int x = 0; x < nodeMap.nodeGrid.Size.X; x++)//Parallel.For(0, gridSz.X, x =>
             {
-                for (int y = 0; y < gridSz.Y; y++)
+                for (int y = 0; y < nodeMap.nodeGrid.Size.Y; y++)
                 {
-                    if (nodeGrid.Get(x, y))
+                    if (nodeMap.nodeGrid.Get(x, y))
                     {
                         int nCount = 0;
 
                         foreach (var dir in IntVector2.Dir8Array)
                         {
-                            if (nodeGrid.TryGet(x + dir.X, y + dir.Y, out var nvalue) && nvalue)
+                            if (nodeMap.nodeGrid.TryGet(x + dir.X, y + dir.Y, out var nvalue) && nvalue)
                             {
                                 nCount++;
                             }
                         }
 
-                        Vector2 center = new Vector2(start + x * NodePixWidth, start + y * NodePixWidth) + iconWorld.rnd.vector2_cirkle(iconWorld.rnd.Float(placeDiff));
+                        Vector2 center = new Vector2(NodeMap.start + x * NodeMap.NodePixWidth, NodeMap.start + y * NodeMap.NodePixWidth) + iconWorld.rnd.vector2_cirkle(iconWorld.rnd.Float(placeDiff));
                         if (nCount == 0)
                         {
                             generateIslandAt(largeIslandR, center);
                         }
                         else if (nCount >= 6)
                         {
-                            if (iconWorld.rnd.Chance(0.06))
+                            if (iconWorld.rnd.Chance(0.045))
                             {
-                                generateMountainChains(center, false);
+                                mountains.Add(center);
+                                //generateMountainChains(center, false);
                             }
                             else
                             {
@@ -189,9 +199,6 @@ namespace VikingEngine.DSSWars.Map.Map2
                 tasks.Clear();
             }
 
-
-
-
             for (int i = 0; i < 100; i++)
             {
                 generateDigChains(false);
@@ -199,14 +206,25 @@ namespace VikingEngine.DSSWars.Map.Map2
             await Task.WhenAll(tasks);
             tasks.Clear();
 
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    generateHills(10, iconWorld.rnd.Int(8));
-            //}
+
+            for (int i = 0; i < 20; i++)
+            {
+                generateHills(10, iconWorld.rnd.Int(8));
+            }
             //for (int i = 0; i < 20; i++)
             //{
             //    generateHills(50, iconWorld.rnd.Int(8));
             //}
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+            foreach (var mPos in mountains)
+            {
+                generateMountainChains(mPos, false);
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+            
             await Task.WhenAll(tasks);
             tasks.Clear();
         }
@@ -286,6 +304,11 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             dataGrid = iconWorld.iconGrid;
 
+            clearMap();
+        }
+
+        void clearMap()
+        {
             Parallel.For(0, dataGrid.Size.X, x =>
             {
                 for (int y = 0; y < dataGrid.Size.Y; y++)
@@ -517,27 +540,14 @@ namespace VikingEngine.DSSWars.Map.Map2
             
         }
 
-
-        void postProcessPixels()
+        void postNoise()
         {
             const bool PostNoise = true;
             //const int PostProcessDivs = 8;
 
             EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.seed + 3);
             NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
-            //NoiseOptions islandNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
 
-            //Rectangle2 area = new Rectangle2(dataGrid.Size);
-            //area.size.X /= PostProcessDivs;
-
-            //for (int divIx = 0; divIx < PostProcessDivs; divIx++)
-            //{
-            //    Rectangle2 divArea = area;
-            //    tasks.Add(Task.Run(() =>
-            //    {
-            //ForXYLoop loop = new ForXYLoop(divArea);
-            //while (loop.Next())
-            //{
             Parallel.For(0, dataGrid.Size.X, x =>
             {
                 for (int y = 0; y < dataGrid.Size.Y; y++)
@@ -550,21 +560,37 @@ namespace VikingEngine.DSSWars.Map.Map2
                     if (tile.groundY < Height_WaterBottom)
                     { tile.groundY = Height_WaterBottom; }
 
+                    //tileColor(ref tile);
+                    dataGrid.Set(x, y, tile);
+                }
+            });
+        }
+        void postProcessPixels()
+        {
+            //const bool PostNoise = true;
+            ////const int PostProcessDivs = 8;
+
+            //EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.seed + 3);
+            //NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
+            
+            Parallel.For(0, dataGrid.Size.X, x =>
+            {
+                for (int y = 0; y < dataGrid.Size.Y; y++)
+                {
+                    var tile = dataGrid.Get(x, y);
+                    //if (PostNoise)
+                    //{
+                    //    tile.groundY -= noiseMap.OctaveNoise2D(postNoise, x, y) * 0.1f;
+                    //}
+                    //if (tile.groundY < Height_WaterBottom)
+                    //{ tile.groundY = Height_WaterBottom; }
+
                     tileColor(ref tile);
                     dataGrid.Set(x, y, tile);
                 }
             });
         }
-        //            }
-        //        }));
-        //        area.X += area.size.X;
-        //    }
-        //}
-        //NoiseOptions generateNoise(PcgRandom rnd, bool use)
-        //{
-        //    NoiseOptions noiseOptions = new NoiseOptions(use, rnd.Float(), rnd.Float(3, 5), rnd.Float(0.7f, 0.9f), rnd.Float(2, 6));
-        //    return noiseOptions;
-        //}
+       
 
         void tileColor(ref GenTile tile)
         {
@@ -615,7 +641,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             DrawMapOptions drawCenterGround = new DrawMapOptions()
             {
                 add = false,
-                radius = iconWorld.rnd.Float(1, 2) * drawMountain.radius,
+                radius = iconWorld.rnd.Float(2, 3) * drawMountain.radius,
                 flatness = 0.4f,
                 addHeight = Height_DefaultGround,
             };

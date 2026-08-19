@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         MapEditor2Display display;
         bool loadingState = false;
         Map2Generator generator = new Map2Generator();
-        Map2GenerateSettings generateSettings = new Map2GenerateSettings();
+        public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
         GeneratorMap map;
         public bool iconState = true;
         public MapEditor2_Scene()
@@ -45,7 +45,19 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 {
                     loadingState = false;
                     display.loadingDisplay.Hide();
-                    map.generate2(generator.iconWorld);
+
+                    if (generator.currentPass <= Map2Pass.NewWorld)
+                    {
+                        map.hide();
+                    }
+                    else if (generator.currentPass < Map2Pass.Icon)
+                    {
+                        map.generateNodes(generator.nodeMap);
+                    }
+                    else
+                    {
+                        map.generateIcon(generator.iconWorld);
+                    }
                 }
             }
             else
@@ -57,19 +69,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             }
         }
 
-        public void generatePass(GenerateMapPass pass)
+        public void generatePass(Map2Pass start, Map2Pass end)
         {
             loadingState = true;
             display.loadingDisplay.Show();
-            generator.generate(generateSettings);
-            //if (pass == GenerateMapPass.Clear || pass == GenerateMapPass.AllTerrain)
-            //{
-            //    mapBackgroundLoading = new MapGenerator_BackgroundLoading();
-
-            //    mapStorage.autoName = $"CustomMap W{GenerateSettings.customMapSize.X} H{GenerateSettings.customMapSize.Y} id{Ref.rnd.Int(9999)}";
-            //}
-            //mapBackgroundLoading.generateSettings = GenerateSettings;
-            //mapBackgroundLoading.generate(pass);
+            generator.generatePass(generateSettings, start, end);
         }
     }
 }
