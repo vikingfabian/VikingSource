@@ -48,12 +48,16 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
 
         public Vector2 start, stop;
         Graphics.Image image;
+        public Graphics.TextG number;
 
         public HorseTrack(VectorRect area)
         {
             //this.area = area;
             image = new Image(SpriteName.WhiteArea, area.Position, area.Size, StupidLib.Layer_Track);
             image.Color = Color.YellowGreen;
+
+            number = new Graphics.TextG(LoadedFont.Regular, area.Center, Screen.TextSizeV2 * 2f, Align.CenterAll, "0 m", 
+                Color.White, StupidLib.Layer_Track-1);
 
             float edge = area.Height * 0.5f;
             area.AddXRadius(-edge);

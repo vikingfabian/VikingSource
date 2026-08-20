@@ -95,6 +95,7 @@ namespace VikingEngine.PJ
             SoundManager.whip = new SoundContainerSingle(PjLib.SoundFolder + "whip_normal", 0.7f);
             SoundManager.whip_perfect = new SoundContainerSingle(PjLib.SoundFolder + "whip_perfect", 0.7f);
             SoundManager.whip_fail = new SoundContainerSingle(PjLib.SoundFolder + "whip_fail", 0.7f);
+SoundManager.success = new SoundContainerSingle(PjLib.SoundFolder + "Heal", 0.7f);
 
 
             //Ref.music = new Sound.MusicPlayer();
@@ -162,8 +163,13 @@ namespace VikingEngine.PJ
             //if (PlatformSettings.DevBuild)
 #if DEBUG
             {
-                new StupidHorse.StupidHorseScene(new List2<GamerData> { new GamerData() { button = new KeyboardButtonMap( 
-                    Microsoft.Xna.Framework.Input.Keys.Space), joustAnimal = JoustAnimal.Pig1, hat =  Hat.NoHat  } }, 0);
+                new StupidHorse.StupidHorseScene(new List2<GamerData> {
+                    new GamerData() { button = new KeyboardButtonMap( 
+                    Microsoft.Xna.Framework.Input.Keys.Space), joustAnimal = JoustAnimal.Pig1, hat =  Hat.NoHat  },
+
+                    new GamerData() { button = new KeyboardButtonMap(
+                    Microsoft.Xna.Framework.Input.Keys.Right), joustAnimal = JoustAnimal.Bird1, hat =  Hat.NoHat  }
+                }, 0);
                 //new MiniGolf.MinigolfState();
                 //    //new SpaceWar.SpacePlayState();
                 //    //new GameState.WolfScare();

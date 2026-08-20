@@ -25,9 +25,24 @@ namespace VikingEngine.PJ.StupidHorse
             for (int i = 0; i < joinedGamers.Count; ++i)
             {
                 Rider rider = new Rider(joinedGamers[i], world, world.tracks[i]);
+                riders.Add(rider);
             }
         }
 
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+
+            foreach (Rider rider in riders)
+            {
+                rider.Update(this);
+            }
+        }
+
+        public void OnWinner(Rider rider)
+        { 
+            
+        }
 
     }
 }
