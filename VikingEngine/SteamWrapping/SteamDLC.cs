@@ -90,12 +90,12 @@ namespace VikingEngine.SteamWrapping
             Ref.gamestate.OnDlcInstalled(dlcAppId);
             
 
-#if PJ
-            if (Ref.gamestate is PJ.LobbyState)
-            {
-                ((PJ.LobbyState)Ref.gamestate).onDlcChanged();
-            }
-#endif
+//#if PJ
+//            if (Ref.gamestate is PJ.LobbyState)
+//            {
+//                ((PJ.LobbyState)Ref.gamestate).onDlcChanged();
+//            }
+//#endif
         }
     }
 }

@@ -100,6 +100,7 @@ namespace VikingEngine.PJ
             part++;
             new LoadBaseTextures();
             new SpriteSheet();
+            DSSWars.HudLib.Init();
             part++;
 
             PjRef.Init();
@@ -111,6 +112,7 @@ namespace VikingEngine.PJ
 
         protected override void asyncDataProcessLoading()
         {
+            
         }
 
         protected override void asyncStorageLoading(ref int part)

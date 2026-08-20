@@ -167,6 +167,7 @@ namespace VikingEngine
                 add(SpriteName.EditorToolPencil);
                 add(SpriteName.EditorToolReColorPencil);
 
+
                 add(SpriteName.MenuPixelIconMusicVol);
                 add(SpriteName.MenuPixelIconSoundVol);
                 add(SpriteName.AutomationGearIcon);
@@ -645,6 +646,15 @@ namespace VikingEngine
 
             add(SpriteName.DKbarrel);
             add(SpriteName.DKbarrel_full);
+            add(SpriteName.pjFPSIcon);
+            add(SpriteName.pjRichCheckOn);
+            add(SpriteName.pjRichCheckOff);
+            add(SpriteName.pjRichButton);
+            add(SpriteName.pjRichButton_Round);
+            add(SpriteName.pjRichMenuBg);
+
+            
+            
             //--
 
 
@@ -795,6 +805,8 @@ namespace VikingEngine
 
                 add(SpriteName.golfChickenFlag, currentIndex, 2, 2);
                 addWithSizeDef(SpriteName.DisconnectSquare, currentIndex, 44, 44);
+
+                add(SpriteName.pjScreenFPSIcon, 2, 2);
             }
 
             currentIndex = numTilesWidth * 29;
@@ -843,7 +855,7 @@ namespace VikingEngine
                 add(SpriteName.MenuIconSoundVol, currentIndex, 2, 2);
                 add(SpriteName.MenuIconCredits, currentIndex, 2, 2);
                 add(SpriteName.MenuIconSettings, currentIndex, 2, 2);
-                currentIndex += 2;
+                add(SpriteName.MenuIconMasterVol, 2, 2);
                 //add(SpriteName.MenuIconFullScreen, currentIndex, 2, 2);
                 add(SpriteName.birdLobbyExitButton, currentIndex, 2, 2);
                 add(SpriteName.MenuIconScreenResolution, currentIndex, 2, 2);
@@ -1238,6 +1250,11 @@ namespace VikingEngine
                 add(SpriteName.PjHeartBroken);
                 add(SpriteName.PjDeathSpeechBobble);
                 add(SpriteName.PjSmackIcon);
+
+                add(SpriteName.pjYoutubeIcon);
+                add(SpriteName.stupidHorseWingLarge);
+                add(SpriteName.stupidHorseWingSmall);
+                add(SpriteName.stupidHorseWhip);
             }
 
             currentIndex = numTilesWidth * 40;
@@ -1337,6 +1354,11 @@ namespace VikingEngine
                 add(SpriteName.golfBugHideN1, 2, 2);
                 add(SpriteName.golfBugHideN2, 2, 2);
                 add(SpriteName.golfBugDead, 2, 2);
+
+                add(SpriteName.stupidHorse, 2, 2);
+                add(SpriteName.stupidHorseBlink, 2, 2);
+                add(SpriteName.stupidHorseJump, 2, 2);
+                add(SpriteName.stupidHorseShadow, 2, 2);
 
                 const int WingSz = 47;
                 addWithSizeDef(SpriteName.pjCoinWings1, currentIndex, WingSz, WingSz);

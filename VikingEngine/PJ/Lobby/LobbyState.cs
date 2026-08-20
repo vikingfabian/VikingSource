@@ -383,11 +383,11 @@ namespace VikingEngine.PJ
             draw = new VikingEngine.Engine.Draw2D();
         }
 
-        public void onDlcChanged()
-        {
-            openMenu(InputSource.DefaultPC);
-            menusystem.dlcChangedMenu();
-        }
+        //public void onDlcChanged()
+        //{
+        //    openMenu(InputSource.DefaultPC);
+        //    menusystem.dlcChangedMenu();
+        //}
 
 
         void generateStartPositions()
@@ -548,14 +548,14 @@ namespace VikingEngine.PJ
         {
             if (menusystem != null)
             {
-                menusystem.DeleteMe();
+                menusystem.closeMenu();
                 menusystem = null;
             }
         }
 
-        public MenuSystem openMenu(Input.InputSource menuUser)
+        public MenuSystem openMenu()
         {
-            menusystem = new MenuSystem(this, menuUser);
+            menusystem = new MenuSystem(this);
 
             return menusystem;
         }
@@ -803,8 +803,8 @@ namespace VikingEngine.PJ
             }
             else if (menusystem != null)
             {
-                if (menusystem.menu.Update() ||
-                    MenuSystem.CloseMenuInput())
+                menusystem.menuUpdate();
+                if (MenuSystem.CloseMenuInput())
                 {
                     CloseMenu();
                 }
@@ -840,7 +840,7 @@ namespace VikingEngine.PJ
 
                 if (menuInput)
                 {
-                    openMenu(menuUser);
+                    openMenu();
                 }
 
                 if (PjRef.host && startButton.Enabled && startInput)
@@ -1496,7 +1496,7 @@ namespace VikingEngine.PJ
 
                 if (menusystem != null)
                 {
-                    ((LobbyState)Ref.gamestate).openMenu(menusystem.menu.inputSource).options();
+                    ((LobbyState)Ref.gamestate).openMenu();
                 }
             }
         }

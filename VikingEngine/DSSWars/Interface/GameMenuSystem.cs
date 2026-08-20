@@ -122,11 +122,6 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 menu.updateMouseInput(ref mouseOver);
 
-                
-                //if (input.Menu.DownEvent)
-                //{
-                //    closeMenu();
-                //}
 
                 return true;
             }

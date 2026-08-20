@@ -43,7 +43,7 @@ namespace VikingEngine.PJ.Strategy
 
             if (menusystem != null)
             {
-                if (menusystem.menu.Update() || Input.Keyboard.KeyDownEvent(Keys.Escape))
+                if (menusystem.menuUpdate() || Input.Keyboard.KeyDownEvent(Keys.Escape))
                 {
                     CloseMenu();
                 }
@@ -212,7 +212,7 @@ namespace VikingEngine.PJ.Strategy
             StrategyLib.SetHudLayer();
             if (menusystem != null)
             {
-                menusystem.DeleteMe();
+                menusystem.closeMenu();
                 menusystem = null;
             }
             StrategyLib.SetMapLayer();
@@ -221,14 +221,14 @@ namespace VikingEngine.PJ.Strategy
         public void openMenu(Input.InputSource inputSource)
         {
             StrategyLib.SetHudLayer();
-            menusystem = new MenuSystem(inputSource);
+            menusystem = new MenuSystem();
 
-            GuiLayout layout = new GuiLayout("Editor menu", menusystem.menu);
-            {
-                new GuiTextButton("Save", null, saveLink, false, layout);
-                new GuiTextButton("Clear area connections", null, clearAreaConnections, false, layout);
-            }
-            layout.End();
+            //GuiLayout layout = new GuiLayout("Editor menu", menusystem.menu);
+            //{
+            //    new GuiTextButton("Save", null, saveLink, false, layout);
+            //    new GuiTextButton("Clear area connections", null, clearAreaConnections, false, layout);
+            //}
+            //layout.End();
 
             StrategyLib.SetMapLayer();
         }

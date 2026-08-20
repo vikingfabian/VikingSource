@@ -1865,6 +1865,16 @@ namespace VikingEngine
         pjMenuIcon,
         pjTitleText,
 
+        pjRichMenuBg,
+        pjRichButton,
+        pjRichButton_Round,
+        pjRichCheckOn,
+        pjRichCheckOff,
+
+        pjFPSIcon,
+        pjScreenFPSIcon,
+        pjYoutubeIcon,
+
         birdLobbyVisibilityAnyone,
         birdLobbyVisibilityFriends,
         birdLobbyVisibilityHidden,
@@ -2213,6 +2223,16 @@ namespace VikingEngine
         golfBugHideN2,
         golfBugDead,
 
+        stupidHorse,
+        stupidHorseBlink,
+        stupidHorseJump,
+        stupidHorseShadow,
+
+      
+        stupidHorseWingLarge,
+        stupidHorseWingSmall,
+        stupidHorseWhip,
+
         DKbarrel,
         DKbarrel_full,
 
@@ -2325,6 +2345,7 @@ namespace VikingEngine
 
         MenuIconExit,
         MenuIconResume,
+        MenuIconMasterVol,
         MenuIconMusicVol,
         MenuIconSoundVol,
         MenuPixelIconMusicVol,
