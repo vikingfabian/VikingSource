@@ -87,10 +87,7 @@ namespace VikingEngine.PJ
                
                 if (Ref.gamesett.settingsHasChanged)
                 {
-                    foreach (var p in DssRef.state.localPlayers)
-                    {
-                        p.gameControls.refreshInput();
-                    }
+                   
                     Ref.gamesett.settingsHasChanged = false;
                     Ref.gamesett.Save();
                 }

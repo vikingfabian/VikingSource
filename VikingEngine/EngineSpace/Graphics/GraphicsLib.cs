@@ -194,35 +194,35 @@ namespace VikingEngine.Graphics
     //    Generated,
     //}
 
-    struct ChildRelation
-    {
-        public static ChildRelation None = new ChildRelation(false, false, false);
-        public static ChildRelation PositionOnly = new ChildRelation(true, false, false);
-        public static ChildRelation Full = new ChildRelation(true, true, true);
-        public bool Position;
-        public bool Size;
-        public bool Rotation;
-        public bool Transparensy;
-        public bool Visibility;
+    //struct ChildRelation
+    //{
+    //    public static ChildRelation None = new ChildRelation(false, false, false);
+    //    public static ChildRelation PositionOnly = new ChildRelation(true, false, false);
+    //    public static ChildRelation Full = new ChildRelation(true, true, true);
+    //    public bool Position;
+    //    public bool Size;
+    //    public bool Rotation;
+    //    public bool Transparensy;
+    //    public bool Visibility;
         
-        public ChildRelation(bool position, bool size, bool rotation)
-        {
-            Position = position;
-            Size = size;
-            Rotation = rotation;
-            Transparensy = false;
-            Visibility = true;
-        }
+    //    public ChildRelation(bool position, bool size, bool rotation)
+    //    {
+    //        Position = position;
+    //        Size = size;
+    //        Rotation = rotation;
+    //        Transparensy = false;
+    //        Visibility = true;
+    //    }
 
-        public ChildRelation(bool position, bool size, bool rotation, bool transparensy, bool visibility)
-        {
-            Position = position;
-            Size = size;
-            Rotation = rotation;
-            Transparensy = transparensy;
-            Visibility = visibility;
-        }
-    }
+    //    public ChildRelation(bool position, bool size, bool rotation, bool transparensy, bool visibility)
+    //    {
+    //        Position = position;
+    //        Size = size;
+    //        Rotation = rotation;
+    //        Transparensy = transparensy;
+    //        Visibility = visibility;
+    //    }
+    //}
 
     struct TextureSourceLib
     {

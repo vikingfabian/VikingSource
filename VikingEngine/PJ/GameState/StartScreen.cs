@@ -8,6 +8,8 @@ using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.GO.Characters;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
 
@@ -89,6 +91,12 @@ namespace VikingEngine.PJ
             Engine.LoadContent.LoadSound(LoadedSound.wolfScare, PjLib.ContentFolder + "jump_scare");
             Engine.LoadContent.LoadSound(LoadedSound.bassdrop, PjLib.ContentFolder + "Bassbomb");
             part++;
+
+            SoundManager.whip = new SoundContainerSingle(PjLib.SoundFolder + "whip_normal", 0.7f);
+            SoundManager.whip_perfect = new SoundContainerSingle(PjLib.SoundFolder + "whip_perfect", 0.7f);
+            SoundManager.whip_fail = new SoundContainerSingle(PjLib.SoundFolder + "whip_fail", 0.7f);
+
+
             //Ref.music = new Sound.MusicPlayer();
             PjRef.JoustSong = new Sound.SongData(PjLib.ContentFolder + "Hemisphere Three", "Standard Joust", null, false, 1f);
             PjRef.JoustSong.LoadAndStore();
@@ -152,15 +160,19 @@ namespace VikingEngine.PJ
             //Engine.XGuide.LocalHostIndex = SignedInPLayer;
 
             //if (PlatformSettings.DevBuild)
+#if DEBUG
             {
+                new StupidHorse.StupidHorseScene(new List2<GamerData> { new GamerData() { button = new KeyboardButtonMap( 
+                    Microsoft.Xna.Framework.Input.Keys.Space), joustAnimal = JoustAnimal.Pig1, hat =  Hat.NoHat  } }, 0);
                 //new MiniGolf.MinigolfState();
                 //    //new SpaceWar.SpacePlayState();
                 //    //new GameState.WolfScare();
                 //    //new Strategy.Editor();
                 //    //new Story.LoadMapState();//Story.StoryPlayState();
                 //    new Bagatelle.BagatellePlayState(null, 0);
+                return;
             }
-            
+#endif
             new LobbyState();
         }
 

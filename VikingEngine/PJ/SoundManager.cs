@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Media;
+using VikingEngine.Sound;
 
 namespace VikingEngine.PJ
 {
@@ -10,6 +11,8 @@ namespace VikingEngine.PJ
     {
         public static SoundLevel SoundLevel = PJ.SoundLevel.Medium;
         public static SoundLevel MusicLevel = PJ.SoundLevel.Medium;
+
+        public static SoundContainerBase whip, whip_perfect, whip_fail;
 
         public static readonly float[] LevelVolume = new float[]
         {

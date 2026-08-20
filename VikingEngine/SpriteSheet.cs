@@ -1355,16 +1355,18 @@ namespace VikingEngine
                 add(SpriteName.golfBugHideN2, 2, 2);
                 add(SpriteName.golfBugDead, 2, 2);
 
-                add(SpriteName.stupidHorse, 2, 2);
-                add(SpriteName.stupidHorseBlink, 2, 2);
-                add(SpriteName.stupidHorseJump, 2, 2);
-                add(SpriteName.stupidHorseShadow, 2, 2);
+                
 
                 const int WingSz = 47;
                 addWithSizeDef(SpriteName.pjCoinWings1, currentIndex, WingSz, WingSz);
                 addWithSizeDef(SpriteName.pjCoinWings2, currentIndex, WingSz, WingSz);
                 addWithSizeDef(SpriteName.pjCoinWings3, currentIndex, WingSz, WingSz);
                 addWithSizeDef(SpriteName.pjCoinWings4, currentIndex, WingSz, WingSz);
+
+                add(SpriteName.stupidHorse, 2, 2);
+                add(SpriteName.stupidHorseBlink, 2, 2);
+                add(SpriteName.stupidHorseJump, 2, 2);
+                add(SpriteName.stupidHorseShadow, 2, 2);
             }
 
             currentIndex = numTilesWidth * 46;
