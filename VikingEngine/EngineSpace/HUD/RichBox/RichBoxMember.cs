@@ -6,6 +6,7 @@ using System.Linq;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO.Characters;
 using VikingEngine.SteamWrapping;
+using VikingEngine.ToGG.HeroQuest.HeroStrategy;
 
 namespace VikingEngine.HUD.RichBox
 {
@@ -221,6 +222,8 @@ namespace VikingEngine.HUD.RichBox
         public override void Create(RichBoxGroup group)
         {
             var rect = SourceRect();
+
+            
             Vector2 boxsize = new Vector2(group.imageHeight / rect.Height * rect.Width, group.imageHeight);
 
             float spaceScaleFrom = group.imageHeight * scale;
@@ -277,7 +280,13 @@ namespace VikingEngine.HUD.RichBox
 
         protected override Rectangle SourceRect()
         {
-            return DataLib.SpriteCollection.Get(sprite).Source;
+            var result = DataLib.SpriteCollection.Get(sprite).Source;
+            if (result.X == 0)
+            {
+                sprite = SpriteName.MissingImage;
+                result = DataLib.SpriteCollection.Get(sprite).Source;
+            }
+            return result;
         }
 
 

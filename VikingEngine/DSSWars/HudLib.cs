@@ -267,6 +267,13 @@ namespace VikingEngine.DSSWars
                 head1col = TitleColor_Head,
                 head2col = TitleColor_Head2,
             };
+
+            DropDownBuilder.DropDownArrow = SpriteName.WarsHudDropDownArrow;
+            DropDownBuilder.Selected = SpriteName.WarsHudDropDownArrow;
+            DropDownBuilder.NotSelected = SpriteName.WarsHudDropDownArrow;
+            DropDownBuilder.Default = SpriteName.WarsHudDropDownArrow;
+
+            DropDownBuilder.selectedCaptionColor = MenuMoreOptionsArrowCol;
         }
         public static void IndexToHud(RichBoxContent content, int myIndex, bool IsNetHosted)
         {

@@ -44,7 +44,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
             if (selected)
             {
                 selectedIx = options.Count;
-                menuCaption = new List<AbsRichBoxMember> { new RbText(caption, HudLib.MenuMoreOptionsArrowCol) };
+                menuCaption = new List<AbsRichBoxMember> { new RbText(caption, selectedCaptionColor) };
             }
             else if (defaultOption)
             {
@@ -70,7 +70,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
             if (selected)
             {
                 selectedIx = options.Count;
-                menuCaption = new List<AbsRichBoxMember> { new RbText(caption, HudLib.MenuMoreOptionsArrowCol) };
+                menuCaption = new List<AbsRichBoxMember> { new RbText(caption, selectedCaptionColor) };
             }
             else if (defaultOption)
             {
@@ -128,6 +128,9 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
             DropDown(content, icon, label, menu.OnDropDownClick, menu.activeDropDown); 
         }
 
+        public static Color selectedCaptionColor;
+        public static SpriteName DropDownArrow, Selected, NotSelected, Default;
+
         public void DropDown(RichBoxContent content, SpriteName icon, string label, Action<string> openClose, string activeDropDown)
         {
             content.newLine();
@@ -142,7 +145,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
                 menuCaption.Insert(0, new RbImage(icon));
                 menuCaption.Insert(1, new RbSpace());
             }
-            menuCaption.Add(new RbImage(SpriteName.WarsHudDropDownArrow));
+            menuCaption.Add(new RbImage(DropDownArrow));
 
             content.Add(new ArtButton(RbButtonStyle.DropDownSelected, menuCaption, new RbAction1Arg<string>(openClose, name, RbSoundType.Expand)));
             if (injectAfter != null)
@@ -156,17 +159,17 @@ namespace VikingEngine.EngineSpace.HUD.RichBox.Artistic
                 for (int i = 0; i < options.Count; i++)
                 {
                     content.newLine();
-                    SpriteName dot = SpriteName.WarsHudListArrowNotSelected;
+                    SpriteName dot = NotSelected;
                     RbButtonStyle style = RbButtonStyle.DropDownNotSelected;
 
                     if (i == selectedIx)
                     {
-                        dot = SpriteName.WarsHudListArrowSelected;
+                        dot = Selected;
                         style = RbButtonStyle.DropDownSelected;
                     }
                     else if (i == defaultIx)
                     {
-                        dot = SpriteName.WarsHudListArrowDefault;
+                        dot = Default;
                     }
 
                     content.Add(new RbTab(0.1f));

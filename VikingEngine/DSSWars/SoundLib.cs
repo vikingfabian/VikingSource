@@ -61,6 +61,8 @@ namespace VikingEngine.DSSWars
 
         public static RbSoundAction buttonHoverAction, tabHoverAction;
 
+     
+
         public static void LoadContent()
         {
             click = new SoundContainerSingle(SoundDir + "click", 0.7f);

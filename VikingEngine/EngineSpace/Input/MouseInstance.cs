@@ -32,6 +32,15 @@ namespace VikingEngine.Input
         /// </summary>
         public bool isActive = true;
 
+        public static SpriteName PointerArt =
+#if DSS
+            SpriteName.cmdPointer;
+#else
+            SpriteName.cmdTutVideo_Pointer;
+#endif
+
+
+
         public MouseInstance()
         {
             bounds = Engine.Screen.Area.Rectangle2;
@@ -230,7 +239,11 @@ namespace VikingEngine.Input
             {
                 if (customMousePointer == null)
                 {
-                    customMousePointer = new Graphics.Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
+                    customMousePointer = new Graphics.Image(PointerArt, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
+                    if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
+                    {
+                        customMousePointer.size *= 1.6f;
+                    }
                 }
 
                 if (customMousePointer != null)

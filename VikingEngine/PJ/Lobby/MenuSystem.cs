@@ -68,7 +68,7 @@ namespace VikingEngine.PJ
                     VectorRect area = Engine.Screen.Area;
                     area.AddRadius(4);
                     blackFade = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, layer + 5);
-                    blackFade.ColorAndAlpha(Color.Black, 0.4f);
+                    blackFade.ColorAndAlpha(Color.Black, 0.8f);
                 }
 
                 VectorRect menuArea = Engine.Screen.SafeArea;
@@ -76,7 +76,7 @@ namespace VikingEngine.PJ
                 menuArea.Width = Engine.Screen.IconSize * 8;
                 menuArea.X = Engine.Screen.CenterScreen.X - menuArea.Width / 2;
 
-                menu = new RichMenu(DSSWars.HudLib.RbSettings, menuArea, new Vector2(8), RichMenu.DefaultRenderEdge, layer, new PlayerData(PlayerData.AllPlayers));
+                menu = new RichMenu(HudLib.RbSettings, menuArea, new Vector2(8), RichMenu.DefaultRenderEdge, layer, new PlayerData(PlayerData.AllPlayers));
 
             }
         }
@@ -119,6 +119,8 @@ namespace VikingEngine.PJ
             return false;
         }
 
+        public bool Open => menu != null;
+
         public void MainMenu()
         {
             openMenu();
@@ -127,6 +129,20 @@ namespace VikingEngine.PJ
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MenuIconResume) },
                 new RbAction(closeMenu))
             {  fillWidth = true });
+
+            Ref.gamesett.pjVolumeOptions(content);
+
+            content.newParagraph();
+
+            Ref.gamesett.pjMonitorOptions(content, menu);
+
+            content.newParagraph();
+            content.Add(new RbSeperationLine(Color.LightGray, 0.6f) { thick = true });
+            content.Add(new RbNewLine(true, 1.2f));
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MenuIconExit) },
+               new RbAction(exitGame_OK))
+            { fillWidth = true });
 
             completeMenu(content);
 
@@ -172,7 +188,7 @@ namespace VikingEngine.PJ
         {
             menu.Refresh(content, null);
             //menu.updateHeightFromContent(Engine.Screen.SafeArea.Bottom);
-            menu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), layer + 2);
+            menu.addBackground(HudLib.HudMenuBackground, layer + 2);
         }
 
         void optionalCertAchievement()

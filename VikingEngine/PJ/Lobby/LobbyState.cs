@@ -801,7 +801,7 @@ namespace VikingEngine.PJ
             {
                 updateLostDisplay();
             }
-            else if (menusystem != null)
+            else if (menusystem != null && menusystem.Open)
             {
                 menusystem.menuUpdate();
                 if (MenuSystem.CloseMenuInput())
@@ -1493,6 +1493,7 @@ namespace VikingEngine.PJ
             if (Ref.gamestate is LobbyState)
             {
                 Reset();
+                HudLib.Init();
 
                 if (menusystem != null)
                 {

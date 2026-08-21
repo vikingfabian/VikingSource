@@ -1868,8 +1868,16 @@ namespace VikingEngine
         pjRichMenuBg,
         pjRichButton,
         pjRichButton_Round,
+        pjRichButton_RoundNotSelected,
         pjRichCheckOn,
         pjRichCheckOff,
+        pjRichDragButton,
+
+        pjRichDropDownArrow,
+        pjRichListArrowSelected,
+        pjRichListArrowNotSelected,
+
+        pjRichListArrowDefault,
 
         pjFPSIcon,
         pjScreenFPSIcon,
@@ -2363,7 +2371,10 @@ namespace VikingEngine
 
         MenuIconMonitorFrame,
         MenuIconMonitorArrowsOut,
+        MenuIconMonitorArrowsOutBorderless,
         MenuIconMonitorArrowsIn,
+        MenuIconMonitorYoutube,
+        MenuIconMonitorWindow,
         MenuIconPerformanceHot,
         MenuIconPerformanceCold,
 

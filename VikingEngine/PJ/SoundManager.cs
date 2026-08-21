@@ -12,7 +12,8 @@ namespace VikingEngine.PJ
         public static SoundLevel SoundLevel = PJ.SoundLevel.Medium;
         public static SoundLevel MusicLevel = PJ.SoundLevel.Medium;
 
-        public static SoundContainerBase whip, whip_perfect, whip_fail, success;
+        public static SoundContainerBase whip, whip_perfect, whip_fail, success,
+            soft_buzz_error, scroll_back, scroll_forward, option_select, option_deselect;
 
         public static readonly float[] LevelVolume = new float[]
         {

@@ -632,7 +632,7 @@ namespace VikingEngine
             currentIndex++;
             add(SpriteName.PjJumpCurve, 2, 1);
 
-            currentIndex += 3;
+            currentIndex += 1;
 
             addFullQtile(SpriteName.spaceWarAstreoidParticleRed1, SpriteName.spaceWarAstreoidParticleRed2,
                 SpriteName.spaceWarAstreoidParticleRed3, SpriteName.spaceWarAstreoidParticleRed4);
@@ -1200,6 +1200,9 @@ namespace VikingEngine
                 add(SpriteName.meatpie5, 2, 2);
                 add(SpriteName.meatpie6, 2, 2);
 
+                add(SpriteName.MenuIconMonitorArrowsOutBorderless, 2, 2);
+                add(SpriteName.MenuIconMonitorYoutube, 2, 2);
+                add(SpriteName.MenuIconMonitorWindow, 2, 2);
             }
 
             currentIndex = numTilesWidth * 39;
@@ -1255,6 +1258,13 @@ namespace VikingEngine
                 add(SpriteName.stupidHorseWingLarge);
                 add(SpriteName.stupidHorseWingSmall);
                 add(SpriteName.stupidHorseWhip);
+                add(SpriteName.pjRichDragButton, 2, 1);
+
+                add(SpriteName.pjRichDropDownArrow);
+                add(SpriteName.pjRichListArrowSelected);
+                add(SpriteName.pjRichListArrowDefault);
+                add(SpriteName.pjRichListArrowNotSelected);
+                add(SpriteName.pjRichButton_RoundNotSelected);
             }
 
             currentIndex = numTilesWidth * 40;

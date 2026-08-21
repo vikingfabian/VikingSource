@@ -362,10 +362,10 @@ namespace VikingEngine.Engine
                 50,
             };
 
-            if (Monitor.CurrentDisplayMode.Height > 2000)
-            {
-                result.Add(25);
-            }
+            //if (Monitor.CurrentDisplayMode.Height > 2000)
+            //{
+            //    result.Add(25);
+            //}
 
             return result;
         }

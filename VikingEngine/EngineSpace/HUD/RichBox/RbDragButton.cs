@@ -202,7 +202,12 @@ namespace VikingEngine.HUD.RichBox
 
                 if (hasChanged)
                 {
+#if DSS
                     (change > 0 ? DSSWars.SoundLib.scroll_forward : DSSWars.SoundLib.scroll_back).Play();
+#endif
+#if PJ
+                    (change > 0 ? PJ.SoundManager.scroll_forward : PJ.SoundManager.scroll_back).Play();
+#endif
                 }
                 else
                 { 
