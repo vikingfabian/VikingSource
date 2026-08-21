@@ -12,6 +12,9 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
         public List<HorseTrack> tracks;
         public Vector2 riderScale, horseScale;
 
+        public Vector2 DefaultVelocity;
+         public float Gravity;
+
         public StupidWorld(int gamerCount)
         { 
             tracks = new List<HorseTrack>(gamerCount);
@@ -21,7 +24,10 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
 
             riderScale = new Vector2(trackSize.Y * 1.4f);
             horseScale = riderScale * 1.2f;
-
+            DefaultVelocity.X = riderScale.X * 2f / 1000f;
+            DefaultVelocity.Y = - DefaultVelocity.X * 1.8f;
+            Gravity = DefaultVelocity.X * 0.1f;
+            
             float trackYSpace = Screen.IconSize;
 
             float totalH = trackSize.Y * gamerCount + trackYSpace * (gamerCount -1);

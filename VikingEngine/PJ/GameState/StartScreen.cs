@@ -168,14 +168,14 @@ namespace VikingEngine.PJ
             //if (PlatformSettings.DevBuild)
 #if DEBUG
             {
-                //new StupidHorse.StupidHorseScene(new List2<GamerData> {
-                //    new GamerData() { button = new KeyboardButtonMap(
-                //    Microsoft.Xna.Framework.Input.Keys.Space), joustAnimal = JoustAnimal.Pig1, hat =  Hat.NoHat  },
+                new StupidHorse.StupidHorseScene(new List2<GamerData> {
+                    new GamerData() { button = new KeyboardButtonMap(
+                    Microsoft.Xna.Framework.Input.Keys.Space), joustAnimal = JoustAnimal.Pig1, hat =  Hat.NoHat  },
 
-                //    new GamerData() { button = new KeyboardButtonMap(
-                //    Microsoft.Xna.Framework.Input.Keys.Right), joustAnimal = JoustAnimal.Bird1, hat =  Hat.NoHat  }
-                //}, 0);
-                //return;
+                    new GamerData() { button = new KeyboardButtonMap(
+                    Microsoft.Xna.Framework.Input.Keys.Right), joustAnimal = JoustAnimal.Bird1, hat =  Hat.NoHat  }
+                }, 0);
+                return;
                 //new MiniGolf.MinigolfState();
                 //    //new SpaceWar.SpacePlayState();
                 //    //new GameState.WolfScare();

@@ -8,7 +8,8 @@ namespace VikingEngine.PJ.StupidHorse
 {
     class StupidHorseScene : AbsPJGameState
     {
-        List<Rider> riders;
+        public StupidWorld world;
+        List <Rider> riders;
 
         public StupidHorseScene(List2<GamerData> joinedGamers, int matchCount)
             : base(true)
@@ -18,7 +19,7 @@ namespace VikingEngine.PJ.StupidHorse
 
             Ref.draw.ClrColor = Color.DarkGreen;
 
-            StupidWorld world = new StupidWorld(joinedGamers.Count);
+            world = new StupidWorld(joinedGamers.Count);
 
             riders = new List<Rider>(joinedGamers.Count);
 
