@@ -22,8 +22,8 @@ namespace VikingEngine.PJ.CarBall
             };
 
         const float TurnSpeed = 0.0035f;
-        const float Accelerate = 0.00011f;
-        const float DeAccelerate = Accelerate * 0.4f;
+        const float Accelerate = 0.0009f;
+        const float DeAccelerate = Accelerate * 0.6f;
         public float maxSpeed, minSpeed;
         public CarImage image;
         Graphics.ImageGroupParent2D inputIcons;
@@ -54,7 +54,7 @@ namespace VikingEngine.PJ.CarBall
         public Car(Gamer gamer)
         {
             this.gamer = gamer;
-            maxSpeed = 0.01f * cballRef.ballScale;
+            maxSpeed = 0.1f * cballRef.ballScale;
             minSpeed = maxSpeed * 0.1f;
 
             float visualScale = cballRef.ballScale;
@@ -122,7 +122,7 @@ namespace VikingEngine.PJ.CarBall
                 golieSpotCheck();
                 outerboundsCheck();
 
-                if (updatePart == cballLib.LastCollisionUpdate)
+                if (updatePart == Ref.TimePassed8ms -1)
                 {
                     image.update();
                     updateInputIcons();
@@ -334,7 +334,7 @@ namespace VikingEngine.PJ.CarBall
 
         void updateMovement()
         {
-            image.position += sumVelocity * cballLib.PartialUpdateLength * Ref.DeltaGameTimeMs;            
+            image.position += sumVelocity /** cballLib.PartialUpdateLength * Ref.DeltaGameTimeMs*/;            
             bound.Center = image.position;            
         }
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.EngineSpace.Sound;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.Sound
 {
@@ -14,7 +15,7 @@ namespace VikingEngine.Sound
     {
         public static bool MediaPlayerError = false;
 
-        static SongData currentMedia = null;
+        //static SongData currentMedia = null;
 
         public IntervalF LoopTimesRange = new IntervalF(2, 3);
         public IntervalF DelayBetweenSongs_minutes = new IntervalF(5, 8);
@@ -32,10 +33,14 @@ namespace VikingEngine.Sound
         public bool playingFromPlayList = true;
 
         public bool keepPlaying = true;
+
+        public bool endlessLoop = false;
         public bool useDelay = true;
 
         NVorbisPlayer player;
         public bool randomPlayList = true;
+
+        //bool pause = false;
 
         public MusicPlayer()
         {
@@ -44,12 +49,21 @@ namespace VikingEngine.Sound
                 Volume = 1f,
                 IsRepeating = false
             };
-
+            
             if (Ref.music != null)
             {
                 throw new Exception("Two music players");
             }
             //lib.DoNothing();
+        }
+
+        public void Pause()
+        {
+            player.Pause();
+        }
+        public void Resume()
+        {
+            player.Resume();
         }
 
         /// <summary>
@@ -81,6 +95,7 @@ namespace VikingEngine.Sound
 
             currentDelay = TimeExt.MinutesToMS(DelayBetweenSongs_minutes.GetRandom());
             keepPlaying = true;
+            endlessLoop = false;
             playSongState = PlaySongState.LoadingSong;
             if (shuffleSongsLeftToPlay <= 0)
             {
@@ -226,7 +241,8 @@ namespace VikingEngine.Sound
                         }
                         else
                         {
-                            onSongComplete();
+                            player.Volume = 0;
+                            beginNextSong();
                         }
                         break;
                     case PlaySongState.FadeIn:
@@ -266,12 +282,20 @@ namespace VikingEngine.Sound
                 }
                 else
                 {
-                    currentSong = nextSongData;
+                    //currentSong = nextSongData;
                     playTime.MilliSeconds = PlayMusic(nextSongData);
 
                     if (currentSong.seamlessLoop)
                     {
-                        playTime.MilliSeconds *= LoopTimesRange.GetRandom(random);
+                        
+                        if (endlessLoop)
+                        {
+                            playTime.MilliSeconds = float.MaxValue;
+                        }
+                        else
+                        {
+                            playTime.MilliSeconds *= LoopTimesRange.GetRandom(random);
+                        }
                         playSongState = PlaySongState.FadeIn;
                     }
                     else
@@ -359,12 +383,14 @@ namespace VikingEngine.Sound
                     //MediaPlayer.Stop();
 
                     //currentMedia = s;
-                    currentMedia = song;
+                    currentSong = song;
+                    //currentMedia = song;
                     player.IsRepeating = song.seamlessLoop;
                     //FilePath path = new FilePath(
                     string path = Engine.LoadContent.Content.RootDirectory + FilePath.Dir + song.filePath + ".ogg";
 
-
+                    SongVolumeAdjust = song.volume;
+                    RefreshVolume();
                     int ms = (int)player.Play(path).TotalMilliseconds;
 
 
@@ -389,7 +415,8 @@ namespace VikingEngine.Sound
 
         public void StopMusic()
         {
-            
+            currentSong = null;
+            //pause = false;
             player.Stop();
 
             //currentMedia?.Dispose();

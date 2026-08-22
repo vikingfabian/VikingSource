@@ -18,6 +18,7 @@ namespace VikingEngine.PJ.CarBall
             Ref.draw.ClrColor = Color.Black;
 
             new Timer.AsynchActionTrigger(loadContent_Asynch, true);
+            Ref.music.stop(false);
         }
 
         void loadContent_Asynch()

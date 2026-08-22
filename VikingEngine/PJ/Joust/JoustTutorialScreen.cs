@@ -17,7 +17,8 @@ namespace VikingEngine.PJ.Joust
         public JoustTutorialScreen(List2<GamerData> joinedGamers)
             : base(false)
         {
-            Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
+            //Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
+            Ref.music.stop(false);
             Input.Mouse.Hide();//Input.Mouse.Visible = false;
 
             this.joinedLocalGamers = joinedGamers;

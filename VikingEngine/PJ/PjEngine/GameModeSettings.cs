@@ -104,6 +104,13 @@ namespace VikingEngine.PJ
                     avatarType = ModeAvatarType.Joust;
                     break;
 
+                case PartyGameMode.StupidHorse:
+                    localPlayerRange = new Range(2, PjLib.SharedControllerMaxPlayers);
+                    hasNetwork = false;
+                    access = GameModeAccessibility.Beta_3;
+                    avatarType = ModeAvatarType.Joust;
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }

@@ -18,6 +18,7 @@ namespace VikingEngine.PJ
             PartyGameMode.CarBall,
             
             PartyGameMode.Match3,
+            PartyGameMode.StupidHorse,
 
             PartyGameMode.SuperSmashBirds,
             PartyGameMode.Tank,
@@ -232,6 +233,8 @@ namespace VikingEngine.PJ
         Match3,
         MoneyRoll,
         MeatPie,
+
+        StupidHorse,
         NUM
     }
 

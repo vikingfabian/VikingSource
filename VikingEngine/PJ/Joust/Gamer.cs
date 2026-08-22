@@ -1184,7 +1184,9 @@ namespace VikingEngine.PJ.Joust
                 onGroundTimer.DeleteMe();
             }
 
-            SteamTimeline.AddInstantaneousTimelineEvent(
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
                  "💀",// Title in UI
                 null, // Description in UI
                 "steam_death", // Built-in Steam icon 
@@ -1192,6 +1194,7 @@ namespace VikingEngine.PJ.Joust
                 0f,// Offset in seconds
                 ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
             );
+            }
 
             //#if !MAH
             new DeathFlash();

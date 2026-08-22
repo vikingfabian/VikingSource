@@ -19,7 +19,7 @@ namespace VikingEngine.PJ.CarBall
 
         public Goalie(GoalieSpot fromSpot, Gamer gamer)
         {
-            this.speed = gamer.car.maxSpeed * 0.7f * fromSpot.speedMultiplier;
+            this.speed = gamer.car.maxSpeed * 2.2f * fromSpot.speedMultiplier;
             this.fromSpot = fromSpot;
             this.gamer = gamer;
 
@@ -45,7 +45,7 @@ namespace VikingEngine.PJ.CarBall
 
         public bool update()
         {
-            paddle.Ypos += speed * moveDir * Ref.DeltaTimeMs;
+            paddle.Ypos += speed * moveDir /** Ref.DeltaTimeMs*/;
             bound.Center = paddle.position;
             inputIcon.update();
 

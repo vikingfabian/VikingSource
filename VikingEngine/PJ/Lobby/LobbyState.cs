@@ -73,7 +73,10 @@ namespace VikingEngine.PJ
             PjRef.host = host;
 
             searchLobbiesTimer.TimeLeft = TimeExt.SecondsToMS(3);
-            PjRef.LobbySong.PlayStored();
+            //PjRef.LobbySong.PlayStored();
+            Ref.music.endlessLoop = true;
+            Ref.music.PlayMusic(new Sound.SongData(PjLib.ContentFolder + "Elevating", true, 0.24f));
+            
 
             Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
             this.joinedLocalGamers = new List2<GamerData>();
@@ -1135,7 +1138,7 @@ namespace VikingEngine.PJ
                     
                 case GameModeAccessibility.Beta_3:
                     PjRef.RefreshDlcStatus();
-                    return PjRef.Dlc2BETA;
+                    return true;
 
                 case GameModeAccessibility.Paid_4:
                     PjRef.RefreshDlcStatus();
@@ -1423,7 +1426,8 @@ namespace VikingEngine.PJ
                     Ref.netSession.setLobbyJoinable(false);
                 }
 
-                MediaPlayer.Stop();
+                //MediaPlayer.Stop();
+                Ref.music.stop(false);
 
                 if (Ref.steam.isInitialized)
                 {
@@ -1472,7 +1476,9 @@ namespace VikingEngine.PJ
                         new ExitToLobbyState(1000, true);
                         PjRef.achievements.secretMeatPie.Unlock();
                         break;
-
+                    case PartyGameMode.StupidHorse:
+                        new StupidHorse.StupidHorseScene(joinedLocalGamers, 0);
+                        break;
                 }
                 PjRef.storage.saveLoad(true, true);
 

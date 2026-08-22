@@ -1,19 +1,11 @@
 ﻿
-* Updated to the latest VikingEngine, Monogame framework, .NET10 and Steam API
-* Steam timeline markers
-* The physics simulation will run in 120 FPS instead of 30
+
+
+
+
 * updated to the latest monogame framework
 * updated to .NET10 which should be slightly faster
 
-Joust Mode
-Made it safer to cancel dive bomb, but failure will reduce 2 lives.
-
-Golf
-* The balls move a little faster
-* Added 200ms delay to the bump use after the shot
-
-
-x no sound in setting
 x steam input, action file
 
 

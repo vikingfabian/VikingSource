@@ -14,10 +14,10 @@ namespace VikingEngine.PJ.CarBall
 
         public const int GoalCount = 5;
 
-        public const int CollisionUpdatesPerFrame = 4;
-        public const int LastCollisionUpdate = CollisionUpdatesPerFrame - 1;
+        //public const int CollisionUpdatesPerFrame = 4;
+        //public const int LastCollisionUpdate = CollisionUpdatesPerFrame - 1;
 
-        public const float PartialUpdateLength = 1f / CollisionUpdatesPerFrame;
+        //public const float PartialUpdateLength = 1f / CollisionUpdatesPerFrame;
 
 
         public const ImageLayers LayerGoal = ImageLayers.Foreground4;

@@ -34,13 +34,13 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
 
             Vector2 start = Engine.Screen.CenterScreen;
             start.X -= trackSize.X * 0.5f;
-            start.Y -= trackSize.Y * 0.5f;
-
+            start.Y -= totalH * 0.5f;
+            
             VectorRect area = new VectorRect(start, trackSize);
 
             for (int i = 0; i < gamerCount; ++i)
             {
-                HorseTrack track = new HorseTrack(area);
+                HorseTrack track = new HorseTrack(this, area);
                 tracks.Add(track);
 
                 area.nextAreaY(1, trackYSpace);
@@ -56,7 +56,7 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
         Graphics.Image image;
         public Graphics.TextG number;
 
-        public HorseTrack(VectorRect area)
+        public HorseTrack(StupidWorld world, VectorRect area)
         {
             //this.area = area;
             image = new Image(SpriteName.WhiteArea, area.Position, area.Size, StupidLib.Layer_Track);
@@ -71,6 +71,7 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
 
             start = area.Position;
             stop = area.RightTop;
+            stop.X -= world.horseScale.X * 0.1f;
         }
     }
 }

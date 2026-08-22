@@ -14,6 +14,8 @@ namespace VikingEngine.PJ.StupidHorse
         public StupidHorseScene(List2<GamerData> joinedGamers, int matchCount)
             : base(true)
         {
+            this.joinedLocalGamers = joinedGamers;
+
             new Graphics.TextG(LoadedFont.Bold, Engine.Screen.SafeArea.Position, Engine.Screen.TextSizeV2, Graphics.Align.Zero, "STUPID HORSE",
                 Color.White, ImageLayers.Foreground0);
 
@@ -33,6 +35,8 @@ namespace VikingEngine.PJ.StupidHorse
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
+            
+            if (baseClassUpdate()) return;
 
             foreach (Rider rider in riders)
             {

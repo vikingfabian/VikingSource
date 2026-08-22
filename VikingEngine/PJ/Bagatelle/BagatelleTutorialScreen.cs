@@ -24,13 +24,10 @@ namespace VikingEngine.PJ.Bagatelle
 
             this.joinedLocalGamers = joinedGamers;
            
-
-            
-           
-
             const float MusicVol = 0.6f;
 
-            Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
+            //Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
+            Ref.music.stop(false);
             Ref.music.SetPlaylist(new List<Sound.SongData>
                 {
                     new Sound.SongData(PjLib.MusicFolder + "AgriculturalHuts", "Agricultural Huts", null, true, MusicVol),

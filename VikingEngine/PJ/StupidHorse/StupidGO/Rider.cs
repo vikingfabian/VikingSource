@@ -25,6 +25,7 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
 
         Time flipTime;
         Time whipVisible;
+        GameTimeStamp landingTime = GameTimeStamp.None;
 
         bool isJumping = false;
         Vector2 velocity = Vector2.Zero;
@@ -32,6 +33,11 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
         const float DefaultRiderRotation = -0.15f;
         const float JumpRiderRotation = -0.3f;
         AnimalSetup animalSetup;
+
+        int sucessfulJumps = 0;
+        const int MaxSucessfulJumps = 4;
+
+        const float SucessfulJumpAccAdd = 0.25f;
 
         public Rider(GamerData gamerData, StupidWorld world, HorseTrack track)
         {
@@ -116,46 +122,44 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
                     SoundManager.whip_fail.Play();
                     velocity.X *= 0.8f;
                     flipTime.MilliSeconds -= 100;
+                    sucessfulJumps = -1;
                 }
                 else
                 {
-                    SoundManager.whip.Play();
-                    velocity.X = scene.world.DefaultVelocity.X * lib.BoolToLeftRight(forwardDir);
+
+                    velocity.X = scene.world.DefaultVelocity.X * (1f + sucessfulJumps * SucessfulJumpAccAdd) * lib.BoolToLeftRight(forwardDir);
                     velocity.Y = scene.world.DefaultVelocity.Y;
                     isJumping = true;
                     horseImage.SetSpriteName(SpriteName.stupidHorseJump);
                     riderImage.SetSpriteName(animalSetup.wingDownSprite);
                     riderRotation = JumpRiderRotation;
+
+                    if (forwardDir)
+                    {
+                        int add;
+                        if (landingTime.msPassed(90))
+                        {
+                            add = 1;
+                            SoundManager.whip.Play();
+                        }
+                        else
+                        {
+                            SoundManager.whip_perfect.Play();
+                            add = 2;
+                        }
+                        sucessfulJumps = Bound.Max(sucessfulJumps + add, MaxSucessfulJumps);
+                    }
+                    else
+                    {
+                        SoundManager.whip.Play();
+                        sucessfulJumps = 0;
+                    }
                 }
 
                 float perc = (horseImage.Xpos - track.start.X) / (track.stop.X - track.start.X);
                 track.number.TextString = (Bound.Set(Convert.ToInt32(perc * 200f), 0, 200)).ToString() + " m";
 
-                if (horseImage.Xpos < 10)
-                {
-                    horseImage.Xpos = 10;
-                }
-
-                if (horseImage.Xpos >= track.stop.X)
-                {
-                    horseImage.Xpos = track.stop.X;
-                    scene.OnWinner(this);
-                    SoundManager.success.Play();
-
-                    int count = 8;
-
-                    var dirs = VectorExt.CircleOfDirections(count, 0f, 0.4f);
-                    //GolfRef.sounds.holeAppear.Play(riderImage.position);
-                    updateRider();
-                    foreach (var m in dirs)
-                    {
-                        var p = new Graphics.ParticleImage(SpriteName.WhiteArea, riderImage.Position, riderImage.size * 0.3f,
-                            StupidLib.Layer_Horse - 4, m);
-                        p.particleData.setFadeout(300, 120);
-                        p.Color = Color.Yellow;
-                    }
-                }
-
+                
 
             }
             else if (gamerData.button.UpEvent)
@@ -163,7 +167,7 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
                 whipImage.Visible = false;
             }
 
-                if (isJumping)
+            if (isJumping)
             {  
                 horseImage.Position += velocity * Ref.DeltaGameTimeMs;
                 for (int i = 0; i < Ref.GameTimePassed8ms; i++)
@@ -171,22 +175,55 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
                     velocity.Y += scene.world.Gravity;
                 }
 
-                if (horseImage.Position.Y >= track.start.Y)
+                checkBounds(scene);
+
+                
+            }
+
+            updateRider();           
+        }
+
+        private void checkBounds(StupidHorseScene scene)
+        {
+            if (horseImage.Xpos < 10)
+            {
+                horseImage.Xpos = 10;
+            }
+
+            if (horseImage.Xpos >= track.stop.X)
+            {
+                velocity.X = 0;
+                horseImage.Xpos = track.stop.X -1;
+                scene.OnWinner(this);
+                SoundManager.success.Play();
+
+                int count = 8;
+
+                var dirs = VectorExt.CircleOfDirections(count, 0f, 0.4f);
+                //GolfRef.sounds.holeAppear.Play(riderImage.position);
+                updateRider();
+                foreach (var m in dirs)
                 {
-                    horseImage.Position = new Vector2(horseImage.Position.X, track.start.Y);
-                    isJumping = false;
-                    horseImage.SetSpriteName(SpriteName.stupidHorse);
-                    riderImage.SetSpriteName(animalSetup.wingUpSprite);
-                    velocity = Vector2.Zero;
-                    riderRotation = DefaultRiderRotation;
+                    var p = new Graphics.ParticleImage(SpriteName.WhiteArea, riderImage.Position, riderImage.size * 0.3f,
+                        StupidLib.Layer_Horse - 4, m);
+                    p.particleData.setFadeout(300, 120);
+                    p.Color = Color.Yellow;
                 }
             }
 
+            if (horseImage.Position.Y >= track.start.Y)
+            {
+                horseImage.Position = new Vector2(horseImage.Position.X, track.start.Y);
+                isJumping = false;
+                horseImage.SetSpriteName(SpriteName.stupidHorse);
+                riderImage.SetSpriteName(animalSetup.wingUpSprite);
+                velocity = Vector2.Zero;
+                riderRotation = DefaultRiderRotation;
 
-            updateRider();
-
-           
-        } 
+                flipTime.MilliSeconds += 60;
+                landingTime.setNow();
+            }
+        }
 
         protected void createBound()
         {

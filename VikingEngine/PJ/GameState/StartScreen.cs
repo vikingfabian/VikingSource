@@ -104,10 +104,10 @@ namespace VikingEngine.PJ
 
 
             //Ref.music = new Sound.MusicPlayer();
-            PjRef.JoustSong = new Sound.SongData(PjLib.ContentFolder + "Hemisphere Three", "Standard Joust", null, false, 1f);
-            PjRef.JoustSong.LoadAndStore();
-            PjRef.LobbySong = new Sound.SongData(PjLib.ContentFolder + "Elevating", "Lobby", null, true, 0.3f);
-            PjRef.LobbySong.LoadAndStore();
+            //PjRef.JoustSong = new Sound.SongData(PjLib.ContentFolder + "Hemisphere Three", "Standard Joust", null, false, 1f);
+            //PjRef.JoustSong.LoadAndStore();
+            //PjRef.LobbySong = new Sound.SongData(PjLib.ContentFolder + "Elevating", "Lobby", null, true, 0.3f);
+            //PjRef.LobbySong.LoadAndStore();
             part++;
 
             VikingEngine.HUD.Gui.LoadContent();
@@ -168,14 +168,14 @@ namespace VikingEngine.PJ
             //if (PlatformSettings.DevBuild)
 #if DEBUG
             {
-                new StupidHorse.StupidHorseScene(new List2<GamerData> {
-                    new GamerData() { button = new KeyboardButtonMap(
-                    Microsoft.Xna.Framework.Input.Keys.Space), joustAnimal = JoustAnimal.Pig1, hat =  Hat.NoHat  },
+                //new StupidHorse.StupidHorseScene(new List2<GamerData> {
+                //    new GamerData() { button = new KeyboardButtonMap(
+                //    Microsoft.Xna.Framework.Input.Keys.Space), joustAnimal = JoustAnimal.Pig1, hat =  Hat.NoHat  },
 
-                    new GamerData() { button = new KeyboardButtonMap(
-                    Microsoft.Xna.Framework.Input.Keys.Right), joustAnimal = JoustAnimal.Bird1, hat =  Hat.NoHat  }
-                }, 0);
-                return;
+                //    new GamerData() { button = new KeyboardButtonMap(
+                //    Microsoft.Xna.Framework.Input.Keys.Right), joustAnimal = JoustAnimal.Bird1, hat =  Hat.NoHat  }
+                //}, 0);
+                //return;
                 //new MiniGolf.MinigolfState();
                 //    //new SpaceWar.SpacePlayState();
                 //    //new GameState.WolfScare();

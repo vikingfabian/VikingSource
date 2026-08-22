@@ -184,7 +184,8 @@ namespace VikingEngine.PJ
                 Engine.Sound.PauseAllLoopedSounds(false);
                 if (hasMusic)
                 {
-                    MediaPlayer.Resume();
+                    //MediaPlayer.Resume();
+                    Ref.music.Resume();
                 }
                 closeMenu();
 
@@ -197,7 +198,8 @@ namespace VikingEngine.PJ
             if (pauseMenu == null && isPlayState)
             {
                 timeSinceInput = 0;
-                MediaPlayer.Pause();
+                // MediaPlayer.Pause();
+                Ref.music.Pause();
                 Engine.Sound.PauseAllLoopedSounds(true);
 
                 setMenuLayer();

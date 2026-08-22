@@ -19,7 +19,8 @@ namespace VikingEngine.PJ.MiniGolf
 
             const float MusicVol = 0.6f;
 
-            Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
+            Ref.music.stop(false);
+
             Ref.music.SetPlaylist(new List<Sound.SongData>
                 {
                     new Sound.SongData(PjLib.MusicFolder + "lazy_town", "Lazy Town", null, true, MusicVol),

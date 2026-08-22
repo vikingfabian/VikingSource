@@ -115,7 +115,7 @@ namespace VikingEngine.PJ.CarBall
 
         void updatePlay()
         {
-            for (int updatePart = 0; updatePart < cballLib.CollisionUpdatesPerFrame; ++updatePart)
+            for (int updatePart = 0; updatePart < Ref.TimePassed8ms; ++updatePart)
             {
                 gamers.loopBegin(forwardCarUpdate);
                 while (gamers.loopNext())
