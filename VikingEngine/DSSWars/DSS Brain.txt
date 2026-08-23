@@ -1,7 +1,6 @@
 
 Change log:
-* Remote player display is blocked until handover is complete
-* Handles failure to join, no available faction 
+* 
 
 KNOWN ISSUES
 

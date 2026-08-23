@@ -145,13 +145,11 @@ namespace VikingEngine.DSSWars
                 return false;
             }
 
-#if DEBUG
-            if (!arraylib.InBound(indexRegister, lowIndex))
+            if (lowIndex < 0 || highIndex >= indexRegister.Length)
             {
-                //throw new Exception();
-                arraylib.InBound(indexRegister, lowIndex);
+                result = -1;
+                return false;
             }
-#endif
 
             result = indexRegister[lowIndex] + highIndex - lowIndex;
 
