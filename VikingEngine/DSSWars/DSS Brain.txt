@@ -1,40 +1,6 @@
 
 Change log:
-* Updated to the latest Monogame framework and .NET10
-* Handles failure to join, no available faction 
-* Black market limit: I added 500 as limit, it grows with 50 for each city capture
-* A hover button for all city resources
-* Can pick army or guards on automation
-* Will set captured cities to auto
-* Ultra wide support - adjustable ui placement
-* Tabs have environmental sounds
-* Theme music added to playlist
-* All relation actions will trigger messages
-* A UI easter egg
-* improved pony model
-* Increased the byte size boundaries on player saves 
-* Build priority - apply to all button
-
-Reassign
-* More efficient unit filter system
-* New reassign menu for soldiers
-* Fixed: food will also follow army split
-
-Manual
-* Added game manual section in pause menu, the menu will also remember the page you are on
-* Removed city help tab
-* Added "open game manual" as second mission in tutorial
-
-Sound
-* Tabs have environmental sounds
-* Theme music added to playlist
-* new event sounds
-* Steam timeline
-
-Performance
-* Using linear arrays for the map, and voxel data
-* Removed all unessesary faction references
-* Removed refences from the aria unit grid
+* 
 
 KNOWN ISSUES
 x reassign dont work with controller
