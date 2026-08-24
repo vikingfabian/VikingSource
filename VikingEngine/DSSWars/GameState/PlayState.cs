@@ -468,7 +468,7 @@ namespace VikingEngine.DSSWars
             initPathFindingThreads();
 
             isReady = true;
-            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
+            AutoSaveTimeStamp.setNow();
             events.onGameStarted();
 
             if ((newGame && LocalHost().IntutorialMode()) == false)
@@ -647,8 +647,8 @@ namespace VikingEngine.DSSWars
             Engine.ParticleHandler.Update(time);
         }
 
-        const float AutoSaveTimeSec = 15 * TimeExt.MinuteInSeconds;
-        float LastAutoSaveTime_TotalSec = 0;
+        //float AutoSaveTimeSec = DssRef.storage.autoSaveInterval_Minutes * TimeExt.MinuteInSeconds;
+        TimeStamp AutoSaveTimeStamp;
 
 
         void setPlayerNetState(PlayerNetState netState)
@@ -724,7 +724,7 @@ namespace VikingEngine.DSSWars
 
             if (host && DssRef.storage.autoSave && 
                 DssRef.storage.runTutorial == false &&
-                Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
+                AutoSaveTimeStamp.minPassed(DssRef.storage.autoSaveInterval_Minutes))//Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
             {
                 AutoSave();
             }            
@@ -746,7 +746,7 @@ namespace VikingEngine.DSSWars
                     new SaveScene(true);
                 }
             }
-            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
+            AutoSaveTimeStamp.setNow();
         }
                 
 

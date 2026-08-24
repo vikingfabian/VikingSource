@@ -42,6 +42,15 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Hud_ApplyToAll => "Apply to all";
         public string Hud_OutOfStock => "Out of stock";
+
+        public string Leaderboards_NationStrength => "Nation wide military strength";
+
+        public string AutoSaveTime => "Auto-save interval";
+        //public string SaveCount_Label => "Save count capacity";
+        //public string SaveCount_Note1 => "Saves are recycled to reduce storage usage";
+        //public string SaveCount_Note2 => "A high count will use more storage";
+        //public string SaveCount_Note3 => "Reducing the count will result in lost saves";
+
         //public string ResourceBoost => "Resource boost";
         ////public string TaxIncome => "Tax income";
         //public string PlayerInteractionTitle => "Player interaction";

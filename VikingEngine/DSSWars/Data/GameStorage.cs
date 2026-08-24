@@ -27,8 +27,11 @@ namespace VikingEngine.DSSWars.Data
         //public bool verticalScreenSplit = true;
 
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
+
         
         public bool autoSave = true;
+        public int autoSaveInterval_Minutes = 45;
+
         public bool runTutorial = true;
         public bool speed5x = true;
         public bool blockImportAchievements = true;
