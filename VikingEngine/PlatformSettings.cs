@@ -13,7 +13,7 @@ namespace VikingEngine
     {
         public static readonly BuildDebugLevel DebugLevel
 #if DEBUG
-            = BuildDebugLevel.Release;
+            = BuildDebugLevel.Dev;
 #else
             = BuildDebugLevel.Release;
 #endif

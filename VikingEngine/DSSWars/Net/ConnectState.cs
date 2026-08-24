@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.Net
         void init()
         {
             Ref.music.stop(true);
+            SoundLib.joining.Play();
 
             Graphics.Text2 text = new Graphics.Text2(DssRef.lang.Network_ConnectingToGame,
                 LoadedFont.Bold, Engine.Screen.CenterScreen, Engine.Screen.TextTitleHeight,

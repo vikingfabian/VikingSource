@@ -52,6 +52,8 @@ namespace VikingEngine.DSSWars.Interface
         InputMap input;
         bool storeStack = false;
         List<string> menuStack = null;
+
+        static readonly int[] AutoSaveIntervalOptions = [15, 30, 45, 60, 90, 120];
         public GameMenuSystem()
             //: base(new InputMap(Engine.XGuide.LocalHostIndex), MenuType.InGame)
         {
@@ -715,11 +717,31 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
 
+                if (DssRef.storage.autoSave)
+                {
+                    content.newLine();
+                    HudLib.Label(content, SpriteName.WarsHudIconChildArrow, DssRef.todoLang.AutoSaveTime);
+                    content.newLine();
+                    foreach (var interval in AutoSaveIntervalOptions)
+                    {
+                        content.Add(new ArtOption(interval == DssRef.storage.autoSaveInterval_Minutes, new List<AbsRichBoxMember> { new RbText(interval.ToString()) }, new RbAction1Arg<int>((int selected) =>
+                        {
+                            DssRef.storage.autoSaveInterval_Minutes = selected;
+                            DssRef.storage.Save(null);
+                        }, interval), new RbTooltip_Text(DssRef.lang.Hud_Time_Minutes)));
+                    }
+                    content.newParagraph();
+                }
+                else
+                { 
+                    content.newLine();
+                }
+
                 if (lobby)
                 {
                     //if (DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
                     {
-                        content.newLine();
+                        
                         content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
                     }
                     content.newLine();

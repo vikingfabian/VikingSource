@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars
             netMessage, netJoined, 
             eventRepeatSound, eventRelationGainVassal,
             forYourInformation, goodNews, warningMessage, storyDramaticEvent,
-            saving,
+            saving, loading, joining,
 
             tab_blackmarket, tab_build, tab_conscript, tab_defence,
             tab_delivery, tab_economy, tab_help, tab_info, tab_pin, tab_resources,
@@ -280,6 +280,8 @@ namespace VikingEngine.DSSWars
             storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 1f);
             warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 1f);
             saving = new SoundContainerSingle(StingerDir + "Saving game", 0.4f);
+            loading = new SoundContainerSingle(StingerDir + "Loading Game", 0.4f);
+            joining = new SoundContainerSingle(StingerDir + "Joining multiplayer gamev1", 0.4f);
             recievedGift = new MessageTimer(new SoundContainerSingle(StingerDir + "Received gifts"));
 
         }

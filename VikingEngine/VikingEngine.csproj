@@ -59,8 +59,11 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Content\**" />
     <Compile Remove="LF2\**" />
+    <EmbeddedResource Remove="Content\**" />
     <EmbeddedResource Remove="LF2\**" />
+    <None Remove="Content\**" />
     <None Remove="LF2\**" />
   </ItemGroup>
   <ItemGroup>
