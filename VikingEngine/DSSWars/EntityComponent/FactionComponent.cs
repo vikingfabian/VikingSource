@@ -6,6 +6,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 
 namespace VikingEngine.DSSWars
 {
@@ -13,13 +14,15 @@ namespace VikingEngine.DSSWars
     {
         public Diplomacy diplomacy;
         const int DefaultFactionCount = 64;
-        public GroupedResource[] factionResourceOverviews = new GroupedResource[DefaultFactionCount * CityResourceIndex.COUNT];
-        public WorkPriority[] factionWork = new WorkPriority[DefaultFactionCount * WorkTemplate.COUNT];
+        public GroupedResource[] factionResourceOverviews /*= new GroupedResource[DefaultFactionCount * CityResourceIndex.COUNT]*/;
+        public WorkPriority[] factionWork /*= new WorkPriority[DefaultFactionCount * WorkTemplate.COUNT]*/;
+        public TechTreeNodeProgress[] techNodeProgress /*= new TechTreeNodeProgress[DefaultFactionCount * TechTreeNodeProgress.NodeCount]*/;
 
         void init_FactionComponents()
         {
             factionResourceOverviews = new GroupedResource[factions.Array.Length * CityResourceIndex.COUNT];
             factionWork = new WorkPriority[factions.Array.Length * WorkTemplate.COUNT];
+            techNodeProgress = new TechTreeNodeProgress[factions.Array.Length * TechTreeNodeProgress.NodeCount];
             //diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
             diplomacy = new Diplomacy(factions.Array.Length);
 

@@ -19,6 +19,26 @@ namespace VikingEngine
         public T value2;
         public T value3;
 
+        public FlatArray_Three() { }
+        public FlatArray_Three(T value1)
+        {
+            this.value1 = value1;
+            count = 1;
+        }
+        public FlatArray_Three(T value1, T value2)
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            count = 2;
+        }
+        public FlatArray_Three(T value1, T value2, T value3) 
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            this.value3 = value3;
+            count = 3;
+        }
+
         public void Add(T v)
         {
             switch (count)
