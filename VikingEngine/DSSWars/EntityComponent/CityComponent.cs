@@ -21,6 +21,8 @@ namespace VikingEngine.DSSWars
         public WorkPriority[] cityWork;
         public StorageSize[] cityStorage;
 
+        public TechTreeNodeProgress_City[] city_techNodes;
+
         const int WorkerXpCOUNT = (int)WorkExperienceType.NUM_NONE;
         int nextXpIndex = 0;
         bool[] WorkXpInUse;
@@ -30,6 +32,15 @@ namespace VikingEngine.DSSWars
         {
             city.resourceComponentStartIndex = CityResourceIndex.COUNT * city.myIndex;
            
+        }
+
+        public TechTreeNodeProgress_City GetTech(int city, TechNodeType nodeType)
+        {
+            return city_techNodes[city * TechTreeNodeProgress_City.NodeCount + (int)nodeType];
+        }
+        public void SetTech(int city, TechNodeType nodeType, TechTreeNodeProgress_City value)
+        { 
+            city_techNodes[city * TechTreeNodeProgress_City.NodeCount + (int)nodeType] = value;
         }
 
         public void initWorkerXp(int cityCount)
@@ -227,6 +238,7 @@ namespace VikingEngine.DSSWars
             neighborCities = new EcsStaticIndexArray(18, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
+            city_techNodes = new TechTreeNodeProgress_City[TechTreeNodeProgress_City.NodeCount * cityCount];
 
             int resourceStart = 0;
             //int workStart = 0;

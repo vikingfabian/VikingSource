@@ -98,34 +98,35 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                     placementValues[i] = placementValue;
                 });
-            //switch (DssRef.storage.ruleset.factionStartSize)
-            //{
-            //    case FactionStartSize.Full:
-            //        generateSettings.percentageUnclaimed = 0.25f;
-            //        generateCityType(CityType.Capital, numHeadCities, HeadCityNeededFreeRadius, generateSettings);
-            //        generateCityType(CityType.Town, numHeadCities * 2, 9, generateSettings);
-            //        generateCityType(CityType.Village, numHeadCities * 4, 8, generateSettings);
-            //        break;
-            //    case FactionStartSize.OneCity:
-            //        generateSettings.percentageUnclaimed = 0.85f;
-            //        generateCityType(CityType.Village, numHeadCities * 8, 8, generateSettings);
-            //        break;
-            //    case FactionStartSize.Settler:
-            //        generateSettings.percentageUnclaimed = 0.85f;
-            //        generateCityType(CityType.Campsite, numHeadCities * 8, 8, generateSettings);
-            //        break;
-            //}
+                //switch (DssRef.storage.ruleset.factionStartSize)
+                //{
+                //    case FactionStartSize.Full:
+                //        generateSettings.percentageUnclaimed = 0.25f;
+                //        generateCityType(CityType.Capital, numHeadCities, HeadCityNeededFreeRadius, generateSettings);
+                //        generateCityType(CityType.Town, numHeadCities * 2, 9, generateSettings);
+                //        generateCityType(CityType.Village, numHeadCities * 4, 8, generateSettings);
+                //        break;
+                //    case FactionStartSize.OneCity:
+                //        generateSettings.percentageUnclaimed = 0.85f;
+                //        generateCityType(CityType.Village, numHeadCities * 8, 8, generateSettings);
+                //        break;
+                //    case FactionStartSize.Settler:
+                //        generateSettings.percentageUnclaimed = 0.85f;
+                //        generateCityType(CityType.Campsite, numHeadCities * 8, 8, generateSettings);
+                //        break;
+                //}
 
-            //float storyPlacementScale = 1f;
-            //if (world.Size.Area() > WorldData.SizeDimentions(MapSize.Medium).Area())
-            //{
-            //    storyPlacementScale = (float)WorldData.SizeDimentions(MapSize.Medium).Area() / world.Size.Area();
-            //}
-            //world.Init_CityComponents(world.cities.Count);
-            //foreach (City city in world.cities)
-            //{
-            //    city.generateCultureAndEconomy(world, storyPlacementScale, cityCultureCollection);
-            //}
+                //float storyPlacementScale = 1f;
+                //if (world.Size.Area() > WorldData.SizeDimentions(MapSize.Medium).Area())
+                //{
+                //    storyPlacementScale = (float)WorldData.SizeDimentions(MapSize.Medium).Area() / world.Size.Area();
+                //}
+                //world.Init_CityComponents(world.cities.Count);
+                //foreach (City city in world.cities)
+                //{
+                //    city.generateCultureAndEconomy(world, storyPlacementScale, cityCultureCollection);
+                //}
+            }
         }
     }
 }

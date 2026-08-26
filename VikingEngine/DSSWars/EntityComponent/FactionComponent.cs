@@ -16,15 +16,17 @@ namespace VikingEngine.DSSWars
         const int DefaultFactionCount = 64;
         public GroupedResource[] factionResourceOverviews /*= new GroupedResource[DefaultFactionCount * CityResourceIndex.COUNT]*/;
         public WorkPriority[] factionWork /*= new WorkPriority[DefaultFactionCount * WorkTemplate.COUNT]*/;
-        public TechTreeNodeProgress[] techNodeProgress /*= new TechTreeNodeProgress[DefaultFactionCount * TechTreeNodeProgress.NodeCount]*/;
+        public TechTreeNodeProgress_Faction[] faction_techNodes /*= new TechTreeNodeProgress[DefaultFactionCount * TechTreeNodeProgress.NodeCount]*/;
 
         void init_FactionComponents()
         {
-            factionResourceOverviews = new GroupedResource[factions.Array.Length * CityResourceIndex.COUNT];
-            factionWork = new WorkPriority[factions.Array.Length * WorkTemplate.COUNT];
-            techNodeProgress = new TechTreeNodeProgress[factions.Array.Length * TechTreeNodeProgress.NodeCount];
+            int length = Math.Max(factions.Array.Length, 256);
+
+            factionResourceOverviews = new GroupedResource[length * CityResourceIndex.COUNT];
+            factionWork = new WorkPriority[length * WorkTemplate.COUNT];
+            faction_techNodes = new TechTreeNodeProgress_Faction[length * TechTreeNodeProgress_City.NodeCount];
             //diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
-            diplomacy = new Diplomacy(factions.Array.Length);
+            diplomacy = new Diplomacy(length);
 
             for (int i = 0; i < factions.Array.Length; i++)
             {
@@ -38,11 +40,18 @@ namespace VikingEngine.DSSWars
 
         public void factionComponentsAdd(Faction faction)
         {
+            if (factionResourceOverviews == null)
+            {
+                init_FactionComponents();
+                return;
+            }
+
             if (factions.Array.Length * CityResourceIndex.COUNT >= factionResourceOverviews.Length)
             {
                 int startIndex = factionResourceOverviews.Length;
                 Array.Resize(ref factionResourceOverviews, factionResourceOverviews.Length * 2);
                 Array.Resize(ref factionWork, factionWork.Length * 2);
+                Array.Resize(ref faction_techNodes, faction_techNodes.Length * 2);
                 //Array.Resize(ref diplomaticRelations, MathExt.GaussSum((factions.Array.Length -1) * 2));
                 diplomacy = new Diplomacy((factions.Array.Length - 1) * 2);
             }

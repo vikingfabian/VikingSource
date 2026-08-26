@@ -42,6 +42,8 @@ namespace VikingEngine
         public const int CmdLetterSz = 18;
         const int NineSplitSz = 30;
 
+        const int WarsCheckSize = 20;
+
         public SpriteSheet()
         {
             addTexture(SpriteName.WaterEdgeMask_coast, 32, 32, LoadedTexture.waterEdge);
@@ -2151,6 +2153,13 @@ namespace VikingEngine
                 add(SpriteName.WarsRelationMobilizing);
                 add(SpriteName.WarsHudIconMultiplayerJoin, 2, 1);
 
+                add(SpriteName.WarsTechButtonDisabled);
+                add(SpriteName.WarsTechButtonEnabled);
+                addWithSizeDef(SpriteName.WarsTechOptionYes, currentIndex, WarsCheckSize, WarsCheckSize);
+                addWithSizeDef(SpriteName.WarsTechOptionNo, currentIndex, WarsCheckSize, WarsCheckSize);
+                add(SpriteName.WarsTechChildArrow);
+                add(SpriteName.WarsTechNextArrow);
+       
             }
 
 
@@ -2836,7 +2845,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudOptionSelected);
                     add(SpriteName.WarsHudOptionNotSelected);
                     add(SpriteName.WarsHudRoundButton);
-                    const int WarsCheckSize = 20;
+                    
                     addWithSizeDef(SpriteName.WarsHudCheckYes, currentIndex, WarsCheckSize, WarsCheckSize);
                     addWithSizeDef(SpriteName.WarsHudCheckNo, currentIndex, WarsCheckSize, WarsCheckSize);
                     addWithSizeDef(SpriteName.WarsHudOptionYes, currentIndex, WarsCheckSize, WarsCheckSize);

@@ -206,6 +206,10 @@ namespace VikingEngine.DSSWars
                 notSelectedTexture = SpriteName.WarsHudSubTabNotSelected,
             };
 
+            RbSettings.TechSelect = new NineSplitSettings(SpriteName.WarsTechButtonEnabled, 1, 8, nineTextureEdge, true, true);
+            RbSettings.TechHover = new NineSplitSettings(SpriteName.WarsTechButtonDisabled, 1, 8, nineTextureEdge, true, true);
+
+
             PopMenuButtonTexture = new HUD.NineSplitSettings(SpriteName.WarsHudPopUpButton, 1, 8, nineTextureEdge, true, true);
 
             TutorialRbSettings = RbSettings;

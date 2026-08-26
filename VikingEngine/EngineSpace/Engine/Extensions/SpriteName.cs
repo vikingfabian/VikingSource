@@ -2439,6 +2439,15 @@ namespace VikingEngine
         
         WarsHudToggleNotSelected,
         WarsHudRoundButton,
+
+        WarsTechButtonEnabled, WarsTechButtonDisabled,
+        WarsTechOptionYes,
+        WarsTechOptionNo,
+        WarsTechChildArrow,
+        WarsTechNextArrow,
+        //addWithSizeDef(SpriteName.WarsHudOptionYes, currentIndex, WarsCheckSize, WarsCheckSize);
+        //addWithSizeDef(SpriteName.WarsHudOptionNo, currentIndex, WarsCheckSize, WarsCheckSize);
+
         WarsHudCheckYes,
         WarsHudCheckNo,
         WarsHudOptionYes,

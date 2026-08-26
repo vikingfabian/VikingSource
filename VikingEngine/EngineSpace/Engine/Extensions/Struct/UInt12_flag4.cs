@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace VikingEngine.EngineSpace.Engine.Extensions.Struct
+namespace VikingEngine.Engine
 {
 
     struct UInt12_flag4

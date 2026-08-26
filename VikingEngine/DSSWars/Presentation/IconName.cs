@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -25,6 +26,11 @@ namespace VikingEngine.DSSWars
 {
     static class IconName
     {
+        //public static void TechNode(TechNodeType nodeType, out SpriteName icon, out string name)
+        //{ 
+            
+        //}
+
         public static void Relation(RelationType relation, out SpriteName icon, out string name)
         {
             switch (relation)

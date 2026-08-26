@@ -38,6 +38,9 @@ namespace VikingEngine.HUD.RichBox
         public ThreeSplitSettings dragButtonTex;
         public NineSplitSettings windowBackground;
 
+        public NineSplitSettings TechHover;
+        public NineSplitSettings TechSelect;
+
         public RichBoxSettings(TextFormat breadText, TextFormat button, float iconHeight, float TitleSizeUp = 1.2f)
         {
             this.breadText = breadText;

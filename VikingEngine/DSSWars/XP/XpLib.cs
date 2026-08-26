@@ -31,6 +31,8 @@ namespace VikingEngine.DSSWars.XP
 
         public static TechnologyUnlock Unlock;
 
+        public static TechTreeStructure TechTree;
+
         public static readonly int XpLevelCount = (int)ExperienceLevel.NUM;
         public static readonly int MaxXpLevel = XpLevelCount - 1;
         public static ExperienceLevel ToLevel(byte xp)
