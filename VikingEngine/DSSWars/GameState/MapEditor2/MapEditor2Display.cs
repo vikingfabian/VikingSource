@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         Setup,
         Nodes,
         Icon,
+        CityPlacements,
         NUM
     }
 
@@ -164,6 +165,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Icon, Map2Pass.IconNoise)));
+                    break;
+
+                case Map2GeneratorTab.CityPlacements:
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.IconCities, Map2Pass.IconCities)));
                     break;
             }
 

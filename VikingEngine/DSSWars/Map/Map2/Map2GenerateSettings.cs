@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         /// </summary>
         public float scale = 1.0f;
 
-        public int minCitySpacing = 8;
+        public int minCitySpacing = 32;
 
         public bool CustomSizeProperty(object tag, bool set, bool value)
         {

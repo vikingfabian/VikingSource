@@ -27,11 +27,11 @@ namespace VikingEngine.DSSWars.Map.Map2
     class GenerateCities
     {
         public Grid2D_L<FlatArray_Three<CityPlacementData>> citiesOnNodes;
-        List<CityPlacementData> cities;
+        public List<CityPlacementData> cities;
 
         PcgRandom rnd = new PcgRandom();
 
-        void generateCities(Map2GenerateSettings generateSettings, NodeMap nodeMap, IconWorldData icon)
+        public void generateCities(Map2GenerateSettings generateSettings, NodeMap nodeMap, IconWorldData icon)
         {
 
             List<IntVector2> cityNodePositions = new List<IntVector2>();
@@ -59,16 +59,17 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             for (int i = 0; i < numCities; i++)
             {
-                IntVector2 check = arraylib.RandomListMemberPop(cityNodePositions, rnd);
-                Rectangle2 nodearea = Rectangle2.FromCenterTileAndRadius(check, 2);
+                IntVector2 rndNodePos = arraylib.RandomListMemberPop(cityNodePositions, rnd);
+                Rectangle2 nodearea = Rectangle2.FromCenterTileAndRadius(rndNodePos, 3);
 
                 Parallel.For(0, CompareValueCount, i =>
                 {
                     PlacementValue placementValue = new PlacementValue();
-                    IntVector2 tryPos = new IntVector2(NodeMap.start + NodeMap.NodePixWidth / 2) + check * NodeMap.NodePixWidth + new IntVector2(rnd.Plus_Minus(CheckRadius), rnd.Plus_Minus(CheckRadius));
+                    IntVector2 tryPos = new IntVector2(NodeMap.start + NodeMap.NodePixWidth / 2) + rndNodePos * NodeMap.NodePixWidth + new IntVector2(rnd.Plus_Minus(CheckRadius), rnd.Plus_Minus(CheckRadius));
 
-                    var tile = icon.iconGrid.Get(tryPos);
-                    if (tile.groundY >= Map2Generator.Height_LowGround && tile.groundY <= Map2Generator.Height_MountainStart)
+                     
+                    if (icon.iconGrid.TryGet(tryPos, out var tile) &&
+                        tile.groundY >= Map2Generator.Height_LowGround && tile.groundY <= Map2Generator.Height_MountainStart)
                     {
                         //find closest city
 
@@ -92,40 +93,49 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                         if (closest >= generateSettings.minCitySpacing)
                         {
+                            placementValue.pos = tryPos;
                             placementValue.success = true;
+                            placementValue.value = closest;
                         }
                     }
 
                     placementValues[i] = placementValue;
                 });
-            //switch (DssRef.storage.ruleset.factionStartSize)
-            //{
-            //    case FactionStartSize.Full:
-            //        generateSettings.percentageUnclaimed = 0.25f;
-            //        generateCityType(CityType.Capital, numHeadCities, HeadCityNeededFreeRadius, generateSettings);
-            //        generateCityType(CityType.Town, numHeadCities * 2, 9, generateSettings);
-            //        generateCityType(CityType.Village, numHeadCities * 4, 8, generateSettings);
-            //        break;
-            //    case FactionStartSize.OneCity:
-            //        generateSettings.percentageUnclaimed = 0.85f;
-            //        generateCityType(CityType.Village, numHeadCities * 8, 8, generateSettings);
-            //        break;
-            //    case FactionStartSize.Settler:
-            //        generateSettings.percentageUnclaimed = 0.85f;
-            //        generateCityType(CityType.Campsite, numHeadCities * 8, 8, generateSettings);
-            //        break;
-            //}
 
-            //float storyPlacementScale = 1f;
-            //if (world.Size.Area() > WorldData.SizeDimentions(MapSize.Medium).Area())
-            //{
-            //    storyPlacementScale = (float)WorldData.SizeDimentions(MapSize.Medium).Area() / world.Size.Area();
-            //}
-            //world.Init_CityComponents(world.cities.Count);
-            //foreach (City city in world.cities)
-            //{
-            //    city.generateCultureAndEconomy(world, storyPlacementScale, cityCultureCollection);
-            //}
+                float bestPlacementValue = float.MinValue;
+                int bestPlacementIndex = -1;
+
+                for (int pIx = 0; pIx < placementValues.Length; pIx++)
+                {
+                    if (placementValues[pIx].success)
+                    {
+                        if (placementValues[pIx].value > bestPlacementValue)
+                        {
+                            bestPlacementValue = placementValues[pIx].value;
+                            bestPlacementIndex = pIx;
+                        }
+                    }
+                }
+
+                if (bestPlacementIndex >= 0)
+                {
+                    IntVector2 cityPos = placementValues[bestPlacementIndex].pos;
+                    CityPlacementData city = new CityPlacementData(){ myIndex = cities.Count, pos = cityPos };
+                    cities.Add(city);
+                    citiesOnNodes.GetRef(rndNodePos).Add(city);
+                }
+               
+            }
+        }
+
+        public void scaleUp16x()
+        {
+            for (int i = 0; i < cities.Count; i++)
+            {
+                var c = cities[i];
+                c.pos *= 16;
+                cities[i] = c;
+            }
         }
     }
 }

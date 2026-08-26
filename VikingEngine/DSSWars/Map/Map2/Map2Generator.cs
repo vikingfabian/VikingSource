@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         NodeGrid,
         Icon,
         IconNoise,
+        IconCities,
         ScaleUp,
         PostNoise,
 
@@ -39,6 +40,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         public IconWorldData iconWorld;
         public WorldData2 world;
         public NodeMap nodeMap;
+
+        GenerateCities generateCities;
         Grid2D_L<GenTile> dataGrid;
         List<Task> tasks = new List<Task>(64);
         //List<Vector2> connectPoints = null;
@@ -88,7 +91,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             Task.Run(async () =>
             {
-                if (start >= Map2Pass.Icon)
+                if (start == Map2Pass.Icon)
                 {
                     clearMap();
                 }
@@ -108,11 +111,15 @@ namespace VikingEngine.DSSWars.Map.Map2
                         case Map2Pass.Icon:
                             nodeTerrainPass(generateSettings).Wait();
                             break;
+                        case Map2Pass.IconCities:
+                            generateCities = new GenerateCities();
+                            generateCities.generateCities(generateSettings, nodeMap, iconWorld);
+                            break;
                         case Map2Pass.IconNoise:
                             addNoiseTexture();
                             break;
                         case Map2Pass.ScaleUp:
-                            scaleUp16x();
+                            await scaleUp16x();
                             break;
                         case Map2Pass.PostNoise:
                             postNoise();
@@ -394,8 +401,10 @@ namespace VikingEngine.DSSWars.Map.Map2
             iconWorld.iconGrid = tempGrid;
         }
 
-        void scaleUp16x()
-        { 
+        async Task scaleUp16x()
+        {
+            Task cities = Task.Run(generateCities.scaleUp16x);
+
             bool[] scalePassesIs4 = {  true, false, true, true };
             foreach (bool pass4 in scalePassesIs4)
             {
@@ -408,6 +417,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                     scaleUp8();
                 }                    
             }
+
+            await cities;
         }
        
         void scaleUp4()
@@ -589,6 +600,26 @@ namespace VikingEngine.DSSWars.Map.Map2
                     dataGrid.Set(x, y, tile);
                 }
             });
+
+            if (generateCities != null)
+            {
+                foreach (var c in generateCities.cities)
+                {
+                    var tile = dataGrid.Get(c.pos);
+                    tile.color = Color.Red;
+                    dataGrid.Set(c.pos, tile);
+
+                    foreach (var dir in IntVector2.Dir8Array)
+                    {
+                        var npos = dir + c.pos;
+                        if (dataGrid.TryGet(npos, out var ntile))
+                        {
+                            ntile.color = Color.Pink;
+                            dataGrid.Set(npos, ntile);
+                        }
+                    }
+                }
+            }
         }
        
 
