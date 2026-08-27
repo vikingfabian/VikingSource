@@ -22,7 +22,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         Setup,
         Nodes,
         Icon,
+        
+        Bioms,
+        
         CityPlacements,
+
+        PostProcessing,
         NUM
     }
 
@@ -158,19 +163,31 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 case Map2GeneratorTab.Nodes:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NodeGrid)));
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NodeGrid), null, true));
                     break;
 
                 case Map2GeneratorTab.Icon:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Icon, Map2Pass.IconNoise)));
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Icon, Map2Pass.IconNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
+                    break;
+
+                case Map2GeneratorTab.Bioms:
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Bioms, Map2Pass.Bioms), null, state.generator.currentPass < Map2Pass.ScaleUp));
                     break;
 
                 case Map2GeneratorTab.CityPlacements:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.IconCities, Map2Pass.IconCities)));
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.IconCities, Map2Pass.IconCities), null, state.generator.currentPass < Map2Pass.ScaleUp));
+                    break;
+
+                case Map2GeneratorTab.PostProcessing:
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.ScaleUp, Map2Pass.PostNoise)));
                     break;
             }
 

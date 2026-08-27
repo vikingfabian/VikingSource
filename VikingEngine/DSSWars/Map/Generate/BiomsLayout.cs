@@ -4,16 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.EngineSpace.Maths;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
+    struct BiomNode
+    {
+        public BiomType biom;
+        public Vector2 pos;
+    }
+
     class BiomsLayout
     {
         const int Width = 6;
         const int Height = 4;
 
         RandomObjects<BiomType>[,] biomGrid;
+
+        
 
         public BiomsLayout(PcgRandom rnd)
         {
@@ -198,10 +208,91 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
+        public void GenerateNodes(IconWorldData world)
+        {
+            const int ScaleUp = 2;
+            const int NodeGridW = Width * ScaleUp;
+            const int NodeGridH = Height * ScaleUp;
+
+
+            List<BiomNode> nodes = new List<BiomNode>(NodeGridW * NodeGridH * 8);
+
+            Vector2 cellsize = world.iconGrid.Size.Vec / new Vector2(NodeGridW, NodeGridH);
+            for (int y = 0; y < NodeGridH; y++)
+            {
+                for (int x = 0; x < NodeGridW; x++)
+                {
+                    var biom = biomGrid[x / ScaleUp, y / ScaleUp].GetRandom();
+                    int nodesCount = world.rnd.Int(2, 4);
+                    for (int i = 0; i < nodesCount; i++)
+                    {
+
+                        BiomNode node = new BiomNode()
+                        {
+                            biom = biom,     
+                            pos = new Vector2(x, y) * cellsize + world.rnd.vector2(cellsize),
+                        };
+
+                        nodes.Add(node);
+                    }
+                }
+            }
+
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData2.seed + 3);
+            NoiseOptions noiseOpt = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
+
+            Parallel.For(0, world.iconGrid.Size.X, x =>
+            {
+                for (int y = 0; y < world.iconGrid.Size.Y; y++)
+                {
+                    BiomNode node1 = new BiomNode();
+                    float node1Dist = float.MaxValue;
+                    BiomNode node2 = new BiomNode();
+                    float node2Dist = float.MaxValue;
+
+                    foreach (var node in nodes)
+                    {
+                        float dist = VectorExt.Length(node.pos.X - x, node.pos.Y - y);
+                        if (dist < node2Dist)
+                        {
+                            if (dist < node1Dist)
+                            {
+                                node1Dist = dist;
+                                node1 = node;
+                            }
+                            else
+                            {
+                                node2Dist = dist;
+                                node2 = node;
+                            }
+                        }
+                    }
+
+                    float noiseValue = noiseMap.OctaveNoise2D_Normal(noiseOpt, x, y);
+                    float gradientPos = node1Dist / (node1Dist + node2Dist);
+                    if (noiseValue * 0.8f > gradientPos)
+                    {
+                        world.iconGrid.GetRef(x, y).biom1 = node1.biom;
+                    }
+                    else
+                    {
+                        world.iconGrid.GetRef(x, y).biom1 = node2.biom;
+                    }
+                }
+            });
+        }
         public BiomType get(WorldData world, Vector2 pos)
         {
             int x = (int)(pos.X / world.Size.X * Width);
             int y = (int)(pos.Y / world.Size.Y * Height);
+
+            return biomGrid[x, y].GetRandom(world.rnd);
+        }
+
+        public BiomType get(IconWorldData world, Vector2 pos)
+        {
+            int x = (int)(pos.X / world.iconGrid.Size.X * Width);
+            int y = (int)(pos.Y / world.iconGrid.Size.Y * Height);
 
             return biomGrid[x, y].GetRandom(world.rnd);
         }

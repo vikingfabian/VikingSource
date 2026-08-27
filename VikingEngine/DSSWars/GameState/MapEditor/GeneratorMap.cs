@@ -19,10 +19,18 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         Vector2 textureSize;
         float scale = 1;
 
+        Vector2 topLeft;
+
         public GeneratorMap(Vector2 pos)
         {
+            topLeft = pos;
             texture = new FactionPixelTexture(-1, false, FactionMapFilter.Terrain);
             image = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, pos, Vector2.One, ImageLayers.Lay8, false);
+        }
+
+        public void resetPos()
+        {
+            image.position = topLeft;
         }
 
         public void userInput(bool mouseOverHud)

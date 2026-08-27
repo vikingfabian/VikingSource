@@ -13,8 +13,11 @@ namespace VikingEngine.DSSWars.Map.Map2
         Empty,
         NewWorld,
         NodeGrid,
+        
         Icon,
         IconNoise,
+        Bioms,
+        
         IconCities,
         ScaleUp,
         PostNoise,
@@ -37,6 +40,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         LoadingState loadingState = LoadingState.None;
 
         public Map2Pass currentPass = 0;
+        BiomsLayout biomsLayout;
         public IconWorldData iconWorld;
         public WorldData2 world;
         public NodeMap nodeMap;
@@ -95,7 +99,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                 {
                     clearMap();
                 }
-
+                if (end < Map2Pass.IconCities)
+                {
+                    generateCities = null;
+                }
 
                 for (Map2Pass pass = start; pass <= end; pass++)
                 {
@@ -110,6 +117,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                             break;
                         case Map2Pass.Icon:
                             nodeTerrainPass(generateSettings).Wait();
+                            break;
+                        case Map2Pass.Bioms:
+                            biomsLayout = new BiomsLayout(iconWorld.rnd);
+                            biomsLayout.GenerateNodes(iconWorld);
                             break;
                         case Map2Pass.IconCities:
                             generateCities = new GenerateCities();
@@ -196,6 +207,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                                 flatness = 0.2f,
                                 addHeight = LayerAddHeight * iconWorld.rnd.Float(0.5f, 2f),
                                 quadChance = 0.3f,
+
+                                //biom = biomsLayout.get(iconWorld, center),
                             };                            
                             startTask_placeDotWithOptions(center, draw, false, 1);
                         }
@@ -420,38 +433,128 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             await cities;
         }
-       
+
+        // Universal blender that mixes Height, Color, and Biomes
+        // Universal blender that mixes Height and Biomes
+        GenTile BlendTiles(GenTile[] tiles, int count, BiomeWeight[] biomeBuffer)
+        {
+            float totalY = 0f;
+            int uniqueBiomes = 0;
+
+            for (int i = 0; i < count; i++)
+            {
+                GenTile t = tiles[i];
+                totalY += t.groundY;
+
+                // Calculate actual weights of the biomes in this tile
+                float w1 = 1f - t.secondBiomWeight;
+                float w2 = t.secondBiomWeight;
+
+                // Add to tallies
+                AddBiomeTally(biomeBuffer, ref uniqueBiomes, t.biom1, w1);
+                if (w2 > 0)
+                    AddBiomeTally(biomeBuffer, ref uniqueBiomes, t.biom2, w2);
+            }
+
+            GenTile result = new GenTile();
+            result.groundY = totalY / count;
+
+            // Resolve the top 2 biomes
+            ResolveTopBiomes(biomeBuffer, uniqueBiomes, out result.biom1, out result.biom2, out result.secondBiomWeight);
+
+            return result;
+        }
+
+        // Tally logic
+        void AddBiomeTally(BiomeWeight[] buffer, ref int uniqueCount, BiomType type, float weight)
+        {
+            for (int i = 0; i < uniqueCount; i++)
+            {
+                if (buffer[i].type == type)
+                {
+                    buffer[i].weight += weight;
+                    return;
+                }
+            }
+            buffer[uniqueCount].type = type;
+            buffer[uniqueCount].weight = weight;
+            uniqueCount++;
+        }
+
+        // Extracts the two highest weighted biomes and calculates their new mix ratio
+        void ResolveTopBiomes(BiomeWeight[] buffer, int uniqueCount, out BiomType b1, out BiomType b2, out float strength2)
+        {
+            if (uniqueCount == 0)
+            {
+                b1 = default; b2 = default; strength2 = 0f;
+                return;
+            }
+            if (uniqueCount == 1)
+            {
+                b1 = buffer[0].type; b2 = buffer[0].type; strength2 = 0f;
+                return;
+            }
+
+            int top1Idx = 0;
+            for (int i = 1; i < uniqueCount; i++)
+                if (buffer[i].weight > buffer[top1Idx].weight) top1Idx = i;
+
+            int top2Idx = -1;
+            for (int i = 0; i < uniqueCount; i++)
+            {
+                if (i == top1Idx) continue;
+                if (top2Idx == -1 || buffer[i].weight > buffer[top2Idx].weight) top2Idx = i;
+            }
+
+            b1 = buffer[top1Idx].type;
+            b2 = buffer[top2Idx].type;
+
+            float w1 = buffer[top1Idx].weight;
+            float w2 = buffer[top2Idx].weight;
+
+            // Calculate the new secondary biome strength relative to the surviving top two
+            strength2 = w2 / (w1 + w2);
+        }
         void scaleUp4()
         {
             Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
 
-            // Parallel.For handles the splitting automatically.
-            // We iterate over the X-axis in parallel, and let each thread handle a full column (Y-loop).
             Parallel.For(0, dataGrid.Size.X, x =>
             {
+                // Thread-local buffers to prevent allocations in the inner loop
+                GenTile[] tileBuffer = new GenTile[4];
+                BiomeWeight[] biomeBuffer = new BiomeWeight[8];
+
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
-                    // --- Standard Interpolation Logic ---
-
                     int lgX = x * 2;
                     int lgY = y * 2;
 
                     int nextX = (x + 1 < dataGrid.Size.X) ? x + 1 : x;
                     int nextY = (y + 1 < dataGrid.Size.Y) ? y + 1 : y;
 
-                    float hTL = dataGrid.Get(x, y).groundY;
-                    float hTR = dataGrid.Get(nextX, y).groundY;
-                    float hBL = dataGrid.Get(x, nextY).groundY;
-                    float hBR = dataGrid.Get(nextX, nextY).groundY;
+                    GenTile tl = dataGrid.Get(x, y);
+                    GenTile tr = dataGrid.Get(nextX, y);
+                    GenTile bl = dataGrid.Get(x, nextY);
+                    GenTile br = dataGrid.Get(nextX, nextY);
 
-                    float avgTop = (hTL + hTR) * 0.5f;
-                    float avgLeft = (hTL + hBL) * 0.5f;
-                    float avgCenter = (hTL + hTR + hBL + hBR) * 0.25f;
+                    // Top mix (TL + TR)
+                    tileBuffer[0] = tl; tileBuffer[1] = tr;
+                    GenTile top = BlendTiles(tileBuffer, 2, biomeBuffer);
 
-                    largeGrid.Set(lgX, lgY, new GenTile { groundY = hTL });
-                    largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
-                    largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
-                    largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
+                    // Left mix (TL + BL)
+                    tileBuffer[0] = tl; tileBuffer[1] = bl;
+                    GenTile left = BlendTiles(tileBuffer, 2, biomeBuffer);
+
+                    // Center mix (TL + TR + BL + BR)
+                    tileBuffer[0] = tl; tileBuffer[1] = tr;
+                    tileBuffer[2] = bl; tileBuffer[3] = br;
+                    GenTile center = BlendTiles(tileBuffer, 4, biomeBuffer);
+
+                    largeGrid.Set(lgX, lgY, tl);
+                    largeGrid.Set(lgX + 1, lgY, top);
+                    largeGrid.Set(lgX, lgY + 1, left);
+                    largeGrid.Set(lgX + 1, lgY + 1, center);
                 }
             });
 
@@ -464,65 +567,167 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             Parallel.For(0, dataGrid.Size.X, x =>
             {
+                // Larger buffers since scaleUp8 looks at 3x3 grids (up to 9 tiles / 18 biomes)
+                GenTile[] tileBuffer = new GenTile[9];
+                BiomeWeight[] biomeBuffer = new BiomeWeight[18];
+
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
                     int lgX = x * 2;
                     int lgY = y * 2;
 
-                    // 1. Get smoothed values for the 4 corners of the current "quad"
-                    // We calculate the 8-neighbor average for each corner involved
-                    float sTL = GetSmoothedHeight(x, y);
-                    float sTR = GetSmoothedHeight(x + 1, y);
-                    float sBL = GetSmoothedHeight(x, y + 1);
-                    float sBR = GetSmoothedHeight(x + 1, y + 1);
+                    // 1. Get fully smoothed tiles for the 4 corners
+                    GenTile sTL = GetSmoothedTile(x, y, tileBuffer, biomeBuffer);
+                    GenTile sTR = GetSmoothedTile(x + 1, y, tileBuffer, biomeBuffer);
+                    GenTile sBL = GetSmoothedTile(x, y + 1, tileBuffer, biomeBuffer);
+                    GenTile sBR = GetSmoothedTile(x + 1, y + 1, tileBuffer, biomeBuffer);
 
-                    // 2. Interpolate the gaps using these smoothed values
-                    float avgTop = (sTL + sTR) * 0.5f;
-                    float avgLeft = (sTL + sBL) * 0.5f;
-                    float avgCenter = (sTL + sTR + sBL + sBR) * 0.25f;
+                    // 2. Interpolate the gaps
+                    tileBuffer[0] = sTL; tileBuffer[1] = sTR;
+                    GenTile avgTop = BlendTiles(tileBuffer, 2, biomeBuffer);
 
-                    // 3. Assign to Large Grid
-                    largeGrid.Set(lgX, lgY, new GenTile { groundY = sTL });
-                    largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
-                    largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
-                    largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
+                    tileBuffer[0] = sTL; tileBuffer[1] = sBL;
+                    GenTile avgLeft = BlendTiles(tileBuffer, 2, biomeBuffer);
+
+                    tileBuffer[0] = sTL; tileBuffer[1] = sTR;
+                    tileBuffer[2] = sBL; tileBuffer[3] = sBR;
+                    GenTile avgCenter = BlendTiles(tileBuffer, 4, biomeBuffer);
+
+                    // 3. Assign
+                    largeGrid.Set(lgX, lgY, sTL);
+                    largeGrid.Set(lgX + 1, lgY, avgTop);
+                    largeGrid.Set(lgX, lgY + 1, avgLeft);
+                    largeGrid.Set(lgX + 1, lgY + 1, avgCenter);
                 }
             });
 
             dataGrid = largeGrid;
             iconWorld.iconGrid = largeGrid;
-            //dataGrid = largeGrid;
-            //world.tileGrid = largeGrid;
         }
 
-        // Helper to get average of a tile and its 8 neighbors
-        float GetSmoothedHeight(int cx, int cy)
+        // Upgraded helper that smooths ALL data (Height, Color, Biomes)
+        GenTile GetSmoothedTile(int cx, int cy, GenTile[] tileBuffer, BiomeWeight[] biomeBuffer)
         {
-            // Clamp center to grid bounds to prevent errors at the far edges
-            cx = (cx >= dataGrid.Size.X) ? dataGrid.Size.X - 1 : cx;
-            cy = (cy >= dataGrid.Size.Y) ? dataGrid.Size.Y - 1 : cy;
+            cx = (cx >= dataGrid.Size.X) ? dataGrid.Size.X - 1 : (cx < 0 ? 0 : cx);
+            cy = (cy >= dataGrid.Size.Y) ? dataGrid.Size.Y - 1 : (cy < 0 ? 0 : cy);
 
-            float totalHeight = 0;
             int count = 0;
 
-            // Loop through 3x3 block centered on (cx, cy)
             for (int nx = cx - 1; nx <= cx + 1; nx++)
             {
                 for (int ny = cy - 1; ny <= cy + 1; ny++)
                 {
-                    // Check bounds for neighbors
                     if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
                     {
-                        totalHeight += dataGrid.Get(nx, ny).groundY;
-                        count++;
+                        tileBuffer[count++] = dataGrid.Get(nx, ny);
                     }
                 }
             }
 
-            return totalHeight / count;
+            return BlendTiles(tileBuffer, count, biomeBuffer);
         }
+        //void scaleUp4()
+        //{
+        //    Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
 
-       void addNoiseTexture()
+        //    // Parallel.For handles the splitting automatically.
+        //    // We iterate over the X-axis in parallel, and let each thread handle a full column (Y-loop).
+        //    Parallel.For(0, dataGrid.Size.X, x =>
+        //    {
+        //        for (int y = 0; y < dataGrid.Size.Y; y++)
+        //        {
+        //            // --- Standard Interpolation Logic ---
+
+        //            int lgX = x * 2;
+        //            int lgY = y * 2;
+
+        //            int nextX = (x + 1 < dataGrid.Size.X) ? x + 1 : x;
+        //            int nextY = (y + 1 < dataGrid.Size.Y) ? y + 1 : y;
+
+        //            float hTL = dataGrid.Get(x, y).groundY;
+        //            float hTR = dataGrid.Get(nextX, y).groundY;
+        //            float hBL = dataGrid.Get(x, nextY).groundY;
+        //            float hBR = dataGrid.Get(nextX, nextY).groundY;
+
+        //            float avgTop = (hTL + hTR) * 0.5f;
+        //            float avgLeft = (hTL + hBL) * 0.5f;
+        //            float avgCenter = (hTL + hTR + hBL + hBR) * 0.25f;
+
+        //            largeGrid.Set(lgX, lgY, new GenTile { groundY = hTL });
+        //            largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
+        //            largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
+        //            largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
+        //        }
+        //    });
+
+        //    dataGrid = largeGrid;
+        //    iconWorld.iconGrid = largeGrid;
+        //}
+        //void scaleUp8()
+        //{
+        //    Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
+
+        //    Parallel.For(0, dataGrid.Size.X, x =>
+        //    {
+        //        for (int y = 0; y < dataGrid.Size.Y; y++)
+        //        {
+        //            int lgX = x * 2;
+        //            int lgY = y * 2;
+
+        //            // 1. Get smoothed values for the 4 corners of the current "quad"
+        //            // We calculate the 8-neighbor average for each corner involved
+        //            float sTL = GetSmoothedHeight(x, y);
+        //            float sTR = GetSmoothedHeight(x + 1, y);
+        //            float sBL = GetSmoothedHeight(x, y + 1);
+        //            float sBR = GetSmoothedHeight(x + 1, y + 1);
+
+        //            // 2. Interpolate the gaps using these smoothed values
+        //            float avgTop = (sTL + sTR) * 0.5f;
+        //            float avgLeft = (sTL + sBL) * 0.5f;
+        //            float avgCenter = (sTL + sTR + sBL + sBR) * 0.25f;
+
+        //            // 3. Assign to Large Grid
+        //            largeGrid.Set(lgX, lgY, new GenTile { groundY = sTL });
+        //            largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
+        //            largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
+        //            largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
+        //        }
+        //    });
+
+        //    dataGrid = largeGrid;
+        //    iconWorld.iconGrid = largeGrid;
+        //    //dataGrid = largeGrid;
+        //    //world.tileGrid = largeGrid;
+        //}
+
+        //// Helper to get average of a tile and its 8 neighbors
+        //float GetSmoothedHeight(int cx, int cy)
+        //{
+        //    // Clamp center to grid bounds to prevent errors at the far edges
+        //    cx = (cx >= dataGrid.Size.X) ? dataGrid.Size.X - 1 : cx;
+        //    cy = (cy >= dataGrid.Size.Y) ? dataGrid.Size.Y - 1 : cy;
+
+        //    float totalHeight = 0;
+        //    int count = 0;
+
+        //    // Loop through 3x3 block centered on (cx, cy)
+        //    for (int nx = cx - 1; nx <= cx + 1; nx++)
+        //    {
+        //        for (int ny = cy - 1; ny <= cy + 1; ny++)
+        //        {
+        //            // Check bounds for neighbors
+        //            if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
+        //            {
+        //                totalHeight += dataGrid.Get(nx, ny).groundY;
+        //                count++;
+        //            }
+        //        }
+        //    }
+
+        //    return totalHeight / count;
+        //}
+
+        void addNoiseTexture()
         {
             const int LoopDivs = 8;
 
@@ -625,10 +830,10 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void tileColor(ref GenTile tile)
         {
-            if (tile.groundY > Height_WaterBottom)
-            {
-                lib.DoNothing();
-            }
+            //if (tile.groundY > Height_WaterBottom)
+            //{
+            //    lib.DoNothing();
+            //}
             if (tile.groundY < 0)
             {
                 float depth = 1f - tile.groundY / Height_WaterBottom;
@@ -636,9 +841,20 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
             else
             {
-                float depth = tile.groundY / Height_MountainPeek;
-                depth *= 0.75f;
-                tile.color = new Color(depth, depth + 0.2f, depth);
+                float height = tile.groundY / Height_MountainPeek;
+                int biomheight = Height.MinLandHeight +  Convert.ToInt32( (Height.MaxHeight - Height.MinLandHeight) * height);
+
+                var col = DssRef.map.bioms.bioms[(int)tile.biom1].colors_height[biomheight].Color;/*TileColor(this).Color*/;
+
+                if (tile.biom2 != tile.biom1 && tile.secondBiomWeight > 0)
+                {
+                    var col2 = DssRef.map.bioms.bioms[(int)tile.biom2].colors_height[biomheight].Color;
+                    col = ColorExt.Mix(col2, col, tile.secondBiomWeight);
+                }
+
+
+                //depth *= 0.75f;
+                tile.color = Color.MultiplyRGB(col, 0.5f + 0.9f * height);//new Color(depth, depth + 0.2f, depth);
             }
         }
 
@@ -666,6 +882,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                 radius = iconWorld.rnd.Float(MinRadius, MaxRadius),
                 flatness = 0.02f,
                 addHeight = Height_MountainPeek,
+
+                //biom = biomsLayout.get(iconWorld, center),
             };
             drawMountain.refreshRadius();
 
@@ -675,6 +893,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 radius = iconWorld.rnd.Float(2, 3) * drawMountain.radius,
                 flatness = 0.4f,
                 addHeight = Height_DefaultGround,
+                //biom = drawMountain.biom,
             };
             drawCenterGround.refreshRadius();
             drawCenterGround = drawAddCalc(center, drawCenterGround);
@@ -852,7 +1071,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                         float t = Math.Min(1f, manhattan / draw.radius);
                         float height = (1f - t) * add + Height_WaterBottom;
 
-                        placeTile(loopArea.Position, height, true);
+                        placeTile(loopArea.Position, height,  true);
                     }
                 }
             }
@@ -909,6 +1128,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                 radius = iconWorld.rnd.Float(MaxRadius * 0.02f, MaxRadius),
                 flatness = iconWorld.rnd.Float(0.05f, 0.2f),
                 addHeight = LayerAddHeight * iconWorld.rnd.Float(0.8f, 2f),
+
+                //biom = biomsLayout.get(iconWorld, center),
             };
 
             draw.quadChance = draw.radius < 20 ? 0.3f : 0;
@@ -979,6 +1200,9 @@ namespace VikingEngine.DSSWars.Map.Map2
                     radius = rnd.Float(MaxRadius * 0.4f, MaxRadius),
                     flatness = 0.6f,
                     addHeight = LayerAddHeight * rnd.Float(0.9f, 2f),
+
+
+                    //biom = biomsLayout.get(iconWorld, center),
                 };
 
                 int chainLength = 1;
@@ -1039,6 +1263,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                     flatness = 0.6f,
                     addHeight = LayerAddHeight * rnd.Float(0.5f, 1.4f),
                     //heightCap = Height_MountainStart,
+
+                    //biom = biomsLayout.get(iconWorld, center),
                 };
 
 
@@ -1114,6 +1340,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                     radius = rnd.Float(MaxRadius * 0.4f, MaxRadius),
                     flatness = 0.1f,
                     addHeight = LayerAddHeight * rnd.Float(1f, 3f),
+
+                    //biom = dataGrid.Get(new IntVector2(center)).biom1,
                 };
                 draw.quadChance = draw.radius < 20 ? 0.3f : 0;
 
@@ -1164,6 +1392,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                     radius = iconWorld.rnd.Float(0.2f, 0.6f) * landRadius,
                     flatness = 0.4f,
                     addHeight = LayerAddHeight * 0.5f,
+
+                    //biom = biomsLayout.get(iconWorld, center),
                 };
                 draw.quadChance = draw.radius < 20 ? 0.6f : 0;
                 draw = drawAddCalc(center, draw);
@@ -1174,8 +1404,8 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateIslandAt(float landRadius, Vector2 center)
         {
-              
-                DrawMapOptions draw = new DrawMapOptions()
+            
+            DrawMapOptions draw = new DrawMapOptions()
                 {
                     noiseStrength = iconWorld.rnd.Float(0.1f, 1.5f),
                     noise = true,
@@ -1183,6 +1413,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     radius = iconWorld.rnd.Float(0.2f, 0.6f) * landRadius,
                     flatness = 0.4f,
                     addHeight = LayerAddHeight * 0.5f,
+                   //biom = biomsLayout.get(iconWorld, center),
                 };
                 draw.quadChance = draw.radius < 20 ? 0.6f : 0;
                 draw = drawAddCalc(center, draw);
@@ -1273,6 +1504,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                 radius = Math.Min(iconWorld.rnd.Float(MinRadius, MaxRadius), iconWorld.rnd.Float(MinRadius, MaxRadius)),
                 flatness = 0.0f,
                 addHeight = -Height.DefaultGroundYoffset * iconWorld.rnd.Float(0.6f, 4f),
+
+                //biom = dataGrid.Get(new IntVector2(center)).biom1,
             };
             draw = drawAddCalc(center, draw);
 
@@ -1414,7 +1647,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     if (distFromCenter <= draw.radius)
                     {
                         //float percentDist = distFromCenter / draw.radius;
-                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw), draw.addHeight > 0);
+                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw),  draw.addHeight > 0);
                     }
                 }
             }
@@ -1435,7 +1668,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         //float percentDist = distFromCenter / draw.radius;
                         float add = Bound.Max( noiseMap.OctaveNoise2D(landNoise, loopArea.Position.X, loopArea.Position.Y) * 2f, 0.1f) * draw.noiseStrength;
-                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw) + add, draw.addHeight > 0);
+                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw) + add,  draw.addHeight > 0);
                     }
                 }
             }
@@ -1465,7 +1698,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     var pos = new IntVector2(x, y);
                     if (quadPen.DrawPixel(pos, out var intensity))
                     {
-                        placeTile(pos, draw.centerHeight * intensity, draw.addHeight > 0);
+                        placeTile(pos, draw.centerHeight * intensity,  draw.addHeight > 0);
                     }
                         //}
                     //}
@@ -1498,14 +1731,20 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
 
 
-        void placeTile(IntVector2 pos, float height, bool increase)
+        void placeTile(IntVector2 pos, float height, /*BiomType biom,*/ bool increase)
         {
             ref var tile = ref dataGrid.GetRef(pos);
+
+            //if (tile.groundY == Height_WaterBottom)
+            //{
+            //    tile.biom1 = biom;
+            //}
             if (increase)
             {
                 if (height > tile.groundY)
                 {
                     tile.groundY = height;
+                    
                     //tile.color = biom.Tile2Color(height);
                 }
             }

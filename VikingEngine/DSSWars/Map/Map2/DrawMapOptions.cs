@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map.Map2
 {
@@ -22,6 +23,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         public bool noise;
         public float noiseStrength;
         public double quadChance;
+
+        //public BiomType biom;
 
         public void refreshRadius()
         {

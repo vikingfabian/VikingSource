@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
     {
         MapEditor2Display display;
         bool loadingState = false;
-        Map2Generator generator = new Map2Generator();
+        public Map2Generator generator = new Map2Generator();
         public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
         GeneratorMap map;
         public bool iconState = true;
@@ -33,14 +33,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             if (loadingState)
             {
-                //mapBackgroundLoading.Update();
-                //if (mapBackgroundLoading.Complete())
-                //{
-                //    loadingState = false;
-                //    display.loadingDisplay.Hide();
-                //    map.generate();
-                //    display.refreshMenu();
-                //}
+                
                 if (generator.complete())
                 {
                     loadingState = false;
@@ -71,6 +64,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public void generatePass(Map2Pass start, Map2Pass end)
         {
+            if (start <= Map2Pass.Empty)
+            {
+                map.resetPos();
+            }
+
             loadingState = true;
             display.loadingDisplay.Show();
             generator.generatePass(generateSettings, start, end);
