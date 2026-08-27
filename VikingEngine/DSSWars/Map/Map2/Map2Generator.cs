@@ -854,7 +854,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
 
                 //depth *= 0.75f;
-                tile.color = Color.MultiplyRGB(col, 0.5f + 0.9f * height);//new Color(depth, depth + 0.2f, depth);
+                tile.color = ColorExt.MultiplyRGB(col, 0.5f + 0.9f * height);//new Color(depth, depth + 0.2f, depth);
             }
         }
 

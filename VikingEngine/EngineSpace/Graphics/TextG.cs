@@ -59,7 +59,7 @@ namespace VikingEngine.Graphics
             {
                 if (outline != TextOutlineType.NoBorder)
                 {
-                    Color col = Color.MultiplyRGBA(outlineColor, Opacity);
+                    Color col = ColorExt.MultiplyRGBA(outlineColor, Opacity);
                     float layer = PaintLayer + PublicConstants.LayerMinDiff;
 
                     if (outline == TextOutlineType.Border8Dir)
