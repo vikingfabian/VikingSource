@@ -275,8 +275,8 @@ namespace VikingEngine.DSSWars.Resource
 
         NUM,
         RESOURCES,
-
         Pheasant,
+        ImmigrantsOrWorkers,
     }
 
 }

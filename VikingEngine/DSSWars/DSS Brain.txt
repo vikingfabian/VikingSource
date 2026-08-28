@@ -1,7 +1,6 @@
 
 Change log:
-* Added add/remove option on build tool
-* Removed the multiplayer gift achievements
+* When spending workers, immigrants will be used first
 
 
 KNOWN ISSUES
