@@ -434,8 +434,10 @@ namespace VikingEngine.DSSWars
                 RelationsLoop loop = new RelationsLoop(p.pfaction);
                 while (loop.Next())
                 {
-                   
-                    diplomaticRelations[loop.RelationIndex()].truce_update();
+                    if (loop.RelationIndex(out int relIx))
+                    {
+                        diplomaticRelations[relIx].truce_update();
+                    }
                 }
             }
 
@@ -872,8 +874,10 @@ namespace VikingEngine.DSSWars
                     RelationsLoop loop = new RelationsLoop(faction);
                     while (loop.Next())
                     {
-                        diplomaticRelations[loop.RelationIndex()].OnDeath();
-                    }
+                        if (loop.RelationIndex(out var relIx))
+                        {
+                            diplomaticRelations[relIx].OnDeath();
+                        } }
 
                 }
                 catch (Exception ex) 
