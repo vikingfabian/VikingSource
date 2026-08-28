@@ -50,6 +50,8 @@ namespace VikingEngine.DSSWars.Build
         public BuildAndExpandType placeBuildingType = BuildAndExpandType.OrchardApple;
         bool availableBuildingType = true;
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
+
+        public ToolAddType toolAdd = ToolAddType.Toggle;
         LocalPlayer player;
         City city;
         bool blockBuildUpdate = false;
@@ -129,7 +131,7 @@ namespace VikingEngine.DSSWars.Build
                         }
                         else if (placeBuildingOption().blueprint.meetsRequirements(city))
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
                         }
                         else
                         {
@@ -162,7 +164,7 @@ namespace VikingEngine.DSSWars.Build
                         }
                         else
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.FollowTool, toolAdd);
                         }
                     }
 
@@ -405,39 +407,10 @@ namespace VikingEngine.DSSWars.Build
                 bool canAct = actOnTile(subTilePos, false, out int usesBuildQue, out City city);
 
                 selection.Create(player, subTilePos, canAct, usesBuildQue, city);
-                //var model = SelectedSubTile.CreateOutlineModel(player, false);
-                //model.Visible = true;
-                //model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
-                
-                //if (!canAct)
-                //{
-                //    model.Color = HudLib.NotAvailableColor;
-                //}
+               
 
-                //selection.Add(new BuildSelectGui() { 
-                //    position = subTilePos, 
-                //    mayBuild = canAct,
-                //    model = model,
-                //    usesBuildQue = usesBuildQue,
-                //    City = city,
-                //});
                 return true;
             }
-
-            //void refreshSelection()
-            //{
-            //    //Dictionary<int, int> city_queLength = new Dictionary<int, int>();
-
-            //    for (int i = 0; i < selection.useCount; ++i)//foreach (var sel in selection)
-            //    {
-            //        if (sel.mayBuild)
-            //        {                        
-            //            sel.model.Color = Color.White;
-            //        }
-            //    }
-            //}
-
-           
         }
 
 
@@ -462,7 +435,7 @@ namespace VikingEngine.DSSWars.Build
 
                     foreach (IntVector2 position in positions)
                     {
-                        player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, false);
+                        player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE, false);
                     }
 
                     void findBuildPositons_AutoBuilder(List<IntVector2> result)
@@ -699,6 +672,15 @@ namespace VikingEngine.DSSWars.Build
                         }
                     }
                     content.newParagraph();
+                    for (ToolAddType addType = 0; addType < ToolAddType.NUM_NONE; addType++)
+                    {
+                        Ref.langOpt.ToolAddType(addType, out var addIcon, out var addCaption);
+                        content.Add(new ArtOption(addType == toolAdd, new List<AbsRichBoxMember> { new RbImage(addIcon) },
+                            new RbAction1Arg<ToolAddType>((ToolAddType selected) => { toolAdd = selected; }, addType),
+                            new RbTooltip_Text(addCaption)));
+                    }
+                    content.newLine();
+
                     foreach (MapPaintToolShape shape in AvailableToolShapes)
                     {
                         string caption;
@@ -727,6 +709,10 @@ namespace VikingEngine.DSSWars.Build
                             new RbAction1Arg<MapPaintToolShape>((MapPaintToolShape shape) => { toolShape = shape; }, shape, RbSoundType.Option),
                             new RbTooltip_Text(caption)));
                     }
+
+                   
+
+                    
 
 
                     content.newParagraph();

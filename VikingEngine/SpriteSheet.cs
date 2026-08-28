@@ -499,6 +499,12 @@ namespace VikingEngine
             add(SpriteName.ButtonRZ, 2, 2);
             add(SpriteName.ButtonLZ, 2, 2);
                         
+            currentIndex = numTilesWidth * 19;
+            {
+                add(SpriteName.EditorToolOptionAdd);
+                add(SpriteName.EditorToolOptionRemove);
+                add(SpriteName.EditorToolOptionToggle);
+            }
 
             //BIRD TILES
             currentIndex = numTilesWidth * 24;
