@@ -17,7 +17,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         Graphics.ImageAdvanced image;
 
         Vector2 textureSize;
-        float scale = 1;
+        float zoom = 1;
+        public float scale = 1;
 
         Vector2 topLeft;
 
@@ -33,20 +34,22 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             image.position = topLeft;
         }
 
-        public void userInput(bool mouseOverHud)
+        public void userInput(InputMap input, bool mouseOverHud)
         {
             if ( !mouseOverHud)
             {
-                if (Input.Mouse.IsButtonDown(MouseButton.Left))
+                if (input.mousePan.IsDown)
                 {
-                    image.position += Input.Mouse.MoveDistance;
+                    image.position += Input.Mouse.MoveDistance + input.moveCursor.direction;
                 }
+                image.position -= input.move.directionAndTime * 4f;
 
-                scale = Bound.Set(scale + lib.ToLeftRight(Input.Mouse.ScrollValue) * 0.1f, 0.25f, 4f);
+                zoom = Bound.Set(zoom + input.ZoomValue() * -0.014f * zoom, 0.25f, 4f);
 
-               
+
+
             }
-            image.size = textureSize * scale;
+            image.size = textureSize * zoom * scale;
         }
 
         public void generate()
@@ -58,6 +61,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             image.Texture = texture.texture;
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
+            scale = 1;
         }
 
 
@@ -67,7 +71,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             texture.texture = map.texture;
             image.Texture = map.texture;
             image.SetFullTextureSource();
-            textureSize = new Vector2(texture.texture.Width, texture.texture.Height) * Map.Map2.NodeMap.NodePixWidth;
+            textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
+            scale = 4;
             image.Visible = true;
         }
 
@@ -87,6 +92,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             image.Texture = texture.texture;
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
+            scale = 2;
             image.Visible = true;
         }
 

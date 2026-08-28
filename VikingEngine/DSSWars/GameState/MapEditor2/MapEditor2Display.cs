@@ -27,7 +27,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         
         CityPlacements,
 
-        PostProcessing,
+        //PostProcessing,
+
+        Complete,
         NUM
     }
 
@@ -184,10 +186,18 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.IconCities, Map2Pass.IconCities), null, state.generator.currentPass < Map2Pass.ScaleUp));
                     break;
 
-                case Map2GeneratorTab.PostProcessing:
+                //case Map2GeneratorTab.PostProcessing:
+                    
+                //    break;
+
+                case Map2GeneratorTab.Complete:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.ScaleUp, Map2Pass.PostNoise)));
+                       new List<AbsRichBoxMember> { new RbText("Post process map") },
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.ScaleUp, Map2Pass.PostNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
+
+                    content.newParagraph();
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));
                     break;
             }
 
@@ -195,6 +205,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             menu.Refresh(content);
 
 
+        }
+
+        void exit()
+        {
+            new ExitToLobby(false);
         }
     }
 

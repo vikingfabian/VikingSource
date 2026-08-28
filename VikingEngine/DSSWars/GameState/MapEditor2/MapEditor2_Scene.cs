@@ -19,12 +19,18 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
         GeneratorMap map;
         public bool iconState = true;
+
+        List<InputMap> controller;
         public MapEditor2_Scene()
             : base()
         {
             display = new MapEditor2Display(this);
             map = new GeneratorMap(display.topRight);
             new Interface.EditorBackground();
+
+            controller = new List<InputMap>{
+                Ref.gamesett.keyboardMap,
+            };
         }
 
         public override void Time_Update(float time)
@@ -33,11 +39,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             if (loadingState)
             {
-                
+
                 if (generator.complete())
                 {
                     loadingState = false;
                     display.loadingDisplay.Hide();
+                    display.refreshMenu();
 
                     if (generator.currentPass <= Map2Pass.NewWorld)
                     {
@@ -50,6 +57,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     else
                     {
                         map.generateIcon(generator.iconWorld);
+                        if (generator.currentPass >= Map2Pass.ScaleUp)
+                        {
+                            map.scale = 0.25f;
+                        }
                     }
                 }
             }
@@ -58,7 +69,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 bool mouseOverHud = false;
                 display.update(ref mouseOverHud);
 
-                map.userInput(mouseOverHud);
+                foreach (var input in controller)
+                {
+                    map.userInput(input, mouseOverHud);
+                }
             }
         }
 

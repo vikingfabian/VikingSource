@@ -9,6 +9,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 {
     class NodeMap
     {
+        public const int TextureScale = 4;
         public const int NodePixWidth = 8;
 
         public const int start = NodePixWidth / 2;
@@ -21,14 +22,26 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public void GenerateTexture()
         {
-            texture = new PixelTexture(nodeGrid.Size);
-            for (int x = 0; x < nodeGrid.Width; x++)
+            
+
+            texture = new PixelTexture(nodeGrid.Size * TextureScale);
+            //for (int x = 0; x < nodeGrid.Width; x++)
+
+            Parallel.For(0, nodeGrid.Width, x =>
             {
                 for (int y = 0; y < nodeGrid.Height; y++)
                 {
-                    texture.SetPixel(x, y, nodeGrid.Get(x, y)? Color.ForestGreen : Color.DarkBlue);                    
+                    var color = nodeGrid.Get(x, y) ? Color.ForestGreen : Color.DarkBlue;
+                    for (int pixY = 0; pixY < TextureScale; pixY++)
+                    {
+                        for (int pixX = 0; pixX < TextureScale; pixX++)
+                        {
+                            texture.SetPixel(x * TextureScale + pixX, y * TextureScale + pixY, color);
+                        }
+                    }
+
                 }
-            }
+            });
 
             texture.ApplyPixelsToTexture();
         }
