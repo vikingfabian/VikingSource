@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
     class MapEditor2Display
     {
-        Map2GeneratorTab tab = 0;
+        public Map2GeneratorTab tab = 0;
         RichMenu menu;
         MapEditor2_Scene state;
         public Vector2 topRight;

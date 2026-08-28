@@ -52,6 +52,23 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             image.size = textureSize * zoom * scale;
         }
 
+        public bool pointerToTilePos(Vector2 pointer, IntVector2 tileSize, out IntVector2 tilePos)
+        {
+            tilePos = IntVector2.Zero;
+            var ar = image.Area;
+            if (ar.IntersectPoint(pointer))
+            {
+                tilePos.Vec = ar.PositionToPercent(pointer) * tileSize.Vec;
+                return true;
+            }
+            return false;
+        }
+
+        public Vector2 TileToScreenPos(IntVector2 tilePos, IntVector2 tileSize)
+        {
+           return image.Area.PercentToPosition(tilePos.Vec / tileSize.Vec);
+        }
+
         public void generate()
         {
             texture.initTexture();

@@ -22,8 +22,6 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public void GenerateTexture()
         {
-            
-
             texture = new PixelTexture(nodeGrid.Size * TextureScale);
             //for (int x = 0; x < nodeGrid.Width; x++)
 
@@ -31,19 +29,29 @@ namespace VikingEngine.DSSWars.Map.Map2
             {
                 for (int y = 0; y < nodeGrid.Height; y++)
                 {
-                    var color = nodeGrid.Get(x, y) ? Color.ForestGreen : Color.DarkBlue;
-                    for (int pixY = 0; pixY < TextureScale; pixY++)
-                    {
-                        for (int pixX = 0; pixX < TextureScale; pixX++)
-                        {
-                            texture.SetPixel(x * TextureScale + pixX, y * TextureScale + pixY, color);
-                        }
-                    }
-
+                    refreshPixel(x, y);
                 }
             });
 
             texture.ApplyPixelsToTexture();
+        }
+
+        public void refreshPixel(int x, int y)
+        {
+            var color = nodeGrid.Get(x, y) ? Color.ForestGreen : Color.DarkBlue;
+
+            if (lib.IsEven(x + y))
+            {
+                color = ColorExt.MultiplyRGB(color, 0.8f);
+            }
+
+            for (int pixY = 0; pixY < TextureScale; pixY++)
+            {
+                for (int pixX = 0; pixX < TextureScale; pixX++)
+                {
+                    texture.SetPixel(x * TextureScale + pixX, y * TextureScale + pixY, color);
+                }
+            }
         }
 
         public void Generate(IconWorldData iconWorld, Map2GenerateSettings generateSettings)

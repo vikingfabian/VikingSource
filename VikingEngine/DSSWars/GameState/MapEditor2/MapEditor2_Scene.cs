@@ -13,18 +13,21 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 {
     class MapEditor2_Scene : AbsDssState
     {
-        MapEditor2Display display;
+        public MapEditor2Display display;
+        MapEditor3_Tool tool;
         bool loadingState = false;
         public Map2Generator generator = new Map2Generator();
         public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
-        GeneratorMap map;
+        public GeneratorMap map;
         public bool iconState = true;
 
         List<InputMap> controller;
+
         public MapEditor2_Scene()
             : base()
         {
             display = new MapEditor2Display(this);
+            tool = new MapEditor3_Tool(this);
             map = new GeneratorMap(display.topRight);
             new Interface.EditorBackground();
 
@@ -39,7 +42,6 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             if (loadingState)
             {
-
                 if (generator.complete())
                 {
                     loadingState = false;
@@ -72,9 +74,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 foreach (var input in controller)
                 {
                     map.userInput(input, mouseOverHud);
+
+                    tool.paintInput(input);
                 }
             }
         }
+
+        
+
 
         public void generatePass(Map2Pass start, Map2Pass end)
         {

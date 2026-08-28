@@ -599,7 +599,7 @@ namespace VikingEngine
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(this.X, this.Y);
         }
 
         public bool Equals(int x, int y)
