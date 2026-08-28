@@ -277,6 +277,10 @@ namespace VikingEngine
         EditorToolPencil,
         EditorToolReColorPencil,
 
+        EditorToolOptionAdd,
+        EditorToolOptionRemove,
+        EditorToolOptionToggle,
+
 
         IconSandGlass,
         LfClosedLock,

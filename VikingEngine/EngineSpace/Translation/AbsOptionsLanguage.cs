@@ -140,5 +140,28 @@ namespace VikingEngine.EngineSpace.Translation
                     throw new NotImplementedException();
             }
         }
+
+        public void ToolAddType(ToolAddType addType, out SpriteName icon, out string name)
+        {
+            switch (addType)
+            {
+                case VikingEngine.ToolAddType.Add:
+                    icon = SpriteName.EditorToolOptionAdd;
+                    name = DssRef.todoLang.Editor_ToolOption_Add;
+                    break;
+                case VikingEngine.ToolAddType.Remove:
+                    icon = SpriteName.EditorToolOptionRemove;
+                    name = DssRef.todoLang.Editor_ToolOption_Remove;
+                    break;
+                case VikingEngine.ToolAddType.Toggle:
+                    icon = SpriteName.EditorToolOptionToggle;
+                    name = DssRef.todoLang.Editor_ToolOption_Toggle;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(addType.ToString());
+
+            }
+        }
     }
 }

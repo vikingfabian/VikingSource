@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
                             //var player =  GetFaction().player.GetLocalPlayer();
                             if (pfaction.TryGetLocalPlayer(out var player))
                             {
-                                player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
+                                player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE);
                             }
                         }
                         return true;

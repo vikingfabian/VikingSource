@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             return false;
         }
 
-        public void addOrder(int playerIx, AbsOrder order, ActionOnConflict onConflict, bool mainThread = true)
+        public void addOrder(int playerIx, AbsOrder order, ActionOnConflict onConflict, ToolAddType addType, bool mainThread = true)
         {
             lock (orders)
             {
@@ -102,19 +102,33 @@ namespace VikingEngine.DSSWars.Players.Orders
                 {
                     if (order.IsConflictingOrder(orders[i]))
                     {
-                        if (onConflict == ActionOnConflict.Cancel)
+                        //if (onConflict == ActionOnConflict.Cancel)
+                        //{
+                        //    return;
+                        //}
+    
+                        if (onConflict == ActionOnConflict.FollowTool)
                         {
-                            return;
+                            if (addType == ToolAddType.Toggle ||
+                                addType == ToolAddType.Remove)
+                            {
+                                orders[i].DeleteMe();
+                                orders.RemoveAt(i);
+                            }
                         }
 
-                        orders[i].DeleteMe();
-                        orders.RemoveAt(i);
-
-                        if (onConflict == ActionOnConflict.Toggle)
-                        {
-                            return;
-                        }
+                        return;
+                        //if (onConflict == ActionOnConflict.Toggle)
+                        //{
+                        //    return;
+                        //}
                     }
+                }
+
+                if (onConflict == ActionOnConflict.FollowTool &&
+                    addType == ToolAddType.Remove)
+                {
+                    return;
                 }
 
                 if (mainThread)
@@ -250,7 +264,8 @@ namespace VikingEngine.DSSWars.Players.Orders
     enum ActionOnConflict
     { 
         Commit,
-        Toggle,
+        //Toggle,
+        FollowTool,
         Cancel,
     }
 }

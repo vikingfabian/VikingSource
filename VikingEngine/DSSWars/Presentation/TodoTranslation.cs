@@ -46,6 +46,11 @@ namespace VikingEngine.DSSWars.Presentation
         public string Leaderboards_NationStrength => "Nation wide military strength";
 
         public string AutoSaveTime => "Auto-save interval";
+
+        public string Editor_ToolOption_Add => "Add";
+        public string Editor_ToolOption_Remove => "Remove";
+        public string Editor_ToolOption_Toggle => "Toggle";
+
         //public string SaveCount_Label => "Save count capacity";
         //public string SaveCount_Note1 => "Saves are recycled to reduce storage usage";
         //public string SaveCount_Note2 => "A high count will use more storage";
