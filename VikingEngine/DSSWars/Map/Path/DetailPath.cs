@@ -331,15 +331,16 @@ namespace VikingEngine.DSSWars.Map.Path
 
         public Vector3 NextNodeWp(Vector3 myPos, out bool complete, out bool ship)
         {
-            complete = currentNodeIx < 0 || currentNodeIx >= nodes.Count;
+            var node_sp = currentNodeIx;
+            complete = node_sp < 0 || node_sp >= nodes.Count;
             if (complete)
             {
                 ship = false;
                 return  WP.SubtileToWorldPosXZ(goal);
             }
 
-            ship = nodes[currentNodeIx].ship;
-            IntVector2 to = nodes[currentNodeIx].position;
+            ship = nodes[node_sp].ship;
+            IntVector2 to = nodes[node_sp].position;
             Vector3 toWp = WP.SubtileToWorldPosXZ(to);
             Vector2 diff = new Vector2( toWp.X - myPos.X, toWp.Z - myPos.Z);
             if (diff.Length() <= NodeMinDistance)

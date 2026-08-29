@@ -100,6 +100,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void BanWarning(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             HudLib.returnButton(content, menu, true, null);
             content.h1(string.Format(DssRef.lang.Hud_SendX, DssRef.lang.Multiplayer_BanWarning), HudLib.TitleColor_Head);
             content.newLine();
@@ -125,6 +127,8 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void RequestBlock(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             HudLib.returnButton(content, menu, true, null);
             content.h1(DssRef.lang.Multiplayer_RequestBlockPlayer, HudLib.TitleColor_Head);
             content.newLine();
@@ -165,6 +169,8 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void Kick(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             content.h1(DssRef.lang.Multiplayer_KickPlayer, HudLib.TitleColor_Head);
             selectedPlayer.addNetGamerToHud(content, true, false);
 
@@ -187,6 +193,8 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void Block(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             content.h1(DssRef.lang.Multiplayer_BlockPlayer, HudLib.TitleColor_Head);
             selectedPlayer.addNetGamerToHud(content, true, false);
 
@@ -212,6 +220,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void recolor(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             HudLib.returnButton(content, menu, true, null);
             content.h1(DssRef.lang.Editor_Color_Recolor, HudLib.TitleColor_Head);
             content.newLine();
