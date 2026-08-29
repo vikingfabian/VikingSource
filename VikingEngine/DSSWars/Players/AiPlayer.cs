@@ -20,8 +20,8 @@ namespace VikingEngine.DSSWars.Players
     {
         public Time nextDecisionTimer = new Time(1000);
 
-        const int PurchaseOrderType_None = 0;
-        const int PurchaseOrderType_Army = 1;
+        //const int PurchaseOrderType_None = 0;
+        //const int PurchaseOrderType_Army = 1;
         
         string name;
 
