@@ -142,12 +142,12 @@ namespace VikingEngine
 
         public float Length()
         {
-            return (float)Math.Sqrt(X * X + Y * Y);//return Vec.Length();
+            return (float)Math.Sqrt(X * X + Y * Y);
         }
 
         public double Length64()
         {
-            return Math.Sqrt(X * X + Y * Y);//return Vec.Length();
+            return Math.Sqrt(X * X + Y * Y);
         }
 
         public float Length(IntVector2 toPoint)
@@ -277,13 +277,7 @@ namespace VikingEngine
                 }
             }
         }
-        //public System.Drawing.Point Point
-        //{
-        //    get
-        //    {
-        //        return new System.Drawing.Point(X, Y);
-        //    }
-        //}
+
         public int[] Array
         {
             get
