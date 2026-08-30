@@ -147,14 +147,20 @@ namespace VikingEngine.DSSWars.Players
 
             if ((!aggresive || city.groups.Count < minGuardCount) && city.AvailableGuardHousing() >= DssConst.SoldierGroup_GuardCount)
             {
+                int emptyCount = 0;
                 lock (city.defenceBuildings.array)
                 {
+                    int needEmpty = city.defenceBuildings.Count / 3;
+
                     for (int i = 0; i < city.defenceBuildings.Count; i++)
                     {
                         if (city.defenceBuildings[i].AvailableForAutoAssign(city, IsBot()))
                         {
-                            armyTypeFilter = ArmyType.CityGuard;
-                            break;
+                            if (++emptyCount >= needEmpty)
+                            {
+                                armyTypeFilter = ArmyType.CityGuard;
+                                break;
+                            }
                         }
                     }
                 }

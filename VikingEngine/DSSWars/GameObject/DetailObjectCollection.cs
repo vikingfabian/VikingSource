@@ -6,6 +6,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -93,21 +94,28 @@ namespace VikingEngine.DSSWars.GameObject
 
             void list(List<SoldierGroup> objects)
             {
-                for (int i = 0; i < objects.Count; ++i)
+                if (objects.Count > 0)
                 {
-                    if (objects[i].defeated())
+                    for (int i = 0; i < objects.Count; ++i)
                     {
-                        arraylib.RemoveCurrentInForwardLoop(objects, ref i);
-                    }
-                    else
-                    {
-                        args.content.newLine();
-                        objects[i].toGroupHud(args);
-                        if (i < objects.Count - 1)
+                        if (objects[i].defeated())
                         {
-                            args.content.Add(new RbSeperationLine());
+                            arraylib.RemoveCurrentInForwardLoop(objects, ref i);
+                        }
+                        else
+                        {
+                            args.content.newLine();
+                            objects[i].toGroupHud(args);
+                            if (i < objects.Count - 1)
+                            {
+                                args.content.Add(new RbSeperationLine());
+                            }
                         }
                     }
+
+                    args.content.newLine();
+                    args.content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MenuTab_Reassign) },
+                         new RbAction1Arg<List<SoldierGroup>>(args.player.hud.StartQuickReassign, objects)));
                 }
             }
         }

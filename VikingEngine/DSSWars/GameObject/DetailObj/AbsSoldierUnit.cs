@@ -1027,6 +1027,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             group.toHud(args, out secondMenuContent);
 
+
+
             if (args.ShowFull)
             {
                 stateDebugText(args.content);

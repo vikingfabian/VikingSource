@@ -1401,7 +1401,7 @@ namespace VikingEngine.DSSWars
             {
                 if (loop.Relation().InWar())
                 {
-                    if (loop.OtherFaction(out var opponent) && opponent.player.IsHumanPlayer())
+                    if (loop.OtherFaction(out var opponent) && opponent.player != null && opponent.player.IsHumanPlayer())
                     {
                         ++playerWars;
                     }

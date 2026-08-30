@@ -24,6 +24,7 @@ using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.MiniGolf;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
 
@@ -1482,10 +1483,7 @@ namespace VikingEngine.DSSWars.GameObject
         void SoldiersPresentationHud(ObjectHudArgs args, bool tooltipOrGroup, bool compact)
         {
             var faction = pfaction.GetFaction();
-            //if (faction == null)
-            //{ return; }
-
-
+           
 
             if (pfaction != args.player.pfaction &&
                 args.player.gameControls.map.selection.obj != null &&
@@ -1655,7 +1653,21 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 args.content.Add(new RbSeperationLine());
             }
-            
+
+            args.content.newLine();
+            args.content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MenuTab_Reassign) },
+                 new RbAction(() => { args.player.hud.StartQuickReassign(new List<SoldierGroup> { this }); })));
+            //    new RbAction(() =>
+            //{
+            //    if (army.TryGetTarget(out var tArmy))
+            //    {
+            //        args.player.armyTab = MenuTab.Reassign;
+            //        args.player.gameControls.mapSelect(tArmy);
+            //        args.player.movingGroupsCollection = new MovingGroupsCollection(tArmy);
+            //        args.player.movingGroupsCollection.mainArmy.AddGroup(new SoldierGroupAndCount(-1, this, true), args.player.movingGroupsCollection.otherArmies.Selected(), true, false);
+            //    }
+            //})));
+
             args.content.newLine();
 
             if (soldierConscript.conscript.weapon == ItemResourceType.Settler)
