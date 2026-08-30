@@ -129,6 +129,13 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             bool non = false;
             MoveGroup(group, toArmy, moveAway, moveAll, false, ref non);
         }
+
+        //public void MoveAwaySpecificGroup(SoldierGroup group, MovingGroups toArmy)
+        //{
+        //    moveGroups.Add(group);
+        //    toArmy.recieveGroups.Add(group);
+        //}
+
         public void MoveGroup(SoldierGroupAndCount group, MovingGroups toArmy, bool moveAway, bool moveAll, bool moveHalf, ref bool halfToggler)
         {
             if (moveAway)
@@ -161,17 +168,20 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             {
                 if (moveAll)
                 {
-                    var groupsC = toArmy.army.groups.counter();
-                    while (groupsC.Next())
+                    if (toArmy.army != null)
                     {
-                        if (groupsC.sel.soldierConscript.conscript.SortOrderValue() == group.sortId)
+                        var groupsC = toArmy.army.groups.counter();
+                        while (groupsC.Next())
                         {
-                            if (!moveHalf || halfToggler)
+                            if (groupsC.sel.soldierConscript.conscript.SortOrderValue() == group.sortId)
                             {
-                                toArmy.moveGroups.Remove(groupsC.sel);
-                                recieveGroups.Remove(groupsC.sel);
+                                if (!moveHalf || halfToggler)
+                                {
+                                    toArmy.moveGroups.Remove(groupsC.sel);
+                                    recieveGroups.Remove(groupsC.sel);
+                                }
+                                halfToggler = !halfToggler;
                             }
-                            halfToggler = !halfToggler;
                         }
                     }
                 }

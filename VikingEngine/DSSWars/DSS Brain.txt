@@ -1,15 +1,13 @@
 
 Change log:
-* When spending workers, immigrants will be used first
-* Auto guard recruiting to reduced by 1/3
+* 
 
 KNOWN ISSUES
 x reassign dont work with controller
 x translate
 x hide achievements
-
-
 X timeline checkbox on steamworks
+
 
 #MAP 2.0
 * Cubic far group models
