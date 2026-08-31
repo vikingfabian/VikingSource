@@ -20,6 +20,11 @@ namespace VikingEngine.DSSWars.Map
         //Represents a thread-safe last in-first out (LIFO) collection.
         ConcurrentStack<PathFinding> poolPf = new ConcurrentStack<PathFinding>();
         ConcurrentQueue<WalkingPath> poolRes = new ConcurrentQueue<WalkingPath>();
+        int createdPfCount = 0;
+
+        public int PfCount => poolPf.Count;
+        public int ResCount => poolRes.Count;
+        public int CreatedPfCount => createdPfCount;
         
         public PathFinding GetPf()
         {
@@ -29,6 +34,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
+                System.Threading.Interlocked.Increment(ref createdPfCount);
                 return new PathFinding();
             }
         }
@@ -63,6 +69,21 @@ namespace VikingEngine.DSSWars.Map
             {
                 poolRes.Enqueue(pathresult);
             }
+        }
+
+        public void Preallocate(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                poolPf.Push(new PathFinding());
+                System.Threading.Interlocked.Increment(ref createdPfCount);
+            }
+        }
+
+        public void Clear()
+        {
+            poolPf.Clear();
+            poolRes.Clear();
         }
     }
 

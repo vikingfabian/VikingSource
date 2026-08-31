@@ -1,4 +1,4 @@
-﻿using Steamworks;
+using Steamworks;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -367,9 +367,11 @@ namespace VikingEngine.DSSWars.GameState
                     end = DssRef.world.factions.Count - 1;
                 }
                 pathUpdates[i] = new PathUpdateThread(i, startIx, end);
+                pathUpdates[i].PreallocatePools(1, 1);
                 startIx = end + 1;
             }
             pathUpdates[count] = new PathUpdateThread_Player(count);
+            pathUpdates[count].PreallocatePools(1, 1);
 
         }
 
@@ -386,6 +388,14 @@ namespace VikingEngine.DSSWars.GameState
             Ref.music.stop(true);
             exitThreads = true;
             DssRef.ambience.gameEnd();
+
+            if (pathUpdates != null)
+            {
+                for (int i = 0; i < pathUpdates.Length; i++)
+                {
+                    pathUpdates[i]?.ClearPools();
+                }
+            }
 
             if (cutScene is EndScene)
             {
