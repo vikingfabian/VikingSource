@@ -13,15 +13,27 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 {
     class MapEditor2_Scene : AbsDssState
     {
-        MapEditor2Display display;
+        public MapEditor2Display display;
+        MapEditor3_Tool tool;
         bool loadingState = false;
-        Generator3 generator = new Generator3();
-        GeneratorMap map;
+        public Map2Generator generator = new Map2Generator();
+        public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
+        public GeneratorMap map;
+        public bool iconState = true;
+
+        List<InputMap> controller;
+
         public MapEditor2_Scene()
             : base()
         {
             display = new MapEditor2Display(this);
+            tool = new MapEditor3_Tool(this);
             map = new GeneratorMap(display.topRight);
+            new Interface.EditorBackground();
+
+            controller = new List<InputMap>{
+                Ref.gamesett.keyboardMap,
+            };
         }
 
         public override void Time_Update(float time)
@@ -30,19 +42,28 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             if (loadingState)
             {
-                //mapBackgroundLoading.Update();
-                //if (mapBackgroundLoading.Complete())
-                //{
-                //    loadingState = false;
-                //    display.loadingDisplay.Hide();
-                //    map.generate();
-                //    display.refreshMenu();
-                //}
                 if (generator.complete())
                 {
                     loadingState = false;
                     display.loadingDisplay.Hide();
-                    map.generate2(generator.world);
+                    display.refreshMenu();
+
+                    if (generator.currentPass <= Map2Pass.NewWorld)
+                    {
+                        map.hide();
+                    }
+                    else if (generator.currentPass < Map2Pass.Icon)
+                    {
+                        map.generateNodes(generator.nodeMap);
+                    }
+                    else
+                    {
+                        map.generateIcon(generator.iconWorld);
+                        if (generator.currentPass >= Map2Pass.ScaleUp)
+                        {
+                            map.scale = 0.25f;
+                        }
+                    }
                 }
             }
             else
@@ -50,23 +71,28 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 bool mouseOverHud = false;
                 display.update(ref mouseOverHud);
 
-                map.userInput(mouseOverHud);
+                foreach (var input in controller)
+                {
+                    map.userInput(input, mouseOverHud);
+
+                    tool.paintInput(input);
+                }
             }
         }
 
-        public void generatePass(GenerateMapPass pass)
+        
+
+
+        public void generatePass(Map2Pass start, Map2Pass end)
         {
+            if (start <= Map2Pass.Empty)
+            {
+                map.resetPos();
+            }
+
             loadingState = true;
             display.loadingDisplay.Show();
-            generator.generate();
-            //if (pass == GenerateMapPass.Clear || pass == GenerateMapPass.AllTerrain)
-            //{
-            //    mapBackgroundLoading = new MapGenerator_BackgroundLoading();
-
-            //    mapStorage.autoName = $"CustomMap W{GenerateSettings.customMapSize.X} H{GenerateSettings.customMapSize.Y} id{Ref.rnd.Int(9999)}";
-            //}
-            //mapBackgroundLoading.generateSettings = GenerateSettings;
-            //mapBackgroundLoading.generate(pass);
+            generator.generatePass(generateSettings, start, end);
         }
     }
 }

@@ -1014,7 +1014,6 @@ namespace VikingEngine.DSSWars.Map.Generate
         }
         void generateCityType(CityType type, int amount, float neededSpace, MapGenerateSettings generateSettings)
         {
-            
 
             ConcurrentStack<IntVector2> preppedTiles = new ConcurrentStack<IntVector2>();
 
