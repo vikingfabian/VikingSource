@@ -20,8 +20,6 @@ namespace VikingEngine.DSSWars.Map
         //Represents a thread-safe last in-first out (LIFO) collection.
         ConcurrentStack<PathFinding> poolPf = new ConcurrentStack<PathFinding>();
         ConcurrentQueue<WalkingPath> poolRes = new ConcurrentQueue<WalkingPath>();
-        //Stack<WalkingPath> poolResOut = new Stack<WalkingPath>();
-
         
         public PathFinding GetPf()
         {
@@ -39,12 +37,6 @@ namespace VikingEngine.DSSWars.Map
         {
             if (poolRes.TryDequeue(out WalkingPath path))
             {
-                if (path.timeStamp + 2 >= Ref.TotalFrameCount)
-                {
-                    poolRes.Enqueue(new WalkingPath());
-                    poolRes.Enqueue(new WalkingPath());
-                    System.Threading.Thread.Sleep(32);
-                }
                 path.recycle();
                 return path;
             }
@@ -69,8 +61,6 @@ namespace VikingEngine.DSSWars.Map
             // Reset the node to a default state
             if (pathresult != null)
             {
-                //path.recycle();
-                pathresult.timeStamp = Ref.TotalFrameCount;
                 poolRes.Enqueue(pathresult);
             }
         }
@@ -226,7 +216,6 @@ namespace VikingEngine.DSSWars.Map
         const int IgnoreDirChangeTimes = 10;
         const float NodeMinDistance = 0.3f;
 
-        public double timeStamp;
         public int currentNodeIx;
         public List<PathNodeResult> nodes = new List<PathNodeResult>(64);
 
@@ -247,6 +236,10 @@ namespace VikingEngine.DSSWars.Map
         public void recycle()
         {
             nodes.Clear();
+            if (nodes.Capacity > 512)
+            {
+                nodes.Capacity = 256;
+            }
         }
 
 //        public WalkingPath(List<PathNodeResult> nodes)
