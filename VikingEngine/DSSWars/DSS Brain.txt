@@ -11,6 +11,7 @@ X timeline checkbox on steamworks
 
 #MAP 2.0
 * Cubic far group models
+* The colors are muted and have higher contrast 
 
 ## QoL ##
 
