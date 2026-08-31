@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
     class MapEditor2_Scene : AbsDssState
     {
         public MapEditor2Display display;
-        MapEditor3_Tool tool;
+        public MapEditor3_Tool tool;
         bool loadingState = false;
         public Map2Generator generator = new Map2Generator();
         public Map2GenerateSettings generateSettings = new Map2GenerateSettings();

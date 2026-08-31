@@ -15,7 +15,27 @@ namespace VikingEngine.DSSWars.Map.Map2
         public bool bCustomSize = false;
         public IntVector2 customMapSize = new IntVector2(WorldData.CustomMapSize_Min);
         public MapSize mapSize = MapSize.Medium;
-        
+
+        public int nodeFillPerc = 15;
+        public int nodeConnectPerc = 70;
+
+        public int nodeFillPercProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                nodeFillPerc = value;
+            }
+            return nodeFillPerc;
+        }
+        public int nodeConnectPercProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                nodeConnectPerc = value;
+            }
+            return nodeConnectPerc;
+        }
+
         /// <summary>
         /// Compared to medium map 
         /// </summary>

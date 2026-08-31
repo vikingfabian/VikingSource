@@ -22,10 +22,21 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         bool bPaintKeyDown = false;
         public IntVector2 prevTilePos;
 
-        ToolAddType addType = ToolAddType.Add;
+        public ToolAddType addType = ToolAddType.Add;
         int penSize_Nodes = 1;
 
-        int penSize = 3;
+        public PencilShape pencilShape = PencilShape.Round;
+
+        int penSize = 2;
+
+        public int penSizeProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                penSize = value;
+            }
+            return penSize;
+        }
 
         Dictionary<IntVector2,Graphics.Image> paintDots = new Dictionary<IntVector2, Graphics.Image>(128);
 
@@ -82,14 +93,24 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public void paintOnTile(IntVector2 tilePos, IntVector2 tileSize)
         {
+            int radius = penSize - 1;
+
             if (tilePos != prevTilePos)
             {
                 Rectangle2 bound = new Rectangle2(IntVector2.Zero, tileSize);
-                Rectangle2 area = Rectangle2.FromCenterTileAndRadius(tilePos, penSize);
+                Rectangle2 area = Rectangle2.FromCenterTileAndRadius(tilePos, radius);
                 area.SetBounds(bound);
                 ForXYLoop loop = new ForXYLoop(area);
                 while (loop.Next())
                 {
+                    if (pencilShape == PencilShape.Round)
+                    {
+                        if ((tilePos - loop.Position).Length() > radius * 1.1f)
+                        {
+                            continue;
+                        }
+                    }
+
                     if (!paintDots.ContainsKey(loop.Position))
                     {
                         Vector2 pos = scene.map.TileToScreenPos(loop.Position, tileSize);
@@ -143,5 +164,28 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 paintDots.Clear();
             }
         }
+
+        public void fill()
+        {
+            setAll(true);
+        }
+        public void clear()
+        {
+            setAll(false);
+        }
+
+
+        void setAll(bool toValue)
+        {
+            scene.generator.nodeMap.nodeGrid.SetAll(toValue);
+            scene.generator.nodeMap.refreshAllPixels();
+        }
+    }
+
+    enum PencilShape
+    { 
+        Round,
+        Square,
+        NUM,
     }
 }

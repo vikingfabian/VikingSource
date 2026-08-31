@@ -163,9 +163,57 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     break;
 
                 case Map2GeneratorTab.Nodes:
+
+                    content.newLine();
+                    HudLib.Label(content, "Fill");
+                    content.Add(new RbTab(0.25f));
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(5, 80, 5), state.generateSettings.nodeFillPercProperty, false);
+                    content.newLine();
+                    HudLib.Label(content, "Connect");
+                    content.Add(new RbTab(0.25f));
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(10, 90, 1), state.generateSettings.nodeConnectPercProperty, false);
+
+                    content.newParagraph();
+
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NodeGrid), null, true));
+                    content.Add(new RbSeperationLine());
+
+                    if (state.generator.currentPass == Map2Pass.NodeGrid)
+                    {
+                        content.h2("Paint tools", HudLib.TitleColor_Head2);
+
+                        HudLib.Label(content, "Pen size");
+                        content.Add(new RbTab(0.25f));
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 5 }, new DragButtonSettings(1, 20, 1), state.tool.penSizeProperty, false);
+
+                        content.newLine();
+                        HudLib.Label(content, "All nodes");
+                        content.Add(new RbTab(0.25f));
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                           new List<AbsRichBoxMember> { new RbText("Fill") }, new RbAction(state.tool.fill), null, true));
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                           new List<AbsRichBoxMember> { new RbText("Clear") }, new RbAction(state.tool.clear), null, true));
+
+                        content.newLine();
+                        for (ToolAddType addType = 0; addType < ToolAddType.NUM_NONE; addType++)
+                        {
+                            Ref.langOpt.ToolAddType(addType, out var addIcon, out var addCaption);
+                            content.Add(new ArtOption(addType == state.tool.addType, new List<AbsRichBoxMember> { new RbImage(addIcon) },
+                                new RbAction1Arg<ToolAddType>((ToolAddType selected) => { state.tool.addType = selected; }, addType),
+                                new RbTooltip_Text(addCaption)));
+                        }
+
+                        content.newLine();
+                        for (PencilShape shape = 0; shape < PencilShape.NUM; shape++)
+                        {
+                            content.Add(new ArtOption(shape == state.tool.pencilShape, new List<AbsRichBoxMember> { new RbText(shape.ToString()) },
+                                new RbAction1Arg<PencilShape>((PencilShape selected) => { state.tool.pencilShape = selected; }, shape),
+                                new RbTooltip_Text("Pen shape")));
+                        }
+                    }
+                    
                     break;
 
                 case Map2GeneratorTab.Icon:
