@@ -22,7 +22,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         bool bPaintKeyDown = false;
         public IntVector2 prevTilePos;
 
-        ToolAddType addType = ToolAddType.Toggle;
+        ToolAddType addType = ToolAddType.Add;
+        int penSize_Nodes = 1;
+
+        int penSize = 3;
 
         Dictionary<IntVector2,Graphics.Image> paintDots = new Dictionary<IntVector2, Graphics.Image>(128);
 
@@ -81,16 +84,21 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         {
             if (tilePos != prevTilePos)
             {
-                if (!paintDots.ContainsKey(tilePos))
+                Rectangle2 bound = new Rectangle2(IntVector2.Zero, tileSize);
+                Rectangle2 area = Rectangle2.FromCenterTileAndRadius(tilePos, penSize);
+                area.SetBounds(bound);
+                ForXYLoop loop = new ForXYLoop(area);
+                while (loop.Next())
                 {
-                    Vector2 pos = scene.map.TileToScreenPos(tilePos, tileSize);
-                    var img = new Graphics.Image(SpriteName.WhiteArea,
-                        pos, new Vector2(4), ImageLayers.Top0);
-                    img.Color = Color.Purple;
-                    paintDots.Add(tilePos, img);
+                    if (!paintDots.ContainsKey(loop.Position))
+                    {
+                        Vector2 pos = scene.map.TileToScreenPos(loop.Position, tileSize);
+                        var img = new Graphics.Image(SpriteName.WhiteArea,
+                            pos, new Vector2(8), ImageLayers.Top0);
+                        img.Color = Color.Purple;
+                        paintDots.Add(loop.Position, img);
+                    }
                 }
-
-               
 
                 prevTilePos = tilePos;
             }
@@ -124,6 +132,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                         }
                         break;
                 }
+
+                scene.generator.nodeMap.texture.ApplyPixelsToTexture();
 
                 foreach (var kv in paintDots)
                 {
