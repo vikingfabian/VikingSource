@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (DssRef.world.tileGrid.InBounds(moveToPos) &&
                             checkedPathsFrom[moveToPos.X, moveToPos.Y] == false)
                         {
-                           if (group.canMoveTo(currentNode.Position, moveToPos))
+                            if (group.canMoveTo(currentNode.Position, moveToPos))
                             {
                                 PathNode node = new PathNode(currentNode, moveToPos, dir, currentNode, goal, group);
                                 open.Add(node);

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
@@ -112,4 +112,9 @@
     <Exec Command="dotnet tool restore" />
   </Target>
     <Import Project="..\VikingBuilder\BuildContent.targets" />
+
+    <ItemGroup>
+      <InternalsVisibleTo Include="VikingEngine.Tests" />
+      <InternalsVisibleTo Include="VikingEngine.Benchmarks" />
+    </ItemGroup>
 </Project>
