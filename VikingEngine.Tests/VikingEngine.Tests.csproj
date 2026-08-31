@@ -1,10 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DefineConstants>$(DefineConstants);PCGAME;DSS</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VikingEngine\VikingEngine.csproj" />
+    <ProjectReference Include="..\VikingEngine\VikingEngine.csproj">
+      <Properties>Platform=x64</Properties>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Steamworks repo\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
+      <Properties>Platform=x64</Properties>
+    </ProjectReference>
   </ItemGroup>
 </Project>

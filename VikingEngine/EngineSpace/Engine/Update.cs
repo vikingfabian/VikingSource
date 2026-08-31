@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -288,6 +288,7 @@ namespace VikingEngine.Engine
 
             if (PlatformSettings.DebugPerformanceText)
             {
+                DebugExtensions.MemoryOverlay.Instance.RecordFrame(Ref.DeltaTimeMs);
                 OneSecondCounter += Ref.DeltaTimeSec;
 
                 if (OneSecondCounter >= 1)
