@@ -33,23 +33,17 @@ namespace VikingEngine.DSSWars.Map.Path
         public void Return(DetailPathFinding path)
         {
             // Reset the node to a default state
-
-            path.recycle();
-            pfPool.Push(path);
+            if (path != null)
+            {
+                path.recycle();
+                pfPool.Push(path);
+            }
         }
 
         public DetailWalkingPath GetRes()
         {   
             if (resultPool.TryDequeue(out DetailWalkingPath path))
             {
-                if (path.timeStamp + 2 >= Ref.TotalFrameCount)
-                {
-                    resultPool.Enqueue(new DetailWalkingPath());
-                    resultPool.Enqueue(new DetailWalkingPath());
-                    resultPool.Enqueue(new DetailWalkingPath());
-                    resultPool.Enqueue(new DetailWalkingPath());
-                    System.Threading.Thread.Sleep(32);
-                }
                 path.recycle();
                 return path;
             }
@@ -63,7 +57,6 @@ namespace VikingEngine.DSSWars.Map.Path
         {
             if (pathresult != null)
             {
-                pathresult.timeStamp = Ref.TotalFrameCount;
                 resultPool.Enqueue(pathresult);
             }
         }
@@ -255,10 +248,13 @@ namespace VikingEngine.DSSWars.Map.Path
         public IntVector2 goal;
         public List<DetailPathNodeResult> nodes = new List<DetailPathNodeResult>(64);
         public bool blockedPath;
-        public double timeStamp;
         public void recycle()
         { 
             nodes.Clear();
+            if (nodes.Capacity > 512)
+            {
+                nodes.Capacity = 256;
+            }
         }
 
         public Vector2 DirToNextNode(Vector2 myPos, out bool complete, out bool ship)
