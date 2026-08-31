@@ -45,10 +45,10 @@ namespace VikingEngine.DSSWars.Communication
             return false;
         }
 
-        public int RelationIndex()
+        public bool RelationIndex(out int result)
         {
-            DssRef.world.diplomacy.RelationIndex(faction.factionIndex, otherFactionIx, out var result);
-            return result;
+            return DssRef.world.diplomacy.RelationIndex(faction.factionIndex, otherFactionIx, out result);
+            
         }
 
         public DiplomaticRelation Relation()

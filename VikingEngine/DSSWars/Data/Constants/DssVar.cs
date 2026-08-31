@@ -60,6 +60,7 @@ namespace VikingEngine.DSSWars
 
             horseModel = new AnimalProfile(VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f), AnimalNoiseType.horse, WalkSoundType.Horse, 0.018f);
             ponyModel = horseModel.Copy(VoxelModelName.pony_brown, 0.8f);
+            ponyModel.wagonPullDistance = 0.05f;
             warHorseModel = horseModel.Copy(VoxelModelName.warhorse_brown, 1.1f);
             draftHorseModel = horseModel.Copy(VoxelModelName.drafthorse_red, 1.2f);
 

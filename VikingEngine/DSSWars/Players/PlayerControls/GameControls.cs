@@ -567,7 +567,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                     storedPos = controllerPointer_storedPos_defaultObject;
                                     break;
                             }
-                            player.hud.objMenu.createMenu(player);
+                            player.hud.objMenu.createMenu(true, player);
                             controllerPointer.setMenu(player.hud.objMenu.menu, storedPos);
                         }
                         else
@@ -955,14 +955,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void nextCity(City city)
         {
-            map.cameraFocus = city;
-            mapSelect(city);
-            player.hud.needRefresh = true;
+            if (city != null)
+            {
+                map.cameraFocus = city;
+                mapSelect(city);
+                player.hud.needRefresh = true;
+            }
         }
 
         public void nextCity()
         {
-            player.hud.needRefresh = true;
+            //player.hud.needRefresh = true;
 
             int dir = 1;
             if (input.Shift() &&
@@ -991,8 +994,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         else
                         {
                             //focus on city
-                            map.cameraFocus = city;
-                            mapSelect(city);
+                            //map.cameraFocus = city;
+                            //mapSelect(city);
+                            nextCity(city);
                             return;
                         }
                     }
@@ -1000,40 +1004,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             } while (++loops < player.pfaction.GetFaction().cities.Array.Length);
 
-            //if (forward)
-            //{
-            //    tabCity++;
-            //    if (tabCity >= player.faction.cities.Count)
-            //    {
-            //        tabCity = 0;
-            //    }
-            //}
-            //else
-            //{
-            //    tabCity--;
-            //    if (tabCity < 0)
-            //    {
-            //        tabCity = player.faction.cities.Count - 1;
-            //    }
-            //}
-
-
-            //int current = 0;
-            
-            //SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            //while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
-            //{
-            //    if (current == tabCity)
-            //    {
-            //        //focus on city
-            //        map.cameraFocus = citySel;
-            //        mapSelect(citySel);
-
-            //        return;
-            //    }
-            //    current++;
-            //}
-            
         }
         public void nextArmy(bool forward)
         {

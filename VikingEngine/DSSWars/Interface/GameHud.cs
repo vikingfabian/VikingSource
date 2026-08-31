@@ -1,15 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface.HudPinUi;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Players;
@@ -55,8 +58,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
             player.hud = this;
-            MessageStart = new Vector2(player.playerData.view.safeScreenArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),
-               player.playerData.view.safeScreenArea.Y);
+            MessageStart = new Vector2(player.playerData.view.wideScreenSafeScreenArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),
+               player.playerData.view.wideScreenSafeScreenArea.Y);
 
             //displays = new GameHudDisplays(player);
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
@@ -176,6 +179,27 @@ namespace VikingEngine.DSSWars.Interface
                 updateMenuDisplays(true);
             }
             return maximizedHud;
+        }
+
+        public void StartQuickReassign(List<SoldierGroup> groups)
+        {
+            
+            if (groups[0].army.TryGetTarget(out var tArmy))
+            {
+
+                player.armyTab = MenuTab.Reassign;
+                player.gameControls.mapSelect(tArmy);
+                //args.player.movingGroupsCollection.mainArmy.
+                player.movingGroupsCollection = new MovingGroupsCollection(tArmy);
+                foreach (var group in groups)
+                {
+                    if (group.army.TryGetTarget(out var tArmy2) && tArmy == tArmy2)
+                    {
+                        player.movingGroupsCollection.mainArmy.AddGroup(new SoldierGroupAndCount(-1, group, true), player.movingGroupsCollection.otherArmies.Selected(), true, false);
+                    }
+                }
+            }
+            
         }
 
         public bool minimapProperty(object tag, bool set, bool value)
@@ -304,7 +328,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void updateMenuDisplays(bool refresh)
         {
-
+           
             if (player.gameControls.diplomacy != null)
             {
                 var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
@@ -344,6 +368,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (refresh)
                 {
                     objMenu.refreshObject(player, obj, selected);
+                    
                 }
             }
         }

@@ -288,7 +288,7 @@ namespace VikingEngine.DSSWars.Conscript
                 conscript.specialization = SpecializationType.AntiCavalry;
             }
 
-            conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+            soldierData.unitFilter = conscript.classify();//out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
             switch (conscript.specialization)
             {
@@ -316,7 +316,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.attackDamageSea = MathExt.AddPercentage(soldierData.attackDamageSea, seaDamagePerc);
                     soldierData.attackDamageStructure = MathExt.SubtractPercentage(soldierData.attackDamageStructure, DssConst.Conscript_SpecializePercentage);
 
-                    if (!ranged)
+                    if (!soldierData.unitFilter.Contains(UnitFilterType.Ranged))//ranged)
                     {
                         soldierData.modelName = LootFest.VoxelModelName.war_sailor;
                         soldierData.modelVariationCount = 2;
@@ -378,7 +378,12 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);
             soldierData.attackTimePlusCoolDown /= 1f + skillBonus;
 
-            ShieldProperties.AddToConscript(ref soldierData, ref conscript, ranged);
+            ShieldProperties.AddToConscript(ref soldierData, ref conscript);
+            if (conscript.armorLevel != ItemResourceType.NONE)
+            {
+                soldierData.basehealth += armorData.basehealth;
+            }
+            //ShieldProperties.AddToConscript(ref soldierData, ref conscript);
 
             return soldierData;
 
@@ -446,8 +451,8 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.Viking:
-                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
-                    if (!ranged)
+                    //conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+                    if (!soldierData.unitFilter.Contains(UnitFilterType.Ranged))
                     {
                         soldierData.modelName = LootFest.VoxelModelName.wars_viking_ship;
 

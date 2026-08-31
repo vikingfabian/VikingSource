@@ -11,6 +11,7 @@ namespace VikingEngine.DSSWars.Data
     static class Music
     {
         const string Artist_MartinGronlund = "Martin Grönlund";
+        const string Artist_CosmeLeites = "Cosme Leites";
         const string Artist_SoundImage = "by Eric Matyas, www.soundimage.org";
 
         static readonly string FilePath = DssLib.ContentDir + "Music" + DataStream.FilePath.Dir;
@@ -51,6 +52,7 @@ namespace VikingEngine.DSSWars.Data
             var result = new List<Sound.SongData>
             {
                 //new Sound.SongData(FilePath + "BBaaB_loop", "BBaaB", true, 0.22f),
+                new Sound.SongData(FilePath + "DSS War Industry -Theme music", "DSS Theme music", Artist_CosmeLeites, true, 0.3f),
                 new Sound.SongData(FilePath + "Gargoyle_loop", "Gargoyle", Artist_MartinGronlund, true, 0.3f),
 
                 //new Sound.SongData(FilePath + "RM 10 - Incubation", "Incubation", false, 0.3f),

@@ -114,7 +114,7 @@ namespace VikingEngine.Voxels
             w.Write((ushort)materialAndReps.Count); //how many repeating parts
             foreach (IntVector2 val in materialAndReps)
             {
-                StreamLib.WriteGrowingBitShiftValue(w, val.Y); //write repetitions
+                StreamLib.WriteGrowing_Byte_Bit(w, val.Y); //write repetitions
             }
             //Divitions
             int numDivitions;
@@ -184,7 +184,7 @@ namespace VikingEngine.Voxels
 
             for (int i = 0; i < numRepetitionParts; i++)
             {
-                repetionsList[i]= StreamLib.ReadGrowingBitShiftValue(r);
+                repetionsList[i]= StreamLib.ReadGrowing_Byte_Bit(r);
             }
 
             int numDivitions;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,13 @@ namespace VikingEngine.Network
     {
         public const string LobbyTimeDataKey = "TIME";
         public const string NameKey = "NAME";
+        public const string HostIdKey = "HOST";
 
         public bool MatchingVersion;
         public string Version;
         public bool alive = true;
         public string name;
+        public CSteamID host;
         public LobbyPublicity lobbyPublicity;
 
         //public const string LobbyTimeKey = "TIME";

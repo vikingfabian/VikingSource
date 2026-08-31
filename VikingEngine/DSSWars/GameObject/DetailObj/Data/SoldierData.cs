@@ -14,6 +14,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 {
     struct SoldierData
     {
+        public UnitFilter unitFilter;
+
         public float blockChance = DssConst.DefaultBlockChance;
         /// <summary>
         /// Max blocks are refills per second
@@ -166,9 +168,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         {
             return rowWidth * columnsDepth;
         }
-        public int UnitCount(bool guard)
+        public int UnitCount(ArmyType armyTypeFilter)
         {
-            if (guard)
+            if (armyTypeFilter == ArmyType.ArmyMen)
             {
                 return DssConst.SoldierGroup_GuardCount;
             }
@@ -182,9 +184,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             return rowWidth * columnsDepth * workForcePerUnit;
         }
 
-        public int workForceCount(bool guard)
+        public int workForceCount(ArmyType armyTypeFilter)
         {
-            if (guard)
+            if (armyTypeFilter == ArmyType.CityGuard)
             {
                 return DssConst.SoldierGroup_GuardCount;
             }

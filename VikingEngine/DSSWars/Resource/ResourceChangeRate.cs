@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Resource
 
         }
 
-        public void oneSecondUpdate()
+        public void oneMinuteUpdate()
         {
             prevProduced = produced;
             prevConsumed = consumed;

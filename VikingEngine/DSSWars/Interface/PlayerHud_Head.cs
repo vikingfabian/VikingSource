@@ -23,7 +23,8 @@ namespace VikingEngine.DSSWars.Interface
     class PlayerHud_Head
     {
         ImageAdvanced flag;
-        NineSplitAreaTexture flagBg;
+        VectorRect flagClickArea;
+        //NineSplitAreaTexture flagBg;
         RichMenu menu;
         public float Bottom;
         public float Right;
@@ -38,8 +39,8 @@ namespace VikingEngine.DSSWars.Interface
         public PlayerHud_Head(LocalPlayer player)
         {
             this.player = player;
-            float headWidth = HudLib.HeadDisplayWidth * 1.36f;
-            var headMenuArea = player.playerData.view.safeScreenArea;
+            float headWidth = HudLib.HeadDisplayWidth * 1.6f;
+            var headMenuArea = player.playerData.view.wideScreenSafeScreenArea;
             headMenuArea.Width = headWidth;
             menu = new RichMenu(HudLib.RbSettings_Head, headMenuArea, new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
             refreshFaction(player, true);
@@ -52,11 +53,17 @@ namespace VikingEngine.DSSWars.Interface
                 //flagBgArea.Position.Y += 4;
                 var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
                 flagBgArea.Round();
-                flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
+                flagClickArea = flagBgArea;
+                NineSplitAreaTexture flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
                 menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
                 flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 8));
+                
+                Graphics.Image flagBgTex = new Image(SpriteName.WhiteArea_LFtiles, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer +1, false);
+                flagBgTex.Color = player.profile.flag.col0_Main;
+
                 flagBgArea.Position.Y += (flagBgArea.Height - flagBgArea.Width) * 0.5f;
                 flagBgArea.Height = flagBgArea.Width;
+                flagBgArea.AddRadius(-2);
 
                 flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
                 RefreshFlag(player);
@@ -96,8 +103,20 @@ namespace VikingEngine.DSSWars.Interface
 
         /// <returns>need refresh</returns>
         public bool updateMouseInput(ref bool mouseOver)
-        { 
-            menu.updateMouseInput(ref mouseOver);
+        {
+            if (flagClickArea.IntersectPoint(menu.InputMap().RbMouseInstance().Position))
+            {
+                mouseOver = true;
+                if (menu.InputMap().RbClick().DownEvent)
+                {
+                    SoundLib.sillyFanfare.Play();
+                    player.gameControls.nextCity(player.pfaction.GetFaction().mainCity);
+                }
+            }
+            else
+            {
+                menu.updateMouseInput(ref mouseOver);
+            }
             return menu.needRefresh;
         }
 
@@ -422,9 +441,11 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
+                SoundLib.Tab(tab);
                 player.factionTab = tab;
             }
             player.hud.needRefresh = true;
+            
         }
 
         void TabTip(RichBoxContent content, object tag)

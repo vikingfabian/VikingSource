@@ -11,6 +11,7 @@ namespace VikingEngine
         public static readonly ThirtyTwoBit Zero = new ThirtyTwoBit(uint.MinValue);
         public static readonly ThirtyTwoBit AllTrue = new ThirtyTwoBit(uint.MaxValue);
 
+        
         static readonly uint[] indexToBitValue = new uint[]
         {
         0x1u, 0x2u, 0x4u, 0x8u,
@@ -199,9 +200,12 @@ namespace VikingEngine
             return (this.bitArray & filter.bitArray) != 0;
         }
 
+        /// <summary>
+        /// Bitwise OR combines the bits, keeping all 'true' bits from both
+        /// </summary>
         public void Combine(ThirtyTwoBit other)
         {
-            // Bitwise OR combines the bits, keeping all 'true' bits from both
+            
             this.bitArray |= other.bitArray;
         }
         
@@ -217,5 +221,15 @@ namespace VikingEngine
             }
             return result + "}";
         }
+
+        public bool HasValue()
+        {
+            return bitArray != uint.MinValue;
+        }
+        public bool IsEmpty()
+        {
+            return bitArray == uint.MinValue;
+        }
+
     }
 }

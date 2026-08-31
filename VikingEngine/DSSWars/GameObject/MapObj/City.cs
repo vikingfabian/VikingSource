@@ -28,6 +28,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Stockpile;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.EngineSpace.DataStream;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
@@ -45,7 +46,6 @@ namespace VikingEngine.DSSWars.GameObject
         public int neighborCitiesCount = 0;
 
         Graphics.AbsVoxelObj overviewModel;
-
         BoundingBox bound;
 
         public FloatingInt childrenAge0 = new FloatingInt();
@@ -81,8 +81,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public BuildingStructure buildingStructure = new BuildingStructure();
         public TerrainStructure terrainStructure = new TerrainStructure();
-
-        
 
         Intvector2MinMax guardCullingMinMax;
         public Rectangle2 cityTileArea;
@@ -202,7 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
                             //var player =  GetFaction().player.GetLocalPlayer();
                             if (pfaction.TryGetLocalPlayer(out var player))
                             {
-                                player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
+                                player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE);
                             }
                         }
                         return true;
@@ -577,8 +575,11 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Bound.Short(freeNobelMen.amount));
             w.Write(Bound.UShort(PenFoodUpkeep_minute));
 
-            cityHallSubtilePos.writeUshort(w);
-            citySquareSubtilePos.writeUshort(w);
+            WP.writeSubTilePos(w, cityHallSubtilePos);
+            WP.writeSubTilePos(w, citySquareSubtilePos);
+
+            //cityHallSubtilePos.writeUshort(w);
+            //citySquareSubtilePos.writeUshort(w);
 
             Debug.WriteCheck(w);
 
@@ -609,9 +610,16 @@ namespace VikingEngine.DSSWars.GameObject
             freeNobelMen.amount = r.ReadInt16();
             PenFoodUpkeep_minute = r.ReadUInt16();
 
-            cityHallSubtilePos.readUshort(r);
-            citySquareSubtilePos.readUshort(r);
-
+            if (subversion >= 132)
+            {
+                cityHallSubtilePos = WP.readSubTilePos(r);
+                citySquareSubtilePos = WP.readSubTilePos(r);
+            }
+            else
+            { 
+                cityHallSubtilePos.readUshort(r);
+                citySquareSubtilePos.readUshort(r);
+            }
 
             Debug.ReadCheck(r);
 
@@ -643,10 +651,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             try
             {
-                if (myIndex == 153)
-                {
-                    lib.DoNothing();
-                }
+                //if (myIndex == 153)
+                //{
+                //    lib.DoNothing();
+                //}
 
                 writeHousing(w);
 
@@ -935,7 +943,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Debug.WriteCheck(w);
 
-            w.Write((ushort)workerStatuses.Count);
+            w.Write(/*(ushort)*/workerStatuses.Count);
             writeStatusesStartEnd(part, workerStatuses.Count, out bool meta, out int start, out int end);
 
             if (meta)
@@ -957,7 +965,20 @@ namespace VikingEngine.DSSWars.GameObject
 
             IntVector2 startPos = citySquareSubtilePos;//WP.ToSubTilePos_Centered(tilePos);
 
-            int workerStatusesCount = r.ReadUInt16();
+            int workerStatusesCount;
+            if (subversion >= 132)
+            {
+                workerStatusesCount = r.ReadInt32();
+            }
+            else
+            {
+                workerStatusesCount = r.ReadUInt16();
+            }
+            //if (myIndex == 1804)
+            //{
+            //    //workerStatusesCount += ushort.MaxValue;
+            //    workerStatusesCount = workerStatusesCount | (1 << 16);
+            //}
             writeStatusesStartEnd(part, workerStatusesCount, out bool meta, out int start, out int end);
             
             if (meta)
@@ -2298,7 +2319,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return TextLib.Error;
             }
             mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
-            return name.name;
+            return name.GetName();
         }
 
         //public override void NameEditEvent(string result, object tag)
@@ -2401,9 +2422,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
-            
+            secondMenuContent = null;
             CityPresentationHud(args, false);
             
             //if (HasFaction())
@@ -2414,7 +2435,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (pfaction== args.player.pfaction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                     {
                         CityDetailsHud(true, args.player, args.content);
-                        new MapObjMenu(args.player, this, args.content);
+                        new MapObjMenu(args.player, this, args.content, out secondMenuContent);
                     }
                     else
                     {
@@ -2619,6 +2640,8 @@ namespace VikingEngine.DSSWars.GameObject
                     if (automateCity || player.tutorial == null || player.tutorial.AdvisorMode())
                     {
                         content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.AutomationGearIcon),
+                               new RbSpace(0.5f),
                             new RbText(DssRef.lang.Automation_AutomateCity)
                             }, AutomateCityProperty));
                     }
@@ -2631,6 +2654,7 @@ namespace VikingEngine.DSSWars.GameObject
                         content.newLine();
                         foreach (var focus in MapObjMenu.AvailableAutomationFocuses)
                         {
+                            SpriteName sprite = SpriteName.NO_IMAGE;
                             string caption = null;
                             switch (focus)
                             {
@@ -2638,24 +2662,33 @@ namespace VikingEngine.DSSWars.GameObject
                                     caption = DssRef.lang.Hud_None;
                                     break;
                                 case AutomationFocus.Food:
+                                    sprite = SpriteName.WarsResource_Food;
                                     caption = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
                                     break;
                                 case AutomationFocus.Grow:
+                                    sprite = SpriteName.WarsBuild_WorkerHuts;
                                     caption = DssRef.lang.Automation_AutomationFocus_Grow;
                                     break;
                                 case AutomationFocus.Export:
+                                    sprite = SpriteName.WarsBuild_Postal;
                                     caption = DssRef.lang.Automation_AutomationFocus_Export;
                                     break;
                                 case AutomationFocus.Military:
+                                    sprite = SpriteName.WarsBuild_Barracks;
                                     caption = DssRef.lang.Automation_AutomationFocus_War;
                                     break;
                             }
 
+                            var buttonContent = new List<AbsRichBoxMember>(3);
+                            if (sprite != SpriteName.NO_IMAGE)
+                            {
+                                buttonContent.Add(new RbImage(sprite));
+                                buttonContent.Add(new RbSpace(0.5f));
+                            }
+                            buttonContent.Add(new RbText(caption));
+
                             var button = new ArtOption(automationFocus == focus,
-                                new List<AbsRichBoxMember>
-                                {
-                                    new RbText(caption),
-                                },
+                                buttonContent,
                                 new RbAction(() =>
                                 {
                                     automationFocus = focus;
@@ -2705,6 +2738,38 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case AutomationFocus.Military:
                                 content.newParagraph();
+
+
+                                //content.Add(new ArtOption(,
+                                //        new List<AbsRichBoxMember> {
+                                //        new RbImage(SpriteName.WarsArmy),
+                                //        new RbSpace(),
+                                //        new RbText(DssRef.lang.Conscript_Soldiers_ArmyType) },
+                                //                    new RbAction1Arg<bool>(guardTabClick, false, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_ArmyType_Description)));
+
+                                //content.Add(new ArtOption(,
+                                //        new List<AbsRichBoxMember> {
+                                //        new RbImage(SpriteName.WarsGuard),
+                                //        new RbSpace(),
+                                //        new RbText(DssRef.lang.Conscript_Soldiers_GuardType) },
+                                //                    new RbAction1Arg<bool>(guardTabClick, true, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
+
+                                armyTypeOption(SpriteName.WarsSoldierMan, DssRef.lang.Hud_Mixed, ArmyType.Mix);
+                                armyTypeOption(SpriteName.WarsArmy, DssRef.lang.Conscript_Soldiers_ArmyType, ArmyType.ArmyMen);
+                                armyTypeOption(SpriteName.WarsGuard, DssRef.lang.Conscript_Soldiers_GuardType, ArmyType.CityGuard);
+
+
+                                void armyTypeOption(SpriteName sprite, string caption, ArmyType armyType)
+                                {
+                                    content.Add(new ArtOption(warAutoArmyType == armyType,
+                                        new List<AbsRichBoxMember> {
+                                        new RbImage(sprite),
+                                        new RbSpace(0.5f),
+                                        new RbText(caption) },
+                                        new RbAction1Arg<ArmyType>((ArmyType selected)=> { warAutoArmyType = selected; }, armyType, RbSoundType.Option)));
+                                }
+                                
+
                                 HudLib.Label(content, DssRef.lang.CityAutomation_SoldierQuality);
                                 content.newLine();
                                 for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
@@ -2766,7 +2831,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     if (icon != SpriteName.NO_IMAGE)
                                     {
                                         buttonContent.Add(new RbImage(icon));
-                                        buttonContent.Add(new RbSpace());
+                                        buttonContent.Add(new RbSpace(0.5f));
                                     }
                                     buttonContent.Add(new RbText(caption, HudLib.SubOptionTextColor));
 
@@ -4076,7 +4141,8 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     DssRef.world.copyStockPile(null, newFaction, this, CopyPasteOption.FactionToCity, ResourceGroupType.NUM);
                 }
-                
+
+                CheckCasual(newFaction.player);
             }
         }
 

@@ -27,10 +27,6 @@ namespace VikingEngine.DSSWars.Conscript
         public int unitsCollected;
         public int unitsNeeded;
 
-        //public int menCollected;
-        //public int menNeeded;
-        //public int equipmentCollected;
-
         public int idAndPosition;
         public TrainingLevel maxTrainingLevel;
         public int que;
@@ -154,6 +150,7 @@ namespace VikingEngine.DSSWars.Conscript
             int allItems(int unitCount, CommitOption commit)
             {
                 FindMin_Int available = new FindMin_Int();
+               // ItemResourceType manType = me.profile.man == ItemResourceType.Men? ItemResourceType.ImmigrantsOrWorkers : me.profile.man;
                 available.Next(payItem(me.profile.man, perUnitCount.menPerUnit, unitCount, commit));
 
                 available.Next(payItem(me.profile.weapon, perUnitCount.weaponsPerUnit, unitCount, commit));
@@ -196,21 +193,9 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void returnItems(City city)
         {
-            if (active >= ConscriptActiveStatus.CollectingEquipment)// ||
-                    //active == ConscriptActiveStatus.CollectingMen)
+            if (active >= ConscriptActiveStatus.CollectingEquipment)
             {
-                //return items
-                //ItemResourceType weaponItem = inProgress.weapon;
-                //ItemResourceType armorItem = inProgress.armorLevel;
-
-                //city.AddGroupedResource(weaponItem, equipmentCollected);
-
-                //if (inProgress.armorLevel != ItemResourceType.NONE)
-                //{
-                //    city.AddGroupedResource(armorItem, equipmentCollected);
-                //}
-
-                //city.workForce.amount += menCollected;
+                
                 payItems(city, CommitOption.Revert, out _, out _);
 
                 active = ConscriptActiveStatus.Idle;

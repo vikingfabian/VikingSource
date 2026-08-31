@@ -19,6 +19,7 @@ namespace VikingEngine.Engine
         
         public VectorRect DrawAreaF;
         public VectorRect safeScreenArea;
+        public VectorRect wideScreenSafeScreenArea;
         public VectorRect DrawAreaPercent;
         public bool verticalSplit, horizontalSplit;
         
@@ -553,22 +554,26 @@ namespace VikingEngine.Engine
                 new Vector2((float)DrawArea.Width / Engine.Screen.Width, (float)DrawArea.Height / Engine.Screen.Height));
 
             DrawAreaF = new VectorRect(DrawArea);
+            
             safeScreenArea = DrawAreaF;
-
-            //safeScreenArea.X//.Position += new Vector2(1);
-            //safeScreenArea.Width = Bound.Max(safeScreenArea.Width, Engine.Screen.SafeArea.Width);
-            //safeScreenArea.Height = Bound.Max(safeScreenArea.Height, Engine.Screen.SafeArea.Height);
-
             safeScreenArea = Engine.Screen.SafeArea.KeepSmallerRectInsideBound_Position(safeScreenArea);
             if (safeScreenArea.X == DrawAreaF.X)
             {
-                safeScreenArea.AddToLeftSide( -SafeSpaceBetweenPlayers);
+                safeScreenArea.AddToLeftSide(-SafeSpaceBetweenPlayers);
             }
             if (safeScreenArea.Right == DrawAreaF.Right)
             {
                 safeScreenArea.Width -= SafeSpaceBetweenPlayers;
             }
 
+            if (numplayers <= 1)
+            {
+                wideScreenSafeScreenArea = Engine.Screen.WideScreenSafeArea;
+            }
+            else
+            {
+                wideScreenSafeScreenArea = safeScreenArea;
+            }
         }
     }
 }

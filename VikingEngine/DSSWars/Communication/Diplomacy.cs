@@ -145,13 +145,11 @@ namespace VikingEngine.DSSWars
                 return false;
             }
 
-#if DEBUG
-            if (!arraylib.InBound(indexRegister, lowIndex))
+            if (lowIndex < 0 || highIndex >= indexRegister.Length)
             {
-                //throw new Exception();
-                arraylib.InBound(indexRegister, lowIndex);
+                result = -1;
+                return false;
             }
-#endif
 
             result = indexRegister[lowIndex] + highIndex - lowIndex;
 
@@ -436,8 +434,10 @@ namespace VikingEngine.DSSWars
                 RelationsLoop loop = new RelationsLoop(p.pfaction);
                 while (loop.Next())
                 {
-                   
-                    diplomaticRelations[loop.RelationIndex()].truce_update();
+                    if (loop.RelationIndex(out int relIx))
+                    {
+                        diplomaticRelations[relIx].truce_update();
+                    }
                 }
             }
 
@@ -683,6 +683,7 @@ namespace VikingEngine.DSSWars
             if (attacker != null && 
                 defender != null &&
                 attacker.armies.Count > 0 &&
+                attacker.militaryStrength > 4 &&
                 attacker != defender &&
                 attacker.player.IsBot())
             {
@@ -873,8 +874,10 @@ namespace VikingEngine.DSSWars
                     RelationsLoop loop = new RelationsLoop(faction);
                     while (loop.Next())
                     {
-                        diplomaticRelations[loop.RelationIndex()].OnDeath();
-                    }
+                        if (loop.RelationIndex(out var relIx))
+                        {
+                            diplomaticRelations[relIx].OnDeath();
+                        } }
 
                 }
                 catch (Exception ex) 

@@ -21,14 +21,14 @@ namespace VikingEngine.DSSWars.Resource
             moveSpeedMultiply = 1.0f;
         }
 
-        public static void AddToConscript(ref SoldierData soldierData, ref ConscriptProfile conscript, bool ranged)
+        public static void AddToConscript(ref SoldierData soldierData, ref ConscriptProfile conscript)
         {
             soldierData.modelData.shield = conscript.shield;
             if (conscript.shield != ItemResourceType.NONE) 
             {
                 var shieldData = DssVar.Shields[conscript.shield];
 
-                if (!ranged && shieldData.meleeSpeedBonus != 0)
+                if (!soldierData.unitFilter.Contains(UnitFilterType.Ranged) && shieldData.meleeSpeedBonus != 0)
                 {
                     soldierData.attackTimePlusCoolDown /= 1f + shieldData.meleeSpeedBonus;
                 }

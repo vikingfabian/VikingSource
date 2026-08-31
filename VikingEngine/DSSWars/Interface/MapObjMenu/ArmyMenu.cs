@@ -24,11 +24,9 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         const string TradeMenuState = "trade";
         //LocalPlayer player;
         protected Army army;
-        //ArmyCollection objectCollection;
-        //ArmyFilterMenu armyFilterMenu;
 
         public static readonly List<MenuTab> ArmyTabs = new List<MenuTab>() {
-            MenuTab.Info, MenuTab.Divide, MenuTab.Disband, MenuTab.Tag };
+            MenuTab.Info, MenuTab.Reassign, /*MenuTab.Divide, MenuTab.Disband,*/ MenuTab.Tag };
 
         public MapObjMenu(LocalPlayer player, ArmyCollection objectCollection, RichBoxContent content)
         {
@@ -62,10 +60,12 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             }
         }
 
-        public MapObjMenu(LocalPlayer player, Army army, RichBoxContent content)
+        public MapObjMenu(LocalPlayer player, Army army, RichBoxContent content, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             this.player = player;
             this.army = army;
+            mapObj = army;
 
             if (!DssRef.storage.ruleset_instance.centralGold)
             {
@@ -135,8 +135,8 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                         case MenuTab.Divide:
                             divideTab(content);
                             break;
-                        case MenuTab.Filter:
-
+                        case MenuTab.Reassign:
+                            ResassignTab(content, out secondMenuContent);
                             break;
                         case MenuTab.Disband:
                             disbandTab(content);
@@ -363,8 +363,6 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
             {
-
-
                 if (tradeAbleArmies[i] == army ||
                     WP.birdDistance(army, tradeAbleArmies[i]) > Army.MaxTradeDistance)
                 {
@@ -404,8 +402,6 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 new RbAction(mergeArmies, RbSoundType.Default), null);
                 content.Add(allbutton);
             }
-
-            
         }
 
 
@@ -504,11 +500,11 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             army.tradeSoldiersAction(ref player.hud.objMenu.otherArmy, type, count);            
         }
 
-        void startArmyTrade(Army toarmy)
-        {
-            player.hud.objMenu.otherArmy = toarmy;
-            player.hud.objMenu.menu.OpenMenu(TradeMenuState, StackOption.Stack);
-        }
+        //void startArmyTrade(Army toarmy)
+        //{
+        //    player.hud.objMenu.otherArmy = toarmy;
+        //    player.hud.objMenu.menu.OpenMenu(TradeMenuState, StackOption.Stack);
+        //}
 
         void selectArmyTrade(AbsArmy toarmy)
         {

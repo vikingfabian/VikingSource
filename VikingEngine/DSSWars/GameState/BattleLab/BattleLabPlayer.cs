@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             if (hud.maximizedHud)
             {
-                hud.objMenu.createMenu(this);
+                hud.objMenu.createMenu(true, this);
                 RichBoxContent content = new RichBoxContent();
                 var result = setupManager.updateObjectDisplay(content, hud.objMenu.menu);
                 hud.objMenu.refresh(this, content);

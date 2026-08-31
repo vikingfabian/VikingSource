@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars
             initWorkerXp(cityCount);
 
             cityResouces = new GroupedResource[CityResourceIndex.COUNT * cityCount];
-            neighborCities = new EcsStaticIndexArray(16, cityCount);
+            neighborCities = new EcsStaticIndexArray(18, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
 

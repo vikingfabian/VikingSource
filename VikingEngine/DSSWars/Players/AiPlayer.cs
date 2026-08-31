@@ -20,8 +20,8 @@ namespace VikingEngine.DSSWars.Players
     {
         public Time nextDecisionTimer = new Time(1000);
 
-        const int PurchaseOrderType_None = 0;
-        const int PurchaseOrderType_Army = 1;
+        //const int PurchaseOrderType_None = 0;
+        //const int PurchaseOrderType_Army = 1;
         
         string name;
 
@@ -1417,11 +1417,11 @@ namespace VikingEngine.DSSWars.Players
                 {
                     City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
 
-                    if (city != null && buySoldiersBalanceCheck_asynch(city, inWar, 0.02, out bool guardOnly))
+                    if (city != null && buySoldiersBalanceCheck_asynch(city, inWar, 0.02, out ArmyType armyType))
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            buySoldiers(city, inWar, guardOnly, true);
+                            buySoldiers(city, inWar, armyType, true);
                         }));
                     }
                 }
@@ -1825,7 +1825,7 @@ namespace VikingEngine.DSSWars.Players
                     }
 
                     //if (haveIncomeForArmyPurchase(true))
-                    if (city != null && buySoldiersBalanceCheck_asynch(city, true, 0.05, out bool guardOnly) && !guardOnly)
+                    if (city != null && buySoldiersBalanceCheck_asynch(city, true, 0.05, out ArmyType armyType) && armyType != ArmyType.CityGuard)
                     {
                         //Start fresh
                         mainArmy = null;
@@ -1995,13 +1995,13 @@ namespace VikingEngine.DSSWars.Players
 
         void mainArmyBuyAtCity(City city, bool defensive)
         {
-            if (buySoldiersBalanceCheck_asynch(city, !defensive, 0.02, out bool guardsOnly))
+            if (buySoldiersBalanceCheck_asynch(city, !defensive, 0.02, out ArmyType armyType))
             {
-                if (!guardsOnly || defensive)
+                if (armyType != ArmyType.CityGuard || defensive)
                 {
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        buySoldiers(city, !defensive, guardsOnly, true);
+                        buySoldiers(city, !defensive, armyType, true);
                     }));
                 }
             }

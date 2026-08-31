@@ -50,9 +50,12 @@ namespace VikingEngine.DSSWars.Build
         public BuildAndExpandType placeBuildingType = BuildAndExpandType.OrchardApple;
         bool availableBuildingType = true;
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
+
+        public ToolAddType toolAdd = ToolAddType.Toggle;
         LocalPlayer player;
         City city;
         bool blockBuildUpdate = false;
+        public bool ordersDifferFromPriority = false;
 
         public BuildAndExpandType CompressedBuildMode()
         {
@@ -70,6 +73,7 @@ namespace VikingEngine.DSSWars.Build
         public BuildControls(LocalPlayer player) 
         { 
             this.player = player;
+            
         }
 
         public BuildOption placeBuildingOption()
@@ -127,7 +131,7 @@ namespace VikingEngine.DSSWars.Build
                         }
                         else if (placeBuildingOption().blueprint.meetsRequirements(city))
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
                         }
                         else
                         {
@@ -160,7 +164,7 @@ namespace VikingEngine.DSSWars.Build
                         }
                         else
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.FollowTool, toolAdd);
                         }
                     }
 
@@ -178,25 +182,17 @@ namespace VikingEngine.DSSWars.Build
 
         public bool buildKeyDown = false;
         Vector3 keyDownPos;
-        IntVector2 startTile, currentTile;
-        List<BuildSelection> selection = new List<BuildSelection>();
-        LShapeDir lShape;
-        class BuildSelection
-        {
-            public IntVector2 position;
-            public bool mayBuild;
-            public Mesh model;
-            public int usesBuildQue;
-            public City City;
-        }
+        
+        BuildSelectGuiCollection selection = new BuildSelectGuiCollection();
+        LShapeDir lShape;        
 
         public void updateBuildMode()
         {
             if (player.gameControls.input.mouseSelect.DownEvent)
             {
-                deleteSelection();
+                selection.deleteSelection();
                 buildKeyDown = true;
-                startTile = player.gameControls.map.hover.subTile.subTilePos;
+                selection.startTile = player.gameControls.map.hover.subTile.subTilePos;
                 keyDownPos = player.gameControls.map.pointerPosWP;
                 lShape = LShapeDir.NoSet;
                 //actOnTile(player.mapControls.hover.subTile);
@@ -204,7 +200,7 @@ namespace VikingEngine.DSSWars.Build
 
             if (buildKeyDown)
             {
-                if (player.gameControls.map.hover.subTile.subTilePos != currentTile)
+                if (player.gameControls.map.hover.subTile.subTilePos != selection.currentTile)
                 {
                     //Update paint selection
                     switch (toolShape)
@@ -212,26 +208,26 @@ namespace VikingEngine.DSSWars.Build
                         case MapPaintToolShape.Free:
                             if (addToSelection(player.gameControls.map.hover.subTile.subTilePos, true))
                             {
-                                refreshSelection();
+                                //refreshSelection();
                             }
                             break;
                         case MapPaintToolShape.Area:
                             {
-                                deleteSelection();
-                                var area = Rectangle2.FromTwoTilePoints(startTile, player.gameControls.map.hover.subTile.subTilePos);
+                                selection.deleteSelection();
+                                var area = Rectangle2.FromTwoTilePoints(selection.startTile, player.gameControls.map.hover.subTile.subTilePos);
                                 ForXYLoop loop = new ForXYLoop(area);
                                 while (loop.Next())
                                 {
                                     addToSelection(loop.Position, false);
                                 }
-                                refreshSelection();
+                                //refreshSelection();
                             }
                             break;
                         case MapPaintToolShape.LShape:
                             {
-                                deleteSelection();
+                                selection.deleteSelection();
 
-                                if (startTile.SideLength(player.gameControls.map.hover.subTile.subTilePos) > 1)
+                                if (selection.startTile.SideLength(player.gameControls.map.hover.subTile.subTilePos) > 1)
                                 {
                                     if (lShape == LShapeDir.NoSet)
                                     {
@@ -250,18 +246,18 @@ namespace VikingEngine.DSSWars.Build
                                     lShape = LShapeDir.NoSet;
                                 }
 
-                                IntVector2 diff = player.gameControls.map.hover.subTile.subTilePos - startTile;
+                                IntVector2 diff = player.gameControls.map.hover.subTile.subTilePos - selection.startTile;
                                 IntVector2 dir = new IntVector2(lib.ToLeftRight(diff.X), lib.ToLeftRight(diff.Y));
                                 IntVector2 length = new IntVector2(Math.Abs(diff.X), Math.Abs(diff.Y));
 
-                                IntVector2 pos = startTile;
+                                IntVector2 pos = selection.startTile;
 
                                 //var area = Rectangle2.FromTwoTilePoints(startTile, player.mapControls.hover.subTile.subTilePos);
                                 switch (lShape)
                                 {
                                     case LShapeDir.NoSet:
                                         {
-                                            addToSelection(startTile, false);
+                                            addToSelection(selection.startTile, false);
                                             addToSelection(player.gameControls.map.hover.subTile.subTilePos, true);
                                         }
                                         break;
@@ -298,15 +294,15 @@ namespace VikingEngine.DSSWars.Build
                                         break;
                                 }
 
-                                refreshSelection();
+                                //refreshSelection();
                             }
                             break;
                         case MapPaintToolShape.Line:
                             {
                                 //How do I make a line that is one tile thick?
-                                deleteSelection(); // Clear previous selection
+                                selection.deleteSelection(); // Clear previous selection
 
-                                IntVector2 start = startTile;
+                                IntVector2 start = selection.startTile;
                                 IntVector2 end = player.gameControls.map.hover.subTile.subTilePos;
 
                                 int x0 = start.X, y0 = start.Y;
@@ -345,7 +341,7 @@ namespace VikingEngine.DSSWars.Build
                                     }
                                 }
 
-                                refreshSelection();
+                                //refreshSelection();
                             }
                             break;
                     }
@@ -354,14 +350,12 @@ namespace VikingEngine.DSSWars.Build
 
             if (player.gameControls.input.mouseSelect.UpEvent )
             {
-               
-
                 bool anySucccess = false;
                 int soundIndex = 0;
                 SoundContainerBase sound = buildMode == SelectTileResult.Build? SoundLib.start_build_contruct : SoundLib.start_destroy_contruct;
-                foreach (var sel in selection)
+                for (int i = 0; i < selection.useCount; ++i)//each (var sel in selection)
                 {
-                    bool success = actOnTile(sel.position, true, out _, out _);
+                    bool success = actOnTile(selection[i].position, true, out _, out _);
 
                     if (success)
                     {
@@ -389,20 +383,21 @@ namespace VikingEngine.DSSWars.Build
                     SoundLib.wrong.Play();
                 }
 
-                deleteSelection();
+                //deleteSelection();
+                selection.deleteSelection();
                 buildKeyDown = false;
             }
 
-            currentTile = player.gameControls.map.hover.subTile.subTilePos;
+            selection.currentTile = player.gameControls.map.hover.subTile.subTilePos;
 
 
             bool addToSelection(IntVector2 subTilePos, bool checkDoublette) 
             {
                 if (checkDoublette)
                 {
-                    foreach (var sel in selection)
+                    for (int i = 0; i < selection.useCount; ++i)//foreach (var sel in selection)
                     {
-                        if (sel.position == subTilePos)
+                        if (selection[i].position == subTilePos)
                         {
                             return false;
                         }
@@ -411,57 +406,10 @@ namespace VikingEngine.DSSWars.Build
 
                 bool canAct = actOnTile(subTilePos, false, out int usesBuildQue, out City city);
 
-                var model = SelectedSubTile.CreateOutlineModel(player, false);
-                model.Visible = true;
-                model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
-                
-                if (!canAct)
-                {
-                    model.Color = HudLib.NotAvailableColor;
-                }
+                selection.Create(player, subTilePos, canAct, usesBuildQue, city);
+               
 
-                selection.Add(new BuildSelection() { 
-                    position = subTilePos, 
-                    mayBuild = canAct,
-                    model = model,
-                    usesBuildQue = usesBuildQue,
-                    City = city,
-                });
                 return true;
-            }
-
-            void refreshSelection()
-            {
-                //Dictionary<int, int> city_queLength = new Dictionary<int, int>();
-
-                foreach (var sel in selection)
-                {
-                    if (sel.mayBuild /*&& sel.usesBuildQue != 0*/)
-                    {
-                        //int availabeQueueLength;
-                        //if (!city_queLength.TryGetValue(sel.City.myIndex, out availabeQueueLength))
-                        //{
-                        //    availabeQueueLength = sel.City.availableBuildQueueLength(player);
-                        //    city_queLength.Add(sel.City.myIndex, availabeQueueLength);                           
-                        //}
-
-                        sel.model.Color = /*(availabeQueueLength > 0 || sel.usesBuildQue <= 0)  ?*/ Color.White/* : Color.Gray*/;
-
-                        //availabeQueueLength -= sel.usesBuildQue;
-                        //city_queLength[sel.City.myIndex] = Bound.Min(availabeQueueLength, 0);
-                    }
-                }
-            }
-
-            void deleteSelection()
-            {
-                foreach (var sel in selection)
-                {
-                    sel.model.DeleteMe();
-                }
-                currentTile = IntVector2.NegativeOne;
-                
-                selection.Clear();
             }
         }
 
@@ -487,7 +435,7 @@ namespace VikingEngine.DSSWars.Build
 
                     foreach (IntVector2 position in positions)
                     {
-                        player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, false);
+                        player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE, false);
                     }
 
                     void findBuildPositons_AutoBuilder(List<IntVector2> result)
@@ -724,6 +672,15 @@ namespace VikingEngine.DSSWars.Build
                         }
                     }
                     content.newParagraph();
+                    for (ToolAddType addType = 0; addType < ToolAddType.NUM_NONE; addType++)
+                    {
+                        Ref.langOpt.ToolAddType(addType, out var addIcon, out var addCaption);
+                        content.Add(new ArtOption(addType == toolAdd, new List<AbsRichBoxMember> { new RbImage(addIcon) },
+                            new RbAction1Arg<ToolAddType>((ToolAddType selected) => { toolAdd = selected; }, addType),
+                            new RbTooltip_Text(addCaption)));
+                    }
+                    content.newLine();
+
                     foreach (MapPaintToolShape shape in AvailableToolShapes)
                     {
                         string caption;
@@ -753,6 +710,10 @@ namespace VikingEngine.DSSWars.Build
                             new RbTooltip_Text(caption)));
                     }
 
+                   
+
+                    
+
 
                     content.newParagraph();
                     autoBuildButton(content, DssRef.lang.Build_AutoPlace, 1, buildOpt);
@@ -775,7 +736,12 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
                         player.pfaction.GetFaction(), city, ItemResourceType.NONE);
-
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsConstructBuildingIcon),
+                        new RbSpace(0.5f),
+                        new RbText(string.Format( DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Work_OrderPrioTitle, DssRef.todoLang.Hud_ApplyToAll )) },
+                        new RbAction1Arg<City>(player.ApplyBuildPrioToAll, city), null, ordersDifferFromPriority));
 
                 }
                 

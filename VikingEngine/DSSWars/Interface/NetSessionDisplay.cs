@@ -27,19 +27,19 @@ namespace VikingEngine.DSSWars.Interface
         public const string PAGE_RECOLOR = "recolor";
         public const string PAGE_DEBUG = "debug";
         public RemotePlayer selectedPlayer = null;
-        public RemotePlayer sendGiftTo = null;
+        //public RemotePlayer sendGiftTo = null;
 
         
         public bool ClientInteractDisplay => selectedPlayer != null;
 
         public void overviewToHud(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
-            if (sendGiftTo != null)
-            {
-                giftMenu(player, content);
-            }
-            else
-            {
+            //if (sendGiftTo != null)
+            //{
+            //    giftMenu(player, content);
+            //}
+            //else
+            //{
                 content.h2(DssRef.lang.Multiplayer_NetSession, HudLib.TitleColor_Head);
 
                 gamerButton(player);
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("*debug") }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, PAGE_DEBUG, StackOption.Stack)));
 
                 content.Add(new RbSeperationLine());
-            }
+            //}
 
             void gamerButton(AbsHumanPlayer gamer)
             {
@@ -90,16 +90,18 @@ namespace VikingEngine.DSSWars.Interface
                         null, new RbTooltip_Text(DssRef.lang.Settings_CasualControls)));
                 }
 
-                if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
-                    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.IsFriend()))
-                {
-                    gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
-                }
+                //if (settings.clientSettings.recieveGifts == GiftRecieveOption.Allow ||
+                //    (settings.clientSettings.recieveGifts == GiftRecieveOption.FriendsOnly && gamer.IsFriend()))
+                //{
+                //    gamer.giftedAchievements.ToHud(content, player, gamer as RemotePlayer, this);
+                //}
             }
         }
 
         public void BanWarning(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             HudLib.returnButton(content, menu, true, null);
             content.h1(string.Format(DssRef.lang.Hud_SendX, DssRef.lang.Multiplayer_BanWarning), HudLib.TitleColor_Head);
             content.newLine();
@@ -125,6 +127,8 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void RequestBlock(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             HudLib.returnButton(content, menu, true, null);
             content.h1(DssRef.lang.Multiplayer_RequestBlockPlayer, HudLib.TitleColor_Head);
             content.newLine();
@@ -165,6 +169,8 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void Kick(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             content.h1(DssRef.lang.Multiplayer_KickPlayer, HudLib.TitleColor_Head);
             selectedPlayer.addNetGamerToHud(content, true, false);
 
@@ -187,6 +193,8 @@ namespace VikingEngine.DSSWars.Interface
         }
         public void Block(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             content.h1(DssRef.lang.Multiplayer_BlockPlayer, HudLib.TitleColor_Head);
             selectedPlayer.addNetGamerToHud(content, true, false);
 
@@ -212,6 +220,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void recolor(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+            if (selectedPlayer == null) return;
+
             HudLib.returnButton(content, menu, true, null);
             content.h1(DssRef.lang.Editor_Color_Recolor, HudLib.TitleColor_Head);
             content.newLine();
@@ -249,79 +259,85 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        void giftMenu(LocalPlayer player, RichBoxContent content)
-        {
-            var hasGifts = sendGiftTo.giftedAchievements.HasGiftsCollection();
+        //void giftMenu(LocalPlayer player, RichBoxContent content)
+//        {
+//            var hasGifts = sendGiftTo.giftedAchievements.HasGiftsCollection();
 
-            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                    new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
-                    new RbSpace(),
-                    new RbText(DssRef.lang.Hud_ReturnToPrevious)
-                    }, new RbAction(() =>
-                    {
-                        sendGiftTo = null;
-                        player.hud.needRefresh = true;
-                    }, RbSoundType.Back)));
+//            content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
+//                    new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
+//                    new RbSpace(),
+//                    new RbText(DssRef.lang.Hud_ReturnToPrevious)
+//                    }, new RbAction(() =>
+//                    {
+//                        sendGiftTo = null;
+//                        player.hud.needRefresh = true;
+//                    }, RbSoundType.Back)));
 
-            content.h2(DssRef.lang.GiftedAchievements, HudLib.TitleColor_Head);
-            content.text(DssRef.lang.GiftedAchievements_Description, HudLib.InfoYellow_Light);
+//            content.h2(DssRef.lang.GiftedAchievements, HudLib.TitleColor_Head);
+//            content.text(DssRef.lang.GiftedAchievements_Description, HudLib.InfoYellow_Light);
 
-#if DEBUG
-            bool[] included = new bool[(int)GiftedAchievementType.NUM];
-#endif
+//#if DEBUG
+//            bool[] included = new bool[(int)GiftedAchievementType.NUM];
+//#endif
 
-            foreach (var category in GiftedAchievementCollection.Categories)
-            {
-                content.newParagraph();
-                foreach (var type in category)
-                {
-                    var gift = GiftedAchievementCollection.Get(type);
+//            foreach (var category in GiftedAchievementCollection.Categories)
+//            {
+//                content.newParagraph();
+//                foreach (var type in category)
+//                {
+//                    var gift = GiftedAchievementCollection.Get(type);
 
-#if DEBUG
-                    included[(int)type] = true;
+//#if DEBUG
+//                    included[(int)type] = true;
                     
-#endif
+//#endif
 
-                    //content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                        new RbImage(GiftedAchievement.DefaultIcon),
-                        new RbSpace(0.5f),
-                        new RbText(gift.name)
-                        }, new RbAction1Arg<GiftedAchievementType>((GiftedAchievementType selected) =>
-                        {
-                            ((PlayState)DssRef.state).sendGiftedAchievement(selected, sendGiftTo);
+//                    //content.newLine();
+//                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+//                        new RbImage(GiftedAchievement.DefaultIcon),
+//                        new RbSpace(0.5f),
+//                        new RbText(gift.name)
+//                        }, new RbAction1Arg<GiftedAchievementType>((GiftedAchievementType selected) =>
+//                        {
+//                            ((PlayState)DssRef.state).sendGiftedAchievement(selected, sendGiftTo);
 
-                            sendGiftTo = null;
-                            player.hud.needRefresh = true;
+//                            sendGiftTo = null;
+//                            player.hud.needRefresh = true;
 
-                        }, type), new RbTooltip((RichBoxContent content, object tag) =>
-                        {
+//                        }, type), new RbTooltip((RichBoxContent content, object tag) =>
+//                        {
 
-                            var info = GiftedAchievementCollection.Get((GiftedAchievementType)tag);
-                            content.h2(string.Format( DssRef.lang.Hud_SendX, string.Empty), HudLib.TitleColor_Action);
-                            content.newParagraph();
-                            content.text(info.description, HudLib.InfoYellow_Light);
+//                            var info = GiftedAchievementCollection.Get((GiftedAchievementType)tag);
+//                            content.h2(string.Format( DssRef.lang.Hud_SendX, string.Empty), HudLib.TitleColor_Action);
+//                            content.newParagraph();
+//                            content.text(info.description, HudLib.InfoYellow_Light);
 
-                        }, type), !hasGifts.Contains(type)));
-                }
+//                        }, type), !hasGifts.Contains(type)));
+//                }
 
-            }
+//            }
 
-#if DEBUG
-            for (int i = 0; i < included.Length; i++)
-            {
-                if (!included[i])
-                {
-                    Debug.Log("missing " + ((GiftedAchievementType)i).ToString());
-                }
-            }
+//#if DEBUG
+//            for (int i = 0; i < included.Length; i++)
+//            {
+//                if (!included[i])
+//                {
+//                    Debug.Log("missing " + ((GiftedAchievementType)i).ToString());
+//                }
+//            }
 
-#endif
-        }
+//#endif
+//        }
 
 
         public void clientToHud(LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
+
+            if (!DssRef.state.UpdateReady())
+            {
+                content.icontext(SpriteName.IconSandGlass, DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light);
+                return;
+            }
 
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
@@ -357,7 +373,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     selectedPlayer = gamer;
                 }
-                player.hud.needRefresh = true;
+                //player.hud.needRefresh = true;
             });
             content.Add(tabGroup);
 

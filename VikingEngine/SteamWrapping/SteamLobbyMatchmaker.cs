@@ -292,7 +292,7 @@ namespace VikingEngine.SteamWrapping
                         { //has locked out anyone that is not friend
                             canBeListed = false;
                         }
-                        else if (Ref.netsett.IsBanned(session.lobbyHost) == BanStatus.Banned)
+                        else if (Ref.netsett.IsBanned(session.metaData.host.m_SteamID) == BanStatus.Banned)
                         {
                             canBeListed = false;
                         }
@@ -370,26 +370,62 @@ namespace VikingEngine.SteamWrapping
             //this.availableSessionsList = availableSessionsList;
         }
 
-        public bool lobbyIsFriend(CSteamID lobbyId, out CSteamID steamIDFriend)
+        //public bool lobbyIsFriend(CSteamID lobbyId, out CSteamID steamIDFriend)
+        //{
+        //    steamIDFriend = CSteamID.Nil;
+
+        //    int cFriends = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagImmediate);
+        //    for (int i = 0; i < cFriends; i++)
+        //    {
+        //        FriendGameInfo_t friendGameInfo;
+        //        steamIDFriend = SteamFriends.GetFriendByIndex(i, EFriendFlags.k_EFriendFlagImmediate);
+
+        //        SteamFriends.GetFriendGamePlayed(steamIDFriend, out friendGameInfo);
+
+        //        if (friendGameInfo.m_steamIDLobby == lobbyId)
+        //        {
+        //            return true;
+        //        }
+        //    }
+
+        //    return false;
+        //}
+        public bool lobbyIsFriend(CSteamID lobbyOwner)
         {
-            steamIDFriend = CSteamID.Nil;
-
-            int cFriends = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagImmediate);
-            for (int i = 0; i < cFriends; i++)
+            if (lobbyOwner == SteamUser.GetSteamID())
             {
-                FriendGameInfo_t friendGameInfo;
-                steamIDFriend = SteamFriends.GetFriendByIndex(i, EFriendFlags.k_EFriendFlagImmediate);
-
-                SteamFriends.GetFriendGamePlayed(steamIDFriend, out friendGameInfo);
-
-                if (friendGameInfo.m_steamIDLobby == lobbyId)
-                {
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            bool isFriend = SteamFriends.HasFriend(lobbyOwner, EFriendFlags.k_EFriendFlagImmediate);
+
+            return isFriend;
         }
+        //public bool lobbyIsFriend(CSteamID lobbyOwner)
+        //{
+        //    // Get the total number of accepted friends
+        //    int friendCount = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagImmediate);
+
+        //    for (int i = 0; i < friendCount; i++)
+        //    {
+        //        // Get the friend's Steam ID
+        //        CSteamID friendId = SteamFriends.GetFriendByIndex(i, EFriendFlags.k_EFriendFlagImmediate);
+
+        //        // Check if they are currently playing a game
+        //        FriendGameInfo_t friendGameInfo;
+        //        if (SteamFriends.GetFriendGamePlayed(friendId, out friendGameInfo))
+        //        {
+        //            // If their current lobby matches the lobby we are checking
+        //            if (friendGameInfo.m_steamIDLobby == lobbyId)
+        //            {
+        //                lobbyOwner = friendId;
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //    lobbyOwner = CSteamID.Nil;
+        //    return false;
+        //}
 
         void onInvite(GameLobbyJoinRequested_t args)
         {

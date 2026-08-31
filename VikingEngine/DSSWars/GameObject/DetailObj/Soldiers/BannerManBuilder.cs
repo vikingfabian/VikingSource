@@ -44,14 +44,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             banner = new Banner(soldier.pfaction.GetFaction(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
         }
-
-        //protected override void updateShipAnimation(AbsSoldierUnit soldier)
-        //{
-        //    base.updateShipAnimation(soldier);
-        //    banner.update(soldier);
-        //}
         protected override void updateAnimation(AbsSoldierUnit soldier)
         {
+            if (banner == null)
+                return;
+
             base.updateAnimation(soldier);
             banner.update(soldier);
         }

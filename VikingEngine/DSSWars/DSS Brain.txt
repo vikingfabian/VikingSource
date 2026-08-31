@@ -1,16 +1,22 @@
 
 Change log:
+* 
 
+KNOWN ISSUES
+x reassign dont work with controller
+x translate
+x hide achievements
+X timeline checkbox on steamworks
 
-* Using linear arrays for the map, and voxel data
 
 #MAP 2.0
 * Cubic far group models
 
+## QoL ##
 
-KNOWN ISSUES
 
 ##ICONS TODO
+* all cities icon
 * gray rounded button
 
 #MOUNTED TODO

@@ -26,12 +26,7 @@ namespace VikingEngine.DSSWars.Players
         public SelectedSubTile(LocalPlayer player, bool isHover)
         {
             model = CreateOutlineModel(player, isHover);
-            //model = new Mesh(isHover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid, Vector3.Zero, new Vector3(WorldData.SubTileWidth * 1.1f),
-            //    TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-
-            //model.setVisibleCamera(player.playerData.localPlayerIndex);
-            //model.AddToRender(DrawGame.UnitDetailLayer);
-            //model.Visible = false;
+           
         }
 
         public void clear()

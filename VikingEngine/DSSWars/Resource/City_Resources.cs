@@ -135,6 +135,24 @@ namespace VikingEngine.DSSWars.GameObject
                         workForce.amount += add;
                         return;
 
+                    case ItemResourceType.ImmigrantsOrWorkers:
+                        if (add > 0)
+                        {
+                            workForce.amount += add;
+                            if (workForce.amount > HousingCount_Workers)
+                            {
+                                immigrants.value += workForce.amount - HousingCount_Workers;
+                                workForce.amount = HousingCount_Workers;
+                            }
+                        }
+                        else
+                        {
+                            int spendImmigrants = Math.Min(immigrants.Int(), -add);
+                            immigrants.value -= spendImmigrants;
+                            workForce.amount += add + spendImmigrants;
+                        }
+                        return;
+
                     case ItemResourceType.NobleMen:
                         freeNobelMen.amount += add;
                         return;
@@ -288,7 +306,7 @@ namespace VikingEngine.DSSWars.GameObject
                             amount = money.GetGold32();
                         }
 
-                        return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue };
+                        return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue, capacity = int.MaxValue };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.NobleMen:
@@ -311,9 +329,10 @@ namespace VikingEngine.DSSWars.GameObject
 #if DEBUG
             if (cityResourceIndex < 0)
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
 #endif
+            ItemPropertyColl.CityIndex(type);
             return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
 
@@ -433,16 +452,7 @@ namespace VikingEngine.DSSWars.GameObject
                     convert2.amount = convert1.amount;//DssConst.HempLinenAndFuelAmount;
                     break;
 
-                //case ItemResourceType.GoldOre:
-                //    {
-                //        var price = convert1.amount * DssConst.GoldOreSellValue;
-                //        GetFaction().addGold( price, this);
-                //        soldResources.add(price);
-
-                //        convert1.type = ItemResourceType.Gold;
-                //        convert1.amount = price;
-                //    }
-                //    break;
+               
             }
 
             if (Ref.peRnd.Chance(DssRef.difficulty.resourceMultiplyChance) &&
@@ -466,14 +476,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //void animalResourceBonus(ref ItemResource item)
-        //{
-        //    if (Culture == CityCulture.AnimalBreeder)
-        //    {
-        //        item.amount *= 2;
-        //    }
-        //}
-        
         public void tradeTab()
         { 
             
@@ -481,13 +483,22 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, Money cost)
         {
-            var faction = pfaction.GetFaction();
-            ref Money money = ref faction.GetRefMoney(this);
-            if (money.pay(cost * count, false, faction.player))
+            if (pfaction.TryGetFactionAndPlayer(out var faction, out var player))
             {
-                AddGroupedResource(resourceType, count);
-                faction.player.GetLocalPlayer()?.tutorial?.onBuyFromBlackMarket(resourceType);
+                ref Money money = ref faction.GetRefMoney(this);
+                if (money.pay(cost * count, false, player))
+                {
+                    AddGroupedResource(resourceType, count);
+                    if (player.IsLocalPlayer())
+                    {
+                        var lp = player.GetLocalPlayer();
+                        lp.tutorial?.onBuyFromBlackMarket(resourceType);
+
+                        lp.BlackMarketCount = Bound.Min(lp.BlackMarketCount - count, 0);
+                    }
+                }
             }
+            
         }
     }   
         

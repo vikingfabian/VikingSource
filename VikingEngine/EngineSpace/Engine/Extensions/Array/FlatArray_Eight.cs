@@ -13,6 +13,33 @@ namespace VikingEngine
     /// </summary>
     public struct FlatArray_Eight<T> where T : struct
     {
+        public FlatArray_Eight(T value1, T value2)
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            this.count = 2;
+        }
+        public FlatArray_Eight(T value1, T value2, T value3, T value4)
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            this.value3 = value3;
+            this.value4 = value4;
+            this.count = 4;
+        }
+        public FlatArray_Eight(T value1, T value2, T value3, T value4, T value5, T value6, T value7, T value8) 
+        { 
+            this.value1 = value1;
+            this.value2 = value2;
+            this.value3 = value3;
+            this.value4 = value4;
+            this.value5 = value5;
+            this.value6 = value6;
+            this.value7 = value7;
+            this.value8 = value8;
+            this.count = 8;
+        }
+
         public int count;
         public T value1;
         public T value2;
@@ -72,6 +99,11 @@ namespace VikingEngine
                     default: throw new IndexOutOfRangeException();
                 }
             }
+        }
+
+        public bool InBounds(int index)
+        {
+            return index >= 0 && index < count;
         }
     }
 }

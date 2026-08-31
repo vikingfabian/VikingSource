@@ -130,7 +130,7 @@ namespace VikingEngine.Graphics
         {
             if (numTriangles > 0)
             {
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(0,
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives/*_Unsafe*/(PrimitiveType.TriangleList, 0,
                     0, numTriangles);
             }
         }

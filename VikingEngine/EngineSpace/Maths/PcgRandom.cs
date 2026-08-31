@@ -184,6 +184,12 @@ namespace VikingEngine
             return (byte)Uint(byte.MaxValue);
         }
 
+
+        public uint Uint_LowDisp()
+        {
+            return Math.Min(Uint(), Uint());
+        }
+
         public uint Uint()
         {
             ulong oldState = state;
@@ -247,6 +253,13 @@ namespace VikingEngine
             float diff = exMax - min;
             var result = Uint();
             return (float)(result * UintDiv * diff) + min;/// (double)uint.MaxValue) * diff + min;
+        }
+
+        public float Float_LowDisp(float min, float exMax)
+        {
+            float diff = exMax - min;
+            var result = Uint_LowDisp();
+            return (float)(result * UintDiv * diff) + min;
         }
 
         override public bool Chance(double chance)

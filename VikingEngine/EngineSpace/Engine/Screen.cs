@@ -54,7 +54,7 @@ namespace VikingEngine.Engine
         public static float WindowScaleF;
         public static RenderScale3D renderScale3D = RenderScale3D.One;
 
-        public static VectorRect SafeArea;
+        public static VectorRect SafeArea, WideScreenSafeArea;
         
         public static IntVector2 RenderingResolution;
         public static Vector2 ResolutionVec;
@@ -67,6 +67,9 @@ namespace VikingEngine.Engine
 
         public static int oversizeWidthPerc = 0;
         public static int oversizeHeightPerc = 0;
+        public static readonly Range UltraWideEdgeRange = new Range(0, 30);
+        public static int UltraWideEdge_Left = 0;
+        public static int UltraWideEdge_Right = 0;
 
         public static SplitScreenOptions splitScreenOptions = 0;
         public static float splitScreenDivideAdjustment1 = 0, splitScreenDivideAdjustment2 = 0, splitScreenDivideAdjustment3 = 0;
@@ -82,6 +85,9 @@ namespace VikingEngine.Engine
             w.Write(splitScreenDivideAdjustment1);
             w.Write(splitScreenDivideAdjustment2);
             w.Write(splitScreenDivideAdjustment3);
+
+            w.Write(UltraWideEdge_Left);
+            w.Write(UltraWideEdge_Right);
         }
         public static void ReadSettings(System.IO.BinaryReader r, int version)
         {
@@ -103,6 +109,12 @@ namespace VikingEngine.Engine
                 splitScreenDivideAdjustment1 = r.ReadSingle();
                 splitScreenDivideAdjustment2 = r.ReadSingle();
                 splitScreenDivideAdjustment3 = r.ReadSingle();
+            }
+
+            if (version >= 40)
+            {
+                UltraWideEdge_Left = UltraWideEdgeRange.SetBounds( r.ReadInt32());
+                UltraWideEdge_Right = UltraWideEdgeRange.SetBounds(r.ReadInt32());
             }
         }
         public static void ApplyScreenSettings(bool refreshUi = true)
@@ -215,8 +227,7 @@ namespace VikingEngine.Engine
             Vector2 safeEdge = VectorExt.Round(RenderingResolution.Vec * SafeBorderPerc);
             SafeArea.AddXRadius(-safeEdge.X);
             SafeArea.AddYRadius(-safeEdge.Y);
-
-           
+            RefreshWideScreen();
 
             ResolutionVec = RenderingResolution.Vec;
             MonitorCenter = MonitorTargetResolution / 2;
@@ -233,6 +244,13 @@ namespace VikingEngine.Engine
             {
                 ApplyScreenSettings(refreshUi);
             }
+        }
+
+        public static void RefreshWideScreen()
+        {
+            WideScreenSafeArea = SafeArea;
+            WideScreenSafeArea.AddToLeftSide((float)Math.Round(RenderingResolution.X * -(UltraWideEdge_Left / 100.0)));
+            WideScreenSafeArea.Width += (float)Math.Round(RenderingResolution.X * -(UltraWideEdge_Right / 100.0));
         }
 
         public static void SetupSplitScreen(int numPlayers)

@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         public float flatness;
         public bool noise;
         public float noiseStrength;
+        public double quadChance;
 
         public void refreshRadius()
         {
@@ -824,7 +825,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
         }
 
-        void tileColor(ref Tile2 tile)
+        void tileColor(ref SubTile tile)
         {
             if (tile.groundY > Height_WaterBottom)
             {

@@ -202,6 +202,7 @@ namespace VikingEngine.Network
         DssPlayerStatus,
         DssPlayerEnterPresentation,
         DssAssignFaction,
+        DssAssignFaction_Failed,
         DssAssignFactionCities,
         DssAssignFactionComplete,
         DssBeginSave,

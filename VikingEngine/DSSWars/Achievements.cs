@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
@@ -80,6 +81,15 @@ namespace VikingEngine.DSSWars
                                 UnlockAchievement_async(AchievementIndex.military_might_tier3);
                             }
                         }
+                    }
+
+                    if (playerFaction.militaryStrength > NationStrengthLeaderBoard.SizeUploaded)
+                    {
+                        ArmyStrengthLeaderBoard.SizeUploaded = playerFaction.militaryStrength;
+                        Ref.update.AddSyncAction(new SyncAction(() =>
+                        {
+                            new NationStrengthLeaderBoard(ArmyStrengthLeaderBoard.SizeUploaded);
+                        }));
                     }
 
                     if (playerFaction.money.copper > int.MaxValue)
@@ -238,7 +248,7 @@ namespace VikingEngine.DSSWars
             {
                 if (SteamAchievements.DebugSetAchievement_Local((int)achievement))
                 {
-                    DssRef.state.LocalHost().hud.messages.Add("Achivement", achievement.ToString());
+                    DssRef.state.LocalHost().hud.messages.Add("Achivement", achievement.ToString(), null);
                 }
             }
         }

@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.EngineSpace.HUD.RichBox.Book;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -112,10 +113,16 @@ namespace VikingEngine.DSSWars
         public static HUD.NineSplitSettings PopMenuButtonTexture;
 
         public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
-
         
-
         public static readonly string EngineVersionString = "VikingEngine ver: {0}" + (PlatformSettings.LinuxBuild? " linux" : " windows");
+
+        public const float MoreArrowTabbing = 0.9f;
+        public const float MoreArrowScale = 0.4f;
+        public const SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
+
+
+        public static RichBookSettings BookSettings;
+
         public static void Init()
         {
             const float TextToIconSz = 1.2f;
@@ -253,6 +260,12 @@ namespace VikingEngine.DSSWars
                 contentLayer = CutContentLayer - 2,
                 bglayer = CutSceneBgLayer - 2,
                 RbSettings = RbSettings,
+            };
+
+            BookSettings = new RichBookSettings()
+            {
+                head1col = TitleColor_Head,
+                head2col = TitleColor_Head2,
             };
         }
         public static void IndexToHud(RichBoxContent content, int myIndex, bool IsNetHosted)
@@ -651,11 +664,18 @@ namespace VikingEngine.DSSWars
             var text = new RbText(DssRef.lang.Info_ButtonIcon);
             text.overrideColor = InfoYellow_Light;
 
-            var button = new ArtImageButton(new List<AbsRichBoxMember> { 
+            var button = new ArtImageButton(new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.WarsHudInfoIcon)
             },
             null, enterAction, true);
             content.Add(button);
+        }
+
+        public static new List<AbsRichBoxMember> AddMoreArrowToButton(List<AbsRichBoxMember> buttonContent)
+        {
+            buttonContent.Add(new RbTab(MoreArrowTabbing));
+            buttonContent.Add(new RbImage(moreOptArrow, MoreArrowScale, MenuMoreOptionsArrowCol));
+            return buttonContent;
         }
 
         public static void PerSecondInfo(Players.LocalPlayer player, RichBoxContent content, bool minuteAverage)

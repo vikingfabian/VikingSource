@@ -58,13 +58,13 @@ namespace VikingEngine.DSSWars.Event
                         {
                             if (checkTime.TimeOut())
                             {
-#if DEBUG
-                                Ref.update.AddSyncAction(new SyncAction(() =>
-                                {
-                                    DssRef.state.localPlayers[0].hud.messages.Add(
-                                        "Event Power check", StoryEventType().ToString());
-                                }));
-#endif
+//#if DEBUG
+//                                Ref.update.AddSyncAction(new SyncAction(() =>
+//                                {
+//                                    DssRef.state.localPlayers[0].hud.messages.Add(
+//                                        "Event Power check", StoryEventType().ToString());
+//                                }));
+//#endif
 
                                 PowerCheck();
                                 eventState = EventState.TriggerEvent_countdown;
@@ -74,14 +74,14 @@ namespace VikingEngine.DSSWars.Event
                     case EventState.TriggerEvent_countdown:
                         if (triggerTime.TimeOut())
                         {
-#if DEBUG
-                            Ref.update.AddSyncAction(new SyncAction(() =>
-                            {
-                                DssRef.state.localPlayers[0].hud.messages.Add(
-                                    "Event Trigger", StoryEventType().ToString());
-                            }));
+//#if DEBUG
+//                            Ref.update.AddSyncAction(new SyncAction(() =>
+//                            {
+//                                DssRef.state.localPlayers[0].hud.messages.Add(
+//                                    "Event Trigger", StoryEventType().ToString());
+//                            }));
 
-#endif
+//#endif
                             calcAndRunEvent_async();
                             eventState = EventState.Done;
                         }
@@ -484,10 +484,8 @@ namespace VikingEngine.DSSWars.Event
             {
                 if (attackCities.Count > 0)
                 {
-                    foreach (var p in DssRef.state.localPlayers)
-                    {
-                        p.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_DarkHorde);
-                    }
+                    DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_DarkHorde, SoundLib.storyDramaticEvent);
+                    
 
                     foreach (var cityIx in attackCities)
                     {
@@ -880,7 +878,7 @@ namespace VikingEngine.DSSWars.Event
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
                     DssRef.state.localPlayers[0].hud.messages.Add(
-                        "Event Trigger", StoryEventType().ToString());
+                        "Event Trigger", StoryEventType().ToString(), null);
                 }));
 
 #endif
@@ -907,7 +905,7 @@ namespace VikingEngine.DSSWars.Event
 
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
-                player.hud.messages.Add(DssRef.lang.EventMessage_EnemyAlliance_Title, DssRef.lang.EventMessage_EnemyAlliance);
+                player.hud.messages.Add(DssRef.lang.EventMessage_EnemyAlliance_Title, DssRef.lang.EventMessage_EnemyAlliance, SoundLib.storyDramaticEvent);
             }));
         }
 
@@ -1028,7 +1026,7 @@ namespace VikingEngine.DSSWars.Event
                         , attackLeader.pfaction, RelationType.RelationTypeN4_War);
                 }
 
-                player.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_TheCohalition);
+                player.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_TheCohalition, SoundLib.storyDramaticEvent);
             }, attackers.ToArray(), player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
 
 
@@ -1119,7 +1117,7 @@ namespace VikingEngine.DSSWars.Event
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    p.hud.messages.Add(DssRef.lang.EventMessage_ProphesyTitle, DssRef.lang.EventMessage_ProphesyText);
+                    p.hud.messages.Add(DssRef.lang.EventMessage_ProphesyTitle, DssRef.lang.EventMessage_ProphesyText, SoundLib.storyDramaticEvent);
                 }
             }));
         }
@@ -1275,7 +1273,7 @@ namespace VikingEngine.DSSWars.Event
 
                     foreach (var p in DssRef.state.localPlayers)
                     {
-                        p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText);
+                        p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText, SoundLib.storyDramaticEvent);
 
                         if (greenwood != null && !DssRef.world.diplomacy.GetRelation(p.pfaction, greenwood.pfaction).InWar())
                         {

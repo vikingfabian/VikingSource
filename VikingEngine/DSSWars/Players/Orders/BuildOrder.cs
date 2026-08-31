@@ -100,8 +100,9 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override RichBoxContent ToHud()
         {
+           
             RichBoxContent content = new RichBoxContent();
-            content.h2(upgrade? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
+            content.h2(SpriteName.WarsConstructBuildingIcon, upgrade ? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
             BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city, upgrade);
 
             content.newLine();
@@ -119,7 +120,8 @@ namespace VikingEngine.DSSWars.Players.Orders
             base.writeGameState(w);
 
             w.Write((ushort)city.myIndex);
-            subTile.write(w);
+            //subTile.write(w);
+            WP.writeSubTilePos(w, subTile);
             w.Write((byte)buildingType);
         }
         override public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
@@ -127,7 +129,14 @@ namespace VikingEngine.DSSWars.Players.Orders
             base.readGameState(playerIx, r, subversion, pointers);
 
             city = DssRef.world.cities[r.ReadUInt16()];
-            subTile.read(r);
+            if (subversion >= 132)
+            {
+                subTile = WP.readSubTilePos(r);
+            }
+            else
+            {
+                subTile.read(r);
+            }
             buildingType = (BuildAndExpandType)r.ReadByte();
 
             onAdd(playerIx);

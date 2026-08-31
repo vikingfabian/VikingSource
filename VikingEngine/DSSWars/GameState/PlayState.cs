@@ -48,8 +48,9 @@ namespace VikingEngine.DSSWars
     partial class PlayState : AbsPlayState
     {
         public int nextGroupId = 0;
-        public bool PartyMode = false;   
-        
+        //public bool PartyMode = false;   
+        public bool casualControls;
+
         TechnologyManager technologyManager = new TechnologyManager();
         bool bResourceMinuteUpdate = true;
         bool slowMinuteUpdate = true;
@@ -212,18 +213,19 @@ namespace VikingEngine.DSSWars
                 m.write(w);
             }
 
+            w.Write(casualControls);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             resources.readGameState(r, subversion);
             events.readGameState(r, subversion, pointers);
 
-            if (subversion >= 16)
-            {
-                progress.readGameState(r, subversion, pointers);
-            }
+            //if (subversion >= 16)
+            //{
+            //    progress.readGameState(r, subversion, pointers);
+            //}
             if (subversion >= 105)
-            { 
+            {
                 NextArmyId = r.ReadInt32();
             }
             if (subversion >= 115)
@@ -233,8 +235,12 @@ namespace VikingEngine.DSSWars
                 {
                     PlayerMapHistory mapHistory = new PlayerMapHistory();
                     mapHistory.read(r, subversion);
-                    previousRemotePlayers.Add(mapHistory.GetHashCode(), mapHistory);
+                    previousRemotePlayers.TryAdd(mapHistory.GetHashCode(), mapHistory);
                 }
+            }
+            if (subversion >= 132)
+            {
+                casualControls |= r.ReadBoolean();
             }
         }
 
@@ -352,8 +358,9 @@ namespace VikingEngine.DSSWars
             {
                 var pdata = localPlayers[i].playerData;
                 Mouse.AddPlayer(pdata, playerCount, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
-
-                //localPlayers[i].initPlayerToPlayer(i, playerCount);
+                
+                casualControls |= localPlayers[i].profile.casualControls;
+                
             }
 
             if (newGame && DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
@@ -468,7 +475,7 @@ namespace VikingEngine.DSSWars
             initPathFindingThreads();
 
             isReady = true;
-            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
+            AutoSaveTimeStamp.setNow();
             events.onGameStarted();
 
             if ((newGame && LocalHost().IntutorialMode()) == false)
@@ -647,8 +654,8 @@ namespace VikingEngine.DSSWars
             Engine.ParticleHandler.Update(time);
         }
 
-        const float AutoSaveTimeSec = 15 * TimeExt.MinuteInSeconds;
-        float LastAutoSaveTime_TotalSec = 0;
+        //float AutoSaveTimeSec = DssRef.storage.autoSaveInterval_Minutes * TimeExt.MinuteInSeconds;
+        TimeStamp AutoSaveTimeStamp;
 
 
         void setPlayerNetState(PlayerNetState netState)
@@ -674,7 +681,9 @@ namespace VikingEngine.DSSWars
 
                         if (local.gameControls.input.Menu.DownEvent)
                         {
-                            menuSystem.pauseMenu();
+                            //menuSystem.pauseMenu();
+                            menuSystem.openAndReturnToStack();
+                            
                         }
 
                         if (local.playerData.LostController)
@@ -722,7 +731,7 @@ namespace VikingEngine.DSSWars
 
             if (host && DssRef.storage.autoSave && 
                 DssRef.storage.runTutorial == false &&
-                Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
+                AutoSaveTimeStamp.minPassed(DssRef.storage.autoSaveInterval_Minutes))//Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
             {
                 AutoSave();
             }            
@@ -744,7 +753,7 @@ namespace VikingEngine.DSSWars
                     new SaveScene(true);
                 }
             }
-            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
+            AutoSaveTimeStamp.setNow();
         }
                 
 
@@ -755,7 +764,7 @@ namespace VikingEngine.DSSWars
             base.OnDestroy();
         }
 
-        override protected bool UpdateReady()
+        override public bool UpdateReady()
         {
             return cutScene == null && (host || factionHandOverComplete);
         }

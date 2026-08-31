@@ -24,13 +24,13 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
             //
-            var optionsDisplayAr = player.playerData.view.safeScreenArea;
+            var optionsDisplayAr = player.playerData.view.wideScreenSafeScreenArea;
             optionsDisplayAr.X = 0;
             menu = new RichMenu(HudLib.RbSettings_HeadOptions, optionsDisplayAr, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
             {
                 refreshUpdate();
                 menu.updateWidthFromContent(true);
-                float toX = lib.SmallestValue(player.playerData.view.DrawAreaF.Right - 8,  player.playerData.view.safeScreenArea.Right) - menu.backgroundArea.Width;
+                float toX = lib.SmallestValue(player.playerData.view.DrawAreaF.Right - 8,  player.playerData.view.wideScreenSafeScreenArea.Right) - menu.backgroundArea.Width;
                 
                 menu.move(VectorExt.V2FromX(toX));
                 menu.updateHeightFromContent(false);
@@ -65,15 +65,19 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.Add(new RbText(string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed), HudLib.HeadBarTextColor_Beige));
                 }
-                content.space(4);
 
-                content.Add(new ArtButton(RbButtonStyle.Primary,
-                    new List<AbsRichBoxMember> { new RbImage(SpriteName.TextChatLetter) },
-                    new RbAction(() =>
-                    {
-                        new TextChat();
-                    }),
-                    new RbTooltip(((PlayState)DssRef.state).chatLog.toolTip)));
+                if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+                {
+                    content.space(4);
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                        new List<AbsRichBoxMember> { new RbImage(SpriteName.TextChatLetter) },
+                        new RbAction(() =>
+                        {
+                            new TextChat();
+                        }),
+                        new RbTooltip(DssRef.state.playstate().chatLog.toolTip)));
+                }
             }
 
             if (player.gameControls.input.inputSource.IsXnaController)

@@ -318,7 +318,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.cannonwagon_ballista, false);
             loadVoxelModel(VoxelModelName.cannonwagon_manbronze, false);
             loadVoxelModel(VoxelModelName.cannonwagon_maniron, false);
-            loadVoxelModel(VoxelModelName.cannon4wagon_maniron, false);
+            loadVoxelModel(VoxelModelName.cannon4wagon_iron, false);
             loadVoxelModel(VoxelModelName.cannoncoach_manbronze, false);
             loadVoxelModel(VoxelModelName.cannoncoach_maniron, false);
             loadVoxelModel(VoxelModelName.cannoncoach_siegeiron, false);
@@ -338,9 +338,17 @@ namespace VikingEngine.DSSWars
             void loadVoxelModel(VoxelModelName modelName, bool centerY)
             {
                 float yAdjust = 0;
-
+                //if (modelName == VoxelModelName.cannon4wagon_iron)
+                //{
+                //    lib.DoNothing();
+                //}
                 DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
+                path.UseTimeMark = false;
                 byte[] data = DataStream.FileToDiskManager.Read(path);
+                //if (data == null)
+                //{
+                //    throw new Exception();
+                //}
                 System.IO.MemoryStream s = new System.IO.MemoryStream(data);
                 System.IO.BinaryReader r = new System.IO.BinaryReader(s);
 

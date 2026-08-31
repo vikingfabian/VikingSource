@@ -19,11 +19,12 @@ namespace VikingEngine.DSSWars.Data
     {
         const int Version = 3;
 
-        const int SaveStateCount = 10;
-        const int AutoSaveCount = 10;
+        //const int SaveStateCount = 10;
+        //const int AutoSaveCount = 10;
+        const int saveCount = 10;
         public const string ImportSaveFolder = "Import Save";
-        SaveIterations saves = new SaveIterations(SaveStateCount);
-        SaveIterations autosaves = new SaveIterations(AutoSaveCount);
+        SaveIterations saves;
+        SaveIterations autosaves;
        
 
         DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
@@ -54,6 +55,23 @@ namespace VikingEngine.DSSWars.Data
 
             return list;
         }
+
+        public SaveMeta()
+        {
+            saves = new SaveIterations(saveCount);
+            autosaves = new SaveIterations(saveCount);
+        }
+
+        //public int SaveCount
+        //{
+        //    get { return saveCount; }
+        //    set
+        //    {
+        //        saveCount = value;
+        //        saves.AdjustLength(saveCount);
+        //        autosaves.AdjustLength(saveCount);
+        //    }
+        //}
 
         public void Save(IStreamIOCallback callBack)
         {
@@ -150,6 +168,8 @@ namespace VikingEngine.DSSWars.Data
         {
             w.Write(Version);
 
+            //w.Write(saveCount);
+
             saves.write(w);
 
             autosaves.write(w); 
@@ -168,29 +188,24 @@ namespace VikingEngine.DSSWars.Data
                 fileCheck.start(version, Version);
                 if (version > Version) { return; }
 
-                //if (version == 1)
+                //if (version >= 4)
                 //{
-                //    if (r.ReadBoolean())
-                //    {
-                //        var state = new SaveStateMeta(r);
-                //        if (state.stateVersion == SaveGamestate.Version)
-                //        {
-                //            saves.saves[0] = state;
-                //        }
-                //    }
+                //    saveCount = r.ReadInt32();
                 //}
-                //else
-                //{
-                    saves.read(r, version);
-                    autosaves.read(r, version);
 
-                    if (version >= 3)
-                    { 
-                        clientSaves.read(r, version);
+                //saves = new SaveIterations(saveCount);
+                //autosaves = new SaveIterations(saveCount);
 
-                        Debug.ReadCheck(r);
-                    }
-                //}
+                saves.read(r, version);
+                autosaves.read(r, version);
+
+                if (version >= 3)
+                { 
+                    clientSaves.read(r, version);
+
+                    Debug.ReadCheck(r);
+                }
+
                 fileCheck.end();
             }
             catch (Exception e)
@@ -200,6 +215,8 @@ namespace VikingEngine.DSSWars.Data
 
             IOLib.fileCheck_savemeta = fileCheck;
         }
+
+        
     }
 
     class SaveIterations
@@ -210,6 +227,19 @@ namespace VikingEngine.DSSWars.Data
         public SaveIterations(int length)
         {
             saves = new SaveStateMeta[length];
+        }
+
+        public void AdjustLength(int length)
+        {
+            if (length != saves.Length)
+            {
+                SaveStateMeta[] newSaves = new SaveStateMeta[length];
+                for (int i = 0; i < saves.Length && i < newSaves.Length; i++)
+                {
+                    newSaves[i] = saves[i];
+                }
+                saves = newSaves;
+            }
         }
 
         public void AddSave(SaveStateMeta save)
@@ -265,6 +295,7 @@ namespace VikingEngine.DSSWars.Data
         public DateTime saveDate;
         public TimeSpan playTime;
         public int localPlayerCount = 1;
+        
         int difficulty;
         public GameModeMainType gameMode = GameModeMainType.NUM;
         public float setting_foodMulti = -1;
@@ -379,6 +410,7 @@ namespace VikingEngine.DSSWars.Data
             saveDate = DateTime.Now;
             playTime = DssRef.time.TotalIngameTime();
             localPlayerCount = DssRef.state.localPlayers.Count;
+            
             difficulty = DssRef.difficulty.TotalDifficulty();
             gameMode = DssRef.difficulty.setting_gameMode;
             worldmeta = DssRef.world.metaData;
@@ -409,6 +441,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(saveDate.Ticks); 
             w.Write(playTime.Ticks);
             w.Write(localPlayerCount);
+            
             w.Write((short)difficulty);
 
             if (worldmeta == null)
@@ -456,6 +489,7 @@ namespace VikingEngine.DSSWars.Data
             saveDate = new DateTime(r.ReadInt64());
             playTime = new TimeSpan(r.ReadInt64());
             localPlayerCount = r.ReadInt32();
+            
             difficulty = r.ReadInt16();
 
             worldmeta = new WorldMetaData(r);
