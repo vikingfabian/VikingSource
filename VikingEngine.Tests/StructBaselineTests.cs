@@ -23,15 +23,17 @@ namespace VikingEngine.Tests
         }
 
         [Fact]
-        public void SubTile_MatchesLegacyBaseline()
+        public void SubTile_IsSmallerThanLegacyBaseline()
         {
-            Assert.Equal(Marshal.SizeOf<LegacySubTile>(), Marshal.SizeOf<SubTile>());
+            Assert.True(Marshal.SizeOf<SubTile>() < Marshal.SizeOf<LegacySubTile>());
+            Assert.Equal(16, Marshal.SizeOf<SubTile>());
         }
 
         [Fact]
-        public void Tile_MatchesLegacyBaseline()
+        public void Tile_IsSmallerThanLegacyBaseline()
         {
-            Assert.Equal(Marshal.SizeOf<LegacyTile>(), Marshal.SizeOf<Tile>());
+            Assert.True(Marshal.SizeOf<Tile>() < Marshal.SizeOf<LegacyTile>());
+            Assert.Equal(34, Marshal.SizeOf<Tile>());
         }
     }
 }

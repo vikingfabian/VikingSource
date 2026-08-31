@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
+using System.Runtime.InteropServices;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Path;
@@ -14,6 +15,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct SubTile
     {
         public static readonly SubTile Empty = new SubTile() { mainTerrain = TerrainMainType.NUM };
@@ -22,13 +24,13 @@ namespace VikingEngine.DSSWars.Map
         public float groundY;
         //public FoilType foil = FoilType.None;
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
-        public int subTerrain = byte.MaxValue;
+        public byte subTerrain = byte.MaxValue;
         /// <summary>
         /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
         /// </summary>
-        public int terrainAmount = 0;
+        public byte terrainAmount = 0;
 
-        public int terrainQuality = 0;
+        public byte terrainQuality = 0;
 
         /// <summary>
         /// Pointer to array with all resources found lying on ground
@@ -38,7 +40,7 @@ namespace VikingEngine.DSSWars.Map
         public SubTile(TerrainMainType type, int subType)
         {
             this.mainTerrain = type;
-            this.subTerrain = subType;
+            this.subTerrain = (byte)subType;
             terrainAmount = 1;
         }
 
@@ -54,7 +56,7 @@ namespace VikingEngine.DSSWars.Map
             this.groundY = groundY;
 
             this.mainTerrain = type;
-            this.subTerrain = subType;
+            this.subTerrain = (byte)subType;
         }
 
         public float TerrainBlockMultipleValue()
@@ -86,8 +88,8 @@ namespace VikingEngine.DSSWars.Map
         public void SetType(TerrainMainType main, int under, int amount)
         {
             mainTerrain = main;
-            subTerrain = under;
-            terrainAmount = amount;
+            subTerrain = (byte)under;
+            terrainAmount = (byte)amount;
         }
 
         const int EqMainTerrainIx = 0;
@@ -96,16 +98,6 @@ namespace VikingEngine.DSSWars.Map
         const int EqCollectionPointerIx = 3;
         public void write(System.IO.BinaryWriter w, ref SubTile previous)
         {
-
-            if (!Bound.IsWithin_Byte(subTerrain))
-            {
-#if DEBUG
-                throw new Exception();
-#endif
-                subTerrain = 0;
-
-            }
-
             //TODO check repeats with previous, use eightbit
             bool eqMainTerrain = mainTerrain == previous.mainTerrain;
             bool eqSubterrain = subTerrain == previous.subTerrain;
@@ -202,7 +194,7 @@ namespace VikingEngine.DSSWars.Map
         public bool EqualTerrain(TerrainMainType main, int sub)
         {
             return mainTerrain == main &&
-                subTerrain == sub;
+                subTerrain == (byte)sub;
         }
         public bool EqualSaveData(ref SubTile other)
         {

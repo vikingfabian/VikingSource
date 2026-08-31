@@ -11,7 +11,7 @@ namespace VikingEngine.Tests
     {
         public static void SetupFlatWorld(
             int width, int height,
-            int landHeight = Height.MinLandHeight,
+            byte landHeight = Height.MinLandHeight,
             HashSet<IntVector2>? waterTiles = null)
         {
             Tile.Init();
