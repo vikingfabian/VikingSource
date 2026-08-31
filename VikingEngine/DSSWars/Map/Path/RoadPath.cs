@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +13,14 @@ namespace VikingEngine.DSSWars.Map.Path
 
         const int TileRadius = 8 * WorldData.TileSubDivitions;
 
-        List<DetailPathNode> open = new List<DetailPathNode>();
+        // Starting value for generation counter.
+        private static readonly int StartingRunId = 1;
+
+        // Min-heap open list ordered by estimated path cost.
+        PriorityQueue<DetailPathNode, float> open = new PriorityQueue<DetailPathNode, float>();
         Rectangle2 area;
-        //IntVector2 gridOffset;
-        IntVector2 nodeUseTopLeft, nodeUseBottomRight;
         DetailPathNode[,] nodeGrid;
+
         public RoadPathFinding()
         {
             
@@ -33,69 +36,39 @@ namespace VikingEngine.DSSWars.Map.Path
 
             area = Rectangle2.FromCenterTileAndRadius(center, TileRadius);
             area.SetBounds(DssRef.world.subTileGrid.Area);
-            //gridOffset = area.pos
-            DetailPathNode startNode = new DetailPathNode(center, (int)startDir, false);
+
+            DetailPathNode startNode = new DetailPathNode(center, (int)startDir, false, StartingRunId);
             {
                 IntVector2 gridPos = center - area.pos;
                 nodeGrid[gridPos.X, gridPos.Y] = startNode;
-                nodeUseTopLeft = gridPos;
-                nodeUseBottomRight = gridPos;
             }
-            //bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
+
             DetailPathNode currentNode = startNode;
-
             int numLoops = 0;
-
 
             while (true)
             {
+                // Expand neighbours not yet visited in this run.
                 for (int dir = 0; dir < 8; dir++)
                 {
                     IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
                     IntVector2 gridPos = pos - area.pos;
-                    if (area.IntersectTilePoint(pos) && !nodeGrid[gridPos.X, gridPos.Y].HasValue)
+                    if (area.IntersectTilePoint(pos) && nodeGrid[gridPos.X, gridPos.Y].RunId != StartingRunId)
                     {
-                        //add a node to open list
-                        DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, false);
-                        open.Add(node);
-
+                        DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, false, StartingRunId);
+                        open.Enqueue(node, node.Value);
                         nodeGrid[gridPos.X, gridPos.Y] = node;
-                        if (gridPos.X < nodeUseTopLeft.X)
-                        {
-                            nodeUseTopLeft.X = gridPos.X;
-                        }
-                        else if (gridPos.X > nodeUseBottomRight.X)
-                        {
-                            nodeUseBottomRight.X = gridPos.X;
-                        }
-
-                        if (gridPos.Y < nodeUseTopLeft.Y)
-                        {
-                            nodeUseTopLeft.Y = gridPos.Y;
-                        }
-                        else if (gridPos.Y > nodeUseBottomRight.Y)
-                        {
-                            nodeUseBottomRight.Y = gridPos.Y;
-                        }
                     }
                 }
 
-                var lowValue = float.MaxValue;
-                int lowIndex = -1;
-                for (int i = 0; i < open.Count; i++)
+                // Break if open set is exhausted.
+                if (open.Count == 0)
                 {
-                    if (open[i].Value < lowValue)
-                    {
-                        lowValue = open[i].Value;
-                        lowIndex = i;
-                    }
+                    break;
                 }
 
-                if (open.Count > 1)
-                {
-                    currentNode = open[lowIndex];
-                    open.RemoveAt(lowIndex);
-                }
+                // Dequeue the lowest cost candidate.
+                currentNode = open.Dequeue();
 
                 currentNode.closed = true;
                 nodeGrid[currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y] = currentNode;
@@ -112,20 +85,20 @@ namespace VikingEngine.DSSWars.Map.Path
                 }
             }
 
-            //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
-
-            //const int MaxBacknodes = 1;
-            var path = new RoadWalkingPath();//DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetRes();
+            var path = new RoadWalkingPath();
             bool blocked = false;
             int totalNodes = 0;
 
+            // Backtrack path from goal to start.
             while (currentNode.Position != startNode.Position)
             {                
                 path.nodes.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
 
                 totalNodes++;
                 if (totalNodes > MaxNodeLength)
+                {
                     throw new EndlessLoopException("");
+                }
                 
                 IntVector2 pos = currentNode.PreviousPosition;
                 currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
@@ -134,7 +107,6 @@ namespace VikingEngine.DSSWars.Map.Path
             path.init(goal, blocked);
             return path;
         }
-
     }
 
 

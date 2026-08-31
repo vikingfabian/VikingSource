@@ -6,3 +6,5 @@ obj
 /VikingBuilder/Assets/DSS/PlayMap/demomap4.sav
 /VikingBuilder/Assets/DSS/PlayMap/demomap5.sav
 /VikingEngine/Content
+
+*.user
