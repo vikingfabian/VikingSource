@@ -51,7 +51,7 @@ namespace VikingEngine
 
         const bool Debug_BlueScreen = false;
 
-        const bool Debug_DebugWindow = false;
+        private static readonly bool Debug_DebugWindow = false;//true;
 
         const bool Debug_ViewSlowDown = true;
 

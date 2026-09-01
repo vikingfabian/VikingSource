@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -601,7 +601,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                                     if (setTerrain > tile.heightLevel)
                                     {
-                                        tile.heightLevel = setTerrain;
+                                        tile.heightLevel = (byte)setTerrain;
                                         tile.biom = biom;
                                     }
                                     else
@@ -693,8 +693,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 if (sub > sunken[loopArea.Position.X, loopArea.Position.Y])
                                 {
                                     sunken[loopArea.Position.X, loopArea.Position.Y] = sub;
-                                    t.heightLevel -= sub;
-                                    Bound.Min(ref t.heightLevel,  Height.LowerWaterHeight);
+                                    t.heightLevel = (byte)Bound.Min(t.heightLevel - sub, Height.LowerWaterHeight);
                                     world.tileGrid.Set(loopArea.Position, t);
                                 }
 
@@ -2016,7 +2015,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 IntVector2 pos = mineLocations[i];
 
                 var subTile = world.subTileGrid.Get(pos);
-                subTile.subTerrain = (int)TerrainMineType.IronOre;
+                subTile.subTerrain = (byte)TerrainMineType.IronOre;
                 world.subTileGrid.Set(pos, subTile);
             }
 
@@ -2034,7 +2033,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     mineLocations.RemoveAt(index);
 
                     var subTile = world.subTileGrid.Get(pos);
-                    subTile.subTerrain = type;
+                    subTile.subTerrain = (byte)type;
 
                     world.subTileGrid.Set(pos, subTile);
 

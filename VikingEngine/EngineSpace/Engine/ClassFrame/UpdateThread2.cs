@@ -14,7 +14,7 @@ namespace VikingEngine
         protected AsynchUpdateAction updateAction;
 
         AutoResetEvent resetEvent = new AutoResetEvent(false);
-        System.Threading.Thread thread;
+        System.Threading.Thread _thread;
        
         protected float time = 0, asynchTime = 0;
         protected string name;
@@ -45,7 +45,7 @@ namespace VikingEngine
 
         public void StartThread(ThreadPriority priority)
         {
-            thread = new Thread(() =>
+            _thread = new Thread(() =>
             {
                 while (!End())
                 {                    
@@ -62,14 +62,11 @@ namespace VikingEngine
                         asynchAction();
                     }
                     busyThread = false;
-                    //}
                 }
-
-                thread.Join();
             });
             
-            thread.Start();
-            thread.Priority = priority;
+            _thread.Start();
+            _thread.Priority = priority;
         }
 
         public override void Time_Update(float time_ms)
@@ -79,7 +76,7 @@ namespace VikingEngine
             //    DeleteMe();
             //    return;
             //}
-            if (!thread.IsAlive)
+            if (!_thread.IsAlive)
             {
                 DeleteMe();
                 return;
@@ -109,8 +106,8 @@ namespace VikingEngine
         public override bool AbortThreads()
         {
 
-            if (thread.ThreadState == ThreadState.Running ||
-                thread.ThreadState == ThreadState.WaitSleepJoin)
+            if (_thread.ThreadState == ThreadState.Running ||
+                _thread.ThreadState == ThreadState.WaitSleepJoin)
             {
                 end = true;
                 resetEvent.Set();
@@ -126,7 +123,7 @@ namespace VikingEngine
 
         public bool Alive()
         { 
-            return thread != null && thread.IsAlive;
+            return _thread != null && _thread.IsAlive;
         }
 
         public override string ToString()

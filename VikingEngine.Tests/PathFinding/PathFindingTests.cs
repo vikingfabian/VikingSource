@@ -294,7 +294,7 @@ namespace VikingEngine.Tests.Pathfinding
                             if (!water.Contains(pt))
                             {
                                 var tile = new Tile();
-                                tile.heightLevel = (i % 3 == 0) ? Height.MountainHeightStart : Height.MinLandHeight + 1;
+                                tile.heightLevel = (byte)((i % 3 == 0) ? Height.MountainHeightStart : Height.MinLandHeight + 1);
                                 DssRef.world.tileGrid.Set(pt, tile);
                             }
                         }

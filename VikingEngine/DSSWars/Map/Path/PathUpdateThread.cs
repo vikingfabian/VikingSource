@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -22,6 +22,18 @@ namespace VikingEngine.DSSWars.Map.Path
         public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
 
         public List<AbsArmy> ArmiesColl_asyncupdate = new List<AbsArmy>();
+
+        public void ClearPools()
+        {
+            pathFindingPool.Clear();
+            detailPathFindingPool.Clear();
+        }
+
+        public void PreallocatePools(int pfCount = 1, int detailPfCount = 1)
+        {
+            pathFindingPool.Preallocate(pfCount);
+            detailPathFindingPool.Preallocate(detailPfCount);
+        }
 
         public PathUpdateThread(int index, int startFaction, int endFaction, System.Threading.ThreadPriority prio = System.Threading.ThreadPriority.BelowNormal)
         {              

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -517,6 +517,46 @@ namespace VikingEngine
             T[] newArray = new T[toLength];
             this.Array.AsSpan().CopyTo(newArray);
             this.Array = newArray;
+        }
+
+        /// <summary>
+        /// Trims unused capacity when the array is oversized (capacity > 16 and spotted length <= capacity / 2).
+        /// Preserves all element positions, indices, and iteration order.
+        /// Intended for state transitions, cleanup routines, and idle periods.
+        /// </summary>
+        public bool TrimExcess()
+        {
+            if (Array.Length > 16 && SpottedLength <= Array.Length / 2)
+            {
+                int newLength = Math.Max(SpottedLength * 2, 8);
+                if (newLength < Array.Length)
+                {
+                    T[] newArray = new T[newLength];
+                    System.Array.Copy(this.Array, 0, newArray, 0, SpottedLength);
+                    this.Array = newArray;
+                    mostLeftFreePosition = Math.Min(mostLeftFreePosition, newLength);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Forces shrinking to fit exact SpottedLength (clamped to minCapacity).
+        /// Preserves all element positions, indices, and iteration order.
+        /// </summary>
+        public bool TrimExcessExact(int minCapacity = 8)
+        {
+            int newLength = Math.Max(SpottedLength, minCapacity);
+            if (newLength < Array.Length)
+            {
+                T[] newArray = new T[newLength];
+                System.Array.Copy(this.Array, 0, newArray, 0, SpottedLength);
+                this.Array = newArray;
+                mostLeftFreePosition = Math.Min(mostLeftFreePosition, newLength);
+                return true;
+            }
+            return false;
         }
 
         public T PrevIteration(ref int i)
