@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -429,11 +429,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (enter)
             {
-                battleData = new SoldierBattleData(this);
+                if (battleData == null)
+                {
+                    battleData = SoldierBattleData.Rent(this);
+                }
             }
             else
             {
-                battleData = null;
+                if (battleData != null)
+                {
+                    var temp = battleData;
+                    battleData = null;
+                    SoldierBattleData.Return(temp);
+                }
             }
         }
 
@@ -1049,6 +1057,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             isDeleted = true;
             health = 0;
+
+            if (battleData != null)
+            {
+                var temp = battleData;
+                battleData = null;
+                SoldierBattleData.Return(temp);
+            }
 
             deleteModels();
 

@@ -397,6 +397,8 @@ namespace VikingEngine.DSSWars.GameState
                 }
             }
 
+            Battle.SoldierBattleData.ClearPool();
+
             if (cutScene is EndScene)
             {
                 cutScene.Close();
