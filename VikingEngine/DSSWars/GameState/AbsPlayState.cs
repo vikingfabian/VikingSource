@@ -399,6 +399,15 @@ namespace VikingEngine.DSSWars.GameState
 
             Battle.SoldierBattleData.ClearPool();
 
+            if (DssRef.world?.factions != null)
+            {
+                var factionsC = DssRef.world.factions.counter();
+                while (factionsC.Next())
+                {
+                    factionsC.sel?.ClearModels();
+                }
+            }
+
             if (cutScene is EndScene)
             {
                 cutScene.Close();

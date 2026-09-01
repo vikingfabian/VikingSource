@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -1246,6 +1246,8 @@ namespace VikingEngine.DSSWars
                 DssRef.state.events.onFactionDestroyed(this);
                 DssRef.world.diplomacy.onFactionDeath(this.pfaction);
 
+                ClearModels();
+
                 if (factiontype == FactionType.Player)
                 {
                     DssRef.state.events.onPlayerDeath();
@@ -1255,7 +1257,7 @@ namespace VikingEngine.DSSWars
                 {
                     Debug.CrashIfThreaded();
                     var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionDeath, PacketReliability.Reliable);
-;                   pfaction.write(w);
+                    pfaction.write(w);
                 }
             }
         }
