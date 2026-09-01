@@ -1,7 +1,6 @@
 
 Change log:
-* Fixed multiplayer find tile crash
-* maybe fixed: client tuorial end crash
+* 
 
 KNOWN ISSUES
 
