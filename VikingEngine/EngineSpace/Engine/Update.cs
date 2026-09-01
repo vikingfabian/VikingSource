@@ -34,9 +34,9 @@ namespace VikingEngine.Engine
 
         SpottedArray<IUpdateable>[] updateLists;
         SpottedArray<IUpdateable> oneTimeTriggers;
-        readonly object syncQueLock = new object();
-        List<ISyncAction> syncQue = new List<ISyncAction>(32);
-        List<ISyncAction> syncProcessingQue = new List<ISyncAction>(32);
+
+        // No lock necessary. Inherently thread sage.
+        ConcurrentQueue<ISyncAction> _syncQue = new();
         
         public int GetUpdateListCount(UpdateType updateType)
         {
@@ -226,32 +226,19 @@ namespace VikingEngine.Engine
                 }
             }
 
-            if (syncQue.Count > 0)
+            // Thread-safe dequeue.
+            while (_syncQue.TryDequeue(out var syncAction))
             {
-                lock (syncQueLock)
-                {
-                    var temp = syncQue;
-                    syncQue = syncProcessingQue;
-                    syncProcessingQue = temp;
-                }
-
-                for (int i = 0; i < syncProcessingQue.Count; i++)
-                {
-                    syncProcessingQue[i].runSyncAction();
-                }
-                syncProcessingQue.Clear();
+                syncAction.runSyncAction();
             }
-            
         }
 
         public void AddSyncAction(ISyncAction syncAction)
         {
             if (syncAction != null)
             {
-                lock (syncQueLock)
-                {
-                    syncQue.Add(syncAction);
-                }
+                // Thread-safe enqueue.
+                _syncQue.Enqueue(syncAction);
             }
         }
 

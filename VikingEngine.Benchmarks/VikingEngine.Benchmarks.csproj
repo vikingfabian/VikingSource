@@ -15,10 +15,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VikingEngine\VikingEngine.csproj">
-      <Properties>Platform=x64</Properties>
+      <SetPlatform>Platform=x64</SetPlatform>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Steamworks repo\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
-      <Properties>Platform=x64</Properties>
+      <SetConfiguration Condition="'$(Configuration)' != 'Release'">Configuration=Windows</SetConfiguration>
+      <SetPlatform>Platform=x64</SetPlatform>
     </ProjectReference>
   </ItemGroup>
 </Project>
