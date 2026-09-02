@@ -327,7 +327,7 @@ namespace VikingEngine.Graphics
         }
 
         private readonly List<FrameGroup> _frameGroups = new List<FrameGroup>(8);
-        private readonly Dictionary<int, List<int>> _framePartitions = new Dictionary<int, List<int>>(8);
+        private readonly Dictionary<int, List<AbsVoxelModelInstance>> _framePartitions = new Dictionary<int, List<AbsVoxelModelInstance>>(8);
 
         public InstancedDrawBatch(int masterId) : base(32)
         {
@@ -370,12 +370,12 @@ namespace VikingEngine.Graphics
                     if (voxInst.VisibleInCamera(cameraIndex))
                     {
                         int frame = voxInst.Frame;
-                        if (!_framePartitions.TryGetValue(frame, out var indices))
+                        if (!_framePartitions.TryGetValue(frame, out var partitionList))
                         {
-                            indices = new List<int>(32);
-                            _framePartitions[frame] = indices;
+                            partitionList = new List<AbsVoxelModelInstance>(32);
+                            _framePartitions[frame] = partitionList;
                         }
-                        indices.Add(i);
+                        partitionList.Add(voxInst);
                     }
                 }
                 else
@@ -388,16 +388,16 @@ namespace VikingEngine.Graphics
             foreach (var kv in _framePartitions)
             {
                 int frame = kv.Key;
-                var indices = kv.Value;
-                if (indices.Count == 0)
+                var instances = kv.Value;
+                if (instances.Count == 0)
                 {
                     continue;
                 }
 
                 int start = writeIndex;
-                for (int j = 0; j < indices.Count; j++)
+                for (int j = 0; j < instances.Count; j++)
                 {
-                    var voxInst = (AbsVoxelModelInstance)this[indices[j]];
+                    var voxInst = instances[j];
 
                     Matrix world = Matrix.CreateScale(voxInst.scale) *
                                    Matrix.CreateFromQuaternion(voxInst.Rotation.QuadRotation) *
@@ -411,7 +411,7 @@ namespace VikingEngine.Graphics
                 {
                     FrameIndex = frame,
                     InstanceStartIndex = start,
-                    InstanceCount = indices.Count
+                    InstanceCount = instances.Count
                 });
             }
 
