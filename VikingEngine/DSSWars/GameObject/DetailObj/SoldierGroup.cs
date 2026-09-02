@@ -24,6 +24,7 @@ using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.MiniGolf;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
 
@@ -100,6 +101,7 @@ namespace VikingEngine.DSSWars.GameObject
         public UnitBuildType shipBuilder;
 
         public SoldierConscriptProfile soldierConscript;
+        
         public SoldierData soldierData;
         public SoldierData soldierData_soldier;
         public bool isShip = false;
@@ -1481,10 +1483,7 @@ namespace VikingEngine.DSSWars.GameObject
         void SoldiersPresentationHud(ObjectHudArgs args, bool tooltipOrGroup, bool compact)
         {
             var faction = pfaction.GetFaction();
-            //if (faction == null)
-            //{ return; }
-
-
+           
 
             if (pfaction != args.player.pfaction &&
                 args.player.gameControls.map.selection.obj != null &&
@@ -1543,8 +1542,9 @@ namespace VikingEngine.DSSWars.GameObject
             SoldiersPresentationHud(args, true, true);
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             if (!army.TryGetTarget(out var tArmy))
             {
                 return;
@@ -1653,7 +1653,21 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 args.content.Add(new RbSeperationLine());
             }
-            
+
+            args.content.newLine();
+            args.content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MenuTab_Reassign) },
+                 new RbAction(() => { args.player.hud.StartQuickReassign(new List<SoldierGroup> { this }); })));
+            //    new RbAction(() =>
+            //{
+            //    if (army.TryGetTarget(out var tArmy))
+            //    {
+            //        args.player.armyTab = MenuTab.Reassign;
+            //        args.player.gameControls.mapSelect(tArmy);
+            //        args.player.movingGroupsCollection = new MovingGroupsCollection(tArmy);
+            //        args.player.movingGroupsCollection.mainArmy.AddGroup(new SoldierGroupAndCount(-1, this, true), args.player.movingGroupsCollection.otherArmies.Selected(), true, false);
+            //    }
+            //})));
+
             args.content.newLine();
 
             if (soldierConscript.conscript.weapon == ItemResourceType.Settler)
@@ -2015,7 +2029,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //lock (DssRef.state.pathFindingPool)
                 //{
-                    DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(path);
+                    DssRef.world.pathFindingPool.Return(path);
                     path = null;
                 //}
             }
@@ -2024,7 +2038,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //lock (DssRef.state.detailPathFindingPool)
                 //{
-                DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.Return(detailPath);
+                DssRef.world.detailPathFindingPool.Return(detailPath);
                     detailPath = null;
                 //}
             }
@@ -2409,11 +2423,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             recyclePath(true, false, pathThreadIndex);
 
-            PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
+            PathFinding pf = DssRef.world.pathFindingPool.GetPf();
             { 
                 path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), WP.ToTilePos( goalWp), isShip);
             }
-            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
+            DssRef.world.pathFindingPool.Return(pf);
         }
 
 
@@ -2432,12 +2446,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             recyclePath(false, true, pathThreadIndex);
 
-            DetailPathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetPf();
+            DetailPathFinding pf = DssRef.world.detailPathFindingPool.GetPf();
             {
-                detailPath = pf.FindPath(pathThreadIndex, WP.ToSubTilePos(position), rotation, goal,
+                detailPath = pf.FindPath(WP.ToSubTilePos(position), rotation, goal,
                     isShip, tArmy.walkGoalAsShip, isTravelNode);
             }
-            DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.Return(pf);
+            DssRef.world.detailPathFindingPool.Return(pf);
 
             var detailPath_sp = detailPath;
 

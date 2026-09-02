@@ -127,9 +127,9 @@ namespace VikingEngine.DSSWars
         /// </summary>
         public static float GroundY(Vector3 wp)
         {
-            return DssRef.world.subTileGrid.array[
+            return DssRef.world.subTileGrid.Get(
                 Convert.ToInt32(wp.X * WorldData.TileSubDivitions + 3.5f),
-                Convert.ToInt32(wp.Z * WorldData.TileSubDivitions + 3.5f)].groundY;
+                Convert.ToInt32(wp.Z * WorldData.TileSubDivitions + 3.5f)).groundY;
         }
 
         public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)

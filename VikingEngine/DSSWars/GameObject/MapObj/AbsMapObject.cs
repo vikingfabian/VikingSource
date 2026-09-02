@@ -181,11 +181,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public void setInRenderState();
 
-        //virtual public void ExitBattleGroup()
-        //{
-        //    battleGroup = null;
-        //}
-
         public float distanceTo(AbsMapObject obj)
         {
             return VectorExt.Length(position.X - obj.position.X, position.Z - obj.position.Z);
@@ -207,6 +202,16 @@ namespace VikingEngine.DSSWars.GameObject
             TypeIcon(content);
             content.hspace();
             content.Add(new RbText(TypeName(), dark? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
+
+        }
+
+        public void toTabContent(RichBoxContent content, bool dark)
+        {
+            //content.Add(new RbText(Name(out _), dark ? HudLib.TitleColor_Name_Dark : HudLib.TitleColor_Name));
+            //content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+            TypeIcon(content);
+            content.hspace();
+            content.Add(new RbText(myIndex.ToString(), dark ? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
 
         }
         virtual public void tagSprites(out SpriteName back, out SpriteName art)
@@ -240,8 +245,6 @@ namespace VikingEngine.DSSWars.GameObject
             get { return pfaction.GetPlayer().IsLocal; }
         }
 
-        //abstract public Faction Faction();
-
         virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
             this.pfaction = newFaction.pfaction;
@@ -250,11 +253,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             IsNetHosted = newFaction.IsNetHosted();
         }
-
-        //override public Faction GetFaction()
-        //{
-        //    return faction;
-        //}
 
         abstract public void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason);
 

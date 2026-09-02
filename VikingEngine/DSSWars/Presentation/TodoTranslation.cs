@@ -17,10 +17,11 @@ namespace VikingEngine.DSSWars.Presentation
     }
 
 
-    class TodoTranslation
+    partial class TodoTranslation
     {
-        public string UnitType_Faction => "Faction";
-        //-------
+        public string GameSettings_UltraWide => "Ultra wide";
+        public string GameSettings_UltraWide_LeftEdge => "UI left edge";
+        public string GameSettings_UltraWide_RightEdge => "UI right edge";
 
         public string Multiplayer_Invite => "Invite";
         public string JoinFailure_NoAvailableFaction => "Join failed, no available faction.";
@@ -28,47 +29,32 @@ namespace VikingEngine.DSSWars.Presentation
         //public string GameSettings_DisplayInputHelp => "Input help";
         //public string GameSettings_InputSmoothing => "Input smoothing";
 
-        ////--
-        //public string FactionName_Ellium => "Ellium";
-        //public string FactionName_GrakPushdug => "Grak pushdug";
-        //public string FactionName_Draugost => "Draugost";
+        public string UnitType_Faction => "Faction";
 
-        ////--
-        //public string Unlock_PublicGames => "public games";
-        //public string UnlockPublic_Warning1 => "Do not play with strangers";
-        //public string UnlockPublic_Warning2 => "The game has zero protection against cheating or trolling";
-        //public string Unlock_WarningBadExperience => "You will have a bad experience";
-        //public string Hud_Accept => "Accept";
-        //public string Hud_Block => "Block";
-        //public string Hud_Deny => "Deny";
-        //public string Hud_Reason => "Reason";
-        //public string Hud_Full => "Full";
-        //public string Hud_Version => "Version";
-        //public string Unlock_PlayerVersusPlayer => "player versus player";
-        //public string UnlockPvp_Warning1 => "DSS is not designed for competetive games";
-        //public string UnlockPvp_Warning2 => "There is no balance, matches will be unfair";
-        //public string PlayerJoinHistoryTitle => "Player join history";
-        //public string BlockedPlayersTitle => "Blocked players";
-        //public string ClickToRemoveBan => "Click: remove ban";
-        //public string HostSettingsTitle => "Host settings";
-        //public string MaxPlayerCount => "Max player count";
-        //public string DistanceBetweenPlayers => "Distance between players";
-        //public string AllowHandicap => "Allow handicap";
-        //public string AllowCasualControls => "Allow casual controls";
-        //public string AutoRecolorPlayerFlags => "Auto recolor player flags";
-        //public string DefaultDiplomacy => "Default diplomacy";
-        //public string ClientSettingsTitle => "Client settings";
-        //public string UseHandicap => "Use handicap";
-        //public string DifficultyDescription_BotAggression => "Bot aggression";
-        //public string Hud_GetExtraX => "Extra {0}";
-        //public string Hud_Hide => "Hide";
-        //public string Hud_ModelType => "Model";
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public string MenuTab_Reassign => "Reassign";
+        public string ArmyOption_SendHalf => "Send half";
 
-        ///// <summary>
-        ///// Label: Text text
-        ///// </summary>
-        //public string Language_LabelAndText_Colon => "{0}: {1}";
-        //public string Language_CathergoryDashUndercathegory => "{0} - {1}";
+        public string Tutorial_OpenManual => "Open pause menu and read about {0} in the {1}";
+        //-------
+
+        public string Hud_ApplyToAll => "Apply to all";
+        public string Hud_OutOfStock => "Out of stock";
+
+        public string Leaderboards_NationStrength => "Nation wide military strength";
+
+        public string AutoSaveTime => "Auto-save interval";
+
+        public string Editor_ToolOption_Add => "Add";
+        public string Editor_ToolOption_Remove => "Remove";
+        public string Editor_ToolOption_Toggle => "Toggle";
+
+        //public string SaveCount_Label => "Save count capacity";
+        //public string SaveCount_Note1 => "Saves are recycled to reduce storage usage";
+        //public string SaveCount_Note2 => "A high count will use more storage";
+        //public string SaveCount_Note3 => "Reducing the count will result in lost saves";
 
         //public string ResourceBoost => "Resource boost";
         ////public string TaxIncome => "Tax income";
@@ -104,96 +90,6 @@ namespace VikingEngine.DSSWars.Presentation
         //public string WarPreparationTimeTooltip => "A delay from war declaration until attacks are available";
         //public string Hud_Allow => "Allow";
         //public string Hud_Blocked => "Blocked";
-
-        //public string Hud_DeleteAll => "Delete all";
-        //public string DiplomacyPlayersChoice => "Players choice";
-        //public string UnlockSureTitle => "Are you really, really sure?";
-        //public string UnlockSureDescription => "Will you be a big boy and not cry on the forum later?";
-
-
-
-        //public string Network_PlayOffline = "Play offline";
-        //public string JoinPermission_Title => "Join Permissions";
-        //public string JoinPermission_Private => "Private";
-        //public string JoinPermission_FriendsOnly => "Friends only";
-        //public string JoinPermission_Public => "Public";
-
-        //public string Network_Join => "Join game";
-        //public string Network_ConnectingToGame => "Connecting...";
-        //public string Lobby_Category_MultiplayerSettings => "Multiplayer settings";
-
-        //public string Hud_Default = "Default";
-        //public string Group_Team = "team";
-        //public string Group_Everyone = "everyone";
-
-        //public string Language_SymbolForMillion => "M";
-
-        //public string DecorType_DiplomaticStatue => "Diplomatic statue";
-
-        //public string Message => "Message";
-        //public string ObjectType_LocationPin => "Location pin";
-        //public string ObjectType_LocationPin_Share => "Share and ping";
-        //public string ObjectType_LocationPin_Ping => "Ping!";
-        //public string InputActionName_TextChat => "Text chat";
-        //public string InputActionName_TextChatLog => "Chat log";
-        //public string InputActionName_VoiceChat => "Voice chat";
-        //public string InputActionName_NextPin => "Next pin";
-        //public string InputActionName_PinAndPing => "Add pin";
-
-        //public string Leaderboards_ArmySize => "One army size, in strength";
-        //public string Leaderboards_MultiplayerPlayerCount => "Hosting player count";
-
-        //public string Multiplayer_BanWarning => "ban warning";
-        //public string Multiplayer_SentToHost => "Will be sent to the host";
-        //public string Multiplayer_AddToOwnBlocks => "Add to your own block list";
-
-        //public string Multiplayer_Message_RequestSent => "Request sent";
-
-        //public string Multiplayer_BlockPlayer => "Block player";
-        //public string Multiplayer_NetSession => "Net session";
-        //public string GiftedAchievements => "Gifted achievements";
-        //public string GiftedAchievements_Description => "Reward your friends bad behaiviour";
-
-        //public string Multiplayer_Title => "Multiplayer";
-        //public string Multiplayer_Lobby => "Multiplayer lobby";
-
-        //public string Multiplayer_Tutorial_HostStart => "1. The host starts a game";
-        //public string Multiplayer_Tutorial_JoinButton => "2. A join button will appear here";
-        //public string Multiplayer_Tutorial_Visible => "The host must have a visible Steam profile";
-
-        //public string Multiplayer_KickPlayer => "Kick player";
-        //public string Multiplayer_RequestBlockPlayer => "Request: Block player";
-        //public string Multiplayer_HandoverComplete => "Handover complete";
-        //public string Multiplayer_LoadingClientSave => "Loading client save";
-        //public string Multiplayer_ClientSaveComplete => "Client save complete";
-        //public string Multiplayer_BadActor => "Bad actor";
-        //public string Multiplayer_NetworkError => "Network error";
-        //public string Multiplayer_Sender => "Sender";
-        //public string Multiplayer_Reciever => "Reciever";
-        //public string Multiplayer_PlayerJoined => "Player joined";
-        //public string Multiplayer_PlayerLeft => "Player left";
-        //public string Multiplayer_RequestingClientGamestates => "Requesting client gamestates...";
-        //public string Multiplayer_TextChat => "Text chat";
-        //public string Multiplayer_VoiceChat => "Voice chat";
-        //public string Steam_UserProfile => "User profile";
-        //public string Steam_OpenSteamOverlay => "Open Steam overlay";
-
-        ///// <summary>
-        ///// In this relation there is a countdown towards war
-        ///// </summary>
-        //public string Diplomacy_RelationType_Mobilizing => "Mobilizing";
-        //public string Diplomacy_OfferRelation => "Offer relation";
-        //public string Diplomacy_OfferRelation_Declined => "Declined offer relation";
-        //public string Diplomacy_SendGold => "Send gold";
-        //public string Diplomacy_GiftToPlayer => "Gift to player";
-        //public string Diplomacy_RecievedGift => "Recived gift";
-        //public string Diplomacy_OnAccept => "If the other player accepts:";
-        //public string Diplomacy_WarPreparationTime => "War preparation time";
-
-        //public string Diplomacy_AboveSoftCap => "Above soft cap";
-        //public string Diplomacy_BelowSoftCap => "Below soft cap";
-        //public string Diplomacy_OpenPlayerToPlayer => "Open player diplomacy";
-        ////--
 
         public string GiftAchieve_WhiteKnight_Name => "White Knight";
         public string GiftAchieve_WhiteKnight_Desc => "Looking good, protecting others.";

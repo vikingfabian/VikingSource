@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monsters;
@@ -72,8 +73,8 @@ namespace VikingEngine.DSSWars
         public VectorRect unitBounds;
         public IntVector2 Size;
         public IntVector2 HalfSize;
-        public Grid2D<Tile> tileGrid;
-        public Grid2D<SubTile> subTileGrid;
+        public Grid2D_L<Tile> tileGrid;
+        public Grid2D_L<SubTile> subTileGrid;
        
         public UnitCollAreaGrid unitCollAreaGrid;
 
@@ -94,6 +95,23 @@ namespace VikingEngine.DSSWars
         public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
 
         public List<PFaction> quickMatchFactions = null;
+
+
+        public PathFindingPool pathFindingPool = new PathFindingPool();
+        public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
+
+        public void ClearPools()
+        {
+            pathFindingPool.Clear();
+            detailPathFindingPool.Clear();
+        }
+
+        public void PreallocatePools(int pfCount = 1, int detailPfCount = 1)
+        {
+            pathFindingPool.Preallocate(pfCount);
+            detailPathFindingPool.Preallocate(detailPfCount);
+        }
+
 
         public WorldData()
         {
@@ -267,11 +285,11 @@ namespace VikingEngine.DSSWars
             unitBounds.AddRadius(-1f);
 
             //create grid
-            tileGrid = new Grid2D<Tile>(Size);
+            tileGrid = new Grid2D_L<Tile>(Size);
 
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
-            subTileGrid = new Grid2D<SubTile>(Size * TileSubDivitions);
+            subTileGrid = new Grid2D_L<SubTile>(Size * TileSubDivitions);
         }
 
         bool subTileHasRepeatValue(ref SubTile subtile)
@@ -644,7 +662,7 @@ namespace VikingEngine.DSSWars
             //DebugWriteSize citiesSz = new DebugWriteSize();
             //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 11;
+            const int SaveMapVersion = 12;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.worldId.seed);
@@ -1050,17 +1068,17 @@ namespace VikingEngine.DSSWars
         public float SubTileHeight(Vector3 wp)
         {
 
-            return subTileGrid.array[
+            return subTileGrid.Get(
                 Convert.ToInt32(wp.X * TileSubDivitions + 3.5f), 
-                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)].groundY;                
+                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)).groundY;                
         }
 
         public float SubTileHeight(Vector3 wp, out SubTile subTile)
         {
 
-            subTile = subTileGrid.array[
+            subTile = subTileGrid.Get(
                 Convert.ToInt32(wp.X * TileSubDivitions + 3.5f),
-                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)];
+                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f));
             return subTile.groundY;
         }
 
@@ -1145,7 +1163,7 @@ namespace VikingEngine.DSSWars
         {
             if (tileBounds.IntersectTilePoint(pos))
             {
-                tile = tileGrid.array[pos.X, pos.Y];
+                tile = tileGrid.Get(pos);
                 return true;
             }
             else

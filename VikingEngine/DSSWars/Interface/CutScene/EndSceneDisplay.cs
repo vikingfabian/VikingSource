@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,9 +121,14 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         public EndSceneCenterDisplayPart(GameEndReason endReason, VictoryType vType, RichboxGui gui, Action watchEpilogue, MatchResult matchResult)
             : base(gui)
         {
+            string eventName = string.Empty, eventDesc = string.Empty, eventIcon = string.Empty;
             if (matchResult != null)
             {
                 bool playerWin = false;
+
+                eventName = DssRef.lang.EndScreen_MatchComplete;
+                eventDesc = DssRef.lang.GameMode_QuickMatch;
+                eventIcon = "steam_trophy";
 
                 content.h1(DssRef.lang.EndScreen_MatchComplete, Color.Yellow);
                 content.h2(DssRef.lang.EndScreen_VictoryTitle, HudLib.TitleColor_Label);
@@ -179,18 +185,44 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
                         content.h2(typeText, HudLib.TitleColor_TypeName);
                         content.text(endquote, HudLib.InfoYellow_Light);
+
+                        eventName = DssRef.lang.EndScreen_VictoryTitle;
+                        eventDesc = typeText;
+                        eventIcon = "steam_trophy";
                         break;
 
                     case GameEndReason.Defeat:
                         content.h1(DssRef.lang.EndScreen_FailTitle).overrideColor = Color.Yellow;
                         content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_FailureQuotes));
+
+                        eventName = DssRef.lang.EndScreen_FailTitle;
+                        eventDesc = DssRef.lang.GameOverResults;
+                        eventIcon = "steam_death";
                         break;
 
                     case GameEndReason.TimesUp:
                         content.h1(DssRef.lang.EndScreen_TimeHasEndedTitle).overrideColor = Color.Yellow;
+
+                        eventName = DssRef.lang.EndScreen_TimeHasEndedTitle;
+                        eventDesc = DssRef.lang.GameOverResults;
+                        eventIcon = "steam_timer";
                         break;
                 }
             }
+
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.AddInstantaneousTimelineEvent(
+                            eventName,               // Title in UI
+                            eventDesc, // Description in UI
+                            eventIcon,                 // Built-in Steam icon 
+                            50,                              // Priority (0 = default, max= 1000)
+                            0f,                             // Offset in seconds
+                            ETimelineEventClipPriority.k_ETimelineEventClipPriority_Featured // Clip suggestion priority
+                        );
+            }
+
+
             content.newParagraph();
 
             Color ButtonColor = new Color(146, 161, 153);//new Color(48, 80, 101);

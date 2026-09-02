@@ -99,8 +99,9 @@ namespace VikingEngine.DSSWars.GameObject
             ownerToHud(args, !tooltip);
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             PinPresentationHud(args, false);
 
             int tabSel = 0;

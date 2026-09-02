@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.Xna.Framework;
 using Steamworks;
 using System;
@@ -28,6 +28,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Stockpile;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.EngineSpace.DataStream;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
@@ -45,7 +46,6 @@ namespace VikingEngine.DSSWars.GameObject
         public int neighborCitiesCount = 0;
 
         Graphics.AbsVoxelObj overviewModel;
-
         BoundingBox bound;
 
         public FloatingInt childrenAge0 = new FloatingInt();
@@ -81,8 +81,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public BuildingStructure buildingStructure = new BuildingStructure();
         public TerrainStructure terrainStructure = new TerrainStructure();
-
-        
 
         Intvector2MinMax guardCullingMinMax;
         public Rectangle2 cityTileArea;
@@ -202,7 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
                             //var player =  GetFaction().player.GetLocalPlayer();
                             if (pfaction.TryGetLocalPlayer(out var player))
                             {
-                                player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
+                                player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE);
                             }
                         }
                         return true;
@@ -1094,7 +1092,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             onGameStart(false);
-            int height = r.ReadByte();
+            byte height = r.ReadByte();
             var tile = new Tile();
             tile.heightLevel = height;
             position.Y = tile.ModelGroundY();
@@ -2424,9 +2422,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
-            
+            secondMenuContent = null;
             CityPresentationHud(args, false);
             
             //if (HasFaction())
@@ -2437,7 +2435,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (pfaction== args.player.pfaction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
                     {
                         CityDetailsHud(true, args.player, args.content);
-                        new MapObjMenu(args.player, this, args.content);
+                        new MapObjMenu(args.player, this, args.content, out secondMenuContent);
                     }
                     else
                     {
@@ -2642,6 +2640,8 @@ namespace VikingEngine.DSSWars.GameObject
                     if (automateCity || player.tutorial == null || player.tutorial.AdvisorMode())
                     {
                         content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.AutomationGearIcon),
+                               new RbSpace(0.5f),
                             new RbText(DssRef.lang.Automation_AutomateCity)
                             }, AutomateCityProperty));
                     }
@@ -2654,6 +2654,7 @@ namespace VikingEngine.DSSWars.GameObject
                         content.newLine();
                         foreach (var focus in MapObjMenu.AvailableAutomationFocuses)
                         {
+                            SpriteName sprite = SpriteName.NO_IMAGE;
                             string caption = null;
                             switch (focus)
                             {
@@ -2661,24 +2662,33 @@ namespace VikingEngine.DSSWars.GameObject
                                     caption = DssRef.lang.Hud_None;
                                     break;
                                 case AutomationFocus.Food:
+                                    sprite = SpriteName.WarsResource_Food;
                                     caption = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
                                     break;
                                 case AutomationFocus.Grow:
+                                    sprite = SpriteName.WarsBuild_WorkerHuts;
                                     caption = DssRef.lang.Automation_AutomationFocus_Grow;
                                     break;
                                 case AutomationFocus.Export:
+                                    sprite = SpriteName.WarsBuild_Postal;
                                     caption = DssRef.lang.Automation_AutomationFocus_Export;
                                     break;
                                 case AutomationFocus.Military:
+                                    sprite = SpriteName.WarsBuild_Barracks;
                                     caption = DssRef.lang.Automation_AutomationFocus_War;
                                     break;
                             }
 
+                            var buttonContent = new List<AbsRichBoxMember>(3);
+                            if (sprite != SpriteName.NO_IMAGE)
+                            {
+                                buttonContent.Add(new RbImage(sprite));
+                                buttonContent.Add(new RbSpace(0.5f));
+                            }
+                            buttonContent.Add(new RbText(caption));
+
                             var button = new ArtOption(automationFocus == focus,
-                                new List<AbsRichBoxMember>
-                                {
-                                    new RbText(caption),
-                                },
+                                buttonContent,
                                 new RbAction(() =>
                                 {
                                     automationFocus = focus;
@@ -2728,6 +2738,38 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case AutomationFocus.Military:
                                 content.newParagraph();
+
+
+                                //content.Add(new ArtOption(,
+                                //        new List<AbsRichBoxMember> {
+                                //        new RbImage(SpriteName.WarsArmy),
+                                //        new RbSpace(),
+                                //        new RbText(DssRef.lang.Conscript_Soldiers_ArmyType) },
+                                //                    new RbAction1Arg<bool>(guardTabClick, false, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_ArmyType_Description)));
+
+                                //content.Add(new ArtOption(,
+                                //        new List<AbsRichBoxMember> {
+                                //        new RbImage(SpriteName.WarsGuard),
+                                //        new RbSpace(),
+                                //        new RbText(DssRef.lang.Conscript_Soldiers_GuardType) },
+                                //                    new RbAction1Arg<bool>(guardTabClick, true, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
+
+                                armyTypeOption(SpriteName.WarsSoldierMan, DssRef.lang.Hud_Mixed, ArmyType.Mix);
+                                armyTypeOption(SpriteName.WarsArmy, DssRef.lang.Conscript_Soldiers_ArmyType, ArmyType.ArmyMen);
+                                armyTypeOption(SpriteName.WarsGuard, DssRef.lang.Conscript_Soldiers_GuardType, ArmyType.CityGuard);
+
+
+                                void armyTypeOption(SpriteName sprite, string caption, ArmyType armyType)
+                                {
+                                    content.Add(new ArtOption(warAutoArmyType == armyType,
+                                        new List<AbsRichBoxMember> {
+                                        new RbImage(sprite),
+                                        new RbSpace(0.5f),
+                                        new RbText(caption) },
+                                        new RbAction1Arg<ArmyType>((ArmyType selected)=> { warAutoArmyType = selected; }, armyType, RbSoundType.Option)));
+                                }
+                                
+
                                 HudLib.Label(content, DssRef.lang.CityAutomation_SoldierQuality);
                                 content.newLine();
                                 for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
@@ -2789,7 +2831,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     if (icon != SpriteName.NO_IMAGE)
                                     {
                                         buttonContent.Add(new RbImage(icon));
-                                        buttonContent.Add(new RbSpace());
+                                        buttonContent.Add(new RbSpace(0.5f));
                                     }
                                     buttonContent.Add(new RbText(caption, HudLib.SubOptionTextColor));
 

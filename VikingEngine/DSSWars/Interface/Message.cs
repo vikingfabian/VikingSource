@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Interface
         public static void Title(RichBoxContent content, string title)
         {
             content.Add(new RbBeginTitle(2));
-            content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+            content.Add(new RbImage(SpriteName.unitEmoteAlerted, 1, HudLib.InfoYellow_Light));
             content.space();
             content.Add(new RbText(title, Color.Yellow));
             content.newLine();
@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default))
                 { fillWidth = true });
 
-                Add(content, SoundLib.message_loud);
+                Add(content, SoundLib.eventResourceLow.Play());
             }
         }
 
@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, mapObj, RbSoundType.Default))
             { fillWidth = true });
 
-            Add(content, SoundLib.netMessage);
+            Add(content, SoundLib.recievedGift.Play());
         }
         public void armyLowFoodMessage(Army army)
         {
@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default))
                 { fillWidth = true });
 
-                Add(content, SoundLib.message_loud);
+                Add(content, SoundLib.eventResourceLow.Play());
             }
         }
 
@@ -263,13 +263,13 @@ namespace VikingEngine.DSSWars.Interface
             Add(content, null);
         }
 
-        public void Add(string title, string text)
+        public void Add(string title, string text, SoundContainerBase sound)
         {
             RichBoxContent content = new RichBoxContent();
             Title(content, title);
             content.text(text);
 
-            Add(content, SoundLib.message_loud);
+            Add(content, sound);
         }
         public void Add(RichBoxContent content)
         {

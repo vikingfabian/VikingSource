@@ -150,6 +150,7 @@ namespace VikingEngine.DSSWars.Conscript
             int allItems(int unitCount, CommitOption commit)
             {
                 FindMin_Int available = new FindMin_Int();
+               // ItemResourceType manType = me.profile.man == ItemResourceType.Men? ItemResourceType.ImmigrantsOrWorkers : me.profile.man;
                 available.Next(payItem(me.profile.man, perUnitCount.menPerUnit, unitCount, commit));
 
                 available.Next(payItem(me.profile.weapon, perUnitCount.weaponsPerUnit, unitCount, commit));

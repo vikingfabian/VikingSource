@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,60 @@ namespace VikingEngine.DSSWars.Battle
 {
     class SoldierBattleData
     {
+        static readonly object _poolLock = new object();
+        static readonly List<SoldierBattleData> _pool = new(256);
+
+        public static int PoolCount
+        {
+            get
+            {
+                lock (_poolLock)
+                {
+                    return _pool.Count;
+                }
+            }
+        }
+
+        public static SoldierBattleData Rent(AbsSoldierUnit parent)
+        {
+            SoldierBattleData data;
+            lock (_poolLock)
+            {
+                if (_pool.Count > 0)
+                {
+                    int lastIndex = _pool.Count - 1;
+                    data = _pool[lastIndex];
+                    _pool.RemoveAt(lastIndex);
+                }
+                else
+                {
+                    data = new SoldierBattleData();
+                }
+            }
+            data.Init(parent);
+            return data;
+        }
+
+        public static void Return(SoldierBattleData data)
+        {
+            if (data != null)
+            {
+                data.Reset();
+                lock (_poolLock)
+                {
+                    _pool.Add(data);
+                }
+            }
+        }
+
+        public static void ClearPool()
+        {
+            lock (_poolLock)
+            {
+                _pool.Clear();
+            }
+        }
+
         static readonly float MaxPushLength = DssConst.Men_StandardWalkingSpeed * 5;
 
         static Physics.CircleBound ParentBound = new CircleBound(), OtherBound = new CircleBound();
@@ -29,11 +83,47 @@ namespace VikingEngine.DSSWars.Battle
         int blocks;
         GameTimeStamp lastBlockTime;
 
+        public SoldierBattleData()
+        {
+        }
+
         public SoldierBattleData(AbsSoldierUnit parent)
         {
-            maxBlock = parent.soldierData.MaxBlockCount();
-            blocks = maxBlock;
+            Init(parent);
+        }
+
+        public void Init(AbsSoldierUnit parent)
+        {
+            if (parent != null)
+            {
+                maxBlock = parent.soldierData.MaxBlockCount();
+                blocks = maxBlock;
+            }
+            else
+            {
+                maxBlock = 0;
+                blocks = 0;
+            }
             lastBlockTime = GameTimeStamp.Now();
+            queueTime = 0;
+            collisionForce = Vector2.Zero;
+            lock (nearBodyCollisionUnits)
+            {
+                nearBodyCollisionUnits.Clear();
+            }
+        }
+
+        public void Reset()
+        {
+            queueTime = 0;
+            collisionForce = Vector2.Zero;
+            maxBlock = 0;
+            blocks = 0;
+            lastBlockTime = default;
+            lock (nearBodyCollisionUnits)
+            {
+                nearBodyCollisionUnits.Clear();
+            }
         }
 
         public bool spendBlock()

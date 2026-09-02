@@ -212,11 +212,7 @@ namespace VikingEngine.PJ.CarBall
             {
                 Car goalMaker = field.leftHalf ? lastTouchRightTeam : lastTouchLeftTeam;
                 goalMaker?.onMadeGoal();
-                //if (goalMaker != null)
-                //{
-                //    goalMaker.gamer.goals++;
-                //}
-
+                
                 cballRef.state.onGoal(field);
 
                 cballRef.sounds.airhorn.PlayFlat();

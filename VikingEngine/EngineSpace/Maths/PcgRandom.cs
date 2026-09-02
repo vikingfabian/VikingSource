@@ -184,6 +184,19 @@ namespace VikingEngine
             return (byte)Uint(byte.MaxValue);
         }
 
+        public IntVector2 intvector2(IntVector2 exMax)
+        {
+            return new IntVector2(
+                (int)(Uint() * UintDiv * exMax.X),
+                (int)(Uint() * UintDiv * exMax.Y));
+        }
+
+
+        public uint Uint_LowDisp()
+        {
+            return Math.Min(Uint(), Uint());
+        }
+
         public uint Uint()
         {
             ulong oldState = state;
@@ -249,6 +262,13 @@ namespace VikingEngine
             return (float)(result * UintDiv * diff) + min;/// (double)uint.MaxValue) * diff + min;
         }
 
+        public float Float_LowDisp(float min, float exMax)
+        {
+            float diff = exMax - min;
+            var result = Uint_LowDisp();
+            return (float)(result * UintDiv * diff) + min;
+        }
+
         override public bool Chance(double chance)
         {
             return Double() <= chance;
@@ -271,6 +291,10 @@ namespace VikingEngine
         override public float Plus_MinusF(float range)
         {
             return (float)(-range + 2.0 * range * Double());
+        }
+        public double Plus_MinusD(double range)
+        {
+            return -range + 2.0 * range * Double();
         }
 
         public float Plus_MinusPercent(float center, float percRange)

@@ -32,6 +32,15 @@ namespace VikingEngine.Graphics
         {
             pixels = new Color[texureSize.X * texureSize.Y];
         }
+        public PixelTexture(Texture2D sourceTexture)
+        : base(sourceTexture.GraphicsDevice, sourceTexture.Width, sourceTexture.Height)
+        {
+            pixels = new Color[sourceTexture.Width * sourceTexture.Height];
+
+            sourceTexture.GetData(pixels);
+
+            this.SetData(pixels);
+        }
         public bool InBound(IntVector2 pos)
         {
             return pos.X >= 0 && pos.X < Width &&
@@ -53,6 +62,24 @@ namespace VikingEngine.Graphics
             pixels[x + y * Width] = col;
         }
 
+        public Color GetPixel(int x, int y)
+        {
+            return pixels[x + y * Width];
+        }
+
+        public bool TryGetPixel(int x, int y, out Color color)
+        {
+            if (x >= 0 && x < Width &&
+                y >= 0 && y < Height)
+            {
+                color = pixels[x + y * Width];
+                return true;
+            }
+
+            color = ColorExt.Empty;
+            return false;
+        }
+
         public void SetTwoPixels(IntVector2 pos, Color col1, Color col2)
         {
             int index = pos.X + pos.Y * Width;
@@ -68,6 +95,11 @@ namespace VikingEngine.Graphics
         {
             this.pixels = pixels;
             base.SetData(pixels);
+        }
+
+        public void PullPixelsFromTexture()
+        {
+            GetData(pixels);
         }
 
         public void ClearPixelArray(Color color)

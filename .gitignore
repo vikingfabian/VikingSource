@@ -3,3 +3,8 @@ obj
 /.vs
 /VikingEngine/Content/DSS/PlayMap
 /VikingEngine/VikingEngine-linux-x64.tar.gz
+/VikingBuilder/Assets/DSS/PlayMap/demomap4.sav
+/VikingBuilder/Assets/DSS/PlayMap/demomap5.sav
+/VikingEngine/Content
+
+*.user

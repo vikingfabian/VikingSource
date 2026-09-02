@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,12 +71,12 @@ namespace VikingEngine.Engine
         {
             if (PlatformSettings.DebugPerformanceText)
             {
-                int gccount = Debug.GarbageCollectionCount();
+                DebugExtensions.MemoryOverlay.Instance.UpdateOneSecond();
 
-                Engine.Draw.DebugUpdateTimeText = Convert.ToString(frameCount) +
+                Engine.Draw.DebugUpdateTimeText = Convert.ToString(frameCount) + " FPS " +
                     "(r" + Convert.ToString(renderTimePeak) +
                     ", u" + Convert.ToString(updateTimePeak) + 
-                    "), GC colls:" + gccount.ToString() + ", GC alo:" + TextLib.FileSizeText(GC.GetTotalMemory(false));
+                    ") | " + DebugExtensions.MemoryOverlay.Instance.FormattedText;
             }
             frameCount = 0;
             updateTimePeak = 0;

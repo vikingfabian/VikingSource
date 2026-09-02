@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -215,7 +216,7 @@ namespace VikingEngine.Engine
 #if PCGAME
             if (Ref.steam.isInitialized)
             {
-                string gamerTag = Valve.Steamworks.SteamAPI.SteamFriends().GetPersonaName();
+                string gamerTag = SteamFriends.GetPersonaName();//Valve.Steamworks.SteamAPI.SteamFriends().GetPersonaName();
 
                 if (fontsafe != LoadedFont.NUM_NON)
                 {

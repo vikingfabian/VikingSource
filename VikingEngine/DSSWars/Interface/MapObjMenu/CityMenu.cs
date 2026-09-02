@@ -46,23 +46,27 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             CityTabs = new List<MenuTab>() {
                 MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket,
-                MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Defence, MenuTab.Progress,
+                MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Reassign, 
+                MenuTab.Defence, 
+                MenuTab.Progress,
                 MenuTab.Tag};
 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
             {
                 CityTabs.Insert(1, MenuTab.God_Recruit);
             }
-            else
-            {
-                CityTabs.Add(MenuTab.Help);
-            }
+            //else
+            //{
+            //    CityTabs.Add(MenuTab.Help);
+            //}
         }
 
-        public MapObjMenu(LocalPlayer player, City city, RichBoxContent content)
+        public MapObjMenu(LocalPlayer player, City city, RichBoxContent content, out RichBoxContent secondMenuContent)
         {
             this.player = player;
             this.city = city;
+            mapObj = city;
+            secondMenuContent = null;
 
             if (!DssRef.storage.ruleset_instance.centralGold)
             {
@@ -163,6 +167,10 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                     case MenuTab.Defence:
                         defenceTab(content);
+                        break;
+
+                    case MenuTab.Reassign:
+                        ResassignTab(content, out secondMenuContent);
                         break;
 
                     case MenuTab.Delivery:
@@ -432,7 +440,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+            content.Add(new RbImage(SpriteName.WarsBuild_TreeApple));
             content.space();
             content.Add(new RbText(DssRef.lang.Help_Food_DontBuild));
 
@@ -496,7 +504,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     {
                         player.progressSubTab = resourcesSubTab;
                     }, workSubTab, RbSoundType.Tab), new RbTooltip_Text(description));
-                //subTab.setGroupSelectionColor(HudLib.RbSettings, player.progressSubTab == workSubTab);
+                
                 content.Add(subTab);
                 //content.space();
             }
@@ -848,7 +856,12 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                             new List<AbsRichBoxMember> { new RbImage(groupIcon) },
                             new RbAction1Arg<ResourcesSubTab>((resourcesSubTab) =>
                             {
+                                if (player.resourcesSubTab.managementType != resourcesSubTab.managementType)
+                                {   
+                                    SoundLib.SubTab(resourcesSubTab.managementType);
+                                }
                                 player.resourcesSubTab = resourcesSubTab;
+
                             }, tab, RbSoundType.Option),
                             new RbTooltip(resourceTabToolTip, tab)));
                         
@@ -1385,7 +1398,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         Automation,
         Disband,
         Divide,
-        Filter,
+        Reassign,
         Progress,
         Mix,
         Help,

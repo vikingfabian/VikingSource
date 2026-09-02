@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -906,7 +906,7 @@ namespace VikingEngine.DSSWars
                                 new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city, RbSoundType.Default))
                             { fillWidth = true });
 
-                            localplayer.hud.messages.Add(content);
+                            localplayer.hud.messages.Add(content, SoundLib.eventLost.Play());
                         }
                     }));
                 }
@@ -1246,6 +1246,8 @@ namespace VikingEngine.DSSWars
                 DssRef.state.events.onFactionDestroyed(this);
                 DssRef.world.diplomacy.onFactionDeath(this.pfaction);
 
+                ClearModels();
+
                 if (factiontype == FactionType.Player)
                 {
                     DssRef.state.events.onPlayerDeath();
@@ -1255,7 +1257,7 @@ namespace VikingEngine.DSSWars
                 {
                     Debug.CrashIfThreaded();
                     var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionDeath, PacketReliability.Reliable);
-;                   pfaction.write(w);
+                    pfaction.write(w);
                 }
             }
         }
@@ -1356,6 +1358,22 @@ namespace VikingEngine.DSSWars
                 return tempColor;
 
             return sp_flag.col0_Main;            
+        }
+
+        public void Colors(out Color main, out Color second)
+        {
+            if (player != null)
+            {
+                var sp_flag = player.profile.flag;
+                if (sp_flag != null)
+                {
+                    main = sp_flag.col0_Main;
+                    second = sp_flag.col1_Detail1;
+                    return;
+                }
+            }
+            main = tempColor;
+            second = tempColor;
         }
 
         public List<Faction> CollectWars()

@@ -277,6 +277,10 @@ namespace VikingEngine
         EditorToolPencil,
         EditorToolReColorPencil,
 
+        EditorToolOptionAdd,
+        EditorToolOptionRemove,
+        EditorToolOptionToggle,
+
 
         IconSandGlass,
         LfClosedLock,
@@ -2957,6 +2961,10 @@ namespace VikingEngine
         WarsFlagType_FlagLarge,
         WarsFlagType_Streamer,
         WarsFlagType_Triangle,
+
+        WarsTextureGroupSquare,
+        WarsTextureGroupSquareMelee,
+
 
         WarsResource_PaddedArmor,
         WarsResource_HeavyPaddedArmor,

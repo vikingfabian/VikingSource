@@ -8,9 +8,9 @@ namespace VikingEngine.DSSWars
 {
     static class StartupSettings 
     {
-        public static string LeaderboardVersion = "apr2026";
-        public static bool LeaderboardInBeta = PlatformSettings.DevBuild ? false :
-           false; //RETAIL
+        public static string LeaderboardVersion = "aug2026";
+        public static bool LeaderboardInBeta = PlatformSettings.DevBuild ? true :
+           true; //RETAIL
 
         //public static bool AutoStartLevel = false;
 
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars
         public static bool EndlessResources = PlatformSettings.DevBuild ? true : 
             false;//DO NOT CHANGE    
 
-        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
+        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? true :
             false;//DO NOT CHANGE
 
         public static bool UnlockAllProgress = PlatformSettings.DevBuild ? true :

@@ -499,6 +499,12 @@ namespace VikingEngine
             add(SpriteName.ButtonRZ, 2, 2);
             add(SpriteName.ButtonLZ, 2, 2);
                         
+            currentIndex = numTilesWidth * 19;
+            {
+                add(SpriteName.EditorToolOptionAdd);
+                add(SpriteName.EditorToolOptionRemove);
+                add(SpriteName.EditorToolOptionToggle);
+            }
 
             //BIRD TILES
             currentIndex = numTilesWidth * 24;
@@ -3012,7 +3018,8 @@ namespace VikingEngine
                     currentIndex += 4;
                     addWithSizeDef(SpriteName.cmdTutVideo_BoardTile, currentIndex, 48, 48);
 
-                    
+                    addWithSizeDef(SpriteName.WarsTextureGroupSquare, currentIndex, 64, 48);
+                    addWithSizeDef(SpriteName.WarsTextureGroupSquareMelee, currentIndex, 64, 48);
                 }
             }
 

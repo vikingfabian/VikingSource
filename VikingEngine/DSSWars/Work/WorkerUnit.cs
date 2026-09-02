@@ -637,8 +637,9 @@ namespace VikingEngine.DSSWars.Work
             args.content.newLine();
             ownerToHud(args, false);
         }
-        public override void toHud(ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args, out RichBoxContent secondMenuContent)
         {
+            secondMenuContent = null;
             WorkerStatus status = parentMapObject.getWorkerStatus(myIndex);
             WorkerPresentationHud(args, false);
             //args.content.h2(Name(out _)).overrideColor = Color.LightYellow;

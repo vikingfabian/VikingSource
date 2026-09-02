@@ -188,11 +188,11 @@ namespace VikingEngine.DSSWars.Map
         {
             IntVector2 pos = IntVector2.Zero;
 
-            Sprite topTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
-            Sprite sideTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
+            Sprite topTex = Sprite.FromName(SpriteName.WhiteArea_LFtiles);
+            Sprite sideTex = Sprite.FromName(SpriteName.WhiteArea_LFtiles);
 
-            Sprite citytopTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
-            Sprite citysideTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
+            Sprite citytopTex = Sprite.FromName(SpriteName.WhiteArea_LFtiles);
+            Sprite citysideTex = Sprite.FromName(SpriteName.WhiteArea_LFtiles);
 
             //List<Graphics.PolygonColor> billboards = new List<PolygonColor>();
             List<Graphics.PolygonColor> polygons = new List<PolygonColor>();

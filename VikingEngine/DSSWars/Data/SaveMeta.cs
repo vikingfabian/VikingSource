@@ -19,14 +19,17 @@ namespace VikingEngine.DSSWars.Data
     {
         const int Version = 3;
 
-        const int SaveStateCount = 10;
-        const int AutoSaveCount = 10;
+        //const int SaveStateCount = 10;
+        //const int AutoSaveCount = 10;
+        const int saveCount = 10;
         public const string ImportSaveFolder = "Import Save";
-        SaveIterations saves = new SaveIterations(SaveStateCount);
-        SaveIterations autosaves = new SaveIterations(AutoSaveCount);
-       
+        public const string ImportHeightMap = "Height Map";
+        SaveIterations saves;
+        SaveIterations autosaves;
+
 
         DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
+        DataStream.FilePath heightmapSavePath = new DataStream.FilePath(ImportHeightMap, null, null);
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
         public GameOverResultCollection gameOverResultCollection = null;
@@ -38,6 +41,8 @@ namespace VikingEngine.DSSWars.Data
         public void CreateImportFolders()
         {
             System.IO.Directory.CreateDirectory(importSavePath.CompleteDirectory);
+            System.IO.Directory.CreateDirectory(heightmapSavePath.CompleteDirectory);
+
         }
 
         public List<string> ListSaveImports()
@@ -54,6 +59,45 @@ namespace VikingEngine.DSSWars.Data
 
             return list;
         }
+
+        public List<string> ListHeightMaps()
+        {
+            var files = System.IO.Directory.GetFiles(heightmapSavePath.CompleteDirectory);
+            List<string> list = new List<string>();
+
+            // The image formats MonoGame can load at runtime
+            //string[] validExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tif", ".tiff", ".dds" };
+
+            foreach (var f in files)
+            {
+                // Extract the extension and make it lowercase for safe comparison
+                string extension = System.IO.Path.GetExtension(f).ToLower();
+
+                if (System.Array.Exists(VikingEngine.StreamLib.ValidTextureExtensions, ext => ext == extension))
+                {
+                    list.Add(f);
+                }
+            }
+
+            return list;
+        }
+
+        public SaveMeta()
+        {
+            saves = new SaveIterations(saveCount);
+            autosaves = new SaveIterations(saveCount);
+        }
+
+        //public int SaveCount
+        //{
+        //    get { return saveCount; }
+        //    set
+        //    {
+        //        saveCount = value;
+        //        saves.AdjustLength(saveCount);
+        //        autosaves.AdjustLength(saveCount);
+        //    }
+        //}
 
         public void Save(IStreamIOCallback callBack)
         {
@@ -150,6 +194,8 @@ namespace VikingEngine.DSSWars.Data
         {
             w.Write(Version);
 
+            //w.Write(saveCount);
+
             saves.write(w);
 
             autosaves.write(w); 
@@ -168,29 +214,24 @@ namespace VikingEngine.DSSWars.Data
                 fileCheck.start(version, Version);
                 if (version > Version) { return; }
 
-                //if (version == 1)
+                //if (version >= 4)
                 //{
-                //    if (r.ReadBoolean())
-                //    {
-                //        var state = new SaveStateMeta(r);
-                //        if (state.stateVersion == SaveGamestate.Version)
-                //        {
-                //            saves.saves[0] = state;
-                //        }
-                //    }
+                //    saveCount = r.ReadInt32();
                 //}
-                //else
-                //{
-                    saves.read(r, version);
-                    autosaves.read(r, version);
 
-                    if (version >= 3)
-                    { 
-                        clientSaves.read(r, version);
+                //saves = new SaveIterations(saveCount);
+                //autosaves = new SaveIterations(saveCount);
 
-                        Debug.ReadCheck(r);
-                    }
-                //}
+                saves.read(r, version);
+                autosaves.read(r, version);
+
+                if (version >= 3)
+                { 
+                    clientSaves.read(r, version);
+
+                    Debug.ReadCheck(r);
+                }
+
                 fileCheck.end();
             }
             catch (Exception e)
@@ -200,6 +241,8 @@ namespace VikingEngine.DSSWars.Data
 
             IOLib.fileCheck_savemeta = fileCheck;
         }
+
+        
     }
 
     class SaveIterations
@@ -210,6 +253,19 @@ namespace VikingEngine.DSSWars.Data
         public SaveIterations(int length)
         {
             saves = new SaveStateMeta[length];
+        }
+
+        public void AdjustLength(int length)
+        {
+            if (length != saves.Length)
+            {
+                SaveStateMeta[] newSaves = new SaveStateMeta[length];
+                for (int i = 0; i < saves.Length && i < newSaves.Length; i++)
+                {
+                    newSaves[i] = saves[i];
+                }
+                saves = newSaves;
+            }
         }
 
         public void AddSave(SaveStateMeta save)

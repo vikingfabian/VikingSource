@@ -35,7 +35,7 @@ namespace VikingEngine
 
         public static readonly bool Debug_SteamAPI = true;
 
-        public static readonly bool Debug_SteamStats = false;
+        public static readonly bool Debug_SteamStats = true;
 
         public static readonly bool Debug_AllowDisconnect = false;
 
@@ -51,7 +51,7 @@ namespace VikingEngine
 
         const bool Debug_BlueScreen = false;
 
-        const bool Debug_DebugWindow = false;
+        private static readonly bool Debug_DebugWindow = false;//true;
 
         const bool Debug_ViewSlowDown = true;
 
@@ -140,7 +140,7 @@ namespace VikingEngine
         /// </summary>
         const bool LockedToFalse = false;
 
-        public static readonly bool DevBuild = DebugLevel <= BuildDebugLevel.DebugDemo;
+        public static readonly bool DevBuild = DebugLevel <= BuildDebugLevel.Dev;
 
         public static readonly bool ReleaseBuild = DebugLevel > BuildDebugLevel.DebugDemo;
 

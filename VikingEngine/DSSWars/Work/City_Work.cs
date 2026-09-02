@@ -116,7 +116,19 @@ namespace VikingEngine.DSSWars.GameObject
                 cityExperienceLevels = SkillCollector.ExportData();
                 
                 int workTeamGoalCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
-                int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount/* + 1*/);
+                int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount);
+
+                if (exitCount > 0 && immigrants.value > WorkTeamSize)
+                {
+                    int spendImmigrantTeams = (int)(immigrants.value / WorkTeamSize);
+                    if (spendImmigrantTeams > exitCount)
+                    {
+                        spendImmigrantTeams = exitCount;
+                    }
+
+                    immigrants.value = -spendImmigrantTeams * WorkTeamSize;
+                    exitCount -= spendImmigrantTeams;
+                }
 
                 if (myIndex == 383)
                 {
@@ -178,12 +190,12 @@ namespace VikingEngine.DSSWars.GameObject
                         ++idleCount;
                     }
                 }
-                else if (exitCount > 0)//workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)
+                else if (exitCount > 0)
                 {
-                    if (myIndex == 54)
-                    {
-                        lib.DoNothing();
-                    }
+                    //if (myIndex == 54)
+                    //{
+                    //    lib.DoNothing();
+                    //}
 
                     findLowXpWorkers();
                 }

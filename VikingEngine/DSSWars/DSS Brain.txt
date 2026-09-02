@@ -3,8 +3,20 @@ Change log:
 * 
 
 KNOWN ISSUES
+x reassign dont work with controller
+x translate
+x hide achievements
+X timeline checkbox on steamworks
+
+
+#MAP 2.0
+* Cubic far group models
+
+## QoL ##
+
 
 ##ICONS TODO
+* all cities icon
 * gray rounded button
 
 #MOUNTED TODO

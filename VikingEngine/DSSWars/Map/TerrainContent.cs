@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using VikingEngine.DSSWars.Map.Settings;
@@ -38,26 +38,26 @@ namespace VikingEngine.DSSWars.Map
 
     class TerrainContent
     {
-        public const int OrchardSproutMaxSize = 6;
-        public const int OrchardPlucked = OrchardSproutMaxSize + 1;
-        public const int OrchardWatered = OrchardPlucked + 1;
-        public const int OrchardReady = OrchardPlucked + 6;
-        public const int OrchardMax = OrchardReady + 1;
+        public const byte OrchardSproutMaxSize = 6;
+        public const byte OrchardPlucked = OrchardSproutMaxSize + 1;
+        public const byte OrchardWatered = OrchardPlucked + 1;
+        public const byte OrchardReady = OrchardPlucked + 6;
+        public const byte OrchardMax = OrchardReady + 1;
 
 
-        public const int SproutMaxSize = 5;
-        public const int TreeMaxSize = 100;
-        public const int TreeReadySize = 50;
+        public const byte SproutMaxSize = 5;
+        public const byte TreeMaxSize = 100;
+        public const byte TreeReadySize = 50;
 
         //public const int DryWoodSize = 20;
 
-        public const int FarmCulture_Empty = 0;
-        public const int FarmCulture_MaxSize = 5;        
-        public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
-        public const int FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
+        public const byte FarmCulture_Empty = 0;
+        public const byte FarmCulture_MaxSize = 5;        
+        public const byte FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
+        public const byte FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
 
-        public const int DryingSaltPanMax = 5;
-        public const int DryingSaltPanReady = DryingSaltPanMax -1;
+        public const byte DryingSaltPanMax = 5;
+        public const byte DryingSaltPanReady = DryingSaltPanMax -1;
 
 
         // Birds

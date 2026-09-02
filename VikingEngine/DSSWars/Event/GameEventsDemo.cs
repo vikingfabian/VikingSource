@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars.Event
 
         protected void endPreWarningMessage()
         {
-            DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, string.Format( DssRef.lang.Demo_EndInXMinuteDescription, 15));
+            DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, string.Format( DssRef.lang.Demo_EndInXMinuteDescription, 15), SoundLib.forYourInformation);
         }
 
         void onDemoVictory(bool victory)
@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.Event
 
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
-                    DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_Complete_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
+                    DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_Complete_Title, DssRef.lang.Demo_EndInOneMinuteDescription, SoundLib.forYourInformation);
                     new Timer.TimedAction3ArgTrigger_InGame<GameEndReason, VictoryType, MatchResult>(triggerGameEnd, victory? GameEndReason.Victory : GameEndReason.Defeat, VictoryType.None, null, TimeExt.MinuteInSeconds * 1f);
                 }));
             }

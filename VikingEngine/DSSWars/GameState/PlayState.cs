@@ -25,6 +25,7 @@ using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
@@ -397,6 +398,12 @@ namespace VikingEngine.DSSWars
         {
             base.onGameStart(newGame);
 
+#if DEBUG
+            //MoveCostLayer moveCostLayers = new MoveCostLayer(DssRef.world);
+            //moveCostLayers.Test();
+#endif
+
+
             updateMouseVisible();
             Ref.music.OnGameStart();
 
@@ -468,7 +475,7 @@ namespace VikingEngine.DSSWars
             initPathFindingThreads();
 
             isReady = true;
-            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
+            AutoSaveTimeStamp.setNow();
             events.onGameStarted();
 
             if ((newGame && LocalHost().IntutorialMode()) == false)
@@ -647,8 +654,8 @@ namespace VikingEngine.DSSWars
             Engine.ParticleHandler.Update(time);
         }
 
-        const float AutoSaveTimeSec = 15 * TimeExt.MinuteInSeconds;
-        float LastAutoSaveTime_TotalSec = 0;
+        //float AutoSaveTimeSec = DssRef.storage.autoSaveInterval_Minutes * TimeExt.MinuteInSeconds;
+        TimeStamp AutoSaveTimeStamp;
 
 
         void setPlayerNetState(PlayerNetState netState)
@@ -674,7 +681,9 @@ namespace VikingEngine.DSSWars
 
                         if (local.gameControls.input.Menu.DownEvent)
                         {
-                            menuSystem.pauseMenu();
+                            //menuSystem.pauseMenu();
+                            menuSystem.openAndReturnToStack();
+                            
                         }
 
                         if (local.playerData.LostController)
@@ -722,7 +731,7 @@ namespace VikingEngine.DSSWars
 
             if (host && DssRef.storage.autoSave && 
                 DssRef.storage.runTutorial == false &&
-                Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
+                AutoSaveTimeStamp.minPassed(DssRef.storage.autoSaveInterval_Minutes))//Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
             {
                 AutoSave();
             }            
@@ -744,7 +753,7 @@ namespace VikingEngine.DSSWars
                     new SaveScene(true);
                 }
             }
-            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
+            AutoSaveTimeStamp.setNow();
         }
                 
 

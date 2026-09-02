@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Players.Profile;
@@ -91,7 +92,7 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleDotted, Engine.LoadContent.ModelPath + "SelectCircleDotted");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleSolid, Engine.LoadContent.ModelPath + "SelectCircleSolid");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleThick, Engine.LoadContent.ModelPath + "SelectCircleThick");
-            EffectVertexColorShadow.LoadContent();
+            //EffectVertexColorShadow.LoadContent();
             part++;
 
             SoundLib.LoadContent();
@@ -220,6 +221,8 @@ namespace VikingEngine.DSSWars
                 //        }
                 //    }
                 //}
+
+                
 #endif
 
                 //if (Ref.netSession.InMultiplayerSession)

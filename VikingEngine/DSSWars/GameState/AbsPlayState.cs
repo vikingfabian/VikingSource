@@ -1,4 +1,5 @@
-﻿using System;
+using Steamworks;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,7 @@ namespace VikingEngine.DSSWars.GameState
         public AbsPlayState() 
             :base() 
         {
+            
             remotePlayers = new SpottedArray<Players.RemotePlayer>();
             remotePlayersCounter = new SpottedArrayCounter<RemotePlayer>(remotePlayers);
 
@@ -365,10 +367,12 @@ namespace VikingEngine.DSSWars.GameState
                     end = DssRef.world.factions.Count - 1;
                 }
                 pathUpdates[i] = new PathUpdateThread(i, startIx, end);
+                //pathUpdates[i].PreallocatePools(1, 1);
                 startIx = end + 1;
             }
             pathUpdates[count] = new PathUpdateThread_Player(count);
-
+            //pathUpdates[count].PreallocatePools(1, 1);
+            DssRef.world.PreallocatePools(count, count);
         }
 
         public void updateMouseVisible()
@@ -384,6 +388,19 @@ namespace VikingEngine.DSSWars.GameState
             Ref.music.stop(true);
             exitThreads = true;
             DssRef.ambience.gameEnd();
+
+            DssRef.world.ClearPools();
+                
+            Battle.SoldierBattleData.ClearPool();
+
+            if (DssRef.world?.factions != null)
+            {
+                var factionsC = DssRef.world.factions.counter();
+                while (factionsC.Next())
+                {
+                    factionsC.sel?.ClearModels();
+                }
+            }
 
             if (cutScene is EndScene)
             {

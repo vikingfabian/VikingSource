@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Event
 
         protected void onDemoTimeUp()
         {
-            DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
+            DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, DssRef.lang.Demo_EndInOneMinuteDescription, SoundLib.forYourInformation);
             new Timer.TimedAction3ArgTrigger_InGame<GameEndReason, VictoryType, MatchResult>(triggerGameEnd, GameEndReason.TimesUp, VictoryType.None, null, TimeExt.MinuteInSeconds * 1f);
         }
 
@@ -576,7 +576,7 @@ namespace VikingEngine.DSSWars.Event
                             mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_LevelMaster);
                             mainArmy.setAsStartArmy();
 
-                            p.hud.messages.Add(DssRef.lang.EventMessage_DarkHordeKiller_Title, DssRef.lang.EventMessage_DarkHordeKiller_Message);
+                            p.hud.messages.Add(DssRef.lang.EventMessage_DarkHordeKiller_Title, DssRef.lang.EventMessage_DarkHordeKiller_Message, SoundLib.goodNews);
 
                             DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.barbarian_bane_any, AchievementIndex.barbarian_bane_100);
                         }
@@ -715,7 +715,7 @@ namespace VikingEngine.DSSWars.Event
             if (storyevent != null)
             {
                 DssRef.state.localPlayers[0].hud.messages.Add(
-                        "Test event", storyevent.StoryEventType().ToString());
+                        "Test event", storyevent.StoryEventType().ToString(), null);
                 storyevent.TriggerNow();
                 //checkTime.start(1);
                 //triggerTime.start(2);

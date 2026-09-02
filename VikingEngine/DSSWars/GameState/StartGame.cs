@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Generate;
@@ -24,6 +25,10 @@ namespace VikingEngine.DSSWars
         public AbsStartPlayState()
             :base(false)
         {
+            if (Ref.steam.isInitialized)
+            {
+                SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_LoadingScreen);
+            }
             loadingStatusText = new Graphics.TextG(LoadedFont.Regular,
                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
                new Vector2(Engine.Screen.TextSize * 2f),
@@ -97,7 +102,7 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.storage.runTutorial = false;
                 }
-                                    
+
                 switch (DssRef.difficulty.setting_gameMode)
                 {
                     case GameModeMainType.FullStory:
@@ -168,7 +173,7 @@ namespace VikingEngine.DSSWars
                 if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
                     if (DssRef.storage.runTutorial)
-                    { 
+                    {
                         DssRef.stats.startTutorial.addOne();
                     }
                     else if (PlatformSettings.STEAM_DEMO)
@@ -206,6 +211,10 @@ namespace VikingEngine.DSSWars
                         DssRef.stats.startNew_MapHuge.addOne();
                         break;
                 }
+            }
+            else
+            {
+                SoundLib.loading.Play();
             }
 
             Ref.lobby.startSearchLobbies(false);

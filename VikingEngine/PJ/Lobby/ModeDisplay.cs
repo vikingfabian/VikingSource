@@ -125,17 +125,17 @@ namespace VikingEngine.PJ.Lobby
 
             mode.SetSpriteName(modeImageTile);
 
-            bool canPlay;
-            lobby.canViewMode(PjRef.storage.Mode, out canPlay);
+            //bool canPlay;
+            lobby.canViewMode(PjRef.storage.Mode);
 
-            bool lockedContent = !canPlay;
+            //bool lockedContent = !canPlay;
 
-            if (PlatformSettings.DebugLevel <= BuildDebugLevel.ShowDemo)
-            {
-                lockedContent = false;
-            }
+            //if (PlatformSettings.DebugLevel <= BuildDebugLevel.ShowDemo)
+            //{
+             bool lockedContent = false;
+            //}
 
-            bool viewDlc = lockedContent && !PjRef.hasAllContentDLC;
+            bool viewDlc = lockedContent;
 
             mode.Opacity = viewDlc? 0.5f : 1f;
             lockIcon.Visible = viewDlc;
