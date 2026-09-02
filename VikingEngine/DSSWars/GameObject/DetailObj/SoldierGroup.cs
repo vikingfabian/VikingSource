@@ -2029,7 +2029,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //lock (DssRef.state.pathFindingPool)
                 //{
-                    DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(path);
+                    DssRef.world.pathFindingPool.Return(path);
                     path = null;
                 //}
             }
@@ -2038,7 +2038,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //lock (DssRef.state.detailPathFindingPool)
                 //{
-                DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.Return(detailPath);
+                DssRef.world.detailPathFindingPool.Return(detailPath);
                     detailPath = null;
                 //}
             }
@@ -2423,11 +2423,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             recyclePath(true, false, pathThreadIndex);
 
-            PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
+            PathFinding pf = DssRef.world.pathFindingPool.GetPf();
             { 
                 path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), WP.ToTilePos( goalWp), isShip);
             }
-            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
+            DssRef.world.pathFindingPool.Return(pf);
         }
 
 
@@ -2446,12 +2446,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             recyclePath(false, true, pathThreadIndex);
 
-            DetailPathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetPf();
+            DetailPathFinding pf = DssRef.world.detailPathFindingPool.GetPf();
             {
-                detailPath = pf.FindPath(pathThreadIndex, WP.ToSubTilePos(position), rotation, goal,
+                detailPath = pf.FindPath(WP.ToSubTilePos(position), rotation, goal,
                     isShip, tArmy.walkGoalAsShip, isTravelNode);
             }
-            DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.Return(pf);
+            DssRef.world.detailPathFindingPool.Return(pf);
 
             var detailPath_sp = detailPath;
 

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using VikingEngine.LootFest.Map;
+﻿
+
+using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DSSWars.Map.Path3
 {
@@ -105,6 +99,19 @@ namespace VikingEngine.DSSWars.Map.Path3
         {
             return position.X >= 0 && position.X < size.X &&
                 position.Y >= 0 && position.Y < size.Y;
+        }
+
+        public static IntVector2 WpToLay4(Vector3 wp)
+        { 
+            return new IntVector2(
+                wp.X * WorldData.TileSubDivitions / MoveCostLayer.Layer4TileWidth, 
+                wp.Z * WorldData.TileSubDivitions / MoveCostLayer.Layer4TileWidth);
+        }
+        public static IntVector2 WpToLay2(Vector3 wp)
+        {
+            return new IntVector2(
+                wp.X * WorldData.TileSubDivitions / MoveCostLayer.Layer2TileWidth, 
+                wp.Z * WorldData.TileSubDivitions / MoveCostLayer.Layer2TileWidth);
         }
     }
 
