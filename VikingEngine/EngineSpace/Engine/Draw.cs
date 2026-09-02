@@ -499,14 +499,7 @@ namespace VikingEngine.Engine
                         uploadedBytes: uploadedBytes
                     );
 
-                    spriteBatch.Begin(SpriteSortMode.BackToFront, StandardBlendState);
-                    spriteBatch.DrawString(LoadContent.Font(LoadedFont.Console), DebugUpdateTimeText, FPSpos,
-                        Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-
-                    //if (Engine.Update.IsRunningSlow)
-                    //    spriteBatch.Draw(Engine.LoadContent.Texture(LoadedTexture.WhiteArea), new Rectangle(10, 10, 20, 20), Color.Red);
-
-                    spriteBatch.End();
+                    DrawOutlinedDebugText(2);
                 }
                 if (Update.SlowDownMarker > 0)
                 {
@@ -535,6 +528,47 @@ namespace VikingEngine.Engine
                 Draw2d(0);
                 
             }
+        }
+
+        private void DrawOutlinedDebugText(int outlineThickness)
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, StandardBlendState);
+
+            var shadowColor = new Color(0, 0, 0, 64);
+            for (var x = -outlineThickness; x <= outlineThickness; x++)
+            {
+                for (var y = -outlineThickness; y <= outlineThickness; y++)
+                {
+                    if (x == 0 && y == 0)
+                    {
+                        continue;
+                    }
+
+                    spriteBatch.DrawString(
+                        LoadContent.Font(LoadedFont.Console),
+                        DebugUpdateTimeText,
+                        FPSpos + new Vector2(x, y),
+                        shadowColor,
+                        0,
+                        Vector2.Zero,
+                        0.5f,
+                        SpriteEffects.None,
+                        0);
+                }
+            }
+
+            spriteBatch.DrawString(
+                LoadContent.Font(LoadedFont.Console),
+                DebugUpdateTimeText,
+                FPSpos,
+                Color.White,
+                0,
+                Vector2.Zero,
+                0.5f,
+                SpriteEffects.None,
+                0);
+
+            spriteBatch.End();
         }
 
         protected void clearDepthBuffer()

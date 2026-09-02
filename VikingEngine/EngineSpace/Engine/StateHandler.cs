@@ -78,6 +78,10 @@ namespace VikingEngine.Engine
                 Engine.Draw.DebugUpdateTimeText =
                     $"{DebugExtensions.RenderOverlay.Instance.FormattedText}\n{DebugExtensions.MemoryOverlay.Instance.FormattedText}";
             }
+            else
+            {
+                Engine.Draw.DebugUpdateTimeText = null;
+            }
             frameCount = 0;
             updateTimePeak = 0;
             renderTimePeak = 0;
