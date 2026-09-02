@@ -67,23 +67,21 @@ namespace VikingEngine.Engine
         { 
             frameCount++;
         }
+
         public static void OneSecUpdate()
         {
             if (PlatformSettings.DebugPerformanceText)
             {
                 DebugExtensions.MemoryOverlay.Instance.UpdateOneSecond();
+                DebugExtensions.RenderOverlay.Instance.UpdateOneSecond(frameCount, renderTimePeak, updateTimePeak);
 
-                Engine.Draw.DebugUpdateTimeText = Convert.ToString(frameCount) + " FPS " +
-                    "(r" + Convert.ToString(renderTimePeak) +
-                    ", u" + Convert.ToString(updateTimePeak) + 
-                    ") | " + DebugExtensions.MemoryOverlay.Instance.FormattedText;
+                Engine.Draw.DebugUpdateTimeText =
+                    $"{DebugExtensions.RenderOverlay.Instance.FormattedText}\n{DebugExtensions.MemoryOverlay.Instance.FormattedText}";
             }
             frameCount = 0;
             updateTimePeak = 0;
             renderTimePeak = 0;
         }
-
-        
     }
     enum Language
     {

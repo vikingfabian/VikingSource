@@ -1,4 +1,4 @@
-﻿using HardwareInstancing;
+using HardwareInstancing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
@@ -49,7 +50,6 @@ namespace VikingEngine.Engine
 
         public DrawBatchCollection drawBatch;
        
-
         public static void Init()
         {
             //Set the technique names
@@ -470,15 +470,34 @@ namespace VikingEngine.Engine
             {
                 StateHandler.RenderLoop();
 
-                DateTime start = DateTime.Now;
-
+                var startTimestamp = Stopwatch.GetTimestamp();
                 drawInContainersEvent();
 
                 graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
                 drawEvent();
 
+                var frameRenderTimeInMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;
+                StateHandler.RenderTimePass(frameRenderTimeInMs);
+
                 if (PlatformSettings.DebugPerformanceText)
                 {
+                    int stdCalls = drawBatch != null ? drawBatch.LastFrameStandardDrawCalls : 0;
+                    int instCalls = drawBatch != null ? drawBatch.LastFrameInstancedDrawCalls : 0;
+                    int instUnits = drawBatch != null ? drawBatch.LastFrameRenderedInstances : 0;
+                    int batches = drawBatch != null ? drawBatch.LastFrameBatchCount : 0;
+                    int slices = drawBatch != null ? drawBatch.LastFrameFrameSlices : 0;
+                    long uploadedBytes = drawBatch != null ? drawBatch.LastFrameUploadedBytes : 0;
+
+                    DebugExtensions.RenderOverlay.Instance.RecordFrame(
+                        frameRenderTimeInMs,
+                        standardDrawCalls: stdCalls,
+                        instancedDrawCalls: instCalls,
+                        renderedInstances: instUnits,
+                        batchCount: batches,
+                        frameSliceCount: slices,
+                        uploadedBytes: uploadedBytes
+                    );
+
                     spriteBatch.Begin(SpriteSortMode.BackToFront, StandardBlendState);
                     spriteBatch.DrawString(LoadContent.Font(LoadedFont.Console), DebugUpdateTimeText, FPSpos,
                         Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
@@ -487,8 +506,6 @@ namespace VikingEngine.Engine
                     //    spriteBatch.Draw(Engine.LoadContent.Texture(LoadedTexture.WhiteArea), new Rectangle(10, 10, 20, 20), Color.Red);
 
                     spriteBatch.End();
-                    DateTime end = DateTime.Now;
-                    StateHandler.RenderTimePass(end.Subtract(start).TotalMilliseconds);
                 }
                 if (Update.SlowDownMarker > 0)
                 {

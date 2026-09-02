@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -15,6 +15,13 @@ namespace VikingEngine.Graphics
         Queue<AbsVoxelModelInstance> loadingQueue = new Queue<AbsVoxelModelInstance>();
         Dictionary<int, DrawBatch> batches = new Dictionary<int, DrawBatch>(128);
 
+        // Frame Telemetry Counters
+        public int LastFrameStandardDrawCalls { get; private set; } = 0;
+        public int LastFrameInstancedDrawCalls { get; private set; } = 0;
+        public int LastFrameRenderedInstances { get; private set; } = 0;
+        public int LastFrameBatchCount { get; private set; } = 0;
+        public int LastFrameFrameSlices { get; private set; } = 0;
+        public long LastFrameUploadedBytes { get; private set; } = 0;
 
         public void Add(AbsVoxelModelInstance instance)
         {
