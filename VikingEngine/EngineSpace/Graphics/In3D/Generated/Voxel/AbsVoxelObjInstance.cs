@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -43,6 +43,11 @@ namespace VikingEngine.Graphics
 
         private Vector3 color = Vector3.One;
         private bool white = true;
+
+        public Vector3 ColorV3
+        {
+            get { return color; }
+        }
 
         /* Constructors */
         public AbsVoxelModelInstance(VoxelModel master, bool addToRender)

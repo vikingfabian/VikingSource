@@ -1,19 +1,26 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
+using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
     class DrawBatchCollection
     {
-        Queue<AbsVoxelModelInstance> loadingQueue = new Queue<AbsVoxelModelInstance>();
-        Dictionary<int, DrawBatch> batches = new Dictionary<int, DrawBatch>(128);
+        private readonly Queue<AbsVoxelModelInstance> _loadingQueue = new Queue<AbsVoxelModelInstance>();
+        private readonly Dictionary<int, InstancedDrawBatch> _batches = new Dictionary<int, InstancedDrawBatch>(128);
+        private readonly List<AbsDraw> _fallbackDrawList = new List<AbsDraw>(64);
+
+        // Double-buffered dynamic instance vertex buffers
+        private DynamicVertexBuffer[] _instanceBuffers;
+        private int _activeBufferIndex = 0;
+        private int _bufferCapacity = 16384;
+        private VertexVoxelInstance[] _cpuInstanceData;
+
+        public static Effect InstancedVoxelEffect;
 
         // Frame Telemetry Counters
         public int LastFrameStandardDrawCalls { get; private set; } = 0;
@@ -23,6 +30,28 @@ namespace VikingEngine.Graphics
         public int LastFrameFrameSlices { get; private set; } = 0;
         public long LastFrameUploadedBytes { get; private set; } = 0;
 
+        public DrawBatchCollection()
+        {
+            _cpuInstanceData = new VertexVoxelInstance[_bufferCapacity];
+            _instanceBuffers = new DynamicVertexBuffer[2];
+
+            var gd = Engine.Draw.graphicsDeviceManager.GraphicsDevice;
+            for (int i = 0; i < 2; i++)
+            {
+                _instanceBuffers[i] = new DynamicVertexBuffer(
+                    gd,
+                    VertexVoxelInstance.VertexDeclaration,
+                    _bufferCapacity,
+                    BufferUsage.WriteOnly
+                );
+            }
+        }
+
+        public static void LoadContent()
+        {
+            InstancedVoxelEffect = Engine.LoadContent.LoadShader("InstancedVoxelShadow");
+        }
+
         public void Add(AbsVoxelModelInstance instance)
         {
             Debug.CrashIfThreaded();
@@ -30,7 +59,7 @@ namespace VikingEngine.Graphics
             if (instance.master == null)
             {
                 instance.OnDrawBatchAdd();
-                loadingQueue.Enqueue(instance);
+                _loadingQueue.Enqueue(instance);
             }
             else
             {
@@ -40,128 +69,244 @@ namespace VikingEngine.Graphics
 
         public void Add(int masterId, AbsDraw model)
         {
-#if DEBUG
             Debug.CrashIfThreaded();
-            //model.InDrawBatchCount++;
-            //if (model.InDrawBatchCount != 1)
-            //{
-            //    lib.DoNothing();
-            //}
-#endif
 
-            DrawBatch batch;
-            if (batches.TryGetValue(masterId, out batch))
+            if (!_batches.TryGetValue(masterId, out var batch))
             {
-//#if DEBUG
-//                if (batch.Contains(model))
-//                {
-//                    throw new Exception();
-//                }
-//#endif
-                batch.Add(model);
-            }
-            else
-            {
-                batches.Add(masterId, new DrawBatch(model));
+                batch = new InstancedDrawBatch(masterId);
+                _batches.Add(masterId, batch);
             }
 
+            batch.Add(model);
             model.OnDrawBatchAdd();
         }
 
-        //public void PreRemove(int masterId, AbsDraw model)
-        //{
-        //    model.SetInRender(false);
-        //    if (batches.TryGetValue(masterId, out var batch))
-        //    {
-        //        batch.preremoved++;
-        //    }
-        //}
         public void DrawDepth(int cameraIndex, LightProjection light, Effect shader)
         {
-            foreach (var kv in batches)
+            if (InstancedVoxelEffect != null && light != null)
             {
-                var list = kv.Value;
-
-                foreach (var model in list)
-                {
-                    (model as Abs3DModel)?.DrawDepthOnly(true, shader, light, cameraIndex);
-                }
+                // Set global light matrices
+                InstancedVoxelEffect.CurrentTechnique = InstancedVoxelEffect.Techniques["InstancedDepthOnly"];
+                InstancedVoxelEffect.Parameters["LightView"]?.SetValue(light.LightViewMatrix);
+                InstancedVoxelEffect.Parameters["LightProjection"]?.SetValue(light.LightProjectionMatrix);
             }
+
+            SwapAndDrawBatches(true, false, cameraIndex, null, light, shader);
         }
+
         public void RemoveAndDraw(bool shadow, int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
-            while (loadingQueue.TryPeek(out var model)
-                && model.master != null)
+            // Process async loaded models
+            while (_loadingQueue.TryPeek(out var model) && model.master != null)
             {
                 if (model.InRenderList)
                 {
-                    Add(model.master.modelIndex, loadingQueue.Dequeue());
+                    Add(model.master.modelIndex, _loadingQueue.Dequeue());
                 }
                 else
                 {
-                    loadingQueue.Dequeue().OnDrawBatchRemove();
+                    _loadingQueue.Dequeue().OnDrawBatchRemove();
                 }
             }
+
+            if (InstancedVoxelEffect != null)
+            {
+                if (camera != null)
+                {
+                    InstancedVoxelEffect.Parameters["View"]?.SetValue(camera.ViewMatrix);
+                    InstancedVoxelEffect.Parameters["Projection"]?.SetValue(camera.Projection);
+                }
+                InstancedVoxelEffect.Parameters["AmbientColor"]?.SetValue(new Vector4(0.72f, 0.72f, 0.72f, 1f));
+                InstancedVoxelEffect.Parameters["DiffuseColor"]?.SetValue(Vector4.One);
+
+                if (shadow && light != null && shader != null)
+                {
+                    InstancedVoxelEffect.CurrentTechnique = InstancedVoxelEffect.Techniques["InstancedLitWithShadow"];
+                    InstancedVoxelEffect.Parameters["LightView"]?.SetValue(light.LightViewMatrix);
+                    InstancedVoxelEffect.Parameters["LightProjection"]?.SetValue(light.LightProjectionMatrix);
+                    InstancedVoxelEffect.Parameters["LightDirection"]?.SetValue(light.lightDirection);
+
+                    var shadowTex = shader.Parameters["ShadowMap"]?.GetValueTexture2D();
+                    if (shadowTex != null)
+                    {
+                        InstancedVoxelEffect.Parameters["ShadowMap"]?.SetValue(shadowTex);
+                    }
+                }
+                else
+                {
+                    InstancedVoxelEffect.CurrentTechnique = InstancedVoxelEffect.Techniques["InstancedLit"];
+                }
+            }
+
+            SwapAndDrawBatches(false, shadow, cameraIndex, camera, light, shader);
+        }
+
+        private void SwapAndDrawBatches(bool depthOnly, bool shadow, int cameraIndex, AbsCamera camera, LightProjection light, Effect fallbackShader)
+        {
+            int maxInstances = 0;
+            foreach (var kv in _batches)
+            {
+                if (kv.Value.Count > maxInstances)
+                {
+                    maxInstances = kv.Value.Count;
+                }
+            }
+            EnsureCapacity(maxInstances);
+
+            _activeBufferIndex = 1 - _activeBufferIndex;
+            var currentVbo = _instanceBuffers[_activeBufferIndex];
+            var gd = Engine.Draw.graphicsDeviceManager.GraphicsDevice;
 
             Span<int> removeStack = stackalloc int[16];
             int removeCount = 0;
 
-            foreach (var kv in batches)
+            _fallbackDrawList.Clear();
+
+            int instancedDrawCalls = 0;
+            int totalRenderedInstances = 0;
+            int activeBatches = 0;
+            int totalFrameSlices = 0;
+            long totalUploadedBytes = 0;
+
+            foreach (var kv in _batches)
             {
-                var list = kv.Value;
+                var batch = kv.Value;
+                int totalActive = batch.CollectAndPrune(cameraIndex, _cpuInstanceData, _fallbackDrawList, out var masterModel, out var frameGroups);
 
-                for (int i = list.Count - 1; i >= 0; i--)
+                if (totalActive == 0)
                 {
-                    var model = list[i];
-                    if (model.InRenderList)
+                    if (batch.Count == 0 && removeCount < removeStack.Length)
                     {
-                        if (shadow)
-                        {
-                            model.DrawWithShadow(cameraIndex, camera, shader, light);
-                        }
-                        else
-                        {
-                            model.Draw(cameraIndex);
-                        }
+                        removeStack[removeCount++] = kv.Key;
                     }
-                    else
-                    {
-                        if (list.Count <= 1)
-                        {
-                            if (removeCount < removeStack.Length)
-                            {
-                                removeStack[removeCount++] = kv.Key;
-                            }
-                            else
-                            {
-                                list.Clear();
-                            }
-                        }
-                        else
-                        {
-                            list.RemoveAt(i);
-                        }
+                    continue;
+                }
 
-                        model.OnDrawBatchRemove();
+                if (masterModel == null || masterModel.VB == null || InstancedVoxelEffect == null)
+                {
+                    continue;
+                }
+
+                // Upload instance stream
+                currentVbo.SetData(_cpuInstanceData, 0, totalActive, SetDataOptions.Discard);
+                totalUploadedBytes += totalActive * VertexVoxelInstance.VertexDeclaration.VertexStride;
+
+                // Set textures
+                if (!depthOnly && masterModel.texture != LoadedTexture.NO_TEXTURE)
+                {
+                    InstancedVoxelEffect.Parameters["MainTexture"]?.SetValue(Engine.LoadContent.Texture(masterModel.texture));
+                }
+
+                // Bind Stream 0 (Geometry) and Stream 1 (Instance Transforms)
+                var bindings = new VertexBufferBinding[2];
+                bindings[0] = new VertexBufferBinding(masterModel.VB.GetVertexBuffer(), 0, 0);
+                bindings[1] = new VertexBufferBinding(currentVbo, 0, 1);
+
+                gd.SetVertexBuffers(bindings);
+                gd.Indices = masterModel.VB.GetIndexBuffer();
+
+                activeBatches++;
+
+                // Draw each active animation frame slice
+                foreach (var pass in InstancedVoxelEffect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+
+                    for (int f = 0; f < frameGroups.Count; f++)
+                    {
+                        var group = frameGroups[f];
+                        var frameData = masterModel.VB.GetFrame(group.FrameIndex);
+
+                        if (frameData.numVertices > 0 && group.InstanceCount > 0)
+                        {
+                            gd.DrawInstancedPrimitives(
+                                PrimitiveType.TriangleList,
+                                0,
+                                frameData.startDrawOrderIndex,
+                                frameData.primitiveCount,
+                                group.InstanceStartIndex,
+                                group.InstanceCount
+                            );
+
+                            instancedDrawCalls++;
+                            totalRenderedInstances += group.InstanceCount;
+                            totalFrameSlices++;
+                        }
                     }
                 }
             }
 
+            // Unbind vertex buffers before fallback drawing to prevent state corruption
+            gd.SetVertexBuffers(null);
+            gd.Indices = null;
+
             for (int i = 0; i < removeCount; i++)
             {
-                batches.Remove(removeStack[i]);
+                _batches.Remove(removeStack[i]);
+            }
+
+            // Fallback Rendering
+            int standardDrawCalls = 0;
+            if (_fallbackDrawList.Count > 0)
+            {
+                for (int i = 0; i < _fallbackDrawList.Count; i++)
+                {
+                    if (depthOnly)
+                    {
+                        (_fallbackDrawList[i] as Abs3DModel)?.DrawDepthOnly(true, fallbackShader, light, cameraIndex);
+                    }
+                    else if (shadow)
+                    {
+                        _fallbackDrawList[i].DrawWithShadow(cameraIndex, camera, fallbackShader, light);
+                    }
+                    else
+                    {
+                        _fallbackDrawList[i].Draw(cameraIndex);
+                    }
+                    standardDrawCalls++;
+                }
+            }
+
+            LastFrameStandardDrawCalls = standardDrawCalls;
+            LastFrameInstancedDrawCalls = instancedDrawCalls;
+            LastFrameRenderedInstances = totalRenderedInstances;
+            LastFrameBatchCount = activeBatches;
+            LastFrameFrameSlices = totalFrameSlices;
+            LastFrameUploadedBytes = totalUploadedBytes;
+        }
+
+        private void EnsureCapacity(int required)
+        {
+            if (required == 0 || required <= _bufferCapacity)
+            {
+                return;
+            }
+
+            int newCap = Math.Max(Math.Max(_bufferCapacity * 2, required), 256);
+            _bufferCapacity = newCap;
+            _cpuInstanceData = new VertexVoxelInstance[newCap];
+
+            var gd = Engine.Draw.graphicsDeviceManager.GraphicsDevice;
+            for (int i = 0; i < 2; i++)
+            {
+                _instanceBuffers[i]?.Dispose();
+                _instanceBuffers[i] = new DynamicVertexBuffer(
+                    gd,
+                    VertexVoxelInstance.VertexDeclaration,
+                    _bufferCapacity,
+                    BufferUsage.WriteOnly
+                );
             }
         }
 
         public void Remove(int masterId, AbsDraw model)
         {
             Debug.CrashIfThreaded();
-            DrawBatch batch;
-            if (batches.TryGetValue(masterId, out batch))
+            if (_batches.TryGetValue(masterId, out var batch))
             {
                 if (batch.Count <= 1)
                 {
-                    batches.Remove(masterId);
+                    _batches.Remove(masterId);
                 }
                 else
                 {
@@ -171,14 +316,107 @@ namespace VikingEngine.Graphics
         }
     }
 
-    class DrawBatch : List<AbsDraw>
+    class InstancedDrawBatch : List<AbsDraw>
     {
-        public int preremoved = 0;
-        public DrawBatch(AbsDraw model)
-            :base(16)
+        public readonly int MasterId;
+        public struct FrameGroup
         {
-            Add(model);
+            public int FrameIndex;
+            public int InstanceStartIndex;
+            public int InstanceCount;
+        }
+
+        private readonly List<FrameGroup> _frameGroups = new List<FrameGroup>(8);
+        private readonly Dictionary<int, List<int>> _framePartitions = new Dictionary<int, List<int>>(8);
+
+        public InstancedDrawBatch(int masterId) : base(32)
+        {
+            MasterId = masterId;
+        }
+
+        public int CollectAndPrune(
+            int cameraIndex,
+            VertexVoxelInstance[] outputBuffer,
+            List<AbsDraw> fallbackList,
+            out VoxelModel masterModel,
+            out List<FrameGroup> frameGroups)
+        {
+            masterModel = null;
+            _frameGroups.Clear();
+            foreach (var list in _framePartitions.Values)
+            {
+                list.Clear();
+            }
+
+            int writeIndex = 0;
+
+            for (int i = Count - 1; i >= 0; i--)
+            {
+                var item = this[i];
+                if (!item.InRenderList)
+                {
+                    RemoveAt(i);
+                    item.OnDrawBatchRemove();
+                    continue;
+                }
+
+                if (item is AbsVoxelModelInstance voxInst)
+                {
+                    if (masterModel == null)
+                    {
+                        masterModel = voxInst.master;
+                    }
+
+                    if (voxInst.VisibleInCamera(cameraIndex))
+                    {
+                        int frame = voxInst.Frame;
+                        if (!_framePartitions.TryGetValue(frame, out var indices))
+                        {
+                            indices = new List<int>(32);
+                            _framePartitions[frame] = indices;
+                        }
+                        indices.Add(i);
+                    }
+                }
+                else
+                {
+                    fallbackList.Add(item);
+                }
+            }
+
+            // Pack grouped instances into output buffer
+            foreach (var kv in _framePartitions)
+            {
+                int frame = kv.Key;
+                var indices = kv.Value;
+                if (indices.Count == 0)
+                {
+                    continue;
+                }
+
+                int start = writeIndex;
+                for (int j = 0; j < indices.Count; j++)
+                {
+                    var voxInst = (AbsVoxelModelInstance)this[indices[j]];
+
+                    Matrix world = Matrix.CreateScale(voxInst.scale) *
+                                   Matrix.CreateFromQuaternion(voxInst.Rotation.QuadRotation) *
+                                   Matrix.CreateTranslation(voxInst.position);
+
+                    Vector4 customData = new Vector4(voxInst.ColorV3.X, voxInst.ColorV3.Y, voxInst.ColorV3.Z, 0f);
+                    outputBuffer[writeIndex++].Set(ref world, customData);
+                }
+
+                _frameGroups.Add(new FrameGroup
+                {
+                    FrameIndex = frame,
+                    InstanceStartIndex = start,
+                    InstanceCount = indices.Count
+                });
+            }
+
+            frameGroups = _frameGroups;
+            return writeIndex;
         }
     }
-
 }

@@ -70,6 +70,7 @@ namespace VikingEngine.Engine
             effectFlag = LoadContent.LoadShader("FlagWaveEffect");
             effectWaveXz = LoadContent.LoadShader("WaveXzEffect");
             shadowEffect = Engine.LoadContent.LoadShader("ShadowEffect");
+            DrawBatchCollection.LoadContent();
             //oceanEffect = Engine.LoadContent.LoadShader("OceanEffectFlat");
 
             //effectSeaNoise = LoadContent.LoadShader("SeaNoiseEffect");
