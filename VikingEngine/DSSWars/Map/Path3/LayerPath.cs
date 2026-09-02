@@ -8,13 +8,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map.Path3
 {
-    //class LayerPathFindingPool
-    //{
-        
-    //}
-
-
-
+    
     class LayerPathFinding
     {
         public const int MaxNodeLength = 30000;

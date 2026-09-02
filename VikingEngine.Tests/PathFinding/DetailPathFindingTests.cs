@@ -20,7 +20,7 @@ namespace VikingEngine.Tests.Pathfinding
             var start = new IntVector2(20, 20);
             var goal = new IntVector2(20, 60);
 
-            var path = pf.FindPath(-1, start, Rotation1D.D0, goal, false, false, false);
+            var path = pf.FindPath(start, Rotation1D.D0, goal, false, false, false);
 
             Assert.NotNull(path);
             Assert.NotEmpty(path.nodes);
@@ -38,7 +38,7 @@ namespace VikingEngine.Tests.Pathfinding
                 var start = new IntVector2(20 + i * 2, 20);
                 var goal = new IntVector2(20 + i * 2, 50);
 
-                var path = pf.FindPath(-1, start, Rotation1D.D0, goal, false, false, false);
+                var path = pf.FindPath(start, Rotation1D.D0, goal, false, false, false);
 
                 Assert.NotNull(path);
                 Assert.NotEmpty(path.nodes);
