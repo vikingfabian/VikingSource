@@ -820,16 +820,16 @@ namespace VikingEngine
             content.Add(new RbDragButton(new DragButtonSettings(0.2f, 2f, 0.1f), minimapScaleProperty, true));
 
             content.newParagraph();
-            content.h2(DssRef.todoLang.GameSettings_UltraWide, HudLib.TitleColor_Head2);
+            content.h2(Ref.langOpt.GameSettings_UltraWide, HudLib.TitleColor_Head2);
 
             content.newLine();
-            HudLib.Label(content, DssRef.todoLang.GameSettings_UltraWide_LeftEdge);
+            HudLib.Label(content, Ref.langOpt.GameSettings_UltraWide_LeftEdge);
             content.hspace();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(Engine.Screen.UltraWideEdgeRange, 1),
                 wideScreenEdgeLProperty, false);
 
             content.newLine();
-            HudLib.Label(content, DssRef.todoLang.GameSettings_UltraWide_RightEdge);
+            HudLib.Label(content, Ref.langOpt.GameSettings_UltraWide_RightEdge);
             content.hspace();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(Engine.Screen.UltraWideEdgeRange, 1),
                 wideScreenEdgeRProperty, false);

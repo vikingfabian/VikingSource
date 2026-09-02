@@ -965,7 +965,7 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.ArmyOption_Divide;
                 case MenuTab.Reassign:
                     description = null;
-                    return DssRef.todoLang.MenuTab_Reassign;
+                    return DssRef.lang.MenuTab_Reassign;
                 case MenuTab.Disband:
                     description = null;
                     return DssRef.lang.ArmyOption_Disband;

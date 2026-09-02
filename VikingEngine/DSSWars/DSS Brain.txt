@@ -4,7 +4,6 @@ Change log:
 
 KNOWN ISSUES
 x reassign dont work with controller
-x translate
 x hide achievements
 X timeline checkbox on steamworks
 

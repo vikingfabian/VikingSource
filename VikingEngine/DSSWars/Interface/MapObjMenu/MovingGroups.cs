@@ -383,7 +383,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     new RbAction3Arg<MovingGroups, MovingGroups, bool>(moveAll,
                             sending, recieving, false), null, groupAndCounts.Count > 0));
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, MoveButtonContent(DssRef.todoLang.ArmyOption_SendHalf),
+                content.Add(new ArtButton(RbButtonStyle.Secondary, MoveButtonContent(DssRef.lang.ArmyOption_SendHalf),
                     new RbAction3Arg<MovingGroups, MovingGroups, bool>(moveAll,
                             sending, recieving, true), null, groupAndCounts.Count > 0));
 

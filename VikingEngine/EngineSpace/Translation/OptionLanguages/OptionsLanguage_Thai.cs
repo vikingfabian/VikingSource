@@ -9,6 +9,11 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Thai : AbsOptionsLanguage
     {
+
+        public override string GameSettings_UltraWide => TextLib.ThaiConv("Ultrawide");
+        public override string GameSettings_UltraWide_LeftEdge => TextLib.ThaiConv("ขอบ|ซ้าย|ของ UI");
+        public override string GameSettings_UltraWide_RightEdge => TextLib.ThaiConv("ขอบ|ขวา|ของ UI");
+        //-------
         public override string GameSettings_WideScrollbar => TextLib.ThaiConv("แถบ|เลื่อน|แบบ|กว้าง");
         public override string GameSettings_DisplayInputHelp => TextLib.ThaiConv("ตัว|ช่วย|การ|ควบคุม");
         public override string GameSettings_InputSmoothing => TextLib.ThaiConv("ปรับ|การ|ควบคุม|ให้|ลื่น|ไหล");

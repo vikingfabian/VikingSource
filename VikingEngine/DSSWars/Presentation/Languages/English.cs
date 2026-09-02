@@ -6,13 +6,36 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
+        
+        
+        //QoL Update
+
+        public override string Multiplayer_Invite => "Invite";
+        public override string JoinFailure_NoAvailableFaction => "Join failed, no available faction.";
+
+        public override string UnitType_Faction => "Faction";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => "Reassign";
+        public override string ArmyOption_SendHalf => "Send half";
+
+        public override string Tutorial_OpenManual => "Open pause menu and read about {0} in the {1}";
+
+        public override string Hud_ApplyToAll => "Apply to all";
+        public override string Hud_OutOfStock => "Out of stock";
+
+        public override string Leaderboards_NationStrength => "Nationwide military strength";
+
+        public override string AutoSaveTime => "Auto-save interval";
+
+        public override string Editor_ToolOption_Add => "Add";
+        public override string Editor_ToolOption_Remove => "Remove";
+        public override string Editor_ToolOption_Toggle => "Toggle";
+
         //Multiplayer update
-        
 
-        //--
-        
-
-        //--
         public override string Unlock_PublicGames => "public games";
         public override string UnlockPublic_Warning1 => "Do not play with strangers";
         public override string UnlockPublic_Warning2 => "The game has zero protection against cheating or trolling";

@@ -8,10 +8,35 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Spanish : AbsLanguage
     {
+
+
+        public override string Multiplayer_Invite => "Invitar";
+        public override string JoinFailure_NoAvailableFaction => "Error al unirse, no hay facciones disponibles.";
+
+        public override string UnitType_Faction => "Facción";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => "Reasignar";
+        public override string ArmyOption_SendHalf => "Enviar mitad";
+
+        public override string Tutorial_OpenManual => "Abre el menú de pausa y lee sobre {0} en el {1}";
+
+        public override string Hud_ApplyToAll => "Aplicar a todo";
+        public override string Hud_OutOfStock => "Agotado";
+
+        public override string Leaderboards_NationStrength => "Fuerza militar nacional";
+
+        public override string AutoSaveTime => "Intervalo de auto-save";
+
+        public override string Editor_ToolOption_Add => "Añadir";
+        public override string Editor_ToolOption_Remove => "Eliminar";
+        public override string Editor_ToolOption_Toggle => "Alternar";
         //Multiplayer update
-        
+
         //--
-     
+
 
         //--
         public override string Unlock_PublicGames => "partidas públicas";
