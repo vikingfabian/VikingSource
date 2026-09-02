@@ -9,9 +9,30 @@ x hide achievements
 X timeline checkbox on steamworks
 
 
-#MAP 2.0
+#MAP 2.0 UPDATE
+* Fixed stuck game process on exit
 * Cubic far group models
 * The colors are muted and have higher contrast 
+
+World map 2.0
+The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
+* Worlds are now twice the size.
+
+Path 3.0
+A new high performance path finding algorithm with four hierarchy levels.
+* Is better adapted to handle terrain and walls.
+* Can handle a more detailed map.
+
+Map editor 2.0
+* New map generator built for much more control over both map generation and map editing.
+* Node editor to give more control over the world shape
+* Height map: Load images and use them to generate the world
+
+Performance
+* Work has been put into keeping down the creeping memory usage (RAM)
+* Memory: Object lists will trim down in size
+* Fixed memory leaks in path finding
+
 
 ## QoL ##
 
