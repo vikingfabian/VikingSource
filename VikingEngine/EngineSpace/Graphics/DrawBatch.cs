@@ -192,9 +192,20 @@ namespace VikingEngine.Graphics
                 totalUploadedBytes += totalActive * VertexVoxelInstance.VertexDeclaration.VertexStride;
 
                 // Set textures
-                if (!depthOnly && masterModel.texture != LoadedTexture.NO_TEXTURE)
+                if (!depthOnly)
                 {
-                    InstancedVoxelEffect.Parameters["MainTexture"]?.SetValue(Engine.LoadContent.Texture(masterModel.texture));
+                    Texture2D texture = null;
+                    if (masterModel.texture != LoadedTexture.NO_TEXTURE)
+                    {
+                        texture = Engine.LoadContent.Texture(masterModel.texture);
+                    }
+
+                    if (texture == null)
+                    {
+                        texture = Engine.LoadContent.Texture(LoadedTexture.WhiteArea);
+                    }
+
+                    InstancedVoxelEffect.Parameters["MainTexture"]?.SetValue(texture);
                 }
 
                 // Bind Stream 0 (Geometry) and Stream 1 (Instance Transforms)
