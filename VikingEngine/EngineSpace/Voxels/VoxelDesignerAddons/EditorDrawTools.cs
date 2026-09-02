@@ -171,7 +171,7 @@ namespace VikingEngine.Voxels
         public static void NetWriteVoxelEdit(IntervalIntV3 volume)
         {
             SteamWrapping.SteamWriter packet;
-            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.VoxelEdit, Network.PacketReliability.ReliableLasy, out packet);
+            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.VoxelEdit, Network.PacketReliability.Reliable, out packet);
             volume.Min.WriteUshortStream(w);
             volume.Size.WriteByteStream(w);
 

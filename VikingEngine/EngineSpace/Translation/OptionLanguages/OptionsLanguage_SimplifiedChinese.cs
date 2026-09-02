@@ -9,6 +9,19 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_SimplifiedChinese : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "宽滚动条";
+        public override string GameSettings_DisplayInputHelp => "操作提示";
+        public override string GameSettings_InputSmoothing => "输入平滑";
+
+        //Mounts
+        public override string InputSteam => "Steam输入";
+        public override string Input_SimulateMouse => "模拟鼠标";
+        public override string Input_LockMouseToWindow => "鼠标锁定至窗口";
+        public override string Input_MouseEdgePush_Title => "边缘平移";
+        public override string Input_NoControl => "无";
+        public override string Input_ActiveControl => "主动";
+        public override string Input_PassiveControl => "被动";
+        public override string Setting_MinimapScale => "小地图缩放";
         //##Settings
         public override string Settings_Particles_FadeMapLayers => "图层淡出";
         public override string SplitScreen_HorizontalFirst => "水平优先";
@@ -25,7 +38,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_BorderlessFullscreen => "无边框全屏";
         public override string GameSettings_RenderedMouseCursor => "渲染光标";
 
-
+        public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
         //--
         public override string GraphicsOption_FarViewDistance => "远距离视野";
         public override string Hud_Cancel => "取消";

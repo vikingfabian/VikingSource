@@ -271,7 +271,7 @@ namespace VikingEngine.LootFest.Players
             //    if (Ref.netSession.IsClient)
             //    {
             //        System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.ClientEndingEditing,
-            //            Network.PacketReliability.ReliableLasy, PlayerIndex);
+            //            Network.PacketReliability.Reliable, PlayerIndex);
             //    }
 
             //    //mode = PlayerMode.Play;

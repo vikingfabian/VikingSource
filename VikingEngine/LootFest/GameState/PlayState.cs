@@ -50,13 +50,13 @@ namespace VikingEngine.LootFest
 
             if (PlatformSettings.PC_platform)
             {
-                Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
+                Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
             }
         }
         
         public void LoadGame(Map.World map, Data.WorldData worldData)
         {
-            Debug.Log("Load world, seed:" + worldData.seed.ToString() + ", Hosting world:" + worldData.hostingWorld.ToString());
+            //Debug.Log("Load world, seed:" + worldData.seed.ToString() + ", Hosting world:" + worldData.hostingWorld.ToString());
             LfRef.LocalHeroes = new StaticList<GO.PlayerCharacter.AbsHero>(LfLib.MaxLocalGamers);
             LfRef.AllHeroes = new StaticList<GO.PlayerCharacter.AbsHero>(LfLib.MaxGamers);
             LfRef.world = map;
@@ -114,10 +114,10 @@ namespace VikingEngine.LootFest
                 LfRef.gamestate.readyToJoinMessage();
             }
 
-#if PCGAME
-            if (Ref.steam.leaderboardsInitialized)
-            { Ref.steam.leaderBoards.uploadlastplayed(); }
-#endif
+//#if PCGAME
+//            if (Ref.steam.leaderboardsInitialized)
+//            { Ref.steam.leaderBoards.uploadlastplayed(); }
+//#endif
 
             if (PlatformSettings.DevBuild && DebugSett.DebugChunkLoading)
             { new DebugChunkLoading(); }
@@ -362,8 +362,7 @@ namespace VikingEngine.LootFest
         public override void BeginInputDialogueEvent(KeyboardInputValues keyInputValues)
         {
             localPlayers[keyInputValues.PlayerIndex].BeginInputDialogueEvent(keyInputValues);
-        }
-        
+        }        
         
         public void QuitToMenu()
         {
@@ -416,7 +415,7 @@ namespace VikingEngine.LootFest
                 {
                     if (!Engine.XGuide.GetPlayer(nextAvailablePlayerIx).IsActive)
                     {
-                        Debug.Log("Join player: " + nextAvailablePlayerIx.ToString());
+                        //Debug.Log("Join player: " + nextAvailablePlayerIx.ToString());
                         joinPlayer(nextAvailablePlayerIx);
 
                         return;
@@ -855,7 +854,7 @@ namespace VikingEngine.LootFest
                     //Recieve start info about the world to join it
                     if (LfRef.WorldHost)
                     {
-                        Debug.Log("recieve world seed");
+                        //Debug.Log("recieve world seed");
                         VikingEngine.LootFest.Data.WorldData worldData = new Data.WorldData(false);
                         worldData.seed = packet.r.ReadInt32();
                         new GameState.LoadingMap(worldData);
@@ -1009,7 +1008,7 @@ namespace VikingEngine.LootFest
                 //    }
                 //    break;
 
-                case Network.PacketType.Chat:
+                case Network.PacketType.TextChat:
                     string text = TextLib.EmptyString;
 
                     try
@@ -1361,7 +1360,7 @@ namespace VikingEngine.LootFest
             if (local)
             {
                 //net share
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.GameCompleted, Network.PacketReliability.ReliableLasy);
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.GameCompleted, Network.PacketReliability.Reliable);
                 Map.WorldPosition.WriteChunkGrindex_Static(chunk, w); //chunk.WriteChunkGrindex(w);
                 w.Write(noDeaths);
             }

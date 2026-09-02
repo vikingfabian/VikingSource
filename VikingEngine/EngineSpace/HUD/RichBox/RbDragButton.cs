@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,34 +50,37 @@ namespace VikingEngine.HUD.RichBox
         public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSetTag intValue, bool useSymbols, object tag = null)
         {
             var dragButton = new RbDragButton(settings, intValue);
+            int value = intValue(tag, false, 0);
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i], useSymbols));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], useSymbols, value > settings.min));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i], useSymbols));
+                content.Add(new RbDragOptionButton(dragButton, options[i], useSymbols, value < settings.max));
             }
         }
 
         public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, FloatGetSetTag floatValue, bool oneDecimal = true, object tag = null)
         {
-            var dragButton = new RbDragButton(settings, floatValue, oneDecimal);
+            
+            var dragButton = new RbDragButton(settings, floatValue, oneDecimal, null, tag);
+            float value = floatValue(tag, false, 0);
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i], false));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], false, value > settings.min));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i], false));
+                content.Add(new RbDragOptionButton(dragButton, options[i], false, value < settings.max));
             }
         }
 
@@ -265,7 +269,7 @@ namespace VikingEngine.HUD.RichBox
         //    content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };            
         //}
 
-        public RbDragOptionButton(RbDragButton parent, float add, bool useSymbols)
+        public RbDragOptionButton(RbDragButton parent, float add, bool useSymbols, bool enabled)
         {
             this.parent = parent;
             this.buttonStyle = Artistic.RbButtonStyle.Primary;
@@ -277,12 +281,14 @@ namespace VikingEngine.HUD.RichBox
             if (useSymbols)
             {
                 content = new List<AbsRichBoxMember> { new RbText(LangLib.ValueSymbol((int)add)) };
-                enter = new RbTooltip_Text(TextLib.PlusMinus(add));
+                enter = new RbTooltip_Text(Math.Abs(add) >= 1000? TextLib.LargeNumber((int)add) : TextLib.PlusMinus(add));
             }
             else
             {
                 content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };
             }
+
+            this.enabled = enabled;
         }
 
         public override void onClick(RichMenu.RichMenu menu)
@@ -303,7 +309,7 @@ namespace VikingEngine.HUD.RichBox
         DirXYstepping controllerStepping = new DirXYstepping();
         public DragButtonInteraction(RichMenu.RichMenu menu, RbDragButton dragButton) 
         {
-            prevMousePos = Input.Mouse.Position;
+            prevMousePos = menu.InputMap().RbMouseInstance().Position;
             this.dragButton = dragButton;
             menu.interaction.interactionStack = this;
             timeStamp = TimeStamp.Now();
@@ -314,21 +320,21 @@ namespace VikingEngine.HUD.RichBox
         }
         public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool needRefresh, out bool endInteraction)
         {
-            
-            float move = Input.Mouse.Position.X - prevMousePos.X;
+            var mouse = menu.InputMap().RbMouseInstance();
+            float move = mouse.Position.X - prevMousePos.X;
             if (Math.Abs(move) > moveLengthForValueChange)
             {
                 float change = (int)(move / moveLengthForValueChange);
                 prevMousePos.X += change * moveLengthForValueChange;
                 
-                if (Input.Mouse.Position.X < mouseXRange.Min)
+                if (mouse.Position.X < mouseXRange.Min)
                 {
-                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Max, Input.Mouse.Position.Y));
+                    mouse.SetPosition(new IntVector2(mouseXRange.Max, Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Max;
                 }
                 else if (Input.Mouse.Position.X > mouseXRange.Max)
                 {
-                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Min, Input.Mouse.Position.Y));
+                    mouse.SetPosition(new IntVector2(mouseXRange.Min, Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Min;
                 }
                 needRefresh = true;
@@ -339,7 +345,7 @@ namespace VikingEngine.HUD.RichBox
                 needRefresh = false;
             }
 
-            endInteraction = Input.Mouse.ButtonUpEvent(MouseButton.Left);
+            endInteraction = menu.InputMap().RbClick().UpEvent;//Input.Mouse.ButtonUpEvent(MouseButton.Left);
 
             return false;
         }
@@ -349,7 +355,7 @@ namespace VikingEngine.HUD.RichBox
             pushScroll = 0;
             pointer.pointer.Visible = false;
 
-            int steps = controllerStepping.update(pointer.inputMap.move.direction).X;
+            int steps = controllerStepping.update(pointer.inputMap.move.direction, true).X;
             //pointer.inputMap.move.
             //controllerMove += pointer.accelerateInput(pointer.inputMap.move.direction).X * 0.2f;
 

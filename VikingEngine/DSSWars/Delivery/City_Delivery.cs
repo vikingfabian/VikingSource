@@ -4,21 +4,21 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Interface.Component;
-using VikingEngine.DSSWars.Presentation;
-using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
-using VikingEngine.PJ.Joust;
+using VikingEngine.Network;
 using VikingEngine.PJ.Bagatelle;
+using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -29,12 +29,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_deliveryUpdate()
         {
-            if (debugTagged || myIndex == 153)
+            if (debugTagged || myIndex == 1049)
             {
                 lib.DoNothing();
             }
 
-            var f = GetFaction();
+            var f = pfaction.GetFaction();
             if (f == null)
                 return;
 
@@ -43,11 +43,17 @@ namespace VikingEngine.DSSWars.GameObject
                 for (int i = 0; i < deliveryServices.Count; i++)
                 {
                     DeliveryStatus status = deliveryServices[i];
+
+                    if (status.inProgress.ToCity() == 253)
+                    {
+                        lib.DoNothing();
+                    }
+
                     switch (status.active)
                     {
                         case DeliveryActiveStatus.Idle:
                             {
-                                if (f.player.IsBot() || 
+                                if (f.player.IsBot() ||
                                     (automateCity && status.que == 0))//OR fully auto
                                 {
                                     status.profile.toCity = DeliveryProfile.ToCityAuto;
@@ -55,53 +61,69 @@ namespace VikingEngine.DSSWars.GameObject
                                     status.recieverMax = 100;
                                     status.useRecieverMax = true;
                                     if (!status.IsRecruitment() && !status.IsGold())
-                                    { 
+                                    {
                                         status.inProgress.type = ItemResourceType.AutomatedItem;
 
                                     }
                                 }
 
-                                if (status.que > 0 && 
+                                if (status.que > 0 &&
                                     status.profile.toCity > 0 &&
                                     status.CanSend(this, out ItemResourceType sendItem))
                                 {
                                     City othercity = findOtherCity(sendItem, ref status);
 
-                                    if (othercity != null && 
-                                        othercity.factionIndex == this.factionIndex )
+                                    if (othercity != null)
                                     {
-                                        if (status.CountDownQue())
+                                        bool correctOwner = othercity.pfaction == this.pfaction;
+                                        if (!correctOwner && DssRef.world.diplomacy.GetRelation(pfaction, othercity.pfaction).Relation >= RelationType.RelationType2_Good)
                                         {
-                                            status.inProgress = status.profile;
-                                            status.inProgress.type = sendItem;
-
-                                            if (status.inProgress.type == ItemResourceType.Men)
-                                            {
-                                                workForce.amount -= status.inProgress.SendAmount;
-
-                                                othercity.workForce.deliverCount += status.inProgress.SendAmount;
+                                            correctOwner = true;
+                                            if (!othercity.IsNetHosted && status.remoteDeliveryUpdateRequest.minPassed(5))
+                                            { 
+                                                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDeliverStatusRequest, Network.PacketReliability.Unrelyable,
+                                                    Network.SendPacketTo.OneSpecific, othercity.NetHostingPeer().fullId, out var packet);
+                                                Net.ObjectId.WriteCity(w, othercity);
+                                                w.Write((byte)status.profile.type);
+                                                packet.EndWrite_Asynch();
                                             }
-                                            else
+                                        }
+
+                                        if (correctOwner)
+                                        {
+                                            if (status.CountDownQue())
                                             {
-                                                AddGroupedResource(status.inProgress.type, -status.inProgress.SendAmount);
+                                                status.inProgress = status.profile;
+                                                status.inProgress.type = sendItem;
 
-                                                var resource_recieve = othercity.GetGroupedResource(status.inProgress.type);
-                                                resource_recieve.deliverCount += status.inProgress.SendAmount;
-                                                othercity.AddGroupedResource(status.inProgress.type, status.inProgress.SendAmount);
-                                            }
-
-                                            status.active++;
-                                            status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this, othercity, status.level, out _));
-                                            if (inRender_detailLayer)
-
-                                            {
-                                                Ref.update.AddSyncAction(new SyncAction(() =>
+                                                if (status.inProgress.type == ItemResourceType.Men)
                                                 {
-                                                    /*new ResourceEffect*/
-                                                    SpriteText3D.GetOrCreate().init(status.inProgress.type, status.inProgress.SendAmount,
-                                                       VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)), DssConst.Men_StandardModelScale * 2f),
-                                                       ResourceEffectType.Deliver);
-                                                }));
+                                                    workForce.amount -= status.inProgress.SendAmount;
+
+                                                    othercity.workForce.deliverCount += status.inProgress.SendAmount;
+                                                }
+                                                else
+                                                {
+                                                    AddGroupedResource(status.inProgress.type, -status.inProgress.SendAmount);
+
+                                                    var resource_recieve = othercity.GetGroupedResource(status.inProgress.type);
+                                                    resource_recieve.deliverCount += status.inProgress.SendAmount;
+                                                    othercity.AddGroupedResource(status.inProgress.type, status.inProgress.SendAmount);
+                                                }
+
+                                                status.active++;
+                                                status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this, othercity, status.level, out _));
+                                                if (inRender_detailLayer)
+
+                                                {
+                                                    Ref.update.AddSyncAction(new SyncAction(() =>
+                                                    {
+                                                        /*new ResourceEffect*/
+                                                        SpriteText3D.GetOrCreate().init(status.inProgress.type, status.inProgress.SendAmount,
+                                                           VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)), DssConst.Men_StandardModelScale * 2f),
+                                                           ResourceEffectType.Deliver);
+                                                    }));
+                                                }
                                             }
                                         }
                                     }
@@ -117,6 +139,14 @@ namespace VikingEngine.DSSWars.GameObject
                             if (status.countdown.TimeOut())
                             {
                                 City othercity = DssRef.world.cities[status.inProgress.ToCity()];
+
+                                if (othercity.pfaction != pfaction && !othercity.IsNetHosted)
+                                {
+                                    //Send over net
+                                    NetWriteDelivery(ref status, othercity);
+                                    status.remoteDeliveryUpdateRequest.setNow();
+                                }
+
                                 if (status.inProgress.type == ItemResourceType.Men)
                                 {
                                     othercity.addWorkers(status.inProgress.SendAmount);
@@ -132,7 +162,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     var resource = othercity.GetGroupedResource(status.inProgress.type);
 
                                     if (status.IsGold() &&
-                                        GetPlayer().IsLocalPlayer())
+                                        pfaction.GetPlayer().IsLocalPlayer())
                                     {
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.gold_deliver);
                                     }
@@ -157,11 +187,8 @@ namespace VikingEngine.DSSWars.GameObject
                     int minAmount = int.MaxValue;
                     City foundcity = null;
 
-                    //var citiesC = GetFaction().cities.counter();
-                    //while (citiesC.Next())
-                    //{
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref GetFaction().cities, DssRef.world.cities, out City citySel))
+                    while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
                         if (citySel != this && tilePos.SideLength(citySel.tilePos) <= DssConst.DeliveryMaxDistance)
                         {
@@ -170,7 +197,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (hasAmount < minAmount)
                                 {
                                     minAmount = hasAmount;
-                                    foundcity = citySel;// = citiesC.sel;
+                                    foundcity = citySel;
                                 }
                             }
                         }
@@ -197,29 +224,150 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        void NetWriteDelivery(ref DeliveryStatus status, City recievingCity)
+        {
+            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDeliver, Network.PacketReliability.Reliable,
+                Network.SendPacketTo.OneSpecific, recievingCity.NetHostingPeer().fullId, out var packet);
+            {
+                Net.ObjectId.WriteCityAndOwner(w, this);
+                Net.ObjectId.WriteCity(w, recievingCity);
+                w.Write((byte)status.inProgress.type);
+
+                int amount = status.inProgress.SendAmount;
+                if (status.inProgress.type == ItemResourceType.Gold)
+                {
+                    amount /= DssConst.GoldDeliveryChunkSize_Mini;
+                }
+                w.Write((byte)amount);
+
+                w.Write((byte)status.profile.type);
+
+            } packet.EndWrite_Asynch();
+        }
+
+        public static void NetReadDelivery(ReceivedPacket packet)
+        {
+            var sendingCity = Net.ObjectId.ReadCityAndOwner(packet.r);
+            var recievingCity = Net.ObjectId.ReadCity(packet.r);
+            if (recievingCity != null)
+            { 
+                ItemResourceType resourceType = (ItemResourceType)packet.r.ReadByte();
+                int amount = packet.r.ReadByte();
+                if (resourceType == ItemResourceType.Gold)
+                {
+                    amount *= DssConst.GoldDeliveryChunkSize_Mini;
+                }
+
+                recievingCity.AddGroupedResource(resourceType, amount);
+
+                if (recievingCity.pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer())
+                {
+                    var lp = p.GetLocalPlayer();
+                    if (lp.hud.messages.DeliveryMessageTime.minPassed(10) &&
+                        sendingCity != null && sendingCity.pfaction.TryGetPlayer(out var r) && r.IsRemotePlayer())
+                    {
+
+                        lp.hud.messages.DeliveryMessageTime.setNow();
+
+                        RichBoxContent content = new RichBoxContent();
+                        content.h1(SpriteName.WarsBuild_Postal, DssRef.lang.MenuTab_Delivery, HudLib.TitleColor_Head);
+
+                        content.newLine();
+                        r.GetRemotePlayer().addNetGamerToHud(content, true, false);
+                        content.hspace();
+                        content.Add(new RbImage(SpriteName.cmdConvertArrow));
+                        content.newLine();
+
+                        recievingCity.CityPresentationHud(new Interface.ObjectHudArgs() { content = content }, true);
+                        content.newLine();
+
+                        IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
+                        content.Add(new RbText(TextLib.PlusMinus(amount)));
+                        content.space();
+                        content.Add(new RbImage(itemIcon));
+                        content.hspace();
+                        content.Add(new RbText(itemName));
+
+                        lp.hud.messages.Add(content, SoundLib.netMessage);
+                    }
+                }
+                NetWriteDeliveryStatusReply(packet, recievingCity, resourceType);
+            }
+            
+        }
+        public static void NetReadDeliveryStatusRequest(ReceivedPacket packet)
+        {
+            var city = Net.ObjectId.ReadCity(packet.r);
+            ItemResourceType resourceType = (ItemResourceType)packet.r.ReadByte();
+
+            if (city != null)
+            {
+                //Send reply
+                NetWriteDeliveryStatusReply(packet, city, resourceType);
+            }
+        }
+
+        public static void NetWriteDeliveryStatusReply(ReceivedPacket packet, City city, ItemResourceType resourceType)
+        {
+#if DEBUG
+            throw new Exception();
+#endif
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssDeliverStatusReply, PacketReliability.Unrelyable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
+            Net.ObjectId.WriteCity(w, city);
+            w.Write((byte)resourceType);
+
+            if (resourceType == ItemResourceType.AutomatedItem)
+            {
+                city.writeResources(w);
+            }
+            else
+            {
+                city.GetGroupedResource(resourceType).writeNet(w);
+            }
+        }
+
+        public static void NetReadDeliveryStatusReply(ReceivedPacket packet)
+        {
+            var city = Net.ObjectId.ReadCity(packet.r);
+            ItemResourceType resourceType = (ItemResourceType)packet.r.ReadByte();
+
+            if (city != null)
+            {
+                if (resourceType == ItemResourceType.AutomatedItem)
+                {
+                    city.readResources(packet.r, int.MaxValue);
+                }
+                else
+                {
+                    //Crashes on men
+                    //city.GetGroupedResource(resourceType).readNet(packet.r);
+                }
+            }
+        }
+
         public ItemResourceType findAutoItem()
         {
             ItemResourceType result = ItemResourceType.NONE;
 
             for (int i = 0; i < 10; ++i)
             {
-                if (find(MovableCityResource_WeaponMelee))
+                if (find(ResourceLib.MovableCityResource_WeaponMelee))
                 {
                     return result;
                 }
-                if (find(MovableCityResource_WeaponRanged))
+                if (find(ResourceLib.MovableCityResource_WeaponRanged))
                 {
                     return result;
                 }
-                if (find(MovableCityResource_Armor))
+                if (find(ResourceLib.MovableCityResource_Armor))
                 {
                     return result;
                 }
-                if (find(MovableCityResource_Metals))
+                if (find(ResourceLib.MovableCityResource_Metals))
                 {
                     return result;
                 }
-                if (find(MovableCityResource_Misc))
+                if (find(ResourceLib.MovableCityResource_Misc))
                 {
                     return result;
                 }
@@ -335,13 +483,10 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 default:
-                    //player.itemDeliveryCopy = currentStatus;
                     return ref player.itemDeliveryCopy;
                 case DeliveryStatus.DeliveryType_Men:
-                    //player.menDeliveryCopy = currentStatus;
                     return ref player.menDeliveryCopy;
                 case DeliveryStatus.DeliveryType_Gold:
-                    //player.goldDeliveryCopy = currentStatus;
                     return ref player.goldDeliveryCopy;
             }
         }

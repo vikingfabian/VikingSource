@@ -15,14 +15,17 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    class PlayerHud_Object
+    class PlayerHud_Object : IPlayerHud_Menu
     {
         List<GameObject.AbsGameObject> selectHistory = new List<AbsGameObject>();
-        
+        public NetSessionDisplay netSessionDisplay = new NetSessionDisplay();
+
         public DiplomacyDisplay diplomacy;
         public RichMenu menu;
         public AbsArmy otherArmy;
 
+        public RichMenu Menu => menu;
+        public bool IsFactionMenu { get { return false; } }
         public PlayerHud_Object(LocalPlayer player)
         {
             diplomacy = new DiplomacyDisplay(player);
@@ -62,61 +65,104 @@ namespace VikingEngine.DSSWars.Interface
 
             var content = new RichBoxContent();
 
-            if (DssRef.world.tileGrid.TryGet(player.gameControls.map.tilePosition, out var tile))
+            if (player.DisplayBattleLab(content, menu))
+            { 
+            
+            }
+            else if (menu.menuStack.Count > 0)
             {
-                var hoverCity = tile.City();
-                hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
-
-                if (hoverCity.factionIndex == player.faction.myIndex &&
-                    player.mapLayer() <= Map.MapDetailLayerType.TerrainOverview2)
+                switch (menu.menuStack.Last())
                 {
-                    content.newLine();
-                   
-                    player.gameControls.input.QuickSelect.ToRichContent(content);
-                    content.space();
-                    content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> {
+                    case NetSessionDisplay.PAGE_BANWARNING:
+                        netSessionDisplay.BanWarning(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_REQUESTBLOCK:
+                        netSessionDisplay.RequestBlock(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_KICK:
+                        netSessionDisplay.Kick(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_BLOCK:
+                        netSessionDisplay.Block(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_RECOLOR:
+                        netSessionDisplay.recolor(player, content, menu);
+                        break;
+                    case NetSessionDisplay.PAGE_DEBUG:
+                        HudLib.returnButton(content, menu, true, null);
+                        DssRef.state.playstate().PacketCountToHud(content);
+                        break;
+                }
+            }
+            else if (netSessionDisplay.ClientInteractDisplay)
+            {
+                netSessionDisplay.clientToHud(player, content, menu);
+                netSessionDisplay.checkAlive();
+            }
+            else
+            {
+                if (DssRef.world.tileGrid.TryGet(player.gameControls.map.tilePosition, out var tile))
+                {
+                    var hoverCity = tile.City();
+                    hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
+
+                    if (hoverCity.pfaction == player.pfaction &&
+                        player.mapLayer() <= Map.MapDetailLayerType.TerrainOverview2)
+                    {
+                        content.newLine();
+
+                        player.gameControls.input.QuickSelect.ToRichContent(content);
+                        content.space();
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                            new List<AbsRichBoxMember> {
                             new RbText(DssRef.lang.Hud_SelectCity)
-                        }, new RbAction(player.gameControls.selectAreaCity)));
+                            }, new RbAction(player.gameControls.selectAreaCity)));
+                    }
+                    content.Add(new RbSeperationLine());
                 }
-                content.Add(new RbSeperationLine());
-            }
 
-            if (DssRef.state.remotePlayers.Count > 0)
-            {
-                content.h2("Net session", HudLib.TitleColor_Head);
-                var remoteC = DssRef.state.remotePlayers.counter();
-                while(remoteC.Next())
+                
+                if (DssRef.state.remotePlayers.Count > 0)
                 {
-                    content.newLine();
-                    remoteC.sel.RemoteToHud(content);
+                   
+
+                    netSessionDisplay.overviewToHud(player, content, menu);
+                    
+                    content.newParagraph();
                 }
-                content.Add(new RbSeperationLine());
-            }
+                
+                //else if (DssRef.state.host && Ref.steam.isInitialized && Ref.netsett.hostNetwork)
+                //{
+                //    netSessionDisplay.invite(content);
+                //}
 
-            content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
+                content.h2(DssRef.lang.Hud_SelectHistory, HudLib.TitleColor_Head);
 
-            for (int i = selectHistory.Count - 1; i >= 0; --i)
-            {
-                var obj = selectHistory[i];
-
-                if (obj.IsDeleted())
+                for (int i = selectHistory.Count - 1; i >= 0; --i)
                 {
-                    selectHistory.RemoveAt(i);
-                }
-                else
-                {
-                    content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                    new RbText(obj.Name(out _), HudLib.TitleColor_Name),
-                    new RbImage(SpriteName.warsBulletSeperationPoint),
-                    new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
-                        new RbAction1Arg<AbsGameObject>((AbsGameObject obj) =>
-                        {
-                            player.gameControls.selectObject(obj);
-                        }, obj)));
+                    var obj = selectHistory[i];
+
+                    if (obj.IsDeleted())
+                    {
+                        selectHistory.RemoveAt(i);
+                    }
+                    else
+                    {
+                        content.newLine();
+                        RichBoxContent buttonContent = new RichBoxContent();
+                        obj.toButtonContent(buttonContent, false);
+                        content.Add(new ArtButton(RbButtonStyle.Outline,
+                            buttonContent,
+
+                            new RbAction1Arg<AbsGameObject>((AbsGameObject obj) =>
+                            {
+                                player.gameControls.selectObject(obj);
+                            }, obj)));
+                    }
                 }
             }
+            
+
 
             menu.Refresh(content, player.gameControls.controllerPointer);
         }
@@ -146,7 +192,7 @@ namespace VikingEngine.DSSWars.Interface
             if (faction != null)
             {
                 var content = new RichBoxContent();
-                diplomacy.toHud(content, faction, selected);
+                diplomacy.toHud(content, faction, true);
                 menu.Refresh(content, player.gameControls.controllerPointer);
             }
             else if (player.factionPixelTexture.HeatMap())

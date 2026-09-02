@@ -22,6 +22,7 @@ using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.PJ;
 using VikingEngine.Voxels;
+using System.IO;
 
 namespace VikingEngine.DSSWars.GameState.VoxelEditor
 {
@@ -135,10 +136,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void setupNewInput(bool controller, int playerIndex)
         {
-            if (dssInput == null || dssInput.inputSource.IsController != controller)
+            if (dssInput == null || dssInput.inputSource.HasControllerInput != controller)
             {
                 dssInput = new InputMap(playerIndex);
-                dssInput.setInputSource(controller? InputSourceType.XController : InputSourceType.KeyboardMouse, playerIndex);
+                dssInput.setInputSource(new InputSource( controller? InputSourceType.XController : InputSourceType.KeyboardMouse, playerIndex));
                 if (controller)
                 {
                     dssInput.copyDataFrom(Ref.gamesett.controllerMap);
@@ -445,17 +446,23 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             templateSent = false;
         }
 
-        public void LinkAnimUnlockFrame()
+        public void LinkAnimUnlockFirstFrame()
         {
-            voxelProject.lockFirstFrames = 0;
-            menusystem.closeMenu();
+            voxelProject.lockFirstFrame = null;
+            //menusystem.closeMenu();
         }
-        public void LinkAnimLockFrame(bool start)
-        {
-            //lockFirstFrames = currentFrame.Value;
-            voxelProject.LockAnimation(start);
-            menusystem.closeMenu();
-        }
+        //public void LinkAnimLockFrame(bool start)
+        //{
+        //    //lockFirstFrames = currentFrame.Value;
+        //    voxelProject.LockAnimation(start);
+        //    menusystem.closeMenu();
+        //}
+
+        //public void LockFrame(bool asFirst, bool bLock)
+        //{
+        //    voxelProject.LockAnimation(start);
+        //    menusystem.closeMenu();
+        //}
 
         //public void LinkAnimAddFrame()
         //{
@@ -716,15 +723,18 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         //    menusystem.listTemplates();
         //}
 
-        const string ThrallordPath = LfLib.DataFolder + "Thrallords";
-        const string RaceTrackPath = LfLib.DataFolder + "Data\\RaceTracks";
+        static readonly string ThrallordPath = LfLib.DataFolder + "Thrallords";
+        static readonly string RaceTrackPath = LfLib.DataFolder + "Data" + Path.DirectorySeparatorChar + "RaceTracks";
 
         protected override void pickColor()
         {
-            base.pickColor();
-            if (drawCoordMaterial.HasMaterial())
+            //base.pickColor();
+            BlockHD pickMaterial = BlockHD.Empty;
+            pickMaterial.BlockValue = PickSafe(designerInterface.drawCoord);
+
+            if (pickMaterial.HasMaterial())
             {
-                SelectedMaterial = drawCoordMaterial;
+                SelectedMaterial = pickMaterial;
                 //if (inGame)
                 //{
                 //    parent.Print("Picked: " + Settings.Material.ToString());

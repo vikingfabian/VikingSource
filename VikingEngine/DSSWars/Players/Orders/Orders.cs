@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players.Orders
@@ -42,13 +43,13 @@ namespace VikingEngine.DSSWars.Players.Orders
             }
         }
 
-        public void refreshAvailable(Faction faction)
+        public void refreshAvailable(PFaction pfaction)
         {
             lock (orders)
             {
                 for (int i = orders.Count - 1; i >= 0; --i)
                 {
-                    if (!orders[i].refreshAvailable(faction))
+                    if (!orders[i].refreshAvailable(pfaction))
                     {
                         orders[i].DeleteMe();
                         orders.RemoveAt(i);
@@ -203,6 +204,11 @@ namespace VikingEngine.DSSWars.Players.Orders
         public void readGameState(int playerIx, BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {            
             int ordersCount = r.ReadUInt16();
+
+//#if DEBUG
+//            ordersCount += ushort.MaxValue + 1;
+//#endif
+
             for (int i = 0; i < ordersCount; i++)
             {
                 OrderType type = OrderType.Build;

@@ -48,7 +48,7 @@ namespace VikingEngine.Engine
         public static int MaxScreenSplit = 4;
 
         public DrawBatchCollection drawBatch;
-        Graphics.Image customMousePointer  = null;
+       
 
         public static void Init()
         {
@@ -171,19 +171,24 @@ namespace VikingEngine.Engine
             //    instancing.Initialize(graphicsDeviceManager.GraphicsDevice);
             //    instancing.Load();
             //}
-            refreshCursor();
+            Input.Mouse.Reset();
+            //refreshCursor();
         }
 
-        public void refreshCursor()
-        {
-            customMousePointer = null;
+        //public void refreshCursor()
+        //{
+        //    //foreach (var ins in Input.Mouse.Instances)
+        //    //{ 
+        //    //    ins.RefreshMouseVisible();
+        //    //}
+        //    //customMousePointer = null;
 
-            if (Ref.gamesett.customCursor)
-            {
-                customMousePointer = new Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
-            }
-            Input.Mouse.RefreshMouseVisible();// = !Ref.gamesett.customMouse;
-        }
+        //    //if (Ref.gamesett.customCursor)
+        //    //{
+        //    //    customMousePointer = new Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
+        //    //}
+        //    //Input.Mouse.RefreshMouseVisible();// = !Ref.gamesett.customMouse;
+        //}
 
         virtual public void DeleteMe()
         {
@@ -498,10 +503,9 @@ namespace VikingEngine.Engine
 
                 spriteBatch.Begin(SpriteSortMode.Immediate);
                 spriteBatch.Draw(MainRenderTarget, Screen.MonitorTargetRect, Color.White);
-                if (customMousePointer != null && Input.Mouse.RenderMouseCursor())
+                foreach (var ins in Input.Mouse.Instances)
                 {
-                    customMousePointer.position = Input.Mouse.Position;
-                    customMousePointer.Draw(0);
+                    ins.Draw();
                 }
                 spriteBatch.End();
             }

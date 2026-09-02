@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -37,7 +38,7 @@ namespace VikingEngine.DSSWars.Interface
         public PlayerHud_Head(LocalPlayer player)
         {
             this.player = player;
-            float headWidth = HudLib.HeadDisplayWidth * 1.75f;
+            float headWidth = HudLib.HeadDisplayWidth * 1.6f;
             var headMenuArea = player.playerData.view.safeScreenArea;
             headMenuArea.Width = headWidth;
             menu = new RichMenu(HudLib.RbSettings_Head, headMenuArea, new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
@@ -46,14 +47,19 @@ namespace VikingEngine.DSSWars.Interface
 
             if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
             {
-                VectorRect flagBgArea = new VectorRect(headMenuArea.Position, new Vector2(menu.backgroundArea.Height * 1.1f));
+                VectorRect flagBgArea = new VectorRect(headMenuArea.Position, new Vector2(menu.backgroundArea.Height * 1.05f));
+                flagBgArea.Width *= 0.7f;
+                //flagBgArea.Position.Y += 4;
                 var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
+                flagBgArea.Round();
                 flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
                 menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
-                flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 6));
+                flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 8));
+                flagBgArea.Position.Y += (flagBgArea.Height - flagBgArea.Width) * 0.5f;
+                flagBgArea.Height = flagBgArea.Width;
+
                 flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
-                flag.Texture = player.flagTexture;
-                flag.SetFullTextureSource();
+                RefreshFlag(player);
 
                 var headBgTex = menu.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);
                 headBgTex.SetOpacity(0.95f);
@@ -63,13 +69,20 @@ namespace VikingEngine.DSSWars.Interface
                     player.hud.MessageStart.Y = Math.Max(menu.backgroundArea.Bottom + Engine.Screen.IconSize * 0.5f, player.hud.MessageStart.Y);
                 }
             }
-                       
+
 
             Bottom = menu.backgroundArea.Bottom;
             Right = menu.backgroundArea.Right;
 
             factionMenuStart = new Vector2(menu.backgroundArea.X, Bottom);
         }
+
+        public void RefreshFlag(LocalPlayer player)
+        {
+            flag.Texture = player.flagTexture;
+            flag.SetFullTextureSource();
+        }
+
         public void refreshFaction(Players.LocalPlayer player, bool prepareLayout)
         {
             var content = new RichBoxContent();
@@ -96,7 +109,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                return DssRef.storage.runTutorial ? TutorialTabs : Tabs;
+                return player.tutorial == null ?  Tabs : TutorialTabs;
             }
         }
 
@@ -124,13 +137,13 @@ namespace VikingEngine.DSSWars.Interface
             int armyCount;
             int cityCount;
 
-            var faction = player.faction;
+            var faction = player.pfaction.GetFaction();
             gold = faction.money.GetGold();
             income = faction.GoldSecDiff();
             workForce = faction.totalWorkForce;
             totalStrength = Convert.ToInt32(faction.militaryStrength);
-            foodAdd = faction.CityFoodProduction;
-            foodSub = faction.CityFoodSpending;
+            foodAdd =  Convert.ToInt32(faction.foodProduction.displayValue_gold_sec);
+            foodSub = Convert.ToInt32(faction.foodSpending.displayValue_gold_sec);
             workForce = faction.totalWorkForce;
             diplomancyPoints = player.diplomaticPoints.Int();
             diplomacySoftMax = player.diplomaticPoints_softMax;
@@ -150,17 +163,31 @@ namespace VikingEngine.DSSWars.Interface
                     new RbTooltip(factionGoldTip)));
             }
 
-            content.Add(new RbTab(0.3f));
+            //content.space();
+            content.Add(new RbTab(0.35f));
+            if (!player.profile.casualControls)
+            {
+                int foodSum = foodAdd - foodSub;
+                RichBoxContent buttonContent = new RichBoxContent();
+                buttonContent.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
+                buttonContent.space(0.5f);
+                buttonContent.Add(new RbText(TextLib.LargeNumber(foodSum), HudLib.NegativeRed(foodSum)));
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,
+                    new RbTooltip(foodTip)));
+
+            }
+            //content.hspace();
+            //content.Add(new RbTab(0.3f));
             {
                 RichBoxContent buttonContent = new RichBoxContent();
                 buttonContent.Add(new RbImage(SpriteName.WarsWorker));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(TextLib.LargeNumber(workForce)));
                 content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,
-                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce))));
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.ResourceType_Workers, workForce))));
             }
-
-            content.Add(new RbTab(0.45f));
+            //content.hspace();
+            //content.Add(new RbTab(0.45f));
             {
                 RichBoxContent buttonContent = new RichBoxContent();
                 buttonContent.Add(new RbImage(SpriteName.WarsStrengthIcon));
@@ -170,7 +197,8 @@ namespace VikingEngine.DSSWars.Interface
                     new RbTooltip_Text(string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(totalStrength))))));
             }
 
-            content.Add(new RbTab(0.6f));
+            //content.hspace();
+            //content.Add(new RbTab(0.6f));
             {
                 RichBoxContent buttonContent = new RichBoxContent();
                 buttonContent.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
@@ -182,28 +210,18 @@ namespace VikingEngine.DSSWars.Interface
 
             
             
-            content.Add(new RbTab(0.8f));
-            if (!player.profile.casualControls)
-            {
-                int foodSum = foodAdd - foodSub;
-                RichBoxContent buttonContent = new RichBoxContent();
-                buttonContent.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
-                buttonContent.space(0.5f);
-                buttonContent.Add(new RbText(TextLib.LargeNumber(foodSum), HudLib.NegativeRed(foodSum)));
-                content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,
-                    new RbTooltip(foodTip)));
-                    
-            }
+            
 
             content.newLine();
 
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.HasControllerInput &&
+                player.gameControls.input.Controller_Faction.IsActive)
             {
-                content.Add(new RbImage(player.gameControls.input.ControllerFaction.Icon) { color = player.gameControls.controller_mayUseHeadDisplay()? Color.White : Color.Black });
+                content.Add(new RbImage(player.gameControls.input.Controller_Faction.Icon) { color = player.gameControls.controller_mayUseHeadDisplay()? Color.White : Color.Black });
                 content.space();                
             }
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Headmenu, out Color focusColor);
-            if (viewControllerTabs)
+            if (viewControllerTabs &&  player.gameControls.input.Controller_TabLeft.IsActive)
             {
                 content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                 content.space(0.5f);
@@ -218,7 +236,7 @@ namespace VikingEngine.DSSWars.Interface
                 factionTabs(content);
             }
 
-            if (viewControllerTabs)
+            if (viewControllerTabs && player.gameControls.input.Controller_TabRight.IsActive)
             {
                 content.space(0.5f);
                 content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });
@@ -227,7 +245,8 @@ namespace VikingEngine.DSSWars.Interface
             content.space(2);
             {
                 RichBoxContent buttonContent = new RichBoxContent();
-                if (player.gameControls.input.inputSource.IsController)
+                if (player.gameControls.input.inputSource.IsXnaController &&
+                    player.gameControls.input.NextCity.IsActive)
                 {
                     buttonContent.Add(new RbImage(player.gameControls.input.NextCity.Icon));
                     buttonContent.space(0.5f);
@@ -240,7 +259,8 @@ namespace VikingEngine.DSSWars.Interface
             }
             {
                 RichBoxContent buttonContent = new RichBoxContent();
-                if (player.gameControls.input.inputSource.IsController)
+                if (player.gameControls.input.inputSource.IsXnaController &&
+                    player.gameControls.input.NextArmy.IsActive)
                 {
                     buttonContent.Add(new RbImage(player.gameControls.input.NextArmy.Icon));
                     buttonContent.space(0.5f);
@@ -250,6 +270,32 @@ namespace VikingEngine.DSSWars.Interface
                 buttonContent.Add(new RbText(armyCount.ToString()));
                 content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextArmy, true),
                     new RbTooltip(nextArmyTip)));
+            }
+            {
+                RichBoxContent nextButton = new RichBoxContent();
+                if (player.gameControls.input.inputSource.HasControllerInput)
+                {
+                    if (player.gameControls.input.inputSource.IsXnaController &&
+                    player.gameControls.input.NextPin.IsActive)
+                    {
+                        nextButton.Add(new RbImage(player.gameControls.input.NextArmy.Icon));
+                        nextButton.space(0.5f);
+                    }
+                    //nextButton.Add(new RbImage(SpriteName.WarsLocationPin));
+                }
+                else
+                {
+                    //nextButton.Add(new RbImage(SpriteName.WarsHudIconNext));
+
+                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsLocationPin) }, 
+                    //    new RbAction(player.beginCreatePin),
+                    //new RbTooltip(addPinTip)));
+                }
+                nextButton.Add(new RbImage(SpriteName.WarsLocationPin));
+                nextButton.space(0.5f);
+                nextButton.Add(new RbText(player.pins.Count.ToString()));
+                content.Add(new ArtButton(RbButtonStyle.Outline, nextButton, new RbAction1Arg<bool>(player.gameControls.nextPin, true),
+                    new RbTooltip(nextPinTip)));
             }
             {
 
@@ -262,10 +308,13 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 else
                 {
-                    if (player.gameControls.input.inputSource.IsController)
+                    if (player.gameControls.input.inputSource.HasControllerInput)
                     {
-                        player.gameControls.input.NextWar.ToRichContent(buttonContent);
-                        buttonContent.space(0.5f);
+                        if (player.gameControls.input.NextWar.IsActive)
+                        {
+                            player.gameControls.input.NextWar.ToRichContent(buttonContent);
+                            buttonContent.space(0.5f);
+                        }
                     }
                     buttonContent.Add(new RbImage(SpriteName.WarsRelationWar));
                     toolTip = DssRef.lang.InputActionName_NextWar;
@@ -317,28 +366,35 @@ namespace VikingEngine.DSSWars.Interface
             for (FactionMapFilter filter = 0; filter < FactionMapFilter.NUM; filter++)
             {
                 SpriteName icon;
+                string filterName;
 
                 switch (filter)
                 {
-                    default: icon = SpriteName.MissingImage; break;
+                    default: icon = SpriteName.MissingImage; filterName = TextLib.Error; break;
 
                     case FactionMapFilter.FactionCols:
                         icon = SpriteName.WarsMapFilterFactions;
+                        filterName = DssRef.todoLang.UnitType_Faction;
                         break;
                     case FactionMapFilter.Terrain:
                         icon = SpriteName.WarsMapFilterTerrain;
+                        filterName = DssRef.lang.ItemSource_Terrain;
                         break;
                     case FactionMapFilter.Minimap:
                         icon = SpriteName.WarsMapFilterMinimap;
+                        filterName = DssRef.lang.InputActionName_MiniMap;
                         break;
                     case FactionMapFilter.PopulationHeatmap:
                         icon = SpriteName.WarsMapFilterWorkers;
+                        filterName = DssRef.lang.ResourceType_Workers;
                         break;
                     case FactionMapFilter.StrengthHeatmap:
                         icon = SpriteName.WarsMapFilterStrength;
+                        filterName = DssRef.lang.Hud_StrengthRating;
                         break;
                     case FactionMapFilter.ResourceHeatmap:
                         icon = SpriteName.WarsIcon_Resources;
+                        filterName = DssRef.lang.MenuTab_Resources;
                         break;
                 }
 
@@ -351,7 +407,7 @@ namespace VikingEngine.DSSWars.Interface
                             player.factionPixelTexture.filter = filter;
                             DssRef.world.BordersUpdated = true;
                        }
-                   , filter, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.MapFilter)));
+                   , filter, RbSoundType.Option), new RbTooltip_Text(string.Format(DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.MapFilter, filterName))));
             }
             
         }
@@ -384,7 +440,7 @@ namespace VikingEngine.DSSWars.Interface
         void nextCityTip(RichBoxContent content, object tag)
         {
             //var player = this.player.GetLocalPlayer();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.faction.cities.Count), HudLib.InfoYellow_Light));
+            content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.pfaction.GetFaction().cities.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.InputActionName_NextCity);
             content.ButtonDescription(SpriteName.KeyShift, DssRef.lang.Hud_Previous);
@@ -394,16 +450,31 @@ namespace VikingEngine.DSSWars.Interface
         void nextArmyTip(RichBoxContent content, object tag)
         {
             //var player = this.player.GetLocalPlayer();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_ArmyCount, player.faction.armies.Count), HudLib.InfoYellow_Light));
+            content.Add(new RbText(string.Format(DssRef.lang.Hud_ArmyCount, player.pfaction.GetFaction().armies.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextArmy, DssRef.lang.InputActionName_NextArmy);
         }
 
+        void nextPinTip(RichBoxContent content, object tag)
+        {
+            //var player = this.player.GetLocalPlayer();
+            content.Add(new RbText(DssRef.lang.ObjectType_LocationPin, HudLib.InfoYellow_Light));
+            content.newParagraph();
+            content.ButtonDescription(player.gameControls.input.NextPin, DssRef.lang.InputActionName_NextPin);
+            content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.lang.InputActionName_PinAndPing);
+            content.ButtonDescription(SpriteName.KeyCtrl, DssRef.lang.ObjectType_LocationPin_Share);
+        }
+
+        void addPinTip(RichBoxContent content, object tag)
+        {
+            content.ButtonDescription(player.gameControls.input.PinAndPing, DssRef.lang.InputActionName_PinAndPing);
+        }
+
         void factionGoldTip(RichBoxContent content, object tag)
         {
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.faction.money.GetGold()))));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.pfaction.GetFaction().money.GetGold()))));
             content.newLine();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(player.faction.GoldSecDiff()))));
+            content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(player.pfaction.GetFaction().GoldSecDiff()))));
         }
 
         void diplomacyTip(RichBoxContent content, object tag)
@@ -420,28 +491,28 @@ namespace VikingEngine.DSSWars.Interface
 
             
             content.newLine();
-            HudLib.Label(content, "Below soft cap");
+            HudLib.Label(content, DssRef.lang.Diplomacy_BelowSoftCap);
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec()))));
 
             content.newLine();
-            HudLib.Label(content, "Above soft cap");
+            HudLib.Label(content, DssRef.lang.Diplomacy_AboveSoftCap);
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec_CapIncluded()))));
+            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond))));
 
             content.newLine();
             content.Add(new RbSeperationLine());
             content.Add(new RbBeginTitle());
             content.Add(new RbImage(SpriteName.WarsBuild_Embassy));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.faction.embassyCount), HudLib.TitleColor_Head));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.pfaction.GetFaction().embassyCount), HudLib.TitleColor_Head));
 
             content.newLine();
-            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+            int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
@@ -450,22 +521,25 @@ namespace VikingEngine.DSSWars.Interface
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.EmbassyAddMaxDiplomacy)));
             content.newLine();
         }
         void foodTip(RichBoxContent content, object tag)
         {
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodProduction, player.faction.CityFoodProduction),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodProduction, Convert.ToInt32( player.pfaction.GetFaction().foodProduction.displayValue_gold_sec)),
                 HudLib.AvailableColor));
 
             content.newLine();
 
             content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodSpending, player.faction.CityFoodSpending),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodSpending, Convert.ToInt32(player.pfaction.GetFaction().foodSpending.displayValue_gold_sec)),
                 HudLib.NotAvailableColor));
+
+            content.newLine();
+            content.text(DssRef.lang.Info_MinuteAverage, HudLib.InfoYellow_Light);
         }
     }
     

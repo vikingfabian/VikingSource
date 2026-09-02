@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.HUD.RichBox
 {
@@ -64,7 +66,12 @@ namespace VikingEngine.HUD.RichBox
         virtual public Vector2 Center => throw new NotImplementedException();
         virtual public Vector2 Size => throw new NotImplementedException();
 
+        virtual public void Parent_OnNewLine(RichBoxGroup group)
+        {}
+
         virtual public bool IsNewLine() { return false; }
+
+        
     }
 
     class RbNewLine : AbsRichBoxMember
@@ -139,11 +146,11 @@ namespace VikingEngine.HUD.RichBox
             List<string> lines = new List<string>(4);
             TextLib.SplitToMultiLine2(text, font,
                 AbsText.HeightToScale(format.size, format.Font).Y,
-                group.boxWidth, group.position.X - group.topleft.X, lines);
+                group.boxWidth, group.carriage.position.X - group.topleft.X, lines);
 
             for (int i = 0; i < lines.Count; ++i)
             {
-                Text2 textLine = new Text2(lines[i], format.Font, group.position,
+                Text2 textLine = new Text2(lines[i], format.Font, group.carriage.position,
                     format.size, col, group.layer, null, group.addToRender);
                 textLine.OrigoAtCenterHeight();
                 group.Add(textLine);
@@ -155,11 +162,11 @@ namespace VikingEngine.HUD.RichBox
 
                 if (arraylib.IsLast(i, lines))
                 {
-                    group.position.X = textLine.MeasureRightPos();
+                    group.carriage.position.X = textLine.MeasureRightPos();
                 }
                 else
                 {
-                    group.position.X = group.topleft.X + group.boxWidth;
+                    group.carriage.position.X = group.topleft.X + group.boxWidth;
                     group.newLine();
                 }
             }
@@ -196,7 +203,7 @@ namespace VikingEngine.HUD.RichBox
 
     //    public override void Create(RichBoxGroup group)
     //    {
-    //        group.position.X += spaces * group.lineSpacing;
+    //        group.carriage.position.X += spaces * group.lineSpacing;
     //    }
     //}
     abstract class AbsRichBoxImage : AbsRichBoxMember
@@ -228,12 +235,12 @@ namespace VikingEngine.HUD.RichBox
                 group.newLine();
             }
 
-            Vector2 center = VectorExt.AddX(group.position, totalW * 0.5f);
+            Vector2 center = VectorExt.AddX(group.carriage.position, totalW * 0.5f);
             var img = createImg(group, center, sz);
 
             group.Add(img);
 
-            group.position.X += totalW;
+            group.carriage.position.X += totalW;
         }
 
         abstract protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz);
@@ -362,7 +369,7 @@ namespace VikingEngine.HUD.RichBox
             List<string> lines = new List<string>(4);
             TextLib.SplitToMultiLine2(text, font,
                 AbsText.HeightToScale(format.size, format.Font).Y,
-                group.boxWidth, group.position.X - group.topleft.X, lines);
+                group.boxWidth, group.carriage.position.X - group.topleft.X, lines);
 
 
 
@@ -382,11 +389,11 @@ namespace VikingEngine.HUD.RichBox
 
                 //if (arraylib.IsLast(i, lines))
                 //{
-                //    group.position.X = textLine.MeasureRightPos();
+                //    group.carriage.position.X = textLine.MeasureRightPos();
                 //}
                 //else
                 //{
-                //    group.position.X = group.topleft.X + group.boxWidth;
+                //    group.carriage.position.X = group.topleft.X + group.boxWidth;
                 //    group.newLine();
                 //}
             }
@@ -430,6 +437,84 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Size => pointer.size;
     }
 
+    class RbGamerIcon : RbTexture
+    {
+        public RbGamerIcon(Network.AbsNetworkPeer gamer, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
+            : base(null, scale, addLeftSpace, addRightSpace)
+        {
+            if (gamer != null)
+            {
+                if (gamer.storedGamerIcon != null)
+                {
+                    tex = gamer.storedGamerIcon;
+                }
+                else
+                {
+                    new GamerIconLoader(gamer, this);
+                }
+            }
+        }
+
+        public void OnLoadedIcon(Texture2D texture)
+        {
+            tex = texture;
+            if (pointer != null)
+            {
+                pointer.Texture = texture;
+                pointer.SetFullTextureSource();
+            }
+        }
+
+        class GamerIconLoader : LazyUpdate
+        {
+            RbGamerIcon reciever;
+            Network.AbsNetworkPeer gamer;
+            int trials = 0;
+            Timer.Basic trialTimer = new Timer.Basic(500, true);
+
+            public GamerIconLoader(Network.AbsNetworkPeer gamer, RbGamerIcon reciever)
+                :base(false)
+            {
+                this.gamer = gamer;
+                this.reciever = reciever;
+
+                if (TryLoadSteamImage() == false)
+                {
+                    AddToUpdateList();
+                }
+            }
+
+            public override void Time_Update(float time_ms)
+            {
+                if (trialTimer.Update(time_ms))
+                {
+                    if (TryLoadSteamImage() || ++trials >= 6)
+                    {
+                        DeleteMe();
+                    }
+                }
+            }
+            bool TryLoadSteamImage()
+            {
+                var steamPeer = gamer as SteamNetworkPeer;
+                if (steamPeer != null)
+                {
+                    var steamImage = steamPeer.GetGamerIcon184x184();
+
+                    if (steamImage.state == SteamImageLoadState.ImageLoadedCorrectly)
+                    {
+                        steamPeer.storedGamerIcon = steamImage.texture;
+                        reciever.OnLoadedIcon(steamImage.texture);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+
+    
+
     class RbSpace : AbsRichBoxMember
     {
         float spaces;
@@ -441,7 +526,7 @@ namespace VikingEngine.HUD.RichBox
 
         public override void Create(RichBoxGroup group)
         {
-            group.position.X += spaces * group.imageHeight * 0.3f;
+            group.carriage.position.X += spaces * group.imageHeight * 0.3f;
         }
     }
 
@@ -472,13 +557,13 @@ namespace VikingEngine.HUD.RichBox
         public override void Create(RichBoxGroup group)
         {
             float goalX = group.topleft.X + group.boxWidth * percX;
-            if (group.position.X < goalX)
+            if (group.carriage.position.X < goalX)
             {
-                group.position.X = goalX;
+                group.carriage.position.X = goalX;
             }
             else
             {
-                group.position.X += 2;
+                group.carriage.position.X += 2;
             }
         }
     }
@@ -488,6 +573,7 @@ namespace VikingEngine.HUD.RichBox
         public Image pointer;
         float opacity;
         Color color;
+        public bool thick = false;
 
         public RbSeperationLine(Color color, float opacity)
         {
@@ -504,7 +590,7 @@ namespace VikingEngine.HUD.RichBox
             var pos = group.seperatingLinePlacement();
 
             pointer = new Image(SpriteName.WhiteArea, pos,
-                new Vector2(group.boxWidth, 2), group.layer, false, group.addToRender);
+                new Vector2(group.boxWidth, thick? 6 : 2), group.layer, false, group.addToRender);
             pointer.ColorAndAlpha(color, opacity);
             group.Add(pointer);
         }
@@ -513,5 +599,10 @@ namespace VikingEngine.HUD.RichBox
         {
             pointer.Width = width;
         }
+    }
+
+    struct CreateMemberResult
+    { 
+        
     }
 }

@@ -22,6 +22,11 @@ namespace VikingEngine
             w.Write(encoded);
         }
 
+        public static void FloatAsPercentU16_WriteEmpty(BinaryWriter w)
+        {
+            w.Write(ushort.MinValue);
+        }
+
         public static float ReadFloatFromPercentU16(BinaryReader r, float max)
         {
             ushort encoded = r.ReadUInt16();
@@ -98,6 +103,22 @@ namespace VikingEngine
         }
 
 
+        public static void WriteUInt24(System.IO.BinaryWriter w, int value)
+        {
+            //maximum value of 16,777,215
+            // Write 3 bytes for X
+            w.Write((byte)(value & 0xFF));         // 1st byte (Lowest 8 bits)
+            w.Write((byte)((value >> 8) & 0xFF));  // 2nd byte (Middle 8 bits)
+            w.Write((byte)((value >> 16) & 0xFF)); // 3rd byte (Highest 8 bits of our 24)
+        }
+
+        public static int ReadUInt24(System.IO.BinaryReader r)
+        {
+            // Reconstruct X from 3 bytes
+            return r.ReadByte() | (r.ReadByte() << 8) | (r.ReadByte() << 16);
+        }
+
+
         public static void ValueIO(ref float value, System.IO.BinaryWriter w, System.IO.BinaryReader r)
         {
             if (w != null)
@@ -162,9 +183,11 @@ namespace VikingEngine
 
         const float FloatMultiplier = 50; //Accuracy of 2%
 
-        public static void WriteFloatMultiplier(float value, System.IO.BinaryWriter w)
-        {            
-            w.Write((byte) (value * FloatMultiplier));
+        public static byte WriteFloatMultiplier(float value, System.IO.BinaryWriter w)
+        {
+           byte byteVal = (byte)(value * FloatMultiplier);
+            w.Write(byteVal);
+            return byteVal;
         }
 
         public static float ReadFloatMultiplier(System.IO.BinaryReader r)
@@ -176,7 +199,7 @@ namespace VikingEngine
         /// <summary>
         /// Best for values that mostly are between 0-200 and rarely larger than 600
         /// </summary>
-        public static void WriteGrowingAddValue(System.IO.BinaryWriter w, int value)
+        public static void WriteGrowing_Byte_Add(System.IO.BinaryWriter w, int value)
         {//REMARK, can't write negative values
             while (value > GrowingAddValueMaxByte)
             {
@@ -185,7 +208,7 @@ namespace VikingEngine
             }
             w.Write((byte)value);
         }
-        public static int ReadGrowingAddValue(System.IO.BinaryReader r)
+        public static int ReadGrowing_Byte_Add(System.IO.BinaryReader r)
         {
             int result = 0;
             while (true)
@@ -210,7 +233,7 @@ namespace VikingEngine
         /// <summary>
         /// Best for values that mostly are between 0-100 but frequently extend beyond 600
         /// </summary>
-        public static void WriteGrowingBitShiftValue(System.IO.BinaryWriter w, int value)
+        public static void WriteGrowing_Byte_Bit(System.IO.BinaryWriter w, int value)
         {//REMARK, can't write negative values
             while (value > GrowingBitShiftValueMaxByte)
             {
@@ -219,7 +242,7 @@ namespace VikingEngine
             }
             w.Write((byte)(value));
         }
-        public static int ReadGrowingBitShiftValue(System.IO.BinaryReader r)
+        public static int ReadGrowing_Byte_Bit(System.IO.BinaryReader r)
         {
             int result = 0;
             int numShifts = 0;
@@ -243,13 +266,13 @@ namespace VikingEngine
             System.IO.MemoryStream s = new System.IO.MemoryStream();
             System.IO.BinaryWriter w = new System.IO.BinaryWriter(s);
 
-            WriteGrowingBitShiftValue(w, value);
-            WriteGrowingAddValue(w, value);
+            WriteGrowing_Byte_Bit(w, value);
+            WriteGrowing_Byte_Add(w, value);
 
             System.IO.BinaryReader r = new System.IO.BinaryReader(s);
             r.BaseStream.Position = 0;
-            int shiftRes = ReadGrowingBitShiftValue(r);
-            int addRes = ReadGrowingAddValue(r);
+            int shiftRes = ReadGrowing_Byte_Bit(r);
+            int addRes = ReadGrowing_Byte_Add(r);
 
             if (value != shiftRes || addRes != value)
             {
@@ -259,10 +282,130 @@ namespace VikingEngine
             //test 512
             s = new System.IO.MemoryStream();
             w = new System.IO.BinaryWriter(s);
-            WriteGrowingBitShiftValue(w, 512);
+            WriteGrowing_Byte_Bit(w, 512);
             byte[] test = new byte[(int)(w.BaseStream.Length)];
             w.BaseStream.Position = 0;
             w.BaseStream.Read(test, 0, test.Length);
+        }
+
+        const int GrowingAddValueMaxUShort = ushort.MaxValue - 1; // 65534
+
+        /// <summary>
+        /// Best for values that mostly are between 0-65534 and rarely larger than 130000
+        /// </summary>
+        public static void WriteGrowing_UShort_Add(System.IO.BinaryWriter w, int value)
+        {
+            // REMARK, can't write negative values
+            while (value > GrowingAddValueMaxUShort)
+            {
+                w.Write(ushort.MaxValue);
+                value -= GrowingAddValueMaxUShort;
+            }
+            w.Write((ushort)value);
+        }
+
+        public static int ReadGrowing_UShort_Add(System.IO.BinaryReader r)
+        {
+            int result = 0;
+            while (true)
+            {
+                ushort value = r.ReadUInt16();
+                if (value == ushort.MaxValue)
+                {
+                    result += GrowingAddValueMaxUShort;
+                }
+                else
+                {
+                    result += value;
+                    return result;
+                }
+            }
+        }
+
+
+        const int GrowingBitShift_UShort = 15;
+        const int GrowingBitShiftValueMaxUShort = 32767; // 0x7FFF (15 bits of data)
+        const int SixteenthBit = 32768;                  // 0x8000 (Continuation flag)
+
+        /// <summary>
+        /// Best for values that mostly are between 0-32767 but frequently extend beyond 65000
+        /// </summary>
+        public static void WriteGrowing_UShort_Bit(System.IO.BinaryWriter w, int value)
+        {
+            // REMARK, can't write negative values
+            while (value > GrowingBitShiftValueMaxUShort)
+            {
+                w.Write((ushort)((value & GrowingBitShiftValueMaxUShort) + SixteenthBit));
+                value = value >> GrowingBitShift_UShort;
+            }
+            w.Write((ushort)(value));
+        }
+
+        public static int ReadGrowing_UShort_Bit(System.IO.BinaryReader r)
+        {
+            int result = 0;
+            int numShifts = 0;
+            while (true)
+            {
+                ushort value = r.ReadUInt16();
+
+                // If the 16th bit is set, it means we have more ushorts to read
+                if (value > GrowingBitShiftValueMaxUShort)
+                {
+                    result += (value & GrowingBitShiftValueMaxUShort) << numShifts;
+                }
+                else
+                {
+                    return result + (value << numShifts);
+                }
+                numShifts += GrowingBitShift_UShort;
+            }
+        }
+
+        /// <summary>
+        /// anything below zero is considered empty
+        /// </summary>
+        public static void WriteGrowing_UShort_Bit_MayEmpty(System.IO.BinaryWriter w, int value)
+        {
+            if (value < 0)
+            {
+                value = -1;
+            }
+            WriteGrowing_UShort_Bit(w, value +1);
+        }
+
+        public static int ReadGrowing_UShort_Bit_MayEmpty(System.IO.BinaryReader r)
+        {
+            return ReadGrowing_UShort_Bit(r) -1;
+        }
+
+        public static void TestGrowingWriter_UShort(int value)
+        {
+            System.IO.MemoryStream s = new System.IO.MemoryStream();
+            System.IO.BinaryWriter w = new System.IO.BinaryWriter(s);
+
+            WriteGrowing_UShort_Bit(w, value);
+            WriteGrowing_UShort_Add(w, value);
+
+            System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+            r.BaseStream.Position = 0;
+
+            int shiftRes = ReadGrowing_UShort_Bit(r);
+            int addRes = ReadGrowing_UShort_Add(r);
+
+            if (value != shiftRes || addRes != value)
+            {
+                throw new System.Exception("Deserialized value did not match the input!");
+            }
+
+            // test 70000 (A value large enough to trigger growth in a ushort implementation)
+            s = new System.IO.MemoryStream();
+            w = new System.IO.BinaryWriter(s);
+            WriteGrowing_UShort_Bit(w, 70000);
+
+            byte[] test = new byte[(int)(w.BaseStream.Length)];
+            s.Position = 0;
+            s.Read(test, 0, test.Length);
         }
 
         public static void WritePercent(float percent, System.IO.BinaryWriter w)

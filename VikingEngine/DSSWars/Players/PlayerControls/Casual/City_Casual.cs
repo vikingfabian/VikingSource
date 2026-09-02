@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
@@ -184,10 +185,9 @@ namespace VikingEngine.DSSWars.GameObject
                 var subTile = DssRef.world.subTileGrid.Get(buildPos);
                 bool upgrade = false;
 
-                //var dist = cityHallSubtilePos.SideLength(buildPos);
                 if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
                 {
-                    EditSubTile edit = new EditSubTile(buildPos, subTile, true, true, false);
+                    EditSubTile edit = new EditSubTile(true, true, buildPos, subTile, true, true, false) { netShare = true };
                     edit.ExecuteEdit();
                 }
             }
@@ -204,6 +204,26 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return casualProgress;
+        }
+
+        public void CheckCasual(AbsPlayer player)
+        {
+            if (player != null)
+            {
+                if (player.IsLocalPlayer())
+                {
+                    if (player.profile.casualControls)
+                    {
+                        automateCity = false;
+                    }
+                    else
+                    {
+                        casualProgress = null;
+                    }
+                }
+
+                casualProgress?.clearAll();
+            }
         }
 
         public int casualRecruitTime_sec(CasualSoldierType soldierType)

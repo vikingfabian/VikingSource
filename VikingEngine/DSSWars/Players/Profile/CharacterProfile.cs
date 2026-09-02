@@ -24,10 +24,12 @@ namespace VikingEngine.DSSWars.Players.Profile
         public int accessoryFace = -1;
 
         public float soldierScale = 1;
+        public bool custom;
 
         public CharacterProfile(int index)
         {
             StorageIndex = index;
+            custom = index >= 0;
         }
 
         public CharacterProfile(int index, System.IO.BinaryReader r)

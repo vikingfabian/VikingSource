@@ -144,6 +144,33 @@ namespace VikingEngine.DSSWars.Work
         }
     }
 
+    class PotteryWorkEffect : AbsWorkEffect
+    {
+        Vector3 emitterPos;
+
+        public PotteryWorkEffect(IntVector2 subTilePos)
+        {
+            emitterPos = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+            emitterPos.X += 0.02f;
+            emitterPos.Y += 0.02f;
+            emitterPos.Z -= 0.03f;
+        }
+
+        public override void update()
+        {
+            //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            {
+                if (Ref.peRnd.Chance(0.5))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, Ref.peRnd.Vector3_Sq(VectorExt.AddZ(emitterPos, 0.02f), 0.007f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
+            }
+        }
+    }
+
     class SmithWorkEffect : AbsWorkEffect
     {
         Vector3 emitterPos;
@@ -167,5 +194,53 @@ namespace VikingEngine.DSSWars.Work
         }
     }
 
-    
+    class ButcherWorkEffect : AbsWorkEffect
+    {
+        Vector3 emitterPos;
+
+        public ButcherWorkEffect(IntVector2 subTilePos)
+        {
+            emitterPos = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+            emitterPos.X -= 0.02f;
+            emitterPos.Y += 0.03f;
+            emitterPos.Z += 0.03f;
+        }
+
+        public override void update()
+        {
+            //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
+            if (/*Ref.TimePassed16ms && */Ref.peRnd.Chance(0.1 / Ref.UpdateTimes60FPS))
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.DssDamage, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
+            }
+        }
+    }
+
+    class SmokingWorkEffect : AbsWorkEffect
+    {
+        Vector3 emitterPos;
+
+        public SmokingWorkEffect(IntVector2 subTilePos)
+        {
+            emitterPos = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+            //emitterPos.X -= 0.01f;
+            //emitterPos.Y += 0.005f;
+            //emitterPos.Z += 0.02f;
+        }
+
+        public override void update()
+        {
+            //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            {
+                if (Ref.peRnd.Chance(0.5))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
+            }
+        }
+    }
 }

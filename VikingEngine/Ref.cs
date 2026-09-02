@@ -25,6 +25,7 @@ namespace VikingEngine
         public static MainGame main;
         public static Sound.SoundManager sound;
         public static GameSettings gamesett;
+        public static Network.NetworkSettings netsett;
         public static VikingEngine.SteamWrapping.SteamManager steam;
         //public static DataLib.Language language;
         public static AbsOptionsLanguage langOpt;                                                                                                                                                               
@@ -38,7 +39,7 @@ namespace VikingEngine
         public static PerformanceRandom peRnd = new PerformanceRandom();
 
 
-        public static Network.INetworkUpdateReviever NetUpdateReciever()
+        public static Network.INetworkUpdateReciever NetUpdateReciever()
         {
             if (lobby == null) return gamestate;
 
@@ -102,8 +103,10 @@ namespace VikingEngine
         /// <summary>For 60fps, acceleration and other processes sensitive to change in FPS</summary>
         //public static bool TimePassed16ms = false;
 
-        /// <summary>For 60fps or more, how many times * 60fps game runs</summary>
+        /// <summary>For 60fps or more, how many times * 60fps game runs, IN GAME TIME</summary>
         public static int GameTimePassed16ms = 0;
+
+        public static int TimePassed16ms = 0;
 
         public static void ClearGarbage()
         {

@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float maxAttackAngle = 0.15f;
         
         //public string description;
-        public UnitType unitType;
+        public UnitBuildType unitBuildType;
 
         public bool Command_Javelin=false;
 
@@ -32,16 +32,14 @@ namespace VikingEngine.DSSWars.GameObject
         public int factionUniqueType = -1;
 
 
-        public override AbsSoldierUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit(bool bannerman)
         {            
             return new BaseSoldier();
         }
 
-       
-
-        virtual public UnitType ShipType()
+        virtual public UnitBuildType ShipType()
         {
-            return UnitType.ConscriptWarship;
+            return UnitBuildType.ConscriptWarship;
         }
 
 

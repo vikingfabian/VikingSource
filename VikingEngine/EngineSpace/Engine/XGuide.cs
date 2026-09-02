@@ -64,28 +64,8 @@ namespace VikingEngine.Engine
             players[(int)p.localPlayerIndex] = p;
         }
 
-        //public static void BeginKeyBoardInput(KeyboardInputValues values)
-        //{
-        //    //waitingKeyInput = true;
-        //    keyInputValues = values;
-        //    new SteamWrapping.SteamInput(values.Description, values.DefaultText);
-        //}
 
-        //public static void TextInputEvent(string input)
-        //{
-        //    if (input == null)
-        //    {
-        //        Ref.gamestate.TextInputCancelEvent(keyInputValues.PlayerIndex);
-        //    }
-        //    else
-        //    {
-        //        if (keyInputValues.callBack == null)
-        //            Ref.gamestate.TextInputEvent(keyInputValues.PlayerIndex, input, keyInputValues.Link);
-        //        else
-        //            keyInputValues.callBack(keyInputValues.PlayerIndex, input, keyInputValues.Link);
-        //    }
-        //}
-
+        
         public static bool InOverlay
         {
             get

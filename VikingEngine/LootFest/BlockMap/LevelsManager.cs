@@ -199,7 +199,7 @@ namespace VikingEngine.LootFest.BlockMap
 
         AbsLevel createLevelAt(LevelEnum lvl, int areaIx)
         {
-            Debug.Log("createLevelAt: " + lvl.ToString() + areaIx.ToString());
+            //Debug.Log("createLevelAt: " + lvl.ToString() + areaIx.ToString());
 
             if (levels[(int)lvl] != null)
             {

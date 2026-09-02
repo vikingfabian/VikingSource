@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,8 @@ using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
-using VikingEngine.LootFest.Music;
-using VikingEngine.PJ.Strategy;
+using VikingEngine.Input;
+using VikingEngine.Network;
 
 
 namespace VikingEngine
@@ -26,15 +27,15 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 34;
+        const int Version = 39;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
         DataStream.FilePath path = new DataStream.FilePath(null, FileName, FileEnd, true, true);
-
+        public bool HasSaveFile = false;
         public int ChunkLoadRadius = LootFest.Map.World.StandardOpenRadius;
         public ThreeOptions MapLoadingSpeed = ThreeOptions.Medium;
-        static readonly int[] FrameRateOptions = new int[] { 30, 60, 75, 100, 120, 144, 165, 240, 360 };
+        static readonly int[] FrameRateOptions = { 30, 60, 75, 100, 120, 144, 165, 240, 360 };
         public int FrameRate = 60;
         public int DetailLevel = 1;
         public bool AutoJoinToCoopLevel = true;
@@ -43,11 +44,14 @@ namespace VikingEngine
         public const int MaxBlood = 100;
         public int Blood = 100;
         public float UiScale = 1f;
+        public bool wideScrollbars = false;
+        public float MinimapScale = 1f;
         public float IngameMenuWidth = 1f;
+        public bool displayInputHelp = true;
         public bool customCursor = false;
         public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
-        public Network.BannedPeers bannedPeers = new Network.BannedPeers();
+        
         public bool graphicsHasChanged = false;
         public bool settingsHasChanged = false;
         public bool shaderHasChanged = false;
@@ -68,16 +72,26 @@ namespace VikingEngine
         public bool panOnZoom = true;
         public int controlLayout = 0;
 
+        public MouseEdgePush edgePush = MouseEdgePush.Active;
+        public bool lockMouseToWindow = true;
         public float scrollWheelSensitivity_menu = 1;
         public float scrollWheelSensitivity_game = 1;
+
+        public float zoomSmoothing = 0.6f;
+        public float panSmoothing = 0.0f;
+
         public float keyPanSpeed = 1f;
 
 
-        float MasterVolume = 0.5f;
+        public float MasterVolume = 0.5f;
         float MusicMasterVolume = 0f;//1f;
         float SoundVolume = Engine.Sound.SoundStandardVolume;
         float AmbientVolume = Engine.Sound.SoundStandardVolume;
         float BattleMelodyVolume = 1f;
+        float netVoiceVolume = 1f;
+        public float NetVoiceVol() { return MathHelper.Clamp(netVoiceVolume * Ref.gamesett.MasterVolume, 0.0f, 1.0f); }
+        public bool NetVoiceMuted() { return netVoiceVolume * Ref.gamesett.MasterVolume <= 0; }
+
         bool lowLatencyGarbageCollecting = true;
         public float SoundVol() { return SoundVolume * MasterVolume; }
         public float AmbientVol() { return AmbientVolume * MasterVolume; }
@@ -88,10 +102,21 @@ namespace VikingEngine
         public GameSettings()
         {
             controllerMap = new InputMap(false);
-            controllerMap.setInputSource(Input.InputSourceType.XController, 0);
+            controllerMap.setInputSource(new Input.InputSource( Input.InputSourceType.XController, 0));
             keyboardMap = new InputMap(true);
-            keyboardMap.setInputSource(Input.InputSourceType.KeyboardMouse, 0);
+            keyboardMap.setInputSource(new Input.InputSource(Input.InputSourceType.KeyboardMouse, 0));
             Ref.gamesett = this;
+            if (Ref.steam != null && Ref.steam.isDeck)
+            {
+                SteamDeckSetup();
+            }
+        }
+
+        public void SteamDeckSetup()
+        {
+            UiScale = 1.5f;
+            MinimapScale = 0.7f;
+            wideScrollbars = true;
         }
 
         public void Save()
@@ -117,13 +142,14 @@ namespace VikingEngine
             w.Write(SoundVolume);
             w.Write((byte)VibrationLevel);
             w.Write(UiScale);
+            w.Write(wideScrollbars);
             w.Write(IngameMenuWidth);
             w.Write((byte)language);
             w.Write(dyslexiaFont);
             controllerMap.write(w);
             keyboardMap.write(w);
             
-            bannedPeers.write(w);
+            //bannedPeers.write(w);
             w.Write(ModelLightShaderEffect);
 
             w.Write(MasterVolume);
@@ -135,6 +161,8 @@ namespace VikingEngine
             w.Write(controlLayout);
             w.Write(scrollWheelSensitivity_menu);
             w.Write(scrollWheelSensitivity_game);
+            w.Write(panSmoothing);
+            w.Write(zoomSmoothing);
             w.Write(keyPanSpeed);
             w.Write(BattleMelodyVolume);
             w.Write(ParticlesEffect);
@@ -155,6 +183,10 @@ namespace VikingEngine
             w.Write(customCursor);
             w.Write(muteControllerDisconnect);
 
+            w.Write(lockMouseToWindow);
+            w.Write((byte)edgePush);
+            w.Write(MinimapScale);
+
             Debug.WriteCheck(w);
         }
 
@@ -166,6 +198,7 @@ namespace VikingEngine
 
         public void readSettings(System.IO.BinaryReader r, int version)
         {
+            HasSaveFile = true;
             if (version > Version || version == 32) return;
 
             Engine.Screen.ReadSettings(r, version);
@@ -187,6 +220,11 @@ namespace VikingEngine
                 UiScale = 1f;
             }
 
+            if (version >= 37)
+            {
+                wideScrollbars = r.ReadBoolean();
+            }
+
             if (version >= 33)
             {
                 IngameMenuWidth = r.ReadSingle();
@@ -199,8 +237,11 @@ namespace VikingEngine
             controllerMap.read(r);
             keyboardMap.read(r);
 
-
-            bannedPeers.read(r, version);
+            if (version < 38)
+            {
+                new BannedPeers().read(r, version);
+            }
+            //bannedPeers.read(r, version);
 
             ModelLightShaderEffect = r.ReadBoolean();
 
@@ -214,6 +255,11 @@ namespace VikingEngine
             controlLayout = r.ReadInt32();
             scrollWheelSensitivity_menu = r.ReadSingle();
             scrollWheelSensitivity_game = r.ReadSingle();
+            if (version >= 39)
+            {
+                panSmoothing = r.ReadSingle();
+                zoomSmoothing = r.ReadSingle();
+            }
             if (version >= 22)
             {
                 keyPanSpeed = r.ReadSingle();
@@ -269,6 +315,16 @@ namespace VikingEngine
             if (version >= 30)
             {
                 muteControllerDisconnect = r.ReadBoolean();
+            }
+
+            if (version >= 35)
+            { 
+                lockMouseToWindow = r.ReadBoolean();
+                edgePush = (MouseEdgePush)r.ReadByte();
+            }
+            if (version >= 36)
+            {
+                MinimapScale = r.ReadSingle();
             }
 
             Debug.ReadCheck(r);
@@ -387,12 +443,16 @@ namespace VikingEngine
         //    }
         //    return Engine.Screen.PcTargetFullScreen;
         //}
+
+       
+
         public bool CustomCursorProperty(object tag, bool set, bool value)
         {
             if (set)
             {
                 customCursor = value;
-                Ref.draw.refreshCursor();
+                Input.Mouse.refreshCursor();
+                //Ref.draw.refreshCursor();
                 settingsHasChanged = true;
             }
             return customCursor;
@@ -575,19 +635,17 @@ namespace VikingEngine
                 content.newLine();
                 content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
                 content.space();
-                content.Add(new RbText(DssRef.lang.Settings_MasterVolume));
+                content.Add(new RbText(DssRef.lang.Settings_MasterVolume, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), masterVolProperty, true));
 
                 if (Ref.music != null)
                 {
-                    //content.newLine();
-                    //content.Add(new RbText(DssRef.lang.MusicIsBroken, HudLib.InfoYellow_Light));
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                     content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
                     content.space();
-                    content.Add(new RbText(Ref.langOpt.SoundOption_MusicVolume));
+                    content.Add(new RbText(Ref.langOpt.SoundOption_MusicVolume, HudLib.TitleColor_Label));
                     content.space();
                     content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), musicVolProperty, true));
                 }
@@ -596,7 +654,7 @@ namespace VikingEngine
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
                 content.space();
-                content.Add(new RbText(DssRef.lang.Settings_AmbienceVolume));
+                content.Add(new RbText(DssRef.lang.Settings_AmbienceVolume, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), ambientVolProperty, true));
 
@@ -605,7 +663,7 @@ namespace VikingEngine
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconMusicVol));
                 content.space();
-                content.Add(new RbText(DssRef.lang.Settings_BattleMelody));
+                content.Add(new RbText(DssRef.lang.Settings_BattleMelody, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 2, 0.1f), BattleMelodyVolProperty, true));
 
@@ -613,9 +671,17 @@ namespace VikingEngine
                 content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
                 content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
                 content.space();
-                content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume));
+                content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty, true));
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                content.Add(new RbImage(SpriteName.MenuPixelIconSoundVol));
+                content.space();
+                content.Add(new RbText(DssRef.lang.Multiplayer_VoiceChat, HudLib.TitleColor_Label));
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), netVoiceVolProperty, true));
             }
             else
             {
@@ -729,9 +795,7 @@ namespace VikingEngine
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdPointer), new RbSpace(0.5f), new RbText(Ref.langOpt.GameSettings_RenderedMouseCursor) },
                 CustomCursorProperty));
 
-            content.newLine();
-            //content.Add(new RbImage(SpriteName.LFIconLetter));
-            content.Add(new RbText( Ref.langOpt.GraphicsOption_UiScale));
+            HudLib.Label(content, Ref.langOpt.GraphicsOption_UiScale);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty, true));
             content.space();
@@ -739,12 +803,19 @@ namespace VikingEngine
                 new RbAction(Ref.gamestate.OnResolutionChange)));
 
             content.newLine();
-            content.Add(new RbText(Ref.langOpt.GraphicsOption_IngameMenuWidth));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GameSettings_WideScrollbar) },
+               wideScrollProperty));
+            content.space();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) },
+                new RbAction(Ref.gamestate.OnResolutionChange)));
+
+            HudLib.Label(content, Ref.langOpt.GraphicsOption_IngameMenuWidth);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.8f, 1.6f, 0.1f), IngameMenuWProperty, true));
 
-            
-            //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
+            HudLib.Label(content, Ref.langOpt.Setting_MinimapScale);
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.2f, 2f, 0.1f), minimapScaleProperty, true));
         }
 
         public void SetDisplayMode(WindowDisplayMode mode)
@@ -1091,6 +1162,25 @@ namespace VikingEngine
             return keyPanSpeed;
         }
 
+        public float panSmoothingProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                panSmoothing = value;
+                settingsHasChanged = true;
+            }
+            return panSmoothing;
+        }
+        public float zoomSmoothingProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                zoomSmoothing = value;
+                settingsHasChanged = true;
+            }
+            return zoomSmoothing;
+        }
+
         public float musicVolProperty(object tag, bool set, float value)
         {
             if (set)
@@ -1130,6 +1220,16 @@ namespace VikingEngine
             return AmbientVolume;
         }
 
+        public float netVoiceVolProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                netVoiceVolume = value;
+                settingsHasChanged = true;
+            }
+            return netVoiceVolume;
+        }
+
         public float BattleMelodyVolProperty(object tag, bool set, float value)
         {
             if (set)
@@ -1150,6 +1250,28 @@ namespace VikingEngine
                 Screen.RefreshUiSize();
             }
             return UiScale;
+        }
+
+        public bool wideScrollProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                wideScrollbars = value;
+                settingsHasChanged = true;
+                Screen.RefreshUiSize();
+            }
+            return wideScrollbars;
+        }
+
+        public float minimapScaleProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                MinimapScale = value;
+
+                graphicsHasChanged = true;
+            }
+            return MinimapScale;
         }
 
         public float IngameMenuWProperty(object tag,bool set, float value)
@@ -1193,6 +1315,16 @@ namespace VikingEngine
                 Ref.gamestate.refreshGcLatency();
             }
             return lowLatencyGarbageCollecting;
+        }
+
+        public bool LockMouseProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                lockMouseToWindow = value;
+                settingsHasChanged = true;
+            }
+            return lockMouseToWindow;
         }
         //string SongTitleProperty(bool set, string value)
         //{
@@ -1247,4 +1379,6 @@ namespace VikingEngine
         High,
         NUM
     }
+
+
 }

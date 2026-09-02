@@ -9,6 +9,19 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Korean : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "넓은 스크롤 바";
+        public override string GameSettings_DisplayInputHelp => "조작 도움말";
+        public override string GameSettings_InputSmoothing => "입력 스무딩";
+
+        //Mounts
+        public override string InputSteam => "Steam 입력";
+        public override string Input_SimulateMouse => "마우스 시뮬레이션";
+        public override string Input_LockMouseToWindow => "마우스를 창에 가두기";
+        public override string Input_MouseEdgePush_Title => "가장자리 스크롤";
+        public override string Input_NoControl => "없음";
+        public override string Input_ActiveControl => "액티브";
+        public override string Input_PassiveControl => "패시브";
+        public override string Setting_MinimapScale => "미니맵 배율";
         //##Settings
         public override string Settings_Particles_FadeMapLayers => "레이어 페이드"; // "Layer Fade"
         public override string SplitScreen_HorizontalFirst => "가로 우선";
@@ -24,7 +37,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => "창 모드";
         public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
         public override string GameSettings_RenderedMouseCursor => "렌더된 커서";
-
+        public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
         //--
         public override string GraphicsOption_FarViewDistance => "원거리 시야";
 

@@ -104,6 +104,25 @@ namespace VikingEngine//WRAPPER
         }
     }
 
+    struct TwoInts
+    {
+        public static readonly TwoInts Empty = new TwoInts(0, 0);
+
+        public int Value1;
+        public int Value2;
+
+        public TwoInts(int v1, int v2)
+        {
+            Value1 = v1;
+            Value2 = v2;
+        }
+
+        public override string ToString()
+        {
+            return Value1.ToString() + ", " + Value2.ToString();
+        }
+    }
+
     struct TwoSprites
     {
         public SpriteName image1, image2;

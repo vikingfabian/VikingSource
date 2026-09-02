@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.XP
             List<BuildAndExpandType> builds = new List<BuildAndExpandType>();
             if (building_stoneBuildings)
             {
-                builds.Add(BuildAndExpandType.Nobelhouse);
+                builds.Add(BuildAndExpandType.Noblehouse);
                 builds.Add(BuildAndExpandType.Bank);
             }
             if (building_mixedFarms)

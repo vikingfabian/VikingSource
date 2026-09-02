@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
         public void claimPost(SoldierGroup group, City city, int defenceIndex)
         {
-            if (city.defenceBuildings.InBound( defenceIndex))
+            if (city.defenceBuildings.InBound_List( defenceIndex))
             {
                 ref var defence = ref city.defenceBuildings.array[defenceIndex];
 
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Players.Command
             {
                 var city = tArmy.GetCity();
                 int defenceIndex = city.defenceIxFromPosId(group.assignedToPost_IdAndPosition);
-                if (city.defenceBuildings.InBound(defenceIndex))
+                if (city.defenceBuildings.InBound_List(defenceIndex))
                 {
                     ref var defence = ref city.defenceBuildings.array[defenceIndex];
                     defence.soldierGroupId = DefenceStatus.NoSoldiers;

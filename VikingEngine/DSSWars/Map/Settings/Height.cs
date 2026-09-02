@@ -17,11 +17,17 @@ namespace VikingEngine.DSSWars.Map.Settings
 
         public const int MaxHeight = 9;
 
+        
+        //public const float LowWater_Tile2Y = LowWaterHeight * DefaultGroundYoffset;
+        //public const float AboveWater_Tile2Y = LowWater_Tile2Y + DefaultGroundYoffset;
+        //public const float MaxLand_Tile2Y = (MineHeightStart -1) * DefaultGroundYoffset;
+        //public const float MountainStart_Tile2Y = MountainHeightStart * DefaultGroundYoffset;
+        //public const float MountainLowPeak_Tile2Y = MountainLowPeak * DefaultGroundYoffset;
         //public const int BiomTypeGreen = 0;
         //public const int BiomTypeDry = 1;
         //public const int BiomCount = 2;
 
-        
+
 
         //static readonly Color Dry0 = new Color(253, 198, 137);
         //static readonly Color Dry1 = new Color(198, 156, 109);

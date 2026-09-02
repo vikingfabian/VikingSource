@@ -109,6 +109,9 @@
       <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\VoxelModel\Temp\" />
+  </ItemGroup>
   
   <PropertyGroup>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>

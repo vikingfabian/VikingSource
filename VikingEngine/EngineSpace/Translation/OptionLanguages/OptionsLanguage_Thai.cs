@@ -9,6 +9,20 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Thai : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => TextLib.ThaiConv("แถบ|เลื่อน|แบบ|กว้าง");
+        public override string GameSettings_DisplayInputHelp => TextLib.ThaiConv("ตัว|ช่วย|การ|ควบคุม");
+        public override string GameSettings_InputSmoothing => TextLib.ThaiConv("ปรับ|การ|ควบคุม|ให้|ลื่น|ไหล");
+
+        //Mounts
+        public override string InputSteam => TextLib.ThaiConv("Steam|Input");
+        public override string Input_SimulateMouse => TextLib.ThaiConv("จำลอง|เมาส์");
+        public override string Input_LockMouseToWindow => TextLib.ThaiConv("ล็อก|เมาส์|ไว้|ใน|หน้าต่าง");
+        public override string Input_MouseEdgePush_Title => TextLib.ThaiConv("เลื่อน|กล้อง|ด้วย|ขอบ|จอ");
+        public override string Input_NoControl => TextLib.ThaiConv("ไม่|มี");
+        public override string Input_ActiveControl => TextLib.ThaiConv("แอคทีฟ");
+        public override string Input_PassiveControl => TextLib.ThaiConv("พาสซีฟ");
+        public override string Setting_MinimapScale => TextLib.ThaiConv("ขนาด|มินิแมพ");
+
         public override string Settings_Particles_FadeMapLayers => TextLib.ThaiConv("เลือน|เลเยอร์|แผนที่");
         public override string SplitScreen_HorizontalFirst => TextLib.ThaiConv("แนวนอน|ก่อน");
         public override string SplitScreen_VerticalFirst => TextLib.ThaiConv("แนวตั้ง|ก่อน");
@@ -24,7 +38,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
         public override string DisplayMode_BorderlessFullscreen => TextLib.ThaiConv("เต็ม|จอ|ไร้|ขอบ");
         public override string GameSettings_RenderedMouseCursor => TextLib.ThaiConv("เรนเดอร์|เคอร์เซอร์");
-
+        public override string GameSettings_MuteControllerDisconnect => TextLib.ThaiConv("ปิด|การ|แจ้ง|เตือน|คอนโทรลเลอร์|หลุด");
         //--
         public override string GraphicsOption_FarViewDistance => TextLib.ThaiConv("ระยะ|การ|มอง|เห็น|ไกล");
 

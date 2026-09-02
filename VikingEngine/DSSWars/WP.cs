@@ -134,13 +134,19 @@ namespace VikingEngine.DSSWars
 
         public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);            
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);
+            }
         }
 
         public static void Rotation1DToQuaterion(Graphics.AbsVoxelObj mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.Identity;
-            mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.Identity;
+                mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            }
         }
 
         public static RotationQuarterion ToQuaterion(float rotation)
@@ -171,11 +177,18 @@ namespace VikingEngine.DSSWars
             return result;
         }
 
-        //public static void writePosXZ(System.IO.BinaryWriter w, Vector3 position)
-        //{
-        //    w.Write((Half)position.X);
-        //    w.Write((Half)position.Z);
-        //}
+        public static void writeSubTilePos(System.IO.BinaryWriter w, IntVector2 position)
+        {
+            position.WriteUInt24(w);
+        }
+
+        public static IntVector2 readSubTilePos(System.IO.BinaryReader r)
+        {
+            var result = IntVector2.Zero;
+            result.ReadUInt24(r);
+            return result;
+        }
+
         public static void readPosXZ_old(System.IO.BinaryReader r, out Vector3 position, out IntVector2 tilePos)
         {
             position = Vector3.Zero;
@@ -199,5 +212,17 @@ namespace VikingEngine.DSSWars
 
             tilePos = new IntVector2(position.X, position.Z);
         }
+
+        public static bool ReadPosXZPercentU16_ZeroCheck(BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        {
+            position = Vector3.Zero;
+            position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
+            position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
+
+            tilePos = new IntVector2(position.X, position.Z);
+
+            return position.X > 0;
+        }
+
     }
 }

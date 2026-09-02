@@ -549,7 +549,7 @@ namespace VikingEngine.LootFest.Map
 
         public void netRead(System.IO.BinaryReader r)
         {
-            Debug.Log(">Receives chunk from host " + Index.ToString());
+            //Debug.Log(">Receives chunk from host " + Index.ToString());
             try
             {
                 ReadChunk(r);
@@ -825,7 +825,7 @@ namespace VikingEngine.LootFest.Map
                //Ref.netSession.EndAsynchPacket(writer,
                //    Network.PacketType.RequestChunk,
                //     Network.SendPacketTo.OneSpecific, Ref.steam.P2PManager.localHost.FullId,
-               //    Network.PacketReliability.ReliableLasy, null);
+               //    Network.PacketReliability.Reliable, null);
            }
 
            if (chunkIsRequested++ > 600)
@@ -838,7 +838,7 @@ namespace VikingEngine.LootFest.Map
        //    //when a chunk is undoed
        //    chunkIsRequested++;
        //    System.IO.BinaryWriter writer = Ref.netSession.BeginWritingPacketToHost(Network.PacketType.RequestChunkGroup, 
-       //        Network.PacketReliability.ReliableLasy, LfLib.LocalHostIx);
+       //        Network.PacketReliability.Reliable, LfLib.LocalHostIx);
        //    //Index.WriteStream(writer);
        //    Map.WorldPosition.WriteChunkGrindex_Static(Index, writer);
        //}

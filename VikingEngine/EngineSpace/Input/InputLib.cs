@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Steamworks;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.Input
 {
@@ -31,6 +33,11 @@ namespace VikingEngine.Input
 
         public static bool AnyKeyDownEvent()
         {
+            if (Ref.steam.input != null && Ref.steam.input.AnyKeyDownEvent())
+            {
+                return true;
+            }
+
             foreach (var m in XInput.controllers)
             {
                 if (m.Connected)
@@ -173,9 +180,36 @@ namespace VikingEngine.Input
             {
                 return add;
             }
+            if (add is NoButtonMap)
+            {
+                return buttonMap;
+            }
             return new AlternativeButtonsMap(buttonMap, add);
         }
 
+        public static Vector2 OnlyOneDimentionOut(Vector2 directionValue)
+        {
+            Vector2 result = Vector2.Zero;
+
+            const float Buffer = 0.6f;
+            float absX = Math.Abs(directionValue.X);
+            float absY = Math.Abs(directionValue.Y);
+            if (absX > absY)
+            {
+                if (absX > Buffer)
+                {
+                    result.X = directionValue.X;
+                }
+            }
+            else
+            {
+                if (absY > Buffer)
+                {
+                    result.Y = directionValue.Y;
+                }
+            }
+            return result;
+        }
         //public static bool DownEvent_AnyInstance(IButtonMap buttons)
         //{
         //    if (buttons.inputSource == InputSourceType.XController)
@@ -215,139 +249,15 @@ namespace VikingEngine.Input
         }
     }
 
-    enum InputSourceType
-    {
-        KeyboardMouse,
-        XController,
-        //SteamController,
-        Any,
-        Num_Non,
 
-        Keyboard,
-        Mouse,
-        
-        //GenericController,
+    enum MouseEdgePush
+    { 
+        None,
+        Passive,
+        Active,
+        NUM
     }
-
-    struct InputSource
-    {
-        public static readonly InputSource DefaultPC = new InputSource(InputSourceType.KeyboardMouse);
-        public static readonly InputSource Empty = new InputSource(InputSourceType.Num_Non);
-
-        public InputSourceType sourceType;
-        public int controllerIndex;
-
-        public InputSource(IButtonMap button)
-        {
-            this.sourceType = button.inputSource;
-            this.controllerIndex = button.ControllerIndex;
-        }
-
-        public InputSource(InputSourceType source, int controllerIndex = -1)
-        {
-            this.sourceType = source;
-            this.controllerIndex = controllerIndex;
-        }
-
-        public bool HasKeyBoard
-        {
-            get { return sourceType == InputSourceType.KeyboardMouse || sourceType == InputSourceType.Any; }
-        }
-
-        public bool HasMouse
-        {
-            get { return sourceType == InputSourceType.KeyboardMouse || sourceType == InputSourceType.Any; }
-        }
-
-        public bool IsController
-        {
-            get { return sourceType == InputSourceType.XController || sourceType == InputSourceType.Any; }
-        }
-
-        public bool HasIndex
-        {
-            get { return sourceType == InputSourceType.XController; }
-        }
-
-        public override string ToString()
-        {
-            string result;
-            switch (sourceType)
-            {
-                case InputSourceType.Num_Non:
-                    result = Ref.langOpt.InputNotSet;
-                    break;
-                case InputSourceType.XController:
-                    result = Ref.langOpt.InputController;
-                    break;
-                case InputSourceType.KeyboardMouse:
-                    result = Ref.langOpt.InputKeyboardMouse;
-                    break;
-                default:
-                    result =sourceType.ToString();
-                    break;
-            }
-            if (HasIndex)
-            {
-                result += TextLib.Parentheses((controllerIndex + 1).ToString(), true);
-            }
-            return result;
-        }
-
-        public override bool Equals([NotNullWhen(true)] object obj)
-        {
-           var other= (InputSource)obj;
-
-            if (sourceType == other.sourceType)
-            {
-                if (HasIndex)
-                { 
-                    return controllerIndex == other.controllerIndex;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-
-        public bool Connected
-        {
-            get 
-            {
-                if (sourceType == InputSourceType.XController)
-                { 
-                    return XInput.controllers[controllerIndex].Connected;
-                }
-
-                return true;
-            }
-        }
-        public XController Controller
-        {
-            get
-            {
-                if (sourceType == InputSourceType.XController)
-                {
-                    return Input.XInput.Instance(controllerIndex);
-                }
-                return null;
-            }
-        }
-
-        public void write(System.IO.BinaryWriter w)
-        {
-            w.Write((int)sourceType);
-            w.Write(controllerIndex);
-        }
-        public void read(System.IO.BinaryReader r)
-        {
-            sourceType = (InputSourceType)r.ReadInt32();
-            controllerIndex = r.ReadInt32();
-        }
-    }
+   
 
     enum PlayerControllerSelection
     {

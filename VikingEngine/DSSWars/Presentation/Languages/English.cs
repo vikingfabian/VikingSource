@@ -6,6 +6,634 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
+        //Multiplayer update
+        
+
+        //--
+        
+
+        //--
+        public override string Unlock_PublicGames => "public games";
+        public override string UnlockPublic_Warning1 => "Do not play with strangers";
+        public override string UnlockPublic_Warning2 => "The game has zero protection against cheating or trolling";
+        public override string Unlock_WarningBadExperience => "You will have a bad experience";
+        public override string Hud_Accept => "Accept";
+        public override string Hud_Block => "Block";
+        public override string Hud_Deny => "Deny";
+        public override string Hud_Reason => "Reason";
+        public override string Hud_Full => "Full";
+        public override string Hud_Version => "Version";
+        public override string Unlock_PlayerVersusPlayer => "player versus player";
+        public override string UnlockPvp_Warning1 => "DSS is not designed for competitive games";
+        public override string UnlockPvp_Warning2 => "There is no balance, matches will be unfair";
+        public override string PlayerJoinHistoryTitle => "Player join history";
+        public override string BlockedPlayersTitle => "Blocked players";
+        public override string ClickToRemoveBan => "Click: remove ban";
+        public override string HostSettingsTitle => "Host settings";
+        public override string MaxPlayerCount => "Max player count";
+        public override string DistanceBetweenPlayers => "Distance between players";
+        public override string AllowHandicap => "Allow handicap";
+        public override string AllowCasualControls => "Allow casual controls";
+        public override string AutoRecolorPlayerFlags => "Auto recolor player flags";
+        public override string DefaultDiplomacy => "Default diplomacy";
+        public override string ClientSettingsTitle => "Client settings";
+        public override string UseHandicap => "Use handicap";
+        public override string DifficultyDescription_BotAggression => "Bot aggression";
+        public override string Hud_GetExtraX => "Extra {0}";
+        public override string Hud_Hide => "Hide";
+        public override string Hud_ModelType => "Model";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}: {1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "Resource boost";
+        //public override string TaxIncome => "Tax income";
+        public override string PlayerInteractionTitle => "Player interaction";
+        public override string DefaultPeaceful => "Default: Peaceful";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "Default: Co-optional";
+        public override string DefaultHardcore => "Default: Hardcore";
+        public override string GeneralTitle => "General";
+
+        public override string InputButton_Hold => "Button hold";
+        public override string InputButton_Toggle => "Button toggle";
+        public override string VoiceOptAlwaysOn => "Always on";
+        public override string VoiceTitle => "Voice";
+        public override string VoiceMute => "Mute";
+        public override string GiftOptAllow => "Allow";
+        public override string GiftOptFriendsOnly => "Friends only";
+        public override string GiftOptBlocked => "Blocked";
+        public override string ReceiveAchievementsTitle => "Receive achievements";
+        public override string GiftWarning => "Warning! Gifted achievements can feel demeaning";
+        public override string FullReset => "Full reset";
+        public override string AllowAllianceTitle => "Allow alliance";
+        public override string CanBreakAlliance => "Can break alliance";
+        public override string AllowWarTitle => "Allow war";
+        public override string FairProtection => "Fair protection";
+        public override string FairProtectionTooltip => "Protected players must use their rules on you";
+        public override string MustAsk => "Must ask";
+        public override string MustAskTooltip => "Both players must agree to fight";
+        public override string AllianceLimit => "Alliance limit";
+        public override string AllianceLimitTooltip => "Can't be attacked by a larger player alliance";
+        public override string GameStartProtection => "Game start protection";
+        public override string Hud_Time_Minutes => "minutes";
+        public override string WarPreparationTime => "War preparation time";
+        public override string WarPreparationTimeTooltip => "A delay from war declaration until attacks are available";
+        public override string Hud_Allow => "Allow";
+        public override string Hud_Blocked => "Blocked";
+
+        public override string Hud_DeleteAll => "Delete all";
+        public override string DiplomacyPlayersChoice => "Players' choice";
+        public override string UnlockSureTitle => "Are you really, really sure?";
+        public override string UnlockSureDescription => "Will you be a big boy and not cry on the forum later?";
+
+
+
+        public override string Network_PlayOffline => "Play offline";
+        public override string JoinPermission_Title => "Join Permissions";
+        public override string JoinPermission_Private => "Private";
+        public override string JoinPermission_FriendsOnly => "Friends only";
+        public override string JoinPermission_Public => "Public";
+
+        public override string Network_Join => "Join game";
+        public override string Network_ConnectingToGame => "Connecting...";
+        public override string Lobby_Category_MultiplayerSettings => "Multiplayer settings";
+
+        public override string Hud_Default => "Default";
+        public override string Group_Team => "team";
+        public override string Group_Everyone => "everyone";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "Diplomatic statue";
+
+        public override string Message => "Message";
+        public override string ObjectType_LocationPin => "Location pin";
+        public override string ObjectType_LocationPin_Share => "Share and ping";
+        public override string ObjectType_LocationPin_Ping => "Ping!";
+        public override string InputActionName_TextChat => "Text chat";
+        public override string InputActionName_TextChatLog => "Chat log";
+        public override string InputActionName_VoiceChat => "Voice chat";
+        public override string InputActionName_NextPin => "Next pin";
+        public override string InputActionName_PinAndPing => "Add pin";
+
+        public override string Leaderboards_ArmySize => "One army size, in strength";
+        public override string Leaderboards_MultiplayerPlayerCount => "Hosting player count";
+
+        public override string Multiplayer_BanWarning => "ban warning";
+        public override string Multiplayer_SentToHost => "Will be sent to the host";
+        public override string Multiplayer_AddToOwnBlocks => "Add to your own block list";
+
+        public override string Multiplayer_Message_RequestSent => "Request sent";
+
+        public override string Multiplayer_BlockPlayer => "Block player";
+        public override string Multiplayer_NetSession => "Net session";
+        public override string GiftedAchievements => "Gifted achievements";
+        public override string GiftedAchievements_Description => "Reward your friends' bad behavior";
+
+        public override string Multiplayer_Title => "Multiplayer";
+        public override string Multiplayer_Lobby => "Multiplayer lobby";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. The host starts a game";
+        public override string Multiplayer_Tutorial_JoinButton => "2. A join button will appear here";
+        public override string Multiplayer_Tutorial_Visible => "The host must have a visible Steam profile";
+
+        public override string Multiplayer_KickPlayer => "Kick player";
+        public override string Multiplayer_RequestBlockPlayer => "Request: Block player";
+        public override string Multiplayer_HandoverComplete => "Handover complete";
+        public override string Multiplayer_LoadingClientSave => "Loading client save";
+        public override string Multiplayer_ClientSaveComplete => "Client save complete";
+        public override string Multiplayer_BadActor => "Bad actor";
+        public override string Multiplayer_NetworkError => "Network error";
+        public override string Multiplayer_Sender => "Sender";
+        public override string Multiplayer_Receiver => "Receiver";
+        public override string Multiplayer_PlayerJoined => "Player joined";
+        public override string Multiplayer_PlayerLeft => "Player left";
+        public override string Multiplayer_RequestingClientGamestates => "Requesting client gamestates...";
+        public override string Multiplayer_TextChat => "Text chat";
+        public override string Multiplayer_VoiceChat => "Voice chat";
+        public override string Steam_UserProfile => "User profile";
+        public override string Steam_OpenSteamOverlay => "Open Steam overlay";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "Mobilizing";
+        public override string Diplomacy_OfferRelation => "Offer relation";
+        public override string Diplomacy_OfferRelation_Declined => "Declined offer relation";
+        public override string Diplomacy_SendGold => "Send gold";
+        public override string Diplomacy_GiftToPlayer => "Gift to player";
+        public override string Diplomacy_RecievedGift => "Recived gift";
+        public override string Diplomacy_OnAccept => "If the other player accepts:";
+        public override string Diplomacy_WarPreparationTime => "War preparation time";
+
+        public override string Diplomacy_AboveSoftCap => "Above soft cap";
+        public override string Diplomacy_BelowSoftCap => "Below soft cap";
+        public override string Diplomacy_OpenPlayerToPlayer => "Open player diplomacy";
+        //--
+
+        //public override string GiftAchieve_WhiteKnight_Name => "White Knight";
+        //public override string GiftAchieve_WhiteKnight_Desc => "Looking good, protecting others.";
+
+        //public override string GiftAchieve_HeroComplexSaviorComplex_Name => "Savior Complex";
+        //public override string GiftAchieve_HeroComplexSaviorComplex_Desc => "Needs to be the hero of the story.";
+
+        //public override string GiftAchieve_CryBaby_Name => "Cry Baby";
+        //public override string GiftAchieve_CryBaby_Desc => "Stop complaining!";
+
+        //public override string GiftAchieve_KingMaker_Name => "King Maker";
+        //public override string GiftAchieve_KingMaker_Desc => "You helped them win...";
+
+        //public override string GiftAchieve_Turtle_Name => "Turtle";
+        //public override string GiftAchieve_Turtle_Desc => "Hiding behind walls.";
+
+        //public override string GiftAchieve_MetaPlayer_Name => "Meta Player";
+        //public override string GiftAchieve_MetaPlayer_Desc => "A proven strategy is the ONLY strategy!";
+
+        //public override string GiftAchieve_Tryhard_Name => "Tryhard";
+        //public override string GiftAchieve_Tryhard_Desc => "What if you tried to have fun?";
+
+        //public override string GiftAchieve_DidPracticeInSecret_Name => "Secret Practicer";
+        //public override string GiftAchieve_DidPracticeInSecret_Desc => "Are you sure that you never played before?";
+
+        //public override string GiftAchieve_TheEncyclopedia_Name => "The Encyclopedia";
+        //public override string GiftAchieve_TheEncyclopedia_Desc => "How do you know everything?";
+
+        //public override string GiftAchieve_WarCriminal_Name => "War Criminal";
+        //public override string GiftAchieve_WarCriminal_Desc => "There's no reason we can't be civil, is there?";
+
+        //public override string GiftAchieve_FarmerRush_Name => "Farmer Rush";
+        //public override string GiftAchieve_FarmerRush_Desc => "Why make steel when you have numbers?";
+
+        //public override string GiftAchieve_Politician_Name => "Politician";
+        //public override string GiftAchieve_Politician_Desc => "Words are your weapon.";
+
+        //public override string GiftAchieve_Socializer_Name => "Socializer";
+        //public override string GiftAchieve_Socializer_Desc => "Someone is here just to chat.";
+
+        //public override string GiftAchieve_OverAchiever_Name => "Overachiever";
+        //public override string GiftAchieve_OverAchiever_Desc => "You look a little sweaty there...";
+
+        //public override string GiftAchieve_Noob_Name => "Noob";
+        //public override string GiftAchieve_Noob_Desc => "Did you skip the tutorial?";
+
+        //public override string GiftAchieve_SwedishNeutrality_Name => "Swedish Neutrality";
+        //public override string GiftAchieve_SwedishNeutrality_Desc => "Why take sides?";
+
+        //public override string GiftAchieve_TroubleMaker_Name => "Troublemaker";
+        //public override string GiftAchieve_TroubleMaker_Desc => "My mom warned me about you."; // "Just want to watch the world burn."
+
+        //public override string GiftAchieve_ScorchedEarth_Name => "Scorched Earth";
+        //public override string GiftAchieve_ScorchedEarth_Desc => "Nothing but rubble is left behind.";
+
+        //public override string GiftAchieve_WarMonger_Name => "Warmonger";
+        //public override string GiftAchieve_WarMonger_Desc => "Violence is the only answer!";
+
+        //public override string GiftAchieve_LivingInABubble_Name => "Living in a Bubble";
+        //public override string GiftAchieve_LivingInABubble_Desc => "Completely oblivious to the world around them.";
+
+        //public override string GiftAchieve_Bully_Name => "Bully";
+        //public override string GiftAchieve_Bully_Desc => "Pick on someone your own size!";
+
+        //public override string GiftAchieve_ControlFreak_Name => "Control Freak";
+        //public override string GiftAchieve_ControlFreak_Desc => "Why leave anything to chance?";
+
+        //public override string GiftAchieve_RandomNothingMakesSense_Name => "Agent of Chaos";
+        //public override string GiftAchieve_RandomNothingMakesSense_Desc => "How do you defy all logic and reason?";
+
+        //public override string GiftAchieve_Hoarder_Name => "Hoarder";
+        //public override string GiftAchieve_Hoarder_Desc => "Going to keep all those resources to yourself?";
+
+        //public override string GiftAchieve_Scatterbrained_Name => "Scatterbrained";
+        //public override string GiftAchieve_Scatterbrained_Desc => "Focus, please!";
+
+        //public override string GiftAchieve_NearSighted_Name => "Nearsighted";
+        //public override string GiftAchieve_NearSighted_Desc => "Only sees what's in front of their nose.";
+
+        //public override string GiftAchieve_AutomationAbuser_Name => "Automation Abuser";
+        //public override string GiftAchieve_AutomationAbuser_Desc => "Your game plays itself...";
+
+        //public override string GiftAchieve_Troll_Name => "Troll";
+        //public override string GiftAchieve_Troll_Desc => "Anything for the LOLs.";
+
+        //public override string GiftAchieve_MemeLord_Name => "Meme Lord";
+        //public override string GiftAchieve_MemeLord_Desc => "Do you know how to talk outside of the internet?";
+
+        //public override string GiftAchieve_SupportSlave_Name => "Support Slave";
+        //public override string GiftAchieve_SupportSlave_Desc => "It's hard work to carry others.";
+
+        //public override string GiftAchieve_DarkSidePlayer_Name => "Lost to the Dark Side";
+        //public override string GiftAchieve_DarkSidePlayer_Desc => "Nice guys finish last.";
+
+        //public override string GiftAchieve_SlaughterHouse_Name => "Slaughterhouse";
+        //public override string GiftAchieve_SlaughterHouse_Desc => "The rivers will run red!";
+
+        //public override string GiftAchieve_AnimalCruelty_Name => "Animal Cruelty";
+        //public override string GiftAchieve_AnimalCruelty_Desc => "Can someone call the Department of Animal Services?";
+
+        //public override string GiftAchieve_LuckyBastard_Name => "Lucky Bastard";
+        //public override string GiftAchieve_LuckyBastard_Desc => "The Gods of RNG are with you!";
+
+        //public override string GiftAchieve_Cursed_Name => "Cursed";
+        //public override string GiftAchieve_Cursed_Desc => "You have no luck!";
+
+        //public override string GiftAchieve_Backstabber_Name => "Backstabber";
+        //public override string GiftAchieve_Backstabber_Desc => "Betrayal!";
+
+        //public override string GiftAchieve_Oathbreaker_Name => "Oathbreaker";
+        //public override string GiftAchieve_Oathbreaker_Desc => "Your word is your bond.";
+
+        //public override string GiftAchieve_Wormtongue_Name => "Wormtongue";
+        //public override string GiftAchieve_Wormtongue_Desc => "Whispers poison in our ears.";
+
+        //public override string GiftAchieve_ArmchairGeneral_Name => "Armchair General";
+        //public override string GiftAchieve_ArmchairGeneral_Desc => "The Logistics Mastermind (of Snacks).";
+
+        //public override string GiftAchieve_Salty_Name => "Salty";
+        //public override string GiftAchieve_Salty_Desc => "Boiling with rage.";
+
+        //public override string GiftAchieve_SaltMiner_Name => "Salt Miner";
+        //public override string GiftAchieve_SaltMiner_Desc => "Other people's rage is your reward.";
+
+        //public override string GiftAchieve_PuppetMaster_Name => "Puppet Master";
+        //public override string GiftAchieve_PuppetMaster_Desc => "Did you pull the strings?";
+
+        //public override string GiftAchieve_TheCarry_Name => "The Carry";
+        //public override string GiftAchieve_TheCarry_Desc => "Someone dragged his team over the finish line.";
+
+        //public override string GiftAchieve_OneManArmy_Name => "One-Man Army";
+        //public override string GiftAchieve_OneManArmy_Desc => "Don't need any help.";
+
+        //public override string GiftAchieve__4DChessPlayer_Name => "4D Chess Player";
+        //public override string GiftAchieve__4DChessPlayer_Desc => "We can't comprehend your big IQ moves.";
+
+        //public override string GiftAchieve_SpreadsheetWarrior_Name => "Spreadsheet Warrior";
+        //public override string GiftAchieve_SpreadsheetWarrior_Desc => "Can optimize the fun out of any game.";
+
+        //public override string GiftAchieve_MeatShield_Name => "Meat Shield";
+        //public override string GiftAchieve_MeatShield_Desc => "Absorbed all the damage.";
+
+        //public override string GiftAchieve_InDebt_Name => "In Debt";
+        //public override string GiftAchieve_InDebt_Desc => "One day you need to pay that back!";
+
+        //public override string GiftAchieve_OnLifeSupport_Name => "On Life Support";
+        //public override string GiftAchieve_OnLifeSupport_Desc => "You wouldn't be alive if it weren't for...";
+
+        //public override string GiftAchieve_LoneWolf_Name => "Lone Wolf";
+        //public override string GiftAchieve_LoneWolf_Desc => "Strongest when the pack is gone, right?";
+
+        //public override string GiftAchieve_ShaggyTooDopeAlwaysChilling_Name => "Always Chilling";
+        //public override string GiftAchieve_ShaggyTooDopeAlwaysChilling_Desc => "Never breaking a sweat.";
+
+        //public override string GiftAchieve_BadInfluence_Name => "Bad Influence";
+        //public override string GiftAchieve_BadInfluence_Desc => "Maybe I shouldn't listen to you.";
+
+        //public override string GiftAchieve_HindsightTactician_Name => "Hindsight Tactician";
+        //public override string GiftAchieve_HindsightTactician_Desc => "Untouched by the fog of war, viewing past chaos through the absolute clarity of the future.";
+
+        //public override string GiftAchieve_Houseplant_Name => "A Decorative Houseplant";
+        //public override string GiftAchieve_Houseplant_Desc => "Hello? Are you there?";
+
+        //public override string GiftAchieve_Sheep_Name => "Herd Mentality";
+        //public override string GiftAchieve_Sheep_Desc => "You are allowed your own opinion.";
+
+        //public override string GiftAchieve_GlitchRider_Name => "Glitch Rider";
+        //public override string GiftAchieve_GlichRider_Desc => "Stop abusing the game!";
+
+        //public override string GiftAchieve_ChickenShit_Name => "Chicken Shit";
+        //public override string GiftAchieve_ChickenShit_Desc => "Are you afraid?";
+
+        //public override string GiftAchieve_TheLeakyCanteen_Name => "The Leaky Canteen";
+        //public override string GiftAchieve_TheLeakyCanteen_Desc => "So dry, not a drop of water!";
+
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Items will not be destroyed if you exceed the stockpile!";
+
+        public override string SlaughterResult_PerAnimal => "Slaughter output, per animal";
+        
+        public override string Settings_Mode_QuickBoss => "Quick boss";
+        public override string Settings_Mode_QuickBoss_Description => "Prepare for a few hours, then meet a final boss";
+
+        public override string QuickBoss_TimeOption => "Boss time (hours)";
+
+
+        //Mounts update
+        public override string Leaderboards_title => "Leaderboards";
+        public override string Leaderboards_domination => "World domination top time, {0}% plus";
+        public override string Leaderboards_victory => "Story victory, top % difficulty";
+        public override string Leaderboards_CitySize => "Top city size, in workers";
+        public override string Leaderboards_Survival => "Survival length at {0}% difficulty";
+
+
+        public override string Message_CannotPayUpkeep => "Cannot pay the upkeep!";
+        public override string Animals_ProductionStop => "Animal production will stop";
+
+        public override string Tutorial_ToCapture => "To capture";
+        public override string Tutorial_ClickButton => "Click button";
+        public override string Tutorial_MoveXToY => "Move {0} to {1}";
+
+
+        public override string Workers_Description1_work => "Will build, collect resources and craft items.";
+        public override string Workers_Description2_income => "Are taxed for income.";
+        public override string Workers_Description3_soldiers => "Can be drafted as soldiers for your armies.";
+
+        public override string Hud_Time_ValuePerMinute => "Value per minute";
+        public override string Hud_Time_ValuePerSecond => "Value per second";
+        public override string Hud_Lock => "Lock";
+        public override string Hud_Maximum => "Max";
+
+        public override string Tutorial_SeeThisInThat => "See {0} in {1}";
+        public override string Conscript_SkillBonus => "Skill bonus";
+        public override string SoldierStats_UnitCount => "Unit count";
+        /// <summary>
+        /// Areas are field, forest, sea and siege
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "Damage per second - {0}";
+        public override string Conscript_BaseHealth => "Base health";
+
+        /// <summary>
+        /// Summary value for the ability to get across the map
+        /// </summary>
+        public override string Conscript_Mobility => "Mobility";
+
+        public override string Conscript_RiderMobility => "Rider mobility";
+        public override string Conscript_LightWagonMobility => "Light wagon mobility";
+        public override string Conscript_HeavyWagonMobility => "Heavy wagon mobility";
+
+        /// <summary>
+        /// Generelized for any object, like skills, resources and buildings
+        /// </summary>
+        public override string Culture_AffectedItems => "Affected items";
+        //## Mounted update ##
+        public override string Progress_ClosingCores => "Closing CPU cores {0}";
+        public override string Editor_ExportFrame => "Export current frame";
+        public override string Editor_FistFrame => "First frame";
+        public override string Editor_LastFrame => "Last frame";
+
+        public override string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";
+        public override string Work_SlaughterX => "Slaughter {0}";
+
+        public override string BuildCategory_Farming => "Farming";
+        public override string Resource_TypeName_ManType => "man type";
+        public override string Resource_TypeName_NobelMen => "nobelmen";
+        public override string Resource_TypeName_ConservedFood => "conserved food";
+
+        public override string UnitType_UnitOnMount => "mounted {0}";
+        public override string UnitType_UnitOnWagon => "wagon {0}";
+        public override string UnitType_NobelUnit => "nobel {0}";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0} {1}-handler";
+
+        public override string Info_ArmyFood4 => "Conserved food allows a larger food reserve";
+        public override string Info_ArmyFood5 => "Fresh food will be used first";
+
+        public override string Resource_ConservedFood_Reserves => "Conserved food reserves";
+        public override string Resource_TypeName_Clay => "clay";
+        public override string Resource_TypeName_Brick => "brick";
+        public override string Resource_TypeName_Container => "container";
+        public override string Resource_TypeName_Meat => "meat";
+        public override string Resource_TypeName_Salt => "salt";
+        public override string Resource_TypeName_Vehicle => "vehicle";
+        public override string Resource_TypeName_WagonClosed => "closed wagon";
+        public override string Resource_TypeName_WagonIron => "iron coach";
+        public override string Resource_TypeName_WagonSteel => "steel coach";
+        public override string Resource_TypeName_Shield => "shield";
+        public override string Resource_TypeName_BucklerShield => "buckler shield";
+        public override string Resource_TypeName_RoundShield => "round shield";
+        public override string Resource_TypeName_HeaterShield => "heater shield";
+        public override string Resource_TypeName_TowerShield => "tower shield";
+
+        public override string Resource_TypeName_Mount => "mount";
+
+        public override string Resource_TypeName_MountArmorTitle => "mount armor";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "mount {0}";
+        public override string Resource_TypeName_Animal => "animal";
+
+        //public override string Resource_TypeName_WildAnimal => "wild animal";
+
+        /// <summary>
+        /// Area with wild animals
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0} habitat";
+
+        public override string Resource_TypeName_Oxen => "oxen";
+        public override string Resource_TypeName_KineOxen => "kine oxen";
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "fowl";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "boar";
+        public override string Resource_TypeName_Pig => "pig";
+        public override string Resource_TypeName_Hen => "hen";
+        public override string Resource_TypeName_Dog => "dog";
+        public override string Resource_TypeName_Hound => "hound";
+
+        public override string Resource_TypeName_Pony => "pony";
+        public override string Resource_TypeName_Horse => "horse";
+        public override string Resource_TypeName_WarHorse => "war horse";
+        public override string Resource_TypeName_DraftHorse => "draft horse";
+
+        public override string Resource_TypeName_WildPig => "wild pig";
+        public override string Resource_TypeName_WildHog => "wild hog";
+        public override string Resource_TypeName_WarHog => "war hog";
+        public override string Resource_TypeName_StagHog => "stag hog";
+
+        public override string Resource_TypeName_Wolf => "wolf";
+        public override string Resource_TypeName_Warg => "warg";
+        public override string Resource_TypeName_AlphaWarg => "alpha warg";
+
+        public override string Resource_TypeName_WildCat => "wild cat";
+        public override string Resource_TypeName_Lion => "lion";
+        public override string Resource_TypeName_WarLion => "war lion";
+
+        public override string Resource_TypeName_Elephant => "elephant";
+        public override string Resource_TypeName_WarElephant => "war elephant";
+        public override string Resource_TypeName_Oliphant => "oliphant";
+
+        public override string BuildHud_Select => "Select building";
+        public override string BuildHud_AreaRadius => "Area radius";
+
+        public override string NobleHouse_HousingCount => "Will house {0} nobelmen";
+
+
+        public override string BuildingType_GreatHall => "Great hall";
+        public override string BuildingType_GreatHall_Description => "Unlock advanced conscripting";
+
+        public override string BuildingType_ClayPit => "Clay pit";
+        public override string BuildingType_Butcher => "Butcher";
+        public override string BuildingType_Butcher_Description => "Turn animals to food and skin";
+        public override string BuildingType_Pottery => "Pottery";
+        public override string BuildingType_CraftX_Description => "{0} crafting station";
+
+        public override string BuildingType_GatherX_Description => "Gather {0}";
+
+        public override string BuildingType_Smoker => "Smoker";
+        public override string BuildingType_Dryer => "Dryer";
+        public override string BuildingType_Shieldmaker => "Shield maker";
+        public override string BuildingType_DryingPan => "Drying pan";
+
+        public override string BuildingType_TrapperHut => "Trapper's hut";
+        public override string BuildingType_TrapperHut_Description => "Allows capture of wild animals";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "Material Storage";
+        public override string BuildingType_FoodStorage => "Food Storage";
+        public override string BuildingType_WeaponStorage => "Weapon Storage";
+        public override string BuildingType_ArmorStorage => "Armor Storage";
+        public override string BuildingType_AnimalStorage => "Animal Storage";
+
+        public override string BuildingType_Storage_Description => "Increase max stockpile by {0}";
+
+        public override string BuildingType_Cesspit => "Cesspit";
+        public override string BuildingType_Cesspit_Description => "Destroy resources";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "Destroys items that exceed the stockpile";
+        public override string Info_XAmountIsConvertedToY => "{0} is converted to {1}";
+        public override string Info_ProductionRestriction => "Item production restricted to";
+
+        public override string BuildingType_FowlPen => "Fowl Pen";
+        public override string BuildingType_BoarPen => "Boar Pen";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "Oxen Pen";
+        public override string BuildingType_KineOxenPen => "Kine Oxen Pen";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "Dog Cage";
+        public override string BuildingType_HoundCage => "Hound Cage";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "Pony Pen";
+        public override string BuildingType_HorsePen => "Horse Pen";
+        public override string BuildingType_WarHorsePen => "War Horse Pen";
+        public override string BuildingType_DraftHorsePen => "Draft Horse Pen";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "Wild Pig Pen";
+        public override string BuildingType_WildHogPen => "Wild Hog Pen";
+        public override string BuildingType_WarHogPen => "War Hog Pen";
+        public override string BuildingType_StagHogPen => "Stag Hog Pen";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "Wolf Cage";
+        public override string BuildingType_WargCage => "Warg Cage";
+        public override string BuildingType_AlphaWargCage => "Alpha Warg Cage";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "Wild Cat Cage";
+        public override string BuildingType_LionCage => "Lion Cage";
+        public override string BuildingType_WarLionCage => "War Lion Cage";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "Elephant Cage";
+        public override string BuildingType_WarElephantCage => "War Elephant Cage";
+        public override string BuildingType_OliphantCage => "Oliphant Cage";
+
+        public override string BuildingDescription_Animals => "Produces animals for soldier conscript";
+        public override string Pen_Breeding => "Animal breeding";
+        public override string Pen_BreedUpChance => "{0}% chance to increase tier";
+        public override string Pen_BreedDownChance => "{0}% chance to decrease tier";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "Higher chance of successful breeding";
+
+        public override string CityCulture_EnhancedProduction => "Enhanced {0} production";
+        public override string CityCulture_Production => "{0} production";
+
+        public override string CityCulture_Butchers => "Butchers";
+
+        public override string CityCulture_Potters => "Potters";
+
+        public override string CityCulture_Wainwright => "Wainwright";
+
+        public override string CityCulture_Wheelwright => "Wheelwright";
+        public override string CityCulture_Wheelwright_Description => "Speed bonus to conscripted carts";
+
+        public override string CityCulture_ShieldMaker => "Shield Maker";
+
+
+        //public override string CityCulture_Nomads_Description => "Low settler cost";
+
+        public override string CityCulture_Coopers => "Coopers";
+
+        public override string CityCulture_Salters => "Salters";
+
+
+        public override string CityBiome_Title => "Biome";
+        public override string CityBiome_Description => "Biomes affect access to some resources and buildings";
+
+        public override string CityBiome_Fields => "Fields";
+        public override string CityBiome_Frozen => "Frozen";
+        public override string CityBiome_Forest => "Forest";
+        public override string CityBiome_Mountain => "Mountain";
+        public override string CityBiome_Desolate => "Desolate";
+        public override string CityBiome_Desert => "Desert";
+
+        public override string Bonus_IncreaseSkin => "Increased skin production";
+        public override string Bonus_FoodStorage => "Larger food storage";
+
+        public override string StockPile_LimitTitle => "Limit stockpile";
+
+
+        //--
         public override string Help_Work_Automatic => "The work is automatic";
         public override string Tutorial_SecondCity => "Gain a second city";
 
@@ -76,14 +704,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "Display mode";
-        public override string DisplayMode_Windowed => "Windowed";
-        public override string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
+        //public override string DisplayMode => "Display mode";
+        //public override string DisplayMode_Windowed => "Windowed";
+        //public override string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
 
-        public override string GameSettings_RenderedMouseCursor => "Rendered cursor";
-        public override string GameSettings_MuteControllerDisconnect => "Mute disconnect messages";
+        //public override string GameSettings_RenderedMouseCursor => "Rendered cursor";
+        //public override string GameSettings_MuteControllerDisconnect => "Mute disconnect messages";
 
         public override string Delivery_MaxDistance => "Delivery max distance: {0}";
         public override string Tutorial_WillTakeAWhile => "This will take a while, come back later.";
@@ -202,7 +830,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -442,7 +1070,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "Upkeep: {0}";
+        public override string Hud_Upkeep => "Upkeep";
         public override string Hud_ArmyUpkeep => "Army upkeep: {0}";
 
         /// <summary>
@@ -454,14 +1082,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "You need to expand the city.";
 
-        public override string Hud_SoldierCount => "Soldier count: {0}";
+        public override string Hud_SoldierCount => "Soldier count";
 
-        public override string Hud_SoldierGroupsCount => "Group count: {0}";
+        public override string Hud_SoldierGroupsCount => "Group count";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "Strength rating: {0}";
+        public override string Hud_StrengthRating => "Strength rating";
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -679,7 +1307,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic communication. How well you can discuss terms. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Speaking terms: {0}";
+        public override string Diplomacy_SpeakTermIs => "Speaking terms";
 
         /// <summary>
         /// Diplomatic communication. Better than normal.
@@ -809,7 +1437,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "Stats";
+        public override string Statistics_Title => "Stats";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -1005,7 +1633,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "Health: {0}";
+        public override string SoldierStats_Health => "Health";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1067,7 +1695,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => "Send {0}";
+        public override string Hud_SendX => "Send {0}";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1226,7 +1854,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "Deserters!";
         public override string EventMessage_DesertersText_Money => "Unpaid soldiers are deserting from your armies";
 
-        public override string DifficultyDescription_AiAggression => "Ai aggressivity: {0}.";
+        //public override string DifficultyDescription_AiAggression => "Ai aggressivity: {0}.";
         public override string DifficultyDescription_BossSize => "Boss size: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Boss enter time: {0}.";
         public override string DifficultyDescription_AiEconomy => "Ai Economy: {0}%.";
@@ -1462,7 +2090,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Pavement";
         public override string BuildingType_Smith => "Smith";
         public override string BuildingType_Cook => "Cook";
-        public override string BuildingType_Storage => "Storehouse";
+        public override string BuildingType_Storehouse => "Storehouse";
 
         public override string BuildingType_ResourceFarm => "{0} farm";
 
@@ -1485,7 +2113,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Home for knights and diplomats";
         public override string BuildingType_CoalPit_Description => "Efficient fuel production";
-        public override string BuildingType_Storage_Description => "Dropoff point for resources";
+        //public override string BuildingType_Storehouse_Description => "Dropoff point for resources";
 
         public override string MenuTab_Info => "Info";
         public override string MenuTab_Work => "Work";
@@ -1573,10 +2201,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Will increase attack in one area, and reduce all others, by {0}";
         public override string Conscript_SelectBuilding => "Select barracks";
 
-        public override string Conscript_WeaponDamage => "Weapon damage: {0}";
-        public override string Conscript_ArmorHealth => "Armor health: {0}";
-        public override string Conscript_TrainingSpeed => "Attack speed: {0}";
-        public override string Conscript_TrainingTime => "Training time: {0}";
+        public override string Conscript_WeaponDamage => "Weapon damage";
+        public override string Conscript_ArmorHealth => "Armor health";
+        public override string Conscript_AttackSpeed => "Attack speed";
+        public override string Conscript_TrainingTime => "Training time";
 
         public override string Conscript_Training_Minimal => "Minimal";
         public override string Conscript_Training_Basic => "Basic";
@@ -1602,15 +2230,15 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "Distance: {0}";
         public override string Delivery_DeliveryTimeX => "Delivery time: {0}";
         public override string Delivery_SenderMinimumCap => "Sender minimum cap";
-        public override string Delivery_RecieverMaximumCap => "Receiver maximum cap";
+        public override string Delivery_ReceiverMaximumCap => "Receiver maximum cap";
         public override string Delivery_ItemsReady => "Items ready";
-        public override string Delivery_RecieverReady => "Receiver ready";
+        public override string Delivery_ReceiverReady => "Receiver ready";
         public override string Hud_ThisCity => "This city";
         public override string Hud_RecieveingCity => "Receiving city";
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Displayed in Resource Per Second.";
+        public override string Info_ResourcePerSecond => "Displayed in Resource Per Second.";
 
         public override string Info_MinuteAverage => "The value is an average from the last minute";
 
@@ -1639,7 +2267,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Peace";
         public override string WorkForce_ChildToManTime => "Grown up age: {0} minutes";
 
-        public override string Economy_TaxIncome => "Tax income: {0}";
+        public override string Economy_TaxIncome => "Tax income";
         public override string Economy_ImportCostsForResource => "Import costs for {0}: {1}";
         public override string Economy_BlackMarketCostsForResource => "Black market costs for {0}: {1}";
         public override string Economy_GuardUpkeep => "Guard upkeep: {0}";
@@ -1682,12 +2310,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string CityCulture_PitMasters => "Pit masters";
 
-        public override string CityCulture_CultureIsX => "Culture: {0}";
+        public override string CityCulture_Culture => "Culture";
         public override string CityCulture_LargeFamilies_Description => "Increased child birth";
         public override string CityCulture_FertileGround_Description => "Crops give more";
         public override string CityCulture_Archers_Description => "Produces skilled archers";
         public override string CityCulture_Warriors_Description => "Produces skilled melee fighters";
-        public override string CityCulture_AnimalBreeder_Description => "Animals give more resources";
+        //public override string CityCulture_AnimalBreeder_Description => "Animals give more resources";
         public override string CityCulture_Miners_Description => "Mines more ore";
         public override string CityCulture_Woodcutters_Description => "Trees give more wood";
         public override string CityCulture_Builders_Description => "Fast at building";
@@ -1708,7 +2336,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "Select tab: {0}";
         public override string Tutorial_IncreasePriorityOnX => "Increase the priority on: {0}";
         public override string Tutorial_PlaceBuildOrder => "Place build order: {0}";
-        public override string Tutorial_ZoomInput => "Zoom";
+        public override string ButtonAction_Zoom => "Zoom";
 
         public override string Tutorial_SelectACity => "Select a city";
         public override string Tutorial_ZoomInWorkers => "Zoom in to see the workers";
@@ -1728,12 +2356,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Coal";
 
-        public override string Language_XUpkeepIsY => "{0} upkeep: {1}";
+        public override string Language_XUpkeep => "{0} upkeep";
         public override string Language_XCountIsY => "{0} count: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Expensive food will be purchased from the black market. Hungry soldiers will desert when your money runs out.";
 
-        public override string Info_ArmyFood => "Armies will restock food from the closest friendly city. Food can be purchased from other factions. In hostile regions, food can only be purchased from the black market.";
+        public override string Info_ArmyFood1 => "Armies will restock food from the closest friendly city.";
+         public override string Info_ArmyFood2 => "Food can be purchased from other factions.";
+        public override string Info_ArmyFood3 => "In hostile regions, food can only be purchased from the black market.";
 
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
@@ -1811,13 +2441,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "Flat land";
         public override string LandType_Water => "Water";
         public override string BuildingType_Wall => "Wall";
-        public override string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
+        public override string Delivery_AutoReceiver_Description => "Will send to the city with lowest amount of resources";
 
         public override string Hud_On => "On";
         public override string Hud_Off => "Off";
 
-        public override string Hud_Time_Seconds => "{0} seconds";
-        public override string Hud_Time_Minutes => "{0} minutes";
+        public override string Hud_Time_XSeconds => "{0} seconds";
+        public override string Hud_Time_XMinutes => "{0} minutes";
         public override string Hud_Undo => "Undo";
         public override string Hud_Redo => "Redo";
 
@@ -2775,9 +3405,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// These symbols are needed to fit large numbers on the HUD, there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "c";
-        public override string EngineHud_SymbolFor1000 => "k";
-        public override string EngineHud_SymbolFor10000 => "10k";
+        public override string Language_SymbolFor100 => "c";
+        public override string Language_SymbolFor1000 => "k";
+        public override string Language_SymbolFor10000 => "10k";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress. Use the word for Steam Achievements.

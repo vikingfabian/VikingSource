@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.Input
 {
-    abstract class PlayerInputMap
+    abstract class PlayerInputMap : IRichMenuInputMap
     {
         /* Static readonlies */
         public static readonly DirectionalButtonsMap arrowKeys = new DirectionalButtonsMap(
@@ -24,6 +25,9 @@ namespace VikingEngine.Input
 
         public HUD.MenuInputMap menuInput;
 
+        public MouseInstance mouse = null;
+        IDirectionalMap touchMap;
+
         public PlayerInputMap()
         { }
 
@@ -31,9 +35,22 @@ namespace VikingEngine.Input
         {
             this.playerIndex = player;
             init();
-            setInputSource(InputSourceType.KeyboardMouse, 0);
-            
+            setInputSource(new InputSource(InputSourceType.KeyboardMouse));            
         }
+
+        virtual public void SetMouse(MouseInstance mouse)
+        { 
+            this.mouse = mouse;
+        }
+
+        virtual public MouseInstance RbMouseInstance() { return mouse != null? mouse: Input.Mouse.Instances[0]; }
+        virtual public IButtonMap RbClick() { return new MouseButtonMap(MouseButton.Left); }
+        virtual public IDirectionalMap RbScroll() { return new DirectionalMouseScrollMap(); }
+
+        virtual public IntVector2 RbMoveSteps() { return IntVector2.Zero; }
+        virtual public bool RbControllerMode => false;
+
+        virtual public bool RbHasController => false;
 
         virtual protected void init()
         {
@@ -42,17 +59,20 @@ namespace VikingEngine.Input
 
         abstract public IButtonMap MenuClick { get; }
 
-        public void setInputSource(InputSourceType inputSource, int index)
+        public void setInputSource(InputSource source)
         {
-            this.inputSource = new InputSource(inputSource, index);
+            this.inputSource = source;
             //this.controllerIndex = index;
 
-            switch (inputSource)
+            switch (inputSource.sourceType)
             {
                 case InputSourceType.Mouse:
                 case InputSourceType.Keyboard:
                 case InputSourceType.KeyboardMouse:
                     keyboardSetup();
+                    break;
+                case InputSourceType.SteamInput:
+                    steamSetup();
                     break;
                 case InputSourceType.XController:
                     xboxSetup();
@@ -71,6 +91,8 @@ namespace VikingEngine.Input
         
         abstract public void keyboardSetup();
         abstract public void xboxSetup();
+
+        virtual public void steamSetup(){ }
         //abstract public void ps4Setup();
         abstract public void genericControllerSetup();
 
@@ -104,6 +126,31 @@ namespace VikingEngine.Input
         virtual public Voxels.EditorInputMap VoxelEditorInput()
         {
             return null;
+        }
+
+        public bool Ctrl()
+        {
+            if (inputSource.HasKeyBoard)
+            {
+                return Input.Keyboard.Ctrl;
+            }
+            return false;
+        }
+        public bool Alt()
+        {
+            if (inputSource.HasKeyBoard)
+            {
+                return Input.Keyboard.Alt;
+            }
+            return false;
+        }
+        public bool Shift()
+        {
+            if (inputSource.HasKeyBoard)
+            {
+                return Input.Keyboard.Shift;
+            }
+            return false;
         }
     }
 }

@@ -15,6 +15,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
+using VikingEngine.Sound;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Interface
@@ -120,6 +121,7 @@ namespace VikingEngine.DSSWars.Interface
         LocalPlayer player;
 
         static readonly TimeLength FoodWarningTimeout = new TimeLength(120);
+        public TimeStamp DeliveryMessageTime = TimeStamp.None;
 
         TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
         TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
@@ -132,7 +134,7 @@ namespace VikingEngine.DSSWars.Interface
 
         bool highEconomyWarningBlock()
         { 
-            return DssRef.storage.gameRuleset.centralGold && player.faction.money.GetGold() > DssConst.Gold_RichStatus;
+            return DssRef.storage.ruleset_instance.centralGold && player.pfaction.GetFaction().money.GetGold() > DssConst.Gold_RichStatus;
         }
 
         public void blockFoodWarning(bool block)
@@ -174,7 +176,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public static void ControllerInputIcons(LocalPlayer player, List<AbsRichBoxMember> button)
         {
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.HasControllerInput &&
+               player.gameControls.input.ControllerMessageClick.IsActive)
             {
                 RichBoxContent.ButtonMap(player.gameControls.input.ControllerMessageClick, button);
                 button.Add(new RbSpace());
@@ -195,17 +198,34 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newParagraph();
 
-                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                MessageGroup_Ingame.ControllerInputIcons(player,gotoBattleButtonContent);
-                gotoBattleButtonContent.Add(new RbText(city.TypeName()));
+                var gotoButtonContent = new RichBoxContent();
+                MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
+                city.toButtonContent(gotoButtonContent, true);
 
-                content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default))
+                { fillWidth = true });
 
-                Add(content);
+                Add(content, SoundLib.message_loud);
             }
         }
 
+        public void giftMessage(AbsArmy mapObj, RemotePlayer fromPlayer)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h1(DssRef.lang.Diplomacy_RecievedGift, HudLib.TitleColor_Head);
+
+            content.newLine();
+            var gotoButtonContent = new RichBoxContent();
+            MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
+            mapObj.toButtonContent(gotoButtonContent, true);
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, mapObj, RbSoundType.Default))
+            { fillWidth = true });
+
+            Add(content, SoundLib.netMessage);
+        }
         public void armyLowFoodMessage(Army army)
         {
             if (!highEconomyWarningBlock() &&
@@ -220,14 +240,16 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newParagraph();
 
-                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                ControllerInputIcons(player, gotoBattleButtonContent);
-                gotoBattleButtonContent.Add(new RbText(army.TypeName()));
+                var gotoButtonContent = new RichBoxContent();
+                MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
+                //gotoButtonContent.Add(new RbText(city.TypeName()));
+                army.toButtonContent(gotoButtonContent, true);
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default))
+                { fillWidth = true });
 
-                Add(content);
+                Add(content, SoundLib.message_loud);
             }
         }
 
@@ -238,7 +260,7 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             content.Add(new RbText(onOff ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off, HudLib.InfoYellow_Light));
 
-            Add(content);
+            Add(content, null);
         }
 
         public void Add(string title, string text)
@@ -247,15 +269,19 @@ namespace VikingEngine.DSSWars.Interface
             Title(content, title);
             content.text(text);
 
-            Add(content);
+            Add(content, SoundLib.message_loud);
+        }
+        public void Add(RichBoxContent content)
+        {
+            Add(content, SoundLib.message_loud);
         }
 
-        public void Add(RichBoxContent content, bool vibrate = true)
+        public void Add(RichBoxContent content, SoundContainerBase sound, bool vibrate = true)
         {
             if (StartupSettings.BlockMessages)
                 return;
 
-            SoundLib.message.Play(Pan.Right);
+            sound?.Play(Pan.Right);
             if (vibrate)
             {
                 player.gameControls.input.Vibrate(300, 0, 1);
@@ -282,10 +308,13 @@ namespace VikingEngine.DSSWars.Interface
             add(content);
         }
 
-        public void goToMapObject(AbsGameObject city)
+        public void goToMapObject(AbsGameObject obj)
         {
-            player.gameControls.map.selection.obj = city;
-            player.gameControls.map.cameraFocus = city;
+            if (obj.pfaction == player.pfaction)
+            {
+                player.gameControls.map.selection.obj = obj;
+            }
+            player.gameControls.map.cameraFocus = obj;
             player.hud.needRefresh = true;
         }
 

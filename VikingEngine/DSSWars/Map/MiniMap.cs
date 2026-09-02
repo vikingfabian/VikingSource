@@ -29,8 +29,8 @@ namespace VikingEngine.DSSWars.Map
         bool viewCameraBound = true;
         public MiniMap(LocalPlayer player, bool runtime)
         {
-            bMouseInput = player.gameControls.input.inputSource.HasMouse;
-            Vector2 sz = Engine.Screen.IconSizeV2 * 5f;
+            bMouseInput = player.gameControls.input.inputSource.useTouchAsMouseSim;
+            Vector2 sz = Engine.Screen.IconSizeV2 * 5f * Ref.gamesett.MinimapScale;
             Vector2 pos = player.playerData.view.safeScreenArea.RightBottom - sz;
             area = new VectorRect(pos, sz);
             area.Round();
@@ -78,6 +78,8 @@ namespace VikingEngine.DSSWars.Map
 
         public void update(LocalPlayer player, bool allowInput, out bool mouseOver)
         {
+            var mouse = player.gameControls.input.mouse;
+
             if (player.minimapPixelTexture == null)
             {
                 mouseOver = false;
@@ -86,7 +88,7 @@ namespace VikingEngine.DSSWars.Map
             mapTexture.Texture = player.minimapPixelTexture.texture;
             unitTexture.Texture = player.unitsPixelTexture.texture;
 
-            mouseOver = allowInput && bMouseInput && area.IntersectPoint(Input.Mouse.Position);
+            mouseOver = allowInput && bMouseInput && area.IntersectPoint(mouse.Position);
             if (mouseOver || selectDown || panDown)
             {
                 hoverHighLight.Visible = true;
@@ -102,7 +104,7 @@ namespace VikingEngine.DSSWars.Map
 
                     if (selectDown)
                     {
-                        player.gameControls.map.setCameraPosition(screenPosToWorldXZ(Input.Mouse.Position));
+                        player.gameControls.map.setCameraPosition(screenPosToWorldXZ(mouse.Position));
                         updateCamera(player);
                     }
                 }
@@ -120,12 +122,12 @@ namespace VikingEngine.DSSWars.Map
 
                     if (panDown)
                     {
-                        mapTexture.position += Input.Mouse.MoveDistance;
+                        mapTexture.position += mouse.MoveDistance;
                         unitTexture.position = mapTexture.position;
 
                         foreach (var l in cameraOutline.lines)
                         { 
-                            l.position += Input.Mouse.MoveDistance;
+                            l.position += mouse.MoveDistance;
                         }
                     }
                 }

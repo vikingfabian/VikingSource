@@ -271,7 +271,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //while (citiesC.Next())
                     //{
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref GetFaction().cities, DssRef.world.cities, out City citySel))
+                    while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
                         if (citySel != this && citySel.researchBuildingCount(true, techType) > 0)
                         {

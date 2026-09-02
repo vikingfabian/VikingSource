@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Players
 
         AutomationAction automationAction = AutomationAction.WaitForUpdate;
         City cityAction = null;
-        UnitType recruitType = UnitType.NULL;
+        UnitBuildType recruitType = UnitBuildType.NULL;
         int recruitCount = 0;
         IntVector2 subtilePos;
 
@@ -247,45 +247,27 @@ namespace VikingEngine.DSSWars.Players
             {
                 automationAction = AutomationAction.WaitForUpdate;
 
-                if (player.faction.GoldSecDiff() > 0)
+                if (player.pfaction.TryGetFaction(out var f) && f.GoldSecDiff() > 0)
                 {
                     //var citiesC = player.faction.cities.counter();
                     for (CityType type = CityType.Capital; type >= CityType.Village; type--)
                     {
-                        //citiesC.Reset();
-                        //while (citiesC.Next())
-                        //{
                         SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                        while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+                        while (citiesC.Next(ref f.cities, DssRef.world.cities, out City citySel))
                         {
                             if (citySel.cityType == type &&
                                 citySel.isMaxHomeUsers() )
-                                //&&
-                                //citySel.battleGroup == null)
+                                
                             {
-                                //if (autoRepair && citySel.damages.HasValue())
-                                //{
-                                //    cityAction = citySel;
-                                //    automationAction = AutomationAction.Repair;
-                                //    return;
-                                //}
 
                                 if (autoUpgradeLogistics && citySel.autoUpgradeLogistics(IntVector2.Zero, false))
                                 {   
                                     cityAction = citySel;
                                     automationAction = AutomationAction.UpgradeLogistics;
-                                    //CityStructure.AutomationInstance.update(citySel, 0, 4);
+                                   
                                     CityStructure.AutomationInstance.NextEmptyLand(citySel, Ref.peRnd.Int(32), out subtilePos);//.EmptyLand.Last();
                                     return;
                                 }
-
-                                //if (autoExpandGuard && citiesC.sel.canIncreaseGuardSize(1, true))
-                                //{
-                                //    cityAction = citiesC.sel;
-                                //    automationAction = AutomationAction.GuardSize;
-                                //    return;
-                                //}
-
                             }
                         }
                     }

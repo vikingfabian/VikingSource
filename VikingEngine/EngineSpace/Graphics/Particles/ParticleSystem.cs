@@ -546,7 +546,7 @@ namespace VikingEngine.Graphics
 
                     if (start < end)
                     {
-                        Debug.Log("start < end");
+                        //Debug.Log("start < end");
                         // If the active particles are all in one consecutive range,
                         // we can draw them all in a single call.
                         Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(

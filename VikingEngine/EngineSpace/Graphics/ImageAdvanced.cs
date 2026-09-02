@@ -51,11 +51,12 @@ namespace VikingEngine.Graphics
             }
         }
 
-        
-
         public void SetFullTextureSource()
         {
-            ImageSource = new Rectangle(0, 0, Texture.Width, Texture.Height);
+            if (Texture != null)
+            {
+                ImageSource = new Rectangle(0, 0, Texture.Width, Texture.Height);
+            }
         }
 
         public override int SourceX

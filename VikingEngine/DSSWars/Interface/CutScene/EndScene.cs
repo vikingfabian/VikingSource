@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                     break;
                 
                 case 2:
-                    if (display!= null )
+                    if (display != null )
                     {
                         display.update();
                     }                    

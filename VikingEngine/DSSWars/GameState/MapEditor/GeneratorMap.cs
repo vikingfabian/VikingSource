@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public GeneratorMap(Vector2 pos)
         {
-            texture = new FactionPixelTexture(null, false, FactionMapFilter.Terrain);
+            texture = new FactionPixelTexture(-1, false, FactionMapFilter.Terrain);
             image = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, pos, Vector2.One, ImageLayers.Lay8, false);
         }
 
@@ -47,6 +47,35 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             texture.filter = arraylib.HasMembers(DssRef.world.cities)? FactionMapFilter.FactionCols : FactionMapFilter.Terrain;
             texture.refreshWorld();
             //if (arraylib.HasMembers( DssRef.world.cities))
+            //{
+            //    texture.RefreshWorld_FactionCol();
+            //}
+            //else
+            //{
+            //    texture.RefreshWorld_TerrainCol();
+            //}
+            image.Texture = texture.texture;
+            image.SetFullTextureSource();
+            textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
+        }
+
+        public void generate2(Map.Map2.WorldData2 world)
+        {
+            texture.texture = new Graphics.PixelTexture(world.iconGrid.Size);
+
+            var loop = world.iconGrid.LoopInstance();
+            while (loop.Next())
+            {
+                var t = world.iconGrid.Get(loop.Position);
+                texture.texture.SetPixel(loop.Position, t.color);
+
+                //texture.texture.SetPixel(loop.Position, Color.Beige);
+            }
+
+
+
+            texture.texture.ApplyPixelsToTexture();
+            //if (arraylib.HasMembers(DssRef.world.cities))
             //{
             //    texture.RefreshWorld_FactionCol();
             //}

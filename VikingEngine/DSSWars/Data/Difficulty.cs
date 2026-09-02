@@ -17,20 +17,14 @@ namespace VikingEngine.DSSWars.Data
 {
     class Difficulty
     {
-        public static readonly IntervalF FoodMultiBound = new IntervalF(0.5f, 10f);
-        public static readonly IntervalF WaterMultiBound = new IntervalF(0.2f, 10f);
-        public static readonly IntervalF ChildMultiBound = new IntervalF(0.2f, 10f);
-        public static readonly IntervalF CraftMultiBound = new IntervalF(0.1f, 4f);
-        public static readonly Range TechMultiBound = new Range(1, 10);
-
+       
         public const int DefaultOption = 2;
 
         int difficulty = DefaultOption;
 
         static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 300 };
         public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 300 };
-        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickMatch, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
-
+        
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
         
@@ -47,33 +41,13 @@ namespace VikingEngine.DSSWars.Data
         public bool resourcesStartHelp = false;
 
         public bool setting_allowPauseCommand = true;
-        public float setting_foodMulti = 1;
-        public float setting_waterMulti = 1;
-        public float setting_childMulti = 1;
-        public float setting_craftMulti = 1;
-        public int setting_techMulti = 1;
+        
 
-        public int setting_techMulti_QuickMatch = 2;
         public int setting_QuickMatch_PlayerCount = 4;
         public bool setting_QuickMatch_TwoTeams = false;
 
-
-        public int TechMultiProperty(object tag, bool set, int value)
-        {
-            if (set)
-            {
-                if (setting_gameMode == GameModeMainType.QuickMatch)
-                {
-                    setting_techMulti_QuickMatch = value;
-                }
-                else
-                { 
-                    setting_techMulti = value;
-                }
-
-            }
-            return setting_gameMode == GameModeMainType.QuickMatch ? setting_techMulti_QuickMatch : setting_techMulti;
-        }
+       
+        
 
         public const GameModeMainType DefaultMode = GameModeMainType.FullStory;
         public GameModeMainType setting_gameMode = DefaultMode;
@@ -84,11 +58,11 @@ namespace VikingEngine.DSSWars.Data
 
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
-        public float toPeacefulPercentage = 0;
+        public float tooPeacefulPercentage = 0;
 
         public double resourceMultiplyChance = 0;
         public bool resourceMultiplyDecrease;
-        public int FoodEnergySett;
+        
         public int PlayerBonusGold = 0;
 
         
@@ -107,7 +81,7 @@ namespace VikingEngine.DSSWars.Data
                 Difficulty difficultyLvl = new Difficulty(i);
 
                 new GuiTextButton(options[i].ToString() + "%",
-                    string.Format( DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
+                    string.Format( string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.DifficultyDescription_BotAggression) /*DssRef.lang.DifficultyDescription_AiAggression*/, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficultyLvl.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
                     //string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficultyLvl.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficultyLvl.aiEconomyLevel].ToString()) + Environment.NewLine +
@@ -126,8 +100,13 @@ namespace VikingEngine.DSSWars.Data
             return setting_gameMode == GameModeMainType.Spectator;
         }
 
-        public static bool ModeSupportsTutorial(GameModeMainType gameMode)
+        public static bool ModeSupportsTutorial(GameModeMainType gameMode, FactionStartSize startSize)
         {
+            if (startSize == FactionStartSize.Settler)
+            {
+                return false;
+            }
+
             switch (gameMode)
             {
                 case GameModeMainType.Spectator:
@@ -162,7 +141,7 @@ namespace VikingEngine.DSSWars.Data
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsBattleIcon));
                 content.hspace();
-                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM))));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.DifficultyDescription_BotAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM))));
             }
             {
                 content.newLine();
@@ -213,19 +192,24 @@ namespace VikingEngine.DSSWars.Data
             double result = PercDifficulty;
             if (!setting_allowPauseCommand)
             {
-                result *= 1.25;
+                result += 50;
+
             }
-            if (!DssRef.storage.gameRuleset.centralGold)
+            if (!DssRef.storage.ruleset.centralGold)
             {
-                result *= 1.5;
+                result += 25;
             }
             switch (setting_gameMode)
             {
-                case GameModeMainType.Sandbox:
-                    result *= 0.75;
+                case GameModeMainType.QuickBoss:
+                    //result += 25;
+                    result += GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.ruleset.QuickBossTimeOption].Value2;
+                    break;
+                case GameModeMainType.FullStory:
+                    result += 50;
                     break;
                 case GameModeMainType.Peaceful:
-                    result *= 0.25;
+                    result *= 0.5;
                     break;
             }
 
@@ -249,7 +233,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void refreshSettings()
         {
-            FoodEnergySett = Convert.ToInt32(DssConst.FoodEnergy * setting_foodMulti);
+            //FoodEnergySett = Convert.ToInt32(DssConst.FoodEnergy * setting_foodMulti);
 
             switch (difficulty)
             {
@@ -295,7 +279,7 @@ namespace VikingEngine.DSSWars.Data
                     resourcesStartHelp = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 20 * TimeExt.MinuteInSeconds;
-                    toPeacefulPercentage = 0.3f;
+                    tooPeacefulPercentage = 0.1f;
                     PlayerBonusGold = 2000;
                     break;
 
@@ -305,10 +289,10 @@ namespace VikingEngine.DSSWars.Data
                     //bossTimeSettings = BossTimeSettings.Normal;
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
-                    honorGuard = true;
+                    honorGuard = false;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
-                    toPeacefulPercentage = 0.75f;
+                    tooPeacefulPercentage = 0.2f;
                     break;
 
                 case 4:
@@ -320,7 +304,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 10;
-                    toPeacefulPercentage = 1f;
+                    tooPeacefulPercentage = 0.4f;
                     break;
 
                 case 5:
@@ -332,7 +316,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 1.5f;
+                    tooPeacefulPercentage = 0.7f;
                     break;
 
                 case 6:
@@ -347,7 +331,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 1.75f;
+                    tooPeacefulPercentage = 2f;
                     break;
 
                 case 7: //200%
@@ -361,7 +345,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     aiDelayTimeSec = 0;
-                    toPeacefulPercentage = 3f;
+                    tooPeacefulPercentage = 5f;
                     break;
 
                 case 8: // 300%
@@ -374,7 +358,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     aiDelayTimeSec = 0;
-                    toPeacefulPercentage = 10f;
+                    tooPeacefulPercentage = 10f;
                     extremeAggression = true;
                     break;
             }
@@ -383,6 +367,7 @@ namespace VikingEngine.DSSWars.Data
 
             switch (setting_gameMode)
             {
+                case GameModeMainType.QuickBoss:
                 case GameModeMainType.FullStory:
                     runStory = true;
                     peaceful = false;
@@ -390,7 +375,7 @@ namespace VikingEngine.DSSWars.Data
                 case GameModeMainType.QuickMatch:
                     runStory = false;
                     peaceful = false;
-                    toPeacefulPercentage = 0;
+                    tooPeacefulPercentage = 0;
                     break;
                 case GameModeMainType.Sandbox:
                 case GameModeMainType.Spectator:
@@ -400,7 +385,7 @@ namespace VikingEngine.DSSWars.Data
                 case GameModeMainType.Peaceful:
                     runStory = false;
                     peaceful = true;
-                    toPeacefulPercentage = 0;
+                    tooPeacefulPercentage = 0;
                     //toPeacefulCheck = false;
                     break;
             }
@@ -409,6 +394,27 @@ namespace VikingEngine.DSSWars.Data
             MercenaryPurchaseCost_Add = 100 + mediumOffset * 20;
 
             aiEconomyMultiplier = AiEconomyLevel[aiEconomyLevel] / 100.0;
+
+           
+        }
+
+        public int honorGuardCount()
+        {
+            if (honorGuard)
+            {
+                switch (DssRef.storage.ruleset.factionStartSize)
+                {
+                    case FactionStartSize.Full:
+                        return 12;
+                    case FactionStartSize.OneCity:
+                        return 4;
+                    case FactionStartSize.Settler:
+                        return 2;
+                }
+
+            }
+
+            return 0;
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -416,12 +422,12 @@ namespace VikingEngine.DSSWars.Data
             w.Write(setting_allowPauseCommand);
             //w.Write(boss);
             w.Write((byte)setting_gameMode);
-            w.Write(setting_foodMulti);
-            w.Write(setting_waterMulti);
-            w.Write(setting_childMulti);
-            w.Write(setting_craftMulti);
-            w.Write(setting_techMulti);
-            w.Write(setting_techMulti_QuickMatch);
+            //w.Write(setting_foodMulti);
+            //w.Write(setting_waterMulti);
+            //w.Write(setting_childMulti);
+            //w.Write(setting_craftMulti);
+            //w.Write(setting_techMulti);
+            //w.Write(setting_techMulti_QuickMatch);
             w.Write(setting_QuickMatch_PlayerCount);
             w.Write(setting_QuickMatch_TwoTeams);
             w.Write(difficulty);
@@ -444,20 +450,27 @@ namespace VikingEngine.DSSWars.Data
             {
                 //NEW
                 setting_gameMode = (GameModeMainType)r.ReadByte();
-                setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, FoodMultiBound);
-                if (storageversion >= 24)
+
+                if (storageversion < 37)
                 {
-                    setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, WaterMultiBound);
-                }
-                if (storageversion >= 25)
-                {
-                    setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, ChildMultiBound);
-                    setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, CraftMultiBound);
+                    DssRef.storage.ruleset.setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, GameRuleset.FoodMultiBound);
+                    if (storageversion >= 24)
+                    {
+                        DssRef.storage.ruleset.setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, GameRuleset.WaterMultiBound);
+                    }
+                    if (storageversion >= 25)
+                    {
+                        DssRef.storage.ruleset.setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, GameRuleset.ChildMultiBound);
+                        DssRef.storage.ruleset.setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, GameRuleset.CraftMultiBound);
+                    }
+                    if (storageversion >= 33)
+                    {
+                        DssRef.storage.ruleset.setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, GameRuleset.TechMultiBound);
+                        DssRef.storage.ruleset.setting_techMulti_QuickMatch = r.ReadInt32();
+                    }
                 }
                 if (storageversion >= 33)
                 {
-                    setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, TechMultiBound);
-                    setting_techMulti_QuickMatch = r.ReadInt32();
                     setting_QuickMatch_PlayerCount = r.ReadInt32();
                     setting_QuickMatch_TwoTeams = r.ReadBoolean();
                 }
@@ -503,6 +516,7 @@ namespace VikingEngine.DSSWars.Data
         Peaceful,
         Spectator,
         QuickMatch,
+        QuickBoss,
         NUM
     }
     //enum AiResourceMultiplyType

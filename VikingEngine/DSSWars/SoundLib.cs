@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.EngineSpace.HUD.RichBox;
 using VikingEngine.HUD.RichBox;
@@ -18,22 +19,33 @@ namespace VikingEngine.DSSWars
     {
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
-        public static SoundContainerBase click, ui_expand, option_select, option_deselect, /*hover,*/ hover_disabled, clicktab,/* hovertab,*/ back, 
+        public static SoundContainerBase click, ui_expand, option_select, option_deselect, hover_disabled, clicktab,back, 
+            speed_down, speed_up,
             scroll_back, scroll_forward,
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
             copy, paste, start, stop,
             select_army, select_city, select_faction,
-            ordermove, orderstop, message, trophy,
-            woodcut, tree_falling, breaking, scythe, drop_item, pickaxe, hen, pig, pickup,
-            anvil, dig, genericWork, hammer, footstep, ship_knirr,
+            ordermove, orderstop, message_loud, ping, trophy,
+            woodcut, tree_falling, breaking, scythe, drop_item, pickaxe, 
+            
+            hen, pig,
+            hog, dog, wolf, lion, oxen, horse, elephant,
+            /*heavy_walk, horse_walk,*/ wagon,
+
+            pickup, anvil, dig, genericWork, hammer, footstep, ship_knirr,
 
            bow, sword, spear, throwblade, throwitem, clothHit, crossbow, heavyballista, reloadballista,
            blade_light, blade_medium, blade_heavy, spear_whoosh,
            musket, cannon, block_attack, wood_bonk,
             
-           painvoice, fleshgore;
+           painvoice, fleshgore,
+            
+            netMessage, netJoined;
 
-        public static RbSoundProfile menu, menuHover, menuOption, menuOptionDeselect, menutab, menuExpand, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop;
+        public static SoundContainerBase[] WalkSounds;
+        public static SoundContainerBase[] AnimalNoises;
+
+        public static RbSoundProfile menu, menuHover, menuOption, menuOptionDeselect, menutab, menuExpand, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop, menuPing;
 
         public static RbSoundAction buttonHoverAction, tabHoverAction;
 
@@ -50,6 +62,10 @@ namespace VikingEngine.DSSWars
             scroll_forward = new SoundContainerSingle(SoundDir + "scroll_forward", 0.8f);
             //hovertab = new SoundContainerSingle(SoundDir + "tab_hover", 0.7f);
             back = new SoundContainerSingle(SoundDir + "back", 0.05f);
+
+            speed_up = new SoundContainerSingle(SoundDir + "up", 0.2f);
+            speed_down = new SoundContainerSingle(SoundDir + "down", 0.25f);
+
             buy = new SoundContainerSingle(SoundDir + "buy");
             wrong = new SoundContainerSingle(SoundDir + "wrong", 0.6f);
             soft_buzz_error = new SoundContainerSingle(SoundDir + "soft_buzz_error", 0.1f);
@@ -67,7 +83,8 @@ namespace VikingEngine.DSSWars
 
             ordermove = new SoundContainerSingle(SoundDir + "ordermove");
             orderstop = new SoundContainerSingle(SoundDir + "orderstop");
-            message = new SoundContainerSingle(SoundDir + "chat_message", 0.75f);
+            message_loud = new SoundContainerSingle(SoundDir + "chat_message", 0.75f);
+            ping = new SoundContainerSingle(SoundDir + "ping", 0.75f);
             trophy = new SoundContainerSingle(SoundDir + "trophy", 0.2f);
 
             woodcut = new SoundContainerSingle(SoundDir + "woodcut", 0.4f, 0.2f);
@@ -76,8 +93,60 @@ namespace VikingEngine.DSSWars
             scythe = new SoundContainerSingle(SoundDir + "scythe", 0.2f, 0.4f);
             drop_item = new SoundContainerSingle(SoundDir + "drop_item", 1f, 0.4f);
             pickaxe = new SoundContainerSingle(SoundDir + "pickaxe", 0.6f, 0.2f);
+        
             hen = new SoundContainerMultiple([SoundDir + "hen1", SoundDir + "hen2"], 0.6f, 0.4f);
             pig = new SoundContainerSingle(SoundDir + "pig", 0.6f, 0.8f);
+
+            hog = new SoundContainerMultiple([SoundDir + "hog1", SoundDir + "hog2"], 0.6f, 0.4f);
+
+            netMessage = new SoundContainerSingle(SoundDir + "TalkingShort");
+            netJoined = new SoundContainerSingle(SoundDir + "player_enters");
+            //Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
+            //Engine.LoadContent.LoadSound(LoadedSound.player_enters, SoundDir + "player_enters");
+
+            SoundContainerMultiple dogGrowl = new SoundContainerMultiple([SoundDir + "dog_growl1", SoundDir + "dog_growl2"]);
+            SoundContainerBuilder dogBuilder = new SoundContainerBuilder(0.6f, 0.4f);
+            dogBuilder.add([SoundDir + "dog_bark (1)", SoundDir + "dog_bark (2)"]);
+            dogBuilder.add(dogGrowl);
+            dog = dogBuilder.Build();
+
+            SoundContainerBuilder wolfBuilder = new SoundContainerBuilder(0.6f, 0.4f);
+            wolfBuilder.add([SoundDir + "howl1", SoundDir + "howl2"]);
+            wolfBuilder.add(dogGrowl);
+            wolf = wolfBuilder.Build();
+
+            SoundContainerMultiple animal_breath = new SoundContainerMultiple([SoundDir + "breath1", SoundDir + "breath2", SoundDir + "breath3"]);
+
+            SoundContainerBuilder elephantBuilder = new SoundContainerBuilder(0.5f, 0.2f);
+            elephantBuilder.add([SoundDir + "elephant_trump1", SoundDir + "elephant_trump2"]);
+            elephantBuilder.add(animal_breath);
+            elephant = elephantBuilder.Build();
+            SoundContainerMultiple heavy_walk = new SoundContainerMultiple([SoundDir + "heavy_walk1", SoundDir + "heavy_walk2", SoundDir + "heavy_walk3", SoundDir + "heavy_walk4"], 0.6f, 0.2f);
+
+            SoundContainerBuilder oxenBuilder = new SoundContainerBuilder(0.6f, 0.4f);
+            oxenBuilder.add([SoundDir + "moo (1)", SoundDir + "moo (2)", SoundDir + "moo (3)"]);
+            oxenBuilder.add(animal_breath);
+            oxen = oxenBuilder.Build();
+
+            SoundContainerBuilder horseBuilder = new SoundContainerBuilder(0.25f, 0.4f);
+            horseBuilder.add([SoundDir + "Horse_Neigh_01", SoundDir + "Horse_Neigh_02", SoundDir + "Horse_Snort"]);
+            horseBuilder.add(animal_breath);
+            horse = horseBuilder.Build();
+
+            SoundContainerMultiple horse_walk = new SoundContainerMultiple(
+                [SoundDir + "horse_walk1", SoundDir + "horse_walk2", SoundDir + "horse_walk3"], 0.4f, 0.2f);
+
+            lion = new SoundContainerMultiple([SoundDir + "lion1", SoundDir + "lion2", SoundDir + "lion3"]);
+
+            wagon = new SoundContainerMultiple([
+                SoundDir + "wagon1",
+                SoundDir + "wagon2",
+                SoundDir + "wagon3",
+                SoundDir + "wagon4",
+                SoundDir + "wagon5",
+                SoundDir + "wagon6",
+                SoundDir + "wagon7"]);
+
             pickup = new SoundContainerSingle(SoundDir + "pickup", 0.6f, 0.4f);
             anvil = new SoundContainerSingle(SoundDir + "anvil", 0.45f, 0.4f);
             dig = new SoundContainerSingle(SoundDir + "dig", 0.3f, 0.4f);
@@ -94,7 +163,10 @@ namespace VikingEngine.DSSWars
                 SoundDir + "footstep (8)",
                 SoundDir + "footstep (9)",
                 SoundDir + "footstep (10)"
-            ], 0.20f, 0.4f);
+            ], 0.2f, 0.4f);
+
+
+
             ship_knirr = new SoundContainerMultiple([SoundDir + "ship_knirr1", SoundDir + "ship_knirr2"], 1.3f, 0.4f);
             //Attacks
             bow = new SoundContainerMultiple([SoundDir + "bow1", SoundDir + "bow2"], 0.5f, 0.4f);
@@ -132,6 +204,23 @@ namespace VikingEngine.DSSWars
             menuPaste = new RbSoundProfile(paste);
             menuStart = new RbSoundProfile(start);
             menuStop = new RbSoundProfile(stop);
+            menuPing = new RbSoundProfile(ping);
+
+            WalkSounds = new SoundContainerBase[] {
+                footstep,
+                horse_walk,
+                heavy_walk };
+
+            AnimalNoises = new SoundContainerBase[(int)AnimalNoiseType.NUM_NONE];
+            AnimalNoises[(int)AnimalNoiseType.hen] = hen;
+            AnimalNoises[(int)AnimalNoiseType.pig] = pig;
+            AnimalNoises[(int)AnimalNoiseType.hog] = hog;
+            AnimalNoises[(int)AnimalNoiseType.dog] = dog;
+            AnimalNoises[(int)AnimalNoiseType.wolf] = wolf;
+            AnimalNoises[(int)AnimalNoiseType.lion] = lion;
+            AnimalNoises[(int)AnimalNoiseType.oxen] = oxen;
+            AnimalNoises[(int)AnimalNoiseType.horse] = horse;
+            AnimalNoises[(int)AnimalNoiseType.elephant] = elephant;
 
             //buttonHoverAction = new RbSoundAction(menuHover);
             //tabHoverAction = new RbSoundAction(menutabHover);
@@ -140,5 +229,38 @@ namespace VikingEngine.DSSWars
             
             //Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
         }
+
+        //public static void speedInputSound()
+        //{
+        //    if (Ref.isPaused)
+        //    {
+        //        SoundLib.speed_down.Play(Pan.Right);
+        //    }
+        //    else
+        //    {
+        //        SoundLib.speed_up.Play(Pan.Right, -0.4f + Ref.GameTimeSpeed * 0.26f);
+        //    }
+        //}
+    }
+
+    enum WalkSoundType
+    { 
+        Foot,
+        Horse,
+        Heavy,
+    }
+
+    enum AnimalNoiseType
+    { 
+        hen,
+        pig,
+        hog,
+        dog,
+        wolf,
+        lion,
+        oxen,
+        horse,
+        elephant,
+        NUM_NONE,
     }
 }

@@ -11,6 +11,449 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+        //Multiplayer update
+        
+        //--
+        
+
+        //--
+        public override string Unlock_PublicGames => "공개 게임";
+        public override string UnlockPublic_Warning1 => "모르는 사람과 플레이하지 마세요";
+        public override string UnlockPublic_Warning2 => "이 게임은 치트나 트롤링을 막을 시스템이 전혀 없습니다";
+        public override string Unlock_WarningBadExperience => "매우 불쾌한 경험을 할 수 있습니다";
+        public override string Hud_Accept => "수락";
+        public override string Hud_Block => "차단";
+        public override string Hud_Deny => "거절";
+        public override string Hud_Reason => "사유";
+        public override string Hud_Full => "가득 참";
+        public override string Hud_Version => "버전";
+        public override string Unlock_PlayerVersusPlayer => "플레이어 간 전투 (PvP)";
+        public override string UnlockPvp_Warning1 => "DSS는 경쟁전 용도로 설계되지 않았습니다";
+        public override string UnlockPvp_Warning2 => "밸런스 조정이 없어 매우 불공평한 매치가 될 것입니다";
+        public override string PlayerJoinHistoryTitle => "플레이어 접속 기록";
+        public override string BlockedPlayersTitle => "차단된 플레이어";
+        public override string ClickToRemoveBan => "클릭: 차단 해제";
+        public override string HostSettingsTitle => "호스트 설정";
+        public override string MaxPlayerCount => "최대 플레이어 수";
+        public override string DistanceBetweenPlayers => "플레이어 간 거리";
+        public override string AllowHandicap => "핸디캡 허용";
+        public override string AllowCasualControls => "캐주얼 조작 허용";
+        public override string AutoRecolorPlayerFlags => "플레이어 깃발 자동 색상 변경";
+        public override string DefaultDiplomacy => "기본 외교";
+        public override string ClientSettingsTitle => "클라이언트 설정";
+        public override string UseHandicap => "핸디캡 사용";
+        public override string DifficultyDescription_BotAggression => "봇 공격성";
+        public override string Hud_GetExtraX => "추가 {0}";
+        public override string Hud_Hide => "숨기기";
+        public override string Hud_ModelType => "모델";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}: {1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "자원 부스트";
+        //public override string TaxIncome => "세금 수입";
+        public override string PlayerInteractionTitle => "플레이어 상호작용";
+        public override string DefaultPeaceful => "기본값: 평화";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "기본값: 선택적 코옵(Co-op)";
+        public override string DefaultHardcore => "기본값: 하드코어";
+        public override string GeneralTitle => "일반";
+
+        public override string InputButton_Hold => "버튼 길게 누르기";
+        public override string InputButton_Toggle => "버튼 토글";
+        public override string VoiceOptAlwaysOn => "항상 켜기";
+        public override string VoiceTitle => "음성";
+        public override string VoiceMute => "뮤트";
+        public override string GiftOptAllow => "허용";
+        public override string GiftOptFriendsOnly => "친구만";
+        public override string GiftOptBlocked => "차단됨";
+        public override string ReceiveAchievementsTitle => "업적 받기";
+        public override string GiftWarning => "경고! 선물 받은 업적은 기분을 상하게 할 수 있습니다";
+        public override string FullReset => "풀 리셋";
+        public override string AllowAllianceTitle => "동맹 허용";
+        public override string CanBreakAlliance => "동맹 파기 가능";
+        public override string AllowWarTitle => "전쟁 허용";
+        public override string FairProtection => "공평한 보호";
+        public override string FairProtectionTooltip => "보호받는 플레이어는 당신에게도 동일한 규칙을 적용해야 합니다";
+        public override string MustAsk => "동의 필수";
+        public override string MustAskTooltip => "양측 플레이어가 전투에 동의해야 합니다";
+        public override string AllianceLimit => "동맹 제한";
+        public override string AllianceLimitTooltip => "더 큰 규모의 플레이어 동맹으로부터 공격받지 않습니다";
+        public override string GameStartProtection => "게임 시작 시 보호";
+        public override string Hud_Time_Minutes => "분";
+        public override string WarPreparationTime => "전쟁 준비 시간";
+        public override string WarPreparationTimeTooltip => "전쟁 선포 후 공격이 가능해질 때까지의 대기 시간";
+        public override string Hud_Allow => "허용";
+        public override string Hud_Blocked => "차단됨";
+
+        public override string Hud_DeleteAll => "모두 삭제";
+        public override string DiplomacyPlayersChoice => "플레이어의 선택";
+        public override string UnlockSureTitle => "정말, 진심으로 확실합니까?";
+        public override string UnlockSureDescription => "나중에 포럼에서 징징대지 않을 성숙한 어른이 맞으신가요?";
+
+
+
+        public override string Network_PlayOffline => "오프라인 플레이";
+        public override string JoinPermission_Title => "참가 권한";
+        public override string JoinPermission_Private => "비공개";
+        public override string JoinPermission_FriendsOnly => "친구만";
+        public override string JoinPermission_Public => "공개";
+
+        public override string Network_Join => "게임 참가";
+        public override string Network_ConnectingToGame => "연결 중...";
+        public override string Lobby_Category_MultiplayerSettings => "멀티플레이어 설정";
+
+        public override string Hud_Default => "기본값";
+        public override string Group_Team => "팀";
+        public override string Group_Everyone => "모두";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "외교 동상";
+
+        public override string Message => "메시지";
+        public override string ObjectType_LocationPin => "위치 핀";
+        public override string ObjectType_LocationPin_Share => "공유 및 핑 찍기";
+        public override string ObjectType_LocationPin_Ping => "핑!";
+        public override string InputActionName_TextChat => "텍스트 채팅";
+        public override string InputActionName_TextChatLog => "채팅 로그";
+        public override string InputActionName_VoiceChat => "보이스 채팅";
+        public override string InputActionName_NextPin => "다음 핀";
+        public override string InputActionName_PinAndPing => "핀 추가";
+
+        public override string Leaderboards_ArmySize => "단일 군대 규모 (전투력)";
+        public override string Leaderboards_MultiplayerPlayerCount => "호스팅 중인 플레이어 수";
+
+        public override string Multiplayer_BanWarning => "차단(밴) 경고";
+        public override string Multiplayer_SentToHost => "호스트에게 전송됩니다";
+        public override string Multiplayer_AddToOwnBlocks => "내 차단 목록에 추가";
+
+        public override string Multiplayer_Message_RequestSent => "요청 전송됨";
+
+        public override string Multiplayer_BlockPlayer => "플레이어 차단";
+        public override string Multiplayer_NetSession => "네트워크 세션";
+        public override string GiftedAchievements => "선물 받은 업적";
+        public override string GiftedAchievements_Description => "친구들의 나쁜 행동에 보상을 줍니다";
+
+        public override string Multiplayer_Title => "멀티플레이어";
+        public override string Multiplayer_Lobby => "멀티플레이어 로비";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. 호스트가 게임을 시작합니다";
+        public override string Multiplayer_Tutorial_JoinButton => "2. 여기에 참가 버튼이 나타납니다";
+        public override string Multiplayer_Tutorial_Visible => "호스트의 Steam 프로필이 공개 상태여야 합니다";
+
+        public override string Multiplayer_KickPlayer => "플레이어 추방(킥)";
+        public override string Multiplayer_RequestBlockPlayer => "요청: 플레이어 차단";
+        public override string Multiplayer_HandoverComplete => "인수인계 완료";
+        public override string Multiplayer_LoadingClientSave => "클라이언트 저장 데이터 불러오는 중";
+        public override string Multiplayer_ClientSaveComplete => "클라이언트 저장 완료";
+        public override string Multiplayer_BadActor => "비매너 유저";
+        public override string Multiplayer_NetworkError => "네트워크 오류";
+        public override string Multiplayer_Sender => "보낸 사람";
+        public override string Multiplayer_Receiver => "받는 사람";
+        public override string Multiplayer_PlayerJoined => "플레이어가 참가했습니다";
+        public override string Multiplayer_PlayerLeft => "플레이어가 떠났습니다";
+        public override string Multiplayer_RequestingClientGamestates => "클라이언트 게임 상태를 요청하는 중...";
+        public override string Multiplayer_TextChat => "텍스트 채팅";
+        public override string Multiplayer_VoiceChat => "보이스 채팅";
+        public override string Steam_UserProfile => "유저 프로필";
+        public override string Steam_OpenSteamOverlay => "Steam 오버레이 열기";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "동원 중";
+        public override string Diplomacy_OfferRelation => "관계 제안";
+        public override string Diplomacy_OfferRelation_Declined => "관계 제안 거절됨";
+        public override string Diplomacy_SendGold => "골드 보내기";
+        public override string Diplomacy_GiftToPlayer => "플레이어에게 선물";
+        public override string Diplomacy_RecievedGift => "선물 받음";
+        public override string Diplomacy_OnAccept => "상대방이 수락할 경우:";
+        public override string Diplomacy_WarPreparationTime => "전쟁 준비 시간";
+
+        public override string Diplomacy_AboveSoftCap => "소프트 캡 초과";
+        public override string Diplomacy_BelowSoftCap => "소프트 캡 미만";
+        public override string Diplomacy_OpenPlayerToPlayer => "플레이어 간 외교 열기";
+
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "비축량을 초과해도 아이템이 파괴되지 않습니다!";
+        public override string SlaughterResult_PerAnimal => "동물당 도축 생산량";
+        public override string Settings_Mode_QuickBoss => "빠른 보스";
+        public override string Settings_Mode_QuickBoss_Description => "몇 시간 동안 준비한 후 최종 보스를 만납니다";
+        public override string QuickBoss_TimeOption => "보스 시간 (시간)";
+        //탈것 업데이트
+        public override string Leaderboards_title => "리더보드";
+        public override string Leaderboards_domination => "세계 정복 최단 시간, {0}% 이상";
+        public override string Leaderboards_victory => "스토리 승리, 상위 % 난이도";
+        public override string Leaderboards_CitySize => "최대 도시 규모 (일꾼 수)";
+        public override string Leaderboards_Survival => "생존 시간 ({0}% 난이도)";
+
+        public override string Message_CannotPayUpkeep => "유지비를 지불할 수 없습니다!";
+        public override string Animals_ProductionStop => "동물 생산이 중단됩니다";
+
+        public override string Tutorial_ToCapture => "포획하기";
+        public override string Tutorial_ClickButton => "버튼 클릭";
+        public override string Tutorial_MoveXToY => "{0}을(를) {1}(으)로 이동";
+
+        public override string Workers_Description1_work => "건설, 자원 수집 및 아이템 제작을 수행합니다.";
+        public override string Workers_Description2_income => "세금을 납부하여 수입원이 됩니다.";
+        public override string Workers_Description3_soldiers => "군대의 병사로 징집될 수 있습니다.";
+
+        public override string Hud_Time_ValuePerMinute => "분당 가치";
+        public override string Hud_Time_ValuePerSecond => "초당 가치";
+        public override string Hud_Lock => "잠금";
+        public override string Hud_Maximum => "최대";
+
+        public override string Tutorial_SeeThisInThat => "{1}에서 {0} 확인";
+        public override string Conscript_SkillBonus => "스킬 보너스";
+        public override string SoldierStats_UnitCount => "유닛 수";
+        /// <summary>
+        /// Areas are field, forest, sea and siege
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "초당 데미지 - {0}";
+        public override string Conscript_BaseHealth => "기본 체력";
+
+        /// <summary>
+        /// Summary value for the ability to get across the map
+        /// </summary>
+        public override string Conscript_Mobility => "기동력";
+
+        public override string Conscript_RiderMobility => "기수 기동력";
+        public override string Conscript_LightWagonMobility => "경형 마차 기동력";
+        public override string Conscript_HeavyWagonMobility => "중형 마차 기동력";
+
+        /// <summary>
+        /// Generelized for any object, like skills, resources and buildings
+        /// </summary>
+        public override string Culture_AffectedItems => "영향을 받는 아이템";
+        //## 탈것 업데이트 ##
+        public override string Progress_ClosingCores => "CPU 코어 종료 중 {0}";
+        public override string Editor_ExportFrame => "현재 프레임 내보내기";
+        public override string Editor_FistFrame => "첫 프레임";
+        public override string Editor_LastFrame => "마지막 프레임";
+
+        public override string Economy_AnimalPenUpkeep => "사육장 유지비: {0}";
+        public override string Work_SlaughterX => "{0} 도축";
+
+        public override string BuildCategory_Farming => "농사";
+        public override string Resource_TypeName_ManType => "인간 유형";
+        public override string Resource_TypeName_NobelMen => "귀족";
+        public override string Resource_TypeName_ConservedFood => "보존식";
+
+        public override string UnitType_UnitOnMount => "{0} 탑승";
+        public override string UnitType_UnitOnWagon => "{0} 마차";
+        public override string UnitType_NobelUnit => "귀족 {0}";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0} ({1} 조련사)";
+
+        public override string Info_ArmyFood4 => "보존식은 더 많은 식량 비축을 가능하게 합니다";
+        public override string Info_ArmyFood5 => "신선한 음식이 먼저 소비됩니다";
+
+        public override string Resource_ConservedFood_Reserves => "보존식 비축량";
+        public override string Resource_TypeName_Clay => "찰흙";
+        public override string Resource_TypeName_Brick => "벽돌";
+        public override string Resource_TypeName_Container => "용기";
+        public override string Resource_TypeName_Meat => "고기";
+        public override string Resource_TypeName_Salt => "소금";
+        public override string Resource_TypeName_Vehicle => "탈것";
+        public override string Resource_TypeName_WagonClosed => "유개 마차";
+        public override string Resource_TypeName_WagonIron => "철제 마차";
+        public override string Resource_TypeName_WagonSteel => "강철 마차";
+        public override string Resource_TypeName_Shield => "방패";
+        public override string Resource_TypeName_BucklerShield => "버클러";
+        public override string Resource_TypeName_RoundShield => "라운드 실드";
+        public override string Resource_TypeName_HeaterShield => "히터 실드";
+        public override string Resource_TypeName_TowerShield => "타워 실드";
+
+        public override string Resource_TypeName_Mount => "탈것";
+
+        public override string Resource_TypeName_MountArmorTitle => "탈것 갑옷";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "탈것용 {0}";
+        public override string Resource_TypeName_Animal => "동물";
+
+        //public override string Resource_TypeName_WildAnimal => "야생 동물";
+
+        /// <summary>
+        /// Area with wild animals
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0} 서식지";
+
+        public override string Resource_TypeName_Oxen => "황소";
+        public override string Resource_TypeName_KineOxen => "암소";
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "가금류";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "수퍅";
+        public override string Resource_TypeName_Pig => "돼지";
+        public override string Resource_TypeName_Hen => "암탉";
+        public override string Resource_TypeName_Dog => "개";
+        public override string Resource_TypeName_Hound => "사냥개";
+
+        public override string Resource_TypeName_Pony => "포니";
+        public override string Resource_TypeName_Horse => "말";
+        public override string Resource_TypeName_WarHorse => "군마";
+        public override string Resource_TypeName_DraftHorse => "짐말";
+
+        public override string Resource_TypeName_WildPig => "야생 돼지";
+        public override string Resource_TypeName_WildHog => "야생 멧돼지";
+        public override string Resource_TypeName_WarHog => "전투 멧돼지";
+        public override string Resource_TypeName_StagHog => "스태그 호그";
+
+        public override string Resource_TypeName_Wolf => "늑대";
+        public override string Resource_TypeName_Warg => "와그";
+        public override string Resource_TypeName_AlphaWarg => "알파 와그";
+
+        public override string Resource_TypeName_WildCat => "들고양이";
+        public override string Resource_TypeName_Lion => "사자";
+        public override string Resource_TypeName_WarLion => "전투 사자";
+
+        public override string Resource_TypeName_Elephant => "코끼리";
+        public override string Resource_TypeName_WarElephant => "전투 코끼리";
+        public override string Resource_TypeName_Oliphant => "올리판트";
+
+        public override string BuildHud_Select => "건물 선택";
+        public override string BuildHud_AreaRadius => "지역 반경";
+
+        public override string NobleHouse_HousingCount => "귀족 {0}명 수용 가능";
+
+
+        public override string BuildingType_GreatHall => "대강당";
+        public override string BuildingType_GreatHall_Description => "고급 징집 잠금 해제";
+
+        public override string BuildingType_ClayPit => "찰흙 채취장";
+        public override string BuildingType_Butcher => "도축장";
+        public override string BuildingType_Butcher_Description => "동물을 식량과 가죽으로 가공";
+        public override string BuildingType_Pottery => "도자기 공방";
+        public override string BuildingType_CraftX_Description => "{0} 제작대";
+
+        public override string BuildingType_GatherX_Description => "{0} 채집";
+
+        public override string BuildingType_Smoker => "훈제장";
+        public override string BuildingType_Dryer => "건조장";
+        public override string BuildingType_Shieldmaker => "방패 제작소";
+        public override string BuildingType_DryingPan => "건조판";
+
+        public override string BuildingType_TrapperHut => "사냥꾼 오두막";
+        public override string BuildingType_TrapperHut_Description => "야생 동물 포획 가능";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "자재 창고";
+        public override string BuildingType_FoodStorage => "식량 창고";
+        public override string BuildingType_WeaponStorage => "무기 창고";
+        public override string BuildingType_ArmorStorage => "갑옷 창고";
+        public override string BuildingType_AnimalStorage => "동물 보관소";
+
+        public override string BuildingType_Storage_Description => "최대 비축량 {0} 증가";
+
+        public override string BuildingType_Cesspit => "폐기장";
+        public override string BuildingType_Cesspit_Description => "자원 파기";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "비축 한도를 초과하는 아이템을 파기합니다";
+        public override string Info_XAmountIsConvertedToY => "{0}이(가) {1}(으)로 변환됨";
+        public override string Info_ProductionRestriction => "아이템 생산 제한:";
+
+        public override string BuildingType_FowlPen => "가금류 사육장";
+        public override string BuildingType_BoarPen => "멧돼지 사육장";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "황소 사육장";
+        public override string BuildingType_KineOxenPen => "암소 사육장";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "견사";
+        public override string BuildingType_HoundCage => "사냥개 사육장";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "포니 사육장";
+        public override string BuildingType_HorsePen => "마구간";
+        public override string BuildingType_WarHorsePen => "군마 사육장";
+        public override string BuildingType_DraftHorsePen => "짐말 사육장";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "야생 돼지 사육장";
+        public override string BuildingType_WildHogPen => "야생 멧돼지 사육장";
+        public override string BuildingType_WarHogPen => "전투 멧돼지 사육장";
+        public override string BuildingType_StagHogPen => "스태그 호그 사육장";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "늑대 우리";
+        public override string BuildingType_WargCage => "와그 우리";
+        public override string BuildingType_AlphaWargCage => "알파 와그 우리";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "들고양이 우리";
+        public override string BuildingType_LionCage => "사자 우리";
+        public override string BuildingType_WarLionCage => "전투 사자 우리";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "코끼리 사육장";
+        public override string BuildingType_WarElephantCage => "전투 코끼리 사육장";
+        public override string BuildingType_OliphantCage => "올리판트 사육장";
+
+        public override string BuildingDescription_Animals => "병사 징집을 위한 동물을 생산합니다";
+        public override string Pen_Breeding => "동물 번식";
+        public override string Pen_BreedUpChance => "티어 상승 확률 {0}%";
+        public override string Pen_BreedDownChance => "티어 하락 확률 {0}%";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "번식 성공 확률 증가";
+
+        public override string CityCulture_EnhancedProduction => "{0} 생산 강화";
+        public override string CityCulture_Production => "{0} 생산";
+
+        public override string CityCulture_Butchers => "도축업자";
+
+        public override string CityCulture_Potters => "옹기장이";
+
+        public override string CityCulture_Wainwright => "마차 제작자";
+
+        public override string CityCulture_Wheelwright => "바퀴 제작자";
+        public override string CityCulture_Wheelwright_Description => "징집된 수레의 속도 보너스";
+
+        public override string CityCulture_ShieldMaker => "방패 제작자";
+
+
+        //public override string CityCulture_Nomads_Description => "낮은 정착 비용";
+
+        public override string CityCulture_Coopers => "통 제작자";
+
+        public override string CityCulture_Salters => "제염업자";
+
+
+        public override string CityBiome_Title => "생물군계";
+        public override string CityBiome_Description => "생물군계는 일부 자원 및 건물 이용에 영향을 줍니다";
+
+        public override string CityBiome_Fields => "들판";
+        public override string CityBiome_Frozen => "동토";
+        public override string CityBiome_Forest => "숲";
+        public override string CityBiome_Mountain => "산악";
+        public override string CityBiome_Desolate => "황무지";
+        public override string CityBiome_Desert => "사막";
+
+        public override string Bonus_IncreaseSkin => "가죽 생산량 증가";
+        public override string Bonus_FoodStorage => "식량 창고 확장";
+
+        public override string StockPile_LimitTitle => "비축 제한";
+
         public override string Help_Work_Automatic => "작업은 자동으로 진행됩니다";
         public override string Tutorial_SecondCity => "두 번째 도시 확보";
         //## Spring update
@@ -76,14 +519,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "화면 모드";
-        public override string DisplayMode_Windowed => "창 모드";
-        public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
+        //public override string DisplayMode => "화면 모드";
+        //public override string DisplayMode_Windowed => "창 모드";
+        //public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
 
-        public override string GameSettings_RenderedMouseCursor => "소프트웨어 커서";
-        public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
+        //public override string GameSettings_RenderedMouseCursor => "소프트웨어 커서";
+        //public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
 
         public override string Delivery_MaxDistance => "최대 배송 거리: {0}";
         public override string Tutorial_WillTakeAWhile => "시간이 좀 걸립니다. 나중에 다시 확인해 주세요.";
@@ -179,7 +622,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -418,7 +861,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "유지비: {0}";
+        public override string Hud_Upkeep => "유지비";
         public override string Hud_ArmyUpkeep => "군대 유지비: {0}";
 
         /// <summary>
@@ -430,14 +873,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "도시를 확장해야 합니다.";
 
-        public override string Hud_SoldierCount => "병사 수: {0}";
+        public override string Hud_SoldierCount => "병사 수";
 
-        public override string Hud_SoldierGroupsCount => "부대 수: {0}";
+        public override string Hud_SoldierGroupsCount => "부대 수";
 
         /// <summary>
         /// Ingame display. Unit calculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "전투력: {0}";
+        public override string Hud_StrengthRating => "전투력";
 
         /// <summary>
         /// Ingame display. Calculated battle strength for the whole nation.
@@ -658,7 +1101,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic communication. How well you can discuss terms. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "협상 상태: {0}";
+        public override string Diplomacy_SpeakTermIs => "협상 상태";
 
         /// <summary>
         /// Diplomatic communication. Better than normal.
@@ -794,7 +1237,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "통계";
+        public override string Statistics_Title => "통계";
 
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
@@ -991,7 +1434,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "체력: {0}";
+        public override string SoldierStats_Health => "체력";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1052,7 +1495,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => "{0} 파견";
+        public override string Hud_SendX => "{0} 파견";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1211,7 +1654,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Money => "급여를 받지 못한 병사들이 군대를 이탈하고 있습니다.";
 
 
-        public override string DifficultyDescription_AiAggression => "AI 공격성: {0}";
+        //public override string DifficultyDescription_AiAggression => "AI 공격성: {0}";
         public override string DifficultyDescription_BossSize => "보스 규모: {0}";
         public override string DifficultyDescription_BossEnterTime => "보스 등장 시간: {0}";
         public override string DifficultyDescription_AiEconomy => "AI 경제력: {0}%";
@@ -1448,7 +1891,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "포장 도로";
         public override string BuildingType_Smith => "대장간";
         public override string BuildingType_Cook => "요리소";
-        public override string BuildingType_Storage => "창고";
+        public override string BuildingType_Storehouse => "창고";
 
         public override string BuildingType_ResourceFarm => "{0} 농장";
 
@@ -1471,7 +1914,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "기사와 외교관의 거주지입니다.";
         public override string BuildingType_CoalPit_Description => "효율적인 연료 생산 건물입니다.";
-        public override string BuildingType_Storage_Description => "자원 보관소입니다.";
+        //public override string BuildingType_Storehouse_Description => "자원 보관소입니다.";
 
         public override string MenuTab_Info => "정보";
         public override string MenuTab_Work => "작업";
@@ -1559,10 +2002,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "특정 전투 유형의 공격력이 {0}만큼 증가하며, 다른 모든 능력은 감소합니다.";
         public override string Conscript_SelectBuilding => "병영 선택";
 
-        public override string Conscript_WeaponDamage => "무기 공격력: {0}";
-        public override string Conscript_ArmorHealth => "방어구 체력: {0}";
-        public override string Conscript_TrainingSpeed => "공격 속도: {0}";
-        public override string Conscript_TrainingTime => "훈련 시간: {0}";
+        public override string Conscript_WeaponDamage => "무기 공격력";
+        public override string Conscript_ArmorHealth => "방어구 체력";
+        public override string Conscript_AttackSpeed => "공격 속도";
+        public override string Conscript_TrainingTime => "훈련 시간";
 
         public override string Conscript_Training_Minimal => "최소";
         public override string Conscript_Training_Basic => "기초";
@@ -1588,15 +2031,15 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "거리: {0}";
         public override string Delivery_DeliveryTimeX => "배송 시간: {0}";
         public override string Delivery_SenderMinimumCap => "송신 최소 한도";
-        public override string Delivery_RecieverMaximumCap => "수신 최대 한도";
+        public override string Delivery_ReceiverMaximumCap => "수신 최대 한도";
         public override string Delivery_ItemsReady => "보낼 아이템 준비 완료";
-        public override string Delivery_RecieverReady => "수신 준비 완료";
+        public override string Delivery_ReceiverReady => "수신 준비 완료";
         public override string Hud_ThisCity => "이 도시";
         public override string Hud_RecieveingCity => "수신 도시";
 
         public override string Info_ButtonIcon => "정보";
 
-        public override string Info_PerSecond => "초당 자원 단위로 표시됩니다.";
+        public override string Info_ResourcePerSecond => "초당 자원 단위로 표시됩니다.";
         public override string Info_MinuteAverage => "최근 1분간의 평균값입니다.";
 
         public override string Message_OutOfFood_Title => "식량 부족";
@@ -1655,12 +2098,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "연결가";
         public override string CityCulture_PitMasters => "숯굴 장인";
 
-        public override string CityCulture_CultureIsX => "문화: {0}";
+        public override string CityCulture_Culture => "문화";
         public override string CityCulture_LargeFamilies_Description => "출산율이 증가합니다.";
         public override string CityCulture_FertileGround_Description => "작물 생산량이 증가합니다.";
         public override string CityCulture_Archers_Description => "숙련된 궁수를 양성합니다.";
         public override string CityCulture_Warriors_Description => "숙련된 근접 전사를 양성합니다.";
-        public override string CityCulture_AnimalBreeder_Description => "가축에서 더 많은 자원을 얻습니다.";
+        //public override string CityCulture_AnimalBreeder_Description => "가축에서 더 많은 자원을 얻습니다.";
         public override string CityCulture_Miners_Description => "광석 채굴량이 증가합니다.";
         public override string CityCulture_Woodcutters_Description => "벌목 효율이 증가합니다.";
         public override string CityCulture_Builders_Description => "건설 속도가 빨라집니다.";
@@ -1681,7 +2124,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "탭 선택: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0}의 우선순위 높이기";
         public override string Tutorial_PlaceBuildOrder => "건설 명령 배치: {0}";
-        public override string Tutorial_ZoomInput => "줌 조작";
+        public override string ButtonAction_Zoom => "줌 조작";
 
         public override string Tutorial_SelectACity => "도시 선택";
         public override string Tutorial_ZoomInWorkers => "확대하여 일꾼을 확인하세요";
@@ -1699,13 +2142,14 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_BogIron => "늪철";
         public override string Resource_TypeName_Coal => "석탄";
 
-        public override string Language_XUpkeepIsY => "{0} 유지비: {1}";
+        public override string Language_XUpkeep => "{0} 유지비";
         public override string Language_XCountIsY => "{0} 수량: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "식량이 부족하여 암시장에서 비싼 식량을 구매합니다. 금화가 바닥나면 병사들이 탈영합니다.";
 
-        public override string Info_ArmyFood => "군대는 가장 가까운 아군 도시에서 식량을 보급받습니다. 다른 세력으로부터 식량을 구매할 수도 있습니다. 적대 지역에서는 암시장에서만 식량을 구입할 수 있습니다.";
-
+        public override string Info_ArmyFood1 => "군대는 가장 가까운 우호적인 도시에서 식량을 보충합니다.";
+        public override string Info_ArmyFood2 => "식량은 다른 세력에게서 구매할 수 있습니다.";
+        public override string Info_ArmyFood3 => "적대적인 지역에서는 암시장에서만 식량을 구매할 수 있습니다.";
         public override string FactionName_Monger => "몽거";
         public override string FactionName_Hatu => "하투";
         public override string FactionName_Destru => "데스트루";
@@ -1775,13 +2219,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "평지";
         public override string LandType_Water => "물";
         public override string BuildingType_Wall => "성벽";
-        public override string Delivery_AutoReciever_Description => "가장 적은 자원을 가진 도시에 자동으로 보냅니다.";
+        public override string Delivery_AutoReceiver_Description => "가장 적은 자원을 가진 도시에 자동으로 보냅니다.";
 
         public override string Hud_On => "켜짐";
         public override string Hud_Off => "꺼짐";
 
-        public override string Hud_Time_Seconds => "{0}초";
-        public override string Hud_Time_Minutes => "{0}분";
+        public override string Hud_Time_XSeconds => "{0}초";
+        public override string Hud_Time_XMinutes => "{0}분";
         public override string Hud_Undo => "되돌리기";
         public override string Hud_Redo => "다시 실행";
 
@@ -2685,9 +3129,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// These symbols are needed to fit large numbers on the HUD, there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "c";
-        public override string EngineHud_SymbolFor1000 => "k";
-        public override string EngineHud_SymbolFor10000 => "10k";
+        public override string Language_SymbolFor100 => "c";
+        public override string Language_SymbolFor1000 => "k";
+        public override string Language_SymbolFor10000 => "10k";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress. Use the word for Steam Achievements.

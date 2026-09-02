@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Interface
                     layer, 
                     Input.InputSource.DefaultPC);
                 menu.useAnyControllerInput = true;//menuType != MenuType.InGame;
-                Input.Mouse.LockToScreenArea = false;
+                Input.Mouse.SetMenuMode(true);//.LockToScreenArea = false;
             }
         }
 

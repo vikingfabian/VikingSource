@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.HUD.RichBox;
 
@@ -42,9 +43,14 @@ namespace VikingEngine.DSSWars.GameObject
             throw new NotImplementedException();
         }
 
-        public override bool defeatedBy(int attackerFaction)
+        public override bool defeatedBy(PFaction attackerFaction)
         {
             throw new NotImplementedException();
+        }
+
+        public override bool MayBattle()
+        {
+            return true;
         }
     }
 }

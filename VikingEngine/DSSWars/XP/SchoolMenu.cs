@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.XP
                 }
                 content.newParagraph();
 
-                if (currentStatus.learnExperience != WorkExperienceType.NONE)
+                if (currentStatus.learnExperience != WorkExperienceType.NUM_NONE)
                 {
                     HudLib.Label(content, DssRef.lang.SchoolHud_ToLevel);
                     content.newLine();
@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.XP
                             content.Add(new RbText(new Data.TimeLength(time - Ref.TotalGameTimeSec).LongString()));
                         }
                     }
-                    que.singleToHud(player, content, queClick, currentStatus.que, SchoolStatus.MaxQue, false);
+                    que.singleToHud(player, content, queClick, currentStatus.que, SchoolStatus.MaxQue, true);
                 }
 
                 content.newParagraph();
@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.XP
                 {
                     var status = city.schoolBuildings[i];
 
-                    if (status.learnExperience != WorkExperienceType.NONE)
+                    if (status.learnExperience != WorkExperienceType.NUM_NONE)
                     {
                         if (count == 1)
                         {

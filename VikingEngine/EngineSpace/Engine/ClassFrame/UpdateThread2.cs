@@ -64,15 +64,22 @@ namespace VikingEngine
                     busyThread = false;
                     //}
                 }
-            });
 
+                thread.Join();
+            });
+            
             thread.Start();
             thread.Priority = priority;
         }
 
         public override void Time_Update(float time_ms)
         {
-            if (end)
+            //if (end)
+            //{
+            //    DeleteMe();
+            //    return;
+            //}
+            if (!thread.IsAlive)
             {
                 DeleteMe();
                 return;
@@ -99,15 +106,20 @@ namespace VikingEngine
             AbortThreads();
         }
 
-        public override void AbortThreads()
+        public override bool AbortThreads()
         {
-            
+
+            if (thread.ThreadState == ThreadState.Running ||
+                thread.ThreadState == ThreadState.WaitSleepJoin)
+            {
                 end = true;
                 resetEvent.Set();
-
-#if DEBUG
-                thread?.Join();
-#endif
+                return true;
+            }
+            return false;
+//#if DEBUG
+//                thread?.Join();
+//#endif
             
 
         }
@@ -132,18 +144,16 @@ namespace VikingEngine
 
         override protected void asynchAction()
         {
-#if FALSE
-            if (updateAction != null)
-            {
-                end = updateAction(id, asynchTime);
-            }
-#else
+
+#if !DEBUG
             try
             {
+#endif
                 if (updateAction != null)
                 {
                     end = updateAction(id, asynchTime);
                 }
+#if !DEBUG
             }
             catch (Exception e)
             {

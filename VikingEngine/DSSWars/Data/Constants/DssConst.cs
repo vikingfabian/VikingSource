@@ -3,6 +3,7 @@
 using VikingEngine.DSSWars.GameObject;
 using System;
 using VikingEngine.ToGG.HeroQuest.Data;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace VikingEngine.DSSWars
 {
@@ -16,6 +17,9 @@ namespace VikingEngine.DSSWars
         public static float DiplomacyExtraCostPerAlly = 0.5f;
 
         //SOLDIER
+        public static int DogHealth = 250;
+        public static int HoundHealth = 500;
+
         public static int Soldier_DefaultHealth = 400;
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;
         public static int SoldierGroup_RowWidth = 6;
@@ -33,14 +37,24 @@ namespace VikingEngine.DSSWars
 
         public static float DefaultBlockChance = 0.75f;
 
-        public static float DefaultBlockRefillTimeSec = 0.25f;
-        public static float LowBlockRefillTimeSec = 0.5f;
-        public static float BadBlockRefillTimeSec = 1f;
+        public static float DefaultBlockRefillTimeSec = 0.5f;
+        public static float LowBlockRefillTimeSec = 1f;
+        public static float BadBlockRefillTimeSec = 2f;
 
         public static float HeightAdvantageBlockReduce_multiply = 0.5f;
         public static float HeavyBlockReduceAttack_Inv = 0.2f;
         public static float MediumBlockReduceAttack_Inv = 0.5f;
         public static float SmallBlockReduceAttack_Inv = 0.75f;
+
+        
+        //NOBEL
+        public const int NobleHouseMenCount = 15;
+        public const float NobelHouseMenAddSpeed_Minute = 5;
+        public static float NobelHouseMenAddSpeed_PerManHouse = NobelHouseMenAddSpeed_Minute / NobleHouseMenCount;
+
+        public const float NobelMenSkillBonusAdd = 0.5f;
+        public const float NobelMenSkillBonus = 1 + NobelMenSkillBonusAdd;
+
 
         //MEN
         public static float SoldierGroupStandardRotatingSpeed = 6.5f;
@@ -53,13 +67,18 @@ namespace VikingEngine.DSSWars
         public static float Men_StandardWalkingSpeed = 0.00018f;
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 
+        //ANIMAL
+        public const double BreedingUpChance = 0.05;
+        public const double BreedingDownChance = 0.25;
+        public const int TrapperHutRadius = 8;
+
         //CONSCRIPT
         public static float SwordAttackRange = 0.04f;
         public static float MeleeAwareRange = SwordAttackRange * 3f;
 
-        public static int WeaponDamage_Handspear = 10;
+        public static int WeaponDamage_Handspear = 15;
         public static int WeaponHealthAdd_Handspear = 200;
-        public static int WeaponDamage_SharpStick = 20;
+        public static int WeaponDamage_SharpStick = 24;
         public static int WeaponDamage_BronzeSword = 45;
         public static int WeaponDamage_ShortSword = 50;
         public static int WeaponDamage_Sword = 80;
@@ -92,6 +111,10 @@ namespace VikingEngine.DSSWars
         public static int WeaponDamage_SiegeCannonIron = 600;
         public static int WeaponDamage_ManCannonIron = 300;
 
+        public static int WeaponDamage_Pig = 5;
+        public static int WeaponDamage_Dog = 80;
+        public static int WeaponDamage_Hound = 150;
+
         public static float AntiCavalryBonusMultiply = 2;
         public static float ArrowWeaknessBonusMultiply = 1.5f;
 
@@ -105,6 +128,8 @@ namespace VikingEngine.DSSWars
         public static int ArmorHealth_FullPlate = (int)(Soldier_DefaultHealth * 3);
         public static int ArmorHealth_Mithril = (int)(Soldier_DefaultHealth * 6);
 
+        public static double ArmorHealthMulti_Mounts = 2.0;
+
         public static float TrainingAttackSpeed_Minimal = 0.5f;
         public static float TrainingAttackSpeed_Basic = 1f;
         public static float TrainingAttackSpeed_Skillful = 1.5f;
@@ -115,6 +140,7 @@ namespace VikingEngine.DSSWars
         public static float TrainingTimeSec_Basic = 90;
         public static float TrainingTimeSec_Skillful = 5 * TimeExt.MinuteInSeconds;
         public static float TrainingTimeSec_Professional = 10 * TimeExt.MinuteInSeconds;
+        public static float TrainingTimeSec_Mount = TimeExt.MinuteInSeconds;
 
         public static float TrainingTimeSec_NobelmenAdd = 120;
 
@@ -127,9 +153,9 @@ namespace VikingEngine.DSSWars
         public const int Gold_RichStatus = 1000000;
 
         //CITY
-        public static int TaxPerWorker_copp = 8;
-        public static int UpkeepPerServiceMan_copp = 10;
-        public static int UpkeepPerGuard_copp = 10;
+        public static int TaxPerWorker_copp = 2;
+        public static int UpkeepPerServiceMan_copp = 4;
+        public static int UpkeepPerGuard_copp = 4;
         public static int CampsiteCityStartMaxWorkForce = HousingCount_WorkerTent;
         public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
@@ -155,6 +181,7 @@ namespace VikingEngine.DSSWars
 
         public static int IronSellValue = 5;
         public static int FoodGoldValue = 2;
+        public static int ConservedFoodGoldValue = 4;
         public static int FoodGoldValue_BlackMarket = FoodGoldValue * 5;
         public static float MoneyCarryPerSoldier = FoodGoldValue_BlackMarket * 2;
 
@@ -163,9 +190,14 @@ namespace VikingEngine.DSSWars
         public static int CityDeliveryChunkSize_Level2 = 60;
         public static int CityDeliveryChunkSize_Level3 = 120;
 
+        public static int GoldDeliveryChunkSize_Mini = 100;
+        public static int GoldDeliveryChunkSize_Level1 = 500;
+        public static int GoldDeliveryChunkSize_Level2 = 2000;
+        public static int GoldDeliveryChunkSize_Level3 = 5000;
+
         //public const int ExpandGuardSizeCost = 12000;
         //public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
-
+        public const int ChildFoodRequirement = 100;
         public const int HousingCount_WorkerTent = 20;
         public const int HousingCount_WorkerHut = 30;
         public const int HousingCount_WorkerHutLarge = 50;
@@ -193,6 +225,15 @@ namespace VikingEngine.DSSWars
         public const int ImmigrantsTransfereSpeed = 5;
         public const int ImmigrantionTent_TransfereSpeedBonus = 2;
         public const int ImmigrantionTent_Capacity = 60;
+
+        //AHRMY UPKEEP
+        public static float TrainingLevelMinimal_CopperUpkeep = 0;
+        public static float TrainingLevelBasic_CopperUpkeep = TaxPerWorker_copp * 0.2f;
+        public static float TrainingLevelSkillful_CopperUpkeep = TaxPerWorker_copp * 0.4f;
+        public static float TrainingLevelProfessional_CopperUpkeep = TaxPerWorker_copp * 1f;
+        public static float Nobel_GoldUpkeep = TaxPerWorker_copp * 1f;
+        public static readonly float[] TrainingCopperUpkeep = [TrainingLevelMinimal_CopperUpkeep, TrainingLevelBasic_CopperUpkeep, TrainingLevelSkillful_CopperUpkeep, TrainingLevelProfessional_CopperUpkeep, TrainingLevelProfessional_CopperUpkeep, TrainingLevelProfessional_CopperUpkeep, 0];
+
 
         //DEFENCE
         public static float GuardPostDefenceChance_Palisade = 0.4f;
@@ -232,6 +273,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_Plant_Upgraded = 15;
         public static float WorkTime_Mine = 35;
         public static float WorkTime_BogIron = WorkTime_Mine * 4;
+        public static float WorkTime_ClayPit = WorkTime_Mine;
         public static float WorkTime_Craft = 10;
 
         public static float WorkTime_Building_Palisade = 10;
@@ -252,9 +294,10 @@ namespace VikingEngine.DSSWars
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
-        public static int OrchidFoodAmount = 30;
-        public static int WheatFoodAmount = 30;
-        public static int AnimalFoodAmount = 60;
+        public static int OrchidFoodAmount = 50;
+        public static int WheatFoodAmount = 50;
+        public static int PenBreedingStockCount = 8;
+        //public static int AnimalFoodAmount = 60;
 
         //public static int DefaultItemFuelAmount = 25;
         public static int RapeSeedFuelAmount = 15;
@@ -267,25 +310,32 @@ namespace VikingEngine.DSSWars
         public static int PigRawFoodAmout = 3;
         public static int PigSkinAmount = 2;
         public static float ManDefaultEnergyCost = 1f;
+        public static float MountDefaultEnergyCost = 2f;
         public static float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;
         public static int PlantWaterCost = 1;
         public static int OrchardWaterCost = 10;
 
-        public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
+        public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp /* / SoldierGroup_DefaultCount*/;
         //public static int PlantFoodCost = 6;
 
         //public static int WorkSafeGuardAmount = 10;
 
         public const int StockPileMinBound = 0;
         public const int StockPileMaxBound = 20000;
+        public const float CessPitConvertToFuelPercentage = 0.1f;
+
+        //STOCKPILE
+        public const int StorageStartSize = 500;
+        public const int StorageBuildingSizeAdd = 500;
 
         //XP
         public static byte WorkXpToLevel = 50;
+        public static int WorkXpToLevel_Squared = WorkXpToLevel * WorkXpToLevel;
         public static int WorkLevel_Expert = WorkXpToLevel * 2;
         public static int WorkLevel_Master = WorkXpToLevel * 3;
-        public static byte DefaultWorkXpGain = 4;
+        public static byte DefaultWorkXpGain = 3;
         public static float XpLevelWorkTimePercReduction = 0.1f;
 
         //public static int WorkQueue_Start = 3;
@@ -309,11 +359,8 @@ namespace VikingEngine.DSSWars
 
         //BANK
         public static float GoldDeliveryFeePerc = 10;
-        public static int BankTaxIncreasePercUnits_copp = 4;
-        public static int GoldDeliveryChunkSize_Mini = 100;
-        public static int GoldDeliveryChunkSize_Level1 = 500;
-        public static int GoldDeliveryChunkSize_Level2 = 2000;
-        public static int GoldDeliveryChunkSize_Level3 = 5000;
+        public static int BankTaxIncreasePercUnits_copp = 2;
+     
 
         public static int Casual_TaxPerWorker_copp = 6;
         public static int Casual_Farm2TaxIncreasePercUnits_copp = 2;

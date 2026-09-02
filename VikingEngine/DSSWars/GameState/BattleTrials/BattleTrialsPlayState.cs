@@ -39,36 +39,36 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
             local.assignPlayer(0, playerCount, true);
             localPlayers.Add(local);
 
-            var factionsCounter = DssRef.world.factions.counter();
-            while (factionsCounter.Next())
-            {
-                factionsCounter.sel.initDiplomacy(DssRef.world);
-            }
+            //var factionsCounter = DssRef.world.factions.counter();
+            //while (factionsCounter.Next())
+            //{
+            //    factionsCounter.sel.initDiplomacy(DssRef.world);
+            //}
         }
 
-        protected override void initScenario()
-        {
-            //Hard coded demo scenario
-            IntVector2 center = new IntVector2(98, 143);
+        //protected override void initScenario()
+        //{
+        //    //Hard coded demo scenario
+        //    IntVector2 center = new IntVector2(98, 143);
 
-            var manager =  new BattleLab.BattleSetupManager();
-            manager.beginBattleSetup(center);
-            manager.addSoldier(8, Resource.ItemResourceType.Sword, BattleSetupManager.BothPlayers);
-            manager.addSoldier(4, Resource.ItemResourceType.HandSpear, BattleSetupManager.BothPlayers);
-            manager.addSoldier(4, Resource.ItemResourceType.Bow, BattleSetupManager.BothPlayers);
-            manager.addSoldier(4, Resource.ItemResourceType.HandSpear, BattleSetupManager.BothPlayers);
-            manager.addSoldier(4, Resource.ItemResourceType.KnightsLance, BattleSetupManager.BothPlayers);
-            manager.addSoldier(2, Resource.ItemResourceType.TwoHandSword, BattleSetupManager.BothPlayers);
+        //    var manager =  new BattleLab.BattleSetupManager();
+        //    manager.beginBattleSetup(center);
+        //    manager.addSoldier(8, Resource.ItemResourceType.Sword, BattleSetupManager.BothPlayers);
+        //    manager.addSoldier(4, Resource.ItemResourceType.HandSpear, BattleSetupManager.BothPlayers);
+        //    manager.addSoldier(4, Resource.ItemResourceType.Bow, BattleSetupManager.BothPlayers);
+        //    manager.addSoldier(4, Resource.ItemResourceType.HandSpear, BattleSetupManager.BothPlayers);
+        //    //manager.addSoldier(4, Resource.ItemResourceType.KnightsLance, BattleSetupManager.BothPlayers);
+        //    manager.addSoldier(2, Resource.ItemResourceType.TwoHandSword, BattleSetupManager.BothPlayers);
 
-            manager.addSoldier(8, Resource.ItemResourceType.Ballista, BattleSetupManager.BothPlayers);
+        //    manager.addSoldier(8, Resource.ItemResourceType.Ballista, BattleSetupManager.BothPlayers);
 
-            manager.startBattle(false, BattleSetupManager.NoPlayer);
-            manager.addTimedAttackFromEnemy(10);
+        //    manager.startBattle(false, BattleSetupManager.NoPlayer);
+        //    manager.addTimedAttackFromEnemy(10);
 
-            LocalHost().gameControls.map.cameraFocus = manager.friendlyArmy;
+        //    LocalHost().gameControls.map.cameraFocus = manager.friendlyArmy;
 
 
 
-        }
+        //}
     }
 }

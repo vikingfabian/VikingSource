@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
@@ -15,18 +17,23 @@ namespace VikingEngine.DSSWars.Data
 {
     class SaveMeta
     {
-        const int Version = 2;
+        const int Version = 3;
 
         const int SaveStateCount = 10;
         const int AutoSaveCount = 10;
         public const string ImportSaveFolder = "Import Save";
         SaveIterations saves = new SaveIterations(SaveStateCount);
         SaveIterations autosaves = new SaveIterations(AutoSaveCount);
+       
 
         DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
         public GameOverResultCollection gameOverResultCollection = null;
+
+        const int SaveClientStateCount = 20;
+        SaveClientIterations clientSaves = new SaveClientIterations(SaveClientStateCount);
+
 
         public void CreateImportFolders()
         {
@@ -58,6 +65,42 @@ namespace VikingEngine.DSSWars.Data
             DataStream.FileToDiskManager.TryReadBinaryIO(path, read);
         }
 
+        public bool LoadClient(PFaction faction)
+        {
+            double latestTimeDiff = double.MaxValue;
+            ClientSaveMeta latest = null;
+
+            foreach (var save in clientSaves.saves)
+            {
+                if (save != null &&
+                    save.host == Ref.netSession.Host().fullId &&
+                    save.World.MapId() == DssRef.world.metaData.worldId.MapId() &&
+                    save.faction == faction)
+                {
+                    double timeDiff = DssRef.time.TotalIngameTime().TotalSeconds - save.playTime.TotalSeconds;
+                    if (timeDiff < 0)
+                    {
+                        timeDiff = Math.Abs(timeDiff) * 2f;
+                    }
+
+                    if (latest == null || timeDiff < latestTimeDiff)
+                    {
+                        latest = save;
+                    }
+                }
+            }
+
+            if (latest != null)
+            {
+                var saveGamestate = new ClientSaveState(latest);
+                saveGamestate.load();
+                return true;
+            }
+
+            return false;
+        }
+
+
         public List<SaveStateMeta> listSaves()
         {
             List<SaveStateMeta> allSaves = new List<SaveStateMeta>();
@@ -87,10 +130,20 @@ namespace VikingEngine.DSSWars.Data
            return (auto ? autosaves : saves).nextIndex;
         }
 
+        public int NextClientSaveIndex()
+        {
+            return clientSaves.nextIndex;
+        }
+
         public void AddSave(SaveStateMeta save, IStreamIOCallback callback)
         {
             (save.autosave ? autosaves : saves).AddSave(save);
             Save(callback);
+        }
+        public void AddSave(ClientSaveMeta save)
+        {
+            clientSaves.AddSave(save);
+            Save(null);
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -100,6 +153,10 @@ namespace VikingEngine.DSSWars.Data
             saves.write(w);
 
             autosaves.write(w); 
+
+            clientSaves.write(w);
+
+            Debug.WriteCheck(w);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -111,23 +168,29 @@ namespace VikingEngine.DSSWars.Data
                 fileCheck.start(version, Version);
                 if (version > Version) { return; }
 
-                if (version == 1)
-                {
-                    if (r.ReadBoolean())
-                    {
-                        var state = new SaveStateMeta(r);
-                        if (state.stateVersion == SaveGamestate.Version)
-                        {
-                            saves.saves[0] = state;
-                        }
-                    }
-                }
-                else
-                {
+                //if (version == 1)
+                //{
+                //    if (r.ReadBoolean())
+                //    {
+                //        var state = new SaveStateMeta(r);
+                //        if (state.stateVersion == SaveGamestate.Version)
+                //        {
+                //            saves.saves[0] = state;
+                //        }
+                //    }
+                //}
+                //else
+                //{
                     saves.read(r, version);
                     autosaves.read(r, version);
 
-                }
+                    if (version >= 3)
+                    { 
+                        clientSaves.read(r, version);
+
+                        Debug.ReadCheck(r);
+                    }
+                //}
                 fileCheck.end();
             }
             catch (Exception e)
@@ -202,6 +265,7 @@ namespace VikingEngine.DSSWars.Data
         public DateTime saveDate;
         public TimeSpan playTime;
         public int localPlayerCount = 1;
+        
         int difficulty;
         public GameModeMainType gameMode = GameModeMainType.NUM;
         public float setting_foodMulti = -1;
@@ -250,7 +314,7 @@ namespace VikingEngine.DSSWars.Data
             if (gameMode != GameModeMainType.NUM)
             {
                 LangLib.GameModeText(gameMode, out string caption, out _);
-                result += string.Format(DssRef.lang.Language_ItemCountPresentation,DssRef.lang.Settings_GameMode, caption) + Environment.NewLine;
+                result += string.Format(DssRef.lang.Language_ItemCount_Colon,DssRef.lang.Settings_GameMode, caption) + Environment.NewLine;
             }
             result += string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine;
             if (autosave)
@@ -266,16 +330,16 @@ namespace VikingEngine.DSSWars.Data
 
             if (setting_foodMulti > 0)
             {
-                result += string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(setting_foodMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(setting_waterMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(setting_childMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(setting_craftMulti)) + Environment.NewLine;
+                result += string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(setting_foodMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(setting_waterMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(setting_childMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(setting_craftMulti)) + Environment.NewLine;
 
             }
 
             if (localPlayerCount > 1)
             {
-                result += string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine;
+                result += string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine;
             }
 
             result += " [" + HudLib.Date(saveDate) + "]";
@@ -285,7 +349,7 @@ namespace VikingEngine.DSSWars.Data
 
         public string ExportString()
         {
-            return FilePath.SanitizeFileName( Path.FileName + "_" + string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + "_" + string.Format(DssRef.lang.Settings_DifficultyLevel, difficulty) + "_seed" + worldmeta.seed);
+            return FilePath.SanitizeFileName( Path.FileName + "_" + string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + "_" + string.Format(DssRef.lang.Settings_DifficultyLevel, difficulty) + "_seed" + worldmeta.worldId.seed);
         }
 
         public SaveStateMeta()
@@ -304,10 +368,10 @@ namespace VikingEngine.DSSWars.Data
             difficulty = DssRef.difficulty.TotalDifficulty();
             gameMode = DssRef.difficulty.setting_gameMode;
 
-            setting_foodMulti = DssRef.difficulty.setting_foodMulti;
-            setting_waterMulti = DssRef.difficulty.setting_waterMulti;
-            setting_childMulti = DssRef.difficulty.setting_childMulti;
-            setting_craftMulti = DssRef.difficulty.setting_craftMulti;
+            setting_foodMulti = DssRef.storage.ruleset.setting_foodMulti;
+            setting_waterMulti = DssRef.storage.ruleset.setting_waterMulti;
+            setting_childMulti = DssRef.storage.ruleset.setting_childMulti;
+            setting_craftMulti = DssRef.storage.ruleset.setting_craftMulti;
             worldmeta = DssRef.world.metaData;
         }
 
@@ -316,6 +380,7 @@ namespace VikingEngine.DSSWars.Data
             saveDate = DateTime.Now;
             playTime = DssRef.time.TotalIngameTime();
             localPlayerCount = DssRef.state.localPlayers.Count;
+            
             difficulty = DssRef.difficulty.TotalDifficulty();
             gameMode = DssRef.difficulty.setting_gameMode;
             worldmeta = DssRef.world.metaData;
@@ -346,6 +411,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(saveDate.Ticks); 
             w.Write(playTime.Ticks);
             w.Write(localPlayerCount);
+            
             w.Write((short)difficulty);
 
             if (worldmeta == null)
@@ -393,6 +459,7 @@ namespace VikingEngine.DSSWars.Data
             saveDate = new DateTime(r.ReadInt64());
             playTime = new TimeSpan(r.ReadInt64());
             localPlayerCount = r.ReadInt32();
+            
             difficulty = r.ReadInt16();
 
             worldmeta = new WorldMetaData(r);
@@ -422,7 +489,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value) 
         {
-            ((LobbyState)Ref.gamestate).continueFromSave(this);
+            ((MainMenuState)Ref.gamestate).continueFromSave(this);
         }
 
         public void readMetaOnly(System.IO.BinaryReader r)

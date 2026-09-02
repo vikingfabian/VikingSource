@@ -36,6 +36,7 @@ namespace VikingEngine.DSSWars.Delivery
         public DeliveryProfile inProgress;
 
         public TimeInGameCountdown countdown;
+        public GameTimeStamp remoteDeliveryUpdateRequest;
 
         public void halt()
         {
@@ -105,7 +106,7 @@ namespace VikingEngine.DSSWars.Delivery
             //while (citiesC.Next())
             //{
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            while (citiesC.Next(ref player.faction.cities))
+            while (citiesC.Next(ref player.pfaction.GetFaction().cities))
             {
                 if (citiesC.sel == profile.toCity)
                 {
@@ -261,7 +262,7 @@ namespace VikingEngine.DSSWars.Delivery
             }
             else
             {
-                result = active.ToString() + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                result = active.ToString() + ", " + string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;
@@ -364,6 +365,11 @@ namespace VikingEngine.DSSWars.Delivery
         public int autoCity;
         public ItemResourceType type;
 
+        public override string ToString()
+        {
+            return $"Deliver {SendAmount} {type} to {toCity}";
+        }
+
         public bool fullSetup()
         {
             return type != ItemResourceType.NONE && type != ItemResourceType.RESOURCES &&
@@ -410,7 +416,7 @@ namespace VikingEngine.DSSWars.Delivery
         {
             distance = VectorExt.Length((othercity.tilePos - from.tilePos).Vec);
             float time = distance / DssVar.Men_StandardWalkingSpeed_PerSec;
-            if (from.Culture == CityCulture.Networker)
+            if (from.cityCulture == CityCulture.Networker)
             {
                 time *= 0.5f;
             }

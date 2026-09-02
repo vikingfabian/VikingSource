@@ -263,5 +263,10 @@ namespace VikingEngine
         {
             return (value.X << 16) | value.Y;
         }
+
+        public static int ToPercentage(double chance)
+        {
+            return Convert.ToInt32(chance * 100);
+        }
     }
 }

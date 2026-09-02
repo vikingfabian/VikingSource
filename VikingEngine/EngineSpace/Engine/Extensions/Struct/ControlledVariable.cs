@@ -58,6 +58,10 @@ namespace VikingEngine
             return new TimeStamp(Ref.TotalTimeSec);
         }
 
+        public bool minPassed(float minutes)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec >= minutes * TimeExt.MinuteInSeconds;
+        }
         public bool secPassed(float seconds)
         {
             return Ref.TotalTimeSec - totalTimeStampSec >= seconds;
@@ -67,6 +71,10 @@ namespace VikingEngine
             return Ref.TotalTimeSec - totalTimeStampSec >= TimeExt.MsToSec * ms;
         }
 
+        public bool belowTime_sec(float seconds)
+        {
+            return Ref.TotalTimeSec - totalTimeStampSec < seconds;
+        }
         public bool belowTime_ms(float ms)
         {
             return Ref.TotalTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;
@@ -142,10 +150,33 @@ namespace VikingEngine
         {
             w.Write(totalTimeStampSec);
         }
-
+        
         public void read(System.IO.BinaryReader r)
         {
             totalTimeStampSec = r.ReadSingle();
+        }
+        public void write_byte(System.IO.BinaryWriter w)
+        {
+            if (totalTimeStampSec > Ref.TotalGameTimeSec)
+            {
+                w.Write(Bound.Byte(Convert.ToInt32(Seconds)));
+            }
+            else
+            {
+                w.Write(byte.MinValue);
+            }
+        }
+        public void read_byte(System.IO.BinaryReader r)
+        {
+            totalTimeStampSec = r.ReadByte();
+            if (totalTimeStampSec == 0)
+            {
+                totalTimeStampSec = -1000;
+            }
+            else
+            {
+                totalTimeStampSec += Ref.TotalGameTimeSec;
+            }
         }
 
         public bool HasTime()
@@ -157,7 +188,10 @@ namespace VikingEngine
         {
             return new GameTimeStamp(Ref.TotalGameTimeSec);
         }
-
+        public bool minPassed(float minutes)
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec >= TimeExt.MinuteInSeconds * minutes;
+        }
         public bool secPassed(float seconds)
         {
             return Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
@@ -176,6 +210,11 @@ namespace VikingEngine
         {
             return Ref.TotalGameTimeSec >= totalTimeStampSec;
                 
+        }
+
+        public TimeSpan TimeSpan_Left()
+        {
+            return TimeSpan.FromSeconds(Bound.Min(totalTimeStampSec - Ref.TotalGameTimeSec, 0));
         }
 
         public void setNow()
@@ -493,7 +532,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CircleCounter
+    struct CircleCounter
     {
         int value;
         public int Value
@@ -534,12 +573,28 @@ namespace VikingEngine
         {
             value = min;
         }
+
+        public CircleCounter AddBound(Range bounds)
+        {
+            CircleCounter copy = this;
+            if (copy.min < bounds.Min)
+            {
+                copy.min = bounds.Min;
+            }
+            if (copy.max > bounds.Max)
+            {
+                copy.max = bounds.Max;
+            }
+            copy.value = bounds.SetBounds(copy.Value);
+
+            return copy;
+        }
     }
 
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CircleCounterUp : ICircleCounter
+    struct CircleCounterUp : ICircleCounter
     {
         public int value;
         public int Value
@@ -590,7 +645,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CircleCounterDown : ICircleCounter
+    struct CircleCounterDown : ICircleCounter
     {
         public int value;
         public int Value
@@ -683,7 +738,7 @@ namespace VikingEngine
     /// <summary>
     /// Will count back n forward between bounds
     /// </summary>
-    public struct PingPongCounter
+    struct PingPongCounter
     {
         public int dir;
         public int Min;
@@ -882,7 +937,7 @@ namespace VikingEngine
         }
     }
    
-    public struct Percent
+    struct Percent
     {
         public const float MaxPercentage = 1;
         public const int MaxTextPercentage = 100;

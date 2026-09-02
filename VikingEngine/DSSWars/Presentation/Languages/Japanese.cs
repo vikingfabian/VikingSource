@@ -8,6 +8,450 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
+        //Multiplayer update
+        
+        //--
+    
+
+        //--
+        public override string Unlock_PublicGames => "パブリックゲーム";
+        public override string UnlockPublic_Warning1 => "知らないプレイヤーとは遊ばないでください";
+        public override string UnlockPublic_Warning2 => "このゲームにはチートや荒らしに対する保護はありません";
+        public override string Unlock_WarningBadExperience => "不快な思いをする可能性があります";
+        public override string Hud_Accept => "承諾";
+        public override string Hud_Block => "ブロック";
+        public override string Hud_Deny => "拒否";
+        public override string Hud_Reason => "理由";
+        public override string Hud_Full => "満員";
+        public override string Hud_Version => "バージョン";
+        public override string Unlock_PlayerVersusPlayer => "プレイヤー対プレイヤー（PvP）";
+        public override string UnlockPvp_Warning1 => "DSSは競技向け（コンペティティブ）に設計されていません";
+        public override string UnlockPvp_Warning2 => "バランス調整がないため、不公平なマッチになります";
+        public override string PlayerJoinHistoryTitle => "プレイヤー参加履歴";
+        public override string BlockedPlayersTitle => "ブロックしたプレイヤー";
+        public override string ClickToRemoveBan => "クリック：BAN（ブロック）解除";
+        public override string HostSettingsTitle => "ホスト設定";
+        public override string MaxPlayerCount => "最大プレイヤー数";
+        public override string DistanceBetweenPlayers => "プレイヤー間の距離";
+        public override string AllowHandicap => "ハンデを許可";
+        public override string AllowCasualControls => "カジュアル操作を許可";
+        public override string AutoRecolorPlayerFlags => "プレイヤーの旗を自動で色分け";
+        public override string DefaultDiplomacy => "デフォルトの外交";
+        public override string ClientSettingsTitle => "クライアント設定";
+        public override string UseHandicap => "ハンデを使用";
+        public override string DifficultyDescription_BotAggression => "ボットの攻撃性";
+        public override string Hud_GetExtraX => "追加の{0}";
+        public override string Hud_Hide => "非表示";
+        public override string Hud_ModelType => "モデル";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}：{1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "リソースブースト";
+        //public override string TaxIncome => "税収";
+        public override string PlayerInteractionTitle => "プレイヤーインタラクション";
+        public override string DefaultPeaceful => "デフォルト：ピースフル（平和）";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "デフォルト：Co-op（任意）";
+        public override string DefaultHardcore => "デフォルト：ハードコア";
+        public override string GeneralTitle => "全般";
+
+        public override string InputButton_Hold => "ボタン長押し";
+        public override string InputButton_Toggle => "ボタン切り替え（トグル）";
+        public override string VoiceOptAlwaysOn => "常時オン";
+        public override string VoiceTitle => "ボイス";
+        public override string VoiceMute => "ミュート";
+        public override string GiftOptAllow => "許可";
+        public override string GiftOptFriendsOnly => "フレンドのみ";
+        public override string GiftOptBlocked => "ブロック";
+        public override string ReceiveAchievementsTitle => "実績の受け取り";
+        public override string GiftWarning => "警告！プレゼントされた実績は屈辱的に感じる場合があります";
+        public override string FullReset => "フルリセット";
+        public override string AllowAllianceTitle => "同盟を許可";
+        public override string CanBreakAlliance => "同盟の破棄を許可";
+        public override string AllowWarTitle => "戦争を許可";
+        public override string FairProtection => "公平な保護";
+        public override string FairProtectionTooltip => "保護されたプレイヤーは、あなたに対しても自身のルールを適用する必要があります";
+        public override string MustAsk => "承認必須";
+        public override string MustAskTooltip => "両プレイヤーが戦闘に合意する必要があります";
+        public override string AllianceLimit => "同盟の制限";
+        public override string AllianceLimitTooltip => "規模の大きいプレイヤー同盟からは攻撃されません";
+        public override string GameStartProtection => "ゲーム開始時の保護";
+        public override string Hud_Time_Minutes => "分";
+        public override string WarPreparationTime => "戦争準備期間";
+        public override string WarPreparationTimeTooltip => "宣戦布告から実際に攻撃可能になるまでの遅延";
+        public override string Hud_Allow => "許可";
+        public override string Hud_Blocked => "ブロック";
+
+        public override string Hud_DeleteAll => "すべて削除";
+        public override string DiplomacyPlayersChoice => "プレイヤーの選択";
+        public override string UnlockSureTitle => "本当に、本当によろしいですか？";
+        public override string UnlockSureDescription => "後でフォーラムで泣き言を言わないと約束できますか？";
+
+
+
+        public override string Network_PlayOffline => "オフラインプレイ";
+        public override string JoinPermission_Title => "参加権限";
+        public override string JoinPermission_Private => "プライベート";
+        public override string JoinPermission_FriendsOnly => "フレンドのみ";
+        public override string JoinPermission_Public => "パブリック";
+
+        public override string Network_Join => "ゲームに参加";
+        public override string Network_ConnectingToGame => "接続中...";
+        public override string Lobby_Category_MultiplayerSettings => "マルチプレイヤー設定";
+
+        public override string Hud_Default => "デフォルト";
+        public override string Group_Team => "チーム";
+        public override string Group_Everyone => "全員";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "外交の像";
+
+        public override string Message => "メッセージ";
+        public override string ObjectType_LocationPin => "ロケーションピン";
+        public override string ObjectType_LocationPin_Share => "共有してPingを送信";
+        public override string ObjectType_LocationPin_Ping => "Ping!";
+        public override string InputActionName_TextChat => "テキストチャット";
+        public override string InputActionName_TextChatLog => "チャットログ";
+        public override string InputActionName_VoiceChat => "ボイスチャット";
+        public override string InputActionName_NextPin => "次のピン";
+        public override string InputActionName_PinAndPing => "ピンを追加";
+
+        public override string Leaderboards_ArmySize => "1つの軍隊の規模（戦力）";
+        public override string Leaderboards_MultiplayerPlayerCount => "ホスト中のプレイヤー数";
+
+        public override string Multiplayer_BanWarning => "BAN（ブロック）警告";
+        public override string Multiplayer_SentToHost => "ホストに送信されます";
+        public override string Multiplayer_AddToOwnBlocks => "自分のブロックリストに追加する";
+
+        public override string Multiplayer_Message_RequestSent => "リクエストを送信しました";
+
+        public override string Multiplayer_BlockPlayer => "プレイヤーをブロック";
+        public override string Multiplayer_NetSession => "ネットワークセッション";
+        public override string GiftedAchievements => "プレゼントされた実績";
+        public override string GiftedAchievements_Description => "フレンドの悪ふざけに対する報酬";
+
+        public override string Multiplayer_Title => "マルチプレイヤー";
+        public override string Multiplayer_Lobby => "マルチプレイヤーロビー";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. ホストがゲームを開始します";
+        public override string Multiplayer_Tutorial_JoinButton => "2. ここに参加ボタンが表示されます";
+        public override string Multiplayer_Tutorial_Visible => "ホストのSteamプロフィールが公開されている必要があります";
+
+        public override string Multiplayer_KickPlayer => "プレイヤーをキック";
+        public override string Multiplayer_RequestBlockPlayer => "リクエスト：プレイヤーをブロック";
+        public override string Multiplayer_HandoverComplete => "引き継ぎ完了";
+        public override string Multiplayer_LoadingClientSave => "クライアントのセーブデータを読み込み中";
+        public override string Multiplayer_ClientSaveComplete => "クライアントのセーブが完了しました";
+        public override string Multiplayer_BadActor => "悪質なプレイヤー";
+        public override string Multiplayer_NetworkError => "ネットワークエラー";
+        public override string Multiplayer_Sender => "送信者";
+        public override string Multiplayer_Receiver => "受信者";
+        public override string Multiplayer_PlayerJoined => "プレイヤーが参加しました";
+        public override string Multiplayer_PlayerLeft => "プレイヤーが退出しました";
+        public override string Multiplayer_RequestingClientGamestates => "クライアントのゲームステータスをリクエスト中...";
+        public override string Multiplayer_TextChat => "テキストチャット";
+        public override string Multiplayer_VoiceChat => "ボイスチャット";
+        public override string Steam_UserProfile => "ユーザープロフィール";
+        public override string Steam_OpenSteamOverlay => "Steamオーバーレイを開く";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "動員中";
+        public override string Diplomacy_OfferRelation => "関係を提案";
+        public override string Diplomacy_OfferRelation_Declined => "提案された関係を拒否";
+        public override string Diplomacy_SendGold => "ゴールドを送る";
+        public override string Diplomacy_GiftToPlayer => "プレイヤーへの贈り物";
+        public override string Diplomacy_RecievedGift => "贈り物を受け取りました";
+        public override string Diplomacy_OnAccept => "相手プレイヤーが承諾した場合：";
+        public override string Diplomacy_WarPreparationTime => "戦争準備期間";
+
+        public override string Diplomacy_AboveSoftCap => "ソフトキャップ超過";
+        public override string Diplomacy_BelowSoftCap => "ソフトキャップ未満";
+        public override string Diplomacy_OpenPlayerToPlayer => "プレイヤー間の外交を開く";
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "備蓄上限を超えてもアイテムは破壊されません！";
+        public override string SlaughterResult_PerAnimal => "動物1匹あたりの屠殺生産量";
+        public override string Settings_Mode_QuickBoss => "クイックボス";
+        public override string Settings_Mode_QuickBoss_Description => "数時間準備して、最終ボスに挑みます";
+        public override string QuickBoss_TimeOption => "ボス出現時間（時間）";
+        //マウントアップデート
+        public override string Leaderboards_title => "リーダーボード";
+        public override string Leaderboards_domination => "世界統一タイム、{0}%以上";
+        public override string Leaderboards_victory => "ストーリー勝利、難易度トップ%";
+        public override string Leaderboards_CitySize => "最大都市サイズ（労働者数）";
+        public override string Leaderboards_Survival => "生存期間（難易度 {0}%）";
+
+        public override string Message_CannotPayUpkeep => "維持費を支払えません！";
+        public override string Animals_ProductionStop => "動物の生産が停止します";
+
+        public override string Tutorial_ToCapture => "捕獲する";
+        public override string Tutorial_ClickButton => "ボタンをクリック";
+        public override string Tutorial_MoveXToY => "{0}を{1}へ移動";
+
+        public override string Workers_Description1_work => "建設、資源収集、アイテム製作を行います。";
+        public override string Workers_Description2_income => "徴税により収入源となります。";
+        public override string Workers_Description3_soldiers => "軍隊の兵士として徴兵可能です。";
+
+        public override string Hud_Time_ValuePerMinute => "毎分の生産量";
+        public override string Hud_Time_ValuePerSecond => "毎秒の生産量";
+        public override string Hud_Lock => "ロック";
+        public override string Hud_Maximum => "最大";
+
+        public override string Tutorial_SeeThisInThat => "{1}内の{0}を確認";
+        public override string Conscript_SkillBonus => "スキルボーナス";
+        public override string SoldierStats_UnitCount => "ユニット数";
+        /// <summary>
+        /// Areas are field, forest, sea and siege
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "秒間ダメージ - {0}";
+        public override string Conscript_BaseHealth => "基本体力";
+
+        /// <summary>
+        /// Summary value for the ability to get across the map
+        /// </summary>
+        public override string Conscript_Mobility => "機動力";
+
+        public override string Conscript_RiderMobility => "騎乗機動力";
+        public override string Conscript_LightWagonMobility => "軽ワゴン機動力";
+        public override string Conscript_HeavyWagonMobility => "重ワゴン機動力";
+
+        /// <summary>
+        /// Generelized for any object, like skills, resources and buildings
+        /// </summary>
+        public override string Culture_AffectedItems => "対象アイテム";
+        //## マウントアップデート ##
+        public override string Progress_ClosingCores => "CPUコアを閉じています：{0}";
+        public override string Editor_ExportFrame => "現在のフレームを書き出し";
+        public override string Editor_FistFrame => "最初のフレーム";
+        public override string Editor_LastFrame => "最後のフレーム";
+
+        public override string Economy_AnimalPenUpkeep => "飼育場の維持費: {0}";
+        public override string Work_SlaughterX => "{0}を屠殺";
+
+        public override string BuildCategory_Farming => "農業";
+        public override string Resource_TypeName_ManType => "人間タイプ";
+        public override string Resource_TypeName_NobelMen => "貴族";
+        public override string Resource_TypeName_ConservedFood => "保存食";
+
+        public override string UnitType_UnitOnMount => "{0}騎乗";
+        public override string UnitType_UnitOnWagon => "{0}ワゴン";
+        public override string UnitType_NobelUnit => "貴族ユニット（{0}）";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0}（{1}使い）";
+
+        public override string Info_ArmyFood4 => "保存食により、より多くの食糧備蓄が可能になります";
+        public override string Info_ArmyFood5 => "生鮮食品が優先的に消費されます";
+
+        public override string Resource_ConservedFood_Reserves => "保存食備蓄";
+        public override string Resource_TypeName_Clay => "粘土";
+        public override string Resource_TypeName_Brick => "レンガ";
+        public override string Resource_TypeName_Container => "容器";
+        public override string Resource_TypeName_Meat => "肉";
+        public override string Resource_TypeName_Salt => "塩";
+        public override string Resource_TypeName_Vehicle => "車両";
+        public override string Resource_TypeName_WagonClosed => "有蓋ワゴン";
+        public override string Resource_TypeName_WagonIron => "鉄の馬車";
+        public override string Resource_TypeName_WagonSteel => "鋼の馬車";
+        public override string Resource_TypeName_Shield => "盾";
+        public override string Resource_TypeName_BucklerShield => "バックラー";
+        public override string Resource_TypeName_RoundShield => "ラウンドシールド";
+        public override string Resource_TypeName_HeaterShield => "ヒーターシールド";
+        public override string Resource_TypeName_TowerShield => "タワーシールド";
+
+        public override string Resource_TypeName_Mount => "マウント";
+
+        public override string Resource_TypeName_MountArmorTitle => "馬具（鎧）";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "マウント用{0}";
+        public override string Resource_TypeName_Animal => "動物";
+
+        //public override string Resource_TypeName_WildAnimal => "野生動物";
+
+        /// <summary>
+        /// Area with wild animals
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0}の生息地";
+
+        public override string Resource_TypeName_Oxen => "雄牛";
+        public override string Resource_TypeName_KineOxen => "雌牛";
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "家禽";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "雄豚";
+        public override string Resource_TypeName_Pig => "豚";
+        public override string Resource_TypeName_Hen => "雌鶏";
+        public override string Resource_TypeName_Dog => "犬";
+        public override string Resource_TypeName_Hound => "猟犬";
+
+        public override string Resource_TypeName_Pony => "ポニー";
+        public override string Resource_TypeName_Horse => "馬";
+        public override string Resource_TypeName_WarHorse => "軍馬";
+        public override string Resource_TypeName_DraftHorse => "荷馬";
+
+        public override string Resource_TypeName_WildPig => "野生の豚";
+        public override string Resource_TypeName_WildHog => "野生の猪";
+        public override string Resource_TypeName_WarHog => "軍用猪";
+        public override string Resource_TypeName_StagHog => "スタッグホッグ";
+
+        public override string Resource_TypeName_Wolf => "狼";
+        public override string Resource_TypeName_Warg => "ワーグ";
+        public override string Resource_TypeName_AlphaWarg => "アルファ・ワーグ";
+
+        public override string Resource_TypeName_WildCat => "山猫";
+        public override string Resource_TypeName_Lion => "ライオン";
+        public override string Resource_TypeName_WarLion => "軍用ライオン";
+
+        public override string Resource_TypeName_Elephant => "象";
+        public override string Resource_TypeName_WarElephant => "戦象";
+        public override string Resource_TypeName_Oliphant => "オリファント";
+
+        public override string BuildHud_Select => "建物を選択";
+        public override string BuildHud_AreaRadius => "効果範囲";
+
+        public override string NobleHouse_HousingCount => "貴族{0}人が居住可能";
+
+
+        public override string BuildingType_GreatHall => "大広間";
+        public override string BuildingType_GreatHall_Description => "高度な徴兵をアンロック";
+
+        public override string BuildingType_ClayPit => "粘土採掘場";
+        public override string BuildingType_Butcher => "肉屋";
+        public override string BuildingType_Butcher_Description => "動物を食糧と皮に加工";
+        public override string BuildingType_Pottery => "陶器工房";
+        public override string BuildingType_CraftX_Description => "{0}製作所";
+
+        public override string BuildingType_GatherX_Description => "{0}を収集";
+
+        public override string BuildingType_Smoker => "燻製所";
+        public override string BuildingType_Dryer => "乾燥所";
+        public override string BuildingType_Shieldmaker => "盾職人の工房";
+        public override string BuildingType_DryingPan => "乾燥パン";
+
+        public override string BuildingType_TrapperHut => "罠師の小屋";
+        public override string BuildingType_TrapperHut_Description => "野生動物の捕獲が可能になる";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "資材保管庫";
+        public override string BuildingType_FoodStorage => "食糧保管庫";
+        public override string BuildingType_WeaponStorage => "武器保管庫";
+        public override string BuildingType_ArmorStorage => "防具保管庫";
+        public override string BuildingType_AnimalStorage => "動物保管庫";
+
+        public override string BuildingType_Storage_Description => "最大備蓄量を{0}増加";
+
+        public override string BuildingType_Cesspit => "廃棄場";
+        public override string BuildingType_Cesspit_Description => "資源を破棄";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "備蓄制限を超えたアイテムを破棄します";
+        public override string Info_XAmountIsConvertedToY => "{0}が{1}に変換されます";
+        public override string Info_ProductionRestriction => "アイテム生産制限：";
+
+        public override string BuildingType_FowlPen => "家禽の囲い";
+        public override string BuildingType_BoarPen => "猪の囲い";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "雄牛の囲い";
+        public override string BuildingType_KineOxenPen => "雌牛の囲い";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "犬のケージ";
+        public override string BuildingType_HoundCage => "猟犬のケージ";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "ポニーの囲い";
+        public override string BuildingType_HorsePen => "馬の囲い";
+        public override string BuildingType_WarHorsePen => "軍馬の囲い";
+        public override string BuildingType_DraftHorsePen => "荷馬の囲い";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "野豚の囲い";
+        public override string BuildingType_WildHogPen => "猪の囲い";
+        public override string BuildingType_WarHogPen => "軍用猪の囲い";
+        public override string BuildingType_StagHogPen => "スタッグホッグの囲い";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "狼のケージ";
+        public override string BuildingType_WargCage => "ワーグのケージ";
+        public override string BuildingType_AlphaWargCage => "アルファ・ワーグのケージ";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "山猫のケージ";
+        public override string BuildingType_LionCage => "ライオンのケージ";
+        public override string BuildingType_WarLionCage => "軍用ライオンのケージ";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "象の囲い";
+        public override string BuildingType_WarElephantCage => "戦象の囲い";
+        public override string BuildingType_OliphantCage => "オリファントの囲い";
+
+        public override string BuildingDescription_Animals => "徴兵用の動物を生産します";
+        public override string Pen_Breeding => "動物の繁殖";
+        public override string Pen_BreedUpChance => "ティア上昇率: {0}%";
+        public override string Pen_BreedDownChance => "ティア下降率: {0}%";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "繁殖の成功率が上昇";
+
+        public override string CityCulture_EnhancedProduction => "{0}の生産強化";
+        public override string CityCulture_Production => "{0}生産";
+
+        public override string CityCulture_Butchers => "肉屋";
+
+        public override string CityCulture_Potters => "陶芸家";
+
+        public override string CityCulture_Wainwright => "荷車職人";
+
+        public override string CityCulture_Wheelwright => "車輪職人";
+        public override string CityCulture_Wheelwright_Description => "徴用されたカートの移動速度ボーナス";
+
+        public override string CityCulture_ShieldMaker => "盾職人";
+
+
+        //public override string CityCulture_Nomads_Description => "入植コスト低下";
+
+        public override string CityCulture_Coopers => "樽職人";
+
+        public override string CityCulture_Salters => "製塩工";
+
+
+        public override string CityBiome_Title => "バイオーム";
+        public override string CityBiome_Description => "バイオームは一部の資源や建物へのアクセスに影響します";
+
+        public override string CityBiome_Fields => "平原";
+        public override string CityBiome_Frozen => "氷結地帯";
+        public override string CityBiome_Forest => "森林";
+        public override string CityBiome_Mountain => "山岳";
+        public override string CityBiome_Desolate => "荒地";
+        public override string CityBiome_Desert => "砂漠";
+
+        public override string Bonus_IncreaseSkin => "皮の生産量増加";
+        public override string Bonus_FoodStorage => "食糧保管庫の拡張";
+
+        public override string StockPile_LimitTitle => "備蓄制限";
+
+
+
         public override string Help_Work_Automatic => "作業は自動で行われます";
         public override string Tutorial_SecondCity => "2つ目の都市を獲得する";
         //## Spring update
@@ -74,14 +518,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "画面モード";
-        public override string DisplayMode_Windowed => "ウィンドウ";
-        public override string DisplayMode_BorderlessFullscreen => "ボーダーレスウィンドウ";
+        //public override string DisplayMode => "画面モード";
+        //public override string DisplayMode_Windowed => "ウィンドウ";
+        //public override string DisplayMode_BorderlessFullscreen => "ボーダーレスウィンドウ";
 
-        public override string GameSettings_RenderedMouseCursor => "カーソル描画";
-        public override string GameSettings_MuteControllerDisconnect => "コントローラー切断通知をミュート";
+        //public override string GameSettings_RenderedMouseCursor => "カーソル描画";
+        //public override string GameSettings_MuteControllerDisconnect => "コントローラー切断通知をミュート";
 
         public override string Delivery_MaxDistance => "最大配送距離: {0}";
         public override string Tutorial_WillTakeAWhile => "時間がかかります。後で戻ってきてください。";
@@ -177,7 +621,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// アイテム数の表示方法。0: アイテム, 1: 数量
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// 言語オプションの選択
@@ -419,7 +863,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ユニットの金コスト。
         /// </summary>
-        public override string Hud_Upkeep => "維持費: {0}";
+        public override string Hud_Upkeep => "維持費";
         public override string Hud_ArmyUpkeep => "軍隊維持費: {0}";
 
         /// <summary>
@@ -431,14 +875,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "都市を拡張する必要があります。";
 
-        public override string Hud_SoldierCount => "兵士数: {0}";
+        public override string Hud_SoldierCount => "兵士数";
 
-        public override string Hud_SoldierGroupsCount => "グループ数: {0}";
+        public override string Hud_SoldierGroupsCount => "グループ数";
 
         /// <summary>
         /// ゲーム内表示。ユニットの計算された戦闘力。
         /// </summary>
-        public override string Hud_StrengthRating => "戦力評価: {0}";
+        public override string Hud_StrengthRating => "戦力評価";
 
         /// <summary>
         /// ゲーム内表示。国全体の計算された戦闘力。
@@ -657,7 +1101,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 外交的コミュニケーション。交渉の状況。0: 用語
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "交渉の状況: {0}";
+        public override string Diplomacy_SpeakTermIs => "交渉の状況";
 
         /// <summary>
         /// 外交的コミュニケーション。通常よりも良好。
@@ -787,7 +1231,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ゲーム終了画面に表示される統計。表示タイトル。
         /// </summary>
-        public override string EndGameStatistics_Title => "統計";
+        public override string Statistics_Title => "統計";
 
         /// <summary>
         /// ゲーム終了画面に表示される統計。経過した総ゲーム内時間。
@@ -983,7 +1427,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 兵士が耐えられる傷の数
         /// </summary>
-        public override string SoldierStats_Health => "健康: {0}";
+        public override string SoldierStats_Health => "健康";
 
         /// <summary>
         /// 一部の兵士は軍隊の移動速度を上げます
@@ -1045,7 +1489,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 軍隊を制御するためのメニューオプション。兵士を軍隊間で送るオプション。
         /// </summary>
-        public override string ArmyOption_SendX => "{0} を送る";
+        public override string Hud_SendX => "{0} を送る";
 
         /// <summary>
         /// 軍隊を制御するためのメニューオプション。兵士を軍隊間で送るオプション。
@@ -1200,7 +1644,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "脱走者！";
         public override string EventMessage_DesertersText_Money => "未払いの兵士たちがあなたの軍隊から脱走しています";
 
-        public override string DifficultyDescription_AiAggression => "AIの攻撃性: {0}。";
+        //public override string DifficultyDescription_AiAggression => "AIの攻撃性: {0}。";
         public override string DifficultyDescription_BossSize => "ボスのサイズ: {0}。";
         public override string DifficultyDescription_BossEnterTime => "ボス登場時間: {0}。";
         public override string DifficultyDescription_AiEconomy => "AIの経済: {0}%。";
@@ -1433,7 +1877,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "舗装";
         public override string BuildingType_Smith => "鍛冶屋";
         public override string BuildingType_Cook => "料理人";
-        public override string BuildingType_Storage => "倉庫";
+        public override string BuildingType_Storehouse => "倉庫";
 
         public override string BuildingType_ResourceFarm => "{0}農場";
 
@@ -1456,7 +1900,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "騎士と外交官の家";
         public override string BuildingType_CoalPit_Description => "効率的な燃料生産";
-        public override string BuildingType_Storage_Description => "資源の集積所";
+        //public override string BuildingType_Storehouse_Description => "資源の集積所";
 
         public override string MenuTab_Info => "情報";
         public override string MenuTab_Work => "仕事";
@@ -1544,10 +1988,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "特定の分野で攻撃力が{0}増加し、他のすべての分野が減少します";
         public override string Conscript_SelectBuilding => "兵舎を選択";
 
-        public override string Conscript_WeaponDamage => "武器のダメージ: {0}";
-        public override string Conscript_ArmorHealth => "鎧の耐久力: {0}";
-        public override string Conscript_TrainingSpeed => "攻撃速度: {0}";
-        public override string Conscript_TrainingTime => "訓練時間: {0}";
+        public override string Conscript_WeaponDamage => "武器のダメージ";
+        public override string Conscript_ArmorHealth => "鎧の耐久力";
+        public override string Conscript_AttackSpeed => "攻撃速度";
+        public override string Conscript_TrainingTime => "訓練時間";
 
         public override string Conscript_Training_Minimal => "最低限";
         public override string Conscript_Training_Basic => "基本";
@@ -1573,15 +2017,15 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "距離: {0}";
         public override string Delivery_DeliveryTimeX => "配送時間: {0}";
         public override string Delivery_SenderMinimumCap => "送信者の最低限の上限";
-        public override string Delivery_RecieverMaximumCap => "受信者の最大上限";
+        public override string Delivery_ReceiverMaximumCap => "受信者の最大上限";
         public override string Delivery_ItemsReady => "準備ができているアイテム";
-        public override string Delivery_RecieverReady => "受信者が準備完了";
+        public override string Delivery_ReceiverReady => "受信者が準備完了";
         public override string Hud_ThisCity => "この都市";
         public override string Hud_RecieveingCity => "受信都市";
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "毎秒あたりの資源で表示されます。";
+        public override string Info_ResourcePerSecond => "毎秒あたりの資源で表示されます。";
 
         public override string Info_MinuteAverage => "この値は、過去1分の平均値です。";
 
@@ -1641,12 +2085,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "ネットワーカー";
         public override string CityCulture_PitMasters => "燃料生産者";
 
-        public override string CityCulture_CultureIsX => "文化: {0}";
+        public override string CityCulture_Culture => "文化";
         public override string CityCulture_LargeFamilies_Description => "出生率が上昇します";
         public override string CityCulture_FertileGround_Description => "作物の収穫量が増えます";
         public override string CityCulture_Archers_Description => "熟練した弓兵を生産します";
         public override string CityCulture_Warriors_Description => "熟練した近接戦闘兵を生産します";
-        public override string CityCulture_AnimalBreeder_Description => "動物がより多くの資源を提供します";
+        //public override string CityCulture_AnimalBreeder_Description => "動物がより多くの資源を提供します";
         public override string CityCulture_Miners_Description => "鉱石の採掘量が増えます";
         public override string CityCulture_Woodcutters_Description => "木材の生産量が増えます";
         public override string CityCulture_Builders_Description => "建設が速くなります";
@@ -1667,7 +2111,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "タブを選択: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0}の優先度を上げる";
         public override string Tutorial_PlaceBuildOrder => "{0}の建設指示を出す";
-        public override string Tutorial_ZoomInput => "ズーム";
+        public override string ButtonAction_Zoom => "ズーム";
 
         public override string Tutorial_SelectACity => "都市を選択";
         public override string Tutorial_ZoomInWorkers => "労働者にズームイン";
@@ -1687,13 +2131,15 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "石炭";
 
-        public override string Language_XUpkeepIsY => "{0}の維持費：{1}";
+        public override string Language_XUpkeep => "{0}の維持費";
         public override string Language_XCountIsY => "{0}の数：{1}";
 
         public override string Message_ArmyOutOfFood_Text => "高価な食料はブラックマーケットから購入されます。お金がなくなると、飢えた兵士は脱走します。";
 
-        public override string Info_ArmyFood => "軍隊は最も近い友好都市から食料を補給します。他の派閥から食料を購入することもできます。敵対地域では、食料をブラックマーケットからしか購入できません。";
-
+        public override string Info_ArmyFood1 => "軍隊は最も近い友好的な都市から食料を補充します。";
+        public override string Info_ArmyFood2 => "食料は他の勢力から購入できます。";
+        public override string Info_ArmyFood3 => "敵対的な地域では、闇市場からのみ食料を購入できます。"; 
+       
         public override string FactionName_Monger => "商人";
         public override string FactionName_Hatu => "ハツ";
         public override string FactionName_Destru => "デストル";
@@ -1765,13 +2211,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "平地";
         public override string LandType_Water => "水域";
         public override string BuildingType_Wall => "壁";
-        public override string Delivery_AutoReciever_Description => "資源が最も少ない都市に送信されます";
+        public override string Delivery_AutoReceiver_Description => "資源が最も少ない都市に送信されます";
 
         public override string Hud_On => "オン";
         public override string Hud_Off => "オフ";
 
-        public override string Hud_Time_Seconds => "{0}秒";
-        public override string Hud_Time_Minutes => "{0}分";
+        public override string Hud_Time_XSeconds => "{0}秒";
+        public override string Hud_Time_XMinutes => "{0}分";
         public override string Hud_Undo => "元に戻す";
         public override string Hud_Redo => "やり直し";
 
@@ -2706,9 +3152,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// These symbols are needed to fit large numbers on the HUD,
         /// there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "百";
-        public override string EngineHud_SymbolFor1000 => "千";
-        public override string EngineHud_SymbolFor10000 => "万";
+        public override string Language_SymbolFor100 => "百";
+        public override string Language_SymbolFor1000 => "千";
+        public override string Language_SymbolFor10000 => "万";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress

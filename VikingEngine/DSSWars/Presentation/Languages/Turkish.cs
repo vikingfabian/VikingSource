@@ -12,6 +12,448 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+        //Multiplayer update
+        
+
+        //--
+        public override string Unlock_PublicGames => "herkese açık oyunlar";
+        public override string UnlockPublic_Warning1 => "Yabancılarla oynama";
+        public override string UnlockPublic_Warning2 => "Oyunun hileye veya trollere karşı hiçbir koruması yoktur";
+        public override string Unlock_WarningBadExperience => "Kötü bir deneyim yaşayacaksın";
+        public override string Hud_Accept => "Kabul et";
+        public override string Hud_Block => "Engelle";
+        public override string Hud_Deny => "Reddet";
+        public override string Hud_Reason => "Sebep";
+        public override string Hud_Full => "Dolu";
+        public override string Hud_Version => "Sürüm";
+        public override string Unlock_PlayerVersusPlayer => "oyuncu oyuncuya karşı (PvP)";
+        public override string UnlockPvp_Warning1 => "DSS rekabetçi maçlar için tasarlanmamıştır";
+        public override string UnlockPvp_Warning2 => "Dengeleme yoktur, maçlar adil olmayacaktır";
+        public override string PlayerJoinHistoryTitle => "Oyuncu katılım geçmişi";
+        public override string BlockedPlayersTitle => "Engellenen oyuncular";
+        public override string ClickToRemoveBan => "Tıkla: banı kaldır";
+        public override string HostSettingsTitle => "Host ayarları";
+        public override string MaxPlayerCount => "Maks. oyuncu sayısı";
+        public override string DistanceBetweenPlayers => "Oyuncular arası mesafe";
+        public override string AllowHandicap => "Handikaba izin ver";
+        public override string AllowCasualControls => "Basitleştirilmiş kontrollere izin ver";
+        public override string AutoRecolorPlayerFlags => "Oyuncu bayraklarını oto. renklendir";
+        public override string DefaultDiplomacy => "Varsayılan diplomasi";
+        public override string ClientSettingsTitle => "Client (İstemci) ayarları";
+        public override string UseHandicap => "Handikap kullan";
+        public override string DifficultyDescription_BotAggression => "Bot agresifliği";
+        public override string Hud_GetExtraX => "Ekstra {0}";
+        public override string Hud_Hide => "Gizle";
+        public override string Hud_ModelType => "Model";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}: {1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "Kaynak boost'u";
+        //public override string TaxIncome => "Vergi geliri";
+        public override string PlayerInteractionTitle => "Oyuncu etkileşimi";
+        public override string DefaultPeaceful => "Varsayılan: Barışçıl";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "Varsayılan: İsteğe bağlı Co-op";
+        public override string DefaultHardcore => "Varsayılan: Hardcore";
+        public override string GeneralTitle => "Genel";
+
+        public override string InputButton_Hold => "Basılı tut";
+        public override string InputButton_Toggle => "Aç-kapat (Toggle)";
+        public override string VoiceOptAlwaysOn => "Her zaman açık";
+        public override string VoiceTitle => "Ses";
+        public override string VoiceMute => "Sustur (Mute)";
+        public override string GiftOptAllow => "İzin ver";
+        public override string GiftOptFriendsOnly => "Sadece arkadaşlar";
+        public override string GiftOptBlocked => "Engellendi";
+        public override string ReceiveAchievementsTitle => "Başarımları al";
+        public override string GiftWarning => "Uyarı! Hediye edilen başarımlar (achievements) aşağılayıcı hissettirebilir";
+        public override string FullReset => "Tam sıfırlama (Full reset)";
+        public override string AllowAllianceTitle => "İttifaka izin ver";
+        public override string CanBreakAlliance => "İttifakı bozabilir";
+        public override string AllowWarTitle => "Savaşa izin ver";
+        public override string FairProtection => "Adil koruma";
+        public override string FairProtectionTooltip => "Korunan oyuncular kendi kurallarını sana karşı da uygulamak zorundadır";
+        public override string MustAsk => "İzin zorunlu";
+        public override string MustAskTooltip => "Savaşmak için her iki oyuncunun da onay vermesi gerekir";
+        public override string AllianceLimit => "İttifak limiti";
+        public override string AllianceLimitTooltip => "Daha büyük bir oyuncu ittifakı tarafından saldırıya uğrayamazsın";
+        public override string GameStartProtection => "Oyun başlangıcı koruması";
+        public override string Hud_Time_Minutes => "dakika";
+        public override string WarPreparationTime => "Savaş hazırlık süresi";
+        public override string WarPreparationTimeTooltip => "Savaş ilanı ile saldırıların yapılabileceği an arasındaki bekleme süresi";
+        public override string Hud_Allow => "İzin ver";
+        public override string Hud_Blocked => "Engellendi";
+
+        public override string Hud_DeleteAll => "Hepsini sil";
+        public override string DiplomacyPlayersChoice => "Oyuncuların seçimi";
+        public override string UnlockSureTitle => "Gerçekten ama gerçekten emin misin?";
+        public override string UnlockSureDescription => "Yetişkin gibi davranıp sonradan forumlarda ağlamayacaksın, değil mi?";
+
+
+
+        public override string Network_PlayOffline => "Çevrimdışı oyna";
+        public override string JoinPermission_Title => "Katılma İzinleri";
+        public override string JoinPermission_Private => "Gizli";
+        public override string JoinPermission_FriendsOnly => "Sadece arkadaşlar";
+        public override string JoinPermission_Public => "Herkese açık";
+
+        public override string Network_Join => "Oyuna katıl";
+        public override string Network_ConnectingToGame => "Bağlanıyor...";
+        public override string Lobby_Category_MultiplayerSettings => "Çok oyunculu (Multiplayer) ayarları";
+
+        public override string Hud_Default => "Varsayılan";
+        public override string Group_Team => "takım";
+        public override string Group_Everyone => "herkes";
+
+        public override string Language_SymbolForMillion => "M";
+
+        public override string DecorType_DiplomaticStatue => "Diplomasi heykeli";
+
+        public override string Message => "Mesaj";
+        public override string ObjectType_LocationPin => "Konum işareti (Pin)";
+        public override string ObjectType_LocationPin_Share => "Paylaş ve ping at";
+        public override string ObjectType_LocationPin_Ping => "Ping!";
+        public override string InputActionName_TextChat => "Yazılı sohbet";
+        public override string InputActionName_TextChatLog => "Sohbet geçmişi";
+        public override string InputActionName_VoiceChat => "Sesli sohbet";
+        public override string InputActionName_NextPin => "Sonraki pin";
+        public override string InputActionName_PinAndPing => "Pin ekle";
+
+        public override string Leaderboards_ArmySize => "Tek bir ordunun büyüklüğü (güç bazında)";
+        public override string Leaderboards_MultiplayerPlayerCount => "Host edilen oyuncu sayısı";
+
+        public override string Multiplayer_BanWarning => "ban uyarısı";
+        public override string Multiplayer_SentToHost => "Host'a gönderilecek";
+        public override string Multiplayer_AddToOwnBlocks => "Kendi engellenenler listene ekle";
+
+        public override string Multiplayer_Message_RequestSent => "İstek gönderildi";
+
+        public override string Multiplayer_BlockPlayer => "Oyuncuyu engelle";
+        public override string Multiplayer_NetSession => "Ağ oturumu";
+        public override string GiftedAchievements => "Hediye edilen başarımlar";
+        public override string GiftedAchievements_Description => "Arkadaşlarının kötü davranışlarını ödüllendir";
+
+        public override string Multiplayer_Title => "Multiplayer";
+        public override string Multiplayer_Lobby => "Multiplayer lobisi";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. Host bir oyun başlatır";
+        public override string Multiplayer_Tutorial_JoinButton => "2. Katıl butonu burada görünecektir";
+        public override string Multiplayer_Tutorial_Visible => "Host'un Steam profili görünür olmalıdır";
+
+        public override string Multiplayer_KickPlayer => "Oyuncuyu kickle (At)";
+        public override string Multiplayer_RequestBlockPlayer => "İstek: Oyuncuyu engelle";
+        public override string Multiplayer_HandoverComplete => "Devir işlemi tamamlandı";
+        public override string Multiplayer_LoadingClientSave => "Client (istemci) kaydı yükleniyor";
+        public override string Multiplayer_ClientSaveComplete => "Client kaydı tamamlandı";
+        public override string Multiplayer_BadActor => "Toksik oyuncu";
+        public override string Multiplayer_NetworkError => "Ağ hatası";
+        public override string Multiplayer_Sender => "Gönderen";
+        public override string Multiplayer_Receiver => "Alıcı";
+        public override string Multiplayer_PlayerJoined => "Oyuncu katıldı";
+        public override string Multiplayer_PlayerLeft => "Oyuncu ayrıldı";
+        public override string Multiplayer_RequestingClientGamestates => "Client oyun durumları isteniyor...";
+        public override string Multiplayer_TextChat => "Yazılı sohbet";
+        public override string Multiplayer_VoiceChat => "Sesli sohbet";
+        public override string Steam_UserProfile => "Kullanıcı profili";
+        public override string Steam_OpenSteamOverlay => "Steam arayüzünü (overlay) aç";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "Seferberlik";
+        public override string Diplomacy_OfferRelation => "İlişki teklif et";
+        public override string Diplomacy_OfferRelation_Declined => "Teklif edilen ilişki reddedildi";
+        public override string Diplomacy_SendGold => "Altın gönder";
+        public override string Diplomacy_GiftToPlayer => "Oyuncuya hediye";
+        public override string Diplomacy_RecievedGift => "Hediye alındı";
+        public override string Diplomacy_OnAccept => "Eğer diğer oyuncu kabul ederse:";
+        public override string Diplomacy_WarPreparationTime => "Savaş hazırlık süresi";
+
+        public override string Diplomacy_AboveSoftCap => "Soft cap'in üzerinde";
+        public override string Diplomacy_BelowSoftCap => "Soft cap'in altında";
+        public override string Diplomacy_OpenPlayerToPlayer => "Oyuncular arası diplomasiyi aç";
+
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Depo sınırını aşarsanız eşyalar yok olmaz!";
+        public override string SlaughterResult_PerAnimal => "Hayvan başına kesim verimi";
+        public override string Settings_Mode_QuickBoss => "Hızlı boss";
+        public override string Settings_Mode_QuickBoss_Description => "Birkaç saat hazırlık yapın, ardından son boss ile karşılaşın";
+        public override string QuickBoss_TimeOption => "Boss süresi (saat)";
+
+        //Binek güncellemesi
+        public override string Leaderboards_title => "Leaderboards";
+        public override string Leaderboards_domination => "Dünya hakimiyeti en iyi süresi, %{0} artı";
+        public override string Leaderboards_victory => "Hikaye zaferi, en iyi % zorluk";
+        public override string Leaderboards_CitySize => "Maksimum şehir boyutu, işçi sayısına göre";
+        public override string Leaderboards_Survival => "%{0} zorlukta hayatta kalma süresi";
+
+        public override string Message_CannotPayUpkeep => "Bakım masrafı ödenemiyor!";
+        public override string Animals_ProductionStop => "Hayvan üretimi duracak";
+
+        public override string Tutorial_ToCapture => "Yakalamak için";
+        public override string Tutorial_ClickButton => "Butona tıkla";
+        public override string Tutorial_MoveXToY => "{0}'i {1}'e taşı";
+
+        public override string Workers_Description1_work => "İnşaat yapacak, kaynak toplayacak ve eşya craftlayacaklar.";
+        public override string Workers_Description2_income => "Gelir için vergi öderler.";
+        public override string Workers_Description3_soldiers => "Orduların için asker olarak silah altına alınabilirler.";
+
+        public override string Hud_Time_ValuePerMinute => "Dakika başına değer";
+        public override string Hud_Time_ValuePerSecond => "Saniye başına değer";
+        public override string Hud_Lock => "Kilitle";
+        public override string Hud_Maximum => "Maks";
+
+        public override string Tutorial_SeeThisInThat => "{1} içinde {0}'i gör";
+        public override string Conscript_SkillBonus => "Skill bonusu";
+        public override string SoldierStats_UnitCount => "Birim sayısı";
+        /// <summary>
+        /// Alanlar; ova, orman, deniz ve kuşatmadır
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "Saniye başına hasar - {0}";
+        public override string Conscript_BaseHealth => "Base HP";
+
+        /// <summary>
+        /// Haritada ilerleyebilme yeteneği için özet değer
+        /// </summary>
+        public override string Conscript_Mobility => "Mobilite";
+
+        public override string Conscript_RiderMobility => "Binici mobilitesi";
+        public override string Conscript_LightWagonMobility => "Hafif araba mobilitesi";
+        public override string Conscript_HeavyWagonMobility => "Ağır araba mobilitesi";
+
+        /// <summary>
+        /// Yetenekler, kaynaklar ve binalar gibi herhangi bir obje için genelleştirilmiş
+        /// </summary>
+        public override string Culture_AffectedItems => "Etkilenen item'lar";
+        //## Binek güncellemesi ##
+        public override string Progress_ClosingCores => "CPU çekirdekleri kapatılıyor {0}";
+        public override string Editor_ExportFrame => "Mevcut frame'i dışa aktar";
+        public override string Editor_FistFrame => "İlk frame";
+        public override string Editor_LastFrame => "Son frame";
+
+        public override string Economy_AnimalPenUpkeep => "Ağıl bakım masrafı: {0}";
+        public override string Work_SlaughterX => "{0} kes";
+
+        public override string BuildCategory_Farming => "Tarım";
+        public override string Resource_TypeName_ManType => "insan tipi";
+        public override string Resource_TypeName_NobelMen => "soylular";
+        public override string Resource_TypeName_ConservedFood => "konserve yiyecek";
+
+        public override string UnitType_UnitOnMount => "{0} biniyor";
+        public override string UnitType_UnitOnWagon => "{0} arabası";
+        public override string UnitType_NobelUnit => "soylu {0}";
+
+        /// <summary>
+        /// 0: asker tipi, 1: hayvan
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0} {1}-terbiyecisi";
+
+        public override string Info_ArmyFood4 => "Konserve yiyecekler daha büyük bir erzak stoğuna izin verir";
+        public override string Info_ArmyFood5 => "Önce taze yiyecekler tüketilir";
+
+        public override string Resource_ConservedFood_Reserves => "Konserve yiyecek stokları";
+        public override string Resource_TypeName_Clay => "kil";
+        public override string Resource_TypeName_Brick => "tuğla";
+        public override string Resource_TypeName_Container => "kutu";
+        public override string Resource_TypeName_Meat => "et";
+        public override string Resource_TypeName_Salt => "tuz";
+        public override string Resource_TypeName_Vehicle => "araç";
+        public override string Resource_TypeName_WagonClosed => "kapalı araba";
+        public override string Resource_TypeName_WagonIron => "demir araba";
+        public override string Resource_TypeName_WagonSteel => "çelik araba";
+        public override string Resource_TypeName_Shield => "kalkan";
+        public override string Resource_TypeName_BucklerShield => "buckler kalkanı";
+        public override string Resource_TypeName_RoundShield => "yuvarlak kalkan";
+        public override string Resource_TypeName_HeaterShield => "üçgen kalkan";
+        public override string Resource_TypeName_TowerShield => "kule kalkanı";
+
+        public override string Resource_TypeName_Mount => "binek";
+
+        public override string Resource_TypeName_MountArmorTitle => "binek zırhı";
+
+        /// <summary>
+        /// 0: zırh tipi
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "binek {0}";
+        public override string Resource_TypeName_Animal => "hayvan";
+
+        //public override string Resource_TypeName_WildAnimal => "vahşi hayvan";
+
+        /// <summary>
+        /// Vahşi hayvanların bulunduğu alan
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0} habitatı";
+
+        public override string Resource_TypeName_Oxen => "öküz";
+        public override string Resource_TypeName_KineOxen => "inek";
+
+        /// <summary>
+        /// Düşük tier tavuk (üretim için)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "kümes hayvanı";
+
+        /// <summary>
+        /// Düşük tier domuz (üretim için)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "erkek domuz";
+        public override string Resource_TypeName_Pig => "domuz";
+        public override string Resource_TypeName_Hen => "tavuk";
+        public override string Resource_TypeName_Dog => "köpek";
+        public override string Resource_TypeName_Hound => "tazı";
+
+        public override string Resource_TypeName_Pony => "midilli";
+        public override string Resource_TypeName_Horse => "at";
+        public override string Resource_TypeName_WarHorse => "savaş atı";
+        public override string Resource_TypeName_DraftHorse => "yük atı";
+
+        public override string Resource_TypeName_WildPig => "yabani domuz";
+        public override string Resource_TypeName_WildHog => "yaban domuzu";
+        public override string Resource_TypeName_WarHog => "savaş domuzu";
+        public override string Resource_TypeName_StagHog => "boynuzlu domuz";
+
+        public override string Resource_TypeName_Wolf => "kurt";
+        public override string Resource_TypeName_Warg => "warg";
+        public override string Resource_TypeName_AlphaWarg => "alfa warg";
+
+        public override string Resource_TypeName_WildCat => "yaban kedisi";
+        public override string Resource_TypeName_Lion => "aslan";
+        public override string Resource_TypeName_WarLion => "savaş aslanı";
+
+        public override string Resource_TypeName_Elephant => "fil";
+        public override string Resource_TypeName_WarElephant => "savaş fili";
+        public override string Resource_TypeName_Oliphant => "olifant";
+
+        public override string BuildHud_Select => "Bina seç";
+        public override string BuildHud_AreaRadius => "Alan yarıçapı";
+
+        public override string NobleHouse_HousingCount => "{0} soyluya ev sahipliği yapacak";
+
+
+        public override string BuildingType_GreatHall => "Büyük Salon";
+        public override string BuildingType_GreatHall_Description => "Gelişmiş asker alımını açar";
+
+        public override string BuildingType_ClayPit => "Kil Ocağı";
+        public override string BuildingType_Butcher => "Kasap";
+        public override string BuildingType_Butcher_Description => "Hayvanları yiyecek ve deriye dönüştürür";
+        public override string BuildingType_Pottery => "Çömlekçi";
+        public override string BuildingType_CraftX_Description => "{0} craft istasyonu";
+
+        public override string BuildingType_GatherX_Description => "{0} topla";
+
+        public override string BuildingType_Smoker => "Tütsüleyici";
+        public override string BuildingType_Dryer => "Kurutucu";
+        public override string BuildingType_Shieldmaker => "Kalkan Üreticisi";
+        public override string BuildingType_DryingPan => "Kurutma Tavası";
+
+        public override string BuildingType_TrapperHut => "Avcı Kulübesi";
+        public override string BuildingType_TrapperHut_Description => "Vahşi hayvanların yakalanmasını sağlar";
+
+        // --- Depolama ---
+        public override string BuildingType_MaterialStorage => "Materyal Deposu";
+        public override string BuildingType_FoodStorage => "Erzak Deposu";
+        public override string BuildingType_WeaponStorage => "Silah Deposu";
+        public override string BuildingType_ArmorStorage => "Zırh Deposu";
+        public override string BuildingType_AnimalStorage => "Hayvan Deposu";
+
+        public override string BuildingType_Storage_Description => "Maksimum stok limitini {0} artırır";
+
+        public override string BuildingType_Cesspit => "Atık Çukuru";
+        public override string BuildingType_Cesspit_Description => "Kaynakları yok eder";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "Stok limitini aşan item'ları yok eder";
+        public override string Info_XAmountIsConvertedToY => "{0}, {1}'e dönüştürülür";
+        public override string Info_ProductionRestriction => "İtem üretimi şu şekilde sınırlandırıldı:";
+
+        public override string BuildingType_FowlPen => "Kümes";
+        public override string BuildingType_BoarPen => "Erkek Domuz Ağılı";
+
+        // --- Öküz Ağılları ---
+        public override string BuildingType_OxenPen => "Öküz Ağılı";
+        public override string BuildingType_KineOxenPen => "İnek Ağılı";
+
+        // --- Köpek Kafesleri ---
+        public override string BuildingType_DogCage => "Köpek Kafesi";
+        public override string BuildingType_HoundCage => "Tazı Kafesi";
+
+        // --- At Ağılları ---
+        public override string BuildingType_PonyPen => "Midilli Ağılı";
+        public override string BuildingType_HorsePen => "At Ağılı";
+        public override string BuildingType_WarHorsePen => "Savaş Atı Ağılı";
+        public override string BuildingType_DraftHorsePen => "Yük Atı Ağılı";
+
+        // --- Domuz Ağılları ---
+        public override string BuildingType_WildPigPen => "Yabani Domuz Ağılı";
+        public override string BuildingType_WildHogPen => "Yaban Domuzu Ağılı";
+        public override string BuildingType_WarHogPen => "Savaş Domuzu Ağılı";
+        public override string BuildingType_StagHogPen => "Boynuzlu Domuz Ağılı";
+
+        // --- Kurt Kafesleri ---
+        public override string BuildingType_WolfCage => "Kurt Kafesi";
+        public override string BuildingType_WargCage => "Warg Kafesi";
+        public override string BuildingType_AlphaWargCage => "Alfa Warg Kafesi";
+
+        // --- Kedi Kafesleri ---
+        public override string BuildingType_WildCatCage => "Yaban Kedisi Kafesi";
+        public override string BuildingType_LionCage => "Aslan Kafesi";
+        public override string BuildingType_WarLionCage => "Savaş Aslanı Kafesi";
+
+        // --- Fil Kafesleri ---
+        public override string BuildingType_ElephantCage => "Fil Ağılı";
+        public override string BuildingType_WarElephantCage => "Savaş Fili Ağılı";
+        public override string BuildingType_OliphantCage => "Olifant Ağılı";
+
+        public override string BuildingDescription_Animals => "Asker alımı için hayvanlar üretir";
+        public override string Pen_Breeding => "Hayvan yetiştiriciliği";
+        public override string Pen_BreedUpChance => "Tier atlama şansı: %{0}";
+        public override string Pen_BreedDownChance => "Tier düşme şansı: %{0}";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "Daha yüksek başarılı yetiştirme şansı";
+
+        public override string CityCulture_EnhancedProduction => "Gelişmiş {0} üretimi";
+        public override string CityCulture_Production => "{0} üretimi";
+
+        public override string CityCulture_Butchers => "Kasaplar";
+
+        public override string CityCulture_Potters => "Çömlekçiler";
+
+        public override string CityCulture_Wainwright => "Arabacılar";
+
+        public override string CityCulture_Wheelwright => "Tekerlekçiler";
+        public override string CityCulture_Wheelwright_Description => "Askere alınan arabalar için speed bonusu";
+
+        public override string CityCulture_ShieldMaker => "Kalkan Üreticileri";
+
+
+        //public override string CityCulture_Nomads_Description => "Düşük yerleşimci maliyeti";
+
+        public override string CityCulture_Coopers => "Fıçıcılar";
+
+        public override string CityCulture_Salters => "Tuzcular";
+
+
+        public override string CityBiome_Title => "Biyom";
+        public override string CityBiome_Description => "Biyomlar bazı kaynaklara ve binalara erişimi etkiler";
+
+        public override string CityBiome_Fields => "Ovalar";
+        public override string CityBiome_Frozen => "Buzul";
+        public override string CityBiome_Forest => "Orman";
+        public override string CityBiome_Mountain => "Dağlık";
+        public override string CityBiome_Desolate => "Issız";
+        public override string CityBiome_Desert => "Çöl";
+
+        public override string Bonus_IncreaseSkin => "Artırılmış deri üretimi";
+        public override string Bonus_FoodStorage => "Daha büyük erzak deposu";
+
+        public override string StockPile_LimitTitle => "Stok limiti";
+
 
         public override string Help_Work_Automatic => "Çalışma otomatiktir";
         public override string Tutorial_SecondCity => "İkinci bir şehir ele geçir";
@@ -80,14 +522,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "Görüntü Modu";
-        public override string DisplayMode_Windowed => "Pencere";
-        public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
+        //public override string DisplayMode => "Görüntü Modu";
+        //public override string DisplayMode_Windowed => "Pencere";
+        //public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
 
-        public override string GameSettings_RenderedMouseCursor => "Yazılımsal İmleç"; // "Software cursor" - standard tech term
-        public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
+        //public override string GameSettings_RenderedMouseCursor => "Yazılımsal İmleç"; // "Software cursor" - standard tech term
+        //public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
 
         public override string Delivery_MaxDistance => "Maks. teslimat mesafesi: {0}";
         public override string Tutorial_WillTakeAWhile => "Bu biraz sürecek, daha sonra tekrar gel.";
@@ -183,7 +625,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -423,7 +865,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "Bakım Maaliyeti: {0}";
+        public override string Hud_Upkeep => "Bakım Maaliyeti";
         public override string Hud_ArmyUpkeep => "Ordu Bakım Maaliyeti: {0}";
 
         /// <summary>
@@ -435,14 +877,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Şehri Genişletmen Gerek.";
 
-        public override string Hud_SoldierCount => "Asker Sayısı: {0}";
+        public override string Hud_SoldierCount => "Asker Sayısı";
 
-        public override string Hud_SoldierGroupsCount => "Grup Sayısı: {0}";
+        public override string Hud_SoldierGroupsCount => "Grup Sayısı";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "Güç Oranı: {0}";
+        public override string Hud_StrengthRating => "Güç Oranı";
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -660,7 +1102,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic communication. How well you can discuss terms. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "İlişki Durumu: {0}";
+        public override string Diplomacy_SpeakTermIs => "İlişki Durumu";
 
         /// <summary>
         /// Diplomatic communication. Better than normal.
@@ -790,7 +1232,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "İstatistikler";
+        public override string Statistics_Title => "İstatistikler";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -986,7 +1428,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "Sağlık: {0}";
+        public override string SoldierStats_Health => "Sağlık";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1048,7 +1490,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => "Şunu gönder: {0}";
+        public override string Hud_SendX => "Şunu gönder: {0}";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1207,7 +1649,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => "Firariler!";
         public override string EventMessage_DesertersText_Money => "Parası ödenmemiş askerler, ordundan firar ediyorlar";
 
-        public override string DifficultyDescription_AiAggression => "YZ agresifliği: {0}.";
+        //public override string DifficultyDescription_AiAggression => "YZ agresifliği: {0}.";
         public override string DifficultyDescription_BossSize => "Baş düşman gücü: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Baş düşmanın gelişine kalan süre: {0}.";
         public override string DifficultyDescription_AiEconomy => "YZ ekonomisi: %{0}.";
@@ -1444,7 +1886,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Kaldırım";
         public override string BuildingType_Smith => "Demirci";
         public override string BuildingType_Cook => "Aşçı";
-        public override string BuildingType_Storage => "Depo";
+        public override string BuildingType_Storehouse => "Depo";
 
         public override string BuildingType_ResourceFarm => "{0} çiftlik";
 
@@ -1467,7 +1909,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Şövalyeler ve diplomatlar için konaklama";
         public override string BuildingType_CoalPit_Description => "Yüksek verimle yakıt üretir";
-        public override string BuildingType_Storage_Description => "Kaynak stoklama noktası";
+        //public override string BuildingType_Storehouse_Description => "Kaynak stoklama noktası";
 
         public override string MenuTab_Info => "Bilgi";
         public override string MenuTab_Work => "İş";
@@ -1555,10 +1997,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Tek bir bölge için saldırı gücünü arttırır, ancak diğer hepsi için düşürür {0}";
         public override string Conscript_SelectBuilding => "Kışla seç";
 
-        public override string Conscript_WeaponDamage => "Silah hasarı: {0}";
-        public override string Conscript_ArmorHealth => "Zırh Dayanıklılığı: {0}";
-        public override string Conscript_TrainingSpeed => "Saldırı hızı: {0}";
-        public override string Conscript_TrainingTime => "Eğitim süresi: {0}";
+        public override string Conscript_WeaponDamage => "Silah hasarı";
+        public override string Conscript_ArmorHealth => "Zırh Dayanıklılığı";
+        public override string Conscript_AttackSpeed => "Saldırı hızı";
+        public override string Conscript_TrainingTime => "Eğitim süresi";
 
         public override string Conscript_Training_Minimal => "Minimal";
         public override string Conscript_Training_Basic => "Temel";
@@ -1584,15 +2026,15 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "Mesafe: {0}";
         public override string Delivery_DeliveryTimeX => "Teslimat süresi: {0}";
         public override string Delivery_SenderMinimumCap => "Gönderen minimum sınırı";
-        public override string Delivery_RecieverMaximumCap => "Alıcı maks sınırı";
+        public override string Delivery_ReceiverMaximumCap => "Alıcı maks sınırı";
         public override string Delivery_ItemsReady => "Eşyalar hazır";
-        public override string Delivery_RecieverReady => "Alıcı hazır";
+        public override string Delivery_ReceiverReady => "Alıcı hazır";
         public override string Hud_ThisCity => "Bu Şehir";
         public override string Hud_RecieveingCity => "Alıcı şehir";
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Saniye Başı Sergilenen Kaynak";
+        public override string Info_ResourcePerSecond => "Saniye Başı Sergilenen Kaynak";
 
         public override string Info_MinuteAverage => "Bu değer, son bir dakikadaki ortalamanın sonucudur";
 
@@ -1652,12 +2094,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Sosyal kelebek";
         public override string CityCulture_PitMasters => "Kömürcü";
 
-        public override string CityCulture_CultureIsX => "Kültür: {0}";
+        public override string CityCulture_Culture => "Kültür";
         public override string CityCulture_LargeFamilies_Description => "Artan doğum oranları";
         public override string CityCulture_FertileGround_Description => "Ekinler daha fazla hasat verir";
         public override string CityCulture_Archers_Description => "Yetenekli okçular yetiştirilir";
         public override string CityCulture_Warriors_Description => "Yetenekli savaşçılar eğitilir";
-        public override string CityCulture_AnimalBreeder_Description => "Hayvanlar daha fazla ürün sağlar";
+        //public override string CityCulture_AnimalBreeder_Description => "Hayvanlar daha fazla ürün sağlar";
         public override string CityCulture_Miners_Description => "Madenden daha fazla cevher çıkarılır";
         public override string CityCulture_Woodcutters_Description => "Ağaçlardan daha fazla odun elde edilir";
         public override string CityCulture_Builders_Description => "Yapı inşaası daha hızlıdır";
@@ -1678,7 +2120,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "Sekme seç: {0}";
         public override string Tutorial_IncreasePriorityOnX => "{0} için önceliği arttır";
         public override string Tutorial_PlaceBuildOrder => "{0} için inşa emri ver";
-        public override string Tutorial_ZoomInput => "Yakınlaştır";
+        public override string ButtonAction_Zoom => "Yakınlaştır";
 
         public override string Tutorial_SelectACity => "Bir şehir seç";
         public override string Tutorial_ZoomInWorkers => "İşçileri görmek için yakınlaştır";
@@ -1698,13 +2140,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Kömür";
 
-        public override string Language_XUpkeepIsY => "{0} maaliyeti: {1}";
+        public override string Language_XUpkeep => "{0} maaliyeti";
         public override string Language_XCountIsY => "{0} sayısı: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Yiyecekler karaborsadan pahalıya alınacak. Paran bittiğinde aç kalan askerler firar edecek.";
 
-        public override string Info_ArmyFood => "Ordular en yakın dost şehirden yiyecek ikmali yapar. Diğer taraflardan da alım yapılabilir. Düşman bölgelerinde yalnızca karaborsa aktiftir.";
-
+        public override string Info_ArmyFood1 => "Ordular, erzaklarını en yakın dost şehirden yeniler.";
+        public override string Info_ArmyFood2 => "Diğer fraksiyonlardan erzak satın alınabilir.";
+        public override string Info_ArmyFood3 => "Düşman bölgelerinde erzak yalnızca karaborsadan satın alınabilir.";
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";
@@ -1738,7 +2181,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Automation_queue_description => "Kuyruk bitene kadar sürekli tekrar eder";
 
         public override string BuildingType_Storehouse_Description => "İşçiler eşyaları buraya bırakabilir";
-
+       
         public override string Resource_TypeName_Longbow => "uzun yay";
         public override string Resource_TypeName_Rapeseed => "kanola";
         public override string Resource_TypeName_Hemp => "enevir";
@@ -1781,13 +2224,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "Düz arazi";
         public override string LandType_Water => "Su";
         public override string BuildingType_Wall => "Sur";
-        public override string Delivery_AutoReciever_Description => "Kaynaklar, stoğu en az olan şehre gönderilir.";
+        public override string Delivery_AutoReceiver_Description => "Kaynaklar, stoğu en az olan şehre gönderilir.";
 
         public override string Hud_On => "Açık";
         public override string Hud_Off => "Kapalı";
 
-        public override string Hud_Time_Seconds => "{0} saniye";
-        public override string Hud_Time_Minutes => "{0} dakika";
+        public override string Hud_Time_XSeconds => "{0} saniye";
+        public override string Hud_Time_XMinutes => "{0} dakika";
         public override string Hud_Undo => "Geri al";
         public override string Hud_Redo => "Yinele";
 
@@ -2749,9 +3192,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// These symbols are needed to fit large numbers on the HUD,
         /// there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "c";
-        public override string EngineHud_SymbolFor1000 => "k";
-        public override string EngineHud_SymbolFor10000 => "10k";
+        public override string Language_SymbolFor100 => "c";
+        public override string Language_SymbolFor1000 => "k";
+        public override string Language_SymbolFor10000 => "10k";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress

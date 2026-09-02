@@ -6,6 +6,26 @@ using System.Text;
 
 namespace VikingEngine.EngineSpace.Maths
 {
+    struct NoiseOptions
+    {
+        public static NoiseOptions None = new NoiseOptions() { useNoise = false };
+
+        public bool useNoise;
+        public float smoothness;
+        public float ocatves;
+        public float persistence;
+        public float scale;
+
+        public NoiseOptions(bool useNoise, float smoothness, float octaves, float persistence, float scale)
+        {
+            this.useNoise = useNoise;
+
+            this.smoothness = smoothness;
+            this.ocatves = octaves;
+            this.persistence = persistence;
+            this.scale = scale;
+        }
+    }
     class SimplexNoise2D
     {
         /* Constants */
@@ -17,16 +37,31 @@ namespace VikingEngine.EngineSpace.Maths
         // Seeded simplex noise in 2d (a shame higher dimensions are patented...)
         public SimplexNoise2D(int seed)
         {
+            setSeed(seed);
+        }
+
+        public void setSeed(int seed)
+        {
             this.seed = seed;
             Random prng = new Random(seed);
 
             perm = new int[2 * PERMUTATION_COUNT];
-            for(int i = 0; i < PERMUTATION_COUNT; ++i)
+            for (int i = 0; i < PERMUTATION_COUNT; ++i)
             {
                 int val = prng.Next(512);
                 perm[i] = val;
                 perm[i + PERMUTATION_COUNT] = val;
             }
+        }
+
+        public float OctaveNoise2D(NoiseOptions options, float x, float y)
+        { 
+            return OctaveNoise2D(options.ocatves, options.persistence, options.scale, x, y);
+        }
+
+        public float OctaveNoise2D_Normal(NoiseOptions options, float x, float y)
+        {
+            return OctaveNoise2D_Normal(options.ocatves, options.persistence, options.scale, x, y);
         }
 
         public float OctaveNoise2D_Normal(float octaves, float persistence, float scale, float x, float y)
@@ -94,6 +129,9 @@ namespace VikingEngine.EngineSpace.Maths
             return u[0] * x + u[1] * y;
         }
 
+
+        float F2 = (float)(0.5 * (Math.Sqrt(3.0) - 1.0));
+        float G2 = (float)((3.0 - Math.Sqrt(3.0)) / 6.0);
         // 2D raw Simplex noise
         private float RawNoise2D( float x, float y )
         {
@@ -102,13 +140,13 @@ namespace VikingEngine.EngineSpace.Maths
             n0 = n1 = n2 = 0.0f;
 
             // Skew the input space to determine which simplex cell we're in
-            float F2 = (float)(0.5 * (Math.Sqrt(3.0) - 1.0));
+            
             // Hairy factor for 2D
             float s = (x + y) * F2;
             int i = FastFloor( x + s );
             int j = FastFloor( y + s );
 
-            float G2 = (float)((3.0 - Math.Sqrt(3.0)) / 6.0);
+            
             float t = (i + j) * G2;
             // Unskew the cell origin back to (x,y) space
             float X0 = i-t;

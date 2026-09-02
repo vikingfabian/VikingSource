@@ -21,7 +21,7 @@ namespace VikingEngine.LootFest.Map
 
         public override void WriteStream(System.IO.BinaryWriter w)
         {
-            Debug.Log("Saving screen:" + screen.ToString());
+            //Debug.Log("Saving screen:" + screen.ToString());
             screen.WriteChunk(w);
         }
         public override void ReadStream(System.IO.BinaryReader r)

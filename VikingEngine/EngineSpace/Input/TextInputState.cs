@@ -18,6 +18,11 @@ namespace VikingEngine.Input
         void textInput_refresh(bool textLengthChanged);
         
         void textInput_complete(string result, object tag);
+
+        string textInput_CurrentText();
+
+        void SteamInputExit(string text);
+        //object textInput_Tag();
     }
 
     class TextInput
@@ -28,7 +33,7 @@ namespace VikingEngine.Input
         
         ITextInputReciever inputReciever;
         public string recieverId;
-        object tag;
+        public object tag;
 
         bool bExit = false;
         public string result = null;
@@ -183,7 +188,10 @@ namespace VikingEngine.Input
             inputReciever.textInput_refresh(textLengthChanged);
         }
 
-
+        public string textInput_CurrentText()
+        { 
+            return preMarkerText + postMarkerText;
+        }
 
         public string DisplayText()
         {
@@ -197,6 +205,13 @@ namespace VikingEngine.Input
             Ref.update.textInput = null;
         }
 
+        public void SteamInputExit(string text)
+        {
+            bExit = true;
+            exitDelay = 20;
+            result = preMarkerText + postMarkerText;
+            inputReciever.textInput_complete(text, tag); 
+        }
 
         public bool Exiting => bExit;
     }
@@ -235,6 +250,19 @@ namespace VikingEngine.Input
         virtual public void textInput_complete(string result, object tag)
         {
             DeleteMe();
+        }
+        public string textInput_CurrentText()
+        {
+            return input.textInput_CurrentText();
+        }
+        //public object textInput_Tag()
+        //{
+        //    return input.tag;
+        //}
+
+        public void SteamInputExit(string text)
+        {
+            input.SteamInputExit(text);
         }
     }
 
@@ -287,6 +315,19 @@ namespace VikingEngine.Input
             {
                 returnEvent.Invoke(result, tag);
             }
+        }
+
+        public string textInput_CurrentText()
+        {
+            return input.textInput_CurrentText();
+        }
+        //public object textInput_Tag()
+        //{
+        //    return input.tag;
+        //}
+        public void SteamInputExit(string text)
+        {
+            input.SteamInputExit(text);
         }
     }
 }

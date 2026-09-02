@@ -32,12 +32,12 @@ namespace VikingEngine.DSSWars.Map
     {
         int lastCheckVersion = 0;
         public int version = 0;
-        protected Faction playerFaction;
+        protected int playerIx;
         public Graphics.PixelTexture texture;
 
-        public AbsMapPixelTexture(Faction faction)
+        public AbsMapPixelTexture(int playerIx)
         {
-            this.playerFaction = faction;
+            this.playerIx = playerIx;
         }
 
         public void initTexture()
@@ -67,8 +67,8 @@ namespace VikingEngine.DSSWars.Map
         float max = 1;
         public FactionMapFilter filter;
         public ItemResourceType resourceFilter = ItemResourceType.Wood_Group;
-        public FactionPixelTexture(Faction faction, bool init, FactionMapFilter filter)
-            : base(faction)
+        public FactionPixelTexture(int playerIx, bool init, FactionMapFilter filter)
+            : base(playerIx)
         {
             this.filter = filter;
             if (init)
@@ -100,7 +100,8 @@ namespace VikingEngine.DSSWars.Map
                     caption = string.Format(DssRef.lang.Hud_TotalStrengthRating, string.Empty);
                     break;
                 case FactionMapFilter.ResourceHeatmap:
-                    icon = ResourceLib.Icon(resourceFilter);
+                    //icon = ResourceLib.Icon(resourceFilter);
+                    IconName.Item(resourceFilter, out icon, out _);
                     caption = DssRef.lang.Resource;
                     break;
             }
@@ -153,12 +154,30 @@ namespace VikingEngine.DSSWars.Map
                 content.newParagraph();
                 foreach (var res in TerrainStructure.AllTerrainResources)
                 {
+                    IconName.Item(res, out SpriteName itemIcon, out string itemName);
+
+                    SpriteName collectIcon;
+                    switch (res)
+                    { 
+                        case ItemResourceType.Wood_Group:
+                        case ItemResourceType.Stone_G:
+                        case ItemResourceType.BogIron:
+                        case ItemResourceType.Clay:
+                            collectIcon = SpriteName.WarsWorkCollect;
+                            break;
+
+                        default:
+                            collectIcon = ItemPropertyColl.Get(res).storageType == StorageType.AnimalStorage ? SpriteName.WarsBuild_Trapper : SpriteName.WarsWorkMine;
+                            break;
+
+                    }
+
                     content.Add(new ArtOption(res == resourceFilter,
                         new List<AbsRichBoxMember> {
-                            new RbImage((res == ItemResourceType.Wood_Group || res == ItemResourceType.Stone_G)? SpriteName.WarsWorkCollect : SpriteName.WarsWorkMine),
-                            new RbImage(ResourceLib.Icon(res)),
+                            new RbImage(collectIcon),
+                            new RbImage(itemIcon),
                             new RbSpace(0.5f),
-                            new RbText(LangLib.Item(res)),
+                            new RbText(itemName),
                         },
                         new RbAction1Arg<ItemResourceType>((ItemResourceType resource) => { 
                             resourceFilter = resource;
@@ -202,6 +221,7 @@ namespace VikingEngine.DSSWars.Map
                     }
                     break;
                 case FactionMapFilter.Minimap:
+                    Faction playerFaction = DssRef.state.localPlayers[playerIx].pfaction.GetFaction();
                     while (loop.Next())
                     {
                         t = DssRef.world.tileGrid.Get(loop.Position);
@@ -269,7 +289,7 @@ namespace VikingEngine.DSSWars.Map
                         else
                         {
                             City city = t.City();
-                            Faction faction = city.GetFaction();
+                            Faction faction = city.pfaction.GetFaction();
 
                             if (faction != null)
                             {

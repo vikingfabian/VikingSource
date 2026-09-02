@@ -8,11 +8,30 @@ using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.Players.Command
 {
-    
 
+    class NetClientCommand : MoveCommand
+    { 
+        public NetClientCommand(SoldierGroup group, Vector3 goalWp) 
+            : base(group, goalWp, float.MinValue, false)
+        {
+        }
+        public override void refreshGoal(Vector3 goalPos)
+        {
+            if (VectorExt.PlaneXZDistance(ref goalWp, ref goalPos) > WorldData.SubTileWidth)
+            {
+                goalWp = goalPos;
+            }
+        }
+
+        public override bool hasPathCommand(out bool pathTowardsUnit)
+        {
+            pathTowardsUnit = false;
+            return !haltCommand;
+        }
+    }
     class MoveCommand : AbsCommand
     {
-        Vector3 goalWp;
+        protected Vector3 goalWp;
 
         public MoveCommand(SoldierGroup group, Vector3 goalWp, float goalRotation, bool queueCommand)
             :base(group, queueCommand)

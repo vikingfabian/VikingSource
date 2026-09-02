@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Presentation
 #if DEBUG
                     throw new NotImplementedException();
 #endif
+
                 case LanguageType.English:
                     return SpriteName.LangButton_English;
 

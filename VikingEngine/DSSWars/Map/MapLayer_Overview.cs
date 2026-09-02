@@ -318,6 +318,7 @@ namespace VikingEngine.DSSWars.Map
         {
             if (state_Processing_Sych_Complete == 2 && DssRef.world.BordersUpdated)
             {
+                DssRef.world.BordersUpdated = false;
                 state_Processing_Sych_Complete = 0;
 
                 borders?.quedEvent();
@@ -333,10 +334,7 @@ namespace VikingEngine.DSSWars.Map
             if (DssLib.UpdateBorders && 
                 state_Processing_Sych_Complete == 1)
             {
-                DssRef.world.BordersUpdated = false;
                 borders?.SetNewModel();
-                //factionsMap.syncTask();
-
                 state_Processing_Sych_Complete = 2;
             }
 

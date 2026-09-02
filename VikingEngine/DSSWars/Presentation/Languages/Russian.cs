@@ -8,6 +8,449 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+        //Multiplayer update
+       
+        //--
+       
+        //--
+        public override string Unlock_PublicGames => "публичные игры";
+        public override string UnlockPublic_Warning1 => "Не играйте с незнакомцами";
+        public override string UnlockPublic_Warning2 => "В игре нет защиты от читеров или троллей";
+        public override string Unlock_WarningBadExperience => "У вас останутся плохие впечатления";
+        public override string Hud_Accept => "Принять";
+        public override string Hud_Block => "Заблокировать";
+        public override string Hud_Deny => "Отклонить";
+        public override string Hud_Reason => "Причина";
+        public override string Hud_Full => "Мест нет";
+        public override string Hud_Version => "Версия";
+        public override string Unlock_PlayerVersusPlayer => "игрок против игрока (PvP)";
+        public override string UnlockPvp_Warning1 => "DSS не предназначена для соревновательных матчей";
+        public override string UnlockPvp_Warning2 => "Здесь нет баланса, матчи будут нечестными";
+        public override string PlayerJoinHistoryTitle => "История подключений игроков";
+        public override string BlockedPlayersTitle => "Заблокированные игроки";
+        public override string ClickToRemoveBan => "Клик: снять бан";
+        public override string HostSettingsTitle => "Настройки хоста";
+        public override string MaxPlayerCount => "Макс. число игроков";
+        public override string DistanceBetweenPlayers => "Расстояние между игроками";
+        public override string AllowHandicap => "Разрешить фору";
+        public override string AllowCasualControls => "Разрешить упрощенное управление";
+        public override string AutoRecolorPlayerFlags => "Автоматически перекрашивать флаги";
+        public override string DefaultDiplomacy => "Дипломатия по умолчанию";
+        public override string ClientSettingsTitle => "Настройки клиента";
+        public override string UseHandicap => "Использовать фору";
+        public override string DifficultyDescription_BotAggression => "Агрессивность ботов";
+        public override string Hud_GetExtraX => "Доп. {0}";
+        public override string Hud_Hide => "Скрыть";
+        public override string Hud_ModelType => "Модель";
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => "{0}: {1}";
+        public override string Language_CatergoryDashUndercategory => "{0} - {1}";
+
+        public override string ResourceBoost => "Буст ресурсов";
+        //public override string TaxIncome => "Доход от налогов";
+        public override string PlayerInteractionTitle => "Взаимодействие игроков";
+        public override string DefaultPeaceful => "По умолчанию: Мирно";
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => "По умолчанию: Кооп по желанию";
+        public override string DefaultHardcore => "По умолчанию: Хардкор";
+        public override string GeneralTitle => "Общие";
+
+        public override string InputButton_Hold => "Удержание кнопки";
+        public override string InputButton_Toggle => "Переключение (Toggle)";
+        public override string VoiceOptAlwaysOn => "Всегда включен";
+        public override string VoiceTitle => "Голос";
+        public override string VoiceMute => "Мьют";
+        public override string GiftOptAllow => "Разрешить";
+        public override string GiftOptFriendsOnly => "Только друзья";
+        public override string GiftOptBlocked => "Заблокировано";
+        public override string ReceiveAchievementsTitle => "Получение достижений";
+        public override string GiftWarning => "Внимание! Подаренные достижения могут показаться унизительными";
+        public override string FullReset => "Полный сброс";
+        public override string AllowAllianceTitle => "Разрешить союзы";
+        public override string CanBreakAlliance => "Можно разорвать союз";
+        public override string AllowWarTitle => "Разрешить войну";
+        public override string FairProtection => "Честная защита";
+        public override string FairProtectionTooltip => "Защищенные игроки обязаны использовать против вас те же правила";
+        public override string MustAsk => "Только с согласия";
+        public override string MustAskTooltip => "Оба игрока должны согласиться на бой";
+        public override string AllianceLimit => "Лимит альянса";
+        public override string AllianceLimitTooltip => "Вас не может атаковать альянс игроков большего размера";
+        public override string GameStartProtection => "Защита на старте игры";
+        public override string Hud_Time_Minutes => "минут";
+        public override string WarPreparationTime => "Время подготовки к войне";
+        public override string WarPreparationTimeTooltip => "Задержка между объявлением войны и возможностью атаковать";
+        public override string Hud_Allow => "Разрешить";
+        public override string Hud_Blocked => "Заблокировано";
+
+        public override string Hud_DeleteAll => "Удалить всё";
+        public override string DiplomacyPlayersChoice => "На выбор игроков";
+        public override string UnlockSureTitle => "Вы действительно, абсолютно уверены?";
+        public override string UnlockSureDescription => "Вы будете вести себя как взрослый и не пойдете потом ныть на форум?";
+
+
+
+        public override string Network_PlayOffline => "Играть оффлайн";
+        public override string JoinPermission_Title => "Права на подключение";
+        public override string JoinPermission_Private => "Приватная";
+        public override string JoinPermission_FriendsOnly => "Только друзья";
+        public override string JoinPermission_Public => "Публичная";
+
+        public override string Network_Join => "Присоединиться к игре";
+        public override string Network_ConnectingToGame => "Подключение...";
+        public override string Lobby_Category_MultiplayerSettings => "Настройки мультиплеера";
+
+        public override string Hud_Default => "По умолчанию";
+        public override string Group_Team => "команда";
+        public override string Group_Everyone => "все";
+
+        public override string Language_SymbolForMillion => "М";
+
+        public override string DecorType_DiplomaticStatue => "Дипломатическая статуя";
+
+        public override string Message => "Сообщение";
+        public override string ObjectType_LocationPin => "Метка на карте";
+        public override string ObjectType_LocationPin_Share => "Поделиться и пингануть";
+        public override string ObjectType_LocationPin_Ping => "Пинг!";
+        public override string InputActionName_TextChat => "Текстовый чат";
+        public override string InputActionName_TextChatLog => "Лог чата";
+        public override string InputActionName_VoiceChat => "Голосовой чат";
+        public override string InputActionName_NextPin => "Следующая метка";
+        public override string InputActionName_PinAndPing => "Добавить метку";
+
+        public override string Leaderboards_ArmySize => "Размер одной армии (в силе)";
+        public override string Leaderboards_MultiplayerPlayerCount => "Количество игроков на хосте";
+
+        public override string Multiplayer_BanWarning => "предупреждение о бане";
+        public override string Multiplayer_SentToHost => "Будет отправлено хосту";
+        public override string Multiplayer_AddToOwnBlocks => "Добавить в свой черный список";
+
+        public override string Multiplayer_Message_RequestSent => "Запрос отправлен";
+
+        public override string Multiplayer_BlockPlayer => "Заблокировать игрока";
+        public override string Multiplayer_NetSession => "Сетевая сессия";
+        public override string GiftedAchievements => "Подаренные достижения";
+        public override string GiftedAchievements_Description => "Вознаграждайте плохое поведение ваших друзей";
+
+        public override string Multiplayer_Title => "Мультиплеер";
+        public override string Multiplayer_Lobby => "Лобби мультиплеера";
+
+        public override string Multiplayer_Tutorial_HostStart => "1. Хост запускает игру";
+        public override string Multiplayer_Tutorial_JoinButton => "2. Кнопка подключения появится здесь";
+        public override string Multiplayer_Tutorial_Visible => "Профиль хоста в Steam должен быть открытым";
+
+        public override string Multiplayer_KickPlayer => "Кикнуть игрока";
+        public override string Multiplayer_RequestBlockPlayer => "Запрос: Заблокировать игрока";
+        public override string Multiplayer_HandoverComplete => "Передача завершена";
+        public override string Multiplayer_LoadingClientSave => "Загрузка сохранения клиента";
+        public override string Multiplayer_ClientSaveComplete => "Сохранение клиента завершено";
+        public override string Multiplayer_BadActor => "Токсичный игрок";
+        public override string Multiplayer_NetworkError => "Ошибка сети";
+        public override string Multiplayer_Sender => "Отправитель";
+        public override string Multiplayer_Receiver => "Получатель";
+        public override string Multiplayer_PlayerJoined => "Игрок присоединился";
+        public override string Multiplayer_PlayerLeft => "Игрок вышел";
+        public override string Multiplayer_RequestingClientGamestates => "Запрос состояния игры у клиентов...";
+        public override string Multiplayer_TextChat => "Текстовый чат";
+        public override string Multiplayer_VoiceChat => "Голосовой чат";
+        public override string Steam_UserProfile => "Профиль пользователя";
+        public override string Steam_OpenSteamOverlay => "Открыть оверлей Steam";
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => "Мобилизация";
+        public override string Diplomacy_OfferRelation => "Предложить отношения";
+        public override string Diplomacy_OfferRelation_Declined => "Предложение отношений отклонено";
+        public override string Diplomacy_SendGold => "Отправить золото";
+        public override string Diplomacy_GiftToPlayer => "Подарок игроку";
+        public override string Diplomacy_RecievedGift => "Подарок получен";
+        public override string Diplomacy_OnAccept => "Если другой игрок согласится:";
+        public override string Diplomacy_WarPreparationTime => "Время подготовки к войне";
+
+        public override string Diplomacy_AboveSoftCap => "Выше софт-капа";
+        public override string Diplomacy_BelowSoftCap => "Ниже софт-капа";
+        public override string Diplomacy_OpenPlayerToPlayer => "Открыть дипломатию с игроком";
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Предметы не будут уничтожены при превышении лимита склада!";
+        public override string SlaughterResult_PerAnimal => "Добыча при забое, за животное";
+        public override string Settings_Mode_QuickBoss => "Быстрый босс";
+        public override string Settings_Mode_QuickBoss_Description => "Подготовьтесь пару часов, а затем встретьтесь с финальным боссом";
+        public override string QuickBoss_TimeOption => "Время босса (в часах)";
+        //Обновление с маунтами
+        public override string Leaderboards_title => "Лидерборды";
+        public override string Leaderboards_domination => "Мировое господство, лучшее время, {0}% и выше";
+        public override string Leaderboards_victory => "Сюжетная победа, топ % сложности";
+        public override string Leaderboards_CitySize => "Размер города (в рабочих)";
+        public override string Leaderboards_Survival => "Время выживания на {0}% сложности";
+
+        public override string Message_CannotPayUpkeep => "Нечем платить за содержание!";
+        public override string Animals_ProductionStop => "Производство животных остановится";
+
+        public override string Tutorial_ToCapture => "Для поимки";
+        public override string Tutorial_ClickButton => "Нажмите кнопку";
+        public override string Tutorial_MoveXToY => "Переместите {0} в {1}";
+
+        public override string Workers_Description1_work => "Строят, добывают ресурсы и крафтят предметы.";
+        public override string Workers_Description2_income => "Платят налоги, принося доход.";
+        public override string Workers_Description3_soldiers => "Могут быть призваны как солдаты в вашу армию.";
+
+        public override string Hud_Time_ValuePerMinute => "Значение в минуту";
+        public override string Hud_Time_ValuePerSecond => "Значение в секунду";
+        public override string Hud_Lock => "Замок";
+        public override string Hud_Maximum => "Макс.";
+
+        public override string Tutorial_SeeThisInThat => "Смотрите {0} в {1}";
+        public override string Conscript_SkillBonus => "Бонус к скиллу";
+        public override string SoldierStats_UnitCount => "Количество юнитов";
+        /// <summary>
+        /// Зоны: поле, лес, море и осада
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "Урон в секунду - {0}";
+        public override string Conscript_BaseHealth => "Базовое HP";
+
+        /// <summary>
+        /// Сводное значение способности передвигаться по карте
+        /// </summary>
+        public override string Conscript_Mobility => "Мобильность";
+
+        public override string Conscript_RiderMobility => "Мобильность всадника";
+        public override string Conscript_LightWagonMobility => "Мобильность (легкая повозка)";
+        public override string Conscript_HeavyWagonMobility => "Мобильность (тяжелая повозка)";
+
+        /// <summary>
+        /// Обобщено для любого объекта, такого как скиллы, ресурсы и здания
+        /// </summary>
+        public override string Culture_AffectedItems => "Затронутые предметы";
+        //## Обновление с маунтами ##
+        public override string Progress_ClosingCores => "Отключение ядер CPU {0}";
+        public override string Editor_ExportFrame => "Экспорт текущего кадра";
+        public override string Editor_FistFrame => "Первый кадр";
+        public override string Editor_LastFrame => "Последний кадр";
+
+        public override string Economy_AnimalPenUpkeep => "Содержание загона: {0}";
+        public override string Work_SlaughterX => "Забить {0}";
+
+        public override string BuildCategory_Farming => "Фермерство";
+        public override string Resource_TypeName_ManType => "тип человека";
+        public override string Resource_TypeName_NobelMen => "аристократы";
+        public override string Resource_TypeName_ConservedFood => "консервированная еда";
+
+        public override string UnitType_UnitOnMount => "верхом на {0}";
+        public override string UnitType_UnitOnWagon => "в повозке: {0}";
+        public override string UnitType_NobelUnit => "знатный {0}";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0}-погонщик {1}";
+
+        public override string Info_ArmyFood4 => "Консервированная еда позволяет создавать бóльшие запасы";
+        public override string Info_ArmyFood5 => "Свежая еда будет расходоваться первой";
+
+        public override string Resource_ConservedFood_Reserves => "Запасы консервированной еды";
+        public override string Resource_TypeName_Clay => "глина";
+        public override string Resource_TypeName_Brick => "кирпич";
+        public override string Resource_TypeName_Container => "контейнер";
+        public override string Resource_TypeName_Meat => "мясо";
+        public override string Resource_TypeName_Salt => "соль";
+        public override string Resource_TypeName_Vehicle => "транспорт";
+        public override string Resource_TypeName_WagonClosed => "крытая повозка";
+        public override string Resource_TypeName_WagonIron => "железная карета";
+        public override string Resource_TypeName_WagonSteel => "стальная карета";
+        public override string Resource_TypeName_Shield => "щит";
+        public override string Resource_TypeName_BucklerShield => "баклер";
+        public override string Resource_TypeName_RoundShield => "круглый щит";
+        public override string Resource_TypeName_HeaterShield => "треугольный щит";
+        public override string Resource_TypeName_TowerShield => "ростовой щит";
+
+        public override string Resource_TypeName_Mount => "маунт";
+
+        public override string Resource_TypeName_MountArmorTitle => "броня для маунта";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "маунт {0}";
+        public override string Resource_TypeName_Animal => "животное";
+
+        //public override string Resource_TypeName_WildAnimal => "дикое животное";
+
+        /// <summary>
+        /// Зона с дикими животными
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "Место обитания: {0}";
+
+        public override string Resource_TypeName_Oxen => "вол";
+        public override string Resource_TypeName_KineOxen => "корова";
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "птица";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "хряк";
+        public override string Resource_TypeName_Pig => "свинья";
+        public override string Resource_TypeName_Hen => "курица";
+        public override string Resource_TypeName_Dog => "собака";
+        public override string Resource_TypeName_Hound => "гончая";
+
+        public override string Resource_TypeName_Pony => "пони";
+        public override string Resource_TypeName_Horse => "лошадь";
+        public override string Resource_TypeName_WarHorse => "боевой конь";
+        public override string Resource_TypeName_DraftHorse => "тягловая лошадь";
+
+        public override string Resource_TypeName_WildPig => "дикая свинья";
+        public override string Resource_TypeName_WildHog => "вепрь";
+        public override string Resource_TypeName_WarHog => "боевой кабан";
+        public override string Resource_TypeName_StagHog => "рогатый кабан";
+
+        public override string Resource_TypeName_Wolf => "волк";
+        public override string Resource_TypeName_Warg => "варг";
+        public override string Resource_TypeName_AlphaWarg => "альфа-варг";
+
+        public override string Resource_TypeName_WildCat => "дикая кошка";
+        public override string Resource_TypeName_Lion => "лев";
+        public override string Resource_TypeName_WarLion => "боевой лев";
+
+        public override string Resource_TypeName_Elephant => "слон";
+        public override string Resource_TypeName_WarElephant => "боевой слон";
+        public override string Resource_TypeName_Oliphant => "олифант";
+
+        public override string BuildHud_Select => "Выбрать здание";
+        public override string BuildHud_AreaRadius => "Радиус области";
+
+        public override string NobleHouse_HousingCount => "Вместит аристократов: {0}";
+
+
+        public override string BuildingType_GreatHall => "Великий зал";
+        public override string BuildingType_GreatHall_Description => "Открывает продвинутый рекрутинг";
+
+        public override string BuildingType_ClayPit => "Глиняный карьер";
+        public override string BuildingType_Butcher => "Мясник";
+        public override string BuildingType_Butcher_Description => "Перерабатывает животных в еду и шкуры";
+        public override string BuildingType_Pottery => "Гончарная";
+        public override string BuildingType_CraftX_Description => "Станция крафта: {0}";
+
+        public override string BuildingType_GatherX_Description => "Сбор: {0}";
+
+        public override string BuildingType_Smoker => "Коптильня";
+        public override string BuildingType_Dryer => "Сушильня";
+        public override string BuildingType_Shieldmaker => "Мастерская щитов";
+        public override string BuildingType_DryingPan => "Сушильный поддон";
+
+        public override string BuildingType_TrapperHut => "Хижина зверолова";
+        public override string BuildingType_TrapperHut_Description => "Позволяет ловить диких животных";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "Склад материалов";
+        public override string BuildingType_FoodStorage => "Склад еды";
+        public override string BuildingType_WeaponStorage => "Склад оружия";
+        public override string BuildingType_ArmorStorage => "Склад брони";
+        public override string BuildingType_AnimalStorage => "Хранилище животных";
+
+        public override string BuildingType_Storage_Description => "Увеличивает макс. лимит склада на {0}";
+
+        public override string BuildingType_Cesspit => "Яма для отходов";
+        public override string BuildingType_Cesspit_Description => "Уничтожает ресурсы";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "Уничтожает предметы сверх лимита склада";
+        public override string Info_XAmountIsConvertedToY => "{0} конвертируется в {1}";
+        public override string Info_ProductionRestriction => "Производство предметов ограничено до";
+
+        public override string BuildingType_FowlPen => "Птичник";
+        public override string BuildingType_BoarPen => "Загон для хряков";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "Загон для волов";
+        public override string BuildingType_KineOxenPen => "Коровник";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "Собачий вольер";
+        public override string BuildingType_HoundCage => "Вольер для гончих";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "Загон для пони";
+        public override string BuildingType_HorsePen => "Конюшня";
+        public override string BuildingType_WarHorsePen => "Загон для боевых коней";
+        public override string BuildingType_DraftHorsePen => "Загон для тягловых лошадей";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "Загон для диких свиней";
+        public override string BuildingType_WildHogPen => "Загон для вепрей";
+        public override string BuildingType_WarHogPen => "Загон для боевых кабанов";
+        public override string BuildingType_StagHogPen => "Загон для рогатых кабанов";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "Волчья клетка";
+        public override string BuildingType_WargCage => "Клетка для варгов";
+        public override string BuildingType_AlphaWargCage => "Клетка для альфа-варгов";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "Клетка для диких кошек";
+        public override string BuildingType_LionCage => "Клетка для львов";
+        public override string BuildingType_WarLionCage => "Клетка для боевых львов";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "Загон для слонов";
+        public override string BuildingType_WarElephantCage => "Загон для боевых слонов";
+        public override string BuildingType_OliphantCage => "Загон для олифантов";
+
+        public override string BuildingDescription_Animals => "Производит животных для рекрутинга солдат";
+        public override string Pen_Breeding => "Разведение животных";
+        public override string Pen_BreedUpChance => "{0}% шанс повысить тир";
+        public override string Pen_BreedDownChance => "{0}% шанс понизить тир";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "Выше шанс успешного разведения";
+
+        public override string CityCulture_EnhancedProduction => "Улучшенное производство: {0}";
+        public override string CityCulture_Production => "Производство: {0}";
+
+        public override string CityCulture_Butchers => "Мясники";
+
+        public override string CityCulture_Potters => "Гончары";
+
+        public override string CityCulture_Wainwright => "Каретники";
+
+        public override string CityCulture_Wheelwright => "Колесники";
+        public override string CityCulture_Wheelwright_Description => "Бонус к скорости призванных повозок";
+
+        public override string CityCulture_ShieldMaker => "Мастера щитов";
+
+
+        //public override string CityCulture_Nomads_Description => "Низкая стоимость поселенцев";
+
+        public override string CityCulture_Coopers => "Бондари";
+
+        public override string CityCulture_Salters => "Солевары";
+
+
+        public override string CityBiome_Title => "Биом";
+        public override string CityBiome_Description => "Биомы влияют на доступ к некоторым ресурсам и зданиям";
+
+        public override string CityBiome_Fields => "Поля";
+        public override string CityBiome_Frozen => "Мерзлота";
+        public override string CityBiome_Forest => "Лес";
+        public override string CityBiome_Mountain => "Горы";
+        public override string CityBiome_Desolate => "Пустошь";
+        public override string CityBiome_Desert => "Пустыня";
+
+        public override string Bonus_IncreaseSkin => "Увеличенное производство шкур";
+        public override string Bonus_FoodStorage => "Увеличенный склад еды";
+
+        public override string StockPile_LimitTitle => "Лимит склада";
+
+
+
         public override string Help_Work_Automatic => "Работа выполняется автоматически";
         public override string Tutorial_SecondCity => "Захватите второй город";
         //## Spring update
@@ -74,14 +517,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "Режим экрана";
-        public override string DisplayMode_Windowed => "В окне";
-        public override string DisplayMode_BorderlessFullscreen => "Окно без рамки";
+        //public override string DisplayMode => "Режим экрана";
+        //public override string DisplayMode_Windowed => "В окне";
+        //public override string DisplayMode_BorderlessFullscreen => "Окно без рамки";
 
-        public override string GameSettings_RenderedMouseCursor => "Программный курсор";
-        public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
+        //public override string GameSettings_RenderedMouseCursor => "Программный курсор";
+        //public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
 
         public override string Delivery_MaxDistance => "Макс. дальность доставки: {0}";
         public override string Tutorial_WillTakeAWhile => "Это займет время, вернитесь позже.";
@@ -177,7 +620,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Как отображать количество предметов. 0: предмет, 1: количество
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Выбор языка
@@ -416,7 +859,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Стоимость содержания юнита
         /// </summary>
-        public override string Hud_Upkeep => "Содержание: {0}";
+        public override string Hud_Upkeep => "Содержание";
         public override string Hud_ArmyUpkeep => "Содержание армии: {0}";
 
         /// <summary>
@@ -428,14 +871,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Вам нужно расширить город.";
 
-        public override string Hud_SoldierCount => "Количество солдат: {0}";
+        public override string Hud_SoldierCount => "Количество солдат";
 
-        public override string Hud_SoldierGroupsCount => "Количество групп: {0}";
+        public override string Hud_SoldierGroupsCount => "Количество групп";
 
         /// <summary>
         /// Отображение в игре. Расчетная боевая мощь юнита
         /// </summary>
-        public override string Hud_StrengthRating => "Рейтинг силы: {0}";
+        public override string Hud_StrengthRating => "Рейтинг силы";
 
         /// <summary>
         /// Отображение в игре. Расчетная боевая мощь всей нации
@@ -652,7 +1095,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Дипломатическое общение. Насколько хорошо вы можете обсуждать условия. 0: Условия обсуждения
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => "Условия обсуждения: {0}";
+        public override string Diplomacy_SpeakTermIs => "Условия обсуждения";
 
         /// <summary>
         /// Дипломатическое общение. Лучше обычного.
@@ -782,7 +1225,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Статистика, отображаемая на экране окончания игры. Заголовок.
         /// </summary>
-        public override string EndGameStatistics_Title => "Статистика";
+        public override string Statistics_Title => "Статистика";
 
         /// <summary>
         /// Статистика, отображаемая на экране окончания игры. Общее время в игре.
@@ -977,7 +1420,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Сколько ранений может выдержать солдат
         /// </summary>
-        public override string SoldierStats_Health => "Здоровье: {0}";
+        public override string SoldierStats_Health => "Здоровье";
 
         /// <summary>
         /// Некоторые солдаты увеличат скорость передвижения армии
@@ -1039,7 +1482,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Опция меню для управления армией. Опции отправки солдат между армиями.
         /// </summary>
-        public override string ArmyOption_SendX => "Отправить {0}";
+        public override string Hud_SendX => "Отправить {0}";
 
         /// <summary>
         /// Опция меню для управления армией. Опции отправки солдат между армиями.
@@ -1193,7 +1636,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string EventMessage_DesertersTitle => "Дезертиры!";
 
-        public override string DifficultyDescription_AiAggression => "Агрессивность ИИ: {0}.";
+        //public override string DifficultyDescription_AiAggression => "Агрессивность ИИ: {0}.";
         public override string DifficultyDescription_BossSize => "Размер босса: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Время появления босса: {0}.";
         public override string DifficultyDescription_AiEconomy => "Экономика ИИ: {0}%.";
@@ -1421,7 +1864,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Тротуар";
         public override string BuildingType_Smith => "Кузница";
         public override string BuildingType_Cook => "Повар";
-        public override string BuildingType_Storage => "Склад";
+        public override string BuildingType_Storehouse => "Склад";
 
         public override string BuildingType_ResourceFarm => "Ферма {0}";
 
@@ -1444,7 +1887,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Дом для рыцарей и дипломатов";
         public override string BuildingType_CoalPit_Description => "Эффективное производство топлива";
-        public override string BuildingType_Storage_Description => "Пункт сдачи ресурсов";
+        //public override string BuildingType_Storehouse_Description => "Пункт сдачи ресурсов";
 
         public override string MenuTab_Info => "Информация";
         public override string MenuTab_Work => "Работа";
@@ -1532,10 +1975,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Увеличивает атаку в одной области, снижая эффективность в остальных на {0}";
         public override string Conscript_SelectBuilding => "Выберите казармы";
 
-        public override string Conscript_WeaponDamage => "Урон оружия: {0}";
-        public override string Conscript_ArmorHealth => "Прочность брони: {0}";
-        public override string Conscript_TrainingSpeed => "Скорость атаки: {0}";
-        public override string Conscript_TrainingTime => "Время тренировки: {0}";
+        public override string Conscript_WeaponDamage => "Урон оружия";
+        public override string Conscript_ArmorHealth => "Прочность брони";
+        public override string Conscript_AttackSpeed => "Скорость атаки";
+        public override string Conscript_TrainingTime => "Время тренировки";
 
         public override string Conscript_Training_Minimal => "Минимум";
         public override string Conscript_Training_Basic => "Базовая";
@@ -1561,15 +2004,15 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => "Расстояние: {0}";
         public override string Delivery_DeliveryTimeX => "Время доставки: {0}";
         public override string Delivery_SenderMinimumCap => "Минимальный предел отправителя";
-        public override string Delivery_RecieverMaximumCap => "Максимальный предел получателя";
+        public override string Delivery_ReceiverMaximumCap => "Максимальный предел получателя";
         public override string Delivery_ItemsReady => "Предметы готовы";
-        public override string Delivery_RecieverReady => "Получатель готов";
+        public override string Delivery_ReceiverReady => "Получатель готов";
         public override string Hud_ThisCity => "Этот город";
         public override string Hud_RecieveingCity => "Город-получатель";
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Отображено в ресурсах в секунду.";
+        public override string Info_ResourcePerSecond => "Отображено в ресурсах в секунду.";
 
         public override string Info_MinuteAverage => "Значение представляет собой среднее за последнюю минуту.";
 
@@ -1629,12 +2072,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Сетевик";
         public override string CityCulture_PitMasters => "Мастер по топливу";
 
-        public override string CityCulture_CultureIsX => "Культура: {0}";
+        public override string CityCulture_Culture => "Культура";
         public override string CityCulture_LargeFamilies_Description => "Увеличивается рождаемость";
         public override string CityCulture_FertileGround_Description => "Урожайность выше";
         public override string CityCulture_Archers_Description => "Производит опытных лучников";
         public override string CityCulture_Warriors_Description => "Производит опытных бойцов ближнего боя";
-        public override string CityCulture_AnimalBreeder_Description => "Животные дают больше ресурсов";
+        //public override string CityCulture_AnimalBreeder_Description => "Животные дают больше ресурсов";
         public override string CityCulture_Miners_Description => "Больше добычи руды";
         public override string CityCulture_Woodcutters_Description => "Больше древесины";
         public override string CityCulture_Builders_Description => "Быстрее строят";
@@ -1655,7 +2098,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => "Выберите вкладку: {0}";
         public override string Tutorial_IncreasePriorityOnX => "Увеличьте приоритет на: {0}";
         public override string Tutorial_PlaceBuildOrder => "Разместите заказ на строительство: {0}";
-        public override string Tutorial_ZoomInput => "Масштабирование";
+        public override string ButtonAction_Zoom => "Масштабирование";
 
         public override string Tutorial_SelectACity => "Выберите город";
         public override string Tutorial_ZoomInWorkers => "Увеличьте масштаб, чтобы увидеть рабочих";
@@ -1675,13 +2118,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Уголь";
 
-        public override string Language_XUpkeepIsY => "{0} содержание: {1}";
+        public override string Language_XUpkeep => "{0} содержание";
         public override string Language_XCountIsY => "{0} количество: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Дорогая еда будет закупаться на черном рынке. Голодные солдаты дезертируют, когда закончатся деньги.";
 
-        public override string Info_ArmyFood => "Армии будут пополнять запасы еды из ближайшего дружественного города. Пищу можно покупать у других фракций. Во враждебных регионах еду можно купить только на черном рынке.";
-
+        public override string Info_ArmyFood1 => "Армии будут пополнять запасы провизии в ближайшем союзном городе.";
+        public override string Info_ArmyFood2 => "Провизию можно покупать у других фракций.";
+        public override string Info_ArmyFood3 => "На враждебных территориях провизию можно купить только на черном рынке.";
         public override string FactionName_Monger => "Торговец";
         public override string FactionName_Hatu => "Хату";
         public override string FactionName_Destru => "Дестру";
@@ -1753,13 +2197,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => "Равнина";
         public override string LandType_Water => "Вода";
         public override string BuildingType_Wall => "Стена";
-        public override string Delivery_AutoReciever_Description => "Отправлять в город с наименьшим количеством ресурсов";
+        public override string Delivery_AutoReceiver_Description => "Отправлять в город с наименьшим количеством ресурсов";
 
         public override string Hud_On => "Включено";
         public override string Hud_Off => "Выключено";
 
-        public override string Hud_Time_Seconds => "{0} секунд";
-        public override string Hud_Time_Minutes => "{0} минут";
+        public override string Hud_Time_XSeconds => "{0} секунд";
+        public override string Hud_Time_XMinutes => "{0} минут";
         public override string Hud_Undo => "Отменить";
         public override string Hud_Redo => "Повторить";
 
@@ -2699,9 +3143,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// These symbols are needed to fit large numbers on the HUD,
         /// there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => "c";
-        public override string EngineHud_SymbolFor1000 => "k";
-        public override string EngineHud_SymbolFor10000 => "10k";
+        public override string Language_SymbolFor100 => "c";
+        public override string Language_SymbolFor1000 => "k";
+        public override string Language_SymbolFor10000 => "10k";
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress

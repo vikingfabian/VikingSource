@@ -1,0 +1,1385 @@
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
+using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.GameState.BattleLab;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Net;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
+using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Input;
+using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.LootFest.GO.PlayerCharacter;
+using VikingEngine.LootFest.Players;
+using VikingEngine.Network;
+using VikingEngine.SteamWrapping;
+using VikingEngine.ToGG.HeroQuest.Display;
+using VikingEngine.ToGG.HeroQuest.Gadgets;
+using VikingEngine.ToGG.MoonFall;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace VikingEngine.DSSWars
+{
+    partial class PlayState
+    {
+        public bool factionHandOverComplete = false;
+
+        public const SpriteName NetworkIcon = SpriteName.WarsHudIconMultiplayer;
+        ConcurrentQueue<FactionHandover> factionHandovers = new ConcurrentQueue<FactionHandover>();
+
+        const int MaxSendLoops = 8;
+        bool asyncRoundTrip = false;
+        bool waitingForClientHandover_autosave;
+        bool waitingForClientHandover_exit;
+        bool waitingForClientHandover = false;
+        bool waitingForClientHandover_Paused;
+        TimeStamp waitingForClientHandoverTime;
+        public ChatLog chatLog = new ChatLog();
+        public Color? recolor = null;
+        //public bool SmallWorldNetSetup;
+
+        int[] packetsRecieved = new int[(int)PacketType.DssNUM];
+
+        bool asynchClientNetUpdate(int id, float time)
+        {
+            if (remotePlayers.Count > 0 && factionHandOverComplete && asyncRoundTrip)
+            {
+                asyncRoundTrip = false;
+                async_updateHandover();
+                bool sentAnything = true;
+
+                for (int loop = 0; loop < MaxSendLoops && sentAnything; loop++)
+                {
+                    sentAnything = false;
+
+                    var remoteC = remotePlayers.counter();
+                    while (remoteC.Next())
+                    {
+                        if (remoteC.sel.networkPeer.peer.lowLoad())
+                        {
+                            netSendMapObjectsInView(remoteC.sel, ref sentAnything);
+                            //sendHostedWars();
+                        }
+                    }
+                }
+            }
+
+            return exitThreads;
+        }
+
+        bool asynchHostNetUpdate(int id, float time)
+        {
+            AbsNetworkPeer handoverPlayer = null;
+
+            if (remotePlayers.Count > 0)
+            {
+                if (asyncRoundTrip)
+                {
+                    int maxSendLoops = factionHandovers.Count > 0 ? 1 : MaxSendLoops;
+
+                    asyncRoundTrip = false;
+                    handoverPlayer = async_updateHandover();
+
+                    bool sentAnything = true;
+
+                    for (int loop = 0; loop < maxSendLoops && sentAnything; loop++)
+                    {
+                        sentAnything = false;
+
+                        var remoteC = remotePlayers.counter();
+                        while (remoteC.Next())
+                        {
+                            if (remoteC.sel.networkPeer.peer.mapLoadedAndReady &&
+                                remoteC.sel.networkPeer.peer.lowPotensialLoad(0.5f))
+                            {
+                                bool sentAnythingToPlayer = false;
+
+                                if (!sendMap(remoteC.sel, ref sentAnythingToPlayer))
+                                {
+                                    netSendMapObjectsInView(remoteC.sel, ref sentAnythingToPlayer);
+                                    //sendHostedWars();
+
+                                    if (!sentAnythingToPlayer)
+                                    {
+                                        sentAnythingToPlayer = remoteC.sel.Net_FullMapSend_async();
+                                    }
+                                }
+
+                                sentAnything |= sentAnythingToPlayer;
+                            }
+                        }
+                    }
+                }
+
+                if (waitingForClientHandover)
+                {
+                    bool ready = true;
+
+                    if (!waitingForClientHandoverTime.secPassed(20))
+                    {
+                        var remoteC = remotePlayers.counter();
+                        while (remoteC.Next())
+                        {
+                            if (remoteC.sel.waitingForSaveHandover)
+                            {
+                                ready = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (ready)
+                    {
+                        waitingForClientHandover = false;
+                        Ref.update.AddSyncAction(new SyncAction(() =>
+                        {
+                            Ref.SetPause(waitingForClientHandover_Paused);
+                            new SaveScene(waitingForClientHandover_autosave).ExitGame = waitingForClientHandover_exit;
+                        }));
+                    }
+                }
+            }
+            else
+            {
+                factionHandovers.Clear();
+            }
+            return exitThreads;
+        }
+
+        private AbsNetworkPeer async_updateHandover()
+        {
+            AbsNetworkPeer handoverPlayer = null;
+
+            if (factionHandovers.Count > 0)
+            {
+                if (factionHandovers.TryPeek(out var factionHandover))
+                {
+                    handoverPlayer = factionHandover.peer;
+
+                    if (factionHandover.Next() == false)
+                    {
+                        //remove
+                        factionHandovers.TryDequeue(out _);
+                    }
+                }
+            }
+
+            return handoverPlayer;
+        }
+
+        bool sendMap(RemotePlayer player, ref bool sentAnything)
+        {
+            if (player.gotStatus)
+            {
+                int sendPacketCount = player.networkPeer.peer.packetsLeft();
+
+                while (player.Net_HostMapUpdate_async())
+                {
+                    sentAnything = true;
+                    if (--sendPacketCount <= 0)
+                    {
+                        player.gotStatus = false;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        private void netSendMapObjectsInView(RemotePlayer player, ref bool sentAnything)
+        {
+            if (player.gotStatus)
+            {
+                player.gotStatus = false;
+                int maxPackets = player.networkPeer.peer.maxPacketCount;
+
+                var cities = player.GetAllCitiesInView();
+                foreach (var c in cities)
+                {
+                    var city = DssRef.world.cities[c];
+                    if (city.IsNetHosted)
+                    {
+                        city.net_roundtrip_asyncupdate(out int packetCount);
+                        sentAnything |= packetCount > 0;
+                        maxPackets -= packetCount;
+                        if (maxPackets <= 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                player.Net_UpdateArmies(ref maxPackets);
+            }
+        }
+
+        void sendHostedWars()
+        {
+            //var factions = DssRef.world.factions.counter();
+            //while (factions.Next())
+            //{
+            //    if (factions.sel.IsNetHosted())
+            //    {
+            //        var armiesC = factions.sel.armies.counter();
+            //        while (armiesC.Next())
+            //        {
+            //            if (armiesC.sel.inBattle)
+            //            {
+            //                for (int i = 0; i < armiesC.sel.inBattleWith.factions.count; ++i)
+            //                {
+            //                    if (armiesC.sel.inBattleWith.factions[i].TryGetPlayer(out var p) && p.IsRemotePlayer())
+            //                    {
+            //                        //share army
+            //                        if (armiesC.sel.lastNetUpdate.secPassed(15))
+            //                        {
+            //                            Army.NetFullArmyStatus(armiesC.sel, Network.PacketReliability.Unrelyable);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+
+
+        bool asynchAiPlayersUpdate(int id, float time)
+        {
+            if (cutScene == null)
+            {
+                var factions = DssRef.world.factions.counter();
+                while (factions.Next())
+                {
+                    factions.sel.asynchAiPlayersUpdate(time);
+                }
+            }
+
+            return exitThreads;
+        }
+
+        Color? autoRecolor(RemotePlayer player, Color flagColor)
+        {
+            if (alreadyInUse(flagColor))
+            {
+                const int HueSteps = 20;
+                const double StartHue = 0;
+
+                double[] lightOptions = [0.5, 0.2, 0.8];
+                double[] saturationOptions = [0.7, 0.9, 0.4];//0.4, 0.9];
+
+                foreach (var lightness in lightOptions)
+                {
+                    foreach (var saturation in saturationOptions)
+                    {
+                        double hue = StartHue;
+                        for (int i = 0; i < HueSteps; i++)
+                        {
+                            hue += 1.0 / HueSteps;
+                            Color col = lib.HSL2RGB(hue, saturation, lightness);
+
+                            if (!alreadyInUse(col))
+                            {
+                                return col;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+
+            bool alreadyInUse(Color color)
+            {
+                AllHumansLoop allHumans = new AllHumansLoop();
+                while (allHumans.Next(out var ready))
+                {
+                    if (player != allHumans.sel)
+                    {
+                        if (ColorExt.ValueDifference(color, allHumans.sel.profile.flag.col0_Main) < 20)
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+                return false;
+            }
+        }
+
+        public override void NetworkReadPacket(ReceivedPacket packet)
+        {
+            var sender = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex) as RemotePlayer;
+
+            //Debug.Log(packet.type.ToString());
+
+#if !DEBUG
+            try
+            {
+#endif
+
+            packetsRecieved[(int)packet.type]++;
+
+            switch (packet.type)
+            {
+                case PacketType.DssJoined_WantWorld:
+                    {
+                        netWriteSendWorld(packet, sender);
+                    }
+                    break;
+
+                case PacketType.DssPlayerStatus:
+                    {
+                        if (sender != null)
+                        {
+                            sender.Net_readStatus(packet.r);
+                            sender.pointer.netRead(packet.r);
+                            sender.timePlayed = TimeSpan.FromSeconds(packet.r.ReadInt32());
+
+                            EightBit bits = new EightBit(packet.r);
+                            sender.networkPeer.peer.isRecording = bits.Get(0);
+                            bool dlc = bits.Get(1);
+                            if (dlc != sender.supporterDLC)
+                            {
+                                sender.supporterDLC = dlc;
+                                sender.pointer.refreshDlc(dlc);
+                            }
+
+                            if (sender.newPlayer)
+                            {
+                                //Present yourself
+                                sender.newPlayer = false;
+                                netPresentYourself(packet);
+                            }
+                        }
+                    }
+                    break;
+
+                case PacketType.DssPlayerEnterPresentation:
+                    {
+                        NetReadPresentation(packet, sender);
+                    }
+                    break;
+
+                case PacketType.DssFactionStatus:
+                    {
+                        int faction = packet.r.ReadUInt16();
+                        DssRef.world.factions.Array[faction].readNet_Status(packet.r);
+                    }
+                    break;
+
+                case PacketType.DssAssignFaction_Failed:
+                    if (!DssRef.state.UpdateReady())
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.icontext(SpriteName.RedErrorCross, DssRef.todoLang.JoinFailure_NoAvailableFaction);
+                        LocalHost().hud.messages.Add(content, SoundLib.wrong);
+
+                        new Timer.ActionEventTimedTrigger(() =>
+                        {
+                            DssRef.state.beginExit();
+                        }, new Time(5, TimeUnit.Seconds));
+                    }
+                    break;
+
+                case PacketType.DssAssignFaction:
+                    {
+                        var tplayer = NetReadPlayer(packet.r);
+                        int factionIx = packet.r.ReadUInt16();
+                        var faction = DssRef.world.faction(factionIx);
+                        tplayer.AssignFaction(faction);
+
+                        DssRef.time.setTotalTime(new TimeSpan(packet.r.ReadInt64()));
+                        tplayer.timePlayed = new TimeSpan(packet.r.ReadInt64());
+                        DssRef.world.metaData.worldId.read(packet.r);
+
+                        LocalHost().netFirstTimeEnter = packet.r.ReadBoolean();
+
+                    }
+                    break;
+
+                case PacketType.DssAssignFactionCities:
+                    {
+                        int factionIx = packet.r.ReadUInt16();
+                        var faction = DssRef.world.faction(factionIx);
+
+                        IntVector2 centerCamera = IntVector2.FromReadUshort(packet.r);
+                        if (centerCamera.X > 0)
+                        {
+                            foreach (var lp in localPlayers)
+                            {
+                                if (lp.pfaction.GetFaction() == faction)
+                                {
+                                    lp.gameControls.map.setCameraPos(centerCamera);
+                                }
+                            }
+                        }
+                        SpottedPointerArray cities = new SpottedPointerArray();
+                        cities.read_ushort_compressed(packet.r);
+
+                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                        while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
+                        {
+                            city.setFaction(faction, false, true, ConvertReason.Assigned, false);
+                        }
+                    }
+                    break;
+
+                case PacketType.DssAssignFactionComplete:
+                    {
+                        factionHandOverComplete = true;
+                        var pfaction = new PFaction(packet.r);
+                        if (pfaction.TryGetFaction(out var faction))
+                        {
+                            bool hosted = faction.IsNetHosted();
+
+                            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
+                            {
+                                city.IsNetHosted = hosted;
+                            }
+                        }
+
+                        bool hasSave = DssRef.storage.meta.LoadClient(pfaction);
+
+                        RichBoxContent content = new RichBoxContent();
+                        content.icontext(NetworkIcon, DssRef.lang.Multiplayer_HandoverComplete);
+                        if (hasSave)
+                        {
+                            content.icontext(SpriteName.WarsHudIconOpen, DssRef.lang.Multiplayer_LoadingClientSave);
+                        }
+                        LocalHost().hud.messages.Add(content);
+                    }
+                    break;
+
+                case PacketType.DssBeginSave:
+                    saveClient(packet.r);
+                    break;
+
+                case PacketType.DssClientHandoverComplete:
+                    {
+                        sender.waitingForSaveHandover = false;
+                        RichBoxContent content = new RichBoxContent();
+                        content.icontext(NetworkIcon, DssRef.lang.Multiplayer_ClientSaveComplete);
+                        content.newLine();
+                        sender.addNetGamerToHud(content, true, false);
+                        LocalHost().hud.messages.Add(content);
+                    }
+                    break;
+
+                case PacketType.DssWorldTiles:
+                    DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
+                    overviewMap.bRefreshDataRecieved = true;
+                    DssRef.world.BordersUpdated = true;
+                    break;
+
+                case PacketType.DssWorldSubTiles:
+                    DssRef.world.readNet_SubTile(packet.r);//l 522
+                    break;
+
+                case PacketType.DssEditSubTile:
+                    EditSubTile editSubTile = new EditSubTile();
+                    editSubTile.read(packet.r);
+
+                    editSubTile.Submit();
+                    break;
+
+                case PacketType.DssFactions:
+                    DssRef.world.readNet_Factions(packet.r);
+                    break;
+
+                case PacketType.DssCities:
+                    DssRef.world.readNet_Cities(packet.r);
+                    break;                                                                                                           
+
+                case PacketType.DssCityStatus:
+                    {
+                        int cityIx = packet.r.ReadUInt16();
+                        var city = DssRef.world.cities[cityIx];
+                        int part = packet.r.ReadByte();
+                        city.readNet_update(packet.r, part);
+                    }
+                    break;
+
+                case PacketType.DssSetCityFaction:
+                    City.NetReadSetFaction(sender, packet.r);
+                    break;
+
+                case PacketType.DssSetArmyFaction:
+                    Army.NetReadSetFaction(sender, packet.r);
+                    break;
+
+                case PacketType.DssArmyStatus:
+                    Army.NetReadArmy(packet.r);
+                    break;
+
+                case PacketType.DssFactionClientDiplomacy:
+                    DssRef.world.diplomacy.readRelationsForClient(packet.r);
+                    break;
+
+                case PacketType.DssSoldierGroupStatus_Army:
+                    //readGroupStatus(true);
+                    AbsArmy.NetReadGroups(true, packet.r);
+                    break;
+                case PacketType.DssSoldierGroupStatus_City:
+                    //readGroupStatus(false);
+                    AbsArmy.NetReadGroups(false, packet.r);
+                    break;
+
+                case PacketType.DssDeliver:
+                    City.NetReadDelivery(packet);
+
+                    break;
+                case PacketType.DssDeliverStatusRequest:
+                    City.NetReadDeliveryStatusRequest(packet);
+                    break;
+                case PacketType.DssDeliverStatusReply: //Is sending when it shouldnt, is auto?
+                    City.NetReadDeliveryStatusReply(packet);
+                    break;
+
+                case PacketType.TextChat:
+                    {
+                        var message = new ChatLogMessage(sender.networkPeer.peer, StreamLib.ReadString_safe(packet.r));
+                        chatLog.Add(message);
+                        RichBoxContent content = new RichBoxContent();
+
+                        sender.addNetGamerToHud(content, true, false);
+                        content.icontext(SpriteName.TextChatLetter, message.message);
+
+                        LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+                    }
+                    break;
+                case PacketType.DssGiftAchievement:
+                    readGiftedAchievement(packet);
+                    break;
+
+                case PacketType.DssDiplomacyRelation:
+                    Communication.DiplomaticRelation.NetReadRelation(packet.r);
+                    break;
+
+                case PacketType.DssPlayerToPlayerRelation:
+                    new DiplomacyDisplay(LocalHost()).netReadP2pRelation(packet.r, sender);
+                    break;
+
+                case PacketType.DssEnterBattle:
+                    //return;
+                    SoldierGroup.NetReadEnterBattle(packet.r);
+                    break;
+
+                //case PacketType.DssAttackDamage:
+                //    AbsSoldierUnit.ReadAttackDamage(packet.r);
+                //    break;
+
+                case PacketType.DssSoldierDeath:
+                    {
+                        var psoldier = new PGameObject(packet.r);//ObjectId.ReadSoldier(packet.r, out _);
+
+                        if (psoldier.pfaction == LocalHost().pfaction)
+                        {
+                            lib.DoNothing();
+                        }
+
+                        if (psoldier.TryGetSoldier(out var group, out var soldier))//soldier != null)
+                        {
+                            soldier.DeleteMe(DeleteReason.Death, true);
+                        }
+                        else if (group != null)
+                        {
+                            group.removeOneSoldier();
+                        }
+                    }
+                    break;
+
+                case PacketType.DssDeleteArmy:
+                    if (ObjectId.NetReadMapObjId(packet.r, out _, true, false, out var army, out _))
+                    {
+                        army.DeleteMe(DeleteReason.NetworkEvent, true);
+                    }
+                    break;
+
+                case PacketType.WarnPlayer:
+                    {
+                        BadBehaviourType behaviourType = (BadBehaviourType)packet.r.ReadByte();
+                        BanWarning(LocalHost(), sender, behaviourType);
+                    }
+                    break;
+                case PacketType.RequestPlayerBan:
+                    {
+                        var badActor = NetReadPlayer(packet.r);
+                        BadBehaviourType behaviourType = (BadBehaviourType)packet.r.ReadByte();
+
+                        if (badActor != null)
+                        {
+                            RichBoxContent content = new RichBoxContent();
+                            sender.addNetGamerToHud(content, true, false);
+                            content.h1(DssRef.lang.Multiplayer_RequestBlockPlayer, HudLib.TitleColor_Head);
+                            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Hud_Reason, behaviourType.ToString());
+                            HudLib.Label(content, DssRef.lang.Multiplayer_BadActor);
+                            badActor.addNetGamerToHud(content, true, false);
+
+                            content.newLine();
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+
+                                 new RbImage(SpriteName.WarsHudIconBlockedPlayer),
+                                 new RbSpace(0.5f),
+                                new RbText(DssRef.lang.Hud_Accept) },
+                                new RbAction(() =>
+                                {
+                                    LocalHost().gameControls.clearSelection();
+                                    LocalHost().hud.objMenu.netSessionDisplay.selectedPlayer = badActor.GetRemotePlayer();
+                                    LocalHost().hud.objMenu.menu.OpenMenu(NetSessionDisplay.PAGE_BLOCK, HUD.RichMenu.StackOption.Stack);
+                                })));
+
+                            LocalHost().hud.messages.Add(content);
+                        }
+                    }
+                    break;
+
+                case PacketType.PlayPause:
+                    //void setSpeedValue(int value)
+                    {
+                        int value = packet.r.ReadByte();
+                        if (value != gameSpeedValue())
+                        {
+                            if (value == 0)
+                            {
+                                Ref.SetPause(true);
+                            }
+                            else
+                            {
+                                Ref.SetPause(false);
+                                Ref.SetGameSpeed(value);
+                            }
+                            onSpeedChange();
+
+                            RichBoxContent content = new RichBoxContent();
+                            if (Ref.isPaused)
+                            {
+                                content.icontext(SpriteName.WarsHudHeadBarPauseIcon, DssRef.lang.Input_Pause);
+                            }
+                            else
+                            {
+                                content.icontext(SpriteName.WarsHudHeadBarPlayIcon,
+                                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, Ref.TargetGameTimeSpeed)));
+                            }
+                            LocalHost().hud.messages.Add(content, Ref.isPaused ? SoundLib.speed_down : SoundLib.speed_up);
+                        }
+                    }
+                    break;
+
+                case PacketType.DssPing:
+                    {
+                        int pinIndex = packet.r.ReadUInt16();
+                        var pin = sender.netReadPin(pinIndex, packet.r);
+                        if (pin != null && pin.Net_IsVisible())
+                        {
+                            pin.setInRenderState();
+
+                            RichBoxContent content = new RichBoxContent();
+                            content.h1(DssRef.lang.ObjectType_LocationPin_Ping, HudLib.TitleColor_Head);
+                            if (pin.pingMessage != PingMessage.None)
+                            {
+                                content.text(pin.pingMessage.ToString(), HudLib.InfoYellow_Light);
+                            }
+
+                            content.newParagraph();
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(pin.Name(out _)) },
+                                new RbAction1Arg<AbsGameObject>(LocalHost().hud.messages.goToMapObject, pin, RbSoundType.Default))
+                            { fillWidth = true });
+
+                            LocalHost().hud.messages.Add(content, SoundLib.message_loud);
+                        }
+                    }
+                    break;
+
+                case PacketType.DssPinUpdate:
+                    {
+                        sender.netReadPinUpdate(packet.r);
+                    }
+                    break;
+
+                case PacketType.DssPinHide:
+                    {
+                        int pinIndex = packet.r.ReadUInt16();
+                        sender.pins.GetIndex_Safe(pinIndex)?.Hide();
+                    }
+                    break;
+                case PacketType.DssPinDelete:
+                    {
+                        int pinIndex = packet.r.ReadUInt16();
+                        sender.pins.GetIndex_Safe(pinIndex)?.DeleteMe(DeleteReason.NetworkEvent, true);
+                    }
+                    break;
+
+                case PacketType.DssRename:
+                    AbsMapObject.NetReadRename(packet.r);
+                    break;
+
+                case PacketType.DssReColor:
+                    {
+                        var faction = ObjectId.ReadFaction(packet.r, out _);
+                        if (faction != null && faction.player != null)
+                        {
+                            Color color = StreamLib.ReadColorStream_3B(packet.r);
+                            faction.player.SetColor(color, false);
+
+                            RichBoxContent content = new RichBoxContent();
+                            content.h1(DssRef.lang.Editor_Color_Recolor, HudLib.TitleColor_Head);
+                            content.newLine();
+                            faction.player.GetHumanPlayer().addNetGamerToHud(content, true, false);
+                            LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+                        }
+                    }
+                    break;
+
+                case PacketType.DssGiftGold:
+                    DiplomacyDisplay.NetReadSendGold(packet, sender);
+                    break;
+                case PacketType.DssBattleLabStartNew:
+                    //Debug.Log("####### battle lab ######");
+                    BattleSetupManager.NetStartBattleLab(packet.r);
+                    break;
+                case PacketType.DssBattleLabAddSoldiers:
+                    BattleSetupManager.NetAddSoldiers(packet.r);
+                    break;
+                case PacketType.DssRequestCityClaim:
+                    City.NetReadClaim(packet.r);
+                    break;
+                case PacketType.DssFactionDeath:
+                    PFaction pFaction = new PFaction(packet.r);
+                    if (pFaction.TryGetFaction(out var f))
+                    { f.DeleteMe(); }
+                    break;
+               
+            }
+#if !DEBUG
+            }
+            catch
+            {
+                NetEvent_ErrorMessage($"Net packet failure: {packet.type}", sender.networkPeer.peer, true);
+            }
+#endif
+
+
+            //void readGroupStatus(bool bArmy)
+            //{
+            //    if (ObjectId.NetReadMapObjId(packet.r, out Faction faction, bArmy, true, out AbsArmy mapObj, out bool needInit))
+            //    {
+            //        if (mapObj != null)
+            //        {
+
+            //            //bool more = false;
+            //            //do
+            //            //{
+            //            //    more = AbsArmy.NetReadGroup(packet.r, mapObj);
+            //            //} while (more);
+            //        }
+            //    }
+            //}
+        }
+
+
+
+        void netWriteSendWorld(ReceivedPacket requestPacket, RemotePlayer sender)
+        {
+            Color? recolor = null;
+
+            var hash = PlayerMapHistory.GetGamerHash(false, sender.networkPeer.peer.fullId, sender.networkPeer.SplitScreenIndex);
+            if (previousRemotePlayers.TryGetValue(hash, out var history))
+            {
+                recolor = history.recolor;
+            }
+            else if (Ref.netsett.hostSettings.autoReColorFlags)
+            {
+                Color flagColor = StreamLib.ReadColorStream_3B(requestPacket.r);
+
+                recolor = autoRecolor(sender, flagColor);
+            }
+
+            /*
+            Joining player wait in lobby for this package
+            */
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, PacketReliability.Reliable, SendPacketTo.OneSpecific, requestPacket.sender.fullId, null);
+            var meta = new SaveStateMeta();
+            meta.netSetup();
+            new NetSharedHostSettings().write(w);
+            var saveGamestate = new SaveGamestate(meta);
+            saveGamestate.writeNet(w);
+            DssRef.storage.ruleset.write(w, false);
+
+            w.Write(recolor.HasValue);
+            if (recolor.HasValue)
+            {
+                StreamLib.WriteColorStream_3B(w, recolor.Value);
+            }
+        }
+
+        public static SaveGamestate NetReadSendWorld(System.IO.BinaryReader r)
+        {
+            var meta = new SaveStateMeta();
+            var saveGamestate = new SaveGamestate(meta);
+
+            Ref.netsett.remoteHostSettings.read(r);
+
+            saveGamestate.readNet(r);
+            saveGamestate.complete = true;
+
+            DssRef.storage.ruleset_instance.read(r, false);
+
+            if (r.ReadBoolean())
+            {
+                Color recolor = StreamLib.ReadColorStream_3B(r);
+                ((PlayState)DssRef.state).recolor = recolor;
+            }
+
+
+            return saveGamestate;
+        }
+
+        void netPresentYourself(ReceivedPacket packet)
+        {
+            System.IO.BinaryWriter w;
+
+            if (packet.sender == null)
+            {
+                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable);
+            }
+            else
+            {
+                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
+            }
+
+            var sett = new NetSharedClientSettings();
+            sett.ApplyHostSettings();
+            sett.write(w);
+
+            w.Write((byte)localPlayers.Count);
+            foreach (var local in localPlayers)
+            {
+                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
+                profile.flag.write(w);
+
+                w.Write(profile.casualControls);
+
+                Net.ObjectId.WriteFaction(w, local.pfaction.GetFaction());
+
+                local.giftedAchievements.writeNetStatus(w);
+            }
+        }
+        void NetReadPresentation(ReceivedPacket packet, RemotePlayer sender)
+        {
+            sender.netClientSettings.read(packet.r);
+            sender.netClientSettings.clientPtoP.ApplyFairProtection();
+
+            int count = packet.r.ReadByte();
+
+            if (sender.profile.flag == null)
+            {
+                sender.profile.flag = new FlagAndColor(packet.r);
+                sender.pointer.colorFrame.Color = sender.profile.flag.col0_Main;
+                sender.flagTexture = sender.profile.flag.flagDesign.CreateTexture(sender.profile.flag);
+
+                sender.profile.casualControls = packet.r.ReadBoolean();
+               
+                var pfaction = new PFaction(packet.r);
+                if (pfaction.HasValue())
+                {
+                    sender.pfaction = pfaction;
+                }
+                sender.giftedAchievements.readNetStatus(packet.r);
+
+
+                RichBoxContent content = new RichBoxContent();
+
+                content.h2(NetworkIcon, DssRef.lang.Multiplayer_PlayerJoined, HudLib.TitleColor_Head);
+                content.newLine();
+                sender.addNetGamerToHud(content, true, false);
+                LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+
+
+                if (host)
+                {
+                    //Assign faction
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            Faction faction = null;
+                            bool firstEnterSetup = false;
+
+                            var hash = PlayerMapHistory.GetGamerHash(false, packet.sender.fullId, packet.senderLocalIndex);
+                            if (previousRemotePlayers.TryGetValue(hash, out var history))
+                            {
+                                previousRemotePlayers.Remove(hash);
+                                Faction prevFaction = history.pfaction.GetFaction();
+                                if (prevFaction != null &&
+                                    prevFaction.cities.Count > 0 &&
+                                    prevFaction.player.IsBot()
+                                    )
+                                {
+                                    faction = prevFaction;
+                                    sender.timePlayed = history.timePlayed;
+                                }
+                            }
+
+                            if (faction == null)
+                            {
+                                firstEnterSetup = true;
+                                faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
+                            }
+
+                            if (faction != null && faction.player.IsBot())
+                            {
+                                Ref.update.AddSyncAction(new SyncAction(() =>
+                                {
+                                    sender.AssignFaction(faction);
+                                    if (firstEnterSetup)
+                                    {
+                                        sender.FirstEnterSetup();
+                                    }
+
+                                    Ref.steam.P2PManager.OnSendingLargeDataChunk();
+
+                                    factionHandovers.Enqueue(new FactionHandover(packet.sender, faction, firstEnterSetup, true));
+                                }));
+                            }
+                            else
+                            {                                
+
+                                Ref.update.AddSyncAction(new SyncAction(() =>
+                                {
+                                    Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction_Failed, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
+                                    RichBoxContent content = new RichBoxContent();
+                                    content.icontext(SpriteName.RedErrorCross, DssRef.todoLang.JoinFailure_NoAvailableFaction);
+                                    sender.addNetGamerToHud(content, false, false);
+                                    LocalHost().hud.messages.Add(content, SoundLib.wrong);
+
+                                    
+                                }));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            BlueScreen.ThreadException = ex;
+                        }
+                    });
+                }
+            }
+        }
+
+        public override void NetEvent_LargePacket(ReceivedPacket packet)
+        {
+            packetsRecieved[(int)packet.type]++;
+
+            switch (packet.type)
+            {
+                case PacketType.DssCityHandOver:
+                    var city = City.NetReadHandOver(packet.r);
+                    if (LocalHost().netFirstTimeEnter && !factionHandOverComplete)
+                    {
+                        city.workTemplate.setAllToFollowFactionAndUpdate(city, LocalHost().pfaction.GetFaction().workTemplate);
+                    }
+                    break;
+                case PacketType.DssWorldDiplomacy:
+                    DssRef.world.diplomacy.readRelations(packet.r, int.MaxValue);
+                    break;
+
+                case PacketType.DssFactionnEnterDiplomacy:
+                    DssRef.world.diplomacy.readRelationsForEnter(packet.r);
+                    break;
+            }
+        }
+
+        public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)
+        {
+            return packet.sender.instancePeers?[packet.senderLocalIndex].Tag as Players.RemotePlayer;
+        }
+
+        public AbsHumanPlayer GetPlayer(ulong id)
+        {
+            if (Ref.netSession.LocalPeer().fullId == id)
+            {
+                return LocalHost();
+            }
+
+            var remotePlayerC = remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                if (remotePlayerC.sel.networkPeer.peer.fullId == id)
+                {
+                    //TODO return region to AI
+                    return remotePlayerC.sel;
+                }
+            }
+
+            return null;
+        }
+
+        public override void NetEvent_GotNetworkId()
+        {
+            //doesnt run
+            base.NetEvent_GotNetworkId();
+        }
+
+        public override void NetworkStatusMessage(NetworkStatusMessage message)
+        {
+            //base.NetworkStatusMessage(message);
+
+            switch (message)
+            {
+                case Network.NetworkStatusMessage.Created_session:
+                    if (localPlayers != null)
+                    {
+                        foreach (var p in localPlayers)
+                        {
+                            p.initNetwork();
+                        }
+                    }
+                    break;
+            }
+        }
+
+        public override void NetEvent_ErrorMessage(string message, AbsNetworkPeer peer, bool peerIsSender)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(SpriteName.RedErrorCross, DssRef.lang.Multiplayer_NetworkError, HudLib.NotAvailableColor);
+            content.text(message);
+
+            var player = GetPlayer(peer.fullId) as RemotePlayer;
+
+            if (player != null)
+            {
+                content.newLine();
+                HudLib.Label(content, peerIsSender ? DssRef.lang.Multiplayer_Sender : DssRef.lang.Multiplayer_Receiver);
+                content.newLine();
+                player.addNetGamerToHud(content, true, false);
+
+                LocalHost().hud.messages.Add(content);
+            }
+        }
+        public override void NetEvent_ConnectionLost(string reason)
+        {
+            base.NetEvent_ConnectionLost(reason);
+            if (!this.host)
+            {
+                new GameState.ExitToLobby(false);
+            }
+        }
+
+        CircleCounterUp dividedUpdate = new CircleCounterUp(3);
+        Timer.Basic NetSlowUpdate = new Timer.Basic(1500, true);
+
+        public override void NetUpdate()
+        {
+            asyncRoundTrip = true;
+
+            if (factionHandovers.IsEmpty || dividedUpdate.Next_IsReset())
+            {
+                bool slowUpdate = NetSlowUpdate.Update();
+
+                foreach (var player in localPlayers)
+                {
+                    player.NetUpdate(slowUpdate);
+                }
+
+                if (slowUpdate && Ref.netSession.IsHost)
+                {
+                    var w = Ref.netSession.BeginWritingPacket(PacketType.PlayPause, PacketReliability.Unrelyable,  SendPacketTo.Ready, 0, null);
+                    w.Write((byte)gameSpeedValue());
+                }
+            }
+        }
+
+        int maxPlayerCount = 1;
+        public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
+        {
+            base.NetEvent_PeerJoined(peer);
+            var player = GetOrCreateRemotePlayer(peer, 0);
+
+            if (host)
+            {
+                RichBoxContent content = new RichBoxContent();
+
+                content.h1(SpriteName.WarsHudIconMultiplayer, DssRef.lang.Network_ConnectingToGame, HudLib.TitleColor_Head);
+
+                content.newLine();
+                player.addNetGamerToHud(content, true, false);
+
+                LocalHost().hud.messages.Add(content);
+            }
+
+            if (Ref.netsett.voiceOption == VoiceOption.AlwaysOn)
+            {
+                Ref.steam.StartRecording();
+            }
+
+            menuSystem.OnMultiplayer();
+
+            int count = remotePlayers.Count + 1;
+            if (count > maxPlayerCount && Ref.netSession.IsHost)
+            {
+                maxPlayerCount = count;
+                if (maxPlayerCount >= 3)
+                {
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        new MultiplayerCountLeaderBoard(maxPlayerCount);
+                    }));
+                }
+
+                switch (maxPlayerCount)
+                {
+                    case 2:
+                        DssRef.stats.startHostingMultiplayer_2.addOne();
+                        Ref.netsett.SendStats(true);
+                        break;
+                    case 3: DssRef.stats.startHostingMultiplayer_3.addOne(); break;
+                    case 4: DssRef.stats.startHostingMultiplayer_4.addOne(); break;
+                    case 10: DssRef.stats.startHostingMultiplayer_10.addOne(); break;
+                }
+
+                Ref.steamlobby.refreshMetaData();
+            }
+        }
+
+        public override void NetEvent_PeerLost(AbsNetworkPeer peer)
+        {
+            if (peer == Ref.netSession.Host())
+            {
+                NetEvent_ConnectionLost("Host peer timeout");
+            }
+
+            var player = GetPlayer(peer.fullId) as RemotePlayer;
+
+            if (player == null)
+            {
+                var remotePlayerC = remotePlayers.counter();
+                while (remotePlayerC.Next())
+                {
+                    if (remotePlayerC.sel.networkPeer != null &&
+                        remotePlayerC.sel.networkPeer.peer == peer)
+                    {
+                        player = remotePlayerC.sel;
+                    }
+                }
+            }
+
+            if (player != null)
+            {
+
+                player.DeleteMe();
+
+                var history = player.GetMapHistory();
+                arraylib.AddOrReplace(previousRemotePlayers, history.GetHashCode(), history);
+                remotePlayers.Remove(player);
+
+                RichBoxContent content = new RichBoxContent();
+
+                content.h2(NetworkIcon, DssRef.lang.Multiplayer_PlayerLeft, HudLib.TitleColor_Head);
+
+                content.newLine();
+
+                player.addNetGamerToHud(content, true, false);
+
+                if (player.pfaction.GetFaction() != null)
+                {
+                    var aiPlayer = player.previousPlayer;
+                    player.pfaction.GetFaction().factiontype = player.previousFactionType;
+
+                    if (aiPlayer != null)
+                    {
+                        aiPlayer.AssignFaction(player.pfaction.GetFaction());
+                        DssRef.world.BordersUpdated = true;
+                    }
+                }
+
+                LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+                Ref.netsett.settingsHasChanged = true;
+            }
+
+            Ref.steamlobby.refreshMetaData();
+        }
+
+
+
+
+        public void NetWritePlayer(System.IO.BinaryWriter w, AbsHumanPlayer player)
+        {
+            player.networkPeer.writeNetID(w);
+        }
+
+        public AbsHumanPlayer NetReadPlayer(System.IO.BinaryReader r)
+        {
+            NetworkInstancePeer.ReadNetID(r, out var peer, out int index);
+
+            return GetOrCreateRemotePlayer(peer, index);
+        }
+
+        public void sendGiftedAchievement(GiftedAchievementType type, RemotePlayer toPlayer)
+        {
+            var w = Ref.netSession.BeginWritingPacket(PacketType.DssGiftAchievement, PacketReliability.Reliable);
+            toPlayer.networkPeer.writeNetID(w);
+            w.Write((byte)type);
+
+            giftMessage(LocalHost(), toPlayer, type);
+
+            DssRef.stats.onSendGift(type);
+        }
+
+        void readGiftedAchievement(ReceivedPacket packet)
+        {
+            AbsHumanPlayer toPlayer = NetReadPlayer(packet.r);
+            GiftedAchievementType type = (GiftedAchievementType)packet.r.ReadByte();
+            giftMessage(GetRemotePlayer(packet), toPlayer, type);
+
+            if (toPlayer.IsLocal)
+            {
+                var gift = GiftedAchievementCollection.Get(type);
+                DssRef.achieve.UnlockAchievement(gift.achievement);
+            }
+        }
+
+        void giftMessage(AbsHumanPlayer from, AbsHumanPlayer to, GiftedAchievementType type)
+        {
+            to.giftedAchievements.Add(type, from);
+
+            RichBoxContent content = new RichBoxContent();
+
+
+            from.addNetGamerToHud(content, true, false);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.cmdConvertArrow));
+            content.newLine();
+            to.addNetGamerToHud(content, true, false);
+
+            content.newParagraph();
+            content.h1(NetworkIcon, DssRef.lang.GiftedAchievements, HudLib.TitleColor_Head2);
+            content.newLine();
+
+            var gift = GiftedAchievementCollection.Get(type);
+            content.h1(GiftedAchievement.DefaultIcon, gift.name, HudLib.TitleColor_TypeName);
+            content.text(gift.description, HudLib.InfoYellow_Light);
+
+            LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+        }
+
+        public void BanWarning(AbsHumanPlayer from, AbsHumanPlayer to, BadBehaviourType behaviourType)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+
+            from.addNetGamerToHud(content, true, false);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.cmdConvertArrow));
+            content.newLine();
+            to.addNetGamerToHud(content, true, false);
+
+            content.newParagraph();
+            content.h1(NetworkIcon, TextLib.LargeFirstLetter(DssRef.lang.Multiplayer_BanWarning), HudLib.TitleColor_Head2);
+            content.newLine();
+
+            content.text(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Hud_Reason, behaviourType.ToString()), HudLib.InfoYellow_Light);
+
+            LocalHost().hud.messages.Add(content, SoundLib.netJoined);
+        }
+
+        public void KickPlayer(AbsNetworkPeer networkPeer)
+        {
+            Ref.netSession.kickFromNetwork(networkPeer);
+        }
+
+        public void BlockPlayer(AbsNetworkPeer networkPeer)
+        {
+            networkPeer.storedData.ban = BanStatus.Banned;
+            Ref.netSession.kickFromNetwork(networkPeer);
+        }
+
+
+        public void RequestClientGamestates(bool autoSave, bool exit = false)
+        {
+            if (waitingForClientHandover == false)
+            {
+                waitingForClientHandover_autosave = autoSave;
+                waitingForClientHandover_exit = exit;
+                waitingForClientHandover = true;
+                waitingForClientHandover_Paused = Ref.isPaused;
+                waitingForClientHandoverTime.setNow();
+                DssRef.state.PauseOnNetSave(true);
+                remotePlayersCounter.Reset();
+                while (remotePlayersCounter.Next())
+                {
+                    remotePlayersCounter.sel.waitingForSaveHandover = true;
+                }
+
+                var w = Ref.netSession.BeginWritingPacket(PacketType.DssBeginSave, PacketReliability.Reliable);
+                w.Write(DssRef.time.TotalIngameTime().Ticks);
+                DssRef.world.metaData.worldId.write(w);
+
+                RichBoxContent content = new RichBoxContent();
+                content.icontext(NetworkIcon, DssRef.lang.Multiplayer_RequestingClientGamestates);
+                LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+            }
+        }
+
+        void saveClient(System.IO.BinaryReader r)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.iconicontext(NetworkIcon, SpriteName.WarsHudIconSpeed_Pause, DssRef.lang.Hud_Save);
+            LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+
+            factionHandovers.Enqueue(new FactionHandover(Ref.netSession.Host(), LocalHost().pfaction.GetFaction(), false, false));
+
+            var playTime = new TimeSpan(r.ReadInt64());
+            WorldMetaId id = new WorldMetaId();
+            id.read(r);
+
+            ClientSaveMeta meta = new ClientSaveMeta(playTime, id, LocalHost().pfaction);
+            ClientSaveState saveGamestate = new ClientSaveState(meta);
+            saveGamestate.save();
+
+            DssRef.storage.Save(null);
+
+            DssRef.state.PauseOnNetSave(true);
+        }
+
+        public void PacketCountToHud(RichBoxContent content)
+        {
+            content.h2("*Packets recieved", HudLib.TitleColor_Head2);
+            for (PacketType type = PacketType.NON + 1; type < PacketType.DssNUM; type++)
+            {
+                content.newLine();
+                content.Add(new RbText(packetsRecieved[(int)type].ToString()));
+                content.Add(new RbTab(0.25f));
+                content.Add(new RbText(type.ToString()));
+            }
+
+            content.newParagraph();
+            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Canvas_Clear) },
+                new RbAction(() =>
+                {
+                    Array.Clear(packetsRecieved);
+                }), null));
+
+            if (host)
+            {
+                content.newParagraph();
+                content.text("Handover queue: " + factionHandovers.Count.ToString());
+            }
+        }
+    }
+}

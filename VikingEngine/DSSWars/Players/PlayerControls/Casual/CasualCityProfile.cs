@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
@@ -215,7 +216,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             folkmen = new SoldierPurchaseOption(1, ItemResourceType.NONE,ItemResourceType.SharpStick, TrainingLevel.Minimal);
             meleeMen = new SoldierPurchaseOption(1, ItemResourceType.HeavyPaddedArmor, ItemResourceType.ShortSword, TrainingLevel.Basic);
             rangedMen = new SoldierPurchaseOption(1, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
-            riderMen = new SoldierPurchaseOption(0, ItemResourceType.IronArmor, ItemResourceType.KnightsLance, TrainingLevel.Skillful);
+            riderMen = new SoldierPurchaseOption(0, ItemResourceType.IronArmor, ItemResourceType.HandSpear, TrainingLevel.Skillful);
             siegeMen = new SoldierPurchaseOption(1, ItemResourceType.NONE, ItemResourceType.Ballista, TrainingLevel.Basic);
 
             
@@ -234,7 +235,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 siegeMen.price = 1;
             }
 
-            if (city.Culture == CityCulture.Seafaring || culture.percWater > 0.5)
+            if (city.cityCulture == CityCulture.Seafaring || culture.percWater > 0.5)
             {
                 shipmen = new SoldierPurchaseOption(  1, ItemResourceType.PaddedArmor, ItemResourceType.ThrowingSpear, TrainingLevel.Basic);
                 
@@ -263,9 +264,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             if (riderMen.Available) riderMen.price = 3000;
             if (siegeMen.Available) siegeMen.price = 1200;
 
-            switch (city.Culture)
+            switch (city.cityCulture)
             {
-                case CityCulture.AnimalBreeder:
+                //case CityCulture.AnimalBreeder:
                 case CityCulture.FertileGround:
                 case CityCulture.LargeFamilies:
                 case CityCulture.Lawbiding:

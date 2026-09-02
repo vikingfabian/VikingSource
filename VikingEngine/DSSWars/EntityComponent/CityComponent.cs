@@ -5,26 +5,214 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
+using VikingEngine.EngineSpace;
+using VikingEngine.LootFest.Display;
+using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars
 {  
     partial class WorldData
     {
-
-        public EcsStaticArray neighborCities;
+        public EcsStaticIndexArray neighborCities;
         public GroupedResource[] cityResouces;
+        public WorkPriority[] cityWork;
+        public StorageSize[] cityStorage;
 
+        const int WorkerXpCOUNT = (int)WorkExperienceType.NUM_NONE;
+        int nextXpIndex = 0;
+        bool[] WorkXpInUse;
+        public StructList<WorkExperience> workerXp;
+        
         public void InitCity(City city)
-        { 
-            city.resourceComponentStartIndex = CityResoureIndex.COUNT * city.myIndex;
+        {
+            city.resourceComponentStartIndex = CityResourceIndex.COUNT * city.myIndex;
+           
+        }
+
+        public void initWorkerXp(int cityCount)
+        {
+            int reserveWorkerCount = cityCount * 400;
+            WorkXpInUse = new bool[reserveWorkerCount];
+            workerXp = new StructList<WorkExperience>(reserveWorkerCount * WorkerXpCOUNT);
+        }
+
+        /// <returns>Entity index</returns>
+        public int ReserveNextWorkXpIndex()
+        {
+            int loop = 0;
+            while (nextXpIndex >= WorkXpInUse.Length || WorkXpInUse[nextXpIndex])
+            { 
+                ++nextXpIndex;
+                if (nextXpIndex >= WorkXpInUse.Length)
+                {
+                    nextXpIndex = 0;
+                    loop++;
+                    if (loop > 2)
+                    {
+                        //throw new Exception("Out of worker xp")
+                        nextXpIndex = WorkXpInUse.Length;
+                        workerXp.Resize();
+                        Array.Resize(ref WorkXpInUse, WorkXpInUse.Length * 2);
+                        break;
+                    }
+                }
+            }
+
+            WorkXpInUse[nextXpIndex] = true;
+            
+            return nextXpIndex++;
+        }
+
+        public void FreeWorkerXp(int index)
+        {
+            if (index >= 0)
+            {
+                ResetWorkerXp(index);
+
+                WorkXpInUse[index] = false;
+            }
+        }
+
+        public void ResetWorkerXp(int index)
+        {
+            if (index >= 0)
+            {
+                int start = index * WorkerXpCOUNT;
+                //Clear out!
+                for (int i = 0; i < WorkerXpCOUNT; ++i)
+                {
+                    workerXp.array[i + start] = WorkExperience.Empty;
+                }
+            }
+        }
+
+        public WorkExperience GetWorkXp(int index, WorkExperienceType type)
+        {
+#if DEBUG
+            if (!workerXp.InBound_Array(index * WorkerXpCOUNT + (int)type))
+            {
+                throw new Exception();
+            }
+#endif
+            int arrayIx = index * WorkerXpCOUNT + (int)type;
+            if (workerXp.InBound_Array(arrayIx))
+            {
+                return workerXp.array[arrayIx];
+            }
+
+            return empty;
+        }
+        public void SetWorkXp(int index, WorkExperienceType type, byte xp)
+        {
+#if DEBUG
+            if (!workerXp.InBound_Array(index * WorkerXpCOUNT + (int)type))
+            {
+                throw new Exception();
+            }
+#endif
+            workerXp.array[index * WorkerXpCOUNT + (int)type].xp = xp;
+        }
+
+        WorkExperience empty = new WorkExperience();
+        public ref WorkExperience GetRefWorkXp(int index, WorkExperienceType type)
+        {
+            int arrayIx = index * WorkerXpCOUNT + (int)type;
+#if DEBUG
+            if (!workerXp.InBound_Array(arrayIx))
+            {
+                throw new Exception();
+            }
+#endif
+            if (index >= 0)
+            {
+                return ref workerXp.array[arrayIx];
+            }
+
+            return ref empty;
+        }
+
+        public void writeWorkXp(int index, System.IO.BinaryWriter w)
+        {
+            if (index >= 0)
+            {
+                int start = index * WorkerXpCOUNT;
+
+                for (int i = 0; i < WorkerXpCOUNT; ++i)
+                {
+                    workerXp.array[i + start].write(w);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < WorkerXpCOUNT; ++i)
+                {
+                    WorkExperience.Empty.write(w);
+                }
+            }
+        }
+        public void readWorkXp(int index, System.IO.BinaryReader r, int subVersion)
+        {
+            int start = index * WorkerXpCOUNT;
+
+            for (int i = 0; i < WorkerXpCOUNT; ++i)
+            {
+                workerXp.array[i + start].read(r);
+            }
+        }
+
+        public int GetWorkXpScore(int index)
+        {
+            int score = 0;
+            if (index >= 0)
+            {
+                int start = index * WorkerXpCOUNT;
+
+                for (int i = 0; i < WorkerXpCOUNT; ++i)
+                {
+                    score += MathExt.Square(workerXp.array[i + start].xp);
+                } 
+            }
+            return score;
+        }
+
+        public List<(WorkExperience xp, WorkExperienceType type)> listWorkXp(int index)
+        {
+            var xpPairs = new List<(WorkExperience xp, WorkExperienceType type)>(8);
+
+            int start = index * WorkerXpCOUNT;
+
+            for (int i = 0; i < WorkerXpCOUNT; ++i)
+            {
+                if (workerXp.array[i + start].xp >= DssConst.WorkXpToLevel)
+                {
+                    xpPairs.Add(new (workerXp.array[i + start], (WorkExperienceType)i));
+                }
+            }
+            
+            // Sort the list by XP in descending order
+            xpPairs.Sort((a, b) => b.xp.CompareTo(a.xp));
+
+            return xpPairs;
         }
 
         public void clearCityResources(City city)
         {
-            int ex_end = city.resourceComponentStartIndex + CityResoureIndex.COUNT;
+            int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;
             for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
             {
                 cityResouces[i].amount = 0;
+            }
+        }
+
+        public void setCityStockPile(City city, int limit)
+        {
+            int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;
+            for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
+            {
+                cityResouces[i].setLimit(limit);
             }
         }
 
@@ -33,11 +221,18 @@ namespace VikingEngine.DSSWars
 
         public void Init_CityComponents(int cityCount)
         {
-            cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
-            neighborCities = new EcsStaticArray(14, cityCount);
+            initWorkerXp(cityCount);
+
+            cityResouces = new GroupedResource[CityResourceIndex.COUNT * cityCount];
+            neighborCities = new EcsStaticIndexArray(16, cityCount);
+            cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
+            cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
+
+            int resourceStart = 0;
+            //int workStart = 0;
 
             int startWood, startLinnen, startFood;
-            if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+            if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
             {
                 startWood = 120;
                 startLinnen = 120;
@@ -50,102 +245,54 @@ namespace VikingEngine.DSSWars
                 startFood = 200;
             }
 
+            for (int i = 0; i < cityWork.Length; i++)
+            {
+                cityWork[i] = new WorkPriority(0);
+            }
+
+            int resStartIndex = 0;
             int startIndex = 0;
             for (int cityIx = 0; cityIx < cityCount; cityIx++)
             {
-                //cities[cityIx].resourceComponentStartIndex = startIndex;
-                //int multiplyDefault = cities[cityIx].cityType == CityType.UnClaimed ? 0 : 1;
-                // Basics
-                cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = startWood, stockPileLimit = DefaultBuffer_Wood };
-                cityResouces[startIndex + CityResoureIndex.fuel] = new GroupedResource { amount = 100, stockPileLimit = 400 };
-                cityResouces[startIndex + CityResoureIndex.water] = new GroupedResource { stockPileLimit = 0 }; // (no default given)
-                cityResouces[startIndex + CityResoureIndex.stone] = new GroupedResource { amount = 20, stockPileLimit = 300 };
-                cityResouces[startIndex + CityResoureIndex.rawFood] = new GroupedResource { amount = 0, stockPileLimit = 200 };
-                cityResouces[startIndex + CityResoureIndex.food] = new GroupedResource { amount = startFood, stockPileLimit = 500 };
-                cityResouces[startIndex + CityResoureIndex.beer] = new GroupedResource { amount = 0, stockPileLimit = 200 };
-                cityResouces[startIndex + CityResoureIndex.coolingfluid] = new GroupedResource { amount = 0, stockPileLimit = 200 };
-                cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { amount = startLinnen, stockPileLimit = DefaultBuffer_SkinLinnen };
+                for (int resourceIx = 0; resourceIx < CityResourceIndex.COUNT; ++resourceIx)
+                {
+                    cityResouces[resourceStart + resourceIx] = new GroupedResource();
+                }
 
-                // Ores
-                cityResouces[startIndex + CityResoureIndex.ironore] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.TinOre] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.CopperOre] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.LeadOre] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.SilverOre] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.GoldOre] = new GroupedResource { stockPileLimit = 100 };
+                cityResouces[resStartIndex + CityResourceIndex.wood].amount = startWood;
+                cityResouces[resStartIndex + CityResourceIndex.fuel].amount = 100;
+                cityResouces[resStartIndex + CityResourceIndex.stone].amount = 20;
+                cityResouces[resStartIndex + CityResourceIndex.food].amount = startFood;
+                cityResouces[resStartIndex + CityResourceIndex.skinLinnen].amount = startLinnen;                
+                cityResouces[resStartIndex + CityResourceIndex.iron].amount = 20;
 
-                // Refined / materials
-                cityResouces[startIndex + CityResoureIndex.iron] = new GroupedResource { amount = 20, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Tin] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Copper] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Lead] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Silver] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.RawMithril] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Sulfur] = new GroupedResource { stockPileLimit = 100 };
+                resourceStart += CityResourceIndex.COUNT;
 
-                // Alloys / specials
-                cityResouces[startIndex + CityResoureIndex.Bronze] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Steel] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.CastIron] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.BloomeryIron] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Mithril] = new GroupedResource { stockPileLimit = 100 };
+                WorkTemplate.InitComponents(cityWork, startIndex);
 
-                // Tools / components / melee
-                cityResouces[startIndex + CityResoureIndex.Palisade] = new GroupedResource { stockPileLimit = 0 };
-                cityResouces[startIndex + CityResoureIndex.Toolkit] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Wagon2Wheel] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Wagon4Wheel] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.BlackPowder] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.GunPowder] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.LedBullet] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.sharpstick] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.BronzeSword] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.shortsword] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Sword] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.LongSword] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.HandSpear] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.MithrilSword] = new GroupedResource { stockPileLimit = 100 };
-
-                // More weapons
-                cityResouces[startIndex + CityResoureIndex.Warhammer] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.twohandsword] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.knightslance] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.SlingShot] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.ThrowingSpear] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.bow] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.longbow] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.crossbow] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.MithrilBow] = new GroupedResource { stockPileLimit = 100 };
-
-                // Early firearms
-                cityResouces[startIndex + CityResoureIndex.HandCannon] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.HandCulvertin] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Rifle] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Blunderbuss] = new GroupedResource { stockPileLimit = 100 };
-
-                // Siege
-                cityResouces[startIndex + CityResoureIndex.BatteringRam] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.ballista] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Manuballista] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.Catapult] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.SiegeCannonBronze] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.ManCannonBronze] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.SiegeCannonIron] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.ManCannonIron] = new GroupedResource { stockPileLimit = 100 };
-
-                // Armor
-                cityResouces[startIndex + CityResoureIndex.paddedArmor] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.HeavyPaddedArmor] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.BronzeArmor] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.mailArmor] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.heavyMailArmor] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.LightPlateArmor] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.FullPlateArmor] = new GroupedResource { stockPileLimit = 100 };
-                cityResouces[startIndex + CityResoureIndex.MithrilArmor] = new GroupedResource { stockPileLimit = 100 };
-
-                startIndex += CityResoureIndex.COUNT;
+                startIndex += WorkTemplate.COUNT;
             }
+
+            for (int i = 0; i < cityStorage.Length; i++)
+            {
+                cityStorage[i] = new StorageSize();
+            }
+
         }
 
+        public void writeComponents(System.IO.BinaryWriter w)
+        {
+            for (int i = 0; i < cityStorage.Length; i++)
+            {
+                cityStorage[i].write(w);
+            }
+        }
+        public void readComponents(System.IO.BinaryReader r, int subVersion)
+        {
+            for (int i = 0; i < cityStorage.Length; i++)
+            {
+                cityStorage[i].read(r, subVersion);
+            }
+        }
     }
 }

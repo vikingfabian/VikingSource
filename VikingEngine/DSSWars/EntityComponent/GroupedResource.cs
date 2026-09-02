@@ -8,18 +8,79 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Characters;
 
 namespace VikingEngine.DSSWars.EntityComponent
 {
+    enum StockpileLimitOption
+    {
+        Zero,
+        //Value100,
+        //Value500,
+        Value200,
+        Value4000,
+        NoLimit,
+        NUM
+    }
+
     struct GroupedResource
     {
+
         public int amount;
+
+        /// <summary>
+        /// Limit from storage buildings
+        /// </summary>
+        public int capacity;
+        
+        /// <summary>
+        /// Player set limit
+        /// </summary>
         public int stockPileLimit;
         public int deliverCount;
+        public bool hasCesspit;
+        
+        public bool useStockLimit;
 
         public ResourceChangeRate changeRate;
+
+        public GroupedResource()
+        {
+            stockPileLimit = DssConst.StorageStartSize;
+            useStockLimit = false;
+        }
+
+        public void copyLimitFrom(GroupedResource copyFrom, bool respectCapacity)
+        {
+            this.stockPileLimit = copyFrom.stockPileLimit;
+            if (respectCapacity && stockPileLimit > capacity)
+            {
+                stockPileLimit = capacity;
+            }
+            useStockLimit = copyFrom.useStockLimit;
+        }
+
+        public void setLimit(int limit)
+        {
+            if (limit >= ushort.MaxValue)
+            {
+                useStockLimit = false;
+            }
+            else
+            {
+                useStockLimit = true;
+                stockPileLimit = Math.Min(capacity, limit);
+            }
+        }
+
+        public void hardSetLimit(int limit)
+        {
+            useStockLimit = true;
+            stockPileLimit = limit;
+        }
 
         public void clearFactionOverView()
         {
@@ -32,12 +93,12 @@ namespace VikingEngine.DSSWars.EntityComponent
         {
             content.newLine();
 
-            content.Add(new RbImage(ResourceLib.Icon(item)));
+            IconName.Item(item, out SpriteName itemIcon, out string itemName);
+            content.Add(new RbImage(itemIcon));
             content.space();
-            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": "));
+            content.Add(new RbText(TextLib.LargeFirstLetter(itemName) + ": "));
             content.Add(new RbTab(0.4f));
             content.Add(new RbText(TextLib.LargeNumber(amount)));
-
 
             content.Add(new RbTab(0.5f));
             content.Add(new RbImage(SpriteName.WarsDecreaseArrowDown));
@@ -53,16 +114,70 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         }
 
+        public void UpdateCapacity(int capacity)
+        {
+            this.capacity = capacity;
+            if (useStockLimit)
+            {
+                Math.Min(stockPileLimit, capacity);
+            }
+            else
+            {
+                stockPileLimit = capacity;
+            }
+        }
 
-        public void writeGameState(System.IO.BinaryWriter w)
+        void writeStockPile(BoolRegister boolRegister)
+        {
+            if (boolRegister.SetNext(useStockLimit))
+            {
+                boolRegister.writer.Write((ushort)stockPileLimit);
+            }
+        }
+        public void readStockPile(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
+        {   
+            useStockLimit = boolRegister.GetNext();
+            if (useStockLimit)
+            {
+                stockPileLimit = r.ReadUInt16();
+            }
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
         {
             w.Write(amount);
             w.Write((ushort)stockPileLimit);
         }
-        public void readGameState(System.IO.BinaryReader r, int subversion)
+        public void readNet(System.IO.BinaryReader r)
         {
             amount = r.ReadInt32();
             stockPileLimit = r.ReadUInt16();
+        }
+
+        public void writeCity(BoolRegister boolRegister)//System.IO.BinaryWriter w)
+        {
+            if (boolRegister.SetNext(amount != 0))
+            {
+                boolRegister.writer.Write(amount);
+            }
+            writeStockPile(boolRegister);
+        }
+        public void readCity(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
+        {
+            if (boolRegister.GetNext())
+            {
+                amount = r.ReadInt32();
+            }
+            readStockPile(boolRegister, r, subversion);
+        }
+
+        public void writeFaction(BoolRegister boolRegister)
+        {
+            writeStockPile(boolRegister);
+        }
+        public void readFaction(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
+        {
+            readStockPile(boolRegister, r, subversion);
         }
 
         public void writeStockPile(System.IO.BinaryWriter w)
@@ -76,27 +191,27 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public bool needMore()
         {
-            return amount < stockPileLimit;
+            return amount < MaxLimit();
         }
 
         public bool reachedBuffer()
         {
-            return amount >= stockPileLimit;
+            return amount >= MaxLimit();
         }
 
         public bool almostReachedBuffer()
         {
-            return amount >= stockPileLimit - 50;
+            return amount >= MaxLimit() - 50;
         }
 
         public bool needToImport()
         {
-            return amount < stockPileLimit;
+            return amount < MaxLimit();
         }
 
         public bool canTradeAway()
         {
-            return amount >= 30 && amount >= stockPileLimit;
+            return amount >= 30 && amount >= MathExt.MultiplyInt(MaxLimit(), 0.8);
         }
 
         public int amountPlusDelivery()
@@ -104,25 +219,32 @@ namespace VikingEngine.DSSWars.EntityComponent
             return amount + deliverCount;
         }
 
-        
+        public int MaxLimit()
+        {
+            if (useStockLimit)
+            {
+                return Math.Min(stockPileLimit, capacity);
+            }
+            else
+            {
+                return capacity;
+            }
+        }
 
         public void add(ItemResource item, int multiply = 1)
         {
             amount += item.amount * multiply;
         }
 
-        //public void clearAmount()
-        //{
-        //    amount = 0;
-        //}
-
-        public void toMenu(RichBoxContent content, ItemResourceType item/*, bool safeGuard*/, ref bool reachedBuffer)
+        public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer)
         {
+            IconName.Item(item, out SpriteName itemIcon, out string itemName);
+
             content.newLine();
 
-            content.Add(new RbImage(ResourceLib.Icon(item)));
+            content.Add(new RbImage(itemIcon));
             content.space();
-            content.Add(new RbText(LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
+            content.Add(new RbText(itemName + ": " + TextLib.LargeNumber(amount)));
 
             if (item != ItemResourceType.Water_G &&
                 item != ItemResourceType.Gold &&
@@ -147,86 +269,82 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item/*, bool safeGuard*/, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
+        public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer, LocalPlayer player, City city, bool hideOnZero = false)
         {
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
-                new RbImage(ResourceLib.Icon(item)),
-                new RbSpace(),
-                new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
-            }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.faction, city, item))));
-
-            if (item != ItemResourceType.Water_G &&
-                item != ItemResourceType.Gold &&
-                item != ItemResourceType.Men)
+            if (amount > 0 || !hideOnZero)
             {
-                bool reached = amount >= stockPileLimit;
-                reachedBuffer |= reached;
-                SpriteName stockIcon;
-                //if (safeGuard)
-                //{
-                //    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                //}
-                //else
-                if (reached)
-                {
-                    stockIcon = SpriteName.WarsStockpileStop;
-                }
-                else
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd;
-                }
-                var icon = new RbImage(stockIcon);
+                IconName.Item(item, out SpriteName itemIcon, out string itemName);
 
-                if (player == null)
-                {
-                    content.Add(icon);
-                }
-                else
-                {
-                    var infoContent = new RichBoxContent();
-                    infoContent.Add(icon);
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
+                    new RbImage(itemIcon),
+                    new RbSpace(),
+                    new RbText(TextLib.LargeFirstLetter(itemName) + ": ", HudLib.TitleColor_TypeName),
+                    new RbText(TextLib.LargeNumber(amount)),
 
-                    var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent,
-                        new RbAction(() =>
-                        {
-                            if (player.tutorial == null)
+                }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.pfaction.GetFaction(), city, item))));
+
+                if (item != ItemResourceType.Water_G &&
+                    item != ItemResourceType.Gold &&
+                    item != ItemResourceType.Men)
+                {
+                    bool reached = amount >= MaxLimit();
+                    reachedBuffer |= reached;
+                    SpriteName stockIcon;
+                    
+                    if (reached)
+                    {
+                        stockIcon = SpriteName.WarsStockpileStop;
+                    }
+                    else
+                    {
+                        stockIcon = SpriteName.WarsStockpileAdd;
+                    }
+                    var icon = new RbImage(stockIcon);
+
+                    if (player == null)
+                    {
+                        content.Add(icon);
+                    }
+                    else
+                    {
+
+                        var infoButton = new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> { icon },
+                            new RbAction(() =>
                             {
-                                player.resourcesSubTab = stockpileLink;
-                            }
-                        }),
-                        new RbTooltip((RichBoxContent content, object tag) =>
-                        {
-                            HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
-                            content.newLine();
-                            content.Add(new RbImage(stockIcon));
-                            content.space();
-                            content.Add(new RbText(city.GetGroupedResource(item).stockPileLimit.ToString()));
-                        }));
+                                if (player.tutorial == null)
+                                {
+                                    player.resourcesSubTab.managementType = ResourceManagementType.Stockpile;
+                                }
+                            }),
+                            new RbTooltip((RichBoxContent content, object tag) =>
+                            {
+                                HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
+                                content.newLine();
+                                content.Add(new RbImage(stockIcon));
+                                content.space();
+                                content.Add(new RbText(city.GetGroupedResource(item).MaxLimit().ToString()));
+                            }));
 
-                    //content.space();
-                    content.Add(infoButton);
+                        content.Add(infoButton);
+                    }
                 }
 
+                if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
+                       new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),
+                       null, true));
+
+                    content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
+                        new RbAction(() => { city.AddGroupedResource(item, 100); }),
+                        null, true));
+                }
             }
-
-
-            if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
-            {
-                content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
-                   new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),
-                   null, true));
-
-                content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
-                    new RbAction(() => { city.AddGroupedResource(item, 100); }),
-                    null, true));
-            }
-
         }
 
         public static void BufferIconInfo(RichBoxContent content, bool safeguard)
         {
-            //content.newLine();
             SpriteName sprite;
             string textstring;
             if (safeguard)
@@ -240,24 +358,16 @@ namespace VikingEngine.DSSWars.EntityComponent
                 textstring = DssRef.lang.Resource_ReachedStockpile;
             }
 
-
             var icon = new RbImage(sprite);
             content.Add(icon);
 
             var text = new RbText(": " + textstring);
-            //text.overrideColor = HudLib.InfoYellow_Light;
             content.Add(text);
         }
 
-        //public void clearOrders()
-        //{ 
-        //    backOrder = 0;
-        //    //orderQueCount = 0;
-        //}
-
         public override string ToString()
         {
-            return $"Grouped resource {amount}/{stockPileLimit}";
+            return $"Grouped resource {amount}/{MaxLimit()}";
         }
     }
 }

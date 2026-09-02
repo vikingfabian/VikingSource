@@ -7,25 +7,29 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.SteamWrapping
 {
-    class SteamWriter : DataStream.MemoryStreamHandler, IUpdateable
+    class SteamWriter : DataStream.MemoryStreamHandler/*, IUpdateable*/
     {
         PacketReliability relyability;
 
         public SendPacketTo To;
         public ulong SpecificGamerID;
+        PacketType storedtype;
+        public bool lockedFromPooling = false;
+        public SteamWriter()
+        { }
 
-        public SteamWriter(PacketReliability relyability, bool addToTrigger, 
+        public void init(PacketReliability relyability, bool addToTrigger,
             SendPacketTo To, ulong SpecificGamerID)
         {
             this.To = To;
             this.SpecificGamerID = SpecificGamerID;
             this.relyability = relyability;
             if (addToTrigger)
-            { Ref.update.AddToOrRemoveFromUpdate(this, true); }
+            {
+                //Ref.update.AddToOrRemoveFromUpdate(this, true); 
+                Ref.netSession.packetsQueue.Enqueue(this);
+            }
         }
-
-        public SteamWriter()
-        { }
 
         public void CheckPacketLength()
         {
@@ -37,30 +41,48 @@ namespace VikingEngine.SteamWrapping
 
         public void EndWrite_Asynch()
         {
-            Ref.update.AddSyncAction(new SyncAction1Arg<float>(Time_Update, 0));
+            Ref.netSession.packetsQueue.Enqueue(this);
         }
 
         public System.IO.BinaryWriter writeHead(PacketType type, int? sender)
         {
+            storedtype = type;
             byte senderout = sender == null ? byte.MinValue : (byte)sender.Value;
 
-            System.IO.BinaryWriter w = this.GetWriter();
+            System.IO.BinaryWriter w = this.GetWriter(SteamP2PManager.SteamPackageByteLimit);
             w.Write(senderout);
             w.Write((byte)type);
 
             return w;
         }
 
-        virtual public void Time_Update(float time)
+//        virtual public void Time_Update(float time)
+//        {
+//#if PCGAME
+//            if (Ref.steam.isNetworkInitialized)
+//            {
+//                Ref.steam.P2PManager.Send(this.ByteArray(out long length), (uint)length, relyability, To, new Steamworks.CSteamID(SpecificGamerID));
+//            }
+//#endif
+//        }
+
+        public void send()
         {
-#if PCGAME
             if (Ref.steam.isNetworkInitialized)
             {
-                Ref.steam.P2PManager.Send(this.ByteArray(), relyability, To, new Steamworks.CSteamID(SpecificGamerID));
+                //Debug.Log(storedtype.ToString());
+                Ref.steam.P2PManager.Send(this.ByteArray(out long length), (uint)length, relyability, To, new Steamworks.CSteamID(SpecificGamerID));
+              
+            }
+#if DEBUG
+            else if (memoryLength > SteamP2PManager.SteamPackageByteLimit)
+            {
+                throw new Exception("Passed steam package limit: " + storedtype.ToString());
             }
 #endif
         }
-        public UpdateType UpdateType { get { return VikingEngine.UpdateType.OneTimeTrigger; } }
+
+        //public UpdateType UpdateType { get { return VikingEngine.UpdateType.OneTimeTrigger; } }
 
         public int SpottedArrayMemberIndex { get { return -1; } set { } }
         public bool SpottedArrayUseIndex { get { return false; } }

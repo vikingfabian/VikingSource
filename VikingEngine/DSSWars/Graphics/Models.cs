@@ -19,11 +19,14 @@ namespace VikingEngine.DSSWars
    
     class Models
     {
-        
+
         public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels;
+        public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels_temporary;
         public Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
 
         public Dictionary<VoxelModelName, WeaponModel> weaponModels;
+
+        public ShieldModel BucklerShield, RoundShield, HeaterShield, TowerShield;
 
         List<VoxelModelData> loadedData = new List<VoxelModelData>();
         bool asycTaskComplete = false;
@@ -67,6 +70,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.armystand_detail,
                 VoxelModelName.cityicon,
                 VoxelModelName.citybanner,
+                VoxelModelName.pin,
 
                 VoxelModelName.modsoldier_debug,
                 VoxelModelName.modsoldier_body1,
@@ -93,10 +97,38 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_hat_soldier_all,
                 VoxelModelName.modsoldier_hat_custom_all,
 
+
+        
+
+
             };
             rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadRawModels.Count);
 
-            List<VoxelModelName> loadWeaponModels = new List<VoxelModelName>
+            List<VoxelModelName> loadTemporaryRawModels = new List<VoxelModelName>
+            {
+                VoxelModelName.Phant_elephant,
+                VoxelModelName.Phant_warelephant,
+                VoxelModelName.Phant_oliphant,
+
+
+                VoxelModelName.Phant_balkong2w,
+                VoxelModelName.Phant_balkong4w,
+                VoxelModelName.Phant_balkong_enforced,
+                VoxelModelName.Phant_balkong_iron,
+                VoxelModelName.Phant_balkong_steel,
+                VoxelModelName.Phant_ballista,
+                VoxelModelName.Phant_bronzecannon,
+                VoxelModelName.Phant_bronzecannon_side,
+                VoxelModelName.Phant_bronzesiege,
+                VoxelModelName.Phant_ironcannon,
+                VoxelModelName.Phant_ironcannon_side,
+                VoxelModelName.Phant_ironsiege,
+                VoxelModelName.Phant_manuballista,
+            };
+
+            rawModels_temporary = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadTemporaryRawModels.Count);
+
+                List <VoxelModelName> loadWeaponModels = new List<VoxelModelName>
             {
                 VoxelModelName.modweapon_sword1,
                 
@@ -122,12 +154,11 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modweapon_longsword,
                 VoxelModelName.modweapon_bronzesword,
 
-                VoxelModelName.modshield_javelin,
-                VoxelModelName.modshield_roman,
+                //VoxelModelName.modshield_javelin,
+                //VoxelModelName.modshield_roman,
                 VoxelModelName.modshield_knightsmallside,
+                //VoxelModelName.modshield_forward1,
             };
-
-            weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);
 
             var units = new AllUnits();
             units.AddRawModelsToLoad(loadRawModels);
@@ -137,36 +168,45 @@ namespace VikingEngine.DSSWars
                 loadVoxelModel(model, false);
             }
 
-            foreach (var modelName in loadRawModels)
-            {
-                DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
-                byte[] data = DataStream.FileToDiskManager.Read(path);
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        System.IO.MemoryStream s = new System.IO.MemoryStream(data);
-                        System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+            loadRawModelsToDic(loadRawModels, rawModels);
+            loadRawModelsToDic(loadTemporaryRawModels, rawModels_temporary);
 
-                        var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
-                        var result = new VoxelObjGridDataAnimHD(grids);
+            //foreach (var modelName in loadRawModels)
+            //{
+            //    DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
+            //    byte[] data = DataStream.FileToDiskManager.Read(path);
+            //    Task.Run(() =>
+            //    {
+            //        try
+            //        {
+            //            System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+            //            System.IO.BinaryReader r = new System.IO.BinaryReader(s);
 
-                        lock (rawModels)
-                        {
-                            rawModels.Add(modelName, result);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        BlueScreen.ThreadException = ex;
-                    }
-                });
-            }
+            //            var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+            //            var result = new VoxelObjGridDataAnimHD(grids);
 
+            //            lock (rawModels)
+            //            {
+            //                rawModels.Add(modelName, result);
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            BlueScreen.ThreadException = ex;
+            //        }
+            //    });
+            //}
+
+            weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);
             foreach (var weaponName in loadWeaponModels)
             {
                 weaponModels.Add(weaponName, new WeaponModel(weaponName));
             }
+
+            BucklerShield = new ShieldModel(VoxelModelName.modshield_forward1, 0);
+            RoundShield = new ShieldModel(VoxelModelName.modshield_forward1, 1);
+            HeaterShield = new ShieldModel(VoxelModelName.modshield_forward1, 2);
+            TowerShield = new ShieldModel(VoxelModelName.modshield_forward1, 3);
 
 
             //VOXEL
@@ -179,6 +219,8 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.war_workerhut, false);
             loadVoxelModel(VoxelModelName.city_mine, false);
             loadVoxelModel(VoxelModelName.city_workstation, false);
+            loadVoxelModel(VoxelModelName.city_meatstation, false);
+            loadVoxelModel(VoxelModelName.city_storage, false);
 
             loadVoxelModel(VoxelModelName.city_dirtwall, false);
             loadVoxelModel(VoxelModelName.city_dirttower, false);
@@ -209,17 +251,22 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_nobelhouse, false);
             loadVoxelModel(VoxelModelName.city_logistic, false);
             loadVoxelModel(VoxelModelName.city_quarry, false);
+            loadVoxelModel(VoxelModelName.city_trapper, false);
             loadVoxelModel(VoxelModelName.city_water, false);
             loadVoxelModel(VoxelModelName.city_tent, false);
             loadVoxelModel(VoxelModelName.city_research, false);
-           
+
             loadVoxelModel(VoxelModelName.decor_statue, false);
+            loadVoxelModel(VoxelModelName.decor_netstatue, false);
             loadVoxelModel(VoxelModelName.city_flagpole, false);
             loadVoxelModel(VoxelModelName.city_pavement, false);
             loadVoxelModel(VoxelModelName.city_garden, false);
 
+            loadVoxelModel(VoxelModelName.Boar, false);
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
+            loadVoxelModel(VoxelModelName.dog1, false);
+            loadVoxelModel(VoxelModelName.hound1, false);
             loadVoxelModel(VoxelModelName.Pheasant, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.slingstone, true);
@@ -235,6 +282,47 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.wars_deserter, false);
             loadVoxelModel(VoxelModelName.horse_brown, false);
             loadVoxelModel(VoxelModelName.horse_white, false);
+            loadVoxelModel(VoxelModelName.wildpig1, false);
+            loadVoxelModel(VoxelModelName.hog1, false);
+            loadVoxelModel(VoxelModelName.warhog1, false);
+            loadVoxelModel(VoxelModelName.staghog1, false);
+            loadVoxelModel(VoxelModelName.wolf1, false);
+            loadVoxelModel(VoxelModelName.warg1, false);
+            loadVoxelModel(VoxelModelName.alphawarg1, false);
+            loadVoxelModel(VoxelModelName.wildcat1, false);
+            loadVoxelModel(VoxelModelName.lion1, false);
+            loadVoxelModel(VoxelModelName.warlion1, false);
+
+            loadVoxelModel(VoxelModelName.Phant_elephant, false);
+            loadVoxelModel(VoxelModelName.Phant_warelephant, false);
+            loadVoxelModel(VoxelModelName.Phant_oliphant, false);
+
+            loadVoxelModel(VoxelModelName.Fowl, false);
+            loadVoxelModel(VoxelModelName.oxen1, false);
+            loadVoxelModel(VoxelModelName.kineoxen1, false);
+            loadVoxelModel(VoxelModelName.pony_brown, false);
+            loadVoxelModel(VoxelModelName.pony_pink, false);
+            loadVoxelModel(VoxelModelName.drafthorse_red, false);
+            loadVoxelModel(VoxelModelName.warhorse_brown, false);
+            
+
+
+            loadVoxelModel(VoxelModelName.wagon_light, false);
+            loadVoxelModel(VoxelModelName.wagon_light4, false);
+            loadVoxelModel(VoxelModelName.wagon_coach, false);
+            loadVoxelModel(VoxelModelName.wagon_ironcoach, false);
+
+            loadVoxelModel(VoxelModelName.cannonwagon_siegebronze, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_manuballista, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_catapult, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_ballista, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_manbronze, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_maniron, false);
+            loadVoxelModel(VoxelModelName.cannon4wagon_maniron, false);
+            loadVoxelModel(VoxelModelName.cannoncoach_manbronze, false);
+            loadVoxelModel(VoxelModelName.cannoncoach_maniron, false);
+            loadVoxelModel(VoxelModelName.cannoncoach_siegeiron, false);
+
             loadVoxelModel(VoxelModelName.wars_shipmelee, false);
             loadVoxelModel(VoxelModelName.buildarea, false);
             loadVoxelModel(VoxelModelName.godfire, false);
@@ -272,6 +360,36 @@ namespace VikingEngine.DSSWars
 
                 loadedData.Add(new VoxelModelData(modelName, verticeData, gridSz, framesData)); 
             }
+        }
+
+        void loadRawModelsToDic(List<VoxelModelName> loadRawModels, Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> toDictionary)
+        {
+            foreach (var modelName in loadRawModels)
+            {
+                DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
+                byte[] data = DataStream.FileToDiskManager.Read(path);
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+                        System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+
+                        var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+                        var result = new VoxelObjGridDataAnimHD(grids);
+
+                        lock (toDictionary)
+                        {
+                            toDictionary.Add(modelName, result);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                });
+            }
+
         }
 
         public void sychLoading()

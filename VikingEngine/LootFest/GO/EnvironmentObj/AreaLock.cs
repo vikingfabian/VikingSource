@@ -46,7 +46,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
 
             CollisionAndDefaultBound = ObjSingleBound.QuickBoundingBox(new Vector3(6, 12, 6));
 
-            Debug.Log("Created " + this.ToString());
+            //Debug.Log("Created " + this.ToString());
 
             switch (unLockType)
             {
@@ -276,7 +276,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
         public override void DeleteMe(bool local)
         {
             base.DeleteMe(local);
-            Debug.Log("Deleted " + this.ToString());
+            //Debug.Log("Deleted " + this.ToString());
         }
 
         public override GameObjectType Type

@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var group = groups.GetIndex_Safe(soldiers);
                             group?.completeTransform(SoldierTransformType.ExitGuard, 0);
                         }
-                        defenceBuildings.array[i] = DefenceStatus.Empty;
+                        defenceBuildings.RemoveAtSwapBack(i);//.array[i] = DefenceStatus.Empty;
                         return;
                     }
                 }
@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (message)
                     {
-                        var player = GetPlayer().GetLocalPlayer();
+                        var player = pfaction.GetPlayer().GetLocalPlayer();
                         if (player != null)
                         {
                             Ref.update.AddSyncAction(new SyncAction2Arg<bool, int>(player.hud.messages.changedAllBuildings, toValue, count));

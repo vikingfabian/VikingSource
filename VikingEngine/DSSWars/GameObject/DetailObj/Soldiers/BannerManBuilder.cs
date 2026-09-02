@@ -13,9 +13,9 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public BannerManBuilder():base() 
         {
-            unitType = UnitType.BannerMan;
+            unitBuildType = UnitBuildType.BannerMan;
         }
-        public override AbsSoldierUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit(bool bannerman)
         {
             return new BannerMan();
         }
@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.GameObject
             : base()
         { }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
             return new BannerManModel(this);
@@ -42,16 +42,13 @@ namespace VikingEngine.DSSWars.GameObject
         public BannerManModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new Banner(soldier.GetFaction_NoChecks(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
+            banner = new Banner(soldier.pfaction.GetFaction(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
         }
-
-        //protected override void updateShipAnimation(AbsSoldierUnit soldier)
-        //{
-        //    base.updateShipAnimation(soldier);
-        //    banner.update(soldier);
-        //}
         protected override void updateAnimation(AbsSoldierUnit soldier)
         {
+            if (banner == null)
+                return;
+
             base.updateAnimation(soldier);
             banner.update(soldier);
         }
@@ -63,7 +60,7 @@ namespace VikingEngine.DSSWars.GameObject
             banner = null;
         }
 
-        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsSoldierUnit unit)
         {
             base.onNewModel(name, master, unit);
             banner.onNewModel_asynch(name, master);

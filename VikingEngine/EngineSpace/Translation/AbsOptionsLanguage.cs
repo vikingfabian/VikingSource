@@ -9,6 +9,21 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+        //Multiplayer update
+        abstract public string GameSettings_WideScrollbar { get; }
+        abstract public string GameSettings_DisplayInputHelp { get; }
+        abstract public string GameSettings_InputSmoothing { get; }
+
+        //Mounts update
+        public abstract string InputSteam { get; }
+        public abstract string Input_SimulateMouse { get; }
+        public abstract string Input_LockMouseToWindow { get; }
+        public abstract string Input_MouseEdgePush_Title { get; }
+        public abstract string Input_NoControl { get; }
+        public abstract string Input_ActiveControl { get; }
+        public abstract string Input_PassiveControl { get; }
+        public abstract string Setting_MinimapScale { get; }
+
 
         //Spring patch
 
@@ -109,6 +124,7 @@ namespace VikingEngine.EngineSpace.Translation
         public abstract string DisplayMode_Windowed { get; }
         public abstract string DisplayMode_BorderlessFullscreen { get; }
         public abstract string GameSettings_RenderedMouseCursor { get; }
+        public abstract string GameSettings_MuteControllerDisconnect { get; }
 
         public string ThreeOption(ThreeOptions option)
         {

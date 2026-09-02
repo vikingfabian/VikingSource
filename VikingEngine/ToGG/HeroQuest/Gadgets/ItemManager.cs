@@ -196,9 +196,9 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
         void netWriteSendItem(AbsItem item, int dropCount, Players.AbsHQPlayer toPlayer)
         {
             var w = Ref.netSession.BeginWritingPacket(Network.PacketType.hqSendItem, 
-                Network.SendPacketTo.OneSpecific,
+                Network.PacketReliability.Reliable,Network.SendPacketTo.OneSpecific,
                 toPlayer.pData.netPeer().fullId, 
-                Network.PacketReliability.Reliable, null);
+                 null);
             w.Write((byte)1);
             item.writeItem(w, dropCount);
         }
@@ -208,9 +208,9 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
             if (items.Count > 0)
             {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.hqSendItem,
-                    Network.SendPacketTo.OneSpecific,
+                    Network.PacketReliability.Reliable,Network.SendPacketTo.OneSpecific,
                     toPlayer.pData.netPeer().fullId,
-                    Network.PacketReliability.Reliable, null);
+                     null);
                 w.Write((byte)items.Count);
                 foreach (var m in items)
                 {

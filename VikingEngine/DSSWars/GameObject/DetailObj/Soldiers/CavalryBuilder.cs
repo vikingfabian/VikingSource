@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -15,136 +17,213 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryBuilder()
             :base()
         {
-            unitType = UnitType.ConscriptCavalry;
-
-            //modelScale = DssConst.Men_StandardModelScale * 1.5f;
-            boundRadius = DssVar.StandardBoundRadius;
-
-            idleFrame = 0;
-            attackFrame = 1;
+            unitBuildType = UnitBuildType.ConscriptCavalry;
             
-            //ArmySpeedBonusLand = 0.8;
-            //rotationSpeed = SoldierGroupStandardRotatingSpeed * 2f;
             targetSpotRange = StandardTargetSpotRange;
-                        
             
-
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
 
-           
-            
             modelAdjY = 0.1f;
-            //hasBannerMan = false;
-
-            //description = DssRef.lang.UnitType_Description_Knight;
         }
 
-        public override AbsSoldierUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit(bool bannerman)
         {
-            return new Knight();
+            return new CavalrySoldier();
         }
     }
-    class Knight : BaseSoldier
+
+    class CavalrySoldier : BaseSoldier
     {
-        public Knight()
+        public CavalrySoldier()
             : base()
         {    
             
         }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
-            if (this.myIndex == 11)
+            if (bannerman)
             {
-                return new KnightBannerModel(this);
+                return new CavalryBannerModel(this);
             }
             else
             {
-                return new KnightModel(this);
+                return new CavalryModel(this);
             }
         }
     }
 
-    class KnightModel : SoldierUnitAdvancedModel
+    
+
+    class CavalryModel : SoldierUnitAdvancedModel
     {
-        
-        Graphics.VoxelModelInstance horsemodel;
-        public KnightModel(AbsSoldierUnit soldier)
+        Graphics.VoxelModelInstance animalmodel;
+        protected float riderY;
+        public CavalryModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
-          
-           horsemodel = DssRef.models.ModelInstance_drawbatch(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.1f);
-           //horsemodel.AddToRender(DrawGame.UnitDetailLayer);
+            AnimalProfile modelData = AnimalModel(soldier.group.soldierConscript.conscript.animal);
+            walkSound = modelData.walkSoundType;
+            animalNoiseType = modelData.noiseType;
+            animalmodel = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
+            riderY = modelData.riderY;
+            
 
-           walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames*2f);
+            walkingAnimation = modelData.animation;
+            //var soldierProfile = soldier.Profile();
+            walkingAnimation.attackframe = CharacterModelBuilder.AttackFrame;
+            walkingAnimation.idleframe = CharacterModelBuilder.IdleFrame;
+            walkingAnimation.idleblinkframe = CharacterModelBuilder.IdleBlinkFrame;
+
+            resetAnimalNoise();
+        }
+
+        public static AnimalProfile AnimalModel(Resource.ItemResourceType animal)
+        {
+            AnimalProfile modelData;
+            switch (animal)
+            {
+                case Resource.ItemResourceType.Pony:
+                    modelData = DssVar.ponyModel;
+                    break;
+
+                default:
+                    modelData = DssVar.horseModel;
+                    if (Ref.rnd.Chance(0.2))
+                    {
+                        modelData.modelName = VoxelModelName.horse_white;
+                    }
+                    break;
+
+                case Resource.ItemResourceType.WarHorse:
+                    modelData = DssVar.warHorseModel;
+                    break;
+
+                case Resource.ItemResourceType.DraftHorse:
+                    modelData = DssVar.draftHorseModel;
+                    break;
+
+                case Resource.ItemResourceType.Oxen:
+                    modelData = DssVar.oxenModel;
+                    break;
+                case Resource.ItemResourceType.KineOxen:
+                    modelData = DssVar.kineOxenModel;
+                    break;
+
+                case Resource.ItemResourceType.WildPig:
+                    modelData = DssVar.wildpigModel;
+                    break;
+                case Resource.ItemResourceType.WildHog:
+                    modelData = DssVar.hogModel;
+                    break;
+                case Resource.ItemResourceType.WarHog:
+                    modelData = DssVar.warhogModel;
+                    break;
+                case Resource.ItemResourceType.StagHog:
+                    modelData = DssVar.stagHogModel;
+                    break;
+
+                case Resource.ItemResourceType.Wolf:
+                    modelData = DssVar.wolfModel;
+                    break;
+
+                case Resource.ItemResourceType.Warg:
+                    modelData = DssVar.wargModel;
+                    break;
+
+                case Resource.ItemResourceType.AlphaWarg:
+                    modelData = DssVar.alphaWargModel;
+                    break;
+
+                case Resource.ItemResourceType.WildCat:
+                    modelData = DssVar.wildcatModel;
+                    break;
+                case Resource.ItemResourceType.Lion:
+                    modelData = DssVar.lionModel;
+                    break;
+                case Resource.ItemResourceType.WarLion:
+                    modelData = DssVar.warlionModel;
+                    break;
+
+                case Resource.ItemResourceType.Elephant:
+                    modelData = DssVar.elephantModel;
+                    break;
+
+                case Resource.ItemResourceType.WarElephant:
+                    modelData = DssVar.warElephantModel;
+                    break;
+
+                case Resource.ItemResourceType.Oliphant:
+                    modelData = DssVar.oliphantModel;
+                    break;
+            }
+            return modelData;
         }
 
         public override void update(AbsSoldierUnit soldier)
         {
             base.update(soldier);
 
-            model.position.Y += 0.018f;
+            model.position.Y += riderY;
         }
 
         protected override void updateAnimation(AbsSoldierUnit soldier)
         {
             if (soldier.inAttackAnimation())
             {
-                model.Frame = soldier.Profile().attackFrame;
+                model.Frame = walkingAnimation.attackframe;
             }
             else
             {
-                model.Frame = soldier.Profile().idleFrame;
+                model.Frame = walkingAnimation.idleframe;
             }
 
             if (soldier.state.walking)
             {
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
 
-                walkingAnimation.update(move, horsemodel);
+                walkingAnimation.update(move, animalmodel, out bool enterEvenFrame);
+                if (enterEvenFrame && Ref.peRnd.ChanceF(0.1f))
+                {
+                    SoundLib.WalkSounds[(int)walkSound].Play(animalmodel.position);
+                }
+
+                if (Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ(animalmodel.position, 0.02f));
+                }
             }
             else 
             {
-                horsemodel.Frame = 0;
+                animalmodel.Frame = 0;
             }
 
             WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);
             
-            horsemodel.position = model.position;
-            horsemodel.Rotation = model.Rotation;
+            animalmodel.position = model.position;
+            animalmodel.Rotation = model.Rotation;
+
+            updateAnimalNoise();
         }
-        //protected override void updateShipAnimation(AbsSoldierUnit soldier)
-        //{
-        //    base.updateShipAnimation(soldier);
-        //    horsemodel.position = model.position;
-        //    horsemodel.Rotation = model.Rotation;
-        //}
 
         public override void DeleteMe()
         {
             base.DeleteMe();
-            //horsemodel.DeleteMe();
-            //DssRef.models.recycle(ref horsemodel, true);
-            horsemodel.preRemoveFromDrawBatch();
+            animalmodel.preRemoveFromDrawBatch();
         }
     }
 
-    class KnightBannerModel : KnightModel
+    class CavalryBannerModel : CavalryModel
     {
         HorseBanner banner;
 
-        public KnightBannerModel(AbsSoldierUnit soldier)
+        public CavalryBannerModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new HorseBanner(soldier.GetFaction(), soldier.soldierData.modelScale);
+            banner = new HorseBanner(soldier.pfaction.GetFaction(), soldier.soldierData.modelScale, riderY);
         }
 
-        //protected override void updateShipAnimation(AbsSoldierUnit soldier)
-        //{
-        //    base.updateShipAnimation(soldier);
-        //    banner.update(soldier);
-        //}
         protected override void updateAnimation(AbsSoldierUnit soldier)
         {
             base.updateAnimation(soldier);
@@ -157,7 +236,7 @@ namespace VikingEngine.DSSWars.GameObject
             banner.DeleteMe();
         }
 
-        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsSoldierUnit unit)
         {
             base.onNewModel(name, master, unit);
             banner.onNewModel_asynch(name, master);
@@ -166,11 +245,12 @@ namespace VikingEngine.DSSWars.GameObject
 
     class HorseBanner : AbsModelAttachment_Batched
     {
-        public HorseBanner(Faction faction, float soldierScale)
+        public HorseBanner(Faction faction, float soldierScale, float riderY)
         {
             model = faction.AutoLoadModelInstance_batched(
-               modelName(), soldierScale * 1f);
-            diff = new Vector3(-0.12f, 0.15f, -0.05f) * soldierScale;
+               modelName(), soldierScale * 0.8f);
+            diff = new Vector3(-0.12f, 0.06f, -0.05f) * soldierScale;
+            diff.Y += riderY;
         }
 
         public override void update(AbsSoldierUnit parent)

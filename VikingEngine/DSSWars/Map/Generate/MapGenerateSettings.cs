@@ -44,6 +44,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public IntervalF startRadiusRange;
         public Range chainLengthRange = new Range(2, 20);
 
+        //public Range chainLengthRange2 = new Range(20, 150);
+
         public float BuildChainsCount_per100Tiles = 0.1f; //Per 100 tiles 
         public float DigChainsCount_per100Tiles = 0.07f; //Per 100 tiles 
 

@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Map
             position.X = vol.Position.X;
             position.Z = vol.Position.Z;
 
-            scale = vol.Scale;
+            scale = vol.Scale * 0.996f;
         }
 
         //public override void Draw(int cameraIndex)

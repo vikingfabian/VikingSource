@@ -18,14 +18,14 @@ namespace VikingEngine.DSSWars.Conscript
         public const int MaxQue = 5;
 
         public ConscriptActiveStatus active;
-        public ConscriptProfile profile;
+        public ConscriptProfile profile = new ConscriptProfile();
 
-        public ConscriptProfile inProgress;
+        public ConscriptProfile inProgress = new ConscriptProfile();
         public TimeInGameCountdown countdown;
         public BuildAndExpandType type;
-        public int menCollected;
-        public int menNeeded;
-        public int equipmentCollected;
+
+        public int unitsCollected;
+        public int unitsNeeded;
 
         public int idAndPosition;
         public TrainingLevel maxTrainingLevel;
@@ -33,6 +33,9 @@ namespace VikingEngine.DSSWars.Conscript
 
         public bool requireMaxPopulation;
         public bool requireMaxFood;
+
+        public BarracksStatus()
+        { }
 
         public BarracksStatus(BuildAndExpandType type)
             : this()
@@ -50,9 +53,9 @@ namespace VikingEngine.DSSWars.Conscript
                 case BuildAndExpandType.WarmachineBarracks:
                     profile.weapon = ItemResourceType.Ballista;
                     break;
-                case BuildAndExpandType.KnightsBarracks:
-                    profile.weapon = ItemResourceType.Warhammer;
-                    break;
+                //case BuildAndExpandType.KnightsBarracks:
+                //    profile.weapon = ItemResourceType.Warhammer;
+                //    break;
                 case BuildAndExpandType.GunBarracks:
                     profile.weapon = ItemResourceType.HandCannon;
                     break;
@@ -60,23 +63,26 @@ namespace VikingEngine.DSSWars.Conscript
                     profile.weapon = ItemResourceType.ManCannonBronze;
                     break;
 
-            }
+            } 
+            profile.man = ItemResourceType.Men;
             profile.training = TrainingLevel.Basic;
             maxTrainingLevel = TrainingLevel.Skillful;
         }
 
         public void checkSpecialization()
         {
-            var spec = profile.avaialableSpecializations(type, out bool mayGuard);
+            var spec = profile.avaialableSpecializations(/*type, out bool mayGuard*/);
 
-            if (profile.specialization == SpecializationType.CityGuard)
-            {
-                if (!mayGuard)
-                {
-                    profile.specialization = spec[0];
-                }
-            }
-            else if (!spec.Contains(profile.specialization))
+            //if (profile.specialization == SpecializationType.CityGuard)
+            //{
+            //    if (!mayGuard)
+            //    {
+            //        profile.specialization = spec[0];
+            //    }
+            //}
+            //else 
+            if (profile.specialization != SpecializationType.CityGuard &&
+                !spec.Contains(profile.specialization))
             {
                 profile.specialization = spec[0];
             }
@@ -102,23 +108,94 @@ namespace VikingEngine.DSSWars.Conscript
 
         }
 
-        public void returnItems(City city)
+        public int UnitsLeft => unitsNeeded - unitsCollected;
+
+        /// <returns>Available/paid count</returns>
+        public int payItems(City city, CommitOption commit, out int totalMen, out bool completed)
         {
-            if (active == ConscriptActiveStatus.CollectingEquipment ||
-                    active == ConscriptActiveStatus.CollectingMen)
+            completed = false;
+            ConscriptUnitCount perUnitCount = new ConscriptUnitCount(profile);
+            unitsNeeded = perUnitCount.groupUnitCount;
+            //int needUnits = unitsNeeded - unitsCollected;
+            var me = this;
+
+            int avaialble = allItems(unitsNeeded, CommitOption.Preview);
+            totalMen = perUnitCount.menPerUnit * unitsNeeded;
+
+            switch (commit)
             {
-                //return items
-                ItemResourceType weaponItem = inProgress.weapon;
-                ItemResourceType armorItem = inProgress.armorLevel;
+                case CommitOption.Commit:
+                    if (profile.specialization != SpecializationType.CityGuard || city.AvailableGuardHousing() >= totalMen)
+                    {
+                        unitsCollected = avaialble;
 
-                city.AddGroupedResource(weaponItem, equipmentCollected);
+                        if (avaialble >= unitsNeeded)
+                        {
+                            allItems(unitsNeeded, commit);
+                            completed = true;
+                        }
+                        //unitsCollected += avaialble;
+                    }
+                    break;
+                case CommitOption.Revert:
+                    allItems(unitsCollected, commit);
+                    unitsCollected = 0;
+                    completed = true;
+                    break;
+            }
+            
+            return avaialble;
 
-                if (inProgress.armorLevel != ItemResourceType.NONE)
+            //--
+            int allItems(int unitCount, CommitOption commit)
+            {
+                FindMin_Int available = new FindMin_Int();
+                available.Next(payItem(me.profile.man, perUnitCount.menPerUnit, unitCount, commit));
+
+                available.Next(payItem(me.profile.weapon, perUnitCount.weaponsPerUnit, unitCount, commit));
+                available.Next(payItem(me.profile.shield, perUnitCount.menPerUnit, unitCount, commit));
+                available.Next(payItem(me.profile.armorLevel, perUnitCount.menPerUnit, unitCount, commit));
+
+                available.Next(payItem(me.profile.animal, perUnitCount.animalsPerUnit, unitCount, commit));
+                available.Next(payItem(me.profile.mountArmor, perUnitCount.animalsPerUnit, unitCount, commit));
+
+                available.Next(payItem(me.profile.vehicle, perUnitCount.vehiclesPerUnit, unitCount, commit));
+
+                return available.minValue;
+            }            
+
+            //RETURN how many units can be covered
+            int payItem(ItemResourceType item, int perUnitCount, int unitCount, CommitOption commit)
+            {
+                if (item == ItemResourceType.NONE || perUnitCount == 0)
                 {
-                    city.AddGroupedResource(armorItem, equipmentCollected);
+                    return unitCount;
                 }
 
-                city.workForce.amount += menCollected;
+                switch (commit)
+                {
+                    case CommitOption.Commit:
+                        city.AddGroupedResource(item, perUnitCount * -unitCount);
+                        return 0;
+
+                    case CommitOption.Revert:
+                        city.AddGroupedResource(item, perUnitCount * unitCount);
+                        return 0;
+
+                    default:
+                        int available = city.GetGroupedResource(item).amount;
+                        return available / perUnitCount;
+
+                }
+            }
+        }
+
+        public void returnItems(City city)
+        {
+            if (active >= ConscriptActiveStatus.CollectingEquipment)
+            {
+                
+                payItems(city, CommitOption.Revert, out _, out _);
 
                 active = ConscriptActiveStatus.Idle;
 
@@ -138,8 +215,8 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (requireMaxFood)
             {
-                var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
-                food = res_food.amount >= res_food.stockPileLimit - 50;
+                var res_food = city.GetRefGroupedResource(EntityComponent.CityResourceIndex.food);
+                food = res_food.amount >= res_food.MaxLimit() - 50;
             }
             else
             {
@@ -149,6 +226,8 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            Debug.WriteCheck(w);
+
             w.Write((byte)active);
             profile.writeGameState(w);
             if (active != ConscriptActiveStatus.Idle)
@@ -158,12 +237,12 @@ namespace VikingEngine.DSSWars.Conscript
             switch (active)
             {
                 case ConscriptActiveStatus.CollectingEquipment:
-                    w.Write((byte)equipmentCollected);
+                    w.Write((byte)unitsCollected);
                     break;
 
-                case ConscriptActiveStatus.CollectingMen:
-                    w.Write((byte)menCollected);
-                    break;
+                //case ConscriptActiveStatus.CollectingMen:
+                //    w.Write((byte)menCollected);
+                //    break;
 
                 case ConscriptActiveStatus.Training:
                     countdown.writeGameState(w);
@@ -176,54 +255,56 @@ namespace VikingEngine.DSSWars.Conscript
 
 
             new EightBit(requireMaxPopulation, requireMaxFood).write(w);
+
+            Debug.WriteCheck(w);
         }
 
-        public void readGameState(System.IO.BinaryReader r, int subVersion)
+        public void readGameState(City city, System.IO.BinaryReader r, int subVersion)
         {
+            Debug.ReadCheck(r);
+
             active = (ConscriptActiveStatus)r.ReadByte();
             profile.readGameState(r);
             if (active != ConscriptActiveStatus.Idle)
             {
                 inProgress.readGameState(r);
-                menNeeded = inProgress.menCost();
+                //menNeeded = inProgress.menCost();
             }
             switch (active)
             {
                 case ConscriptActiveStatus.CollectingEquipment:
-                    equipmentCollected = r.ReadByte();
+                    unitsCollected = r.ReadByte();
                     break;
 
-                case ConscriptActiveStatus.CollectingMen:
-                    equipmentCollected = DssConst.SoldierGroup_DefaultCount;
-                    menCollected = r.ReadByte();
-                    break;
+                //case ConscriptActiveStatus.CollectingMen:
+                //    equipmentCollected = DssConst.SoldierGroup_DefaultCount;
+                //    menCollected = r.ReadByte();
+                //    break;
 
                 case ConscriptActiveStatus.Training:
-                    equipmentCollected = DssConst.SoldierGroup_DefaultCount;
-                    menCollected = DssConst.SoldierGroup_DefaultCount;
+                    payItems(city, CommitOption.Preview, out _, out _);
+                    unitsCollected = unitsNeeded;
+                    //unitsNeeded = DssConst.SoldierGroup_DefaultCount;
+                    //menCollected = DssConst.SoldierGroup_DefaultCount;
                     countdown.readGameState(r);
                     break;
             }
-            
-            if (subVersion >= 40)
-            {
-                type = (BuildAndExpandType)r.ReadByte();
-            }
+
+
+            type = (BuildAndExpandType)r.ReadByte();
+
             idAndPosition = r.ReadInt32();
             que = r.ReadByte();
 
-            if (subVersion >= 43)
-            {
-                maxTrainingLevel = (TrainingLevel)r.ReadByte();
-                //maxTrainingLevel = TrainingLevel.Skillful;
-            }
 
-            if (subVersion >= 60)
-            {
-                EightBit bools = EightBit.FromStream(r);
-                requireMaxPopulation = bools.Get(0);
-                requireMaxFood = bools.Get(1);
-            }
+            maxTrainingLevel = (TrainingLevel)r.ReadByte();
+            //maxTrainingLevel = TrainingLevel.Skillful;
+
+            EightBit bools = EightBit.FromStream(r);
+            requireMaxPopulation = bools.Get(0);
+            requireMaxFood = bools.Get(1);
+
+            Debug.ReadCheck(r);
 
             checkSpecialization();
         }
@@ -242,12 +323,17 @@ namespace VikingEngine.DSSWars.Conscript
             return false;
         }
 
-        public TimeLength TimeLength()
+        public void RevertCountDown()
         {
-            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, type));
+            que = Math.Min(MaxQue, que + 1);
         }
 
-        public string activeStringOf(ConscriptActiveStatus status, int menCount, out bool collected)
+        public TimeLength TimeLength()
+        {
+            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, inProgress.animal, type));
+        }
+
+        public string activeStringOf(ConscriptActiveStatus status, out bool collected)
         {
             string result = null;
             collected = false;
@@ -260,19 +346,19 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case ConscriptActiveStatus.CollectingEquipment:
                     {
-                        collected = equipmentCollected >= menCount;
-                        var progress = string.Format(DssRef.lang.Language_CollectProgress, equipmentCollected, menCount);
+                        collected = unitsCollected >= unitsNeeded;
+                        var progress = string.Format(DssRef.lang.Language_CollectProgress, unitsCollected, unitsNeeded);
                         result = string.Format(DssRef.lang.Conscription_Status_CollectingEquipment, progress);
                     }
                     break;
 
-                case ConscriptActiveStatus.CollectingMen:
-                    {
-                        collected = menCollected >= menCount;
-                        var progress = string.Format(DssRef.lang.Language_CollectProgress, menCollected, menCount);
-                        result = string.Format(DssRef.lang.Conscription_Status_CollectingMen, progress);
-                    }
-                    break;
+                //case ConscriptActiveStatus.CollectingMen:
+                //    {
+                //        collected = menCollected >= menCount;
+                //        var progress = string.Format(DssRef.lang.Language_CollectProgress, menCollected, menCount);
+                //        result = string.Format(DssRef.lang.Conscription_Status_CollectingMen, progress);
+                //    }
+                //    break;
             }
 
             return result;
@@ -287,8 +373,8 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-                int menCostProgress = menNeeded;
-                result = activeStringOf(active, menCostProgress, out _) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                //int menCostProgress = unitsNeeded;
+                result = activeStringOf(active, out _) + ", " + string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;
@@ -340,12 +426,16 @@ namespace VikingEngine.DSSWars.Conscript
             content.Add(new RbImage(icon));
             content.hspace();
             //ItemResourceType weaponitem = ConscriptProfile.WeaponItem(profile.weapon);
-            content.Add(new RbImage(ResourceLib.Icon(weaponItem)));
+            IconName.Item(weaponItem, out var weaponIcon, out var weaponName);
+            
+
+            content.Add(new RbImage(weaponIcon));
 
             if (profile.armorLevel != ItemResourceType.NONE)
             {
+                IconName.Item(armorItem, out var armorIcon, out var armorName);
                 //ItemResourceType armoritem = ConscriptProfile.ArmorItem(profile.armorLevel);
-                content.Add(new RbImage(ResourceLib.Icon(armorItem)));
+                content.Add(new RbImage(armorIcon));
             }
             content.Add(new RbImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)profile.training)));
 
@@ -367,7 +457,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.Add(new RbSeperationLine());
 
-            ConscriptMenu.resourcesToMenu(content, city, this);
+            ConscriptMenu.resourcesToMenu(content, city, this, false);
 
         }
     }

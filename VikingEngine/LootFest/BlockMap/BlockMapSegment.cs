@@ -103,7 +103,7 @@ namespace VikingEngine.LootFest.BlockMap
 
             if (PlatformSettings.DevBuild)
             {
-                Debug.Log("Load Segment: " + header.ToString());
+                //Debug.Log("Load Segment: " + header.ToString());
             }
             SaveLoad(false, false, null);
         }

@@ -17,8 +17,9 @@ namespace VikingEngine.DSSWars.Resource
          new UseResource[]
          {
                new UseResource(ItemResourceType.GoldOre, 5),
+               new UseResource(ItemResourceType.Fuel_G, 5),
          },
-            XP.WorkExperienceType.Smelting, XP.ExperienceLevel.Beginner_1, CraftRequirement.Smelter
+            XP.WorkExperienceType.Smelting, XP.ExperienceLevel.Beginner_1,  Build.BuildAndExpandType.Smelter
         );
 
         public static readonly CraftBlueprint CopperCoin = new CraftBlueprint(
@@ -29,7 +30,7 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Copper, 5),
            },
-            XP.WorkExperienceType.CraftMetal,  XP.ExperienceLevel.Beginner_1, CraftRequirement.Minter
+            XP.WorkExperienceType.CraftMetal,  XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.CoinMinter
        )
         { workTag = (int)ItemResourceType.CopperCoin };
 
@@ -41,7 +42,7 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Bronze, 5),
            },
-            XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, CraftRequirement.Minter
+            XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.CoinMinter
        )
         { workTag = (int)ItemResourceType.BronzeCoin };
 
@@ -53,7 +54,7 @@ namespace VikingEngine.DSSWars.Resource
           {
                new UseResource(ItemResourceType.Silver, 5),
           },
-           XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, CraftRequirement.Minter
+           XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.CoinMinter
       )
         { workTag = (int)ItemResourceType.SilverCoin };
 
@@ -65,7 +66,7 @@ namespace VikingEngine.DSSWars.Resource
           {
                new UseResource(ItemResourceType.Mithril, 1),
           },
-           XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, CraftRequirement.Minter
+           XP.WorkExperienceType.CraftMetal, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.CoinMinter
       )
         { workTag = (int)ItemResourceType.ElfCoin };
 

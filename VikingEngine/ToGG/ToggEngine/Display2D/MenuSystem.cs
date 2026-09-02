@@ -30,7 +30,7 @@ namespace VikingEngine.ToGG
 
         public void OpenMenu(bool inGame)
         {
-            Input.Mouse.LockToScreenArea = false;
+            Input.Mouse.SetMenuMode(true);
 
             if (menu == null)
             {
@@ -74,7 +74,7 @@ namespace VikingEngine.ToGG
         }
         public void CloseMenu()
         {
-            Input.Mouse.LockToScreenArea = true;
+            Input.Mouse.SetMenuMode(false);
 
             if (menu != null)
             {
@@ -200,10 +200,10 @@ namespace VikingEngine.ToGG
                 }
                 new GuiLabel("*There is currently no Sound or Music", layout);
                 //Ref.gamesett.optionsMenu(layout);
-                if (Ref.gamesett.bannedPeers.HasMembers)
-                {
-                    new GuiTextButton("Banned players", null, listBlockedPlayers, true, layout);
-                }
+                //if (Ref.gamesett.bannedPeers.HasMembers)
+                //{
+                //    new GuiTextButton("Banned players", null, listBlockedPlayers, true, layout);
+                //}
                 //resolutionOptions(layout);
 
             }
@@ -216,8 +216,9 @@ namespace VikingEngine.ToGG
         {
             GuiLayout layout = new GuiLayout("Blocked players", menu);
             {
-                Ref.gamesett.bannedPeers.toMenu(layout, onBanRemove);
-                //new GuiLabel("Click to remove block", layout);
+                //Ref.gamesett.bannedPeers.toMenu(layout, onBanRemove);
+                
+               //new GuiLabel("Click to remove block", layout);
                 //foreach (var m in Ref.netSession.blockedUsers.members)
                 //{
                 //    new GuiTextButton(m.name, "Unblock: " + m.ToString(),

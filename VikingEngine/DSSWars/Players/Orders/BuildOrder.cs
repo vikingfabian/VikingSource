@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -118,7 +119,8 @@ namespace VikingEngine.DSSWars.Players.Orders
             base.writeGameState(w);
 
             w.Write((ushort)city.myIndex);
-            subTile.write(w);
+            //subTile.write(w);
+            WP.writeSubTilePos(w, subTile);
             w.Write((byte)buildingType);
         }
         override public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
@@ -126,7 +128,14 @@ namespace VikingEngine.DSSWars.Players.Orders
             base.readGameState(playerIx, r, subversion, pointers);
 
             city = DssRef.world.cities[r.ReadUInt16()];
-            subTile.read(r);
+            if (subversion >= 132)
+            {
+                subTile = WP.readSubTilePos(r);
+            }
+            else
+            {
+                subTile.read(r);
+            }
             buildingType = (BuildAndExpandType)r.ReadByte();
 
             onAdd(playerIx);
@@ -163,9 +172,9 @@ namespace VikingEngine.DSSWars.Players.Orders
 
       
 
-        public override bool refreshAvailable(Faction faction)
+        public override bool refreshAvailable(PFaction faction)
         {
-            return city.factionIndex == faction.myIndex;
+            return city.pfaction == faction;
         }
 
         override public OrderType GetWorkType(City city)

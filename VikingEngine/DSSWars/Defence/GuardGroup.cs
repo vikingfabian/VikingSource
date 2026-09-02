@@ -31,22 +31,23 @@ namespace VikingEngine.DSSWars.Defence
             : base(army)
         { }
 
-        public override void writeGameState(BinaryWriter w)
+        //public override void writeGameState(BinaryWriter w)
+        public override void writeGameState(BinaryWriter w, bool includePosition)
         {
-            base.writeGameState(w);
+            base.writeGameState(w, includePosition);
+       
             w.Write(assignedToPost_IdAndPosition);
         }
-
-        public override void readGameState(AbsArmy tArmy, BinaryReader r, int subVersion, bool needInit, ObjectPointerCollection pointers)
+        public override void readGameState(AbsArmy tArmy, BinaryReader r, int subVersion, bool needInit, bool includePosition, ObjectPointerCollection pointers)
         {
-            base.readGameState(tArmy, r, subVersion, needInit, pointers);
-
+            base.readGameState(tArmy, r, subVersion, needInit, includePosition, pointers);
+        
             assignedToPost_IdAndPosition = r.ReadInt32();
             if (assignedToPost_IdAndPosition >= 0)
             {
                 //refreshSoldierDefence();
                 onEnterGuard(GetCity(), assignedToPost_IdAndPosition);
-                refreshGuardPosition();
+                refreshGuardPosition(false);
             }
 
             goalWp = position;
@@ -87,7 +88,7 @@ namespace VikingEngine.DSSWars.Defence
         {
             city.defence_assignGuard_toIndex(this, defenceIndex);
 
-            refreshGuardPosition();
+            refreshGuardPosition(true);
 
 
         }
@@ -96,21 +97,21 @@ namespace VikingEngine.DSSWars.Defence
         {
             return WorldData.SubTileHalfWidth;
         }
-        void refreshGuardPosition()
+        void refreshGuardPosition(bool hostedAction)
         {
             IntVector2 subPos = conv.IntToIntVector2(assignedToPost_IdAndPosition);
             Vector3 center = WP.SubtileToWorldPosXZgroundY_Centered(subPos);
             if (DssRef.world.subTileGrid.TryGet(subPos, out var tile))
             {
                 postYPos = center.Y + tile.BuildingHeight();
-                setArmyPlacement2(center, false, true);
+                setArmyPlacement2(center, false, true, hostedAction);
             }
         }
 
         public void onEnterGuard(City city, int IdAndPosition)
         {
             assignedToPost_IdAndPosition = IdAndPosition;
-            soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
+            soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
             if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out SubTile subTile))
             {
@@ -161,41 +162,41 @@ namespace VikingEngine.DSSWars.Defence
             damageBlockChance_fromTerrain = 0;
         }
 
-        void setRestingMode(bool set)
-        {
-            if (set != restingGuardMode)
-            {
-                restingGuardMode = set;
+        //void setRestingMode(bool set)
+        //{
+        //    if (set != restingGuardMode)
+        //    {
+        //        restingGuardMode = set;
 
-                if (set)
-                {
-                    int count = 0;
-                    var soldiersC = soldiers.counter();
-                    while (soldiersC.Next())
-                    {
-                        count++;
-                        if (count == 1)
-                        {
-                            soldiersC.sel.groupOffset = Vector2.Zero;
-                        }
-                        else
-                        {
-                            soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
-                            soldiersC.RemoveAtCurrent();
-                        }
-                    }
-                    soldierCount = count;
-                }
-                else
-                {
-                    var first = FirstSoldier();
-                    if (first != null)
-                    {
-                        refillGuardUnits(first.SoldierProfile(), soldierCount - 1, first.model != null);
-                    }
-                }
-            }
-        }
+        //        if (set)
+        //        {
+        //            int count = 0;
+        //            var soldiersC = soldiers.counter();
+        //            while (soldiersC.Next())
+        //            {
+        //                count++;
+        //                if (count == 1)
+        //                {
+        //                    soldiersC.sel.groupOffset = Vector2.Zero;
+        //                }
+        //                else
+        //                {
+        //                    soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
+        //                    soldiersC.RemoveAtCurrent();
+        //                }
+        //            }
+        //            soldierCount = count;
+        //        }
+        //        else
+        //        {
+        //            var first = FirstSoldier();
+        //            if (first != null)
+        //            {
+        //                refillGuardUnits(first.SoldierProfile(), soldierCount - 1, first.model != null);
+        //            }
+        //        }
+        //    }
+        //}
 
         //public override void update(float time, bool fullUpdate)
         //{
@@ -217,11 +218,11 @@ namespace VikingEngine.DSSWars.Defence
                 base.setGroundY();
             }
         }
-        protected override void createAllSoldiers(UnitType type, int count, bool createModels)
+        protected override void createAllSoldiers(UnitBuildType type, int count, bool createModels)
         {
             var typeProfile = DssRef.units.Get(type);
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
-            soldierData = soldierConscript.init();
+            soldierData = soldierConscript.createSoldierData();
 
             if (typeProfile.IsShip())
             {
@@ -230,7 +231,7 @@ namespace VikingEngine.DSSWars.Defence
 
             if (count > 0)
             {
-                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, tilePos, ref soldierData, createModels);
+                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, false, tilePos, ref soldierData, createModels);
                 unit.firstUpdate();
                 refillGuardUnits(typeProfile, count - 1, createModels);
             }
@@ -243,7 +244,8 @@ namespace VikingEngine.DSSWars.Defence
             {
                 if (i < IntVector2.AllDiagonalsArray.Length)
                 {
-                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], tilePos, ref soldierData, createModels);
+                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], 
+                        false, tilePos, ref soldierData, createModels);
                     unit.firstUpdate();
                 }
             }

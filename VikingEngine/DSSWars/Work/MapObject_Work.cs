@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 var city = GetCity();
-                for (int i = workerUnits.Count -1; i>=0;--i)//each (var w in workerUnits)
+                for (int i = workerUnits.Count -1; i>=0;--i)
                 {
                     if (workerUnits[i].update(city))
                     { 
@@ -44,15 +44,29 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
+        static HashSet<int> ExistingWorkers = new HashSet<int>(1024);
+
         void addMissingWorkerUnits()
         {
-            lock (workerStatuses.array)
+            ExistingWorkers.Clear();
+
+            if (pfaction.TryGetFaction(out _))
             {
-                for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
+
+                foreach (var unit in workerUnits)
                 {
-                    if (workerStatuses[i].work != WorkType.IsDeleted)
+                    ExistingWorkers.Add(unit.myIndex);
+                }
+
+                lock (workerStatuses.array)
+                {
+                    for (int i = 0; i < workerStatuses.Count; i++)
                     {
-                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                        if (workerStatuses.array[i].work != WorkType.IsDeleted &&
+                            !ExistingWorkers.Contains(i))
+                        {
+                            workerUnits.Add(new WorkerUnit(this, workerStatuses.array[i], i));
+                        }
                     }
                 }
             }
@@ -91,19 +105,24 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void getWorkerStatus(int index, ref WorkerStatus status)
+        public WorkerStatus getWorkerStatus(int index)
         {
-            lock (workerStatuses.array)
-            {
-                status = workerStatuses[index];
-            }
+            //lock (workerStatuses.array)
+            //{
+                return workerStatuses.array[index];
+            //}
+        }
+
+        public ref WorkerStatus getRefWorkerStatus(int index)
+        {
+            return ref workerStatuses.array[index];
         }
 
         public void setWorkerStatus(int index, ref WorkerStatus status)
         {
             lock (workerStatuses.array)
             {
-                workerStatuses[index] = status;
+                workerStatuses.array[index] = status;
             }
         }
     }

@@ -96,6 +96,15 @@ namespace VikingEngine.DSSWars.Map
         public void write(System.IO.BinaryWriter w, ref SubTile previous)
         {
 
+            if (!Bound.IsWithin_Byte(subTerrain))
+            {
+#if DEBUG
+                throw new Exception();
+#endif
+                subTerrain = 0;
+
+            }
+
             //TODO check repeats with previous, use eightbit
             bool eqMainTerrain = mainTerrain == previous.mainTerrain;
             bool eqSubterrain = subTerrain == previous.subTerrain;
@@ -117,7 +126,7 @@ namespace VikingEngine.DSSWars.Map
 
             if (!eqSubterrain)
             {
-                w.Write(Debug.Byte_OrCrash(subTerrain));
+                w.Write((byte)subTerrain);
             }
 
             if (!eqTerrainAmount)
@@ -272,6 +281,8 @@ namespace VikingEngine.DSSWars.Map
                         //case TerrainSubFoilType.RapeSeedFarmUpgraded:
                         //case TerrainSubFoilType.HempFarmUpgraded:
                         case TerrainSubFoilType.BogIron:
+                        case TerrainSubFoilType.ClayPit:
+                        case TerrainSubFoilType.SaltPit:
                             return false;
                         
                     }

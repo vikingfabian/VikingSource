@@ -26,6 +26,11 @@ namespace VikingEngine
             return CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z);
         }
 
+        public static bool CorruptValue(Vector2 value)
+        {
+            return CorruptValue(value.X) || CorruptValue(value.Y);
+        }
+
         public static void CrashCorruptValue(Vector3 value)
         {
             if (CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z))
@@ -198,6 +203,13 @@ namespace VikingEngine
             {
                 throw new NetworkWriteReadSynchException("ReadCheck");
             }
+        }
+
+        public static bool ReadCheck_returnIfError(System.IO.BinaryReader r)
+        {
+            byte val = r.ReadByte();
+            return PlatformSettings.ViewErrorWarnings && val != StreamCheckValue;
+           
         }
 
         public static int GarbageCollectionCount()

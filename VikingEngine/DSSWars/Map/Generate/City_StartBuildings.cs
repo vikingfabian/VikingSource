@@ -18,11 +18,15 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 citySquareSubtilePos;
 
 
+        
+
         public void createCampSite(IntVector2 subtilepos)
         {
             cityHallSubtilePos = subtilepos;
-            EditSubTile edit = new EditSubTile(subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false);
-           edit.SubmitOrExecute();
+            var localPlayer = pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer();
+            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
+           
+            edit.SubmitOrExecute();
 
             Span<Dir4> testDirs = stackalloc Dir4[] { Dir4.S, Dir4.E, Dir4.W, Dir4.N };
 
@@ -34,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (!tile.IsWater())
                     {
                         citySquareSubtilePos = pos;
-                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false).SubmitOrExecute();
+                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false) { netShare = true }.SubmitOrExecute();
                         break;
                     }
                 }
@@ -47,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (!tile.IsWater())
                     {
-                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false).SubmitOrExecute();
+                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false) { netShare = true }.SubmitOrExecute();
                         break;
                     }
                 }
@@ -65,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (cityType == CityType.Campsite)
             {
-                PcgRandom rnd = new PcgRandom(world.metaData.seed * myIndex);
+                PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
                 var subtile = WP.ToSubTilePos_Centered(tilePos);
                 subtile.X += rnd.Plus_Minus(3);
@@ -75,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                PcgRandom rnd = new PcgRandom(world.metaData.seed * myIndex);
+                PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
                 List<IntVector2> emptyGeneral = new List<IntVector2>();
                 Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);
@@ -106,7 +110,7 @@ namespace VikingEngine.DSSWars.GameObject
                         largeServiceHouse = false;
                         road = (int)TerrainDecorType.CobbleStones;
                         centerHall = (int)TerrainBuildingType.CityHall_Village;
-                        percBuilding = 0.3;
+                        percBuilding = 0.15;
                         percWallGuard = 0;
                         cityServiceCount = DssConst.VillageHall_RequiredStaff;
                         break;
@@ -118,7 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
                         largeServiceHouse = false;
                         road = (int)TerrainDecorType.Square;
                         centerHall = (int)TerrainBuildingType.CityHall_Town;
-                        percBuilding = 0.5;
+                        percBuilding = 0.15;
                         percWallGuard = 0.1;
                         cityServiceCount = DssConst.TownHall_RequiredStaff;
                         break;
@@ -131,14 +135,14 @@ namespace VikingEngine.DSSWars.GameObject
                         largeServiceHouse = true;
                         road = (int)TerrainDecorType.Square;
                         centerHall = (int)TerrainBuildingType.CityHall_Capital;
-                        percBuilding = 0.6;
+                        percBuilding = 0.15;
                         percWallGuard = 0.25;
                         cityServiceCount = DssConst.CapitalHall_RequiredStaff;
                         break;
 
                 }
 
-                freeServiceMen.amount -= cityServiceCount;
+                
 
                 //cityServiceCount += 1;
 
@@ -259,7 +263,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
 
-                int total = workingAndFreeServiceMen;
+                freeServiceMen.amount -= cityServiceCount;
+                //int total = workingAndFreeServiceMen;
 
                 while (freeServiceMen.amount < 1 && emptyGeneral.Count > 0)
                 {

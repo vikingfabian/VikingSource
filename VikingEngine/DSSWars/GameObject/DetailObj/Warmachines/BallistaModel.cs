@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
         {
         }
 
-        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
+        public override void onNewModel(VoxelModelName name, VoxelModel master, AbsSoldierUnit unit)
         {
             base.onNewModel(name, master, unit);
 
@@ -45,9 +45,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warmachines
 
             float scale = soldier.soldierData.modelScale;
 
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * Xdiff, scale * Zdiff);
-            workers.Add(soldier.GetFaction(),
+            workers.Add(soldier.pfaction.GetFaction(),
                 scale * -Xdiff, scale * Zdiff);
         }
 

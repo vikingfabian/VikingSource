@@ -29,11 +29,11 @@ namespace VikingEngine.DSSWars.Players
     {
         protected static readonly AutoWeaponOption[] ConscriptWeaponPrioOrder =
         {
-             new AutoWeaponOption(ItemResourceType.MithrilSword, true, BuildAndExpandType.KnightsBarracks),
-             new AutoWeaponOption(ItemResourceType.MithrilBow,false, BuildAndExpandType.KnightsBarracks),
-             new AutoWeaponOption(ItemResourceType.KnightsLance,true, BuildAndExpandType.KnightsBarracks),
-             new AutoWeaponOption(ItemResourceType.TwoHandSword,true, BuildAndExpandType.KnightsBarracks),
-             new AutoWeaponOption(ItemResourceType.Warhammer,true, BuildAndExpandType.KnightsBarracks),
+             new AutoWeaponOption(ItemResourceType.MithrilSword, true, BuildAndExpandType.SoldierBarracks),
+             new AutoWeaponOption(ItemResourceType.MithrilBow,false, BuildAndExpandType.ArcherBarracks),
+             //new AutoWeaponOption(ItemResourceType.KnightsLance,true, BuildAndExpandType.KnightsBarracks),
+             new AutoWeaponOption(ItemResourceType.TwoHandSword,true, BuildAndExpandType.SoldierBarracks),
+             new AutoWeaponOption(ItemResourceType.Warhammer,true, BuildAndExpandType.SoldierBarracks),
 
              new AutoWeaponOption(ItemResourceType.LongSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.Sword,true, BuildAndExpandType.SoldierBarracks),
@@ -62,6 +62,14 @@ namespace VikingEngine.DSSWars.Players
              new AutoWeaponOption( ItemResourceType.SharpStick,true, BuildAndExpandType.SoldierBarracks),
         };
 
+        protected static readonly ItemResourceType[] conscriptShieldPrioOrder =
+        {
+            ItemResourceType.HeaterShield,
+            ItemResourceType.TowerShield,
+            ItemResourceType.RoundShield,
+            ItemResourceType.BucklerShield,
+        };
+
         protected static readonly ItemResourceType[] conscriptArmorPrioOrder =
         {
             ItemResourceType.MithrilArmor,
@@ -75,6 +83,55 @@ namespace VikingEngine.DSSWars.Players
         };
 
        
+
+        protected static readonly ItemResourceType[] conscriptMountPrioOrder =
+         {
+            ItemResourceType.Oliphant,
+            ItemResourceType.WarElephant,
+            ItemResourceType.AlphaWarg,
+            ItemResourceType.WarLion,
+            ItemResourceType.WarHog,
+            ItemResourceType.WarHorse,
+
+            ItemResourceType.Elephant,
+            ItemResourceType.Warg,
+            ItemResourceType.Lion,
+            ItemResourceType.WildHog,
+            ItemResourceType.Horse,
+
+            ItemResourceType.Hound,
+
+            ItemResourceType.Wolf,
+            ItemResourceType.WildCat,
+            ItemResourceType.WildPig,
+            ItemResourceType.Pony,
+
+            ItemResourceType.Dog,
+            
+            ItemResourceType.DraftHorse,
+            ItemResourceType.StagHog,
+        };
+ protected static readonly ItemResourceType[] conscriptMountArmorPrioOrder =
+         {
+            ItemResourceType.MountMithrilArmor,
+            ItemResourceType.MountFullPlateArmor,
+            ItemResourceType.MountLightPlateArmor,
+            ItemResourceType.MountHeavyIronArmor,
+            ItemResourceType.MountIronArmor,
+            ItemResourceType.MountBronzeArmor,
+            ItemResourceType.MountHeavyPaddedArmor,
+            ItemResourceType.MountPaddedArmor,
+        };
+
+        protected static readonly ItemResourceType[] conscriptVehiclePrioOrder =
+         {
+             ItemResourceType.WagonSteel,
+              ItemResourceType.WagonIron,
+               ItemResourceType.WagonClosed,
+                ItemResourceType.Wagon4Wheel,
+                 ItemResourceType.Wagon2Wheel,
+        };
+        
 
         void setupConscriptAi_async(City city, bool aggresive, out ConscriptProfile profile, out BuildAndExpandType barracksType, out int barracksCount, out int manCount, out int unitCount)
         {
@@ -107,11 +164,11 @@ namespace VikingEngine.DSSWars.Players
             barracksCount = 0;
             barracksType = BuildAndExpandType.NUM_NONE;
 
-            if (AutoConscriptLib.HasEnoughFoodAndGold(faction, city, guard, aggresive) &&
+            if (AutoConscriptLib.HasEnoughFoodAndGold(pfaction.GetFaction(), city, guard, aggresive) &&
                 city.conscriptBuildings.Count > 0)
             {
                 AutoWeaponOption weapon = new AutoWeaponOption(ItemResourceType.NONE, false, BuildAndExpandType.SoldierBarracks);
-                ItemResourceType armorLevel = ItemResourceType.NONE;
+                //ItemResourceType armorLevel = ItemResourceType.NONE;
 
                 foreach (var w in ConscriptWeaponPrioOrder)
                 {
@@ -126,7 +183,41 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                manCount = ItemPropertyColl.Get(weapon.item).soldierData.workForceCount(guard);
+                profile = new ConscriptProfile()
+                {
+                    weapon = weapon.item,
+                    //armorLevel = armorLevel,
+                    training = TrainingLevel.Basic,
+                    specialization = guard ? SpecializationType.CityGuard : SpecializationType.None,
+                };
+
+                if (weapon.item == ItemResourceType.NONE)
+                {
+                    profile = ConscriptProfile.Empty;
+                    return;
+                }
+
+                var weaponProp = ItemPropertyColl.Get(weapon.item);
+                manCount = weaponProp.soldierData.workForceCount(guard);
+
+                if (weaponProp.Filter_IsTwoHandWeapon)
+                {
+                    if (city.GetGroupedResource(ItemResourceType.BucklerShield).amount >= unitCount)
+                    {
+                        profile.shield = ItemResourceType.BucklerShield;
+                    }
+                }
+                else
+                {
+                    foreach (var shield in conscriptShieldPrioOrder)
+                    {
+                        if (city.GetGroupedResource(shield).amount >= unitCount)
+                        {
+                            profile.shield = shield;
+                            break;
+                        }
+                    }
+                }
 
                 foreach (var a in conscriptArmorPrioOrder)
                 {
@@ -134,26 +225,61 @@ namespace VikingEngine.DSSWars.Players
 
                     if (availableArmor >= unitCount)
                     {
-                        armorLevel = a;
+                        profile.armorLevel = a;
                         break;
                     }
                 }
 
                 if (weapon.item == ItemResourceType.NONE ||
-                    !AutoConscriptLib.MayUseItemInConscript(city, armorLevel, false, guard))                   
+                    !AutoConscriptLib.MayUseItemInConscript(city, profile.armorLevel, false, guard))                   
                 {
                     //Item is too low quality
                     profile = ConscriptProfile.Empty;
                     return;
                 }
 
-                profile = new ConscriptProfile()
+                if (!guard)
                 {
-                    weapon = weapon.item,
-                    armorLevel = armorLevel,
-                    training = TrainingLevel.Basic,
-                    specialization = guard? SpecializationType.CityGuard : SpecializationType.None,
-                };
+                    foreach (var animal in conscriptMountPrioOrder)
+                    {
+                        if (city.GetGroupedResource(animal).amount >= unitCount)
+                        {
+                            profile.animal = animal;
+                            break;
+                        }
+                    }
+
+                    if (profile.animal != ItemResourceType.NONE)
+                    {
+                        foreach (var mountArmor in conscriptMountArmorPrioOrder)
+                        {
+                            if (city.GetGroupedResource(mountArmor).amount >= unitCount)
+                            {
+                                profile.mountArmor = mountArmor;
+                                break;
+                            }
+                        }
+
+                        foreach (var vehicle in conscriptVehiclePrioOrder)
+                        {
+                            if (city.GetGroupedResource(vehicle).amount >= unitCount)
+                            {
+                                profile.vehicle = vehicle;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                Conscript.ConscriptOptions conscriptOptions = new ConscriptOptions(profile);
+                conscriptOptions.CheckLegal(ref profile);
+                //profile = new ConscriptProfile()
+                //{
+                //    weapon = weapon.item,
+                //    armorLevel = armorLevel,
+                //    training = TrainingLevel.Basic,
+                //    specialization = guard? SpecializationType.CityGuard : SpecializationType.None,
+                //};
 
                 barracksType = weapon.barracks;
 
@@ -199,7 +325,7 @@ namespace VikingEngine.DSSWars.Players
 
                     int maxCount = Convert.ToInt32(city.workForce.amount * multiply);
 
-                    var armiesC = faction.armies.counter();
+                    var armiesC = pfaction.GetFaction().armies.counter();
                     while (armiesC.Next())
                     {
                         if (DssRef.world.tileGrid.Get(armiesC.sel.tilePos).CityIndex == city.myIndex)
@@ -225,7 +351,7 @@ namespace VikingEngine.DSSWars.Players
                 return false;
             }
 
-            if (city.factionIndex != faction.myIndex)
+            if (city.pfaction != pfaction)
             {
                 return false;
             }
@@ -256,7 +382,7 @@ namespace VikingEngine.DSSWars.Players
                 city.AddGroupedResource(profile.armorLevel, -get * unitCount);
                 city.workForce.amount -= get * manCount;
 
-                var aiPlayer = city.GetPlayer().GetAiPlayer();
+                var aiPlayer = city.pfaction.GetPlayer().GetAiPlayer();
 
                 if (aiPlayer != null)
                 {
@@ -300,7 +426,7 @@ namespace VikingEngine.DSSWars.Players
                 
                 city.conscriptArmy(profile, city.defaultConscriptPos(), get);
 
-                city.nextAutoConscriptTime.setTimeFromNow(ConscriptProfile.TrainingTime(profile.training, barracksType) / barracksCount);
+                city.nextAutoConscriptTime.setTimeFromNow(ConscriptProfile.TrainingTime(profile.training, profile.animal, barracksType) / barracksCount);
             }
 
             return get > 0;

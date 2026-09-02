@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
@@ -14,9 +15,9 @@ namespace VikingEngine.DSSWars.GameObject
         public List<SoldierGroup> armyGroups = new List<SoldierGroup>(8);
         public List<SoldierGroup> guardGroups = new List<SoldierGroup>(8);
 
-        public DetailObjectCollection(Faction faction)
+        public DetailObjectCollection(PFaction faction)
         {
-            this.factionIndex = faction.myIndex;
+            this.pfaction = faction;
         }
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
@@ -68,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (armyGroups.Count > 0)
                 {
                     args.content.Add(new RbImage(SpriteName.WarsArmy));
-                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_Soldiers_ArmyType, armyGroups.Count)));
+                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Conscript_Soldiers_ArmyType, armyGroups.Count)));
 
                     if (guardGroups.Count > 0)
                     {
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (guardGroups.Count > 0)
                 {
                     args.content.Add(new RbImage(SpriteName.WarsGuard));
-                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_Soldiers_GuardType, guardGroups.Count)));
+                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Conscript_Soldiers_GuardType, guardGroups.Count)));
                 }
             }
         }
@@ -122,7 +123,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
   
 
-        public override bool aliveAndBelongTo(int faction)
+        public override bool aliveAndBelongTo(PFaction faction)
         {
             list(armyGroups);
             list(guardGroups);

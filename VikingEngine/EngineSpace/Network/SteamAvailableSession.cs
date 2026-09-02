@@ -1,9 +1,10 @@
 ﻿#if PCGAME
+using Microsoft.CodeAnalysis;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Steamworks;
 using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.Network
@@ -19,17 +20,23 @@ namespace VikingEngine.Network
         public SteamAvailableSession(CSteamID available)
             :base(available.m_SteamID)
         {
-            Ref.steam.LobbyMatchmaker.getMetaData(available, out publicity);
+            //Ref.steam.LobbyMatchmaker.getMetaData(available, out publicity);
 
-            this.name = SteamMatchmaking.GetLobbyData(available, LobbyDatas.LobbyName.ToString());
-            
-            this.lobbyHost = SteamMatchmaking.GetLobbyOwner(available).m_SteamID;
+            //this.name = SteamMatchmaking.GetLobbyData(available, LobbyDatas.LobbyName.ToString());
+            var keys = metaData.GetKeys();
+            metaData.Values = new string[keys.Length];
+            for (int i = 0; i < keys.Length; i++)
+            {
+                metaData.Values[i] = SteamMatchmaking.GetLobbyData(available, keys[i]);
+            }
+            metaData.OnDataRecieved();
 
-            CSteamID steamIDFriend;
-            if (Ref.steam.LobbyMatchmaker.lobbyIsFriend(available, out steamIDFriend))
+            //this.lobbyHost = SteamMatchmaking.GetLobbyOwner(available).m_SteamID;
+
+            if (Ref.steam.LobbyMatchmaker.lobbyIsFriend(metaData.host))
             {
                 friend = true;
-                lobbyHost = steamIDFriend.m_SteamID;
+                //lobbyHost = steamIDFriend.m_SteamID;
             }
         }
 
@@ -42,12 +49,13 @@ namespace VikingEngine.Network
 
         public SteamImageLoadData tryLoadGamerIcon()
         {
-            SteamImageLoadData steamImage = SteamNetworkPeer.GetAvatarImage(new CSteamID( lobbyHost));
+            SteamImageLoadData steamImage = SteamNetworkPeer.GetAvatarImage(metaData.host/*new CSteamID( lobbyHost)*/);
             return steamImage;
         }
 
         override public void join()
         {
+            
             Ref.steam.LobbyMatchmaker.JoinLobby(new CSteamID( lobbyId));
         }
     }

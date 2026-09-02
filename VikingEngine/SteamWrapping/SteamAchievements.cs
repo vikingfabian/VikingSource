@@ -36,12 +36,12 @@ namespace VikingEngine.SteamWrapping
         Callback<UserAchievementStored_t> UserAchievementStoredCallback;
 
         static SteamAchievementData[] achievements;
-        bool isInitialized;
+        //bool isInitialized;
         
         /* Constructors */
         public SteamAchievements()
         {
-            isInitialized = false;
+            //isInitialized = false;
 
             if (PlatformSettings.RunProgram == StartProgram.LootFest3)
             {
@@ -94,10 +94,12 @@ namespace VikingEngine.SteamWrapping
                 achievement.achieved = true;
                 achievements[enumValue] = achievement;
 
-                if (isInitialized)
+                if (Ref.steam.isInitialized)
                 {
                     SteamUserStats.SetAchievement(achievement.idString);
-                    return SteamUserStats.StoreStats();
+                    Ref.steam.statsNeedUpdate = true;
+                    return true;
+                    //return SteamUserStats.StoreStats();
                 }
                 
             }
@@ -107,7 +109,7 @@ namespace VikingEngine.SteamWrapping
 
         public bool SetAchievement_async(int enumValue)
         {
-            if (isInitialized)
+            if (Ref.steam.isInitialized)
             {
                 if (!achievements[enumValue].achieved)
                 {
@@ -121,10 +123,11 @@ namespace VikingEngine.SteamWrapping
 
         public bool SetAchievement(string id)
         {
-            if (isInitialized)
+            if (Ref.steam.isInitialized)
             {
                 SteamUserStats.SetAchievement(id);
-                return SteamUserStats.StoreStats();
+                Ref.steam.statsNeedUpdate = true;
+                return true;
             }
 
             return false;
@@ -132,10 +135,11 @@ namespace VikingEngine.SteamWrapping
 
         public bool ClearAchievement(int enumValue)
         {
-            if (isInitialized)
+            if (Ref.steam.isInitialized)
             {
                 SteamUserStats.ClearAchievement(achievements[enumValue].idString);
-                return SteamUserStats.StoreStats();
+                Ref.steam.statsNeedUpdate = true;
+                return true;
             }
 
             return false;
@@ -154,7 +158,7 @@ namespace VikingEngine.SteamWrapping
         /// </summary>
         public void OnUserStatsRecieved(UserStatsReceived_t caller)
         {
-            isInitialized = true;
+            //isInitialized = true;
 
             if (achievements != null)
             {

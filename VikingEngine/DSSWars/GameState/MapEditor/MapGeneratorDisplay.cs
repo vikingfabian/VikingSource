@@ -17,6 +17,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
 {
@@ -41,7 +42,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             var area = Screen.SafeArea;
             area.Width = Screen.IconSize * 8;
             
-            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.gameRuleset.mapSize);
+            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.ruleset.mapSize);
 
             topRight = area.RightTop;
             topRight.X += Engine.Screen.BorderWidth;
@@ -120,7 +121,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                         {
                             for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
                             {
-                                mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.gameRuleset.mapSize == sz, defaultOptions.gameRuleset.mapSize == sz,
+                                mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.ruleset.mapSize == sz, defaultOptions.ruleset.mapSize == sz,
                                     new RbAction1Arg<MapSize>(setMapSize, sz), null);
                             }
                             mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, menu);
@@ -287,7 +288,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public void beginEditName()
         {
-            new TextInputState(state.mapStorage.Name, NameEditEvent, null);
+           var reciever =  new TextInputState(state.mapStorage.Name, NameEditEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
 
         virtual protected void NameEditEvent(string result, object tag)
@@ -300,8 +302,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         }
         public void setMapSize(MapSize value)
         {
-            DssRef.storage.gameRuleset.mapSize = value;
-            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.gameRuleset.mapSize);
+            DssRef.storage.ruleset.mapSize = value;
+            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.ruleset.mapSize);
             menu.CloseDropDown();
         }
 

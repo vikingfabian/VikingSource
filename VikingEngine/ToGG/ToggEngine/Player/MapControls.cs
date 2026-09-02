@@ -148,11 +148,11 @@ namespace VikingEngine.ToGG
                 
                 if (!mouseDownOnMapPan)
                 {
-                    if (Input.Mouse.HasEdgePush())
+                    if (Input.Mouse.Instances[0].HasEdgePush())
                     {
                         if (unlockEdgePush)
                         {
-                            toggRef.cam.panCamera(toggLib.ToV3(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed));
+                            toggRef.cam.panCamera(toggLib.ToV3(-Input.Mouse.Instances[0].EdgePush(Ref.DeltaTimeMs * PanSpeed, PanSpeed)));
                         }
                     }
                     else

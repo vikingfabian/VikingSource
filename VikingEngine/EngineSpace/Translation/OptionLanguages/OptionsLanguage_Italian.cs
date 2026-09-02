@@ -9,6 +9,19 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Italian : AbsOptionsLanguage
     {
+        public override string GameSettings_WideScrollbar => "Barra di scorrimento larga";
+        public override string GameSettings_DisplayInputHelp => "Guida ai comandi";
+        public override string GameSettings_InputSmoothing => "Fluidità dei comandi";
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Simula mouse";
+        public override string Input_LockMouseToWindow => "Blocca il mouse nella finestra";
+        public override string Input_MouseEdgePush_Title => "Scorrimento ai bordi";
+        public override string Input_NoControl => "Nessuno";
+        public override string Input_ActiveControl => "Attivo";
+        public override string Input_PassiveControl => "Passivo";
+        public override string Setting_MinimapScale => "Scala della minimappa";
+
         //##Settings
         public override string Settings_Particles_FadeMapLayers => "Dissolvenza livelli";
         public override string SplitScreen_HorizontalFirst => "Orizzontale prima";
@@ -24,7 +37,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => "Finestra";
         public override string DisplayMode_BorderlessFullscreen => "Schermo intero senza bordi";
         public override string GameSettings_RenderedMouseCursor => "Cursore renderizzato";
-
+        public override string GameSettings_MuteControllerDisconnect => "Silenzia disconnessione controller";
         //--
         public override string GraphicsOption_FarViewDistance => "Vista a lunga distanza";
 

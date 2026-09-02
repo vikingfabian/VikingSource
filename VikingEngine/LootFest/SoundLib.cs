@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -7,8 +8,8 @@ namespace VikingEngine.LootFest
 {
     static class SoundLib
     {
-        public const string SoundDir = LfLib.ContentFolder + "Sound\\";
-        public const string NewSoundDir = SoundDir + "NEW\\";
+        public static readonly string SoundDir = LfLib.ContentFolder + "Sound" + Path.DirectorySeparatorChar;
+        public static readonly string NewSoundDir = SoundDir + "NEW" + Path.DirectorySeparatorChar;
 
         public static readonly Sound.SoundSettings UnavailableActionSound = new Sound.SoundSettings(LoadedSound.out_of_ammo);
         public static readonly Sound.SoundSettings SmallSuccessSound = new Sound.SoundSettings(LoadedSound.CraftSuccessful);
@@ -73,7 +74,7 @@ namespace VikingEngine.LootFest
             Engine.LoadContent.LoadSound(LoadedSound.EnemyProj2, SoundDir + "enemyproj2");
 
             Engine.LoadContent.LoadSound(LoadedSound.door, SoundDir + "door");
-            Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
+           
 
             Engine.LoadContent.LoadSound(LoadedSound.express_anger, SoundDir + "express_anger");
             Engine.LoadContent.LoadSound(LoadedSound.express_hi1, SoundDir + "express_hi1");
@@ -84,6 +85,8 @@ namespace VikingEngine.LootFest
             Engine.LoadContent.LoadSound(LoadedSound.express_teasing2, SoundDir + "express_teasing2");
             Engine.LoadContent.LoadSound(LoadedSound.express_thumbup1, SoundDir + "express_thumbup1");
             Engine.LoadContent.LoadSound(LoadedSound.express_thumbup2, SoundDir + "express_thumbup2");
+
+            Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
             Engine.LoadContent.LoadSound(LoadedSound.player_enters, SoundDir + "player_enters");
             Engine.LoadContent.LoadSound(LoadedSound.enter_build, SoundDir + "enter_build");
            

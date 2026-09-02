@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DataLib;
 using VikingEngine.DataStream;
 using VikingEngine.Engine;
 using VikingEngine.PJ;
@@ -58,17 +59,21 @@ namespace VikingEngine.Sound
 
         abstract protected SoundEffect File();
 
+        //public void Play()
+        //{
+        //    Play(Pan.Center);
+        //}
         public void Play()
         {
-            Play(Pan.Center);
+            Play(Pan.Center, 0);
         }
 
         public void PlayDelayed(float milliseconds)
         {
-            new Timer.TimedAction1ArgTrigger<Pan>(Play, Pan.Center, milliseconds);
+            new Timer.TimedAction2ArgTrigger<Pan, float>(Play, Pan.Center, 0, milliseconds);
         }
 
-        public void Play(Vector3 position)
+        public void Play(Vector3 position, float instancePitch = 0)
         {
             if (SoundManager.SoundInitializeSuccess && SoundStackManager.Available())
             {
@@ -100,7 +105,7 @@ namespace VikingEngine.Sound
 
                     float pan = Bound.Set(direction.X / MaxSoundDist, -1, 1) * Ref.gamesett.reversedStereoValue;
 
-                    float pitch = pitchAdd;
+                    float pitch = pitchAdd + instancePitch;
                     if (randomPitch != 0)
                     {
                         pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);
@@ -111,11 +116,11 @@ namespace VikingEngine.Sound
             }
         }
         
-        public void Play(Pan pan)
+        public void Play(Pan pan, float instancePitch = 0)
         {
             if (SoundManager.SoundInitializeSuccess)
             {
-                float pitch = pitchAdd;
+                float pitch = pitchAdd + instancePitch;
                 if (randomPitch != 0)
                 {
                     pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);
@@ -147,9 +152,58 @@ namespace VikingEngine.Sound
         }
     }
 
+
+    class SoundContainerBuilder : SoundContainerBase
+    {
+        List<SoundEffect> files = new List<SoundEffect>(8);
+
+        public SoundContainerBuilder(float volume = 1, float randomPitch = 0, float pitchAdd = 0)
+        {   
+            this.volume = volume;
+            this.randomPitch = randomPitch;
+            this.pitchAdd = pitchAdd;
+        }
+
+        public void add(string[] filePath)
+        {
+            if (SoundManager.SoundInitializeSuccess)
+            {
+                for (int i = 0; i < filePath.Length; i++)
+                {
+                    files.Add(LoadContent.Content.Load<SoundEffect>(filePath[i]));
+                }
+            }
+        }
+
+        public void add(SoundContainerMultiple sound, int specificIndex)
+        {
+            if (SoundManager.SoundInitializeSuccess)
+            {
+                files.Add(sound.files[specificIndex]);
+            }
+        }
+        public void add(SoundContainerMultiple sounds)
+        {
+            if (SoundManager.SoundInitializeSuccess)
+            {
+                files.AddRange(sounds.files);
+            }
+        }
+
+        public SoundContainerMultiple Build()
+        { 
+            return new SoundContainerMultiple(files.ToArray(), volume, randomPitch, pitchAdd);
+        }
+
+        protected override SoundEffect File()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class SoundContainerMultiple: SoundContainerBase
     {
-        SoundEffect[] files;
+        public SoundEffect[] files;
 
         public SoundContainerMultiple(string[] filePath, float volume = 1, float randomPitch = 0, float pitchAdd = 0)
         {
@@ -163,6 +217,14 @@ namespace VikingEngine.Sound
                 this.volume = volume;
                 this.randomPitch = randomPitch;
                 this.pitchAdd = pitchAdd;
+            }
+        }
+
+        public SoundContainerMultiple(SoundEffect[] files, float volume, float randomPitch, float pitchAdd)
+        {
+            if (SoundManager.SoundInitializeSuccess)
+            {
+                this.files = files;
             }
         }
 

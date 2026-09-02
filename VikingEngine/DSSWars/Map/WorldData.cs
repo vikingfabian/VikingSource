@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Players;
@@ -15,8 +16,6 @@ using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
-using VikingEngine.ToGG.Commander.LevelSetup;
-using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {   
@@ -94,7 +93,7 @@ namespace VikingEngine.DSSWars
 
         public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
 
-        public List<int> quickMatchFactions = null;
+        public List<PFaction> quickMatchFactions = null;
 
         public WorldData()
         {
@@ -107,15 +106,15 @@ namespace VikingEngine.DSSWars
             this.metaData = metaData;
             if (generateSettings.storage.customSeed)
             { 
-                metaData.seed = generateSettings.storage.seed;
-                metaData.objSeed = generateSettings.storage.seed;
+                metaData.worldId.seed = generateSettings.storage.seed;
+                metaData.worldId.objSeed = generateSettings.storage.seed;
                 metaData.objRnd = new PcgRandom(generateSettings.storage.seed);
             }
 
             //metaData.customEditorMap = customEditorMap;
             LoadingWorld = this;
 
-            rnd = new PcgRandom(metaData.seed);
+            rnd = new PcgRandom(metaData.worldId.seed);
 
             if (generateSettings.bCustomSize)
             {
@@ -137,30 +136,57 @@ namespace VikingEngine.DSSWars
             return null;
         }
 
-        public Faction findOrCreate(FactionType factionType)
+        public Faction findOrCreate(FactionType factionType, int setIndex)
         {
+            Faction faction;
             int firstEmpty = -1;
-            for (int i =  0; i < factions.Array.Length; ++i)//each (var faction in factions.Array)
+
+
+            if (setIndex >= 0 && factions.Array[setIndex] != null && factions.Array[setIndex].factiontype != factionType)
             {
-                var faction = factions.Array[i];
+                setIndex = -1;
+            }
+
+            if (setIndex >= 0)
+            {
+                faction = factions.Array[setIndex];
                 if (faction != null)
                 {
-                    if (faction.factiontype == factionType)
-                    { 
-                        return faction;
-                    }
+                    faction.isAlive = true;
+                    return faction;                    
                 }
-                else if (firstEmpty < 0)
+                else
                 {
-                    firstEmpty = i;
+                    firstEmpty = setIndex;
                 }
             }
-                        
+            else
+            {
+                for (int i = 0; i < factions.Array.Length; ++i)
+                {
+                    faction = factions.Array[i];
+                    if (faction != null)
+                    {
+                        if (faction.factiontype == factionType)
+                        {
+                            faction.isAlive = true;
+                            return faction;
+                        }
+                    }
+                    else if (firstEmpty < 0)
+                    {
+                        firstEmpty = i;
+                    }
+                }
+            }           
             var newFaction = new Faction(DssRef.world, factionType, firstEmpty);
+            newFaction.initMidGameEnter();
+
             new Players.AiPlayer(newFaction, true);
-            newFaction.initDiplomacy(DssRef.world);
+            //newFaction.initDiplomacy(DssRef.world);
             return newFaction;            
         }
+
 
         public static MapSize CustomMapSizeToSize(IntVector2 size)
         {
@@ -276,6 +302,10 @@ namespace VikingEngine.DSSWars
 
             Debug.WriteCheck(w);
 
+            writeComponents(w);
+
+            Debug.WriteCheck(w);
+
             w.Write((ushort)factions.Array.Length);
             foreach (var faction in factions.Array)
             {
@@ -296,7 +326,8 @@ namespace VikingEngine.DSSWars
                 w.Write((byte)quickMatchFactions.Count);
                 foreach (var m in quickMatchFactions)
                 {
-                    w.Write((ushort)m);
+                    //w.Write((ushort)m);
+                    m.write(w);
                 }
             }
             else
@@ -305,6 +336,8 @@ namespace VikingEngine.DSSWars
             }
 
             Debug.WriteCheck(w);
+
+            DssRef.world.diplomacy.writeRelations(w);
             
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
@@ -332,11 +365,12 @@ namespace VikingEngine.DSSWars
 
             Debug.ReadCheck(r);
 
+            readComponents(r, subversion);
+
+            Debug.ReadCheck(r);
+
             int factionLegth = factions.Array.Length;
-            if (subversion >= 63)
-            {
-                factionLegth = r.ReadUInt16();
-            }
+            factionLegth = r.ReadUInt16();
             
             int darkLordCount = 0;
 
@@ -365,27 +399,31 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (subversion >= 85)
+            
+            int quickMatchFactionsCount = r.ReadByte();
+            if (quickMatchFactionsCount > 0)
             {
-                int quickMatchFactionsCount = r.ReadByte();
-                if (quickMatchFactionsCount > 0)
+                quickMatchFactions = new List<PFaction>(quickMatchFactionsCount);
+                for (int i = 0; i < quickMatchFactionsCount; i++)
                 {
-                    quickMatchFactions = new List<int>(quickMatchFactionsCount);
-                    for (int i = 0; i < quickMatchFactionsCount; i++)
+                    //int fIx = r.ReadUInt16();
+                    var pf = new PFaction(r);
+                    if (pf.TryGetFaction(out var f))
                     {
-                        int fIx = r.ReadUInt16();
-                        var f = faction(fIx);
-                        if (f != null)
-                        {
-                            f.quickMatchFaction = true;
-                            f.displayInFullOverview = true;
-                            quickMatchFactions.Add(fIx);
-                        }
+                        f.quickMatchFaction = true;
+                        //f.displayInFullOverview = true;
+                        quickMatchFactions.Add(pf);
                     }
                 }
             }
+            
 
-            Debug.ReadCheck(r);            
+            Debug.ReadCheck(r);
+
+            if (subversion >= 109)
+            {
+                DssRef.world.diplomacy.readRelations(r, subversion);
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -405,21 +443,22 @@ namespace VikingEngine.DSSWars
             Init_CityComponents(cityCount);
             for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
             {
-                City c = new City(cityIndex);
+                City c = new City(cityIndex, this);
                 cities.Add(c);
+                c.IsNetHosted = false;
             }
 
             int factionCount = r.ReadInt32();
             factions = new SpottedArray<Faction>(factionCount);
-            init_FactionComponents();
+            
             for (int i = 0; i < factionCount; ++i)
             {
                 var faction = new Faction(i);
-                faction.initClient(this);
+                //faction.initClient(this);
                 factions.Add(faction);
             }
+            init_FactionComponents();
 
-            
         }
 
         public void writeNet_Tile(System.IO.BinaryWriter w, IntVector2 tilePos)
@@ -435,18 +474,22 @@ namespace VikingEngine.DSSWars
             Tile previous = new Tile();
             while (loop.Next())
             {
+                remotePlayerC.Reset();
+                while (remotePlayerC.Next())
+                {
+                    if (remotePlayerC.sel.networkPeer.peer.mapLoadedAndReady)
+                    {
+                        var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
+                        remoteTile.overview = true;
+                        remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
+                    }
+                }
+
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
                 tile.writeMapFile(w, previous);
 
                 previous = tile;
 
-                remotePlayerC.Reset();
-                while (remotePlayerC.Next())
-                { 
-                    var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
-                    remoteTile.overview = true;
-                    remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
-                }
             }            
         }
 
@@ -466,10 +509,24 @@ namespace VikingEngine.DSSWars
 
                 previous = tile;
             }
+
+            unitCollAreaGrid.netTilesRecieved(tilePos);
         }
 
         public void writeNet_SubTile(System.IO.BinaryWriter w, IntVector2 tilePos)
         {
+            var remotePlayerC = DssRef.state.remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                if (remotePlayerC.sel.networkPeer.peer.mapLoadedAndReady)
+                {
+                    var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(tilePos);
+                    remoteTile.detail = true;
+                    remoteTile.detailTimeStamp.setTimeFromNow(TimeExt.MinuteInSeconds * 10);
+                    remotePlayerC.sel.remoteTileGrid.Set(tilePos, remoteTile);
+                }
+            }
+
             tilePos.writeUshort(w);
 
             var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
@@ -482,14 +539,6 @@ namespace VikingEngine.DSSWars
                 tile.write(w, ref previous);
 
                 previous = tile;
-            }
-
-            var remotePlayerC = DssRef.state.remotePlayers.counter();
-            while (remotePlayerC.Next())
-            {
-                var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(tilePos);
-                remoteTile.detail = true;
-                remotePlayerC.sel.remoteTileGrid.Set(tilePos, remoteTile);
             }
         }
 
@@ -505,43 +554,39 @@ namespace VikingEngine.DSSWars
             {
                 ref var tile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
                 tile.read(r, ref previous, int.MaxValue);
-                //DssRef.world.subTileGrid.Set(loop.Position, tile);
 
                 previous = tile;
             }
+
+            DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
+
+            //unitCollAreaGrid.netSubTilesRecieved(tilePos);
         }
 
-        public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)
+        public void writeNet_Factions(System.IO.BinaryWriter w, PFaction faction)
         {
-            //int count = 
-
-            //w.Write((byte)factions.Count);
-            //foreach (int faction in factions) 
-            //{
-                int faction = factions.First();
-                w.Write((ushort)faction);
-                this.factions.Array[faction].writeNet(w);
-                Debug.WriteCheck(w);
-            //}
-
+            
+            //int faction = factions.First();
+            //w.Write((ushort)faction);
+            faction.write(w);
+            this.factions.Array[faction.factionIndex].writeNet(w);
+            Debug.WriteCheck(w);
+            
             SteamP2PManager.CrashOnTooLargePacket(w);
 
             var remotePlayerC = DssRef.state.remotePlayers.counter();
             while (remotePlayerC.Next())
             {
-                remotePlayerC.sel.factionsRecieved[faction] = true;
+                remotePlayerC.sel.factionsRecieved[faction.factionIndex] = true;
             }
         }
 
         public void readNet_Factions(System.IO.BinaryReader r)
         {
-            //int factionCount = r.ReadByte();
-            //for (int i = 0; i < factionCount; i++)
-            //{ 
-                int faction = r.ReadUInt16();
-                this.factions.Array[faction].readNet(r);
-                Debug.ReadCheck(r);
-            //}
+             
+            int faction = r.ReadUInt16();
+            this.factions.Array[faction].readNet(r);
+            Debug.ReadCheck(r);
         }
 
         public void writeNet_Cities(System.IO.BinaryWriter w, HashSet<int> CitiesInView)
@@ -557,7 +602,7 @@ namespace VikingEngine.DSSWars
                 this.cities[city].writeNet_map(w);
                 Debug.WriteCheck(w);
 
-                Debug.WriteCheck(w);
+                //Debug.WriteCheck(w);
                 //
                 remotePlayerC.Reset();
                 while (remotePlayerC.Next())
@@ -583,8 +628,10 @@ namespace VikingEngine.DSSWars
             {
                 int city = r.ReadUInt16();
                 this.cities[city].readNet_map(this, r);
-                Debug.ReadCheck(r);
-
+                if (this.cities[city].IsNetHosted)
+                {
+                    lib.DoNothing();
+                }
                 Debug.ReadCheck(r);
             }
 
@@ -597,10 +644,10 @@ namespace VikingEngine.DSSWars
             //DebugWriteSize citiesSz = new DebugWriteSize();
             //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 10;
+            const int SaveMapVersion = 11;
             w.Write(SaveMapVersion);
 
-            w.Write(metaData.seed);
+            w.Write(metaData.worldId.seed);
             Size.write(w);
 
             if (abortLoad) return;
@@ -644,7 +691,7 @@ namespace VikingEngine.DSSWars
                     if (factions.Array[i] != null)
                     {
                         w.Write(true);
-                        w.Write((byte)factions.Array[i].factiontype);
+                        w.Write((byte)factions.Array[i].StoredFactionType());
                         factions.Array[i].writeMapFile(w);
                     }
                     else
@@ -668,7 +715,7 @@ namespace VikingEngine.DSSWars
         {
             int version = r.ReadInt32();
 
-            metaData.seed = r.ReadUInt16();
+            metaData.worldId.seed = r.ReadUInt16();
 
             Size.read(r);
             refreshSize(Size);
@@ -717,12 +764,12 @@ namespace VikingEngine.DSSWars
 
                     for (int i = 0; i < factionLength; ++i)
                     {
-//#if DEBUG
-//                        if (i == 25)
-//                        {
-//                            lib.DoNothing();
-//                        }
-//#endif
+#if DEBUG
+                        if (i == 100)
+                        {
+                            lib.DoNothing();
+                        }
+#endif
                         if (r.ReadBoolean())
                         {
                             FactionType factionType = (FactionType)r.ReadByte();
@@ -780,16 +827,16 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-        public AbsMapObject getUnit(System.IO.BinaryReader r)
-        {
-            return getFaction(r).GetUnit(r);
-        }
+        //public AbsMapObject getUnit(System.IO.BinaryReader r)
+        //{
+        //    return getFaction(r).GetUnit(r);
+        //}
 
-        public Faction getFaction(System.IO.BinaryReader r)
-        {
-            byte factionId = r.ReadByte();
-            return factions[factionId];
-        }
+        //public Faction getFaction(System.IO.BinaryReader r)
+        //{
+        //    byte factionId = r.ReadByte();
+        //    return factions[factionId];
+        //}
 
 
         public Tile tileFromSubTilePos(IntVector2 position)
@@ -831,44 +878,154 @@ namespace VikingEngine.DSSWars
             return centerArea;
         }
 
-        public Faction getPlayerAvailableFaction(bool firstPlayer, List<Players.LocalPlayer> players)
+        //public Faction getPlayerAvailableFaction(bool firstPlayer, bool dropIn, List<Players.LocalPlayer> players)
+        //{
+        //    const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
+
+        //    Rectangle2 centerArea = CenterArea();
+
+        //    int loops = 0;
+        //    while (true)
+        //    {
+        //        Faction result = factions.GetRandom(Ref.rnd);
+                
+        //        if (result.availableForPlayer && dropInCheck(result) && result.mainCity != null &&
+        //            (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 1000))
+        //        {
+        //            if (firstPlayer || loops >= 1000)
+        //            {
+        //                return result;
+        //            }
+        //            else if (!result.HasPlayerNeighbor() && 
+        //                players[0].faction.mainCity.distanceTo(result.mainCity) <= MultiPlayerDistance)
+        //            {
+        //                return result;
+        //            }
+        //            ++loops;
+        //        }
+
+        //        if (++loops > 10000)
+        //        {
+        //            throw new EndlessLoopException("getPlayerAvailableFaction");
+        //        }
+
+        //        if (loops == 100 || loops == 200 || loops == 300 || loops == 400 || loops == 500)
+        //        {
+        //            centerArea.AddRadius(20);
+        //        }
+        //    }
+
+        //    bool dropInCheck(Faction faction)
+        //    {
+        //        if (dropIn)
+        //        {
+        //            return faction.isAlive;
+        //        }
+        //        return true;
+        //    }
+        //}
+
+        public Faction getPlayerAvailableFaction2(List<Players.LocalPlayer> players, bool firstPlayer, bool dropIn)
         {
-            const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
+            int MultiPlayerDistance = MathExt.MultiplyInt(GenerateMap.HeadCityNeededFreeRadius, 1.75f * Ref.netsett.PlayerSpacing + 1.5f);
+
+            List<Faction> sortedList = new List<Faction>();
 
             Rectangle2 centerArea = CenterArea();
 
-            int loops = 0;
-            while (true)
-            {
-                Faction result = factions.GetRandom(Ref.rnd);
-                
-                if (result.availableForPlayer && result.mainCity != null &&
-                    (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 1000))
+            HashSet<PFaction> hadPlayerOwner = new HashSet<PFaction>();
+            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            {   
+                foreach (var kv in DssRef.state.playstate().previousRemotePlayers)
                 {
-                    if (firstPlayer || loops >= 1000)
-                    {
-                        return result;
-                    }
-                    else if (!result.HasPlayerNeighbor() && 
-                        players[0].faction.mainCity.distanceTo(result.mainCity) <= MultiPlayerDistance)
-                    {
-                        return result;
-                    }
-                    ++loops;
-                }
-
-                if (++loops > 10000)
-                {
-                    throw new EndlessLoopException("getPlayerAvailableFaction");
-                }
-
-                if (loops == 100 || loops == 200 || loops == 300 || loops == 400 || loops == 500)
-                {
-                    centerArea.AddRadius(20);
+                    hadPlayerOwner.Add(kv.Value.pfaction);
                 }
             }
+
+            //Calculate scores
+            foreach (var f in factions.Array)
+            {
+                if (f != null && f.player.IsBot() && f.cities.Count > 0)
+                { 
+                    sortedList.Add(f);
+
+                    f.availableForPlayerScore = Ref.rnd.Int(100);
+
+                    if (f.availableForPlayer)
+                    {
+                        f.availableForPlayerScore += 1000;
+                    }
+
+                    if (f.viewOnLargeMap)
+                    {
+                        f.availableForPlayerScore -= 1000;
+                    }
+                    else
+                    {
+                        var adj = f.adjacentFactions(true);
+                        foreach (var nFaction in adj)
+                        {
+                            if (nFaction.viewOnLargeMap)
+                            {
+                                f.availableForPlayerScore -= 500;
+                            }
+                            if (nFaction.player.IsHumanPlayer())
+                            {
+                                f.availableForPlayerScore -= 200;
+                            }
+                        }
+                    }
+
+                    //if (f.cities.Count > 0)
+                    //{
+                    //    f.availableForPlayerScore += 1000;
+                    //}
+
+                    if (f.mainCity != null)
+                    {
+                        if (centerArea.IntersectPoint(f.mainCity.tilePos))
+                        {
+                            f.availableForPlayerScore += 1000;
+                        }
+                        else
+                        {
+                            f.availableForPlayerScore += 500 - centerArea.LengthToClosestEdge(f.mainCity.tilePos);
+                        }
+
+                        if (!firstPlayer)
+                        {
+                            float offsetToFirstPlayer = Math.Abs( players[0].pfaction.GetFaction().mainCity.distanceTo(f.mainCity) - MultiPlayerDistance);
+                            f.availableForPlayerScore += 200 - Convert.ToInt32(offsetToFirstPlayer * 4);
+                        }
+                    }
+
+                    if (!firstPlayer)
+                    {
+                        if (f.HasPlayerNeighbor() && Ref.netsett.PlayerSpacing > 0)
+                        {
+                            f.availableForPlayerScore -= 200;
+                        }
+                    }
+
+                    if (dropIn)
+                    {
+                        int wars = f.CountWars(out int playerWars);
+                        f.availableForPlayerScore -= wars * 2000 + playerWars * 8000;
+
+                        if (hadPlayerOwner.Contains(f.pfaction))
+                        {
+                            f.availableForPlayerScore -= 500;
+                        }
+                    }
+                }
+            }
+
+            sortedList.Sort((a, b) => a.availableForPlayerScore.CompareTo(b.availableForPlayerScore));
+
+            return sortedList.LastOrDefault();
         }
-       
+
+
         public City closestCity(IntVector2 pos, out float dist)
         {
             if (cities.Count == 0)
@@ -921,7 +1078,7 @@ namespace VikingEngine.DSSWars
 
         public int TileSeed(int x, int y)
         {
-            return metaData.seed + x * 11 + y * 13;
+            return metaData.worldId.seed + x * 11 + y * 13;
         }
 
         //public bool GetTileSafe(Vector3 pos, out Tile tile)
@@ -1160,6 +1317,9 @@ namespace VikingEngine.DSSWars
                 FactionType.Hælfolc,
                 FactionType.AerimAngren,
 
+                FactionType.Ellium,
+                FactionType.GrakPushdug,
+                FactionType.Draugost,
             };
 
 

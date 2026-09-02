@@ -253,6 +253,7 @@ namespace VikingEngine.DSSWars
                     DrawGenerated(MidLayer, cameraIndex);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     Draw3d(MidLayer, cameraIndex);
+                    Draw3d(FarLayer, cameraIndex);
                     localPlayer.DrawMidLayer_Mesh(cameraIndex);
                     break;
 
@@ -260,6 +261,7 @@ namespace VikingEngine.DSSWars
                 case Map.MapDetailLayerType.FactionColors3:
                     DssRef.state.detailMap.Update_outOfFocus();
                     DssRef.state.factionsMap.Draw(cameraIndex, localPlayer);
+                    Draw3d(FarLayer, cameraIndex);
                     //Draw3d(FarLayer, cameraIndex);
                     break;                    
             }

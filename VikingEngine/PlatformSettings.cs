@@ -79,7 +79,7 @@ namespace VikingEngine
 
         const bool Debug_DebugOptions = true;
 
-        public const int SteamNetworkVersion = 101; //fungerar som nätverks spärr mellan versioner
+        //public const int SteamNetworkVersion = 101; //fungerar som nätverks spärr mellan versioner
 
         
 
@@ -105,6 +105,13 @@ namespace VikingEngine
 #elif XBOX
                     ReleasePlatform.Xbox;
 #endif
+
+        public static readonly bool LinuxBuild = OperatingSystem.IsLinux();//Does not work with publish
+//#if LINUX
+//    true;
+//#else
+//    false;
+//#endif
 
         public static readonly bool PC_platform = TargetPlatform == ReleasePlatform.PC;
 
@@ -137,7 +144,7 @@ namespace VikingEngine
 
         public static readonly bool ReleaseBuild = DebugLevel > BuildDebugLevel.DebugDemo;
 
-        public static readonly bool SteamAPI =
+        public static readonly bool SteamAPI =//= false;
             DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_SteamAPI;
 
 
@@ -165,12 +172,8 @@ namespace VikingEngine
         public static readonly bool ViewCollisionBounds =
           DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_ViewCollisionBounds;
 
-        public static readonly bool OnlineMultiplayer = false;
-        //public static readonly bool Demo =
-        //    DebugLevel == BuildDebugLevel.DebugDemo ||
-        //    DebugLevel == BuildDebugLevel.PublicDemo || 
-        //    DebugLevel == BuildDebugLevel.ShowDemo;
-
+        public static readonly bool OnlineMultiplayer = true;
+        
         /// <summary>
         /// Will make a delay when accessing files on the computer
         /// </summary>
@@ -201,17 +204,17 @@ namespace VikingEngine
         {
             get
             {
-                if (Engine.LoadContent.SteamVersion == null)
+                if (Engine.LoadContent.EngineVersion == null)
                     return "Unknown Version";
                 else if (PlatformSettings.STEAM_DEMO)
-                    return "Demo v. " + Engine.LoadContent.SteamVersion;
+                    return "Demo v. " + Engine.LoadContent.EngineVersion;
                 else
-                    return "Version " + Engine.LoadContent.SteamVersion;
+                    return "Version " + Engine.LoadContent.EngineVersion;
             }
         }
         public static string XboxVersion = "UNKNOWN";
 
-        public const string SteamApiDll = "Steam_api64";
+        //public const string SteamApiDll = "Steam_api64";
 
         public const string GameTitle =
 #if TOGG

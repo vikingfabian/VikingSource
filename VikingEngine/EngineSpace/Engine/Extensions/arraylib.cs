@@ -392,10 +392,27 @@ namespace VikingEngine
             list.RemoveAt(list.Count - 1);
             return result;
         }
+
         public static void RemoveLast<T>(List<T> list)
         {
             if (list.Count > 0)
             { list.RemoveAt(list.Count - 1); }
+        }
+
+        public static void RemoveLast<T>(List<T> list, int removeCount)
+        {
+            removeCount = Math.Min(list.Count, removeCount);
+            list.RemoveRange(list.Count - removeCount, removeCount);
+        }
+
+        public static void RemoveLast_Unsafe<T>(List<T> list, int removeCount)
+        {
+            list.RemoveRange(list.Count - removeCount, removeCount);
+        }
+
+        public static void RemoveFirst_Unsafe<T>(List<T> list, int removeCount)
+        {
+            list.RemoveRange(0, removeCount);
         }
 
         public static void RemoveCurrentInForwardLoop<T>(List<T> list, ref int i)
@@ -509,6 +526,26 @@ namespace VikingEngine
             }
         }
 
+        public static T GetClamped<T>(List<T> list, int index)
+        {
+            if (index < 0)
+                return list[0];
+            if (index >= list.Count)
+                return list[list.Count - 1];
+
+            return list[index];
+        }
+
+        public static T GetClamped<T>(T[] array, int index)
+        {
+            if (index < 0)
+                return array[0];
+            if (index >= array.Length)
+                return array[array.Length - 1];
+
+            return array[index];
+        }
+
         public static bool InBound<T>(List<T> list, int index)
         {
             return list != null && index >= 0 && index < list.Count;
@@ -536,7 +573,17 @@ namespace VikingEngine
                 index2 >= 0 && index2 < array.Length;
         }
 
-
+        public static void AddOrReplace<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TKey key, TValue add)
+        {
+            if (dictionary.ContainsKey(key))
+            {
+                dictionary[key] = add;
+            }
+            else
+            { 
+                dictionary.Add(key, add);
+            }
+        }
         public static TKey DictionaryKeyFromValue<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TValue value)
         {
             foreach (var kv in dictionary)

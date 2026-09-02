@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Defence
         public void ToHud(City city, LocalPlayer player, RichBoxContent content)
         {
             this.city = city;
-            if (city.defenceBuildings.InBound(city.selectedDefenceBuilding))
+            if (city.defenceBuildings.InBound_List(city.selectedDefenceBuilding))
             {
                 DefenceStatus currentStatus = getSelected();
                 content.Add(new RbBeginTitle(1));

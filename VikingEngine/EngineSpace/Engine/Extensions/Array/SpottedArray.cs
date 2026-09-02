@@ -44,6 +44,20 @@ namespace VikingEngine
             return sel != null;
         }
 
+        /// <summary>
+        /// To be used in a while-loop
+        /// </summary>
+        public bool Next_MaxLoops(ref int maxLoops)
+        {
+            if (maxLoops <= 0)
+            {
+                return false;
+            }
+            maxLoops--;
+            sel = array.NextIteration(ref selIndex);
+            return sel != null;
+        }
+
         public bool HasMore()
         {
             return selIndex < 0 || sel != null;
@@ -409,7 +423,7 @@ namespace VikingEngine
 
         public void RemoveAt_EqualSafeCheck(T obj, int index)
         {
-            if (index < Array.Length && obj.Equals(Array[index]))
+            if (index>= 0 && index < Array.Length && obj.Equals(Array[index]))
             {
                 --Count;
                 Array[index] = default(T);
@@ -472,14 +486,37 @@ namespace VikingEngine
             }
         }
 
+        //public void adjustLength()
+        //{
+
+        //    T[] newArray = new T[Math.Max(Array.Length * 2, 8)];
+        //    for (int i = 0; i < Array.Length; ++i)
+        //    {
+        //        newArray[i] = Array[i];
+        //    }
+        //    Array = newArray;
+        //}
         public void adjustLength()
         {
-            T[] newArray = new T[Math.Max(Array.Length * 2, 8)];
-            for (int i = 0; i < Array.Length; ++i)
+            //T[] newArray = new T[Math.Max(this.Array.Length * 2, 8)];
+            //this.Array.AsSpan().CopyTo(newArray);
+            //this.Array = newArray;
+            adjustLength(Math.Max(this.Array.Length * 2, 8));
+        }
+
+        public void adjustMinimumLength(int minLength)
+        {
+            if (minLength > Array.Length)
             {
-                newArray[i] = Array[i];
+                adjustLength(minLength * 2);
             }
-            Array = newArray;
+        }
+
+        public void adjustLength(int toLength)
+        {
+            T[] newArray = new T[toLength];
+            this.Array.AsSpan().CopyTo(newArray);
+            this.Array = newArray;
         }
 
         public T PrevIteration(ref int i)

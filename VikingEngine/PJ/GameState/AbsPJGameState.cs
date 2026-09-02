@@ -191,7 +191,7 @@ namespace VikingEngine.PJ
                     Ref.isPaused = true;
                 }
 
-                Input.Mouse.View();//Input.Mouse.Hide();//Input.Mouse.Visible = true;
+                Input.Mouse.ViewAll();//Input.Mouse.Hide();//Input.Mouse.Visible = true;
             }
         }
 

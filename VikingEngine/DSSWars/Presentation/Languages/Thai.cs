@@ -8,6 +8,449 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Thai : AbsLanguage
     {
+        //Multiplayer update
+        
+        //--
+      
+
+        //--
+        public override string Unlock_PublicGames => TextLib.ThaiConv("ห้อง|สาธารณะ");
+        public override string UnlockPublic_Warning1 => TextLib.ThaiConv("อย่า|เล่น|กับ|คน|แปลก|หน้า");
+        public override string UnlockPublic_Warning2 => TextLib.ThaiConv("ตัว|เกม|ไม่|มี|ระบบ|ป้องกัน|คน|โกง|หรือ|คน|โทรล");
+        public override string Unlock_WarningBadExperience => TextLib.ThaiConv("คุณ|อาจ|จะ|เจอ|ประสบการณ์|ที่|แย่|ได้");
+        public override string Hud_Accept => TextLib.ThaiConv("ยอม|รับ");
+        public override string Hud_Block => TextLib.ThaiConv("บล็อก");
+        public override string Hud_Deny => TextLib.ThaiConv("ปฏิเสธ");
+        public override string Hud_Reason => TextLib.ThaiConv("เหตุ|ผล");
+        public override string Hud_Full => TextLib.ThaiConv("เต็ม");
+        public override string Hud_Version => TextLib.ThaiConv("เวอร์ชัน");
+        public override string Unlock_PlayerVersusPlayer => TextLib.ThaiConv("ผู้|เล่น|ปะทะ|ผู้|เล่น|(PvP)");
+        public override string UnlockPvp_Warning1 => TextLib.ThaiConv("DSS|ไม่|ได้|ออกแบบ|มา|เพื่อ|การ|แข่ง|ขัน");
+        public override string UnlockPvp_Warning2 => TextLib.ThaiConv("มัน|ไม่|มี|ความ|สมดุล|การ|เล่น|จะ|ไม่|ยุติธรรม");
+        public override string PlayerJoinHistoryTitle => TextLib.ThaiConv("ประวัติ|การ|เข้า|ร่วม|ของ|ผู้|เล่น");
+        public override string BlockedPlayersTitle => TextLib.ThaiConv("ผู้|เล่น|ที่|ถูก|บล็อก");
+        public override string ClickToRemoveBan => TextLib.ThaiConv("คลิก:|ปลด|แบน");
+        public override string HostSettingsTitle => TextLib.ThaiConv("การ|ตั้ง|ค่า|โฮสต์");
+        public override string MaxPlayerCount => TextLib.ThaiConv("จำนวน|ผู้|เล่น|สูง|สุด");
+        public override string DistanceBetweenPlayers => TextLib.ThaiConv("ระยะ|ห่าง|ระหว่าง|ผู้|เล่น");
+        public override string AllowHandicap => TextLib.ThaiConv("อนุญาต|การ|ต่อ|แต้ม");
+        public override string AllowCasualControls => TextLib.ThaiConv("อนุญาต|การ|ควบคุม|แบบ|ง่าย");
+        public override string AutoRecolorPlayerFlags => TextLib.ThaiConv("เปลี่ยน|สี|ธง|ผู้|เล่น|อัตโนมัติ");
+        public override string DefaultDiplomacy => TextLib.ThaiConv("การ|ทูต|เริ่ม|ต้น");
+        public override string ClientSettingsTitle => TextLib.ThaiConv("การ|ตั้ง|ค่า|ไคลเอนต์");
+        public override string UseHandicap => TextLib.ThaiConv("ใช้|การ|ต่อ|แต้ม");
+        public override string DifficultyDescription_BotAggression => TextLib.ThaiConv("ความ|ดุดัน|ของ|บอท");
+        public override string Hud_GetExtraX => TextLib.ThaiConv("ได้|รับ|{0}|เพิ่ม");
+        public override string Hud_Hide => TextLib.ThaiConv("ซ่อน");
+        public override string Hud_ModelType => TextLib.ThaiConv("โมเดล");
+
+        /// <summary>
+        /// Label: Text text
+        /// </summary>
+        public override string Language_LabelAndText_Colon => TextLib.ThaiConv("{0}:|{1}");
+        public override string Language_CatergoryDashUndercategory => TextLib.ThaiConv("{0}|-|{1}");
+
+        public override string ResourceBoost => TextLib.ThaiConv("บูสต์|ทรัพยากร");
+        //public override string TaxIncome => TextLib.ThaiConv("ราย|ได้|จาก|ภาษี");
+        public override string PlayerInteractionTitle => TextLib.ThaiConv("การ|โต้|ตอบ|ระหว่าง|ผู้|เล่น");
+        public override string DefaultPeaceful => TextLib.ThaiConv("เริ่ม|ต้น:|สันติ");
+
+        /// <summary>
+        /// Co-optional if a merge of "co-op and optional", meaning players choose to be cooperative
+        /// </summary>
+        public override string DefaultCoOptional => TextLib.ThaiConv("เริ่ม|ต้น:|Co-op|ทาง|เลือก");
+        public override string DefaultHardcore => TextLib.ThaiConv("เริ่ม|ต้น:|ฮาร์ดคอร์");
+        public override string GeneralTitle => TextLib.ThaiConv("ทั่ว|ไป");
+
+        public override string InputButton_Hold => TextLib.ThaiConv("กด|ปุ่ม|ค้าง");
+        public override string InputButton_Toggle => TextLib.ThaiConv("กด|สลับ|(Toggle)");
+        public override string VoiceOptAlwaysOn => TextLib.ThaiConv("เปิด|ตลอด");
+        public override string VoiceTitle => TextLib.ThaiConv("เสียง");
+        public override string VoiceMute => TextLib.ThaiConv("ปิด|เสียง|(Mute)");
+        public override string GiftOptAllow => TextLib.ThaiConv("อนุญาต");
+        public override string GiftOptFriendsOnly => TextLib.ThaiConv("เฉพาะ|เพื่อน");
+        public override string GiftOptBlocked => TextLib.ThaiConv("บล็อก");
+        public override string ReceiveAchievementsTitle => TextLib.ThaiConv("รับ|ความ|สำเร็จ");
+        public override string GiftWarning => TextLib.ThaiConv("คำ|เตือน!|ความ|สำเร็จ|ที่|ถูก|ส่ง|ให้|อาจ|ทำ|ให้|รู้สึก|แย่|ได้");
+        public override string FullReset => TextLib.ThaiConv("รีเซ็ต|ทั้ง|หมด");
+        public override string AllowAllianceTitle => TextLib.ThaiConv("อนุญาต|การ|เป็น|พันธมิตร");
+        public override string CanBreakAlliance => TextLib.ThaiConv("ฉีก|สัญญา|พันธมิตร|ได้");
+        public override string AllowWarTitle => TextLib.ThaiConv("อนุญาต|การ|ทำ|สงคราม");
+        public override string FairProtection => TextLib.ThaiConv("การ|คุ้ม|ครอง|ที่|เป็น|ธรรม");
+        public override string FairProtectionTooltip => TextLib.ThaiConv("ผู้|เล่น|ที่|ได้|รับ|การ|คุ้ม|ครอง|ต้อง|ใช้|กฎ|เดียว|กัน|กับ|คุณ");
+        public override string MustAsk => TextLib.ThaiConv("ต้อง|ขอ|อนุญาต");
+        public override string MustAskTooltip => TextLib.ThaiConv("ผู้|เล่น|ทั้ง|สอง|ฝ่าย|ต้อง|ตกลง|ที่|จะ|สู้|กัน");
+        public override string AllianceLimit => TextLib.ThaiConv("ขีด|จำกัด|พันธมิตร");
+        public override string AllianceLimitTooltip => TextLib.ThaiConv("ไม่|สามารถ|ถูก|โจมตี|จาก|กลุ่ม|พันธมิตร|ที่|ใหญ่|กว่า|ได้");
+        public override string GameStartProtection => TextLib.ThaiConv("การ|คุ้ม|ครอง|ตอน|เริ่ม|เกม");
+        public override string Hud_Time_Minutes => TextLib.ThaiConv("นาที");
+        public override string WarPreparationTime => TextLib.ThaiConv("เวลา|เตรียม|ตัว|ทำ|สงคราม");
+        public override string WarPreparationTimeTooltip => TextLib.ThaiConv("ระยะ|เวลา|รอ|ตั้งแต่|ประกาศ|สงคราม|จน|กว่า|จะ|โจมตี|ได้");
+        public override string Hud_Allow => TextLib.ThaiConv("อนุญาต");
+        public override string Hud_Blocked => TextLib.ThaiConv("ถูก|บล็อก");
+
+        public override string Hud_DeleteAll => TextLib.ThaiConv("ลบ|ทั้ง|หมด");
+        public override string DiplomacyPlayersChoice => TextLib.ThaiConv("ตัว|เลือก|ของ|ผู้|เล่น");
+        public override string UnlockSureTitle => TextLib.ThaiConv("แน่|ใจ|จริงๆ|ใช่|ไหม?");
+        public override string UnlockSureDescription => TextLib.ThaiConv("โต|แล้ว|อย่า|ไป|ร้องไห้|งอแง|ใน|ฟอรัม|ที|หลัง|ล่ะ?");
+
+
+
+        public override string Network_PlayOffline => TextLib.ThaiConv("เล่น|ออฟไลน์");
+        public override string JoinPermission_Title => TextLib.ThaiConv("สิทธิ์|การ|เข้า|ร่วม");
+        public override string JoinPermission_Private => TextLib.ThaiConv("ส่วน|ตัว");
+        public override string JoinPermission_FriendsOnly => TextLib.ThaiConv("เฉพาะ|เพื่อน");
+        public override string JoinPermission_Public => TextLib.ThaiConv("สาธารณะ");
+
+        public override string Network_Join => TextLib.ThaiConv("เข้า|ร่วม|เกม");
+        public override string Network_ConnectingToGame => TextLib.ThaiConv("กำลัง|เชื่อม|ต่อ...");
+        public override string Lobby_Category_MultiplayerSettings => TextLib.ThaiConv("การ|ตั้ง|ค่า|มัลติเพลเยอร์");
+
+        public override string Hud_Default => TextLib.ThaiConv("เริ่ม|ต้น");
+        public override string Group_Team => TextLib.ThaiConv("ทีม");
+        public override string Group_Everyone => TextLib.ThaiConv("ทุก|คน");
+
+        public override string Language_SymbolForMillion => TextLib.ThaiConv("M");
+
+        public override string DecorType_DiplomaticStatue => TextLib.ThaiConv("รูป|ปั้น|การ|ทูต");
+
+        public override string Message => TextLib.ThaiConv("ข้อ|ความ");
+        public override string ObjectType_LocationPin => TextLib.ThaiConv("พิน|บอก|ตำแหน่ง");
+        public override string ObjectType_LocationPin_Share => TextLib.ThaiConv("แชร์|และ|ปิง");
+        public override string ObjectType_LocationPin_Ping => TextLib.ThaiConv("ปิง!");
+        public override string InputActionName_TextChat => TextLib.ThaiConv("แชท|ข้อ|ความ");
+        public override string InputActionName_TextChatLog => TextLib.ThaiConv("ประวัติ|แชท");
+        public override string InputActionName_VoiceChat => TextLib.ThaiConv("แชท|เสียง");
+        public override string InputActionName_NextPin => TextLib.ThaiConv("พิน|ถัด|ไป");
+        public override string InputActionName_PinAndPing => TextLib.ThaiConv("เพิ่ม|พิน");
+
+        public override string Leaderboards_ArmySize => TextLib.ThaiConv("ขนาด|กอง|ทัพ|เดียว|วัด|ตาม|ความ|แข็ง|แกร่ง");
+        public override string Leaderboards_MultiplayerPlayerCount => TextLib.ThaiConv("จำนวน|ผู้|เล่น|ใน|โฮสต์");
+
+        public override string Multiplayer_BanWarning => TextLib.ThaiConv("คำ|เตือน|การ|แบน");
+        public override string Multiplayer_SentToHost => TextLib.ThaiConv("จะ|ถูก|ส่ง|ไป|ให้|โฮสต์");
+        public override string Multiplayer_AddToOwnBlocks => TextLib.ThaiConv("เพิ่ม|ลง|ใน|ราย|ชื่อ|บล็อก|ของ|คุณ");
+
+        public override string Multiplayer_Message_RequestSent => TextLib.ThaiConv("ส่ง|คำ|ขอ|แล้ว");
+
+        public override string Multiplayer_BlockPlayer => TextLib.ThaiConv("บล็อก|ผู้|เล่น");
+        public override string Multiplayer_NetSession => TextLib.ThaiConv("เซสชัน|เครือ|ข่าย");
+        public override string GiftedAchievements => TextLib.ThaiConv("ความ|สำเร็จ|ที่|ได้|เป็น|ของ|ขวัญ");
+        public override string GiftedAchievements_Description => TextLib.ThaiConv("ให้|รางวัล|พฤติกรรม|แย่|ๆ|ของ|เพื่อน|คุณ");
+
+        public override string Multiplayer_Title => TextLib.ThaiConv("มัลติเพลเยอร์");
+        public override string Multiplayer_Lobby => TextLib.ThaiConv("ล็อบบี้|มัลติเพลเยอร์");
+
+        public override string Multiplayer_Tutorial_HostStart => TextLib.ThaiConv("1.|โฮสต์|เริ่ม|เกม");
+        public override string Multiplayer_Tutorial_JoinButton => TextLib.ThaiConv("2.|ปุ่ม|เข้า|ร่วม|จะ|ปรากฏ|ขึ้น|ที่|นี่");
+        public override string Multiplayer_Tutorial_Visible => TextLib.ThaiConv("โฮสต์|ต้อง|เปิด|โปรไฟล์|Steam|ให้|มอง|เห็น|ได้");
+
+        public override string Multiplayer_KickPlayer => TextLib.ThaiConv("เตะ|ผู้|เล่น|(Kick)");
+        public override string Multiplayer_RequestBlockPlayer => TextLib.ThaiConv("คำ|ขอ:|บล็อก|ผู้|เล่น");
+        public override string Multiplayer_HandoverComplete => TextLib.ThaiConv("การ|ส่ง|มอบ|เสร็จ|สิ้น");
+        public override string Multiplayer_LoadingClientSave => TextLib.ThaiConv("กำลัง|โหลด|เซฟ|ไคลเอนต์");
+        public override string Multiplayer_ClientSaveComplete => TextLib.ThaiConv("เซฟ|ไคลเอนต์|เสร็จ|สมบูรณ์");
+        public override string Multiplayer_BadActor => TextLib.ThaiConv("ตัว|ป่วน");
+        public override string Multiplayer_NetworkError => TextLib.ThaiConv("ข้อ|ผิด|พลาด|เครือ|ข่าย");
+        public override string Multiplayer_Sender => TextLib.ThaiConv("ผู้|ส่ง");
+        public override string Multiplayer_Receiver => TextLib.ThaiConv("ผู้|รับ");
+        public override string Multiplayer_PlayerJoined => TextLib.ThaiConv("ผู้|เล่น|เข้า|ร่วม|แล้ว");
+        public override string Multiplayer_PlayerLeft => TextLib.ThaiConv("ผู้|เล่น|ออก|ไป|แล้ว");
+        public override string Multiplayer_RequestingClientGamestates => TextLib.ThaiConv("กำลัง|ขอ|สถานะ|เกม|ไคลเอนต์...");
+        public override string Multiplayer_TextChat => TextLib.ThaiConv("แชท|ข้อ|ความ");
+        public override string Multiplayer_VoiceChat => TextLib.ThaiConv("แชท|เสียง");
+        public override string Steam_UserProfile => TextLib.ThaiConv("โปรไฟล์|ผู้|ใช้");
+        public override string Steam_OpenSteamOverlay => TextLib.ThaiConv("เปิด|Steam|โอเวอร์เลย์");
+
+        /// <summary>
+        /// In this relation there is a countdown towards war
+        /// </summary>
+        public override string Diplomacy_RelationType_Mobilizing => TextLib.ThaiConv("กำลัง|ระดม|พล");
+        public override string Diplomacy_OfferRelation => TextLib.ThaiConv("เสนอ|ความ|สัมพันธ์");
+        public override string Diplomacy_OfferRelation_Declined => TextLib.ThaiConv("ปฏิเสธ|ข้อ|เสนอ|ความ|สัมพันธ์");
+        public override string Diplomacy_SendGold => TextLib.ThaiConv("ส่ง|ทอง");
+        public override string Diplomacy_GiftToPlayer => TextLib.ThaiConv("ของ|ขวัญ|ให้|ผู้|เล่น");
+        public override string Diplomacy_RecievedGift => TextLib.ThaiConv("ได้|รับ|ของ|ขวัญ");
+        public override string Diplomacy_OnAccept => TextLib.ThaiConv("ถ้า|ผู้|เล่น|อีก|ฝ่าย|ยอม|รับ:");
+        public override string Diplomacy_WarPreparationTime => TextLib.ThaiConv("เวลา|เตรียม|ตัว|ทำ|สงคราม");
+
+        public override string Diplomacy_AboveSoftCap => TextLib.ThaiConv("เกิน|ซอฟต์แคป");
+        public override string Diplomacy_BelowSoftCap => TextLib.ThaiConv("ต่ำ|กว่า|ซอฟต์แคป");
+        public override string Diplomacy_OpenPlayerToPlayer => TextLib.ThaiConv("เปิด|การ|ทูต|ระหว่าง|ผู้|เล่น");
+
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => TextLib.ThaiConv("ไอเทม|จะ|ไม่|ถูก|ทำลาย|หาก|ของ|เกิน|ความจุ|คลัง|!");
+        public override string SlaughterResult_PerAnimal => TextLib.ThaiConv("ผลผลิต|จาก|การ|ชำแหละ|,|ต่อ|สัตว์|หนึ่ง|ตัว");
+        public override string Settings_Mode_QuickBoss => TextLib.ThaiConv("บอส|แบบ|รวดเร็ว");
+        public override string Settings_Mode_QuickBoss_Description => TextLib.ThaiConv("เตรียมตัว|ไม่|กี่|ชั่วโมง|,|จากนั้น|พบ|กับ|บอส|ตัว|สุดท้าย");
+        public override string QuickBoss_TimeOption => TextLib.ThaiConv("เวลา|บอส|(|ชั่วโมง|)");
+        //อัปเดต|สัตว์|พาหนะ
+        public override string Leaderboards_title => TextLib.ThaiConv("กระดาน|ผู้นำ");
+        public override string Leaderboards_domination => TextLib.ThaiConv("เวลา|ดี|ที่สุด|ใน|การ|ยึดครอง|โลก|ระดับ|{0}%|ขึ้นไป");
+        public override string Leaderboards_victory => TextLib.ThaiConv("ชนะ|โหมด|เนื้อเรื่อง|ที่|ความ|ยาก|ระดับ|ท็อป|%");
+        public override string Leaderboards_CitySize => TextLib.ThaiConv("ขนาด|เมือง|ใหญ่|ที่สุด|นับ|ตาม|จำนวน|คนงาน");
+        public override string Leaderboards_Survival => TextLib.ThaiConv("ระยะเวลา|เอาชีวิตรอด|ที่|ความ|ยาก|{0}%");
+
+        public override string Message_CannotPayUpkeep => TextLib.ThaiConv("ไม่|สามารถ|จ่าย|ค่า|บำรุงรักษา|ได้!");
+        public override string Animals_ProductionStop => TextLib.ThaiConv("การ|ผลิต|สัตว์|จะ|หยุด|ลง");
+
+        public override string Tutorial_ToCapture => TextLib.ThaiConv("เพื่อ|จับ");
+        public override string Tutorial_ClickButton => TextLib.ThaiConv("คลิก|ปุ่ม");
+        public override string Tutorial_MoveXToY => TextLib.ThaiConv("ย้าย|{0}|ไป|ที่|{1}");
+
+        public override string Workers_Description1_work => TextLib.ThaiConv("จะ|สร้าง|สิ่งก่อสร้าง|รวบรวม|ทรัพยากร|และ|คราฟต์|ไอเทม");
+        public override string Workers_Description2_income => TextLib.ThaiConv("จ่าย|ภาษี|เพื่อ|เป็น|รายได้");
+        public override string Workers_Description3_soldiers => TextLib.ThaiConv("สามารถ|เกณฑ์|เป็น|ทหาร|สำหรับ|กองทัพ|ของ|คุณ|ได้");
+
+        public override string Hud_Time_ValuePerMinute => TextLib.ThaiConv("มูลค่า|ต่อ|นาที");
+        public override string Hud_Time_ValuePerSecond => TextLib.ThaiConv("มูลค่า|ต่อ|วินาที");
+        public override string Hud_Lock => TextLib.ThaiConv("ล็อก");
+        public override string Hud_Maximum => TextLib.ThaiConv("สูงสุด");
+
+        public override string Tutorial_SeeThisInThat => TextLib.ThaiConv("ดู|{0}|ใน|{1}");
+        public override string Conscript_SkillBonus => TextLib.ThaiConv("โบนัส|สกิล");
+        public override string SoldierStats_UnitCount => TextLib.ThaiConv("จำนวน|ยูนิต");
+        /// <summary>
+        /// พื้นที่|ได้แก่|ทุ่งหญ้า|ป่า|ทะเล|และ|การ|ปิดล้อม
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => TextLib.ThaiConv("ดาเมจ|ต่อ|วินาที|-|{0}");
+        public override string Conscript_BaseHealth => TextLib.ThaiConv("Base|HP");
+
+        /// <summary>
+        /// ค่า|สรุป|สำหรับ|ความ|สามารถ|ใน|การ|ข้าม|แผนที่
+        /// </summary>
+        public override string Conscript_Mobility => TextLib.ThaiConv("ความ|คล่องตัว");
+
+        public override string Conscript_RiderMobility => TextLib.ThaiConv("ความ|คล่องตัว|ของ|ผู้|ขี่");
+        public override string Conscript_LightWagonMobility => TextLib.ThaiConv("ความ|คล่องตัว|ของ|รถม้า|เบา");
+        public override string Conscript_HeavyWagonMobility => TextLib.ThaiConv("ความ|คล่องตัว|ของ|รถม้า|หนัก");
+
+        /// <summary>
+        /// ใช้|ทั่วไป|สำหรับ|ออบเจกต์|ใดๆ|เช่น|สกิล|ทรัพยากร|และ|สิ่งก่อสร้าง
+        /// </summary>
+        public override string Culture_AffectedItems => TextLib.ThaiConv("ไอเทม|ที่|ได้|รับ|ผลกระทบ");
+        //## อัปเดต|สัตว์|พาหนะ ##
+        public override string Progress_ClosingCores => TextLib.ThaiConv("กำลัง|ปิด|คอร์|CPU|{0}");
+        public override string Editor_ExportFrame => TextLib.ThaiConv("ส่งออก|เฟรม|ปัจจุบัน");
+        public override string Editor_FistFrame => TextLib.ThaiConv("เฟรม|แรก");
+        public override string Editor_LastFrame => TextLib.ThaiConv("เฟรม|สุดท้าย");
+
+        public override string Economy_AnimalPenUpkeep => TextLib.ThaiConv("ค่า|บำรุง|คอก:|{0}");
+        public override string Work_SlaughterX => TextLib.ThaiConv("ชำแหละ|{0}");
+
+        public override string BuildCategory_Farming => TextLib.ThaiConv("เกษตรกรรม");
+        public override string Resource_TypeName_ManType => TextLib.ThaiConv("ประเภท|คน");
+        public override string Resource_TypeName_NobelMen => TextLib.ThaiConv("ขุนนาง");
+        public override string Resource_TypeName_ConservedFood => TextLib.ThaiConv("อาหาร|ถนอม");
+
+        public override string UnitType_UnitOnMount => TextLib.ThaiConv("ขี่|{0}");
+        public override string UnitType_UnitOnWagon => TextLib.ThaiConv("รถม้า|{0}");
+        public override string UnitType_NobelUnit => TextLib.ThaiConv("ขุนนาง|{0}");
+
+        /// <summary>
+        /// 0: ประเภท|ทหาร, 1: สัตว์
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => TextLib.ThaiConv("{0}|ผู้|ฝึก|{1}");
+
+        public override string Info_ArmyFood4 => TextLib.ThaiConv("อาหาร|ถนอม|ช่วย|ให้|เก็บ|เสบียง|ได้|มาก|ขึ้น");
+        public override string Info_ArmyFood5 => TextLib.ThaiConv("อาหาร|สด|จะ|ถูก|ใช้|ก่อน");
+
+        public override string Resource_ConservedFood_Reserves => TextLib.ThaiConv("เสบียง|อาหาร|ถนอม");
+        public override string Resource_TypeName_Clay => TextLib.ThaiConv("ดินเหนียว");
+        public override string Resource_TypeName_Brick => TextLib.ThaiConv("อิฐ");
+        public override string Resource_TypeName_Container => TextLib.ThaiConv("ภาชนะ");
+        public override string Resource_TypeName_Meat => TextLib.ThaiConv("เนื้อ");
+        public override string Resource_TypeName_Salt => TextLib.ThaiConv("เกลือ");
+        public override string Resource_TypeName_Vehicle => TextLib.ThaiConv("พาหนะ");
+        public override string Resource_TypeName_WagonClosed => TextLib.ThaiConv("รถม้า|แบบ|ปิด");
+        public override string Resource_TypeName_WagonIron => TextLib.ThaiConv("รถม้า|เหล็ก");
+        public override string Resource_TypeName_WagonSteel => TextLib.ThaiConv("รถม้า|เหล็กกล้า");
+        public override string Resource_TypeName_Shield => TextLib.ThaiConv("โล่");
+        public override string Resource_TypeName_BucklerShield => TextLib.ThaiConv("โล่|บักเกลอร์");
+        public override string Resource_TypeName_RoundShield => TextLib.ThaiConv("โล่|กลม");
+        public override string Resource_TypeName_HeaterShield => TextLib.ThaiConv("โล่|ฮีตเตอร์");
+        public override string Resource_TypeName_TowerShield => TextLib.ThaiConv("โล่|ทาวเวอร์");
+
+        public override string Resource_TypeName_Mount => TextLib.ThaiConv("สัตว์|พาหนะ");
+
+        public override string Resource_TypeName_MountArmorTitle => TextLib.ThaiConv("เกราะ|สัตว์|พาหนะ");
+
+        /// <summary>
+        /// 0: ประเภท|ชุดเกราะ
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => TextLib.ThaiConv("สัตว์|พาหนะ|{0}");
+        public override string Resource_TypeName_Animal => TextLib.ThaiConv("สัตว์");
+
+        //public override string Resource_TypeName_WildAnimal => TextLib.ThaiConv("สัตว์|ป่า");
+
+        /// <summary>
+        /// พื้นที่|ที่|มี|สัตว์ป่า
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => TextLib.ThaiConv("แหล่ง|ที่|อยู่|ของ|{0}");
+
+        public override string Resource_TypeName_Oxen => TextLib.ThaiConv("วัว|ผู้");
+        public override string Resource_TypeName_KineOxen => TextLib.ThaiConv("วัว|เมีย");
+
+        /// <summary>
+        /// แม่ไก่|เทียร์|ต่ำ|(สำหรับ|เพาะพันธุ์)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => TextLib.ThaiConv("สัตว์|ปีก");
+
+        /// <summary>
+        /// หมู|เทียร์|ต่ำ|(สำหรับ|เพาะพันธุ์)
+        /// </summary>
+        public override string Resource_TypeName_Boar => TextLib.ThaiConv("หมูป่า");
+        public override string Resource_TypeName_Pig => TextLib.ThaiConv("หมู");
+        public override string Resource_TypeName_Hen => TextLib.ThaiConv("แม่ไก่");
+        public override string Resource_TypeName_Dog => TextLib.ThaiConv("หมา");
+        public override string Resource_TypeName_Hound => TextLib.ThaiConv("หมาล่าเนื้อ");
+
+        public override string Resource_TypeName_Pony => TextLib.ThaiConv("ม้าแคระ");
+        public override string Resource_TypeName_Horse => TextLib.ThaiConv("ม้า");
+        public override string Resource_TypeName_WarHorse => TextLib.ThaiConv("ม้าศึก");
+        public override string Resource_TypeName_DraftHorse => TextLib.ThaiConv("ม้าลากจูง");
+
+        public override string Resource_TypeName_WildPig => TextLib.ThaiConv("หมู|เถื่อน");
+        public override string Resource_TypeName_WildHog => TextLib.ThaiConv("หมูป่า|เถื่อน");
+        public override string Resource_TypeName_WarHog => TextLib.ThaiConv("หมูป่า|ศึก");
+        public override string Resource_TypeName_StagHog => TextLib.ThaiConv("หมูป่า|เขา");
+
+        public override string Resource_TypeName_Wolf => TextLib.ThaiConv("หมาป่า");
+        public override string Resource_TypeName_Warg => TextLib.ThaiConv("วอร์ก");
+        public override string Resource_TypeName_AlphaWarg => TextLib.ThaiConv("วอร์ก|จ่าฝูง");
+
+        public override string Resource_TypeName_WildCat => TextLib.ThaiConv("แมวป่า");
+        public override string Resource_TypeName_Lion => TextLib.ThaiConv("สิงโต");
+        public override string Resource_TypeName_WarLion => TextLib.ThaiConv("สิงโต|ศึก");
+
+        public override string Resource_TypeName_Elephant => TextLib.ThaiConv("ช้าง");
+        public override string Resource_TypeName_WarElephant => TextLib.ThaiConv("ช้างศึก");
+        public override string Resource_TypeName_Oliphant => TextLib.ThaiConv("โอลิฟอนต์");
+
+        public override string BuildHud_Select => TextLib.ThaiConv("เลือก|สิ่งก่อสร้าง");
+        public override string BuildHud_AreaRadius => TextLib.ThaiConv("รัศมี|พื้นที่");
+
+        public override string NobleHouse_HousingCount => TextLib.ThaiConv("สามารถ|รองรับ|ขุนนาง|ได้|{0}|คน");
+
+
+        public override string BuildingType_GreatHall => TextLib.ThaiConv("โถง|ใหญ่");
+        public override string BuildingType_GreatHall_Description => TextLib.ThaiConv("ปลดล็อก|การ|เกณฑ์|ทหาร|ขั้นสูง");
+
+        public override string BuildingType_ClayPit => TextLib.ThaiConv("บ่อ|ดินเหนียว");
+        public override string BuildingType_Butcher => TextLib.ThaiConv("คน|ขาย|เนื้อ");
+        public override string BuildingType_Butcher_Description => TextLib.ThaiConv("เปลี่ยน|สัตว์|เป็น|อาหาร|และ|หนังสัตว์");
+        public override string BuildingType_Pottery => TextLib.ThaiConv("โรง|ปั้น|หม้อ");
+        public override string BuildingType_CraftX_Description => TextLib.ThaiConv("สถานี|คราฟต์|{0}");
+
+        public override string BuildingType_GatherX_Description => TextLib.ThaiConv("รวบรวม|{0}");
+
+        public override string BuildingType_Smoker => TextLib.ThaiConv("โรง|รมควัน");
+        public override string BuildingType_Dryer => TextLib.ThaiConv("โรง|อบแห้ง");
+        public override string BuildingType_Shieldmaker => TextLib.ThaiConv("ช่าง|ทำ|โล่");
+        public override string BuildingType_DryingPan => TextLib.ThaiConv("กระทะ|อบแห้ง");
+
+        public override string BuildingType_TrapperHut => TextLib.ThaiConv("กระท่อม|พราน|ดัก|สัตว์");
+        public override string BuildingType_TrapperHut_Description => TextLib.ThaiConv("ช่วย|ให้|จับ|สัตว์ป่า|ได้");
+
+        // --- โกดัง ---
+        public override string BuildingType_MaterialStorage => TextLib.ThaiConv("โกดัง|วัสดุ");
+        public override string BuildingType_FoodStorage => TextLib.ThaiConv("โกดัง|อาหาร");
+        public override string BuildingType_WeaponStorage => TextLib.ThaiConv("คลัง|อาวุธ");
+        public override string BuildingType_ArmorStorage => TextLib.ThaiConv("คลัง|ชุดเกราะ");
+        public override string BuildingType_AnimalStorage => TextLib.ThaiConv("ที่|เก็บ|สัตว์");
+
+        public override string BuildingType_Storage_Description => TextLib.ThaiConv("เพิ่ม|ความ|จุ|คลัง|สูงสุด|{0}");
+
+        public override string BuildingType_Cesspit => TextLib.ThaiConv("บ่อ|ขยะ");
+        public override string BuildingType_Cesspit_Description => TextLib.ThaiConv("ทำลาย|ทรัพยากร");
+
+        public override string BuildingType_Cesspit_Info1_StockPile => TextLib.ThaiConv("ทำลาย|ไอเทม|ที่|เกิน|ความ|จุ|คลัง");
+        public override string Info_XAmountIsConvertedToY => TextLib.ThaiConv("{0}|ถูก|แปลง|เป็น|{1}");
+        public override string Info_ProductionRestriction => TextLib.ThaiConv("จำกัด|การ|ผลิต|ไอเทม|ไว้|ที่");
+
+        public override string BuildingType_FowlPen => TextLib.ThaiConv("เล้า|สัตว์ปีก");
+        public override string BuildingType_BoarPen => TextLib.ThaiConv("คอก|หมูป่า");
+
+        // --- คอก|วัว ---
+        public override string BuildingType_OxenPen => TextLib.ThaiConv("คอก|วัวผู้");
+        public override string BuildingType_KineOxenPen => TextLib.ThaiConv("คอก|วัวเมีย");
+
+        // --- กรง|หมา ---
+        public override string BuildingType_DogCage => TextLib.ThaiConv("กรง|หมา");
+        public override string BuildingType_HoundCage => TextLib.ThaiConv("กรง|หมาล่าเนื้อ");
+
+        // --- คอก|ม้า ---
+        public override string BuildingType_PonyPen => TextLib.ThaiConv("คอก|ม้าแคระ");
+        public override string BuildingType_HorsePen => TextLib.ThaiConv("คอก|ม้า");
+        public override string BuildingType_WarHorsePen => TextLib.ThaiConv("คอก|ม้าศึก");
+        public override string BuildingType_DraftHorsePen => TextLib.ThaiConv("คอก|ม้าลากจูง");
+
+        // --- คอก|หมู/หมูป่า ---
+        public override string BuildingType_WildPigPen => TextLib.ThaiConv("คอก|หมู|เถื่อน");
+        public override string BuildingType_WildHogPen => TextLib.ThaiConv("คอก|หมูป่า|เถื่อน");
+        public override string BuildingType_WarHogPen => TextLib.ThaiConv("คอก|หมูป่า|ศึก");
+        public override string BuildingType_StagHogPen => TextLib.ThaiConv("คอก|หมูป่า|เขา");
+
+        // --- กรง|หมาป่า ---
+        public override string BuildingType_WolfCage => TextLib.ThaiConv("กรง|หมาป่า");
+        public override string BuildingType_WargCage => TextLib.ThaiConv("กรง|วอร์ก");
+        public override string BuildingType_AlphaWargCage => TextLib.ThaiConv("กรง|วอร์ก|จ่าฝูง");
+
+        // --- กรง|แมว ---
+        public override string BuildingType_WildCatCage => TextLib.ThaiConv("กรง|แมวป่า");
+        public override string BuildingType_LionCage => TextLib.ThaiConv("กรง|สิงโต");
+        public override string BuildingType_WarLionCage => TextLib.ThaiConv("กรง|สิงโต|ศึก");
+
+        // --- กรง|ช้าง ---
+        public override string BuildingType_ElephantCage => TextLib.ThaiConv("กรง|ช้าง");
+        public override string BuildingType_WarElephantCage => TextLib.ThaiConv("กรง|ช้างศึก");
+        public override string BuildingType_OliphantCage => TextLib.ThaiConv("กรง|โอลิฟอนต์");
+
+        public override string BuildingDescription_Animals => TextLib.ThaiConv("ผลิต|สัตว์|สำหรับ|เกณฑ์|ทหาร");
+        public override string Pen_Breeding => TextLib.ThaiConv("การ|เพาะพันธุ์|สัตว์");
+        public override string Pen_BreedUpChance => TextLib.ThaiConv("โอกาส|{0}%|ที่|จะ|เพิ่ม|เทียร์");
+        public override string Pen_BreedDownChance => TextLib.ThaiConv("โอกาส|{0}%|ที่|จะ|ลด|เทียร์");
+
+
+        public override string CityCulture_AnimalBreeder2_Description => TextLib.ThaiConv("โอกาส|เพาะพันธุ์|สำเร็จ|สูง|ขึ้น");
+
+        public override string CityCulture_EnhancedProduction => TextLib.ThaiConv("เพิ่ม|การ|ผลิต|{0}");
+        public override string CityCulture_Production => TextLib.ThaiConv("การ|ผลิต|{0}");
+
+        public override string CityCulture_Butchers => TextLib.ThaiConv("คน|ขาย|เนื้อ");
+
+        public override string CityCulture_Potters => TextLib.ThaiConv("ช่างปั้น");
+
+        public override string CityCulture_Wainwright => TextLib.ThaiConv("ช่าง|ทำ|เกวียน");
+
+        public override string CityCulture_Wheelwright => TextLib.ThaiConv("ช่าง|ทำ|ล้อ");
+        public override string CityCulture_Wheelwright_Description => TextLib.ThaiConv("โบนัส|ความเร็ว|สำหรับ|รถ|เกณฑ์");
+
+        public override string CityCulture_ShieldMaker => TextLib.ThaiConv("ช่าง|ทำ|โล่");
+
+
+        //public override string CityCulture_Nomads_Description => TextLib.ThaiConv("ต้นทุน|ตั้งถิ่นฐาน|ต่ำ");
+
+        public override string CityCulture_Coopers => TextLib.ThaiConv("ช่าง|ทำ|ถังไม้");
+
+        public override string CityCulture_Salters => TextLib.ThaiConv("คน|ทำ|เกลือ");
+
+
+        public override string CityBiome_Title => TextLib.ThaiConv("ไบโอม");
+        public override string CityBiome_Description => TextLib.ThaiConv("ไบโอม|มี|ผล|ต่อ|การ|เข้าถึง|ทรัพยากร|และ|สิ่งก่อสร้าง|บาง|อย่าง");
+
+        public override string CityBiome_Fields => TextLib.ThaiConv("ทุ่งหญ้า");
+        public override string CityBiome_Frozen => TextLib.ThaiConv("แดน|น้ำแข็ง");
+        public override string CityBiome_Forest => TextLib.ThaiConv("ป่า");
+        public override string CityBiome_Mountain => TextLib.ThaiConv("ภูเขา");
+        public override string CityBiome_Desolate => TextLib.ThaiConv("ดินแดน|รกร้าง");
+        public override string CityBiome_Desert => TextLib.ThaiConv("ทะเลทราย");
+
+        public override string Bonus_IncreaseSkin => TextLib.ThaiConv("เพิ่ม|การ|ผลิต|หนังสัตว์");
+        public override string Bonus_FoodStorage => TextLib.ThaiConv("โกดัง|อาหาร|ใหญ่|ขึ้น");
+
+        public override string StockPile_LimitTitle => TextLib.ThaiConv("จำกัด|ความ|จุ|คลัง");
+
         public override string Help_Work_Automatic => TextLib.ThaiConv("การ|ทำ|งาน|เป็น|ไป|โดย|อัตโนมัติ");
         public override string Tutorial_SecondCity => TextLib.ThaiConv("ครอบ|ครอง|เมือง|ที่|สอง");
         public override string InputAction_SkipAutomated => TextLib.ThaiConv("ข้าม|อัตโนมัติ");
@@ -75,14 +518,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => TextLib.ThaiConv("{1} {0}");
+        public override string Language_ItemCount => TextLib.ThaiConv("{1} {0}");
 
-        public override string DisplayMode => TextLib.ThaiConv("โหมด|แสดง|ผล");
-        public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
-        public override string DisplayMode_BorderlessFullscreen => TextLib.ThaiConv("เต็ม|จอ|ไร้|ขอบ");
+        //public override string DisplayMode => TextLib.ThaiConv("โหมด|แสดง|ผล");
+        //public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
+        //public override string DisplayMode_BorderlessFullscreen => TextLib.ThaiConv("เต็ม|จอ|ไร้|ขอบ");
 
-        public override string GameSettings_RenderedMouseCursor => TextLib.ThaiConv("เรนเดอร์|เคอร์เซอร์");
-        public override string GameSettings_MuteControllerDisconnect => TextLib.ThaiConv("ปิด|การ|แจ้ง|เตือน|คอนโทรลเลอร์|หลุด");
+        //public override string GameSettings_RenderedMouseCursor => TextLib.ThaiConv("เรนเดอร์|เคอร์เซอร์");
+        //public override string GameSettings_MuteControllerDisconnect => TextLib.ThaiConv("ปิด|การ|แจ้ง|เตือน|คอนโทรลเลอร์|หลุด");
 
         public override string Delivery_MaxDistance => TextLib.ThaiConv("ระยะ|ขน|ส่ง|สูงสุด: {0}");
         public override string Tutorial_WillTakeAWhile => TextLib.ThaiConv("ขั้น|ตอนนี้|ใช้|เวลา|สัก|พัก |ลอง|กลับ|มา|ดู|ใหม่|ภาย|หลัง");
@@ -199,7 +642,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => TextLib.ThaiConv("{0}: {1}");
+        public override string Language_ItemCount_Colon => TextLib.ThaiConv("{0}: {1}");
 
         /// <summary>
         /// Select language option
@@ -439,7 +882,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา: {0}");
+        public override string Hud_Upkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา");
         public override string Hud_ArmyUpkeep => TextLib.ThaiConv("ค่า|บำรุง|กอง|ทัพ: {0}");
 
         /// <summary>
@@ -451,14 +894,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => TextLib.ThaiConv("คุณ|ต้อง|ขยาย|เมือง|ก่อน");
 
-        public override string Hud_SoldierCount => TextLib.ThaiConv("จำนวน|ทหาร: {0}");
+        public override string Hud_SoldierCount => TextLib.ThaiConv("จำนวน|ทหาร");
 
-        public override string Hud_SoldierGroupsCount => TextLib.ThaiConv("จำนวน|กลุ่ม: {0}");
+        public override string Hud_SoldierGroupsCount => TextLib.ThaiConv("จำนวน|กลุ่ม");
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => TextLib.ThaiConv("ระดับ|พลัง: {0}");
+        public override string Hud_StrengthRating => TextLib.ThaiConv("ระดับ|พลัง");
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -674,7 +1117,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Diplomatic communication. How well you can discuss terms. 0: SpeakTerms
         /// </summary>
-        public override string Diplomacy_SpeakTermIs => TextLib.ThaiConv("ระดับ|การ|เจรจา: {0}");
+        public override string Diplomacy_SpeakTermIs => TextLib.ThaiConv("ระดับ|การ|เจรจา");
 
         /// <summary>
         /// Diplomatic communication. Better than normal.
@@ -804,7 +1247,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => TextLib.ThaiConv("สถิติ");
+        public override string Statistics_Title => TextLib.ThaiConv("สถิติ");
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -1000,7 +1443,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => TextLib.ThaiConv("พลัง|ชีวิต: {0}");
+        public override string SoldierStats_Health => TextLib.ThaiConv("พลัง|ชีวิต");
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1062,7 +1505,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SendX => TextLib.ThaiConv("ส่ง| {0}");
+        public override string Hud_SendX => TextLib.ThaiConv("ส่ง| {0}");
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -1221,7 +1664,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersTitle => TextLib.ThaiConv("ทหาร|หนี|ทัพ!");
         public override string EventMessage_DesertersText_Money => TextLib.ThaiConv("ทหาร|ที่|ไม่|ได้|รับ|ค่า|จ้าง|กำลัง|หนี|ทัพ|ไป|จาก|กอง|ทัพ|ของ|คุณ");
 
-        public override string DifficultyDescription_AiAggression => TextLib.ThaiConv("ความ|ดุดัน|ของ| AI: {0}");
+        //public override string DifficultyDescription_AiAggression => TextLib.ThaiConv("ความ|ดุดัน|ของ| AI: {0}");
         public override string DifficultyDescription_BossSize => TextLib.ThaiConv("ขนาด|ของ|บอส: {0}");
         public override string DifficultyDescription_BossEnterTime => TextLib.ThaiConv("เวลา|ปรากฏ|ตัว|ของ|บอส: {0}");
         public override string DifficultyDescription_AiEconomy => TextLib.ThaiConv("เศรษฐกิจ|ของ| AI: {0}%");
@@ -1455,7 +1898,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => TextLib.ThaiConv("ทาง|เดิน|หิน");
         public override string BuildingType_Smith => TextLib.ThaiConv("โรง|ตี|เหล็ก");
         public override string BuildingType_Cook => TextLib.ThaiConv("โรง|ครัว");
-        public override string BuildingType_Storage => TextLib.ThaiConv("โรง|เก็บ|ของ");
+        public override string BuildingType_Storehouse => TextLib.ThaiConv("โรง|เก็บ|ของ");
 
         public override string BuildingType_ResourceFarm => TextLib.ThaiConv("ฟาร์ม| {0}");
 
@@ -1478,7 +1921,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => TextLib.ThaiConv("ที่|พัก|สำหรับ|อัศวิน|และ|นัก|การ|ทูต");
         public override string BuildingType_CoalPit_Description => TextLib.ThaiConv("ผลิต|เชื้อเพลิง|อย่าง|มี|ประสิทธิภาพ");
-        public override string BuildingType_Storage_Description => TextLib.ThaiConv("จุด|รับ|ฝาก|ทรัพยากร");
+        //public override string BuildingType_Storehouse_Description => TextLib.ThaiConv("จุด|รับ|ฝาก|ทรัพยากร");
 
         public override string MenuTab_Info => TextLib.ThaiConv("ข้อมูล");
         public override string MenuTab_Work => TextLib.ThaiConv("งาน");
@@ -1566,10 +2009,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => TextLib.ThaiConv("จะ|เพิ่ม|พลัง|โจมตี|ใน|ด้าน|หนึ่ง|แต่|จะ|ลด|ด้าน|อื่น|ลง|ทั้งหมด| {0}");
         public override string Conscript_SelectBuilding => TextLib.ThaiConv("เลือก|โรง|ทหาร");
 
-        public override string Conscript_WeaponDamage => TextLib.ThaiConv("พลัง|โจมตี|อาวุธ: {0}");
-        public override string Conscript_ArmorHealth => TextLib.ThaiConv("พลัง|ป้องกัน|เกราะ: {0}");
-        public override string Conscript_TrainingSpeed => TextLib.ThaiConv("ความ|เร็ว|การ|โจมตี: {0}");
-        public override string Conscript_TrainingTime => TextLib.ThaiConv("เวลา|ใน|การ|ฝึก: {0}");
+        public override string Conscript_WeaponDamage => TextLib.ThaiConv("พลัง|โจมตี|อาวุธ");
+        public override string Conscript_ArmorHealth => TextLib.ThaiConv("พลัง|ป้องกัน|เกราะ");
+        public override string Conscript_AttackSpeed => TextLib.ThaiConv("ความ|เร็ว|การ|โจมตี");
+        public override string Conscript_TrainingTime => TextLib.ThaiConv("เวลา|ใน|การ|ฝึก");
 
         public override string Conscript_Training_Minimal => TextLib.ThaiConv("พื้น|ฐาน|ที่สุด");
         public override string Conscript_Training_Basic => TextLib.ThaiConv("ขั้น|ต้น");
@@ -1595,15 +2038,15 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Delivery_DistanceX => TextLib.ThaiConv("ระยะ|ทาง: {0}");
         public override string Delivery_DeliveryTimeX => TextLib.ThaiConv("เวลา|ขน|ส่ง: {0}");
         public override string Delivery_SenderMinimumCap => TextLib.ThaiConv("ขีด|จำกัด|ขั้น|ต่ำ|ผู้|ส่ง");
-        public override string Delivery_RecieverMaximumCap => TextLib.ThaiConv("ขีด|จำกัด|สูงสุด|ผู้|รับ");
+        public override string Delivery_ReceiverMaximumCap => TextLib.ThaiConv("ขีด|จำกัด|สูงสุด|ผู้|รับ");
         public override string Delivery_ItemsReady => TextLib.ThaiConv("ไอเทม|พร้อม|ส่ง");
-        public override string Delivery_RecieverReady => TextLib.ThaiConv("ผู้|รับ|พร้อม|รับ");
+        public override string Delivery_ReceiverReady => TextLib.ThaiConv("ผู้|รับ|พร้อม|รับ");
         public override string Hud_ThisCity => TextLib.ThaiConv("เมือง|นี้");
         public override string Hud_RecieveingCity => TextLib.ThaiConv("เมือง|ผู้|รับ");
 
         public override string Info_ButtonIcon => TextLib.ThaiConv("i");
 
-        public override string Info_PerSecond => TextLib.ThaiConv("แสดง|เป็น|ทรัพยากร|ต่อ|วินาที");
+        public override string Info_ResourcePerSecond => TextLib.ThaiConv("แสดง|เป็น|ทรัพยากร|ต่อ|วินาที");
 
         public override string Info_MinuteAverage => TextLib.ThaiConv("ค่า|นี้|คือ|ค่า|เฉลี่ย|จาก| 1 |นาที|ล่าสุด");
 
@@ -1675,12 +2118,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string CityCulture_PitMasters => TextLib.ThaiConv("เจ้า|แห่ง|เตา|เผา");
 
-        public override string CityCulture_CultureIsX => TextLib.ThaiConv("วัฒนธรรม: {0}");
+        public override string CityCulture_Culture => TextLib.ThaiConv("วัฒนธรรม");
         public override string CityCulture_LargeFamilies_Description => TextLib.ThaiConv("เพิ่ม|อัตรา|การ|เกิด|ของ|เด็ก");
         public override string CityCulture_FertileGround_Description => TextLib.ThaiConv("พืช|ผล|ให้|ผล|ผลิต|มาก|ขึ้น");
         public override string CityCulture_Archers_Description => TextLib.ThaiConv("ผลิต|พล|ธนู|ที่|เชี่ยวชาญ");
         public override string CityCulture_Warriors_Description => TextLib.ThaiConv("ผลิต|นัก|รบ|ประชิด|ที่|เชี่ยวชาญ");
-        public override string CityCulture_AnimalBreeder_Description => TextLib.ThaiConv("สัตว์|ให้|ทรัพยากร|มาก|ขึ้น");
+        //public override string CityCulture_AnimalBreeder_Description => TextLib.ThaiConv("สัตว์|ให้|ทรัพยากร|มาก|ขึ้น");
         public override string CityCulture_Miners_Description => TextLib.ThaiConv("ขุด|แร่|ได้|มาก|ขึ้น");
         public override string CityCulture_Woodcutters_Description => TextLib.ThaiConv("ต้น|ไม้|ให้|ไม้|มาก|ขึ้น");
         public override string CityCulture_Builders_Description => TextLib.ThaiConv("ก่อ|สร้าง|ได้|รวดเร็ว");
@@ -1701,7 +2144,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_SelectTabX => TextLib.ThaiConv("เลือก|แท็บ: {0}");
         public override string Tutorial_IncreasePriorityOnX => TextLib.ThaiConv("เพิ่ม|ลำดับ|ความ|สำคัญ|ของ: {0}");
         public override string Tutorial_PlaceBuildOrder => TextLib.ThaiConv("สั่ง|ก่อ|สร้าง: {0}");
-        public override string Tutorial_ZoomInput => TextLib.ThaiConv("ซูม");
+        public override string ButtonAction_Zoom => TextLib.ThaiConv("ซูม");
 
         public override string Tutorial_SelectACity => TextLib.ThaiConv("เลือก|เมือง");
         public override string Tutorial_ZoomInWorkers => TextLib.ThaiConv("ซูม|เข้าไป|เพื่อ|ดู|คน|งาน");
@@ -1721,12 +2164,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => TextLib.ThaiConv("ถ่าน|หิน");
 
-        public override string Language_XUpkeepIsY => TextLib.ThaiConv("ค่า|บำรุง|รักษา| {0}: {1}");
+        public override string Language_XUpkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา| {0}");
         public override string Language_XCountIsY => TextLib.ThaiConv("จำนวน| {0}: {1}");
 
         public override string Message_ArmyOutOfFood_Text => TextLib.ThaiConv("จะ|มีการ|ซื้อ|เสบียง|ราคา|แพง|จาก|ตลาด|มืด |ทหาร|ที่|หิว|โซ|จะ|หนี|ทัพ|เมื่อ|เงิน|ของ|คุณ|หมด|ลง");
 
-        public override string Info_ArmyFood => TextLib.ThaiConv("กอง|ทัพ|จะ|เติม|เสบียง|จาก|เมือง|พันธมิตร|ที่|ใกล้|ที่สุด |เสบียง|สามารถ|ซื้อ|ได้|จาก|ฝ่าย|อื่น |แต่|ใน|เขต|ศัตรู|จะ|ซื้อ|เสบียง|ได้|จาก|ตลาด|มืด|เท่านั้น");
+        public override string Info_ArmyFood1 => "กองทัพ|จะ|เติม|เสบียง|จาก|เมือง|พันธมิตร|ที่|ใกล้|ที่สุด.";
+        public override string Info_ArmyFood2 => "สามารถ|ซื้อ|เสบียง|ได้|จาก|ฝ่าย|อื่น.";
+        public override string Info_ArmyFood3 => "ใน|ดินแดน|ศัตรู|จะ|ซื้อ|เสบียง|ได้|จาก|ตลาดมืด|เท่านั้น.";
 
         public override string FactionName_Monger => TextLib.ThaiConv("มอง|เกอร์");
         public override string FactionName_Hatu => TextLib.ThaiConv("ฮา|ตู");
@@ -1800,13 +2245,13 @@ namespace VikingEngine.DSSWars.Presentation
         public override string LandType_Flatland => TextLib.ThaiConv("ที่|ราบ");
         public override string LandType_Water => TextLib.ThaiConv("แหล่ง|น้ำ");
         public override string BuildingType_Wall => TextLib.ThaiConv("กำแพง");
-        public override string Delivery_AutoReciever_Description => TextLib.ThaiConv("จะ|ส่ง|ไป|ยัง|เมือง|ที่|มี|ทรัพยากร|น้อย|ที่สุด");
+        public override string Delivery_AutoReceiver_Description => TextLib.ThaiConv("จะ|ส่ง|ไป|ยัง|เมือง|ที่|มี|ทรัพยากร|น้อย|ที่สุด");
 
         public override string Hud_On => TextLib.ThaiConv("เปิด");
         public override string Hud_Off => TextLib.ThaiConv("ปิด");
 
-        public override string Hud_Time_Seconds => TextLib.ThaiConv("{0} | วินาที");
-        public override string Hud_Time_Minutes => TextLib.ThaiConv("{0} | นาที");
+        public override string Hud_Time_XSeconds => TextLib.ThaiConv("{0} | วินาที");
+        public override string Hud_Time_XMinutes => TextLib.ThaiConv("{0} | นาที");
         public override string Hud_Undo => TextLib.ThaiConv("ย้อน|กลับ");
         public override string Hud_Redo => TextLib.ThaiConv("ทำ|ซ้ำ");
 
@@ -2741,9 +3186,9 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// These symbols are needed to fit large numbers on the HUD, there will be a tooltip to explain what number it represents
         /// </summary>
-        public override string EngineHud_SymbolFor100 => TextLib.ThaiConv("c");
-        public override string EngineHud_SymbolFor1000 => TextLib.ThaiConv("k");
-        public override string EngineHud_SymbolFor10000 => TextLib.ThaiConv("10k");
+        public override string Language_SymbolFor100 => TextLib.ThaiConv("c");
+        public override string Language_SymbolFor1000 => TextLib.ThaiConv("k");
+        public override string Language_SymbolFor10000 => TextLib.ThaiConv("10k");
 
         /// <summary>
         /// When loading files from other players, you won’t get their achievement progress. Use the word for Steam Achievements.

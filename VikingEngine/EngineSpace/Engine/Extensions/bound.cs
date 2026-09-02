@@ -75,6 +75,10 @@ namespace VikingEngine
 
             return (byte)value;
         }
+        public static bool IsWithin_Byte(int value)
+        {
+            return value >= byte.MinValue && value <= byte.MaxValue;
+        }
 
         public static ushort UShort(double value)
         {
@@ -135,6 +139,12 @@ namespace VikingEngine
             return value;
         }
         public static float Max(float value, float max)
+        {
+            if (value > max) { return max; }
+            return value;
+        }
+
+        public static double Max(double value, double max)
         {
             if (value > max) { return max; }
             return value;

@@ -8,8 +8,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class Projectile : AbsUpdateable
     {
-        public static void ProjectileAttack(bool fullUpdate, AbsDetailUnit attacker,
-            AttackType type, AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount) /*int splashCount, float splashPercDamage)*/
+        public static void ProjectileAttack(bool fullUpdate, AbsSoldierUnit attacker,
+            AttackType type, AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount)
         {
             if (fullUpdate)
             {
@@ -27,8 +27,8 @@ namespace VikingEngine.DSSWars.GameObject
         //const float MinDistance = AbsSoldierData.StandardModelScale * 0.2f;
 
         Graphics.VoxelModelInstance model;
-        AbsDetailUnit fromAttack;
-        GameObject.AbsDetailUnit target; 
+        AbsSoldierUnit fromAttack;
+        GameObject.AbsSoldierUnit target; 
         int damage;
         int splashCount;
         //float splashPercDamage;
@@ -45,8 +45,8 @@ namespace VikingEngine.DSSWars.GameObject
         Vector3 blankTarget;
         float blockReduce_inv;
 
-        public Projectile(Vector3 start, AbsDetailUnit fromAttack, AttackType type, 
-            AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount)
+        public Projectile(Vector3 start, AbsSoldierUnit fromAttack, AttackType type, 
+            AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount)
             : base(true)
         {
             this.fromAttack = fromAttack;
@@ -243,9 +243,6 @@ namespace VikingEngine.DSSWars.GameObject
             WP.Rotation1DToQuaterion(model, dir.Radians);
 
             blankTarget = fromAttack.position + VectorExt.V2toV3XZ(dir.Direction(range));
-
-            //Vector3 diff = blankTarget - model.position;
-
         }
 
         public override void Time_Update(float time_ms)
@@ -320,20 +317,20 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount, AbsDetailUnit fromAttack)
+        public static void ProjectileHit(bool fullUpdate, AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount, AbsSoldierUnit fromAttack)
         {
 
-            target.takeDamage(damage, blockReduce_inv, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
+            target.takeDamage(damage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.pfaction, fullUpdate, out _);
             if (splashCount > 0 && target.IsSoldierUnit())
             {
-                int splashDamage = damage;//Convert.ToInt32(splashPercDamage * damage);
+                int splashDamage = damage;
 
                 for (int i = 0; i < splashCount; i++)
                 {
                     var target2 = target.group.soldiers?.GetRandomUnsafe(Ref.rnd);
                     if (target2 != null)
                     {
-                        target2.takeDamage(splashDamage, blockReduce_inv, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);
+                        target2.takeDamage(splashDamage, blockReduce_inv, fromAttack, fromAttack.attackDir, fromAttack.pfaction, fullUpdate, out _);
                     }
                 }
             }
@@ -343,8 +340,6 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            //model.DeleteMe();
-            //DssRef.models.recycle(ref model, true, true);
             model.preRemoveFromDrawBatch();
         }
     }

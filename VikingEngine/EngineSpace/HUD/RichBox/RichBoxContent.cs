@@ -47,6 +47,17 @@ namespace VikingEngine.HUD.RichBox
 
             return textCont;
         }
+
+        public RbText icontext(SpriteName icon, string textline, Color color)
+        {
+            newLine();
+            Add(new RbImage(icon));
+            space();
+            var textCont = new RbText(textline, color);
+            Add(textCont);
+
+            return textCont;
+        }
         public RbText iconicontext(SpriteName icon, SpriteName icon2, string textline)
         {
             newLine();

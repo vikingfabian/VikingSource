@@ -133,7 +133,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
                 case AiState.Move:
                     if (unitActions.unit != null)
                     {
-                        Debug.Log("Move unit " + unitActions.unit.ToString());
+                        //Debug.Log("Move unit " + unitActions.unit.ToString());
 
                         SpectatorTargetPos = unitActions.unit.squarePos;
 
@@ -325,7 +325,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
             }
             else
             {
-                Debug.Log("CHECK ALIVE FALSE: " + state.ToString());
+                //Debug.Log("CHECK ALIVE FALSE: " + state.ToString());
                 setState(AiState.UnitActivationComplete);
                 return false;
             }
@@ -491,7 +491,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
                         {
                             unitActions = new UnitAiActions(activationOrder.sel);
 
-                            Debug.Log("Next ai unit: " + unitActions.unit.ToString());
+                            //Debug.Log("Next ai unit: " + unitActions.unit.ToString());
 
                             setState(AiState.NextUnitAction);
                             return;
