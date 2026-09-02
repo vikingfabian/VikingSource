@@ -1,10 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState.MapEditor;
+using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.Engine;
@@ -13,6 +17,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.LootFest.Players;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor2
@@ -21,6 +26,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
     { 
         Setup,
         Nodes,
+        
         Icon,
         
         Bioms,
@@ -41,6 +47,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         public Vector2 topRight;
         public ImageGroup2D loadingDisplay;
         static readonly List<float> MapSizeAdd = new List<float> { 8, 64, 1024 };
+
+        bool heightMapSubTab = false;
 
         public MapEditor2Display(MapEditor2_Scene state)
         { 
@@ -163,63 +171,46 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     break;
 
                 case Map2GeneratorTab.Nodes:
-
-                    content.newLine();
-                    HudLib.Label(content, "Fill");
-                    content.Add(new RbTab(0.25f));
-                    RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(5, 80, 5), state.generateSettings.nodeFillPercProperty, false);
-                    content.newLine();
-                    HudLib.Label(content, "Connect");
-                    content.Add(new RbTab(0.25f));
-                    RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(10, 90, 1), state.generateSettings.nodeConnectPercProperty, false);
-
-                    content.newParagraph();
-
-                    content.Add(new ArtButton(RbButtonStyle.Primary,
-                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NodeGrid), null, true));
-                    content.Add(new RbSeperationLine());
-
-                    if (state.generator.currentPass == Map2Pass.NodeGrid)
-                    {
-                        content.h2("Paint tools", HudLib.TitleColor_Head2);
-
-                        HudLib.Label(content, "Pen size");
-                        content.Add(new RbTab(0.25f));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 5 }, new DragButtonSettings(1, 20, 1), state.tool.penSizeProperty, false);
-
-                        content.newLine();
-                        HudLib.Label(content, "All nodes");
-                        content.Add(new RbTab(0.25f));
-                        content.Add(new ArtButton(RbButtonStyle.Primary,
-                           new List<AbsRichBoxMember> { new RbText("Fill") }, new RbAction(state.tool.fill), null, true));
-                        content.Add(new ArtButton(RbButtonStyle.Primary,
-                           new List<AbsRichBoxMember> { new RbText("Clear") }, new RbAction(state.tool.clear), null, true));
-
-                        content.newLine();
-                        for (ToolAddType addType = 0; addType < ToolAddType.NUM_NONE; addType++)
-                        {
-                            Ref.langOpt.ToolAddType(addType, out var addIcon, out var addCaption);
-                            content.Add(new ArtOption(addType == state.tool.addType, new List<AbsRichBoxMember> { new RbImage(addIcon) },
-                                new RbAction1Arg<ToolAddType>((ToolAddType selected) => { state.tool.addType = selected; }, addType),
-                                new RbTooltip_Text(addCaption)));
-                        }
-
-                        content.newLine();
-                        for (PencilShape shape = 0; shape < PencilShape.NUM; shape++)
-                        {
-                            content.Add(new ArtOption(shape == state.tool.pencilShape, new List<AbsRichBoxMember> { new RbText(shape.ToString()) },
-                                new RbAction1Arg<PencilShape>((PencilShape selected) => { state.tool.pencilShape = selected; }, shape),
-                                new RbTooltip_Text("Pen shape")));
-                        }
-                    }
-                    
+                    tab_nodes(content);
                     break;
 
                 case Map2GeneratorTab.Icon:
-                    content.Add(new ArtButton(RbButtonStyle.Primary,
-                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Icon, Map2Pass.IconNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
+                    var subTab1 = new ArtButton(!heightMapSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+                       new RbAction1Arg<bool>((bool selected) =>
+                       {
+                           heightMapSubTab = selected;
+                       }, false, RbSoundType.Tab));
+
+                    content.Add(subTab1);
+
+                    var subTab2 = new ArtButton(heightMapSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                        new List<AbsRichBoxMember> { new RbText("Height map") },
+                        new RbAction1Arg<bool>((bool selected) =>
+                        {
+                            heightMapSubTab = selected;
+                        }, true, RbSoundType.Tab));
+
+                    content.Add(subTab2);
+
+                    content.newParagraph();
+                    if (heightMapSubTab)
+                    {
+                        content.text("Load a height map texture");
+                        string explanation = "Supported files: " + string.Join(", ", StreamLib.ValidTextureExtensions) + ".";
+                        content.text(explanation);
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                           new List<AbsRichBoxMember> { new RbText("Select height map") },
+                           new RbAction(importSaves)));
+                    }
+                    else
+                    {
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                           new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+                           new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Icon, Map2Pass.IconNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
+                    }
                     break;
 
                 case Map2GeneratorTab.Bioms:
@@ -255,10 +246,141 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         }
 
+        private void tab_nodes(RichBoxContent content)
+        {
+            content.newLine();
+            HudLib.Label(content, "Fill");
+            content.Add(new RbTab(0.25f));
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(5, 80, 5), state.generateSettings.nodeFillPercProperty, false);
+            content.newLine();
+            HudLib.Label(content, "Connect");
+            content.Add(new RbTab(0.25f));
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(10, 90, 1), state.generateSettings.nodeConnectPercProperty, false);
+
+            content.newParagraph();
+
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+               new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+               new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NodeGrid), null, true));
+            content.Add(new RbSeperationLine());
+
+            if (state.generator.currentPass == Map2Pass.NodeGrid)
+            {
+                content.h2("Paint tools", HudLib.TitleColor_Head2);
+
+                HudLib.Label(content, "Pen size");
+                content.Add(new RbTab(0.25f));
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 5 }, new DragButtonSettings(1, 20, 1), state.tool.penSizeProperty, false);
+
+                content.newLine();
+                HudLib.Label(content, "All nodes");
+                content.Add(new RbTab(0.25f));
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                   new List<AbsRichBoxMember> { new RbText("Fill") }, new RbAction(state.tool.fill), null, true));
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                   new List<AbsRichBoxMember> { new RbText("Clear") }, new RbAction(state.tool.clear), null, true));
+
+                content.newLine();
+                for (ToolAddType addType = 0; addType < ToolAddType.NUM_NONE; addType++)
+                {
+                    Ref.langOpt.ToolAddType(addType, out var addIcon, out var addCaption);
+                    content.Add(new ArtOption(addType == state.tool.addType, new List<AbsRichBoxMember> { new RbImage(addIcon) },
+                        new RbAction1Arg<ToolAddType>((ToolAddType selected) => { state.tool.addType = selected; }, addType),
+                        new RbTooltip_Text(addCaption)));
+                }
+
+                content.newLine();
+                for (PencilShape shape = 0; shape < PencilShape.NUM; shape++)
+                {
+                    content.Add(new ArtOption(shape == state.tool.pencilShape, new List<AbsRichBoxMember> { new RbText(shape.ToString()) },
+                        new RbAction1Arg<PencilShape>((PencilShape selected) => { state.tool.pencilShape = selected; }, shape),
+                        new RbTooltip_Text("Pen shape")));
+                }
+            }
+        }
+
         void exit()
         {
             new ExitToLobby(false);
         }
+
+        bool importSavesMenu = false;
+       
+        void importSaves()
+        {
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, menu, true, null);
+
+
+            //var saves = DssRef.storage.meta.ListHeightMaps();
+            importSavesMenu = true;
+
+            content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
+
+            menu.menuStack.Add("import");
+            menu.Refresh(content);
+            new Timer.AsynchActionTrigger(loadHeightmapList_async, true);
+
+
+        }
+
+        void loadHeightmapList_async()
+        {
+            var list = DssRef.storage.meta.ListHeightMaps();
+
+            List<TwoStrings> nameAndPath = new List<TwoStrings>(list.Count);
+            for (int i = 0; i < list.Count; ++i)
+            {
+                nameAndPath.Add(new TwoStrings(list[i].Split(Path.DirectorySeparatorChar).Last(), list[i]));
+            }
+
+            new Timer.Action1ArgTrigger<List<TwoStrings>>(listHeightMaps, nameAndPath);
+        }
+
+        void listHeightMaps(List<TwoStrings> name_Path)
+        {
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, menu, true, null);
+
+            if (importSavesMenu)
+            {
+                for (int i = 0; i < name_Path.Count; ++i)
+                {
+                    var save = name_Path[i];
+                    var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                    new RbImage(SpriteName.WarsHudIconImport),
+                                    new RbSpace(),
+                                    new RbText(LoadContent.CheckCharsSafety(save.String1, LoadedFont.Regular)),
+
+                                },
+                new RbAction1Arg<string>(importHeightMap, save.String2));
+
+                    btn.fillWidth = true;
+                    content.Add(btn);
+                    
+                }
+
+                if (name_Path.Count == 0)
+                {
+                    content.Add(new RbText(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light));
+                }
+            }
+            menu.Refresh(content);
+        }
+
+        void importHeightMap(string path)
+        {
+            //SaveStateMeta meta = new SaveStateMeta();
+            //meta.import = name;
+            //meta.importedWorld = true;
+            //loadGame = meta;
+            //openPlayerSetupForMode(StartGameMode.Play);
+
+            state.generator.addHeightMap(new HeightMapTexture(path));
+            state.generateHeightMap();
+
+        }
+
     }
 
 }

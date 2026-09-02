@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         public const float Height_LowGround = Height_WaterPlane + 0.1f;
         const float Height_DefaultGround = Height_WaterPlane + 0.2f;
         public const float Height_MountainStart = Height_DefaultGround + 0.3f;
-        const float Height_MountainPeek = Height_DefaultGround + 0.6f;
+        public const float Height_MountainPeek = Height_DefaultGround + 0.6f;
 
         const float LayerAddHeight = 0.15f;
         const float Height_PostNoise = LayerAddHeight * 2.4f;
@@ -44,6 +44,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         public IconWorldData iconWorld;
         public WorldData2 world;
         public NodeMap nodeMap;
+
+        public HeightMapTexture heightMapTexture = null;
 
         GenerateCities generateCities;
         Grid2D_L<GenTile> dataGrid;
@@ -82,6 +84,20 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                 });
             }
+        }
+
+        public void addHeightMap(HeightMapTexture heightMap)
+        { 
+            this.heightMapTexture = heightMap;
+            
+        }
+
+        public void generateHeightMap()
+        {
+            heightMapTexture.apply(dataGrid);
+            postProcessPixels();
+
+            loadingState = LoadingState.Complete;
         }
 
         public void generatePass(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end)
@@ -842,7 +858,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             else
             {
                 float height = tile.groundY / Height_MountainPeek;
-                int biomheight = Height.MinLandHeight +  Convert.ToInt32( (Height.MaxHeight - Height.MinLandHeight) * height);
+                int biomheight = Bound.Set( Height.MinLandHeight +  Convert.ToInt32( (Height.MaxHeight - Height.MinLandHeight) * height), 0, 9);
 
                 var col = DssRef.map.bioms.bioms[(int)tile.biom1].colors_height[biomheight].Color;/*TileColor(this).Color*/;
 

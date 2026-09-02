@@ -94,5 +94,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             display.loadingDisplay.Show();
             generator.generatePass(generateSettings, start, end);
         }
+
+        public void generateHeightMap()
+        {
+            loadingState = true;
+            display.loadingDisplay.Show();
+            generator.generateHeightMap();
+        }
     }
 }

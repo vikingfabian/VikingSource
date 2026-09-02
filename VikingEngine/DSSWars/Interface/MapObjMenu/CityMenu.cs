@@ -504,7 +504,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     {
                         player.progressSubTab = resourcesSubTab;
                     }, workSubTab, RbSoundType.Tab), new RbTooltip_Text(description));
-                //subTab.setGroupSelectionColor(HudLib.RbSettings, player.progressSubTab == workSubTab);
+                
                 content.Add(subTab);
                 //content.space();
             }
