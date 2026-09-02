@@ -25,6 +25,7 @@ using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
@@ -396,6 +397,12 @@ namespace VikingEngine.DSSWars
         override protected void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
+
+#if DEBUG
+            //MoveCostLayer moveCostLayers = new MoveCostLayer(DssRef.world);
+            //moveCostLayers.Test();
+#endif
+
 
             updateMouseVisible();
             Ref.music.OnGameStart();

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -21,7 +21,12 @@ namespace VikingEngine.DSSWars
 
         List<int> processStarted = new List<int>(8);
 
-        public void onNewPlayerModels()
+        public void OnNewPlayerModels()
+        {
+            ClearModels();
+        }
+
+        public void ClearModels()
         {
             models_loaded.Clear();
             lock (processStarted)
@@ -29,6 +34,8 @@ namespace VikingEngine.DSSWars
                 processStarted.Clear();
             }
         }
+
+        public int LoadedModelsCount => models_loaded.Count;
 
         public Graphics.VoxelModelInstance AutoLoadModelInstance(VoxelModelName name,
            float scale = 1f, bool addToRender = false)

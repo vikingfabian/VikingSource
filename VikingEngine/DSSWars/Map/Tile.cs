@@ -1,8 +1,9 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Settings;
@@ -12,10 +13,11 @@ using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct Tile
     {
-        public const int NoBorderRegion = -2;
-        public const int SeaBorder = -1;
+        public const short NoBorderRegion = -2;
+        public const short SeaBorder = -1;
         const int CompareToAmountCities = 8;
 
         public static void Init()
@@ -40,29 +42,29 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        //Save data
-        public int CityIndex;
-        public BiomType biom =  BiomType.Green;
+        // 4-byte members (naturally 4-byte aligned)
         public float secondaryBiomStrength = 0;
-        public BiomType secondaryBiom = BiomType.Green;
-        public int heightLevel;
-        public TileContent tileContent = TileContent.NONE;
-        public int BorderCount;
-        public int BorderRegion_North, BorderRegion_East, BorderRegion_South, BorderRegion_West;
-        public int seaDistanceHeatMap = int.MinValue;
-        //public int prevFoliageCount = 32;
-        //--
-
-        //public int WorkerCount = 0;
-        
         public float exitRenderTimeStamp_TotSec = 0;
-        //public byte renderStateA = Culling.NoRender;
-        //public byte renderStateB = Culling.NoRender;
+        public int seaDistanceHeatMap = int.MinValue;
+        public int subtileVisualEdits = 0;
+
+        // 2-byte members (naturally 2-byte aligned at offset 16)
+        public short CityIndex;
+        public short BorderRegion_North;
+        public short BorderRegion_East;
+        public short BorderRegion_South;
+        public short BorderRegion_West;
+
+        // 1-byte members (always aligned)
+        public BiomType biom = BiomType.Green;
+        public BiomType secondaryBiom = BiomType.Green;
+        public byte heightLevel;
+        public TileContent tileContent = TileContent.NONE;
+        public byte BorderCount;
         public byte bits_renderStateA = Culling.NoRender;
         public byte bits_renderStateB = Culling.NoRender;
+        [MarshalAs(UnmanagedType.I1)]
         public bool hasTileInRender = false;
-
-        public int subtileVisualEdits = 0;
         //public bool inRender = false;
 
         public bool OutOfRenderTimeOut()
@@ -164,7 +166,7 @@ namespace VikingEngine.DSSWars.Map
             //w.Write(Debug.Byte_OrCrash((int)tileContent));
             if (!eqCityIndex)
             {
-                w.Write(Debug.Ushort_OrCrash(CityIndex));
+                w.Write(CityIndex);
             }
 
             if (!eqBiom)
@@ -216,7 +218,14 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                CityIndex = r.ReadUInt16();
+                if (version <= 11)
+                {
+                    CityIndex = (short)r.ReadUInt16();
+                }
+                else
+                {
+                    CityIndex = r.ReadInt16();
+                }
             }
 
             if (saveOpt.Get(SaveOpt_biom_Ix))
@@ -288,22 +297,21 @@ namespace VikingEngine.DSSWars.Map
         {
             ++BorderCount;
             
-                switch (dir)
-                {
-                    case 0:
-                        BorderRegion_North = toregion;
-                        break;
-                    case 1:
-                        BorderRegion_East = toregion;
-                        break;
-                    case 2:
-                        BorderRegion_South = toregion;
-                        break;
-                    case 3:
-                        BorderRegion_West = toregion;
-                        break;
-                }
-            
+            switch (dir)
+            {
+                case 0:
+                    BorderRegion_North = (short)toregion;
+                    break;
+                case 1:
+                    BorderRegion_East = (short)toregion;
+                    break;
+                case 2:
+                    BorderRegion_South = (short)toregion;
+                    break;
+                case 3:
+                    BorderRegion_West = (short)toregion;
+                    break;
+            }
         }
 
         public bool hasBorder(out bool sameFaction)
@@ -713,12 +721,13 @@ namespace VikingEngine.DSSWars.Map
         public const float UnitMinY = WaterSurfaceY; //+ 0.02f;
         public const float UnitQuadMinY = WaterSurfaceY + 0.07f;
         const float LayerHeight = 0.06f;
+        public const float LowWaterY = WaterSurfaceY - 0.07f;
 
         static readonly float[] TypeToHeight = new float[]
         {
             WaterSurfaceY - 0.3f,//Deep water
             WaterSurfaceY - 0.18f,//Deep water
-            WaterSurfaceY - 0.07f,//Water_0,
+            LowWaterY,//Water_0,
             0f,//OpenField_1,
             LayerHeight,//Plains_2,
             LayerHeight * 2f,//Vegetation_3,
@@ -768,7 +777,7 @@ namespace VikingEngine.DSSWars.Map
         Border,
     }
 
-    enum TileContent
+    enum TileContent : byte
     {
         NONE,
         City,

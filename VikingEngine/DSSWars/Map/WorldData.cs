@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monsters;
@@ -94,6 +95,23 @@ namespace VikingEngine.DSSWars
         public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
 
         public List<PFaction> quickMatchFactions = null;
+
+
+        public PathFindingPool pathFindingPool = new PathFindingPool();
+        public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
+
+        public void ClearPools()
+        {
+            pathFindingPool.Clear();
+            detailPathFindingPool.Clear();
+        }
+
+        public void PreallocatePools(int pfCount = 1, int detailPfCount = 1)
+        {
+            pathFindingPool.Preallocate(pfCount);
+            detailPathFindingPool.Preallocate(detailPfCount);
+        }
+
 
         public WorldData()
         {
@@ -644,7 +662,7 @@ namespace VikingEngine.DSSWars
             //DebugWriteSize citiesSz = new DebugWriteSize();
             //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 11;
+            const int SaveMapVersion = 12;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.worldId.seed);

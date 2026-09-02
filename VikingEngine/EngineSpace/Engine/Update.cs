@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,7 +34,9 @@ namespace VikingEngine.Engine
 
         SpottedArray<IUpdateable>[] updateLists;
         SpottedArray<IUpdateable> oneTimeTriggers;
-        ConcurrentStack<ISyncAction> syncQue = new ConcurrentStack<ISyncAction>();
+
+        // No lock necessary. Inherently thread sage.
+        ConcurrentQueue<ISyncAction> _syncQue = new();
         
         public int GetUpdateListCount(UpdateType updateType)
         {
@@ -224,22 +226,28 @@ namespace VikingEngine.Engine
                 }
             }
 
-            while (syncQue.TryPop(out ISyncAction syncAction))
+            // Thread-safe dequeue.
+            while (_syncQue.TryDequeue(out var syncAction))
             {
                 syncAction.runSyncAction();
             }
-            
-                //for (int i = 0; i < syncQue.Count;++i)
-                //{
-                //    syncQue[i].runSyncAction();
-                //}
-                //syncQue.Clear();
-            
         }
 
         public void AddSyncAction(ISyncAction syncAction)
-        {            
-            syncQue.Push(syncAction);   
+        {
+            if (syncAction != null)
+            {
+                // Thread-safe enqueue.
+                _syncQue.Enqueue(syncAction);
+            }
+        }
+
+        public void AddSyncAction(Action action)
+        {
+            if (action != null)
+            {
+                AddSyncAction(new SyncAction(action));
+            }
         }
 
         public void TriggerAllSteamWriters()
@@ -288,6 +296,7 @@ namespace VikingEngine.Engine
 
             if (PlatformSettings.DebugPerformanceText)
             {
+                DebugExtensions.MemoryOverlay.Instance.RecordFrame(Ref.DeltaTimeMs);
                 OneSecondCounter += Ref.DeltaTimeSec;
 
                 if (OneSecondCounter >= 1)

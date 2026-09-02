@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.Xna.Framework;
 using Steamworks;
 using System;
@@ -1092,7 +1092,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             onGameStart(false);
-            int height = r.ReadByte();
+            byte height = r.ReadByte();
             var tile = new Tile();
             tile.heightLevel = height;
             position.Y = tile.ModelGroundY();

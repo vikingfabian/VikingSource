@@ -408,6 +408,14 @@ namespace VikingEngine
             X += addX;
             Y += addY;
         }
+        public IntVector2 ReturnSum(int addX, int addY)
+        {
+            IntVector2 result = this;
+            result.X += addX;
+            result.Y += addY;
+
+            return result;
+        }
 
         public void Add(IntVector2 add)
         {
