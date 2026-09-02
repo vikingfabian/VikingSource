@@ -9,6 +9,9 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Italian : AbsOptionsLanguage
     {
+        public override string GameSettings_UltraWide => "Ultrawide";
+        public override string GameSettings_UltraWide_LeftEdge => "Bordo sinistro della UI";
+        public override string GameSettings_UltraWide_RightEdge => "Bordo destro della UI";
         public override string GameSettings_WideScrollbar => "Barra di scorrimento larga";
         public override string GameSettings_DisplayInputHelp => "Guida ai comandi";
         public override string GameSettings_InputSmoothing => "Fluidità dei comandi";

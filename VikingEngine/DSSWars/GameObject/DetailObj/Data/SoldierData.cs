@@ -172,11 +172,11 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         {
             if (armyTypeFilter == ArmyType.ArmyMen)
             {
-                return DssConst.SoldierGroup_GuardCount;
+                return rowWidth * columnsDepth;
             }
             else
             {
-                return rowWidth * columnsDepth;
+                return DssConst.SoldierGroup_GuardCount;
             }
         }
         public int workForceCount()

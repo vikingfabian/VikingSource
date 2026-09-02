@@ -517,7 +517,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.OpenManual:
-                    content.iconicontext(HudLib.CheckImage(openManual.completed), SpriteName.MenuPixelIconManual, string.Format(DssRef.todoLang.Tutorial_OpenManual, DssRef.todoLang.GameManualTitle_Work, DssRef.todoLang.GameManual));
+                    content.iconicontext(HudLib.CheckImage(openManual.completed), SpriteName.MenuPixelIconManual, string.Format(DssRef.lang.Tutorial_OpenManual, DssRef.lang.GameManualTitle_Work, DssRef.lang.GameManual));
                     break;
 
                 case TutorialMission.CasualBuildBarracks:

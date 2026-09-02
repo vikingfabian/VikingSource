@@ -12,8 +12,32 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+
+        public override string Multiplayer_Invite => "Davet et";
+        public override string JoinFailure_NoAvailableFaction => "Katılım başarısız, kullanılabilir faction yok.";
+
+        public override string UnitType_Faction => "Faction";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => "Yeniden ata";
+        public override string ArmyOption_SendHalf => "Yarısını gönder";
+
+        public override string Tutorial_OpenManual => "Duraklatma menüsünü açın ve {1} içinden {0} hakkında bilgi edinin";
+
+        public override string Hud_ApplyToAll => "Tümüne uygula";
+        public override string Hud_OutOfStock => "Stokta yok";
+
+        public override string Leaderboards_NationStrength => "Ülke çapında askeri güç";
+
+        public override string AutoSaveTime => "Auto-save aralığı";
+
+        public override string Editor_ToolOption_Add => "Ekle";
+        public override string Editor_ToolOption_Remove => "Kaldır";
+        public override string Editor_ToolOption_Toggle => "Değiştir";
         //Multiplayer update
-        
+
 
         //--
         public override string Unlock_PublicGames => "herkese açık oyunlar";

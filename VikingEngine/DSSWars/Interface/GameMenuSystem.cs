@@ -203,13 +203,13 @@ namespace VikingEngine.DSSWars.Interface
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, menu, true, null);
 
-                        content.h1(DssRef.todoLang.GameManual, HudLib.TitleColor_Head);
+                        content.h1(DssRef.lang.GameManual, HudLib.TitleColor_Head);
 
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.WarsHammer),
                             new RbSpace(),
-                            new RbText(DssRef.todoLang.GameManualTitle_Work),
+                            new RbText(DssRef.lang.GameManualTitle_Work),
                             
                             }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Manual_Work, StackOption.Stack))
                             {
@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.Interface
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.WarsSoldierMan),
                             new RbSpace(),
-                            new RbText(DssRef.todoLang.GameManualTitle_Soldiers),
+                            new RbText(DssRef.lang.GameManualTitle_Soldiers),
 
                             }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Manual_Soldiers, StackOption.Stack))
                         {
@@ -247,7 +247,7 @@ namespace VikingEngine.DSSWars.Interface
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, menu, true, null);
 
-                        new RichBook().GenerateUI(content, DssRef.todoLang.manual_work, null, HudLib.BookSettings);
+                        new RichBook().GenerateUI(content, DssRef.lang.manual_work, null, HudLib.BookSettings);
 
                         menu.Refresh(content);
 
@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Interface
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, menu, true, null);
 
-                        new RichBook().GenerateUI(content, DssRef.todoLang.manual_food, null, HudLib.BookSettings);
+                        new RichBook().GenerateUI(content, DssRef.lang.manual_food, null, HudLib.BookSettings);
 
                         menu.Refresh(content);
                     }
@@ -274,7 +274,7 @@ namespace VikingEngine.DSSWars.Interface
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, menu, true, null);
 
-                        new RichBook().GenerateUI(content, DssRef.todoLang.manual_soldiers, new Dictionary<string, string> {
+                        new RichBook().GenerateUI(content, DssRef.lang.manual_soldiers, new Dictionary<string, string> {
                             { "barracks", DssRef.lang.BuildingType_SoldierBarracks },
                             { "queue", DssRef.lang.Hud_ProductionQueue },
 
@@ -477,7 +477,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbSpace(),
                     new RbImage(SpriteName.WarsHudIconNetwork),
                     new RbSpace(),
-                    new RbText(DssRef.todoLang.Multiplayer_Invite)
+                    new RbText(DssRef.lang.Multiplayer_Invite)
                     }, new RbAction(Ref.netSession.Invite), new RbTooltip_Text(DssRef.lang.Steam_OpenSteamOverlay))
                 {
                     fillWidth = true
@@ -488,7 +488,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.MenuPixelIconManual),
                     new RbSpace(),
-                    new RbText(DssRef.todoLang.GameManual)
+                    new RbText(DssRef.lang.GameManual)
                     }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Manual_Main, StackOption.Stack))
                     {
                         fillWidth = true
@@ -720,7 +720,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (DssRef.storage.autoSave)
                 {
                     content.newLine();
-                    HudLib.Label(content, SpriteName.WarsHudIconChildArrow, DssRef.todoLang.AutoSaveTime);
+                    HudLib.Label(content, SpriteName.WarsHudIconChildArrow, DssRef.lang.AutoSaveTime);
                     content.newLine();
                     foreach (var interval in AutoSaveIntervalOptions)
                     {

@@ -393,7 +393,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     case FactionMapFilter.FactionCols:
                         icon = SpriteName.WarsMapFilterFactions;
-                        filterName = DssRef.todoLang.UnitType_Faction;
+                        filterName = DssRef.lang.UnitType_Faction;
                         break;
                     case FactionMapFilter.Terrain:
                         icon = SpriteName.WarsMapFilterTerrain;
