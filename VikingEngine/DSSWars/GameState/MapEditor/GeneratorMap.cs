@@ -97,6 +97,17 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         {
             texture.texture = new Graphics.PixelTexture(world.iconGrid.Size);
 
+            refreshTexture(world);
+
+            image.Texture = texture.texture;
+            image.SetFullTextureSource();
+            textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
+            scale = 2;
+            image.Visible = true;
+        }
+
+        public void refreshTexture(Map.Map2.IconWorldData world)
+        {
             var loop = world.iconGrid.LoopInstance();
             while (loop.Next())
             {
@@ -105,12 +116,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             }
 
             texture.texture.ApplyPixelsToTexture();
-            
-            image.Texture = texture.texture;
-            image.SetFullTextureSource();
-            textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
-            scale = 2;
-            image.Visible = true;
+
         }
 
         public void hide()

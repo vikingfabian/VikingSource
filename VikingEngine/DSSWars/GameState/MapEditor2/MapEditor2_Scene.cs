@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameState.MapEditor;
@@ -58,7 +59,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     }
                     else
                     {
-                        map.generateIcon(generator.iconWorld);
+                        map.generateIcon(generator.ActiveIconWorld);
                         if (generator.currentPass >= Map2Pass.ScaleUp)
                         {
                             map.scale = 0.25f;
@@ -71,17 +72,33 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 bool mouseOverHud = false;
                 display.update(ref mouseOverHud);
 
-                foreach (var input in controller)
+                if (!mouseOverHud)
                 {
-                    map.userInput(input, mouseOverHud);
+                    foreach (var input in controller)
+                    {
+                        map.userInput(input, mouseOverHud);
 
-                    tool.paintInput(input);
+                        tool.paintInput(input);
+                    }
                 }
             }
         }
 
-        
+        bool redrawLock = false;
+        public void redrawPixels()
+        {
+            if (!redrawLock)
+            {
+                redrawLock = true;
 
+                Task.Run(() =>
+                {
+                    generator.processTexturePixels();
+                    map.refreshTexture(generator.ActiveIconWorld);
+                    redrawLock = false;
+                });
+            }
+        }
 
         public void generatePass(Map2Pass start, Map2Pass end)
         {
@@ -93,6 +110,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             loadingState = true;
             display.loadingDisplay.Show();
             generator.generatePass(generateSettings, start, end);
+        }
+
+        public void revertToIconPass()
+        {
+            loadingState = true;
+            display.loadingDisplay.Show();
+            generator.revertToIconPass();
         }
 
         public void generateHeightMap()

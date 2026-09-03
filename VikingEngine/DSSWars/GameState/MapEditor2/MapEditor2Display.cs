@@ -11,12 +11,15 @@ using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Map2;
+using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.LootFest.Map.Terrain;
 using VikingEngine.LootFest.Players;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
@@ -124,11 +127,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 var tabGroup = new ArtTabgroup(tabs, (int)tab, (int ix) =>
                 {
                     tab = (Map2GeneratorTab)ix;
+                    
                 }, null);
 
                 content.Add(tabGroup);
             }
-
+            state.tool?.refreshTools(tab);
             content.newLine();
 
             switch (tab)
@@ -175,48 +179,18 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     break;
 
                 case Map2GeneratorTab.Icon:
-                    var subTab1 = new ArtButton(!heightMapSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
-                       new RbAction1Arg<bool>((bool selected) =>
-                       {
-                           heightMapSubTab = selected;
-                       }, false, RbSoundType.Tab));
-
-                    content.Add(subTab1);
-
-                    var subTab2 = new ArtButton(heightMapSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                        new List<AbsRichBoxMember> { new RbText("Height map") },
-                        new RbAction1Arg<bool>((bool selected) =>
-                        {
-                            heightMapSubTab = selected;
-                        }, true, RbSoundType.Tab));
-
-                    content.Add(subTab2);
-
-                    content.newParagraph();
-                    if (heightMapSubTab)
-                    {
-                        content.text("Load a height map texture");
-                        string explanation = "Supported files: " + string.Join(", ", StreamLib.ValidTextureExtensions) + ".";
-                        content.text(explanation);
-
-                        content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary,
-                           new List<AbsRichBoxMember> { new RbText("Select height map") },
-                           new RbAction(importSaves)));
-                    }
-                    else
-                    {
-                        content.Add(new ArtButton(RbButtonStyle.Primary,
-                           new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
-                           new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Icon, Map2Pass.IconNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
-                    }
+                    tab_Icon(content);
                     break;
 
                 case Map2GeneratorTab.Bioms:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Bioms, Map2Pass.Bioms), null, state.generator.currentPass < Map2Pass.ScaleUp));
+
+                    if (state.generator.currentPass > Map2Pass.NodeGrid && state.generator.currentPass < Map2Pass.ScaleUp)
+                    {
+                        paintHud(content, true , false, false, true);
+                    }
                     break;
 
                 case Map2GeneratorTab.CityPlacements:
@@ -225,15 +199,19 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.IconCities, Map2Pass.IconCities), null, state.generator.currentPass < Map2Pass.ScaleUp));
                     break;
 
-                //case Map2GeneratorTab.PostProcessing:
-                    
-                //    break;
-
                 case Map2GeneratorTab.Complete:
-                    content.Add(new ArtButton(RbButtonStyle.Primary,
-                       new List<AbsRichBoxMember> { new RbText("Post process map") },
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.ScaleUp, Map2Pass.PostNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
-
+                    if (state.generator.currentPass < Map2Pass.ScaleUp)
+                    {
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                           new List<AbsRichBoxMember> { new RbText("Post process map") },
+                           new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.ScaleUp, Map2Pass.PostNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
+                    }
+                    else
+                    {
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                           new List<AbsRichBoxMember> { new RbImage(SpriteName.Undo), new RbSpace(0.5f), new RbText("Revert to icon") },
+                           new RbAction(state.revertToIconPass)));
+                    }
                     content.newParagraph();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                         new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));
@@ -244,6 +222,124 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             menu.Refresh(content);
 
 
+        }
+
+        private void tab_Icon(RichBoxContent content)
+        {           
+
+            var subTab1 = new ArtButton(!heightMapSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+                new RbAction1Arg<bool>((bool selected) =>
+                {
+                    heightMapSubTab = selected;
+                }, false, RbSoundType.Tab));
+
+            content.Add(subTab1);
+
+            var subTab2 = new ArtButton(heightMapSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                new List<AbsRichBoxMember> { new RbText("Height map") },
+                new RbAction1Arg<bool>((bool selected) =>
+                {
+                    heightMapSubTab = selected;
+                }, true, RbSoundType.Tab));
+
+            content.Add(subTab2);
+
+            content.newParagraph();
+            if (heightMapSubTab)
+            {
+                var heightMap = state.generator.heightMapTexture;
+
+                content.h2("Load a height map texture", HudLib.TitleColor_Head2);
+                string explanation = "Supported files: " + string.Join(", ", StreamLib.ValidTextureExtensions) + ".";
+                content.text(explanation);
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                   new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconOpen), new RbSpace(0.5f), new RbText("Select height map") },
+                   new RbAction(importSaves),null, state.generator.currentPass < Map2Pass.ScaleUp));
+
+                if (heightMap != null)
+                {
+                    content.text(heightMap.Name, HudLib.TitleColor_Name);
+                    content.text(LangLib.CanvasSize(heightMap.pixelTexture.Width.ToString(), heightMap.pixelTexture.Height.ToString()), HudLib.InfoYellow_Light);
+
+                    content.newParagraph();
+                    HudLib.Label(content, DssRef.lang.HUD_Scale);
+                    content.newLine();
+                    RbDragButton.EqualToButton(content, 2f, heightMap.scaleProperty);
+                    RbDragButton.EqualToButton(content, 1f, heightMap.scaleProperty);
+                    RbDragButton.EqualToButton(content, 0.5f, heightMap.scaleProperty);
+                    RbDragButton.EqualToButton(content, 0.25f, heightMap.scaleProperty);
+                    content.newLine();
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 0.5f, 0.1f, }, new DragButtonSettings(0.1f, 10f, 0.05f), heightMap.scaleProperty, false);
+
+                    content.newParagraph();
+                    HudLib.Label(content, "Offset X");
+                    content.newLine();
+                    offSetDragButton(heightMap.offSetXProperty, heightMap.pixelTexture.Width);
+                    
+                    content.newParagraph();
+                    HudLib.Label(content, "Offset Y");
+                    content.newLine();
+                    offSetDragButton(heightMap.offSetYProperty, heightMap.pixelTexture.Height);
+
+
+                    content.newParagraph();
+                    HudLib.Label(content, "Top height");
+                    content.newLine();
+                    RbDragButton.EqualToButton(content, Map2Generator.Height_MountainPeek, heightMap.topHeightProperty);
+                    content.newLine();
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(Map2Generator.Height_DefaultGround, Map2Generator.Height_MountainPeek + 0.2f, 0.01f), heightMap.topHeightProperty, false);
+                    
+                    content.newParagraph();
+                    HudLib.Label(content, "Bottom height");
+                    content.newLine();
+                    RbDragButton.EqualToButton(content, Map2Generator.Height_WaterBottom, heightMap.bottomHeightProperty);
+                    content.newLine();
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(Map2Generator.Height_WaterBottom, 0, 0.01f), heightMap.bottomHeightProperty, false);
+
+                    content.newParagraph();
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) },
+                       new RbAction(state.generateHeightMap), null, state.generator.currentPass < Map2Pass.ScaleUp)
+                    { fillWidth = true });
+
+                    void offSetDragButton(IntGetSetTag property, int textureSize)
+                    {
+                        RbDragButton.EqualToButton(content, 0, property);
+                        content.newLine();
+                        var options = new List<float>(4);
+                        options.Add(1);
+
+                        if (textureSize >= 1000)
+                        {
+                            options.Add(1000);
+                        }
+                        if (textureSize >= 250)
+                        {
+                            options.Add(250);
+                        }
+                        if (textureSize >= 100)
+                        {
+                            options.Add(100);
+                        }
+                        if (textureSize >= 50)
+                        {
+                            options.Add(50);
+                        }
+
+                        RbDragButton.RbDragButtonGroup(content, options, new DragButtonSettings(-textureSize, textureSize, 1), property, true);
+
+                    }
+                }
+            }
+            else
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                   new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+                   new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Icon, Map2Pass.IconNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
+            }
         }
 
         private void tab_nodes(RichBoxContent content)
@@ -262,40 +358,73 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             content.Add(new ArtButton(RbButtonStyle.Primary,
                new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
                new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NodeGrid), null, true));
-            content.Add(new RbSeperationLine());
+            
 
             if (state.generator.currentPass == Map2Pass.NodeGrid)
             {
-                content.h2("Paint tools", HudLib.TitleColor_Head2);
+                paintHud(content, false, true, true, false);
+            }
+        }
 
-                HudLib.Label(content, "Pen size");
-                content.Add(new RbTab(0.25f));
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 5 }, new DragButtonSettings(1, 20, 1), state.tool.penSizeProperty, false);
+        private void paintHud(RichBoxContent content, bool bioms, bool clear, bool bAddType, bool bNoise)
+        {
+            content.Add(new RbSeperationLine());
 
+            content.h2("Paint tools", HudLib.TitleColor_Head2);
+
+            if (bioms)
+            {
+                HudLib.Label(content, DssRef.lang.CityBiome_Title);
                 content.newLine();
-                HudLib.Label(content, "All nodes");
+                for (BiomType tbiom = 0; tbiom < BiomType.NUM; tbiom++)
+                {
+                    content.Add(new ArtOption(tbiom == state.tool.biom, new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea_LFtiles, 0.9f, DssRef.map.bioms.bioms[(int)tbiom].colors_height[4].Color) },
+                        new RbAction1Arg<BiomType>((BiomType selected) => { state.tool.biom = selected; }, tbiom)));
+                }
+                content.newParagraph();
+            }
+
+            
+            content.newLine();
+            HudLib.Label(content, "Canvas");
+            content.Add(new RbTab(0.25f));
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+               new List<AbsRichBoxMember> { new RbText("Fill") }, new RbAction(state.tool.fill), null, true));
+            if (clear)
+            {
                 content.Add(new RbTab(0.25f));
-                content.Add(new ArtButton(RbButtonStyle.Primary,
-                   new List<AbsRichBoxMember> { new RbText("Fill") }, new RbAction(state.tool.fill), null, true));
+
                 content.Add(new ArtButton(RbButtonStyle.Primary,
                    new List<AbsRichBoxMember> { new RbText("Clear") }, new RbAction(state.tool.clear), null, true));
+            }
+            HudLib.Label(content, "Pen size");
+            content.Add(new RbTab(0.25f));
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 5 }, new DragButtonSettings(1, state.tool.toolSettings.maxPenSize, 1), state.tool.penSizeProperty, false);
 
+            if (bAddType)
+            {
                 content.newLine();
                 for (ToolAddType addType = 0; addType < ToolAddType.NUM_NONE; addType++)
                 {
                     Ref.langOpt.ToolAddType(addType, out var addIcon, out var addCaption);
-                    content.Add(new ArtOption(addType == state.tool.addType, new List<AbsRichBoxMember> { new RbImage(addIcon) },
-                        new RbAction1Arg<ToolAddType>((ToolAddType selected) => { state.tool.addType = selected; }, addType),
+                    content.Add(new ArtOption(addType == state.tool.toolSettings.addType, new List<AbsRichBoxMember> { new RbImage(addIcon) },
+                        new RbAction1Arg<ToolAddType>((ToolAddType selected) => { state.tool.toolSettings.addType = selected; }, addType),
                         new RbTooltip_Text(addCaption)));
                 }
+            }
 
+            content.newLine();
+            for (PencilShape shape = 0; shape < PencilShape.NUM; shape++)
+            {
+                content.Add(new ArtOption(shape == state.tool.toolSettings.pencilShape, new List<AbsRichBoxMember> { new RbText(shape.ToString()) },
+                    new RbAction1Arg<PencilShape>((PencilShape selected) => { state.tool.toolSettings.pencilShape = selected; }, shape),
+                    new RbTooltip_Text("Pen shape")));
+            }
+
+            if (bNoise)
+            {
                 content.newLine();
-                for (PencilShape shape = 0; shape < PencilShape.NUM; shape++)
-                {
-                    content.Add(new ArtOption(shape == state.tool.pencilShape, new List<AbsRichBoxMember> { new RbText(shape.ToString()) },
-                        new RbAction1Arg<PencilShape>((PencilShape selected) => { state.tool.pencilShape = selected; }, shape),
-                        new RbTooltip_Text("Pen shape")));
-                }
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Noise") },state.tool.noiseProperty, null));
             }
         }
 

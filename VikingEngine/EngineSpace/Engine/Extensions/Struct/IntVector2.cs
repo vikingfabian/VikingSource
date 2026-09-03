@@ -183,8 +183,8 @@ namespace VikingEngine
 
         public IntVector2 Multiply(float multi)
         {
-            X = (int)multi * X;
-            Y = (int)multi * Y;
+            X = Convert.ToInt32( multi * X);
+            Y = Convert.ToInt32( multi * Y);
             return this;
         }
 

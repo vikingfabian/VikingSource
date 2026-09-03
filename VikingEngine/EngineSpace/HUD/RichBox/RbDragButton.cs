@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
@@ -64,7 +66,10 @@ namespace VikingEngine.HUD.RichBox
                 content.Add(new RbDragOptionButton(dragButton, options[i], useSymbols, value < settings.max));
             }
         }
-
+        public static void EqualToButton(RichBoxContent content,float setValue, FloatGetSetTag floatValue, object tag = null)
+        { 
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("=" + setValue.ToString()) }, new RbAction(() => { floatValue(tag, true, setValue); }), null));
+        }
         public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, FloatGetSetTag floatValue, bool oneDecimal = true, object tag = null)
         {
             
@@ -92,7 +97,11 @@ namespace VikingEngine.HUD.RichBox
 
         RbText textPointer;
         ThreeSplitTexture_Hori texture;
-        
+
+        public static void EqualToButton(RichBoxContent content, int setValue, IntGetSetTag intValue, object tag = null)
+        {
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("=" + setValue.ToString()) }, new RbAction(() => { intValue(tag, true, setValue); }), null));
+        }
         public RbDragButton(DragButtonSettings settings, IntGetSetTag intValue, AbsRbAction enter = null, object tag = null)
         {
             this.enter = enter;

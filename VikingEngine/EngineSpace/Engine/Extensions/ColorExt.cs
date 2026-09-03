@@ -14,7 +14,10 @@ namespace VikingEngine
         public static readonly Color DarkGrayer =  new Color(80, 80, 80);
         public static readonly Color VeryDarkGray = GrayScale(0.1f);
 
-
+        public static float GetBrightness(this Color col)
+        {
+            return (col.R + col.G + col.B) / 3f / byte.MaxValue;
+        }
         public static Color GrayScale(float white)
         {
             return new Color(white, white, white);

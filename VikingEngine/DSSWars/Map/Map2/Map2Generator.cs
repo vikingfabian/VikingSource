@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         const float Height_WaterPlane = 0;
         public const float Height_WaterBottom = Height_WaterPlane - 0.3f;
         public const float Height_LowGround = Height_WaterPlane + 0.1f;
-        const float Height_DefaultGround = Height_WaterPlane + 0.2f;
+        public const float Height_DefaultGround = Height_WaterPlane + 0.2f;
         public const float Height_MountainStart = Height_DefaultGround + 0.3f;
         public const float Height_MountainPeek = Height_DefaultGround + 0.6f;
 
@@ -41,7 +41,10 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public Map2Pass currentPass = 0;
         BiomsLayout biomsLayout;
-        public IconWorldData iconWorld;
+        public IconWorldData iconWorld, iconWorldScaledUp;
+
+        public IconWorldData ActiveIconWorld => iconWorldScaledUp == null ? iconWorld : iconWorldScaledUp;
+
         public WorldData2 world;
         public NodeMap nodeMap;
 
@@ -78,7 +81,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     //todo clone
                     //scaleUp16x();
 
-                    postProcessPixels();
+                    processTexturePixels();
 
                     loadingState = LoadingState.Complete;
 
@@ -95,9 +98,22 @@ namespace VikingEngine.DSSWars.Map.Map2
         public void generateHeightMap()
         {
             heightMapTexture.apply(dataGrid);
-            postProcessPixels();
+            processTexturePixels();
 
             loadingState = LoadingState.Complete;
+        }
+
+        public void revertToIconPass()
+        {
+            loadingState = LoadingState.Pass;
+            Task.Run(async () =>
+            {
+                iconWorldScaledUp = null;
+                dataGrid = iconWorld.iconGrid;
+                currentPass = Map2Pass.IconNoise;
+                processTexturePixels();
+                loadingState = LoadingState.Complete;
+            });
         }
 
         public void generatePass(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end)
@@ -115,7 +131,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 {
                     clearMap();
                 }
-                if (end < Map2Pass.IconCities)
+                if (end < Map2Pass.Bioms)
                 {
                     generateCities = null;
                 }
@@ -162,7 +178,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
                 else
                 {
-                    postProcessPixels();
+                    processTexturePixels();
                 }
 
                 loadingState = LoadingState.Complete;
@@ -431,8 +447,11 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
 
         async Task scaleUp16x()
-        {
-            Task cities = Task.Run(generateCities.scaleUp16x);
+        {    
+            iconWorldScaledUp = iconWorld.CloneMe();
+            dataGrid = iconWorldScaledUp.iconGrid;
+
+            Task cities = Task.Run(()=>{ generateCities.scaleUp16x(iconWorldScaledUp); });
 
             bool[] scalePassesIs4 = {  true, false, true, true };
             foreach (bool pass4 in scalePassesIs4)
@@ -575,7 +594,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             });
 
             dataGrid = largeGrid;
-            iconWorld.iconGrid = largeGrid;
+            iconWorldScaledUp.iconGrid = largeGrid;
         }
         void scaleUp8()
         {
@@ -618,7 +637,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             });
 
             dataGrid = largeGrid;
-            iconWorld.iconGrid = largeGrid;
+            iconWorldScaledUp.iconGrid = largeGrid;
         }
 
         // Upgraded helper that smooths ALL data (Height, Color, Biomes)
@@ -777,7 +796,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             const bool PostNoise = true;
             //const int PostProcessDivs = 8;
 
-            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.seed + 3);
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorldScaledUp.metaData2.seed + 3);
             NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
 
             Parallel.For(0, dataGrid.Size.X, x =>
@@ -797,26 +816,17 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             });
         }
-        void postProcessPixels()
+        public void processTexturePixels()
         {
-            //const bool PostNoise = true;
-            ////const int PostProcessDivs = 8;
+            IconWorldData icon = ActiveIconWorld;
 
-            //EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.seed + 3);
-            //NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
-            
+
             Parallel.For(0, dataGrid.Size.X, x =>
             {
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
                     var tile = dataGrid.Get(x, y);
-                    //if (PostNoise)
-                    //{
-                    //    tile.groundY -= noiseMap.OctaveNoise2D(postNoise, x, y) * 0.1f;
-                    //}
-                    //if (tile.groundY < Height_WaterBottom)
-                    //{ tile.groundY = Height_WaterBottom; }
-
+                   
                     tileColor(ref tile);
                     dataGrid.Set(x, y, tile);
                 }
@@ -824,7 +834,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             if (generateCities != null)
             {
-                foreach (var c in generateCities.cities)
+                foreach (var c in icon.cities)
                 {
                     var tile = dataGrid.Get(c.pos);
                     tile.color = Color.Red;
