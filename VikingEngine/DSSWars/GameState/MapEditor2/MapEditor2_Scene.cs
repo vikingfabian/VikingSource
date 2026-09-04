@@ -87,6 +87,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         bool redrawLock = false;
         public void redrawPixels()
         {
+            if (display.tab == Map2GeneratorTab.Bioms && generator.currentPass < Map2Pass.Bioms)
+            {
+                generator.currentPass = Map2Pass.Bioms;
+            }
+
             if (!redrawLock)
             {
                 redrawLock = true;

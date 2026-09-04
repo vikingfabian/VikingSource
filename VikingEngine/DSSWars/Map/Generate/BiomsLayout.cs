@@ -23,8 +23,6 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         RandomObjects<BiomType>[,] biomGrid;
 
-        
-
         public BiomsLayout(PcgRandom rnd)
         {
             biomGrid = new RandomObjects<BiomType>[Width, Height];

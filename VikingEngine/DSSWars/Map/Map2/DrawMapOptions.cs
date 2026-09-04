@@ -26,6 +26,11 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         //public BiomType biom;
 
+        public void refreshHeight()
+        {
+            centerHeight = addHeight;
+        }
+
         public void refreshRadius()
         {
             flatRadius = radius * flatness;
@@ -40,6 +45,23 @@ namespace VikingEngine.DSSWars.Map.Map2
             {
                 edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * addHeight), Map2Generator.Height_WaterBottom);
             }
+            //centerHeight = addHeight;
+        }
+
+        public void refreshRadius_PaintTool()
+        {
+            flatRadius = radius * flatness;
+            hillRadius = radius - flatRadius;
+
+            //if (addHeight > 0) //add
+            //{
+            //    edgeHeight = centerHeight - (hillRadius * 0.1f * addHeight);
+            //}
+
+            //else
+            //{
+                edgeHeight = 0.05f * centerHeight;
+            //}
             //centerHeight = addHeight;
         }
 

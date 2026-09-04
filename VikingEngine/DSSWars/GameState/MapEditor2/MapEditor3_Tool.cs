@@ -12,12 +12,34 @@ using VikingEngine.LootFest.Map;
 namespace VikingEngine.DSSWars.GameState.MapEditor2
 {
 
-    //class PaintDot
-    //{
-    //    public Graphics.Image dot;
-    //    public IntVector2 tilePos;
+    struct PaintDot
+    {
+        public Graphics.Image dot;
+        public IntVector2 tilePos;
+        public float strength;
 
-    //}
+        public PaintDot(Graphics.Image dot, IntVector2 tilePos)
+        {
+            this.dot = dot;
+            this.tilePos = tilePos;
+            this.strength = 0;
+        }
+
+        public void refreshColor()
+        {
+            const int Scale = 5;
+            int r = 110;
+            int b = 110;
+            if (strength < 0)
+            {
+                b += (int)(-strength * Scale);
+            }
+            else if (strength > 0)
+            {
+                r += (int)(strength * Scale);
+            }
+        }
+    }
     class ToolSettings
     {
         public Map2GeneratorTab tab;
@@ -29,6 +51,18 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         public int penSize;
         public int maxPenSize;
         public bool noise = false;
+
+        public bool advancedStrength;
+
+        public DrawMapOptions draw = new DrawMapOptions()
+        {   
+            flatness = 0.2f,
+            addHeight = Map2Generator.Height_DefaultGround,
+            add = true,
+            quadChance = 0f,
+            noiseStrength = 0.3f,
+            radius = 1f,
+        };
     }
 
     class MapEditor3_Tool
@@ -38,11 +72,38 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         public IntVector2 prevTilePos;
 
         ToolSettings settings_nodes = new ToolSettings() { tab = Map2GeneratorTab.Nodes, penSize = 2, maxPenSize = 10, };
-        ToolSettings settings_bioms = new ToolSettings() { tab = Map2GeneratorTab.Bioms, penSize = 10, maxPenSize = 50, noise = true, };
+        ToolSettings settings_tiles = new ToolSettings() { tab = Map2GeneratorTab.Icon, penSize = 6, maxPenSize = 80, noise = true, advancedStrength = true};
+        ToolSettings settings_bioms = new ToolSettings() { tab = Map2GeneratorTab.Bioms, penSize = 10, maxPenSize = 200, noise = true, };
 
         public ToolSettings toolSettings;
 
         public BiomType biom = 0;
+
+        public bool setHeightProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                toolSettings.draw.add = !value;
+            }
+            return !toolSettings.draw.add;
+        }
+        public float heightProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                toolSettings.draw.addHeight = value;
+            }
+            return toolSettings.draw.addHeight;
+        }
+
+        public int flatnessProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                toolSettings.draw.flatness = conv.FromPercentage(value);
+            }
+            return conv.ToPercentage(toolSettings.draw.flatness);
+        }
 
         public int penSizeProperty(object tag, bool set, int value)
         {
@@ -62,7 +123,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             return toolSettings.noise;
         }
 
-        Dictionary<IntVector2,Graphics.Image> paintDots = new Dictionary<IntVector2, Graphics.Image>(128);
+        Dictionary<int, PaintDot> paintDots = new Dictionary<int, PaintDot>(128);
         EngineSpace.Maths.SimplexNoise2D noiseMap;
         NoiseOptions noiseOpt;
 
@@ -80,6 +141,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
                 case Map2GeneratorTab.Nodes:
                     toolSettings = settings_nodes;
+                    break;
+                case Map2GeneratorTab.Icon:
+                    toolSettings = settings_tiles;
                     break;
                 default:
                     toolSettings = settings_bioms;
@@ -102,6 +166,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     }
                     allowPaintInput = scene.generator.currentPass == Map2Pass.NodeGrid;
                     tileSize = scene.generator.nodeMap.nodeGrid.Size;
+                    break;
+                case Map2GeneratorTab.Icon:
+                    if (scene.generator.iconWorld == null)
+                    {
+                        return;
+                    }
+                    allowPaintInput = scene.generator.currentPass >= Map2Pass.Icon;
+                    tileSize = scene.generator.iconWorld.iconGrid.Size;
                     break;
                 case Map2GeneratorTab.Bioms:
                     if (scene.generator.iconWorld == null)
@@ -147,6 +219,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         {
             int radius = toolSettings.penSize - 1;
 
+            var advDraw = toolSettings.draw;
+            advDraw.refreshHeight();
+            advDraw.refreshRadius_PaintTool();
+
             if (tilePos != prevTilePos)
             {
                 Rectangle2 bound = new Rectangle2(IntVector2.Zero, tileSize);
@@ -159,7 +235,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
                     if (toolSettings.pencilShape == PencilShape.Round)
                     {
-                        if (centerDistance > 1.1f)
+                        if (centerDistance >= 1f)
                         {
                             continue;
                         }
@@ -174,13 +250,45 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                         }
                     }
 
-                    if (!paintDots.ContainsKey(loop.Position))
+                    float strength = 0;
+                    if (toolSettings.advancedStrength)
+                    {
+                        if (centerDistance < advDraw.flatRadius)
+                        {
+                            strength = advDraw.centerHeight;
+                        }
+                        else
+                        {
+                            float percTowardsEdge = (centerDistance - advDraw.flatRadius) / advDraw.hillRadius;
+                            strength = advDraw.centerHeight * (1f - percTowardsEdge) + advDraw.edgeHeight * percTowardsEdge;
+                        }
+                    }
+
+                    if (paintDots.TryGetValue(loop.Position.GetHashCode(), out var dot))
+                    {
+                        if (toolSettings.advancedStrength)
+                        {
+                            if (Math.Abs(strength) > Math.Abs(dot.strength))
+                            {
+                                dot.strength = strength;
+                                dot.refreshColor();
+                                paintDots[loop.Position.GetHashCode()] = dot;
+                            }
+                        }
+                    }
+                    else
                     {
                         Vector2 pos = scene.map.TileToScreenPos(loop.Position, tileSize);
                         var img = new Graphics.Image(SpriteName.WhiteArea,
                             pos, new Vector2(8), ImageLayers.Top0);
                         img.Color = Color.Purple;
-                        paintDots.Add(loop.Position, img);
+                        dot = new PaintDot(img, loop.Position);
+                        if (toolSettings.advancedStrength)
+                        {
+                            dot.strength = strength;
+                            dot.refreshColor();
+                        }
+                        paintDots.Add(loop.Position.GetHashCode(), dot);
                     }
                 }
 
@@ -198,7 +306,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     case Map2GeneratorTab.Nodes:
                         foreach (var kv in paintDots)
                         {
-                            ref var tile = ref scene.generator.nodeMap.nodeGrid.GetRef(kv.Key);
+                            ref var tile = ref scene.generator.nodeMap.nodeGrid.GetRef(kv.Value.tilePos);
                             switch (toolSettings.addType)
                             {
                                 case ToolAddType.Toggle:
@@ -212,23 +320,37 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                                     break;
                             }
 
-                            scene.generator.nodeMap.refreshPixel(kv.Key.X, kv.Key.Y);
+                            scene.generator.nodeMap.refreshPixel(kv.Value.tilePos.X, kv.Value.tilePos.Y);
                             scene.generator.nodeMap.texture.ApplyPixelsToTexture();
+                        }
+                        break;
+
+                    case Map2GeneratorTab.Icon:
+                        foreach (var kv in paintDots)
+                        {
+                            ref var tile = ref scene.generator.iconWorld.iconGrid.GetRef(kv.Value.tilePos);
+                            if (toolSettings.draw.add)
+                            {
+                                tile.groundY += kv.Value.strength;
+                            }
+                            else
+                            {
+                                tile.groundY = kv.Value.strength;
+                            }
                         }
                         break;
                     case Map2GeneratorTab.Bioms:
                         foreach (var kv in paintDots)
                         {
-                            ref var tile = ref scene.generator.iconWorld.iconGrid.GetRef(kv.Key);
-                            tile.biom1 = biom;                            
+                            ref var tile = ref scene.generator.iconWorld.iconGrid.GetRef(kv.Value.tilePos);
+                            tile.biom1 = biom;
                         }
-                        
                         break;
                 }
 
                 foreach (var kv in paintDots)
                 {
-                    kv.Value.DeleteMe();
+                    kv.Value.dot.DeleteMe();
                 }
 
                 if (scene.display.tab != Map2GeneratorTab.Nodes)

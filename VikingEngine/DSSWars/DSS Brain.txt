@@ -25,6 +25,7 @@ A new high performance path finding algorithm with four hierarchy levels.
 Map editor 2.0
 * New map generator built for much more control over both map generation and map editing.
 * Node editor to give more control over the world shape
+* Icon editor: Allows fast editing in 1/16 scale
 * Height map: Load images and use them to generate the world
 
 Performance
