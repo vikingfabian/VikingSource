@@ -331,7 +331,15 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                             ref var tile = ref scene.generator.iconWorld.iconGrid.GetRef(kv.Value.tilePos);
                             if (toolSettings.draw.add)
                             {
-                                tile.groundY += kv.Value.strength;
+                                if (toolSettings.addType == ToolAddType.Add)
+                                {
+                                    tile.groundY += kv.Value.strength;
+                                }
+                                else
+                                {
+                                    tile.groundY -= kv.Value.strength;
+                                }
+                                tile.groundY = Bound.Set(tile.groundY, Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek);
                             }
                             else
                             {
@@ -375,12 +383,50 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     }
                     scene.redrawPixels();
                     break;
+                case Map2GeneratorTab.Icon:
+                    for (int i = 0; i < scene.generator.iconWorld.iconGrid.array.Length; i++)
+                    {
+                        ref var tile = ref scene.generator.iconWorld.iconGrid.array[i];
+                        if (toolSettings.draw.add)
+                        {
+                            if (toolSettings.addType == ToolAddType.Add)
+                            {
+                                tile.groundY += toolSettings.draw.addHeight;
+                            }
+                            else
+                            {
+                                tile.groundY -= toolSettings.draw.addHeight;
+                            }
+                            tile.groundY = Bound.Set(tile.groundY, Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek);
+                        }
+                        else
+                        {
+                            tile.groundY = toolSettings.draw.addHeight;
+                        }
+                    }
+                    scene.redrawPixels();
+                    break;
 
             }
         }
         public void clear()
         {
-            setAllNodes(false);
+            switch (toolSettings.tab)
+            {
+                case Map2GeneratorTab.Nodes:
+                    setAllNodes(false);
+                    break;
+                
+                case Map2GeneratorTab.Icon:
+                    for (int i = 0; i < scene.generator.iconWorld.iconGrid.array.Length; i++)
+                    {
+                        ref var tile = ref scene.generator.iconWorld.iconGrid.array[i];
+                        tile.groundY = Map2Generator.Height_WaterBottom;
+                    }
+                    scene.redrawPixels();
+                    break;
+
+            }
         }
 
 
