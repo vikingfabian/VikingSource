@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace VikingEngine.Graphics
         
         public AbsEffect Effect;
         
-        private VertexAndIndexBufferAnimated VB;
+        public VertexAndIndexBufferAnimated VB;
         //public bool visualProcessStarted = false;
 
         /* Constructors */

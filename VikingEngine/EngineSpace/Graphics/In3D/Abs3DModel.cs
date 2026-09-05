@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -36,6 +36,24 @@ namespace VikingEngine.Graphics
         public RotationQuarterion Rotation = RotationQuarterion.Identity;
 
         public bool customShader = false;
+
+        public Matrix WorldMatrix = Matrix.Identity;
+        protected Vector3 _prevPosition = new Vector3(float.MinValue);
+        protected Vector3 _prevScale = new Vector3(float.MinValue);
+        protected RotationQuarterion _prevRotation = new RotationQuarterion(new Quaternion(float.MinValue, 0, 0, 0));
+
+        public void UpdateWorldMatrix()
+        {
+            if (position != _prevPosition || scale != _prevScale || Rotation.QuadRotation != _prevRotation.QuadRotation)
+            {
+                WorldMatrix = Matrix.CreateScale(scale) *
+                              Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+                              Matrix.CreateTranslation(position);
+                _prevPosition = position;
+                _prevScale = scale;
+                _prevRotation = Rotation;
+            }
+        }
 
         public Abs3DModel(bool add)
             : base(add)

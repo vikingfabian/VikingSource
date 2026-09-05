@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -139,7 +139,11 @@ namespace VikingEngine
             //if (PlatformSettings.RunProgram == StartProgram.LootFest3 && Input.Keyboard.KeyDownEvent(Keys.D5))
             //{ PlatformSettings.DebugWindow = !PlatformSettings.DebugWindow; }
             
-            if (PlatformSettings.DebugPerformanceText) start = DateTime.Now;
+            long startTimestamp = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                startTimestamp = Stopwatch.GetTimestamp();
+            }
 
             this.gameTime = gameTime;
             gameIsActive = IsActive;
@@ -149,8 +153,12 @@ namespace VikingEngine
             DebugExtensions.BlueScreen.TryCatch(updateLoop, DebugExtensions.TryMethodType.U);
             DebugExtensions.BlueScreen.CatchThreadExeception();
 
-
-            if (PlatformSettings.DebugPerformanceText) Engine.StateHandler.UpdateTimePass(DateTime.Now.Subtract(start).TotalMilliseconds);
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                var updateTimeMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;
+                DebugExtensions.RenderOverlay.Instance.RecordUpdate(updateTimeMs);
+                Engine.StateHandler.UpdateTimePass(updateTimeMs);
+            }
 
             base.Update(gameTime);
         }
