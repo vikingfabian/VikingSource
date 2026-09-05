@@ -93,7 +93,7 @@ namespace VikingEngine.Engine
 
             //Post process
             FPSpos = Vector2.Zero;
-            FPSpos = Engine.Screen.SafeArea.Position * 0.6f;
+            FPSpos = Engine.Screen.SafeArea.Position * 0.4f;//0.6f;
 
             AbsText.Init();
         }
@@ -488,9 +488,15 @@ namespace VikingEngine.Engine
                     int batches = drawBatch != null ? drawBatch.LastFrameBatchCount : 0;
                     int slices = drawBatch != null ? drawBatch.LastFrameFrameSlices : 0;
                     long uploadedBytes = drawBatch != null ? drawBatch.LastFrameUploadedBytes : 0;
+                    float prepMs = drawBatch != null ? drawBatch.LastFramePrepBatchesTimeMs : 0f;
+                    float depthMs = drawBatch != null ? drawBatch.LastFrameDrawDepthTimeMs : 0f;
+                    float litMs = drawBatch != null ? drawBatch.LastFrameDrawLitTimeMs : 0f;
 
                     DebugExtensions.RenderOverlay.Instance.RecordFrame(
                         frameRenderTimeInMs,
+                        prepBatchesTimeMs: prepMs,
+                        drawDepthTimeMs: depthMs,
+                        drawLitTimeMs: litMs,
                         standardDrawCalls: stdCalls,
                         instancedDrawCalls: instCalls,
                         renderedInstances: instUnits,
@@ -535,6 +541,7 @@ namespace VikingEngine.Engine
             spriteBatch.Begin(SpriteSortMode.Deferred, StandardBlendState);
 
             var shadowColor = new Color(0, 0, 0, 64);
+            var scale = 0.6f;//0.5f;
             for (var x = -outlineThickness; x <= outlineThickness; x++)
             {
                 for (var y = -outlineThickness; y <= outlineThickness; y++)
@@ -551,7 +558,7 @@ namespace VikingEngine.Engine
                         shadowColor,
                         0,
                         Vector2.Zero,
-                        0.5f,
+                        scale,
                         SpriteEffects.None,
                         0);
                 }
@@ -564,7 +571,7 @@ namespace VikingEngine.Engine
                 Color.White,
                 0,
                 Vector2.Zero,
-                0.5f,
+                scale,
                 SpriteEffects.None,
                 0);
 

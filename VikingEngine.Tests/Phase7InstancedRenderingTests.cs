@@ -61,10 +61,9 @@ namespace VikingEngine.Tests
         public void InstancedDrawBatch_PrunesInactiveAndGroupsByFrame()
         {
             var batch = new InstancedDrawBatch(1);
-            var output = new VertexVoxelInstance[64];
             var fallback = new System.Collections.Generic.List<AbsDraw>();
 
-            batch.CollectAndPrune(0, output, fallback, out var master, out var frames);
+            batch.Prepare(0, 0, fallback);
 
             Assert.Equal(1, batch.MasterId);
             Assert.Empty(batch);
@@ -76,17 +75,33 @@ namespace VikingEngine.Tests
         {
             var overlay = new RenderOverlay();
 
-            // Record 3 simulated frames
-            overlay.RecordFrame(10.0f, standardDrawCalls: 2, instancedDrawCalls: 5, renderedInstances: 1000, batchCount: 3, frameSliceCount: 8, uploadedBytes: 80000);
-            overlay.RecordFrame(20.0f, standardDrawCalls: 4, instancedDrawCalls: 5, renderedInstances: 1000, batchCount: 3, frameSliceCount: 8, uploadedBytes: 80000);
-            overlay.RecordFrame(30.0f, standardDrawCalls: 6, instancedDrawCalls: 5, renderedInstances: 1000, batchCount: 3, frameSliceCount: 8, uploadedBytes: 80000);
+            // Record simulated updates
+            overlay.RecordUpdate(4.0f);
+            overlay.RecordUpdate(6.0f);
 
-            overlay.UpdateOneSecond(frameCount: 3, renderPeak: 30.0, updatePeak: 5.0);
+            // Record 3 simulated frames
+            overlay.RecordFrame(10.0f, prepBatchesTimeMs: 1.0f, drawDepthTimeMs: 4.0f, drawLitTimeMs: 5.0f, standardDrawCalls: 2, instancedDrawCalls: 5, renderedInstances: 1000, batchCount: 3, frameSliceCount: 8, uploadedBytes: 80000);
+            overlay.RecordFrame(20.0f, prepBatchesTimeMs: 2.0f, drawDepthTimeMs: 8.0f, drawLitTimeMs: 10.0f, standardDrawCalls: 4, instancedDrawCalls: 5, renderedInstances: 1000, batchCount: 3, frameSliceCount: 8, uploadedBytes: 80000);
+            overlay.RecordFrame(30.0f, prepBatchesTimeMs: 3.0f, drawDepthTimeMs: 12.0f, drawLitTimeMs: 15.0f, standardDrawCalls: 6, instancedDrawCalls: 5, renderedInstances: 1000, batchCount: 3, frameSliceCount: 8, uploadedBytes: 80000);
+
+            overlay.UpdateOneSecond(frameCount: 3, renderPeak: 30.0, updatePeak: 6.0);
 
             Assert.Equal(3, overlay.FPS);
             Assert.Equal(10.0f, overlay.MinRenderTimeMs);
             Assert.Equal(30.0f, overlay.MaxRenderTimeMs);
             Assert.Equal(20.0f, overlay.AvgRenderTimeMs);
+
+            Assert.Equal(2.0f, overlay.AvgPrepBatchesTimeMs);
+            Assert.Equal(3.0f, overlay.PeakPrepBatchesTimeMs);
+            Assert.Equal(8.0f, overlay.AvgDrawDepthTimeMs);
+            Assert.Equal(12.0f, overlay.PeakDrawDepthTimeMs);
+            Assert.Equal(10.0f, overlay.AvgDrawLitTimeMs);
+            Assert.Equal(15.0f, overlay.PeakDrawLitTimeMs);
+
+            Assert.Equal(5.0f, overlay.AvgUpdateTimeMs);
+            Assert.Equal(4.0f, overlay.MinUpdateTimeMs);
+            Assert.Equal(6.0f, overlay.MaxUpdateTimeMs);
+
             Assert.Equal(4.0f, overlay.AvgStandardDrawCallsPerFrame);
             Assert.Equal(5.0f, overlay.AvgInstancedDrawCallsPerFrame);
             Assert.Equal(9.0f, overlay.AvgTotalDrawCallsPerFrame);
