@@ -12,8 +12,19 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 {
+    enum SoldierAbility
+    { 
+        AntiSpear,
+        AntiCavalry,
+        AntiPlateArmor,
+        ArrowWeakness,
+    }
+
     struct SoldierData
     {
+        public EightBit abilities = EightBit.Zero;
+        public byte parry = 0;
+
         public UnitFilter unitFilter;
 
         public float blockChance = DssConst.DefaultBlockChance;
@@ -23,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public float blocksRefillTimeSec = DssConst.DefaultBlockRefillTimeSec; 
 
         public int basehealth = DssConst.Soldier_DefaultHealth;
-        public bool arrowWeakness = false;
+        //public bool arrowWeakness = false;
         public AttackType mainAttack = 0;
         public AttackType secondaryAttack = 0;
         public int bonusProjectiles = 0;
@@ -54,10 +65,6 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public bool canAttackCharacters = true;
         public bool canAttackStructure = true;
         public float modelScale = DssConst.Men_ModCharacterScale;
-
-        //public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
-        //public float copperUpkeepPerSoldier = 0;
-        
         public float boundRadius = DssVar.StandardBoundRadius;
         public float groupSpacing = DssVar.DefaultGroupSpacing;
         public Vector3 attackStart = new Vector3(DssConst.Men_StandardModelScale * 0.5f, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.5f);
@@ -66,7 +73,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public int rowWidth = DssConst.SoldierGroup_RowWidth;
         public int columnsDepth = DssConst.SoldierGroup_ColumnsDepth;
         public int workForcePerUnit = 1;
-        //public int animalsPerUnit = 1;
+        
 
 
         public Vector3 modelToShadowScale = new Vector3(0.4f, 1f, 0.32f);
