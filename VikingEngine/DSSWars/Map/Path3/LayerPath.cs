@@ -8,13 +8,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map.Path3
 {
-    //class LayerPathFindingPool
-    //{
-        
-    //}
-
-
-
+    
     class LayerPathFinding
     {
         public const int MaxNodeLength = 30000;
@@ -37,18 +31,21 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         public void ApplyParentPath(LayerWalkingPath parentPath)
         {
-            const int ParentTileScale = 4;
-
-            foreach (var node in parentPath.nodes)
+            if (parentPath != null)
             {
-                IntVector2 pos = node.position * ParentTileScale;
-                IntVector2 end = pos + ParentTileScale;
+                const int ParentTileScale = 4;
 
-                for (int y = pos.Y; y < end.Y; y++)
+                foreach (var node in parentPath.nodes)
                 {
-                    for (int x = pos.X; x < end.X; x++)
+                    IntVector2 pos = node.position * ParentTileScale;
+                    IntVector2 end = pos + ParentTileScale;
+
+                    for (int y = pos.Y; y < end.Y; y++)
                     {
-                        nodeGrid.Set(pos, LayerPathNode.Thunnel);
+                        for (int x = pos.X; x < end.X; x++)
+                        {
+                            nodeGrid.Set(pos, LayerPathNode.Thunnel);
+                        }
                     }
                 }
             }

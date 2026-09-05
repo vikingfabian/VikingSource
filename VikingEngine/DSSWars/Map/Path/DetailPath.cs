@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.Map.Path
@@ -102,7 +103,29 @@ namespace VikingEngine.DSSWars.Map.Path
             nodeGrid = new Grid2D_L<DetailPathNode>(area.size);
         }
 
-        public DetailWalkingPath FindPath(int pathThreadIndex, IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
+        public void ApplyParentPath(LayerWalkingPath parentPath)
+        {
+            if (parentPath != null)
+            {
+                const int ParentTileScale = 4;
+
+                foreach (var node in parentPath.nodes)
+                {
+                    IntVector2 pos = node.position * ParentTileScale;
+                    IntVector2 end = pos + ParentTileScale;
+
+                    for (int y = pos.Y; y < end.Y; y++)
+                    {
+                        for (int x = pos.X; x < end.X; x++)
+                        {
+                            nodeGrid.Set(pos, DetailPathNode.Thunnel);
+                        }
+                    }
+                }
+            }
+        }
+
+        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
         {
             // Short-circuit if already at target, out of bounds, or outside max local search radius.
             if (center == goal ||
@@ -186,13 +209,13 @@ namespace VikingEngine.DSSWars.Map.Path
             }
 
             DetailWalkingPath path;
-            if (pathThreadIndex < 0)
+            if (DssRef.world == null)
             {
                 path = new ();
             }
             else
             {
-                path = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetRes();
+                path = DssRef.world.detailPathFindingPool.GetRes();
             }
 
             bool blocked = false;
@@ -448,8 +471,11 @@ namespace VikingEngine.DSSWars.Map.Path
 
         public static readonly DetailPathNode Empty = new DetailPathNode();
 
+        public static readonly DetailPathNode Thunnel = new DetailPathNode() { thunnelValue = -10 };
+
         public float Heuristic;
         public float Value;
+        public float thunnelValue;
         float moveCost;
 
         public IntVector2 Position;
@@ -525,7 +551,7 @@ namespace VikingEngine.DSSWars.Map.Path
 
             const float DistanceToGoalWeight = 1.5f;
             Heuristic *= DistanceToGoalWeight;
-            this.Value = moveCost + Heuristic;
+            this.Value = moveCost + Heuristic + thunnelValue;
         }
     }
 }

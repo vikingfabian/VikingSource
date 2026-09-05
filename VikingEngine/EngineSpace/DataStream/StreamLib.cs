@@ -14,6 +14,7 @@ namespace VikingEngine
     static class StreamLib
     {
         public const string BackUpName = "_bak";
+        public static readonly string[] ValidTextureExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tif", ".tiff", ".dds" };
 
         public static void WriteFloatAsPercentU16(BinaryWriter w, float value, float max)
         {

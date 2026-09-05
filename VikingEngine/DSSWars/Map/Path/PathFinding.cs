@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                path = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetRes();
+                path = DssRef.world.pathFindingPool.GetRes();
             }
 
             // Backtrack path from goal to start.

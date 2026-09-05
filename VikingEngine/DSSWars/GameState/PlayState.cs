@@ -486,7 +486,7 @@ namespace VikingEngine.DSSWars
 
         public void initStartUnits(bool barracks = false)
         {
-            if (StartupSettings.SpawnStartingArmies)
+            if (DssRef.state.host && StartupSettings.SpawnStartingArmies)
             {
                 startingArmySizes(out double unitCountMulti, out bool settlerGuard);
 

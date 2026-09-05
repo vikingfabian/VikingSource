@@ -25,6 +25,11 @@ namespace VikingEngine.DSSWars.Map.Map2
             texture = new PixelTexture(nodeGrid.Size * TextureScale);
             //for (int x = 0; x < nodeGrid.Width; x++)
 
+            refreshAllPixels();
+        }
+
+        public void refreshAllPixels()
+        {
             Parallel.For(0, nodeGrid.Width, x =>
             {
                 for (int y = 0; y < nodeGrid.Height; y++)
@@ -57,23 +62,27 @@ namespace VikingEngine.DSSWars.Map.Map2
         public void Generate(IconWorldData iconWorld, Map2GenerateSettings generateSettings)
         {
             IntVector2 gridSz = new IntVector2(iconWorld.iconGrid.Width / NodePixWidth - 1, iconWorld.iconGrid.Height / NodePixWidth - 1);
-            float fillPerc = 0.15f;
+            float fillPerc = conv.FromPercentage(generateSettings.nodeFillPerc);
+            float keepFillingPerc = conv.FromPercentage(generateSettings.nodeConnectPerc);
+            int recursiveLayers = Bound.Set(generateSettings.nodeConnectPerc / 10 + 8, 2, 20);
+            float connectPerc = Bound.Max( keepFillingPerc + 0.2f, 0.95f);
             nodeGrid = new Grid2D_L<bool>(gridSz);
             int fillCount = (int)(gridSz.Area() * fillPerc);
             nodeCount = fillCount;
+            int paralellCount = fillPerc < 0.4f ? 2 : 8;
 
-            Parallel.For(0, 8, i =>
+            Parallel.For(0, paralellCount, i =>
                 {
 
                     while (fillCount > 0)
                     {
 
-                        setPos(iconWorld.rnd.intvector2(gridSz));
+                        setPos(iconWorld.rnd.intvector2(gridSz), 0);
 
 
-                        void setPos(IntVector2 pos)
+                        void setPos(IntVector2 pos, int layer)
                         {
-                            if (!nodeGrid.Get(pos))
+                            if (!nodeGrid.Get(pos) && layer < recursiveLayers)
                             {
                                 nodeGrid.Set(pos, true);
                                 fillCount--;
@@ -81,7 +90,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                                 double rand = iconWorld.rnd.Double();
 
-                                if (rand < 0.45)
+                                if (rand < keepFillingPerc)
                                 {
                                     foreach (var dir in IntVector2.Dir8Array)
                                     {
@@ -89,12 +98,12 @@ namespace VikingEngine.DSSWars.Map.Map2
                                         {
                                             if (nodeGrid.TryGet(pos + dir, out var value) && !value)
                                             {
-                                                setPos(pos + dir);
+                                                setPos(pos + dir, layer + 1);
                                             }
                                         }
                                     }
                                 }
-                                else if (rand < 0.9)
+                                else if (rand < connectPerc)
                                 {
                                     //Try connect
                                     for (int i = 0; i < 2; i++)
@@ -111,7 +120,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                                                 {
                                                     if (++neighborCount >= 2)
                                                     {
-                                                        setPos(pos + dir);
+                                                        setPos(pos + dir, layer +1);
                                                         break;
                                                     }
                                                 }

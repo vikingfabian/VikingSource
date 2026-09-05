@@ -3187,18 +3187,18 @@ namespace VikingEngine.DSSWars
         }
 
         bool importSavesMenu = false;
-        void importSaves()
-        {
-            var saves = DssRef.storage.meta.listSaves();
-            importSavesMenu = true;
+        //void importSaves()
+        //{
+        //    var saves = DssRef.storage.meta.listSaves();
+        //    importSavesMenu = true;
 
-            GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ImportSave, menuSystem.menu);
-            {
-                new GuiLabel(DssRef.lang.Hud_Loading, layout);
-            }
-            layout.OnDelete += new Action(() => { importSavesMenu = false; });
-            layout.End();
-        }
+        //    GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ImportSave, menuSystem.menu);
+        //    {
+        //        new GuiLabel(DssRef.lang.Hud_Loading, layout);
+        //    }
+        //    layout.OnDelete += new Action(() => { importSavesMenu = false; });
+        //    layout.End();
+        //}
 
         void importSaves2()
         {
@@ -3206,7 +3206,7 @@ namespace VikingEngine.DSSWars
             HudLib.returnButton(content, underMenu, true, null);
 
 
-            var saves = DssRef.storage.meta.listSaves();
+            //var saves = DssRef.storage.meta.listSaves();
             importSavesMenu = true;
 
             content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
@@ -3231,28 +3231,28 @@ namespace VikingEngine.DSSWars
             new Timer.Action1ArgTrigger<List<string>>(listImports2, list);
         }
 
-        void listImports(List<string> names)
-        {
-            if (importSavesMenu)
-            {
-                menuSystem.menu.PopLayout();
+        //void listImports(List<string> names)
+        //{
+        //    if (importSavesMenu)
+        //    {
+        //        menuSystem.menu.PopLayout();
 
-                GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_LoadState, menuSystem.menu);
-                {
-                    for (int i = 0; i < names.Count; ++i)
-                    {
-                        var save = names[i];
-                        new GuiTextButton(LoadContent.CheckCharsSafety( save, LoadedFont.Regular), null, new GuiAction1Arg<string>(importSave, save), false, layout);
-                    }
+        //        GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_LoadState, menuSystem.menu);
+        //        {
+        //            for (int i = 0; i < names.Count; ++i)
+        //            {
+        //                var save = names[i];
+        //                new GuiTextButton(LoadContent.CheckCharsSafety( save, LoadedFont.Regular), null, new GuiAction1Arg<string>(importSave, save), false, layout);
+        //            }
 
-                    if (names.Count == 0)
-                    {
-                        new GuiLabel(DssRef.lang.Hud_EmptyList, layout);
-                    }
-                }
-                layout.End();
-            }
-        }
+        //            if (names.Count == 0)
+        //            {
+        //                new GuiLabel(DssRef.lang.Hud_EmptyList, layout);
+        //            }
+        //        }
+        //        layout.End();
+        //    }
+        //}
 
         void listImports2(List<string> names)
         {

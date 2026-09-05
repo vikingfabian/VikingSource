@@ -367,12 +367,12 @@ namespace VikingEngine.DSSWars.GameState
                     end = DssRef.world.factions.Count - 1;
                 }
                 pathUpdates[i] = new PathUpdateThread(i, startIx, end);
-                pathUpdates[i].PreallocatePools(1, 1);
+                //pathUpdates[i].PreallocatePools(1, 1);
                 startIx = end + 1;
             }
             pathUpdates[count] = new PathUpdateThread_Player(count);
-            pathUpdates[count].PreallocatePools(1, 1);
-
+            //pathUpdates[count].PreallocatePools(1, 1);
+            DssRef.world.PreallocatePools(count, count);
         }
 
         public void updateMouseVisible()
@@ -389,14 +389,8 @@ namespace VikingEngine.DSSWars.GameState
             exitThreads = true;
             DssRef.ambience.gameEnd();
 
-            if (pathUpdates != null)
-            {
-                for (int i = 0; i < pathUpdates.Length; i++)
-                {
-                    pathUpdates[i]?.ClearPools();
-                }
-            }
-
+            DssRef.world.ClearPools();
+                
             Battle.SoldierBattleData.ClearPool();
 
             if (DssRef.world?.factions != null)
