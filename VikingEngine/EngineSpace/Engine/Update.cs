@@ -32,6 +32,8 @@ namespace VikingEngine.Engine
 
         private float _lastUpdateListMs = 0f;
         private float _lastSyncQueMs = 0f;
+
+        // TODO: Check if this is a good enough value, or if it should be configurable. Or what happens if this causes backing up.
         public static double MaxSyncActionBudgetMs = 2.0;
         public TextInput textInput = null;
         //public bool blockGameInput = false;
@@ -384,12 +386,25 @@ namespace VikingEngine.Engine
             }
 
             long tSync = Stopwatch.GetTimestamp();
+            double budget = MaxSyncActionBudgetMs;
+            if (budget > 0)
+            {
+                int count = _syncQue.Count;
+                if (count > 200)
+                {
+                    budget = Math.Max(budget, 12.0);
+                }
+                else if (count > 50)
+                {
+                    budget = Math.Max(budget, 6.0);
+                }
+            }
 
-            // Thread-safe dequeue with time budget throttling.
+            // Thread-safe dequeue with dynamic time budget throttling.
             while (_syncQue.TryDequeue(out var syncAction))
             {
                 syncAction.runSyncAction();
-                if (MaxSyncActionBudgetMs > 0 && Stopwatch.GetElapsedTime(tSync).TotalMilliseconds >= MaxSyncActionBudgetMs)
+                if (budget > 0 && Stopwatch.GetElapsedTime(tSync).TotalMilliseconds >= budget)
                 {
                     break;
                 }

@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
 using VikingEngine.Tests.Legacy;
+using VikingEngine.Voxels;
 using Xunit;
 
 namespace VikingEngine.Tests
@@ -520,6 +523,141 @@ namespace VikingEngine.Tests
                 Update.MaxSyncActionBudgetMs = originalBudget;
             }
         }
+
+        [Fact]
+        public void AbsVoxelObj_ModelIndexGeneration_IsThreadSafeAndUnique()
+        {
+            const int threadCount = 8;
+            const int modelsPerThread = 125;
+            var indices = new System.Collections.Concurrent.ConcurrentBag<int>();
+
+            System.Threading.Tasks.Parallel.For(0, threadCount, _ =>
+            {
+                for (int i = 0; i < modelsPerThread; i++)
+                {
+                    var model = new TestVoxelObj();
+                    indices.Add(model.modelIndex);
+                }
+            });
+
+            Assert.Equal(threadCount * modelsPerThread, indices.Count);
+            var distinctCount = new System.Collections.Generic.HashSet<int>(indices).Count;
+            Assert.Equal(indices.Count, distinctCount);
+        }
+
+        [Fact]
+        public void Update_DynamicSyncQueBudget_ExpandsUnderBacklog()
+        {
+            var update = new Update(null);
+            double originalBudget = Update.MaxSyncActionBudgetMs;
+            try
+            {
+                Update.MaxSyncActionBudgetMs = 1.0;
+
+                // Add 60 actions to trigger the > 50 backlog threshold
+                int executed = 0;
+                for (int i = 0; i < 60; i++)
+                {
+                    update.AddSyncAction(new SyncAction(() =>
+                    {
+                        var sw = System.Diagnostics.Stopwatch.StartNew();
+                        while (sw.ElapsedTicks < System.Diagnostics.Stopwatch.Frequency / 10000) { } // ~0.1ms spin
+                        executed++;
+                    }));
+                }
+
+                update.Time_Update(16.0f);
+
+                // With base budget 1.0ms, ~2 actions execute.
+                // With dynamic backlog budget 6.0ms, at least 4 actions execute.
+                Assert.True(executed >= 4, $"Expected dynamic budget to allow more executions, but executed {executed}");
+            }
+            finally
+            {
+                Update.MaxSyncActionBudgetMs = originalBudget;
+            }
+        }
+
+        private static void InitVoxelTestContext()
+        {
+            Block.Init();
+            DataLib.SpriteCollection.Sprites = new Graphics.Sprite[(int)SpriteName.NUM];
+            var whiteSprite = new Graphics.Sprite();
+            whiteSprite.SourcePolygonTopLeft = Vector2.Zero;
+            whiteSprite.SourcePolygonTopRight = new Vector2(1, 0);
+            whiteSprite.SourcePolygonLowLeft = new Vector2(0, 1);
+            whiteSprite.SourcePolygonLowRight = Vector2.One;
+            DataLib.SpriteCollection.Sprites[(int)SpriteName.WhiteArea] = whiteSprite;
+        }
+
+        [Fact]
+        public void VoxelObjBuilder_BuildVerticesHD_Texture_ProducesVerticeDataColorTexture()
+        {
+            InitVoxelTestContext();
+
+            var grid = new VoxelObjGridDataHD(new IntVector3(2, 2, 2));
+            grid.Set(0, 0, 0, 1);
+            var grids = new List<VoxelObjGridDataHD> { grid };
+
+            var verticeData = VoxelObjBuilder.BuildVerticesHD_Texture(grids, Vector3.Zero, out var framesData);
+
+            Assert.NotNull(verticeData);
+            Assert.IsType<VerticeDataColorTexture>(verticeData);
+            Assert.Equal(VertexPositionColorTexture.VertexDeclaration, verticeData.VertexDeclaration);
+            Assert.Single(framesData);
+        }
+
+        [Fact]
+        public void VoxelObjBuilder_BuildVerticesHD_ProducesVerticeDataColorNormal_PreservesLootFestSemantics()
+        {
+            InitVoxelTestContext();
+
+            var grid = new VoxelObjGridDataHD(new IntVector3(2, 2, 2));
+            grid.Set(0, 0, 0, 1);
+            var grids = new List<VoxelObjGridDataHD> { grid };
+
+            var verticeData = VoxelObjBuilder.BuildVerticesHD(grids, Vector3.Zero, out var framesData);
+
+            Assert.NotNull(verticeData);
+            Assert.IsType<VerticeDataColorNormal>(verticeData);
+            Assert.Equal(VertexPositionColorNormal.VertexDeclaration, verticeData.VertexDeclaration);
+            Assert.Single(framesData);
+        }
+
+        [Fact]
+        public void DrawBatchCollection_FallbackItems_RetainedAcrossDepthAndLitPasses()
+        {
+            MainGame.SetMainThreadForTest();
+            var collection = new DrawBatchCollection();
+            var model = new TestVoxelObj();
+            model.Visible = true;
+
+            collection.Add(1, model);
+
+            // Pass 1: Depth pass in frame 0
+            collection.DrawDepth(0, null, null);
+            Assert.Equal(1, collection.FallbackDrawListCount);
+
+            // Pass 2: Lit pass in frame 0 (fallback items must be retained, not cleared)
+            collection.RemoveAndDraw(true, 0, null, null, null);
+            Assert.Equal(1, collection.FallbackDrawListCount);
+
+            // Pass 3: Next frame depth pass (cleared and re-prepared for new frame)
+            collection.DrawDepth(0, null, null);
+            Assert.Equal(1, collection.FallbackDrawListCount);
+        }
+    }
+
+    internal class TestVoxelObj : AbsVoxelObj
+    {
+        public TestVoxelObj() : base(false) { }
+        public override float SizeToScale => 1f;
+        public override int GridSideLength => 1;
+        public override int NumFrames => 1;
+        public override void copyAllDataFrom(AbsDraw master) { }
+        public override void DrawDepthOnly(bool drawDepth, Microsoft.Xna.Framework.Graphics.Effect shader, LightProjection light, int cameraIndex) { }
+        public override void Draw(int cameraIndex) { }
+        public override AbsDraw CloneMe() => throw new NotImplementedException();
     }
 
     internal class Phase5DummyUpdateableA : IUpdateable

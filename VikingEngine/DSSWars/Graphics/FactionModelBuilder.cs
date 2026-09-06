@@ -1,4 +1,4 @@
-﻿using Steamworks;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +85,14 @@ namespace VikingEngine.DSSWars
 
             var centerAdjust = grid.Frames[0].BottomCenterAdj();
 
-            buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
+            if (name == VoxelModelName.wars_flag)
+            {
+                buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
+            }
+            else
+            {
+                buildVerticeDataHD(copy.Frames, centerAdjust);
+            }
 
             Graphics.VoxelModel model = modelFromVertices();
 

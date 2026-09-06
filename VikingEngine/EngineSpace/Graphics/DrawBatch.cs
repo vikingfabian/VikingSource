@@ -18,6 +18,10 @@ namespace VikingEngine.Graphics
         public static Effect InstancedVoxelEffect;
 
         private int _currentRenderFrame = 0;
+        private int _lastPreparedFrameCollection = -1;
+        private int _lastPreparedCameraCollection = -1;
+
+        public int FallbackDrawListCount => _fallbackDrawList.Count;
 
         // Frame Telemetry Counters
         public int LastFrameStandardDrawCalls { get; private set; } = 0;
@@ -123,6 +127,7 @@ namespace VikingEngine.Graphics
                 }
                 InstancedVoxelEffect.Parameters["AmbientColor"]?.SetValue(new Vector4(0.72f, 0.72f, 0.72f, 1f));
                 InstancedVoxelEffect.Parameters["DiffuseColor"]?.SetValue(Vector4.One);
+                InstancedVoxelEffect.Parameters["ZBias"]?.SetValue(0.005f);
 
                 if (shadow && light != null && shader != null)
                 {
@@ -149,11 +154,14 @@ namespace VikingEngine.Graphics
 
         private void RenderBatches(bool depthOnly, bool shadow, int cameraIndex, AbsCamera camera, LightProjection light, Effect fallbackShader)
         {
-            var gd = Engine.Draw.graphicsDeviceManager.GraphicsDevice;
-
             // Step 1: Prepare all batches (runs only once per frame per camera)
             var prepStart = Stopwatch.GetTimestamp();
-            _fallbackDrawList.Clear();
+            if (_lastPreparedFrameCollection != _currentRenderFrame || _lastPreparedCameraCollection != cameraIndex)
+            {
+                _fallbackDrawList.Clear();
+                _lastPreparedFrameCollection = _currentRenderFrame;
+                _lastPreparedCameraCollection = cameraIndex;
+            }
             long totalUploadedBytes = 0;
 
             Span<int> removeStack = stackalloc int[16];
@@ -171,6 +179,30 @@ namespace VikingEngine.Graphics
                 }
             }
             _accumulatedPrepTimeMs += (float)Stopwatch.GetElapsedTime(prepStart).TotalMilliseconds;
+
+            var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
+            if (gd == null)
+            {
+                for (int i = 0; i < removeCount; i++)
+                {
+                    if (_batches.TryGetValue(removeStack[i], out var emptyBatch))
+                    {
+                        emptyBatch.Dispose();
+                        _batches.Remove(removeStack[i]);
+                    }
+                }
+
+                if (!depthOnly)
+                {
+                    if (!_depthDrawnThisFrame)
+                    {
+                        LastFrameDrawDepthTimeMs = 0f;
+                    }
+                    _depthDrawnThisFrame = false;
+                    _currentRenderFrame++;
+                }
+                return;
+            }
 
             // Step 2: Draw all prepared batches
             int instancedDrawCalls = 0;
@@ -302,7 +334,12 @@ namespace VikingEngine.Graphics
             _bufferCapacity = newCap;
             _cpuData = new VertexVoxelInstance[newCap];
 
-            var gd = Engine.Draw.graphicsDeviceManager.GraphicsDevice;
+            var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
+            if (gd == null)
+            {
+                return;
+            }
+
             _instanceBuffer?.Dispose();
             _instanceBuffer = new DynamicVertexBuffer(
                 gd,
@@ -349,9 +386,26 @@ namespace VikingEngine.Graphics
                         continue;
                     }
 
+                    if (voxInst.master.customShader)
+                    {
+                        if (voxInst.VisibleInCamera(cameraIndex))
+                        {
+                            fallbackList.Add(item);
+                        }
+                        continue;
+                    }
+
                     if (_masterModel == null)
                     {
                         _masterModel = voxInst.master;
+                    }
+                    else if (voxInst.master != _masterModel)
+                    {
+                        if (voxInst.VisibleInCamera(cameraIndex))
+                        {
+                            fallbackList.Add(item);
+                        }
+                        continue;
                     }
 
                     if (voxInst.VisibleInCamera(cameraIndex))
@@ -367,7 +421,17 @@ namespace VikingEngine.Graphics
                 }
                 else
                 {
-                    fallbackList.Add(item);
+                    if (item is Abs3DModel model3D)
+                    {
+                        if (model3D.VisibleInCamera(cameraIndex))
+                        {
+                            fallbackList.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        fallbackList.Add(item);
+                    }
                 }
             }
 
@@ -412,7 +476,10 @@ namespace VikingEngine.Graphics
             }
 
             _preparedCount = writeIndex;
-            _instanceBuffer.SetData(_cpuData, 0, _preparedCount, SetDataOptions.Discard);
+            if (_instanceBuffer != null)
+            {
+                _instanceBuffer.SetData(_cpuData, 0, _preparedCount, SetDataOptions.Discard);
+            }
             UploadedBytesThisFrame = _preparedCount * VertexVoxelInstance.VertexDeclaration.VertexStride;
         }
 

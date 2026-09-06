@@ -17,7 +17,7 @@ float4x4 LightProjection;
 float3 LightDirection;
 float4 AmbientColor;
 float4 DiffuseColor;
-float ZBias = 0.001f;
+float ZBias = 0.005f;
 
 // Textures & Samplers
 texture MainTexture;
@@ -176,7 +176,7 @@ VSDepthOutput InstancedDepthVS(VSGeometryInput geom, VSInstanceInput inst)
 float4 InstancedDepthPS(VSDepthOutput input) : COLOR0
 {
     float depth = input.Depth.x / input.Depth.y;
-    return float4(depth, depth, depth, 1.0f);
+    return float4(depth + 0.0015f, 0, 0, 1.0f);
 }
 
 //-----------------------------------------------------------------------------
