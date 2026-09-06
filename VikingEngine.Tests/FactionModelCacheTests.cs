@@ -5,7 +5,7 @@ using Xunit;
 
 namespace VikingEngine.Tests
 {
-    public class Phase5FactionModelTests
+    public class FactionModelCacheTests
     {
         [Fact]
         public void Faction_ClearModels_EmptiesLoadedModelsDictionary()

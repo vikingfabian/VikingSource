@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +14,7 @@ namespace VikingEngine.Graphics
 
         static int NextIndex()
         {
-            int result = CurrentVoxelModelIndex++;
+            int result = System.Threading.Interlocked.Increment(ref CurrentVoxelModelIndex) - 1;
             if (result == 52)
             {
                 lib.DoNothing();

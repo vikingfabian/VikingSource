@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars
             accessory(profile.character.accessoryFace, VoxelModelName.modsoldier_face_access, faceOffset);
 
             var centerAdjust = grid.Frame(0).BottomCenterAdj();
-            buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
+            buildVerticeDataHD(grid.Frames, centerAdjust);
             Graphics.VoxelModel model = modelFromVertices();
 
             return model;
