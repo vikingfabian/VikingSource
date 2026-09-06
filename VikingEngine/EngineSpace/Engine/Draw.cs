@@ -590,8 +590,8 @@ namespace VikingEngine.Engine
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, StandardBlendState);
 
-            var shadowColor = new Color(0, 0, 0, 48);
-            var scale = 1.0f;//0.6f;//0.5f;
+            var shadowColor = new Color(0, 0, 0, 32);
+            var scale = 0.8f;//0.6f;//0.5f;
             for (var x = -outlineThickness; x <= outlineThickness; x++)
             {
                 for (var y = -outlineThickness; y <= outlineThickness; y++)
