@@ -241,15 +241,6 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                         }
                     }
 
-                    if (toolSettings.noise)
-                    {
-                        float noiseValue = noiseMap.OctaveNoise2D_Normal(noiseOpt, loop.Position.X, loop.Position.Y);
-                        if (noiseValue * 0.8f < centerDistance)
-                        {
-                            continue;
-                        }
-                    }
-
                     float strength = 0;
                     if (toolSettings.advancedStrength)
                     {
@@ -261,6 +252,29 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                         {
                             float percTowardsEdge = (centerDistance - advDraw.flatRadius) / advDraw.hillRadius;
                             strength = advDraw.centerHeight * (1f - percTowardsEdge) + advDraw.edgeHeight * percTowardsEdge;
+                        }
+                    }
+
+                    if (toolSettings.noise)
+                    {
+                        float noiseValue = noiseMap.OctaveNoise2D_Normal(noiseOpt, loop.Position.X, loop.Position.Y);
+
+                        if (toolSettings.advancedStrength)
+                        {
+                            float reduce = noiseValue * advDraw.centerHeight * lib.ToLeftRight(strength);
+                            strength -= reduce;
+
+                            if (strength > 0 != advDraw.centerHeight > 0)
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (noiseValue * 1.2f < centerDistance)
+                            {
+                                continue;
+                            }
                         }
                     }
 

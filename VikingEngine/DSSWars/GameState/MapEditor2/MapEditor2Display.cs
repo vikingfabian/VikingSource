@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,23 +20,22 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.Input;
 using VikingEngine.LootFest.Map.Terrain;
 using VikingEngine.LootFest.Players;
+using VikingEngine.SteamWrapping;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor2
 {
     enum Map2GeneratorTab
     { 
-        Setup,
-        Nodes,
-        
-        Icon,
-        
-        Bioms,
-        
+        File,
+        //Setup,
+        Nodes,        
+        Icon,        
+        Bioms,        
         CityPlacements,
-
         Complete,
         NUM
     }
@@ -47,6 +47,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         Heightmap,
         NUM
     }
+
+    
 
     class MapEditor2Display
     {
@@ -101,10 +103,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public void refreshMenu()
         {
-            if (state.iconState)
-            {
-                iconMenu();
-            }
+            iconMenu();
+            
         }
 
         void iconMenu()
@@ -116,10 +116,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText("Generate all") }, 
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NUM)));
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary,
-                       new List<AbsRichBoxMember> { new RbText("Clear") },
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NewWorld)));
+            //content.newLine();
+            //content.Add(new ArtButton(RbButtonStyle.Primary,
+            //           new List<AbsRichBoxMember> { new RbText("Clear") },
+            //           new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NewWorld)));
 
             content.newParagraph();
 
@@ -143,8 +143,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             switch (tab)
             {
-                case Map2GeneratorTab.Setup:
-                    tab_setup(content);
+                case Map2GeneratorTab.File:
+                    tab_file(content);
                     break;
 
                 case Map2GeneratorTab.Nodes:
@@ -193,12 +193,38 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
 
             menu.Refresh(content);
-
-
         }
 
-        private void tab_setup(RichBoxContent content)
+        //public void processMenu()
+        //{
+        //    menu.menuStack.Add("process");
+        //    updateProcessPage();
+        //}
+
+        public void updateProcessPage()
         {
+            RichBoxContent content = new RichBoxContent();
+
+            if (Ref.steam.InWorkshopUploadProgress())
+            {
+                Ref.steam.WorkshopUploadToHud(content);
+            }
+            else
+            {
+                content.text("Processing...");
+            }
+            menu.Refresh(content);
+        }
+
+        //public void onProcessComplete()
+        //{
+        //    menu.menuStack.Clear();
+        //    refreshMenu();
+        //}
+
+        private void tab_file(RichBoxContent content)
+        {
+            content.h2("Setup", HudLib.TitleColor_Head2);
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_Terrain_CustomSize) }, state.generateSettings.CustomSizeProperty));
 
@@ -233,6 +259,46 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, menu);
                 }
             }
+
+            content.newParagraph();
+            content.Add(new RbSeperationLine());
+
+            content.h2("Storage", HudLib.TitleColor_Head2);
+            content.newLine();
+            var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
+                        new RbAction(beginEditName), null);
+            content.Add(editButton);
+            content.Add(new RbText(state.iconMeta.name, Color.LightYellow));
+            content.space();
+            DataStream.FilePath path, iconPath;
+            state.storage.SavePath(state.iconMeta.name, out path, out iconPath);
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconSave, 0.8f), new RbSpace(),
+                new RbText(DssRef.lang.Hud_Save) }, new RbAction(state.saveIconMap),
+                new RbTooltip_Text(LoadContent.CheckCharsSafety(path.CompleteDirectory, LoadedFont.Regular)), state.generator.currentPass >= Map2Pass.Icon));
+
+            content.newParagraph();
+            content.Add(new RbSeperationLine());
+
+            if (Ref.steam.isInitialized)
+            {
+                content.h2("Workshop", HudLib.TitleColor_Head2);
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconExport, 0.8f), new RbSpace(),
+                new RbText("Upload") }, new RbAction(state.uploadIconMap),
+                    null, state.generator.currentPass >= Map2Pass.Icon));
+            }
+        }
+        public void beginEditName()
+        {
+            var reciever = new TextInputState(state.iconMeta.name, NameEditEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
+        }
+        void NameEditEvent(string result, object tag)
+        {
+            state.iconMeta.name = result;
+            menu.needRefresh = true;
         }
 
         private void tab_Icon(RichBoxContent content)
@@ -393,7 +459,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             if (state.generator.currentPass == Map2Pass.NodeGrid)
             {
-                paintHud(content, false, true, true, false, false);
+                paintHud(content, false, true, true, true, false);
             }
         }
 

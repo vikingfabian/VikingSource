@@ -44,6 +44,7 @@ namespace VikingEngine.DataStream
 
         static void TryWrite(FilePath file, byte[] data)
         {
+            
 
             /* 1.Find old files and list them
              * 2.Create new file

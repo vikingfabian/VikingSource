@@ -34,6 +34,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         public const float Height_MountainStart = Height_DefaultGround + 0.3f;
         public const float Height_MountainPeek = Height_DefaultGround + 0.6f;
 
+        public static readonly IntervalF Height_Interval = new IntervalF(Height_WaterBottom, Height_MountainPeek);
+
         const float LayerAddHeight = 0.15f;
         const float Height_PostNoise = LayerAddHeight * 2.4f;
 

@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 {
     class GeneratorMap
     {
-        FactionPixelTexture texture;
+        public FactionPixelTexture texture;
         Graphics.ImageAdvanced image;
 
         Vector2 textureSize;

@@ -189,6 +189,50 @@ namespace VikingEngine.Engine
         //    //}
         //    //Input.Mouse.RefreshMouseVisible();// = !Ref.gamesett.customMouse;
         //}
+        public Texture2D ShrinkTexture(Texture2D originalTexture, int maxWidth, int maxHeight)
+        {
+            // 1. Calculate the new dimensions while preserving aspect ratio
+            float widthRatio = (float)maxWidth / originalTexture.Width;
+            float heightRatio = (float)maxHeight / originalTexture.Height;
+            float scale = Math.Min(1f, Math.Min(widthRatio, heightRatio));
+
+            // If the texture is already smaller than the max bounds, return it as-is to save memory
+            if (scale >= 1f)
+            {
+                return originalTexture;
+            }
+
+            int newWidth = (int)(originalTexture.Width * scale);
+            int newHeight = (int)(originalTexture.Height * scale);
+
+            // 2. Create a RenderTarget2D to act as our new texture
+            RenderTarget2D renderTarget = new RenderTarget2D(
+                graphicsDeviceManager.GraphicsDevice,
+                newWidth,
+                newHeight,
+                false,
+                originalTexture.Format,
+                DepthFormat.None
+            );
+
+            // 3. Cache current render targets so we don't break the main game loop's rendering state
+            RenderTargetBinding[] currentTargets = graphicsDeviceManager.GraphicsDevice.GetRenderTargets();
+
+            // 4. Bind the new render target and clear it
+            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(renderTarget);
+            graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
+
+            // 5. Draw the original texture scaled down
+            // SamplerState.LinearClamp is critical here for smooth downsampling
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone);
+            spriteBatch.Draw(originalTexture, new Rectangle(0, 0, newWidth, newHeight), Color.White);
+            spriteBatch.End();
+
+            // 6. Restore the original render targets back to the graphics device
+            graphicsDeviceManager.GraphicsDevice.SetRenderTargets(currentTargets);
+
+            return renderTarget;
+        }
 
         virtual public void DeleteMe()
         {

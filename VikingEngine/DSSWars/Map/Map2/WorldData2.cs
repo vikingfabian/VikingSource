@@ -23,44 +23,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
     }
 
-    class IconWorldData
-    {
-        public WorldMetaData2 metaData2;
-        public Grid2D_L<GenTile> iconGrid;
-        public List<CityPlacementData> cities = null;
-
-        public PcgRandom rnd;
-
-        public IconWorldData(IntVector2 iconSize)
-        {
-            metaData2 = new WorldMetaData2();
-
-            rnd = new PcgRandom(metaData2.seed);
-
-            iconGrid = new Grid2D_L<GenTile>(iconSize);
-
-            IntVector2 tileSz = iconGrid.Size * 16;
-
-        }
-
-        public IconWorldData CloneMe()
-        {
-            IconWorldData clone = new IconWorldData(this.iconGrid.Size);
-
-            clone.metaData2 = this.metaData2;
-
-            if (this.cities != null)
-            {
-                clone.cities = new List<CityPlacementData>(this.cities);
-            }
-            
-            clone.rnd = new PcgRandom(this.metaData2.seed);
-
-            clone.iconGrid = this.iconGrid.Clone();
-
-            return clone;
-        }
-    }
+    
 
     class WorldData2
     {

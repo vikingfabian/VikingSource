@@ -187,7 +187,7 @@ namespace VikingEngine.SteamWrapping
                     }
                     else
                     {
-                        result = new SteamApplicationSettings(new AppId_t(1223150));
+                        result = new SteamApplicationSettings(new AppId_t(3582440));
                     }
                     break;
                 case StartProgram.PartyJousting:
@@ -283,7 +283,7 @@ namespace VikingEngine.SteamWrapping
             }
 
             DLC = new SteamDLC();
-            
+            initWorkShop();
         }
 
         public void initMultiPlayer()

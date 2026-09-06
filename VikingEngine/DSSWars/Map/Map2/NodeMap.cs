@@ -23,7 +23,6 @@ namespace VikingEngine.DSSWars.Map.Map2
         public void GenerateTexture()
         {
             texture = new PixelTexture(nodeGrid.Size * TextureScale);
-            //for (int x = 0; x < nodeGrid.Width; x++)
 
             refreshAllPixels();
         }

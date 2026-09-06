@@ -214,7 +214,7 @@ namespace VikingEngine.DataStream
             char[] invalidChars = Path.GetInvalidFileNameChars();
             foreach (char c in invalidChars)
             {
-                fileName = fileName.Replace(c, ' ');
+                fileName = fileName.Replace(c, '□');
             }
 
             return fileName;
