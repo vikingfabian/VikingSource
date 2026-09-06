@@ -79,6 +79,26 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public BiomType biom = 0;
 
+        float planeEditFrom = Map2Generator.Height_WaterBottom;
+        float planeEditTo = 0;
+
+        public float planeEditFromProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                planeEditFrom = value;
+            }
+            return planeEditFrom;
+        }
+        public float planeEditToProperty(object tag, bool set, float value)
+        {
+            if (set)
+            {
+                planeEditTo = value;
+            }
+            return planeEditTo;
+        }
+
         public bool setHeightProperty(object tag, bool set, bool value)
         {
             if (set)
@@ -384,6 +404,22 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 }
                 paintDots.Clear();
             }
+        }
+
+        public void adjustPlane(float addHeight)
+        {
+            IntervalF range = new IntervalF(planeEditFrom, planeEditTo);
+            range.sort_LowToHigh();
+
+            for (int i = 0; i < scene.generator.iconWorld.iconGrid.array.Length; i++)
+            {
+                ref var tile = ref scene.generator.iconWorld.iconGrid.array[i];
+                if (range.IsWithinRange(tile.groundY))
+                {
+                    tile.groundY = Bound.Set(tile.groundY + addHeight, Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek);
+                }
+            }
+            scene.redrawPixels();
         }
 
         public void fill()

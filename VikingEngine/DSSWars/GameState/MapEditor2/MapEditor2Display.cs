@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         Generate,
         Paint,
         Heightmap,
+        Processing,
         NUM
     }
 
@@ -324,6 +325,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     case Map2GeneratorSubTab.Heightmap:
                         caption = "Height map";
                         break;
+                    case Map2GeneratorSubTab.Processing:
+                        caption = "Processing";
+                        break;
 
                 }
 
@@ -352,10 +356,43 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 case Map2GeneratorSubTab.Heightmap:
                     tab_icon_heightmap(content);
                     break;
+                case Map2GeneratorSubTab.Processing:
+                    tab_icon_processing(content);
+                    break;
             }
            
         }
+        private void tab_icon_processing(RichBoxContent content)
+        {
+            content.h2("Adjust plane", HudLib.TitleColor_Head2);
 
+            content.newLine();
+            content.Add(new RbText("From height"));
+            content.newLine();
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 0.5f, 0.25f },
+                new DragButtonSettings(Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek, 0.05f), state.tool.planeEditFromProperty, false);
+            
+            content.newParagraph();
+            content.Add(new RbText("To height"));
+            content.newLine();
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 0.5f, 0.25f },
+                new DragButtonSettings(Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek, 0.05f), state.tool.planeEditToProperty, false);
+
+            content.newParagraph();
+            content.Add(new RbText("Adjust height", HudLib.TitleColor_Label2));
+            content.newLine();
+            var adjust = new List<float> { 0.5f, 0.1f, 0.05f };
+            for (int i = 0; i < adjust.Count; ++i)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(adjust[i])) },
+                   new RbAction1Arg<float>((float selected) => { state.tool.adjustPlane(selected); }, adjust[i]), null, true));
+            }
+            for (int i = adjust.Count-1; i >=0 ; --i)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(-adjust[i])) },
+                   new RbAction1Arg<float>((float selected) => { state.tool.adjustPlane(selected); }, -adjust[i]), null, true));
+            }
+        }
         private void tab_icon_heightmap(RichBoxContent content)
         {
             var heightMap = state.generator.heightMapTexture;

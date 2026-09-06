@@ -224,6 +224,16 @@ namespace VikingEngine
             return result;
         }
 
+        public void sort_LowToHigh()
+        {
+            if (Max < Min)
+            {
+                var store = Max;
+                Max = Min;
+                Min = store;
+            }
+        }
+
         public override string ToString()
         {
             return "Range { " + Min.ToString() + " to " + Max.ToString() + " }";

@@ -110,7 +110,9 @@ namespace VikingEngine.HUD.RichBox
             this.intValue = intValue;
             valueType = DragValueType.Int;
 
-            textPointer = new RbText(TextLib.LargeNumber((int)settings.max));
+            string positive = TextLib.LargeNumber((int)settings.max);
+            string negative = TextLib.LargeNumber((int)settings.min);
+            textPointer = new RbText(negative.Length > positive.Length? negative : positive);
             this.content = new List<AbsRichBoxMember> { textPointer };
             enabled = true;
 
@@ -125,7 +127,9 @@ namespace VikingEngine.HUD.RichBox
             this.floatValue = floatValue;
             valueType = oneDecimal? DragValueType.Float_1Dec : DragValueType.Float_2Dec;
 
-            textPointer = new RbText(oneDecimal? TextLib.OneDecimal(settings.max) : TextLib.TwoDecimal(settings.max));
+            string positive = oneDecimal ? TextLib.OneDecimal(settings.max) : TextLib.TwoDecimal(settings.max);
+            string negative = oneDecimal ? TextLib.OneDecimal(settings.min) : TextLib.TwoDecimal(settings.min);
+            textPointer = new RbText(negative.Length > positive.Length ? negative : positive);
             this.content = new List<AbsRichBoxMember> { textPointer };
             enabled = true;
 
