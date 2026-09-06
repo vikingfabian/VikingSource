@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using Xunit;
 
 namespace VikingEngine.Tests
 {
-    public class Phase6UpdateLoopTests
+    public class EngineUpdateLoopTests
     {
         [Fact]
         public void RenderTargetDrawContainer_ContractVerification()
@@ -103,5 +104,42 @@ namespace VikingEngine.Tests
                 }
             }
         }
+
+        [Fact]
+        public void Update_DumpUpdateListSummary_CountsTypesCorrectly()
+        {
+            var update = new Update(null);
+            var dummy1 = new DummyUpdateableA();
+            var dummy2 = new DummyUpdateableA();
+            var dummy3 = new DummyUpdateableB();
+
+            update.AddToOrRemoveFromUpdate(dummy1, true);
+            update.AddToOrRemoveFromUpdate(dummy2, true);
+            update.AddToOrRemoveFromUpdate(dummy3, true);
+
+            string summary = update.DumpUpdateListSummary(UpdateType.Full);
+
+            Assert.Contains("DummyUpdateableA: 2", summary);
+            Assert.Contains("DummyUpdateableB: 1", summary);
+            Assert.Contains("Total Items: 3", summary);
+        }
+    }
+
+    internal class DummyUpdateableA : IUpdateable
+    {
+        public int SpottedArrayMemberIndex { get; set; } = -1;
+        public bool SpottedArrayUseIndex => true;
+        public UpdateType UpdateType => UpdateType.Full;
+        public bool RunDuringPause => false;
+        public void Time_Update(float time_ms) { }
+    }
+
+    internal class DummyUpdateableB : IUpdateable
+    {
+        public int SpottedArrayMemberIndex { get; set; } = -1;
+        public bool SpottedArrayUseIndex => true;
+        public UpdateType UpdateType => UpdateType.Full;
+        public bool RunDuringPause => false;
+        public void Time_Update(float time_ms) { }
     }
 }

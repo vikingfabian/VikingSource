@@ -144,7 +144,7 @@ namespace VikingEngine
         private void ProcessScreenshot(GameTime gameTime)
         {
             var isScreenshotKeyPressed =
-                Input.Keyboard.KeyDownEvent(Keys.F12)
+                Input.Keyboard.KeyDownEvent(Keys.F9)
                 || Input.Keyboard.KeyDownEvent(Keys.PrintScreen);
 
             if (Engine.Draw.IsScreenshotRequested)
@@ -173,7 +173,7 @@ namespace VikingEngine
                     !PlatformSettings.DebugPerformanceText;
             }
 
-            if (Input.Keyboard.KeyDownEvent(Keys.F11))
+            if (Input.Keyboard.KeyDownEvent(Keys.F8))
             {
                 Ref.update?.DumpUpdateListToFile();
             }
