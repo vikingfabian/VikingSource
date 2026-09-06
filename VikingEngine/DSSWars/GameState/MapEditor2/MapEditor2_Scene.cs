@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
         public GeneratorMap map;
         //public bool iconState = true;
-
+        MapEditHistory editHistory = new MapEditHistory();
         public IconMapStorage storage = new IconMapStorage();
 
         List<InputMap> controller;
@@ -159,6 +159,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             loadingState = true;
             display.loadingDisplay.Show();
             generator.generatePass(generateSettings, start, end);
+        }
+
+        public void undo()
+        {
+            editHistory.undo(this);
+            generator.refreshPass();
         }
 
         public void revertToIconPass()

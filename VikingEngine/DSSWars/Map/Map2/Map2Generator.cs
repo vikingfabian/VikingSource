@@ -186,7 +186,26 @@ namespace VikingEngine.DSSWars.Map.Map2
                 loadingState = LoadingState.Complete;
             });
         }
-        
+
+        public void refreshPass()
+        {
+            loadingState = LoadingState.Pass;
+         
+            Task.Run(async () =>
+            {
+                if (currentPass < Map2Pass.Icon)
+                {
+                    nodeMap.GenerateTexture();
+                }
+                else
+                {
+                    processTexturePixels();
+                }
+
+                loadingState = LoadingState.Complete;
+            });
+        }
+
 
         private async Task nodeTerrainPass(Map2GenerateSettings generateSettings)
         {
