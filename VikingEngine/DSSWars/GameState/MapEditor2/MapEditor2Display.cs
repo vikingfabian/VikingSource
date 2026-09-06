@@ -288,6 +288,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 new RbImage(SpriteName.WarsHudIconExport, 0.8f), new RbSpace(),
                 new RbText("Upload") }, new RbAction(state.uploadIconMap),
                     null, state.generator.currentPass >= Map2Pass.Icon));
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.SteamIcon, 0.8f), new RbSpace(),
+                new RbText("Browse") }, new RbAction1Arg<string>(Ref.steam.OpenWorkshopFilteredByTag, DssWorkshop.IconMap_Tag),
+                    new RbTooltip_Text(DssRef.lang.Steam_OpenSteamOverlay), true));
             }
         }
         public void beginEditName()

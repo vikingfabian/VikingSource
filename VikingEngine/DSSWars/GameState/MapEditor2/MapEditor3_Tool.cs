@@ -189,8 +189,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             {
                 if (bPaintKeyDown)
                 {
-                    if (scene.map.pointerToTilePos(Input.Mouse.Position, tileSize, out var tilePos))
+                    if (!input.editorInput.draw.IsDown)
                     {
+                        SoundLib.editorKeyDown(false, Input.Mouse.Position.X);
+                        finalizePaintStroke();
+                    }
+                    else if (scene.map.pointerToTilePos(Input.Mouse.Position, tileSize, out var tilePos))
+                    {   
                         paintOnTile(tilePos, tileSize);
                     }
                 }
@@ -198,15 +203,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 {
                     if (scene.map.pointerToTilePos(Input.Mouse.Position, tileSize, out var tilePos))
                     {
+                        SoundLib.editorKeyDown(true, Input.Mouse.Position.X);
                         bPaintKeyDown = true;
                         prevTilePos = IntVector2.NegativeOne;
                         paintOnTile(tilePos, tileSize);
                     }
-                }
-
-                if (input.editorInput.draw.UpEvent)
-                {
-                    finalizePaintStroke();
                 }
             }
             else
@@ -225,6 +226,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             if (tilePos != prevTilePos)
             {
+                SoundLib.editorDrag(Input.Mouse.Position.X);
+
                 Rectangle2 bound = new Rectangle2(IntVector2.Zero, tileSize);
                 Rectangle2 area = Rectangle2.FromCenterTileAndRadius(tilePos, radius);
                 area.SetBounds(bound);

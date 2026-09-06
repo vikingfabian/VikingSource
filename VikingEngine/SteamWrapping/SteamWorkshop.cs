@@ -31,7 +31,18 @@ namespace VikingEngine.SteamWrapping
             _createItemResult = CallResult<CreateItemResult_t>.Create(OnItemCreated);
             _submitItemUpdateResult = CallResult<SubmitItemUpdateResult_t>.Create(OnItemSubmitted);
         }
+        public void OpenWorkshopFilteredByTag(string tag)
+        {
+           
+            // Construct the community URL. 
+            // Uri.EscapeDataString ensures tags with spaces (e.g., "Custom Models") won't break the URL.
+            string url = $"https://steamcommunity.com/workshop/browse/?appid={applicationSettings.appId}&requiredtags[]={Uri.EscapeDataString(tag)}";
 
+            // Pushes the URL to the Steam Overlay web browser.
+            // Note: If the user has disabled the Steam Overlay in their client settings, 
+            // Steamworks automatically handles this by opening their default desktop web browser instead.
+            SteamFriends.ActivateGameOverlayToWebPage(url);
+        }
         public void BeginUpload(WorkshopItem workShopItem)
         { 
 
