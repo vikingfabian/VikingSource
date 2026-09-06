@@ -91,6 +91,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                int capturedGen = instance.PoolGeneration;
                 Task.Run(async () =>
                 {
                     try
@@ -141,7 +142,10 @@ namespace VikingEngine.DSSWars
                             await Task.Delay(100);
                         }
 
-                        setMaster(instance, master.GetMaster());
+                        if (instance.PoolGeneration == capturedGen)
+                        {
+                            setMaster(instance, master.GetMaster());
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -169,6 +173,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                int capturedGen = (instance as VoxelModelInstance_Pooled)?.PoolGeneration ?? 0;
                 Task.Run(async () =>
                 {
                     try
@@ -189,7 +194,10 @@ namespace VikingEngine.DSSWars
                             await Task.Delay(100);
                         }
 
-                        setMaster(instance, master.GetMaster());
+                        if (!(instance is VoxelModelInstance_Pooled pooled) || pooled.PoolGeneration == capturedGen)
+                        {
+                            setMaster(instance, master.GetMaster());
+                        }
                     }
                     catch (Exception ex)
                     {

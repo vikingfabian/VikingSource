@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +7,24 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.Graphics
 {
-    class RenderTargetDraw3dContainer : RenderTargetImage, IDrawContainer
+    class RenderTargetDraw3dContainer : RenderTargetImage, IDrawContainer, IRenderTargetContainer
     {
         public List<Graphics.AbsDraw> renderList = new List<AbsDraw>();
 
         public RenderTargetDraw3dContainer(Vector2 pos, Vector2 size, ImageLayers layer)
            : base(pos, size, layer)
         { }
+
+        public void DrawToTarget()
+        {
+            DrawModelsToTarget();
+        }
+
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+            Ref.draw?.drawContainers.Remove(this);
+        }
         
         /// <summary>
         /// Has to be manually called before each render

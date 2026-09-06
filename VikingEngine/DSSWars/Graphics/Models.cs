@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -357,14 +357,18 @@ namespace VikingEngine.DSSWars
                 List<VoxelObjGridDataHD> loadedFrames = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
 
                 if (centerY)
+                {
                     centerAdjust += loadedFrames[0].CenterAdj();
+                }
                 else
+                {
                     centerAdjust += loadedFrames[0].BottomCenterAdj();
+                }
 
                 IntVector3 gridSz = loadedFrames[0].Size;
 
                 List<Frame> framesData;
-                IVerticeData verticeData = VoxelObjBuilder.BuildVerticesHD(loadedFrames, centerAdjust, out framesData);
+                IVerticeData verticeData = VoxelObjBuilder.BuildVerticesHD_Texture(loadedFrames, centerAdjust, out framesData);
 
                 loadedData.Add(new VoxelModelData(modelName, verticeData, gridSz, framesData)); 
             }

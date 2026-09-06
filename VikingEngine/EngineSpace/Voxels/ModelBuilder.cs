@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace VikingEngine.Voxels
         public Graphics.VoxelModel BuildFromGrid(VoxelObjGridDataAnimHD grid)
         {
             var centerAdjust = grid.Frame(0).BottomCenterAdj();
-            buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
+            buildVerticeDataHD(grid.Frames, centerAdjust);
             Graphics.VoxelModel model = modelFromVertices();
 
             return model;

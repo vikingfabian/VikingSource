@@ -118,7 +118,7 @@ namespace VikingEngine.Benchmarks.Pathfinding.Legacy
             }
             else
             {
-                path = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetRes();
+                path = new WalkingPath();
             }
 
             while (currentNode.Position != startNode.Position)

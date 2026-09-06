@@ -1,4 +1,4 @@
-﻿using HardwareInstancing;
+using HardwareInstancing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
@@ -32,6 +33,8 @@ namespace VikingEngine.Engine
 
         /* Static */
         public static string DebugUpdateTimeText = TextLib.EmptyString;
+        public static bool IsScreenshotRequested = false;
+        public static bool IsScreenshotProcessed = false;
         public static int PreviousVertexBuffer =-1;
         public static RenderTargetImage RenderTargetImageBuffer;
         public static GraphicsDeviceManager graphicsDeviceManager;
@@ -49,7 +52,6 @@ namespace VikingEngine.Engine
 
         public DrawBatchCollection drawBatch;
        
-
         public static void Init()
         {
             //Set the technique names
@@ -70,6 +72,7 @@ namespace VikingEngine.Engine
             effectFlag = LoadContent.LoadShader("FlagWaveEffect");
             effectWaveXz = LoadContent.LoadShader("WaveXzEffect");
             shadowEffect = Engine.LoadContent.LoadShader("ShadowEffect");
+            DrawBatchCollection.LoadContent();
             //oceanEffect = Engine.LoadContent.LoadShader("OceanEffectFlat");
 
             //effectSeaNoise = LoadContent.LoadShader("SeaNoiseEffect");
@@ -92,7 +95,7 @@ namespace VikingEngine.Engine
 
             //Post process
             FPSpos = Vector2.Zero;
-            FPSpos = Engine.Screen.SafeArea.Position * 0.6f;
+            FPSpos = Engine.Screen.SafeArea.Position * 0.4f;//0.6f;
 
             AbsText.Init();
         }
@@ -149,6 +152,7 @@ namespace VikingEngine.Engine
         /// Will override the normal render list and collect the images in the container instead
         /// </summary>
         public IDrawContainer AddToContainer = null;
+        public List<Graphics.IRenderTargetContainer> drawContainers = new List<Graphics.IRenderTargetContainer>();
 
         public Graphics.LFHeightMap heightmap;
 
@@ -470,25 +474,41 @@ namespace VikingEngine.Engine
             {
                 StateHandler.RenderLoop();
 
-                DateTime start = DateTime.Now;
-
+                var startTimestamp = Stopwatch.GetTimestamp();
                 drawInContainersEvent();
 
                 graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
                 drawEvent();
 
+                var frameRenderTimeInMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;
+                StateHandler.RenderTimePass(frameRenderTimeInMs);
+
                 if (PlatformSettings.DebugPerformanceText)
                 {
-                    spriteBatch.Begin(SpriteSortMode.BackToFront, StandardBlendState);
-                    spriteBatch.DrawString(LoadContent.Font(LoadedFont.Console), DebugUpdateTimeText, FPSpos,
-                        Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                    int stdCalls = drawBatch != null ? drawBatch.LastFrameStandardDrawCalls : 0;
+                    int instCalls = drawBatch != null ? drawBatch.LastFrameInstancedDrawCalls : 0;
+                    int instUnits = drawBatch != null ? drawBatch.LastFrameRenderedInstances : 0;
+                    int batches = drawBatch != null ? drawBatch.LastFrameBatchCount : 0;
+                    int slices = drawBatch != null ? drawBatch.LastFrameFrameSlices : 0;
+                    long uploadedBytes = drawBatch != null ? drawBatch.LastFrameUploadedBytes : 0;
+                    float prepMs = drawBatch != null ? drawBatch.LastFramePrepBatchesTimeMs : 0f;
+                    float depthMs = drawBatch != null ? drawBatch.LastFrameDrawDepthTimeMs : 0f;
+                    float litMs = drawBatch != null ? drawBatch.LastFrameDrawLitTimeMs : 0f;
 
-                    //if (Engine.Update.IsRunningSlow)
-                    //    spriteBatch.Draw(Engine.LoadContent.Texture(LoadedTexture.WhiteArea), new Rectangle(10, 10, 20, 20), Color.Red);
+                    DebugExtensions.RenderOverlay.Instance.RecordFrame(
+                        frameRenderTimeInMs,
+                        prepBatchesTimeMs: prepMs,
+                        drawDepthTimeMs: depthMs,
+                        drawLitTimeMs: litMs,
+                        standardDrawCalls: stdCalls,
+                        instancedDrawCalls: instCalls,
+                        renderedInstances: instUnits,
+                        batchCount: batches,
+                        frameSliceCount: slices,
+                        uploadedBytes: uploadedBytes
+                    );
 
-                    spriteBatch.End();
-                    DateTime end = DateTime.Now;
-                    StateHandler.RenderTimePass(end.Subtract(start).TotalMilliseconds);
+                    DrawOutlinedDebugText(4);
                 }
                 if (Update.SlowDownMarker > 0)
                 {
@@ -498,6 +518,21 @@ namespace VikingEngine.Engine
                     --Update.SlowDownMarker;
                 }
 
+                if (IsScreenshotRequested)
+                {
+                    if (!IsScreenshotProcessed)
+                    {
+                        IsScreenshotProcessed = true;
+                        SaveScreenshot(MainRenderTarget);
+                    }
+                }
+                else
+                {
+                    if (IsScreenshotProcessed)
+                    {
+                        IsScreenshotProcessed = false;
+                    }
+                }
 
                 graphicsDeviceManager.GraphicsDevice.SetRenderTarget(null);
 
@@ -519,13 +554,92 @@ namespace VikingEngine.Engine
             }
         }
 
+        private void SaveScreenshot(RenderTarget2D renderTarget)
+        {
+            try
+            {
+                string baseDir = VikingEngine.DataStream.FilePath.StorageDirectory();
+                if (string.IsNullOrEmpty(baseDir))
+                {
+                    baseDir = System.IO.Directory.GetCurrentDirectory();
+                }
+
+                string dir = System.IO.Path.Combine(baseDir, "Screenshots");
+                if (!System.IO.Directory.Exists(dir))
+                {
+                    System.IO.Directory.CreateDirectory(dir);
+                }
+
+                string fileName = $"Screenshot_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png";
+                string filePath = System.IO.Path.Combine(dir, fileName);
+
+                using (var stream = new System.IO.FileStream(filePath, System.IO.FileMode.Create))
+                {
+                    renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
+                }
+
+                VikingEngine.Debug.Log($"Screenshot saved: {filePath}");
+            }
+            catch (Exception ex)
+            {
+                VikingEngine.Debug.LogError($"Screenshot failed: {ex.Message}");
+            }
+        }
+
+        private void DrawOutlinedDebugText(int outlineThickness)
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, StandardBlendState);
+
+            var shadowColor = new Color(0, 0, 0, 32);
+            var scale = 0.8f;//0.6f;//0.5f;
+            for (var x = -outlineThickness; x <= outlineThickness; x++)
+            {
+                for (var y = -outlineThickness; y <= outlineThickness; y++)
+                {
+                    if (x == 0 && y == 0)
+                    {
+                        continue;
+                    }
+
+                    spriteBatch.DrawString(
+                        LoadContent.Font(LoadedFont.Console),
+                        DebugUpdateTimeText,
+                        FPSpos + new Vector2(x, y),
+                        shadowColor,
+                        0,
+                        Vector2.Zero,
+                        scale,
+                        SpriteEffects.None,
+                        0);
+                }
+            }
+
+            spriteBatch.DrawString(
+                LoadContent.Font(LoadedFont.Console),
+                DebugUpdateTimeText,
+                FPSpos,
+                Color.White,
+                0,
+                Vector2.Zero,
+                scale,
+                SpriteEffects.None,
+                0);
+
+            spriteBatch.End();
+        }
+
         protected void clearDepthBuffer()
         {
             MainRenderTarget.GraphicsDevice.Clear(ClearOptions.DepthBuffer, ColorExt.Empty, 1f, 0);
         }
 
         virtual protected void drawInContainersEvent()
-        { }
+        {
+            for (int i = 0; i < drawContainers.Count; ++i)
+            {
+                drawContainers[i].DrawToTarget();
+            }
+        }
 
         virtual public void OnShaderChange(ShaderChangeType changeType)
         { }

@@ -7,6 +7,7 @@ namespace VikingEngine.DebugExtensions
     public class MemoryOverlay
     {
         public static MemoryOverlay Instance = new MemoryOverlay();
+        public static readonly string LayoutSeparator = "\n";//" | ";
 
         public bool IsEnabled = true;
 
@@ -37,7 +38,7 @@ namespace VikingEngine.DebugExtensions
             _prevGen0 = GC.CollectionCount(0);
             _prevGen1 = GC.CollectionCount(1);
             _prevGen2 = GC.CollectionCount(2);
-            _prevAllocatedBytes = GC.GetTotalAllocatedBytes(true);
+            _prevAllocatedBytes = GC.GetTotalAllocatedBytes(false);
             TotalHeapBytes = GC.GetTotalMemory(false);
         }
 
@@ -61,7 +62,7 @@ namespace VikingEngine.DebugExtensions
             var currentGen0 = GC.CollectionCount(0);
             var currentGen1 = GC.CollectionCount(1);
             var currentGen2 = GC.CollectionCount(2);
-            var currentAllocated = GC.GetTotalAllocatedBytes(true);
+            var currentAllocated = GC.GetTotalAllocatedBytes(false);
 
             Gen0Delta = currentGen0 - _prevGen0;
             Gen1Delta = currentGen1 - _prevGen1;
@@ -95,7 +96,7 @@ namespace VikingEngine.DebugExtensions
             var heapMb = TotalHeapBytes / (1024.0 * 1024.0);
             var allocRateMb = AllocatedBytesDelta / (1024.0 * 1024.0);
 
-            FormattedText = $"Heap: {heapMb:F1}MB | Alloc: {allocRateMb:F2}MB/s | GC: [{Gen0Delta}/{Gen1Delta}/{Gen2Delta}] | Frame: {AvgFrameTimeMs:F1}ms (min: {MinFrameTimeMs:F1}, max: {MaxFrameTimeMs:F1})";
+            FormattedText = $"Heap: {heapMb:F1}MB | Alloc: {allocRateMb:F2}MB/s | GC: [{Gen0Delta}/{Gen1Delta}/{Gen2Delta}]{LayoutSeparator}Frame: {AvgFrameTimeMs:F1}ms (min: {MinFrameTimeMs:F1}, max: {MaxFrameTimeMs:F1})";
         }
     }
 }

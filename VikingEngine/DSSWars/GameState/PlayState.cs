@@ -1,4 +1,4 @@
-﻿//#define DEBUG_CLIENT
+//#define DEBUG_CLIENT
 
 
 using Microsoft.Xna.Framework;
@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -568,15 +569,40 @@ namespace VikingEngine.DSSWars
                 return;
             }
             
+            // Phase 4: Subsystem profiling variables
+            bool profiling = PlatformSettings.DebugPerformanceText;
+            float citiesMs = 0f;
+            float factionsMs = 0f;
+            float factionOneSecMs = 0f;
+
             if (Ref.DeltaGameTimeMs > 0)
             {
                 DssRef.time.update();
                 
                 if (isReady)
                 {
+                    // --- Cities Update ---
+                    long citiesStart = 0;
+                    if (profiling)
+                    {
+                        citiesStart = Stopwatch.GetTimestamp();
+                    }
+
                     foreach (var m in DssRef.world.cities)
                     {
                         m.update();
+                    }
+
+                    if (profiling && citiesStart > 0)
+                    {
+                        citiesMs = (float)Stopwatch.GetElapsedTime(citiesStart).TotalMilliseconds;
+                    }
+
+                    // --- Factions Update (includes oneSecUpdate) ---
+                    long factionsStart = 0;
+                    if (profiling)
+                    {
+                        factionsStart = Stopwatch.GetTimestamp();
                     }
 
                     var factionsC = DssRef.world.factions.counter();
@@ -588,7 +614,18 @@ namespace VikingEngine.DSSWars
 
                             if (DssRef.time.oneSecond)
                             {
+                                long oneSecStart = 0;
+                                if (profiling)
+                                {
+                                    oneSecStart = Stopwatch.GetTimestamp();
+                                }
+
                                 factionsC.sel.oneSecUpdate(DssRef.time.oneMinute);
+
+                                if (profiling && oneSecStart > 0)
+                                {
+                                    factionOneSecMs += (float)Stopwatch.GetElapsedTime(oneSecStart).TotalMilliseconds;
+                                }
                             }
                         }
                         else if (factionsC.sel.pfaction.TryGetPlayer(out _))
@@ -597,10 +634,26 @@ namespace VikingEngine.DSSWars
 
                             if (DssRef.time.oneSecond)
                             {
+                                long oneSecStart = 0;
+                                if (profiling)
+                                {
+                                    oneSecStart = Stopwatch.GetTimestamp();
+                                }
+
                                 factionsC.sel.client_oneSecUpdate(DssRef.time.oneMinute);
+
+                                if (profiling && oneSecStart > 0)
+                                {
+                                    factionOneSecMs += (float)Stopwatch.GetElapsedTime(oneSecStart).TotalMilliseconds;
+                                }
                             }
 
                         }
+                    }
+
+                    if (profiling && factionsStart > 0)
+                    {
+                        factionsMs = (float)Stopwatch.GetElapsedTime(factionsStart).TotalMilliseconds;
                     }
                 }
                 
@@ -620,6 +673,14 @@ namespace VikingEngine.DSSWars
                         factions.sel.PauseUpdate();
                     }
                 }                
+            }
+
+            // --- Map Update (runs unconditionally) ---
+            float mapMs = 0f;
+            long mapStart = 0;
+            if (profiling)
+            {
+                mapStart = Stopwatch.GetTimestamp();
             }
 
             switch (processTime.update())
@@ -642,16 +703,36 @@ namespace VikingEngine.DSSWars
             
             overviewMap.update();
 
-            //if (bUserUpdate)
-            //{
-                updateUserInput(bUserMapUpdate);
-            //}
-            //else
-            //{ 
-                
-            //}
+            if (profiling && mapStart > 0)
+            {
+                mapMs = (float)Stopwatch.GetElapsedTime(mapStart).TotalMilliseconds;
+            }
 
-            Engine.ParticleHandler.Update(time);
+            // --- User Input Update (runs unconditionally) ---
+            float userInputMs = 0f;
+            long userInputStart = 0;
+            if (profiling)
+            {
+                userInputStart = Stopwatch.GetTimestamp();
+            }
+
+            updateUserInput(bUserMapUpdate);
+
+            if (profiling && userInputStart > 0)
+            {
+                userInputMs = (float)Stopwatch.GetElapsedTime(userInputStart).TotalMilliseconds;
+            }
+
+            // --- Particles Update (handled centrally by Engine.Update.Time_Update) ---
+            float particlesMs = 0f;
+
+            // --- Record all subsystem timings ---
+            if (profiling)
+            {
+                DebugExtensions.RenderOverlay.Instance.RecordSimSubsystems(
+                    citiesMs, factionsMs, factionOneSecMs,
+                    mapMs, userInputMs, particlesMs);
+            }
         }
 
         //float AutoSaveTimeSec = DssRef.storage.autoSaveInterval_Minutes * TimeExt.MinuteInSeconds;
