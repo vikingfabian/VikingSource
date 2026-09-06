@@ -34,6 +34,7 @@ namespace VikingEngine.Engine
         private float _lastSyncQueMs = 0f;
 
         // TODO: Tie this to framerate.
+        // TODO: Should we allow disabling budget?
         public static readonly double IdealSyncActionBudgetMs = 2.0;
         public static readonly double IncreasedSyncActionBudgetMs = 6.0;
         public static readonly double MaxSyncActionBudgetMs = 12.0d;
@@ -387,16 +388,13 @@ namespace VikingEngine.Engine
                 _lastUpdateListMs = (float)Stopwatch.GetElapsedTime(tUpdList).TotalMilliseconds;
             }
 
-            var budget = IdealSyncActionBudgetMs;
+            //var budget = IdealSyncActionBudgetMs;
             var queueSize = _syncQue.Count;
-            if (queueSize > 200)
-            {
-                budget = Math.Max(budget, MaxSyncActionBudgetMs);
-            }
-            else if (queueSize > 50)
-            {
-                budget = Math.Max(budget, IncreasedSyncActionBudgetMs);
-            }
+            var budget = queueSize > 200
+                ? MaxSyncActionBudgetMs
+                : queueSize > 50
+                    ? IncreasedSyncActionBudgetMs
+                    : IdealSyncActionBudgetMs;
 
             // Thread-safe dequeue with dynamic time budget throttling.
             var syncStartTimestamp = Stopwatch.GetTimestamp();
