@@ -33,8 +33,10 @@ namespace VikingEngine.Engine
         private float _lastUpdateListMs = 0f;
         private float _lastSyncQueMs = 0f;
 
-        // TODO: Check if this is a good enough value, or if it should be configurable. Or what happens if this causes backing up.
-        public static double MaxSyncActionBudgetMs = 2.0;
+        // TODO: Tie this to framerate.
+        public static readonly double IdealSyncActionBudgetMs = 2.0;
+        public static readonly double IncreasedSyncActionBudgetMs = 6.0;
+        public static readonly double MaxSyncActionBudgetMs = 12.0d;
         public TextInput textInput = null;
         //public bool blockGameInput = false;
         //public string blockGameInputId = null;
@@ -385,26 +387,23 @@ namespace VikingEngine.Engine
                 _lastUpdateListMs = (float)Stopwatch.GetElapsedTime(tUpdList).TotalMilliseconds;
             }
 
-            long tSync = Stopwatch.GetTimestamp();
-            double budget = MaxSyncActionBudgetMs;
-            if (budget > 0)
+            var budget = IdealSyncActionBudgetMs;
+            var queueSize = _syncQue.Count;
+            if (queueSize > 200)
             {
-                int count = _syncQue.Count;
-                if (count > 200)
-                {
-                    budget = Math.Max(budget, 12.0);
-                }
-                else if (count > 50)
-                {
-                    budget = Math.Max(budget, 6.0);
-                }
+                budget = Math.Max(budget, MaxSyncActionBudgetMs);
+            }
+            else if (queueSize > 50)
+            {
+                budget = Math.Max(budget, IncreasedSyncActionBudgetMs);
             }
 
             // Thread-safe dequeue with dynamic time budget throttling.
+            var syncStartTimestamp = Stopwatch.GetTimestamp();
             while (_syncQue.TryDequeue(out var syncAction))
             {
                 syncAction.runSyncAction();
-                if (budget > 0 && Stopwatch.GetElapsedTime(tSync).TotalMilliseconds >= budget)
+                if (Stopwatch.GetElapsedTime(syncStartTimestamp).TotalMilliseconds >= budget)
                 {
                     break;
                 }
@@ -412,7 +411,7 @@ namespace VikingEngine.Engine
 
             if (PlatformSettings.DebugPerformanceText)
             {
-                _lastSyncQueMs = (float)Stopwatch.GetElapsedTime(tSync).TotalMilliseconds;
+                _lastSyncQueMs = (float)Stopwatch.GetElapsedTime(syncStartTimestamp).TotalMilliseconds;
             }
         }
 
