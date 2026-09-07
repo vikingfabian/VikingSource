@@ -26,7 +26,7 @@ namespace VikingEngine.Voxels
         public Graphics.VoxelModel BuildFromGrid(VoxelObjGridDataAnimHD grid)
         {
             var centerAdjust = grid.Frame(0).BottomCenterAdj();
-            buildVerticeDataHD(grid.Frames, centerAdjust);
+            buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
             Graphics.VoxelModel model = modelFromVertices();
 
             return model;
