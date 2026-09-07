@@ -3214,7 +3214,6 @@ namespace VikingEngine.DSSWars
             underMenu.menuStack.Add("import");
             underMenu.Refresh(content);
             new Timer.AsynchActionTrigger(loadSaveImportsList_async2, true);
-
             
         }
 
@@ -3222,79 +3221,46 @@ namespace VikingEngine.DSSWars
         {
             var list = DssRef.storage.meta.ListSaveImports();
 
-
-            for (int i =0; i < list.Count; ++i)//each (var f in list)
-            {
-                list[i] = list[i].Split(Path.DirectorySeparatorChar).Last();
-            }
-
-            new Timer.Action1ArgTrigger<List<string>>(listImports2, list);
+            new Timer.Action1ArgTrigger<List<FilePath>>(listImports2, list);
         }
 
-        //void listImports(List<string> names)
-        //{
-        //    if (importSavesMenu)
-        //    {
-        //        menuSystem.menu.PopLayout();
-
-        //        GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_LoadState, menuSystem.menu);
-        //        {
-        //            for (int i = 0; i < names.Count; ++i)
-        //            {
-        //                var save = names[i];
-        //                new GuiTextButton(LoadContent.CheckCharsSafety( save, LoadedFont.Regular), null, new GuiAction1Arg<string>(importSave, save), false, layout);
-        //            }
-
-        //            if (names.Count == 0)
-        //            {
-        //                new GuiLabel(DssRef.lang.Hud_EmptyList, layout);
-        //            }
-        //        }
-        //        layout.End();
-        //    }
-        //}
-
-        void listImports2(List<string> names)
+        
+        void listImports2(List<FilePath> names)
         {
             RichBoxContent content = new RichBoxContent();
             HudLib.returnButton(content, underMenu, true, null);
 
             if (importSavesMenu)
             {
-                //menuSystem.menu.PopLayout();
+                for (int i = 0; i < names.Count; ++i)
+                {
+                    var save = names[i].FileName;
+                   
+                    var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsHudIconImport),
+                            new RbSpace(),
+                            new RbText(LoadContent.CheckCharsSafety(save, LoadedFont.Regular)),
 
-                //GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_LoadState, menuSystem.menu);
-                //{
-                    for (int i = 0; i < names.Count; ++i)
-                    {
-                        var save = names[i];
-                            var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                                    new RbImage(SpriteName.WarsHudIconImport),
-                                    new RbSpace(),
-                                    new RbText(LoadContent.CheckCharsSafety(save, LoadedFont.Regular)),
+                        },
+                    new RbAction1Arg<FilePath>(importSave, names[i]));
 
-                                },
-                        new RbAction1Arg<string>(importSave, save));
+                    btn.fillWidth = true;
+                    content.Add(btn);
+                    
+                }
 
-                        btn.fillWidth = true;
-                        content.Add(btn);
-                    //new GuiTextButton(LoadContent.CheckCharsSafety(save, LoadedFont.Regular), null, new GuiAction1Arg<string>(importSave, save), false, layout);
-                    }
-
-                    if (names.Count == 0)
-                    {
-                        content.Add(new RbText(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light));
-                    }
-                //}
-                //layout.End();
+                if (names.Count == 0)
+                {
+                    content.Add(new RbText(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light));
+                }
             }
             underMenu.Refresh(content);
         }
 
-        void importSave(string name)
+        void importSave(FilePath name)
         {
             SaveStateMeta meta = new SaveStateMeta();            
-            meta.import = name;
+            meta.import = name.FileName;
             meta.importedWorld = true;
             loadGame = meta;
             openPlayerSetupForMode(StartGameMode.Play);
@@ -3308,7 +3274,7 @@ namespace VikingEngine.DSSWars
             playerData.inputSource = inputSource;
             DssRef.storage.checkPlayerDoublettes(0);
 
-            new StartGame(true,/* netLobby,*/ saveMeta, mapBackgroundLoading);
+            new StartGame(true, saveMeta, mapBackgroundLoading);
         }
 
     }

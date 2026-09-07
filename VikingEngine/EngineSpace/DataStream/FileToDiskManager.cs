@@ -331,6 +331,8 @@ namespace VikingEngine.DataStream
             return new string[0];
         }
 
+        
+
         public static string[] SearchFilesInStorageDir(string searchPattern)
         {
            

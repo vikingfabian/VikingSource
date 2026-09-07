@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
@@ -54,7 +55,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
     class MapEditor2Display
     {
         public Map2GeneratorTab tab = 0;
-        RichMenu menu;
+        public RichMenu menu;
         MapEditor2_Scene state;
         public Vector2 topRight;
         public ImageGroup2D loadingDisplay;
@@ -104,23 +105,23 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public void refreshMenu()
         {
-            iconMenu();
-            
+            iconMenu();            
         }
 
         void iconMenu()
         {
             RichBoxContent content = new RichBoxContent();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.Undo) },
+                new RbAction(state.undo), new RbTooltip_Text(DssRef.lang.Hud_Undo), state.editHistory.CanUndo));
+
+            content.newParagraph();
             content.h1("Map 2.0 - Icon editor", HudLib.TitleColor_Head);
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText("Generate all") }, 
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NUM)));
-            //content.newLine();
-            //content.Add(new ArtButton(RbButtonStyle.Primary,
-            //           new List<AbsRichBoxMember> { new RbText("Clear") },
-            //           new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NewWorld)));
+           
 
             content.newParagraph();
 
@@ -212,7 +213,16 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             }
             else
             {
-                content.text("Processing...");
+                switch (state.process)
+                {
+                    case ProcessState.Loading:
+                        content.text("Loading...");
+                        break;
+                    case ProcessState.Saving:
+                        content.text("Saving...");
+                        break;
+                }
+                
             }
             menu.Refresh(content);
         }
@@ -240,6 +250,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 content.Add(new RbText(DssRef.lang.Hud_Vector_Y + ":", HudLib.TitleColor_Label));
                 content.space();
                 RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.generateSettings.MapYProperty, false);
+
+                content.text(WorldData.SizeString(WorldData.ToMapSize(state.generateSettings.customMapSize), state.generateSettings.customMapSize), HudLib.InfoYellow_Light);
+
             }
             else
             {
@@ -260,6 +273,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, menu);
                 }
             }
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+                       new List<AbsRichBoxMember> { new RbText("New map") },
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NodeGrid)));
 
             content.newParagraph();
             content.Add(new RbSeperationLine());
@@ -277,6 +294,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 new RbImage(SpriteName.WarsHudIconSave, 0.8f), new RbSpace(),
                 new RbText(DssRef.lang.Hud_Save) }, new RbAction(state.saveIconMap),
                 new RbTooltip_Text(LoadContent.CheckCharsSafety(path.CompleteDirectory, LoadedFont.Regular)), state.generator.currentPass >= Map2Pass.Icon));
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconOpen, 0.8f), new RbSpace(),
+                new RbText("Load") }, new RbAction(beginListSaves),
+                new RbTooltip_Text(LoadContent.CheckCharsSafety(path.CompleteDirectory, LoadedFont.Regular)), true));
+
 
             content.newParagraph();
             content.Add(new RbSeperationLine());
@@ -404,7 +427,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary,
                new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconOpen), new RbSpace(0.5f), new RbText("Select height map") },
-               new RbAction(importSaves), null, state.generator.currentPass < Map2Pass.ScaleUp));
+               new RbAction(beginListHeightMaps), null, state.generator.currentPass < Map2Pass.ScaleUp));
 
             if (heightMap != null)
             {
@@ -431,6 +454,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 content.newLine();
                 offSetDragButton(heightMap.offSetYProperty, heightMap.pixelTexture.Height);
 
+                content.newParagraph();
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                  new List<AbsRichBoxMember> { new RbText("Fit canvas to heightmap") },
+                  new RbAction(state.fitCanvasToHeightMap), null, true)
+                { fillWidth = true });
 
                 content.newParagraph();
                 HudLib.Label(content, "Top height");
@@ -593,24 +621,20 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         {
             new ExitToLobby(false);
         }
-
-        bool importSavesMenu = false;
-       
-        void importSaves()
+        void beginListHeightMaps()
         {
             RichBoxContent content = new RichBoxContent();
             HudLib.returnButton(content, menu, true, null);
 
 
-            //var saves = DssRef.storage.meta.ListHeightMaps();
-            importSavesMenu = true;
+            //var saves = DssRef.storage.meta.listSaves();
+            state.process = ProcessState.Loading;
 
-            content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
+            //content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
 
-            menu.menuStack.Add("import");
-            menu.Refresh(content);
+
+            //menu.Refresh(content);
             new Timer.AsynchActionTrigger(loadHeightmapList_async, true);
-
 
         }
 
@@ -629,32 +653,38 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         void listHeightMaps(List<TwoStrings> name_Path)
         {
+            if (state.process != ProcessState.Loading)
+            {
+                return;
+            }
+            state.endProcess();
+            menu.menuStack.Add("listhmaps");
+
             RichBoxContent content = new RichBoxContent();
             HudLib.returnButton(content, menu, true, null);
 
-            if (importSavesMenu)
+            
+            for (int i = 0; i < name_Path.Count; ++i)
             {
-                for (int i = 0; i < name_Path.Count; ++i)
-                {
-                    var save = name_Path[i];
-                    var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                                    new RbImage(SpriteName.WarsHudIconImport),
-                                    new RbSpace(),
-                                    new RbText(LoadContent.CheckCharsSafety(save.String1, LoadedFont.Regular)),
+                var save = name_Path[i];
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                new RbImage(SpriteName.WarsHudIconImport),
+                                new RbSpace(),
+                                new RbText(LoadContent.CheckCharsSafety(save.String1, LoadedFont.Regular)),
 
-                                },
-                new RbAction1Arg<string>(importHeightMap, save.String2));
+                            },
+            new RbAction1Arg<string>(importHeightMap, save.String2));
 
-                    btn.fillWidth = true;
-                    content.Add(btn);
+                btn.fillWidth = true;
+                content.Add(btn);
                     
-                }
-
-                if (name_Path.Count == 0)
-                {
-                    content.Add(new RbText(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light));
-                }
             }
+
+            if (name_Path.Count == 0)
+            {
+                content.Add(new RbText(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light));
+            }
+            
             menu.Refresh(content);
         }
 
@@ -670,6 +700,80 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             state.generateHeightMap();
 
         }
+
+        void beginListSaves()
+        {
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, menu, true, null);
+
+
+            //var saves = DssRef.storage.meta.listSaves();
+            state.process = ProcessState.Loading;
+
+            //content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
+
+            
+            //menu.Refresh(content);
+            new Timer.AsynchActionTrigger(listSaves_async, true);
+
+        }
+
+        void listSaves_async()
+        {
+
+            state.storage.SavePath(string.Empty, out var path, out _);
+            var list = FilePath.ListFilesInStorageDir2(path);
+
+            new Timer.Action1ArgTrigger<List<FilePath>>(listSaves, list);
+        }
+
+
+        void listSaves(List<FilePath> names)
+        {
+            if (state.process != ProcessState.Loading)
+            {
+                return;
+            }
+            state.endProcess();
+            menu.menuStack.Add("listsaves");
+
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, menu, true, null);
+
+            
+                for (int i = 0; i < names.Count; ++i)
+                {
+                    var save = names[i].FileName;
+                    var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                new RbImage(SpriteName.WarsHudIconImport),
+                                new RbSpace(),
+                                new RbText(LoadContent.CheckCharsSafety(save, LoadedFont.Regular)),
+
+                            },
+                new RbAction1Arg<FilePath>(load, names[i]));
+
+                    btn.fillWidth = true;
+                    content.Add(btn);
+
+                }
+
+                if (names.Count == 0)
+                {
+                    content.Add(new RbText(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light));
+                }
+            
+            menu.Refresh(content);
+        }
+
+        void load(FilePath path)
+        {
+            state.iconMeta.name = path.FileName;
+
+            new Timer.Asynch2ArgTrigger<FilePath, Action<IconWorldData>>(state.storage.Load_Asynch,
+                path, state.onLoad);
+        }
+
+        
 
     }
 

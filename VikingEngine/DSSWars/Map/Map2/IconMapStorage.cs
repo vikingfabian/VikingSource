@@ -56,6 +56,15 @@ namespace VikingEngine.DSSWars.Map.Map2
             }, true);           
         }
 
+        public void Load_Asynch(FilePath path, Action<IconWorldData> onComplete)
+        {
+            IconWorldData data = new IconWorldData();
+
+            DataStream.BeginReadWrite.BinaryIO(false, path, null, data.readIcon, null, false);
+
+            Ref.update.AddSyncAction(new SyncAction1Arg<IconWorldData>(onComplete, data));
+        }
+
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         { 
             

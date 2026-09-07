@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -11,7 +13,9 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.PJ.Joust;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor2
 {
@@ -26,7 +30,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
         public GeneratorMap map;
         //public bool iconState = true;
-        MapEditHistory editHistory = new MapEditHistory();
+        public MapEditHistory editHistory = new MapEditHistory();
         public IconMapStorage storage = new IconMapStorage();
 
         List<InputMap> controller;
@@ -56,24 +60,35 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             {
                 display.updateProcessPage();
 
-                if (process == ProcessState.WorkshopUpload)
+                switch (process)
                 {
-                    if (Ref.steam.workshopUploadState != SteamWrapping.WorkshopUploadState.Uploading)
-                    {
-                        RichBoxContent content = new RichBoxContent();
-                        content.h2("Upload", HudLib.TitleColor_Head);
+                    case ProcessState.WorkshopUpload:
+                        {
+                            if (Ref.steam.workshopUploadState != SteamWrapping.WorkshopUploadState.Uploading)
+                            {
+                                RichBoxContent content = new RichBoxContent();
+                                content.h2("Upload", HudLib.TitleColor_Head);
 
-                        content.newLine();
-                        content.Add(new RbImage(SpriteName.WarsHudIconExport));
-                        content.space();
-                        content.Add(new RbText(Ref.steam.workshopUploadState.ToString()));
+                                content.newLine();
+                                content.Add(new RbImage(SpriteName.WarsHudIconExport));
+                                content.space();
+                                content.Add(new RbText(Ref.steam.workshopUploadState.ToString()));
 
-                        messages.Add(content);
+                                messages.Add(content);
 
-                        //--
-                        //display.onProcessComplete();
-                        endProcess();
-                    }
+                                //--
+                                //display.onProcessComplete();
+                                endProcess();
+                            }
+                        }
+                        break;
+
+                    case ProcessState.Loading:
+                        if (display.menu.menuStack.Count == 0)
+                        {
+                            endProcess();
+                        }
+                        break;
                 }
                 return;
             }
@@ -146,6 +161,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public void generatePass(Map2Pass start, Map2Pass end)
         {
+            if (end >= Map2Pass.NodeGrid)
+            {
+                editHistory.AddStorePoint(this);
+            }
+
             if (start == Map2Pass.NewWorld && generator.currentPass > Map2Pass.NewWorld)
             {
                 iconMeta = new IconWorldDataMeta();
@@ -158,12 +178,27 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             loadingState = true;
             display.loadingDisplay.Show();
-            generator.generatePass(generateSettings, start, end);
+            generator.generatePass(generateSettings, start, end, null);
+        }
+
+        public void onLoad(IconWorldData data)
+        {
+            
+
+            generator.currentPass = Map2Pass.Bioms;
+            editHistory.undo(this);
+
+            generator.iconWorld = data;
+            loadingState = true;
+            display.loadingDisplay.Show();
+            generator.refreshPass();
         }
 
         public void undo()
         {
             editHistory.undo(this);
+            loadingState = true;
+            display.loadingDisplay.Show();
             generator.refreshPass();
         }
 
@@ -176,9 +211,29 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public void generateHeightMap()
         {
+            editHistory.AddStorePoint(this);
+
             loadingState = true;
             display.loadingDisplay.Show();
             generator.generateHeightMap();
+        }
+
+        public void fitCanvasToHeightMap()
+        {
+            editHistory.AddStorePoint(this);
+
+            var size = generator.heightMapTexture.Size();
+            size.X = Bound.Max(size.X, WorldData.CustomMapSize_Max);
+            size.Y = Bound.Max(size.Y, WorldData.CustomMapSize_Max);
+            generateSettings.customMapSize = size;
+            generateSettings.bCustomSize = true;
+
+            generator.generatePass(generateSettings, 0, Map2Pass.Icon, ()=>
+            {
+                loadingState = true;
+                display.loadingDisplay.Show();
+                generator.generateHeightMap();
+            });
         }
 
         public void saveIconMap()
@@ -215,15 +270,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             if (process == ProcessState.WorkshopUploadSave)
             {
                 process = ProcessState.WorkshopUpload;
-                storage.SavePath(iconMeta.name, out DataStream.FilePath path, out DataStream.FilePath iconPath);
-                Ref.steam.BeginUpload(new SteamWrapping.WorkshopItem()
-                {
-                    itemName = iconMeta.name,
-                    itemDescription = "none",
-                    itempath = path,
-                    iconpath = iconPath,
-                    itemTags = new List<string>() { VikingEngine.DSSWars.Data.DssWorkshop.IconMap_Tag },
-                });                
+                
+                Ref.steam.BeginUpload(WorkshopItemSetup());                
             }
             else
             {
@@ -236,16 +284,38 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             
         }
 
-        void endProcess()
+        SteamWrapping.WorkshopItem WorkshopItemSetup()
+        {
+            storage.SavePath(iconMeta.name, out DataStream.FilePath path, out DataStream.FilePath iconPath);
+
+            var result = new SteamWrapping.WorkshopItem()
+            {
+                itemName = iconMeta.name,
+                //itemDescription = "none",
+                itempath = path,
+                iconpath = iconPath,
+                itemTags = new List<string>() { VikingEngine.DSSWars.Data.DssWorkshop.IconMap_Tag },
+            };
+
+            result.itemDescription =
+                $"{WorldData.SizeString(WorldData.ToMapSize(generateSettings.customMapSize), generateSettings.customMapSize)}. {string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion)}.";
+
+            return result;
+        }
+
+        public void endProcess()
         { 
             process = ProcessState.None;
             display.refreshMenu();
         }
     }
 
+
+
     enum ProcessState
     {
         None,
+        Loading,
         Saving,
 
         WorkshopUploadSave,

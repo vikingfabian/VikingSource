@@ -53,7 +53,17 @@ namespace VikingEngine.DSSWars.Map.Map2
         public HeightMapTexture heightMapTexture = null;
 
         GenerateCities generateCities;
-        Grid2D_L<GenTile> dataGrid;
+        Grid2D_L<GenTile> DataGrid()
+        {
+            if (currentPass >= Map2Pass.ScaleUp)
+            {
+                return iconWorldScaledUp.iconGrid;
+            }
+            else 
+            {
+                return iconWorld.iconGrid;
+            }
+        }
         List<Task> tasks = new List<Task>(64);
         //List<Vector2> connectPoints = null;
         EngineSpace.Maths.SimplexNoise2D noiseMap;
@@ -99,7 +109,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public void generateHeightMap()
         {
-            heightMapTexture.apply(dataGrid);
+            heightMapTexture.apply(DataGrid());
             processTexturePixels();
 
             loadingState = LoadingState.Complete;
@@ -111,14 +121,14 @@ namespace VikingEngine.DSSWars.Map.Map2
             Task.Run(async () =>
             {
                 iconWorldScaledUp = null;
-                dataGrid = iconWorld.iconGrid;
+                //dataGrid = iconWorld.iconGrid;
                 currentPass = Map2Pass.IconNoise;
                 processTexturePixels();
                 loadingState = LoadingState.Complete;
             });
         }
 
-        public void generatePass(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end)
+        public void generatePass(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end, Action onComplete)
         {
 
             loadingState = LoadingState.Pass;
@@ -184,6 +194,11 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
 
                 loadingState = LoadingState.Complete;
+
+                if (onComplete != null)
+                {
+                    Ref.update.AddSyncAction(onComplete);
+                }
             });
         }
 
@@ -375,27 +390,32 @@ namespace VikingEngine.DSSWars.Map.Map2
             noiseMap.setSeed(iconWorld.rnd.Int());
             loadingState = LoadingState.Pass;
 
-            dataGrid = iconWorld.iconGrid;
+            //dataGrid = iconWorld.iconGrid;
 
             clearMap();
         }
 
         void clearMap()
         {
-            Parallel.For(0, dataGrid.Size.X, x =>
+            var dataGrid = DataGrid();
+            if (dataGrid != null)
             {
-                for (int y = 0; y < dataGrid.Size.Y; y++)
+                Parallel.For(0, dataGrid.Size.X, x =>
                 {
-                    var tile = dataGrid.Get(x, y);
+                    for (int y = 0; y < dataGrid.Size.Y; y++)
+                    {
+                        var tile = dataGrid.Get(x, y);
 
-                    tile.groundY = Height_WaterBottom;
-                    dataGrid.Set(x, y, tile);
-                }
-            });
+                        tile.groundY = Height_WaterBottom;
+                        dataGrid.Set(x, y, tile);
+                    }
+                });
+            }
         }
 
         void SmoothMap()
         {
+            var dataGrid = DataGrid();
             // Create a temporary grid to store the smoothed results
             // We must read from 'dataGrid' and write to 'tempGrid' to avoid race conditions
             Grid2D_L<GenTile> tempGrid = new Grid2D_L<GenTile>(dataGrid.Size);
@@ -470,7 +490,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         async Task scaleUp16x()
         {    
             iconWorldScaledUp = iconWorld.CloneMe();
-            dataGrid = iconWorldScaledUp.iconGrid;
+            //dataGrid = iconWorldScaledUp.iconGrid;
 
             Task cities = Task.Run(()=>{ generateCities.scaleUp16x(iconWorldScaledUp); });
 
@@ -573,6 +593,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
         void scaleUp4()
         {
+            var dataGrid = iconWorldScaledUp.iconGrid;
             Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
 
             Parallel.For(0, dataGrid.Size.X, x =>
@@ -614,11 +635,12 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             });
 
-            dataGrid = largeGrid;
+            //dataGrid = largeGrid;
             iconWorldScaledUp.iconGrid = largeGrid;
         }
         void scaleUp8()
         {
+            var dataGrid = iconWorldScaledUp.iconGrid;
             Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
 
             Parallel.For(0, dataGrid.Size.X, x =>
@@ -657,13 +679,15 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             });
 
-            dataGrid = largeGrid;
+            //dataGrid = largeGrid;
             iconWorldScaledUp.iconGrid = largeGrid;
         }
 
         // Upgraded helper that smooths ALL data (Height, Color, Biomes)
         GenTile GetSmoothedTile(int cx, int cy, GenTile[] tileBuffer, BiomeWeight[] biomeBuffer)
         {
+            var dataGrid = iconWorldScaledUp.iconGrid;
+
             cx = (cx >= dataGrid.Size.X) ? dataGrid.Size.X - 1 : (cx < 0 ? 0 : cx);
             cy = (cy >= dataGrid.Size.Y) ? dataGrid.Size.Y - 1 : (cy < 0 ? 0 : cy);
 
@@ -785,6 +809,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void addNoiseTexture()
         {
+            var dataGrid = DataGrid();
             const int LoopDivs = 8;
 
             EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.seed + 11);
@@ -814,6 +839,8 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void postNoise()
         {
+            var dataGrid = iconWorldScaledUp.iconGrid;
+
             const bool PostNoise = true;
             //const int PostProcessDivs = 8;
 
@@ -840,7 +867,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         public void processTexturePixels()
         {
             IconWorldData icon = ActiveIconWorld;
-
+            var dataGrid = icon.iconGrid;
 
             Parallel.For(0, dataGrid.Size.X, x =>
             {
@@ -907,11 +934,14 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateMountainChains()
         {
+            var dataGrid = DataGrid();
             generateMountainChains(iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1), true);
         }
 
         void generateMountainChains(Vector2 center, bool bSideLinks)
         {
+            var dataGrid = DataGrid();
+
             Range chainLengthRange2 = new Range(4, 10);
             //Vector2 center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
 
@@ -1073,7 +1103,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void placeMountainSquare(PcgRandom rnd, IntVector2 center, DrawMapOptions draw/*, NoiseOptions noiseOpt*/)
         {
-
+            var dataGrid = DataGrid();
             draw.refreshRadius();
             //float noiseCap = new IntervalF(0.9f, 0.3f).GetFromPercent(noiseOpt.smoothness);
             //float radiusPercCap = new IntervalF(0.2f, 0.5f).GetFromPercent(noiseOpt.smoothness);
@@ -1126,6 +1156,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateLandChains(float MaxRadius, bool addativeOnly, bool noise)
         {
+            var dataGrid = DataGrid();
             Vector2 center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
 
             int maxLoops = 50;
@@ -1157,7 +1188,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateLandChains(Vector2 center, float MaxRadius, bool noise)
         {
-
+            var dataGrid = DataGrid();
             Range chainLengthRange2 = new Range(3, 8);
             if (MaxRadius < 6)
             {
@@ -1233,6 +1264,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateLargeIsland(float MaxRadius)
         {
+            var dataGrid = DataGrid();
             PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
 
             tasks.Add(Task.Run(() =>
@@ -1361,6 +1393,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateHills(float MaxRadius, int fractals)
         {
+            var dataGrid = DataGrid();
             PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
 
             tasks.Add(Task.Run(() =>
@@ -1415,7 +1448,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateIsland(Vector2 landCenter, float landRadius)
         {
-
+            var dataGrid = DataGrid();
             if (landRadius > 1)
             {
                 int maxLoops = 6;
@@ -1471,6 +1504,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateQuadIsland()
         {
+            var dataGrid = DataGrid();
             tasks.Add(Task.Run(() =>
             {
                 PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
@@ -1514,6 +1548,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateDigChains(bool large)
         {
+            var dataGrid = DataGrid();
             int maxLoops = 5;
             Vector2 center = Vector2.Zero;
 
@@ -1592,6 +1627,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         DrawMapOptions drawAddCalc(Vector2 center, DrawMapOptions draw)
         {
+            var dataGrid = DataGrid();
             if (draw.add && dataGrid.TryGet(new IntVector2(center), out var tile))
             {
                 if (draw.addHeight > 0)
@@ -1608,9 +1644,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     draw.centerHeight = draw.addHeight;
                     draw.radius += 0.5f;
                     draw.flatness *= 0.5f;
-
                 }
-
             }
             else
             {
@@ -1681,7 +1715,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void placeDot(PcgRandom rnd, Vector2 center, DrawMapOptions draw)
         {
-
+            var dataGrid = DataGrid();
             draw.refreshRadius();
             Rectangle2 area = new Rectangle2(new IntVector2(center), (int)draw.radius + 1);
             ForXYLoop loopArea = new ForXYLoop(area);
@@ -1701,7 +1735,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
         void placeDot_noise(PcgRandom rnd, Vector2 center, DrawMapOptions draw)
         {
-
+            var dataGrid = DataGrid();
             draw.refreshRadius();
             Rectangle2 area = new Rectangle2(new IntVector2(center), (int)draw.radius + 1);
             ForXYLoop loopArea = new ForXYLoop(area);
@@ -1726,32 +1760,20 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             draw.radius = quadPen.radius;
             draw.refreshRadius();
-            //Rectangle2 area = new Rectangle2(new IntVector2(center), (int)draw.radius + 1);
             var minmax = quadPen.BeginDraw(iconWorld);
-            //ForXYLoop loopArea = new ForXYLoop(area);
-            //while (loopArea.Next())
-            //{
+            
             for (int y = minmax.min.Y; y <= minmax.max.Y; ++y)
             {
                 for (int x = minmax.min.X; x <= minmax.max.X; ++x)
                 {
-                    //if (dataGrid.InBounds(loopArea.Position))
-                    //{
-                    //Vector2 posDiff = loopArea.Position.Vec - center;
-                    //float distFromCenter = (posDiff).Length();
-                    //if (distFromCenter <= draw.radius)
-                    //{
-                    //float percentDist = distFromCenter / draw.radius;
                     var pos = new IntVector2(x, y);
                     if (quadPen.DrawPixel(pos, out var intensity))
                     {
                         placeTile(pos, draw.centerHeight * intensity,  draw.addHeight > 0);
                     }
-                        //}
-                    //}
                 }
             }
-            //}
+            
         }
 
 
@@ -1780,6 +1802,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void placeTile(IntVector2 pos, float height, /*BiomType biom,*/ bool increase)
         {
+            var dataGrid = DataGrid();
             ref var tile = ref dataGrid.GetRef(pos);
 
             //if (tile.groundY == Height_WaterBottom)

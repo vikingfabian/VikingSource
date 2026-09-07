@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             }
 
             history.Add(restorePoint);
+
+            scene.display.menu.needRefresh = true;
         }
 
         public void undo(MapEditor2_Scene scene)
@@ -38,6 +40,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 restorePoint.restore(scene);
             }
         }
+
+        public bool CanUndo => history.Count > 0;
     }
 
     abstract class AbsRestorePoint

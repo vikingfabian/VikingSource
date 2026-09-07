@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Data
         SaveIterations autosaves;
 
 
-        DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
+        DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, SaveStateMeta.FileEnd);
         DataStream.FilePath heightmapSavePath = new DataStream.FilePath(ImportHeightMap, null, null);
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
@@ -45,28 +45,26 @@ namespace VikingEngine.DSSWars.Data
 
         }
 
-        public List<string> ListSaveImports()
+        public List<FilePath> ListSaveImports()
         {
-            var files = System.IO.Directory.GetFiles(importSavePath.CompleteDirectory);
-            List<string> list = new List<string>();
-            foreach (var f in files)
-            {
-                if (f.Contains(SaveStateMeta.FileEnd))
-                { 
-                    list.Add(f);
-                }
-            }
+            return FilePath.ListFilesInStorageDir2(importSavePath);
+            //var files = System.IO.Directory.GetFiles(importSavePath.CompleteDirectory);
+            //List<string> list = new List<string>();
+            //foreach (var f in files)
+            //{
+            //    if (f.Contains(SaveStateMeta.FileEnd))
+            //    { 
+            //        list.Add(f);
+            //    }
+            //}
 
-            return list;
+            //return list;
         }
 
         public List<string> ListHeightMaps()
         {
             var files = System.IO.Directory.GetFiles(heightmapSavePath.CompleteDirectory);
             List<string> list = new List<string>();
-
-            // The image formats MonoGame can load at runtime
-            //string[] validExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tif", ".tiff", ".dds" };
 
             foreach (var f in files)
             {

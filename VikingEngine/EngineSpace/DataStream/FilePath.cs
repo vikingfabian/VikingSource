@@ -38,6 +38,8 @@ namespace VikingEngine.DataStream
         public int NumVersionsStacking; //normally one
         public bool UseTimeMark;
 
+        public FilePath()
+        { }
         public FilePath(string directoryPath)
             : this(directoryPath, null, null, true, 1, true)
         { }
@@ -118,32 +120,28 @@ namespace VikingEngine.DataStream
         }
 
 
-        
+        /// <summary>
+        /// Must be storage path
+        /// </summary>
+        public static FilePath FromString(string fullpath)
+        {
+            FilePath result = new FilePath() { Storage = true };
+            var fileNameAndEnd = Path.GetFileName(fullpath).Split('.');
+            result.FileName = fileNameAndEnd[0];
+            result.FileEnd = "." + fileNameAndEnd[1];
 
+            var dirL = StorageDirectory().Length + 1;
+            result.LocalDirectoryPath = fullpath.Substring(dirL, fullpath.Length - dirL);
+            result.LocalDirectoryPath = result.LocalDirectoryPath.Substring(0, result.LocalDirectoryPath.Length - result.FileName.Length - result.FileEnd.Length);
+            return result;
+        }
         
 
         public static string StorageDirectory()
         {
 #if PCGAME
             if (PlatformSettings.ReleaseBuild && PlatformSettings.PC_platform)
-            {
-                //if (Config.PcStoragePath == null)
-                //{
-                //    PcStoragePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + 
-                //        "\\My Games\\" +
-                //        StorageFolderName;
-                //}
-//#if PJ
-//                "PartyJousting";}
-//#elif CCG
-//                "PickHero";}
-//#elif DSS
-//                "LootfestWars"; }
-//#elif TOGG
-//                "TowardsGoldAndGlory"; }
-//#else
-//                "Lootfest";}
-//#endif
+            {               
                 return Config.PcStoragePath;
             }
             else
@@ -186,7 +184,22 @@ namespace VikingEngine.DataStream
                 return DataLib.SaveLoad.FilesInContentDir(LocalDirectoryPath);
             }
         }
-        
+        public static List<FilePath> ListFilesInStorageDir2(FilePath searchPattern)
+        {
+            var files = System.IO.Directory.GetFiles(searchPattern.CompleteDirectory, "*", SearchOption.AllDirectories);
+            List<FilePath> list = new List<FilePath>();
+            foreach (var f in files)
+            {
+
+                if (string.CompareOrdinal(searchPattern.FileEnd, 0, f, f.Length - searchPattern.FileEnd.Length, searchPattern.FileEnd.Length) == 0)
+                {
+                    list.Add(FilePath.FromString(f));
+                }
+            }
+
+            return list;
+        }
+
         public void CheckFileLength()
         {
             const int MaxFileLength = 250;

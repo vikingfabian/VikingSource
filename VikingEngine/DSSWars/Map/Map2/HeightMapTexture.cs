@@ -24,6 +24,10 @@ namespace VikingEngine.DSSWars.Map.Map2
             pixelTexture = new PixelTexture(texture);
         }
 
+        public IntVector2 Size()
+        {
+            return pixelTexture.Size().Multiply(scale);
+        }
         public void apply(Grid2D_L<GenTile> dataGrid)
         {
             IntVector2 trueOffset = offset;

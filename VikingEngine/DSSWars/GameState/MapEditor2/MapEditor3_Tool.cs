@@ -338,76 +338,84 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             if (bPaintKeyDown)
             {
                 bPaintKeyDown = false;
-                switch (scene.display.tab)
+
+                if (paintDots.Count > 0)
                 {
-                    case Map2GeneratorTab.Nodes:
-                        foreach (var kv in paintDots)
-                        {
-                            ref var tile = ref scene.generator.nodeMap.nodeGrid.GetRef(kv.Value.tilePos);
-                            switch (toolSettings.addType)
-                            {
-                                case ToolAddType.Toggle:
-                                    tile = !tile;
-                                    break;
-                                case ToolAddType.Add:
-                                    tile = true;
-                                    break;
-                                case ToolAddType.Remove:
-                                    tile = false;
-                                    break;
-                            }
+                    scene.editHistory.AddStorePoint(scene);
 
-                            scene.generator.nodeMap.refreshPixel(kv.Value.tilePos.X, kv.Value.tilePos.Y);
-                            scene.generator.nodeMap.texture.ApplyPixelsToTexture();
-                        }
-                        break;
-
-                    case Map2GeneratorTab.Icon:
-                        foreach (var kv in paintDots)
-                        {
-                            ref var tile = ref scene.generator.iconWorld.iconGrid.GetRef(kv.Value.tilePos);
-                            if (toolSettings.draw.add)
+                    switch (scene.display.tab)
+                    {
+                        case Map2GeneratorTab.Nodes:
+                            foreach (var kv in paintDots)
                             {
-                                if (toolSettings.addType == ToolAddType.Add)
+                                ref var tile = ref scene.generator.nodeMap.nodeGrid.GetRef(kv.Value.tilePos);
+                                switch (toolSettings.addType)
                                 {
-                                    tile.groundY += kv.Value.strength;
+                                    case ToolAddType.Toggle:
+                                        tile = !tile;
+                                        break;
+                                    case ToolAddType.Add:
+                                        tile = true;
+                                        break;
+                                    case ToolAddType.Remove:
+                                        tile = false;
+                                        break;
+                                }
+
+                                scene.generator.nodeMap.refreshPixel(kv.Value.tilePos.X, kv.Value.tilePos.Y);
+                                scene.generator.nodeMap.texture.ApplyPixelsToTexture();
+                            }
+                            break;
+
+                        case Map2GeneratorTab.Icon:
+                            foreach (var kv in paintDots)
+                            {
+                                ref var tile = ref scene.generator.iconWorld.iconGrid.GetRef(kv.Value.tilePos);
+                                if (toolSettings.draw.add)
+                                {
+                                    if (toolSettings.addType == ToolAddType.Add)
+                                    {
+                                        tile.groundY += kv.Value.strength;
+                                    }
+                                    else
+                                    {
+                                        tile.groundY -= kv.Value.strength;
+                                    }
+                                    tile.groundY = Bound.Set(tile.groundY, Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek);
                                 }
                                 else
                                 {
-                                    tile.groundY -= kv.Value.strength;
+                                    tile.groundY = kv.Value.strength;
                                 }
-                                tile.groundY = Bound.Set(tile.groundY, Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek);
                             }
-                            else
+                            break;
+                        case Map2GeneratorTab.Bioms:
+                            foreach (var kv in paintDots)
                             {
-                                tile.groundY = kv.Value.strength;
+                                ref var tile = ref scene.generator.iconWorld.iconGrid.GetRef(kv.Value.tilePos);
+                                tile.biom1 = biom;
                             }
-                        }
-                        break;
-                    case Map2GeneratorTab.Bioms:
-                        foreach (var kv in paintDots)
-                        {
-                            ref var tile = ref scene.generator.iconWorld.iconGrid.GetRef(kv.Value.tilePos);
-                            tile.biom1 = biom;
-                        }
-                        break;
-                }
+                            break;
+                    }
 
-                foreach (var kv in paintDots)
-                {
-                    kv.Value.dot.DeleteMe();
-                }
+                    foreach (var kv in paintDots)
+                    {
+                        kv.Value.dot.DeleteMe();
+                    }
 
-                if (scene.display.tab != Map2GeneratorTab.Nodes)
-                {
-                    scene.redrawPixels();
+                    if (scene.display.tab != Map2GeneratorTab.Nodes)
+                    {
+                        scene.redrawPixels();
+                    }
+                    paintDots.Clear();
                 }
-                paintDots.Clear();
             }
         }
 
         public void adjustPlane(float addHeight)
         {
+            scene.editHistory.AddStorePoint(scene);
+
             IntervalF range = new IntervalF(planeEditFrom, planeEditTo);
             range.sort_LowToHigh();
 
@@ -424,6 +432,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public void fill()
         {
+            scene.editHistory.AddStorePoint(scene);
+            
             switch (toolSettings.tab)
             {
                 case Map2GeneratorTab.Nodes:
@@ -464,6 +474,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         }
         public void clear()
         {
+            scene.editHistory.AddStorePoint(scene);
+
             switch (toolSettings.tab)
             {
                 case Map2GeneratorTab.Nodes:

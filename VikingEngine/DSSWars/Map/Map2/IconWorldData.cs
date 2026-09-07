@@ -25,6 +25,24 @@ namespace VikingEngine.DSSWars.Map.Map2
         public PcgRandom rnd;
         const int Version = 1;
 
+        
+        public IconWorldData()
+        {
+            rnd = new PcgRandom(metaData2.seed);
+
+        }
+
+        public IconWorldData(IntVector2 iconSize)
+        {
+            metaData2 = new WorldMetaData2();
+
+            rnd = new PcgRandom(metaData2.seed);
+
+            iconGrid = new Grid2D_L<GenTile>(iconSize);
+
+            //IntVector2 tileSz = iconGrid.Size * 16;
+
+        }
         public void writeIcon(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -48,17 +66,6 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
         }
 
-        public IconWorldData(IntVector2 iconSize)
-        {
-            metaData2 = new WorldMetaData2();
-
-            rnd = new PcgRandom(metaData2.seed);
-
-            iconGrid = new Grid2D_L<GenTile>(iconSize);
-
-            IntVector2 tileSz = iconGrid.Size * 16;
-
-        }
 
         public IconWorldData CloneMe()
         {
