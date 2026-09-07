@@ -1170,18 +1170,22 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
-                //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
-
                 var btn = new ArtButton(RbButtonStyle.Secondary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.WarsHudIconOpen), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.GameMenu_LoadState),
-                    //new RbTab(MoreArrowTabbing),
-                    //moreArrow,
+                    new RbImage(SpriteName.WarsHudIconOpen), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.GameMenu_LoadState),                   
                 }), new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListSaves, StackOption.ClearStack), null);
                 btn.fillWidth = true;
                 content.Add(btn);
             }
-           
+            {
+                content.newLine();
+
+                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    /*new RbImage(SpriteName.LFIconMap), new RbTab(ButtonTextTabbing), */new RbText("Map editor 2.0 - alpha"),
+                }, new RbAction(map2), new RbTooltip_Text("Warning! High chance of the save files to be unusable in later versions"));
+                btn.fillWidth = true;
+                content.Add(btn);
+            }
+
 #endif
             content.newParagraph();
             {

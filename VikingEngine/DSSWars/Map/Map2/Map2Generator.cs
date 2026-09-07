@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         BiomsLayout biomsLayout;
         public IconWorldData iconWorld, iconWorldScaledUp;
 
-        public IconWorldData ActiveIconWorld => iconWorldScaledUp == null ? iconWorld : iconWorldScaledUp;
+        public IconWorldData ActiveIconWorld => currentPass >= Map2Pass.ScaleUp ? iconWorldScaledUp : iconWorld;
 
         public WorldData2 world;
         public NodeMap nodeMap;
@@ -162,6 +162,9 @@ namespace VikingEngine.DSSWars.Map.Map2
                         case Map2Pass.Icon:
                             nodeTerrainPass(generateSettings).Wait();
                             break;
+                        case Map2Pass.IconNoise:
+                            addNoiseTexture();
+                            break;
                         case Map2Pass.Bioms:
                             biomsLayout = new BiomsLayout(iconWorld.rnd);
                             biomsLayout.GenerateNodes(iconWorld);
@@ -170,9 +173,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                             generateCities = new GenerateCities();
                             generateCities.generateCities(generateSettings, nodeMap, iconWorld);
                             break;
-                        case Map2Pass.IconNoise:
-                            addNoiseTexture();
-                            break;
+                        
                         case Map2Pass.ScaleUp:
                             await scaleUp16x();
                             break;
