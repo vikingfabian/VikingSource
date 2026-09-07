@@ -42,12 +42,12 @@ sampler2D ShadowSampler = sampler_state
     AddressV = Clamp;
 };
 
-// Stream 0: Shared Voxel Mesh Geometry (VertexPositionColorTexture)
+// Stream 0: Shared Voxel Mesh Geometry (VertexPositionColorNormal)
 struct VSGeometryInput
 {
     float4 Position : POSITION0;
     float4 Color : COLOR0;
-    float2 TexCoord : TEXCOORD0;
+    float3 Normal : NORMAL0;
 };
 
 // Stream 1: Instance Data (Frequency = 1)
@@ -64,10 +64,9 @@ struct VSOutput
 {
     float4 Position : SV_POSITION;
     float4 Color : COLOR0;
-    float2 TexCoord : TEXCOORD0;
-    float4 ShadowPosition : TEXCOORD5;
-    float3 WorldNormal : TEXCOORD6;
-    float4 InstanceData : TEXCOORD7;
+    float4 ShadowPosition : TEXCOORD0;
+    float3 WorldNormal : TEXCOORD1;
+    float4 InstanceData : TEXCOORD2;
 };
 
 //-----------------------------------------------------------------------------
@@ -94,9 +93,8 @@ VSOutput InstancedMainVS(VSGeometryInput geom, VSInstanceInput inst)
     output.ShadowPosition = mul(lightViewPos, LightProjection);
 
     output.Color = geom.Color;
-    output.TexCoord = geom.TexCoord;
     output.InstanceData = inst.InstanceData;
-    output.WorldNormal = float3(0, 1, 0); // Voxel vertex normals handled via diffuse
+    output.WorldNormal = mul(geom.Normal, (float3x3)instanceWorld);
 
     return output;
 }
@@ -106,8 +104,7 @@ VSOutput InstancedMainVS(VSGeometryInput geom, VSInstanceInput inst)
 //-----------------------------------------------------------------------------
 float4 InstancedMainPS(VSOutput input) : COLOR0
 {
-    float4 texColor = tex2D(MainSampler, input.TexCoord);
-    float4 baseColor = texColor * input.Color;
+    float4 baseColor = input.Color;
 
     // Alpha test for cutout transparency
     clip(baseColor.a - 0.1f);
@@ -132,8 +129,14 @@ float4 InstancedMainPS(VSOutput input) : COLOR0
         }
     }
 
+    // World-space Lambertian directional diffuse lighting
+    // LightDirection points from sun toward scene (-Y), so -LightDirection points toward the sun
+    float3 normal = normalize(input.WorldNormal);
+    float3 lightDir = normalize(LightDirection);
+    float incidence = saturate(dot(normal, -lightDir));
+
     // Apply Ambient + Diffuse Lighting with Shadow Multiplier
-    float3 finalLighting = AmbientColor.rgb + (DiffuseColor.rgb * shadow);
+    float3 finalLighting = AmbientColor.rgb + (DiffuseColor.rgb * incidence * shadow);
     float4 finalColor = float4(baseColor.rgb * finalLighting, baseColor.a);
 
     // Damage Flash (InstanceData.w: 0.0 -> 1.0)
@@ -184,8 +187,7 @@ float4 InstancedDepthPS(VSDepthOutput input) : COLOR0
 //-----------------------------------------------------------------------------
 float4 InstancedLitPS(VSOutput input) : COLOR0
 {
-    float4 texColor = tex2D(MainSampler, input.TexCoord);
-    float4 baseColor = texColor * input.Color;
+    float4 baseColor = input.Color;
 
     // Alpha test for cutout transparency
     clip(baseColor.a - 0.1f);
@@ -193,8 +195,14 @@ float4 InstancedLitPS(VSOutput input) : COLOR0
     // Apply Instance Tint (InstanceData.xyz)
     baseColor.rgb *= input.InstanceData.rgb;
 
+    // World-space Lambertian directional diffuse lighting
+    // LightDirection points from sun toward scene (-Y), so -LightDirection points toward the sun
+    float3 normal = normalize(input.WorldNormal);
+    float3 lightDir = normalize(LightDirection);
+    float incidence = saturate(dot(normal, -lightDir));
+
     // Apply Ambient + Diffuse Lighting directly without shadow evaluation
-    float3 finalLighting = AmbientColor.rgb + DiffuseColor.rgb;
+    float3 finalLighting = AmbientColor.rgb + (DiffuseColor.rgb * incidence);
     float4 finalColor = float4(baseColor.rgb * finalLighting, baseColor.a);
 
     // Damage Flash (InstanceData.w: 0.0 -> 1.0)

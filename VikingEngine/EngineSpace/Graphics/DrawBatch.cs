@@ -125,8 +125,13 @@ namespace VikingEngine.Graphics
                     InstancedVoxelEffect.Parameters["View"]?.SetValue(camera.ViewMatrix);
                     InstancedVoxelEffect.Parameters["Projection"]?.SetValue(camera.Projection);
                 }
-                InstancedVoxelEffect.Parameters["AmbientColor"]?.SetValue(new Vector4(0.72f, 0.72f, 0.72f, 1f));
-                InstancedVoxelEffect.Parameters["DiffuseColor"]?.SetValue(Vector4.One);
+                float brightness = Ref.gamesett != null ? Ref.gamesett.modelBrightness : 1f;
+                Vector3 sunColor = light != null ? light.SunColor : new Vector3(0.5f, 0.45f, 0.45f);
+                Vector3 lightDir = light != null ? light.lightDirection : new Vector3(-0.2f, -1f, -0.2f);
+
+                InstancedVoxelEffect.Parameters["AmbientColor"]?.SetValue(new Vector4(0.8f * brightness, 0.8f * brightness, 0.8f * brightness, 1f));
+                InstancedVoxelEffect.Parameters["DiffuseColor"]?.SetValue(new Vector4(sunColor * brightness, 1f));
+                InstancedVoxelEffect.Parameters["LightDirection"]?.SetValue(lightDir);
                 InstancedVoxelEffect.Parameters["ZBias"]?.SetValue(0.005f);
 
                 if (shadow && light != null && shader != null)
@@ -134,7 +139,6 @@ namespace VikingEngine.Graphics
                     InstancedVoxelEffect.CurrentTechnique = InstancedVoxelEffect.Techniques["InstancedLitWithShadow"];
                     InstancedVoxelEffect.Parameters["LightView"]?.SetValue(light.LightViewMatrix);
                     InstancedVoxelEffect.Parameters["LightProjection"]?.SetValue(light.LightProjectionMatrix);
-                    InstancedVoxelEffect.Parameters["LightDirection"]?.SetValue(light.lightDirection);
 
                     var shadowTex = shader.Parameters["ShadowMap"]?.GetValueTexture2D();
                     if (shadowTex != null)

@@ -70,14 +70,14 @@ namespace VikingEngine.Tests
             int[] testPresets = { 30, 60, 75, 100, 120, 144, 165, 240, 360 };
 
             TimeSpan currentTarget = TimeSpan.FromTicks(166667); // 60 FPS
-            TimeSpan currentMax = TimeSpan.FromTicks(currentTarget.Ticks * 2);
+            TimeSpan currentMax = TimeSpan.FromTicks(Math.Max(TimeSpan.FromMilliseconds(500).Ticks, currentTarget.Ticks * 4));
 
             foreach (int fromFps in testPresets)
             {
                 foreach (int toFps in testPresets)
                 {
                     TimeSpan newTarget = new TimeSpan((long)(TimeSpan.TicksPerMillisecond * (1000.0 / toFps)));
-                    TimeSpan newMax = TimeSpan.FromTicks(newTarget.Ticks * 2);
+                    TimeSpan newMax = TimeSpan.FromTicks(Math.Max(TimeSpan.FromMilliseconds(500).Ticks, newTarget.Ticks * 4));
 
                     // Execute the exact assignment logic used in Engine.Update.SetFrameRate
                     if (newTarget > currentMax)
@@ -100,8 +100,59 @@ namespace VikingEngine.Tests
                     }
 
                     Assert.True(currentTarget <= currentMax);
-                    Assert.Equal(newTarget.Ticks * 2, currentMax.Ticks);
+                    Assert.Equal(Math.Max(TimeSpan.FromMilliseconds(500).Ticks, newTarget.Ticks * 4), currentMax.Ticks);
+                    Assert.True(currentMax.TotalMilliseconds >= 500.0);
                 }
+            }
+        }
+
+        [Fact]
+        public void TimeUpdate_ResetsAndIncrements16msTimersCorrectly()
+        {
+            var update = new Update(null);
+            bool originalPaused = Ref.isPaused;
+            float originalDelta = Ref.DeltaTimeMs;
+            float originalSpeed = Ref.GameTimeSpeed;
+
+            try
+            {
+                Ref.isPaused = false;
+                Ref.GameTimeSpeed = 1f;
+
+                // 1. Initial tick with delta exceeding Time16ms (~33.33ms)
+                Ref.DeltaTimeMs = 40f;
+                update.Time_Update(40f);
+
+                Assert.Equal(1, Ref.GameTimePassed16ms);
+                Assert.Equal(1, Ref.TimePassed16ms);
+
+                // 2. Subsequent tick with small delta: both timers should reset to 0
+                Ref.DeltaTimeMs = 5f;
+                update.Time_Update(5f);
+
+                Assert.Equal(0, Ref.GameTimePassed16ms);
+                Assert.Equal(0, Ref.TimePassed16ms);
+
+                // 3. Paused state: TimePassed16ms increments with real time, GameTimePassed16ms stays 0
+                Ref.isPaused = true;
+                Ref.DeltaTimeMs = 40f;
+                update.Time_Update(40f);
+
+                Assert.Equal(0, Ref.GameTimePassed16ms);
+                Assert.Equal(1, Ref.TimePassed16ms);
+
+                // 4. Tick with 0 delta: both reset to 0
+                Ref.DeltaTimeMs = 0f;
+                update.Time_Update(0f);
+
+                Assert.Equal(0, Ref.GameTimePassed16ms);
+                Assert.Equal(0, Ref.TimePassed16ms);
+            }
+            finally
+            {
+                Ref.isPaused = originalPaused;
+                Ref.DeltaTimeMs = originalDelta;
+                Ref.GameTimeSpeed = originalSpeed;
             }
         }
 

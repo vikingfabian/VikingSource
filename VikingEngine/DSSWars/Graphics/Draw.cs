@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars
                     {
                         DrawGenerated(UnitDetailLayer, cameraIndex);
                         DssRef.state.detailMap.updateAndDraw(false, shadowProcessor.shader, shadowProcessor.light, cameraIndex);
-                        drawBatch.RemoveAndDraw(false, cameraIndex, Camera, null, null);
+                        drawBatch.RemoveAndDraw(false, cameraIndex, Camera, null, shadowProcessor.light);
                     }
                     graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                     graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;

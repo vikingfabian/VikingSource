@@ -207,6 +207,21 @@ namespace VikingEngine.Tests
             collection.DrawDepth(0, null, null);
             Assert.Equal(1, collection.FallbackDrawListCount);
         }
+
+        [Fact]
+        public void DrawBatchCollection_RemoveAndDraw_WithoutShadow_RetainsFallbackItems()
+        {
+            MainGame.SetMainThreadForTest();
+            var collection = new DrawBatchCollection();
+            var model = new TestVoxelObj();
+            model.Visible = true;
+
+            collection.Add(1, model);
+
+            // Pass with shadow = false
+            collection.RemoveAndDraw(false, 0, null, null, null);
+            Assert.Equal(1, collection.FallbackDrawListCount);
+        }
     }
 
     internal class TestVoxelObj : AbsVoxelObj

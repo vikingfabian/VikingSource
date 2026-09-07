@@ -85,14 +85,7 @@ namespace VikingEngine.DSSWars
 
             var centerAdjust = grid.Frames[0].BottomCenterAdj();
 
-            if (name == VoxelModelName.wars_flag)
-            {
-                buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
-            }
-            else
-            {
-                buildVerticeDataHD(copy.Frames, centerAdjust);
-            }
+            buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
 
             Graphics.VoxelModel model = modelFromVertices();
 
