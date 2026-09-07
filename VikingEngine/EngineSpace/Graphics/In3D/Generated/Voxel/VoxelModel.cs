@@ -116,7 +116,10 @@ namespace VikingEngine.Graphics
                 Matrix modelWorld = Matrix.CreateScale(scale) *
                             Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
                             Matrix.CreateTranslation(position);
-                //shader.Parameters["Texture"]?.SetValue(LoadContent.Texture(LoadedTexture.WhiteArea));
+                if (texture != LoadedTexture.NO_TEXTURE)
+                {
+                    shader.Parameters["Texture"]?.SetValue(LoadContent.Texture(texture));
+                }
                 shader.Parameters["Color"]?.SetValue(Color.ToVector4());
 
                 Matrix world = /*transforms[modelMesh.ParentBone.Index] **/ modelWorld;

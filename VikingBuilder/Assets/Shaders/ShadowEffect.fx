@@ -48,6 +48,17 @@ sampler2D TextureSampler = sampler_state
     AddressV = Wrap;
 };
 
+// Point-filtered sampler for pixel-art sprite atlas terrain tiles
+sampler2D TerrainTextureSampler = sampler_state
+{
+    Texture = (Texture);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
 struct VSInputDepth
 {
     float4 Position : POSITION0;
@@ -102,14 +113,14 @@ float4 ApplyLightingModel(V2P input, float4 color)
     float specularStrength = clamp(dot(cameraDir, reflectVector), 0.0f, 1.0f);
     float3 specularColor = LightColor * pow(specularStrength, Shininess) * SpecularIntensity;
     
-    // shadow mappping
+    // shadow mapping
     float shadowScalar = 1.0f;
     
     for (int i = 0; i < ShadowSamples; i++)
     {
         float4 seed = float4(i, input.ViewPosition.xyz);
         
-        float2 samplePosition = input.SMPosition + (randomOffset(seed) / 700.0f); //The divition controls the fade radius
+        float2 samplePosition = input.SMPosition + (randomOffset(seed) / 700.0f); //The division controls the fade radius.
         
         float2 edgeDist = min(samplePosition, 1.0 - samplePosition);
         float edgeFade = saturate(min(edgeDist.x, edgeDist.y) * EdgeFadeScale); 
@@ -235,5 +246,53 @@ technique RenderTextured
     {
         VertexShader = compile VS_SHADERMODEL VShader();
         PixelShader = compile PS_SHADERMODEL PShaderTextureColor();
+    }
+}
+
+// Vertex Color + Texture input (for terrain tiles)
+struct VSInputVCT
+{
+    float4 Position : POSITION0;
+    float4 VertexColor : COLOR0;
+    float2 TextureCoords : TEXCOORD0;
+};
+
+V2P VShaderVertexColorTexture(VSInputVCT input)
+{
+    V2P output;
+
+    output.ViewPosition = mul(input.Position, ModelToView);
+    output.Position = mul(input.Position, ModelToScreen);
+    output.Color = input.VertexColor * Color;
+
+    float4 lightPosition = mul(input.Position, ModelToLight);
+    float2 shadowMapCoord = mad(lightPosition.xy / lightPosition.w, 0.5f, float2(0.5f, 0.5f));
+    shadowMapCoord.y = 1.0f - shadowMapCoord.y;
+
+    output.SMPosition = shadowMapCoord;
+    output.SMDepth = lightPosition.z / lightPosition.w;
+
+    // Terrain tiles are horizontal planes; hardcode upward normal
+    output.ViewNormal = mul(float3(0.0f, 1.0f, 0.0f), NormalToView);
+    output.TextureCoords = input.TextureCoords;
+
+    return output;
+}
+
+float4 PShaderVertexColorTexture(V2P input) : COLOR
+{
+    float4 texCol = tex2D(TerrainTextureSampler, input.TextureCoords);
+    clip(texCol.a - 0.5f);
+
+    float4 diffuse = float4(input.Color.rgb * texCol.rgb, input.Color.a * texCol.a);
+    return ApplyLightingModel(input, diffuse);
+}
+
+technique RenderVertexColorTexture
+{
+    pass P0
+    {
+        VertexShader = compile VS_SHADERMODEL VShaderVertexColorTexture();
+        PixelShader = compile PS_SHADERMODEL PShaderVertexColorTexture();
     }
 }
