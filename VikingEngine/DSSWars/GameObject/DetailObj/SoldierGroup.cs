@@ -1655,7 +1655,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             args.content.newLine();
-            args.content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.MenuTab_Reassign) },
+            args.content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.MenuTab_Reassign) },
                  new RbAction(() => { args.player.hud.StartQuickReassign(new List<SoldierGroup> { this }); })));
             //    new RbAction(() =>
             //{

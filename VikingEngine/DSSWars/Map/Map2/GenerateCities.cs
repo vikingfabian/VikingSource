@@ -9,12 +9,7 @@ using VikingEngine.LootFest.Map;
 namespace VikingEngine.DSSWars.Map.Map2
 {
 
-    struct CityPlacementData
-    {
-        public int myIndex;
-        public IntVector2 pos;
-
-    }
+    
 
     struct PlacementValue
     {
@@ -27,7 +22,7 @@ namespace VikingEngine.DSSWars.Map.Map2
     class GenerateCities
     {
         public Grid2D_L<FlatArray_Three<CityPlacementData>> citiesOnNodes;
-        public List<CityPlacementData> cities;
+        
 
         PcgRandom rnd = new PcgRandom();
 
@@ -50,7 +45,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
 
             int numCities = MathExt.MultiplyInt(cityNodePositions.Count, 0.5);
-            cities = new List<CityPlacementData>(numCities);
+            icon.cities = new List<CityPlacementData>(numCities);
 
             const int CompareValueCount = 8;
             PlacementValue[] placementValues = new PlacementValue[CompareValueCount];
@@ -120,21 +115,21 @@ namespace VikingEngine.DSSWars.Map.Map2
                 if (bestPlacementIndex >= 0)
                 {
                     IntVector2 cityPos = placementValues[bestPlacementIndex].pos;
-                    CityPlacementData city = new CityPlacementData(){ myIndex = cities.Count, pos = cityPos };
-                    cities.Add(city);
+                    CityPlacementData city = new CityPlacementData(){ myIndex = icon.cities.Count, pos = cityPos };
+                    icon.cities.Add(city);
                     citiesOnNodes.GetRef(rndNodePos).Add(city);
                 }
                
             }
         }
 
-        public void scaleUp16x()
+        public void scaleUp16x(IconWorldData icon)
         {
-            for (int i = 0; i < cities.Count; i++)
+            for (int i = 0; i < icon.cities.Count; i++)
             {
-                var c = cities[i];
+                var c = icon.cities[i];
                 c.pos *= 16;
-                cities[i] = c;
+                icon.cities[i] = c;
             }
         }
     }

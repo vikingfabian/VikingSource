@@ -11,10 +11,33 @@ namespace VikingEngine.DSSWars.Presentation
     partial class Polish : AbsLanguage
     {
 
+        public override string Multiplayer_Invite => "Zaproś";
+        public override string JoinFailure_NoAvailableFaction => "Dołączenie nie powiodło się, brak dostępnych frakcji.";
+
+        public override string UnitType_Faction => "Frakcja";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => "Przypisz ponownie";
+        public override string ArmyOption_SendHalf => "Wyślij połowę";
+
+        public override string Tutorial_OpenManual => "Otwórz menu pauzy i przeczytaj informacje o: {0} w: {1}";
+
+        public override string Hud_ApplyToAll => "Zastosuj do wszystkich";
+        public override string Hud_OutOfStock => "Brak w magazynie";
+
+        public override string Leaderboards_NationStrength => "Siła militarna nacji";
+
+        public override string AutoSaveTime => "Interwał autozapisu";
+
+        public override string Editor_ToolOption_Add => "Dodaj";
+        public override string Editor_ToolOption_Remove => "Usuń";
+        public override string Editor_ToolOption_Toggle => "Przełącz";
         //Multiplayer update
-       
+
         //--
-     
+
 
         //--
         public override string Unlock_PublicGames => "gry publiczne";

@@ -80,6 +80,19 @@ namespace VikingEngine.Graphics
             return false;
         }
 
+        public bool TryGetPixel(IntVector2 pos, out Color color)
+        {
+            if (pos.X >= 0 && pos.X < Width &&
+                pos.Y >= 0 && pos.Y < Height)
+            {
+                color = pixels[pos.X + pos.Y * Width];
+                return true;
+            }
+
+            color = ColorExt.Empty;
+            return false;
+        }
+
         public void SetTwoPixels(IntVector2 pos, Color col1, Color col2)
         {
             int index = pos.X + pos.Y * Width;
@@ -115,6 +128,11 @@ namespace VikingEngine.Graphics
             DateTime date = DateTime.Now;
             Stream stream = File.Create(path + ".png");
             SaveAsPng(stream, Width, Height);
+        }
+
+        public IntVector2 Size()
+        { 
+            return new IntVector2(Width, Height);
         }
     }
 }

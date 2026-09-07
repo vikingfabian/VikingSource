@@ -354,7 +354,7 @@ namespace VikingEngine.DSSWars.Data
                 case LeaderBoardType.nation150_strength_casual:
                 case LeaderBoardType.nation200_strength:
                 case LeaderBoardType.nation200_strength_casual:
-                    title = DssRef.todoLang.Leaderboards_NationStrength;
+                    title = DssRef.lang.Leaderboards_NationStrength;
                     break;
 
                 case LeaderBoardType.survive300_time:

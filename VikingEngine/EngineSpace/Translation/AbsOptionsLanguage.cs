@@ -9,6 +9,12 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+
+        //QoL Update
+        public abstract string GameSettings_UltraWide { get; }
+        public abstract string GameSettings_UltraWide_LeftEdge { get; }
+        public abstract string GameSettings_UltraWide_RightEdge { get; }
+
         //Multiplayer update
         abstract public string GameSettings_WideScrollbar { get; }
         abstract public string GameSettings_DisplayInputHelp { get; }
@@ -147,15 +153,15 @@ namespace VikingEngine.EngineSpace.Translation
             {
                 case VikingEngine.ToolAddType.Add:
                     icon = SpriteName.EditorToolOptionAdd;
-                    name = DssRef.todoLang.Editor_ToolOption_Add;
+                    name = DssRef.lang.Editor_ToolOption_Add;
                     break;
                 case VikingEngine.ToolAddType.Remove:
                     icon = SpriteName.EditorToolOptionRemove;
-                    name = DssRef.todoLang.Editor_ToolOption_Remove;
+                    name = DssRef.lang.Editor_ToolOption_Remove;
                     break;
                 case VikingEngine.ToolAddType.Toggle:
                     icon = SpriteName.EditorToolOptionToggle;
-                    name = DssRef.todoLang.Editor_ToolOption_Toggle;
+                    name = DssRef.lang.Editor_ToolOption_Toggle;
                     break;
 
                 default:

@@ -740,7 +740,7 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsConstructBuildingIcon),
                         new RbSpace(0.5f),
-                        new RbText(string.Format( DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Work_OrderPrioTitle, DssRef.todoLang.Hud_ApplyToAll )) },
+                        new RbText(string.Format( DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Work_OrderPrioTitle, DssRef.lang.Hud_ApplyToAll )) },
                         new RbAction1Arg<City>(player.ApplyBuildPrioToAll, city), null, ordersDifferFromPriority));
 
                 }

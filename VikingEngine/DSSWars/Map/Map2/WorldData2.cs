@@ -16,26 +16,14 @@ namespace VikingEngine.DSSWars.Map.Map2
             seed = Ref.rnd.Ushort();
         }
     }
-
-    class IconWorldData
+    struct CityPlacementData
     {
-        public WorldMetaData2 metaData2;
-        public Grid2D_L<GenTile> iconGrid;
-        public PcgRandom rnd;
-
-        public IconWorldData(IntVector2 iconSize)
-        {
-            metaData2 = new WorldMetaData2();
-
-            rnd = new PcgRandom(metaData2.seed);
-
-            iconGrid = new Grid2D_L<GenTile>(iconSize);
-
-            IntVector2 tileSz = iconGrid.Size * 16;
-
-        }
+        public int myIndex;
+        public IntVector2 pos;
 
     }
+
+    
 
     class WorldData2
     {

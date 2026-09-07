@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars
                     if (!DssRef.state.UpdateReady())
                     {
                         RichBoxContent content = new RichBoxContent();
-                        content.icontext(SpriteName.RedErrorCross, DssRef.todoLang.JoinFailure_NoAvailableFaction);
+                        content.icontext(SpriteName.RedErrorCross, DssRef.lang.JoinFailure_NoAvailableFaction);
                         LocalHost().hud.messages.Add(content, SoundLib.wrong);
 
                         new Timer.ActionEventTimedTrigger(() =>
@@ -999,7 +999,7 @@ namespace VikingEngine.DSSWars
                                 {
                                     Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction_Failed, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId, null);
                                     RichBoxContent content = new RichBoxContent();
-                                    content.icontext(SpriteName.RedErrorCross, DssRef.todoLang.JoinFailure_NoAvailableFaction);
+                                    content.icontext(SpriteName.RedErrorCross, DssRef.lang.JoinFailure_NoAvailableFaction);
                                     sender.addNetGamerToHud(content, false, false);
                                     LocalHost().hud.messages.Add(content, SoundLib.wrong);
 

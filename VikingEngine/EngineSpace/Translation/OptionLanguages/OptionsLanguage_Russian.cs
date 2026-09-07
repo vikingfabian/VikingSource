@@ -9,6 +9,10 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Russian : AbsOptionsLanguage
     {
+        public override string GameSettings_UltraWide => "Ультраширокий";
+        public override string GameSettings_UltraWide_LeftEdge => "Левый край UI";
+        public override string GameSettings_UltraWide_RightEdge => "Правый край UI";
+        //-------
         public override string GameSettings_WideScrollbar => "Широкая полоса прокрутки";
         public override string GameSettings_DisplayInputHelp => "Помощь по управлению";
         public override string GameSettings_InputSmoothing => "Сглаживание ввода";

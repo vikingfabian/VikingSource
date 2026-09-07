@@ -9,6 +9,11 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_English : AbsOptionsLanguage
     {
+        //QoL Update
+        public override string GameSettings_UltraWide => "Ultrawide";
+        public override string GameSettings_UltraWide_LeftEdge => "UI left edge";
+        public override string GameSettings_UltraWide_RightEdge => "UI right edge";
+        //
         public override string GameSettings_WideScrollbar => "Wide scrollbar";
         public override string GameSettings_DisplayInputHelp => "Input help";
         public override string GameSettings_InputSmoothing => "Input smoothing";

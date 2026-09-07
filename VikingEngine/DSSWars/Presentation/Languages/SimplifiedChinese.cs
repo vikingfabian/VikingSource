@@ -8,10 +8,34 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+
+        public override string Multiplayer_Invite => "邀请";
+        public override string JoinFailure_NoAvailableFaction => "加入失败，没有可用的派系。";
+
+        public override string UnitType_Faction => "派系";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => "重新指派";
+        public override string ArmyOption_SendHalf => "发送一半";
+
+        public override string Tutorial_OpenManual => "打开暂停菜单，并在{1}中阅读关于{0}的信息";
+
+        public override string Hud_ApplyToAll => "应用到全部";
+        public override string Hud_OutOfStock => "库存不足";
+
+        public override string Leaderboards_NationStrength => "全国军事实力";
+
+        public override string AutoSaveTime => "自动保存间隔";
+
+        public override string Editor_ToolOption_Add => "添加";
+        public override string Editor_ToolOption_Remove => "移除";
+        public override string Editor_ToolOption_Toggle => "切换";
         //Multiplayer update
-        
+
         //--
-      
+
 
         //--
         public override string Unlock_PublicGames => "公开游戏";

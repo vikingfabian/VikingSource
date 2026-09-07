@@ -8,6 +8,11 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
+
+        public override string GameSettings_UltraWide => "Ultrawide";
+        public override string GameSettings_UltraWide_LeftEdge => "UI sol kenarı";
+        public override string GameSettings_UltraWide_RightEdge => "UI sağ kenarı";
+        //-------
         public override string GameSettings_WideScrollbar => "Geniş kaydırma çubuğu";
         public override string GameSettings_DisplayInputHelp => "Kontrol yardımı";
         public override string GameSettings_InputSmoothing => "Kontrol yumuşatma";

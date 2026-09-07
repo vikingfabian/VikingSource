@@ -11,10 +11,34 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+
+        public override string Multiplayer_Invite => "초대";
+        public override string JoinFailure_NoAvailableFaction => "참가 실패, 선택할 수 있는 세력이 없습니다.";
+
+        public override string UnitType_Faction => "세력";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => "재배치";
+        public override string ArmyOption_SendHalf => "절반 보내기";
+
+        public override string Tutorial_OpenManual => "일시 정지 메뉴를 열고 {1}에서 {0}에 대해 읽어보세요";
+
+        public override string Hud_ApplyToAll => "모두에게 적용";
+        public override string Hud_OutOfStock => "재고 없음";
+
+        public override string Leaderboards_NationStrength => "국가 전체 군사력";
+
+        public override string AutoSaveTime => "자동 저장 간격";
+
+        public override string Editor_ToolOption_Add => "추가";
+        public override string Editor_ToolOption_Remove => "제거";
+        public override string Editor_ToolOption_Toggle => "토글";
         //Multiplayer update
-        
+
         //--
-        
+
 
         //--
         public override string Unlock_PublicGames => "공개 게임";

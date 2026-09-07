@@ -15,15 +15,21 @@ namespace VikingEngine.DSSWars.Map.Map2
         public const int start = NodePixWidth / 2;
 
 
-        public int nodeCount = 0;
+        //public int nodeCount = 0;
         public Grid2D_L<bool> nodeGrid;
         
         public PixelTexture texture;
 
+        public NodeMap CloneMe()
+        {
+            NodeMap clone = new NodeMap();
+            clone.nodeGrid = nodeGrid.Clone();
+            return clone;
+        }
+
         public void GenerateTexture()
         {
             texture = new PixelTexture(nodeGrid.Size * TextureScale);
-            //for (int x = 0; x < nodeGrid.Width; x++)
 
             refreshAllPixels();
         }
@@ -68,7 +74,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             float connectPerc = Bound.Max( keepFillingPerc + 0.2f, 0.95f);
             nodeGrid = new Grid2D_L<bool>(gridSz);
             int fillCount = (int)(gridSz.Area() * fillPerc);
-            nodeCount = fillCount;
+            int nodeCount = fillCount;
             int paralellCount = fillPerc < 0.4f ? 2 : 8;
 
             Parallel.For(0, paralellCount, i =>

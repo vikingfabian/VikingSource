@@ -244,14 +244,37 @@ namespace VikingEngine.DSSWars
                 case MapSize.Epic:
                     result = new IntVector2(EpicMapWidth, EpicMapHeigth);
                     break;
+                case MapSize.EpicPlus:
+                    result = new IntVector2(WorldData.CustomMapSize_Max, WorldData.CustomMapSize_Max);
+                    break;
                 default:
                     throw new NotImplementedException();
             }
 
             return result;
         }
+        public static MapSize ToMapSize(IntVector2 tileSize)
+        {
+            var area = tileSize.Area();
+
+            for (MapSize sz = MapSize.Epic; sz >= 0; sz--)
+            {
+                if (area > SizeDimentions(sz).Area())
+                {
+                    return sz + 1;
+                }
+            }
+
+            return MapSize.Tiny;
+        }
 
         public static string SizeString(MapSize mapSize)
+        {
+            return SizeString(mapSize, SizeDimentions(mapSize));
+        }
+
+
+        public static string SizeString(MapSize mapSize, IntVector2 tileSize)
         {
             string name = null;
             switch (mapSize)
@@ -262,13 +285,12 @@ namespace VikingEngine.DSSWars
                 case MapSize.Large: name = DssRef.lang.Lobby_MapSizeOptLarge; break;
                 case MapSize.Huge: name = DssRef.lang.Lobby_MapSizeOptHuge; break;
                 case MapSize.Epic: name = DssRef.lang.Lobby_MapSizeOptEpic; break;
+                case MapSize.EpicPlus: name = DssRef.lang.Lobby_MapSizeOptEpic + "+"; break;
             }
-
-            var dim = SizeDimentions(mapSize);
             name += " " +
                 string.Format(DssRef.lang.Lobby_MapSizeDesc,
-                    Math.Round(dim.X * WorldData.TileWidthInKm),
-                    Math.Round(dim.Y * WorldData.TileWidthInKm));
+                    Math.Round(tileSize.X * WorldData.TileWidthInKm),
+                    Math.Round(tileSize.Y * WorldData.TileWidthInKm));
 
             return name;
         }

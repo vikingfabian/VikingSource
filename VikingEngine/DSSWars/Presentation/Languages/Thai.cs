@@ -8,10 +8,35 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Thai : AbsLanguage
     {
+
+
+        public override string Multiplayer_Invite => TextLib.ThaiConv("เชิญ");
+        public override string JoinFailure_NoAvailableFaction => TextLib.ThaiConv("เข้าร่วม|ไม่|สำเร็จ ไม่มี|ฝ่าย|ที่|สามารถ|เลือก|ได้");
+
+        public override string UnitType_Faction => TextLib.ThaiConv("ฝ่าย");
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => TextLib.ThaiConv("จัด|กำลัง|ใหม่");
+        public override string ArmyOption_SendHalf => TextLib.ThaiConv("ส่ง|ครึ่ง|หนึ่ง");
+
+        public override string Tutorial_OpenManual => TextLib.ThaiConv("เปิด|เมนู|หยุด|เกม|และ|อ่าน|เกี่ยวกับ {0} ได้|ใน {1}");
+
+        public override string Hud_ApplyToAll => TextLib.ThaiConv("ปรับ|ใช้|กับ|ทั้งหมด");
+        public override string Hud_OutOfStock => TextLib.ThaiConv("สินค้า|หมด");
+
+        public override string Leaderboards_NationStrength => TextLib.ThaiConv("ความ|แข็งแกร่ง|ทาง|ทหาร|ของ|ประเทศ");
+
+        public override string AutoSaveTime => TextLib.ThaiConv("ช่วง|เวลา auto-save");
+
+        public override string Editor_ToolOption_Add => TextLib.ThaiConv("เพิ่ม");
+        public override string Editor_ToolOption_Remove => TextLib.ThaiConv("ลบ");
+        public override string Editor_ToolOption_Toggle => TextLib.ThaiConv("สลับ");
         //Multiplayer update
-        
+
         //--
-      
+
 
         //--
         public override string Unlock_PublicGames => TextLib.ThaiConv("ห้อง|สาธารณะ");

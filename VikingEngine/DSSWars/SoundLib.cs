@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
         public static SoundContainerBase click, ui_expand, option_select, option_deselect, hover_disabled, clicktab, back,
+            editor_click_down, editor_click_up, editor_drag,
             speed_down, speed_up,
             scroll_back, scroll_forward,
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
@@ -74,6 +75,10 @@ namespace VikingEngine.DSSWars
             scroll_forward = new SoundContainerSingle(SoundDir + "scroll_forward", 0.8f);
             //hovertab = new SoundContainerSingle(SoundDir + "tab_hover", 0.7f);
             back = new SoundContainerSingle(SoundDir + "back", 0.05f);
+
+            editor_click_down=new SoundContainerSingle(SoundDir + "editor_click_down", 0.7f);
+            editor_click_up = new SoundContainerSingle(SoundDir + "editor_click_up2", 1.2f);
+            editor_drag = new SoundContainerSingle(SoundDir + "editor_drag", 0.4f);
 
             speed_up = new SoundContainerSingle(SoundDir + "up", 0.2f);
             speed_down = new SoundContainerSingle(SoundDir + "down", 0.25f);
@@ -259,30 +264,30 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, SoundDir + "out_of_ammo");
 
             string StingerDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "stinger" + DataStream.FilePath.Dir;
-            eventRepeatSound = new SoundContainerSingle(StingerDir + "stringer_repeat");
-            eventRelationWar = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship War"));
-            eventRelationEnemy = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Enemy  "));
-            eventRelationGood = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Good"));
-            eventRelationAlly = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Ally"));
-            eventRelationTotalWar = new MessageTimer(new SoundContainerSingle(StingerDir + "Total War"));
-            eventRelationGainVassal = new SoundContainerSingle(StingerDir + "Gaining a vassalv2");
+            eventRepeatSound = new SoundContainerSingle(StingerDir + "stringer_repeat", 0.6f);
+            eventRelationWar = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship War", 0.6f));
+            eventRelationEnemy = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Enemy  ", 0.6f));
+            eventRelationGood = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Good", 0.6f));
+            eventRelationAlly = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Ally", 0.6f));
+            eventRelationTotalWar = new MessageTimer(new SoundContainerSingle(StingerDir + "Total War", 0.6f));
+            eventRelationGainVassal = new SoundContainerSingle(StingerDir + "Gaining a vassalv2", 0.6f);
 
-            eventBattle = new MessageTimer(new SoundContainerSingle(StingerDir + "Entered battlev4"));
-            eventSiege = new MessageTimer(new SoundContainerSingle(StingerDir + "Under Siege"));
+            eventBattle = new MessageTimer(new SoundContainerSingle(StingerDir + "Entered battlev4", 0.6f));
+            eventSiege = new MessageTimer(new SoundContainerSingle(StingerDir + "Under Siege", 0.6f));
             eventLost = new MessageTimer(new SoundContainerSingle(StingerDir + "Lost battlev1", 1.3f));
 
-            eventResourceLow = new MessageTimer(new SoundContainerSingle(StingerDir + "Out of Resource Eventv4"));
-            eventDeserters = new MessageTimer(new SoundContainerSingle(StingerDir + "UnitsDesertedModified"));
+            eventResourceLow = new MessageTimer(new SoundContainerSingle(StingerDir + "Out of Resource Eventv4", 0.6f));
+            eventDeserters = new MessageTimer(new SoundContainerSingle(StingerDir + "UnitsDesertedModified", 0.6f));
 
             sillyFanfare = new SoundContainerSingle(StingerDir + "Silly fanfarev3-volumen+7", 0.6f);
-            forYourInformation = new SoundContainerSingle(StingerDir + "For Your Information", 1f);
-            goodNews = new SoundContainerSingle(StingerDir + "Good News", 1f);
-            storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 1f);
-            warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 1f);
+            forYourInformation = new SoundContainerSingle(StingerDir + "For Your Information", 0.6f);
+            goodNews = new SoundContainerSingle(StingerDir + "Good News", 0.6f);
+            storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 0.6f);
+            warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 0.6f);
             saving = new SoundContainerSingle(StingerDir + "Saving game", 0.4f);
             loading = new SoundContainerSingle(StingerDir + "Loading Game", 0.4f);
             joining = new SoundContainerSingle(StingerDir + "Joining multiplayer gamev1", 0.4f);
-            recievedGift = new MessageTimer(new SoundContainerSingle(StingerDir + "Received gifts"));
+            recievedGift = new MessageTimer(new SoundContainerSingle(StingerDir + "Received gifts", 0.6f));
 
         }
         public static void SubTab(Resource.ResourceManagementType subTab)
@@ -355,6 +360,28 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        static int dragLength = 0;
+        static TimeStamp dragTime = TimeStamp.None;
+        public static void editorKeyDown(bool down, float xpos)
+        {
+            dragLength = 0;
+            if (down)
+                SoundLib.editor_click_down.Play(Pan.ScreenXToPan(xpos));
+            else
+                SoundLib.editor_click_up.Play(Pan.ScreenXToPan(xpos));
+        }
+        public static void editorDrag(float xpos)
+        {
+            if (dragTime.msPassed(50))
+            {
+                if (dragLength > 0)
+                {
+                    SoundLib.editor_drag.Play(Pan.ScreenXToPan(xpos), Bound.Max(-0.3f + dragLength * 0.05f, 0.8f));
+                }
+                dragLength++;
+                dragTime.setNow();
+            }
+        }
         //public static void speedInputSound()
         //{
         //    if (Ref.isPaused)
