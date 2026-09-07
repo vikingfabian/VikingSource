@@ -328,8 +328,8 @@ namespace VikingEngine.Engine
                     ++Ref.GameTimePassed16ms;
                 }
             }
-            {//Calc Ref.GameTimePassed16ms
-                Ref.GameTimePassed16ms = 0;
+            {
+                Ref.TimePassed16ms = 0;
 
                 time_16msCountDown += Ref.DeltaTimeMs;
 
@@ -503,7 +503,7 @@ namespace VikingEngine.Engine
         public static void SetFrameRate(int fps)
         {
             var target = new TimeSpan((long)(TimeSpan.TicksPerMillisecond * (1000.0 / (double)fps)));
-            var maxElapsed = TimeSpan.FromTicks(target.Ticks * 2);
+            var maxElapsed = TimeSpan.FromTicks(Math.Max(TimeSpan.FromMilliseconds(500).Ticks, target.Ticks * 4));
 
             if (Ref.main != null)
             {
