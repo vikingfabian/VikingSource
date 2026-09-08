@@ -6,7 +6,7 @@ Change log:
 * Tiny map will remove 50% difficulty score
 * Reduced survive 350% to 300%
 * Fixed the army strength leaderboard
-
+* Locked the city low resource warnings to one line
 
 KNOWN ISSUES
 x reassign dont work with controller
