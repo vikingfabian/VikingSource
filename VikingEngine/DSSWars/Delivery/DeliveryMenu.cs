@@ -267,7 +267,9 @@ namespace VikingEngine.DSSWars.Delivery
                             {
                                 buttonContent.hspace();
                             }
-                            buttonContent.Add(new RbText(citySel.TypeName()));
+                            buttonContent.Add(new RbText(TextLib.SetMaxLenght(citySel.Name(out _), 12, true), HudLib.TitleColor_Name));
+                            buttonContent.space();
+                            buttonContent.Add(new RbText(citySel.myIndex.ToString(), HudLib.TitleColor_Name_Dark));
 
                             var button = new ArtToggle(citySel.myIndex == currentStatus.profile.toCity, buttonContent,
                                 new RbAction1Arg<int>(cityClick, citySel.myIndex, RbSoundType.Option),

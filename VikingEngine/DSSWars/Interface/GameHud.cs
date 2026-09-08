@@ -195,6 +195,10 @@ namespace VikingEngine.DSSWars.Interface
                     player.armyTab = MenuTab.Reassign;
                 }
                 player.gameControls.mapSelect(tArmy);
+                if (player.gameControls.input.inputSource.HasControllerInput)
+                { 
+                    player.gameControls.setMenuFocus(true, true, 1);
+                }
                 //args.player.movingGroupsCollection.mainArmy.
                 player.movingGroupsCollection = new MovingGroupsCollection(tArmy);
                 foreach (var group in groups)

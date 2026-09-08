@@ -1,18 +1,18 @@
 "controller_mappings"
 {
 	"version"		"3"
-	"revision"		"169"
-	"title"		"xbox v5"
-	"description"		"Official controller layout for xbox one controller"
+	"revision"		"175"
+	"title"		"Xbox v670"
+	"description"		"Your modified layout for this game."
 	"creator"		"76561198046251956"
 	"progenitor"		""
-	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-next_patch\\controller_xboxone.vdf"
+	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-beta_test\\45e-2e3-5200bb4.vdf"
 	"export_type"		"personal_local"
 	"controller_type"		"controller_xboxone"
 	"controller_caps"		"1590271"
 	"major_revision"		"0"
 	"minor_revision"		"0"
-	"Timestamp"		"1783025841"
+	"Timestamp"		"0"
 	"actions"
 	{
 		"EditorControls"
@@ -273,10 +273,6 @@
 			"Action_mirrorY"		"Miroir Y"
 			"Action_undo"		"Annuler l'action"
 			"Action_YmovementToggle"		"Activer/Désactiver l'axe Y"
-			"Action_PinAndPing"		"Marqueur"
-			"Action_TextChat"		"Chat textuel"
-			"Action_VoiceChat"		"Chat vocal"
-			"Action_next_pin"		"Marqueur suivant"
 		}
 		"schinese"
 		{
@@ -322,10 +318,6 @@
 			"Action_mirrorY"		"Y轴镜像"
 			"Action_undo"		"撤销"
 			"Action_YmovementToggle"		"切换Y轴"
-			"Action_PinAndPing"		"标记"
-			"Action_TextChat"		"文本聊天"
-			"Action_VoiceChat"		"语音聊天"
-			"Action_next_pin"		"下一个标记"
 		}
 		"japanese"
 		{
@@ -371,10 +363,6 @@
 			"Action_mirrorY"		"Y軸反転"
 			"Action_undo"		"元に戻す"
 			"Action_YmovementToggle"		"Y軸切り替え"
-			"Action_PinAndPing"		"ピン"
-			"Action_TextChat"		"テキストチャット"
-			"Action_VoiceChat"		"ボイスチャット"
-			"Action_next_pin"		"次のピン"
 		}
 		"german"
 		{
@@ -420,10 +408,6 @@
 			"Action_mirrorY"		"Y spiegeln"
 			"Action_undo"		"Rückgängig"
 			"Action_YmovementToggle"		"Y-Achse umschalten"
-			"Action_PinAndPing"		"Pin"
-			"Action_TextChat"		"Textchat"
-			"Action_VoiceChat"		"Sprachchat"
-			"Action_next_pin"		"Nächster Pin"
 		}
 		"spanish"
 		{
@@ -469,10 +453,6 @@
 			"Action_mirrorY"		"Reflejar Y"
 			"Action_undo"		"Deshacer"
 			"Action_YmovementToggle"		"Alternar eje Y"
-			"Action_PinAndPing"		"Pin"
-			"Action_TextChat"		"Chat de texto"
-			"Action_VoiceChat"		"Chat de voz"
-			"Action_next_pin"		"Siguiente pin"
 		}
 		"thai"
 		{
@@ -518,10 +498,6 @@
 			"Action_mirrorY"		"กลับด้านแกน Y"
 			"Action_undo"		"เลิกทำ"
 			"Action_YmovementToggle"		"เปิด/ปิด แกน Y"
-			"Action_PinAndPing"		"ปักหมุด"
-			"Action_TextChat"		"แชทข้อความ"
-			"Action_VoiceChat"		"แชทด้วยเสียง"
-			"Action_next_pin"		"ปักหมุดถัดไป"
 		}
 		"russian"
 		{
@@ -567,10 +543,6 @@
 			"Action_mirrorY"		"Отразить по Y"
 			"Action_undo"		"Отменить"
 			"Action_YmovementToggle"		"Ось Y (вкл/выкл)"
-			"Action_PinAndPing"		"Метка"
-			"Action_TextChat"		"Текстовый чат"
-			"Action_VoiceChat"		"Голосовой чат"
-			"Action_next_pin"		"Следующая метка"
 		}
 		"brazilian"
 		{
@@ -616,10 +588,6 @@
 			"Action_mirrorY"		"Espelhar Y"
 			"Action_undo"		"Desfazer"
 			"Action_YmovementToggle"		"Alternar Eixo Y"
-			"Action_PinAndPing"		"Marcador"
-			"Action_TextChat"		"Chat de texto"
-			"Action_VoiceChat"		"Chat de voz"
-			"Action_next_pin"		"Próximo marcador"
 		}
 		"turkish"
 		{
@@ -665,10 +633,6 @@
 			"Action_mirrorY"		"Y Yansıtma"
 			"Action_undo"		"Geri Al"
 			"Action_YmovementToggle"		"Y Ekseni Aç/Kapat"
-			"Action_PinAndPing"		"İşaret"
-			"Action_TextChat"		"Metin Sohbeti"
-			"Action_VoiceChat"		"Sesli Sohbet"
-			"Action_next_pin"		"Sonraki İşaret"
 		}
 		"italian"
 		{
@@ -714,10 +678,6 @@
 			"Action_mirrorY"		"Specchia Y"
 			"Action_undo"		"Annulla azione"
 			"Action_YmovementToggle"		"Attiva/Disattiva asse Y"
-			"Action_PinAndPing"		"Segnalino"
-			"Action_TextChat"		"Chat di testo"
-			"Action_VoiceChat"		"Chat vocale"
-			"Action_next_pin"		"Segnalino successivo"
 		}
 		"polish"
 		{
@@ -763,10 +723,6 @@
 			"Action_mirrorY"		"Odbicie lustrzane Y"
 			"Action_undo"		"Cofnij"
 			"Action_YmovementToggle"		"Przełącz oś Y"
-			"Action_PinAndPing"		"Znacznik"
-			"Action_TextChat"		"Czat tekstowy"
-			"Action_VoiceChat"		"Czat głosowy"
-			"Action_next_pin"		"Następny znacznik"
 		}
 	}
 	"group"
@@ -1485,6 +1441,26 @@
 		"description"		""
 		"inputs"
 		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action add_layer 5 1 1, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 	}
 	"group"
@@ -2618,6 +2594,24 @@
 	}
 	"group"
 	{
+		"id"		"77"
+		"mode"		"joystick_move"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"layer"		"1"
+		}
+		"gameactions"
+		{
+			"InGameControls"		"CameraTilt"
+		}
+	}
+	"group"
+	{
 		"id"		"6"
 		"mode"		"switches"
 		"name"		""
@@ -2738,7 +2732,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action InGameControls pause, Pause, , "
+							"binding"		"game_action InGameControls tab_left, Previous Tab, , "
 						}
 					}
 				}
@@ -2754,7 +2748,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action InGameControls gamespeed, Game Speed, , "
+							"binding"		"game_action InGameControls tab_right, Next Tab, , "
 						}
 					}
 				}
@@ -3022,8 +3016,8 @@
 			"16"		"left_trigger active"
 			"17"		"right_trigger active"
 			"43"		"right_trigger inactive modeshift"
-			"25"		"joystick inactive"
-			"76"		"joystick active"
+			"25"		"joystick active"
+			"76"		"joystick inactive"
 			"26"		"right_joystick inactive"
 			"30"		"right_joystick inactive modeshift"
 			"31"		"right_joystick inactive modeshift"
@@ -3071,6 +3065,7 @@
 			"54"		"button_diamond active"
 			"55"		"left_trigger active"
 			"56"		"right_trigger active"
+			"77"		"right_joystick active"
 			"69"		"dpad active"
 		}
 	}

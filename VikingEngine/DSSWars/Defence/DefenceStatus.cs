@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Defence
 
         public static float WallDefenceChance(TerrainWallType wallType, out int soldierAttackDamageBonus)
         {
-            soldierAttackDamageBonus = 3;
+            soldierAttackDamageBonus = 5;
 
             switch (wallType)
             {

@@ -1,23 +1,10 @@
 
 Change log:
-* Fixed guard select reassign
-* Fixed stuck reassign menu
-* Domination victory will now ignore uunclaimed land
-* Tiny map will remove 50% difficulty score
-* Reduced survive 350% to 300%
-* Fixed the army strength leaderboard
-* Locked the city low resource warnings to one line
+* 
 
 KNOWN ISSUES
-x reassign dont work with controller
 x hide achievements
 X timeline checkbox on steamworks
-
-
-#MAP 2.0
-* Cubic far group models
-
-## QoL ##
 
 
 ##ICONS TODO
