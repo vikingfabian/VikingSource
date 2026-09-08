@@ -1,6 +1,12 @@
 
 Change log:
-* 
+* Fixed guard select reassign
+* Fixed stuck reassign menu
+* Domination victory will now ignore uunclaimed land
+* Tiny map will remove 50% difficulty score
+* Reduced survive 350% to 300%
+* Fixed the army strength leaderboard
+
 
 KNOWN ISSUES
 x reassign dont work with controller

@@ -213,6 +213,16 @@ namespace VikingEngine.DSSWars.Data
                     break;
             }
 
+            var wsize = DssRef.storage.ruleset.mapSize;
+            if (Ref.gamestate is PlayState)
+            {
+                wsize = WorldData.CustomMapSizeToSize(DssRef.world.Size);
+            }
+            if (wsize <= MapSize.Tiny)
+            {
+                result -= 50;
+            }
+
             return Convert.ToInt32(result);
         }
 

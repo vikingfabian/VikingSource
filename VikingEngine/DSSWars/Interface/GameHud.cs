@@ -186,8 +186,14 @@ namespace VikingEngine.DSSWars.Interface
             
             if (groups[0].army.TryGetTarget(out var tArmy))
             {
-
-                player.armyTab = MenuTab.Reassign;
+                if (tArmy.IsCity())
+                {
+                    player.cityTab = MenuTab.Reassign;
+                }
+                else
+                {
+                    player.armyTab = MenuTab.Reassign;
+                }
                 player.gameControls.mapSelect(tArmy);
                 //args.player.movingGroupsCollection.mainArmy.
                 player.movingGroupsCollection = new MovingGroupsCollection(tArmy);
@@ -328,7 +334,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void updateMenuDisplays(bool refresh)
         {
-           
+            bool bUseSecondMenu = false;
+
             if (player.gameControls.diplomacy != null)
             {
                 var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
@@ -363,12 +370,16 @@ namespace VikingEngine.DSSWars.Interface
                 updateObjectDisplay(null, false, refresh);
             }
 
+            if (!bUseSecondMenu)
+            {
+                objMenu.deleteSecondMenu();
+            }
+
             void updateObjectDisplay(GameObject.AbsGameObject obj, bool selected, bool refresh)
             {
                 if (refresh)
                 {
-                    objMenu.refreshObject(player, obj, selected);
-                    
+                    objMenu.refreshObject(player, obj, selected, out bUseSecondMenu);                    
                 }
             }
         }

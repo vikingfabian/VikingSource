@@ -822,13 +822,16 @@ namespace VikingEngine.DSSWars
             {
                 bool minute = DssRef.time.pullMinute(ref asynchGameObjectsMinutes);
 
+                int cityCount = 0;
                 foreach (var m in DssRef.world.cities)
                 {
-                    //if (m.IsNetHosted)
-                    //{
+                    if (m.cityType > CityType.UnClaimed)
+                    {
                         m.asynchGameObjectsUpdate(minute);
-                    //}
+                        cityCount++;
+                    }
                 }
+                DssRef.world.claimedCityCount = cityCount;
 
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
