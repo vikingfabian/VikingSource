@@ -8,6 +8,20 @@ x hide achievements
 X timeline checkbox on steamworks
 
 
+## QoL Part 2 ##
+* The color range of voxel models have been adjusted
+
+
+Performance
+* Work has been put into keeping down the creeping memory (RAM) usage (contribution made by Uygar "Agent" Yilmaz)
+* Memory: Object lists will trim down in size (Uygar "Agent" Yilmaz)
+* Path finding have been optimized (Uygar "Agent" Yilmaz)
+* Fixed memory leaks in path finding (Uygar "Agent" Yilmaz)
+* Model instance rendering (Uygar "Agent" Yilmaz)
+* The terrain shadow renderer now supports textures (Uygar "Agent" Yilmaz)
+
+
+
 #MAP 2.0 UPDATE
 * Fixed stuck game process on exit
 * Cubic far group models
@@ -28,13 +42,9 @@ Map editor 2.0
 * Icon editor: Allows fast editing in 1/16 scale
 * Height map: Load images and use them to generate the world
 
-Performance
-* Work has been put into keeping down the creeping memory usage (RAM)
-* Memory: Object lists will trim down in size
-* Fixed memory leaks in path finding
 
 
-## QoL ##
+
 
 
 ##ICONS TODO
