@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Data
                     new DifficultySubTab(LeaderBoardType.nation50_strength, 50),new DifficultySubTab(LeaderBoardType.nation100_strength, 100), new DifficultySubTab(LeaderBoardType.nation150_strength, 150), new DifficultySubTab(LeaderBoardType.nation200_strength, 200)) },
 
             new LeaderBoardMainTab { first = LeaderBoardType.survive300_time, icon = SpriteName.WarsRelationTotalWar,casualSubTab = true, difficultyTabs = new FlatArray_Eight<DifficultySubTab>(
-                new DifficultySubTab(LeaderBoardType.survive300_time, 300),new DifficultySubTab(LeaderBoardType.survive400_time, 400)) },
+                new DifficultySubTab(LeaderBoardType.survive300_time, SurviveLeaderBoard.Difficulty300),new DifficultySubTab(LeaderBoardType.survive400_time, SurviveLeaderBoard.Difficulty400)) },
 
             new LeaderBoardMainTab { first = LeaderBoardType.multiplayer_playercount, icon = SpriteName.WarsHudIconMultiplayer, casualSubTab = false, },
         };
@@ -815,7 +815,7 @@ namespace VikingEngine.DSSWars.Data
 
     class SurviveLeaderBoard : AbsLeaderBoard
     {
-        public const int Difficulty300 = 350;
+        public const int Difficulty300 = 300;
         public const int Difficulty400 = 400;
         public SurviveLeaderBoard(LeaderBoardType type)
         {

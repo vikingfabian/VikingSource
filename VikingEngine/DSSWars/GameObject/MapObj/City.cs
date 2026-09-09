@@ -2595,17 +2595,20 @@ namespace VikingEngine.DSSWars.GameObject
                     content.Add(new RbImage(SpriteName.WarsStrengthIcon));
                     content.space(0.5f);
                     content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
-                    
-                    lowResource(ItemResourceType.Water_G, 1);
-                    lowResource(ItemResourceType.Food_G);
 
-                    lowResource(ItemResourceType.Wood_Group);
-                    lowResource(ItemResourceType.Stone_G);
-                    lowResource(ItemResourceType.SkinLinen_Group);
-                    lowResource(ItemResourceType.Fuel_G);
-                    lowResource(ItemResourceType.Iron_G);
-                    lowResource(ItemResourceType.ServiceMen, 5);
+                    content.Add(new RbLockLine(true));
+                    {
+                        lowResource(ItemResourceType.Water_G, 1);
+                        lowResource(ItemResourceType.Food_G);
 
+                        lowResource(ItemResourceType.Wood_Group);
+                        lowResource(ItemResourceType.Stone_G);
+                        lowResource(ItemResourceType.SkinLinen_Group);
+                        lowResource(ItemResourceType.Fuel_G);
+                        lowResource(ItemResourceType.Iron_G);
+                        lowResource(ItemResourceType.ServiceMen, 5);
+                    }
+                    content.Add(new RbLockLine(false));
 
                     void lowResource(ItemResourceType resourceType, int low = 10)
                     {

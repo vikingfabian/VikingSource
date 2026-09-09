@@ -78,6 +78,10 @@ namespace VikingEngine.SteamWrapping
         
         virtual public void BeginUpload()
         {
+#if DEBUG
+            Debug.Log($"SteamLeaderBoard BeginUpload: {name}");
+#endif
+
             uploadOnFind = true;
             find();
         }

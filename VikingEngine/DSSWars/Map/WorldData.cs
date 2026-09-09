@@ -78,6 +78,7 @@ namespace VikingEngine.DSSWars
        
         public UnitCollAreaGrid unitCollAreaGrid;
 
+        public int claimedCityCount = int.MaxValue;
         public List<City> cities = new List<City>(0); 
         public SpottedArray<Faction> factions;
 
