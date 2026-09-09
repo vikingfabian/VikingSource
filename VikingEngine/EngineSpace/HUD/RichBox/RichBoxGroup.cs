@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using VikingEngine.EngineSpace.HUD.RichBox;
 using VikingEngine.Graphics;
 using VikingEngine.Network;
@@ -47,9 +48,12 @@ namespace VikingEngine.HUD.RichBox
         public List<ControllerSection> controllerSections = new List<ControllerSection>();
 
         int tryCreatePosition = -1;
-        bool lockNewLine = false;
-        //public int lineCount = 0;
+        //bool lockNewLine = false;
         public float groupScale = 1f;
+
+        bool lockLine = false;
+        //int lockLineAtIndex = -1; 
+        int currentCreateIndex = -1;
 
         public override void SetOffset(Vector2 position)
         {
@@ -77,9 +81,9 @@ namespace VikingEngine.HUD.RichBox
                 removeDeadHeightSpace(true);
             }
 
-            foreach (var m in content)
+            for (currentCreateIndex = 0; currentCreateIndex < content.Count; currentCreateIndex++)//each (var m in content)
             {
-                m.Create(this);
+                content[currentCreateIndex].Create(this);
             }
 
             completeLine();
@@ -99,6 +103,22 @@ namespace VikingEngine.HUD.RichBox
             maxArea.Width = maxWidth;
 
             finalizeArea(useDynamicWidth, content);
+        }
+
+        public void CreateLineLock(bool begin)
+        {
+            lockLine = begin;
+            //if (begin)
+            //{
+            //    lockLineAtIndex = images.Count;
+            //}
+            //else
+            //{
+            //    for (int i = lockLineAtIndex + 1; i < currentCreateIndex; i++)
+            //    {
+            //        content[i].
+            //    }
+            //}
         }
 
         public void setScale(float newScale)
@@ -176,7 +196,7 @@ namespace VikingEngine.HUD.RichBox
 
         public void newLine()
         {
-            if (!lockNewLine)
+            if (!lockLine)
             {
                 completeLine();
 
@@ -284,7 +304,7 @@ namespace VikingEngine.HUD.RichBox
         public void TryCreate_Complete()
         {
             addToRender = true;
-            lockNewLine = false;
+            lockLine = false;
 
             for (int i = tryCreatePosition; i < images.Count; i++)
             {
@@ -300,7 +320,7 @@ namespace VikingEngine.HUD.RichBox
             }
 
             addToRender = true;
-            lockNewLine = false;
+            lockLine = false;
         }
 
         public VectorRect AreaWithPosOffset()

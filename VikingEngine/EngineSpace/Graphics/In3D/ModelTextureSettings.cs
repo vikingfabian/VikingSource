@@ -23,7 +23,7 @@ namespace VikingEngine.Graphics
 
         public ModelTextureSettings(SpriteName sprite, Color ColorAndAlpha)
         {
-            TextureSource = Sprite.FromeName(sprite);
+            TextureSource = Sprite.FromName(sprite);
             texture = null;
             this.effectType =  TextureEffectType.Flat;
             this.ColorAndAlpha = ColorAndAlpha.ToVector4();
@@ -33,12 +33,12 @@ namespace VikingEngine.Graphics
 
         public void SetSpriteName(SpriteName name)
         {
-            TextureSource = Sprite.FromeName(name);
+            TextureSource = Sprite.FromName(name);
             texture = null;
         }
 
         public static readonly ModelTextureSettings Default = new ModelTextureSettings(
-             Sprite.FromeName(SpriteName.NO_IMAGE), null, TextureEffectType.Flat, Vector4.One);
+             Sprite.FromName(SpriteName.NO_IMAGE), null, TextureEffectType.Flat, Vector4.One);
     }
 }
 

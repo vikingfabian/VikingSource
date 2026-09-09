@@ -215,16 +215,6 @@ namespace VikingEngine
                 y >= 0 && y < size.Y;
         }
 
-        //public T[] ToArray()
-        //{
-        //    return (T[])array.Clone();
-        //}
-
-        //public void FromArray(T[] array1D)
-        //{
-        //    Array.Copy(array1D, array, array.Length);
-        //}
-
         #region LOOP
 
         ForXYLoop loop;
@@ -283,10 +273,6 @@ namespace VikingEngine
         #endregion
 
 
-        //public void Clear()
-        //{
-        //    //SetAll(default(T));
-        //}
         public void Clear()
         {
             Array.Clear(array, 0, array.Length);

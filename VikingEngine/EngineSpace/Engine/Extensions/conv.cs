@@ -268,5 +268,10 @@ namespace VikingEngine
         {
             return Convert.ToInt32(chance * 100);
         }
+
+        public static float FromPercentage(int percent)
+        { 
+            return percent * 0.01f;
+        }
     }
 }

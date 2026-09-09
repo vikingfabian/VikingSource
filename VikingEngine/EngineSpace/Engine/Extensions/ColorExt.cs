@@ -14,7 +14,10 @@ namespace VikingEngine
         public static readonly Color DarkGrayer =  new Color(80, 80, 80);
         public static readonly Color VeryDarkGray = GrayScale(0.1f);
 
-
+        public static float GetBrightness(this Color col)
+        {
+            return (col.R + col.G + col.B) / 3f / byte.MaxValue;
+        }
         public static Color GrayScale(float white)
         {
             return new Color(white, white, white);
@@ -40,7 +43,26 @@ namespace VikingEngine
         {
             return new Color(col1.ToVector3() * col2.ToVector3());
         }
-
+        /// <summary>
+        /// Multiplies the RGBA component values of a color by the specified value.
+        /// </summary>
+        /// <param name="value">The source color value to multiply.</param>
+        /// <param name="scale">The value to multiply the RGBA component values by.</param>
+        /// <returns>The new color value created as a result of the multiplication.</returns>
+        public static Color MultiplyRGBA(Color value, float scale)
+        {
+            return new Color((int)(value.R * scale), (int)(value.G * scale), (int)(value.B * scale), (int)(value.A * scale));
+        }
+        /// <summary>
+        /// Multiplies the RGB component values of a color by the specified value.
+        /// </summary>
+        /// <param name="value">The source color value to multiply.</param>
+        /// <param name="scale">The value to multiply the RGB component values by.</param>
+        /// <returns>The new color value created as a result of the multiplication.</returns>
+        public static Color MultiplyRGB(Color value, float scale)
+        {
+            return new Color((int)(value.R * scale), (int)(value.G * scale), (int)(value.B * scale), value.A);
+        }
         public static Color Reverse(Color col)
         {
             return new Color(Microsoft.Xna.Framework.Vector3.One - col.ToVector3());

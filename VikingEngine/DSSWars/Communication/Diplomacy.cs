@@ -232,8 +232,14 @@ namespace VikingEngine.DSSWars
 
         public ref DiplomaticRelation GetRefRelation(PFaction pfaction1, PFaction pfaction2)
         {
-            RelationIndex(pfaction1.factionIndex, pfaction2.factionIndex, out int relIndex);
-            return ref diplomaticRelations[relIndex];
+            if (RelationIndex(pfaction1.factionIndex, pfaction2.factionIndex, out int relIndex))
+            {
+                return ref diplomaticRelations[relIndex];
+            }
+            else
+            {
+                return ref empty;
+            }
         }
 
         public ref DiplomaticRelation GetRefRelation_Safe(PFaction pfaction1, PFaction pfaction2)

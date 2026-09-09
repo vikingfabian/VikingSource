@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.Event
                     p.alliedFactions = p.alliedFactions_build;
                     p.alliedFactions_build = store;
                 }
-                if (p.alliedFactions.Count != p.alliedFactions_build.Count)//allyCount != p.allyCount)
+                if (p.alliedFactions.Count != p.alliedFactions_build.Count)
                 { 
                     DssRef.achieve.onAllyCount(p.alliedFactions.Count);
                 }
@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Event
                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
                 }
 
-                if (worldPeace && peaceStrength > warStrength && p.pfaction.GetFaction().cities.Count < DssRef.world.cities.Count / 2)
+                if (worldPeace && peaceStrength > warStrength && p.pfaction.GetFaction().cities.Count < DssRef.world.claimedCityCount / 2)
                 {
                     Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));
                     return;
@@ -186,7 +186,7 @@ namespace VikingEngine.DSSWars.Event
                 int missingCities = 0;
                 foreach (var city in DssRef.world.cities)
                 {
-                    if (city.pfaction != p.pfaction)
+                    if (city.cityType > CityType.UnClaimed && city.pfaction != p.pfaction)
                     {
                         missingCities++;
                         if (missingCities > dominationCount)
@@ -205,20 +205,6 @@ namespace VikingEngine.DSSWars.Event
             }            
             
         }
-
-        //void asyncCheckPlayerDominance()
-        //{
-        //    foreach (var p in DssRef.state.localPlayers)
-        //    {
-        //        if (p.faction.cities.Count >= p.nextDominationSize)
-        //        {
-        //            //p.nextDominationSize = p.faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
-        //            p.cohalitionEvent = true;
-
-        //            collectAllianceAgainstPlayerDomination(p);
-        //        }
-        //    }
-        //}
 
         public bool RunAi()
         {

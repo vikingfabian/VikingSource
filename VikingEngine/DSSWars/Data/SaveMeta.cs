@@ -23,11 +23,13 @@ namespace VikingEngine.DSSWars.Data
         //const int AutoSaveCount = 10;
         const int saveCount = 10;
         public const string ImportSaveFolder = "Import Save";
+        public const string ImportHeightMap = "Height Map";
         SaveIterations saves;
         SaveIterations autosaves;
-       
 
-        DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
+
+        DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, SaveStateMeta.FileEnd);
+        DataStream.FilePath heightmapSavePath = new DataStream.FilePath(ImportHeightMap, null, null);
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
         public GameOverResultCollection gameOverResultCollection = null;
@@ -39,16 +41,38 @@ namespace VikingEngine.DSSWars.Data
         public void CreateImportFolders()
         {
             System.IO.Directory.CreateDirectory(importSavePath.CompleteDirectory);
+            System.IO.Directory.CreateDirectory(heightmapSavePath.CompleteDirectory);
+
         }
 
-        public List<string> ListSaveImports()
+        public List<FilePath> ListSaveImports()
         {
-            var files = System.IO.Directory.GetFiles(importSavePath.CompleteDirectory);
+            return FilePath.ListFilesInStorageDir2(importSavePath);
+            //var files = System.IO.Directory.GetFiles(importSavePath.CompleteDirectory);
+            //List<string> list = new List<string>();
+            //foreach (var f in files)
+            //{
+            //    if (f.Contains(SaveStateMeta.FileEnd))
+            //    { 
+            //        list.Add(f);
+            //    }
+            //}
+
+            //return list;
+        }
+
+        public List<string> ListHeightMaps()
+        {
+            var files = System.IO.Directory.GetFiles(heightmapSavePath.CompleteDirectory);
             List<string> list = new List<string>();
+
             foreach (var f in files)
             {
-                if (f.Contains(SaveStateMeta.FileEnd))
-                { 
+                // Extract the extension and make it lowercase for safe comparison
+                string extension = System.IO.Path.GetExtension(f).ToLower();
+
+                if (System.Array.Exists(VikingEngine.StreamLib.ValidTextureExtensions, ext => ext == extension))
+                {
                     list.Add(f);
                 }
             }

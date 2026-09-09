@@ -107,7 +107,7 @@ public class Builder : ContentBuilder
 #if PJ
         contentCollection.Exclude<WildcardRule>("DSS/**");
 #endif
-        contentCollection.Include<WildcardRule>("*.wav", new WavImporter());
+        //contentCollection.Include<WildcardRule>("*.wav", new WavImporter());
         contentCollection.Exclude<WildcardRule>("Shaders/DeferredRenderer/*.*");
         contentCollection.Exclude<WildcardRule>("Shaders/Old/*.*");
         

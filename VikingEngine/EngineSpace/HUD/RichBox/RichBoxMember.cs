@@ -530,6 +530,21 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
+    class RbLockLine : AbsRichBoxMember
+    {
+        public bool begin;
+
+        public RbLockLine(bool begin)
+        { 
+            this.begin = begin;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            group.CreateLineLock(begin);
+        }
+    }
+
     class RichBoxScale : AbsRichBoxMember
     {
         float scale;

@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars
         public const int ImmigrantionTent_TransfereSpeedBonus = 2;
         public const int ImmigrantionTent_Capacity = 60;
 
-        //AHRMY UPKEEP
+        //ARMY UPKEEP
         public static float TrainingLevelMinimal_CopperUpkeep = 0;
         public static float TrainingLevelBasic_CopperUpkeep = TaxPerWorker_copp * 0.2f;
         public static float TrainingLevelSkillful_CopperUpkeep = TaxPerWorker_copp * 0.4f;
@@ -236,10 +236,10 @@ namespace VikingEngine.DSSWars
 
 
         //DEFENCE
-        public static float GuardPostDefenceChance_Palisade = 0.4f;
-        public static float GuardPostDefenceChance_Dirt = 0.5f;
-        public static float GuardPostDefenceChance_Wood = 0.7f;
-        public static float GuardPostDefenceChance_Stone = 0.85f;
+        public static float GuardPostDefenceChance_Palisade = 0.6f;
+        public static float GuardPostDefenceChance_Dirt = 0.7f;
+        public static float GuardPostDefenceChance_Wood = 0.85f;
+        public static float GuardPostDefenceChance_Stone = 0.96f;
 
 
         //BUILDING

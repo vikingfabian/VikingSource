@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
         public static SoundContainerBase click, ui_expand, option_select, option_deselect, hover_disabled, clicktab, back,
+            editor_click_down, editor_click_up, editor_drag,
             speed_down, speed_up,
             scroll_back, scroll_forward,
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
@@ -74,6 +75,10 @@ namespace VikingEngine.DSSWars
             scroll_forward = new SoundContainerSingle(SoundDir + "scroll_forward", 0.8f);
             //hovertab = new SoundContainerSingle(SoundDir + "tab_hover", 0.7f);
             back = new SoundContainerSingle(SoundDir + "back", 0.05f);
+
+            editor_click_down=new SoundContainerSingle(SoundDir + "editor_click_down", 0.7f);
+            editor_click_up = new SoundContainerSingle(SoundDir + "editor_click_up2", 1.2f);
+            editor_drag = new SoundContainerSingle(SoundDir + "editor_drag", 0.4f);
 
             speed_up = new SoundContainerSingle(SoundDir + "up", 0.2f);
             speed_down = new SoundContainerSingle(SoundDir + "down", 0.25f);
@@ -355,6 +360,28 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        static int dragLength = 0;
+        static TimeStamp dragTime = TimeStamp.None;
+        public static void editorKeyDown(bool down, float xpos)
+        {
+            dragLength = 0;
+            if (down)
+                SoundLib.editor_click_down.Play(Pan.ScreenXToPan(xpos));
+            else
+                SoundLib.editor_click_up.Play(Pan.ScreenXToPan(xpos));
+        }
+        public static void editorDrag(float xpos)
+        {
+            if (dragTime.msPassed(50))
+            {
+                if (dragLength > 0)
+                {
+                    SoundLib.editor_drag.Play(Pan.ScreenXToPan(xpos), Bound.Max(-0.3f + dragLength * 0.05f, 0.8f));
+                }
+                dragLength++;
+                dragTime.setNow();
+            }
+        }
         //public static void speedInputSound()
         //{
         //    if (Ref.isPaused)

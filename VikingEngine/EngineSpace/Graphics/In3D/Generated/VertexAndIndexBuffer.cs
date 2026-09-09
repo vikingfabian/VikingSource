@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -33,6 +33,16 @@ namespace VikingEngine.Graphics
         /* Fields */
         protected VertexBuffer vertexBuffer_GPU;
         protected IndexBuffer indexBuffer;
+
+        public VertexBuffer GetVertexBuffer()
+        {
+            return vertexBuffer_GPU;
+        }
+
+        public IndexBuffer GetIndexBuffer()
+        {
+            return indexBuffer;
+        }
 
         private float opacity = 1;
 
@@ -193,12 +203,25 @@ namespace VikingEngine.Graphics
                 }
             }
         }
+        public Frame GetFrame(int frame)
+        {
+            if (frames.Count == 0)
+            {
+                return default(Frame);
+            }
+            if (frame < 0 || frame >= frames.Count)
+            {
+                frame = 0;
+            }
+            return frames[frame];
+        }
+
         public override void updateBoundingSphere(ref BoundingSphere boundingSphere)
         {
             boundingSphere = CullingBound;
         }
     }
-    struct Frame
+    public struct Frame
     {
         /* Constants */
         const int VerticesPerPoly = 4;

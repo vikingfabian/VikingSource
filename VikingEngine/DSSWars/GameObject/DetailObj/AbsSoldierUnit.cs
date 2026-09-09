@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -347,18 +347,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         bool freeToMove(float time)
         {
-            if (battleData != null)
+            var data = battleData;
+            if (data != null)
             {
-                if (battleData.queueTime > 0)
+                if (data.queueTime > 0)
                 {
-                    battleData.queueTime -= time;
-                    if (battleData.queueTime <= 0)
+                    data.queueTime -= time;
+                    if (data.queueTime <= 0)
                     {
-                        battleData.InQueue(this);
+                        data.InQueue(this);
                     }
                 }
 
-                return battleData.queueTime <= 0;
+                return data.queueTime <= 0;
             }
 
             return true;
@@ -429,11 +430,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (enter)
             {
-                battleData = new SoldierBattleData(this);
+                if (battleData == null)
+                {
+                    battleData = SoldierBattleData.Rent(this);
+                }
             }
             else
             {
-                battleData = null;
+                if (battleData != null)
+                {
+                    var temp = battleData;
+                    battleData = null;
+                    SoldierBattleData.Return(temp);
+                }
             }
         }
 
@@ -557,7 +566,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 updateTurn();
 
-                if (battleData.queueTime <= 0)
+                var data = battleData;
+                if (data == null || data.queueTime <= 0)
                 {
                     state2 = SoldierState2.walking;
                 }
@@ -1049,6 +1059,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             isDeleted = true;
             health = 0;
+
+            if (battleData != null)
+            {
+                var temp = battleData;
+                battleData = null;
+                SoldierBattleData.Return(temp);
+            }
 
             deleteModels();
 

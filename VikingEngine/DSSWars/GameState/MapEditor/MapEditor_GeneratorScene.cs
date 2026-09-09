@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                 bool mouseOverHud = false;
                 display.update(ref mouseOverHud);
 
-                map.userInput(mouseOverHud);                
+                //map.userInput(mouseOverHud);                
             }
         }
 

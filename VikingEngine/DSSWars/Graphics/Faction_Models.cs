@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -21,7 +21,12 @@ namespace VikingEngine.DSSWars
 
         List<int> processStarted = new List<int>(8);
 
-        public void onNewPlayerModels()
+        public void OnNewPlayerModels()
+        {
+            ClearModels();
+        }
+
+        public void ClearModels()
         {
             models_loaded.Clear();
             lock (processStarted)
@@ -29,6 +34,8 @@ namespace VikingEngine.DSSWars
                 processStarted.Clear();
             }
         }
+
+        public int LoadedModelsCount => models_loaded.Count;
 
         public Graphics.VoxelModelInstance AutoLoadModelInstance(VoxelModelName name,
            float scale = 1f, bool addToRender = false)
@@ -84,6 +91,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                int capturedGen = instance.PoolGeneration;
                 Task.Run(async () =>
                 {
                     try
@@ -134,7 +142,10 @@ namespace VikingEngine.DSSWars
                             await Task.Delay(100);
                         }
 
-                        setMaster(instance, master.GetMaster());
+                        if (instance.PoolGeneration == capturedGen)
+                        {
+                            setMaster(instance, master.GetMaster());
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -162,6 +173,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                int capturedGen = (instance as VoxelModelInstance_Pooled)?.PoolGeneration ?? 0;
                 Task.Run(async () =>
                 {
                     try
@@ -182,7 +194,10 @@ namespace VikingEngine.DSSWars
                             await Task.Delay(100);
                         }
 
-                        setMaster(instance, master.GetMaster());
+                        if (!(instance is VoxelModelInstance_Pooled pooled) || pooled.PoolGeneration == capturedGen)
+                        {
+                            setMaster(instance, master.GetMaster());
+                        }
                     }
                     catch (Exception ex)
                     {

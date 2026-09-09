@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
@@ -96,10 +96,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj">
-      <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
+      <SetPlatform>Platform=x64</SetPlatform>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Steamworks repo\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
-      <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
+      <SetConfiguration Condition="'$(Configuration)' != 'Release'">Configuration=Windows</SetConfiguration>
+      <SetPlatform>Platform=x64</SetPlatform>
     </ProjectReference>
   </ItemGroup>
   
@@ -112,4 +113,9 @@
     <Exec Command="dotnet tool restore" />
   </Target>
     <Import Project="..\VikingBuilder\BuildContent.targets" />
+
+    <ItemGroup>
+      <InternalsVisibleTo Include="VikingEngine.Tests" />
+      <InternalsVisibleTo Include="VikingEngine.Benchmarks" />
+    </ItemGroup>
 </Project>

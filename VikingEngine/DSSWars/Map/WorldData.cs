@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monsters;
@@ -77,6 +78,7 @@ namespace VikingEngine.DSSWars
        
         public UnitCollAreaGrid unitCollAreaGrid;
 
+        public int claimedCityCount = int.MaxValue;
         public List<City> cities = new List<City>(0); 
         public SpottedArray<Faction> factions;
 
@@ -94,6 +96,23 @@ namespace VikingEngine.DSSWars
         public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
 
         public List<PFaction> quickMatchFactions = null;
+
+
+        public PathFindingPool pathFindingPool = new PathFindingPool();
+        public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
+
+        public void ClearPools()
+        {
+            pathFindingPool.Clear();
+            detailPathFindingPool.Clear();
+        }
+
+        public void PreallocatePools(int pfCount = 1, int detailPfCount = 1)
+        {
+            pathFindingPool.Preallocate(pfCount);
+            detailPathFindingPool.Preallocate(detailPfCount);
+        }
+
 
         public WorldData()
         {
@@ -226,14 +245,37 @@ namespace VikingEngine.DSSWars
                 case MapSize.Epic:
                     result = new IntVector2(EpicMapWidth, EpicMapHeigth);
                     break;
+                case MapSize.EpicPlus:
+                    result = new IntVector2(WorldData.CustomMapSize_Max, WorldData.CustomMapSize_Max);
+                    break;
                 default:
                     throw new NotImplementedException();
             }
 
             return result;
         }
+        public static MapSize ToMapSize(IntVector2 tileSize)
+        {
+            var area = tileSize.Area();
+
+            for (MapSize sz = MapSize.Epic; sz >= 0; sz--)
+            {
+                if (area > SizeDimentions(sz).Area())
+                {
+                    return sz + 1;
+                }
+            }
+
+            return MapSize.Tiny;
+        }
 
         public static string SizeString(MapSize mapSize)
+        {
+            return SizeString(mapSize, SizeDimentions(mapSize));
+        }
+
+
+        public static string SizeString(MapSize mapSize, IntVector2 tileSize)
         {
             string name = null;
             switch (mapSize)
@@ -244,13 +286,12 @@ namespace VikingEngine.DSSWars
                 case MapSize.Large: name = DssRef.lang.Lobby_MapSizeOptLarge; break;
                 case MapSize.Huge: name = DssRef.lang.Lobby_MapSizeOptHuge; break;
                 case MapSize.Epic: name = DssRef.lang.Lobby_MapSizeOptEpic; break;
+                case MapSize.EpicPlus: name = DssRef.lang.Lobby_MapSizeOptEpic + "+"; break;
             }
-
-            var dim = SizeDimentions(mapSize);
             name += " " +
                 string.Format(DssRef.lang.Lobby_MapSizeDesc,
-                    Math.Round(dim.X * WorldData.TileWidthInKm),
-                    Math.Round(dim.Y * WorldData.TileWidthInKm));
+                    Math.Round(tileSize.X * WorldData.TileWidthInKm),
+                    Math.Round(tileSize.Y * WorldData.TileWidthInKm));
 
             return name;
         }
@@ -644,7 +685,7 @@ namespace VikingEngine.DSSWars
             //DebugWriteSize citiesSz = new DebugWriteSize();
             //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 11;
+            const int SaveMapVersion = 12;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.worldId.seed);

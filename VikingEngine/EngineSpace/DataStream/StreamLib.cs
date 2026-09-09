@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 
@@ -14,6 +15,7 @@ namespace VikingEngine
     static class StreamLib
     {
         public const string BackUpName = "_bak";
+        public static readonly string[] ValidTextureExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tif", ".tiff", ".dds" };
 
         public static void WriteFloatAsPercentU16(BinaryWriter w, float value, float max)
         {
@@ -25,6 +27,29 @@ namespace VikingEngine
         public static void FloatAsPercentU16_WriteEmpty(BinaryWriter w)
         {
             w.Write(ushort.MinValue);
+        }
+
+        public static void saveTextureAsPNG(Texture2D texture, FilePath iconPath)
+        {
+            iconPath.FileEnd = ".png";
+
+
+            //const int Size = 64;
+
+            try
+            {
+                using (FileStream stream = new FileStream(iconPath.CompleteLocalPath(true), FileMode.Create))
+                {
+                    //renderModel().SaveAsPng(stream, Size, Size);
+                    texture.SaveAsPng(stream, texture.Width, texture.Height);
+                }
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                throw;
+#endif
+            }
         }
 
         public static float ReadFloatFromPercentU16(BinaryReader r, float max)
@@ -428,6 +453,8 @@ namespace VikingEngine
             }
             return path;
         }
+
+        
     }
 
     interface IStreamIOCallback

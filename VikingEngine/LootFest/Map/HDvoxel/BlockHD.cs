@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DAMP_COLORS
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,19 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
         public const int ColorStep = 16;
         const int StartColor = ColorStep / 2;
+
+        const int ContrastPivot = 140;
+        const double Darker = 0.94;
+
+        const int StartColorR = 26;
+        const int StartColorG = 16;
+        const int StartColorB = 10;
+
+        public const int ColorStepR = 13;
+        public const int ColorStepG = 13;
+        public const int ColorStepB = 13;
+
+
         //const int ColorStepCount = (byte.MaxValue - StartColor) / ColorStep;
 
         public Color color;
@@ -141,12 +156,27 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         public static Color ToColor(ushort blockValue)
         {
             //61440,3840,240,15
+#if DAMP_COLORS
+            Color result = new Color(
+                (byte)Contrast(StartColorR + (blockValue >> 12) * ColorStepR),
+                (byte)Contrast(StartColorG + ((blockValue >> 8) & 15) * ColorStepG),
+                (byte)Contrast(StartColorB + ((blockValue >> 4) & 15) * ColorStepB));
 
+            int Contrast(int value)
+            {
+                if (value < ContrastPivot)
+                {
+                    value = (int)(value * Darker);
+                }
+
+                return value;
+            }
+#else
             Color result = new Color(
                 (byte)(StartColor + (blockValue >> 12) * ColorStep),
                 (byte)(StartColor + ((blockValue >> 8) & 15) * ColorStep),
                 (byte)(StartColor + ((blockValue >> 4) & 15) * ColorStep));
-
+#endif
             return result;
         }
 

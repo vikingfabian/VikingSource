@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -116,9 +116,17 @@ namespace VikingEngine.Graphics
 
         }
 
-        public static Sprite FromeName(SpriteName name)
+        public static Sprite FromName(SpriteName name)
         {
-            return DataLib.SpriteCollection.Sprites[(int)name];
+            if (DataLib.SpriteCollection.Sprites != null
+                && (int)name < DataLib.SpriteCollection.Sprites.Length)
+            {
+                return DataLib.SpriteCollection.Sprites[(int)name];
+            }
+            else
+            {
+                return new Sprite();
+            }
         }
     }
 }

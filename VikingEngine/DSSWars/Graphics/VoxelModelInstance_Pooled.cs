@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,7 @@ namespace VikingEngine.DSSWars
     {
         bool allowRecycle;
         public int inRecyclePool = 0;
+        public int PoolGeneration { get; private set; } = 0;
         public VoxelModelInstance_Pooled(bool allowRecycle)
             : base(null, false)
         {
@@ -42,6 +43,7 @@ namespace VikingEngine.DSSWars
             inPlayerCamera = EightBit.AllTrue;
             master = null;
             Rotation = RotationQuarterion.Identity;
+            PoolGeneration++;
 
             //inRecyclePool--;
             //if (inRecyclePool != 0)

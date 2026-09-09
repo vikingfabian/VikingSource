@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
@@ -28,13 +29,25 @@ namespace VikingEngine.Engine
         float time_16msCountDown = 0;
         public float TotalGameTime = 0;
         public bool exitApplication = false;
+
+        private float _lastUpdateListMs = 0f;
+        private float _lastSyncQueMs = 0f;
+
+        // TODO: Tie this to framerate.
+        // TODO: Should we allow disabling budget?
+        public static readonly double IdealSyncActionBudgetMs = 2.0;
+        public static readonly double IncreasedSyncActionBudgetMs = 6.0;
+        public static readonly double MaxSyncActionBudgetMs = 12.0d;
         public TextInput textInput = null;
         //public bool blockGameInput = false;
         //public string blockGameInputId = null;
 
         SpottedArray<IUpdateable>[] updateLists;
         SpottedArray<IUpdateable> oneTimeTriggers;
-        ConcurrentStack<ISyncAction> syncQue = new ConcurrentStack<ISyncAction>();
+
+        // No lock necessary. Inherently thread sage.
+        ConcurrentQueue<ISyncAction> _syncQue = new();
+        public int SyncQueCount => _syncQue.Count;
         
         public int GetUpdateListCount(UpdateType updateType)
         {
@@ -52,7 +65,7 @@ namespace VikingEngine.Engine
 
         public Update(GameState parentState)
         {
-            name = "Update for " + parentState.ToString();
+            name = "Update for " + (parentState != null ? parentState.ToString() : "TestState");
             updateLists = new SpottedArray<IUpdateable>[(int)UpdateType.NUM];
             for (int i = 0; i < (int)UpdateType.NUM; i++)
             {
@@ -105,32 +118,170 @@ namespace VikingEngine.Engine
             layout.End();
         }
 
+        public string DumpUpdateListSummary(UpdateType updateType = UpdateType.Full)
+        {
+            var typeCounts = new Dictionary<string, int>();
+            int total = 0;
+            var counter = new SpottedArrayCounter<IUpdateable>(updateLists[(int)updateType]);
+            while (counter.Next())
+            {
+                var item = counter.GetSelection;
+                if (item != null)
+                {
+                    string typeName = item.GetType().Name;
+                    if (!typeCounts.TryGetValue(typeName, out int currentCount))
+                    {
+                        currentCount = 0;
+                    }
+                    typeCounts[typeName] = currentCount + 1;
+                    total++;
+                }
+            }
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"=== UpdateList ({updateType}) Dump - Total Items: {total} ===");
+            var sorted = new List<KeyValuePair<string, int>>(typeCounts);
+            sorted.Sort((a, b) => b.Value.CompareTo(a.Value));
+            foreach (var kv in sorted)
+            {
+                sb.AppendLine($"{kv.Key}: {kv.Value}");
+            }
+            sb.AppendLine("==================================================");
+            return sb.ToString();
+        }
+
+        public string DumpUpdateListToFile(UpdateType updateType = UpdateType.Full)
+        {
+            try
+            {
+                string text = DumpUpdateListSummary(updateType);
+                string baseDir = VikingEngine.DataStream.FilePath.StorageDirectory();
+                if (string.IsNullOrEmpty(baseDir))
+                {
+                    baseDir = System.IO.Directory.GetCurrentDirectory();
+                }
+
+                string dir = System.IO.Path.Combine(baseDir, "DebugDumps");
+                if (!System.IO.Directory.Exists(dir))
+                {
+                    System.IO.Directory.CreateDirectory(dir);
+                }
+
+                string fileName = $"UpdateList_{updateType}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt";
+                string filePath = System.IO.Path.Combine(dir, fileName);
+                System.IO.File.WriteAllText(filePath, text);
+                VikingEngine.Debug.Log($"Update list dumped to: {filePath}");
+                return filePath;
+            }
+            catch (Exception ex)
+            {
+                VikingEngine.Debug.LogWarning($"Failed to dump update list: {ex.Message}");
+                return null;
+            }
+        }
+
         public bool MainUpdate(GameTime gameTime)
         {
+            long tCalc = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                tCalc = Stopwatch.GetTimestamp();
+            }
+
             CalcDeltaTime(gameTime);
+
+            float calcDeltaMs = 0f;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                calcDeltaMs = (float)Stopwatch.GetElapsedTime(tCalc).TotalMilliseconds;
+            }
+
+            long tPreInput = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                tPreInput = Stopwatch.GetTimestamp();
+            }
+
 #if PCGAME
             Ref.steam?.Update();
 #endif
 #if XBOX
             Ref.xbox.update();
 #endif
-            Time_Update(Ref.DeltaTimeMs);
-            TaskExt.Update();//Ref.asynchUpdate.update();
 
+            float preInputMs = 0f;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                preInputMs = (float)Stopwatch.GetElapsedTime(tPreInput).TotalMilliseconds;
+            }
+
+            Time_Update(Ref.DeltaTimeMs);
+
+            long tPostInput = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                tPostInput = Stopwatch.GetTimestamp();
+            }
+
+            TaskExt.Update();//Ref.asynchUpdate.update();
 
             VikingEngine.Input.InputLib.Update();
             Sound.Update();
+
+            float inputSoundMs = preInputMs;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                inputSoundMs += (float)Stopwatch.GetElapsedTime(tPostInput).TotalMilliseconds;
+            }
+
             if (Ref.gamestate.UpdateCount == 0)
             {
                 Ref.gamestate.FirstUpdate();
             }
             ++Ref.gamestate.UpdateCount;
             ++Ref.TotalFrameCount;
+
+            long tState = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                tState = Stopwatch.GetTimestamp();
+            }
+
             Ref.gamestate.Time_Update(Ref.DeltaTimeMs);
+
+            float gameStateMs = 0f;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                gameStateMs = (float)Stopwatch.GetElapsedTime(tState).TotalMilliseconds;
+            }
+
+            long tLazy = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                tLazy = Stopwatch.GetTimestamp();
+            }
 
             if (LasyUpdatePart == Engine.LasyUpdatePart.Part8_LasyUpdateList)
             {
                 Time_UpdateLasyList();
+            }
+
+            float lazyUpdateMs = 0f;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                lazyUpdateMs = (float)Stopwatch.GetElapsedTime(tLazy).TotalMilliseconds;
+            }
+
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                DebugExtensions.RenderOverlay.Instance.RecordEngineSubsystems(
+                    calcDeltaMs,
+                    _lastUpdateListMs,
+                    _lastSyncQueMs,
+                    gameStateMs,
+                    inputSoundMs,
+                    lazyUpdateMs
+                );
             }
 
             if (PlatformSettings.ViewSlowDown)
@@ -148,7 +299,7 @@ namespace VikingEngine.Engine
         public const float Time16msInSeconds = 1f / 30f;
         public const float Time60Fps = 1000f / 60f;
 
-        void Time_Update(float time)
+        internal void Time_Update(float time)
         {
             lazyUpdateAccumulatedTime_next += time;
             TotalGameTime += time;
@@ -177,8 +328,8 @@ namespace VikingEngine.Engine
                     ++Ref.GameTimePassed16ms;
                 }
             }
-            {//Calc Ref.GameTimePassed16ms
-                Ref.GameTimePassed16ms = 0;
+            {
+                Ref.TimePassed16ms = 0;
 
                 time_16msCountDown += Ref.DeltaTimeMs;
 
@@ -199,9 +350,17 @@ namespace VikingEngine.Engine
 
             //XGuide.Update();
             if (Ref.netSession != null)
+            {
                 Ref.netSession.Time_Update(time);
+            }
             ParticleHandler.Update(time);
 
+
+            long tUpdList = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                tUpdList = Stopwatch.GetTimestamp();
+            }
 
             IUpdateable updateMember;
             updateCounter.Reset();
@@ -224,22 +383,51 @@ namespace VikingEngine.Engine
                 }
             }
 
-            while (syncQue.TryPop(out ISyncAction syncAction))
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                _lastUpdateListMs = (float)Stopwatch.GetElapsedTime(tUpdList).TotalMilliseconds;
+            }
+
+            //var budget = IdealSyncActionBudgetMs;
+            var queueSize = _syncQue.Count;
+            var budget = queueSize > 200
+                ? MaxSyncActionBudgetMs
+                : queueSize > 50
+                    ? IncreasedSyncActionBudgetMs
+                    : IdealSyncActionBudgetMs;
+
+            // Thread-safe dequeue with dynamic time budget throttling.
+            var syncStartTimestamp = Stopwatch.GetTimestamp();
+            while (_syncQue.TryDequeue(out var syncAction))
             {
                 syncAction.runSyncAction();
+                if (Stopwatch.GetElapsedTime(syncStartTimestamp).TotalMilliseconds >= budget)
+                {
+                    break;
+                }
             }
-            
-                //for (int i = 0; i < syncQue.Count;++i)
-                //{
-                //    syncQue[i].runSyncAction();
-                //}
-                //syncQue.Clear();
-            
+
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                _lastSyncQueMs = (float)Stopwatch.GetElapsedTime(syncStartTimestamp).TotalMilliseconds;
+            }
         }
 
         public void AddSyncAction(ISyncAction syncAction)
-        {            
-            syncQue.Push(syncAction);   
+        {
+            if (syncAction != null)
+            {
+                // Thread-safe enqueue.
+                _syncQue.Enqueue(syncAction);
+            }
+        }
+
+        public void AddSyncAction(Action action)
+        {
+            if (action != null)
+            {
+                AddSyncAction(new SyncAction(action));
+            }
         }
 
         public void TriggerAllSteamWriters()
@@ -288,6 +476,7 @@ namespace VikingEngine.Engine
 
             if (PlatformSettings.DebugPerformanceText)
             {
+                DebugExtensions.MemoryOverlay.Instance.RecordFrame(Ref.DeltaTimeMs);
                 OneSecondCounter += Ref.DeltaTimeSec;
 
                 if (OneSecondCounter >= 1)
@@ -313,11 +502,35 @@ namespace VikingEngine.Engine
 
         public static void SetFrameRate(int fps)
         {
-            Ref.main.TargetElapsedTime = new TimeSpan((long)(TimeSpan.TicksPerMillisecond * (1000.0 / (double)fps)));
+            var target = new TimeSpan((long)(TimeSpan.TicksPerMillisecond * (1000.0 / (double)fps)));
+            var maxElapsed = TimeSpan.FromTicks(Math.Max(TimeSpan.FromMilliseconds(500).Ticks, target.Ticks * 4));
+
+            if (Ref.main != null)
+            {
+                // MonoGame enforces TargetElapsedTime <= MaxElapsedTime.
+                // Order assignments to prevent ArgumentOutOfRangeException on any FPS setting:
+                if (target > Ref.main.MaxElapsedTime)
+                {
+                    Ref.main.MaxElapsedTime = maxElapsed;
+                    Ref.main.TargetElapsedTime = target;
+                }
+                else
+                {
+                    Ref.main.TargetElapsedTime = target;
+                    Ref.main.MaxElapsedTime = maxElapsed;
+                }
+
+                Ref.TargetDeltaTimeMs = (float)Ref.main.TargetElapsedTime.TotalMilliseconds;
+                Ref.TargetDeltaTimeSec = (float)Ref.main.TargetElapsedTime.TotalSeconds;
+            }
+            else
+            {
+                Ref.TargetDeltaTimeMs = (float)target.TotalMilliseconds;
+                Ref.TargetDeltaTimeSec = (float)target.TotalSeconds;
+            }
+
             Ref.UpdateTimes30FPS = fps / 30;
             Ref.UpdateTimes60FPS = fps / 60f;
-            Ref.TargetDeltaTimeMs = (float)Ref.main.TargetElapsedTime.TotalMilliseconds;
-            Ref.TargetDeltaTimeSec =  (float)Ref.main.TargetElapsedTime.TotalSeconds;
         }
 
         public static int MillisecToFrames(float ms)

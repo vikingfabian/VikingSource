@@ -922,6 +922,13 @@ namespace VikingEngine
             float percent = currentPos / maxPos;
             return new Pan(percent * 2 - 1);
         }
+
+        public static Pan ScreenXToPan(float xpos)
+        {
+            float percent = xpos / Engine.Screen.Width;
+            return new Pan(percent * 2 - 1);
+        }
+
         public static Pan Left
         {
             get { return new Pan(Min); }

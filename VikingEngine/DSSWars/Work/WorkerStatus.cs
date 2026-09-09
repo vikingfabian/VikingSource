@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1270,7 +1270,7 @@ namespace VikingEngine.DSSWars.Work
 
                         if (subTile.terrainAmount >= size.harvestReady)
                         {
-                            subTile.terrainAmount -= size.maxSize;
+                            subTile.terrainAmount = (byte)(subTile.terrainAmount - size.maxSize);
 
                             EditSubTile editTile = new EditSubTile(city.pfaction, false, subTileEnd, subTile, false, true, false);
                             editTile.Submit();

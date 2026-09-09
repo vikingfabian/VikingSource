@@ -159,6 +159,7 @@ namespace VikingEngine.DSSWars
 
         override public void keyboardSetup()
         {
+            moveCursor = new EmptyDirectionalMap();
             //ControllerCancel = new NoButtonMap();
             Controller_ObjectMenuToggle = new NoButtonMap();
             ControllerMessageClick = new NoButtonMap();
@@ -432,6 +433,7 @@ namespace VikingEngine.DSSWars
             //wasd = new DirectionalButtonsMap(null, null, null, null);
             move = new DirectionalXboxMap(ThumbStickType.Left, false, inputSource.controllerIndex);
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);
+            moveCursor = move;
 
             guiScroll = new EmptyDirectionalMap();
             cameraStick =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);

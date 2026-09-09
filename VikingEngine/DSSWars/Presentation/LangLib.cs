@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
@@ -26,6 +27,13 @@ namespace VikingEngine.DSSWars.Presentation
 {
     static class LangLib
     {
+
+        public static string CanvasSize(string x, string y)
+        {
+            string xdim = string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Editor_Canvas_Dimension_X, x);
+            string ydim = string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Editor_Canvas_Dimension_Y, y);
+            return string.Format( DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Editor_Canvas_Size, xdim + ", " + ydim);
+        }
         public static string Biome(CityBiome biom)
         {
             switch (biom)
@@ -46,6 +54,30 @@ namespace VikingEngine.DSSWars.Presentation
                     return TextLib.Error;
             }
         }
+        //public static string Biome(BiomType biom)
+        //{
+        //    switch (biom)
+        //    {
+        //        case BiomType.Hills:
+        //            return ".hills";
+        //        case BiomType.Green:
+        //            return DssRef.lang.CityBiome_Fields;
+        //        case BiomType.GreenDry:
+        //            return DssRef.lang.CityBiome_Fields;
+        //        case BiomType.Frozen:
+        //            return DssRef.lang.CityBiome_Frozen;
+        //        case BiomType.Forest:
+        //            return DssRef.lang.CityBiome_Forest;
+        //        case BiomType.Mountain:
+        //            return DssRef.lang.CityBiome_Mountain;
+        //        case BiomType.Desolate:
+        //            return DssRef.lang.CityBiome_Desolate;
+        //        case BiomType.Desert:
+        //            return DssRef.lang.CityBiome_Desert;
+        //        default:
+        //            return TextLib.Error;
+        //    }
+        //}
 
         public static string FactionStartSizeName(FactionStartSize size)
         {
