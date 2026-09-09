@@ -478,38 +478,38 @@ namespace VikingEngine.DSSWars.Conscript
             //        break;
 
             //}
-            switch (LockedSpecialization(weapon))
-            {
-                case SpecializationType.AntiCavalry:
-                    return Specializations_AntiCavalry;
+            //switch (LockedSpecialization(weapon))
+            //{
+            //    case SpecializationType.AntiCavalry:
+            //        return Specializations_AntiCavalry;
 
-                case SpecializationType.Siege:
-                    return Specializations_Siege;
-            }
+            //    case SpecializationType.Siege:
+            //        return Specializations_Siege;
+            //}
 
             return Specializations_Default;
         }
 
-        public static SpecializationType LockedSpecialization(ItemResourceType weapon)
-        {
-            switch (weapon)
-            {
+        //public static SpecializationType LockedSpecialization(ItemResourceType weapon)
+        //{
+        //    switch (weapon)
+        //    {
 
-                case ItemResourceType.Pike:
-                case ItemResourceType.HandSpear:
-                case ItemResourceType.TwoHandSword:
-                    return SpecializationType.AntiCavalry;
+        //        //case ItemResourceType.Pike:
+        //        //case ItemResourceType.HandSpear:
+        //        //case ItemResourceType.TwoHandSword:
+        //        //    return SpecializationType.AntiCavalry;
 
-                case ItemResourceType.Ballista:
-                case ItemResourceType.SiegeCannonIron:
-                case ItemResourceType.SiegeCannonBronze:
-                    return SpecializationType.Siege;
+        //        case ItemResourceType.Ballista:
+        //        case ItemResourceType.SiegeCannonIron:
+        //        case ItemResourceType.SiegeCannonBronze:
+        //            return SpecializationType.Siege;
 
-                default:
-                    return SpecializationType.None;
+        //        default:
+        //            return SpecializationType.None;
 
-            }
-        }
+        //    }
+        //}
 
         public void toHud(RichBoxContent content, bool compact)
         {

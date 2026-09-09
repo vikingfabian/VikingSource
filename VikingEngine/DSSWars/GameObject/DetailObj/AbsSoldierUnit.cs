@@ -876,6 +876,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void takeDamage(int damageAmount, float blockReduce, AbsSoldierUnit meleeAttacker, Rotation1D attackDir, PFaction enemyFaction, bool fullUpdate, out bool blocked)
         {
+            if (damageAmount <= 0)
+            {
+                blocked = true;
+                if (fullUpdate)
+                {
+                    GoreManager.ViewBlock(this, damageAmount, attackDir);
+                }
+                return;
+            }
+
             float diff = Rotation1D.AngleDifference_Absolute(attackDir.radians, rotation.radians);
 
             if (diff > MathExt.TauOver3 && Ref.peRnd.ChanceF(soldierData.blockChance * blockReduce))
@@ -904,25 +914,8 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     recievedProjectileAttackWhileIdle = state.idle;
 
-                    //if (meleeAttacker.IsNetHosted)
-                    //{
-                        //if (IsNetHosted)
-                        //{
                     reduceHealth(damageAmount, enemyFaction, fullUpdate);
-                        //}
-                        //else
-                        //{
-                        //    //Send damage to client
-                        //    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssAttackDamage, Network.PacketReliability.Reliable, out var packet);
-                        //    {
-                        //        w.Write((ushort)damageAmount);
-                        //        w.Write(attackDir.ByteDir);
-                        //        Net.ObjectId.WriteSoldier(w, this);
-                        //    }
-                        //    packet.EndWrite_Asynch();
-                        //}
-                    //}
-
+                    
                     if (fullUpdate)
                     {
                         GoreManager.ViewDamage(this, damageAmount, attackDir);
@@ -1456,18 +1449,6 @@ namespace VikingEngine.DSSWars.GameObject
                 if (mainAttack)
                 {
                     damage = soldierData.attackDamage;
-
-                    if (group != null &&
-                        group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry)
-                    {
-                        switch (target.DetailUnitType())
-                        {
-                            case UnitBuildType.ConscriptCavalry:
-                            case UnitBuildType.ConscriptBalkong:
-                                damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
-                                break;
-                        }
-                    }
                 }
                 else
                 {
@@ -1476,9 +1457,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                 damage += damage * group.soldierAttackDamageBonus;
 
+                bool isMelee = soldierData.mainAttack == AttackType.Melee && mainAttack;
+                attack_applyAbilities(target, isMelee, blockReduce, ref damage);
+
                 attackDir = angleToUnit(target);
 
-                if (soldierData.mainAttack == AttackType.Melee && mainAttack)
+                if (isMelee)
                 {
                     if (fullUpdate)
                     {
@@ -1523,11 +1507,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    if (target.soldierData.arrowWeakness)
-                    {
-                        damage = MathExt.MultiplyInt(DssConst.ArrowWeaknessBonusMultiply, damage);
-                    }
-
                     if (mainAttack)
                     {
                         Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage, blockReduce, soldierData.attackSplashCount);
@@ -1546,6 +1525,79 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
+        }
+
+        void attack_applyAbilities(AbsSoldierUnit target, bool isMelee, float blockReduce, ref int damage)
+        {
+            float defenderParry = target.soldierData.parry * blockReduce;
+            
+            if (group != null)
+            {
+                if (group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry &&
+                   target.soldierData.unitFilter.Contains(UnitFilterType.Animal))
+                {
+                    damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
+                }
+                
+                if (soldierData.abilities.Get((int)SoldierAbility.AntiPlateArmor) && target.bPlateArmor())
+                {
+                    damage = MathExt.MultiplyInt(4, damage);
+                    defenderParry -= 25;
+                }
+            }
+
+            if (isMelee)
+            {
+                if (target.soldierData.abilities.Get((int)SoldierAbility.AntiSpear) && bSpear())
+                {
+                    defenderParry += 50;
+                }
+
+                //if (soldierData.abilities.Get((int)SoldierAbility.DefenceBreak))
+                //{
+                //    target.battleData?.BreakBlocking();
+                //}
+
+                const float MaxishParry = 75;
+                const float MaxParryChance = 0.8f;
+                //Calculate parry
+                if (defenderParry > soldierData.parry)
+                { 
+                    float diff = defenderParry - soldierData.parry;
+                    if (Ref.peRnd.ChanceF(diff / MaxishParry * MaxParryChance + 0.05f))
+                    {
+                        damage = 0;
+                    }
+                }
+            }
+            else
+            {
+                if (target.soldierData.abilities.Get((int)SoldierAbility.ArrowWeakness))
+                {
+                    damage = MathExt.MultiplyInt(DssConst.ArrowWeaknessBonusMultiply, damage);
+                }
+            }
+
+            
+        }
+
+        public bool bPlateArmor()
+        {
+            if (group != null)
+            {
+                return group.soldierConscript.conscript.armorLevel == ItemResourceType.LightPlateArmor ||
+                    group.soldierConscript.conscript.armorLevel == ItemResourceType.FullPlateArmor;
+            }
+            return false;
+        }
+        public bool bSpear()
+        {
+            if (group != null)
+            {
+                return group.soldierConscript.conscript.weapon == ItemResourceType.HandSpear ||
+                    group.soldierConscript.conscript.weapon == ItemResourceType.Pike;
+            }
+            return false;
         }
 
         public bool IsAttacking

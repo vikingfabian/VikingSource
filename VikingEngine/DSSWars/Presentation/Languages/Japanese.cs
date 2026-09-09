@@ -2021,7 +2021,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_Specialization_Sea => "海";
         public override string Conscript_Specialization_Siege => "攻城";
         public override string Conscript_Specialization_Traditional => "伝統的";
-        public override string Conscript_Specialization_AntiCavalry => "対騎兵";
+        public override string Conscript_Ability_AntiCavalry => "対騎兵";
 
         public override string Conscription_Status_CollectingEquipment => "装備を集めています: {0}";
         public override string Conscription_Status_CollectingMen => "兵士を集めています: {0}";

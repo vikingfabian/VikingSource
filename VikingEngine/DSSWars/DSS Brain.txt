@@ -8,9 +8,15 @@ x hide achievements
 X timeline checkbox on steamworks
 
 
-## QoL Part 2 ##
+## QoL Part 2 ## (December 17)
 * The color range of voxel models have been adjusted
 
+Soldier abilities
+* Added a parry system. Weapons with high parry will block melee attacks from those with low.
+* Armor and shields will add parry.
+* Added and reworked abilities: AntiSpear, AntiCavalry, AntiPlateArmor, ArrowWeakness and DefenceBreak
+* Removed the locked specialization on long hand weapons and warmachines
+* Warhammer are now only strong against plate armor 
 
 Performance
 * Work has been put into keeping down the creeping memory (RAM) usage (contribution made by Uygar "Agent" Yilmaz)
@@ -19,13 +25,10 @@ Performance
 * Fixed memory leaks in path finding (Uygar "Agent" Yilmaz)
 * Model instance rendering (Uygar "Agent" Yilmaz)
 * The terrain shadow renderer now supports textures (Uygar "Agent" Yilmaz)
-
+* Fixed stuck game process on exit (Uygar "Agent" Yilmaz)
 
 
 #MAP 2.0 UPDATE
-* Fixed stuck game process on exit
-* Cubic far group models
-* The colors are muted and have higher contrast 
 
 World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.

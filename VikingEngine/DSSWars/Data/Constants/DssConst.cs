@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars
         public static int WeaponDamage_LongSword = 120;
 
         public static int WeaponDamage_Pike = 80;
-        public static int WeaponDamage_Warhammer = 100;
+        public static int WeaponDamage_Warhammer = 50;
         public static int WeaponDamage_TwoHandSword = 140;
         public static int WeaponDamage_KnigtsLance = 200;
         public static int WeaponDamage_MithrilSword = 600;

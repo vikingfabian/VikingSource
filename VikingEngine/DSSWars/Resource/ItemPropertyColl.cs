@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.ToGG.MoonFall.GO;
 
@@ -64,11 +65,11 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Meat, CityResourceIndex.Meat, DefaultWeight, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
 
             new ItemProperties(ItemResourceType.RawFood_Group, CityResourceIndex.rawFood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.FoodStorage).AddItemSource(
-                new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WheatFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
+            new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WheatFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
 
             new ItemProperties(ItemResourceType.Linen, CityResourceIndex.skinLinnen, 1f / 10, WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.SkinLinen_Group, CityResourceIndex.skinLinnen, 1f / 10, WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage).AddItemSource(
-                new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LinenFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
+            new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LinenFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
             new ItemProperties(ItemResourceType.WoodContainer, CityResourceIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.PotContainer, CityResourceIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_clay, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Container, CityResourceIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay, StorageType.MaterialStorage).AddItemSource(new ItemSource(Build.BuildAndExpandType.Carpenter));
@@ -126,11 +127,23 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.MountMithrilArmor, CityResourceIndex.MountMithrilArmor, DefaultWeight, WorkPriorityType.craftMountMithrilArmor, CraftResourceLib.MountMithrilArmor, null, StorageType.ArmorStorage);
 
             // --- Shields ---
-            new ItemProperties(ItemResourceType.BucklerShield, CityResourceIndex.BucklerShield, DefaultWeight, WorkPriorityType.craftBucklerShield, CraftResourceLib.BucklerShield, null, StorageType.WeaponStorage);
-            new ItemProperties(ItemResourceType.RoundShield, CityResourceIndex.RoundShield, DefaultWeight, WorkPriorityType.craftRoundShield, CraftResourceLib.RoundShield, null, StorageType.WeaponStorage);
-            new ItemProperties(ItemResourceType.HeaterShield, CityResourceIndex.HeaterShield, DefaultWeight, WorkPriorityType.craftHeaterShield, CraftResourceLib.HeaterShield, null, StorageType.WeaponStorage);
-            new ItemProperties(ItemResourceType.TowerShield, CityResourceIndex.TowerShield, DefaultWeight, WorkPriorityType.craftTowerShield, CraftResourceLib.TowerShield, null, StorageType.WeaponStorage);
-
+            {
+                var shield =  new ItemProperties(ItemResourceType.BucklerShield, CityResourceIndex.BucklerShield, DefaultWeight, WorkPriorityType.craftBucklerShield, CraftResourceLib.BucklerShield, null, StorageType.WeaponStorage);
+                shield.soldierData.parry = 25;
+            }
+            {
+                var shield = new ItemProperties(ItemResourceType.RoundShield, CityResourceIndex.RoundShield, DefaultWeight, WorkPriorityType.craftRoundShield, CraftResourceLib.RoundShield, null, StorageType.WeaponStorage);
+                shield.soldierData.parry = 20;
+            }
+            {
+                var shield = new ItemProperties(ItemResourceType.HeaterShield, CityResourceIndex.HeaterShield, DefaultWeight, WorkPriorityType.craftHeaterShield, CraftResourceLib.HeaterShield, null, StorageType.WeaponStorage);
+                shield.soldierData.parry = 10;
+            }
+            {
+                var shield = new ItemProperties(ItemResourceType.TowerShield, CityResourceIndex.TowerShield, DefaultWeight, WorkPriorityType.craftTowerShield, CraftResourceLib.TowerShield, null, StorageType.WeaponStorage);
+                shield.soldierData.parry = 5;
+                shield.soldierData.abilities.Set((int)SoldierAbility.AntiSpear, true);
+            }
             // --- Buildings & Tools ---
             new ItemProperties(ItemResourceType.Palisade, CityResourceIndex.Palisade, DefaultWeight, WorkPriorityType.craftPalisade, CraftResourceLib.Palisade, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Toolkit, CityResourceIndex.Toolkit, DefaultWeight, WorkPriorityType.craftToolkit, CraftResourceLib.Toolkit, null, StorageType.MaterialStorage);
@@ -799,6 +812,7 @@ namespace VikingEngine.DSSWars.Resource
                 ref var soldier = ref armor.soldierData;
                 soldier.basehealth = DssConst.ArmorHealth_Bronze;
                 soldier.modelData.armor = ArmorLevel.Iron;
+                soldier.parry = 1;
             }
 
             // Iron Armor → Iron
@@ -807,6 +821,7 @@ namespace VikingEngine.DSSWars.Resource
                 ref var soldier = ref armor.soldierData;
                 soldier.basehealth = DssConst.ArmorHealth_Mail;
                 soldier.modelData.armor = ArmorLevel.Iron;
+                soldier.parry = 2;
             }
 
             // Heavy Iron Armor → Iron
@@ -815,6 +830,7 @@ namespace VikingEngine.DSSWars.Resource
                 ref var soldier = ref armor.soldierData;
                 soldier.basehealth = DssConst.ArmorHealth_HeavyMail;
                 soldier.modelData.armor = ArmorLevel.Iron;
+                soldier.parry = 4;
             }
 
             // Light Plate Armor → Steel
@@ -823,6 +839,7 @@ namespace VikingEngine.DSSWars.Resource
                 ref var soldier = ref armor.soldierData;
                 soldier.basehealth = DssConst.ArmorHealth_Plate;
                 soldier.modelData.armor = ArmorLevel.Steel;
+                soldier.parry = 6;
             }
 
             // Full Plate Armor → Steel
@@ -831,6 +848,7 @@ namespace VikingEngine.DSSWars.Resource
                 ref var soldier = ref armor.soldierData;
                 soldier.basehealth = DssConst.ArmorHealth_FullPlate;
                 soldier.modelData.armor = ArmorLevel.Steel;
+                soldier.parry = 10;
             }
 
             // Mithril Armor → Masterful
@@ -839,6 +857,7 @@ namespace VikingEngine.DSSWars.Resource
                 ref var soldier = ref armor.soldierData;
                 soldier.basehealth = DssConst.ArmorHealth_Mithril;
                 soldier.modelData.armor = ArmorLevel.Masterful;
+                soldier.parry = 15;
             }
 
             //MOUNT ARMOR
@@ -950,6 +969,7 @@ namespace VikingEngine.DSSWars.Resource
                 weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
+                soldier.abilities.Set((int)SoldierAbility.AntiSpear, true);
                 soldier.attackDamage = DssConst.WeaponDamage_BronzeSword;
                 soldier.attackSplashCount = 0;
                 soldier.attackDamageStructure = soldier.attackDamage;
@@ -964,6 +984,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.BronzeSword;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.parry = 2;
             }
 
             {
@@ -971,6 +992,7 @@ namespace VikingEngine.DSSWars.Resource
                 weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
+                soldier.abilities.Set((int)SoldierAbility.AntiSpear, true);
                 soldier.attackDamage = DssConst.WeaponDamage_ShortSword;
                 soldier.attackSplashCount = 0;
                 soldier.attackDamageStructure = soldier.attackDamage;
@@ -985,6 +1007,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ShortSword;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.parry = 15;
             }
 
             {
@@ -1006,6 +1029,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Sword;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.parry = 25;
             }
 
             {
@@ -1026,6 +1050,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.LongSword;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.parry = 22;
             }
 
             {
@@ -1037,7 +1062,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackDamageStructure = soldier.attackDamage;
                 soldier.attackDamageSea = soldier.attackDamage;
 
-                soldier.arrowWeakness = true;
+                soldier.abilities.Set((int)SoldierAbility.AntiCavalry, true);
+                soldier.abilities.Set((int)SoldierAbility.ArrowWeakness, true);//arrowWeakness = true;
                 soldier.mainAttack = AttackType.Melee;
                 soldier.attackRange = 0.055f;
                 soldier.modelName = LootFest.VoxelModelName.wars_piker;
@@ -1049,6 +1075,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Pike;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.parry = 2;
             }
 
             {
@@ -1061,7 +1088,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackDamageStructure = soldier.attackDamage;
                 soldier.attackDamageSea = soldier.attackDamage;
 
-                soldier.arrowWeakness = true;
+                soldier.abilities.Set((int)SoldierAbility.AntiCavalry, true);
+                //soldier.abilities.Set((int)SoldierAbility.ArrowWeakness, true);
                 soldier.mainAttack = AttackType.Melee;
                 soldier.attackRange = 0.05f;
                 soldier.modelName = LootFest.VoxelModelName.wars_spearman;
@@ -1080,6 +1108,7 @@ namespace VikingEngine.DSSWars.Resource
                 weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
+                soldier.abilities.Set((int)SoldierAbility.AntiPlateArmor, true);
                 soldier.attackDamage = DssConst.WeaponDamage_Warhammer;
                 soldier.attackSplashCount = 0;
                 soldier.attackDamageStructure = soldier.attackDamage;
@@ -1092,10 +1121,11 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.icon = SpriteName.WarsUnitIcon_Hammerknight;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.6f;
 
-                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
+                soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Warhammer;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.parry = 4;
             }
 
             {
@@ -1107,7 +1137,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.attackDamageStructure = soldier.attackDamage;
                 soldier.attackDamageSea = soldier.attackDamage;
 
-                soldier.arrowWeakness = true;
+                soldier.abilities.Set((int)SoldierAbility.ArrowWeakness, true);
+                soldier.abilities.Set((int)SoldierAbility.AntiCavalry, true);
                 soldier.mainAttack = AttackType.Melee;
                 soldier.attackRange = 0.08f;
                 soldier.modelName = LootFest.VoxelModelName.wars_twohand;
@@ -1116,11 +1147,12 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.icon = SpriteName.WarsUnitIcon_TwoHand;
                 soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
-                soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+                soldier.blockReducingAttack_Inv = DssConst.MediumBlockReduceAttack_Inv;
                 soldier.blocksRefillTimeSec = DssConst.LowBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.TwoHandSword;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.parry = 20;
             }
 
             //{
@@ -1178,6 +1210,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.MithrilSword;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.parry = 22;
             }
 
             {

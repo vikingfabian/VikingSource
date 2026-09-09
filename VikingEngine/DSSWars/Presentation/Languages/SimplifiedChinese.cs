@@ -2018,7 +2018,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_Specialization_Sea => "海战";
         public override string Conscript_Specialization_Siege => "攻城";
         public override string Conscript_Specialization_Traditional => "传统";
-        public override string Conscript_Specialization_AntiCavalry => "反骑兵";
+        public override string Conscript_Ability_AntiCavalry => "反骑兵";
 
         public override string Conscription_Status_CollectingEquipment => "收集装备: {0}";
         public override string Conscription_Status_CollectingMen => "集结士兵: {0}";

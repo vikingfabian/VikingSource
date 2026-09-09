@@ -18,6 +18,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         AntiCavalry,
         AntiPlateArmor,
         ArrowWeakness,
+        //DefenceBreak,
+        NUM
     }
 
     struct SoldierData
@@ -104,6 +106,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f / blocksRefillTimeSec))));
             HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
+
+            Resource.ResourceLib.SoldierAbilities(this, content);
         }
 
         public void applySkillBonus(float skillBonus, float mobileBonus)

@@ -19,7 +19,13 @@ namespace VikingEngine.DSSWars.Presentation
 
     partial class TodoTranslation
     {
+        public string Conscript_Parry => "Parry";
+        public string Conscript_Parry_Description => "Higher parry will block some melee attacks";
 
+        public string Conscript_Ability_AntiSpear => "Strong against spear";
+        public string Conscript_Ability_AntiPlate => "Anti plate armor";
+        public string Conscript_Ability_ArrowWeakness => "Weak to projectiles";
+        //public string Conscript_Ability_DefenceBreak => "Breaks soldier block";
 
     }
 }

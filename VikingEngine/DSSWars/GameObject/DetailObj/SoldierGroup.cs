@@ -1535,6 +1535,8 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbImage(SpriteName.WarsMobilityIcon));
             args.content.hspace();
             args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
+
+           
         }
 
         public override void toTooltip(ObjectHudArgs args)

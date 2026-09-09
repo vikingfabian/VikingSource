@@ -2032,7 +2032,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_Specialization_Sea => "Navale";
         public override string Conscript_Specialization_Siege => "Assedio";
         public override string Conscript_Specialization_Traditional => "Tradizionale";
-        public override string Conscript_Specialization_AntiCavalry => "Anticavalleria";
+        public override string Conscript_Ability_AntiCavalry => "Anticavalleria";
 
         public override string Conscription_Status_CollectingEquipment => "Raccolta equipaggiamento: {0}";
         public override string Conscription_Status_CollectingMen => "Reclutamento uomini: {0}";

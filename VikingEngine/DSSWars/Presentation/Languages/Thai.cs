@@ -2048,7 +2048,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_Specialization_Sea => TextLib.ThaiConv("การ|รบ|ทาง|เรือ");
         public override string Conscript_Specialization_Siege => TextLib.ThaiConv("การ|ล้อม|เมือง");
         public override string Conscript_Specialization_Traditional => TextLib.ThaiConv("แบบ|ดั้งเดิม");
-        public override string Conscript_Specialization_AntiCavalry => TextLib.ThaiConv("ต้าน|ทหาร|ม้า");
+        public override string Conscript_Ability_AntiCavalry => TextLib.ThaiConv("ต้าน|ทหาร|ม้า");
 
         public override string Conscription_Status_CollectingEquipment => TextLib.ThaiConv("กำลัง|รวบรวม|อุปกรณ์: {0}");
         public override string Conscription_Status_CollectingMen => TextLib.ThaiConv("กำลัง|รวบรวม|พล|ทหาร: {0}");
