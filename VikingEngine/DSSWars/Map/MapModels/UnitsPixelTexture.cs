@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapModels
 {
 
 

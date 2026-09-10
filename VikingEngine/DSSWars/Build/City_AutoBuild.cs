@@ -13,7 +13,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.EntityComponent;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;

@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Tests.Legacy;
 using Xunit;
@@ -15,7 +15,7 @@ namespace VikingEngine.Tests
         [Fact]
         public void SubTile_PackedSize_Is16Bytes()
         {
-            int size = Marshal.SizeOf<MapTile_>();
+            int size = Marshal.SizeOf<MapTile1_1>();
             Assert.Equal(16, size);
         }
 
@@ -30,7 +30,7 @@ namespace VikingEngine.Tests
         public void SubTile_SizeReduction_Saves12BytesPerInstance()
         {
             int legacySize = Marshal.SizeOf<LegacySubTile>();
-            int newSize = Marshal.SizeOf<MapTile_>();
+            int newSize = Marshal.SizeOf<MapTile1_1>();
 
             Assert.Equal(28, legacySize);
             Assert.Equal(16, newSize);
@@ -59,7 +59,7 @@ namespace VikingEngine.Tests
             Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_South);
             Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_West);
             Assert.Equal(TileContent.NONE, tile.tileContent);
-            Assert.Equal(Height.DeepWaterHeight, tile.heightLevel);
+            Assert.Equal(ColorHeight.DeepWaterHeight, tile.heightLevel);
         }
 
         [Fact]
@@ -73,16 +73,16 @@ namespace VikingEngine.Tests
             using (var ms = new MemoryStream())
             using (var w = new BinaryWriter(ms))
             {
-                var prev = new MapTile_();
+                var prev = new MapTile1_1();
                 original.write(w, ref prev);
                 data = ms.ToArray();
             }
 
-            MapTile_ loaded = new MapTile_();
+            MapTile1_1 loaded = new MapTile1_1();
             using (var ms = new MemoryStream(data))
             using (var r = new BinaryReader(ms))
             {
-                var prev = new MapTile_();
+                var prev = new MapTile1_1();
                 loaded.read(r, ref prev, 12);
             }
 

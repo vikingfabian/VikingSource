@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 
@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 case WorkType.GatherFoil:
                     
-                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile_ subTile))
+                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
                         {
 
                             switch (subTile.GetFoilType())

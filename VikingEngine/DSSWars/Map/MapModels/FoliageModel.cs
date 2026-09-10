@@ -7,7 +7,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.MoonFall;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapModels
 {
     //struct FlagModel //: FoliageModel
     //{

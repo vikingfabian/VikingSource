@@ -2,20 +2,22 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Map.Settings
 {
-    class Height
+    class ColorHeight
     {
         public const int DeepWaterHeight = 0;
         public const int LowerWaterHeight = 1;
-        public const int LowWaterHeight = 2;
-        public const int MinLandHeight = 3;
-        public const int MineHeightStart = 6;
-        public const int MountainHeightStart = 7;
-        public const int MountainLowPeak = 8;
+        public const int WaterSurfaceHeight = MapHeight2.WaterColorLayersCount;
+        //public const int LowWaterHeight = 2;
+        //public const int MinLandHeight = 3;
+        //public const int MineHeightStart = 6;
+        //public const int MountainHeightStart = 7;
+        //public const int MountainLowPeak = 8;
 
-        public const int MaxHeight = 9;
+        public const int MaxHeight = byte.MaxValue / MapHeight2.ColorLayerHeight; //7
 
         
         //public const float LowWater_Tile2Y = LowWaterHeight * DefaultGroundYoffset;
@@ -49,7 +51,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         //public Color color;
         public double groundYoffsetChance;
         public float groundYoffset;
-        public float[,] mountainPeak = null;
+        //public float[,] mountainPeak = null;
         //public SurfaceTextureType textureType = SurfaceTextureType.None;
         //public bool[] foilEnabled = new bool[(int)SubTileFoilType.NUM];
 
@@ -58,18 +60,18 @@ namespace VikingEngine.DSSWars.Map.Settings
         public int influenceCost;
 
         public float percTree = 0;
-        public bool isMountainPeek= false;
+        //public bool isMountainPeek= false;
 
 
-        public Height(int height)
+        public ColorHeight(int colorHeight)
         {
             groundYoffsetChance = DefaultGroundYoffsetChance;
             groundYoffset = DefaultGroundYoffset;
 
 
-            switch (height)
+            switch (colorHeight)
             {
-                case DeepWaterHeight:
+                case 0:
                     influenceCost = 2000;
                     break;
 
@@ -77,7 +79,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                     influenceCost = 1600;
                     break;
 
-                case LowWaterHeight:
+                case MapHeight2.WaterColorLayersCount:
                     influenceCost = 800;
                     break;
 
@@ -108,7 +110,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 case 7:
                     groundYoffset = DefaultGroundYoffset * 1.2f;
                     groundYoffsetChance = 0.7;
-                    createMountainPeak(0.07f);
+                    //createMountainPeak(0.07f);
                     culture = TerrainCultureType.Mountain;
 
                     percTree = 0.4f;
@@ -118,43 +120,43 @@ namespace VikingEngine.DSSWars.Map.Settings
                 case 8:
                     groundYoffset = DefaultGroundYoffset * 1.8f;
                     groundYoffsetChance = 0.8;
-                    createMountainPeak(0.20f);
+                    //createMountainPeak(0.20f);
                     culture = TerrainCultureType.Mountain;
 
                     influenceCost = 100;
-                    isMountainPeek = true;
+                    //isMountainPeek = true;
                     break;
 
-                case 9:
-                    groundYoffset = DefaultGroundYoffset * 2.2f;
-                    groundYoffsetChance = 0.8;
-                    createMountainPeak(0.28f);
-                    culture = TerrainCultureType.Mountain;
+                //case 9:
+                //    groundYoffset = DefaultGroundYoffset * 2.2f;
+                //    groundYoffsetChance = 0.8;
+                //    //createMountainPeak(0.28f);
+                //    culture = TerrainCultureType.Mountain;
 
-                    influenceCost = 200;
-                    isMountainPeek = true;
-                    break;
+                //    influenceCost = 200;
+                //    //isMountainPeek = true;
+                //    break;
 
                 default: throw new NotImplementedException();
             }
         }
 
-        void createMountainPeak(float peakHeight)
-        {
-            mountainPeak = new float[WorldData.TileSubDivitions, WorldData.TileSubDivitions];
+        //void createMountainPeak(float peakHeight)
+        //{
+        //    mountainPeak = new float[WorldData.TileSubDivitions, WorldData.TileSubDivitions];
 
-            ForXYLoop loop = new ForXYLoop(new IntVector2(WorldData.TileSubDivitions));
+        //    ForXYLoop loop = new ForXYLoop(new IntVector2(WorldData.TileSubDivitions));
 
-            Vector2 center = new Vector2((WorldData.TileSubDivitions - 1) * 0.5f);
+        //    Vector2 center = new Vector2((WorldData.TileSubDivitions - 1) * 0.5f);
 
-            float half = WorldData.TileSubDivitions * 0.5f;
+        //    float half = WorldData.TileSubDivitions * 0.5f;
 
-            while (loop.Next())
-            {
-                float offsetPerc = VectorExt.SideLength(loop.Position.Vec - center) / half;
-                mountainPeak[loop.Position.X, loop.Position.Y] = (1f - offsetPerc) * peakHeight;
-            }
-        }
+        //    while (loop.Next())
+        //    {
+        //        float offsetPerc = VectorExt.SideLength(loop.Position.Vec - center) / half;
+        //        mountainPeak[loop.Position.X, loop.Position.Y] = (1f - offsetPerc) * peakHeight;
+        //    }
+        //}
     }
 
     

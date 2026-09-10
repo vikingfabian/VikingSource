@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using VikingEngine;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.Tests
@@ -11,7 +10,7 @@ namespace VikingEngine.Tests
     {
         public static void SetupFlatWorld(
             int width, int height,
-            byte landHeight = Height.MinLandHeight,
+            byte landHeight = ColorHeight.MinLandHeight,
             HashSet<IntVector2>? waterTiles = null)
         {
             SumTile4_4.Init();
@@ -28,7 +27,7 @@ namespace VikingEngine.Tests
 
                     if (waterTiles != null && waterTiles.Contains(pos))
                     {
-                        tile.heightLevel = Height.DeepWaterHeight;
+                        tile.heightLevel = ColorHeight.DeepWaterHeight;
                     }
                     else
                     {

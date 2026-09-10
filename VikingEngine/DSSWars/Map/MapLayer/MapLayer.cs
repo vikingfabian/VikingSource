@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using VikingEngine.ToGG.Commander.Players;
 using VikingEngine.Input;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapLayer
 {
     
     class MapLayerManager

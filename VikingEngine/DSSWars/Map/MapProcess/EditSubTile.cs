@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapProcess
 {
     struct EditSubTile
     {
         public IntVector2 position;
-        public MapTile_ value;
+        public MapTile1_1 value;
         public bool editTerrain;
         public bool editAmount;
         public bool editCollection;
@@ -18,7 +20,7 @@ namespace VikingEngine.DSSWars.Map
         public bool isPlayer;
         public bool netShare;
 
-        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, MapTile_ value, bool editTerrain, bool editAmount, bool editCollection)
+        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editAmount, bool editCollection)
         {
             hostedTile = pfaction.TryGetFaction(out var faction) && faction.IsNetHosted();
             isPlayer = faction.player != null && faction.player.IsLocalPlayer();
@@ -30,7 +32,7 @@ namespace VikingEngine.DSSWars.Map
             this.editCollection = editCollection;
         }
 
-        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, MapTile_ value, bool editTerrain, bool editAmount, bool editCollection)
+        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editAmount, bool editCollection)
         {
             hostedTile = hosted;
             this.isPlayer = isPlayer;
@@ -58,7 +60,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void read(System.IO.BinaryReader r)
         {
-            value = new MapTile_();
+            value = new MapTile1_1();
 
             position.readShort(r);
             EightBit eightBit = new EightBit(r);

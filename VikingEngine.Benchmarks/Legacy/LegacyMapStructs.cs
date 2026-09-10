@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.Benchmarks.Legacy
@@ -44,7 +44,7 @@ namespace VikingEngine.Benchmarks.Legacy
         public LegacyTile()
         {
             CityIndex = -1;
-            heightLevel = Height.DeepWaterHeight;
+            heightLevel = ColorHeight.DeepWaterHeight;
         }
     }
 }

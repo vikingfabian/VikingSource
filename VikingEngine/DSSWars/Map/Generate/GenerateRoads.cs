@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Map.Settings;
 
@@ -17,7 +18,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         //{ 
 
         //}
-        const float RoadHeight = -Height.DefaultGroundYoffset;
+        const float RoadHeight = -ColorHeight.DefaultGroundYoffset;
 
         public void fromCity(WorldData world, City city)
         {
@@ -87,7 +88,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                         void placeOnSubTile(IntVector2 pos)
                         {
-                            ref MapTile_ subTile = ref world.subTileGrid.GetRef(pos);// [pos.X, pos.Y];
+                            ref MapTile1_1 subTile = ref world.subTileGrid.GetRef(pos);// [pos.X, pos.Y];
 
                             bool canBuild = false;
                             switch (subTile.mainTerrain)

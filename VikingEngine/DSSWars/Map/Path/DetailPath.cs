@@ -524,7 +524,7 @@ namespace VikingEngine.DSSWars.Map.Path
                 moveCost -= 1f;
             }
 
-            MapTile_ subtile = world.subTileGrid.Get(pos);
+            MapTile1_1 subtile = world.subTileGrid.Get(pos);
             moveCost *= subtile.TerrainBlockMultipleValue();
 
             SumTile4_4 tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);

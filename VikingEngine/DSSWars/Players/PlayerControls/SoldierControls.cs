@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Physics;
@@ -212,7 +213,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                                     {
                                                         if (DssRef.world.subTileGrid.TryGet(loop.Position, out var tile))
                                                         {
-                                                            if (tile.mainTerrain == Map.TerrainMainType.Wall &&
+                                                            if (tile.mainTerrain == TerrainMainType.Wall &&
                                                                 !containsWall(loop.Position))
                                                             {
                                                                 if (group.army.TryGetTarget(out var tArmy))

@@ -2,7 +2,6 @@ using System;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.Benchmarks.Legacy;
 
 namespace VikingEngine.Benchmarks
@@ -22,7 +21,7 @@ namespace VikingEngine.Benchmarks
         [BenchmarkCategory("SubTile_Size"), Benchmark]
         public int MeasureSubTile_CurrentSize()
         {
-            return Marshal.SizeOf<MapTile_>();
+            return Marshal.SizeOf<MapTile1_1>();
         }
 
         [BenchmarkCategory("Tile_Size"), Benchmark(Baseline = true)]
@@ -48,7 +47,7 @@ namespace VikingEngine.Benchmarks
         [BenchmarkCategory("SubTile_ChunkAlloc"), Benchmark]
         public object AllocateSubTileChunk_Current()
         {
-            var chunk = new MapTile_[4096];
+            var chunk = new MapTile1_1[4096];
             chunk[0].terrainAmount = 10;
             return chunk;
         }

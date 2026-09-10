@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Graphics;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapModels
 {
     class UnitMiniModels
     {

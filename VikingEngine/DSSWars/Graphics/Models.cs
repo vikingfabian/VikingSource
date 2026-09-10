@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Data;

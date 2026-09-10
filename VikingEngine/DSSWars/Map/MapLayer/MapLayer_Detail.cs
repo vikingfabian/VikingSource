@@ -4,13 +4,14 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.Commander.UnitsData;
 using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapLayer
 {
     class MapLayer_Detail: AbsMapLayer
     {

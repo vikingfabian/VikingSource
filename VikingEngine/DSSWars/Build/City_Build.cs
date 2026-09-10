@@ -1,6 +1,6 @@
 ﻿using System;
 using VikingEngine.DSSWars.Delivery;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars.GameObject
     //AUTO BUILD
     partial class City
     {
-        public bool executeBuildEffectsOnCity(bool build, IntVector2 subPos, ref MapTile_ subTile, TerrainMainType mainType, int subType)
+        public bool executeBuildEffectsOnCity(bool build, IntVector2 subPos, ref MapTile1_1 subTile, TerrainMainType mainType, int subType)
         {
             if (!build)
             {

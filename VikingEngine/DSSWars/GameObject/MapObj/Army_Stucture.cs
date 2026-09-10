@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.PJ.CarBall;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -420,9 +420,9 @@ namespace VikingEngine.DSSWars.GameObject
                 localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
                 IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
-                if (DssRef.world.subTileGrid.TryGet(subTilePos, out MapTile_ subTile))
+                if (DssRef.world.subTileGrid.TryGet(subTilePos, out MapTile1_1 subTile))
                 {
-                    if (subTile.mainTerrain != Map.TerrainMainType.DefaultSea)
+                    if (subTile.mainTerrain != TerrainMainType.DefaultSea)
                     {
                         currentColX = colX + 1;
                         return true;
@@ -475,7 +475,7 @@ namespace VikingEngine.DSSWars.GameObject
                         IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
                         if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
                         {
-                            if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                            if ((subTile.mainTerrain == TerrainMainType.DefaultSea) != endAsShip)
                             {
                                 failedPlacements.Add(group);
                             }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars
 {
@@ -91,7 +90,7 @@ namespace VikingEngine.DSSWars
                 0,
                 subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth);
 
-            if (DssRef.world.subTileGrid.TryGet(subtilePos, out MapTile_ subTile))
+            if (DssRef.world.subTileGrid.TryGet(subtilePos, out MapTile1_1 subTile))
             { 
                 result.Y = subTile.groundY;
             }

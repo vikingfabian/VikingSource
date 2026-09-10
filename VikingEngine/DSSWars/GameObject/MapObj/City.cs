@@ -18,8 +18,9 @@ using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
@@ -4276,7 +4277,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
 
-                MapTile_ subTile = new MapTile_();
+                MapTile1_1 subTile = new MapTile1_1();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
                 new EditSubTile(pfaction, true, cityHallSubtilePos, subTile, true, false, false).Submit();
 

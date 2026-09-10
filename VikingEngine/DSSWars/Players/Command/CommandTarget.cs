@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players.Command
@@ -64,7 +65,7 @@ namespace VikingEngine.DSSWars.Players.Command
         { 
             this.soldierGroup = soldierGroup;
             player.gameControls.mapSelect(soldierGroup);
-            player.gameControls.map.SetTargetZoom(Map.MapDetailLayerType.UnitDetail1);
+            player.gameControls.map.SetTargetZoom(MapDetailLayerType.UnitDetail1);
 
             model = SelectedSubTile.CreateOutlineModel(player, true);
             model.Visible = true;            

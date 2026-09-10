@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
 using VikingEngine.ToGG.HeroQuest;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapData
 {
 
     /// <summary>
@@ -20,34 +21,35 @@ namespace VikingEngine.DSSWars.Map
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct SumTile4_4
     {
+        public const int TileWidth = 4;
         public const short NoBorderRegion = -2;
         public const short SeaBorder = -1;
         const int CompareToAmountCities = 8;
 
-        public static void Init()
-        {
-            TypeToHeight_aboveWater = new float[TypeToHeight.Length];
-            for (int i = 0; i < TypeToHeight.Length; i++)
-            {
-                TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
+        //public static void Init()
+        //{
+        //    TypeToHeight_aboveWater = new float[TypeToHeight.Length];
+        //    for (int i = 0; i < TypeToHeight.Length; i++)
+        //    {
+        //        TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
 
-                if (i >= Height.MountainHeightStart)
-                { 
-                    TypeToHeight_aboveWater[i] += 0.2f;
-                }
-            }
+        //        if (i >= MapHeight2.MountainStartY)
+        //        { 
+        //            TypeToHeight_aboveWater[i] += 0.2f;
+        //        }
+        //    }
 
-            TypeToWalkingMultiplier = new float[TypeToWalkingDistance.Length];
-            TypeToShipTravelMultiplier = new float[TypeToWalkingDistance.Length];
-            for (int i = 0; i < TypeToWalkingDistance.Length; ++i)
-            {
-                TypeToWalkingMultiplier[i] = 1f / TypeToWalkingDistance[i];
-                TypeToShipTravelMultiplier[i] = 1f / TypeToShipDistance[i];
-            }
-        }
+        //    TypeToWalkingMultiplier = new float[TypeToWalkingDistance.Length];
+        //    TypeToShipTravelMultiplier = new float[TypeToWalkingDistance.Length];
+        //    for (int i = 0; i < TypeToWalkingDistance.Length; ++i)
+        //    {
+        //        TypeToWalkingMultiplier[i] = 1f / TypeToWalkingDistance[i];
+        //        TypeToShipTravelMultiplier[i] = 1f / TypeToShipDistance[i];
+        //    }
+        //}
 
         // 4-byte members (naturally 4-byte aligned)
-        public float secondaryBiomStrength = 0;
+        public byte secondaryBiomStrength = 0;
         public float exitRenderTimeStamp_TotSec = 0;
         public int seaDistanceHeatMap = int.MinValue;
         public int subtileVisualEdits = 0;
@@ -60,15 +62,16 @@ namespace VikingEngine.DSSWars.Map
         public short BorderRegion_West;
 
         // 1-byte members (always aligned)
-        public BiomType biom = BiomType.Green;
-        public BiomType secondaryBiom = BiomType.Green;
-        public byte heightLevel;
-        public TileContent tileContent = TileContent.NONE;
+        //public BiomType biom = BiomType.Green;
+        //public BiomType secondaryBiom = BiomType.Green;
+        public BiomType biom1= BiomType.Green; 
+        public BiomType biom2 = BiomType.Green;
+        public byte secondBiomWeight;
+
+        //public TileContent tileContent = TileContent.NONE;
         public byte BorderCount;
-        public byte bits_renderStateA = Culling.NoRender;
-        public byte bits_renderStateB = Culling.NoRender;
-        [MarshalAs(UnmanagedType.I1)]
-        public bool hasTileInRender = false;
+        
+        
         //public bool inRender = false;
 
         public bool OutOfRenderTimeOut()
@@ -78,7 +81,7 @@ namespace VikingEngine.DSSWars.Map
 
         public SumTile4_4()
         {
-            heightLevel = Height.DeepWaterHeight;
+            //heightLevel = Height.DeepWaterHeight;
 
             clearCityData();
         }
@@ -86,7 +89,7 @@ namespace VikingEngine.DSSWars.Map
         public void clearCityData()
         { 
              CityIndex = -1;
-            tileContent = TileContent.NONE;
+            //tileContent = TileContent.NONE;
             BorderCount = 0;
             BorderRegion_North = NoBorderRegion; 
             BorderRegion_East = NoBorderRegion; 
@@ -145,6 +148,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void writeMapFile(System.IO.BinaryWriter w, SumTile4_4 previuos)
         {
+            /*
             EightBit saveOpt = new EightBit();
             bool bIsCity = tileContent == TileContent.City;
             bool eqCityIndex = CityIndex == previuos.CityIndex;
@@ -201,10 +205,13 @@ namespace VikingEngine.DSSWars.Map
             {
                 w.Write(Debug.Short_OrCrash(BorderRegion_West));
             }
+
+            */
         }
 
         public void readMapFile(System.IO.BinaryReader r, SumTile4_4 previuos, int version)
         {
+            /*
             //TODO optimera med att spara bool för repeat av vanliga värden
 
             //tileContent = (TileContent)r.ReadByte();
@@ -294,7 +301,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 BorderRegion_West = NoBorderRegion;
             }
-
+            */
         }
 
         public void AddBorder(int dir, int toregion)
@@ -404,8 +411,12 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        static readonly Color MapCol_HeadCity = new Color(255,174,184);
-        static readonly Color MapCol_LargeCity = new Color(253,0,30);
+       
+
+        public bool HasBorderImage() { return BorderCount > 0; }
+
+        static readonly Color MapCol_HeadCity = new Color(255, 174, 184);
+        static readonly Color MapCol_LargeCity = new Color(253, 0, 30);
         static readonly Color MapCol_SmallCity = new Color(148, 0, 17);
         static readonly Color MapCol_CampsiteCity = new Color(148, 0, 17);
         static readonly Color MapCol_UnclaimedCity = Color.Blue;
@@ -416,22 +427,19 @@ namespace VikingEngine.DSSWars.Map
         static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
         static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
 
-        public bool HasBorderImage() { return BorderCount > 0; }
-
-
         public Color MinimapColor_Faction(IntVector2 pos)
         {
             
             if (tileContent == TileContent.City)
                 return cityColor();
 
-            if (heightLevel <= Height.LowerWaterHeight)
+            if (heightLevel <= ColorHeight.LowerWaterHeight)
             {
                 foreach (var dir in IntVector2.Dir4Array)
                 {
                     if (DssRef.world.tileGrid.TryGet(pos + dir, out var nTile))
                     {
-                        if (nTile.heightLevel > Height.LowerWaterHeight)
+                        if (nTile.heightLevel > ColorHeight.LowerWaterHeight)
                         {
                             return lib.IsEven(pos.X + pos.Y) ?
                                 WorldData.WaterDarkCol1 : WorldData.WaterDarkCol2;
@@ -442,7 +450,7 @@ namespace VikingEngine.DSSWars.Map
                 return lib.IsEven(pos.X + pos.Y) ?
                     WorldData.WaterVeryDarkCol1 : WorldData.WaterVeryDarkCol2;
             }
-            else if (heightLevel == Height.LowWaterHeight)
+            else if (heightLevel == ColorHeight.LowWaterHeight)
             {
                 return lib.IsEven(pos.X + pos.Y) ? WorldData.WaterEdgeColorBright : WorldData.WaterEdgeColor;
             }
@@ -457,7 +465,7 @@ namespace VikingEngine.DSSWars.Map
             if (tileContent == TileContent.City)
                 return cityColor();
 
-            if (heightLevel <= Height.LowWaterHeight)
+            if (heightLevel <= ColorHeight.LowWaterHeight)
             {
                 return lib.IsEven(pos.X + pos.Y) ?
                     WorldData.WaterDarkCol : WorldData.WaterDarkCol2;
@@ -479,6 +487,7 @@ namespace VikingEngine.DSSWars.Map
                 return col;
             }
         }
+        
 
         public Color MinimapColor_Minimap(Faction playerFaction, IntVector2 pos)
         {
@@ -491,7 +500,7 @@ namespace VikingEngine.DSSWars.Map
                 return cityColor_Minimap();
             }
            
-            if (heightLevel <= Height.LowWaterHeight)
+            if (heightLevel <= ColorHeight.LowWaterHeight)
             { 
                 return WorldData.WaterDarkCol2;
             }
@@ -655,7 +664,7 @@ namespace VikingEngine.DSSWars.Map
             return color;
         }
 
-        public Height heightSett()
+        public ColorHeight heightSett()
         {
             return DssRef.map.heigts[heightLevel];
         }
@@ -688,102 +697,101 @@ namespace VikingEngine.DSSWars.Map
                 case CityType.UnClaimed: return MiniMapCol_UnclaimedCity;
             }
         }
-        static float[] TypeToWalkingMultiplier;
+        //static float[] TypeToWalkingMultiplier;
 
-        static readonly float[] TypeToWalkingDistance = new float[]
-        {
-            12,//Deep water
-            6,//Deep water
-            3,//Water_0,
-            0.8f,//OpenField_1,
-            1,//Plains_2,
-            1.4f,//Vegetation_3,
-            1.5f,//Hills_4,
-            2.4f,//Mountain_5,
-            4,//MountainRidge_6,
-            8,
-        };
+        //static readonly float[] TypeToWalkingDistance = new float[]
+        //{
+        //    12,//Deep water
+        //    6,//Deep water
+        //    3,//Water_0,
+        //    0.8f,//OpenField_1,
+        //    1,//Plains_2,
+        //    1.4f,//Vegetation_3,
+        //    1.5f,//Hills_4,
+        //    2.4f,//Mountain_5,
+        //    4,//MountainRidge_6,
+        //    8,
+        //};
 
-        static float[] TypeToShipTravelMultiplier;
+        //static float[] TypeToShipTravelMultiplier;
 
-        static readonly float[] TypeToShipDistance = new float[]
-        {
-            0.8f,//Deep water
-            0.8f,
-            1f,//Water_0,
-            4f,//OpenField_1,
-            6,//Plains_2,
-            6,//Vegetation_3,
-            6,//Hills_4,
-            6,//Mountain_5,
-            6,
-            6,//MountainRidge_6,
-        };
+        //static readonly float[] TypeToShipDistance = new float[]
+        //{
+        //    0.8f,//Deep water
+        //    0.8f,
+        //    1f,//Water_0,
+        //    4f,//OpenField_1,
+        //    6,//Plains_2,
+        //    6,//Vegetation_3,
+        //    6,//Hills_4,
+        //    6,//Mountain_5,
+        //    6,
+        //    6,//MountainRidge_6,
+        //};
 
-        public const float WaterSurfaceY = -0.1f;
-        public const float WaterFoamY = WaterSurfaceY + 0.01f;
-        public const float UnitMinY = WaterSurfaceY; //+ 0.02f;
-        public const float UnitQuadMinY = WaterSurfaceY + 0.07f;
-        const float LayerHeight = 0.06f;
-        public const float LowWaterY = WaterSurfaceY - 0.07f;
+        
+        
+        //public const float UnitQuadMinY = WaterSurfaceY + 0.07f;
+        //const float LayerHeight = 0.06f;
+        //public const float LowWaterY = WaterSurfaceY - 0.07f;
 
-        static readonly float[] TypeToHeight = new float[]
-        {
-            WaterSurfaceY - 0.3f,//Deep water
-            WaterSurfaceY - 0.18f,//Deep water
-            LowWaterY,//Water_0,
-            0f,//OpenField_1,
-            LayerHeight,//Plains_2,
-            LayerHeight * 2f,//Vegetation_3,
-            LayerHeight * 3f,//Hills_4,
-            LayerHeight * 4.2f,//Mountain_5,
-            LayerHeight * 5.4f,
-            LayerHeight * 6.8f,//MountainRidge_6,
-        };
+        //static readonly float[] TypeToHeight = new float[]
+        //{
+        //    WaterSurfaceY - 0.3f,//Deep water
+        //    WaterSurfaceY - 0.18f,//Deep water
+        //    LowWaterY,//Water_0,
+        //    0f,//OpenField_1,
+        //    LayerHeight,//Plains_2,
+        //    LayerHeight * 2f,//Vegetation_3,
+        //    LayerHeight * 3f,//Hills_4,
+        //    LayerHeight * 4.2f,//Mountain_5,
+        //    LayerHeight * 5.4f,
+        //    LayerHeight * 6.8f,//MountainRidge_6,
+        //};
 
         static float[] TypeToHeight_aboveWater;
 
-        public float TroupWalkingDistance(bool ship)
-        {
-            if (ship) return TypeToShipDistance[(int)heightLevel];
-            else return TypeToWalkingDistance[(int)heightLevel];
-        }
+        //public float TroupWalkingDistance(bool ship)
+        //{
+        //    if (ship) return TypeToShipDistance[(int)heightLevel];
+        //    else return TypeToWalkingDistance[(int)heightLevel];
+        //}
 
-        public float TerrainSpeedMultiplier(bool ship)
-        {            
-            if (ship) return TypeToShipTravelMultiplier[heightLevel];
-            else return TypeToWalkingMultiplier[heightLevel];
-        }
+        //public float TerrainSpeedMultiplier(bool ship)
+        //{            
+        //    if (ship) return TypeToShipTravelMultiplier[heightLevel];
+        //    else return TypeToWalkingMultiplier[heightLevel];
+        //}
 
-        public float TerrainSpeedMultiplier(out bool isLand)
-        {
-            isLand = IsLand();
-            if (isLand) return TypeToWalkingMultiplier[heightLevel];
-            else return TypeToShipTravelMultiplier[heightLevel];
-        }
+        //public float TerrainSpeedMultiplier(out bool isLand)
+        //{
+        //    isLand = IsLand();
+        //    if (isLand) return TypeToWalkingMultiplier[heightLevel];
+        //    else return TypeToShipTravelMultiplier[heightLevel];
+        //}
 
-        public bool IsLand() { return heightLevel > Height.LowWaterHeight; }
+        //public bool IsLand() { return heightLevel > ColorHeight.LowWaterHeight; }
 
-        public bool MayBuild() { return heightLevel > Height.LowWaterHeight && heightLevel < Height.MountainLowPeak; }
+        //public bool MayBuild() { return heightLevel > ColorHeight.LowWaterHeight && heightLevel < ColorHeight.MountainLowPeak; }
 
-        public bool IsWater() { return heightLevel <= Height.LowWaterHeight; }
+        //public bool IsWater() { return heightLevel <= ColorHeight.LowWaterHeight; }
         
-        public override string ToString()
-        {
-            return (IsWater()? "water" : "land") + heightLevel.ToString() + " city:" + CityIndex.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    return (IsWater()? "water" : "land") + heightLevel.ToString() + " city:" + CityIndex.ToString();
+        //}
     }
 
-    enum TileSpecialType
-    {
-        NON,
-        AdjacantToCity,
-        Border,
-    }
+    //enum TileSpecialType
+    //{
+    //    NON,
+    //    AdjacantToCity,
+    //    Border,
+    //}
 
-    enum TileContent : byte
-    {
-        NONE,
-        City,
-    }
+    //enum TileContent : byte
+    //{
+    //    NONE,
+    //    City,
+    //}
 }

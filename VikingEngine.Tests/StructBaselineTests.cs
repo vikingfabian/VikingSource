@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.Tests.Legacy;
 using Xunit;
 
@@ -25,8 +24,8 @@ namespace VikingEngine.Tests
         [Fact]
         public void SubTile_IsSmallerThanLegacyBaseline()
         {
-            Assert.True(Marshal.SizeOf<MapTile_>() < Marshal.SizeOf<LegacySubTile>());
-            Assert.Equal(16, Marshal.SizeOf<MapTile_>());
+            Assert.True(Marshal.SizeOf<MapTile1_1>() < Marshal.SizeOf<LegacySubTile>());
+            Assert.Equal(16, Marshal.SizeOf<MapTile1_1>());
         }
 
         [Fact]

@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         public DrawMapOptions draw = new DrawMapOptions()
         {   
             flatness = 0.2f,
-            addHeight = Map2Generator.Height_DefaultGround,
+            addHeight = Map2Generator.DefaultGroundY,
             add = true,
             quadChance = 0f,
             noiseStrength = 0.3f,
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
         public BiomType biom = 0;
 
-        float planeEditFrom = Map2Generator.Height_WaterBottom;
+        float planeEditFrom = Map2Generator.WaterBottomY;
         float planeEditTo = 0;
 
         public float planeEditFromProperty(object tag, bool set, float value)
@@ -381,7 +381,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                                     {
                                         tile.groundY -= kv.Value.strength;
                                     }
-                                    tile.groundY = Bound.Set(tile.groundY, Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek);
+                                    tile.groundY = Bound.Set(tile.groundY, Map2Generator.WaterBottomY, Map2Generator.MountainPeekY);
                                 }
                                 else
                                 {
@@ -424,7 +424,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 ref var tile = ref scene.generator.iconWorld.iconGrid.array[i];
                 if (range.IsWithinRange(tile.groundY))
                 {
-                    tile.groundY = Bound.Set(tile.groundY + addHeight, Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek);
+                    tile.groundY = Bound.Set(tile.groundY + addHeight, Map2Generator.WaterBottomY, Map2Generator.MountainPeekY);
                 }
             }
             scene.redrawPixels();
@@ -460,7 +460,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                             {
                                 tile.groundY -= toolSettings.draw.addHeight;
                             }
-                            tile.groundY = Bound.Set(tile.groundY, Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek);
+                            tile.groundY = Bound.Set(tile.groundY, Map2Generator.WaterBottomY, Map2Generator.MountainPeekY);
                         }
                         else
                         {
@@ -486,7 +486,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                     for (int i = 0; i < scene.generator.iconWorld.iconGrid.array.Length; i++)
                     {
                         ref var tile = ref scene.generator.iconWorld.iconGrid.array[i];
-                        tile.groundY = Map2Generator.Height_WaterBottom;
+                        tile.groundY = Map2Generator.WaterBottomY;
                     }
                     scene.redrawPixels();
                     break;

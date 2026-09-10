@@ -9,7 +9,6 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -498,11 +497,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))
             {
-                float y = DssRef.world.SubTileHeight(position, out MapTile_ subTile) + ModelGroundYAdj;
+                float y = DssRef.world.SubTileHeight(position, out MapTile1_1 subTile) + ModelGroundYAdj;
 
-                if (y < Map.SumTile4_4.UnitMinY)
+                if (y < Map.MapData.SumTile4_4.UnitMinY)
                 {
-                    y = Map.SumTile4_4.UnitMinY;
+                    y = Map.MapData.SumTile4_4.UnitMinY;
                 }
 
                 if (y != position.Y)
@@ -1441,7 +1440,7 @@ namespace VikingEngine.DSSWars.GameObject
                 float blockReduce = soldierData.blockReducingAttack_Inv;
 
                 //Height advantage
-                if (group.position.Y + position.Y - Map.Settings.Height.DefaultGroundYoffset >= target.group.position.Y + target.position.Y &&
+                if (group.position.Y + position.Y - Map.Settings.ColorHeight.DefaultGroundYoffset >= target.group.position.Y + target.position.Y &&
                     !IsShipType())
                 {
                     blockReduce *= DssConst.HeightAdvantageBlockReduce_multiply;

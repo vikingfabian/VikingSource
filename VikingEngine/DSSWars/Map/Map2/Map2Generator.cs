@@ -27,14 +27,16 @@ namespace VikingEngine.DSSWars.Map.Map2
 
     class Map2Generator
     {
-        const float Height_WaterPlane = 0;
-        public const float Height_WaterBottom = Height_WaterPlane - 0.3f;
-        public const float Height_LowGround = Height_WaterPlane + 0.1f;
-        public const float Height_DefaultGround = Height_WaterPlane + 0.2f;
-        public const float Height_MountainStart = Height_DefaultGround + 0.3f;
-        public const float Height_MountainPeek = Height_DefaultGround + 0.6f;
+        //const float WaterSurfaceY = 0;
+        //public const float WaterBottomY = WaterSurfaceY - 0.3f;
+        //public const float LowGroundY = WaterSurfaceY + 0.1f;
+        //public const float DefaultGroundY = WaterSurfaceY + 0.2f;
+        //public const float MountainStartY = DefaultGroundY + 0.3f;
+        //public const float MountainPeekY = DefaultGroundY + 0.6f;//0.8
 
-        public static readonly IntervalF Height_Interval = new IntervalF(Height_WaterBottom, Height_MountainPeek);
+        //ungefär 0.004 per lager höjd
+
+        
 
         const float LayerAddHeight = 0.15f;
         const float Height_PostNoise = LayerAddHeight * 2.4f;
@@ -407,7 +409,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         var tile = dataGrid.Get(x, y);
 
-                        tile.groundY = Height_WaterBottom;
+                        tile.groundY = MapLib.MapHeight2.WaterBottomY;
                         dataGrid.Set(x, y, tile);
                     }
                 });
@@ -423,8 +425,8 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             // Thresholds
             float heightDiffThreshold = 0.2f; // How "bumpy" it needs to be to trigger smoothing
-            float minHeight = Height_WaterPlane;           // Don't smooth below this (e.g., Water)
-            float maxHeight = Height_MountainStart;           // Don't smooth above this (e.g., Peaks)
+            float minHeight = MapLib.MapHeight2.WaterSurfaceY;           // Don't smooth below this (e.g., Water)
+            float maxHeight = MapLib.MapHeight2.MountainStartY;           // Don't smooth above this (e.g., Peaks)
 
             Parallel.For(0, dataGrid.Size.X, x =>
             {
@@ -826,11 +828,11 @@ namespace VikingEngine.DSSWars.Map.Map2
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
                     var tile = dataGrid.Get(x, y);
-                    float edge = Bound.Max(Math.Abs(Height_WaterPlane - tile.groundY), edgeThickness) / edgeThickness;
+                    float edge = Bound.Max(Math.Abs(MapLib.MapHeight2.WaterSurfaceY - tile.groundY), edgeThickness) / edgeThickness;
                     tile.groundY -= noiseMap.OctaveNoise2D(postNoise, x, y) * (0.08f + (1f - edge) * 0.3f); //*
                                                                                             
-                    if (tile.groundY < Height_WaterBottom)
-                    { tile.groundY = Height_WaterBottom; }
+                    if (tile.groundY < MapLib.MapHeight2.WaterBottomY)
+                    { tile.groundY = MapLib.MapHeight2.WaterBottomY; }
 
                     dataGrid.Set(x, y, tile);
                 }
@@ -857,8 +859,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         tile.groundY -= noiseMap.OctaveNoise2D(postNoise, x, y) * 0.1f;
                     }
-                    if (tile.groundY < Height_WaterBottom)
-                    { tile.groundY = Height_WaterBottom; }
+                    if (tile.groundY < MapLib.MapHeight2.WaterBottomY)
+                    { tile.groundY = MapLib.MapHeight2.WaterBottomY; }
 
                     //tileColor(ref tile);
                     dataGrid.Set(x, y, tile);
@@ -903,35 +905,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
        
 
-        void tileColor(ref GenTile tile)
-        {
-            //if (tile.groundY > Height_WaterBottom)
-            //{
-            //    lib.DoNothing();
-            //}
-            if (tile.groundY < 0)
-            {
-                float depth = 1f - tile.groundY / Height_WaterBottom;
-                tile.color = new Microsoft.Xna.Framework.Color(depth * 0.5f, depth * 0.5f, depth * 0.5f + 0.2f);
-            }
-            else
-            {
-                float height = tile.groundY / Height_MountainPeek;
-                int biomheight = Bound.Set( Height.MinLandHeight +  Convert.ToInt32( (Height.MaxHeight - Height.MinLandHeight) * height), 0, 9);
-
-                var col = DssRef.map.bioms.bioms[(int)tile.biom1].colors_height[biomheight].Color;/*TileColor(this).Color*/;
-
-                if (tile.biom2 != tile.biom1 && tile.secondBiomWeight > 0)
-                {
-                    var col2 = DssRef.map.bioms.bioms[(int)tile.biom2].colors_height[biomheight].Color;
-                    col = ColorExt.Mix(col2, col, tile.secondBiomWeight);
-                }
-
-
-                //depth *= 0.75f;
-                tile.color = ColorExt.MultiplyRGB(col, 0.5f + 0.9f * height);//new Color(depth, depth + 0.2f, depth);
-            }
-        }
+        
 
         void generateMountainChains()
         {
@@ -959,7 +933,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 add = false,
                 radius = iconWorld.rnd.Float(MinRadius, MaxRadius),
                 flatness = 0.02f,
-                addHeight = Height_MountainPeek,
+                addHeight = MapLib.MapHeight2.MountainPeekY,
 
                 //biom = biomsLayout.get(iconWorld, center),
             };
@@ -970,7 +944,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 add = false,
                 radius = iconWorld.rnd.Float(2, 3) * drawMountain.radius,
                 flatness = 0.4f,
-                addHeight = Height_DefaultGround,
+                addHeight = MapLib.MapHeight2.DefaultGroundY,
                 //biom = drawMountain.biom,
             };
             drawCenterGround.refreshRadius();
@@ -1110,7 +1084,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             //float radiusPercCap = new IntervalF(0.2f, 0.5f).GetFromPercent(noiseOpt.smoothness);
             //float percFallOffRadius = 1f - radiusPercCap;
 
-            float add = draw.centerHeight - Height_WaterBottom;
+            float add = draw.centerHeight - MapLib.MapHeight2.WaterBottomY;
 
 
             if (rnd.Chance(0.6))
@@ -1125,7 +1099,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     {
                         int sideLength = loopArea.Position.SideLength(center);
 
-                        float height = (1f - sideLength / draw.radius) * add + Height_WaterBottom;
+                        float height = (1f - sideLength / draw.radius) * add + MapLib.MapHeight2.WaterBottomY;
                         placeTile(loopArea.Position, height, true);
                     }
                 }
@@ -1147,7 +1121,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                         // Normalize so height hits water bottom at L1 distance == radius
                         float t = Math.Min(1f, manhattan / draw.radius);
-                        float height = (1f - t) * add + Height_WaterBottom;
+                        float height = (1f - t) * add + MapLib.MapHeight2.WaterBottomY;
 
                         placeTile(loopArea.Position, height,  true);
                     }
@@ -1170,7 +1144,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                         return;
                     }
                     center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
-                } while (dataGrid.Get(new IntVector2(center)).groundY >= Height_WaterPlane);
+                } while (dataGrid.Get(new IntVector2(center)).groundY >= MapLib.MapHeight2.WaterSurfaceY);
             }
             else
             {
@@ -1181,7 +1155,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                         return;
                     }
                     center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
-                } while (dataGrid.Get(new IntVector2(center)).groundY < Height_LowGround);
+                } while (dataGrid.Get(new IntVector2(center)).groundY < MapLib.MapHeight2.LowGroundY);
             }
 
             generateLandChains(center, MaxRadius, noise);
@@ -1410,7 +1384,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     }
                     center = rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
                     groundY = dataGrid.Get(new IntVector2(center)).groundY;
-                } while (groundY < Height_LowGround || groundY > Height_MountainStart);
+                } while (groundY < MapLib.MapHeight2.LowGroundY || groundY > MapLib.MapHeight2.MountainStartY);
                
                 
                 DrawMapOptions draw = new DrawMapOptions()
@@ -1463,7 +1437,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     }
                     float distance = iconWorld.rnd.Float(1.0f, 5f) * landRadius;
                     center = landCenter + iconWorld.rnd.vector2_cirkle(distance);
-                } while (!dataGrid.TryGet(new IntVector2(center), out var tile) || tile.groundY > Height_LowGround);
+                } while (!dataGrid.TryGet(new IntVector2(center), out var tile) || tile.groundY > MapLib.MapHeight2.LowGroundY);
 
                 DrawMapOptions draw = new DrawMapOptions()
                 {
@@ -1586,7 +1560,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 add = true,
                 radius = Math.Min(iconWorld.rnd.Float(MinRadius, MaxRadius), iconWorld.rnd.Float(MinRadius, MaxRadius)),
                 flatness = 0.0f,
-                addHeight = -Height.DefaultGroundYoffset * iconWorld.rnd.Float(0.6f, 4f),
+                addHeight = -ColorHeight.DefaultGroundYoffset * iconWorld.rnd.Float(0.6f, 4f),
 
                 //biom = dataGrid.Get(new IntVector2(center)).biom1,
             };
@@ -1633,15 +1607,15 @@ namespace VikingEngine.DSSWars.Map.Map2
             {
                 if (draw.addHeight > 0)
                 {
-                    tile.groundY = Bound.Max(tile.groundY, Height_MountainStart);
+                    tile.groundY = Bound.Max(tile.groundY, MapLib.MapHeight2.MountainStartY);
                 }
 
                 draw.centerHeight = draw.addHeight * 0.25f + tile.groundY;
 
-                if (draw.addHeight > 0 && draw.centerHeight < Height_DefaultGround)
+                if (draw.addHeight > 0 && draw.centerHeight < MapLib.MapHeight2.DefaultGroundY)
                 {
 
-                    draw.addHeight += Height_DefaultGround;
+                    draw.addHeight += MapLib.MapHeight2.DefaultGroundY;
                     draw.centerHeight = draw.addHeight;
                     draw.radius += 0.5f;
                     draw.flatness *= 0.5f;

@@ -7,7 +7,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
@@ -82,32 +82,32 @@ namespace VikingEngine.DSSWars.Build
         public int wildAnimalCount_Elephant;
 
 
-        static readonly MapTile_ TerrainType_wood = new MapTile_(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
-        static readonly MapTile_ TerrainType_stone = new MapTile_(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
-        static readonly MapTile_ TerrainType_stoneblock = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.StoneBlock); //New
+        static readonly MapTile1_1 TerrainType_wood = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
+        static readonly MapTile1_1 TerrainType_stone = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
+        static readonly MapTile1_1 TerrainType_stoneblock = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.StoneBlock); //New
 
-        static readonly MapTile_ TerrainType_clay = new MapTile_(TerrainMainType.Foil, (int)TerrainSubFoilType.ClayPit); //New
-        static readonly MapTile_ TerrainType_bogiron = new MapTile_(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron);
-        static readonly MapTile_ TerrainType_iron = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.IronOre);
-        static readonly MapTile_ TerrainType_tin = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.TinOre);
-        static readonly MapTile_ TerrainType_copper = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.CopperOre);
-        static readonly MapTile_ TerrainType_lead = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.LeadOre);
-        static readonly MapTile_ TerrainType_silver = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.SilverOre);
-        static readonly MapTile_ TerrainType_gold = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.GoldOre);
-        static readonly MapTile_ TerrainType_mithril = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.Mithril);
+        static readonly MapTile1_1 TerrainType_clay = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.ClayPit); //New
+        static readonly MapTile1_1 TerrainType_bogiron = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron);
+        static readonly MapTile1_1 TerrainType_iron = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.IronOre);
+        static readonly MapTile1_1 TerrainType_tin = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.TinOre);
+        static readonly MapTile1_1 TerrainType_copper = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.CopperOre);
+        static readonly MapTile1_1 TerrainType_lead = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.LeadOre);
+        static readonly MapTile1_1 TerrainType_silver = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.SilverOre);
+        static readonly MapTile1_1 TerrainType_gold = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.GoldOre);
+        static readonly MapTile1_1 TerrainType_mithril = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.Mithril);
 
-        static readonly MapTile_ TerrainType_salt = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.Salt); //New
-        static readonly MapTile_ TerrainType_sulfur = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
-        static readonly MapTile_ TerrainType_coal = new MapTile_(TerrainMainType.Mine, (int)TerrainMineType.Coal);
+        static readonly MapTile1_1 TerrainType_salt = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.Salt); //New
+        static readonly MapTile1_1 TerrainType_sulfur = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
+        static readonly MapTile1_1 TerrainType_coal = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.Coal);
 
-        static readonly MapTile_ TerrainType_fowlHabitat = new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.FowlHabitat);
-        static readonly MapTile_ TerrainType_boarHabitat = new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.BoarHabitat);
-        static readonly MapTile_ TerrainType_dogHabitat = new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.DogHabitat);
-        static readonly MapTile_ TerrainType_oxHabitat = new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.OxHabitat);
-        static readonly MapTile_ TerrainType_ponyHabitat = new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.PonyHabitat);
-        static readonly MapTile_ TerrainType_wolfHabitat = new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.WolfHabitat);
-        static readonly MapTile_ TerrainType_catHabitat = new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.CatHabitat);
-        static readonly MapTile_ TerrainType_elephantHabitat = new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.ElephantHabitat);
+        static readonly MapTile1_1 TerrainType_fowlHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.FowlHabitat);
+        static readonly MapTile1_1 TerrainType_boarHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.BoarHabitat);
+        static readonly MapTile1_1 TerrainType_dogHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.DogHabitat);
+        static readonly MapTile1_1 TerrainType_oxHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.OxHabitat);
+        static readonly MapTile1_1 TerrainType_ponyHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.PonyHabitat);
+        static readonly MapTile1_1 TerrainType_wolfHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.WolfHabitat);
+        static readonly MapTile1_1 TerrainType_catHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.CatHabitat);
+        static readonly MapTile1_1 TerrainType_elephantHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.ElephantHabitat);
 
 
         public bool HasIndependantResources()
@@ -276,12 +276,12 @@ namespace VikingEngine.DSSWars.Build
 
 
 
-        public void naturalResource(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, MapTile_ terrainType, ref int totalCount)
+        public void naturalResource(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, MapTile1_1 terrainType, ref int totalCount)
         {
             resourceHoverButton(player, content, count, resource, DssRef.lang.Work_GatherXResource, SpriteName.WarsWorkCollect, terrainType, false, ref totalCount);
         }
 
-        public void animalHabitat(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, MapTile_ terrainType)
+        public void animalHabitat(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, MapTile1_1 terrainType)
         {
             if (count > 0)
             {
@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.Build
                 countText.overrideColor = Color.White;
                 infoContent.Add(countText);
 
-                var infoButton = new ArtButton(RbButtonStyle.Outline, infoContent, new RbAction1Arg<MapTile_>(player.gameControls.map.terrainSearchClick, terrainType),
+                var infoButton = new ArtButton(RbButtonStyle.Outline, infoContent, new RbAction1Arg<MapTile1_1>(player.gameControls.map.terrainSearchClick, terrainType),
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         content.Add(new RbImage(icon));
@@ -309,12 +309,12 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        public void mine(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, MapTile_ terrainType, ref int totalCount)
+        public void mine(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, MapTile1_1 terrainType, ref int totalCount)
         {
             resourceHoverButton(player, content, count, resource, DssRef.lang.BuildingType_ResourceMine, SpriteName.WarsWorkMine, terrainType, terrainType.mainTerrain != TerrainMainType.NUM, ref totalCount);
         }
 
-        public void resourceHoverButton(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, string categoryName, SpriteName workIcon, MapTile_ terrainType, bool clickable, ref int totalCount)
+        public void resourceHoverButton(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, string categoryName, SpriteName workIcon, MapTile1_1 terrainType, bool clickable, ref int totalCount)
         {
             totalCount += count;
             if (count > 0)
@@ -329,7 +329,7 @@ namespace VikingEngine.DSSWars.Build
                 countText.overrideColor = Color.White;
                 infoContent.Add(countText);
 
-                var infoButton = new ArtButton(clickable? RbButtonStyle.Outline : RbButtonStyle.HoverArea, infoContent, clickable? new RbAction1Arg<MapTile_>( player.gameControls.map.terrainSearchClick, terrainType) : null,
+                var infoButton = new ArtButton(clickable? RbButtonStyle.Outline : RbButtonStyle.HoverArea, infoContent, clickable? new RbAction1Arg<MapTile1_1>( player.gameControls.map.terrainSearchClick, terrainType) : null,
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         content.Add(new RbOverlapImage(new RbImage(icon), workIcon, Vector2.Zero, 0.8f));

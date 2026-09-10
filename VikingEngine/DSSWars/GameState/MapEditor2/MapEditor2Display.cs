@@ -393,13 +393,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             content.Add(new RbText("From height"));
             content.newLine();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 0.5f, 0.25f },
-                new DragButtonSettings(Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek, 0.05f), state.tool.planeEditFromProperty, false);
+                new DragButtonSettings(Map2Generator.WaterBottomY, Map2Generator.MountainPeekY, 0.05f), state.tool.planeEditFromProperty, false);
             
             content.newParagraph();
             content.Add(new RbText("To height"));
             content.newLine();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 0.5f, 0.25f },
-                new DragButtonSettings(Map2Generator.Height_WaterBottom, Map2Generator.Height_MountainPeek, 0.05f), state.tool.planeEditToProperty, false);
+                new DragButtonSettings(Map2Generator.WaterBottomY, Map2Generator.MountainPeekY, 0.05f), state.tool.planeEditToProperty, false);
 
             content.newParagraph();
             content.Add(new RbText("Adjust height", HudLib.TitleColor_Label2));
@@ -463,16 +463,16 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 content.newParagraph();
                 HudLib.Label(content, "Top height");
                 content.newLine();
-                RbDragButton.EqualToButton(content, Map2Generator.Height_MountainPeek, heightMap.topHeightProperty);
+                RbDragButton.EqualToButton(content, Map2Generator.MountainPeekY, heightMap.topHeightProperty);
                 content.newLine();
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(Map2Generator.Height_DefaultGround, Map2Generator.Height_MountainPeek + 0.2f, 0.01f), heightMap.topHeightProperty, false);
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(Map2Generator.DefaultGroundY, Map2Generator.MountainPeekY + 0.2f, 0.01f), heightMap.topHeightProperty, false);
 
                 content.newParagraph();
                 HudLib.Label(content, "Bottom height");
                 content.newLine();
-                RbDragButton.EqualToButton(content, Map2Generator.Height_WaterBottom, heightMap.bottomHeightProperty);
+                RbDragButton.EqualToButton(content, Map2Generator.WaterBottomY, heightMap.bottomHeightProperty);
                 content.newLine();
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(Map2Generator.Height_WaterBottom, 0, 0.01f), heightMap.bottomHeightProperty, false);
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(Map2Generator.WaterBottomY, 0, 0.01f), heightMap.bottomHeightProperty, false);
 
                 content.newParagraph();
                 content.Add(new ArtButton(RbButtonStyle.Primary,
@@ -590,7 +590,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             {
                 content.newLine();
                 HudLib.Label(content, "Height"); content.Add(new RbTab(0.25f));
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.25f, 1f },  new DragButtonSettings(state.tool.setHeightProperty(null, false, false)? Map2Generator.Height_WaterBottom : 0.05f, Map2Generator.Height_MountainPeek, 0.05f),
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.25f, 1f },  new DragButtonSettings(state.tool.setHeightProperty(null, false, false)? Map2Generator.WaterBottomY : 0.05f, Map2Generator.MountainPeekY, 0.05f),
                     state.tool.heightProperty, false);
                 
                 content.newLine();

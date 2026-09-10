@@ -12,8 +12,8 @@ using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -31,9 +31,9 @@ namespace VikingEngine.DSSWars.GameState
         public bool isReady = false;
         public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
-        public Map.MapLayer_Factions factionsMap;
-        protected Map.MapLayer_Overview overviewMap;
-        public Map.MapLayer_Detail detailMap;
+        public MapLayer_Factions factionsMap;
+        protected MapLayer_Overview overviewMap;
+        public MapLayer_Detail detailMap;
         public Culling culling;
 
         public PathUpdateThread[] pathUpdates;

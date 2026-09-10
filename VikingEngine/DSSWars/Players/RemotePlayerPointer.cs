@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Players
@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                mapLayer = (Map.MapDetailLayerType)r.ReadByte();
+                mapLayer = (MapDetailLayerType)r.ReadByte();
                 mouseOverHud = r.ReadBoolean();
                 if (mapLayer >= MapDetailLayerType.FullOverview4)
                 {

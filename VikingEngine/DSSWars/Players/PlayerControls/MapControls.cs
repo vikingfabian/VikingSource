@@ -7,7 +7,7 @@ using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.EngineSpace.Graphics.In3D;
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Players
 
             targetZoom = MapLayerManager.StartZoom;
             camera = new TopViewCamera(MapLayerManager.StartZoom, 
-                new Vector2(MathHelper.PiOver2, Map.MapLayerManager.NormalCamAngle),
+                new Vector2(MathHelper.PiOver2, MapLayerManager.NormalCamAngle),
                 player.playerData.view.DrawAreaF.Width, player.playerData.view.DrawAreaF.Height);
             camera.FarPlane = 800;
             
@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Players
 
             controllerMode = player.gameControls.input.inputSource.ControllerMode;
 
-            rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.Height.DeepWaterHeight-1, Map.Settings.Height.MaxHeight +1);
+            rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.ColorHeight.DeepWaterHeight-1, Map.Settings.ColorHeight.MaxHeight +1);
 
             refreshSetting();
 
@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.Players
             return player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f);
         }
 
-        public void terrainSearchClick(MapTile_ terrain)
+        public void terrainSearchClick(MapTile1_1 terrain)
         {
             var city = selection.obj?.GetCity();
             if (city != null)
@@ -490,7 +490,7 @@ namespace VikingEngine.DSSWars.Players
             IntVector2 subTilePositionInLoop= IntVector2.Zero;
             
 
-            MapTile_ subTile;
+            MapTile1_1 subTile;
             for (int y = 6; y >= -1; --y)
             {
                 subTilePositionInLoop.Y = subTilePosition.Y + y;

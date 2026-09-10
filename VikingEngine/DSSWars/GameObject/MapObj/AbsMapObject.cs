@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.GameObject
             return VectorExt.Length(position.X - tilePos.X, position.Z - tilePos.Y);
         }
 
-        public Map.SumTile4_4 Tile()
+        public Map.MapData.SumTile4_4 Tile()
         {
             return DssRef.world.tileGrid.Get(tilePos);
         }

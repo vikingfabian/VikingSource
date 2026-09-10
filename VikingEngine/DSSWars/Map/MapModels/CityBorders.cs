@@ -13,7 +13,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapModels
 {
     struct AddBorderStick
     {

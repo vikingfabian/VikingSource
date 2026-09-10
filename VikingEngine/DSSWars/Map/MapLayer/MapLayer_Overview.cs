@@ -3,10 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapLayer
 {
     abstract class AbsMapLayer : Point3D
     {
@@ -139,16 +141,16 @@ namespace VikingEngine.DSSWars.Map
 
     class MapLayer_Overview : AbsMapLayer
     {
-        public Map.Borders borders;
+        public Borders borders;
         public UnitMiniModels unitMiniModels;
 
         int state_Processing_Sych_Complete = 2;
-        Map.MapLayer_Factions factionsMap;
+        MapLayer_Factions factionsMap;
         Graphics.GeneratedObjColor heightMapModel;
         public bool bRefreshTimer = false;
         public bool bRefreshDataRecieved = false;
 
-        public MapLayer_Overview(Map.MapLayer_Factions factionsMap)
+        public MapLayer_Overview(MapLayer_Factions factionsMap)
         {
             this.factionsMap = factionsMap;
             Ref.draw.CurrentRenderLayer = DrawGame.MidLayer;
@@ -219,7 +221,7 @@ namespace VikingEngine.DSSWars.Map
                 for (pos.X = 0; pos.X < DssRef.world.Size.X; ++pos.X)
                 {
                     SumTile4_4 tile = DssRef.world.tileGrid.Get(pos);
-                    if (tile.heightLevel != Height.DeepWaterHeight)
+                    if (tile.heightLevel != ColorHeight.DeepWaterHeight)
                     {
                         Color terrainCol = tile.BiomColor();//DssRef.map.bioms.bioms[(int)tile.biom].Color(tile).Color;
                         //Tile.TerrainTypes[tile.biom, tile.heightLevel].color;
@@ -252,7 +254,7 @@ namespace VikingEngine.DSSWars.Map
                         //move out the texture source 
                         imgCoords.UpdateSourcePolygon(false);
 
-                        if (tile.heightLevel > Height.LowerWaterHeight)
+                        if (tile.heightLevel > ColorHeight.LowerWaterHeight)
                         {
                             float h = Bound.Max(TileSideHeight, center.Y + 0.5f); 
 

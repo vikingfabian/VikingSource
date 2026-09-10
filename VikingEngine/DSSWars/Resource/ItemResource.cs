@@ -15,14 +15,14 @@ namespace VikingEngine.DSSWars.Resource
         /// <summary>
         /// Goes from 0: broken, to 255: masterpiece
         /// </summary>
-        public int quality;
+        //public int quality;
 
         /// <summary>
         /// Tracks time, risk and expences. Based on seconds of work.
         /// </summary>
-        public int cost;
+        //public int cost;
 
-        public int amount;
+        public ushort amount;
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -35,28 +35,28 @@ namespace VikingEngine.DSSWars.Resource
             amount = r.ReadUInt16();
         }
 
-        public ItemResource(ItemResourceType type, int quality, int cost, int amount)
-        {
-            this.type = type;
-            this.quality = quality;
-            this.cost = cost;
-            this.amount = amount;
-        }
+        //public ItemResource(ItemResourceType type, int amount)
+        //{
+        //    this.type = type;
+        //    .quality = quality;
+        //    this.cost = cost;
+        //    this.amount = amount;
+        //}
 
-        public ItemResource(ItemResourceType type, int amount)
+        public ItemResource(ItemResourceType type, ushort amount)
         {
             this.type = type;
-            this.quality = 1;
-            this.cost = 1;
+            //this.quality = 1;
+           // this.cost = 1;
             this.amount = amount;
         }
 
         public void merge(ItemResource other)
         {
-            quality = quality * amount + other.quality * other.amount;
+            //quality = quality * amount + other.quality * other.amount;
             amount += other.amount;
-            quality /= amount;
-            cost += other.cost;
+            //quality /= amount;
+            //cost += other.cost;
         }
 
         public override string ToString()
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Resource
         }
     }
 
-    enum ItemResourceType
+    enum ItemResourceType : byte
     {
         NONE,
                 

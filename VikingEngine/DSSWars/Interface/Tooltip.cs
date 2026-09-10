@@ -20,7 +20,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Interface
 {

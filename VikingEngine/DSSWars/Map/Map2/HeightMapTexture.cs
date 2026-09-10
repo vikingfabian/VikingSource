@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public float scale = 1;
         public float bottomHeight = 0;
-        public float topHeight = Map2Generator.Height_MountainPeek;
+        public float topHeight = Map2Generator.MountainPeekY;
         public IntVector2 offset = IntVector2.Zero;
 
         public string Name;
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     }
                     else
                     {
-                        tile.groundY = Map2Generator.Height_WaterBottom;
+                        tile.groundY = Map2Generator.WaterBottomY;
                     }
 
                     dataGrid.Set(x, y, tile);

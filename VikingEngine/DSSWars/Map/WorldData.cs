@@ -10,6 +10,9 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Data;
@@ -74,8 +77,6 @@ namespace VikingEngine.DSSWars
         public IntVector2 Size;
         public IntVector2 HalfSize;
         
-        public WorldMapTiles tiles;
-       
         public UnitCollAreaGrid unitCollAreaGrid;
 
         public List<City> cities = new List<City>(0); 
@@ -99,6 +100,10 @@ namespace VikingEngine.DSSWars
 
         public PathFindingPool pathFindingPool = new PathFindingPool();
         public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
+
+
+        public Grid2D_L<SumTile4_4> tileGrid;
+        public Grid2D_L<MapTile1_1> subTileGrid;
 
         public void ClearPools()
         {
@@ -307,14 +312,15 @@ namespace VikingEngine.DSSWars
             unitBounds.AddRadius(-1f);
 
             //create grid
-            
+            subTileGrid = new Grid2D_L<MapTile1_1>(Size);
+            tileGrid = new Grid2D_L<SumTile4_4>(Size / 4);
 
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
             
         }
 
-        bool subTileHasRepeatValue(ref MapTile_ subtile)
+        bool subTileHasRepeatValue(ref MapTile1_1 subtile)
         {
             return subtile.mainTerrain == TerrainMainType.DefaultSea;
         }
@@ -322,7 +328,7 @@ namespace VikingEngine.DSSWars
         public void writeGameState(System.IO.BinaryWriter w)
         {
             subTileGrid.LoopBegin();
-            MapTile_ previuos = new MapTile_();
+            MapTile1_1 previuos = new MapTile1_1();
 
             while (subTileGrid.LoopNext())
             {
@@ -384,12 +390,12 @@ namespace VikingEngine.DSSWars
         {
             availableGenericAiTypes.Clear();
             subTileGrid.LoopBegin();
-            MapTile_ previuos = new MapTile_();
+            MapTile1_1 previuos = new MapTile1_1();
 
 
             while (subTileGrid.LoopNext())
             {
-                MapTile_ subtile = subTileGrid.LoopValueGet();
+                MapTile1_1 subtile = subTileGrid.LoopValueGet();
                 subtile.read(r, ref previuos, subversion);
                 subTileGrid.LoopValueSet(subtile);
 
@@ -571,7 +577,7 @@ namespace VikingEngine.DSSWars
 
             var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
             ForXYLoop loop = new ForXYLoop(area);
-            MapTile_ previous = new MapTile_();
+            MapTile1_1 previous = new MapTile1_1();
 
             while (loop.Next())
             {
@@ -588,7 +594,7 @@ namespace VikingEngine.DSSWars
 
             var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
             ForXYLoop loop = new ForXYLoop(area);
-            MapTile_ previous = new MapTile_();
+            MapTile1_1 previous = new MapTile1_1();
 
             while (loop.Next())
             {
@@ -1095,7 +1101,7 @@ namespace VikingEngine.DSSWars
                 Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)).groundY;                
         }
 
-        public float SubTileHeight(Vector3 wp, out MapTile_ subTile)
+        public float SubTileHeight(Vector3 wp, out MapTile1_1 subTile)
         {
 
             subTile = subTileGrid.Get(

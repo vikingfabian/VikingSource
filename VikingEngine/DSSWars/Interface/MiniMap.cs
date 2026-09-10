@@ -10,7 +10,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.LootFest.Players;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Interface
 {
     class MiniMap
     {

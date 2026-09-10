@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Data

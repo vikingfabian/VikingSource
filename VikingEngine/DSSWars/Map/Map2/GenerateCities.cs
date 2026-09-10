@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                      
                     if (icon.iconGrid.TryGet(tryPos, out var tile) &&
-                        tile.groundY >= Map2Generator.Height_LowGround && tile.groundY <= Map2Generator.Height_MountainStart)
+                        tile.groundY >= Map2Generator.LowGroundY && tile.groundY <= Map2Generator.MountainStartY)
                     {
                         //find closest city
 

@@ -55,7 +55,7 @@ namespace VikingEngine.Tests.Pathfinding
                 water.Add(new IntVector2(10, y));
             }
 
-            TestWorldHelper.SetupFlatWorld(64, 64, Height.MinLandHeight, water);
+            TestWorldHelper.SetupFlatWorld(64, 64, ColorHeight.MinLandHeight, water);
             var pf = new PathFinding();
 
             var start = new IntVector2(5, 15);
@@ -85,7 +85,7 @@ namespace VikingEngine.Tests.Pathfinding
                 }
             }
 
-            TestWorldHelper.SetupFlatWorld(64, 64, Height.MinLandHeight, water);
+            TestWorldHelper.SetupFlatWorld(64, 64, ColorHeight.MinLandHeight, water);
             var pf = new PathFinding();
 
             var start = new IntVector2(5, 10);
@@ -208,7 +208,7 @@ namespace VikingEngine.Tests.Pathfinding
                 for (int x = 30; x < 70; x++)
                 {
                     var t = new SumTile4_4();
-                    t.heightLevel = Height.MountainHeightStart;
+                    t.heightLevel = ColorHeight.MountainHeightStart;
                     DssRef.world.tileGrid.Set(new IntVector2(x, y), t);
                 }
             }
@@ -275,7 +275,7 @@ namespace VikingEngine.Tests.Pathfinding
                 }
             }
 
-            TestWorldHelper.SetupFlatWorld(MapWidth, MapHeight, Height.MinLandHeight, water);
+            TestWorldHelper.SetupFlatWorld(MapWidth, MapHeight, ColorHeight.MinLandHeight, water);
 
             // Add scattered hill and mountain clusters across the Epic map
             for (int i = 0; i < 30; i++)
@@ -294,7 +294,7 @@ namespace VikingEngine.Tests.Pathfinding
                             if (!water.Contains(pt))
                             {
                                 var tile = new SumTile4_4();
-                                tile.heightLevel = (byte)((i % 3 == 0) ? Height.MountainHeightStart : Height.MinLandHeight + 1);
+                                tile.heightLevel = (byte)((i % 3 == 0) ? ColorHeight.MountainHeightStart : ColorHeight.MinLandHeight + 1);
                                 DssRef.world.tileGrid.Set(pt, tile);
                             }
                         }

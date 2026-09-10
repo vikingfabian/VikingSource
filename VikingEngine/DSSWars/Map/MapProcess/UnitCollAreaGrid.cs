@@ -7,11 +7,11 @@ using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.ToGG.MoonFall;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapProcess
 {
     class UnitCollAreaGrid
     {
-        public const int UnitGridSquareWidth = 8;
+        public const int UnitGridSquareWidth = 64;
 
         public Grid2D<UnitCollArea> grid;
 

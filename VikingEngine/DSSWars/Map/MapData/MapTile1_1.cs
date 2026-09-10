@@ -12,8 +12,9 @@ using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.LootFest.Players;
+using VikingEngine.DSSWars.Map.MapLib;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapData
 {
     //struct LandTileData
     //{ 
@@ -39,9 +40,9 @@ namespace VikingEngine.DSSWars.Map
     //}
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct MapTile_
+    struct MapTile1_1
     {
-        public static readonly MapTile_ Empty = new MapTile_() { mainTerrain = TerrainMainType.NUM };
+        public static readonly MapTile1_1 Empty = new MapTile1_1() { mainTerrain = TerrainMainType.NUM };
         //public Color color;
         public byte heightValue;
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
@@ -64,14 +65,14 @@ namespace VikingEngine.DSSWars.Map
         /// </summary>
         public int collectionPointer = -1;
 
-        public MapTile_(TerrainMainType type, int subType)
+        public MapTile1_1(TerrainMainType type, int subType)
         {
             this.mainTerrain = type;
             this.subTerrain = (byte)subType;
             terrainAmount = 1;
         }
 
-        public MapTile_(TerrainMainType type, int subType, byte heightValue/*, Color color, float groundY*/)
+        public MapTile1_1(TerrainMainType type, int subType, byte heightValue/*, Color color, float groundY*/)
         {
 #if DEBUG
             //if (color == ColorExt.Empty)
@@ -123,7 +124,7 @@ namespace VikingEngine.DSSWars.Map
         const int EqSubterrainIx = 1;
         const int EqTerrainAmountIx = 2;
         const int EqCollectionPointerIx = 3;
-        public void write(System.IO.BinaryWriter w, ref MapTile_ previous)
+        public void write(System.IO.BinaryWriter w, ref MapTile1_1 previous)
         {
             //TODO check repeats with previous, use eightbit
             bool eqMainTerrain = mainTerrain == previous.mainTerrain;
@@ -159,11 +160,11 @@ namespace VikingEngine.DSSWars.Map
                 w.Write(collectionPointer);
             }
 
-            w.Write(groundY);
-            StreamLib.WriteColorStream_3B(w, color);
+            w.Write(heightValue);
+            //StreamLib.WriteColorStream_3B(w, color);
         }
 
-        public void read(System.IO.BinaryReader r, ref MapTile_ previous, int version)
+        public void read(System.IO.BinaryReader r, ref MapTile1_1 previous, int version)
         {
             EightBit reapeats = new EightBit(r);
 
@@ -203,8 +204,9 @@ namespace VikingEngine.DSSWars.Map
                 collectionPointer = r.ReadInt32();
             }
 
-            groundY = r.ReadSingle();
-            color = StreamLib.ReadColorStream_3B(r);
+            heightValue = r.ReadByte();
+            //groundY = r.ReadSingle();
+            //color = StreamLib.ReadColorStream_3B(r);
 #if DEBUG
             //if (color == ColorExt.Empty)
             //{
@@ -213,7 +215,7 @@ namespace VikingEngine.DSSWars.Map
 #endif
         }
 
-        public bool EqualTerrain(MapTile_ other)
+        public bool EqualTerrain(MapTile1_1 other)
         {
             return mainTerrain == other.mainTerrain &&
                 subTerrain == other.subTerrain;
@@ -223,22 +225,22 @@ namespace VikingEngine.DSSWars.Map
             return mainTerrain == main &&
                 subTerrain == (byte)sub;
         }
-        public bool EqualSaveData(ref MapTile_ other)
+        public bool EqualSaveData(ref MapTile1_1 other)
         {
             return  terrainAmount == other.terrainAmount && 
                 mainTerrain == other.mainTerrain && 
                 subTerrain == other.subTerrain &&
                 collectionPointer == other.collectionPointer &&
-                groundY == other.groundY;            
+                heightValue == other.heightValue;            
         }
 
-        public void copySaveDataFrom(ref MapTile_ other)
+        public void copySaveDataFrom(ref MapTile1_1 other)
         { 
             this.terrainAmount = other.terrainAmount;
             this.mainTerrain = other.mainTerrain;
             this.subTerrain = other.subTerrain;
-            this.groundY = other.groundY;
-            this.color = other.color;
+            this.heightValue = other.heightValue;
+            //this.color = other.color;
 
 #if DEBUG
             //if (color == ColorExt.Empty)

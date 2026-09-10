@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.Map.Settings
     class Biom
     {
         const int MainColorHeight = 5;
-        public TileColor[] colors_height = new TileColor[Height.MaxHeight+1];
+        public TileColor[] colors_height = new TileColor[ColorHeight.MaxHeight+1];
         public TileColor brightCoast;
         public float percTree;
         public float percSoftTree;
@@ -164,19 +164,19 @@ namespace VikingEngine.DSSWars.Map.Settings
             {
                 TileColor seafloor = brightCoast;
                 seafloor.Color = Color.Black;//ColorExt.VeryDarkGray;//ColorExt.ChangeBrighness(WorldData.WaterDarkCol, -50);
-                colors_height[Height.LowerWaterHeight] = seafloor;
-                colors_height[Height.LowWaterHeight] = brightCoast;                
+                colors_height[ColorHeight.LowerWaterHeight] = seafloor;
+                colors_height[ColorHeight.LowWaterHeight] = brightCoast;                
             }
 
             //Mix towards bright coast
             {
-                int height = Height.MinLandHeight;
+                int height = ColorHeight.MinLandHeight;
                 float percCoast = 0.5f;
                 colors_height[height] = Settings.TileColor.Mix(brightCoast, mainCol, percCoast);
             }
 
             {
-                int height = Height.MinLandHeight + 1;
+                int height = ColorHeight.MinLandHeight + 1;
                 float percCoast = 0.2f;
                 colors_height[height] = Settings.TileColor.Mix(brightCoast, mainCol, percCoast);
             }
@@ -195,13 +195,13 @@ namespace VikingEngine.DSSWars.Map.Settings
 
             {
                 float percDark = 0.4f;
-                colors_height[Height.MountainHeightStart] = Settings.TileColor.Mix(darkGradient, mainCol, percDark);
+                colors_height[ColorHeight.MountainHeightStart] = Settings.TileColor.Mix(darkGradient, mainCol, percDark);
 
                 float percMountainGray = 0.8f;
-                colors_height[Height.MountainHeightStart + 1] = Settings.TileColor.Mix(mountain, colors_height[Height.MountainHeightStart], percMountainGray);
+                colors_height[ColorHeight.MountainHeightStart + 1] = Settings.TileColor.Mix(mountain, colors_height[ColorHeight.MountainHeightStart], percMountainGray);
 
                 
-                colors_height[Height.MaxHeight] = mountain;
+                colors_height[ColorHeight.MaxHeight] = mountain;
             }
 
 
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars.Map.Settings
 
         public Color Tile2Color(float y)
         { 
-            int level = MathExt.SplitFloat(y / Height.DefaultGroundYoffset, out float fraction);
+            int level = MathExt.SplitFloat(y / ColorHeight.DefaultGroundYoffset, out float fraction);
             //float percFraction = fraction;
 
 

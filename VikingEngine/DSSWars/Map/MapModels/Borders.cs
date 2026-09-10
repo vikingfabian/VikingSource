@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using VikingEngine.Graphics;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapModels
 {
     class Borders
     {

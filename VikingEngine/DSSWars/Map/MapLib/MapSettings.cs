@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         public static readonly Color DeepWaterCol1 = new Color(71, 95, 214);
         public static readonly Color DeepWaterCol2 = ColorExt.Multiply(DeepWaterCol1, 1.1f);
 
-        public Height[] heigts;
+        public ColorHeight[] heigts;
         public WorldBioms bioms;
 
         public MapSettings()
@@ -20,11 +20,11 @@ namespace VikingEngine.DSSWars.Map.Settings
             DssRef.map = this;
 
             bioms = new WorldBioms();
-            heigts = new Height[Height.MaxHeight + 1];
+            heigts = new ColorHeight[ColorHeight.MaxHeight + 1];
 
-            for (int height = 0; height <= Height.MaxHeight; ++height)
+            for (int height = 0; height <= ColorHeight.MaxHeight; ++height)
             {
-                heigts[height] = new Height(height);
+                heigts[height] = new ColorHeight(height);
             }            
         }
 

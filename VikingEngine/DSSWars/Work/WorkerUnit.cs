@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -166,7 +167,7 @@ namespace VikingEngine.DSSWars.Work
                             if (workAnimation_soundframe())
                             {
                                 workEffect?.onSoundAnimation();
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile_ subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
                                 {
                                     switch ((TerrainSubFoilType)subTile.subTerrain)
                                     {
@@ -221,7 +222,7 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile_ subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
                                 {
                                     var building = (TerrainBuildingType)subTile.subTerrain;
 
@@ -274,7 +275,7 @@ namespace VikingEngine.DSSWars.Work
                         switch (status.work)
                         {
                             case WorkType.GatherFoil:
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile_ subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
                                 {
                                     switch ((TerrainSubFoilType)subTile.subTerrain)
                                     {
@@ -379,7 +380,7 @@ namespace VikingEngine.DSSWars.Work
             switch (status.work)
             {
                 case WorkType.Craft:
-                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile_ subTile))
+                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
                     {
                         var building = (TerrainBuildingType)subTile.subTerrain;
 

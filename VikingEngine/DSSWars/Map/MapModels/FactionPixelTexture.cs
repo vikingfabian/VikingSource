@@ -13,7 +13,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG.MoonFall;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapModels
 {
 
     enum FactionMapFilter
@@ -278,7 +278,7 @@ namespace VikingEngine.DSSWars.Map
                         if (t.tileContent == TileContent.City)
                             color = t.cityColor();
 
-                        if (t.heightLevel <= Height.LowerWaterHeight)
+                        if (t.heightLevel <= ColorHeight.LowerWaterHeight)
                         {
                             color = Color.CornflowerBlue;
                         }

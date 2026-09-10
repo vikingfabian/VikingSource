@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Defence
 {
@@ -128,19 +128,19 @@ namespace VikingEngine.DSSWars.Defence
 
             switch (wallType)
             {
-                case Map.TerrainWallType.NUM_NONE:
+                case TerrainWallType.NUM_NONE:
                     return 0;
 
-                case Map.TerrainWallType.Palisade:                    
+                case TerrainWallType.Palisade:                    
                     soldierAttackDamageBonus = 2; 
                     return DssConst.GuardPostDefenceChance_Palisade;
                 
-                case Map.TerrainWallType.DirtWall:
-                case Map.TerrainWallType.DirtTower:
+                case TerrainWallType.DirtWall:
+                case TerrainWallType.DirtTower:
                     return DssConst.GuardPostDefenceChance_Dirt;
 
-                case Map.TerrainWallType.WoodWall:
-                case Map.TerrainWallType.WoodTower:
+                case TerrainWallType.WoodWall:
+                case TerrainWallType.WoodTower:
                     return DssConst.GuardPostDefenceChance_Wood;
 
                 default:

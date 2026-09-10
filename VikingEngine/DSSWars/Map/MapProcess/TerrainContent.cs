@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapProcess
 {
     struct AnimalPenGrowth
     {
@@ -22,7 +23,7 @@ namespace VikingEngine.DSSWars.Map
             harvestReady = maxSize * harvestCount;
         }
 
-        public void asyncCityProduce(ref MapTile_ subtile)
+        public void asyncCityProduce(ref MapTile1_1 subtile)
         {            
             if (subtile.terrainAmount < maxTotal)
             {
@@ -153,13 +154,13 @@ namespace VikingEngine.DSSWars.Map
         public const int DryingSaltAmount = 8;
         public const int MineAmount_Coal = 20;
 
-        public void asyncFoilGroth(IntVector2 pos, ref MapTile_ subtile)
+        public void asyncFoilGroth(IntVector2 pos, ref MapTile1_1 subtile)
         {
-            Map.TerrainSubFoilType foilType = (Map.TerrainSubFoilType)subtile.subTerrain;
+            TerrainSubFoilType foilType = (TerrainSubFoilType)subtile.subTerrain;
             switch (foilType)
             {
-                case Map.TerrainSubFoilType.TreeSoft:
-                case Map.TerrainSubFoilType.TreeHard:
+                case TerrainSubFoilType.TreeSoft:
+                case TerrainSubFoilType.TreeHard:
                     {
                         if (subtile.terrainAmount < TreeMaxSize)
                         {
@@ -179,10 +180,10 @@ namespace VikingEngine.DSSWars.Map
                             if (DssRef.world.subTileGrid.InBounds(npos))
                             {
                                 ref var ntile = ref DssRef.world.subTileGrid.GetRef(npos);
-                                if (ntile.mainTerrain == Map.TerrainMainType.DefaultLand)
+                                if (ntile.mainTerrain == TerrainMainType.DefaultLand)
                                 {
-                                    Map.TerrainSubFoilType sprout = foilType == Map.TerrainSubFoilType.TreeSoft ? Map.TerrainSubFoilType.TreeSoftSprout : Map.TerrainSubFoilType.TreeHardSprout;
-                                    ntile.SetType(Map.TerrainMainType.Foil, (int)sprout, 1);
+                                    TerrainSubFoilType sprout = foilType == TerrainSubFoilType.TreeSoft ? TerrainSubFoilType.TreeSoftSprout : TerrainSubFoilType.TreeHardSprout;
+                                    ntile.SetType(TerrainMainType.Foil, (int)sprout, 1);
                                 }
                             }
 
@@ -197,11 +198,11 @@ namespace VikingEngine.DSSWars.Map
                         subtile.terrainAmount++;
                     }
                     break;
-                case Map.TerrainSubFoilType.TreeHardSprout:
+                case TerrainSubFoilType.TreeHardSprout:
                     {
                         if (++subtile.terrainAmount > SproutMaxSize)
                         {
-                            subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
+                            subtile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHard, 1);
                         }
                     }
                     break;
@@ -225,9 +226,9 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void asyncCityProduce(IntVector2 pos, ref MapTile_ subtile)
+        public void asyncCityProduce(IntVector2 pos, ref MapTile1_1 subtile)
         {
-            Map.TerrainBuildingType buildingType = (Map.TerrainBuildingType)subtile.subTerrain;
+            TerrainBuildingType buildingType = (TerrainBuildingType)subtile.subTerrain;
             switch (buildingType)
             {
                 case TerrainBuildingType.BoarHabitat:
@@ -353,7 +354,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
             }
 
-            void spawnEggs(int eggGroupCount, ref MapTile_ subtile)
+            void spawnEggs(int eggGroupCount, ref MapTile1_1 subtile)
             {
                 //const int EggGroupCount = 5;
 
@@ -376,12 +377,12 @@ namespace VikingEngine.DSSWars.Map
         public static void createSubTileContent(int x, int y, 
             float distanceToCity,
             SumTile4_4 tile,
-            Height height,
+            ColorHeight height,
             Biom biom,
             ref IntervalF mudRadius,
-            ref MapTile_ subTile, 
+            ref MapTile1_1 subTile, 
             WorldData world, 
-            VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap,
+            EngineSpace.Maths.SimplexNoise2D noiseMap,
             List<IntVector2> mineLocations,
             List<IntVector2> animalSpawns)
         {
@@ -402,7 +403,7 @@ namespace VikingEngine.DSSWars.Map
 
                     if (stonenoise > 0.1)
                     {
-                        if (tile.heightLevel >= Height.MineHeightStart)
+                        if (tile.heightLevel >= ColorHeight.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
                             

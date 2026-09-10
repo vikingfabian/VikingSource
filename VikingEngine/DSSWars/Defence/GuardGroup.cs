@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Command;
 
 namespace VikingEngine.DSSWars.Defence
@@ -113,7 +112,7 @@ namespace VikingEngine.DSSWars.Defence
             assignedToPost_IdAndPosition = IdAndPosition;
             //soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
-            if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out MapTile_ subTile))
+            if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out MapTile1_1 subTile))
             {
                 if (soldierData.unitFilter.Contains(UnitFilterType.Ranged))
                 {

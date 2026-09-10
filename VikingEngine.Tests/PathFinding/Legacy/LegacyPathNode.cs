@@ -1,6 +1,5 @@
 using System;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.Tests.Pathfinding.Legacy
 {

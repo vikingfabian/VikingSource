@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Map;
 
-namespace VikingEngine.DSSWars
+namespace VikingEngine.DSSWars.Map.MapModels
 {
     //class MapTextures
     //{

@@ -9,7 +9,9 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.PJ.GameState;
@@ -1386,7 +1388,7 @@ namespace VikingEngine.DSSWars.Build
             return BuildAndExpandType.NUM_NONE;
         }
 
-        public static bool CanAutoBuildHere(ref MapTile_ subTile)
+        public static bool CanAutoBuildHere(ref MapTile1_1 subTile)
         {
             switch (subTile.mainTerrain)
             {
@@ -1410,7 +1412,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static bool TryAutoBuild(PFaction pfaction, IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
         {
-            MapTile_ subTile;
+            MapTile1_1 subTile;
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out subTile))
             {
                 if (CanAutoBuildHere(ref subTile))

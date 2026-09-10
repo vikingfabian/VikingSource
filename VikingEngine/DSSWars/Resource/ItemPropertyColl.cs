@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.ToGG.MoonFall.GO;
 
@@ -53,12 +54,12 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.SoftWood, CityResourceIndex.wood, 1f / 30, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.DryWood, CityResourceIndex.wood, 1f / 60, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
 
-            new ItemProperties(ItemResourceType.Wood_Group, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
-            new ItemProperties(ItemResourceType.Clay, CityResourceIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.ClayPit));
+            new ItemProperties(ItemResourceType.Wood_Group, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.TreeSoft));
+            new ItemProperties(ItemResourceType.Clay, CityResourceIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.ClayPit));
 
             // basic resources
-            new ItemProperties(ItemResourceType.Stone_G, CityResourceIndex.stone, 1f / CarryStones, WorkPriorityType.stone, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.Stones));
-            new ItemProperties(ItemResourceType.Brick, CityResourceIndex.Brick, 1f / CarryBricks, WorkPriorityType.craftBrick, CraftResourceLib.Brick, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.StoneBlock));
+            new ItemProperties(ItemResourceType.Stone_G, CityResourceIndex.stone, 1f / CarryStones, WorkPriorityType.stone, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.Stones));
+            new ItemProperties(ItemResourceType.Brick, CityResourceIndex.Brick, 1f / CarryBricks, WorkPriorityType.craftBrick, CraftResourceLib.Brick, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.StoneBlock));
             new ItemProperties(ItemResourceType.Egg, CityResourceIndex.rawFood, 1f / 60, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Wheat, CityResourceIndex.rawFood, 1f / 10, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Meat, CityResourceIndex.Meat, DefaultWeight, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
@@ -74,28 +75,28 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Container, CityResourceIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay, StorageType.MaterialStorage).AddItemSource(new ItemSource(Build.BuildAndExpandType.Carpenter));
 
             // fuel & food
-            new ItemProperties(ItemResourceType.Fuel_G, CityResourceIndex.fuel, DefaultWeight, WorkPriorityType.craftFuel, CraftResourceLib.Fuel1, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.CoalPit), new ItemSource(Map.TerrainMineType.Coal));
+            new ItemProperties(ItemResourceType.Fuel_G, CityResourceIndex.fuel, DefaultWeight, WorkPriorityType.craftFuel, CraftResourceLib.Fuel1, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.CoalPit), new ItemSource(TerrainMineType.Coal));
             new ItemProperties(ItemResourceType.Coal, CityResourceIndex.fuel, DefaultWeight, WorkPriorityType.miningCoal, CraftResourceLib.Charcoal, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.Salt, CityResourceIndex.Salt, DefaultWeight, WorkPriorityType.miningSalt, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.Salt), new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.DryingPan));
+            new ItemProperties(ItemResourceType.Salt, CityResourceIndex.Salt, DefaultWeight, WorkPriorityType.miningSalt, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.Salt), new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.DryingPan));
             new ItemProperties(ItemResourceType.Food_G, CityResourceIndex.food, 1f / CarryFood, WorkPriorityType.craftFood, CraftResourceLib.Food1, CraftResourceLib.Food2, StorageType.FoodStorage).AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OrchardApple));
             new ItemProperties(ItemResourceType.ConservedFood, CityResourceIndex.ConservedFood, 1f / CarryConservedFood, WorkPriorityType.craftConservedFood, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked, StorageType.FoodStorage).AddItemSource(new ItemSource(Build.BuildAndExpandType.Cook), new ItemSource(Build.BuildAndExpandType.Smoker), new ItemSource(Build.BuildAndExpandType.Dryer));
             new ItemProperties(ItemResourceType.Beer, CityResourceIndex.beer, DefaultWeight, WorkPriorityType.craftBeer, CraftResourceLib.Beer, null, StorageType.FoodStorage);
             new ItemProperties(ItemResourceType.CoolingFluid, CityResourceIndex.coolingfluid, DefaultWeight, WorkPriorityType.craftCoolingFluid, CraftResourceLib.CoolingFluid, null, StorageType.MaterialStorage);
 
             // metals & alloys
-            new ItemProperties(ItemResourceType.IronOre_G, CityResourceIndex.ironore, 1f / 10, WorkPriorityType.miningIron, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.IronOre));
-            new ItemProperties(ItemResourceType.TinOre, CityResourceIndex.TinOre, 1f / 10, WorkPriorityType.miningTin, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.TinOre));
-            new ItemProperties(ItemResourceType.CopperOre, CityResourceIndex.CopperOre, 1f / 10, WorkPriorityType.miningCopper, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.CopperOre));
-            new ItemProperties(ItemResourceType.LeadOre, CityResourceIndex.LeadOre, 1f / 10, WorkPriorityType.miningLead, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.LeadOre));
-            new ItemProperties(ItemResourceType.SilverOre, CityResourceIndex.SilverOre, 1f / 10, WorkPriorityType.miningSilver, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.SilverOre));
-            new ItemProperties(ItemResourceType.GoldOre, CityResourceIndex.GoldOre, 1f / 10, WorkPriorityType.miningGold, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.GoldOre));
+            new ItemProperties(ItemResourceType.IronOre_G, CityResourceIndex.ironore, 1f / 10, WorkPriorityType.miningIron, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.IronOre));
+            new ItemProperties(ItemResourceType.TinOre, CityResourceIndex.TinOre, 1f / 10, WorkPriorityType.miningTin, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.TinOre));
+            new ItemProperties(ItemResourceType.CopperOre, CityResourceIndex.CopperOre, 1f / 10, WorkPriorityType.miningCopper, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.CopperOre));
+            new ItemProperties(ItemResourceType.LeadOre, CityResourceIndex.LeadOre, 1f / 10, WorkPriorityType.miningLead, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.LeadOre));
+            new ItemProperties(ItemResourceType.SilverOre, CityResourceIndex.SilverOre, 1f / 10, WorkPriorityType.miningSilver, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.SilverOre));
+            new ItemProperties(ItemResourceType.GoldOre, CityResourceIndex.GoldOre, 1f / 10, WorkPriorityType.miningGold, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.GoldOre));
 
             new ItemProperties(ItemResourceType.Iron_G, CityResourceIndex.iron, DefaultWeight, WorkPriorityType.smeltIron, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Tin, CityResourceIndex.Tin, DefaultWeight, WorkPriorityType.smeltTin, CraftResourceLib.Tin, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Copper, CityResourceIndex.Copper, DefaultWeight, WorkPriorityType.smeltCopper, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Lead, CityResourceIndex.Lead, DefaultWeight, WorkPriorityType.smeltLead, CraftResourceLib.Lead, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.RawMithril, CityResourceIndex.RawMithril, DefaultWeight, WorkPriorityType.miningMithril, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.Mithril));
-            new ItemProperties(ItemResourceType.Sulfur, CityResourceIndex.Sulfur, DefaultWeight, WorkPriorityType.miningSulfur, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.Sulfur));
+            new ItemProperties(ItemResourceType.RawMithril, CityResourceIndex.RawMithril, DefaultWeight, WorkPriorityType.miningMithril, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.Mithril));
+            new ItemProperties(ItemResourceType.Sulfur, CityResourceIndex.Sulfur, DefaultWeight, WorkPriorityType.miningSulfur, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.Sulfur));
 
             new ItemProperties(ItemResourceType.Silver, CityResourceIndex.Silver, DefaultWeight, WorkPriorityType.smeltSilver, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Gold, NoCityResource, DefaultWeight, WorkPriorityType.smeltGold, Minting.ConvertGoldOre, null, StorageType.MaterialStorage);

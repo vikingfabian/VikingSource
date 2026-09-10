@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO.NPC;
 

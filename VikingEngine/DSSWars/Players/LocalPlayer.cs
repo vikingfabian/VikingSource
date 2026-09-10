@@ -20,7 +20,8 @@ using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLayer;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
@@ -1948,13 +1949,13 @@ namespace VikingEngine.DSSWars.Players
 
         public MapDetailLayerType mapLayer()
         {
-            if (Map.MapLayerManager.CameraIndexToView == null ||
-                Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex] == null)
+            if (MapLayerManager.CameraIndexToView == null ||
+                MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex] == null)
             {
                 return MapDetailLayerType.TerrainOverview2;
             }
 
-            return Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex].current.type;
+            return MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex].current.type;
         }
         public double diplomacyAddPerSec_CapIncluded()
         {

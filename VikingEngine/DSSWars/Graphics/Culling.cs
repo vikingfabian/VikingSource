@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.Engine;
 using VikingEngine.LootFest.Data;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.PJ.Moba.GO;
+using VikingEngine.DSSWars.Map.MapLayer;
 
 namespace VikingEngine.DSSWars
 {
@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 pos)
         {
-            if (DssRef.world.tileGrid.TryGet(pos, out Map.SumTile4_4 tile))
+            if (DssRef.world.tileGrid.TryGet(pos, out Map.MapData.SumTile4_4 tile))
             {
                 if (cullingStateA)
                 { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
@@ -285,7 +285,7 @@ namespace VikingEngine.DSSWars
 
         public void asynch_update(bool bStateA, ref bool detailView)
         {
-            Map.MapLayerManager detailLayer = Map.MapLayerManager.CameraIndexToView[index];
+            MapLayerManager detailLayer = MapLayerManager.CameraIndexToView[index];
             bool hasValue1, hasValue2, hasValue3, hasValue4;
             Vector3 topleft = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.Position, playerData.view.Viewport, mapPlane, out hasValue1);
             Vector3 topright = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.RightTop, playerData.view.Viewport, mapPlane, out hasValue2);
@@ -376,7 +376,7 @@ namespace VikingEngine.DSSWars
             midLayer = r.ReadBoolean();
         }
 
-        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, Map.MapLayer layer)
+        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, MapLayer layer)
         {
             this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;

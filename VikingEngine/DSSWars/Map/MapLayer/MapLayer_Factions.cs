@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Map;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.MapLayer
 {
     class MapLayer_Factions
     {

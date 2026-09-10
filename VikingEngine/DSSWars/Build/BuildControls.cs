@@ -14,7 +14,8 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Presentation;
@@ -120,7 +121,7 @@ namespace VikingEngine.DSSWars.Build
                         if (DssRef.difficulty.GodPowers())
                         {
                             var build = BuildLib.BuildOptions[(int)placeBuildingType];
-                            MapTile_ subTile = DssRef.world.subTileGrid.Get(subTilePos);
+                            MapTile1_1 subTile = DssRef.world.subTileGrid.Get(subTilePos);
                             if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
                             {
                                 EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true, true, false);

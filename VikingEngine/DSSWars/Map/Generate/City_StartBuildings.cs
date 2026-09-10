@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.LootFest.GO.Characters;
 using VikingEngine.ToGG.Commander.UnitsData;
 
@@ -24,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             cityHallSubtilePos = subtilepos;
             var localPlayer = pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer();
-            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
+            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
            
             edit.SubmitOrExecute();
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
 {
@@ -18,14 +17,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Rectangle2 area;
         IntVector2 start;
         IntVector2 currentPos;
-        MapTile_ terrainType;
+        MapTile1_1 terrainType;
 
         public TerrainTypeSearch()
         {
             cityIx = -1; 
         }
 
-        public Vector3 FindNext(City city, MapTile_ terrainType)
+        public Vector3 FindNext(City city, MapTile1_1 terrainType)
         {
             bool newSearch = cityIx != city.myIndex ||
                 !this.terrainType.EqualTerrain(terrainType);

@@ -6,7 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Players;
 using static System.Collections.Specialized.BitVector32;
@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Players
     {
         public bool hasSelection = false;
         public IntVector2 subTilePos;
-        public MapTile_ subTile;
+        public MapTile1_1 subTile;
         Mesh model;
         public bool isNew = false;
         public SelectTileResult selectTileResult = SelectTileResult.None;
@@ -104,48 +104,48 @@ namespace VikingEngine.DSSWars.Players
                                         tileOfInterest = true;
                                         switch ((TerrainBuildingType)subTile.subTerrain)
                                         {
-                                            case Map.TerrainBuildingType.CityHall_Tent:
-                                            case Map.TerrainBuildingType.CityHall_Village:
-                                            case Map.TerrainBuildingType.CityHall_Town:
-                                            case Map.TerrainBuildingType.CityHall_Capital:
+                                            case TerrainBuildingType.CityHall_Tent:
+                                            case TerrainBuildingType.CityHall_Village:
+                                            case TerrainBuildingType.CityHall_Town:
+                                            case TerrainBuildingType.CityHall_Capital:
                                                 selectTileResult = SelectTileResult.CityHall;
                                                 break;
-                                            case Map.TerrainBuildingType.Postal:
-                                            case Map.TerrainBuildingType.PostalLevel2:
-                                            case Map.TerrainBuildingType.PostalLevel3:
+                                            case TerrainBuildingType.Postal:
+                                            case TerrainBuildingType.PostalLevel2:
+                                            case TerrainBuildingType.PostalLevel3:
                                                 selectTileResult = SelectTileResult.Postal;
                                                 break;
-                                            case Map.TerrainBuildingType.Recruitment:
-                                            case Map.TerrainBuildingType.RecruitmentLevel2:
-                                            case Map.TerrainBuildingType.RecruitmentLevel3:
+                                            case TerrainBuildingType.Recruitment:
+                                            case TerrainBuildingType.RecruitmentLevel2:
+                                            case TerrainBuildingType.RecruitmentLevel3:
                                                 selectTileResult = SelectTileResult.Recruitment;
                                                 break;
-                                            case Map.TerrainBuildingType.GoldDeliveryLevel1:
-                                            case Map.TerrainBuildingType.GoldDeliveryLevel2:
-                                            case Map.TerrainBuildingType.GoldDeliveryLevel3:
+                                            case TerrainBuildingType.GoldDeliveryLevel1:
+                                            case TerrainBuildingType.GoldDeliveryLevel2:
+                                            case TerrainBuildingType.GoldDeliveryLevel3:
                                                 selectTileResult = SelectTileResult.GoldDeliver;
                                                 break;
 
-                                            case Map.TerrainBuildingType.SoldierBarracks:
-                                            case Map.TerrainBuildingType.ArcherBarracks:
-                                            case Map.TerrainBuildingType.WarmachineBarracks:
+                                            case TerrainBuildingType.SoldierBarracks:
+                                            case TerrainBuildingType.ArcherBarracks:
+                                            case TerrainBuildingType.WarmachineBarracks:
                                             //case Map.TerrainBuildingType.KnightsBarracks:
-                                            case Map.TerrainBuildingType.GunBarracks:
-                                            case Map.TerrainBuildingType.CannonBarracks:
+                                            case TerrainBuildingType.GunBarracks:
+                                            case TerrainBuildingType.CannonBarracks:
                                                 selectTileResult = SelectTileResult.Conscript;
                                                 break;
 
-                                            case Map.TerrainBuildingType.School:
+                                            case TerrainBuildingType.School:
                                                 selectTileResult = SelectTileResult.School;
                                                 break;
-                                            case Map.TerrainBuildingType.ResearchCenter:
+                                            case TerrainBuildingType.ResearchCenter:
                                                 selectTileResult = SelectTileResult.ResearchCenter;
                                                 break;
-                                            case Map.TerrainBuildingType.BookPress:
+                                            case TerrainBuildingType.BookPress:
                                                 selectTileResult = SelectTileResult.BookPress;
                                                 break;
 
-                                            case Map.TerrainBuildingType.Cesspit:
+                                            case TerrainBuildingType.Cesspit:
                                                 selectTileResult = SelectTileResult.CessPit;
                                                 break;
                                         }
@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Players
             return MayBuildResult.ERR;
         }
 
-        public static MayBuildResult MayBuild(City city, MapTile_ subTile, LocalPlayer player, out bool upgrade)
+        public static MayBuildResult MayBuild(City city, MapTile1_1 subTile, LocalPlayer player, out bool upgrade)
         {
             upgrade = false;
             if (city != null)

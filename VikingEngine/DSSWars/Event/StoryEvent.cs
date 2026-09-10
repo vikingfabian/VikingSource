@@ -510,7 +510,7 @@ namespace VikingEngine.DSSWars.Event
                     {
                         if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
                             tile.IsLand() &&
-                            tile.tileContent != Map.TileContent.City &&
+                            tile.tileContent != Map.MapData.TileContent.City &&
                             (trial > 1 || tile.CityIndex == city.myIndex)) //require same city area on first trial
                         {
                             //Available for spawn
@@ -788,7 +788,7 @@ namespace VikingEngine.DSSWars.Event
 
                         foreach (var pos in checkPos)
                         {
-                            if (DssRef.world.tileGrid.TryGet(pos, out Map.SumTile4_4 tile))
+                            if (DssRef.world.tileGrid.TryGet(pos, out Map.MapData.SumTile4_4 tile))
                             {
                                 if (tile.IsWater())
                                 {
