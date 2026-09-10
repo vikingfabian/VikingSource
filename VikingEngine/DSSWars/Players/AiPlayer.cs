@@ -1925,7 +1925,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        if (DssRef.world.tileGrid.TryGet(mainArmy.tilePos, out Tile tile))
+                        if (DssRef.world.tileGrid.TryGet(mainArmy.tilePos, out SumTile4_4 tile))
                         {
                             var city = tile.City();
                             if (city.pfaction == pfaction)

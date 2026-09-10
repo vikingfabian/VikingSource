@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             cityHallSubtilePos = subtilepos;
             var localPlayer = pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer();
-            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
+            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new MapTile_(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
            
             edit.SubmitOrExecute();
 

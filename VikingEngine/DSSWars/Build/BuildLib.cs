@@ -1386,7 +1386,7 @@ namespace VikingEngine.DSSWars.Build
             return BuildAndExpandType.NUM_NONE;
         }
 
-        public static bool CanAutoBuildHere(ref SubTile subTile)
+        public static bool CanAutoBuildHere(ref MapTile_ subTile)
         {
             switch (subTile.mainTerrain)
             {
@@ -1410,7 +1410,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static bool TryAutoBuild(PFaction pfaction, IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
         {
-            SubTile subTile;
+            MapTile_ subTile;
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out subTile))
             {
                 if (CanAutoBuildHere(ref subTile))

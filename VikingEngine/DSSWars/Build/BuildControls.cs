@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.Build
                         if (DssRef.difficulty.GodPowers())
                         {
                             var build = BuildLib.BuildOptions[(int)placeBuildingType];
-                            SubTile subTile = DssRef.world.subTileGrid.Get(subTilePos);
+                            MapTile_ subTile = DssRef.world.subTileGrid.Get(subTilePos);
                             if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
                             {
                                 EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true, true, false);

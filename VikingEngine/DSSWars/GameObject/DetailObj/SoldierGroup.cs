@@ -2526,7 +2526,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void setGroundY()
         {
-            if (DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
+            if (DssRef.world.tileGrid.TryGet(tilePos, out SumTile4_4 tile))
             {
                 position.Y = tile.GroundY_aboveWater();
             }
@@ -2872,7 +2872,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 //state = GroupState.Idle;
 
-                if (hostedAction && DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
+                if (hostedAction && DssRef.world.tileGrid.TryGet(tilePos, out SumTile4_4 tile))
                 {
                     bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
                     if (waterNode != isShip)

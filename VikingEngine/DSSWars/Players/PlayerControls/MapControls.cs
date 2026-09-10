@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.Players
             return player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f);
         }
 
-        public void terrainSearchClick(SubTile terrain)
+        public void terrainSearchClick(MapTile_ terrain)
         {
             var city = selection.obj?.GetCity();
             if (city != null)
@@ -490,7 +490,7 @@ namespace VikingEngine.DSSWars.Players
             IntVector2 subTilePositionInLoop= IntVector2.Zero;
             
 
-            SubTile subTile;
+            MapTile_ subTile;
             for (int y = 6; y >= -1; --y)
             {
                 subTilePositionInLoop.Y = subTilePosition.Y + y;

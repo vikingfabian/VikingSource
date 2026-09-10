@@ -207,7 +207,7 @@ namespace VikingEngine.Tests.Pathfinding
             {
                 for (int x = 30; x < 70; x++)
                 {
-                    var t = new Tile();
+                    var t = new SumTile4_4();
                     t.heightLevel = Height.MountainHeightStart;
                     DssRef.world.tileGrid.Set(new IntVector2(x, y), t);
                 }
@@ -293,7 +293,7 @@ namespace VikingEngine.Tests.Pathfinding
                             var pt = new IntVector2(x, y);
                             if (!water.Contains(pt))
                             {
-                                var tile = new Tile();
+                                var tile = new SumTile4_4();
                                 tile.heightLevel = (byte)((i % 3 == 0) ? Height.MountainHeightStart : Height.MinLandHeight + 1);
                                 DssRef.world.tileGrid.Set(pt, tile);
                             }

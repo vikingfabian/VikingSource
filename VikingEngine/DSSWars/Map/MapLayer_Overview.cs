@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Map
 
         public static VectorVolume WaterModelVolume()
         {
-            Vector3 surfacePos = new Vector3(DssRef.world.Size.X * 0.5f - 0.5f, Tile.WaterSurfaceY, DssRef.world.Size.Y * 0.5f - 0.5f);
+            Vector3 surfacePos = new Vector3(DssRef.world.Size.X * 0.5f - 0.5f, SumTile4_4.WaterSurfaceY, DssRef.world.Size.Y * 0.5f - 0.5f);
             Vector3 waterScale = new Vector3(DssRef.world.Size.X, 1f, DssRef.world.Size.Y);
 
             return new VectorVolume(surfacePos, waterScale);
@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Map
 
                 for (pos.X = 0; pos.X < DssRef.world.Size.X; ++pos.X)
                 {
-                    Tile tile = DssRef.world.tileGrid.Get(pos);
+                    SumTile4_4 tile = DssRef.world.tileGrid.Get(pos);
                     if (tile.heightLevel != Height.DeepWaterHeight)
                     {
                         Color terrainCol = tile.BiomColor();//DssRef.map.bioms.bioms[(int)tile.biom].Color(tile).Color;
@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars.Map
 
                         for (int i = 0; i < IntVector2.Dir4Array.Length; ++i)
                         {
-                            edge4Dir[i] =  DssRef.world.GetTileSafe(pos + IntVector2.Dir4Array[i], out Tile n) && tile.heightLevel > n.heightLevel;
+                            edge4Dir[i] =  DssRef.world.GetTileSafe(pos + IntVector2.Dir4Array[i], out SumTile4_4 n) && tile.heightLevel > n.heightLevel;
                         }
 
                         Sprite imgCoords = topTex;

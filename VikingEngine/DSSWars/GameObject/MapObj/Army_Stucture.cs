@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars.GameObject
                 localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
                 IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
-                if (DssRef.world.subTileGrid.TryGet(subTilePos, out SubTile subTile))
+                if (DssRef.world.subTileGrid.TryGet(subTilePos, out MapTile_ subTile))
                 {
                     if (subTile.mainTerrain != Map.TerrainMainType.DefaultSea)
                     {

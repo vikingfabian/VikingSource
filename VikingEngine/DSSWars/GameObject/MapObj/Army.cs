@@ -1002,7 +1002,7 @@ namespace VikingEngine.DSSWars.GameObject
                 Vector2 minpos = VectorExt.V2Max;
                 Vector2 maxpos = VectorExt.V2Min;
 
-                if (DssRef.world.tileGrid.TryGet(tilePos, out Map.Tile tile))
+                if (DssRef.world.tileGrid.TryGet(tilePos, out Map.SumTile4_4 tile))
                 {
                     terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
                 }

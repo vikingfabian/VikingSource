@@ -22,7 +22,7 @@ namespace VikingEngine.Benchmarks
         [BenchmarkCategory("SubTile_Size"), Benchmark]
         public int MeasureSubTile_CurrentSize()
         {
-            return Marshal.SizeOf<SubTile>();
+            return Marshal.SizeOf<MapTile_>();
         }
 
         [BenchmarkCategory("Tile_Size"), Benchmark(Baseline = true)]
@@ -34,7 +34,7 @@ namespace VikingEngine.Benchmarks
         [BenchmarkCategory("Tile_Size"), Benchmark]
         public int MeasureTile_CurrentSize()
         {
-            return Marshal.SizeOf<Tile>();
+            return Marshal.SizeOf<SumTile4_4>();
         }
 
         [BenchmarkCategory("SubTile_ChunkAlloc"), Benchmark(Baseline = true)]
@@ -48,7 +48,7 @@ namespace VikingEngine.Benchmarks
         [BenchmarkCategory("SubTile_ChunkAlloc"), Benchmark]
         public object AllocateSubTileChunk_Current()
         {
-            var chunk = new SubTile[4096];
+            var chunk = new MapTile_[4096];
             chunk[0].terrainAmount = 10;
             return chunk;
         }
@@ -64,7 +64,7 @@ namespace VikingEngine.Benchmarks
         [BenchmarkCategory("Tile_ChunkAlloc"), Benchmark]
         public object AllocateTileChunk_Current()
         {
-            var chunk = new Tile[4096];
+            var chunk = new SumTile4_4[4096];
             chunk[0].CityIndex = 1;
             return chunk;
         }

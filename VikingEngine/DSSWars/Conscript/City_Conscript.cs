@@ -546,7 +546,7 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (IntVector2 dir in IntVector2.Dir4Array)
             {
                 IntVector2 pos = tilePos + dir * 2;
-                Tile t = DssRef.world.tileGrid.Get(pos);
+                SumTile4_4 t = DssRef.world.tileGrid.Get(pos);
                 if (t.IsLand())
                 {
                     recruitToTile = pos;
@@ -558,7 +558,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             while (edgeLoop.Next())
             {
-                Tile t = DssRef.world.tileGrid.Get(edgeLoop.Position);
+                SumTile4_4 t = DssRef.world.tileGrid.Get(edgeLoop.Position);
                 if (t.IsLand())
                 {
                     recruitToTile = edgeLoop.Position;
@@ -568,7 +568,7 @@ namespace VikingEngine.DSSWars.GameObject
             foreach (IntVector2 dir in IntVector2.Dir4Array)
             {
                 IntVector2 pos = tilePos + dir;
-                Tile t = DssRef.world.tileGrid.Get(pos);
+                SumTile4_4 t = DssRef.world.tileGrid.Get(pos);
                 if (t.IsLand())
                 {
                     recruitToTile = pos;

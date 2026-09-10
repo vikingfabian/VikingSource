@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.Map
 
                             while (subTileLoop.Next())
                             {
-                                SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                MapTile_ subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
                                 if (subTile.mainTerrain == main && subTile.subTerrain == sub)
                                 { 
@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.Map
 
                             while (subTileLoop.Next())
                             {
-                                SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                MapTile_ subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
                                 if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
                                     subTile.mainTerrain == TerrainMainType.Destroyed)
@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (DssRef.world.tileBounds.IntersectTilePoint(edgeRandomizer.Position))
                     {
-                        if (DssRef.world.tileGrid.TryGet(edgeRandomizer.Position, out Tile tile))
+                        if (DssRef.world.tileGrid.TryGet(edgeRandomizer.Position, out SumTile4_4 tile))
                         {
                             if (tile.CityIndex == city.myIndex && tile.IsLand())
                             {
@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Map
 
                                 while (subTileLoop.Next())
                                 {
-                                    SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                    MapTile_ subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
                                     switch (subTile.mainTerrain)
                                     {
                                         case TerrainMainType.Destroyed:
@@ -305,7 +305,7 @@ namespace VikingEngine.DSSWars.Map
 
                     while (subTileLoop.Next())
                     {
-                        SubTile subTile = world.subTileGrid.Get(subTileLoop.Position);
+                        MapTile_ subTile = world.subTileGrid.Get(subTileLoop.Position);
 
                         if (subTile.collectionPointer >= 0)
                         {
@@ -1193,7 +1193,7 @@ namespace VikingEngine.DSSWars.Map
                 city.HousingCount_Workers = housingCount_Workers;
             }
 
-            void farming(ref SubTile subTile)
+            void farming(ref MapTile_ subTile)
             {
                 if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
                 {
@@ -1214,7 +1214,7 @@ namespace VikingEngine.DSSWars.Map
 
                 foreach (var pos in AnimalPens)
                 {
-                    EditSubTile editValue = new EditSubTile(city.pfaction, false, pos, new SubTile() { terrainAmount = 1 }, false, true, false);
+                    EditSubTile editValue = new EditSubTile(city.pfaction, false, pos, new MapTile_() { terrainAmount = 1 }, false, true, false);
                     editValue.Submit();
                 }
             }

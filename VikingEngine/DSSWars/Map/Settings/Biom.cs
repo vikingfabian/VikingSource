@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.Map.Settings
 
         }
 
-        public TileColor TileColor(Tile tile)
+        public TileColor TileColor(SumTile4_4 tile)
         {
             var result = colors_height[tile.heightLevel];
             if (tile.seaDistanceHeatMap <= 12)

@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 case WorkType.GatherFoil:
                     
-                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out SubTile subTile))
+                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile_ subTile))
                         {
 
                             switch (subTile.GetFoilType())

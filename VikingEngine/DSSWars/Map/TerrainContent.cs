@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map
             harvestReady = maxSize * harvestCount;
         }
 
-        public void asyncCityProduce(ref SubTile subtile)
+        public void asyncCityProduce(ref MapTile_ subtile)
         {            
             if (subtile.terrainAmount < maxTotal)
             {
@@ -153,7 +153,7 @@ namespace VikingEngine.DSSWars.Map
         public const int DryingSaltAmount = 8;
         public const int MineAmount_Coal = 20;
 
-        public void asyncFoilGroth(IntVector2 pos, ref SubTile subtile)
+        public void asyncFoilGroth(IntVector2 pos, ref MapTile_ subtile)
         {
             Map.TerrainSubFoilType foilType = (Map.TerrainSubFoilType)subtile.subTerrain;
             switch (foilType)
@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void asyncCityProduce(IntVector2 pos, ref SubTile subtile)
+        public void asyncCityProduce(IntVector2 pos, ref MapTile_ subtile)
         {
             Map.TerrainBuildingType buildingType = (Map.TerrainBuildingType)subtile.subTerrain;
             switch (buildingType)
@@ -353,7 +353,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
             }
 
-            void spawnEggs(int eggGroupCount, ref SubTile subtile)
+            void spawnEggs(int eggGroupCount, ref MapTile_ subtile)
             {
                 //const int EggGroupCount = 5;
 
@@ -375,11 +375,11 @@ namespace VikingEngine.DSSWars.Map
 
         public static void createSubTileContent(int x, int y, 
             float distanceToCity,
-            Tile tile,
+            SumTile4_4 tile,
             Height height,
             Biom biom,
             ref IntervalF mudRadius,
-            ref SubTile subTile, 
+            ref MapTile_ subTile, 
             WorldData world, 
             VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap,
             List<IntVector2> mineLocations,

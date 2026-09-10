@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Work
                             prevX = Convert.ToInt32(model.position.X);
                             prevZ = Convert.ToInt32(model.position.Z);
                             //Tile tile;
-                            if (DssRef.world.tileGrid.TryGet(prevX, prevZ, out Tile tile))
+                            if (DssRef.world.tileGrid.TryGet(prevX, prevZ, out SumTile4_4 tile))
                             {
                                 isShip = tile.IsWater();
                                 if (isShip)
@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.Work
                         {
                             if (/*Ref.TimePassed16ms &&*/ Ref.peRnd.ChanceF(0.3f/Ref.UpdateTimes60FPS))
                             {
-                                Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterSurfaceY),
+                                Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, SumTile4_4.WaterSurfaceY),
                                     DssConst.Men_StandardModelScale * 0.2f, 4);
                             }
                         }
@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.Work
                             if (workAnimation_soundframe())
                             {
                                 workEffect?.onSoundAnimation();
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile_ subTile))
                                 {
                                     switch ((TerrainSubFoilType)subTile.subTerrain)
                                     {
@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile_ subTile))
                                 {
                                     var building = (TerrainBuildingType)subTile.subTerrain;
 
@@ -274,7 +274,7 @@ namespace VikingEngine.DSSWars.Work
                         switch (status.work)
                         {
                             case WorkType.GatherFoil:
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile_ subTile))
                                 {
                                     switch ((TerrainSubFoilType)subTile.subTerrain)
                                     {
@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.Work
             switch (status.work)
             {
                 case WorkType.Craft:
-                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile_ subTile))
                     {
                         var building = (TerrainBuildingType)subTile.subTerrain;
 
@@ -578,9 +578,9 @@ namespace VikingEngine.DSSWars.Work
             {
                 float y = DssRef.world.SubTileHeight(model.position) + 0.01f;//ModelGroundYAdj;
 
-                if (y < Tile.UnitMinY)
+                if (y < SumTile4_4.UnitMinY)
                 {
-                    y = Tile.UnitMinY;
+                    y = SumTile4_4.UnitMinY;
                 }
 
                 if (y != model.position.Y)

@@ -15,36 +15,63 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct SubTile
-    {
-        public static readonly SubTile Empty = new SubTile() { mainTerrain = TerrainMainType.NUM };
+    //struct LandTileData
+    //{ 
+    //    public byte subTerrain = byte.MaxValue;
+    //    /// <summary>
+    //    /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
+    //    /// </summary>
+    //    public byte terrainAmount = 0;
 
-        public Color color;
-        public float groundY;
-        //public FoilType foil = FoilType.None;
+    //    public byte health = 100;
+
+    //    public byte orientation = 0;
+
+    //    //public byte terrainQuality = 0;
+
+    //    /// <summary>
+    //    /// Pointer to array with all resources found lying on ground
+    //    /// </summary>
+    //    public int collectionPointer = -1;
+
+    //    public LandTileData() 
+    //    { }
+    //}
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    struct MapTile_
+    {
+        public static readonly MapTile_ Empty = new MapTile_() { mainTerrain = TerrainMainType.NUM };
+        //public Color color;
+        public byte heightValue;
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
+
+        //public int landDataIndex = -1;
         public byte subTerrain = byte.MaxValue;
         /// <summary>
         /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
         /// </summary>
         public byte terrainAmount = 0;
 
-        public byte terrainQuality = 0;
+        public byte health = 100;
+
+        public byte orientation = 0;
+
+        //public byte terrainQuality = 0;
 
         /// <summary>
         /// Pointer to array with all resources found lying on ground
         /// </summary>
         public int collectionPointer = -1;
 
-        public SubTile(TerrainMainType type, int subType)
+        public MapTile_(TerrainMainType type, int subType)
         {
             this.mainTerrain = type;
             this.subTerrain = (byte)subType;
             terrainAmount = 1;
         }
 
-        public SubTile(TerrainMainType type, int subType, Color color, float groundY)
+        public MapTile_(TerrainMainType type, int subType, byte heightValue/*, Color color, float groundY*/)
         {
 #if DEBUG
             //if (color == ColorExt.Empty)
@@ -52,8 +79,8 @@ namespace VikingEngine.DSSWars.Map
             //    throw new Exception("Empty col");
             //}
 #endif
-            this.color = color;
-            this.groundY = groundY;
+            //this.color = color;
+            //this.groundY = groundY;
 
             this.mainTerrain = type;
             this.subTerrain = (byte)subType;
@@ -96,7 +123,7 @@ namespace VikingEngine.DSSWars.Map
         const int EqSubterrainIx = 1;
         const int EqTerrainAmountIx = 2;
         const int EqCollectionPointerIx = 3;
-        public void write(System.IO.BinaryWriter w, ref SubTile previous)
+        public void write(System.IO.BinaryWriter w, ref MapTile_ previous)
         {
             //TODO check repeats with previous, use eightbit
             bool eqMainTerrain = mainTerrain == previous.mainTerrain;
@@ -136,7 +163,7 @@ namespace VikingEngine.DSSWars.Map
             StreamLib.WriteColorStream_3B(w, color);
         }
 
-        public void read(System.IO.BinaryReader r, ref SubTile previous, int version)
+        public void read(System.IO.BinaryReader r, ref MapTile_ previous, int version)
         {
             EightBit reapeats = new EightBit(r);
 
@@ -186,7 +213,7 @@ namespace VikingEngine.DSSWars.Map
 #endif
         }
 
-        public bool EqualTerrain(SubTile other)
+        public bool EqualTerrain(MapTile_ other)
         {
             return mainTerrain == other.mainTerrain &&
                 subTerrain == other.subTerrain;
@@ -196,7 +223,7 @@ namespace VikingEngine.DSSWars.Map
             return mainTerrain == main &&
                 subTerrain == (byte)sub;
         }
-        public bool EqualSaveData(ref SubTile other)
+        public bool EqualSaveData(ref MapTile_ other)
         {
             return  terrainAmount == other.terrainAmount && 
                 mainTerrain == other.mainTerrain && 
@@ -205,7 +232,7 @@ namespace VikingEngine.DSSWars.Map
                 groundY == other.groundY;            
         }
 
-        public void copySaveDataFrom(ref SubTile other)
+        public void copySaveDataFrom(ref MapTile_ other)
         { 
             this.terrainAmount = other.terrainAmount;
             this.mainTerrain = other.mainTerrain;
@@ -389,7 +416,7 @@ namespace VikingEngine.DSSWars.Map
                     }
 
                 case TerrainMainType.DefaultSea:
-                    if (groundY <= Tile.LowWaterY)
+                    if (groundY <= SumTile4_4.LowWaterY)
                     {
                         return new MoveCost(50, 1f);
                     }

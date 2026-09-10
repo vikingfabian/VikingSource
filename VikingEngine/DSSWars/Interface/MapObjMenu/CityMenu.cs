@@ -908,7 +908,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     
                     city.GetGroupedResource(CityResourceIndex.fuel).toMenu(content, ItemResourceType.Fuel_G, ref reachedBuffer, player, city);
                     int totalmines = 0;
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.SubTile.Empty, ref totalmines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.MapTile_.Empty, ref totalmines);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
                     content.space();
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
@@ -998,23 +998,23 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     int totalMines = 0;
 
                     city.GetGroupedResource(CityResourceIndex.ironore).toMenu(content, ItemResourceType.IronOre_G, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, Map.SubTile.Empty, ref totalMines);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, Map.MapTile_.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, Map.MapTile_.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.TinOre).toMenu(content, ItemResourceType.TinOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, Map.MapTile_.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.CopperOre).toMenu(content, ItemResourceType.CopperOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, Map.MapTile_.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.LeadOre).toMenu(content, ItemResourceType.LeadOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_lead, ItemResourceType.Lead, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_lead, ItemResourceType.Lead, Map.MapTile_.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.SilverOre).toMenu(content, ItemResourceType.SilverOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, Map.MapTile_.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.GoldOre).toMenu(content, ItemResourceType.GoldOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_gold, ItemResourceType.Gold, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_gold, ItemResourceType.Gold, Map.MapTile_.Empty, ref totalMines);
                     HudLib.blueprintButton(city, player, content, Minting.ConvertGoldOre);
 
                     content.newParagraph();
@@ -1036,10 +1036,10 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
 
                     city.GetGroupedResource(CityResourceIndex.RawMithril).toMenu(content, ItemResourceType.RawMithril, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, Map.MapTile_.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.Sulfur).toMenu(content, ItemResourceType.Sulfur, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_sulfur, ItemResourceType.Sulfur, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_sulfur, ItemResourceType.Sulfur, Map.MapTile_.Empty, ref totalMines);
                     content.newParagraph();
 
 

@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Map
             const float HeightAboveGround_Uncolored = HeightAboveGround_Color + 0.03f;
 
 
-            Tile t;
+            SumTile4_4 t;
             Vector3 cornerNW = Vector3.Zero, cornerNE = Vector3.Zero, cornerSW = Vector3.Zero, cornerSE = Vector3.Zero, innerCornerNW = Vector3.Zero, innerCornerNE = Vector3.Zero, innerCornerSW = Vector3.Zero, innerCornerSE = Vector3.Zero;
 
             Sprite tex = Sprite.FromName(SpriteName.WhiteArea_LFtiles);

@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Map
             waterEdgeModel.Visible = false;
         }
         
-        public void generateModel_async(IntVector2 pos, Tile tile)
+        public void generateModel_async(IntVector2 pos, SumTile4_4 tile)
         {
             this.pos = pos;
             hasPolygons = tile.heightLevel != Height.DeepWaterHeight;
@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 model.position = WP.ToWorldPos(pos);
                 waterEdgeModel.position = model.position;
-                waterEdgeModel.PositionY = Tile.WaterFoamY;
+                waterEdgeModel.PositionY = SumTile4_4.WaterFoamY;
 
 #if DEBUG
                 model.DebugName = "Detail map tile " + pos.ToString();
@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.Map
 
                         rnd.SetSeed(subX * 3 + subY * 11);
 
-                        SubTile subTile = DssRef.world.subTileGrid.Get(subX, subY);
+                        MapTile_ subTile = DssRef.world.subTileGrid.Get(subX, subY);
                         Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileWidth, topLeft.Y + y * WorldData.SubTileWidth);
 
                         bool bSurfacePolygonTexture = true;
@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 
 
-                void block(Vector2 subTopLeft, SpriteName texture, Color color, ref SubTile subTile)
+                void block(Vector2 subTopLeft, SpriteName texture, Color color, ref MapTile_ subTile)
                 {
                     var top = Graphics.PolygonColor.QuadXZ(
                         subTopLeft,
@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void generateWaterEdge_async(IntVector2 pos, Tile tile)
+        public void generateWaterEdge_async(IntVector2 pos, SumTile4_4 tile)
         {
             //const float WaveModelWidth = 0.25f;
             //const float WaveModelHalSize = WaveModelWidth * 0.5f;
@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        Vector3 topCenter(ref SubTile subTile, ref Vector2 subTopLeft)
+        Vector3 topCenter(ref MapTile_ subTile, ref Vector2 subTopLeft)
         {
             return new Vector3(
                  pos.X + subTopLeft.X,
@@ -303,7 +303,7 @@ namespace VikingEngine.DSSWars.Map
                  pos.Y + subTopLeft.Y);
         }
 
-        void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft, Color tileColor, SurfaceTextureType textureType)
+        void surfaceTexture(SumTile4_4 tile, MapTile_ subTile, Vector2 subTopLeft, Color tileColor, SurfaceTextureType textureType)
         {
             
             Vector3 center = new Vector3(
@@ -582,7 +582,7 @@ namespace VikingEngine.DSSWars.Map
             
         }
 
-        void createWall(Tile tile, ref SubTile subTile, TerrainWallType buildingType, Vector3 wp, ref Color surfaceColor)
+        void createWall(SumTile4_4 tile, ref MapTile_ subTile, TerrainWallType buildingType, Vector3 wp, ref Color surfaceColor)
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
@@ -637,7 +637,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
         static readonly Color SquareGroundCol = new Color(102,102,115);
-        void createBuilding(Tile tile, ref SubTile subTile, TerrainBuildingType buildingType, Vector3 wp, ref Color surfaceColor)
+        void createBuilding(SumTile4_4 tile, ref MapTile_ subTile, TerrainBuildingType buildingType, Vector3 wp, ref Color surfaceColor)
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
@@ -1064,7 +1064,7 @@ namespace VikingEngine.DSSWars.Map
         static readonly Color GardenGrassColShadow = new Color(90, 135, 60);
         static readonly Color PavementGroundCol = new Color(92, 92, 136);
 
-        void createDecor(Tile tile, ref SubTile subTile, TerrainDecorType decorType, Vector3 wp, ref bool bSurfacePolygonTexture, ref SurfaceTextureType surfacePolygonTexture, ref Color surfaceColor)
+        void createDecor(SumTile4_4 tile, ref MapTile_ subTile, TerrainDecorType decorType, Vector3 wp, ref bool bSurfacePolygonTexture, ref SurfaceTextureType surfacePolygonTexture, ref Color surfaceColor)
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
@@ -1302,7 +1302,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        void animals(Tile tile, ref SubTile subTile, ref Vector3 wp, ItemResourceType animalType, AnimalPenGrowth penGrowth)
+        void animals(SumTile4_4 tile, ref MapTile_ subTile, ref Vector3 wp, ItemResourceType animalType, AnimalPenGrowth penGrowth)
         {
             if (tile.OutOfRenderTimeOut())
             {

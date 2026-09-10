@@ -498,11 +498,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))
             {
-                float y = DssRef.world.SubTileHeight(position, out SubTile subTile) + ModelGroundYAdj;
+                float y = DssRef.world.SubTileHeight(position, out MapTile_ subTile) + ModelGroundYAdj;
 
-                if (y < Map.Tile.UnitMinY)
+                if (y < Map.SumTile4_4.UnitMinY)
                 {
-                    y = Map.Tile.UnitMinY;
+                    y = Map.SumTile4_4.UnitMinY;
                 }
 
                 if (y != position.Y)

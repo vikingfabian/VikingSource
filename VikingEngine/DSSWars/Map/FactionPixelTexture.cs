@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Map
         
         void refreshArea(Rectangle2 area)
         {
-            Tile t;
+            SumTile4_4 t;
 
             ForXYLoop loop = new ForXYLoop(area);
 

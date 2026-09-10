@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.GameObject
                 ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
                 while (loop.Next())
                 {
-                    Tile t = DssRef.world.tileGrid.Get(loop.Position);
+                    SumTile4_4 t = DssRef.world.tileGrid.Get(loop.Position);
                     if (t.IsLand())
                     {
                         armySpawnTilePos = loop.Position;
@@ -1093,7 +1093,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             onGameStart(false);
             byte height = r.ReadByte();
-            var tile = new Tile();
+            var tile = new SumTile4_4();
             tile.heightLevel = height;
             position.Y = tile.ModelGroundY();
             if (overviewModel != null)
@@ -1232,7 +1232,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (edgeLoop.Next())
                             {
 
-                                if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out Tile t) &&
+                                if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out SumTile4_4 t) &&
                                         t.MayBuild() && t.CityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
@@ -4276,7 +4276,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
 
-                SubTile subTile = new SubTile();
+                MapTile_ subTile = new MapTile_();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
                 new EditSubTile(pfaction, true, cityHallSubtilePos, subTile, true, false, false).Submit();
 

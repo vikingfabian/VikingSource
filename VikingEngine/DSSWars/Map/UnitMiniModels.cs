@@ -79,9 +79,9 @@ namespace VikingEngine.DSSWars.Map
                                     Vector3 pos = groups.sel.position;
                                     pos.Y += 0.07f;
 
-                                    if (pos.Y < Tile.UnitQuadMinY)
+                                    if (pos.Y < SumTile4_4.UnitQuadMinY)
                                     {
-                                        pos.Y = Tile.UnitQuadMinY;
+                                        pos.Y = SumTile4_4.UnitQuadMinY;
                                     }
 
                                     topPoly.quadXZPlacement(pos,

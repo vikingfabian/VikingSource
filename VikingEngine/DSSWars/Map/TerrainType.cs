@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map
         NUM
     }
 
-    enum TerrainSubFoilType
+    enum TerrainSubFoilType : byte
     {
         TreeHardSprout,
         TreeSoftSprout,
@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.Map
     /// <summary>
     /// Creates a stockpile of resources
     /// </summary>
-    enum TerrainResourcesType
+    enum TerrainResourcesType : byte
     {
         Wood,
         Rubble,
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Map
         NUM_NONE
     }
 
-    enum TerrainBuildingType
+    enum TerrainBuildingType : byte
     {   
         CityHall_Village,
         CityHall_Town,
@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.Map
         NUM_NONE
     }
 
-    enum TerrainWallType
+    enum TerrainWallType : byte
     {
         DirtWall,
         DirtTower,
@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.Map
         NUM_NONE
     }
 
-    enum TerrainDecorType
+    enum TerrainDecorType : byte
     {
         Square,
         CobbleStones,
@@ -248,13 +248,13 @@ namespace VikingEngine.DSSWars.Map
         NUM_NONE
     }
 
-    enum TerrainRoadType
+    enum TerrainRoadType : byte
     {
         DirtRoad,
         NUM_NONE
     }
 
-    enum TerrainMineType
+    enum TerrainMineType : byte
     {
         Salt,
         Coal,
@@ -269,13 +269,13 @@ namespace VikingEngine.DSSWars.Map
         Sulfur,
     }
 
-    enum TerrainSeaType
-    {       
-        Deep,
-        Low,
-    }
+    //enum TerrainSeaType : byte
+    //{       
+    //    Deep,
+    //    Low,
+    //}
 
-    enum TerrainDefaultLandType
+    enum TerrainDefaultLandType : byte
     {
         Flat,
         Mountain,

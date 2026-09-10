@@ -392,7 +392,7 @@ namespace VikingEngine.DSSWars.Work
                 return;
             }
 
-            ref SubTile subTile = ref DssRef.world.subTileGrid.GetRef(subTileEnd);
+            ref MapTile_ subTile = ref DssRef.world.subTileGrid.GetRef(subTileEnd);
 
             bool tryRepeatWork = false;
 
@@ -1912,7 +1912,7 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-        void gatherWood(Resource.ItemResourceType resourceType, ref SubTile subTile, City city)
+        void gatherWood(Resource.ItemResourceType resourceType, ref MapTile_ subTile, City city)
         {
             int amount = subTile.terrainAmount;
 
@@ -2014,7 +2014,7 @@ namespace VikingEngine.DSSWars.Work
                     timeSec = DssConst.WorkTime_LocalTrade;
                     break;
                 case WorkType.GatherFoil:
-                    if (DssRef.world.subTileGrid.TryGet(subTileEnd, out SubTile subTile))
+                    if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile_ subTile))
                     {
                         switch ((TerrainSubFoilType)subTile.subTerrain)
                         {

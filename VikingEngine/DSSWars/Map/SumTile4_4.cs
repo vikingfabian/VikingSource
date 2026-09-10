@@ -13,8 +13,12 @@ using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map
 {
+
+    /// <summary>
+    /// Group of 4 by 4 tiles
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct Tile
+    struct SumTile4_4
     {
         public const short NoBorderRegion = -2;
         public const short SeaBorder = -1;
@@ -72,7 +76,7 @@ namespace VikingEngine.DSSWars.Map
             return (Ref.TotalGameTimeSec - exitRenderTimeStamp_TotSec) > 1f;
         }
 
-        public Tile()
+        public SumTile4_4()
         {
             heightLevel = Height.DeepWaterHeight;
 
@@ -91,7 +95,7 @@ namespace VikingEngine.DSSWars.Map
             seaDistanceHeatMap = int.MinValue;
         }
 
-        public Tile(System.IO.BinaryReader r, Tile previous, int version)
+        public SumTile4_4(System.IO.BinaryReader r, SumTile4_4 previous, int version)
             :this()
         {
             readMapFile(r, previous, version);
@@ -139,7 +143,7 @@ namespace VikingEngine.DSSWars.Map
         const int SaveOpt_HasBorderW_Ix = 7;
 
 
-        public void writeMapFile(System.IO.BinaryWriter w, Tile previuos)
+        public void writeMapFile(System.IO.BinaryWriter w, SumTile4_4 previuos)
         {
             EightBit saveOpt = new EightBit();
             bool bIsCity = tileContent == TileContent.City;
@@ -199,7 +203,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void readMapFile(System.IO.BinaryReader r, Tile previuos, int version)
+        public void readMapFile(System.IO.BinaryReader r, SumTile4_4 previuos, int version)
         {
             //TODO optimera med att spara bool för repeat av vanliga värden
 

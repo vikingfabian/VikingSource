@@ -73,8 +73,8 @@ namespace VikingEngine.DSSWars
         public VectorRect unitBounds;
         public IntVector2 Size;
         public IntVector2 HalfSize;
-        public Grid2D_L<Tile> tileGrid;
-        public Grid2D_L<SubTile> subTileGrid;
+        
+        public WorldMapTiles tiles;
        
         public UnitCollAreaGrid unitCollAreaGrid;
 
@@ -307,14 +307,14 @@ namespace VikingEngine.DSSWars
             unitBounds.AddRadius(-1f);
 
             //create grid
-            tileGrid = new Grid2D_L<Tile>(Size);
+            
 
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
-            subTileGrid = new Grid2D_L<SubTile>(Size * TileSubDivitions);
+            
         }
 
-        bool subTileHasRepeatValue(ref SubTile subtile)
+        bool subTileHasRepeatValue(ref MapTile_ subtile)
         {
             return subtile.mainTerrain == TerrainMainType.DefaultSea;
         }
@@ -322,7 +322,7 @@ namespace VikingEngine.DSSWars
         public void writeGameState(System.IO.BinaryWriter w)
         {
             subTileGrid.LoopBegin();
-            SubTile previuos = new SubTile();
+            MapTile_ previuos = new MapTile_();
 
             while (subTileGrid.LoopNext())
             {
@@ -384,12 +384,12 @@ namespace VikingEngine.DSSWars
         {
             availableGenericAiTypes.Clear();
             subTileGrid.LoopBegin();
-            SubTile previuos = new SubTile();
+            MapTile_ previuos = new MapTile_();
 
 
             while (subTileGrid.LoopNext())
             {
-                SubTile subtile = subTileGrid.LoopValueGet();
+                MapTile_ subtile = subTileGrid.LoopValueGet();
                 subtile.read(r, ref previuos, subversion);
                 subTileGrid.LoopValueSet(subtile);
 
@@ -511,7 +511,7 @@ namespace VikingEngine.DSSWars
             area.SetTileBounds(DssRef.world.tileBounds);
             ForXYLoop loop = new ForXYLoop(area);
 
-            Tile previous = new Tile();
+            SumTile4_4 previous = new SumTile4_4();
             while (loop.Next())
             {
                 remotePlayerC.Reset();
@@ -540,7 +540,7 @@ namespace VikingEngine.DSSWars
             var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
             area.SetTileBounds(DssRef.world.tileBounds);
             ForXYLoop loop = new ForXYLoop(area);
-            Tile previous = new Tile();
+            SumTile4_4 previous = new SumTile4_4();
             while (loop.Next())
             {
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
@@ -571,7 +571,7 @@ namespace VikingEngine.DSSWars
 
             var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
             ForXYLoop loop = new ForXYLoop(area);
-            SubTile previous = new SubTile();
+            MapTile_ previous = new MapTile_();
 
             while (loop.Next())
             {
@@ -588,7 +588,7 @@ namespace VikingEngine.DSSWars
 
             var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
             ForXYLoop loop = new ForXYLoop(area);
-            SubTile previous = new SubTile();
+            MapTile_ previous = new MapTile_();
 
             while (loop.Next())
             {
@@ -694,7 +694,7 @@ namespace VikingEngine.DSSWars
             
             //tilesSz.begin(w);
             ForXYLoop loop = new ForXYLoop(Size);
-            Tile previous = new Tile();
+            SumTile4_4 previous = new SumTile4_4();
             while (loop.Next())
             {
                 var tile = tileGrid.Get(loop.Position);
@@ -760,10 +760,10 @@ namespace VikingEngine.DSSWars
             Size.read(r);
             refreshSize(Size);
             ForXYLoop loop = new ForXYLoop(Size);
-            Tile previous = new Tile();
+            SumTile4_4 previous = new SumTile4_4();
             while (loop.Next())
             {
-                var tile = new Tile(r, previous, version);
+                var tile = new SumTile4_4(r, previous, version);
                 tileGrid.Set(loop.Position, tile);
                 previous = tile;
             }
@@ -879,14 +879,14 @@ namespace VikingEngine.DSSWars
         //}
 
 
-        public Tile tileFromSubTilePos(IntVector2 position)
+        public SumTile4_4 tileFromSubTilePos(IntVector2 position)
         {
             return tileGrid.Get(position.X / TileSubDivitions, position.Y / TileSubDivitions);
         }  
 
         public bool adjacentToLand(IntVector2 tile)
         {
-            Tile t;
+            SumTile4_4 t;
             //Check if it has a neighbor tile that is land
             foreach (IntVector2 dir in IntVector2.Dir8Array)
             {
@@ -1095,7 +1095,7 @@ namespace VikingEngine.DSSWars
                 Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)).groundY;                
         }
 
-        public float SubTileHeight(Vector3 wp, out SubTile subTile)
+        public float SubTileHeight(Vector3 wp, out MapTile_ subTile)
         {
 
             subTile = subTileGrid.Get(
@@ -1104,12 +1104,12 @@ namespace VikingEngine.DSSWars
             return subTile.groundY;
         }
 
-        public Tile GetTile(Vector2 pos)
+        public SumTile4_4 GetTile(Vector2 pos)
         {
             return tileGrid.Get(WP.ToTilePos(pos));
         }
 
-        public Tile GetTile(Vector3 pos)
+        public SumTile4_4 GetTile(Vector3 pos)
         {
             return tileGrid.Get(WP.ToTilePos(pos));
         }
@@ -1134,7 +1134,7 @@ namespace VikingEngine.DSSWars
 
             IntVector2 gridPos = WP.ToTilePos(pos);
 
-            Tile center = tileGrid.Get(gridPos);
+            SumTile4_4 center = tileGrid.Get(gridPos);
             float result = center.UnitGroundY();
             
             Vector2 centerDiff = new Vector2(pos.X - gridPos.X, pos.Z - gridPos.Y);
@@ -1145,7 +1145,7 @@ namespace VikingEngine.DSSWars
                 IntVector2 nPos = gridPos;
                 nPos.X += lib.ToLeftRight(centerDiff.X);
 
-                Tile nTile;
+                SumTile4_4 nTile;
                 if (GetTileSafe(nPos, out nTile))
                 {
                     result = lib.LargestValue(result, nTile.UnitGroundY());
@@ -1157,7 +1157,7 @@ namespace VikingEngine.DSSWars
                 IntVector2 nPos = gridPos;
                 nPos.Y += lib.ToLeftRight(centerDiff.Y);
 
-                Tile nTile;
+                SumTile4_4 nTile;
                 if (GetTileSafe(nPos, out nTile))
                 {
                     result = lib.LargestValue(result, nTile.UnitGroundY());
@@ -1170,7 +1170,7 @@ namespace VikingEngine.DSSWars
                 IntVector2 nPos = gridPos;
                 nPos.X += lib.ToLeftRight(centerDiff.X);
                 nPos.Y += lib.ToLeftRight(centerDiff.Y);
-                Tile nTile;
+                SumTile4_4 nTile;
                 if (GetTileSafe(nPos, out nTile))
                 {
                     result = lib.LargestValue(result, nTile.UnitGroundY());
@@ -1181,7 +1181,7 @@ namespace VikingEngine.DSSWars
             return Bound.Min(result, -0.1f);
         }
 
-        public bool GetTileSafe(IntVector2 pos, out Tile tile)
+        public bool GetTileSafe(IntVector2 pos, out SumTile4_4 tile)
         {
             if (tileBounds.IntersectTilePoint(pos))
             {
@@ -1190,7 +1190,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                tile = new Tile();
+                tile = new SumTile4_4();
                 return false;
             }
         }
@@ -1214,7 +1214,7 @@ namespace VikingEngine.DSSWars
             foreach (IntVector2 dir in IntVector2.Dir8Array)
             {
                 IntVector2 pos = center + dir;
-                Tile t = tileGrid.Get(pos);
+                SumTile4_4 t = tileGrid.Get(pos);
                 if (t.IsLand())
                 {
                     return pos;

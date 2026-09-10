@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Defence
             assignedToPost_IdAndPosition = IdAndPosition;
             //soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
-            if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out SubTile subTile))
+            if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out MapTile_ subTile))
             {
                 if (soldierData.unitFilter.Contains(UnitFilterType.Ranged))
                 {

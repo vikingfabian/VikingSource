@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Players
     {
         public bool hasSelection = false;
         public IntVector2 subTilePos;
-        public SubTile subTile;
+        public MapTile_ subTile;
         Mesh model;
         public bool isNew = false;
         public SelectTileResult selectTileResult = SelectTileResult.None;
@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Players
             return MayBuildResult.ERR;
         }
 
-        public static MayBuildResult MayBuild(City city, SubTile subTile, LocalPlayer player, out bool upgrade)
+        public static MayBuildResult MayBuild(City city, MapTile_ subTile, LocalPlayer player, out bool upgrade)
         {
             upgrade = false;
             if (city != null)

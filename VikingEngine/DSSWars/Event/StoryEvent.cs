@@ -788,7 +788,7 @@ namespace VikingEngine.DSSWars.Event
 
                         foreach (var pos in checkPos)
                         {
-                            if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
+                            if (DssRef.world.tileGrid.TryGet(pos, out Map.SumTile4_4 tile))
                             {
                                 if (tile.IsWater())
                                 {

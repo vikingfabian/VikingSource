@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.GameObject
                     foamModel = new Mesh(LoadedMesh.plane, Vector3.Zero, DssConst.Men_StandardModelScale * 3f * new Vector3(0.96f, 1, 2), TextureEffectType.Flat,
                         SpriteName.WaterEdgeMask_ship, Color.White, false);
                     foamModel.Opacity = WaterEdgeBuilder.Opacity;
-                    foamModel.position.Y = Tile.WaterFoamY - 0.005f;
+                    foamModel.position.Y = SumTile4_4.WaterFoamY - 0.005f;
 #if DEBUG
                     FoamModelIndex++;
                     foamModel.DebugName = "Foam model " + FoamModelIndex.ToString();
@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
                 {
-                    Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterFoamY),
+                    Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, SumTile4_4.WaterFoamY),
                     DssConst.Men_StandardModelScale * 0.8f, 5);
                 }
             }

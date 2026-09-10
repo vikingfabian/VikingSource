@@ -14,7 +14,7 @@ namespace VikingEngine.Benchmarks.Pathfinding
             byte landHeight = Height.MinLandHeight,
             HashSet<IntVector2>? waterTiles = null)
         {
-            Tile.Init();
+            SumTile4_4.Init();
 
             var world = new WorldData();
             world.refreshSize(new IntVector2(width, height));
@@ -24,7 +24,7 @@ namespace VikingEngine.Benchmarks.Pathfinding
                 for (int x = 0; x < width; x++)
                 {
                     var pos = new IntVector2(x, y);
-                    var tile = new Tile();
+                    var tile = new SumTile4_4();
 
                     if (waterTiles != null && waterTiles.Contains(pos))
                     {

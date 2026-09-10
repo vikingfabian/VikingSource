@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 pos)
         {
-            if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
+            if (DssRef.world.tileGrid.TryGet(pos, out Map.SumTile4_4 tile))
             {
                 if (cullingStateA)
                 { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }

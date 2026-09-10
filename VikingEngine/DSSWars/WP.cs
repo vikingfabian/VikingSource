@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars
                 0,
                 subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth);
 
-            if (DssRef.world.subTileGrid.TryGet(subtilePos, out SubTile subTile))
+            if (DssRef.world.subTileGrid.TryGet(subtilePos, out MapTile_ subTile))
             { 
                 result.Y = subTile.groundY;
             }

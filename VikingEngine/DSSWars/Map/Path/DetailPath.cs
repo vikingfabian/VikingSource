@@ -524,10 +524,10 @@ namespace VikingEngine.DSSWars.Map.Path
                 moveCost -= 1f;
             }
 
-            SubTile subtile = world.subTileGrid.Get(pos);
+            MapTile_ subtile = world.subTileGrid.Get(pos);
             moveCost *= subtile.TerrainBlockMultipleValue();
 
-            Tile tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);
+            SumTile4_4 tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);
             waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)

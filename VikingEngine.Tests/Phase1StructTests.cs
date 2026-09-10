@@ -15,14 +15,14 @@ namespace VikingEngine.Tests
         [Fact]
         public void SubTile_PackedSize_Is16Bytes()
         {
-            int size = Marshal.SizeOf<SubTile>();
+            int size = Marshal.SizeOf<MapTile_>();
             Assert.Equal(16, size);
         }
 
         [Fact]
         public void Tile_PackedSize_Is34Bytes()
         {
-            int size = Marshal.SizeOf<Tile>();
+            int size = Marshal.SizeOf<SumTile4_4>();
             Assert.Equal(34, size);
         }
 
@@ -30,7 +30,7 @@ namespace VikingEngine.Tests
         public void SubTile_SizeReduction_Saves12BytesPerInstance()
         {
             int legacySize = Marshal.SizeOf<LegacySubTile>();
-            int newSize = Marshal.SizeOf<SubTile>();
+            int newSize = Marshal.SizeOf<MapTile_>();
 
             Assert.Equal(28, legacySize);
             Assert.Equal(16, newSize);
@@ -41,7 +41,7 @@ namespace VikingEngine.Tests
         public void Tile_SizeReduction_Saves30BytesPerInstance()
         {
             int legacySize = Marshal.SizeOf<LegacyTile>();
-            int newSize = Marshal.SizeOf<Tile>();
+            int newSize = Marshal.SizeOf<SumTile4_4>();
 
             Assert.Equal(64, legacySize);
             Assert.Equal(34, newSize);
@@ -51,13 +51,13 @@ namespace VikingEngine.Tests
         [Fact]
         public void Tile_SentinelsAndDefaults_ArePreserved()
         {
-            var tile = new Tile();
+            var tile = new SumTile4_4();
 
             Assert.Equal((short)(-1), tile.CityIndex);
-            Assert.Equal(Tile.NoBorderRegion, tile.BorderRegion_North);
-            Assert.Equal(Tile.NoBorderRegion, tile.BorderRegion_East);
-            Assert.Equal(Tile.NoBorderRegion, tile.BorderRegion_South);
-            Assert.Equal(Tile.NoBorderRegion, tile.BorderRegion_West);
+            Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_North);
+            Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_East);
+            Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_South);
+            Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_West);
             Assert.Equal(TileContent.NONE, tile.tileContent);
             Assert.Equal(Height.DeepWaterHeight, tile.heightLevel);
         }
@@ -73,16 +73,16 @@ namespace VikingEngine.Tests
             using (var ms = new MemoryStream())
             using (var w = new BinaryWriter(ms))
             {
-                var prev = new SubTile();
+                var prev = new MapTile_();
                 original.write(w, ref prev);
                 data = ms.ToArray();
             }
 
-            SubTile loaded = new SubTile();
+            MapTile_ loaded = new MapTile_();
             using (var ms = new MemoryStream(data))
             using (var r = new BinaryReader(ms))
             {
-                var prev = new SubTile();
+                var prev = new MapTile_();
                 loaded.read(r, ref prev, 12);
             }
 
@@ -97,30 +97,30 @@ namespace VikingEngine.Tests
         [Fact]
         public void Tile_Serialization_RoundTrip_Version12_PreservesData()
         {
-            var original = new Tile();
+            var original = new SumTile4_4();
             original.CityIndex = 42;
             original.biom = BiomType.Frozen;
             original.heightLevel = 5;
             original.tileContent = TileContent.City;
             original.BorderRegion_North = 10;
-            original.BorderRegion_East = Tile.SeaBorder;
-            original.BorderRegion_South = Tile.NoBorderRegion;
+            original.BorderRegion_East = SumTile4_4.SeaBorder;
+            original.BorderRegion_South = SumTile4_4.NoBorderRegion;
             original.BorderRegion_West = 3;
 
             byte[] data;
             using (var ms = new MemoryStream())
             using (var w = new BinaryWriter(ms))
             {
-                var prev = new Tile();
+                var prev = new SumTile4_4();
                 original.writeMapFile(w, prev);
                 data = ms.ToArray();
             }
 
-            Tile loaded = new Tile();
+            SumTile4_4 loaded = new SumTile4_4();
             using (var ms = new MemoryStream(data))
             using (var r = new BinaryReader(ms))
             {
-                var prev = new Tile();
+                var prev = new SumTile4_4();
                 loaded.readMapFile(r, prev, 12);
             }
 
@@ -129,8 +129,8 @@ namespace VikingEngine.Tests
             Assert.Equal((byte)5, loaded.heightLevel);
             Assert.Equal(TileContent.City, loaded.tileContent);
             Assert.Equal((short)10, loaded.BorderRegion_North);
-            Assert.Equal(Tile.SeaBorder, loaded.BorderRegion_East);
-            Assert.Equal(Tile.NoBorderRegion, loaded.BorderRegion_South);
+            Assert.Equal(SumTile4_4.SeaBorder, loaded.BorderRegion_East);
+            Assert.Equal(SumTile4_4.NoBorderRegion, loaded.BorderRegion_South);
             Assert.Equal((short)3, loaded.BorderRegion_West);
         }
 
@@ -158,11 +158,11 @@ namespace VikingEngine.Tests
                 v11Data = ms.ToArray();
             }
 
-            Tile loaded = new Tile();
+            SumTile4_4 loaded = new SumTile4_4();
             using (var ms = new MemoryStream(v11Data))
             using (var r = new BinaryReader(ms))
             {
-                var prev = new Tile();
+                var prev = new SumTile4_4();
                 loaded.readMapFile(r, prev, 11);
             }
 

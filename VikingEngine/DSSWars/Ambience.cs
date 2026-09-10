@@ -214,7 +214,7 @@ namespace VikingEngine.DSSWars
         {
             
             IntVector2 tileCenter = WP.ToTilePos( DssRef.state.culling.players[0].MapCenter);
-            Tile onTile = DssRef.world.tileGrid.Get(tileCenter);                      
+            SumTile4_4 onTile = DssRef.world.tileGrid.Get(tileCenter);                      
 
             volumeCurveTime += Ref.DeltaTimeSec * Ref.peRnd.Float() * 0.2;
             float volumeCurve = 1f + (float)(Math.Sin(volumeCurveTime) * 0.3);

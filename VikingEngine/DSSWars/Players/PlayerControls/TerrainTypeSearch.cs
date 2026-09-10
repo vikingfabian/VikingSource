@@ -18,14 +18,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Rectangle2 area;
         IntVector2 start;
         IntVector2 currentPos;
-        SubTile terrainType;
+        MapTile_ terrainType;
 
         public TerrainTypeSearch()
         {
             cityIx = -1; 
         }
 
-        public Vector3 FindNext(City city, SubTile terrainType)
+        public Vector3 FindNext(City city, MapTile_ terrainType)
         {
             bool newSearch = cityIx != city.myIndex ||
                 !this.terrainType.EqualTerrain(terrainType);
