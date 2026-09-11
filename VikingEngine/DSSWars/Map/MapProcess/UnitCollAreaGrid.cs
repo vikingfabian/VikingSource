@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
     {
         public const int UnitGridSquareWidth = 64;
 
-        public Grid2D<UnitCollArea> grid;
+        public Grid2D_L<UnitCollArea> grid;
 
         public List<GameObject.SoldierGroup> groups_nearUpdate = new List<GameObject.SoldierGroup>(32);
         public List<City> cities_nearUpdate = new List<City>(4);
@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 throw new Exception();
             }
 
-            grid = new Grid2D<UnitCollArea>(worldSz / UnitGridSquareWidth);
+            grid = new Grid2D_L<UnitCollArea>(worldSz / UnitGridSquareWidth);
 
             grid.LoopBegin();
 
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             {
                 for (int x = 0; x < grid.Size.X; ++x)
                 {
-                    grid.array[x, y].beginProcess();
+                    grid.GetRef(x, y).beginProcess();
                 }
             }
 
@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 while (armies.Next())
                 {
                     IntVector2 armyArea = armies.sel.tilePos / UnitGridSquareWidth;
-                    grid.array[armyArea.X, armyArea.Y].processAdd(armies.sel);
+                    grid.GetRef(armyArea.X, armyArea.Y).processAdd(armies.sel);
 
                     var groups = armies.sel.groups.counter();
                     while (groups.Next())
@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             {
                 for (int x = 0; x < grid.Size.X; ++x)
                 {
-                    grid.array[x, y].endProcess();
+                    grid.GetRef(x, y).endProcess();
                 }
             }
         }

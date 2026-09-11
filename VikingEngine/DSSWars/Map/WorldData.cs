@@ -48,9 +48,9 @@ namespace VikingEngine.DSSWars
         public const int CustomMapSize_Max = 4096;
 
 
-        public const int TileSubDivitions = 8;
-        public const int HalfTileSubDivitions = TileSubDivitions / 2;
-        public const int TileSubDivitions_MaxIndex = TileSubDivitions-1;
+        //public const int TileSubDivitions = 8;
+        //public const int HalfTileSubDivitions = TileSubDivitions / 2;
+        //public const int TileSubDivitions_MaxIndex = TileSubDivitions-1;
 
         public static readonly Color WaterCol = new Color(14, 155, 246);
         public static readonly Color WaterCol2 = ColorExt.Multiply(WaterCol, 0.9f);
@@ -65,9 +65,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color WaterVeryDarkCol2 = ColorExt.Multiply(WaterVeryDarkCol1, 1.05f);
 
         public static readonly float TileHalfWidth = 0.5f;
-        public static readonly float SubTileWidth = 1f / TileSubDivitions;
-        public static readonly Vector2 SubTileWidthV2 = new Vector2(SubTileWidth);
-        public static readonly float SubTileHalfWidth = SubTileWidth * 0.5f;
+        
 
         public WorldMetaData metaData;
 
@@ -93,7 +91,7 @@ namespace VikingEngine.DSSWars
 
         public List<FactionType> availableGenericAiTypes = new List<FactionType>();
 
-        public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
+        //public GenerateMapPass generatePassCompleted = GenerateMapPass.Clear;
 
         public List<PFaction> quickMatchFactions = null;
 
@@ -101,7 +99,7 @@ namespace VikingEngine.DSSWars
         public PathFindingPool pathFindingPool = new PathFindingPool();
         public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
 
-
+        public Grid2D_L<MapChunkData8_8> chunkGrid;
         public Grid2D_L<SumTile4_4> tileGrid;
         public Grid2D_L<MapTile1_1> subTileGrid;
 
@@ -123,16 +121,16 @@ namespace VikingEngine.DSSWars
             factions = new SpottedArray<Faction>();
         }
 
-        public WorldData(WorldMetaData metaData, MapGenerateSettings generateSettings/*, bool customEditorMap*/)//ushort seed, MapSize size)
+        public WorldData(WorldMetaData metaData, Map.Map2.Map2GenerateSettings generateSettings/*, bool customEditorMap*/)//ushort seed, MapSize size)
             : this()
         {
             this.metaData = metaData;
-            if (generateSettings.storage.customSeed)
-            { 
-                metaData.worldId.seed = generateSettings.storage.seed;
-                metaData.worldId.objSeed = generateSettings.storage.seed;
-                metaData.objRnd = new PcgRandom(generateSettings.storage.seed);
-            }
+            //if (generateSettings.storage.customSeed)
+            //{ 
+            //    metaData.worldId.seed = generateSettings.storage.seed;
+            //    metaData.worldId.objSeed = generateSettings.storage.seed;
+            //    metaData.objRnd = new PcgRandom(generateSettings.storage.seed);
+            //}
 
             //metaData.customEditorMap = customEditorMap;
             LoadingWorld = this;
@@ -313,7 +311,8 @@ namespace VikingEngine.DSSWars
 
             //create grid
             subTileGrid = new Grid2D_L<MapTile1_1>(Size);
-            tileGrid = new Grid2D_L<SumTile4_4>(Size / 4);
+            tileGrid = new Grid2D_L<SumTile4_4>(Size / SumTile4_4.TileWidth);
+            chunkGrid = new Grid2D_L<MapChunkData8_8>(Size / MapChunkData8_8.TileWidth);
 
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
@@ -575,7 +574,7 @@ namespace VikingEngine.DSSWars
 
             tilePos.writeUshort(w);
 
-            var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
+            var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(MapChunkData8_8.TileWidth));
             ForXYLoop loop = new ForXYLoop(area);
             MapTile1_1 previous = new MapTile1_1();
 
@@ -590,9 +589,10 @@ namespace VikingEngine.DSSWars
 
         public void readNet_SubTile(System.IO.BinaryReader r)
         {
+            /*
             IntVector2 tilePos = IntVector2.FromReadUshort(r);
 
-            var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
+            var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(MapChunkData8_8.TileWidth));
             ForXYLoop loop = new ForXYLoop(area);
             MapTile1_1 previous = new MapTile1_1();
 
@@ -606,7 +606,7 @@ namespace VikingEngine.DSSWars
 
             DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
 
-            //unitCollAreaGrid.netSubTilesRecieved(tilePos);
+            */
         }
 
         public void writeNet_Factions(System.IO.BinaryWriter w, PFaction faction)
@@ -885,22 +885,22 @@ namespace VikingEngine.DSSWars
         //}
 
 
-        public SumTile4_4 tileFromSubTilePos(IntVector2 position)
-        {
-            return tileGrid.Get(position.X / TileSubDivitions, position.Y / TileSubDivitions);
-        }  
+        //public SumTile4_4 tileFromSubTilePos(IntVector2 position)
+        //{
+        //    return tileGrid.Get(position.X / TileSubDivitions, position.Y / TileSubDivitions);
+        //}  
 
-        public bool adjacentToLand(IntVector2 tile)
-        {
-            SumTile4_4 t;
-            //Check if it has a neighbor tile that is land
-            foreach (IntVector2 dir in IntVector2.Dir8Array)
-            {
-                if (GetTileSafe(tile + dir, out t) && t.IsLand())
-                    return true;
-            }
-            return false;
-        }      
+        //public bool adjacentToLand(IntVector2 tile)
+        //{
+        //    SumTile4_4 t;
+        //    //Check if it has a neighbor tile that is land
+        //    foreach (IntVector2 dir in IntVector2.Dir8Array)
+        //    {
+        //        if (GetTileSafe(tile + dir, out t) && t.IsLand())
+        //            return true;
+        //    }
+        //    return false;
+        //}      
 
         public Faction ClosestFactionOverview(Vector3 position)
         {
@@ -914,10 +914,10 @@ namespace VikingEngine.DSSWars
             }
             return distances.minMember;
         }
-
+        public const int HeadCityNeededFreeRadius = 14;
         public Rectangle2 CenterArea()
         {
-            int radius = GenerateMap.HeadCityNeededFreeRadius * (DssRef.difficulty.setting_QuickMatch_PlayerCount < 6? 4 : 5);
+            int radius = HeadCityNeededFreeRadius * (DssRef.difficulty.setting_QuickMatch_PlayerCount < 6? 4 : 5);
             radius = Bound.Max(radius, Size.Y / 2 - 5);
             Rectangle2 centerArea = Rectangle2.FromCenterTileAndRadius(Size / 2, radius);//new Rectangle2(IntVector2.Zero, world.Size);
             
@@ -973,7 +973,7 @@ namespace VikingEngine.DSSWars
 
         public Faction getPlayerAvailableFaction2(List<Players.LocalPlayer> players, bool firstPlayer, bool dropIn)
         {
-            int MultiPlayerDistance = MathExt.MultiplyInt(GenerateMap.HeadCityNeededFreeRadius, 1.75f * Ref.netsett.PlayerSpacing + 1.5f);
+            int MultiPlayerDistance = MathExt.MultiplyInt(HeadCityNeededFreeRadius, 1.75f * Ref.netsett.PlayerSpacing + 1.5f);
 
             List<Faction> sortedList = new List<Faction>();
 
@@ -1093,22 +1093,21 @@ namespace VikingEngine.DSSWars
             return cities[closest.minMemberIndex];
         }
 
-        public float SubTileHeight(Vector3 wp)
-        {
+        //public float SubTileHeight(Vector3 wp)
+        //{
+        //    return subTileGrid.Get(
+        //        Convert.ToInt32(wp.X * TileSubDivitions + 3.5f), 
+        //        Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)).groundY;                
+        //}
 
-            return subTileGrid.Get(
-                Convert.ToInt32(wp.X * TileSubDivitions + 3.5f), 
-                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)).groundY;                
-        }
+        //public float SubTileHeight(Vector3 wp, out MapTile1_1 subTile)
+        //{
 
-        public float SubTileHeight(Vector3 wp, out MapTile1_1 subTile)
-        {
-
-            subTile = subTileGrid.Get(
-                Convert.ToInt32(wp.X * TileSubDivitions + 3.5f),
-                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f));
-            return subTile.groundY;
-        }
+        //    subTile = subTileGrid.Get(
+        //        Convert.ToInt32(wp.X * TileSubDivitions + 3.5f),
+        //        Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f));
+        //    return subTile.groundY;
+        //}
 
         public SumTile4_4 GetTile(Vector2 pos)
         {
@@ -1134,72 +1133,72 @@ namespace VikingEngine.DSSWars
         //}
 
          
-        public float GetGroundHeight(Vector3 pos)
-        {
-            const float InCenterRadius = 0.1f;
+        //public float GetGroundHeight(Vector3 pos)
+        //{
+        //    const float InCenterRadius = 0.1f;
 
-            IntVector2 gridPos = WP.ToTilePos(pos);
+        //    IntVector2 gridPos = WP.ToTilePos(pos);
 
-            SumTile4_4 center = tileGrid.Get(gridPos);
-            float result = center.UnitGroundY();
+        //    SumTile4_4 center = tileGrid.Get(gridPos);
+        //    float result = center.UnitGroundY();
             
-            Vector2 centerDiff = new Vector2(pos.X - gridPos.X, pos.Z - gridPos.Y);
+        //    Vector2 centerDiff = new Vector2(pos.X - gridPos.X, pos.Z - gridPos.Y);
 
-            int pointCount = 1;
-            if (Math.Abs(centerDiff.X) > InCenterRadius)
-            {
-                IntVector2 nPos = gridPos;
-                nPos.X += lib.ToLeftRight(centerDiff.X);
+        //    int pointCount = 1;
+        //    if (Math.Abs(centerDiff.X) > InCenterRadius)
+        //    {
+        //        IntVector2 nPos = gridPos;
+        //        nPos.X += lib.ToLeftRight(centerDiff.X);
 
-                SumTile4_4 nTile;
-                if (GetTileSafe(nPos, out nTile))
-                {
-                    result = lib.LargestValue(result, nTile.UnitGroundY());
-                    pointCount++;
-                }
-            }
-            if (Math.Abs(centerDiff.Y) > InCenterRadius)
-            {
-                IntVector2 nPos = gridPos;
-                nPos.Y += lib.ToLeftRight(centerDiff.Y);
+        //        SumTile4_4 nTile;
+        //        if (GetTileSafe(nPos, out nTile))
+        //        {
+        //            result = lib.LargestValue(result, nTile.UnitGroundY());
+        //            pointCount++;
+        //        }
+        //    }
+        //    if (Math.Abs(centerDiff.Y) > InCenterRadius)
+        //    {
+        //        IntVector2 nPos = gridPos;
+        //        nPos.Y += lib.ToLeftRight(centerDiff.Y);
 
-                SumTile4_4 nTile;
-                if (GetTileSafe(nPos, out nTile))
-                {
-                    result = lib.LargestValue(result, nTile.UnitGroundY());
-                    pointCount++;
-                }
-            }
+        //        SumTile4_4 nTile;
+        //        if (GetTileSafe(nPos, out nTile))
+        //        {
+        //            result = lib.LargestValue(result, nTile.UnitGroundY());
+        //            pointCount++;
+        //        }
+        //    }
 
-            if (pointCount == 3)
-            {
-                IntVector2 nPos = gridPos;
-                nPos.X += lib.ToLeftRight(centerDiff.X);
-                nPos.Y += lib.ToLeftRight(centerDiff.Y);
-                SumTile4_4 nTile;
-                if (GetTileSafe(nPos, out nTile))
-                {
-                    result = lib.LargestValue(result, nTile.UnitGroundY());
-                    pointCount++;
-                }
-            }
+        //    if (pointCount == 3)
+        //    {
+        //        IntVector2 nPos = gridPos;
+        //        nPos.X += lib.ToLeftRight(centerDiff.X);
+        //        nPos.Y += lib.ToLeftRight(centerDiff.Y);
+        //        SumTile4_4 nTile;
+        //        if (GetTileSafe(nPos, out nTile))
+        //        {
+        //            result = lib.LargestValue(result, nTile.UnitGroundY());
+        //            pointCount++;
+        //        }
+        //    }
 
-            return Bound.Min(result, -0.1f);
-        }
+        //    return Bound.Min(result, -0.1f);
+        //}
 
-        public bool GetTileSafe(IntVector2 pos, out SumTile4_4 tile)
-        {
-            if (tileBounds.IntersectTilePoint(pos))
-            {
-                tile = tileGrid.Get(pos);
-                return true;
-            }
-            else
-            {
-                tile = new SumTile4_4();
-                return false;
-            }
-        }
+        //public bool GetTileSafe(IntVector2 pos, out SumTile4_4 tile)
+        //{
+        //    if (tileBounds.IntersectTilePoint(pos))
+        //    {
+        //        tile = tileGrid.Get(pos);
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        tile = new SumTile4_4();
+        //        return false;
+        //    }
+        //}
 
         //public bool GetTileSafe_ref(IntVector2 pos, ref Tile tile)
         //{
@@ -1220,7 +1219,7 @@ namespace VikingEngine.DSSWars
             foreach (IntVector2 dir in IntVector2.Dir8Array)
             {
                 IntVector2 pos = center + dir;
-                SumTile4_4 t = tileGrid.Get(pos);
+                MapTile1_1 t = subTileGrid.Get(pos);
                 if (t.IsLand())
                 {
                     return pos;

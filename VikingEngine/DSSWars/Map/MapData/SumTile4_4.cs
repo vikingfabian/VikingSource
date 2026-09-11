@@ -22,8 +22,10 @@ namespace VikingEngine.DSSWars.Map.MapData
     struct SumTile4_4
     {
         public const int TileWidth = 4;
-        public const short NoBorderRegion = -2;
-        public const short SeaBorder = -1;
+
+        public const float ModelScale = MapTile1_1.ModelScale * TileWidth;
+        public const ushort NoBorderRegion = ushort.MaxValue;
+        public const ushort SeaBorder = ushort.MaxValue -1;
         const int CompareToAmountCities = 8;
 
         //public static void Init()
@@ -50,16 +52,17 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         // 4-byte members (naturally 4-byte aligned)
         public byte secondaryBiomStrength = 0;
-        public float exitRenderTimeStamp_TotSec = 0;
+        
         public int seaDistanceHeatMap = int.MinValue;
-        public int subtileVisualEdits = 0;
+
+        
 
         // 2-byte members (naturally 2-byte aligned at offset 16)
-        public short CityIndex;
-        public short BorderRegion_North;
-        public short BorderRegion_East;
-        public short BorderRegion_South;
-        public short BorderRegion_West;
+        public ushort CityIndex;
+        public ushort BorderRegion_North;
+        public ushort BorderRegion_East;
+        public ushort BorderRegion_South;
+        public ushort BorderRegion_West;
 
         // 1-byte members (always aligned)
         //public BiomType biom = BiomType.Green;
@@ -68,16 +71,15 @@ namespace VikingEngine.DSSWars.Map.MapData
         public BiomType biom2 = BiomType.Green;
         public byte secondBiomWeight;
 
+        public byte biomColorHeight;
+
         //public TileContent tileContent = TileContent.NONE;
         public byte BorderCount;
         
         
         //public bool inRender = false;
 
-        public bool OutOfRenderTimeOut()
-        { 
-            return (Ref.TotalGameTimeSec - exitRenderTimeStamp_TotSec) > 1f;
-        }
+       
 
         public SumTile4_4()
         {
@@ -88,7 +90,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public void clearCityData()
         { 
-             CityIndex = -1;
+             CityIndex = ushort.MaxValue;
             //tileContent = TileContent.NONE;
             BorderCount = 0;
             BorderRegion_North = NoBorderRegion; 
@@ -304,23 +306,23 @@ namespace VikingEngine.DSSWars.Map.MapData
             */
         }
 
-        public void AddBorder(int dir, int toregion)
+        public void AddBorder(int dir, ushort toregion)
         {
             ++BorderCount;
             
             switch (dir)
             {
                 case 0:
-                    BorderRegion_North = (short)toregion;
+                    BorderRegion_North = toregion;
                     break;
                 case 1:
-                    BorderRegion_East = (short)toregion;
+                    BorderRegion_East = toregion;
                     break;
                 case 2:
-                    BorderRegion_South = (short)toregion;
+                    BorderRegion_South = toregion;
                     break;
                 case 3:
-                    BorderRegion_West = (short)toregion;
+                    BorderRegion_West = toregion;
                     break;
             }
         }
@@ -426,7 +428,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
         static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
         static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
-
+        /*
         public Color MinimapColor_Faction(IntVector2 pos)
         {
             
@@ -663,16 +665,16 @@ namespace VikingEngine.DSSWars.Map.MapData
             Color color = ColorExt.MultiplyRGBA(factionCol, brightness);
             return color;
         }
+        */
+        //public ColorHeight heightSett()
+        //{
+        //    return DssRef.map.heigts[heightLevel];
+        //}
 
-        public ColorHeight heightSett()
-        {
-            return DssRef.map.heigts[heightLevel];
-        }
-
-        public Biom Biom()
-        {
-            return DssRef.map.bioms.bioms[(int)biom];
-        }
+        //public Biom Biom()
+        //{
+        //    return DssRef.map.bioms.bioms[(int)biom];
+        //}
 
         public Color cityColor()
         {
@@ -749,7 +751,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         //    LayerHeight * 6.8f,//MountainRidge_6,
         //};
 
-        static float[] TypeToHeight_aboveWater;
+        //static float[] TypeToHeight_aboveWater;
 
         //public float TroupWalkingDistance(bool ship)
         //{

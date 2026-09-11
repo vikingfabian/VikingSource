@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Engine;
@@ -253,7 +254,7 @@ namespace VikingEngine.DSSWars
             }
             float battleReduce = 1f - battleFadeTotal;
 
-            int deepSeaSoundLevelDir = lib.BoolToLeftRight(onTile.heightLevel <= ColorHeight.DeepWaterHeight);
+            int deepSeaSoundLevelDir = lib.BoolToLeftRight(onTile.biomColorHeight <= ColorHeight.DeepWaterHeight);
             deepSeaFade = Bound.Set(deepSeaFade + FarNearFadeSpeed_PerSec * deepSeaSoundLevelDir * Ref.DeltaGameTimeSec, 0f, MaxSeaLevel);
             float seaSoundReduce = 1f - deepSeaFade * 0.5f;
 
@@ -268,7 +269,7 @@ namespace VikingEngine.DSSWars
             if (nearNeedSoundBiom)
             {
                 LoopingSoundData[] wind, melody;
-                switch (onTile.biom)
+                switch (onTile.biom1)
                 { 
                     case BiomType.YellowDry:
                     case BiomType.RedDry:

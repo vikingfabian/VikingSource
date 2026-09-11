@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         int followsGoalId = int.MinValue;
 
-        public IntVector2 tilePos;
+        public IntVector2 maptilePos;
         public IntVector2 armyGridPlacement2 = IntVector2.Zero;
         public Rotation1D rotation;
 
@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case GroupState.FollowCommand:
                     {
                         WP.ReadPosXZPercentU16(r, out position, out tilePos);
-                        if (VectorExt.PlaneXZDistance(ref position, ref goalWp) > WorldData.SubTileWidth)
+                        if (VectorExt.PlaneXZDistance(ref position, ref goalWp) > Map.MapData.MapTile1_1.ModelScale)
                         {
                             goalWp = position;
                         }
@@ -389,7 +389,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var command_sp = command;
                             if (command_sp == null)
                             {
-                                if (VectorExt.PlaneXZDistance(ref position, ref newGoalWp) > WorldData.SubTileWidth)
+                                if (VectorExt.PlaneXZDistance(ref position, ref newGoalWp) > Map.MapData.MapTile1_1.ModelScale)
                                 {
                                     command = new NetClientCommand(this, newGoalWp);
                                 }
@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars.GameObject
                     
                     WP.ReadPosXZPercentU16(r, out var rPosition, out tilePos);
 
-                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > WorldData.SubTileWidth * 8)
+                    if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > Map.MapData.MapTile1_1.ModelScale * 8)
                     {
                         position = rPosition;
                     }
@@ -1058,7 +1058,7 @@ namespace VikingEngine.DSSWars.GameObject
             setGroundY();
         }
 
-        //static readonly float FlankDistAdd = WorldData.SubTileWidth * 0.6f;
+        //static readonly float FlankDistAdd = Map.MapData.MapTile1_1.ModelScale * 0.6f;
 
         void updateMoveAndAttackTarget(float time, bool fullUpdate, AbsGroup attack_sp, ref float groupWalkSpeed)
         {
@@ -1366,7 +1366,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (waitTime >= 5000)
                             {
                                 waitTime = 0f;
-                                if ((goalWp - position).PlaneXZLength() > WorldData.SubTileHalfWidth)
+                                if ((goalWp - position).PlaneXZLength() > MapTile1_1.SubTileHalfWidth)
                                 {
                                     state = GroupState.FindArmyPlacement;
                                     wakeupSoldiers();
@@ -1805,7 +1805,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        static readonly float GoalCompleteDistance = WorldData.SubTileWidth * 0.2f;
+        static readonly float GoalCompleteDistance = Map.MapData.MapTile1_1.ModelScale * 0.2f;
         bool updateWalking(Vector3 walkTowards, bool walk, bool rotate, bool induvidualSpeed, Rotation1D finalRotation, float time, out float speed)
         {
             Vector2 diff = new Vector2(
@@ -2215,7 +2215,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             Vector2 norm = VectorExt.Normalize(diff, out float l);
 
-            if (l > WorldData.SubTileWidth)
+            if (l > Map.MapData.MapTile1_1.ModelScale)
             {
                 Vector2 center = new Vector2(position.X, position.Z);
                 WalkDirBound.center = center + norm * WalkDirCheckLength;
@@ -2410,7 +2410,7 @@ namespace VikingEngine.DSSWars.GameObject
                         goalSubTile = WP.ToSubTilePos(goalWp);
                     }
 
-                    if (l >= WorldData.SubTileWidth &&
+                    if (l >= Map.MapData.MapTile1_1.ModelScale &&
                         (detailPath == null || detailPath.goal != goalSubTile))
                     {
                         pathCalulate_detail(goalSubTile, isTravelNode, pathThreadIndex);

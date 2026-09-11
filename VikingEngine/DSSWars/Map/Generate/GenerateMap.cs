@@ -20,6 +20,7 @@ using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
+    /*
     enum GenerateMapPass
     {         
         Clear,
@@ -34,7 +35,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         AllPopulation,
         All,
     }
-
+    */
+    /*
     class GenerateMap
     {
         public static int LoadStatus = 0;
@@ -206,6 +208,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void generate_cleanup()
         {
+
             var water = new SumTile4_4();
             Rectangle2 area = new Rectangle2(IntVector2.Zero, world.Size);
             area.AddRadius(-1);
@@ -1679,10 +1682,10 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             for (int loopy = 0; loopy < world.Size.Y; ++loopy)
             {
-                int supTileStartY = loopy * WorldData.TileSubDivitions;
+                int supTileStartY = loopy * Map.MapData.MapTile1_1.ModelScale_Inv;
                 for (int loopx = startX; loopx < endX; ++loopx)
                 {
-                    int supTileStartX = loopx * WorldData.TileSubDivitions;
+                    int supTileStartX = loopx * Map.MapData.MapTile1_1.ModelScale_Inv;
 
                     ref SumTile4_4 tile = ref world.tileGrid.GetRef(loopx, loopy); //lefttop side
                     checkAdj(loopx + 1, loopy, ref tile);
@@ -1731,7 +1734,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             List<IntVector2> mineLocations = new List<IntVector2>(1024);
             List<IntVector2> animalSpawns = new List<IntVector2>(1024);
-            const int WidthMin1 = WorldData.TileSubDivitions - 1;
+            const int WidthMin1 = Map.MapData.MapTile1_1.ModelScale_Inv - 1;
 
             int partWidth = world.Size.X / ProcessTilesDivisionParts;
             int startX = partWidth * part;
@@ -1741,10 +1744,10 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             for (int loopy = 0; loopy < world.Size.Y; ++loopy)
             {
-                int supTileStartY = loopy * WorldData.TileSubDivitions;
+                int supTileStartY = loopy * Map.MapData.MapTile1_1.ModelScale_Inv;
                 for (int loopx = startX; loopx < endX; ++loopx)
                 {
-                    int supTileStartX = loopx * WorldData.TileSubDivitions;
+                    int supTileStartX = loopx * Map.MapData.MapTile1_1.ModelScale_Inv;
 
                     SumTile4_4 tile = world.tileGrid.Get(loopx, loopy);
                     var city = world.cities[tile.CityIndex];
@@ -2046,7 +2049,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
     }
 
-
+    */
     class CityCultureCollection
     {
         public RandomObjects<CityResurceSeed> CitySeedCommoness;
@@ -2124,5 +2127,5 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             };
     }
-
+    
 }

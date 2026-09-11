@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
@@ -365,9 +366,9 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         DssRef.state.resources.addItem(
                             new ItemResource(
                                 ItemResourceType.Egg,
-                                1,
-                                subtile.terrainAmount * 4,
-                                subtile.terrainAmount * eggGroupCount),
+                                //1,
+                                //subtile.terrainAmount * 4,
+                                (ushort)(subtile.terrainAmount * eggGroupCount)),
                             ref subtile.collectionPointer);
                     }
                 }
@@ -386,7 +387,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             List<IntVector2> mineLocations,
             List<IntVector2> animalSpawns)
         {
-            if (tile.IsLand() && !height.isMountainPeek)
+            if (subTile.IsLand() /*&& !height.isMountainPeek*/)
             {
                 if (distanceToCity <= mudRadius.Max)
                 {
@@ -403,7 +404,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                     if (stonenoise > 0.1)
                     {
-                        if (tile.heightLevel >= ColorHeight.MineHeightStart)
+                        if (tile.biomColorHeight >= ColorHeight.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
                             

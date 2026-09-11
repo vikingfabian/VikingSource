@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         }
 
 
-        const float MobilityMultiplySpeed = WorldData.TileSubDivitions * TimeExt.SecondToMs;
+        const float MobilityMultiplySpeed = Map.MapData.MapTile1_1.ModelScale_Inv * TimeExt.SecondToMs;
         public float mobilityValue()
         {
             return walkingSpeed * MobilityMultiplySpeed;

@@ -42,6 +42,15 @@ namespace VikingEngine.DSSWars.Map.MapData
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct MapTile1_1
     {
+        
+        public const int ModelScale_Inv = 8;
+        public const float ModelScale = 1f / ModelScale_Inv;
+
+        public const int ModelScale_Inv_MaxIndex = ModelScale_Inv - 1;
+
+        public static readonly Vector2 ModelScaleV2 = new Vector2(ModelScale);
+        public static readonly float SubTileHalfWidth = ModelScale * 0.5f;
+
         public static readonly MapTile1_1 Empty = new MapTile1_1() { mainTerrain = TerrainMainType.NUM };
         //public Color color;
         public byte heightValue;
@@ -64,6 +73,13 @@ namespace VikingEngine.DSSWars.Map.MapData
         /// Pointer to array with all resources found lying on ground
         /// </summary>
         public int collectionPointer = -1;
+
+        public float groundY => heightValue * MapHeight2.HeightY;
+
+        public bool IsLand()
+        {
+            return heightValue > MapHeight2.WaterPlaneHeight;
+        }
 
         public MapTile1_1(TerrainMainType type, int subType)
         {
@@ -366,36 +382,36 @@ namespace VikingEngine.DSSWars.Map.MapData
                     return 0;
 
                 case TerrainMainType.Building:
-                    return WorldData.SubTileWidth * 0.4f;
+                    return Map.MapData.MapTile1_1.ModelScale * 0.4f;
                 case TerrainMainType.Wall:
                     switch ((TerrainWallType)subTerrain)
                     {
                         default:
-                           return WorldData.SubTileWidth * 0.5f;
+                           return Map.MapData.MapTile1_1.ModelScale * 0.5f;
 
                         case TerrainWallType.Palisade:
                             return 0;
 
                         case TerrainWallType.DirtWall:
-                            return WorldData.SubTileWidth * 0.3f;
+                            return Map.MapData.MapTile1_1.ModelScale * 0.3f;
                         case TerrainWallType.DirtTower:
-                            return WorldData.SubTileWidth * 0.4f;
+                            return Map.MapData.MapTile1_1.ModelScale * 0.4f;
 
 
                         case TerrainWallType.WoodWall:
-                            return WorldData.SubTileWidth * 0.4f;
+                            return Map.MapData.MapTile1_1.ModelScale * 0.4f;
                         case TerrainWallType.WoodTower:
-                            return WorldData.SubTileWidth * 0.4f;
+                            return Map.MapData.MapTile1_1.ModelScale * 0.4f;
 
                         case TerrainWallType.StoneWall:
                         case TerrainWallType.StoneWallBlueRoof:
                         case TerrainWallType.StoneWallGreen:
                         case TerrainWallType.StoneWallWoodHouse:
                         case TerrainWallType.StoneGate:
-                            return WorldData.SubTileWidth * 0.6f;
+                            return Map.MapData.MapTile1_1.ModelScale * 0.6f;
 
                         case TerrainWallType.StoneTower:
-                            return WorldData.SubTileWidth * 1.3f;
+                            return Map.MapData.MapTile1_1.ModelScale * 1.3f;
 
                     }
             }
@@ -418,7 +434,7 @@ namespace VikingEngine.DSSWars.Map.MapData
                     }
 
                 case TerrainMainType.DefaultSea:
-                    if (groundY <= SumTile4_4.LowWaterY)
+                    if (heightValue <= MapHeight2.WaterPlaneHeight)
                     {
                         return new MoveCost(50, 1f);
                     }
@@ -466,6 +482,18 @@ namespace VikingEngine.DSSWars.Map.MapData
                     //}
                     return new MoveCost(0.75f, 75f);
             }
+        }
+
+        const float ModelGroundYAdj = 0.06f;
+        public float UnitGroundY()
+        {
+            float result = groundY + ModelGroundYAdj;
+            if (result > MapHeight2.WaterSurfaceY)
+            {
+                return result;
+            }
+
+            return MapHeight2.WaterSurfaceY;
         }
     }
 

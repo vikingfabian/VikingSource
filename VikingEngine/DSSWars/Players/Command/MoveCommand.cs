@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Players.Command
         }
         public override void refreshGoal(Vector3 goalPos)
         {
-            if (VectorExt.PlaneXZDistance(ref goalWp, ref goalPos) > WorldData.SubTileWidth)
+            if (VectorExt.PlaneXZDistance(ref goalWp, ref goalPos) > Map.MapData.MapTile1_1.ModelScale)
             {
                 goalWp = goalPos;
             }

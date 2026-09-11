@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.Build
 {

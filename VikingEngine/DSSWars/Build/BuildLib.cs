@@ -1454,8 +1454,8 @@ namespace VikingEngine.DSSWars.Build
                             DssRef.state.resources.addItem(
                                 new Resource.ItemResource(
                                   r.type,
-                                  subTile.terrainQuality,
-                                  0,
+                                  //subTile.terrainQuality,
+                                  //0,
                                   returnAmount),
                               ref subTile.collectionPointer);
                         }

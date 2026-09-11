@@ -22,21 +22,16 @@ namespace VikingEngine.DSSWars.Map.Map2
         ScaleUp,
         PostNoise,
 
-        NUM
+        NUM,
+
+        BuildMapData,
+
+        All,
     }
 
     class Map2Generator
     {
-        //const float WaterSurfaceY = 0;
-        //public const float WaterBottomY = WaterSurfaceY - 0.3f;
-        //public const float LowGroundY = WaterSurfaceY + 0.1f;
-        //public const float DefaultGroundY = WaterSurfaceY + 0.2f;
-        //public const float MountainStartY = DefaultGroundY + 0.3f;
-        //public const float MountainPeekY = DefaultGroundY + 0.6f;//0.8
-
-        //ungefär 0.004 per lager höjd
-
-        
+        public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
 
         const float LayerAddHeight = 0.15f;
         const float Height_PostNoise = LayerAddHeight * 2.4f;
@@ -49,7 +44,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public IconWorldData ActiveIconWorld => currentPass >= Map2Pass.ScaleUp ? iconWorldScaledUp : iconWorld;
 
-        public WorldData2 world;
+        public WorldGenData2 world;
         public NodeMap nodeMap;
 
         public HeightMapTexture heightMapTexture = null;
@@ -70,6 +65,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         //List<Vector2> connectPoints = null;
         EngineSpace.Maths.SimplexNoise2D noiseMap;
         NoiseOptions landNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
+
+        public Map2Builder mapBuilder;
         public void generate(Map2GenerateSettings generateSettings)
         {
             if (loadingState == LoadingState.None)
@@ -90,10 +87,6 @@ namespace VikingEngine.DSSWars.Map.Map2
                     await nodeTerrainPass(generateSettings);
 
                     addNoiseTexture();
-
-                    //world = new WorldData2(iconWorld);
-                    //todo clone
-                    //scaleUp16x();
 
                     processTexturePixels();
 
@@ -130,7 +123,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             });
         }
 
-        public void generatePass(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end, Action onComplete)
+        public void generatePassRange(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end, Action onComplete)
         {
 
             loadingState = LoadingState.Pass;
@@ -141,68 +134,83 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             Task.Run(async () =>
             {
-                if (start == Map2Pass.Icon)
-                {
-                    clearMap();
-                }
-                if (end < Map2Pass.Bioms)
-                {
-                    generateCities = null;
-                }
-
-                for (Map2Pass pass = start; pass <= end; pass++)
-                {
-                    switch (pass)
-                    {
-                        case Map2Pass.NewWorld:
-                            newWorldPass(generateSettings);
-                            break;
-                        case Map2Pass.NodeGrid:
-                            nodeMap = new NodeMap();
-                            nodeMap.Generate(iconWorld, generateSettings);
-                            break;
-                        case Map2Pass.Icon:
-                            nodeTerrainPass(generateSettings).Wait();
-                            break;
-                        case Map2Pass.IconNoise:
-                            addNoiseTexture();
-                            break;
-                        case Map2Pass.Bioms:
-                            biomsLayout = new BiomsLayout(iconWorld.rnd);
-                            biomsLayout.GenerateNodes(iconWorld);
-                            break;
-                        case Map2Pass.IconCities:
-                            generateCities = new GenerateCities();
-                            generateCities.generateCities(generateSettings, nodeMap, iconWorld);
-                            break;
-                        
-                        case Map2Pass.ScaleUp:
-                            await scaleUp16x();
-                            break;
-                        case Map2Pass.PostNoise:
-                            postNoise();
-                            break;
-                    }
-                }
-
-                currentPass = end;
-
-                if (end < Map2Pass.Icon)
-                {
-                    nodeMap.GenerateTexture();
-                }
-                else
-                {
-                    processTexturePixels();
-                }
-
-                loadingState = LoadingState.Complete;
-
-                if (onComplete != null)
-                {
-                    Ref.update.AddSyncAction(onComplete);
-                }
+                generatePassRange_async(generateSettings, start, end, onComplete);
             });
+        }
+
+        public async Task generatePassRange_async(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end, Action onComplete)
+        {
+            if (start == Map2Pass.Icon)
+            {
+                clearMap();
+            }
+            if (end < Map2Pass.Bioms)
+            {
+                generateCities = null;
+            }
+
+            for (Map2Pass pass = start; pass <= end; pass++)
+            {
+               await generatePass(generateSettings, pass);
+            }
+
+            currentPass = end;
+
+            if (end < Map2Pass.Icon)
+            {
+                nodeMap.GenerateTexture();
+            }
+            else
+            {
+                processTexturePixels();
+            }
+
+            loadingState = LoadingState.Complete;
+
+            if (onComplete != null)
+            {
+                Ref.update.AddSyncAction(onComplete);
+            }
+        }
+
+        public async Task generatePass(Map2GenerateSettings generateSettings, Map2Pass pass)
+        {
+            switch (pass)
+            {
+                case Map2Pass.NewWorld:
+                    newWorldPass(generateSettings);
+                    break;
+                case Map2Pass.NodeGrid:
+                    nodeMap = new NodeMap();
+                    nodeMap.Generate(iconWorld, generateSettings);
+                    break;
+                case Map2Pass.Icon:
+                    nodeTerrainPass(generateSettings).Wait();
+                    break;
+                case Map2Pass.IconNoise:
+                    addNoiseTexture();
+                    break;
+                case Map2Pass.Bioms:
+                    biomsLayout = new BiomsLayout(iconWorld.rnd);
+                    biomsLayout.GenerateNodes(iconWorld);
+                    break;
+                case Map2Pass.IconCities:
+                    generateCities = new GenerateCities();
+                    generateCities.generateCities(generateSettings, nodeMap, iconWorld);
+                    break;
+
+                case Map2Pass.ScaleUp:
+                    await scaleUp16x();
+                    break;
+                case Map2Pass.PostNoise:
+                    postNoise();
+                    break;
+
+                case Map2Pass.BuildMapData:
+                    mapBuilder = new Map2Builder();
+                    mapBuilder.ConvertIcon(this);
+                    break;
+            }
         }
 
         public void refreshPass()
@@ -389,7 +397,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             iconWorld = new IconWorldData(generateSettings.IconSize());
 
-            noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.seed);
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.worldId.seed);
             noiseMap.setSeed(iconWorld.rnd.Int());
             loadingState = LoadingState.Pass;
 
@@ -815,7 +823,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             var dataGrid = DataGrid();
             const int LoopDivs = 8;
 
-            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.seed + 11);
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.worldId.seed + 11);
             NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 30f);
             float edgeThickness = LayerAddHeight * 1.6f;
             //NoiseOptions islandNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
@@ -847,7 +855,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             const bool PostNoise = true;
             //const int PostProcessDivs = 8;
 
-            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorldScaledUp.metaData2.seed + 3);
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorldScaledUp.metaData2.worldId.seed + 3);
             NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
 
             Parallel.For(0, dataGrid.Size.X, x =>
@@ -877,8 +885,9 @@ namespace VikingEngine.DSSWars.Map.Map2
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
                     var tile = dataGrid.Get(x, y);
-                   
-                    tileColor(ref tile);
+
+                    tile.color = Map.MapModels.TileColor.terrainColor(new MapModels.CombinedTile(tile));
+                    //tileColor(ref tile);
                     dataGrid.Set(x, y, tile);
                 }
             });

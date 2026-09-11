@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map.Map2
@@ -19,7 +20,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
     class IconWorldData
     {
-        public WorldMetaData2 metaData2;
+        public WorldMetaData metaData2;
         public Grid2D_L<GenTile> iconGrid;
         public List<CityPlacementData> cities = null;
         public PcgRandom rnd;
@@ -28,15 +29,15 @@ namespace VikingEngine.DSSWars.Map.Map2
         
         public IconWorldData()
         {
-            rnd = new PcgRandom(metaData2.seed);
+            rnd = new PcgRandom(metaData2.worldId.seed);
 
         }
 
         public IconWorldData(IntVector2 iconSize)
         {
-            metaData2 = new WorldMetaData2();
+            metaData2 = new WorldMetaData(Ref.rnd.Ushort(), MapSize.Medium, -1);
 
-            rnd = new PcgRandom(metaData2.seed);
+            rnd = new PcgRandom(metaData2.worldId.seed);
 
             iconGrid = new Grid2D_L<GenTile>(iconSize);
 
@@ -58,7 +59,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             int version = r.ReadInt32();
 
-            metaData2 = new WorldMetaData2();
+            metaData2 = new WorldMetaData(Ref.rnd.Ushort(), MapSize.Medium, -1);
             iconGrid = new Grid2D_L<GenTile>(IntVector2.FromReadUshort(r));
             for (int i = 0; i < iconGrid.array.Length; i++)
             {
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 clone.cities = new List<CityPlacementData>(this.cities);
             }
 
-            clone.rnd = new PcgRandom(this.metaData2.seed);
+            clone.rnd = new PcgRandom(this.metaData2.worldId.seed);
 
             clone.iconGrid = this.iconGrid.Clone();
 

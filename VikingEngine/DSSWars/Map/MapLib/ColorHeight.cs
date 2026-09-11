@@ -12,8 +12,8 @@ namespace VikingEngine.DSSWars.Map.Settings
         public const int LowerWaterHeight = 1;
         public const int WaterSurfaceHeight = MapHeight2.WaterColorLayersCount;
         //public const int LowWaterHeight = 2;
-        //public const int MinLandHeight = 3;
-        //public const int MineHeightStart = 6;
+        public const int MinLandHeight = WaterSurfaceHeight+1;
+        public const int MineHeightStart = MinLandHeight + 2;
         //public const int MountainHeightStart = 7;
         //public const int MountainLowPeak = 8;
 
@@ -143,13 +143,13 @@ namespace VikingEngine.DSSWars.Map.Settings
 
         //void createMountainPeak(float peakHeight)
         //{
-        //    mountainPeak = new float[WorldData.TileSubDivitions, WorldData.TileSubDivitions];
+        //    mountainPeak = new float[Map.MapData.MapTile1_1.ModelScale_Inv, Map.MapData.MapTile1_1.ModelScale_Inv];
 
-        //    ForXYLoop loop = new ForXYLoop(new IntVector2(WorldData.TileSubDivitions));
+        //    ForXYLoop loop = new ForXYLoop(new IntVector2(Map.MapData.MapTile1_1.ModelScale_Inv));
 
-        //    Vector2 center = new Vector2((WorldData.TileSubDivitions - 1) * 0.5f);
+        //    Vector2 center = new Vector2((Map.MapData.MapTile1_1.ModelScale_Inv - 1) * 0.5f);
 
-        //    float half = WorldData.TileSubDivitions * 0.5f;
+        //    float half = Map.MapData.MapTile1_1.ModelScale_Inv * 0.5f;
 
         //    while (loop.Next())
         //    {

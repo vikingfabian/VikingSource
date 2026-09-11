@@ -7,6 +7,7 @@ using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
@@ -38,7 +39,7 @@ namespace VikingEngine.DSSWars.Players
         Plane groundPlane = new Plane(Vector3.UnitY, 0);
 
         BoundingBox subTileBoundingBox = new BoundingBox();
-        static readonly Vector3 SubTileBoxSz = new Vector3(WorldData.SubTileWidth, WorldData.SubTileWidth * 3f, WorldData.SubTileWidth);
+        static readonly Vector3 SubTileBoxSz = new Vector3(Map.MapData.MapTile1_1.ModelScale, Map.MapData.MapTile1_1.ModelScale * 3f, Map.MapData.MapTile1_1.ModelScale);
 
         SafeCollectAsynchList<AbsMapObject> nearMapObjects = new SafeCollectAsynchList<AbsMapObject>(8);
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
@@ -1411,7 +1412,7 @@ namespace VikingEngine.DSSWars.Players
             playerPointerPos = camera.LookTarget;
 
             DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
-            playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
+            playerPointerPos.Y = DssRef.world.subTileGrid.Get( WP.ToSubTilePos(playerPointerPos)).groundY + 0.5f;
         }
 
         public void loadCamPos()

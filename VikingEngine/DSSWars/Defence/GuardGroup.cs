@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Players.Command;
 
 namespace VikingEngine.DSSWars.Defence
@@ -94,7 +95,7 @@ namespace VikingEngine.DSSWars.Defence
 
         public override float GroupMoveBoundRadius()
         {
-            return WorldData.SubTileHalfWidth;
+            return MapTile1_1.SubTileHalfWidth;
         }
         void refreshGuardPosition(bool hostedAction)
         {

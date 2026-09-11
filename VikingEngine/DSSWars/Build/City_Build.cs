@@ -1,5 +1,6 @@
 ﻿using System;
 using VikingEngine.DSSWars.Delivery;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Resource;
 
@@ -375,7 +376,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case TerrainMainType.Destroyed:
                     case TerrainMainType.DefaultLand:
                         var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
-                        return tile.MayBuild() && tile.CityIndex == myIndex;
+                        return /*tile.MayBuild() &&*/ tile.CityIndex == myIndex;
 
                 }
             }

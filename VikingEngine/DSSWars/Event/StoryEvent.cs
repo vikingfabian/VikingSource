@@ -498,6 +498,7 @@ namespace VikingEngine.DSSWars.Event
 
         public static Army spawnBarbarians(City city, bool tutorial)
         {
+            /*
             for (int trial = 1; trial <= 2; trial++)
             {
                 
@@ -612,6 +613,7 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
             }
+            */
 #if DEBUG
             throw new Exception("No enemy spawn");
 #endif
@@ -733,6 +735,7 @@ namespace VikingEngine.DSSWars.Event
 
         private void calcSouthSpawn()
         {
+            /*
             List<IntVector2> usedTiles = new List<IntVector2>();
             IntVector2[] checkPos = new IntVector2[2];
 
@@ -816,6 +819,7 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
             }
+            */
         }
 
         public override void writeGameState(BinaryWriter w)

@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Map.Path
     class DetailPathFinding
     {
         public const int MaxNodeLength = 30000;
-        const int MaxTileRadius = 64 * WorldData.TileSubDivitions;
+        const int MaxTileRadius = 64 * Map.MapData.MapTile1_1.ModelScale_Inv;
 
         // Min-heap open list ordered by: (TotalCost, Heuristic)
         PriorityQueue<DetailPathNode, (float Value, float Heuristic)> open = new PriorityQueue<DetailPathNode, (float, float)>();
@@ -286,7 +286,7 @@ namespace VikingEngine.DSSWars.Map.Path
         List<Graphics.Mesh> nodeImages;
 #endif
         const int IgnoreDirChangeTimes = 10;
-        static readonly float NodeMinDistance = 0.3f * WorldData.SubTileWidth;
+        static readonly float NodeMinDistance = 0.3f * Map.MapData.MapTile1_1.ModelScale;
 
         public int currentNodeIx;
         public IntVector2 goal;
@@ -361,9 +361,9 @@ namespace VikingEngine.DSSWars.Map.Path
             foreach (var n in nodes)
             {
                 Vector3 pos = WP.SubtileToWorldPosXZgroundY_Centered(n.position);
-                pos.Y += WorldData.SubTileHalfWidth;
+                pos.Y += MapTile1_1.SubTileHalfWidth;
                 var mesh = new Graphics.Mesh(LoadedMesh.cube_repeating, pos,
-                   new Vector3(WorldData.SubTileHalfWidth), Graphics.TextureEffectType.Flat, SpriteName.KeyArrowRight, Color.Pink, false);
+                   new Vector3(MapTile1_1.SubTileHalfWidth), Graphics.TextureEffectType.Flat, SpriteName.KeyArrowRight, Color.Pink, false);
                 mesh.AddToRender(DrawGame.UnitDetailLayer);
                 nodeImages.Add(mesh);
             }
@@ -527,7 +527,7 @@ namespace VikingEngine.DSSWars.Map.Path
             MapTile1_1 subtile = world.subTileGrid.Get(pos);
             moveCost *= subtile.TerrainBlockMultipleValue();
 
-            SumTile4_4 tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);
+            SumTile4_4 tile = world.tileGrid.Get(pos / Map.MapData.MapTile1_1.ModelScale_Inv);
             waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)

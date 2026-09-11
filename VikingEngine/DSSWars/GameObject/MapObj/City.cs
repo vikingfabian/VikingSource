@@ -19,6 +19,7 @@ using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Map.Settings;
@@ -120,6 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public IntVector2 ArmySpawnTilePos()
         {
+            /*
             if (armySpawnTilePos.HasValue())
             {
                 return armySpawnTilePos;
@@ -138,7 +140,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-
+            */
             Debug.LogError("GetFreeTile" + tilePos.ToString());
             return tilePos;
         }
@@ -1070,6 +1072,7 @@ namespace VikingEngine.DSSWars.GameObject
         /// </summary>
         public void writeNet_map(System.IO.BinaryWriter w)
         {
+            /*
             writeMapFile(w);
 
             pfaction.write(w);
@@ -1077,10 +1080,12 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((byte)Tile().heightLevel);
 
             terrainStructure.write(w);
+            */
         }
 
         public void readNet_map(WorldData world, System.IO.BinaryReader r)
         {
+            /*
             readMapFile(world, r, int.MaxValue);
             
             //int r_pfaction = r.ReadUInt16();
@@ -1105,6 +1110,7 @@ namespace VikingEngine.DSSWars.GameObject
             terrainStructure.read(r);
 
             DssRef.world.unitCollAreaGrid.add(this);
+            */
         }
 
         public void net_roundtrip_asyncupdate(out int packetCount)
@@ -1234,7 +1240,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
 
                                 if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out SumTile4_4 t) &&
-                                        t.MayBuild() && t.CityIndex == myIndex)
+                                        /*t.MayBuild() &&*/ t.CityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
                                     IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
@@ -1242,8 +1248,8 @@ namespace VikingEngine.DSSWars.GameObject
                                     for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
                                     {
                                         IntVector2 subPos = topLeft;
-                                        subPos.X += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
-                                        subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
+                                        subPos.X += Ref.peRnd.Int(1, Map.MapData.MapTile1_1.ModelScale_Inv - 1);
+                                        subPos.Y += Ref.peRnd.Int(1, Map.MapData.MapTile1_1.ModelScale_Inv - 1);
 
 
                                         //var faction = GetFaction();
@@ -1438,7 +1444,7 @@ namespace VikingEngine.DSSWars.GameObject
             CalcRecruitToTile();
             armyGoalRotation = rotation.radians;
 
-            position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
+            //position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
             refreshCitySize();
                         
             if (newGame && cityType > CityType.UnClaimed)
@@ -1596,9 +1602,12 @@ namespace VikingEngine.DSSWars.GameObject
                         ref var prevTile = ref DssRef.world.tileGrid.GetRef(prevTilePos);
                         ref var tile = ref DssRef.world.tileGrid.GetRef(tilePos);
 
+                        /*
                         prevTile.tileContent = TileContent.NONE;
                         tile.tileContent = TileContent.City;
                         position = WP.ToWorldPos(tilePos, tile.ModelGroundY());
+
+                        */
                     }
                 }
                 return true;

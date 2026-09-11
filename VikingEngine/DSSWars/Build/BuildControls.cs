@@ -14,6 +14,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
@@ -497,10 +498,10 @@ namespace VikingEngine.DSSWars.Build
                                 if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                                 {
                                     var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                                    if (tile.CityIndex == city.myIndex && tile.MayBuild())
+                                    if (tile.CityIndex == city.myIndex /*&& tile.MayBuild()*/)
                                     {
                                         topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                                        subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                                        subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
                                         while (subTileLoop.Next())
                                         {

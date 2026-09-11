@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Settings;
@@ -11,17 +12,17 @@ namespace VikingEngine.DSSWars.Map.MapModels
     /// <summary>
     /// Combines data from different tile data types
     /// </summary>
-    struct SummaryTile
+    struct CombinedTile
     {
         public MapTile1_1 mapTile;
         public SumTile4_4 sumTile;
 
-        public SummaryTile() 
+        public CombinedTile() 
         { 
             
         }
 
-        public SummaryTile(GenTile genTile)
+        public CombinedTile(GenTile genTile)
         {
             mapTile = new MapTile1_1()
             {
@@ -41,14 +42,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
     static class TileColor
     {
        
-        static Color tileColor(SummaryTile tile)
+        public static Color terrainColor(CombinedTile tile)
         {
-            //if (tile.groundY > Height_WaterBottom)
-            //{
-            //    lib.DoNothing();
-            //}
-            
-
             if (tile.mapTile.heightValue <= MapLib.MapHeight2.WaterPlaneHeight)
             {
                 float depth = 1f - tile.mapTile.heightValue / (float)MapLib.MapHeight2.WaterPlaneHeight;//1f - tile.groundY / MapLib.MapHeight2.WaterBottomY;
@@ -74,6 +69,74 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 //depth *= 0.75f;
                 //tile.color = ColorExt.MultiplyRGB(col, 0.5f + 0.9f * height);//new Color(depth, depth + 0.2f, depth);
             }
+        }
+
+        public static Color factionColor(CombinedTile tile)
+        {
+            if (tile.sumTile.CityIndex != ushort.MaxValue)
+            {   
+                if (DssRef.world.cities[tile.sumTile.CityIndex].pfaction.TryGetPlayer(out var p) && 
+                    p.profile.flag != null)
+                {
+                    return p.profile.flag.col0_Main;
+                }
+            }
+            return Color.Gray;
+            
+        }
+
+        public static Color heightAndMinimapCol(Faction playerFaction, CombinedTile tile)
+        {
+            float brightness = 1f - tile.mapTile.heightValue * 0.05f;
+
+            float red = 0;
+            float green = 0;
+
+            if (tile.sumTile.CityIndex == ushort.MaxValue)
+            {
+                return ColorExt.VeryDarkGray;
+            }
+
+            var pfaction = DssRef.world.cities[tile.sumTile.CityIndex].pfaction;
+            if (pfaction == playerFaction.pfaction)
+            {
+                brightness *= 0.5f;
+            }
+            else
+            {
+                var rel = DssRef.world.diplomacy.GetRelation(playerFaction.pfaction, pfaction).Relation;
+
+                if (rel <= RelationType.RelationTypeN2_Truce)
+                {
+                    red = 0.2f;
+                }
+                else if (rel >= RelationType.RelationType3_Ally)
+                {
+                    green = 0.2f;
+                }
+
+                brightness *= 0.2f;
+            }
+
+            //int distance = city.tilePos.SideLength(pos);
+
+            //if (distance == 1)
+            //{
+            //    brightness *= 1.5f;
+            //}
+            //else if (hasBorder(out bool sameFaction))
+            //{
+            //    if (sameFaction)
+            //    {
+            //        brightness *= 1.25f;
+            //    }
+            //    else
+            //    {
+            //        brightness *= 0.6f;
+            //    }
+            //}
+
+            return new Color(brightness + red, brightness + green, brightness);
         }
         static Color biomCol(Settings.BiomType biom, int biomColorheight, float percNextHeight)
         {

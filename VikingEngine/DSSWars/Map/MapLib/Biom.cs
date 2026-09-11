@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.Map.Settings
 {
@@ -165,7 +166,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 TileColor seafloor = brightCoast;
                 seafloor.Color = Color.Black;//ColorExt.VeryDarkGray;//ColorExt.ChangeBrighness(WorldData.WaterDarkCol, -50);
                 colors_height[ColorHeight.LowerWaterHeight] = seafloor;
-                colors_height[ColorHeight.LowWaterHeight] = brightCoast;                
+                colors_height[ColorHeight.WaterSurfaceHeight] = brightCoast;                
             }
 
             //Mix towards bright coast
@@ -194,11 +195,12 @@ namespace VikingEngine.DSSWars.Map.Settings
             }
 
             {
+                const int MountainStart = 5;
                 float percDark = 0.4f;
-                colors_height[ColorHeight.MountainHeightStart] = Settings.TileColor.Mix(darkGradient, mainCol, percDark);
+                colors_height[MountainStart] = Settings.TileColor.Mix(darkGradient, mainCol, percDark);
 
                 float percMountainGray = 0.8f;
-                colors_height[ColorHeight.MountainHeightStart + 1] = Settings.TileColor.Mix(mountain, colors_height[ColorHeight.MountainHeightStart], percMountainGray);
+                colors_height[ColorHeight.MaxHeight] = Settings.TileColor.Mix(mountain, colors_height[MountainStart], percMountainGray);
 
                 
                 colors_height[ColorHeight.MaxHeight] = mountain;
@@ -209,7 +211,7 @@ namespace VikingEngine.DSSWars.Map.Settings
 
         public TileColor TileColor(SumTile4_4 tile)
         {
-            var result = colors_height[tile.heightLevel];
+            var result = colors_height[tile.biomColorHeight];
             if (tile.seaDistanceHeatMap <= 12)
             {
                 result.Color = ColorExt.Mix(result.Color, brightCoast.Color, 0.5f);

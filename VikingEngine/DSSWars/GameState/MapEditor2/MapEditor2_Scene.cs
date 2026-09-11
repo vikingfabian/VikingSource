@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         public MapEditor3_Tool tool;
         bool loadingState = false;
         public Map2Generator generator = new Map2Generator();
-        public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
+        
         public GeneratorMap map;
         //public bool iconState = true;
         public MapEditHistory editHistory = new MapEditHistory();
@@ -178,7 +178,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
 
             loadingState = true;
             display.loadingDisplay.Show();
-            generator.generatePass(generateSettings, start, end, null);
+            generator.generatePassRange(generator.generateSettings, start, end, null);
         }
 
         public void onLoad(IconWorldData data)
@@ -225,10 +225,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             var size = generator.heightMapTexture.Size();
             size.X = Bound.Max(size.X, WorldData.CustomMapSize_Max);
             size.Y = Bound.Max(size.Y, WorldData.CustomMapSize_Max);
-            generateSettings.customMapSize = size;
-            generateSettings.bCustomSize = true;
+            generator.generateSettings.customMapSize = size;
+            generator.generateSettings.bCustomSize = true;
 
-            generator.generatePass(generateSettings, 0, Map2Pass.Icon, ()=>
+            generator.generatePassRange(generator.generateSettings, 0, Map2Pass.Icon, ()=>
             {
                 loadingState = true;
                 display.loadingDisplay.Show();
@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             };
 
             result.itemDescription =
-                $"{WorldData.SizeString(WorldData.ToMapSize(generateSettings.customMapSize), generateSettings.customMapSize)}. {string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion)}.";
+                $"{WorldData.SizeString(WorldData.ToMapSize(generator.generateSettings.customMapSize), generator.generateSettings.customMapSize)}. {string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion)}.";
 
             return result;
         }

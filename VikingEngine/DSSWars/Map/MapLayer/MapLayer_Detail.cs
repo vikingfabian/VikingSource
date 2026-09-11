@@ -16,8 +16,8 @@ namespace VikingEngine.DSSWars.Map.MapLayer
     class MapLayer_Detail: AbsMapLayer
     {
         AutoResetEvent pauseEvent = new AutoResetEvent(false);
-        ConcurrentStack<DetailMapTile> tilePool = new ConcurrentStack<DetailMapTile>();
-        SpottedArray<DetailMapTile> tiles;
+        ConcurrentStack<DetailModelTile> tilePool = new ConcurrentStack<DetailModelTile>();
+        SpottedArray<DetailModelTile> tiles;
 
         const int MaxRemoveCount = 32;
         int MaxSychToRenderCount;
@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         public MapLayer_Detail()
         {
             DssRef.state.detailMap = this;
-            tiles = new SpottedArray<DetailMapTile>(1024);
+            tiles = new SpottedArray<DetailModelTile>(1024);
 
             WaterModel(true);
 
@@ -138,15 +138,13 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             {
                 if (tileC.sel.renderState == DetailMapTileState.InRender)
                 {
-                    ref var worldtile = ref DssRef.world.tileGrid.GetRef(tileC.sel.pos);
-                    byte render = DssRef.state.culling.cullingStateA ? worldtile.bits_renderStateA : worldtile.bits_renderStateB;
-                    if (render == Culling.NoRender || (oneSecondUpdate && DssRef.world.tileGrid.Get(tileC.sel.pos).subtileVisualEdits > 0))
+                    ref var chunkData = ref DssRef.world.chunkGrid.GetRef(tileC.sel.chunkGrindex);
+                    byte render = DssRef.state.culling.cullingStateA ? chunkData.bits_renderStateA : chunkData.bits_renderStateB;
+                    if (render == Culling.NoRender || (oneSecondUpdate && chunkData.subtileVisualEdits > 0))
                     {
-                        worldtile.hasTileInRender = false;
-                        worldtile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
-                        tileC.sel.exitRender = DetailMapTileExitState.Prepare;
-
-                        
+                        chunkData.hasTileInRender = false;
+                        chunkData.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
+                        tileC.sel.exitRender = DetailMapTileExitState.Prepare;                        
                     }
                 }
                 else if (tileC.sel.renderState == DetailMapTileState.None)
@@ -176,18 +174,18 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
                         while (loop.Next())
                         {
-                            var tile = DssRef.world.tileGrid.Get(loop.Position);
+                            var tile = DssRef.world.chunkGrid.Get(loop.Position);
 
                             if (!tile.hasTileInRender)
                             {
                                 tile.hasTileInRender = true;
                                 tile.subtileVisualEdits = 0;
-                                DssRef.world.tileGrid.Set(loop.Position, tile);
+                                DssRef.world.chunkGrid.Set(loop.Position, tile);
 
-                                DetailMapTile maptile;
+                                DetailModelTile maptile;
                                 if (!tilePool.TryPop(out maptile))
                                 {
-                                    maptile = new DetailMapTile();
+                                    maptile = new DetailModelTile();
                                 }
                                 //maptile.add = true;
                                 maptile.generateModel_async(loop.Position, tile);

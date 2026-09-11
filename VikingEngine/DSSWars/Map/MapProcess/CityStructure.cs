@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         if (tile.CityIndex == city.myIndex && tile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                            subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
                             while (subTileLoop.Next())
                             {
@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         if (tile.CityIndex == city.myIndex && tile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                            subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
                             while (subTileLoop.Next())
                             {
@@ -173,7 +173,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         if (tile.CityIndex == city.myIndex && tile.MayBuild())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                            subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
                             while (subTileLoop.Next())
                             {
@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                             if (tile.CityIndex == city.myIndex && tile.IsLand())
                             {
                                 IntVector2 topleft = WP.ToSubTilePos_TopLeft(edgeRandomizer.Position);
-                                ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                                ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
                                 while (subTileLoop.Next())
                                 {
@@ -303,7 +303,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     tile.IsLand())
                 {
                     topleft = WP.ToSubTilePos_TopLeft(loop.Position);
-                    subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                    subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
                     while (subTileLoop.Next())
                     {

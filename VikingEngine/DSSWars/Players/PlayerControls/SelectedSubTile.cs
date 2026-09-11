@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Players;
@@ -45,12 +46,12 @@ namespace VikingEngine.DSSWars.Players
             if (isHover)
             {
                 loadedMesh = LoadedMesh.SelectSquareDotted;
-                scale = WorldData.SubTileWidth * 1.1f;
+                scale = Map.MapData.MapTile1_1.ModelScale * 1.1f;
             }
             else
             {
                 loadedMesh = LoadedMesh.SelectSquareSolid;
-                scale = WorldData.SubTileWidth * 1.0f;
+                scale = Map.MapData.MapTile1_1.ModelScale * 1.0f;
             }
 
             var model = new Mesh(loadedMesh, Vector3.Zero, new Vector3(scale),
@@ -208,7 +209,7 @@ namespace VikingEngine.DSSWars.Players
             { 
                 if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
                 {
-                    if (tile.MayBuild())
+                    //if (tile.MayBuild())
                     {
                         city = tile.City();
 

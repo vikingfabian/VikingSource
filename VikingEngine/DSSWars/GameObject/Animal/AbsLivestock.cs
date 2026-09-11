@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         VectorRect area;
         protected Graphics.VoxelModelInstance model;
         protected AnimalProfile modelData;
-        IntVector2 tilepos;
+        IntVector2 chunkpos;
         Time stateTime;
         Vector3 walkDir;
         bool walkState = true;
@@ -34,11 +34,11 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             this.modelData = modelData;
             this.soundFile = soundFile;
             this.soundPitch = soundPitch;
-            this.tilepos = tilepos;
+            this.chunkpos = tilepos;
             model = createModel();
 
             stateTime = new Time(Ref.peRnd.Float(10, 2000));
-            area = VectorRect.FromCenterSize(VectorExt.PlaneXZVec(topCenterWp), WorldData.SubTileWidthV2 * 0.8f);
+            area = VectorRect.FromCenterSize(VectorExt.PlaneXZVec(topCenterWp), Map.MapData.MapTile1_1.ModelScaleV2 * 0.8f);
             model.position = VectorExt.V3FromXZ( area.RandomPos(), topCenterWp.Y);
             WP.Rotation1DToQuaterion(model, Ref.peRnd.Rotation());
         }
@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                 }
             }
 
-            var tile = DssRef.world.tileGrid.Get(tilepos);
+            var tile = DssRef.world.chunkGrid.Get(chunkpos);
             if (!tile.hasTileInRender && tile.OutOfRenderTimeOut())
             {
                 DeleteMe();

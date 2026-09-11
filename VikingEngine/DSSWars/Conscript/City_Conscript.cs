@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface.Component;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -545,8 +546,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             foreach (IntVector2 dir in IntVector2.Dir4Array)
             {
-                IntVector2 pos = tilePos + dir * 2;
-                SumTile4_4 t = DssRef.world.tileGrid.Get(pos);
+                IntVector2 pos = cityHallSubtilePos + dir * 2;
+                MapTile1_1 t = DssRef.world.subTileGrid.Get(pos);
                 if (t.IsLand())
                 {
                     recruitToTile = pos;
@@ -554,11 +555,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, 2));
+            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(cityHallSubtilePos, 2));
 
             while (edgeLoop.Next())
             {
-                SumTile4_4 t = DssRef.world.tileGrid.Get(edgeLoop.Position);
+                MapTile1_1 t = DssRef.world.subTileGrid.Get(edgeLoop.Position);
                 if (t.IsLand())
                 {
                     recruitToTile = edgeLoop.Position;
@@ -567,8 +568,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
             foreach (IntVector2 dir in IntVector2.Dir4Array)
             {
-                IntVector2 pos = tilePos + dir;
-                SumTile4_4 t = DssRef.world.tileGrid.Get(pos);
+                IntVector2 pos = cityHallSubtilePos + dir;
+                MapTile1_1 t = DssRef.world.subTileGrid.Get(pos);
                 if (t.IsLand())
                 {
                     recruitToTile = pos;

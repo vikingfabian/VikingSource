@@ -9,6 +9,8 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -497,11 +499,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))
             {
-                float y = DssRef.world.SubTileHeight(position, out MapTile1_1 subTile) + ModelGroundYAdj;
+                MapTile1_1 subTile = DssRef.world.subTileGrid.Get(WP.ToSubTilePos(position));
+                float y = subTile.groundY + ModelGroundYAdj;
 
-                if (y < Map.MapData.SumTile4_4.UnitMinY)
+                if (y < MapHeight2.UnitMinY)
                 {
-                    y = Map.MapData.SumTile4_4.UnitMinY;
+                    y = MapHeight2.UnitMinY;
                 }
 
                 if (y != position.Y)

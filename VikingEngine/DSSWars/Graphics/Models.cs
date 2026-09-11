@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.godfire, false);
             loadVoxelModel(VoxelModelName.wars_borderstick, false);
 
-            foreach (var model in DetailMapTile.LoadModel())
+            foreach (var model in DetailModelTile.LoadModel())
             {
                 loadVoxelModel(model, false);
             }

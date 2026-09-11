@@ -13,6 +13,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.EngineSpace;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -117,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
                         else
                         {
                             Rotation1D dir = new Rotation1D(Ref.peRnd.Rotation());
-                            float dist = Ref.peRnd.Float(WorldData.SubTileHalfWidth, WorldData.SubTileWidth * 2f);
+                            float dist = Ref.peRnd.Float(MapTile1_1.SubTileHalfWidth, Map.MapData.MapTile1_1.ModelScale * 2f);
 
                             group.goalWp = VectorExt.AddXZ(group.position, dir.Direction(dist));
                         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
@@ -55,25 +56,27 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             }
         }
 
-        public bool canRunPass(GenerateMapPass pass)
+        public bool canRunPass(Map2Pass pass)
         {
-            switch (pass)
-            {
-                default:
-                    return mapBackgroundLoading != null && DssRef.world != null;
+            return true;
+            //switch (pass)
+            //{
+            //    default:
+            //        return mapBackgroundLoading != null && DssRef.world != null;
 
-                case GenerateMapPass.Clear:
-                    return true;
+            //    case GenerateMapPass.Clear:
+            //        return true;
 
-                case GenerateMapPass.Build:
-                case GenerateMapPass.Dig:
-                case GenerateMapPass.CleanUp:
-                    return DssRef.world != null && DssRef.world.generatePassCompleted < GenerateMapPass.Cities;
-            }
+            //    case GenerateMapPass.Build:
+            //    case GenerateMapPass.Dig:
+            //    case GenerateMapPass.CleanUp:
+            //        return DssRef.world != null && DssRef.world.generatePassCompleted < GenerateMapPass.Cities;
+            //}
         }
 
-        public void generatePass(GenerateMapPass pass)
+        public void generatePass(Map2Pass pass)
         {
+            /*
             loadingState = true;
             display.loadingDisplay.Show();
 
@@ -85,6 +88,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             }
             mapBackgroundLoading.generateSettings = GenerateSettings;
             mapBackgroundLoading.generate(pass);
+            */
         }
 
         

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO.NPC;
 
@@ -111,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (lookingForTerrain)
             {
-                if (DssRef.world.tileGrid.TryGet(group.tilePos, out SumTile4_4 tile) &&
+                if (DssRef.world.subTileGrid.TryGet(group.maptilePos, out MapTile1_1 tile) &&
                     tile.IsWater() == toShip)
                 {
                     begin();

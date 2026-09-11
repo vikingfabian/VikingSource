@@ -520,8 +520,8 @@ namespace VikingEngine.DSSWars.Work
             ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             walkDist_beforeRefresh = 0;
             goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
-            goalPos.X += WorldData.SubTileWidth * 0.25f;
-            goalPos.Z += WorldData.SubTileWidth * 0.1f;
+            goalPos.X += Map.MapData.MapTile1_1.ModelScale * 0.25f;
+            goalPos.Z += Map.MapData.MapTile1_1.ModelScale * 0.1f;
 
             walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
             WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
