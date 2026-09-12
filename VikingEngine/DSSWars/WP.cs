@@ -44,11 +44,11 @@ namespace VikingEngine.DSSWars
 
         public static IntVector2 ToSubTilePos(Vector3 pos)
         {
-            return new IntVector2((pos.X - MapTile1_1.SubTileHalfWidth) * Map.MapData.MapTile1_1.ModelScale_Inv + WorldData.HalfTileSubDivitions , (pos.Z - MapTile1_1.SubTileHalfWidth) * Map.MapData.MapTile1_1.ModelScale_Inv + WorldData.HalfTileSubDivitions );
+            return new IntVector2((pos.X - MapTile1_1.SubTileHalfWidth) * Map.MapData.MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half, (pos.Z - MapTile1_1.SubTileHalfWidth) * Map.MapData.MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half);
         }
         public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
         {
-            return new IntVector2(tilePos.X * Map.MapData.MapTile1_1.ModelScale_Inv + WorldData.HalfTileSubDivitions, tilePos.Y * Map.MapData.MapTile1_1.ModelScale_Inv + WorldData.HalfTileSubDivitions);
+            return new IntVector2(tilePos.X * Map.MapData.MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half, tilePos.Y * Map.MapData.MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half);
         }
 
         public static IntVector2 ToSubTilePos_TopLeft(IntVector2 pos)
@@ -106,13 +106,13 @@ namespace VikingEngine.DSSWars
             return subtilePos;
         }
 
-        public static Vector3 ToMapPos(IntVector2 tile)
-        {
-            return new Vector3(
-                tile.X * TileDrawScale,
-                DssRef.world.tileGrid.Get(tile).GroundY_aboveWater(),
-                tile.Y * TileDrawScale);
-        }
+        //public static Vector3 ChunkToMapPos(IntVector2 tile)
+        //{
+        //    return new Vector3(
+        //        tile.X * TileDrawScale,
+        //        DssRef.world.tileGrid.Get(tile).co .GroundY_aboveWater(),
+        //        tile.Y * TileDrawScale);
+        //}
 
         public static Vector3 ToSubTileWP_Centered(IntVector2 tilePos)
         {
@@ -158,11 +158,11 @@ namespace VikingEngine.DSSWars
 
         public static float birdDistance(AbsMapObject obj1, IntVector2 tilePos2)
         {
-            return (obj1.tilePos - tilePos2).Length();
+            return (obj1.mapTilePos - tilePos2).Length();
         }
         public static float birdDistance(AbsMapObject obj1, AbsMapObject obj2)
         {
-            return (obj1.tilePos - obj2.tilePos).Length();
+            return (obj1.mapTilePos - obj2.mapTilePos).Length();
         }
 
         public static void writeTilePos(System.IO.BinaryWriter w, IntVector2 position)
@@ -204,24 +204,29 @@ namespace VikingEngine.DSSWars
             StreamLib.WriteFloatAsPercentU16(w, position.Z, DssRef.world.Size.Y);
         }
 
-        public static void ReadPosXZPercentU16(BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        public static void ReadPosXZPercentU16(BinaryReader r, out Vector3 position, out IntVector2 maptilePos)
         {
             position = Vector3.Zero;
             position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
             position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
 
-            tilePos = new IntVector2(position.X, position.Z);
+            maptilePos = new IntVector2(position.X * MapTile1_1.ModelScale_Inv, position.Z * MapTile1_1.ModelScale_Inv);
         }
 
-        public static bool ReadPosXZPercentU16_ZeroCheck(BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        public static bool ReadPosXZPercentU16_ZeroCheck(BinaryReader r, out Vector3 position, out IntVector2 maptilePos)
         {
             position = Vector3.Zero;
             position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
             position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
 
-            tilePos = new IntVector2(position.X, position.Z);
+            maptilePos = new IntVector2(position.X * MapTile1_1.ModelScale_Inv, position.Z * MapTile1_1.ModelScale_Inv);
 
             return position.X > 0;
+        }
+
+        public static IntVector2 MaptileToSumTile(IntVector2 mapTilePos)
+        {
+            return mapTilePos / SumTile4_4.TileWidth;
         }
 
     }

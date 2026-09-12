@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         void divideTab(RichBoxContent content)
         {
             List<AbsArmy> tradeAbleArmies = new List<AbsArmy>();
-            DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.tilePos, 1,
+            DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.mapTilePos, 1,
                 tradeAbleArmies);
 
             FilterTradeAbleArmies(army, tradeAbleArmies);

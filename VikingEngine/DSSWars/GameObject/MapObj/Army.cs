@@ -72,10 +72,10 @@ namespace VikingEngine.DSSWars.GameObject
             id = ++DssRef.state.NextArmyId;
             name.name = Data.NameGenerator.ArmyName(id);
             position = WP.ToMapPos(startPosition);
-            tilePos = startPosition;
-            cullingTopLeft = tilePos.Vec;
+            mapTilePos = startPosition;
+            cullingTopLeft = mapTilePos.Vec;
             cullingBottomRight = cullingTopLeft;
-            nextNodePos = tilePos;
+            nextNodePos = mapTilePos;
             setMaxFood();
 
             init(faction);
@@ -177,8 +177,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            WP.ReadPosXZPercentU16(r, out position, out tilePos);            
-            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
+            WP.ReadPosXZPercentU16(r, out position, out mapTilePos);            
+            position.Y = DssRef.world.tileGrid.Get(mapTilePos).GroundY_aboveWater();
 
             readAiState(r, int.MaxValue, null);
 
@@ -251,14 +251,14 @@ namespace VikingEngine.DSSWars.GameObject
                 name.name = Data.NameGenerator.ArmyName(id);
             }
                         
-            WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            WP.ReadPosXZPercentU16(r, out position, out mapTilePos);
             
             readSoldierGroups(r, subVersion, pointers);
 
             init(faction);
             postInit(faction);
             refreshPositions(true);
-            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
+            position.Y = DssRef.world.tileGrid.Get(mapTilePos).GroundY_aboveWater();
 
             readAiState(r, subVersion, pointers);
 
@@ -550,7 +550,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (toArmy == null)
             {
-                IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
+                IntVector2 onTile = DssRef.world.GetFreeTile(mapTilePos);
                 toArmy = pfaction.GetFaction().NewArmy(onTile);
             }
 
@@ -795,7 +795,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (l > 0.04f)
                     {
-                        var tile = DssRef.world.tileGrid.Get(tilePos);
+                        var tile = DssRef.world.tileGrid.Get(mapTilePos);
                         float speed = tile.TerrainSpeedMultiplier(out bool isLand);
                         speed *= isLand ? transportSpeedLand : transportSpeedSea;
 
@@ -808,9 +808,9 @@ namespace VikingEngine.DSSWars.GameObject
                         position.Y = tile.GroundY_aboveWater();
 
                         IntVector2 newtilepos = new IntVector2(position.X, position.Z);
-                        if (tilePos != newtilepos)
+                        if (mapTilePos != newtilepos)
                         {
-                            tilePos = newtilepos;
+                            mapTilePos = newtilepos;
                         }
                     }
 
@@ -863,8 +863,8 @@ namespace VikingEngine.DSSWars.GameObject
                         DssRef.world.unitBounds.KeepPointInsideBound_TilePositionXZref(ref newPosition);
                         position = newPosition;
 
-                        tilePos = new IntVector2(position.X, position.Z);
-                        var tile = DssRef.world.tileGrid.Get(tilePos);
+                        mapTilePos = new IntVector2(position.X, position.Z);
+                        var tile = DssRef.world.tileGrid.Get(mapTilePos);
                         position.Y = tile.GroundY_aboveWater();
 
                     }
@@ -878,7 +878,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (overviewBanner != null)
             {
-                var tile = DssRef.world.tileGrid.Get(tilePos);
+                var tile = DssRef.world.tileGrid.Get(mapTilePos);
                 overviewBanner.position = VectorExt.AddY(position, tile.GroundY_aboveWater());
                 bound.Center = overviewBanner.position;
             }
@@ -886,7 +886,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshPositions(bool onPurchase)
         {
-            refreshGroupPlacements2(tilePos, false, false, false);
+            refreshGroupPlacements2(mapTilePos, false, false, false);
         }
 
         public void startInOnePoint()
@@ -1002,7 +1002,7 @@ namespace VikingEngine.DSSWars.GameObject
                 Vector2 minpos = VectorExt.V2Max;
                 Vector2 maxpos = VectorExt.V2Min;
 
-                if (DssRef.world.tileGrid.TryGet(tilePos, out Map.MapData.SumTile4_4 tile))
+                if (DssRef.world.tileGrid.TryGet(mapTilePos, out Map.MapData.SumTile4_4 tile))
                 {
                     terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
                 }
@@ -1122,7 +1122,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (!DssRef.storage.ruleset_instance.centralGold && time > 0)
                 {
-                    var onCity = DssRef.world.tileGrid.Get(tilePos).City();
+                    var onCity = DssRef.world.tileGrid.Get(mapTilePos).City();
 
                     if (onCity.pfaction == pfaction)
                     {
@@ -1169,7 +1169,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (objective == ArmyObjective.TeleportAttack)
                     {
                         //Wait to jump
-                        if (DssRef.state.culling.outsidePlayerAttension(tilePos))
+                        if (DssRef.state.culling.outsidePlayerAttension(mapTilePos))
                         {
                             if (teleportTime.TimeOut())//Ref.TotalGameTimeSec >= teleportTime)
                             {
@@ -1186,7 +1186,7 @@ namespace VikingEngine.DSSWars.GameObject
                     else if (objective == ArmyObjective.TeleportMove)
                     {
                         //Wait to jump
-                        if (DssRef.state.culling.outsidePlayerAttension(tilePos))
+                        if (DssRef.state.culling.outsidePlayerAttension(mapTilePos))
                         {
                             if (teleportTime.TimeOut())
                             {

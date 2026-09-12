@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Map
                                                 {
                                                     activeCities = true;
 
-                                                    if (area.IntersectTilePoint(cities[cityIx].city.tilePos))
+                                                    if (area.IntersectTilePoint(cities[cityIx].city.mapTilePos))
                                                     {
                                                         cities[cityIx].next(inflenceMap, world);
                                                     }
@@ -377,7 +377,7 @@ namespace VikingEngine.DSSWars.Map
                 this.city = city;
                 //Workforce är ca 300
                 int startInfluence = 20000 + city.HousingCount_Workers * 200;
-                Rectangle2 startArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 1);
+                Rectangle2 startArea = Rectangle2.FromCenterTileAndRadius(city.mapTilePos, 1);
                 ForXYLoop startloop = new ForXYLoop(startArea);
                 while(startloop.Next())
                 {
@@ -445,7 +445,7 @@ namespace VikingEngine.DSSWars.Map
                                     ref var adjInf = ref inflenceMap.GetRef(npos);
                                     if (!adjInf.locked)
                                     {
-                                        double length = (npos-city.tilePos).Length64();
+                                        double length = (npos-city.mapTilePos).Length64();
                                         int cost = world.tileGrid.Get(npos).heightSett().influenceCost + adjInf.influence;
                                         cost += Convert.ToInt32(length * length) * 10;
 

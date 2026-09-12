@@ -409,12 +409,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 if (cityarea.X == 0)
                 {
-                    cityarea.pos = citySel.tilePos;
+                    cityarea.pos = citySel.mapTilePos;
                     cityarea.size = IntVector2.One;
                 }
                 else
                 {
-                    cityarea.includeTile(citySel.tilePos);
+                    cityarea.includeTile(citySel.mapTilePos);
                 }
             }
 

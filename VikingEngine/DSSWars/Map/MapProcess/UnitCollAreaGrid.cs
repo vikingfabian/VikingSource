@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 var armies = factions.sel.armies.counter();
                 while (armies.Next())
                 {
-                    IntVector2 armyArea = armies.sel.tilePos / UnitGridSquareWidth;
+                    IntVector2 armyArea = armies.sel.mapTilePos / UnitGridSquareWidth;
                     grid.GetRef(armyArea.X, armyArea.Y).processAdd(armies.sel);
 
                     var groups = armies.sel.groups.counter();
@@ -399,8 +399,8 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
         public PFaction cityCaptureCheck(City city, int radius)
         {
-            IntVector2 areaStart = (city.tilePos - radius) / UnitGridSquareWidth;
-            IntVector2 areaEnd = (city.tilePos + radius) / UnitGridSquareWidth;
+            IntVector2 areaStart = (city.mapTilePos - radius) / UnitGridSquareWidth;
+            IntVector2 areaEnd = (city.mapTilePos + radius) / UnitGridSquareWidth;
             
             Dictionary<PFaction, float> faction_power = new Dictionary<PFaction, float>();
             //faction_power.Add(city.faction.parentArrayIndex, 0);
@@ -417,7 +417,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                 foreach (var pSoldierGroup in area.groups)
                                 {
                                     var m = pSoldierGroup.GetSoldierGroup(out _);
-                                    if (m != null && m.tilePos.SideLength(city.tilePos) <= radius)
+                                    if (m != null && m.tilePos.SideLength(city.mapTilePos) <= radius)
                                     {
                                         if (city.pfaction == m.pfaction ||
                                             DssRef.world.diplomacy.GetRelation(city.pfaction, m.pfaction).InWar())
@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                     if (parmy != ignore &&
                                         parmy.pfaction == factionFilter &&
                                         parmy.TryGetArmy(out var army) &&
-                                        (army.tilePos - tilePos).Length() <= maxTileDistance)
+                                        (army.mapTilePos - tilePos).Length() <= maxTileDistance)
                                     {
                                         return army;
                                     }
@@ -743,7 +743,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
         public void add(GameObject.City city)
         {
-            IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
+            IntVector2 areaPos = city.mapTilePos / UnitGridSquareWidth;
 
             grid.Get(areaPos).cities.Add(city.myIndex);
         }
@@ -780,7 +780,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                     {
                         var city = DssRef.world.cities[area.cities[i]];
-                        closest.Next(city.tilePos.Length(tilePos), city);
+                        closest.Next(city.mapTilePos.Length(tilePos), city);
                     }
                 }
             }

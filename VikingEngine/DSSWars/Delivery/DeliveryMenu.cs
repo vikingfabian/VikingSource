@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Delivery
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        if (citySel != city && city.tilePos.SideLength(citySel.tilePos) <= DssConst.DeliveryMaxDistance)
+                        if (citySel != city && city.mapTilePos.SideLength(citySel.mapTilePos) <= DssConst.DeliveryMaxDistance)
                         {
                             count++;
                             var buttonContent = new RichBoxContent();

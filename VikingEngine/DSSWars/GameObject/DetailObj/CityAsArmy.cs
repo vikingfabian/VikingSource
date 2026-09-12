@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             int count = 0;
             float totalStrength = 0;
-            Intvector2MinMax minMax = new Intvector2MinMax(tilePos);
+            Intvector2MinMax minMax = new Intvector2MinMax(mapTilePos);
             bool allGropsAreIdle = true;
 
             if (groups.Count > 0)
@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     totalStrength += strength;
 
-                    minMax.Next(ref groupsC.sel.tilePos);
+                    minMax.Next(ref groupsC.sel.maptilePos);
                 }
             }
 

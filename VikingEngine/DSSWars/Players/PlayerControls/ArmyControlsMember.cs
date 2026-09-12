@@ -78,12 +78,12 @@ namespace VikingEngine.DSSWars.Players
         {
             if (pathState == PathFindState.None && isAlive)
             {
-                if (army.tilePos != player.gameControls.map.tilePosition &&
+                if (army.mapTilePos != player.gameControls.map.tilePosition &&
                     DssRef.world.tileGrid.InBounds(player.gameControls.map.tilePosition))
                 {
                     PathFinding pf = DssRef.world.pathFindingPool.GetPf();
                     {
-                        newPath = pf.FindPath(DssRef.state.PathThreadCount(), army.tilePos, conv.ToDir8_INT(army.rotation), player.gameControls.map.tilePosition,
+                        newPath = pf.FindPath(DssRef.state.PathThreadCount(), army.mapTilePos, conv.ToDir8_INT(army.rotation), player.gameControls.map.tilePosition,
                             false);
                     }
                     DssRef.world.pathFindingPool.Return(pf);

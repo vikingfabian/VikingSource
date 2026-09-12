@@ -652,9 +652,9 @@ namespace VikingEngine.DSSWars.Event
             int mostSouth = 0;
             foreach (var p in DssRef.state.localPlayers)
             {
-                if (p.pfaction.GetFaction().mainCity != null && p.pfaction.GetFaction().mainCity.tilePos.Y > mostSouth)
+                if (p.pfaction.GetFaction().mainCity != null && p.pfaction.GetFaction().mainCity.mapTilePos.Y > mostSouth)
                 {
-                    mostSouth = p.pfaction.GetFaction().mainCity.tilePos.Y;
+                    mostSouth = p.pfaction.GetFaction().mainCity.mapTilePos.Y;
                 }
             }
 
@@ -722,7 +722,7 @@ namespace VikingEngine.DSSWars.Event
                         army.startInOnePoint();
 
                         DssRef.world.diplomacy.declareWar(enemyFac.pfaction, DssRef.state.localPlayers[playerIx].pfaction, false);
-                        army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
+                        army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].mapTilePos, 3));
                     }
                 }
 

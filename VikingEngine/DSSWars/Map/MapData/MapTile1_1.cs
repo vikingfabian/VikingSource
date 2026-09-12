@@ -42,8 +42,9 @@ namespace VikingEngine.DSSWars.Map.MapData
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct MapTile1_1
     {
-        
+
         public const int ModelScale_Inv = 8;
+        public const int ModelScale_Inv_Half = ModelScale_Inv / 2;
         public const float ModelScale = 1f / ModelScale_Inv;
 
         public const int ModelScale_Inv_MaxIndex = ModelScale_Inv - 1;

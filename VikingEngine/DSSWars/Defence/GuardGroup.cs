@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.Defence
 
             if (count > 0)
             {
-                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, false, tilePos, ref soldierData, createModels);
+                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, false, maptilePos, ref soldierData, createModels);
                 unit.firstUpdate();
                 refillGuardUnits(typeProfile, count - 1, createModels);
             }
@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Defence
                 if (i < IntVector2.AllDiagonalsArray.Length)
                 {
                     AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], 
-                        false, tilePos, ref soldierData, createModels);
+                        false, maptilePos, ref soldierData, createModels);
                     unit.firstUpdate();
                 }
             }

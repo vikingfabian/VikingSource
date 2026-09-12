@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (cityType == CityType.UnClaimed)
             {
-                cityHallSubtilePos = WP.ToSubTilePos_Centered(tilePos);
+                cityHallSubtilePos = WP.ToSubTilePos_Centered(mapTilePos);
                 var subTile = world.subTileGrid.Get(cityHallSubtilePos);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Unclaimed, 1);
                 world.subTileGrid.Set(cityHallSubtilePos, subTile);
@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
-                var subtile = WP.ToSubTilePos_Centered(tilePos);
+                var subtile = WP.ToSubTilePos_Centered(mapTilePos);
                 subtile.X += rnd.Plus_Minus(3);
                 subtile.Y += rnd.Plus_Minus(3);
 
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
                 List<IntVector2> emptyGeneral = new List<IntVector2>();
                 Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);
 
-                IntVector2 topleft = WP.ToSubTilePos_TopLeft(tilePos) + startSubTilePos;
+                IntVector2 topleft = WP.ToSubTilePos_TopLeft(mapTilePos) + startSubTilePos;
 
                 int tower;
                 //int gate = (int)TerrainWallType.StoneGate;

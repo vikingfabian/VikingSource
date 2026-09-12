@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             int cityradius = city.cityTileArea.size.SideLength() / 2;
             for (int radius = 2; radius <= cityradius; ++radius)
             {
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
 
                 while (cirkleLoop.Next())
                 {
@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             int maxRadius = city.cityTileArea.size.SideLength();
             for (int radius = 0; radius < maxRadius; ++radius)
             {
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
 
                 while (cirkleLoop.Next())
                 {
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             int maxRadius = city.cityTileArea.size.SideLength();
             for (int radius = 0; radius < maxRadius; ++radius)
             {
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
 
                 while (cirkleLoop.Next())
                 {
@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             for (int radius = 0; radius < maxRadius; ++radius)
             {
                 //ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
-                edgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                edgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
                 while (edgeRandomizer.Next())
                 {
                     if (DssRef.world.tileBounds.IntersectTilePoint(edgeRandomizer.Position))

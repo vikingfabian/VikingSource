@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             while (templates.Count > 0)
             {
                 CityTemplate_Default t = arraylib.RandomListMemberPop( templates, world.rnd );
-                if (t.followsRequirements(city.tilePos, out int rotation, world))
+                if (t.followsRequirements(city.mapTilePos, out int rotation, world))
                 { 
                     return t.Get(rotation, out startSubTilePos);
                 }                

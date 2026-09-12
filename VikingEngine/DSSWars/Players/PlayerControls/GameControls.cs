@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             map = new Players.MapControls(player);
             if (player.pfaction.GetFaction().mainCity != null)
             {
-                map.setCameraPos(player.pfaction.GetFaction().mainCity.tilePos);
+                map.setCameraPos(player.pfaction.GetFaction().mainCity.mapTilePos);
             }
             refreshFaction();
             refreshGameSpeedOptions(true);

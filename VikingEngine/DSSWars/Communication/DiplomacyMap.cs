@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Communication
                 questFlags.Add(new QuestFlag()
                 {
                     GameObject = factory,
-                    tilePos = factory.tilePos,
+                    tilePos = factory.mapTilePos,
                     icon = new Graphics.Image(SpriteName.WarsFactoryIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 4, true),
                 });
             }

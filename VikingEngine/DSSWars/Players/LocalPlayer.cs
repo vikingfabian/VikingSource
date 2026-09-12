@@ -1927,7 +1927,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                gameControls.map.setCameraPos(pfaction.GetFaction().mainCity.tilePos);
+                gameControls.map.setCameraPos(pfaction.GetFaction().mainCity.mapTilePos);
             }
             else
             {

@@ -491,7 +491,7 @@ namespace VikingEngine.DSSWars.Build
                         for (int radius = 1; radius <= cityradius; ++radius)
                         {
                             int distanceValue = -radius;
-                            ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                            ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
 
                             while (cirkleLoop.Next())
                             {

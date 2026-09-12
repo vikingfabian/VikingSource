@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float strengthValue = -1;
         public float mobilityValue = 0;
 
-        public IntVector2 tilePos;
+        public IntVector2 mapTilePos;
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (IsNetHosted || lastNetUpdate.belowTime_sec(20))
             {
-                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
+                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, mapTilePos);
             }
             else
             {
@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Map.MapData.SumTile4_4 Tile()
         {
-            return DssRef.world.tileGrid.Get(tilePos);
+            return DssRef.world.tileGrid.Get(mapTilePos);
         }
         public override void toButtonContent(RichBoxContent content, bool dark)
         {
@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override IntVector2 TilePos()
         {
-            return tilePos;
+            return mapTilePos;
         }
         public override Vector3 WorldPos()
         {

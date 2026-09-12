@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             position = startPos;
             goalWp = startPos;
-            tilePos = WP.ToTilePos(position);
+            maptilePos = WP.ToSubTilePos(position);
 
             initPart2();
 
@@ -378,7 +378,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case GroupState.FollowCommand:
                     {
-                        WP.ReadPosXZPercentU16(r, out position, out tilePos);
+                        WP.ReadPosXZPercentU16(r, out position, out maptilePos);
                         if (VectorExt.PlaneXZDistance(ref position, ref goalWp) > Map.MapData.MapTile1_1.ModelScale)
                         {
                             goalWp = position;
@@ -407,7 +407,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case GroupState.Battle:
                     
-                    WP.ReadPosXZPercentU16(r, out var rPosition, out tilePos);
+                    WP.ReadPosXZPercentU16(r, out var rPosition, out maptilePos);
 
                     if (VectorExt.PlaneXZDistance(ref position, ref rPosition) > Map.MapData.MapTile1_1.ModelScale * 8)
                     {
@@ -481,11 +481,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (subVersion < 62)
                 {
-                    WP.readPosXZ_old(r, out position, out tilePos);
+                    WP.readPosXZ_old(r, out position, out maptilePos);
                 }
                 else
                 {
-                    WP.ReadPosXZPercentU16(r, out position, out tilePos);
+                    WP.ReadPosXZPercentU16(r, out position, out maptilePos);
                 }
                 rotation.ByteDir = r.ReadByte();
             }
@@ -527,7 +527,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                WP.readPosXZ_old(r, out position, out tilePos);
+                WP.readPosXZ_old(r, out position, out maptilePos);
                 rotation.ByteDir = r.ReadByte();
             }
 
@@ -667,7 +667,7 @@ namespace VikingEngine.DSSWars.GameObject
             bool create(int x, int y, bool banner, AbsSoldierBuilder builder, ref SoldierData soldierData)
             {
                 AbsSoldierUnit unit = createUnit(builder, new IntVector2(x + xStart, y),
-                        banner, tilePos, ref soldierData, createModels);
+                        banner, maptilePos, ref soldierData, createModels);
 
                 if (unit == null)
                 {
@@ -926,7 +926,7 @@ namespace VikingEngine.DSSWars.GameObject
                 pathIsReady = false;
             }
 
-            if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+            if (DssRef.world.subTileGrid.TryGet(maptilePos, out var tile))
             {
                 waterNode = tile.IsWater();
             }
@@ -1054,7 +1054,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void setAsStartArmy()
         {
             position = goalWp;
-            tilePos = WP.ToTilePos(position);
+            maptilePos = WP.ToSubTilePos(position);
             setGroundY();
         }
 
@@ -1281,14 +1281,14 @@ namespace VikingEngine.DSSWars.GameObject
                                 //Capture city here
                                 if (tArmy.IsArmy())
                                 {
-                                    if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+                                    if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile))
                                     {
                                         var city = tile.City();
                                         if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                         {
-                                            if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
+                                            if (city.mapTilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
                                             {
-                                                goalWp = WP.ToWorldPos(city.tilePos);
+                                                goalWp = WP.ToWorldPos(city.mapTilePos);
                                                 state = GroupState.CityCapture;
                                                 return;
                                             }

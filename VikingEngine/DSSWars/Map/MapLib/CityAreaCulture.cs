@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         public Vector2 worldPerc;
         public CityAreaCulture(City city, WorldData world)
         {
-            Rectangle2 cultureArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
+            Rectangle2 cultureArea = Rectangle2.FromCenterTileAndRadius(city.mapTilePos, 3);
             double total = cultureArea.Area;
             ForXYLoop loop = new ForXYLoop(cultureArea);
 
@@ -75,8 +75,8 @@ namespace VikingEngine.DSSWars.Map.Settings
             percDesolate = desolateBiom / land;
 
             //Collect cultures
-            worldPerc.X = city.tilePos.X / (float)world.Size.X;
-            worldPerc.Y = city.tilePos.Y / (float)world.Size.Y;
+            worldPerc.X = city.mapTilePos.X / (float)world.Size.X;
+            worldPerc.Y = city.mapTilePos.Y / (float)world.Size.Y;
         }
     }
 }

@@ -1029,13 +1029,13 @@ namespace VikingEngine.DSSWars
 
                     if (f.mainCity != null)
                     {
-                        if (centerArea.IntersectPoint(f.mainCity.tilePos))
+                        if (centerArea.IntersectPoint(f.mainCity.mapTilePos))
                         {
                             f.availableForPlayerScore += 1000;
                         }
                         else
                         {
-                            f.availableForPlayerScore += 500 - centerArea.LengthToClosestEdge(f.mainCity.tilePos);
+                            f.availableForPlayerScore += 500 - centerArea.LengthToClosestEdge(f.mainCity.mapTilePos);
                         }
 
                         if (!firstPlayer)
@@ -1086,7 +1086,7 @@ namespace VikingEngine.DSSWars
                 var city = cities[i];
                 if (city != null)
                 {
-                    closest.Next((pos.Vec - city.tilePos.Vec).Length(), i);
+                    closest.Next((pos.Vec - city.mapTilePos.Vec).Length(), i);
                 }
             }
             dist = closest.minValue;
