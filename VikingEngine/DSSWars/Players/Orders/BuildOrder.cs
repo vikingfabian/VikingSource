@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             int type = (int)buildingType;
             blueprint = BuildLib.BuildOptions[type].blueprint;
-            var result = new WorkQueMember(upgrade? WorkType.Upgrade : WorkType.Build, type, 0, subTile, priority, 0, 0);
+            var result = new WorkQueMember(upgrade? WorkType.Upgrade : WorkType.Build, type, 0, WorkPriorityType.buildOrders, subTile, priority, 0, 0);
             result.orderId = id;
             return result;
         }

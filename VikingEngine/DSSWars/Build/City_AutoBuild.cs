@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (!(loop.AtBottom && loop.AtCenterX) && //place for opening
                                 MayAutoBuildHere(loop.Position) && work_isFreeTile(loop.Position))
                             {
-                                workQue.Add(new WorkQueMember(WorkType.Build, (int)(loop.AtCorner ? towerType : wallType), 0, loop.Position, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                                workQue.Add(new WorkQueMember(WorkType.Build, (int)(loop.AtCorner ? towerType : wallType), 0, WorkPriorityType.autoBuild, loop.Position, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                                 addCount--;
                                 if (addCount <= 0)
                                 {
@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (MayAutoBuildHere(buildingStructure.SuggestedTrapperPos) &&
                         work_isFreeTile(buildingStructure.SuggestedTrapperPos))
                     {
-                        workQue.Add(new WorkQueMember(WorkType.Build, (int)BuildAndExpandType.TrapperHut, 0, buildingStructure.SuggestedTrapperPos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                        workQue.Add(new WorkQueMember(WorkType.Build, (int)BuildAndExpandType.TrapperHut, 0, WorkPriorityType.autoBuild, buildingStructure.SuggestedTrapperPos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                         buildingStructure.SuggestedTrapperPos = IntVector2.Zero;
                     }
                 }
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.GameObject
                         work_isFreeTile(pos))
                     {
                         byte prio = buildType == safeGuardBuild ? WorkTemplate.MaxPrio : workTemplate.Get(WorkPriorityType.autoBuild).value;
-                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, WorkPriorityType.autoBuild, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                     }
                 }
                 else

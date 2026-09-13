@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.GameObject
                             amount = money.GetGold32();
                         }
 
-                        return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue, capacity = int.MaxValue };
+                        return new GroupedResource() { amount = amount, stockPileLimit = ushort.MaxValue, capacity = ushort.MaxValue, };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.NobleMen:

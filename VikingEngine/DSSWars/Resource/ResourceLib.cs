@@ -324,7 +324,7 @@ namespace VikingEngine.DSSWars.Resource
                 content.Add(new RbText(storeText, HudLib.SecondaryTextColor));
             }
             bool hasPriority;
-            Work.WorkPriority priority = city != null? city.workTemplate.GetWorkPriority(item, out hasPriority) : faction.workTemplate.GetWorkPriority(item, out hasPriority);
+            Work.WorkPriority priority = city != null? city.workTemplate.GetWorkPriority(item, out hasPriority, out _) : faction.workTemplate.GetWorkPriority(item, out hasPriority, out _);
             if (hasPriority)
             {
                 content.newLine();
@@ -672,7 +672,8 @@ namespace VikingEngine.DSSWars.Resource
     enum ResourceManagementType
     {
         Overview,
-        Work,
+        WorkPrio,
+        WorkCount,
         Stockpile,
         Auto,
     }

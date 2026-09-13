@@ -25,13 +25,17 @@ namespace VikingEngine.DSSWars.Work
     {
         static readonly IntervalF EnergyBounds = new IntervalF(DssConst.Worker_Starvation, DssConst.Worker_MaxEnergy);
 
-        public int XpEntityIndex;
+        
         //public WorkExperienceType xpType1, xpType2, xpType3;
         ////5 levels, using 50xp each
         //public byte xp1, xp2, xp3;
         public byte workBonus;
 
         public WorkType work;
+
+        public WorkPriorityType workPriorityType;
+
+        public int XpEntityIndex;
         public int workSubType;
         public int orderId;
 
@@ -200,7 +204,7 @@ namespace VikingEngine.DSSWars.Work
                     ItemResource recieved = toCity.MakeTrade(foodType, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE,  WorkPriorityType.NUM_NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
                     break;
                 case WorkType.TrossReturnToArmy:
                     if (carry.type == ItemResourceType.ConservedFood)
@@ -1947,10 +1951,11 @@ namespace VikingEngine.DSSWars.Work
         }
 
 
-        public void createWorkOrder(WorkType work, int subWork, byte workBonus, XP.WorkExperienceType experienceType, int order, IntVector2 targetSubTile, City city)
+        public void createWorkOrder(WorkType work, int subWork, byte workBonus, XP.WorkExperienceType experienceType, WorkPriorityType priorityType, int order, IntVector2 targetSubTile, City city)
         {
             this.workBonus = workBonus;
             this.work = work;
+            this.workPriorityType = priorityType;
             workSubType = subWork;
             orderId = order;
             subTileStart = subTileEnd;

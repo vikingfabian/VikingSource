@@ -805,7 +805,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                     break;
 
-                case ResourceManagementType.Work:
+                case ResourceManagementType.WorkPrio:
                     content.text( string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
                     break;
 
@@ -843,7 +843,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     {
                         if (group == ResourceGroupType.Mint)
                         {
-                            bool includeMint = managementType == ResourceManagementType.Work && city.buildingStructure.CoinMinter_count > 0;
+                            bool includeMint = managementType == ResourceManagementType.WorkPrio && city.buildingStructure.CoinMinter_count > 0;
                             if (!includeMint)
                             {
                                 continue;
@@ -879,9 +879,14 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     resourceOverview(content, player.resourcesSubTab.resourceGroup); 
                     break;                
 
-                case ResourceManagementType.Work:
+                case ResourceManagementType.WorkPrio:
                     content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
                     city.workTemplate.toHud(player, content, player.resourcesSubTab.resourceGroup, city.pfaction.GetFaction(), city);
+                    break;
+
+                case ResourceManagementType.WorkCount:
+                    content.h2(".Worker count", HudLib.TitleColor_Head);
+                    new WorkerLimitMenu(content, city, city.pfaction.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
                     break;
 
                 case ResourceManagementType.Stockpile:

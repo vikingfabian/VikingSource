@@ -28,24 +28,31 @@ namespace VikingEngine.DSSWars.EntityComponent
 
     struct GroupedResource
     {
+        public bool hasCesspit;
 
-        public int amount;
+        public bool useStockLimit;
+
+       
+
+        /// <summary>
+        /// Player set limit
+        /// </summary>
+        public ushort stockPileLimit;
+
+
+
+
+        public ushort deliverCount;
+
 
         /// <summary>
         /// Limit from storage buildings
         /// </summary>
-        public int capacity;
-        
-        /// <summary>
-        /// Player set limit
-        /// </summary>
-        public int stockPileLimit;
-        public int deliverCount;
-        public bool hasCesspit;
-        
-        public bool useStockLimit;
+        public ushort capacity;
 
         public ResourceChangeRate changeRate;
+
+        public int amount;
 
         public GroupedResource()
         {
@@ -72,14 +79,14 @@ namespace VikingEngine.DSSWars.EntityComponent
             else
             {
                 useStockLimit = true;
-                stockPileLimit = Math.Min(capacity, limit);
+                stockPileLimit = (ushort)Math.Min(capacity, limit);
             }
         }
 
         public void hardSetLimit(int limit)
         {
             useStockLimit = true;
-            stockPileLimit = limit;
+            stockPileLimit = (ushort)limit;
         }
 
         public void clearFactionOverView()
@@ -116,14 +123,14 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public void UpdateCapacity(int capacity)
         {
-            this.capacity = capacity;
+            this.capacity = (ushort)capacity;
             if (useStockLimit)
             {
                 Math.Min(stockPileLimit, capacity);
             }
             else
             {
-                stockPileLimit = capacity;
+                stockPileLimit = (ushort)capacity;
             }
         }
 

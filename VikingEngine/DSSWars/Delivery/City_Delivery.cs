@@ -100,14 +100,14 @@ namespace VikingEngine.DSSWars.GameObject
                                                 {
                                                     workForce.amount -= status.inProgress.SendAmount;
 
-                                                    othercity.workForce.deliverCount += status.inProgress.SendAmount;
+                                                    othercity.workForce.deliverCount += (ushort)status.inProgress.SendAmount;
                                                 }
                                                 else
                                                 {
                                                     AddGroupedResource(status.inProgress.type, -status.inProgress.SendAmount);
 
                                                     var resource_recieve = othercity.GetGroupedResource(status.inProgress.type);
-                                                    resource_recieve.deliverCount += status.inProgress.SendAmount;
+                                                    resource_recieve.deliverCount += (ushort)status.inProgress.SendAmount;
                                                     othercity.AddGroupedResource(status.inProgress.type, status.inProgress.SendAmount);
                                                 }
 
@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     {
                                         othercity.workForce.deliverCount = 0;
                                     }
-                                    othercity.workForce.deliverCount = Bound.Min( othercity.workForce.deliverCount - status.inProgress.SendAmount, 0);
+                                    othercity.workForce.deliverCount = (ushort)Bound.Min( othercity.workForce.deliverCount - status.inProgress.SendAmount, 0);
                                 }
                                 else
                                 {
@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     }
 
                                     resource.amount += status.inProgress.SendAmount;
-                                    resource.deliverCount = Bound.Min(resource.deliverCount - status.inProgress.SendAmount, 0);
+                                    resource.deliverCount = (ushort)Bound.Min(resource.deliverCount - status.inProgress.SendAmount, 0);
                                     othercity.SetGroupedResource(status.inProgress.type, resource);
                                 }
                                 status.active = DeliveryActiveStatus.Idle;

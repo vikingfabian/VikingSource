@@ -1329,7 +1329,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //{ 
 
                     //}
-                    if (player.resourcesSubTab.EqualTab(new ResourcesSubTab(ResourceManagementType.Work, ResourceGroupType.Weapons))) //== ResourcesSubTab.Work_Weapons)
+                    if (player.resourcesSubTab.EqualTab(new ResourcesSubTab(ResourceManagementType.WorkPrio, ResourceGroupType.Weapons))) //== ResourcesSubTab.Work_Weapons)
                     {
                         if (!weaponsArmor_selectSubTab)
                         {

@@ -1,6 +1,7 @@
 
 Change log:
-* 
+* Compressed the size of resources
+X Worker count limit to better control the flow of work
 
 KNOWN ISSUES
 x reassign dont work with controller
@@ -12,6 +13,9 @@ X timeline checkbox on steamworks
 * Fixed stuck game process on exit
 * Cubic far group models
 * The colors are muted and have higher contrast 
+
+Worker max count
+* A new way to manage city work (prototype version)
 
 World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.

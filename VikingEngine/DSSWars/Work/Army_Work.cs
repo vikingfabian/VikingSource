@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 int statusIx = getOrCreateFreeWorker();
                                 var status = workerStatuses[statusIx];
-                                status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
+                                status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
                                 if (goldValue > 0)
                                 {
                                     foodCosts_import.add(status.carry.amount);
