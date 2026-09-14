@@ -1,17 +1,19 @@
 
 Change log:
+* fixed leaderboard crash
 * Performance: Removed build order city references
 * fixed: faction diplomacy select city highlights errors
-x the guards multiply
 
 Network issues
 * Fixed build order client read crash
 * Fixed: City automation becomes unchecked.
-* Fixed: Postal service settings revert to automatic — only the category remains saved.
+* Fixed: Postal service settings revert to automatic.
 * Fixed: Tags are not saved.
-* Fixed: Additional storage is not saved, and you must add new ones because removing existing storage causes the reserved quantity to go negative
+* Fixed: Additional resource storage is not saved
 * Fixed: City guards are not visible on the ramparts
 * Fixed: build orders end up below ground
+* Fixed: resource processing off bounds crash
+* fixed: end empty net session crash
 
 KNOWN ISSUES
 

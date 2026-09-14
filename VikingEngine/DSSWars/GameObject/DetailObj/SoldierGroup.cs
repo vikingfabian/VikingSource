@@ -348,17 +348,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             GroupState rState = (GroupState)r.ReadByte();
             state = rState;
-            //Debug.ReadCheck(r);
-
+            
             readGameState(tArmy, r, int.MaxValue, needInit, rState <= GroupState.FindArmyPlacement, null);
-            //Debug.ReadCheck(r);
+            
             setGroundY();
             
-
-            //Debug.Log("## Soldiergroup read Net, state: " + state.ToString());
-            //Debug.Log($"goal: {goalWp}, pos: {position}" );
-
-
             switch (rState)
             {
                 default:

@@ -155,7 +155,6 @@ namespace VikingEngine.DSSWars.GameObject
                 if (mapObj != null && (!mapObj.IsNetHosted || isHandOver))
                 {  
                     int packetIndex = r.ReadByte();
-                    //Debug.ReadCheck(r);
                     
                     for (int i = 0; i < GroupsPerPacket; i++)
                     {
@@ -164,22 +163,12 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             var rpos = r.BaseStream.Position;
                             mapObj.NetReadGroup(r, groupIndex);
-                            //if (Debug.ReadCheck_returnIfError(r))
-                            //{
-                            //    r.BaseStream.Position = rpos;
-                            //    mapObj.NetReadGroup(r, groupIndex);
-                            //}
                         }
                         else
                         {
                             var group = mapObj.groups.PullIndex_Safe(groupIndex);
                             if (group != null)
                             {
-                                //if (mapObj.IsArmy() || mapObj.IsNetHosted)
-                                //{
-                                //    lib.DoNothing();
-                                //}
-
                                 group.DeleteMe(DeleteReason.NetworkEvent, false);
                             }
                         }
@@ -213,10 +202,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 groups.HardSet(group, index);
                 group.myIndex = index;
-                //if (!group.pfaction.HasValue())
-                //{
-                //    throw new Exception();
-                //}
             }
 
             return group;
@@ -224,8 +209,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void remove(SoldierGroup group)
         {
-            //Debug.CrashIfThreaded();
-            if (IsNetHosted || debugTagged)//pfaction == DssRef.state.LocalHost().pfaction)
+            if (IsNetHosted || debugTagged)
             {
                 lib.DoNothing();
             }
@@ -386,16 +370,14 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int i = 0; i < groupsCount; i++)
                 {
-                    GuardGroup group = new GuardGroup(this, r, subVersion, pointers);
-                    
+                    GuardGroup group = new GuardGroup(this, r, subVersion, pointers);                    
                 }
             }
             else
             {
                 for (int i = 0; i < groupsCount; i++)
                 {
-                    SoldierGroup group = new SoldierGroup(this, r, subVersion, pointers);
-                    
+                    SoldierGroup group = new SoldierGroup(this, r, subVersion, pointers);                    
                 }
             }
 
