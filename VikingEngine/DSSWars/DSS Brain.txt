@@ -2,6 +2,22 @@
 Change log:
 * 
 
+Bugs for the second player after rejoining a saved game:
+
+1. Fixed: City automation becomes unchecked.
+
+2. Fixed: Postal service settings revert to automatic — only the category remains saved.
+
+3. Army flags appear in the top‑left corner of the map (you must split the army and regroup it to fix the flag position).
+
+4. Wood issue — citizens ignore wood lying on the ground and instead chop new trees.
+
+5. Fixed: Tags are not saved.
+
+6. Additional storage is not saved, and you must add new ones because removing existing storage causes the reserved quantity to go negative (already mentioned in other topics).
+
+7. City guards are not visible on the ramparts (you need to move them outside the wall and place them again; works for the current game session).
+
 KNOWN ISSUES
 
 ##ICONS TODO

@@ -87,9 +87,10 @@ namespace VikingEngine.DSSWars.Data
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                p.orders.writeGameState(w);
+                //p.orders.writeGameState(w);
 
-                p.writePins(w);
+                //p.writePins(w);
+                p.writeGameState(w, true);
                 Debug.WriteCheck(w);
 
                 p.pfaction.GetFaction().writeClientState(w);
@@ -139,9 +140,18 @@ namespace VikingEngine.DSSWars.Data
             for (int i = 0; i < localPlayersCount; i++)
             {
                 var p = DssRef.state.localPlayers[i];
-                p.orders.readGameState(i, r, version.sub, null);
 
-                p.readPins(r, version.sub);
+                if (version.sub < 133)
+                {
+                    p.orders.readGameState(i, r, version.sub, null);
+
+                    p.readPins(r, version.sub);
+                }
+                else
+                { 
+                    p.readGameState(r, true, version.sub, null);
+                }
+                
                 Debug.ReadCheck(r);
 
                 if (version.sub >= 131)

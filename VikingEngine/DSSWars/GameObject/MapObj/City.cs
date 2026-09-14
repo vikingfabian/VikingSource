@@ -641,29 +641,61 @@ namespace VikingEngine.DSSWars.GameObject
         {
             workTemplate.writeGameState(w);
             writeClientResources(w);
+
+            writeAutomation(w);
+
+            lock (deliveryServices)
+            {
+                w.Write((ushort)deliveryServices.Count);
+                foreach (var delivery in deliveryServices)
+                {
+                    delivery.writeClientState(w);
+                }
+            }
         }
 
         public void readClientState(System.IO.BinaryReader r, int subversion)
         {
             workTemplate.readGameState(r, subversion, true);
             readClientResources(r, subversion);
+
+            if (subversion >= 133)
+            { 
+                readAutomation(r);
+
+                lock (deliveryServices)
+                {
+                    Dictionary<int, int> deliveryIdToIndex = new Dictionary<int, int>();
+                    for (int i = 0; i < deliveryServices.Count; ++i)
+                    {
+                        deliveryIdToIndex.Add(deliveryServices[i].idAndPosition, i);
+                    }
+
+                    int deliveryServicesCount = r.ReadUInt16();
+                    for (int i = 0; i < deliveryServicesCount; i++)
+                    {
+                        DeliveryStatus status = new Delivery.DeliveryStatus();
+                        status.readClientState(r, subversion);
+
+                        if (deliveryIdToIndex.TryGetValue(status.idAndPosition, out int index))
+                        {
+                            deliveryServices[index].ApplyClientSetup(status);
+                        }
+                    } 
+                }
+            }
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
             try
             {
-                //if (myIndex == 153)
-                //{
-                //    lib.DoNothing();
-                //}
-
                 writeHousing(w);
 
                 workTemplate.writeGameState(w);
 
                 Debug.WriteCheck(w);
-                
+
                 writeResources(w);
 
                 writeWorkerStatuses(w, false, -1);
@@ -703,7 +735,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             research.writeGameState(w);
                         }
-                    }   
+                    }
                 }
                 else
                 {
@@ -741,20 +773,16 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                w.Write(autoBuild_Work);
-                w.Write(autoBuild_Farm);
-                w.Write((byte)autoExpandFarmType);
+                writeAutomation(w);
 
                 Tag.write(w);
-                
+
                 w.Write(res_food_safeguard);
 
                 technology.writeGameState(w, false);
                 money.write(w);
-                w.Write(automateCity);
-                w.Write((byte)automationFocus);
-                w.Write((byte)warAutoQuality);
-                w.Write((byte)warAutoWeaponType);
+
+
 
                 name.write(w);
 
@@ -771,7 +799,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                 Debug.WriteCheck(w);
 
-                //throw new Exception("test");
             }
             catch (Exception e)
             {
@@ -781,6 +808,8 @@ namespace VikingEngine.DSSWars.GameObject
                 BlueScreen.ThreadException = e;
             }
         }
+
+        
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -874,56 +903,69 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            autoBuild_Work = r.ReadBoolean();
-            autoBuild_Farm = r.ReadBoolean();
-            autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
+            if (subversion < 133)
+            {
+                autoBuild_Work = r.ReadBoolean();
+                autoBuild_Farm = r.ReadBoolean();
+                autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
+            }
+            else
+            {
+                readAutomation(r);
+            }
 
             Tag.read(r, subversion);
-            //tagBack = (CityTagBack)r.ReadByte();
-            //if (tagBack != CityTagBack.NONE)
-            //{
-            //    tagArt = (TagArt)r.ReadUInt16();
-            //}
-
+            
             res_food_safeguard = r.ReadBoolean();
 
             technology.readGameState(r, subversion, false);
 
 
-            if (subversion < 53)
-            {
-                int gold = r.ReadInt32();
-                money.copper = gold * 100;
-            }
-            else if (subversion < 67)
-            {
-                money.copper = r.ReadInt32();
-            }
-            else
-            {
-                money.read(r);
-            }
+            money.read(r);
 
-            automateCity = r.ReadBoolean();
-            automationFocus = (AutomationFocus)r.ReadByte();
-            if (subversion >= 60)
+            if (subversion < 133)
             {
+                automateCity = r.ReadBoolean();
+                automationFocus = (AutomationFocus)r.ReadByte();
+
                 warAutoQuality = (WarAutoQuality)r.ReadByte();
                 warAutoWeaponType = (WarAutoWeaponType)r.ReadByte();
             }
             name.read(r, subversion);
 
-            if (subversion >= 68)
+            
+            casualCityProfile.readGameState(r, subversion);
+            if (r.ReadBoolean())
             {
-                casualCityProfile.readGameState(r, subversion);
-                if (r.ReadBoolean())
-                {
-                    GetCasualProgress().readGameState(this, r, subversion);
-                    //casualCityProfile.refreshTech(casualProgress);
-                }
+                GetCasualProgress().readGameState(this, r, subversion);
+                //casualCityProfile.refreshTech(casualProgress);
             }
+            
             Debug.ReadCheck(r);
         }
+                
+
+        private void writeAutomation(BinaryWriter w)
+        {
+            w.Write(autoBuild_Work);
+            w.Write(autoBuild_Farm);
+            w.Write((byte)autoExpandFarmType);
+            w.Write(automateCity);
+            w.Write((byte)automationFocus);
+            w.Write((byte)warAutoQuality);
+            w.Write((byte)warAutoWeaponType);
+        }
+        private void readAutomation(BinaryReader r)
+        {
+            autoBuild_Work = r.ReadBoolean();
+            autoBuild_Farm = r.ReadBoolean();
+            autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
+            automateCity = r.ReadBoolean();
+            automationFocus = (AutomationFocus)r.ReadByte();
+            warAutoQuality = (WarAutoQuality)r.ReadByte();
+            warAutoWeaponType = (WarAutoWeaponType)r.ReadByte();
+        }
+
 
         void writeStatusesStartEnd(int part, int workerStatusesCount, out bool meta, out int start, out int end)
         {

@@ -125,12 +125,15 @@ namespace VikingEngine.DSSWars.Players
         virtual public void Update()
         { }
 
-        virtual public void writeGameState(System.IO.BinaryWriter w)
+        virtual public void writeGameState(System.IO.BinaryWriter w, bool isNetClient)
         {
 
         }
 
-        
+        virtual public void readGameState(System.IO.BinaryReader r, bool isNetClient, int version, ObjectPointerCollection pointers)
+        {
+
+        }
 
         protected void readAiPlayerGameState(BinaryReader r, int subversion)
         {
@@ -148,20 +151,7 @@ namespace VikingEngine.DSSWars.Players
                 
             }
         }
-
-        virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
-        {
-
-        }
-
-        //virtual public void writeNet(System.IO.BinaryWriter w)
-        //{
-
-        //}
-        //virtual public void readNet(System.IO.BinaryReader r)
-        //{
-
-        //}
+               
 
         virtual public void oneSecUpdate()
         { }
