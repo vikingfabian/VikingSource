@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             if (armyArmy != null)
             {
                 List<AbsArmy> tradeAbleArmies = new List<AbsArmy>();
-                DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.mapTilePos, 1,
+                DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.maptilePos, 1,
                     tradeAbleArmies);
 
                 FilterTradeAbleArmies(armyArmy, tradeAbleArmies);

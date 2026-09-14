@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Map2;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
@@ -237,21 +238,21 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         {
             content.h2("Setup", HudLib.TitleColor_Head2);
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_Terrain_CustomSize) }, state.generateSettings.CustomSizeProperty));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_Terrain_CustomSize) }, state.generator.generateSettings.CustomSizeProperty));
 
-            if (state.generateSettings.bCustomSize)
+            if (state.generator.generateSettings.bCustomSize)
             {
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.Hud_Vector_X + ":", HudLib.TitleColor_Label));
                 content.space();
-                RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.generateSettings.MapXProperty, false);
+                RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.generator.generateSettings.MapXProperty, false);
 
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.Hud_Vector_Y + ":", HudLib.TitleColor_Label));
                 content.space();
-                RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.generateSettings.MapYProperty, false);
+                RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.generator.generateSettings.MapYProperty, false);
 
-                content.text(WorldData.SizeString(WorldData.ToMapSize(state.generateSettings.customMapSize), state.generateSettings.customMapSize), HudLib.InfoYellow_Light);
+                content.text(WorldData.SizeString(WorldData.ToMapSize(state.generator.generateSettings.customMapSize), state.generator.generateSettings.customMapSize), HudLib.InfoYellow_Light);
 
             }
             else
@@ -261,11 +262,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 {
                     for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
                     {
-                        mapSzOptions.AddOption(WorldData.SizeString(sz), sz == state.generateSettings.mapSize, sz == MapSize.Medium,
+                        mapSzOptions.AddOption(WorldData.SizeString(sz), sz == state.generator.generateSettings.mapSize, sz == MapSize.Medium,
                             new RbAction1Arg<MapSize>((MapSize selected) =>
                             {
-                                state.generateSettings.mapSize = selected;
-                                state.generateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.ruleset.mapSize);
+                                state.generator.generateSettings.mapSize = selected;
+                                state.generator.generateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.ruleset.mapSize);
                                 menu.CloseDropDown();
 
                             }, sz), null);
@@ -393,13 +394,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             content.Add(new RbText("From height"));
             content.newLine();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 0.5f, 0.25f },
-                new DragButtonSettings(Map2Generator.WaterBottomY, Map2Generator.MountainPeekY, 0.05f), state.tool.planeEditFromProperty, false);
+                new DragButtonSettings(MapHeight2.WaterBottomY, MapHeight2.MountainPeekY, 0.05f), state.tool.planeEditFromProperty, false);
             
             content.newParagraph();
             content.Add(new RbText("To height"));
             content.newLine();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 0.5f, 0.25f },
-                new DragButtonSettings(Map2Generator.WaterBottomY, Map2Generator.MountainPeekY, 0.05f), state.tool.planeEditToProperty, false);
+                new DragButtonSettings(MapHeight2.WaterBottomY, MapHeight2.MountainPeekY, 0.05f), state.tool.planeEditToProperty, false);
 
             content.newParagraph();
             content.Add(new RbText("Adjust height", HudLib.TitleColor_Label2));
@@ -463,16 +464,16 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 content.newParagraph();
                 HudLib.Label(content, "Top height");
                 content.newLine();
-                RbDragButton.EqualToButton(content, Map2Generator.MountainPeekY, heightMap.topHeightProperty);
+                RbDragButton.EqualToButton(content, MapHeight2.MountainPeekY, heightMap.topHeightProperty);
                 content.newLine();
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(Map2Generator.DefaultGroundY, Map2Generator.MountainPeekY + 0.2f, 0.01f), heightMap.topHeightProperty, false);
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(MapHeight2.DefaultGroundY, MapHeight2.MountainPeekY + 0.2f, 0.01f), heightMap.topHeightProperty, false);
 
                 content.newParagraph();
                 HudLib.Label(content, "Bottom height");
                 content.newLine();
-                RbDragButton.EqualToButton(content, Map2Generator.WaterBottomY, heightMap.bottomHeightProperty);
+                RbDragButton.EqualToButton(content, MapHeight2.WaterBottomY, heightMap.bottomHeightProperty);
                 content.newLine();
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(Map2Generator.WaterBottomY, 0, 0.01f), heightMap.bottomHeightProperty, false);
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f, 0.05f }, new DragButtonSettings(MapHeight2.WaterBottomY, 0, 0.01f), heightMap.bottomHeightProperty, false);
 
                 content.newParagraph();
                 content.Add(new ArtButton(RbButtonStyle.Primary,
@@ -515,11 +516,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             content.newLine();
             HudLib.Label(content, "Fill");
             content.Add(new RbTab(0.25f));
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(5, 80, 5), state.generateSettings.nodeFillPercProperty, false);
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(5, 80, 5), state.generator.generateSettings.nodeFillPercProperty, false);
             content.newLine();
             HudLib.Label(content, "Connect");
             content.Add(new RbTab(0.25f));
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(10, 90, 1), state.generateSettings.nodeConnectPercProperty, false);
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(10, 90, 1), state.generator.generateSettings.nodeConnectPercProperty, false);
 
             content.newParagraph();
 
@@ -590,7 +591,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             {
                 content.newLine();
                 HudLib.Label(content, "Height"); content.Add(new RbTab(0.25f));
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.25f, 1f },  new DragButtonSettings(state.tool.setHeightProperty(null, false, false)? Map2Generator.WaterBottomY : 0.05f, Map2Generator.MountainPeekY, 0.05f),
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 0.25f, 1f },  new DragButtonSettings(state.tool.setHeightProperty(null, false, false)? MapHeight2.WaterBottomY : 0.05f, MapHeight2.MountainPeekY, 0.05f),
                     state.tool.heightProperty, false);
                 
                 content.newLine();

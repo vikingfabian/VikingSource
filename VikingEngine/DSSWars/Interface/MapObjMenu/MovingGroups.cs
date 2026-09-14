@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                 if (toArmy.army == null)
                 {
-                    IntVector2 onTile = DssRef.world.GetFreeTile(army.mapTilePos);
+                    IntVector2 onTile = DssRef.world.GetFreeTile(army.maptilePos);
                     toArmy.army = army.pfaction.GetFaction().NewArmy(onTile);
                 }
 

@@ -345,7 +345,7 @@ namespace VikingEngine.DSSWars
                             new RbImage(SpriteName.WarsMapIcon, 0.9f),
                             new RbSpace(),
                             new RbText(DssRef.lang.Lobby_Editor_MapEditor) }),
-                            new RbAction(openMapEditor), null, !PlatformSettings.STEAM_DEMO));
+                            new RbAction(mapEditor2), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() {
@@ -1005,8 +1005,8 @@ namespace VikingEngine.DSSWars
                 content.text("! debug cheats !");
             }
             content.Button("start", new RbAction(startGame), null, true);
-            content.Button("map editor", new RbAction(openMapEditor), null, true);
-            content.Button("map2", new RbAction(map2), null, true);
+            //content.Button("map editor", new RbAction(op), null, true);
+            content.Button("map2", new RbAction(mapEditor2), null, true);
 
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
             content.Button("trial", new RbAction(startTrial), null, true);
@@ -1181,7 +1181,7 @@ namespace VikingEngine.DSSWars
 
                 var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                     /*new RbImage(SpriteName.LFIconMap), new RbTab(ButtonTextTabbing), */new RbText("Map editor 2.0 - alpha"),
-                }, new RbAction(map2), new RbTooltip_Text("Warning! High chance of the save files to be unusable in later versions"));
+                }, new RbAction(mapEditor2), new RbTooltip_Text("Warning! High chance of the save files to be unusable in later versions"));
                 btn.fillWidth = true;
                 content.Add(btn);
             }
@@ -1357,11 +1357,11 @@ namespace VikingEngine.DSSWars
             //openUnderMenu(UnderMenu_PlayerSetup, StackOption.Stack);
             openPlayerSetupForMode(StartGameMode.BattleTrials);
         }
-        void openMapEditor()
-        {
-            mapBackgroundLoading?.Abort();
-            new MapEditor_GeneratorScene();
-        }
+        //void openMapEditor()
+        //{
+        //    mapBackgroundLoading?.Abort();
+        //    new MapEditor_GeneratorScene();
+        //}
 
         void startBattleLab()
         {
@@ -1685,7 +1685,7 @@ namespace VikingEngine.DSSWars
             GameStorage defaultOptions = new GameStorage();
 
             //var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
-            WorldData customWorld = mapBackgroundLoading?.dataGenerate?.world;
+            WorldData customWorld = mapBackgroundLoading.WorldData();//mapBackgroundLoading?.dataGenerate?.world;
 
             bool continueCustomMap = customWorld !=null && customWorld.metaData.customEditorMap;
             if (continueCustomMap)
@@ -2802,7 +2802,7 @@ namespace VikingEngine.DSSWars
             new StartEditor(0, true, EditorType.Files);
         }
 
-        void map2()
+        void mapEditor2()
         {
             new StartEditor(0, true, EditorType.Map2);
         }
@@ -2879,10 +2879,10 @@ namespace VikingEngine.DSSWars
                 voxeleditor();
             }
 
-            if (VikingEngine.Input.Keyboard.Ctrl && VikingEngine.Input.Keyboard.KeyDownEvent(Keys.M))
-            {
-                openMapEditor();
-            }
+            //if (VikingEngine.Input.Keyboard.Ctrl && VikingEngine.Input.Keyboard.KeyDownEvent(Keys.M))
+            //{
+            //    ();
+            //}
 
             if (Ref.music != null)
             {

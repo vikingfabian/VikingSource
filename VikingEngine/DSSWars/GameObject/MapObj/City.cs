@@ -141,8 +141,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
             */
-            Debug.LogError("GetFreeTile" + mapTilePos.ToString());
-            return mapTilePos;
+            Debug.LogError("GetFreeTile" + maptilePos.ToString());
+            return maptilePos;
         }
 
        
@@ -287,8 +287,8 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate = new WorkTemplate(true, index);
             
             world.InitCity(this);
-            this.mapTilePos = pos;
-            cityTileArea = Rectangle2.FromCenterTileAndRadius(mapTilePos, 1);
+            this.maptilePos = pos;
+            cityTileArea = Rectangle2.FromCenterTileAndRadius(maptilePos, 1);
             this.cityType = type;
             
         }
@@ -499,7 +499,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
-            mapTilePos.writeUshort(w);
+            maptilePos.writeUshort(w);
 
             w.Write(Debug.Byte_OrCrash((int)cityType));
             w.Write(Debug.Ushort_OrCrash(areaSize));
@@ -526,7 +526,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readMapFile(WorldData world, System.IO.BinaryReader r, int saveMapVersion)
         {
-            mapTilePos.readUshort(r);
+            maptilePos.readUshort(r);
 
             cityType = (CityType)r.ReadByte();
             //if (saveMapVersion < 9)
@@ -1229,7 +1229,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     try
                     {
-                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(mapTilePos, 1));
+                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, 1));
                         edgeLoop.RandomPosition(true);
 
                         int maxLoops = 10000;
@@ -1470,7 +1470,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (!name.custom)
             {
-                name.name = Data.NameGenerator.CityName(mapTilePos);
+                name.name = Data.NameGenerator.CityName(maptilePos);
             }
             setTimeOnAllWorkers();
 
@@ -1561,7 +1561,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (!name.custom)
                     {
-                        name.name = Data.NameGenerator.CityName(mapTilePos);
+                        name.name = Data.NameGenerator.CityName(maptilePos);
                     }
 
                     //Send hosted action
@@ -1596,11 +1596,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (newTile)
                     {
-                        IntVector2 prevTilePos = mapTilePos;
-                        mapTilePos = WP.SubtileToTilePos(subtile);
+                        IntVector2 prevTilePos = maptilePos;
+                        maptilePos = WP.SubtileToTilePos(subtile);
 
                         ref var prevTile = ref DssRef.world.tileGrid.GetRef(prevTilePos);
-                        ref var tile = ref DssRef.world.tileGrid.GetRef(mapTilePos);
+                        ref var tile = ref DssRef.world.tileGrid.GetRef(maptilePos);
 
                         /*
                         prevTile.tileContent = TileContent.NONE;
@@ -1927,7 +1927,7 @@ namespace VikingEngine.DSSWars.GameObject
                 try
                 {
                     
-                    PFaction newPOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
+                    PFaction newPOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 16);
                     if (newPOwner != pfaction && newPOwner.TryGetFaction(out var newOwner))                    
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
@@ -2079,13 +2079,13 @@ namespace VikingEngine.DSSWars.GameObject
             const int DominanceTileRadius = 4;
 
             //Faction faction = GetFaction();
-            DssRef.world.unitCollAreaGrid.collectArmies(pfaction, mapTilePos, 2,
+            DssRef.world.unitCollAreaGrid.collectArmies(pfaction, maptilePos, 2,
                 DssRef.world.unitCollAreaGrid.armies_nearUpdate);
 
             foreach (var p in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
             {
                 var m = p.GetArmy();
-                if (m.mapTilePos.SideLength(mapTilePos) <= DominanceTileRadius)
+                if (m.maptilePos.SideLength(maptilePos) <= DominanceTileRadius)
                 {
                     armyDefence += m.strengthValue;
                 }
@@ -4044,7 +4044,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     
                     newFaction.AddCity(this, false);
-                    EditSubTile.OntileChange(mapTilePos);
+                    EditSubTile.OntileChange(maptilePos);
                 }
 
                 OnNewOwner(newFaction, convert || duringStartup, convertReason);

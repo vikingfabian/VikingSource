@@ -236,7 +236,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 }
             }
 
-            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData2.seed + 3);
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData2.worldId.seed + 3);
             NoiseOptions noiseOpt = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
 
             Parallel.For(0, world.iconGrid.Size.X, x =>

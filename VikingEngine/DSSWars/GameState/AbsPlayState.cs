@@ -124,8 +124,8 @@ namespace VikingEngine.DSSWars.GameState
             culling = new Culling();
 
             factionsMap = new MapLayer_Factions();
-            overviewMap = new Map.MapLayer_Overview(factionsMap);
-            detailMap = new Map.MapLayer_Detail();
+            overviewMap = new MapLayer_Overview(factionsMap);
+            detailMap = new MapLayer_Detail();
             ((DrawGame)draw).initMapShaders();
 
             foreach (var p in localPlayers)

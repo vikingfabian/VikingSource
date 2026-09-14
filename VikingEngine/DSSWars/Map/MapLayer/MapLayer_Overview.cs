@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
@@ -63,7 +64,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
         public static VectorVolume WaterModelVolume()
         {
-            Vector3 surfacePos = new Vector3(DssRef.world.Size.X * 0.5f - 0.5f, SumTile4_4.WaterSurfaceY, DssRef.world.Size.Y * 0.5f - 0.5f);
+            Vector3 surfacePos = new Vector3(DssRef.world.Size.X * 0.5f - 0.5f, MapHeight2.WaterSurfaceY, DssRef.world.Size.Y * 0.5f - 0.5f);
             Vector3 waterScale = new Vector3(DssRef.world.Size.X, 1f, DssRef.world.Size.Y);
 
             return new VectorVolume(surfacePos, waterScale);
@@ -163,7 +164,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
             {
-                borders = new Map.Borders();
+                borders = new Borders();
             }
             Ref.draw.CurrentRenderLayer = 0;
 
@@ -198,7 +199,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
             //List<Graphics.PolygonColor> billboards = new List<PolygonColor>();
             List<Graphics.PolygonColor> polygons = new List<PolygonColor>();
-
+            /*
 
             Vector3 center = Vector3.Zero;
             Vector3 nw = Vector3.Zero;
@@ -280,7 +281,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                     }
                 }
             }
-
+            */
             //polygons.AddRange(billboards);
 
             return polygons;

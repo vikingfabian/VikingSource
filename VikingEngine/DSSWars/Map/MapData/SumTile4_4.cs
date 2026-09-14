@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Map.MapData
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct SumTile4_4
     {
+        public static readonly SumTile4_4 Empty = new SumTile4_4();
         public const int TileWidth = 4;
 
         public const float ModelScale = MapTile1_1.ModelScale * TileWidth;
@@ -104,6 +105,11 @@ namespace VikingEngine.DSSWars.Map.MapData
             :this()
         {
             readMapFile(r, previous, version);
+        }
+
+        public int mapInflenceCost()
+        {
+            return 1;
         }
 
         public void setWaterHeat_Land(int heat)

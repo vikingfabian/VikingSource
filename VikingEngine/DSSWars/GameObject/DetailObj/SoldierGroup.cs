@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
@@ -1286,9 +1287,9 @@ namespace VikingEngine.DSSWars.GameObject
                                         var city = tile.City();
                                         if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                         {
-                                            if (city.mapTilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
+                                            if (city.maptilePos.SideLength(maptilePos) <= 16 || tArmy.GetArmy().attackTarget == city)
                                             {
-                                                goalWp = WP.ToWorldPos(city.mapTilePos);
+                                                goalWp = WP.ToWorldPos(city.maptilePos);
                                                 state = GroupState.CityCapture;
                                                 return;
                                             }
@@ -1310,12 +1311,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                             if (Ref.peRnd.Chance(0.1))
                             {
-                                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+                                if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile))
                                 {
                                     var city = tile.City();
                                     if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                     {
-                                        goalWp = WP.ToWorldPos(city.tilePos);
+                                        goalWp = WP.SubtileToWorldPosXZ(city.maptilePos);
 
                                         if (VectorExt.PlaneXZLength(goalWp - position) < CaptureDistance)
                                         {
@@ -2094,7 +2095,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 lib.DoNothing();
             }
-            DssRef.world.unitCollAreaGrid.collectOpponentGroups(pfaction, tilePos, out  List<GameObject.SoldierGroup> groups, out List<City> cities);
+            DssRef.world.unitCollAreaGrid.collectOpponentGroups(pfaction, maptilePos, out  List<GameObject.SoldierGroup> groups, out List<City> cities);
 
             AbsGroup nearest = null;
             float distanceValue = float.MaxValue;
@@ -2225,7 +2226,7 @@ namespace VikingEngine.DSSWars.GameObject
                 collisionModel.position = VectorExt.V2toV3XZ(WalkDirBound.center, position.Y);
 #endif
                 List<AbsArmy> ArmiesColl_asyncupdate = DssRef.state.pathUpdates[pathThreadIndex].ArmiesColl_asyncupdate;
-                DssRef.world.unitCollAreaGrid.collectArmies(tilePos, ArmiesColl_asyncupdate);
+                DssRef.world.unitCollAreaGrid.collectArmies(maptilePos, ArmiesColl_asyncupdate);
                 foreach (var army in ArmiesColl_asyncupdate)
                 {
                     var groupC = army.groups.counter();
@@ -2283,10 +2284,10 @@ namespace VikingEngine.DSSWars.GameObject
                     counter.sel.asyncBattleUpdate();                    
                 }
             }
-            tilePos = WP.ToTilePos(position);
-            if (DssRef.world.tileBounds.IntersectPoint(tilePos))
+            maptilePos = WP.ToSubTilePos(position);
+            if (DssRef.world.maptileBounds.IntersectPoint(maptilePos))
             {
-                position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY();
+                position.Y = DssRef.world.subTileGrid.Get(maptilePos).groundY;
             }
         }
 
@@ -2360,7 +2361,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (soldiers != null)
                 {
-                    tilePos = WP.ToTilePos(position);
+                    maptilePos = WP.ToSubTilePos(position);
                     setGroundY();
 
                     IntVector2 goalSubTile = WP.ToSubTilePos(target.position);
@@ -2377,7 +2378,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z) &&
                     DssRef.world.unitBounds.IntersectPoint(goalWp.X, goalWp.Z))
                 {
-                    tilePos = WP.ToTilePos(position);
+                    maptilePos = WP.ToSubTilePos(position);
                     setGroundY();
                     groupToGroupCollsionUpate_async(pathThreadIndex);
 
@@ -2397,7 +2398,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var path_sp = path;
                         if (path_sp != null)
                         {
-                            IntVector2 aheadPathTile = path_sp.getNodeAhead(3, tilePos, out isTravelNode);
+                            IntVector2 aheadPathTile = path_sp.getNodeAhead(3, maptilePos, out isTravelNode);
                             goalSubTile = WP.ToSubTilePos_Centered(aheadPathTile);
                         }
                         else
@@ -2425,7 +2426,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             PathFinding pf = DssRef.world.pathFindingPool.GetPf();
             { 
-                path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), WP.ToTilePos( goalWp), isShip);
+                path = pf.FindPath(pathThreadIndex, maptilePos, conv.ToDir8_INT(rotation), WP.ToTilePos( goalWp), isShip);
             }
             DssRef.world.pathFindingPool.Return(pf);
         }
@@ -2526,7 +2527,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void setGroundY()
         {
-            if (DssRef.world.tileGrid.TryGet(tilePos, out SumTile4_4 tile))
+            if (DssRef.world.subTileGrid.TryGet(maptilePos, out MapTile1_1 tile))
             {
                 position.Y = tile.GroundY_aboveWater();
             }
@@ -2584,7 +2585,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void onDisband(bool deserter)
         {
             //Immigrate to closest city
-            var closestCity = DssRef.world.unitCollAreaGrid.closestCity(tilePos);
+            var closestCity = DssRef.world.unitCollAreaGrid.closestCity(maptilePos);
             Vector2 dir;
             RotationQuarterion rot;
             if (closestCity != null)
@@ -2863,7 +2864,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (telePort)
             {
                 position = wp;
-                tilePos = WP.ToTilePos(position);
+                maptilePos = WP.ToSubTilePos(position);
                 setGroundY();
 
                 if (army.TryGetTarget(out var tArmy))
@@ -2872,9 +2873,9 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 //state = GroupState.Idle;
 
-                if (hostedAction && DssRef.world.tileGrid.TryGet(tilePos, out SumTile4_4 tile))
+                if (hostedAction /*&& DssRef.world.tileGrid.TryGet(maptilePos, out SumTile4_4 tile)*/)
                 {
-                    bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
+                    bool waterNode = DssRef.world.subTileGrid.Get(maptilePos).IsWater();
                     if (waterNode != isShip)
                     {
                         Ref.update.AddSyncAction(new SyncAction2Arg<SoldierTransformType, int>(completeTransform, waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1));

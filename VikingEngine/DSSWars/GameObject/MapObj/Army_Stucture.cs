@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.PJ.CarBall;
 
@@ -94,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void armyColumnWidthClick(int w)
         {
             armyColumnWidth = w;
-            refreshGroupPlacements2(mapTilePos, false, false);
+            refreshGroupPlacements2(maptilePos, false, false);
         }
 
         protected void refreshGroupPlacements2(IntVector2 walkToTilePos, bool resetCommand, bool teleport, bool async = true)

@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                     var loopArea = state.enterArea;
                     loopArea.size += 1;
 
-                    loopArea.SetTileBounds(DssRef.world.tileBounds);
+                    loopArea.SetTileBounds(DssRef.world.chunkBounds);
 
                     if (loopArea.Width > 0 && loopArea.Height > 0)
                     {

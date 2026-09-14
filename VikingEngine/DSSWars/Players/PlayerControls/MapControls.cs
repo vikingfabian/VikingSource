@@ -582,7 +582,7 @@ namespace VikingEngine.DSSWars.Players
 
                 bool checkDistance(AbsMapObject obj)
                 {
-                    if (tilePosition.SideLength(obj.mapTilePos) <= MapObjRadius)
+                    if (tilePosition.SideLength(obj.maptilePos) <= MapObjRadius)
                     {
                         nearMapObjects.processList.Add(obj);
                         return true;

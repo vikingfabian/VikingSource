@@ -1044,7 +1044,7 @@ namespace VikingEngine.DSSWars.Interface
             //Engine.Screen.SetupSplitScreen(DssRef.state.localPlayers.Count);
             if (int.TryParse(result, out int id) && arraylib.InBound(DssRef.world.cities, id))
             { 
-                DssRef.state.LocalHost().gameControls.map.setCameraPos( DssRef.world.cities[id].mapTilePos);
+                DssRef.state.LocalHost().gameControls.map.setCameraPos( DssRef.world.cities[id].maptilePos);
             }
             
         }

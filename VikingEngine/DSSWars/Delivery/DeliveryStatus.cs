@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.Delivery
 
         public static TimeLength DeliveryTime(City from, City othercity, int level, out float distance)
         {
-            distance = VectorExt.Length((othercity.mapTilePos - from.mapTilePos).Vec);
+            distance = VectorExt.Length((othercity.maptilePos - from.maptilePos).Vec);
             float time = distance / DssVar.Men_StandardWalkingSpeed_PerSec;
             if (from.cityCulture == CityCulture.Networker)
             {

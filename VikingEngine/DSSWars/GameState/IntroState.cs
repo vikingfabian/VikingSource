@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars
 
 
             new MapSettings();
-            Map.MapData.SumTile4_4.Init();
+            //Map.MapData.SumTile4_4.Init();
         }
 
         override protected void asyncContentLoading(ref int part)

@@ -71,11 +71,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             id = ++DssRef.state.NextArmyId;
             name.name = Data.NameGenerator.ArmyName(id);
-            position = WP.ToMapPos(startPosition);
-            mapTilePos = startPosition;
-            cullingTopLeft = mapTilePos.Vec;
+            position = WP.SubtileToWorldPosXZgroundY_Centered(startPosition);
+            maptilePos = startPosition;
+            cullingTopLeft = maptilePos.Vec;
             cullingBottomRight = cullingTopLeft;
-            nextNodePos = mapTilePos;
+            nextNodePos = maptilePos;
             setMaxFood();
 
             init(faction);
@@ -177,8 +177,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            WP.ReadPosXZPercentU16(r, out position, out mapTilePos);            
-            position.Y = DssRef.world.tileGrid.Get(mapTilePos).GroundY_aboveWater();
+            WP.ReadPosXZPercentU16(r, out position, out maptilePos);            
+            position.Y = DssRef.world.subTileGrid.Get(maptilePos).GroundY_aboveWater();
 
             readAiState(r, int.MaxValue, null);
 
@@ -251,14 +251,14 @@ namespace VikingEngine.DSSWars.GameObject
                 name.name = Data.NameGenerator.ArmyName(id);
             }
                         
-            WP.ReadPosXZPercentU16(r, out position, out mapTilePos);
+            WP.ReadPosXZPercentU16(r, out position, out maptilePos);
             
             readSoldierGroups(r, subVersion, pointers);
 
             init(faction);
             postInit(faction);
             refreshPositions(true);
-            position.Y = DssRef.world.tileGrid.Get(mapTilePos).GroundY_aboveWater();
+            position.Y = DssRef.world.subTileGrid.Get(maptilePos).GroundY_aboveWater();
 
             readAiState(r, subVersion, pointers);
 
@@ -550,7 +550,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (toArmy == null)
             {
-                IntVector2 onTile = DssRef.world.GetFreeTile(mapTilePos);
+                IntVector2 onTile = DssRef.world.GetFreeTile(maptilePos);
                 toArmy = pfaction.GetFaction().NewArmy(onTile);
             }
 
@@ -795,9 +795,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (l > 0.04f)
                     {
-                        var tile = DssRef.world.tileGrid.Get(mapTilePos);
-                        float speed = tile.TerrainSpeedMultiplier(out bool isLand);
-                        speed *= isLand ? transportSpeedLand : transportSpeedSea;
+                        //var tile = DssRef.world.subTileGrid.Get(mapTilePos);
+                        float speed = DssRef.world.TerrainSpeedMultiplier(maptilePos, isShip);//tile.TerrainSpeedMultiplier(out bool isLand);
+                        speed *= isShip ? transportSpeedLand : transportSpeedSea;
 
                         dir.Normalize();
                         //rotation.radians = lib.V2ToAngle(dir);
@@ -805,12 +805,12 @@ namespace VikingEngine.DSSWars.GameObject
                         position.X += move.X;
                         position.Z += move.Y;
 
-                        position.Y = tile.GroundY_aboveWater();
+                        position.Y = DssRef.world.subTileGrid.Get(maptilePos).GroundY_aboveWater();
 
                         IntVector2 newtilepos = new IntVector2(position.X, position.Z);
-                        if (mapTilePos != newtilepos)
+                        if (maptilePos != newtilepos)
                         {
-                            mapTilePos = newtilepos;
+                            maptilePos = newtilepos;
                         }
                     }
 
@@ -863,8 +863,8 @@ namespace VikingEngine.DSSWars.GameObject
                         DssRef.world.unitBounds.KeepPointInsideBound_TilePositionXZref(ref newPosition);
                         position = newPosition;
 
-                        mapTilePos = new IntVector2(position.X, position.Z);
-                        var tile = DssRef.world.tileGrid.Get(mapTilePos);
+                        maptilePos = WP.ToSubTilePos(position);
+                        var tile = DssRef.world.subTileGrid.Get(maptilePos);
                         position.Y = tile.GroundY_aboveWater();
 
                     }
@@ -878,7 +878,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (overviewBanner != null)
             {
-                var tile = DssRef.world.tileGrid.Get(mapTilePos);
+                var tile = DssRef.world.subTileGrid.Get(maptilePos);
                 overviewBanner.position = VectorExt.AddY(position, tile.GroundY_aboveWater());
                 bound.Center = overviewBanner.position;
             }
@@ -886,7 +886,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshPositions(bool onPurchase)
         {
-            refreshGroupPlacements2(mapTilePos, false, false, false);
+            refreshGroupPlacements2(maptilePos, false, false, false);
         }
 
         public void startInOnePoint()
@@ -1002,10 +1002,11 @@ namespace VikingEngine.DSSWars.GameObject
                 Vector2 minpos = VectorExt.V2Max;
                 Vector2 maxpos = VectorExt.V2Min;
 
-                if (DssRef.world.tileGrid.TryGet(mapTilePos, out Map.MapData.SumTile4_4 tile))
-                {
-                    terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
-                }
+                //if (DssRef.world.subTileGrid.TryGet(maptilePos, out Map.MapData.MapTile1_1 tile))
+                //{
+                //    terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
+                //}
+                terrainSpeedMultiplier = DssRef.world.TerrainSpeedMultiplier(maptilePos, isShip);
 
                 var groupsC = groups.counter();
 
@@ -1122,7 +1123,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (!DssRef.storage.ruleset_instance.centralGold && time > 0)
                 {
-                    var onCity = DssRef.world.tileGrid.Get(mapTilePos).City();
+                    var onCity = DssRef.world.tileGrid.Get(maptilePos).City();
 
                     if (onCity.pfaction == pfaction)
                     {
@@ -1169,7 +1170,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (objective == ArmyObjective.TeleportAttack)
                     {
                         //Wait to jump
-                        if (DssRef.state.culling.outsidePlayerAttension(mapTilePos))
+                        if (DssRef.state.culling.outsidePlayerAttension(maptilePos))
                         {
                             if (teleportTime.TimeOut())//Ref.TotalGameTimeSec >= teleportTime)
                             {
@@ -1186,7 +1187,7 @@ namespace VikingEngine.DSSWars.GameObject
                     else if (objective == ArmyObjective.TeleportMove)
                     {
                         //Wait to jump
-                        if (DssRef.state.culling.outsidePlayerAttension(mapTilePos))
+                        if (DssRef.state.culling.outsidePlayerAttension(maptilePos))
                         {
                             if (teleportTime.TimeOut())
                             {

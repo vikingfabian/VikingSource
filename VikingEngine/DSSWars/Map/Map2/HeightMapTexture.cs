@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 
@@ -12,7 +13,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public float scale = 1;
         public float bottomHeight = 0;
-        public float topHeight = Map2Generator.MountainPeekY;
+        public float topHeight = MapHeight2.MountainPeekY;
         public IntVector2 offset = IntVector2.Zero;
 
         public string Name;
@@ -51,7 +52,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     }
                     else
                     {
-                        tile.groundY = Map2Generator.WaterBottomY;
+                        tile.groundY = MapHeight2.WaterBottomY;
                     }
 
                     dataGrid.Set(x, y, tile);

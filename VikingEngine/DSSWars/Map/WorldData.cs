@@ -69,8 +69,9 @@ namespace VikingEngine.DSSWars
 
         public WorldMetaData metaData;
 
-        public Rectangle2 tileBounds;
-        public Rectangle2 tileBoundsSubOne;
+        public Rectangle2 maptileBounds;
+        public Rectangle2 chunkBounds;
+        public Rectangle2 maptileBoundsSubOne;
         public VectorRect unitBounds;
         public IntVector2 Size;
         public IntVector2 HalfSize;
@@ -119,6 +120,19 @@ namespace VikingEngine.DSSWars
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
+        }
+
+        public bool GetMapAndSumTile(IntVector2 mapTilePos, out MapTile1_1 mapTile, out SumTile4_4 sumTile)
+        {
+            if (DssRef.world.maptileBounds.IntersectTilePoint(mapTilePos))
+            { 
+                mapTile = subTileGrid.Get(mapTilePos);
+                sumTile = tileGrid.Get(WP.MaptileToSumTile(mapTilePos));
+                return true;
+            }
+            mapTile = MapTile1_1.Empty;
+            sumTile = SumTile4_4.Empty;
+            return false;
         }
 
         public WorldData(WorldMetaData metaData, Map.Map2.Map2GenerateSettings generateSettings/*, bool customEditorMap*/)//ushort seed, MapSize size)
@@ -303,9 +317,9 @@ namespace VikingEngine.DSSWars
             Size = sz;
             HalfSize = Size / 2;
             areaTileCount = Size.X * Size.Y;
-            tileBounds = new Rectangle2(IntVector2.Zero, Size - 1);
-            tileBoundsSubOne = tileBounds; 
-            tileBoundsSubOne.AddRadius(-1);
+            maptileBounds = new Rectangle2(IntVector2.Zero, Size - 1);
+            maptileBoundsSubOne = maptileBounds; 
+            maptileBoundsSubOne.AddRadius(-1);
             unitBounds = new VectorRect(Vector2.Zero, Size.Vec);
             unitBounds.AddRadius(-1f);
 
@@ -316,7 +330,7 @@ namespace VikingEngine.DSSWars
 
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
-            
+            chunkBounds = chunkGrid.TileBound();
         }
 
         bool subTileHasRepeatValue(ref MapTile1_1 subtile)
@@ -1029,13 +1043,13 @@ namespace VikingEngine.DSSWars
 
                     if (f.mainCity != null)
                     {
-                        if (centerArea.IntersectPoint(f.mainCity.mapTilePos))
+                        if (centerArea.IntersectPoint(f.mainCity.maptilePos))
                         {
                             f.availableForPlayerScore += 1000;
                         }
                         else
                         {
-                            f.availableForPlayerScore += 500 - centerArea.LengthToClosestEdge(f.mainCity.mapTilePos);
+                            f.availableForPlayerScore += 500 - centerArea.LengthToClosestEdge(f.mainCity.maptilePos);
                         }
 
                         if (!firstPlayer)
@@ -1086,7 +1100,7 @@ namespace VikingEngine.DSSWars
                 var city = cities[i];
                 if (city != null)
                 {
-                    closest.Next((pos.Vec - city.mapTilePos.Vec).Length(), i);
+                    closest.Next((pos.Vec - city.maptilePos.Vec).Length(), i);
                 }
             }
             dist = closest.minValue;

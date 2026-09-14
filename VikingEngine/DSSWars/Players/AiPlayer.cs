@@ -1506,11 +1506,11 @@ namespace VikingEngine.DSSWars.Players
             var armiesC = pfaction.GetFaction().armies.counter();
             while (armiesC.Next())
             {
-                if (DssRef.world.tileGrid.TryGet(armiesC.sel.mapTilePos, out var tile))
+                if (DssRef.world.tileGrid.TryGet(armiesC.sel.maptilePos, out var tile))
                 {
                     var city = tile.City();
                     if (city.cityType == CityType.UnClaimed &&
-                        city.mapTilePos.SideLength(armiesC.sel.mapTilePos) <= 2 &&
+                        city.maptilePos.SideLength(armiesC.sel.maptilePos) <= 2 &&
                         armiesC.sel.HasSettler(out var settler))
                     {
                         SettlerCommandTarget.OrderSettler(settler, city.cityHallSubtilePos);
@@ -1869,7 +1869,7 @@ namespace VikingEngine.DSSWars.Players
                             nextDecisionTimer.MilliSeconds += 4000;
                             if (city.distanceTo(mainArmy) > 2)
                             {
-                                mainArmy.Ai_Order_MoveTo(city.mapTilePos);
+                                mainArmy.Ai_Order_MoveTo(city.maptilePos);
                             }
                         }
                         else
@@ -1902,7 +1902,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (city != null)
                     {
-                        collectLooseArmies(city.mapTilePos);
+                        collectLooseArmies(city.maptilePos);
                     }
                     else
                     {
@@ -1925,7 +1925,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        if (DssRef.world.tileGrid.TryGet(mainArmy.mapTilePos, out SumTile4_4 tile))
+                        if (DssRef.world.tileGrid.TryGet(mainArmy.maptilePos, out SumTile4_4 tile))
                         {
                             var city = tile.City();
                             if (city.pfaction == pfaction)
@@ -2109,7 +2109,7 @@ namespace VikingEngine.DSSWars.Players
 
             bool check(City city)
             {
-                DssRef.world.unitCollAreaGrid.collectOpponentArmies(pfaction, city.mapTilePos, 1, DssRef.world.unitCollAreaGrid.armies_aiUpdate);
+                DssRef.world.unitCollAreaGrid.collectOpponentArmies(pfaction, city.maptilePos, 1, DssRef.world.unitCollAreaGrid.armies_aiUpdate);
 
 
                 foreach (var army in DssRef.world.unitCollAreaGrid.armies_aiUpdate)
@@ -2208,7 +2208,7 @@ namespace VikingEngine.DSSWars.Players
                         return null;
                     }
 
-                    float l = (otherCity.mapTilePos - myCity.mapTilePos).Length();
+                    float l = (otherCity.maptilePos - myCity.maptilePos).Length();
 
                     if (l < closestDistance)
                     { 
@@ -2274,7 +2274,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 //if (armyC.sel.ai.objective == ArmyObjective.None)
                 //{
-                var otherArmy = DssRef.world.unitCollAreaGrid.AdjacenToArmy(pfaction, armyC.sel.pointer(), armyC.sel.mapTilePos, Army.MaxTradeDistance +1);
+                var otherArmy = DssRef.world.unitCollAreaGrid.AdjacenToArmy(pfaction, armyC.sel.pointer(), armyC.sel.maptilePos, Army.MaxTradeDistance +1);
                 if (otherArmy != null)
                 {
                     Army army1, army2;
@@ -2398,7 +2398,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.state.events.RunAi() && army != null && opponent != null)
             {
-                var areaPos = UnitCollAreaGrid.ToAreaPos(army.mapTilePos);
+                var areaPos = UnitCollAreaGrid.ToAreaPos(army.maptilePos);
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
                     PFaction.Empty, opponent.pfaction);
                 if (DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate.Count > 0)
@@ -2420,7 +2420,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 //var faction = pfaction.GetFaction();
 
-                var areaPos = UnitCollAreaGrid.ToAreaPos(army.mapTilePos);
+                var areaPos = UnitCollAreaGrid.ToAreaPos(army.maptilePos);
 
                 int compareCityCount = 4;
 

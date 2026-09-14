@@ -26,6 +26,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
         public const float WaterFoamY = WaterSurfaceY + 0.01f;
         public const float UnitMinY = WaterSurfaceY;
 
+        public const float UnitQuadMinY = WaterSurfaceY + 0.07f;
+
         public static readonly IntervalF HeightY_Interval = new IntervalF(WaterBottomY, MaxY);
 
         public static void ToColorHeight(byte heightValue, out int colorheight, out float percNextHeight)

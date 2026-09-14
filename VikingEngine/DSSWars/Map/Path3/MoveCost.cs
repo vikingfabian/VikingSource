@@ -11,6 +11,11 @@ namespace VikingEngine.DSSWars.Map.Path3
     {
         public static readonly MoveCost Empty = new MoveCost();
 
+        public bool isWater;
+        public bool urbanTerrain;
+        public bool natureTerrain;
+        public bool deadlyTerrain;
+
         public float land;
         public float water;
 

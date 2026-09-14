@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.GameObject
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
-                        if (citySel != this && mapTilePos.SideLength(citySel.mapTilePos) <= DssConst.DeliveryMaxDistance)
+                        if (citySel != this && maptilePos.SideLength(citySel.maptilePos) <= DssConst.DeliveryMaxDistance)
                         {
                             if (status.CanRecieve(sendItem, citySel.myIndex, out int hasAmount))
                             {

@@ -491,11 +491,11 @@ namespace VikingEngine.DSSWars.Build
                         for (int radius = 1; radius <= cityradius; ++radius)
                         {
                             int distanceValue = -radius;
-                            ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
+                            ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
 
                             while (cirkleLoop.Next())
                             {
-                                if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                                if (DssRef.world.maptileBounds.IntersectTilePoint(cirkleLoop.Position))
                                 {
                                     var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
                                     if (tile.CityIndex == city.myIndex /*&& tile.MayBuild()*/)

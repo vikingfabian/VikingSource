@@ -158,11 +158,11 @@ namespace VikingEngine.DSSWars
 
         public static float birdDistance(AbsMapObject obj1, IntVector2 tilePos2)
         {
-            return (obj1.mapTilePos - tilePos2).Length();
+            return (obj1.maptilePos - tilePos2).Length();
         }
         public static float birdDistance(AbsMapObject obj1, AbsMapObject obj2)
         {
-            return (obj1.mapTilePos - obj2.mapTilePos).Length();
+            return (obj1.maptilePos - obj2.maptilePos).Length();
         }
 
         public static void writeTilePos(System.IO.BinaryWriter w, IntVector2 position)

@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars
             else
             {
                 loadingStatusText.TextString = "Building " + loadingSz.ToString() + " map " +
-                    loadingNumber.ToString() + ". Process: " + GenerateMap.LoadStatus.ToString() + "%" + Environment.NewLine +
+                    loadingNumber.ToString() + ". Process: " + /*GenerateMap.LoadStatus.ToString() +*/ "%" + Environment.NewLine +
                     "Failed maps: " + failCount.ToString();
                 
             }
@@ -85,19 +85,19 @@ namespace VikingEngine.DSSWars
                     {
                         while (true)
                         {
-                            List<Task> tasks = new List<Task>();
-                            bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings(), tasks).Result;
+                            //List<Task> tasks = new List<Task>();
+                            //bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings(), tasks).Result;
 
-                            await Task.WhenAll(tasks);
+                            //await Task.WhenAll(tasks);
 
-                            if (success)
-                            {
+                            //if (success)
+                            //{
                                 return;
-                            }
-                            else
-                            {
-                                failCount++;
-                            }
+                            //}
+                            //else
+                            //{
+                            //    failCount++;
+                            //}
                         }
 
                     }

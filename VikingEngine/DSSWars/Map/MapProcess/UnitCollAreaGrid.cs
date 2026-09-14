@@ -70,13 +70,13 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 var armies = factions.sel.armies.counter();
                 while (armies.Next())
                 {
-                    IntVector2 armyArea = armies.sel.mapTilePos / UnitGridSquareWidth;
+                    IntVector2 armyArea = armies.sel.maptilePos / UnitGridSquareWidth;
                     grid.GetRef(armyArea.X, armyArea.Y).processAdd(armies.sel);
 
                     var groups = armies.sel.groups.counter();
                     while (groups.Next())
                     {
-                        IntVector2 area = groups.sel.tilePos / UnitGridSquareWidth;
+                        IntVector2 area = groups.sel.maptilePos / UnitGridSquareWidth;
                         UnitCollArea collArea;
                         if (grid.TryGet(area, out collArea))
                         {
@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 var groups = city.groups.counter();
                 while (groups.Next())
                 {
-                    IntVector2 area = groups.sel.tilePos / UnitGridSquareWidth;
+                    IntVector2 area = groups.sel.maptilePos / UnitGridSquareWidth;
                     UnitCollArea collArea;
                     if (grid.TryGet(area, out collArea))
                     {
@@ -399,8 +399,8 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
         public PFaction cityCaptureCheck(City city, int radius)
         {
-            IntVector2 areaStart = (city.mapTilePos - radius) / UnitGridSquareWidth;
-            IntVector2 areaEnd = (city.mapTilePos + radius) / UnitGridSquareWidth;
+            IntVector2 areaStart = (city.maptilePos - radius) / UnitGridSquareWidth;
+            IntVector2 areaEnd = (city.maptilePos + radius) / UnitGridSquareWidth;
             
             Dictionary<PFaction, float> faction_power = new Dictionary<PFaction, float>();
             //faction_power.Add(city.faction.parentArrayIndex, 0);
@@ -417,7 +417,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                 foreach (var pSoldierGroup in area.groups)
                                 {
                                     var m = pSoldierGroup.GetSoldierGroup(out _);
-                                    if (m != null && m.tilePos.SideLength(city.mapTilePos) <= radius)
+                                    if (m != null && m.maptilePos.SideLength(city.maptilePos) <= radius)
                                     {
                                         if (city.pfaction == m.pfaction ||
                                             DssRef.world.diplomacy.GetRelation(city.pfaction, m.pfaction).InWar())
@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                     if (parmy != ignore &&
                                         parmy.pfaction == factionFilter &&
                                         parmy.TryGetArmy(out var army) &&
-                                        (army.mapTilePos - tilePos).Length() <= maxTileDistance)
+                                        (army.maptilePos - tilePos).Length() <= maxTileDistance)
                                     {
                                         return army;
                                     }
@@ -743,7 +743,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
         public void add(GameObject.City city)
         {
-            IntVector2 areaPos = city.mapTilePos / UnitGridSquareWidth;
+            IntVector2 areaPos = city.maptilePos / UnitGridSquareWidth;
 
             grid.Get(areaPos).cities.Add(city.myIndex);
         }
@@ -780,7 +780,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                     {
                         var city = DssRef.world.cities[area.cities[i]];
-                        closest.Next(city.mapTilePos.Length(tilePos), city);
+                        closest.Next(city.maptilePos.Length(tilePos), city);
                     }
                 }
             }

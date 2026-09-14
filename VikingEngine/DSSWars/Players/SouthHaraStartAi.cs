@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Players
                 while (armiesC.Next())
                 {
                     if (!messageDone &&
-                            armiesC.sel.walkGoal.SideLength(armiesC.sel.mapTilePos) <= 80)
+                            armiesC.sel.walkGoal.SideLength(armiesC.sel.maptilePos) <= 80)
                     {                       
                          DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.EventMessage_HaraMercenaryTitle, DssRef.lang.EventMessage_HaraMercenaryText, SoundLib.storyDramaticEvent);
                         

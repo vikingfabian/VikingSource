@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void basicInit()
         {
             
-            mapTilePos = WP.ToTilePos(position);
+            maptilePos = WP.ToTilePos(position);
 
             
             name.setDefault("Pin " + myIndex.ToString());
@@ -269,7 +269,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             name.read(r, subVersion);
             
-            WP.ReadPosXZPercentU16(r, out position, out mapTilePos);
+            WP.ReadPosXZPercentU16(r, out position, out maptilePos);
 
             if (subVersion >= 115)
             {
@@ -290,8 +290,8 @@ namespace VikingEngine.DSSWars.GameObject
             var f = pfaction.GetFaction();
             if (f != null && Net_IsVisible())
             {
-                mapTilePos = WP.ToTilePos(position);
-                this.position.Y = DssRef.world.tileGrid.Get(mapTilePos).ModelGroundY() + 0.05f;
+                maptilePos = WP.ToTilePos(position);
+                this.position.Y = DssRef.world.subTileGrid.Get(maptilePos).groundY + 0.05f;
                 bound = new BoundingSphere(position, 0.3f);
 
                 overviewModel?.DeleteMe();
@@ -316,7 +316,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, mapTilePos, IsNetHosted ? pfaction.GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, maptilePos, IsNetHosted ? pfaction.GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
         }
 
         public override void setInRenderState()

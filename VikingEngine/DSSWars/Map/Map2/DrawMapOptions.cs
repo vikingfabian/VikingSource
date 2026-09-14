@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map.Map2
@@ -43,7 +44,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             else
             {
-                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * addHeight), Map2Generator.WaterBottomY);
+                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * addHeight), MapHeight2.WaterBottomY);
             }
             //centerHeight = addHeight;
         }
@@ -67,7 +68,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public void adjustHeight(float add)
         {
-            if (centerHeight + add > Map2Generator.LowGroundY)
+            if (centerHeight + add > MapHeight2.LowGroundY)
             {
                 centerHeight += add;
                 edgeHeight += add;

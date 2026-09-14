@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Net
                         IntVector2 centerCamera = IntVector2.Zero;
                         if (faction.mainCity != null)
                         {
-                            centerCamera = faction.mainCity.mapTilePos;
+                            centerCamera = faction.mainCity.maptilePos;
                         }
                         centerCamera.writeUshort(w);
                         faction.cities.write_ushort_compressed(w);

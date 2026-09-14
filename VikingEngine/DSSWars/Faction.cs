@@ -636,7 +636,7 @@ namespace VikingEngine.DSSWars
             while (armyC.Next())
             {
                 if ((armyC.sel.objective == ArmyObjective.None || armyC.sel.objective == ArmyObjective.Halt) &&
-                    armyC.sel.mapTilePos == tilepos)
+                    armyC.sel.maptilePos == tilepos)
                 { 
                     return true;
                 }
@@ -893,7 +893,7 @@ namespace VikingEngine.DSSWars
 
                         RichBoxContent content = new RichBoxContent();
                         
-                        if (localplayer.battleMessageCheck(city.mapTilePos))
+                        if (localplayer.battleMessageCheck(city.maptilePos))
                         {
                             MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
 
@@ -945,7 +945,7 @@ namespace VikingEngine.DSSWars
             if (mainCity_sp != null)
             {
                 cityPosition = true;
-                return mainCity_sp.mapTilePos - IntVector2.One;
+                return mainCity_sp.maptilePos - IntVector2.One;
             }
             else if (armies.Count > 0)
             {
@@ -954,7 +954,7 @@ namespace VikingEngine.DSSWars
                 if (first != null)
                 {
                     cityPosition = false;
-                    return first.mapTilePos;
+                    return first.maptilePos;
                 }
             }
 

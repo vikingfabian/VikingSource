@@ -357,7 +357,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                startPos = WP.ToWorldPos(mapTilePos);
+                startPos = WP.ToWorldPos(maptilePos);
             }
 
             return startPos;
@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (settleArea != null)
                 {
-                    army.Ai_Order_MoveTo(settleArea.mapTilePos);
+                    army.Ai_Order_MoveTo(settleArea.maptilePos);
                 }
             }
 
@@ -531,7 +531,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            Vector3 startPos = WP.ToWorldPos(mapTilePos);
+            Vector3 startPos = WP.ToWorldPos(maptilePos);
             for (int i = 0; i < 5; i++)
             {
                 new SoldierGroup(army, soldierProfile, startPos);
@@ -576,8 +576,8 @@ namespace VikingEngine.DSSWars.GameObject
                     return;
                 }
             }
-            Debug.LogError("GetFreeTile" + mapTilePos.ToString());
-            recruitToTile = mapTilePos;
+            Debug.LogError("GetFreeTile" + maptilePos.ToString());
+            recruitToTile = maptilePos;
         }
 
         public void createStartupBarracks()

@@ -61,14 +61,13 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             int cityradius = city.cityTileArea.size.SideLength() / 2;
             for (int radius = 2; radius <= cityradius; ++radius)
             {
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
 
                 while (cirkleLoop.Next())
                 {
-                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    if (DssRef.world.GetMapAndSumTile(cirkleLoop.Position, out var mapTile, out var sumTile))/*.maptileBounds.IntersectTilePoint(cirkleLoop.Position)*/
                     {
-                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                        if (tile.CityIndex == city.myIndex && tile.IsLand())
+                        if (sumTile.CityIndex == city.myIndex && mapTile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
@@ -125,14 +124,15 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             int maxRadius = city.cityTileArea.size.SideLength();
             for (int radius = 0; radius < maxRadius; ++radius)
             {
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
 
                 while (cirkleLoop.Next())
                 {
-                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    //if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    if (DssRef.world.GetMapAndSumTile(cirkleLoop.Position, out var mapTile, out var sumTile))
                     {
-                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                        if (tile.CityIndex == city.myIndex && tile.IsLand())
+                        //var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                        if (sumTile.CityIndex == city.myIndex && mapTile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
@@ -163,14 +163,14 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             int maxRadius = city.cityTileArea.size.SideLength();
             for (int radius = 0; radius < maxRadius; ++radius)
             {
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
 
                 while (cirkleLoop.Next())
                 {
-                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    if (DssRef.world.GetMapAndSumTile(cirkleLoop.Position, out var mapTile, out var sumTile))
                     {
                         var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                        if (tile.CityIndex == city.myIndex && tile.MayBuild())
+                        if (tile.CityIndex == city.myIndex /*&& tile.MayBuild()*/)
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
@@ -203,14 +203,16 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             for (int radius = 0; radius < maxRadius; ++radius)
             {
                 //ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
-                edgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(city.mapTilePos, radius));
+                edgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
                 while (edgeRandomizer.Next())
                 {
-                    if (DssRef.world.tileBounds.IntersectTilePoint(edgeRandomizer.Position))
-                    {
-                        if (DssRef.world.tileGrid.TryGet(edgeRandomizer.Position, out SumTile4_4 tile))
+                    //if (DssRef.world.tileBounds.IntersectTilePoint(edgeRandomizer.Position))
+                    //{
+                        //if (DssRef.world.tileGrid.TryGet(edgeRandomizer.Position, out SumTile4_4 tile))
+                        //{
+                        if (DssRef.world.GetMapAndSumTile(edgeRandomizer.Position, out var mapTile, out var sumTile))
                         {
-                            if (tile.CityIndex == city.myIndex && tile.IsLand())
+                            if (sumTile.CityIndex == city.myIndex && mapTile.IsLand())
                             {
                                 IntVector2 topleft = WP.ToSubTilePos_TopLeft(edgeRandomizer.Position);
                                 ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
@@ -232,7 +234,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                 }
                             }
                         }
-                    }
+                    //}
                 }
             }
 
@@ -298,9 +300,9 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             while (loop.Next())
             {
 
-                if (world.tileGrid.TryGet(loop.Position, out var tile) &&
-                    tile.CityIndex == city.myIndex &&
-                    tile.IsLand())
+                if (world.GetMapAndSumTile(loop.Position, out var mapTile, out var sumTile) &&
+                    sumTile.CityIndex == city.myIndex &&
+                    mapTile.IsLand())
                 {
                     topleft = WP.ToSubTilePos_TopLeft(loop.Position);
                     subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);

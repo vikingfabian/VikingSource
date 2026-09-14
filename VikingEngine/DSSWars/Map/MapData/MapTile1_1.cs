@@ -43,6 +43,8 @@ namespace VikingEngine.DSSWars.Map.MapData
     struct MapTile1_1
     {
 
+        public static readonly MapTile1_1 Empty = new MapTile1_1() { mainTerrain = TerrainMainType.NUM };
+
         public const int ModelScale_Inv = 8;
         public const int ModelScale_Inv_Half = ModelScale_Inv / 2;
         public const float ModelScale = 1f / ModelScale_Inv;
@@ -52,7 +54,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         public static readonly Vector2 ModelScaleV2 = new Vector2(ModelScale);
         public static readonly float SubTileHalfWidth = ModelScale * 0.5f;
 
-        public static readonly MapTile1_1 Empty = new MapTile1_1() { mainTerrain = TerrainMainType.NUM };
+        
         //public Color color;
         public byte heightValue;
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
@@ -76,6 +78,11 @@ namespace VikingEngine.DSSWars.Map.MapData
         public int collectionPointer = -1;
 
         public float groundY => heightValue * MapHeight2.HeightY;
+
+        public float GroundY_aboveWater()
+        {
+           return Bound.Min(heightValue* MapHeight2.HeightY, MapHeight2.WaterSurfaceY);
+        }
 
         public bool IsLand()
         {
@@ -267,6 +274,23 @@ namespace VikingEngine.DSSWars.Map.MapData
 #endif
         }
 
+        public bool TileContentIsCity()
+        {
+            if (mainTerrain == TerrainMainType.Building)
+            {
+                switch ((TerrainBuildingType)subTerrain)
+                {
+                    case TerrainBuildingType.CityHall_Capital:
+                    case TerrainBuildingType.CityHall_Tent:
+                    case TerrainBuildingType.CityHall_Town:
+                    case TerrainBuildingType.CityHall_Unclaimed:
+                    case TerrainBuildingType.CityHall_Village:
+                        return true;
+                }
+            }
+
+            return false;
+        }
         public bool MayBuild(BuildAndExpandType build, out bool upgrade)
         {
             upgrade = false;
@@ -427,7 +451,7 @@ namespace VikingEngine.DSSWars.Map.MapData
                     switch ((TerrainDefaultLandType)subTerrain)
                     {
                         case TerrainDefaultLandType.Mountain:
-                            return new MoveCost(20, 2000);
+                            return new MoveCost(20, 2000) { deadlyTerrain = true };
 
                         default:
                         case TerrainDefaultLandType.Flat:
@@ -435,13 +459,13 @@ namespace VikingEngine.DSSWars.Map.MapData
                     }
 
                 case TerrainMainType.DefaultSea:
-                    if (heightValue <= MapHeight2.WaterPlaneHeight)
+                    if (heightValue >= MapHeight2.ShallowWaterHeight)
                     {
-                        return new MoveCost(50, 1f);
+                        return new MoveCost(50, 1f) { isWater = true };
                     }
                     else
                     {
-                        return new MoveCost(10000, 1f);
+                        return new MoveCost(10000, 1f) { isWater = true };
                     }
 
                 case TerrainMainType.Destroyed:
@@ -449,12 +473,13 @@ namespace VikingEngine.DSSWars.Map.MapData
 
                 case TerrainMainType.Resourses:
                 case TerrainMainType.Mine:
+                    return new MoveCost(2f, 200);
                 case TerrainMainType.Decor:
                 case TerrainMainType.Building:
-                    return new MoveCost(2f, 200);
+                    return new MoveCost(2f, 200) { urbanTerrain = true };
 
                 case TerrainMainType.Foil:
-                    return new MoveCost(4f, 400);
+                    return new MoveCost(4f, 400) { natureTerrain = true };
 
                 case TerrainMainType.Wall:
                     // Water cost for walls was originally cost.land * 100.
@@ -462,18 +487,18 @@ namespace VikingEngine.DSSWars.Map.MapData
                     switch ((TerrainWallType)subTerrain)
                     {
                         case TerrainWallType.Palisade:
-                            return new MoveCost(3f);
+                            return new MoveCost(3f) { urbanTerrain = true };
 
                         case TerrainWallType.DirtWall:
                         case TerrainWallType.DirtTower:
-                            return new MoveCost(4f);
+                            return new MoveCost(4f) { urbanTerrain = true };
 
                         case TerrainWallType.WoodWall:
                         case TerrainWallType.WoodTower:
-                            return new MoveCost(5f);
+                            return new MoveCost(5f) { urbanTerrain = true };
 
                         default:
-                            return new MoveCost(8f);
+                            return new MoveCost(8f) { urbanTerrain = true };
                     }
 
                 case TerrainMainType.Road:

@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             if (tileLength > MoveCostLayer.Layer4TileWidth * 2)
             {
                 LayerPathFinding path = DssRef.world.GetLayerPath(4);
-                lay4Path = path.FindPath(DssRef.world.layer4, MoveCostLayer.WpToLay4(start), startDir, MoveCostLayer.WpToLay4(goal), startAsShip, endAsShip);
+                lay4Path = path.FindPath(DssRef.world.moveLayer4, MoveCostLayer.WpToLay4(start), startDir, MoveCostLayer.WpToLay4(goal), startAsShip, endAsShip);
             }
 
             LayerWalkingPath lay2Path = null;
@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             {
                 LayerPathFinding path = DssRef.world.GetLayerPath(2);
                 path.ApplyParentPath(lay4Path);
-                lay2Path = path.FindPath(DssRef.world.layer2, MoveCostLayer.WpToLay2(start), startDir, MoveCostLayer.WpToLay2(goal), startAsShip, endAsShip);
+                lay2Path = path.FindPath(DssRef.world.moveLayer2, MoveCostLayer.WpToLay2(start), startDir, MoveCostLayer.WpToLay2(goal), startAsShip, endAsShip);
             }
 
             return lay2Path;

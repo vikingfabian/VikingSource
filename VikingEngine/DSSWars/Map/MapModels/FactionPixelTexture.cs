@@ -192,12 +192,13 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         public void refreshWorld()
         {
-            refreshArea(DssRef.world.tileBounds);
+            refreshArea(DssRef.world.maptileBounds);
             version++;
         }
         
         void refreshArea(Rectangle2 area)
         {
+            /*
             SumTile4_4 t;
 
             ForXYLoop loop = new ForXYLoop(area);
@@ -325,6 +326,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             }
 
             texture.ApplyPixelsToTexture();
+            */
         }
 
     }

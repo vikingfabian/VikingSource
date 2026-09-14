@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            Vector3 startPos = WP.ToWorldPos(VectorExt.AddY(mapTilePos, 1));
+            Vector3 startPos = WP.ToWorldPos(VectorExt.AddY(maptilePos, 1));
             for (int i = 0; i < 1; i++)
             {
                 new GuardGroup(this, soldierProfile, startPos);
@@ -277,7 +277,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            Vector3 startPos = WP.ToWorldPos(VectorExt.AddY(mapTilePos, 1));
+            Vector3 startPos = WP.ToWorldPos(VectorExt.AddY(maptilePos, 1));
             
             var guard = new GuardGroup(this, soldierProfile, startPos);
             guard.TeleportToDefencePost(this, idAndPosition, selectedDefenceBuilding);
@@ -297,7 +297,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            Vector3 startPos = WP.ToWorldPos(VectorExt.AddY(mapTilePos, 1));
+            Vector3 startPos = WP.ToWorldPos(VectorExt.AddY(maptilePos, 1));
 
             var guard = new GuardGroup(this, soldierProfile, startPos);
             guard.TeleportToDefencePost(this, idAndPosition, postIndex);

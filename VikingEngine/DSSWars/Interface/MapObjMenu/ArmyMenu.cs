@@ -232,7 +232,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
         public static void settlerButton(LocalPlayer player, RichBoxContent content, SoldierGroup unit)
         {
-            if (DssRef.world.tileGrid.TryGet(unit.tilePos, out var tile))
+            if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(unit.maptilePos), out var tile))
             {
                 bool unclaimedLand = tile.City().cityType == CityType.UnClaimed;
 
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         void divideTab(RichBoxContent content)
         {
             List<AbsArmy> tradeAbleArmies = new List<AbsArmy>();
-            DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.mapTilePos, 1,
+            DssRef.world.unitCollAreaGrid.collectArmies(player.pfaction, army.maptilePos, 1,
                 tradeAbleArmies);
 
             FilterTradeAbleArmies(army, tradeAbleArmies);

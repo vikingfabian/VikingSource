@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map.MapModels
@@ -21,7 +22,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
         static readonly Color UncoloredEdge_SharedFaction = Color.DarkGray;
         public void quedEvent()
         {
-            
+            /*
             const float TileHalfScale = 0.5f;
             const float UncoloredEdgeWidth = 0.05f;
             const float ColoredEdgeWidth = 0.16f;
@@ -218,9 +219,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
             nextModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
                 polygons, null), LoadedTexture.SpriteSheet, false);
-
-            //nextModel.Effect = modelEffect;
-            //nextModel.BuildFromPolygons(new PolygonsAndTrianglesColor(polygons, null), new List<int> { polygons.Count }, LoadedTexture.WhiteArea);
+            */
         }
 
         public void SetNewModel()

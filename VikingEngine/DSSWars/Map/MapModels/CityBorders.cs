@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         void create_async(LocalPlayer player, CancellationToken token)
         {
-
+            /*
 
             const float ModelGroundYAdj = 0.01f;
             const float TileThird = 1f / 3f;
@@ -214,6 +214,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         addStick(bottom, frame);
                     }
                 }
+            
             }
 
             int regionToFrame(int region)
@@ -232,6 +233,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             {
                 add.Push(new AddBorderStick(pos, frame));
             }
+            */
         }
 
     }

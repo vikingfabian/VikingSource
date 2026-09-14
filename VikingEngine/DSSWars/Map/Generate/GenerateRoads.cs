@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Map.Settings;
@@ -18,7 +19,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         //{ 
 
         //}
-        const float RoadHeight = -ColorHeight.DefaultGroundYoffset;
+        const int RoadHeight = -1;//-ColorHeight.DefaultGroundYoffset;
 
         public void fromCity(WorldData world, City city)
         {
@@ -58,8 +59,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                         //}
 
                         PathFinding largePath = new PathFinding();
-                        var largePathResult = largePath.FindPath(-1, city.mapTilePos, (int)conv.ToDir8(nCity.mapTilePos - city.mapTilePos), nCity.mapTilePos, false);
-                        largePathResult.nodes.Add(new PathNodeResult(city.mapTilePos, false));
+                        var largePathResult = largePath.FindPath(-1, city.maptilePos, (int)conv.ToDir8(nCity.maptilePos - city.maptilePos), nCity.maptilePos, false);
+                        largePathResult.nodes.Add(new PathNodeResult(city.maptilePos, false));
 
                         IntVector2 subTilePos = nCity.cityHallSubtilePos;
 
@@ -115,7 +116,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             if (canBuild)
                             {
                                 subTile.SetType(TerrainMainType.Road, 0, 1);
-                                subTile.groundY += RoadHeight;
+                                subTile.heightValue = (byte)(subTile.heightValue + RoadHeight);
                             }
                         }
                     }

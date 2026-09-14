@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map.MapModels
@@ -79,9 +81,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                     Vector3 pos = groups.sel.position;
                                     pos.Y += 0.07f;
 
-                                    if (pos.Y < SumTile4_4.UnitQuadMinY)
+                                    if (pos.Y < MapHeight2.UnitQuadMinY)
                                     {
-                                        pos.Y = SumTile4_4.UnitQuadMinY;
+                                        pos.Y = MapHeight2.UnitQuadMinY;
                                     }
 
                                     topPoly.quadXZPlacement(pos,
