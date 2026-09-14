@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
 
-            int resourceStart = 0;
+            //int resourceStart = 0;
             //int workStart = 0;
 
             int startWood, startLinnen, startFood;
@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars
             {
                 for (int resourceIx = 0; resourceIx < CityResourceIndex.COUNT; ++resourceIx)
                 {
-                    cityResouces[resourceStart + resourceIx] = new GroupedResource();
+                    cityResouces[resStartIndex + resourceIx] = new GroupedResource();
                 }
 
                 cityResouces[resStartIndex + CityResourceIndex.wood].amount = startWood;
@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars
                 cityResouces[resStartIndex + CityResourceIndex.skinLinnen].amount = startLinnen;                
                 cityResouces[resStartIndex + CityResourceIndex.iron].amount = 20;
 
-                resourceStart += CityResourceIndex.COUNT;
+                resStartIndex += CityResourceIndex.COUNT;
 
                 WorkTemplate.InitComponents(cityWork, startIndex);
 

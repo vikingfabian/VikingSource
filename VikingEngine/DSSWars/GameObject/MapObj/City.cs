@@ -312,8 +312,7 @@ namespace VikingEngine.DSSWars.GameObject
             CityAreaCulture areaCulture = new CityAreaCulture(this, world);
 
             workHutStyle = areaCulture.percMountain > 0.5 ? 0 : 1;
-
-            
+                       
 
             if (areaCulture.percDesolate > 0.5)
             {
