@@ -212,13 +212,13 @@ namespace VikingEngine.DSSWars.Players
                             if (!isSubTile)
                             {
                                 var tile = DssRef.world.tileGrid.Get(loop.Position);
-                                if (!citiesRecieved[tile.CityIndex])
+                                if (tile.CityIndex >= 0 && !citiesRecieved[tile.CityIndex])
                                 {
                                     CitiesInView.Add(tile.CityIndex);
                                 }
 
                                 PFaction pfaction = tile.City().pfaction;
-                                if (pfaction.TryGetFaction(out var faction) && faction.player.IsLocal)
+                                if (pfaction.TryGetFaction(out var faction) && faction.player != null && faction.player.IsLocal)
                                 {
                                     if (!factionsRecieved[pfaction.factionIndex])
                                     {
