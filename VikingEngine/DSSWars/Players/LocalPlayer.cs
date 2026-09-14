@@ -446,7 +446,6 @@ namespace VikingEngine.DSSWars.Players
             statistics.readGameState(r, subversion);
 
             if (!isNetClient)
-            if (subversion >= 59)
             {
                 while (true)
                 {
@@ -526,7 +525,6 @@ namespace VikingEngine.DSSWars.Players
             
             hud.pins.readGameState(r, subversion);
             
-
             if (subversion >= 85)
             {
                 tooPeacefulCheckTimer.read(r);
@@ -611,10 +609,16 @@ namespace VikingEngine.DSSWars.Players
         }
         public void readClientSave(int playerIx, BinaryReader r, int subversion)
         {
-            xxx
-            orders.readGameState(playerIx, r, subversion, null);
+            if (subversion < 133)
+            {
+                orders.readGameState(playerIx, r, subversion, null);
 
-            readPins(r, subversion);
+                readPins(r, subversion);
+            }
+            else
+            {
+                readGameState(r, true, subversion, null);
+            }
             Debug.ReadCheck(r);
                         
             var f = pfaction.GetFaction();
