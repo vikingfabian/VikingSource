@@ -552,14 +552,17 @@ namespace VikingEngine.DSSWars
 
             while (loop.Next())
             {
-                ref var tile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
-                tile.read(r, ref previous, int.MaxValue);
+                ref var subtile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
+                subtile.read(r, ref previous, int.MaxValue);
 
-                previous = tile;
+                previous = subtile;
             }
-
-            DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
-
+            ref var tile = ref DssRef.world.tileGrid.GetRef(tilePos);
+            tile.subtileVisualEdits++;
+            if (DssRef.world.cities[tile.CityIndex].pfaction.TryGetLocalPlayer(out var lp))
+            {
+               lp.orders.refreshYpos();
+            }
             //unitCollAreaGrid.netSubTilesRecieved(tilePos);
         }
 

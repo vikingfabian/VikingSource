@@ -144,6 +144,17 @@ namespace VikingEngine.DSSWars.Players.Orders
             }
         }
 
+        public void refreshYpos()
+        {
+            lock (orders)
+            {
+                foreach (AbsOrder order in orders)
+                {
+                    order.refreshYpos();
+                }
+            }
+        }
+
         public AbsOrder GetFromId(int id)
         {
             lock (orders)
@@ -205,10 +216,6 @@ namespace VikingEngine.DSSWars.Players.Orders
         {            
             int ordersCount = r.ReadUInt16();
 
-//#if DEBUG
-//            ordersCount += ushort.MaxValue + 1;
-//#endif
-
             for (int i = 0; i < ordersCount; i++)
             {
                 OrderType type = OrderType.Build;
@@ -229,11 +236,12 @@ namespace VikingEngine.DSSWars.Players.Orders
                         order = new DemolishOrder();
                         break;
                 }
-                
-                
-                order.readGameState(playerIx, r, subversion, pointers);
 
-                orders.Add(order);
+
+                if (order.readGameState(playerIx, r, subversion, pointers))
+                {
+                    orders.Add(order);
+                }
             }
              Debug.ReadCheck(r);
         }

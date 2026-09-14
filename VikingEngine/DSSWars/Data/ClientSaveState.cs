@@ -110,7 +110,6 @@ namespace VikingEngine.DSSWars.Data
                     city.writeClientState(memW);
                     meta.memoryLength = memW.BaseStream.Position - meta.memoryStart;
                     clientSaveMetas.Add(meta);
-                    //city.workTemplate.onFactionChange(city, workTemplate, true);
                 }
 
 

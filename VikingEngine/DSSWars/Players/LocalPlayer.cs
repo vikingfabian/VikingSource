@@ -385,9 +385,9 @@ namespace VikingEngine.DSSWars.Players
                     kv.Key.write(w);
                     kv.Value.writeGameState(w);
                 }
-            }
-            w.Write(ushort.MaxValue);
 
+                w.Write(ushort.MaxValue);
+            }
             automation.writeGameState(w);
 
             w.Write(int.MinValue);
@@ -996,9 +996,9 @@ namespace VikingEngine.DSSWars.Players
                 for (int i = 0; i < orders.orders.Count; ++i)
                 {
                     var buildOrder = orders.orders[i].GetBuild();
-                    if (buildOrder != null && !Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.city))
+                    if (buildOrder != null && !Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.pcity.GetCity()))
                     {
-                        buildOrder.city.WorkerStats_StuckBuildings_Process++;
+                        buildOrder.pcity.GetCity().WorkerStats_StuckBuildings_Process++;
                     }
                 }
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.Operations;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,9 +72,9 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void writeGameState(BinaryWriter w)
+        public override void writeGameState(BinaryWriter w, bool isNetClient)
         {
-            base.writeGameState(w);
+            base.writeGameState(w, isNetClient);
 
             w.Write(arraylib.SafeCount(servantFactions));
             if (servantFactions != null)
@@ -93,9 +94,9 @@ namespace VikingEngine.DSSWars.Players
             Debug.WriteCheck(w);
         }
 
-        public override void readGameState(BinaryReader r, int version, ObjectPointerCollection pointers)
+        public override void readGameState(BinaryReader r, bool isNetClient, int version, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, version, pointers);
+            base.readGameState(r, isNetClient, version, pointers);
 
             int darkLordAlliesCount = r.ReadInt32();
             if (darkLordAlliesCount > 0)

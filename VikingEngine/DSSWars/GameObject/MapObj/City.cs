@@ -1181,6 +1181,7 @@ namespace VikingEngine.DSSWars.GameObject
             DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
             var w = cityData.GetWriter();
             City.NetWriteHandover(w, city, fullHandover);
+            DssRef.world.cityStorage[city.myIndex].write(w);
 
             SteamLargePacketWriter largeWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
             largeWriter.begin();
@@ -1197,8 +1198,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             w.Write(fullHandover);
             w.Write((ushort)city.myIndex);
+
             city.writeGameState(w);
-            
+            DssRef.world.writeCityStorage(w, city);
         }
 
         public static City NetReadHandOver(System.IO.BinaryReader r)
@@ -1208,6 +1210,8 @@ namespace VikingEngine.DSSWars.GameObject
             var city = DssRef.world.cities[cityIx];
 
             city.readGameState(r, int.MaxValue, null);
+            DssRef.world.readCityStorage(r, city);
+
             if (fullHandover)
             {
                 city.IsNetHosted = true;
