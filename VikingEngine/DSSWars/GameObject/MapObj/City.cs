@@ -520,16 +520,14 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.WriteCheck(w);
         }
 
+        public bool IsInitialized => tilePos.X >= 0;
+
         public void readMapFile(WorldData world, System.IO.BinaryReader r, int saveMapVersion)
         {
             tilePos.readUshort(r);
 
             cityType = (CityType)r.ReadByte();
-            //if (saveMapVersion < 9)
-            //{
-            //    cityType += 2;
-            //}
-            
+           
             areaSize = r.ReadUInt16();
 
             
@@ -4423,7 +4421,7 @@ namespace VikingEngine.DSSWars.GameObject
         Village,
         Town,
         Capital,
-        //Factory,
+        
         NUM
     }
 }

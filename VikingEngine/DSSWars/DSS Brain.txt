@@ -1,15 +1,11 @@
 
 Change log:
-x network broken?
-* Adjusted head bar flag - again
-* Adjusted elephant cannon carry
-* Fixed resource setup (all start resources were zero)
-
+* 
 
 KNOWN ISSUES
 x hide achievements
 X timeline checkbox on steamworks
-
+x adjust "all facts"
 
 ##ICONS TODO
 * all cities icon
