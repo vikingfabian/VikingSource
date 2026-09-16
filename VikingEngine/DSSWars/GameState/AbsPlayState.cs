@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.MapLayer;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -123,8 +124,9 @@ namespace VikingEngine.DSSWars.GameState
             DssRef.ambience.gameStart();
             culling = new Culling();
 
+            CrossHeightMap crossHeightMap = new CrossHeightMap();
             factionsMap = new MapLayer_Factions();
-            overviewMap = new MapLayer_Overview(factionsMap);
+            overviewMap = new MapLayer_Overview(factionsMap, crossHeightMap);
             detailMap = new MapLayer_Detail();
             ((DrawGame)draw).initMapShaders();
 

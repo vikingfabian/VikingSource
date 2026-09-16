@@ -82,27 +82,27 @@ namespace VikingEngine.DSSWars.Resource
             ++count;
         }
 
-        public int CountResources(ItemResourceType resourceType, int minQuality)
-        {
-            int matchingResources = 0;
-            if (resource1.type == resourceType && resource1.quality >= minQuality) matchingResources++;
-            if (resource2.type == resourceType && resource2.quality >= minQuality) matchingResources++;
-            if (resource3.type == resourceType && resource3.quality >= minQuality) matchingResources++;
-            if (resource4.type == resourceType && resource4.quality >= minQuality) matchingResources++;
-            if (resource5.type == resourceType && resource5.quality >= minQuality) matchingResources++;
-            if (resource6.type == resourceType && resource6.quality >= minQuality) matchingResources++;
-            if (resource7.type == resourceType && resource7.quality >= minQuality) matchingResources++;
-            if (resource8.type == resourceType && resource8.quality >= minQuality) matchingResources++;
+        //public int CountResources(ItemResourceType resourceType, int minQuality)
+        //{
+        //    int matchingResources = 0;
+        //    if (resource1.type == resourceType && resource1.quality >= minQuality) matchingResources++;
+        //    if (resource2.type == resourceType && resource2.quality >= minQuality) matchingResources++;
+        //    if (resource3.type == resourceType && resource3.quality >= minQuality) matchingResources++;
+        //    if (resource4.type == resourceType && resource4.quality >= minQuality) matchingResources++;
+        //    if (resource5.type == resourceType && resource5.quality >= minQuality) matchingResources++;
+        //    if (resource6.type == resourceType && resource6.quality >= minQuality) matchingResources++;
+        //    if (resource7.type == resourceType && resource7.quality >= minQuality) matchingResources++;
+        //    if (resource8.type == resourceType && resource8.quality >= minQuality) matchingResources++;
 
-            return matchingResources;
-        }
+        //    return matchingResources;
+        //}
 
         public bool RemoveResource(ItemResourceType resourceType, int minQuality)
         {
             for (int i = count - 1; i >= 0; --i)
             {
                 var resource = GetResourceAtIndex(i);//todo, alltid plocka sämst
-                if (resource.type == resourceType && resource.quality >= minQuality)
+                if (resource.type == resourceType /*&& resource.quality >= minQuality*/)
                 {
                     removeAt(i); return true;
                 }
@@ -161,7 +161,7 @@ namespace VikingEngine.DSSWars.Resource
 
             if (totWeight > maxWeight)
             {
-                int pick = Convert.ToInt32(maxWeight / unitweight);
+                ushort pick = Convert.ToUInt16(maxWeight / unitweight);
                 result.amount = pick;
                 item.amount -= pick;
                 SetResourceAtIndex(count - 1, item);

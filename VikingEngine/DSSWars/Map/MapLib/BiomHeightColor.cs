@@ -6,7 +6,7 @@ using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Map.Settings
 {
-    class ColorHeight
+    class BiomHeightColor
     {
         public const int DeepWaterHeight = 0;
         public const int LowerWaterHeight = 1;
@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         //public const int MountainHeightStart = 7;
         //public const int MountainLowPeak = 8;
 
-        public const int MaxHeight = byte.MaxValue / MapHeight2.ColorLayerHeight; //7
+        public const int MaxHeight = byte.MaxValue / MapHeight2.ColorLayerHeight + 1; //7
 
         
         //public const float LowWater_Tile2Y = LowWaterHeight * DefaultGroundYoffset;
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         //public bool isMountainPeek= false;
 
 
-        public ColorHeight(int colorHeight)
+        public BiomHeightColor(int colorHeight)
         {
             groundYoffsetChance = DefaultGroundYoffsetChance;
             groundYoffset = DefaultGroundYoffset;

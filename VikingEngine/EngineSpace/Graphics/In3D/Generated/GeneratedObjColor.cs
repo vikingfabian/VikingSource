@@ -73,7 +73,7 @@ namespace VikingEngine.Graphics
                 effectGround.LightingEnabled = false;
             }
 
-            if (polygonsAndTriangles.NumPolygons == 0)
+            if (polygonsAndTriangles.NumPolygons + polygonsAndTriangles.NumCrossPolys == 0)
                 return;
             vertexAndIndexBuffers = (VertexAndIndexBuffer)PolygonLib.BuildVBFromPolygons(polygonsAndTriangles);
             

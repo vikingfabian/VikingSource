@@ -29,30 +29,10 @@ namespace VikingEngine.DSSWars.Map.MapData
         public const ushort SeaBorder = ushort.MaxValue -1;
         const int CompareToAmountCities = 8;
 
-        //public static void Init()
-        //{
-        //    TypeToHeight_aboveWater = new float[TypeToHeight.Length];
-        //    for (int i = 0; i < TypeToHeight.Length; i++)
-        //    {
-        //        TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
-
-        //        if (i >= MapHeight2.MountainStartY)
-        //        { 
-        //            TypeToHeight_aboveWater[i] += 0.2f;
-        //        }
-        //    }
-
-        //    TypeToWalkingMultiplier = new float[TypeToWalkingDistance.Length];
-        //    TypeToShipTravelMultiplier = new float[TypeToWalkingDistance.Length];
-        //    for (int i = 0; i < TypeToWalkingDistance.Length; ++i)
-        //    {
-        //        TypeToWalkingMultiplier[i] = 1f / TypeToWalkingDistance[i];
-        //        TypeToShipTravelMultiplier[i] = 1f / TypeToShipDistance[i];
-        //    }
-        //}
+       
 
         // 4-byte members (naturally 4-byte aligned)
-        public byte secondaryBiomStrength = 0;
+        
         
         public int seaDistanceHeatMap = int.MinValue;
 
@@ -76,11 +56,31 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         //public TileContent tileContent = TileContent.NONE;
         public byte BorderCount;
-        
-        
+
+        public byte secondaryBiomStrength = 0;
         //public bool inRender = false;
 
-       
+        //public static void Init()
+        //{
+        //    TypeToHeight_aboveWater = new float[TypeToHeight.Length];
+        //    for (int i = 0; i < TypeToHeight.Length; i++)
+        //    {
+        //        TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
+
+        //        if (i >= MapHeight2.MountainStartY)
+        //        { 
+        //            TypeToHeight_aboveWater[i] += 0.2f;
+        //        }
+        //    }
+
+        //    TypeToWalkingMultiplier = new float[TypeToWalkingDistance.Length];
+        //    TypeToShipTravelMultiplier = new float[TypeToWalkingDistance.Length];
+        //    for (int i = 0; i < TypeToWalkingDistance.Length; ++i)
+        //    {
+        //        TypeToWalkingMultiplier[i] = 1f / TypeToWalkingDistance[i];
+        //        TypeToShipTravelMultiplier[i] = 1f / TypeToShipDistance[i];
+        //    }
+        //}
 
         public SumTile4_4()
         {
@@ -389,7 +389,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public City City()
         {
-            if (CityIndex < 0)
+            if (CityIndex == ushort.MaxValue)
             {
                 return null;
             }
@@ -434,12 +434,13 @@ namespace VikingEngine.DSSWars.Map.MapData
         static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
         static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
         static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
+       
         /*
         public Color MinimapColor_Faction(IntVector2 pos)
         {
             
-            if (tileContent == TileContent.City)
-                return cityColor();
+            //if (tileContent == TileContent.City)
+            //    return cityColor();
 
             if (heightLevel <= ColorHeight.LowerWaterHeight)
             {
@@ -467,7 +468,8 @@ namespace VikingEngine.DSSWars.Map.MapData
                 return heightAndFactionCol(pos);
             }
         }
-
+        */
+        /*
         public Color MinimapColor_Terrain(IntVector2 pos)
         {
             if (tileContent == TileContent.City)
@@ -705,6 +707,17 @@ namespace VikingEngine.DSSWars.Map.MapData
                 case CityType.UnClaimed: return MiniMapCol_UnclaimedCity;
             }
         }
+
+        public override string ToString()
+        {
+            return $"SumTile4_4:\n" +
+                   $"  CityIndex: {CityIndex}\n" +
+                   $"  SeaDistanceHeatMap: {seaDistanceHeatMap}\n" +
+                   $"  Borders (N/E/S/W): {BorderRegion_North} / {BorderRegion_East} / {BorderRegion_South} / {BorderRegion_West} (Count: {BorderCount})\n" +
+                   $"  Biom1: {biom1}\n" +
+                   $"  Biom2: {biom2} (Weight: {secondBiomWeight}, Strength: {secondaryBiomStrength})\n" +
+                   $"  BiomColorHeight: {biomColorHeight}";
+        }
         //static float[] TypeToWalkingMultiplier;
 
         //static readonly float[] TypeToWalkingDistance = new float[]
@@ -737,8 +750,8 @@ namespace VikingEngine.DSSWars.Map.MapData
         //    6,//MountainRidge_6,
         //};
 
-        
-        
+
+
         //public const float UnitQuadMinY = WaterSurfaceY + 0.07f;
         //const float LayerHeight = 0.06f;
         //public const float LowWaterY = WaterSurfaceY - 0.07f;
@@ -783,7 +796,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         //public bool MayBuild() { return heightLevel > ColorHeight.LowWaterHeight && heightLevel < ColorHeight.MountainLowPeak; }
 
         //public bool IsWater() { return heightLevel <= ColorHeight.LowWaterHeight; }
-        
+
         //public override string ToString()
         //{
         //    return (IsWater()? "water" : "land") + heightLevel.ToString() + " city:" + CityIndex.ToString();

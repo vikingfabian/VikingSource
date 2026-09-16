@@ -847,12 +847,13 @@ namespace VikingEngine.DSSWars
 
         public void asynchCullingUpdate(float time, bool bStateA)
         {
-            
-            foreach (var p in DssRef.state.localPlayers)
+            if (DssRef.state.PlayType() != GameState.PlayStateType.MapEditor)
             {
-                p.unitsPixelTexture.updateColorProfile(pfaction);
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.updateColorProfile(pfaction);
+                }
             }
-            
             var armiesC = armies.counter();
             while (armiesC.Next())
             {

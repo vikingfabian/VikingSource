@@ -357,7 +357,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                startPos = WP.ToWorldPos(maptilePos);
+                startPos = WP.ChunkToWorldPos(maptilePos);
             }
 
             return startPos;
@@ -531,7 +531,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            Vector3 startPos = WP.ToWorldPos(maptilePos);
+            Vector3 startPos = WP.ChunkToWorldPos(maptilePos);
             for (int i = 0; i < 5; i++)
             {
                 new SoldierGroup(army, soldierProfile, startPos);

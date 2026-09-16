@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                 if (DssRef.state != null && DssRef.state.culling.insidePlayerAttension_sub(position))
                 {
-                    DssRef.world.tileGrid.GetRef(WP.SubtileToTilePos(position)).subtileVisualEdits++;
+                    DssRef.world.chunkGrid.GetRef(WP.MaptileToChunk(position)).subtileVisualEdits++;
                 }
             }
 
@@ -131,11 +131,11 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             }
         }
 
-        public static void OntileChange(IntVector2 tilePos)
+        public static void OntileChange(IntVector2 maptilePos)
         {
-            if (!DssRef.state.culling.outsidePlayerAttension(tilePos))
+            if (!DssRef.state.culling.outsidePlayerAttension(maptilePos))
             {
-                DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
+                DssRef.world.chunkGrid.GetRef(WP.MaptileToChunk( maptilePos)).subtileVisualEdits++;
             }
         }
     }

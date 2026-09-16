@@ -2,16 +2,9 @@
 Change log:
 * 
 
-KNOWN ISSUES
-x reassign dont work with controller
-x hide achievements
-X timeline checkbox on steamworks
 
 
 #MAP 2.0 UPDATE
-* Fixed stuck game process on exit
-* Cubic far group models
-* The colors are muted and have higher contrast 
 
 World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
@@ -29,9 +22,7 @@ Map editor 2.0
 * Height map: Load images and use them to generate the world
 
 Performance
-* Work has been put into keeping down the creeping memory usage (RAM)
-* Memory: Object lists will trim down in size
-* Fixed memory leaks in path finding
+* More work has been put into keeping down the creeping memory usage (RAM)
 
 
 ## QoL ##

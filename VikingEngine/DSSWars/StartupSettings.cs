@@ -8,6 +8,7 @@ namespace VikingEngine.DSSWars
 {
     static class StartupSettings 
     {
+        public const bool AlwaysRefreshMap = true;
         public static string LeaderboardVersion = "aug2026";
         public static bool LeaderboardInBeta = PlatformSettings.DevBuild ? true :
            true; //RETAIL
@@ -50,7 +51,7 @@ namespace VikingEngine.DSSWars
         public static bool DebugResoursesSuperSpeed = PlatformSettings.DevBuild ? false :
            false;//DO NOT CHANGE
         
-        public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? false :
+        public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? true :
             false;//DO NOT CHANGE
 
         public static bool BlockMessages = PlatformSettings.DevBuild ? false :

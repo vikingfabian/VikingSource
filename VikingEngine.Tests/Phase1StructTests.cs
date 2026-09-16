@@ -59,7 +59,7 @@ namespace VikingEngine.Tests
             Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_South);
             Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_West);
             Assert.Equal(TileContent.NONE, tile.tileContent);
-            Assert.Equal(ColorHeight.DeepWaterHeight, tile.heightLevel);
+            Assert.Equal(BiomHeightColor.DeepWaterHeight, tile.heightLevel);
         }
 
         [Fact]

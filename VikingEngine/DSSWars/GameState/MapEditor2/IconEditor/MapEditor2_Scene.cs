@@ -17,7 +17,7 @@ using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.PJ.Joust;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
-namespace VikingEngine.DSSWars.GameState.MapEditor2
+namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 {
     class MapEditor2_Scene : AbsDssState, IStreamIOCallback
     {
@@ -222,11 +222,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
         {
             editHistory.AddStorePoint(this);
 
-            var size = generator.heightMapTexture.Size();
+            IntVector2 size = generator.heightMapTexture.Size();
             size.X = Bound.Max(size.X, WorldData.CustomMapSize_Max);
             size.Y = Bound.Max(size.Y, WorldData.CustomMapSize_Max);
-            generator.generateSettings.customMapSize = size;
-            generator.generateSettings.bCustomSize = true;
+            //generator.generateSettings.mapScale.customMapSize = size;
+            //generator.generateSettings.mapScale.bCustomSize = true;
+            generator.generateSettings.mapScale.setTextureSize(size);
 
             generator.generatePassRange(generator.generateSettings, 0, Map2Pass.Icon, ()=>
             {
@@ -298,7 +299,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             };
 
             result.itemDescription =
-                $"{WorldData.SizeString(WorldData.ToMapSize(generator.generateSettings.customMapSize), generator.generateSettings.customMapSize)}. {string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion)}.";
+                $"{WorldData.SizeString(WorldData.ToMapSize(generator.generateSettings.mapScale.customMapSize), generator.generateSettings.mapScale.customMapSize)}. {string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion)}.";
 
             return result;
         }

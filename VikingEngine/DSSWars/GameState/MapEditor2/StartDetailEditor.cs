@@ -1,56 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Map2;
 
-namespace VikingEngine.DSSWars.GameState.BattleLab
+namespace VikingEngine.DSSWars.GameState.MapEditor2
 {
-    class StartBattleLab : AbsStartPlayState
+    class StartDetailEditor : AbsStartPlayState
     {
-        bool lab;
-        public StartBattleLab(MapBackgroundLoading loading)
+        public StartDetailEditor(MapBackgroundLoading loading)
             : base()
         {
-            DssRef.settings.playType = PlayStateType.BattleLab;
-            lab = true;
+            DssRef.settings.playType = PlayStateType.MapEditor;
             BattleLabStorage.Singleton = new BattleLabStorage();
 
             if (loading == null)
             {
-
                 loading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
             this.loading = loading;
-        
+
         }
 
-        public StartBattleLab()
+        public StartDetailEditor()
             : base()
         {
-            lab = false;
+
             Map2GenerateSettings generateSettings = new Map2GenerateSettings();
             generateSettings.useGenerate = true;
             generateSettings.setCustomSize(WorldData.SizeDimentions(MapSize.Tiny));
             generateSettings.StartAs = MapStartAs.Land;
-            
+
             loading = new MapBackgroundLoading(generateSettings);
         }
 
         protected override void onLoadComplete()
         {
-            if (lab)
-            {
-                new BattleLabPlayState();
-            }
-            else
-            {
-                new BattleTrials.BattleTrialsPlayState();
-            }
+            new DetailEditor.MapEditorPlayState();
         }
     }
 }

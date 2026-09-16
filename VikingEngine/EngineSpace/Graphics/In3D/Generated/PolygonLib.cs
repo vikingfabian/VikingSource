@@ -14,6 +14,7 @@ namespace VikingEngine.Graphics
     {
         int NumPolygons { get; }
         int NumTriangles { get; }
+        int NumCrossPolys { get; }
 
         PolygonType Type { get; }
         //object GetPolygonVertex(ref int polyIndex, ref int vertticeIx);
@@ -121,18 +122,24 @@ namespace VikingEngine.Graphics
             }
         }
 
-        public VerticeDrawOrderData(int polyCount, int triangleCount)
+        public VerticeDrawOrderData(int polyCount, int triangleCount, int crossPolyCount)
         {
-            numVertices = polyCount * PolygonLib.NumCornersPolygon + triangleCount * PolygonLib.NumCornersTriangle;
-            numTriangles = polyCount * 2 + triangleCount;
-            indexDrawOrderLength = PolygonLib.NumDrawIxPerPoly * polyCount + PolygonLib.NumDrawIxPerTriangle * triangleCount;
-            
+            numVertices = polyCount * PolygonLib.VerticeCountPolygon + 
+                triangleCount * PolygonLib.VerticeCountTriangle +
+                crossPolyCount * PolygonLib.VerticeCountCrossPoly;
+
+            numTriangles = polyCount * 2 + triangleCount + crossPolyCount * 4;
+
+            indexDrawOrderLength = polyCount * PolygonLib.NumDrawIxPerPoly + 
+                 triangleCount * PolygonLib.NumDrawIxPerTriangle +
+                crossPolyCount * PolygonLib.NumDrawIxPerCrossPoly;
+
             //indexDrawOrder = new UInt16[indexDrawOrderLength];
 
             bitSize = drawOrderLengthToBitSz(indexDrawOrderLength);
             if (bitSize == IndexElementSize.SixteenBits)
             {
-                indexDrawOrder16 = new UInt16[indexDrawOrderLength];
+                indexDrawOrder16 = new ushort[indexDrawOrderLength];
                 indexDrawOrder32 = null;
             }
             else
@@ -166,9 +173,9 @@ namespace VikingEngine.Graphics
             drawOrderData = new VerticeDrawOrderData(indexDrawOrder);
         }
 
-        public VerticeDataNormal(int polyCount, int triangleCount)
+        public VerticeDataNormal(int polyCount, int triangleCount, int crossPolyCount)
         {
-            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount);
+            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount, crossPolyCount);
             Vertices = new VertexPositionNormalTexture[drawOrderData.numVertices];
 
         }
@@ -197,16 +204,16 @@ namespace VikingEngine.Graphics
             drawOrderData = new VerticeDrawOrderData(indexDrawOrder);
         }
 
-        public VerticeDataColorTexture(int polyCount, int triangleCount)//pooling
+        public VerticeDataColorTexture(int polyCount, int triangleCount, int crossPolyCount)//pooling
         {
-            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount);
+            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount, crossPolyCount);
             Vertices = new ArrayExposedList<VertexPositionColorTexture>(drawOrderData.numVertices);
             Vertices.setLenght(drawOrderData.numVertices);
         }
 
-        public void recycle(int polyCount, int triangleCount)//pooling
+        public void recycle(int polyCount, int triangleCount, int crossPolyCount)//pooling
         {
-            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount);
+            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount, crossPolyCount);
             Vertices.setLenght(drawOrderData.numVertices);
         }
         public void SetVertice(int index, object vertice)
@@ -240,9 +247,9 @@ namespace VikingEngine.Graphics
             drawOrderData = new VerticeDrawOrderData(indexDrawOrder);
         }
 
-        public VerticeDataColorNormal(int polyCount, int triangleCount)
+        public VerticeDataColorNormal(int polyCount, int triangleCount, int crossPolyCount)
         {
-            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount);
+            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount, crossPolyCount);
             Vertices = new VertexPositionColorNormal[drawOrderData.numVertices];
         }
         public void SetVertice(int index, object vertice)
@@ -264,9 +271,9 @@ namespace VikingEngine.Graphics
         public VertexPositionColor[] Vertices;
         VerticeDrawOrderData drawOrderData;
 
-        public VerticeDataColor(int polyCount, int triangleCount)
+        public VerticeDataColor(int polyCount, int triangleCount, int crossPolyCount)
         {
-            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount);
+            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount, crossPolyCount);
             Vertices = new VertexPositionColor[drawOrderData.numVertices];
         }
 
@@ -416,10 +423,13 @@ namespace VikingEngine.Graphics
     {
         public static ConcurrentStack<VerticeDataColorTexture> VerticeDataPool = new ConcurrentStack<VerticeDataColorTexture>();
 
-        static readonly int[] BasicIndexDrawOrder = new int[] { 0, 1, 2, 2, 1, 3 };
-        public const int NumCornersPolygon = 4;
-        public const int NumCornersTriangle = 3;
-        public const int NumDrawIxPerPoly = 6;
+        static readonly int[] QuadIndexDrawOrder = new int[] { 0, 1, 2, 2, 1, 3 };
+        static readonly int[] CrossQuadIndexDrawOrder = new int[] { 2, 1, 0, 1, 3, 0, 3, 4, 0, 0, 2, 4 };//0, 2, 4, 0, 4, 3, 0, 3, 1, 0, 1, 2 };
+        public const int VerticeCountPolygon = 4;
+        public const int VerticeCountCrossPoly = 5;
+        public const int VerticeCountTriangle = 3;
+        public static readonly int NumDrawIxPerPoly = QuadIndexDrawOrder.Length;
+        public static readonly int NumDrawIxPerCrossPoly = CrossQuadIndexDrawOrder.Length;
         public const int NumDrawIxPerTriangle = 6; //??
 
         public static VerticeDataColorTexture BuildVDFromPolygons(PolygonsAndTrianglesColor polygonsAndTriangles)
@@ -427,11 +437,11 @@ namespace VikingEngine.Graphics
             VerticeDataColorTexture verticeData;
             if (VerticeDataPool.TryPop(out verticeData))
             {
-                verticeData.recycle(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+                verticeData.recycle(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles, polygonsAndTriangles.NumCrossPolys);
             }
             else
             {
-                verticeData = new VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+                verticeData = new VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles, polygonsAndTriangles.NumCrossPolys);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
             }
 
             VerticeDrawOrderData drawOrder = verticeData.DrawData;
@@ -440,56 +450,49 @@ namespace VikingEngine.Graphics
 
             for (int polyIx = 0; polyIx < polygonsAndTriangles.NumPolygons; polyIx++)
             {
-                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex0_coltex(ref polyIx));
-                totalVerticeIx++;
-                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex1_coltex(ref polyIx));
-                totalVerticeIx++;
-                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex2_coltex(ref polyIx));
-                totalVerticeIx++;
-                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex3_coltex(ref polyIx));
-                totalVerticeIx++;
-
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.Polygons[polyIx].V0sw);
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.Polygons[polyIx].V1nw);//polygonsAndTriangles.GetPolygonVertex1_coltex(ref polyIx));
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.Polygons[polyIx].V2se);//polygonsAndTriangles.GetPolygonVertex2_coltex(ref polyIx));
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.Polygons[polyIx].V3ne);//polygonsAndTriangles.GetPolygonVertex3_coltex(ref polyIx));
+                
                 for (int drawOrderIx = 0; drawOrderIx < NumDrawIxPerPoly; drawOrderIx++)
                 {
-                    drawOrder.SetDrawOrder(indexDrawOrderPointer, BasicIndexDrawOrder[drawOrderIx] + polyIx * PolygonLib.NumCornersPolygon);
+                    drawOrder.SetDrawOrder(indexDrawOrderPointer, QuadIndexDrawOrder[drawOrderIx] + polyIx * PolygonLib.VerticeCountPolygon);
                     indexDrawOrderPointer++;
                 }
             }
-            for (int triIx = 0; triIx < polygonsAndTriangles.NumTriangles; triIx++)
-            {
-                for (int corner = 0; corner < PolygonLib.NumCornersTriangle; corner++)
-                {
-                    verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetTriangleVertex(triIx, corner));
-                    drawOrder.SetDrawOrder(indexDrawOrderPointer, totalVerticeIx);
-                    totalVerticeIx++;
-                    indexDrawOrderPointer++;
-                }
 
+            for (int crossIx = 0; crossIx < polygonsAndTriangles.NumCrossPolys; crossIx++)
+            {
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.CrossPolygons[crossIx].centerVertex);
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.CrossPolygons[crossIx].rectangle.V0sw);
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.CrossPolygons[crossIx].rectangle.V1nw);//polygonsAndTriangles.GetPolygonVertex1_coltex(ref polyIx));
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.CrossPolygons[crossIx].rectangle.V2se);//polygonsAndTriangles.GetPolygonVertex2_coltex(ref polyIx));
+                verticeData.SetVertice(totalVerticeIx++, polygonsAndTriangles.CrossPolygons[crossIx].rectangle.V3ne);//polygonsAndTriangles.GetPolygonVertex3_coltex(ref polyIx));
+
+                for (int drawOrderIx = 0; drawOrderIx < NumDrawIxPerCrossPoly; drawOrderIx++)
+                {
+                    drawOrder.SetDrawOrder(indexDrawOrderPointer++, CrossQuadIndexDrawOrder[drawOrderIx] + crossIx * PolygonLib.VerticeCountCrossPoly);
+                   
+                }
             }
+            //for (int triIx = 0; triIx < polygonsAndTriangles.NumTriangles; triIx++)
+            //{
+            //    for (int corner = 0; corner < PolygonLib.NumCornersTriangle; corner++)
+            //    {
+            //        verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetTriangleVertex(triIx, corner));
+            //        drawOrder.SetDrawOrder(indexDrawOrderPointer, totalVerticeIx);
+            //        totalVerticeIx++;
+            //        indexDrawOrderPointer++;
+            //    }
+
+            //}
             return verticeData;
         }
 
-        //    else
-        //    {
-        //        //används inte
-        //        VerticeDataNormal verticeData = new VerticeDataNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
-        //        throw new NotImplementedException();
-        //    }
-
-        //}
-
         public static VerticeDataNormal BuildVDFromPolygons(PolygonsAndTrianglesNormal polygonsAndTriangles)
-        {
-            //VerticeDataColorNormal verticeData;
-            //if (VerticeDataPool.TryPop(out verticeData))
-            //{
-            //    verticeData.recycle(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
-            //}
-            //else
-            //{
-            //    verticeData = new VerticeDataColorNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
-            //}
-            VerticeDataNormal verticeData = new VerticeDataNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+        {           
+            VerticeDataNormal verticeData = new VerticeDataNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles, polygonsAndTriangles.NumCrossPolys);
 
             VerticeDrawOrderData drawOrder = verticeData.DrawData;
             int totalVerticeIx = 0;
@@ -508,13 +511,13 @@ namespace VikingEngine.Graphics
 
                 for (int drawOrderIx = 0; drawOrderIx < NumDrawIxPerPoly; drawOrderIx++)
                 {
-                    drawOrder.SetDrawOrder(indexDrawOrderPointer, BasicIndexDrawOrder[drawOrderIx] + polyIx * PolygonLib.NumCornersPolygon);
+                    drawOrder.SetDrawOrder(indexDrawOrderPointer, QuadIndexDrawOrder[drawOrderIx] + polyIx * PolygonLib.VerticeCountPolygon);
                     indexDrawOrderPointer++;
                 }
             }
             for (int triIx = 0; triIx < polygonsAndTriangles.NumTriangles; triIx++)
             {
-                for (int corner = 0; corner < PolygonLib.NumCornersTriangle; corner++)
+                for (int corner = 0; corner < PolygonLib.VerticeCountTriangle; corner++)
                 {
                     verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetTriangleVertex(triIx, corner));
                     drawOrder.SetDrawOrder(indexDrawOrderPointer, totalVerticeIx);

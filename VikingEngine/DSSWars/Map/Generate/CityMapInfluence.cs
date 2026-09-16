@@ -20,15 +20,10 @@ namespace VikingEngine.DSSWars.Map
         public bool generate(WorldData world) 
         {
             inflenceMap = new Grid2D<Influence>(world.Size);
-            //inflenceMap.LoopBegin();
-            //while (inflenceMap.LoopNext())
-            //{
-            //    inflenceMap.LoopValueSet(new Influence());
-            //}
+           
+            cities = new MapCity[world.cities.Count];
 
-            cities = new MapCity[world.cities.Count];//new List<MapCity>(world.cities.Count);
-
-            int verticalDivitions = world.Size.X / 128;//(Generate.GenerateMap.HeadCityNeededFreeRadius * 4);
+            int verticalDivitions = world.Size.X / 128;
             
             bool result = Task.Run(async ()=> {
 
@@ -263,7 +258,7 @@ namespace VikingEngine.DSSWars.Map
                     StringBuilder line = new StringBuilder();
                     for (int x = 0; x < inflenceMap.Width; ++x)
                     {
-                        line.Append(string.Format("{0:D6}", inflenceMap.array[x, y].city.ToString()));
+                        line.Append(string.Format("{0:D6}", inflenceMap.Get(x, y).city.ToString()));
                         line.Append(',');
                     }
 

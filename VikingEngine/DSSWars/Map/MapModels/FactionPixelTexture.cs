@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -30,6 +31,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
     abstract class AbsMapPixelTexture
     {
+        protected const int TilesPerPixelScale = 4;
         int lastCheckVersion = 0;
         public int version = 0;
         protected int playerIx;
@@ -47,7 +49,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         virtual protected IntVector2 TextureScale()
         {
-            return DssRef.world.Size;
+            return DssRef.world.Size / TilesPerPixelScale;
         }
 
         public bool NewVersion()
@@ -198,10 +200,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
         
         void refreshArea(Rectangle2 area)
         {
-            /*
-            SumTile4_4 t;
 
-            ForXYLoop loop = new ForXYLoop(area);
+            //SumTile4_4 t;
+            ForXYLoop loop = new ForXYLoop(DssRef.world.Size/* / SumTile4_4.TileWidth*/) { stepLength = TilesPerPixelScale };
 
             switch (filter)
             {
@@ -209,30 +210,38 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 case FactionMapFilter.FactionCols:
                     while (loop.Next())
                     {
-                        t = DssRef.world.tileGrid.Get(loop.Position);
-                        texture.SetPixel(loop.Position, t.MinimapColor_Faction(loop.Position));
+                        //var t = DssRef.world.tileGrid.Get(loop.Position);
+                        var tile = DssRef.world.GetCombinedTile(loop.Position);
+
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.FactionAndTerrainColor(tile)/*t.MinimapColor_Faction(loop.Position)*/);
                     }
+                    lib.DoNothing();
                     break;
 
                 case FactionMapFilter.Terrain:
                     while (loop.Next())
                     {
-                        t = DssRef.world.tileGrid.Get(loop.Position);
-                        texture.SetPixel(loop.Position, t.MinimapColor_Terrain(loop.Position));
+                        //t = DssRef.world.tileGrid.Get(loop.Position);
+                        //texture.SetPixel(loop.Position, t.MinimapColor_Terrain(loop.Position));
+                        var tile = DssRef.world.GetCombinedTile(loop.Position);
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.TerrainColor(tile));
                     }
                     break;
                 case FactionMapFilter.Minimap:
                     Faction playerFaction = DssRef.state.localPlayers[playerIx].pfaction.GetFaction();
                     while (loop.Next())
                     {
-                        t = DssRef.world.tileGrid.Get(loop.Position);
-                        texture.SetPixel(loop.Position, t.MinimapColor_Minimap(playerFaction, loop.Position));
+                        //t = DssRef.world.tileGrid.Get(loop.Position);
+                        //texture.SetPixel(loop.Position, t.MinimapColor_Minimap(playerFaction, loop.Position));
+                        var tile = DssRef.world.GetCombinedTile(loop.Position);
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile));
                     }
+                    lib.DoNothing();
                     break;
                 case FactionMapFilter.PopulationHeatmap:
                 case FactionMapFilter.StrengthHeatmap:
                 case FactionMapFilter.ResourceHeatmap:
-
+                    /*
                     max = 0;
 
                     var factionsC = DssRef.world.factions.counter();
@@ -276,10 +285,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         Color color;
                         t = DssRef.world.tileGrid.Get(loop.Position);
 
-                        if (t.tileContent == TileContent.City)
-                            color = t.cityColor();
+                        //if (t.tileContent == TileContent.City)
+                        //    color = t.cityColor();
 
-                        if (t.heightLevel <= ColorHeight.LowerWaterHeight)
+                        if (t.heightLevel <= BiomHeightColor.LowerWaterHeight)
                         {
                             color = Color.CornflowerBlue;
                         }
@@ -321,12 +330,13 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         }
 
                         texture.SetPixel(loop.Position, color);
-                    }                    
+                    }   
+                    */
                     break;
             }
 
             texture.ApplyPixelsToTexture();
-            */
+            
         }
 
     }

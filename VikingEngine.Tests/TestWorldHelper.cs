@@ -10,7 +10,7 @@ namespace VikingEngine.Tests
     {
         public static void SetupFlatWorld(
             int width, int height,
-            byte landHeight = ColorHeight.MinLandHeight,
+            byte landHeight = BiomHeightColor.MinLandHeight,
             HashSet<IntVector2>? waterTiles = null)
         {
             SumTile4_4.Init();
@@ -27,7 +27,7 @@ namespace VikingEngine.Tests
 
                     if (waterTiles != null && waterTiles.Contains(pos))
                     {
-                        tile.heightLevel = ColorHeight.DeepWaterHeight;
+                        tile.heightLevel = BiomHeightColor.DeepWaterHeight;
                     }
                     else
                     {

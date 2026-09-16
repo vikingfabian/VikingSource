@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
@@ -37,7 +38,7 @@ namespace VikingEngine.DSSWars.Work
         float finalizeWorkTime;
         GameTimer workAnimation = new GameTimer(1f, true, true);
         bool isShip = false;
-        int prevX, prevZ;
+        IntVector2 prevmapTile;//X, prevZ;
         float walkDist_beforeRefresh = 0f;
         AbsWorkEffect workEffect = null;
         PFaction pFaction;
@@ -126,12 +127,12 @@ namespace VikingEngine.DSSWars.Work
 #endif
                         updateGroudY(false);
 
-                        if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
+                        IntVector2 maptile = WP.ToSubTilePos(model.position);
+                        if (maptile != prevmapTile)//Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
                         {
-                            prevX = Convert.ToInt32(model.position.X);
-                            prevZ = Convert.ToInt32(model.position.Z);
+                            prevmapTile = maptile;
                             //Tile tile;
-                            if (DssRef.world.tileGrid.TryGet(prevX, prevZ, out SumTile4_4 tile))
+                            if (DssRef.world.subTileGrid.TryGet(prevmapTile, out var tile))
                             {
                                 isShip = tile.IsWater();
                                 if (isShip)
@@ -145,7 +146,7 @@ namespace VikingEngine.DSSWars.Work
                         {
                             if (/*Ref.TimePassed16ms &&*/ Ref.peRnd.ChanceF(0.3f/Ref.UpdateTimes60FPS))
                             {
-                                Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, SumTile4_4.WaterSurfaceY),
+                                Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, MapHeight2.WaterSurfaceY),
                                     DssConst.Men_StandardModelScale * 0.2f, 4);
                             }
                         }
@@ -292,7 +293,7 @@ namespace VikingEngine.DSSWars.Work
                                             }
                                             break;
                                     }
-                                    EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
+                                    EditSubTile.OntileChange(status.subTileEnd);
                                 }
                                 break;
                             case WorkType.Plant:
@@ -310,7 +311,7 @@ namespace VikingEngine.DSSWars.Work
                                 SoundLib.drop_item.Play(model.position);
                                 /*new ResourceEffect*/
                                 SpriteText3D.GetOrCreate().init(ItemResourceType.Water_G, -waterCost, model.position, ResourceEffectType.Add);
-                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
+                                EditSubTile.OntileChange(status.subTileEnd);
                                 break;
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);
@@ -577,11 +578,11 @@ namespace VikingEngine.DSSWars.Work
         {
             if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))
             {
-                float y = DssRef.world.SubTileHeight(model.position) + 0.01f;//ModelGroundYAdj;
+                float y = WP.SubTileHeight(model.position) + 0.01f;//ModelGroundYAdj;
 
-                if (y < SumTile4_4.UnitMinY)
+                if (y < MapHeight2.UnitMinY)
                 {
-                    y = SumTile4_4.UnitMinY;
+                    y = MapHeight2.UnitMinY;
                 }
 
                 if (y != model.position.Y)

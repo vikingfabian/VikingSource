@@ -56,6 +56,8 @@ namespace VikingEngine.Graphics
         public PolygonType Type { get { return PolygonType.Normal; } }
         public int NumPolygons { get { return Polygons.Count; } }
         public int NumTriangles { get { return  (Triangles == null?  0 : Triangles.Count); } }
+
+        public int NumCrossPolys => 0;
     }
     struct PolygonNormal
     {

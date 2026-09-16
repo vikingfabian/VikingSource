@@ -378,7 +378,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         public static void createSubTileContent(int x, int y, 
             float distanceToCity,
             SumTile4_4 tile,
-            ColorHeight height,
+            BiomHeightColor height,
             Biom biom,
             ref IntervalF mudRadius,
             ref MapTile1_1 subTile, 
@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                     if (stonenoise > 0.1)
                     {
-                        if (tile.biomColorHeight >= ColorHeight.MineHeightStart)
+                        if (tile.biomColorHeight >= BiomHeightColor.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
                             

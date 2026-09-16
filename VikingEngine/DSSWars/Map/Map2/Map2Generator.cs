@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public IconWorldData ActiveIconWorld => currentPass >= Map2Pass.ScaleUp ? iconWorldScaledUp : iconWorld;
 
-        public WorldGenData2 world;
+        //public WorldGenData2 world;
         public NodeMap nodeMap;
 
         public HeightMapTexture heightMapTexture = null;
@@ -180,20 +180,25 @@ namespace VikingEngine.DSSWars.Map.Map2
                 case Map2Pass.NewWorld:
                     newWorldPass(generateSettings);
                     break;
+
                 case Map2Pass.NodeGrid:
                     nodeMap = new NodeMap();
                     nodeMap.Generate(iconWorld, generateSettings);
                     break;
+
                 case Map2Pass.Icon:
                     nodeTerrainPass(generateSettings).Wait();
                     break;
+
                 case Map2Pass.IconNoise:
                     addNoiseTexture();
                     break;
+
                 case Map2Pass.Bioms:
                     biomsLayout = new BiomsLayout(iconWorld.rnd);
                     biomsLayout.GenerateNodes(iconWorld);
                     break;
+
                 case Map2Pass.IconCities:
                     generateCities = new GenerateCities();
                     generateCities.generateCities(generateSettings, nodeMap, iconWorld);
@@ -202,6 +207,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 case Map2Pass.ScaleUp:
                     await scaleUp16x();
                     break;
+
                 case Map2Pass.PostNoise:
                     postNoise();
                     break;
@@ -395,9 +401,9 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         private void newWorldPass(Map2GenerateSettings generateSettings)
         {
-            iconWorld = new IconWorldData(generateSettings.IconSize());
+            iconWorld = new IconWorldData(generateSettings.mapScale.Size(true));
 
-            noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.worldId.seed);
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData.worldId.seed);
             noiseMap.setSeed(iconWorld.rnd.Int());
             loadingState = LoadingState.Pass;
 
@@ -823,7 +829,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             var dataGrid = DataGrid();
             const int LoopDivs = 8;
 
-            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData2.worldId.seed + 11);
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData.worldId.seed + 11);
             NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 30f);
             float edgeThickness = LayerAddHeight * 1.6f;
             //NoiseOptions islandNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
@@ -855,7 +861,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             const bool PostNoise = true;
             //const int PostProcessDivs = 8;
 
-            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorldScaledUp.metaData2.worldId.seed + 3);
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorldScaledUp.metaData.worldId.seed + 3);
             NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
 
             Parallel.For(0, dataGrid.Size.X, x =>
@@ -886,7 +892,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 {
                     var tile = dataGrid.Get(x, y);
 
-                    tile.color = Map.MapModels.TileColor.terrainColor(new MapModels.CombinedTile(tile));
+                    tile.color = Map.MapModels.TileColor.TerrainColor(new MapModels.CombinedTile(tile));
                     //tileColor(ref tile);
                     dataGrid.Set(x, y, tile);
                 }
@@ -1569,7 +1575,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 add = true,
                 radius = Math.Min(iconWorld.rnd.Float(MinRadius, MaxRadius), iconWorld.rnd.Float(MinRadius, MaxRadius)),
                 flatness = 0.0f,
-                addHeight = -ColorHeight.DefaultGroundYoffset * iconWorld.rnd.Float(0.6f, 4f),
+                addHeight = -BiomHeightColor.DefaultGroundYoffset * iconWorld.rnd.Float(0.6f, 4f),
 
                 //biom = dataGrid.Get(new IntVector2(center)).biom1,
             };

@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
     class MapLayer_Factions
     {
         IntVector2 mapsz;
-        //public Map.FactionPixelTexture factionPixelTex;
+        public FactionPixelTexture factionPixelTex;
 
         MapTexturePlane mapPlane, unitPlane;
 
@@ -24,9 +24,9 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             mapPlane = new MapTexturePlane();
             unitPlane = new MapTexturePlane();
             unitPlane.Y += 0.14f;//0.06f;
-            //factionPixelTex = new FactionPixelTexture(true,
-            //    (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor)? 
-            //    FactionMapFilter.FactionCols : FactionMapFilter.Terrain);           
+            factionPixelTex = new FactionPixelTexture(0, true,
+                (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
+                FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
         }
 
         public void Draw(int cameraIndex, LocalPlayer player)
@@ -63,12 +63,12 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 p.factionPixelTexture.refreshWorld();
                 p.minimapPixelTexture.refreshWorld();
             }
-                //factionPixelTex.refreshWorld();
+            factionPixelTex.refreshWorld();
         }
 
         //public void syncTask()
         //{
-        //    factionPixelTex.SetNewTexture();
+        //    //factionPixelTex.SetNewTexture();
         //}
     }
 }

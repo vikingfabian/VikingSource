@@ -10,7 +10,7 @@ using VikingEngine.EngineSpace.Maths;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Map;
 
-namespace VikingEngine.DSSWars.GameState.MapEditor2
+namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 {
 
     struct PaintDot

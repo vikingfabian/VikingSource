@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.Players
 
             controllerMode = player.gameControls.input.inputSource.ControllerMode;
 
-            rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.ColorHeight.DeepWaterHeight-1, Map.Settings.ColorHeight.MaxHeight +1);
+            rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.BiomHeightColor.DeepWaterHeight-1, Map.Settings.BiomHeightColor.MaxHeight +1);
 
             refreshSetting();
 
@@ -229,7 +229,7 @@ namespace VikingEngine.DSSWars.Players
             prevPointerPosWP = pointerPosWP;
             pointerPosWP = screenPosToWorldPos(pointerPos());
             IntVector2 prevTile = tilePosition;
-            tilePosition = DssRef.world.tileBounds.KeepTilePointInArea(WP.ToTilePos(pointerPosWP));
+            tilePosition = DssRef.world.maptileBounds.KeepTilePointInArea(WP.ToTilePos(pointerPosWP));
             onNewTile = prevTile != tilePosition;
             if (onNewTile)
             {
@@ -1395,7 +1395,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void setCameraPos(IntVector2 tile)
         {
-            playerPointerPos = WP.ToWorldPos(tile);
+            playerPointerPos = WP.ChunkToWorldPos(tile);
             camera.LookTarget = playerPointerPos;
             camera.clearGoalTarget();
             cameraFocus = null;

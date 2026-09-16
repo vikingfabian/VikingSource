@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.Map.Map2;
 
-namespace VikingEngine.DSSWars.GameState.MapEditor2
+namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 {
     
     class MapEditHistory

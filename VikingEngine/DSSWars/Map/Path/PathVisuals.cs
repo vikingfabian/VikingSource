@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Map
                 for (int i = path.currentNodeIx; i >= 0; --i)
                 {
                     Graphics.Mesh_MultiLayer dot = new Graphics.Mesh_MultiLayer(LoadedMesh.SelectCircleThick,
-                        WP.ToMapPos(path.nodes[i].position),
+                        WP.ChunkToWorldPos(path.nodes[i].position),
                         new Vector3(0.2f), Graphics.TextureEffectType.Flat,
                         SpriteName.WhiteArea, color);
                     dot.Opacity = opacity;

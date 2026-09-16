@@ -64,11 +64,10 @@ namespace VikingEngine.DSSWars
             
             asynch_updateTiles();
             
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    p.unitsPixelTexture.asynch_Begin();
-                }
-            
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.asynch_Begin();
+            }
 
             var factions = DssRef.world.factions.counter();
             while (factions.Next())

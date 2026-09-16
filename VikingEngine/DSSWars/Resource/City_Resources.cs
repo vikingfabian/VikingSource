@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             AddGroupedResource(itemResourceType, -carry);
             
-            return new ItemResource(itemResourceType, 1, payment, carry);
+            return new ItemResource(itemResourceType,/* 1, payment,*/ carry);
         }
 
         public void dropOffItem(ItemResource item, out ItemResource convert1, out ItemResource convert2)
@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Egg:                                   
                 //case ItemResourceType.Hen:
                     convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.HenRawFoodAmout;
+                    convert1.amount = (ushort)DssConst.HenRawFoodAmout;
                     //animalResourceBonus(ref item);
                     break;
 

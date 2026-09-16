@@ -44,7 +44,7 @@ namespace VikingEngine.Tests.Legacy
         public LegacyTile()
         {
             CityIndex = -1;
-            heightLevel = ColorHeight.DeepWaterHeight;
+            heightLevel = BiomHeightColor.DeepWaterHeight;
         }
     }
 }

@@ -28,7 +28,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.SteamWrapping;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
-namespace VikingEngine.DSSWars.GameState.MapEditor2
+namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 {
     enum Map2GeneratorTab
     { 
@@ -188,7 +188,15 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                            new List<AbsRichBoxMember> { new RbImage(SpriteName.Undo), new RbSpace(0.5f), new RbText("Revert to icon") },
                            new RbAction(state.revertToIconPass)));
                     }
-                    content.newParagraph();
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                          new List<AbsRichBoxMember> { new RbText("Open: Map editor - detail") },
+                          new RbAction(() =>
+                          {
+                              new StartDetailEditor(new MapBackgroundLoading(state.generator));
+                          }), null, state.generator.currentPass >= Map2Pass.Icon));
+
+                   content.newParagraph();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                         new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));
                     break;
@@ -240,7 +248,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_Terrain_CustomSize) }, state.generator.generateSettings.CustomSizeProperty));
 
-            if (state.generator.generateSettings.bCustomSize)
+            if (state.generator.generateSettings.mapScale.bCustomSize)
             {
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.Hud_Vector_X + ":", HudLib.TitleColor_Label));
@@ -252,7 +260,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 content.space();
                 RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.generator.generateSettings.MapYProperty, false);
 
-                content.text(WorldData.SizeString(WorldData.ToMapSize(state.generator.generateSettings.customMapSize), state.generator.generateSettings.customMapSize), HudLib.InfoYellow_Light);
+                content.text(WorldData.SizeString(WorldData.ToMapSize(state.generator.generateSettings.mapScale.customMapSize), state.generator.generateSettings.mapScale.customMapSize), HudLib.InfoYellow_Light);
 
             }
             else
@@ -262,11 +270,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
                 {
                     for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
                     {
-                        mapSzOptions.AddOption(WorldData.SizeString(sz), sz == state.generator.generateSettings.mapSize, sz == MapSize.Medium,
+                        mapSzOptions.AddOption(WorldData.SizeString(sz), sz == state.generator.generateSettings.mapScale.mapSize, sz == MapSize.Medium,
                             new RbAction1Arg<MapSize>((MapSize selected) =>
                             {
-                                state.generator.generateSettings.mapSize = selected;
-                                state.generator.generateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.ruleset.mapSize);
+                                state.generator.generateSettings.mapScale.mapSize = selected;
+                                state.generator.generateSettings.mapScale.customMapSize = WorldData.SizeDimentions(DssRef.storage.ruleset.mapSize);
                                 menu.CloseDropDown();
 
                             }, sz), null);

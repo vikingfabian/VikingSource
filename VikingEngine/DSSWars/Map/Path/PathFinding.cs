@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map;
@@ -117,7 +118,7 @@ namespace VikingEngine.DSSWars.Map
             PathNode startNode = new PathNode(center, startDir, startAsShip, _currentRunId);
             nodeGrid.Set(center, startNode);
 
-            bool endAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
+            bool endAsShip = false;//DssRef.world.tileGrid.Get(goal).IsWater();
             PathNode currentNode = startNode;
 
             int numLoops = 0;
@@ -128,7 +129,7 @@ namespace VikingEngine.DSSWars.Map
                 for (int dir = 0; dir < 8; dir++)
                 {
                     IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && nodeGrid.Get(pos).RunId != _currentRunId)
+                    if (DssRef.world.maptileBounds.IntersectTilePoint(pos) && nodeGrid.Get(pos).RunId != _currentRunId)
                     {
                         PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip, _currentRunId);
                         
@@ -494,7 +495,7 @@ namespace VikingEngine.DSSWars.Map
             }
 
             SumTile4_4 tile = world.tileGrid.Get(pos);
-            waterTile = tile.IsWater();
+            //waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)
             {
@@ -509,7 +510,7 @@ namespace VikingEngine.DSSWars.Map
             }
             ship = this.waterTile;
 
-            moveCost *= tile.TroupWalkingDistance(ship);
+            //moveCost *= tile.TroupWalkingDistance(ship);
 
             moveCost += parent.moveCost;
 

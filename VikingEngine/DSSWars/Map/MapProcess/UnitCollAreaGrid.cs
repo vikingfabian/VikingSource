@@ -33,11 +33,11 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
         public UnitCollAreaGrid(IntVector2 worldSz)
         {
-            if ((worldSz.X % UnitGridSquareWidth) != 0 ||
-                (worldSz.Y % UnitGridSquareWidth) != 0)
-            {
-                throw new Exception();
-            }
+            //if ((worldSz.X % UnitGridSquareWidth) != 0 ||
+            //    (worldSz.Y % UnitGridSquareWidth) != 0)
+            //{
+            //    throw new Exception();
+            //}
 
             grid = new Grid2D_L<UnitCollArea>(worldSz / UnitGridSquareWidth);
 

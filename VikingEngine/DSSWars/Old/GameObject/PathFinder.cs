@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshGoal()
         {
-            currentGoalPos = WP.ToWorldPos(path.nodes[currentNode]);//warsRef.board.areaToWorldPos(path.nodes[currentNode]);
+            currentGoalPos = WP.ChunkToWorldPos(path.nodes[currentNode]);//warsRef.board.areaToWorldPos(path.nodes[currentNode]);
         }
     }
 

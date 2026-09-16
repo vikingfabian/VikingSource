@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars
             }
             float battleReduce = 1f - battleFadeTotal;
 
-            int deepSeaSoundLevelDir = lib.BoolToLeftRight(onTile.biomColorHeight <= ColorHeight.DeepWaterHeight);
+            int deepSeaSoundLevelDir = lib.BoolToLeftRight(onTile.biomColorHeight <= BiomHeightColor.DeepWaterHeight);
             deepSeaFade = Bound.Set(deepSeaFade + FarNearFadeSpeed_PerSec * deepSeaSoundLevelDir * Ref.DeltaGameTimeSec, 0f, MaxSeaLevel);
             float seaSoundReduce = 1f - deepSeaFade * 0.5f;
 

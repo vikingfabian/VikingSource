@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                 while (cirkleLoop.Next())
                 {
-                    if (DssRef.world.GetMapAndSumTile(cirkleLoop.Position, out var mapTile, out var sumTile))/*.maptileBounds.IntersectTilePoint(cirkleLoop.Position)*/
+                    if (DssRef.world.GetMapAndSumTile_Safe(cirkleLoop.Position, out var mapTile, out var sumTile))/*.maptileBounds.IntersectTilePoint(cirkleLoop.Position)*/
                     {
                         if (sumTile.CityIndex == city.myIndex && mapTile.IsLand())
                         {
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 while (cirkleLoop.Next())
                 {
                     //if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
-                    if (DssRef.world.GetMapAndSumTile(cirkleLoop.Position, out var mapTile, out var sumTile))
+                    if (DssRef.world.GetMapAndSumTile_Safe(cirkleLoop.Position, out var mapTile, out var sumTile))
                     {
                         //var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
                         if (sumTile.CityIndex == city.myIndex && mapTile.IsLand())
@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                 while (cirkleLoop.Next())
                 {
-                    if (DssRef.world.GetMapAndSumTile(cirkleLoop.Position, out var mapTile, out var sumTile))
+                    if (DssRef.world.GetMapAndSumTile_Safe(cirkleLoop.Position, out var mapTile, out var sumTile))
                     {
                         var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
                         if (tile.CityIndex == city.myIndex /*&& tile.MayBuild()*/)
@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     //{
                         //if (DssRef.world.tileGrid.TryGet(edgeRandomizer.Position, out SumTile4_4 tile))
                         //{
-                        if (DssRef.world.GetMapAndSumTile(edgeRandomizer.Position, out var mapTile, out var sumTile))
+                        if (DssRef.world.GetMapAndSumTile_Safe(edgeRandomizer.Position, out var mapTile, out var sumTile))
                         {
                             if (sumTile.CityIndex == city.myIndex && mapTile.IsLand())
                             {
@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             while (loop.Next())
             {
 
-                if (world.GetMapAndSumTile(loop.Position, out var mapTile, out var sumTile) &&
+                if (world.GetMapAndSumTile_Safe(loop.Position, out var mapTile, out var sumTile) &&
                     sumTile.CityIndex == city.myIndex &&
                     mapTile.IsLand())
                 {

@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
             if (hasPolygons)
             {
-                model.position = WP.ToWorldPos(chunkGrindex);
+                model.position = WP.ChunkToWorldPos(chunkGrindex);
                 waterEdgeModel.position = model.position;
                 waterEdgeModel.PositionY = MapHeight2.WaterFoamY;
 
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
                 DssRef.state.detailMap.terrainPolygons.Clear();
 
-                Vector2 topLeft = VectorExt.V2NegHalf;
+                Vector2 topLeft = VectorExt.V2NegHalf * MapChunkData8_8.ModelScale;
                 //IntVector2 subTileStart = chunkGrindex * Map.MapData.MapChunkData8_8.TileWidth;
                 
 
@@ -140,15 +140,16 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                 comTile.mapTile = DssRef.world.subTileGrid.Get(mapX, mapY);
 
                                 rnd.SetSeed(mapX * 3 + mapY * 11);
-
                                 
-                                Vector2 subTopLeft = new Vector2(topLeft.X + x * Map.MapData.MapTile1_1.ModelScale, topLeft.Y + y * Map.MapData.MapTile1_1.ModelScale);
+                                Vector2 subTopLeft = new Vector2(
+                                    topLeft.X + (x + sumx * SumTile4_4.TileWidth) * Map.MapData.MapTile1_1.ModelScale, 
+                                    topLeft.Y + (y + sumy * SumTile4_4.TileWidth) * Map.MapData.MapTile1_1.ModelScale);
 
                                 bool bSurfacePolygonTexture = true;
                                 SurfaceTextureType surfacePolygonTexture = col.Texture;
                                 SpriteName surfaceSprite = SpriteName.WhiteArea_LFtiles;
 
-                                Color surfaceColor = TileColor.terrainColor(comTile);//comTile.mapTile.color;
+                                Color surfaceColor = TileColor.TerrainColor(comTile);//comTile.mapTile.color;
 
                                 switch (comTile.mapTile.mainTerrain)
                                 {

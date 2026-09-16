@@ -41,12 +41,19 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
     static class TileColor
     {
-       
-        public static Color terrainColor(CombinedTile tile)
+        public static Color FactionAndTerrainColor(CombinedTile tile)
+        {
+            return TerrainColor(tile);
+        }
+        public static Color MinimapColor(CombinedTile tile)
+        {
+            return TerrainColor(tile);
+        }
+        public static Color TerrainColor(CombinedTile tile)
         {
             if (tile.mapTile.heightValue <= MapLib.MapHeight2.WaterPlaneHeight)
             {
-                float depth = 1f - tile.mapTile.heightValue / (float)MapLib.MapHeight2.WaterPlaneHeight;//1f - tile.groundY / MapLib.MapHeight2.WaterBottomY;
+                float depth = /*1f - */tile.mapTile.heightValue / (float)MapLib.MapHeight2.WaterPlaneHeight;//1f - tile.groundY / MapLib.MapHeight2.WaterBottomY;
                 return new Color(depth * 0.5f, depth * 0.5f, depth * 0.5f + 0.2f);
             }
             else
@@ -62,7 +69,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 if (tile.sumTile.biom2 != tile.sumTile.biom1 && tile.sumTile.secondBiomWeight > 0)
                 {
                     var col2 = biomCol(tile.sumTile.biom2, biomColorheight, percNextHeight);//DssRef.map.bioms.bioms[(int)tile.biom2].colors_height[biomColorheight].Color;
-                    color = ColorExt.Mix(col2, color, tile.sumTile.secondBiomWeight);
+                    color = ColorExt.Mix(col2, color, tile.sumTile.secondBiomWeight / (float)byte.MaxValue);
                 }
 
                 return color;
@@ -141,8 +148,15 @@ namespace VikingEngine.DSSWars.Map.MapModels
         static Color biomCol(Settings.BiomType biom, int biomColorheight, float percNextHeight)
         {
             Color col1 = DssRef.map.bioms.bioms[(int)biom].colors_height[biomColorheight].Color;
-            Color col2 = DssRef.map.bioms.bioms[(int)biom].colors_height[biomColorheight + 1].Color;
-            return ColorExt.Mix(col2, col1, percNextHeight);
+            if (percNextHeight > 0)
+            {
+                Color col2 = DssRef.map.bioms.bioms[(int)biom].colors_height[biomColorheight + 1].Color;
+                return ColorExt.Mix(col2, col1, percNextHeight);
+            }
+            else
+            {
+                return col1;
+            }
         }
     }
 }

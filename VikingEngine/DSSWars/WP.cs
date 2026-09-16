@@ -13,23 +13,27 @@ namespace VikingEngine.DSSWars
     /// </summary>
     static class WP
     {
-        public const float TileDrawScale = 1f;
-        public static readonly Vector2 TileScaleV2 = new Vector2(TileDrawScale);
+        //public const float TileDrawScale = 1f;
+        public static readonly Vector2 TileScaleV2 = new Vector2(MapChunkData8_8.ModelScale);
         static readonly Vector2 TileHalfScaleV2 = TileScaleV2 * PublicConstants.Half;
 
         //public bool InBound(Vector3 position)
         //{ 
         //    return DssRef.world.unitBounds.in
         //}
+        public static float SubTileHeight(Vector3 wp)
+        {
+            return DssRef.world.subTileGrid.Get(ToSubTilePos(wp)).groundY;
+        }
 
         public static Vector2 ToWorldPosXZ(IntVector2 tile)
         {
             return tile.Vec * TileScaleV2;
         }
 
-        public static Vector3 ToWorldPos(IntVector2 tile, float y = 0)
+        public static Vector3 ChunkToWorldPos(IntVector2 tile, float y = 0)
         {
-            return new Vector3(tile.X * TileDrawScale, y, tile.Y * TileDrawScale);
+            return new Vector3(tile.X * MapChunkData8_8.ModelScale, y, tile.Y * MapChunkData8_8.ModelScale);
         }
 
         public static IntVector2 ToTilePos(Vector3 pos)
@@ -228,6 +232,9 @@ namespace VikingEngine.DSSWars
         {
             return mapTilePos / SumTile4_4.TileWidth;
         }
-
+        public static IntVector2 MaptileToChunk(IntVector2 mapTilePos)
+        {
+            return mapTilePos / MapChunkData8_8.TileWidth;
+        }
     }
 }

@@ -36,6 +36,11 @@ namespace VikingEngine.DSSWars.Map.Path3
             this.water = water;
         }
 
+        public float GetMoveCost(bool isShip)
+        { 
+            return isShip? water : land;
+        }
+
         public static MoveCost Sum(MoveCost cost1, MoveCost cost2)
         {
             cost1.land += cost2.land;

@@ -836,7 +836,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 s.InitLocal(position, gridPlacement, area, this);
-                s.position = WP.ToWorldPos(area); //temp pos
+                s.position = WP.ChunkToWorldPos(area); //temp pos
                 s.myIndex = soldiers_sp.Add(s);
 
                 if (army != null && army.TryGetTarget(out var tArmy) &&
@@ -1289,7 +1289,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         {
                                             if (city.maptilePos.SideLength(maptilePos) <= 16 || tArmy.GetArmy().attackTarget == city)
                                             {
-                                                goalWp = WP.ToWorldPos(city.maptilePos);
+                                                goalWp = WP.ChunkToWorldPos(city.maptilePos);
                                                 state = GroupState.CityCapture;
                                                 return;
                                             }

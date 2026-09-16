@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameState.FlagEditor;
+using VikingEngine.DSSWars.GameState.MapEditor2.IconEditor;
 using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars.GameState
@@ -56,7 +57,7 @@ namespace VikingEngine.DSSWars.GameState
                         new FileLab.FileLabScene();
                         break;
                     case EditorType.Map2:
-                        new MapEditor2.MapEditor2_Scene();
+                        new MapEditor2_Scene();
                         break;
                 }
             }

@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
@@ -28,21 +29,25 @@ namespace VikingEngine.DSSWars
     {  
         public static WorldData LoadingWorld = null;
 
+        
+
+        const int ScaleUpMap2 = 16;
+
         //Måste vara delbart med UnitGridSquareWidth
         //Must be in sizes of 8
-        public const int TinyMapWidth = 200;
-        public const int TinyMapHeigth = 176;
-        public const int SmallMapWidth = 320;
-        public const int SmallMapHeigth = 232;
-        public const int MediumMapWidth = 512;
-        public const int MediumMapHeigth = 432;
-        public const int LargeMapWidth = 720;
-        public const int LargeMapHeigth = 624;
-        public const int HugeMapWidth = 912;
-        public const int HugeMapHeigth = 832;
-        public const int EpicMapWidth = 1184;
-        public const int EpicMapHeigth = 1024;
-        public const double TileWidthInKm = 0.064;
+        public const int TinyMapWidth = 200 * ScaleUpMap2;
+        public const int TinyMapHeigth = 176 * ScaleUpMap2;
+        public const int SmallMapWidth = 320 * ScaleUpMap2;
+        public const int SmallMapHeigth = 232 * ScaleUpMap2;
+        public const int MediumMapWidth = 512 * ScaleUpMap2;
+        public const int MediumMapHeigth = 432 * ScaleUpMap2;
+        public const int LargeMapWidth = 720 * ScaleUpMap2;
+        public const int LargeMapHeigth = 624 * ScaleUpMap2;
+        public const int HugeMapWidth = 912 * ScaleUpMap2;
+        public const int HugeMapHeigth = 832 * ScaleUpMap2;
+        public const int EpicMapWidth = 1184 * ScaleUpMap2;
+        public const int EpicMapHeigth = 1024 * ScaleUpMap2;
+        public const double TileWidthInKm = 0.008;
 
         public const int CustomMapSize_Min = 160;
         public const int CustomMapSize_Max = 4096;
@@ -74,6 +79,8 @@ namespace VikingEngine.DSSWars
         public Rectangle2 maptileBoundsSubOne;
         public VectorRect unitBounds;
         public IntVector2 Size;
+
+        public Vector2 unitSize;
         public IntVector2 HalfSize;
         
         public UnitCollAreaGrid unitCollAreaGrid;
@@ -122,10 +129,19 @@ namespace VikingEngine.DSSWars
             factions = new SpottedArray<Faction>();
         }
 
-        public bool GetMapAndSumTile(IntVector2 mapTilePos, out MapTile1_1 mapTile, out SumTile4_4 sumTile)
+        public CombinedTile GetCombinedTile(IntVector2 mapTilePos)
+        {
+            return new CombinedTile()
+            {
+                mapTile = subTileGrid.Get(mapTilePos),
+                sumTile = tileGrid.Get(WP.MaptileToSumTile(mapTilePos))
+            };
+        }
+
+        public bool GetMapAndSumTile_Safe(IntVector2 mapTilePos, out MapTile1_1 mapTile, out SumTile4_4 sumTile)
         {
             if (DssRef.world.maptileBounds.IntersectTilePoint(mapTilePos))
-            { 
+            {
                 mapTile = subTileGrid.Get(mapTilePos);
                 sumTile = tileGrid.Get(WP.MaptileToSumTile(mapTilePos));
                 return true;
@@ -151,15 +167,16 @@ namespace VikingEngine.DSSWars
 
             rnd = new PcgRandom(metaData.worldId.seed);
 
-            if (generateSettings.bCustomSize)
-            {
-                metaData.mapSize = CustomMapSizeToSize(generateSettings.customMapSize);
-                refreshSize(generateSettings.customMapSize);
-            }
-            else
-            {
-                refreshSize(SizeDimentions(metaData.mapSize));
-            }
+            refreshSize(generateSettings.mapScale.Size(false));
+            //if (generateSettings.bCustomSize)
+            //{
+            //    metaData.mapSize = CustomMapSizeToSize(generateSettings.customMapSize);
+            //    refreshSize(generateSettings.customMapSize);
+            //}
+            //else
+            //{
+            //    refreshSize(SizeDimentions(metaData.mapSize));
+            //}
         }
 
         public Faction faction(int index)
@@ -320,7 +337,9 @@ namespace VikingEngine.DSSWars
             maptileBounds = new Rectangle2(IntVector2.Zero, Size - 1);
             maptileBoundsSubOne = maptileBounds; 
             maptileBoundsSubOne.AddRadius(-1);
-            unitBounds = new VectorRect(Vector2.Zero, Size.Vec);
+
+            unitSize = Size.Vec * MapTile1_1.ModelScale;
+            unitBounds = new VectorRect(Vector2.Zero, unitSize);
             unitBounds.AddRadius(-1f);
 
             //create grid
@@ -527,7 +546,7 @@ namespace VikingEngine.DSSWars
             tilePos.writeUshort(w);
 
             var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
-            area.SetTileBounds(DssRef.world.tileBounds);
+            area.SetTileBounds(DssRef.world.maptileBounds);
             ForXYLoop loop = new ForXYLoop(area);
 
             SumTile4_4 previous = new SumTile4_4();
@@ -557,7 +576,7 @@ namespace VikingEngine.DSSWars
             IntVector2 tilePos = IntVector2.FromReadUshort(r);
 
             var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
-            area.SetTileBounds(DssRef.world.tileBounds);
+            area.SetTileBounds(DssRef.world.maptileBounds);
             ForXYLoop loop = new ForXYLoop(area);
             SumTile4_4 previous = new SumTile4_4();
             while (loop.Next())
@@ -1246,8 +1265,8 @@ namespace VikingEngine.DSSWars
         const float ExtraBoundRadius = 2f;
         public void WorldBound(ref float x, ref float z)
         {
-            x = Bound.Set(x, ExtraBoundRadius, DssRef.world.Size.X - ExtraBoundRadius);
-            z = Bound.Set(z, ExtraBoundRadius, DssRef.world.Size.Y - ExtraBoundRadius);
+            x = Bound.Set(x, ExtraBoundRadius, DssRef.world.unitSize.X - ExtraBoundRadius);
+            z = Bound.Set(z, ExtraBoundRadius, DssRef.world.unitSize.Y - ExtraBoundRadius);
         }
         public static List<FactionType> NamedAiTypes()
         {

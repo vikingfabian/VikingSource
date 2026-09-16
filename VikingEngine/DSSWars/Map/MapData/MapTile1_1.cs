@@ -521,6 +521,18 @@ namespace VikingEngine.DSSWars.Map.MapData
 
             return MapHeight2.WaterSurfaceY;
         }
+
+        public override string ToString()
+        {
+            return $"MapTile1_1:\n" +
+                   $"  Height: {heightValue}\n" +
+                   $"  MainTerrain: {mainTerrain}\n" +
+                   $"  SubTerrain: {subTerrain}\n" +
+                   $"  Amount: {terrainAmount}\n" +
+                   $"  Health: {health}\n" +
+                   $"  Orientation: {orientation}\n" +
+                   $"  CollectionPointer: {collectionPointer}";
+        }
     }
 
 }

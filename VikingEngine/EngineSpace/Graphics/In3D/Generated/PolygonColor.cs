@@ -15,10 +15,11 @@ namespace VikingEngine.Graphics
     struct PolygonsAndTrianglesColor : IPolygonsAndTriangles
     {
         public List<PolygonColor> Polygons;
-        public List<TriangleColor> Triangles;
-        public PolygonsAndTrianglesColor(List<PolygonColor> polygon)
-            : this(polygon, new List<TriangleColor>())
-        {  }
+        public List<CrossPolygonColor> CrossPolygons;
+        //public List<TriangleColor> Triangles;
+        //public PolygonsAndTrianglesColor(List<PolygonColor> polygon)
+        //    : this(polygon, new List<TriangleColor>())
+        //{  }
         public void AddRange(IPolygonsAndTriangles add)
         {
             PolygonsAndTrianglesColor conv = (PolygonsAndTrianglesColor)add;
@@ -61,15 +62,19 @@ namespace VikingEngine.Graphics
 
         public object GetTriangleVertex(int triangleIndex, int vertticeIx)
         {
-            return Triangles[triangleIndex].VerticeData[vertticeIx];
+            throw new NotFiniteNumberException();
+            //return Triangles[triangleIndex].VerticeData[vertticeIx];
         }
-        public PolygonsAndTrianglesColor(List<PolygonColor> polygons, List<TriangleColor> triangles)
-        { Polygons = polygons; Triangles = triangles; }
-        public void Add(PolygonsAndTrianglesColor add)
-        {
-            Polygons.AddRange(add.Polygons);
-            Triangles.AddRange(add.Triangles);
+        public PolygonsAndTrianglesColor(List<PolygonColor> polygons, List<CrossPolygonColor> crossPolygons)/*, List<TriangleColor> triangles*///)
+        { 
+            Polygons = polygons; /* Triangles = triangles;*/ 
+            CrossPolygons = crossPolygons;
         }
+        //public void Add(PolygonsAndTrianglesColor add)
+        //{
+        //    Polygons.AddRange(add.Polygons);
+        //    Triangles.AddRange(add.Triangles);
+        //}
         public void AddPosition(Vector3 add)
         {
             for (int i = 0; i < Polygons.Count; i++)
@@ -84,20 +89,48 @@ namespace VikingEngine.Graphics
             }
         }
         public static PolygonsAndTrianglesColor Empty
-        { get { return new PolygonsAndTrianglesColor(new List<PolygonColor>(), new List<TriangleColor>()); } }
+        { get { return new PolygonsAndTrianglesColor(null, null/*, new List<TriangleColor>()*/); } }
         public PolygonsAndTrianglesColor Clone()
         {
             List<PolygonColor> polys = new List<PolygonColor>();
             polys.AddRange(Polygons);
-            return new PolygonsAndTrianglesColor(polys, new List<TriangleColor>());
+            var clone = new PolygonsAndTrianglesColor();
+            if (Polygons != null)
+            { 
+               clone.Polygons = new List<PolygonColor>(Polygons); 
+            }
+            if (CrossPolygons != null)
+            {
+                clone.CrossPolygons = new List<CrossPolygonColor>(CrossPolygons);
+            }
+            return clone;
         }
         public PolygonType Type { get { return PolygonType.Color; } }
-        public int NumPolygons { get { return Polygons.Count; } }
-        public int NumTriangles { get { return Triangles == null? 0 : Triangles.Count; } }
+        public int NumPolygons => Polygons == null ? 0 : Polygons.Count;
+        public int NumTriangles => 0;//{ get { return 0; } }//return Triangles == null? 0 : Triangles.Count; } }
+        public int NumCrossPolys => CrossPolygons == null? 0 : CrossPolygons.Count;
     }
-    struct PolygonColor
+
+    /// <summary>
+    /// Polygon with four triangles in a cross structure
+    /// </summary>
+    struct CrossPolygonColor
     {
-        
+        public PolygonColor rectangle;
+        public VertexPositionColorTexture centerVertex;
+
+        public CrossPolygonColor(Vector3 center, Vector3 nw, Vector3 ne, Vector3 sw, Vector3 se, VectorRect uv, Color color)
+        {
+            rectangle.V0sw = new VertexPositionColorTexture(sw, color, uv.LeftBottom);
+            rectangle.V1nw = new VertexPositionColorTexture(nw, color, uv.Position);
+            rectangle.V2se = new VertexPositionColorTexture(se, color, uv.RightBottom);
+            rectangle.V3ne = new VertexPositionColorTexture(ne, color, uv.RightTop);
+            centerVertex = new VertexPositionColorTexture((nw + se) * 0.5f, color, uv.Center);
+        }
+    }
+
+    struct PolygonColor
+    {        
         public VertexPositionColorTexture V0sw;
         public VertexPositionColorTexture V1nw;
         public VertexPositionColorTexture V2se;
