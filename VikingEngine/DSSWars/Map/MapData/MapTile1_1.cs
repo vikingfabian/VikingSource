@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         /// </summary>
         public int collectionPointer = -1;
 
-        public float groundY => heightValue * MapHeight2.HeightY;
+        public float groundY => heightValue * MapHeight2.HeightY + MapHeight2.WaterBottomY;
 
         public float GroundY_aboveWater()
         {

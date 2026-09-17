@@ -121,11 +121,11 @@ namespace VikingEngine.Graphics
 
         public CrossPolygonColor(Vector3 center, Vector3 nw, Vector3 ne, Vector3 sw, Vector3 se, VectorRect uv, Color color)
         {
-            rectangle.V0sw = new VertexPositionColorTexture(sw, color, uv.LeftBottom);
-            rectangle.V1nw = new VertexPositionColorTexture(nw, color, uv.Position);
-            rectangle.V2se = new VertexPositionColorTexture(se, color, uv.RightBottom);
-            rectangle.V3ne = new VertexPositionColorTexture(ne, color, uv.RightTop);
-            centerVertex = new VertexPositionColorTexture((nw + se) * 0.5f, color, uv.Center);
+            rectangle.V0sw = new VertexPositionColorTexture(sw, Color.White, uv.LeftBottom);//uv.Position);//uv.RightBottom);//uv.RightTop);//uv.LeftBottom);
+            rectangle.V1nw = new VertexPositionColorTexture(nw, Color.White, uv.Position); //uv.RightBottom);//uv.RightTop);//uv.LeftBottom);//uv.RightBottom);//uv.Position);
+            rectangle.V2se = new VertexPositionColorTexture(se, Color.White, uv.RightBottom);//uv.RightTop);//uv.LeftBottom);//uv.RightTop);//uv.Position);//uv.RightBottom);
+            rectangle.V3ne = new VertexPositionColorTexture(ne, color, uv.RightTop);//uv.Position);//uv.RightBottom);//uv.Position);//uv.LeftBottom);//uv.RightTop);
+            centerVertex = new VertexPositionColorTexture(center, color, uv.Center);
         }
     }
 

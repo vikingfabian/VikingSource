@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map.MapLayer
@@ -49,6 +50,12 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         public void update()
         {
             updateWaterTexture();
+            //crossHeightMap.update(DssRef.state.LocalHost());
+        }
+
+        public void Draw(int cameraIndex, LocalPlayer player)
+        {
+            crossHeightMap.Draw(cameraIndex, player);
         }
 
         public void refresh_async()

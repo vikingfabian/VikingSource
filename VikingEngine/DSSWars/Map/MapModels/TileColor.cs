@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             if (tile.mapTile.heightValue <= MapLib.MapHeight2.WaterPlaneHeight)
             {
                 float depth = /*1f - */tile.mapTile.heightValue / (float)MapLib.MapHeight2.WaterPlaneHeight;//1f - tile.groundY / MapLib.MapHeight2.WaterBottomY;
-                return new Color(depth * 0.5f, depth * 0.5f, depth * 0.5f + 0.2f);
+                return new Color(depth * 0.7f, depth * 0.7f, depth * 0.7f + 0.2f);
             }
             else
             {

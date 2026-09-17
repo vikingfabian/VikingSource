@@ -6,12 +6,14 @@ using System.Text;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map.MapModels
 {
     class CrossHeightMap
     {
-        const int CrossTileWidth = 4;
+        const int CrossTileWidth = 8;
+        const int CrossTileHalfWidth = CrossTileWidth / 2;
         const float CrossTileScale = CrossTileWidth * MapTile1_1.ModelScale;
         const float CrossTileHalfScale = CrossTileScale * 0.5f;
 
@@ -34,7 +36,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
             IntVector2 gridSize = DssRef.world.Size / CrossTileWidth;
 
-            ForXYLoop loop = new ForXYLoop(gridSize);
+            ForXYLoop loop = new ForXYLoop(gridSize-1);
             VectorRect uv = new VectorRect(Vector2.Zero, Vector2.One / gridSize.Vec);
 
 
@@ -44,14 +46,25 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 Vector3 centerWp = new Vector3(loop.Position.X * CrossTileScale + CrossTileHalfScale, 1, loop.Position.Y * CrossTileScale + CrossTileHalfScale);
                 uv.Position = uv.Size * loop.Position.Vec;
                 Graphics.CrossPolygonColor polygon = new CrossPolygonColor(
-                    centerWp,
-                    VectorExt.AddXZ(centerWp, -CrossTileHalfScale, -CrossTileHalfScale),
-                    VectorExt.AddXZ(centerWp, -CrossTileHalfScale, CrossTileHalfScale),
-                    VectorExt.AddXZ(centerWp, CrossTileHalfScale, -CrossTileHalfScale),
-                    VectorExt.AddXZ(centerWp, CrossTileHalfScale, CrossTileHalfScale),
-                    uv, Color.Purple);
+                    verticePos(centerWp, 0, 0, topLeftMapTile, CrossTileHalfWidth, CrossTileHalfWidth),
+                    verticePos(centerWp, -CrossTileHalfScale, -CrossTileHalfScale, topLeftMapTile, 0, 0),//nw
+                    verticePos(centerWp, CrossTileHalfScale, -CrossTileHalfScale, topLeftMapTile, CrossTileWidth, 0),//ne
+                    verticePos(centerWp, -CrossTileHalfScale, CrossTileHalfScale, topLeftMapTile, 0, CrossTileWidth),//sw
+                    verticePos(centerWp, CrossTileHalfScale, CrossTileHalfScale, topLeftMapTile, CrossTileWidth, CrossTileWidth),//se
+                    uv, Color.White);
 
                 crossPolygons.Add(polygon);
+
+                Vector3 verticePos(Vector3 centerWp, float addX, float addZ, IntVector2 tileTopLeft, int tileAddX, int tileAddY)
+                {
+                    centerWp.X += addX;
+                    centerWp.Z += addZ;
+
+                    tileTopLeft.Add(tileAddX, tileAddY);
+                    centerWp.Y = DssRef.world.subTileGrid.Get(tileTopLeft).groundY;
+
+                    return centerWp;
+                }
             }
 
             return crossPolygons;
@@ -61,8 +74,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
         {
             if (player.factionPixelTexture != null)
             {
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
                 GeneratedObjColor.effectGround.Texture = player.factionPixelTexture.texture;
                 heightMapModel.Draw(cameraIndex);
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
                 //Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
                 //mapPlane.Draw(cameraIndex);
                 //unitPlane.Draw(cameraIndex);
@@ -70,12 +85,17 @@ namespace VikingEngine.DSSWars.Map.MapModels
             }
         }
 
+        public void update(LocalPlayer player)
+        {
+            GeneratedObjColor.effectGround.Texture = player.factionPixelTexture.texture;
+        }
+
         public void createModel(List<CrossPolygonColor> crossPolygons)
         {
             heightMapModel?.DeleteMe();
             heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
                 null, crossPolygons), LoadedTexture.WhiteArea, false);
-            heightMapModel.AddToRender(DrawGame.MidLayer);
+            //heightMapModel.AddToRender(DrawGame.MidLayer);
         }
     }
 }

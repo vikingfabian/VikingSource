@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.GameState
         public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
         public MapLayer_Factions factionsMap;
-        protected MapLayer_Overview overviewMap;
+        public MapLayer_Overview overviewMap;
         public MapLayer_Detail detailMap;
         public Culling culling;
 

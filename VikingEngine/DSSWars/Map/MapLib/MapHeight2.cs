@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
         public const float WaterSurfaceY = -0.1f;
 
         public const byte ShallowWaterHeight = WaterPlaneHeight - 16;
-        public const float WaterBottomY = WaterSurfaceY - WaterPlaneHeight * HeightY;
+        public const float WaterBottomY = WaterSurfaceY - WaterPlaneHeight * HeightY - 0.5f * HeightY;
         public const float LowGroundY = WaterSurfaceY + 30 * HeightY;
         public const float DefaultGroundY = WaterSurfaceY + 60 * HeightY;
         public const float MountainStartY = DefaultGroundY + 90 * HeightY;

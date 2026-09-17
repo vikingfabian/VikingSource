@@ -251,8 +251,11 @@ namespace VikingEngine.DSSWars
                     //graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
                     DssRef.state.detailMap.Update_outOfFocus();
+                   
                     DrawGenerated(MidLayer, cameraIndex);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
+                    DssRef.state.overviewMap.Draw(cameraIndex, localPlayer);
                     Draw3d(MidLayer, cameraIndex);
                     Draw3d(FarLayer, cameraIndex);
                     localPlayer.DrawMidLayer_Mesh(cameraIndex);

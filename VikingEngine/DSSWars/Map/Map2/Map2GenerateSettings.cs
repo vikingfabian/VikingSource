@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public MapScale mapScale = new MapScale();
 
-        public int nodeFillPerc = 80;//15;
+        public int nodeFillPerc = 15;
         public int nodeConnectPerc = 70;
 
         public int nodeFillPercProperty(object tag, bool set, int value)
