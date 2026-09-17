@@ -150,6 +150,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
             Color col1 = DssRef.map.bioms.bioms[(int)biom].colors_height[biomColorheight].Color;
             if (percNextHeight > 0)
             {
+                if (biomColorheight == 7)
+                {
+                    lib.DoNothing();
+                }
                 Color col2 = DssRef.map.bioms.bioms[(int)biom].colors_height[biomColorheight + 1].Color;
                 return ColorExt.Mix(col2, col1, percNextHeight);
             }

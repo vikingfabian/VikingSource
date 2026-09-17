@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         //public TileContent tileContent = TileContent.NONE;
         public byte BorderCount;
 
-        public byte secondaryBiomStrength = 0;
+        //public byte secondaryBiomStrength = 0;
         //public bool inRender = false;
 
         //public static void Init()
@@ -715,7 +715,7 @@ namespace VikingEngine.DSSWars.Map.MapData
                    $"  SeaDistanceHeatMap: {seaDistanceHeatMap}\n" +
                    $"  Borders (N/E/S/W): {BorderRegion_North} / {BorderRegion_East} / {BorderRegion_South} / {BorderRegion_West} (Count: {BorderCount})\n" +
                    $"  Biom1: {biom1}\n" +
-                   $"  Biom2: {biom2} (Weight: {secondBiomWeight}, Strength: {secondaryBiomStrength})\n" +
+                   $"  Biom2: {biom2} (Weight: {secondBiomWeight})\n" +
                    $"  BiomColorHeight: {biomColorHeight}";
         }
         //static float[] TypeToWalkingMultiplier;

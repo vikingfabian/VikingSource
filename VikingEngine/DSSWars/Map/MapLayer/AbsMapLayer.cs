@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             //{
             waterSurface.texture = WaterTex()[0];
             int repeatCount = detailLayer ? 2 : 1;
-            waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.Size * repeatCount);
+            waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.chunkGrid.Size * repeatCount);
             //}
             //else
             //{

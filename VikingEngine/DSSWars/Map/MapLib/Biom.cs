@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Map.Settings
 {
@@ -160,50 +161,52 @@ namespace VikingEngine.DSSWars.Map.Settings
             this.percSoftTree = percSoftTree;
             this.percDryWood = percDryWood;
             this.brightCoast = brightCoast;
+            TileColor mountainTop = mountain;
+            mountainTop.Color = ColorExt.Mix(mountain.Color, Color.White, 0.7f);
             //Under water coastal color
             //for (int height = 0; height <= Height.LowWaterHeight; height++)
             {
                 TileColor seafloor = brightCoast;
                 seafloor.Color = Color.Black;//ColorExt.VeryDarkGray;//ColorExt.ChangeBrighness(WorldData.WaterDarkCol, -50);
                 colors_height[BiomHeightColor.LowerWaterHeight] = seafloor;
-                colors_height[BiomHeightColor.WaterSurfaceHeight] = brightCoast;                
+                colors_height[BiomHeightColor.WaterSurfaceHeight] = brightCoast;    //2            
             }
 
             //Mix towards bright coast
             {
-                int height = BiomHeightColor.MinLandHeight;
+                int height = BiomHeightColor.MinLandHeight;//3
                 float percCoast = 0.5f;
                 colors_height[height] = Settings.TileColor.Mix(brightCoast, mainCol, percCoast);
             }
 
             {
-                int height = BiomHeightColor.MinLandHeight + 1;
+                int height = BiomHeightColor.MinLandHeight + 1;//4
                 float percCoast = 0.2f;
                 colors_height[height] = Settings.TileColor.Mix(brightCoast, mainCol, percCoast);
             }
 
             //Main level colors
             {
-                colors_height[MainColorHeight] = mainCol;
+                colors_height[MainColorHeight] = mainCol;//5
             }
 
             //Mix towards dark mountain
             {
-                int height = MainColorHeight + 1;
+                //int height = MainColorHeight + 1;
                 float percDark = 0.2f;
-                colors_height[height] = Settings.TileColor.Mix(darkGradient, mainCol, percDark);
+                colors_height[6] = mountain;//Settings.TileColor.Mix(darkGradient, mainCol, percDark);
             }
 
             {
-                const int MountainStart = 5;
+               // const int MountainStart = 5;
                 float percDark = 0.4f;
-                colors_height[MountainStart] = Settings.TileColor.Mix(darkGradient, mainCol, percDark);
+                colors_height[7] = mountainTop;//Settings.TileColor.Mix(darkGradient, mainCol, percDark);
 
-                float percMountainGray = 0.8f;
-                colors_height[BiomHeightColor.MaxHeight] = Settings.TileColor.Mix(mountain, colors_height[MountainStart], percMountainGray);
+                //float percMountainGray = 0.8f;
+                //colors_height[BiomHeightColor.MaxHeight] = Settings.TileColor.Mix(mountain, colors_height[7], percMountainGray);
 
-                
-                colors_height[BiomHeightColor.MaxHeight] = mountain;
+
+                colors_height[BiomHeightColor.MaxHeight] = mountainTop;
             }
 
 

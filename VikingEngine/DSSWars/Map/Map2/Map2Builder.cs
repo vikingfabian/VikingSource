@@ -42,13 +42,20 @@ namespace VikingEngine.DSSWars.Map.Map2
                     int tileY = y * SumTile4_4.TileWidth + 1;
 
                     var genTile = generator.iconWorldScaledUp.iconGrid.Get(tileX, tileY);
+
+                    
+
                     SumTile4_4 sumTile = new SumTile4_4()
                     {
                         biom1 = genTile.biom1,
                         biom2 = genTile.biom2,
-                        secondaryBiomStrength = (byte)(genTile.secondBiomWeight * byte.MaxValue),
+                        secondBiomWeight = (byte)(genTile.secondBiomWeight * byte.MaxValue),
                         biomColorHeight = (byte)(MapHeight2.HeightY_Interval.GetValueBytePercentPos_WithBound(genTile.groundY) / MapHeight2.ColorLayerHeight)
                     };
+                    //if (genTile.secondBiomWeight > 0.1f)
+                    //{
+                    //    lib.DoNothing();
+                    //}
                     world.tileGrid.Set(x, y, sumTile);
                 }
             });

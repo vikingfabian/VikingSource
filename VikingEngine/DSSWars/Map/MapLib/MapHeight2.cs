@@ -17,12 +17,13 @@ namespace VikingEngine.DSSWars.Map.MapLib
 
         public const byte ShallowWaterHeight = WaterPlaneHeight - 16;
         public const float WaterBottomY = WaterSurfaceY - WaterPlaneHeight * HeightY - 0.5f * HeightY;
-        public const float LowGroundY = WaterSurfaceY + 30 * HeightY;
-        public const float DefaultGroundY = WaterSurfaceY + 60 * HeightY;
-        public const float MountainStartY = DefaultGroundY + 90 * HeightY;
-        public const float MountainPeekY = DefaultGroundY + 120 * HeightY;
+        public const float LowGroundY = WaterSurfaceY + 20 * HeightY;
+        public const float DefaultGroundY = WaterSurfaceY + 40 * HeightY;
+        public const float MountainStartY = DefaultGroundY + 60 * HeightY;
+        
         public const float MaxY = WaterBottomY + byte.MaxValue * HeightY;
 
+        public const float MountainPeekY = MaxY - HeightY * 4f;
         public const float WaterFoamY = WaterSurfaceY + 0.01f;
         public const float UnitMinY = WaterSurfaceY;
 
