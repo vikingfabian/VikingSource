@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
 
         virtual protected LocalPlayer createLocalPlayer(Faction faction)
         {
-            return new BattleLabPlayer(faction);
+            return new MapEditorPlayer(faction);
         }
 
         virtual protected void initScenario()

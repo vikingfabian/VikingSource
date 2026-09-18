@@ -81,6 +81,7 @@ namespace VikingEngine.DSSWars
         public IntVector2 Size;
 
         public Vector2 unitSize;
+        public Vector2 unitSizeInv;
         public IntVector2 HalfSize;
         
         public UnitCollAreaGrid unitCollAreaGrid;
@@ -136,6 +137,27 @@ namespace VikingEngine.DSSWars
                 mapTile = subTileGrid.Get(mapTilePos),
                 sumTile = tileGrid.Get(WP.MaptileToSumTile(mapTilePos))
             };
+        }
+        public CombinedTile GetCombinedTileAndLean(IntVector2 mapTilePos, out int leanY)
+        {
+            var result = new CombinedTile()
+            {
+                mapTile = subTileGrid.Get(mapTilePos),
+                sumTile = tileGrid.Get(WP.MaptileToSumTile(mapTilePos))
+            };
+
+            mapTilePos.Y++;
+
+            if (result.mapTile.heightValue >= MapHeight2.MountainStarHeight && mapTilePos.Y < subTileGrid.Size.Y)
+            {
+                leanY = result.mapTile.heightValue - subTileGrid.Get(mapTilePos).heightValue;
+            }
+            else
+            { 
+                leanY = 0;
+            }
+
+            return result;
         }
 
         public bool GetMapAndSumTile_Safe(IntVector2 mapTilePos, out MapTile1_1 mapTile, out SumTile4_4 sumTile)
@@ -339,6 +361,7 @@ namespace VikingEngine.DSSWars
             maptileBoundsSubOne.AddRadius(-1);
 
             unitSize = Size.Vec * MapTile1_1.ModelScale;
+            unitSizeInv = Vector2.One / unitSize;
             unitBounds = new VectorRect(Vector2.Zero, unitSize);
             unitBounds.AddRadius(-1f);
 

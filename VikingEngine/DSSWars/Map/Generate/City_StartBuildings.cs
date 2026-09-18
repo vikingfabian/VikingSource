@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.GameObject
                 List<IntVector2> emptyGeneral = new List<IntVector2>();
                 Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);
 
-                IntVector2 topleft = WP.ToSubTilePos_TopLeft(maptilePos) + startSubTilePos;
+                IntVector2 topleft = maptilePos + startSubTilePos;
 
                 int tower;
                 //int gate = (int)TerrainWallType.StoneGate;
@@ -163,106 +163,108 @@ namespace VikingEngine.DSSWars.GameObject
                     TerrainMainType main = TerrainMainType.Building;
                     int sub = -1;
                     IntVector2 pos = topleft + templateLoop.Position;
-                    var subTile = world.subTileGrid.Get(pos);
-
-                    switch (template.Get(templateLoop.Position))
+                    if (world.subTileGrid.TryGet(pos, out var subTile))
                     {
-                        case CityTemplateCellType.General:
-                            if (rnd.Chance(percBuilding))
-                            {
-                                sub = servicehouse;
-                                onServiceHouseBuild(true, largeServiceHouse);
-                            }
-                            else
-                            {
-                                main = TerrainMainType.Decor;
-                                sub = road;
-                                emptyGeneral.Add(pos);
-                            }
-                            break;
-                        case CityTemplateCellType.Wall:
-                            {
-                                DefenceStatus defence = new DefenceStatus();
-                                main = TerrainMainType.Wall;
-                                sub = wall;
-                                defence.autoAssign = rnd.Chance(percWallGuard);
 
-                                defence.init(pos, false);
-                                defenceBuildings.Add(defence);
-                            }
-                            break;
-                        case CityTemplateCellType.OuterWall:
-                            {
-                                DefenceStatus defence = new DefenceStatus();
-                                main = TerrainMainType.Wall;
-                                sub = lowWall;
-                                defence.autoAssign = rnd.Chance(percWallGuard);
-
-                                defence.init(pos, false);
-                                defenceBuildings.Add(defence);
-                            }
-                            break;
-                        case CityTemplateCellType.Tower:
-                            {
-                                DefenceStatus defence = new DefenceStatus();
-                                main = TerrainMainType.Wall;
-                                sub = tower;
-                                defence.autoAssign = true;
-
-                                defence.init(pos, true);
-                                defenceBuildings.Add(defence);
-                            }
-                            break;
-                        case CityTemplateCellType.Gate:
-                            {
-                                main = TerrainMainType.Decor;
-                                sub = road;
-                            }
-                            break;
-                        case CityTemplateCellType.Road:
-                            main = TerrainMainType.Decor;
-                            sub = road;
-                            break;
-
-                        case CityTemplateCellType.CraftArea:
-                            if (craftStations.Count > 0)
-                            {
-                                var building = arraylib.RandomListMemberPop(craftStations, rnd);
-                                sub = (int)building;
-                                switch (building)
+                        switch (template.Get(templateLoop.Position))
+                        {
+                            case CityTemplateCellType.General:
+                                if (rnd.Chance(percBuilding))
                                 {
-                                    case TerrainBuildingType.GuardHouse_Small:
-                                        onGuardHouseBuild(true, false);
-                                        break;
-                                    case TerrainBuildingType.GuardHouse_Large:
-                                        onGuardHouseBuild(true, true);
-                                        break;
+                                    sub = servicehouse;
+                                    onServiceHouseBuild(true, largeServiceHouse);
                                 }
-                            }
-                            else
-                            {
+                                else
+                                {
+                                    main = TerrainMainType.Decor;
+                                    sub = road;
+                                    emptyGeneral.Add(pos);
+                                }
+                                break;
+                            case CityTemplateCellType.Wall:
+                                {
+                                    DefenceStatus defence = new DefenceStatus();
+                                    main = TerrainMainType.Wall;
+                                    sub = wall;
+                                    defence.autoAssign = rnd.Chance(percWallGuard);
+
+                                    defence.init(pos, false);
+                                    defenceBuildings.Add(defence);
+                                }
+                                break;
+                            case CityTemplateCellType.OuterWall:
+                                {
+                                    DefenceStatus defence = new DefenceStatus();
+                                    main = TerrainMainType.Wall;
+                                    sub = lowWall;
+                                    defence.autoAssign = rnd.Chance(percWallGuard);
+
+                                    defence.init(pos, false);
+                                    defenceBuildings.Add(defence);
+                                }
+                                break;
+                            case CityTemplateCellType.Tower:
+                                {
+                                    DefenceStatus defence = new DefenceStatus();
+                                    main = TerrainMainType.Wall;
+                                    sub = tower;
+                                    defence.autoAssign = true;
+
+                                    defence.init(pos, true);
+                                    defenceBuildings.Add(defence);
+                                }
+                                break;
+                            case CityTemplateCellType.Gate:
+                                {
+                                    main = TerrainMainType.Decor;
+                                    sub = road;
+                                }
+                                break;
+                            case CityTemplateCellType.Road:
                                 main = TerrainMainType.Decor;
                                 sub = road;
-                                barracksReservedSpot = pos;
-                            }
-                            break;
-                        case CityTemplateCellType.CityHall:
-                            sub = centerHall;
-                            cityHallSubtilePos = pos;
-                            break;
-                        case CityTemplateCellType.CityCenterSquare:
-                            main = TerrainMainType.Decor;
-                            sub = (int)TerrainDecorType.Square;
-                            citySquareSubtilePos = pos;
-                            break;
-                    }
+                                break;
 
-                    if (sub >= 0)
-                    {
-                        subTile.SetType(main, sub, 1);
-                        world.subTileGrid.Set(pos, subTile);
-                    }
+                            case CityTemplateCellType.CraftArea:
+                                if (craftStations.Count > 0)
+                                {
+                                    var building = arraylib.RandomListMemberPop(craftStations, rnd);
+                                    sub = (int)building;
+                                    switch (building)
+                                    {
+                                        case TerrainBuildingType.GuardHouse_Small:
+                                            onGuardHouseBuild(true, false);
+                                            break;
+                                        case TerrainBuildingType.GuardHouse_Large:
+                                            onGuardHouseBuild(true, true);
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    main = TerrainMainType.Decor;
+                                    sub = road;
+                                    barracksReservedSpot = pos;
+                                }
+                                break;
+                            case CityTemplateCellType.CityHall:
+                                sub = centerHall;
+                                cityHallSubtilePos = pos;
+                                break;
+                            case CityTemplateCellType.CityCenterSquare:
+                                main = TerrainMainType.Decor;
+                                sub = (int)TerrainDecorType.Square;
+                                citySquareSubtilePos = pos;
+                                break;
+                        }
 
+                        if (sub >= 0)
+                        {
+                            subTile.SetType(main, sub, 1);
+                            world.subTileGrid.Set(pos, subTile);
+                        }
+
+                    }
                 }
 
                 freeServiceMen.amount -= cityServiceCount;

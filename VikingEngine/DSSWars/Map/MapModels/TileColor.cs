@@ -5,6 +5,7 @@ using System.Text;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map.MapModels
@@ -41,23 +42,23 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
     static class TileColor
     {
-        public static Color FactionAndTerrainColor(CombinedTile tile)
+        public static Color FactionAndTerrainColor(CombinedTile tile, int leanY)
         {
-            return TerrainColor(tile);
+            return TerrainColor(tile, leanY);
         }
-        public static Color MinimapColor(CombinedTile tile)
+        public static Color MinimapColor(CombinedTile tile, int leanY)
         {
-            return TerrainColor(tile);
+            return TerrainColor(tile, leanY);
         }
-        public static Color TerrainColor(CombinedTile tile)
+        public static Color TerrainColor(CombinedTile tile, int leanY)
         {
-            if (tile.mapTile.heightValue <= MapLib.MapHeight2.WaterPlaneHeight)
-            {
-                float depth = /*1f - */tile.mapTile.heightValue / (float)MapLib.MapHeight2.WaterPlaneHeight;//1f - tile.groundY / MapLib.MapHeight2.WaterBottomY;
-                return new Color(depth * 0.7f, depth * 0.7f, depth * 0.7f + 0.2f);
-            }
-            else
-            {
+            //if (tile.mapTile.heightValue <= MapLib.MapHeight2.WaterPlaneHeight)
+            //{
+            //    float depth = /*1f - */tile.mapTile.heightValue / (float)MapLib.MapHeight2.WaterPlaneHeight;//1f - tile.groundY / MapLib.MapHeight2.WaterBottomY;
+            //    return new Color(depth * 0.7f, depth * 0.7f, depth * 0.7f + 0.2f);
+            //}
+            //else
+            //{
                 //float height = tile.groundY / MapLib.MapHeight2.MountainPeekY;
                 //int biomColorheight = Bound.Set(MapLib.MapHeight2.MinLandHeight +  Convert.ToInt32( (ColorHeight.MaxHeight - ColorHeight.MinLandHeight) * height), 0, 9);
 
@@ -72,10 +73,15 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     color = ColorExt.Mix(col2, color, tile.sumTile.secondBiomWeight / (float)byte.MaxValue);
                 }
 
+            if (leanY < -1)
+            {
+                color = ColorExt.MultiplyRGB(color, tile.mapTile.heightValue < MapHeight2.MountainStarHeight? 0.97f : 0.92f);
+            }
+
                 return color;
                 //depth *= 0.75f;
                 //tile.color = ColorExt.MultiplyRGB(col, 0.5f + 0.9f * height);//new Color(depth, depth + 0.2f, depth);
-            }
+            //}
         }
 
         public static Color factionColor(CombinedTile tile)

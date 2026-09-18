@@ -18,6 +18,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         public int nodeFillPerc = 15;
         public int nodeConnectPerc = 70;
 
+        public float percentageUnclaimed = 0.25f;
+
         public int nodeFillPercProperty(object tag, bool set, int value)
         {
             if (set)

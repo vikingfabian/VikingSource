@@ -89,6 +89,12 @@ namespace VikingEngine.DSSWars.Map.MapData
             clearCityData();
         }
 
+        public void GetBiom(out BiomHeightColor biomHeight, out Biom biom)
+        {
+            biom = DssRef.map.bioms.bioms[(int)biom1];
+            biomHeight = DssRef.map.heigts[biomColorHeight];
+        }
+
         public void clearCityData()
         { 
              CityIndex = ushort.MaxValue;
@@ -398,7 +404,11 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public Faction Faction()
         {
-           return DssRef.world.cities[CityIndex].pfaction.GetFaction();
+            if (CityIndex == ushort.MaxValue)
+            {
+                return null;
+            }
+            return DssRef.world.cities[CityIndex].pfaction.GetFaction();
         }
         //public Faction Faction_Safe()
         //{

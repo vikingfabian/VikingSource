@@ -15,46 +15,40 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         //int waterEdgeFrame = 0;
         double waterMoveCurve = 0;
 
-        protected Graphics.Mesh waterSurface, waterBottom;
-        protected void WaterModel(bool detailLayer)
-        {
-            //Graphics.Mesh waterBottom;
+        protected Graphics.Mesh waterSurface/*, waterBottom*/;
 
+        public AbsMapLayer(int layer)
+        {
+            WaterModel(layer);
+        }
+
+        protected void WaterModel(int layer)
+        {
+            
             var vol = WaterModelVolume();
 
-            waterBottom = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
-                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.DarkBlue, false);
-            waterBottom.Y -= 0.6f;
-            waterBottom.Scale = vol.Scale;
+            //waterBottom = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
+            //    TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.DarkBlue, false);
+            //waterBottom.Y -= 0.6f;
+            //waterBottom.Scale = vol.Scale;
 
             waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
                 TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,
                 false);
 
-            //if (highDetail)
-            //{
+           
             waterSurface.texture = WaterTex()[0];
-            int repeatCount = detailLayer ? 2 : 1;
+            int repeatCount = layer == DrawGame.UnitDetailLayer ? 2 : 1;
             waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.chunkGrid.Size * repeatCount);
-            //}
-            //else
-            //{
-            //    waterSurface.effectType = TextureEffectType.SeaNoise;
-
-            //    waterSurface.Color = WorldData.WaterCol;//new Color(14, 155, 246);
-            //    //new Color(4.3f, 48.6f,77.3f);
-            //}
+           
             waterSurface.Scale = vol.Scale;
             const float SurfaceTrans = 0.8f;
             waterSurface.Opacity = SurfaceTrans;
 
-            int drawLayer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
-            //if (!detailLayer)
-            {
-                waterSurface.AddToRender(drawLayer);
-            }
-            waterBottom.AddToRender(drawLayer);
-            //waterSurface.Visible = true;
+            waterSurface.AddToRender(layer);
+            
+            //waterBottom.AddToRender(layer);
+            
         }
 
         abstract protected Texture2D[] WaterTex();

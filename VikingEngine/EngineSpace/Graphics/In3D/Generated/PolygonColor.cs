@@ -127,6 +127,12 @@ namespace VikingEngine.Graphics
             rectangle.V3ne = new VertexPositionColorTexture(ne, color, uv.RightTop);//uv.Position);//uv.RightBottom);//uv.Position);//uv.LeftBottom);//uv.RightTop);
             centerVertex = new VertexPositionColorTexture(center, color, uv.Center);
         }
+
+        public void SetColor(Color color)
+        { 
+            centerVertex.Color  = color;
+            rectangle.SetColor(color);
+        }
     }
 
     struct PolygonColor

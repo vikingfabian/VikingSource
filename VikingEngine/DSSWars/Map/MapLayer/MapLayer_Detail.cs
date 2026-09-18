@@ -4,10 +4,13 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapModels;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.Commander.UnitsData;
 using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
 
@@ -25,22 +28,23 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         public List<Graphics.PolygonColor> waterEdgePolygons = new List<Graphics.PolygonColor>(64);
 
         public static Graphics.CustomEffect_NoColor ModelEffect = new Graphics.CustomEffect_NoColor("FlatVerticeColor", false);
-        
 
+        CrossHeightMap crossHeightMap;
         /// <summary>
         /// Trigger a reload of the map
         /// </summary>
         public bool oneSecondUpdate = false;
 
-        public MapLayer_Detail()
+        public MapLayer_Detail(CrossHeightMap crossHeightMap)
+            : base(DrawGame.UnitDetailLayer)
         {
             DssRef.state.detailMap = this;
             tiles = new SpottedArray<DetailModelTile>(1024);
 
-            WaterModel(true);
+            //WaterModel(DrawGame.UnitDetailLayer);
 
             refreshLoadSpeed();
-
+            this.crossHeightMap = crossHeightMap;
         }
 
         //public OceanProcess createOceanProcess()
@@ -65,8 +69,15 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             }
         }
 
-        public void updateAndDraw(bool depth, Effect shader, LightProjection light, int cameraIndex)
+        public void drawCrossMap(int cameraIndex, LocalPlayer player)
         {
+            crossHeightMap.Draw(cameraIndex, player, -MapHeight2.HeightY * 28f);
+        }
+
+        public void updateAndDraw(bool depth, Effect shader, LightProjection light, int cameraIndex, LocalPlayer player)
+        {
+            
+
             updateWaterTexture();
 
             var tilesC = tiles.counter();

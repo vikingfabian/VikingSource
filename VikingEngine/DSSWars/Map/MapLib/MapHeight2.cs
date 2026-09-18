@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map.MapLib
 {
     static class MapHeight2
     {
+        const int VoxelCubeWidth = 24;
+
         public const byte ColorLayerHeight = 32;
         public const int WaterColorLayersCount = 2;
-        public const float HeightY = 0.004f;
+        public const float HeightY = MapTile1_1.ModelScale / VoxelCubeWidth; //0.005208333
 
         public const byte WaterPlaneHeight = ColorLayerHeight * WaterColorLayersCount; //64
         public const float WaterSurfaceY = -0.1f;
@@ -19,6 +22,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
         public const float WaterBottomY = WaterSurfaceY - WaterPlaneHeight * HeightY - 0.5f * HeightY;
         public const float LowGroundY = WaterSurfaceY + 20 * HeightY;
         public const float DefaultGroundY = WaterSurfaceY + 40 * HeightY;
+
+        public const int MountainStarHeight = ColorLayerHeight * 6;
         public const float MountainStartY = DefaultGroundY + 60 * HeightY;
         
         public const float MaxY = WaterBottomY + byte.MaxValue * HeightY;

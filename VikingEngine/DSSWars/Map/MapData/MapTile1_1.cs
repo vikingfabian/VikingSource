@@ -77,7 +77,8 @@ namespace VikingEngine.DSSWars.Map.MapData
         /// </summary>
         public int collectionPointer = -1;
 
-        public float groundY => heightValue * MapHeight2.HeightY + MapHeight2.WaterBottomY;
+        public float groundY => heightValue <= MapHeight2.MountainStarHeight ? heightValue * MapHeight2.HeightY + MapHeight2.WaterBottomY :
+            MapHeight2.MountainStarHeight * MapHeight2.HeightY + (heightValue - MapHeight2.MountainStarHeight) * MapHeight2.HeightY * 4f + MapHeight2.WaterBottomY;
 
         public float GroundY_aboveWater()
         {

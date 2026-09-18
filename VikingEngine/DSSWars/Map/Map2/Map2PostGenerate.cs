@@ -7,7 +7,10 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapProcess;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.LootFest.Data;
+using VikingEngine.PJ.Tanks;
 
 namespace VikingEngine.DSSWars.Map.Map2
 {
@@ -17,13 +20,153 @@ namespace VikingEngine.DSSWars.Map.Map2
         GenerateRegion region = new GenerateRegion();
         CityCultureCollection cityCultureCollection = new CityCultureCollection();
         WorldData world;
-        public Map2PostGenerate(WorldData world, Map2GenerateSettings generateSettings) 
+        VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap;
+        public Map2PostGenerate(WorldData world) 
         { 
             this.world = world;
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.worldId.seed);
+        }
+
+        public async void citiesAndFactionsSetup(Map2GenerateSettings generateSettings)
+        {
+            cityAreaClaim();
 
             factionStartAreas(world.metaData.mapSize,
                 DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full,
                 generateSettings);
+
+            placeCityBuildings();
+        }
+
+        public async void cityAreaClaim()
+        {
+            List<Task> tasks = new List<Task>();
+
+            foreach (var c in world.cities)
+            {
+                City city = c;
+                
+                // Start the task and add it to the list
+                tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        CityMapClaim2.CityClaim(city);
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+
+                }));
+            }
+
+            // Wait for all tasks to complete
+            await Task.WhenAll(tasks);
+        }
+
+        public async void placeCityBuildings()
+        {
+            CityTemplateCollection templateCollection = new CityTemplateCollection();
+
+            // Create a list to hold the tasks
+            List<Task> tasks = new List<Task>();
+
+            foreach (var c in world.cities)
+            {
+                City city = c;
+
+
+                // Start the task and add it to the list
+                tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        city.createBuildingSubtiles(world, templateCollection);
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+
+                }));
+            }
+
+            // Wait for all tasks to complete
+            await Task.WhenAll(tasks);
+        }
+
+        void factionStartAreas(MapSize mapSize, bool oneCity, Map2GenerateSettings generateSettings)
+        {
+            int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
+
+            if (mapSize >= MapSize.Epic)
+            {
+                goalWorkForce += DssConst.HeadCityStartMaxWorkForce;
+            }
+            else if (mapSize >= MapSize.Huge)
+            {
+                goalWorkForce += DssConst.LargeCityStartMaxWorkForce;
+            }
+
+            bool useRandomEmpires = mapSize >= MapSize.Medium;
+            IntervalF randomEmpiresSizeMulti = new IntervalF(1.5f, 2f + (mapSize - MapSize.Medium));
+
+            //if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            //{
+            //    namedFactionsOnMap_QuickMatch(DssRef.difficulty.QuickMatchPlayerStartSize(), oneCity);
+            //}
+            //else
+            {
+                namedFactionsOnMap(goalWorkForce, oneCity);
+            }
+            //var last = world.cities.Last();
+
+            foreach (City c in world.cities)
+            {
+                if (c.pfaction.IsEmpty() && c.cityType > CityType.UnClaimed)
+                {
+                    int size = goalWorkForce;
+                    bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
+                    if (rndEmpire)
+                    {
+                        size = MathExt.MultiplyInt(randomEmpiresSizeMulti.GetRandom(world.rnd), size);
+                    }
+
+                    size = MathExt.MultiplyInt(size, 1.0 - generateSettings.percentageUnclaimed);
+
+                    //region.Reset((int)size);
+                    var faction = new Faction(world, FactionType.DefaultAi);
+                    int regionCurrentWorkforce = region.GetStartFactionRegion(size, oneCity, c, world, faction);
+
+
+                    if ((regionCurrentWorkforce >= size && !rndEmpire) || oneCity)
+                    {
+                        faction.availableForPlayer = true;
+                    }
+                }
+            }
+
+            if (world.factions.Count > DssLib.RtsMaxFactions)
+            {
+                throw new Exception("RtsMaxFactions");
+            }
+        }
+
+        public void placeTerrain()
+        {
+            List<IntVector2> mineLocations = new List<IntVector2>(1024);
+            List<IntVector2> animalSpawns = new List<IntVector2>(1024);
+
+            Parallel.For(0, world.subTileGrid.Size.X, x =>
+            {
+                for (int y = 0; y < world.subTileGrid.Size.Y; y++)
+                {
+                    var ctile = world.GetCombinedTile(new IntVector2(x, y));//new MapTile1_1(tiletype, subType, rndColor, topY);
+                    TerrainContent.createSubTileContent(x, y, ref ctile, world, noiseMap, mineLocations, animalSpawns);
+                    world.subTileGrid.Set(x, y, ctile.mapTile);
+                }
+            });
         }
         void bindTilesToCities()
         {
@@ -157,7 +300,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             });
         }
-
+        /*
         void factionStartAreas(MapSize mapSize, bool oneCity, Map2GenerateSettings generateSettings)
         {
             int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
@@ -195,7 +338,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                         size = MathExt.MultiplyInt(randomEmpiresSizeMulti.GetRandom(world.rnd), size);
                     }
 
-                    size = MathExt.MultiplyInt(size, 1.0 /*- generateSettings.percentageUnclaimed*/);
+                    size = MathExt.MultiplyInt(size, 1.0 - generateSettings.percentageUnclaimed);
 
                     //region.Reset((int)size);
                     var faction = new Faction(world, FactionType.DefaultAi);
@@ -214,7 +357,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 throw new Exception("RtsMaxFactions");
             }
         }
-
+        */
         void namedFactionsOnMap(int standardWorkForce, bool oneCity)
         {
             bool bFullStory = DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory;

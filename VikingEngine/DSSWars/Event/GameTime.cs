@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Event
                         if (Ref.gamesett.modelShadow)
                         {
                             shadow_LightDirection = new Vector3(-(0.2f + 0.15f * diff), -(1f - 0.15f * diff), -(0.2f + 0.15f * diff));
-                            shadow_SunColor = new Vector3(0.4f + diff * 0.12f, 0.45f, 0.45f) * (0.7f + light);
+                            shadow_SunColor = new Vector3(0.4f + diff * 0.12f, 0.45f, 0.45f) * (0.5f + light);
                         }
                         else if (Ref.gamesett.ModelLightShaderEffect)
                         {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
@@ -45,11 +46,13 @@ namespace VikingEngine.DSSWars.Interface
             hoverHighLight.Opacity = 0.5f;
             hoverHighLight.Visible = false;
 
-            mapTexture = new ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, DssRef.world.Size.Vec, ImageLayers.Background0, false, false);
-            mapTexture.ImageSource = new Rectangle(0, 0, DssRef.world.Size.X, DssRef.world.Size.Y);
+
+            var textureSz = AbsMapPixelTexture.PixelTextureScale();
+            mapTexture = new ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, textureSz.Vec, ImageLayers.Background0, false, false);
+            mapTexture.ImageSource = new Rectangle(0, 0, textureSz.X, textureSz.Y);
            
-            unitTexture = new ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, DssRef.world.Size.Vec, ImageLayers.Foreground3, false, false);
-            unitTexture.ImageSource = new Rectangle(0, 0, DssRef.world.Size.X, DssRef.world.Size.Y);
+            unitTexture = new ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, textureSz.Vec, ImageLayers.Foreground3, false, false);
+            unitTexture.ImageSource = new Rectangle(0, 0, textureSz.X, textureSz.Y);
 
             textureSize = mapTexture.size;
 
@@ -168,7 +171,7 @@ namespace VikingEngine.DSSWars.Interface
             Vector2 localPos = screenPos - area.Position;
             Vector2 mapPos = localPos - mapTexture.position;
 
-            return mapPos / scale;
+            return mapPos / scale / textureSize * DssRef.world.unitSize;
         }
 
         void refreshScale()
@@ -177,10 +180,10 @@ namespace VikingEngine.DSSWars.Interface
             unitTexture.size = mapTexture.size;
         }
 
-        void refreshPosition(LocalPlayer player) 
-        { 
-            Vector2 center = player.gameControls.map.camera.LookTargetXZ;
-            mapTexture.position = -(center * scale) + areaHalfSize;
+        void refreshPosition(LocalPlayer player)
+        {
+            //Vector2 center = player.gameControls.map.camera.LookTargetXZ * DssRef.world.unitSizeInv * textureSize;
+            mapTexture.position = -(lookCenter(player) * scale) + areaHalfSize;
             unitTexture.position = mapTexture.position;
         }
 
@@ -190,7 +193,7 @@ namespace VikingEngine.DSSWars.Interface
             var state = DssRef.state.culling.cullingStateA ? p.stateA : p.stateB;
             cameraOutline.rectangle.Size = state.enterArea.size.Vec;
 
-            cameraOutline.rectangle.Center = (player.gameControls.map.camera.LookTargetXZ * scale) + mapTexture.position;
+            cameraOutline.rectangle.Center = (lookCenter(player) * scale) + mapTexture.position;
             cameraOutline.Refresh();
 
             if (viewCameraBound == state.farLayer)
@@ -198,6 +201,11 @@ namespace VikingEngine.DSSWars.Interface
                 viewCameraBound = !state.farLayer;
                 cameraOutline.setOpacity(viewCameraBound ? 1f: 0.25f);
             }
+        }
+
+        Vector2 lookCenter(LocalPlayer player)
+        {
+            return player.gameControls.map.camera.LookTargetXZ * DssRef.world.unitSizeInv * textureSize;
         }
     }
 }

@@ -125,9 +125,13 @@ namespace VikingEngine.DSSWars.GameState
             culling = new Culling();
 
             CrossHeightMap crossHeightMap = new CrossHeightMap();
-            factionsMap = new MapLayer_Factions();
+
+            factionsMap = new MapLayer_Factions(crossHeightMap);
             overviewMap = new MapLayer_Overview(factionsMap, crossHeightMap);
-            detailMap = new MapLayer_Detail();
+            detailMap = new MapLayer_Detail(crossHeightMap);
+
+            crossHeightMap.init();
+
             ((DrawGame)draw).initMapShaders();
 
             foreach (var p in localPlayers)

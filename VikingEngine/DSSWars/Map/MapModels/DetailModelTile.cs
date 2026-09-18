@@ -149,7 +149,17 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                 SurfaceTextureType surfacePolygonTexture = col.Texture;
                                 SpriteName surfaceSprite = SpriteName.WhiteArea_LFtiles;
 
-                                Color surfaceColor = TileColor.TerrainColor(comTile);//comTile.mapTile.color;
+                                int leanY;
+                                if (mapY + 1 < DssRef.world.subTileGrid.Size.Y)
+                                {
+                                    leanY = comTile.mapTile.heightValue - DssRef.world.subTileGrid.Get(mapX, mapY + 1).heightValue;
+                                }
+                                else
+                                {
+                                    leanY = 0;
+                                }
+
+                                Color surfaceColor = TileColor.TerrainColor(comTile, leanY);//comTile.mapTile.color;
 
                                 switch (comTile.mapTile.mainTerrain)
                                 {

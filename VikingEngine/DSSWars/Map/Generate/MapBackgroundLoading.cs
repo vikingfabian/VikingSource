@@ -250,8 +250,9 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
 
                         loadingState = LoadingState.Post1Started;
-                        postGenerate = new Map2PostGenerate(dataGenerate.mapBuilder.world, dataGenerate.generateSettings);
-
+                        postGenerate = new Map2PostGenerate(dataGenerate.mapBuilder.world);
+                        postGenerate.citiesAndFactionsSetup(dataGenerate.generateSettings);
+                        postGenerate.placeTerrain();
                         //postGenerate.generateCityBuildings();
                         
                     }

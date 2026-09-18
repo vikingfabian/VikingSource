@@ -1227,7 +1227,7 @@ namespace VikingEngine.DSSWars.Players
                 currentTiltYAngleOption = -1;
             }
 
-            player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
+            player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * 0.25f;
         }
 
         void controllerCameraUp()

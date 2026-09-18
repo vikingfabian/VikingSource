@@ -891,8 +891,14 @@ namespace VikingEngine.DSSWars.Map.Map2
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
                     var tile = dataGrid.Get(x, y);
+                    int leanY = 0;
+                    int nextY = y + 1;
+                    if (nextY < dataGrid.Size.Y)
+                    {
+                        leanY = tile.heightValue - dataGrid.Get(x, nextY).heightValue;
+                    }
 
-                    tile.color = Map.MapModels.TileColor.TerrainColor(new MapModels.CombinedTile(tile));
+                    tile.color = Map.MapModels.TileColor.TerrainColor(new MapModels.CombinedTile(tile), leanY);
                     //tileColor(ref tile);
                     dataGrid.Set(x, y, tile);
                 }

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
 
@@ -375,28 +377,30 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             }
         }
 
+        const int TerrainCutOff = MapHeight2.MountainStarHeight;
+
         public static void createSubTileContent(int x, int y, 
-            float distanceToCity,
-            SumTile4_4 tile,
-            BiomHeightColor height,
-            Biom biom,
-            ref IntervalF mudRadius,
-            ref MapTile1_1 subTile, 
+            //float distanceToCity,
+            //SumTile4_4 tile,
+            //BiomHeightColor height,
+            //Biom biom,
+            //ref IntervalF mudRadius,
+            ref CombinedTile cTile, 
             WorldData world, 
             EngineSpace.Maths.SimplexNoise2D noiseMap,
             List<IntVector2> mineLocations,
             List<IntVector2> animalSpawns)
         {
-            if (subTile.IsLand() /*&& !height.isMountainPeek*/)
+            if (cTile.mapTile.IsLand() && cTile.mapTile.heightValue < TerrainCutOff /*&& !height.isMountainPeek*/)
             {
-                if (distanceToCity <= mudRadius.Max)
-                {
-                    if (distanceToCity <= mudRadius.Min || world.rnd.Chance(0.5))
-                    {
-                        subTile.SetType(TerrainMainType.Destroyed, 0, 1);
-                        return;
-                    }
-                }
+                //if (distanceToCity <= mudRadius.Max)
+                //{
+                //    if (distanceToCity <= mudRadius.Min || world.rnd.Chance(0.5))
+                //    {
+                //        subTile.SetType(TerrainMainType.Destroyed, 0, 1);
+                //        return;
+                //    }
+                //}
 
                 if (world.rnd.Chance(0.6))
                 {
@@ -404,13 +408,13 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                     if (stonenoise > 0.1)
                     {
-                        if (tile.biomColorHeight >= BiomHeightColor.MineHeightStart)
+                        if (cTile.sumTile.biomColorHeight >= BiomHeightColor.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
                             
                             if (rndMine < 0.008)
                             {
-                                subTile.SetType(TerrainMainType.Mine, 0, 1);
+                                cTile.mapTile.SetType(TerrainMainType.Mine, 0, 1);
                                 mineLocations.Add(new IntVector2(x, y));
                                 return;
                             }
@@ -420,38 +424,38 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                             var rndBog = world.rnd.Double();
                             if (rndBog < 0.003)
                             {
-                                subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron, 1);
+                                cTile.mapTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron, 1);
                                 return;
                             }
                             else if (rndBog < 0.008)
                             {
-                                subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.ClayPit, 1);
+                                cTile.mapTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.ClayPit, 1);
                                 return;
                             }
                         }
 
                         if (stonenoise > 0.6f)
                         {
-                            subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.StoneBlock, 1);
+                            cTile.mapTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.StoneBlock, 1);
                             return;
                         }
                     }
                     if (stonenoise < -0.5f)
                     {
-                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones, 1);
+                        cTile.mapTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones, 1);
                         return;
                     }
 
                     float herbnoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, x, -y);
                     if (herbnoise > 0.6f)
                     {
-                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Herbs, 1);
+                        cTile.mapTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Herbs, 1);
                         return;
                     }
                     if (herbnoise < -0.5f)
                     {
                         animalSpawn();
-                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Bush, 1);
+                        cTile.mapTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Bush, 1);
                         return;
                     }
 
@@ -459,13 +463,13 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     if (grassnoise > 0.5f)
                     {
                         animalSpawn();
-                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TallGrass, 1);
+                        cTile.mapTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TallGrass, 1);
                         return;
                     }
                 }
 
-
-                var percTree = height.percTree * biom.percTree;
+                cTile.sumTile.GetBiom(out BiomHeightColor biomHeight, out Biom biom);
+                var percTree = biomHeight.percTree * biom.percTree;
                 if (percTree > 0)
                 {
                     float treenoise = noiseMap.OctaveNoise2D_Normal(4, 0.75f, 1, x, y);
@@ -489,21 +493,21 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                             treeType = TerrainSubFoilType.TreeHard;
                         }
 
-                        subTile.SetType(TerrainMainType.Foil, (int)treeType, size);
+                        cTile.mapTile.SetType(TerrainMainType.Foil, (int)treeType, size);
                     }
 
                 }
 
                 void animalSpawn()
                 {
-                    if (distanceToCity > 3)
-                    {
+                    //if (distanceToCity > 3)
+                    //{
                         var rndWildAnimal = world.rnd.Double();
                         if (rndWildAnimal < 0.012)
                         {
                             animalSpawns.Add(new IntVector2(x, y));
                         }
-                    }
+                    //}
                 }
             }
         }

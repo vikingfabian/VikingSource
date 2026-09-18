@@ -167,8 +167,12 @@ namespace VikingEngine.DSSWars.Map.Settings
             //for (int height = 0; height <= Height.LowWaterHeight; height++)
             {
                 TileColor seafloor = brightCoast;
-                seafloor.Color = Color.Black;//ColorExt.VeryDarkGray;//ColorExt.ChangeBrighness(WorldData.WaterDarkCol, -50);
-                colors_height[BiomHeightColor.LowerWaterHeight] = seafloor;
+                seafloor.Color = new Color(60, 44, 24);//ColorExt.Mix(brightCoast.Color, Color.SandyBrown, 0.6f);//ColorExt.VeryDarkGray;//ColorExt.ChangeBrighness(WorldData.WaterDarkCol, -50);
+                colors_height[0] = seafloor;
+
+                TileColor lowWater = seafloor;
+                lowWater.Color = ColorExt.Mix(brightCoast.Color, seafloor.Color, 0.7f);
+                colors_height[BiomHeightColor.LowerWaterHeight] = lowWater;
                 colors_height[BiomHeightColor.WaterSurfaceHeight] = brightCoast;    //2            
             }
 

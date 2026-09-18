@@ -10,61 +10,62 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars.Map.MapLayer
 {
-    class MapLayer_Factions
+    class MapLayer_Factions : AbsFarLayer
     {
-        IntVector2 mapsz;
-        public FactionPixelTexture factionPixelTex;
+        //IntVector2 mapsz;
+        //public FactionPixelTexture factionPixelTex;
 
-        MapTexturePlane mapPlane, unitPlane;
+        //MapTexturePlane mapPlane, unitPlane;
 
-        public MapLayer_Factions()
+        public MapLayer_Factions(CrossHeightMap crossHeightMap)
+            :base(DrawGame.FarLayer, crossHeightMap)
         {
             //mapsz = DssRef.world.Size;
 
-            mapPlane = new MapTexturePlane();
-            unitPlane = new MapTexturePlane();
-            unitPlane.Y += 0.14f;//0.06f;
-            factionPixelTex = new FactionPixelTexture(0, true,
-                (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
-                FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
+            //mapPlane = new MapTexturePlane();
+            //unitPlane = new MapTexturePlane();
+            //unitPlane.Y += 0.14f;//0.06f;
+            //factionPixelTex = new FactionPixelTexture(0, true,
+            //    (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
+            //    FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
         }
 
-        public void Draw(int cameraIndex, LocalPlayer player)
-        {
-            if (player.factionPixelTexture != null)
-            {
-                mapPlane.texture = player.factionPixelTexture.texture;
-                unitPlane.texture = player.unitsPixelTexture.texture;
+        //public void Draw(int cameraIndex, LocalPlayer player)
+        //{
+        //    if (player.factionPixelTexture != null)
+        //    {
+        //        mapPlane.texture = player.factionPixelTexture.texture;
+        //        unitPlane.texture = player.unitsPixelTexture.texture;
 
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-                mapPlane.Draw(cameraIndex);
-                unitPlane.Draw(cameraIndex);
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
-            }
-        }
+        //        Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+        //        mapPlane.Draw(cameraIndex);
+        //        unitPlane.Draw(cameraIndex);
+        //        Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+        //    }
+        //}
 
-        public void asyncTask()
-        {
-            if (mapsz != DssRef.world.Size)
-            { 
-                mapsz = DssRef.world.Size;
-                mapPlane.refreshScale();
-                unitPlane.refreshScale();
+        //public void asyncTask()
+        //{
+        //    if (mapsz != DssRef.world.Size)
+        //    { 
+        //        mapsz = DssRef.world.Size;
+        //        mapPlane.refreshScale();
+        //        unitPlane.refreshScale();
 
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    p.factionPixelTexture.initTexture();
-                    p.minimapPixelTexture.initTexture();
-                }
-            }
+        //        foreach (var p in DssRef.state.localPlayers)
+        //        {
+        //            p.factionPixelTexture.initTexture();
+        //            p.minimapPixelTexture.initTexture();
+        //        }
+        //    }
 
-            foreach (var p in DssRef.state.localPlayers)
-            {
-                p.factionPixelTexture.refreshWorld();
-                p.minimapPixelTexture.refreshWorld();
-            }
-            factionPixelTex.refreshWorld();
-        }
+        //    foreach (var p in DssRef.state.localPlayers)
+        //    {
+        //        p.factionPixelTexture.refreshWorld();
+        //        p.minimapPixelTexture.refreshWorld();
+        //    }
+        //    factionPixelTex.refreshWorld();
+        //}
 
         //public void syncTask()
         //{

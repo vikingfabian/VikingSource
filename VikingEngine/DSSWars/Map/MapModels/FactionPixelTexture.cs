@@ -44,10 +44,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         public void initTexture()
         {
-            texture = new Graphics.PixelTexture(TextureScale());
+            texture = new Graphics.PixelTexture(PixelTextureScale());
         }
 
-        virtual protected IntVector2 TextureScale()
+        public static IntVector2 PixelTextureScale()
         {
             return DssRef.world.Size / TilesPerPixelScale;
         }
@@ -211,9 +211,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     while (loop.Next())
                     {
                         //var t = DssRef.world.tileGrid.Get(loop.Position);
-                        var tile = DssRef.world.GetCombinedTile(loop.Position);
+                        var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
 
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.FactionAndTerrainColor(tile)/*t.MinimapColor_Faction(loop.Position)*/);
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.FactionAndTerrainColor(tile, leanY)/*t.MinimapColor_Faction(loop.Position)*/);
                     }
                     lib.DoNothing();
                     break;
@@ -223,8 +223,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         //t = DssRef.world.tileGrid.Get(loop.Position);
                         //texture.SetPixel(loop.Position, t.MinimapColor_Terrain(loop.Position));
-                        var tile = DssRef.world.GetCombinedTile(loop.Position);
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.TerrainColor(tile));
+                        var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.TerrainColor(tile, leanY));
                     }
                     break;
                 case FactionMapFilter.Minimap:
@@ -233,8 +233,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         //t = DssRef.world.tileGrid.Get(loop.Position);
                         //texture.SetPixel(loop.Position, t.MinimapColor_Minimap(playerFaction, loop.Position));
-                        var tile = DssRef.world.GetCombinedTile(loop.Position);
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile));
+                        var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY));
                     }
                     lib.DoNothing();
                     break;

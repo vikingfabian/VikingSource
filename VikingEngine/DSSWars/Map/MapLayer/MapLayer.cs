@@ -144,8 +144,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         }
 
         void setNewLayer()
-        {
-           
+        {           
             prevLayer = current;
             current = layers.sel;
 
@@ -159,7 +158,8 @@ namespace VikingEngine.DSSWars.Map.MapLayer
               
             }
 
-            player.view.Camera.FarPlane = current.type < MapDetailLayerType.FactionColors3 ? 800 : 5000;
+            player.view.Camera.NearPlane = current.nearPlane;//current.type < MapDetailLayerType.FactionColors3 ? 800 : 5000;
+            player.view.Camera.FarPlane = current.farPlane;
         }
         public void Update()
         {
@@ -256,18 +256,22 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
         public MapDetailLayerType type;
 
+        public float nearPlane, farPlane;
+
         public MapLayer(MapDetailLayerType type, float minZoom, float maxZoom, float zoomBuffer)
         {
             this.type = type;
             zoom = new IntervalF(minZoom - zoomBuffer, maxZoom + zoomBuffer);
+
+            farPlane = maxZoom * 2f;
+            nearPlane = Bound.Min( minZoom - 30f, 0.2f);
 
             switch (type)
             {
                 case MapDetailLayerType.UnitDetail1:
                     //CloseUp
                     goalCamAngle = CloseUpCamAngle;
-                    DrawDetailLayer = true;
-                   
+                    DrawDetailLayer = true;                   
                     break;
 
                 default://case DrawUnitsLevel.Normal:

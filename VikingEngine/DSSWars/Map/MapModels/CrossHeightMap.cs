@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Players;
@@ -53,12 +54,40 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     verticePos(centerWp, CrossTileHalfScale, CrossTileHalfScale, topLeftMapTile, CrossTileWidth, CrossTileWidth),//se
                     uv, Color.White);
 
+                //float verticalLean = polygon.rectangle.V1nw.Position.Y + polygon.rectangle.V3ne.Position.Y -
+                //     polygon.rectangle.V0sw.Position.Y + polygon.rectangle.V2se.Position.Y;
+                //float horizontalLean = polygon.rectangle.V1nw.Position.Y + polygon.rectangle.V0sw.Position.Y -
+                //     polygon.rectangle.V3ne.Position.Y + polygon.rectangle.V2se.Position.Y;
+
+                //Color color = Color.White;
+                //const float MinLean = MapHeight2.HeightY * 4;
+                //if (Math.Abs(verticalLean) > Math.Abs(horizontalLean))
+                //{
+                //    if (verticalLean < -MinLean)
+                //    {
+                //        color = new Color(240, 240, 240);
+                //    }
+                //}
+                //else
+                //{
+                //    if (horizontalLean > MinLean)
+                //    {
+                //        color = new Color(246, 242, 242);
+                //    }
+                //    else if (horizontalLean < -MinLean)
+                //    {
+                //        color = new Color(245, 245, 255);
+                //    }
+                //}
+
+                //polygon.SetColor(color);
+
                 crossPolygons.Add(polygon);
 
                 Vector3 verticePos(Vector3 centerWp, float addX, float addZ, IntVector2 tileTopLeft, int tileAddX, int tileAddY)
                 {
-                    centerWp.X += addX;
-                    centerWp.Z += addZ;
+                    centerWp.X += addX - CrossTileHalfScale;
+                    centerWp.Z += addZ - CrossTileHalfScale;
 
                     tileTopLeft.Add(tileAddX, tileAddY);
                     centerWp.Y = DssRef.world.subTileGrid.Get(tileTopLeft).groundY;
@@ -70,18 +99,16 @@ namespace VikingEngine.DSSWars.Map.MapModels
             return crossPolygons;
         }
 
-        public void Draw(int cameraIndex, LocalPlayer player)
+        public void Draw(int cameraIndex, LocalPlayer player, float adjY)
         {
             if (player.factionPixelTexture != null)
             {
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
                 GeneratedObjColor.effectGround.Texture = player.factionPixelTexture.texture;
+                heightMapModel.position.Y = adjY;
                 heightMapModel.Draw(cameraIndex);
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
-                //Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-                //mapPlane.Draw(cameraIndex);
-                //unitPlane.Draw(cameraIndex);
-                //Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+                
             }
         }
 
@@ -95,7 +122,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
             heightMapModel?.DeleteMe();
             heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
                 null, crossPolygons), LoadedTexture.WhiteArea, false);
-            //heightMapModel.AddToRender(DrawGame.MidLayer);
+            heightMapModel.scale = new Vector3(1.0000f);
+            heightMapModel.PositionXZ -= new Vector2((heightMapModel.scale.X - 1f) * 0.5f);
+           
         }
     }
 }
