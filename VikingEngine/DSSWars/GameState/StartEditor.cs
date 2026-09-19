@@ -56,9 +56,9 @@ namespace VikingEngine.DSSWars.GameState
                     case EditorType.Files:
                         new FileLab.FileLabScene();
                         break;
-                    case EditorType.Map2:
-                        new MapEditor2_Scene();
-                        break;
+                    //case EditorType.Map2:
+                    //    new MapEditor2_Scene();
+                    //    break;
                 }
             }
         }
@@ -71,6 +71,6 @@ namespace VikingEngine.DSSWars.GameState
         Character,
         Shader,
         Files,
-        Map2,
+        //Map2,
     }
 }

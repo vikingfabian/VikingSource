@@ -32,5 +32,15 @@ namespace VikingEngine.DSSWars.Map.MapData
                 secondBiomWeight = (byte)(genTile.secondBiomWeight * byte.MaxValue),
             };
         }
+
+        public GenTile GenTile()
+        {
+            return new GenTile()
+            {
+                biom1 = sumTile.biom1,
+                groundY = mapTile.GroundY_NoRamp(),
+                heightValue = mapTile.heightValue
+            };
+        }
     }
 }

@@ -19,6 +19,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         public BiomType biom1, biom2;
         public float secondBiomWeight;
 
+        
+
         public void writeIcon(System.IO.BinaryWriter w)
         {
             heightValue = MapHeight2.HeightY_Interval.GetValueBytePercentPos_WithBound(groundY);

@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
 {
     class MapEditorPlayState : AbsPlayState
     {
-        bool isReady = false;
+        //bool isReady = false;
 
         public MapEditorPlayState()
             : base()

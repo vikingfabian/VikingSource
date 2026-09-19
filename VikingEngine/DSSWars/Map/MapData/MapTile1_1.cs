@@ -80,6 +80,11 @@ namespace VikingEngine.DSSWars.Map.MapData
         public float groundY => heightValue <= MapHeight2.MountainStarHeight ? heightValue * MapHeight2.HeightY + MapHeight2.WaterBottomY :
             MapHeight2.MountainStarHeight * MapHeight2.HeightY + (heightValue - MapHeight2.MountainStarHeight) * MapHeight2.HeightY * 4f + MapHeight2.WaterBottomY;
 
+        public float GroundY_NoRamp()
+        {
+            return heightValue* MapHeight2.HeightY + MapHeight2.WaterBottomY;
+        }
+
         public float GroundY_aboveWater()
         {
            return Bound.Min(heightValue* MapHeight2.HeightY, MapHeight2.WaterSurfaceY);

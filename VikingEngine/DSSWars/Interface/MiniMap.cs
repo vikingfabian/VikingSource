@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 updateCamera(player);
             }
-        }
+        } 
 
         public void OnMapZoom(float zoominput, LocalPlayer player)
         {

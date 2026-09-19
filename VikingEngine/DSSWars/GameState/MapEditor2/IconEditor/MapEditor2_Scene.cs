@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 
         public ProcessState process = ProcessState.None;
 
-        public MapEditor2_Scene()
+        public MapEditor2_Scene(WorldData revertWorld)
             : base()
         {
             messages = new MessageGroup_Editor();
@@ -46,6 +46,17 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             tool = new MapEditor3_Tool(this);
             map = new GeneratorMap(display.topRight);
             new Interface.EditorBackground();
+
+            if (revertWorld != null)
+            {
+                var mapBuilder = new Map2Builder();
+                generator.iconWorld = mapBuilder.ConvertBackToIcon(revertWorld);
+                generator.currentPass = Map2Pass.IconCities;
+
+                loadingState = true;
+                display.loadingDisplay.Show();
+                generator.refreshPass();
+            }
 
             controller = new List<InputMap>{
                 Ref.gamesett.keyboardMap,
@@ -183,8 +194,6 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 
         public void onLoad(IconWorldData data)
         {
-            
-
             generator.currentPass = Map2Pass.Bioms;
             editHistory.undo(this);
 

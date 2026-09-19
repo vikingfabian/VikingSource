@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public HeightMapTexture heightMapTexture = null;
 
-        GenerateCities generateCities;
+        GenerateCities generateCities = new GenerateCities();
         Grid2D_L<GenTile> DataGrid()
         {
             if (currentPass >= Map2Pass.ScaleUp)
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     break;
 
                 case Map2Pass.IconCities:
-                    generateCities = new GenerateCities();
+                    
                     generateCities.generateCities(generateSettings, nodeMap, iconWorld);
                     break;
 

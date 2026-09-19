@@ -2806,7 +2806,7 @@ namespace VikingEngine.DSSWars
 
         void mapIconEditor()
         {
-            new StartEditor(0, true, EditorType.Map2);
+            new StartIconEditor(null);//StartEditor(0, true, EditorType.Map2);
         }
         void mapDetailEditor()
         {
