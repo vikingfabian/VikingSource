@@ -1514,7 +1514,7 @@ namespace VikingEngine.DSSWars.Players
                         city.maptilePos.SideLength(armiesC.sel.maptilePos) <= 2 &&
                         armiesC.sel.HasSettler(out var settler))
                     {
-                        SettlerCommandTarget.OrderSettler(settler, city.cityHallSubtilePos);
+                        SettlerCommandTarget.OrderSettler(settler, city.maptilePos);
                     }
                 }
             }

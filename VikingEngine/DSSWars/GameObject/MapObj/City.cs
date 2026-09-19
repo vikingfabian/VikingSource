@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.GameObject
         public FloatingInt childrenAge0 = new FloatingInt();
         public int childrenAge1 = 0;
 
-        public IntVector2 cityHallSubtilePos;
+        //public IntVector2 cityHallSubtilePos;
         IntVector2 armySpawnTilePos = IntVector2.Zero;
         public GroupedResource workForce = new GroupedResource();
         bool needServiceMenRefresh = true;
@@ -290,7 +290,8 @@ namespace VikingEngine.DSSWars.GameObject
             this.maptilePos = pos;
             cityTileArea = Rectangle2.FromCenterTileAndRadius(maptilePos, 1);
             this.cityType = type;
-            
+            //refreshPos();
+
         }
 
         public City(int index, WorldData world)
@@ -298,6 +299,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.myIndex = index;
             workTemplate = new WorkTemplate(true, index);
             world.InitCity(this);
+            //refreshPos();
         }
 
         public City(WorldData world, int index, System.IO.BinaryReader r, int version)
@@ -306,6 +308,17 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate = new WorkTemplate(true, index);
             world.InitCity(this);
             readMapFile(world, r, version);
+            //refreshPos();
+        }
+
+        void refreshPos()
+        {
+            position = WP.SubtileToWorldPosXZgroundY_Centered(maptilePos);
+        }
+
+        public void onEditorStart()
+        {
+            refreshPos();
         }
 
         public void generateCultureAndEconomy(WorldData world, float storyPlacementScale, CityCultureCollection cityCultureCollection)
@@ -578,7 +591,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Bound.Short(freeNobelMen.amount));
             w.Write(Bound.UShort(PenFoodUpkeep_minute));
 
-            WP.writeSubTilePos(w, cityHallSubtilePos);
+            WP.writeSubTilePos(w, maptilePos);
             WP.writeSubTilePos(w, citySquareSubtilePos);
 
             //cityHallSubtilePos.writeUshort(w);
@@ -613,17 +626,10 @@ namespace VikingEngine.DSSWars.GameObject
             freeNobelMen.amount = r.ReadInt16();
             PenFoodUpkeep_minute = r.ReadUInt16();
 
-            if (subversion >= 132)
-            {
-                cityHallSubtilePos = WP.readSubTilePos(r);
-                citySquareSubtilePos = WP.readSubTilePos(r);
-            }
-            else
-            { 
-                cityHallSubtilePos.readUshort(r);
-                citySquareSubtilePos.readUshort(r);
-            }
 
+            maptilePos = WP.readSubTilePos(r);
+            citySquareSubtilePos = WP.readSubTilePos(r);
+            
             Debug.ReadCheck(r);
 
             childrenAge0.read16bit(r);
@@ -777,7 +783,7 @@ namespace VikingEngine.DSSWars.GameObject
             catch (Exception e)
             {
                 BlueScreen.AttachMessage =
-                   $"workforce {workForce.amount}, HousingCount_Workers {HousingCount_Workers}, HousingCount_Guard {HousingCount_Guard}, cityHallSubtilePos {cityHallSubtilePos}, cityStorageCenter {citySquareSubtilePos}, childrenAge0 {childrenAge0}, childrenAge1 {childrenAge1}, immigrants {immigrants}, ";
+                   $"workforce {workForce.amount}, HousingCount_Workers {HousingCount_Workers}, HousingCount_Guard {HousingCount_Guard}, cityHallSubtilePos {maptilePos}, cityStorageCenter {citySquareSubtilePos}, childrenAge0 {childrenAge0}, childrenAge1 {childrenAge1}, immigrants {immigrants}, ";
 
                 BlueScreen.ThreadException = e;
             }
@@ -950,8 +956,8 @@ namespace VikingEngine.DSSWars.GameObject
             writeStatusesStartEnd(part, workerStatuses.Count, out bool meta, out int start, out int end);
 
             if (meta)
-            {   
-                cityHallSubtilePos.write(w);
+            {
+                maptilePos.write(w);
             }
 
             for (int i = start; i < end; i++)
@@ -969,14 +975,8 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 startPos = citySquareSubtilePos;//WP.ToSubTilePos_Centered(tilePos);
 
             int workerStatusesCount;
-            if (subversion >= 132)
-            {
-                workerStatusesCount = r.ReadInt32();
-            }
-            else
-            {
-                workerStatusesCount = r.ReadUInt16();
-            }
+            workerStatusesCount = r.ReadInt32();
+            
             //if (myIndex == 1804)
             //{
             //    //workerStatusesCount += ushort.MaxValue;
@@ -986,10 +986,8 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (meta)
             {
-                if (subversion >= 65)
-                {
-                    cityHallSubtilePos.read(r);
-                }
+                maptilePos.read(r);
+                
             }
 
             for (int i = start; i < end; i++)
@@ -1591,7 +1589,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 void updateTileData()
                 {
-                    bool newTile = cityHallSubtilePos != subtile;
+                    bool newTile = this.maptilePos != subtile;
                     cityType = CityType.Campsite;
 
                     if (newTile)
@@ -1683,8 +1681,7 @@ namespace VikingEngine.DSSWars.GameObject
             else if (faction.player.profile.flag != null)
             {
                 setModel(faction.AutoLoadModelInstance(
-                   LootFest.VoxelModelName.cityicon, IconScale()));
-                
+                   LootFest.VoxelModelName.cityicon, IconScale()));                
             }
 
             void setModel(Graphics.AbsVoxelObj model)
@@ -4288,7 +4285,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 MapTile1_1 subTile = new MapTile1_1();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-                new EditSubTile(pfaction, true, cityHallSubtilePos, subTile, true, false, false).Submit();
+                new EditSubTile(pfaction, true, maptilePos, subTile, true, false, false).Submit();
 
                 refreshCitySize();
             }

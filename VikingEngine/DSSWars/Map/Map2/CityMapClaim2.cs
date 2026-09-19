@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public static void CityClaim(City city)
         {
-            var area = Rectangle2.FromCenterTileAndRadius(WP.MaptileToSumTile(city.cityHallSubtilePos), DefaultHallClaimSummaryRadius);
+            var area = Rectangle2.FromCenterTileAndRadius(WP.MaptileToSumTile(city.maptilePos), DefaultHallClaimSummaryRadius);
             ForXYLoop loop = new ForXYLoop(area);
 
             while (loop.Next())

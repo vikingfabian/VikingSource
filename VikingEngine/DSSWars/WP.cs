@@ -88,15 +88,30 @@ namespace VikingEngine.DSSWars
             return worldPos;
         }
 
+        //public static Vector3 SubtileToWorldPosXZgroundY_Centered(IntVector2 subtilePos)
+        //{
+        //    var result = new Vector3(
+        //        subtilePos.X * MapTile1_1.ModelScale - WorldData.TileHalfWidth + MapTile1_1.SubTileHalfWidth,
+        //        0,
+        //        subtilePos.Y * MapTile1_1.ModelScale - WorldData.TileHalfWidth + MapTile1_1.SubTileHalfWidth);
+
+        //    if (DssRef.world.subTileGrid.TryGet(subtilePos, out MapTile1_1 subTile))
+        //    { 
+        //        result.Y = subTile.groundY;
+        //    }
+
+        //    return result;
+        //}
+
         public static Vector3 SubtileToWorldPosXZgroundY_Centered(IntVector2 subtilePos)
         {
             var result = new Vector3(
-                subtilePos.X * MapTile1_1.ModelScale - WorldData.TileHalfWidth + MapTile1_1.SubTileHalfWidth,
+                subtilePos.X * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth,
                 0,
-                subtilePos.Y * MapTile1_1.ModelScale - WorldData.TileHalfWidth + MapTile1_1.SubTileHalfWidth);
+                subtilePos.Y * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth);
 
             if (DssRef.world.subTileGrid.TryGet(subtilePos, out MapTile1_1 subTile))
-            { 
+            {
                 result.Y = subTile.groundY;
             }
 

@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             for (int i = 0; i < IntVector2.Dir4Array.Length; i++)
             {
                 IntVector2 nPos = tilePos + IntVector2.Dir4Array[i];
-                if (world.subTileGrid.Get(nPos).IsLand())
+                if (world.subTileGrid.TryGet(nPos, out var tile) && tile.IsLand())
                 {
                     availableGateRotations.Add((Dir4)i);
                 }
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             for (int i = 0; i < IntVector2.Dir8Array.Length; i++)
             {
                 IntVector2 nPos = tilePos + IntVector2.Dir8Array[i];
-                if (world.subTileGrid.Get(nPos).IsLand())
+                if (world.subTileGrid.TryGet(nPos, out var tile) && tile.IsLand())
                 {
                     landCount++;
                 }

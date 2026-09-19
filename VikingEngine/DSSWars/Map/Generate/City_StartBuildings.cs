@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void createCampSite(IntVector2 subtilepos)
         {
-            cityHallSubtilePos = subtilepos;
+            maptilePos = subtilepos;
             var localPlayer = pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer();
             EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
            
@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             foreach (var dir in testDirs)
             {
-                IntVector2 pos = cityHallSubtilePos + IntVector2.Dir4Array[(int)dir];
+                IntVector2 pos = maptilePos + IntVector2.Dir4Array[(int)dir];
                 if (DssRef.world.subTileGrid.TryGet(pos, out var tile))
                 {
                     if (!tile.IsWater())
@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             foreach (var dir in IntVector2.Dir8Array)
             {
-                IntVector2 pos = cityHallSubtilePos + dir * 2;
+                IntVector2 pos = maptilePos + dir * 2;
                 if (DssRef.world.subTileGrid.TryGet(pos, out var tile))
                 {
                     if (!tile.IsWater())
@@ -64,10 +64,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (cityType == CityType.UnClaimed)
             {
-                cityHallSubtilePos = WP.ToSubTilePos_Centered(maptilePos);
-                var subTile = world.subTileGrid.Get(cityHallSubtilePos);
+                //maptilePos = WP.ToSubTilePos_Centered(maptilePos);
+                var subTile = world.subTileGrid.Get(maptilePos);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Unclaimed, 1);
-                world.subTileGrid.Set(cityHallSubtilePos, subTile);
+                world.subTileGrid.Set(maptilePos, subTile);
             }
             else if (cityType == CityType.Campsite)
             {
@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case CityTemplateCellType.CityHall:
                                 sub = centerHall;
-                                cityHallSubtilePos = pos;
+                                //cityHallSubtilePos = pos;
                                 break;
                             case CityTemplateCellType.CityCenterSquare:
                                 main = TerrainMainType.Decor;

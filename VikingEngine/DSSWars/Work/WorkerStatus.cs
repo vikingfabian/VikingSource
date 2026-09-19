@@ -106,8 +106,8 @@ namespace VikingEngine.DSSWars.Work
                 int secondsPassed = Convert.ToInt32(processTimeStartStampSec - Ref.TotalGameTimeSec);
                 w.Write(Bound.Byte(secondsPassed / TimeNetShareDiv));
                 w.Write(Bound.Byte((int)processTimeLengthSec / TimeNetShareDiv));
-                (subTileEnd - city.cityHallSubtilePos).writeShort(w);
-                (subTileStart - city.cityHallSubtilePos).writeShort(w);
+                (subTileEnd - city.maptilePos).writeShort(w);
+                (subTileStart - city.maptilePos).writeShort(w);
             }
         }
         public void readGameState(City city, System.IO.BinaryReader r, bool netPacket, int subversion)
@@ -125,8 +125,8 @@ namespace VikingEngine.DSSWars.Work
                 int secondsPassed = r.ReadByte() * TimeNetShareDiv;
                 processTimeStartStampSec = Ref.TotalGameTimeSec - secondsPassed;
                 processTimeLengthSec = r.ReadByte() * TimeNetShareDiv;
-                subTileEnd = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
-                subTileStart = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
+                subTileEnd = IntVector2.FromReadShort(r) + city.maptilePos;
+                subTileStart = IntVector2.FromReadShort(r) + city.maptilePos;
             }
         }
 

@@ -101,7 +101,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             Ref.music.OnGameStart();
             
             startMapThreads();
-           
+
+            foreach (var m in DssRef.world.cities)
+            {
+                m.onEditorStart();
+            }
+
             isReady = true;
         }
 
@@ -141,38 +146,43 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             }
 
 
-            if (Ref.DeltaGameTimeMs > 0)
-            {
-                DssRef.time.update();
+            //if (Ref.DeltaGameTimeMs > 0)
+            //{
+            //    DssRef.time.update();
 
+            //    if (isReady)
+            //    {
+            //        foreach (var m in DssRef.world.cities)
+            //        {
+            //            m.PauseUpdate();
+            //        }
+
+            //        var factions = DssRef.world.factions.counter();
+            //        while (factions.Next())
+            //        {
+            //            if (factions.sel.player != null)
+            //            {
+            //                factions.sel.update();
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
                 if (isReady)
                 {
-                    var factions = DssRef.world.factions.counter();
-                    while (factions.Next())
+                    foreach (var m in DssRef.world.cities)
                     {
-                        if (factions.sel.player != null)
-                        {
-                            factions.sel.update();
-                        }
-
-                        //if (DssRef.time.oneSecond)
-                        //{
-                        //    factions.sel.oneSecUpdate();
-                        //}
+                        m.PauseUpdate();
                     }
-                }
-            }
-            else
-            {
-                if (isReady)
-                {
+
                     var factions = DssRef.world.factions.counter();
                     while (factions.Next())
                     {
                         factions.sel.PauseUpdate();
                     }
                 }
-            }
+            //}
 
             if (DssRef.time.halfSecond)
             {

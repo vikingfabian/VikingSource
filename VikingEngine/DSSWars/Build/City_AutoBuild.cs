@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (BuildLib.BuildOptions[(int)wallType].availableBlueprintResources(this))
                     {
-                        ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(cityHallSubtilePos, currentWallRadius));
+                        ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, currentWallRadius));
                         while (loop.Next())
                         {
                             if (!(loop.AtBottom && loop.AtCenterX) && //place for opening

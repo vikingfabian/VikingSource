@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         var largePathResult = largePath.FindPath(-1, city.maptilePos, (int)conv.ToDir8(nCity.maptilePos - city.maptilePos), nCity.maptilePos, false);
                         largePathResult.nodes.Add(new PathNodeResult(city.maptilePos, false));
 
-                        IntVector2 subTilePos = nCity.cityHallSubtilePos;
+                        IntVector2 subTilePos = nCity.maptilePos;
 
                         foreach (var node in largePathResult.nodes)
                         {

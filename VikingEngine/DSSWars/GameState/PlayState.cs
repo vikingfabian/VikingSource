@@ -644,7 +644,7 @@ namespace VikingEngine.DSSWars
 
             //if (bUserUpdate)
             //{
-                updateUserInput(bUserMapUpdate);
+            updateUserInput(bUserMapUpdate);
             //}
             //else
             //{ 

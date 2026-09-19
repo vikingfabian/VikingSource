@@ -371,7 +371,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                return cityHallSubtilePos;
+                return maptilePos;
             }
         }
 
@@ -546,7 +546,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             foreach (IntVector2 dir in IntVector2.Dir4Array)
             {
-                IntVector2 pos = cityHallSubtilePos + dir * 2;
+                IntVector2 pos = maptilePos + dir * 2;
                 MapTile1_1 t = DssRef.world.subTileGrid.Get(pos);
                 if (t.IsLand())
                 {
@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(cityHallSubtilePos, 2));
+            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, 2));
 
             while (edgeLoop.Next())
             {
@@ -568,7 +568,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             foreach (IntVector2 dir in IntVector2.Dir4Array)
             {
-                IntVector2 pos = cityHallSubtilePos + dir;
+                IntVector2 pos = maptilePos + dir;
                 MapTile1_1 t = DssRef.world.subTileGrid.Get(pos);
                 if (t.IsLand())
                 {
