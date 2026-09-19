@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Players
                     tileOfInterest = false;
                     if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
                     {
-                        city = tile.City();
+                        city = tile.pcity.City();
                     }
 
                     if (player.gameControls.InBuildOrdersMode())
@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //if (tile.MayBuild())
                     {
-                        city = tile.City();
+                        city = tile.pcity.City();
 
                         return MayBuild(city, subTile, player, out upgrade);
                     }
@@ -296,7 +296,7 @@ namespace VikingEngine.DSSWars.Players
                 IntVector2 tilePos = WP.SubtileToTilePos(subTilePos);
                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                 {
-                    city = tile.City();
+                    city = tile.pcity.City();
                     
                         if (city.pfaction.GetPlayer() == player || DssRef.difficulty.GodPowers())
                         {

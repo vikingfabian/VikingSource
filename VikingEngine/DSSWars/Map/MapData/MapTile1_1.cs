@@ -85,9 +85,10 @@ namespace VikingEngine.DSSWars.Map.MapData
            return Bound.Min(heightValue* MapHeight2.HeightY, MapHeight2.WaterSurfaceY);
         }
 
-        public bool IsLand()
+        
+        public bool IsLandOrWaterPlane()
         {
-            return heightValue > MapHeight2.WaterPlaneHeight;
+            return heightValue >= MapHeight2.WaterPlaneHeight;
         }
 
         public MapTile1_1(TerrainMainType type, int subType)
@@ -394,10 +395,13 @@ namespace VikingEngine.DSSWars.Map.MapData
             IconName.Terrain(mainTerrain, subTerrain, out _, out string name);
             return name;
         }
-
+        public bool IsLand()
+        {
+            return heightValue > MapHeight2.WaterPlaneHeight;
+        }
         public bool IsWater()
         {
-            return mainTerrain == TerrainMainType.DefaultSea;
+            return heightValue <= MapHeight2.WaterPlaneHeight;//mainTerrain == TerrainMainType.DefaultSea;
         }
 
         public float BuildingHeight()

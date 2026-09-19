@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using VikingEngine.ToGG.Commander.Players;
 using VikingEngine.Input;
+using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.Map.MapLayer
 {
@@ -28,31 +28,31 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         static readonly float TerrainMaxZoom = 200;
         public static readonly float StartZoom= TerrainMaxZoom * 0.5f;
 
-        const float CloseUpCamAngle = 0.85f;
+        //const float CloseUpCamAngle = 0.85f;
         public const float NormalCamAngle = 0.78f;
-        const float OverviewCamAngle = 0.65f;
+       // const float OverviewCamAngle = 0.20f;
 
         //static readonly IntervalF DetailZoom = new IntervalF(2f, 4f) + FullZoomRange.Min;
         //static readonly IntervalF OverviewZoom = new IntervalF(OverviewZoomStart - 2f, OverviewZoomStart);
         //static readonly IntervalF FactionZoom = new IntervalF(-1.5f, 0f) + UnitMaxZoom;
 
-        
-        Engine.PlayerData player;
-       
+
+        //Engine.player.playerData player.playerData;
+        LocalPlayer player;
         //public bool DrawCloseUp, DrawNormalAndClose, DrawNormal, DrawOverview, DrawFullOverview;
         public float OverviewAndFactionsTransparentsy;
         public float OverviewScale = 1f;
 
         public float TiltYAdd = 0;
 
-        public MapLayerManager(Engine.PlayerData player)
+        public MapLayerManager(LocalPlayer player)
         {
             this.player = player;
 
             refreshLayers();
 
             updateCamIndex();
-            new AsynchUpdateable(asynchUpdate, "Units cam culling, " + player.localPlayerIndex.ToString(), player.localPlayerIndex);
+            new AsynchUpdateable(asynchUpdate, "Units cam culling, " + player.playerData.localPlayerIndex.ToString(), player.playerData.localPlayerIndex);
             
         }
 
@@ -133,7 +133,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
             for (int i = 0; i < DssLib.MaxLocalPlayers; ++i)
             {
-                if (Ref.draw.ActivePlayerScreens[i] == player)
+                if (Ref.draw.ActivePlayerScreens[i] == player.playerData)
                 {
                     CameraIndexToView[i] = this;
                     return;
@@ -158,8 +158,17 @@ namespace VikingEngine.DSSWars.Map.MapLayer
               
             }
 
-            player.view.Camera.NearPlane = current.nearPlane;//current.type < MapDetailLayerType.FactionColors3 ? 800 : 5000;
-            player.view.Camera.FarPlane = current.farPlane;
+            if (player.factionPixelTexture != null)
+            {
+                player.factionPixelTexture.overview = current.DrawMid;
+                if (!current.DrawDetailLayer)
+                {
+                    DssRef.world.BordersUpdated = true;
+                }
+            }
+
+            player.playerData.view.Camera.NearPlane = current.nearPlane;//current.type < MapDetailLayerType.FactionColors3 ? 800 : 5000;
+            player.playerData.view.Camera.FarPlane = current.farPlane;
         }
         public void Update()
         {
@@ -191,12 +200,12 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 }
             }
 
-            if (player.view.Camera.targetZoom < current.zoom.Min)
+            if (player.playerData.view.Camera.targetZoom < current.zoom.Min)
             {
                 layers.selectPrev();
                 setNewLayer();
             }
-            else if (player.view.Camera.targetZoom >= current.zoom.Max)
+            else if (player.playerData.view.Camera.targetZoom >= current.zoom.Max)
             {
                 layers.selectNext();
                 setNewLayer();
@@ -208,24 +217,24 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 goalTiltY += TiltYAdd;
             }
 
-            if (player.view.Camera.TiltY != goalTiltY)
+            if (player.playerData.view.Camera.TiltY != goalTiltY)
             {
                 float tiltSpeed = Ref.DeltaTimeMs * 0.0016f;
-                float diff = goalTiltY - player.view.Camera.TiltY;
+                float diff = goalTiltY - player.playerData.view.Camera.TiltY;
                 if (tiltSpeed > Math.Abs(diff))
                 {
-                    player.view.Camera.TiltY = goalTiltY;
+                    player.playerData.view.Camera.TiltY = goalTiltY;
                 }
                 else
                 {
-                    player.view.Camera.TiltY += tiltSpeed * lib.ToLeftRight(diff);
+                    player.playerData.view.Camera.TiltY += tiltSpeed * lib.ToLeftRight(diff);
                 }
             }
         }
 
         public float PercZoom()
         {
-            return FullZoomRange.GetValuePercentPos(player.view.Camera.targetZoom);
+            return FullZoomRange.GetValuePercentPos(player.playerData.view.Camera.targetZoom);
         }
         public override string ToString()
         {
@@ -242,7 +251,8 @@ namespace VikingEngine.DSSWars.Map.MapLayer
     {
         const float CloseUpCamAngle = 0.85f;
         public const float NormalCamAngle = 0.78f;
-        const float OverviewCamAngle = 0.65f;
+        const float FarCamAngle = 0.35f;
+        const float VeryFarCamAngle = 0.2f;
 
         public bool DrawDetailLayer, DrawNormalAndClose, DrawMid, DrawFar, DrawFullOverview;
         //public float CloseUpTransparentsy, NormalAndCloseTransparentsy, NormalTransparentsy, OverviewTransparentsy, OverviewAndFactionsTransparentsy, FactionsTransparentsy;
@@ -280,14 +290,14 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                     break;
 
                 case MapDetailLayerType.FactionColors3:
-                    goalCamAngle = OverviewCamAngle;
+                    goalCamAngle = FarCamAngle;
                     DrawFar = true;
                     DrawFullOverview = false;
                     DrawDetailLayer = false;                  
                     break;
 
                 case MapDetailLayerType.FullOverview4:
-                    goalCamAngle = OverviewCamAngle;
+                    goalCamAngle = VeryFarCamAngle;
                     DrawFullOverview = true;
                     DrawFar = true;                   
                     break;

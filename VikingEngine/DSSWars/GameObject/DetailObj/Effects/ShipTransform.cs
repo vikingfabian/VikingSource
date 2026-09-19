@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void completeTransform()
         {
             
-            var city = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTile)).City();
+            var city = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTile)).pcity.City();
 
             if (group.soldierCount > 0 &&
                 city.cityType == CityType.UnClaimed)

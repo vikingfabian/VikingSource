@@ -498,7 +498,7 @@ namespace VikingEngine.DSSWars.Build
                                 if (DssRef.world.maptileBounds.IntersectTilePoint(cirkleLoop.Position))
                                 {
                                     var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                                    if (tile.CityIndex == city.myIndex /*&& tile.MayBuild()*/)
+                                    if (tile.pcity.cityIndex == city.myIndex /*&& tile.MayBuild()*/)
                                     {
                                         topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
                                         subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);

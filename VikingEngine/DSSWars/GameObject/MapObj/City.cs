@@ -1238,7 +1238,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
 
                                 if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out SumTile4_4 t) &&
-                                        /*t.MayBuild() &&*/ t.CityIndex == myIndex)
+                                        /*t.MayBuild() &&*/ t.pcity.cityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
                                     IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
@@ -1681,7 +1681,7 @@ namespace VikingEngine.DSSWars.GameObject
             else if (faction.player.profile.flag != null)
             {
                 setModel(faction.AutoLoadModelInstance(
-                   LootFest.VoxelModelName.cityicon, IconScale()));                
+                   LootFest.VoxelModelName.cityicon, IconScale()/* * 0.1f*/));                
             }
 
             void setModel(Graphics.AbsVoxelObj model)

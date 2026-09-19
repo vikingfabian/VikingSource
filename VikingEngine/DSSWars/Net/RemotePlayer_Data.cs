@@ -212,12 +212,12 @@ namespace VikingEngine.DSSWars.Players
                             if (!isSubTile)
                             {
                                 var tile = DssRef.world.tileGrid.Get(loop.Position);
-                                if (tile.CityIndex >= 0 && !citiesRecieved[tile.CityIndex])
+                                if (tile.pcity.HasValue() && !citiesRecieved[tile.pcity.cityIndex])
                                 {
-                                    CitiesInView.Add(tile.CityIndex);
+                                    CitiesInView.Add(tile.pcity.cityIndex);
                                 }
 
-                                PFaction pfaction = tile.City().pfaction;
+                                PFaction pfaction = tile.pcity.City().pfaction;
                                 if (pfaction.TryGetFaction(out var faction) && faction.player != null && faction.player.IsLocal)
                                 {
                                     if (!factionsRecieved[pfaction.factionIndex])
@@ -350,7 +350,7 @@ namespace VikingEngine.DSSWars.Players
                 
                 var tile = DssRef.world.tileGrid.Get(loop.Position);
                 
-                CitiesInView.Add(tile.CityIndex);
+                CitiesInView.Add(tile.pcity.cityIndex);
                 
                 
             }

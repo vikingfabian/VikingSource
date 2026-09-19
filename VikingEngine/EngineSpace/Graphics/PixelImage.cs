@@ -93,6 +93,15 @@ namespace VikingEngine.Graphics
             return false;
         }
 
+        public void TrySetPixel(IntVector2 pos, Color col)
+        {
+            if (pos.X >= 0 && pos.X < Width &&
+                pos.Y >= 0 && pos.Y < Height)
+            {
+                pixels[pos.X + pos.Y * Width] = col;
+            }
+        }
+
         public void SetTwoPixels(IntVector2 pos, Color col1, Color col2)
         {
             int index = pos.X + pos.Y * Width;

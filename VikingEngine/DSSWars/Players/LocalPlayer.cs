@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.Players
             cityTab = AvailableCityTabs()[0];
 
             Ref.draw.AddPlayerScreen(playerData);
-            mapLayersManager = new MapLayerManager(playerData);
+            mapLayersManager = new MapLayerManager(this);
             InitTutorial(newGame);
 
             refreshNeihgborAggression();
@@ -1875,7 +1875,8 @@ namespace VikingEngine.DSSWars.Players
         {
             factionPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true,
                 (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
-                FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
+                FactionMapFilter.FactionCols : FactionMapFilter.Terrain)
+            { overview = true };
             minimapPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true, FactionMapFilter.Minimap);
             unitsPixelTexture = new UnitsPixelTexture(playerData.localPlayerIndex);
         }

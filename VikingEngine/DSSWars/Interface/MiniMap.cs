@@ -163,6 +163,7 @@ namespace VikingEngine.DSSWars.Interface
                 scale = Bound.Set(scale - zoom * speed * Ref.gamesett.scrollWheelSensitivity_game * scale, 0.5f, 5f);
                 refreshScale();
                 refreshPosition(player);
+                updateCamera(player);
             }
         }
 
@@ -191,7 +192,7 @@ namespace VikingEngine.DSSWars.Interface
         {   
             var p = DssRef.state.culling.players[player.playerData.localPlayerIndex];
             var state = DssRef.state.culling.cullingStateA ? p.stateA : p.stateB;
-            cameraOutline.rectangle.Size = state.enterArea.size.Vec;
+            cameraOutline.rectangle.Size = state.enterArea.size.Vec * DssRef.world.unitSizeInv * textureSize * scale; //area is in unit size
 
             cameraOutline.rectangle.Center = (lookCenter(player) * scale) + mapTexture.position;
             cameraOutline.Refresh();

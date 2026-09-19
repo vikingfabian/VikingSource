@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 
@@ -330,7 +331,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 
                 var tile = world.tileGrid.Get(loop.Position);
-                tile.CityIndex = (ushort)city.myIndex;
+                tile.pcity = new PCity( city.myIndex);
                 world.tileGrid.Set(loop.Position, tile);
 
                 //var r = loop.Position.SideLength(city.tilePos);

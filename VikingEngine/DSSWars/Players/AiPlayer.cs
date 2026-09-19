@@ -1509,7 +1509,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (DssRef.world.tileGrid.TryGet(armiesC.sel.maptilePos, out var tile))
                 {
-                    var city = tile.City();
+                    var city = tile.pcity.City();
                     if (city.cityType == CityType.UnClaimed &&
                         city.maptilePos.SideLength(armiesC.sel.maptilePos) <= 2 &&
                         armiesC.sel.HasSettler(out var settler))
@@ -1928,7 +1928,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(mainArmy.maptilePos), out SumTile4_4 tile))
                         {
-                            var city = tile.City();
+                            var city = tile.pcity.City();
                             if (city.pfaction == pfaction)
                             {
                                 if (city.distanceTo(mainArmy) <= 2)

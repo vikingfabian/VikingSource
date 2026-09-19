@@ -190,6 +190,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             }
             switch (processTime.update())
             {
+                case ProcessEvent.OverviewMap:
+                    overviewMap.HalfSecondUpdate();
+                    break;
                 case ProcessEvent.SubTileReload:
                     detailMap.oneSecondUpdate = true;
                     overviewMap.bRefreshTimer = true;
@@ -197,6 +200,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             }
 
             //detailMap.update();
+
             overviewMap.update();
 
             if (localPlayers != null)

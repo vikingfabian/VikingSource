@@ -69,6 +69,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
         float max = 1;
         public FactionMapFilter filter;
         public ItemResourceType resourceFilter = ItemResourceType.Wood_Group;
+
+        public bool overview = false;
         public FactionPixelTexture(int playerIx, bool init, FactionMapFilter filter)
             : base(playerIx)
         {
@@ -202,20 +204,19 @@ namespace VikingEngine.DSSWars.Map.MapModels
         {
 
             //SumTile4_4 t;
-            ForXYLoop loop = new ForXYLoop(DssRef.world.Size/* / SumTile4_4.TileWidth*/) { stepLength = TilesPerPixelScale };
+            ForXYLoop loop = new ForXYLoop(DssRef.world.Size) { stepLength = TilesPerPixelScale };
 
-            switch (filter)
+            switch (overview? FactionMapFilter.Terrain : filter)
             {
 
                 case FactionMapFilter.FactionCols:
                     while (loop.Next())
                     {
-                        //var t = DssRef.world.tileGrid.Get(loop.Position);
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
-
                         texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.FactionAndTerrainColor(tile, leanY)/*t.MinimapColor_Faction(loop.Position)*/);
                     }
-                    lib.DoNothing();
+
+                    AddCityIcons();
                     break;
 
                 case FactionMapFilter.Terrain:
@@ -224,19 +225,17 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         //t = DssRef.world.tileGrid.Get(loop.Position);
                         //texture.SetPixel(loop.Position, t.MinimapColor_Terrain(loop.Position));
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.TerrainColor(tile, leanY));
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.BorderAndTerrainColor(tile, leanY));
                     }
                     break;
                 case FactionMapFilter.Minimap:
                     Faction playerFaction = DssRef.state.localPlayers[playerIx].pfaction.GetFaction();
                     while (loop.Next())
                     {
-                        //t = DssRef.world.tileGrid.Get(loop.Position);
-                        //texture.SetPixel(loop.Position, t.MinimapColor_Minimap(playerFaction, loop.Position));
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
                         texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY));
                     }
-                    lib.DoNothing();
+                    AddCityIcons();
                     break;
                 case FactionMapFilter.PopulationHeatmap:
                 case FactionMapFilter.StrengthHeatmap:
@@ -339,5 +338,28 @@ namespace VikingEngine.DSSWars.Map.MapModels
             
         }
 
+        void AddCityIcons()
+        {
+            foreach (var city in DssRef.world.cities)
+            {
+                TileColor.cityColor(city, out Color centerCol, out Color outline, out Color factionCol);
+                IntVector2 center = (city.maptilePos + (TilesPerPixelScale / 2))/ TilesPerPixelScale;
+                texture.SetPixel(center, centerCol);
+                Rectangle2 cityArea = Rectangle2.FromCenterTileAndRadius(center, 1);
+                ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(cityArea);
+                while (edgeLoop.Next())
+                {
+                    texture.TrySetPixel(edgeLoop.Position, outline);
+                }
+
+                cityArea.AddRadius(1);
+                edgeLoop = new ForXYEdgeLoop(cityArea);
+                while (edgeLoop.Next())
+                {
+                    texture.TrySetPixel(edgeLoop.Position, factionCol);
+                }
+
+            }
+        }
     }
 }

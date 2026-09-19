@@ -39,7 +39,12 @@ namespace VikingEngine.DSSWars.Map.MapData
         
 
         // 2-byte members (naturally 2-byte aligned at offset 16)
-        public ushort CityIndex;
+        public PCity pcity;
+
+        //New
+        public bool IsBorderTile;
+
+        //OLD
         public ushort BorderRegion_North;
         public ushort BorderRegion_East;
         public ushort BorderRegion_South;
@@ -97,7 +102,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public void clearCityData()
         { 
-             CityIndex = ushort.MaxValue;
+             pcity = PCity.Empty;
             //tileContent = TileContent.NONE;
             BorderCount = 0;
             BorderRegion_North = NoBorderRegion; 
@@ -341,6 +346,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public bool hasBorder(out bool sameFaction)
         {
+            /*
             if (BorderCount > 0)
             {
                 PFaction owner = DssRef.world.cities[CityIndex].pfaction;
@@ -368,8 +374,9 @@ namespace VikingEngine.DSSWars.Map.MapData
                 sameFaction = true;
                 return true;
             }
-
+            */
             sameFaction = false;
+            
             return false;
         }
 
@@ -393,23 +400,19 @@ namespace VikingEngine.DSSWars.Map.MapData
             closeCities = new StaticList<KeyValuePair<float, City>>(CompareToAmountCities);
         }
 
-        public City City()
-        {
-            if (CityIndex == ushort.MaxValue)
-            {
-                return null;
-            }
-            return DssRef.world.cities[CityIndex]; 
-        }
+        //public City pcity.City()
+        //{
+        //    //if (CityIndex == ushort.MaxValue)
+        //    //{
+        //    //    return null;
+        //    //}
+        //    return DssRef.world.cities[0];
+        //}
+        //public Faction pcity.Faction()
+        //{
+        //    return null;
+        //}
 
-        public Faction Faction()
-        {
-            if (CityIndex == ushort.MaxValue)
-            {
-                return null;
-            }
-            return DssRef.world.cities[CityIndex].pfaction.GetFaction();
-        }
         //public Faction Faction_Safe()
         //{
         //    return DssRef.world.cities[CityIndex].GetFaction_Safe();
@@ -417,7 +420,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public Color FactionColor()
         {
-            var c = DssRef.world.cities[CityIndex];
+            var c = pcity.City();//DssRef.world.cities[CityIndex];
             var p = c.pfaction.GetPlayer();
             if (p != null && p.profile.flag != null)
             {
@@ -433,17 +436,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public bool HasBorderImage() { return BorderCount > 0; }
 
-        static readonly Color MapCol_HeadCity = new Color(255, 174, 184);
-        static readonly Color MapCol_LargeCity = new Color(253, 0, 30);
-        static readonly Color MapCol_SmallCity = new Color(148, 0, 17);
-        static readonly Color MapCol_CampsiteCity = new Color(148, 0, 17);
-        static readonly Color MapCol_UnclaimedCity = Color.Blue;
-
-        static readonly Color MiniMapCol_HeadCity = new Color(251, 37, 114);
-        static readonly Color MiniMapCol_LargeCity = new Color(226, 11, 88);
-        static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
-        static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
-        static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
+       
        
         /*
         public Color MinimapColor_Faction(IntVector2 pos)
@@ -694,34 +687,34 @@ namespace VikingEngine.DSSWars.Map.MapData
         //    return DssRef.map.bioms.bioms[(int)biom];
         //}
 
-        public Color cityColor()
-        {
-            switch (City().cityType)
-            {
-                default: return MapCol_HeadCity;
-                case CityType.Town: return MapCol_LargeCity;
-                case CityType.Village: return MapCol_SmallCity;
-                case CityType.Campsite: return MapCol_CampsiteCity;
-                case CityType.UnClaimed: return MapCol_UnclaimedCity;
+        //public Color cityColor()
+        //{
+        //    switch (pcity.City().cityType)
+        //    {
+        //        default: return MapCol_HeadCity;
+        //        case CityType.Town: return MapCol_LargeCity;
+        //        case CityType.Village: return MapCol_SmallCity;
+        //        case CityType.Campsite: return MapCol_CampsiteCity;
+        //        case CityType.UnClaimed: return MapCol_UnclaimedCity;
 
-            }
-        }
-        public Color cityColor_Minimap()
-        {
-            switch (City().cityType)
-            {
-                default: return MiniMapCol_HeadCity;
-                case CityType.Town: return MiniMapCol_LargeCity;
-                case CityType.Village: return MiniMapCol_SmallCity;
-                case CityType.Campsite: return MiniMapCol_CampsiteCity;
-                case CityType.UnClaimed: return MiniMapCol_UnclaimedCity;
-            }
-        }
+        //    }
+        //}
+        //public Color cityColor_Minimap()
+        //{
+        //    switch (pcity.City().cityType)
+        //    {
+        //        default: return MiniMapCol_HeadCity;
+        //        case CityType.Town: return MiniMapCol_LargeCity;
+        //        case CityType.Village: return MiniMapCol_SmallCity;
+        //        case CityType.Campsite: return MiniMapCol_CampsiteCity;
+        //        case CityType.UnClaimed: return MiniMapCol_UnclaimedCity;
+        //    }
+        //}
 
         public override string ToString()
         {
             return $"SumTile4_4:\n" +
-                   $"  CityIndex: {CityIndex}\n" +
+                   $"  CityIndex: {pcity}\n" +
                    $"  SeaDistanceHeatMap: {seaDistanceHeatMap}\n" +
                    $"  Borders (N/E/S/W): {BorderRegion_North} / {BorderRegion_East} / {BorderRegion_South} / {BorderRegion_West} (Count: {BorderCount})\n" +
                    $"  Biom1: {biom1}\n" +

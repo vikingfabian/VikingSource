@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(unit.maptilePos), out var tile))
             {
-                bool unclaimedLand = tile.City().cityType == CityType.UnClaimed;
+                bool unclaimedLand = tile.pcity.City().cityType == CityType.UnClaimed;
 
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{

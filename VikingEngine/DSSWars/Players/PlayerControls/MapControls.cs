@@ -209,7 +209,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (onNewTile)
             {
-                var newCity = DssRef.world.tileGrid.Get(tilePosition).City();
+                var newCity = DssRef.world.tileGrid.Get(tilePosition).pcity.City();
                 if (newCity != selection.obj && newCity.pfaction == player.pfaction)
                 {
                     selection.obj = newCity;

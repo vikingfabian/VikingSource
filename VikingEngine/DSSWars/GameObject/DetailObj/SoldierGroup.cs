@@ -1284,7 +1284,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile))
                                     {
-                                        var city = tile.City();
+                                        var city = tile.pcity.City();
                                         if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                         {
                                             if (city.maptilePos.SideLength(maptilePos) <= 16 || tArmy.GetArmy().attackTarget == city)
@@ -1313,7 +1313,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile))
                                 {
-                                    var city = tile.City();
+                                    var city = tile.pcity.City();
                                     if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                     {
                                         goalWp = WP.SubtileToWorldPosXZ(city.maptilePos);

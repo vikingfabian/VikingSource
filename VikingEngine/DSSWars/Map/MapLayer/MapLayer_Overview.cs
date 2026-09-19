@@ -38,10 +38,10 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             
             //waterBottom.Y = waterSurface.Y - 0.1f;
 
-            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
-            {
-                borders = new Borders();
-            }
+            //if (DssRef.state.PlayType() != GameState.PlayStateType.BattleLab)
+            //{
+            //    borders = new Borders();
+            //}
             Ref.draw.CurrentRenderLayer = 0;
 
             unitMiniModels = new UnitMiniModels();
@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
         public void runAsyncTask()
         {
-            if (state_Processing_Sych_Complete == 2 && DssRef.world.BordersUpdated || StartupSettings.AlwaysRefreshMap)
+            if (state_Processing_Sych_Complete == 2 && DssRef.world.BordersUpdated /*|| StartupSettings.AlwaysRefreshMap*/)
             {
                 DssRef.world.BordersUpdated = false;
                 state_Processing_Sych_Complete = 0;
@@ -97,6 +97,11 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 if (DssRef.state.PlayType() != GameState.PlayStateType.BattleLab)
                 {
                     //factionsMap.asyncTask();
+                    foreach (var p in DssRef.state.localPlayers)
+                    {
+                        p.factionPixelTexture.refreshWorld();
+                        p.minimapPixelTexture.refreshWorld();
+                    }
                 }
                 state_Processing_Sych_Complete = 1;
             }

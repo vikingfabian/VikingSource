@@ -45,11 +45,11 @@ namespace VikingEngine.DSSWars.Event
                 var enemy = DssRef.state.LocalHost().getPin("enemy");
                 if (enemy != null)
                 {
-                    Faction attacker = DssRef.world.tileGrid.Get(enemy.maptilePos).Faction();
+                    Faction attacker = DssRef.world.tileGrid.Get(enemy.maptilePos).pcity.Faction();
                     attacker.addGold_factionWide(100000);
 
                     var defend = DssRef.state.LocalHost().getPin("defend");
-                    defendingCity = DssRef.world.tileGrid.Get(defend.maptilePos).City();
+                    defendingCity = DssRef.world.tileGrid.Get(defend.maptilePos).pcity.City();
 
                     //1. Send one army
                     new Timer.TimedAction0ArgTrigger_InGame(() =>

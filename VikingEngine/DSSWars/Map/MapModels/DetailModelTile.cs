@@ -822,7 +822,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1.0f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(faction, 7, wp + new Vector3(Map.MapData.MapTile1_1.ModelScale * 0.22f, 0.002f, -0.004f), Map.MapData.MapTile1_1.ModelScale * 0.8f);
@@ -834,7 +834,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.0f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -895,7 +895,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -908,7 +908,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 2, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
                     
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -921,7 +921,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 3, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -934,7 +934,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 4, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -1216,7 +1216,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -1230,7 +1230,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel( faction, 1, wp + new Vector3(0.011f, 0.009f, -0.032f), Map.MapData.MapTile1_1.ModelScale * 1f);
@@ -1243,7 +1243,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -1257,7 +1257,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -1271,7 +1271,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -1285,7 +1285,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -1299,7 +1299,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
@@ -1313,7 +1313,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_flagpole, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
 
-                        var faction = sumTile.Faction();
+                        var faction = sumTile.pcity.Faction();
                         if (faction != null)
                         {
                             var flag = new FoliageModel(

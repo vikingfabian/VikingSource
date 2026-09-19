@@ -37,11 +37,11 @@ namespace VikingEngine.DSSWars.Map.MapModels
             Sprite tex = Sprite.FromName(SpriteName.WhiteArea_LFtiles);
             List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>();
 
-            for (int y = 0; y < DssRef.world.Size.Y; ++y)
+            for (int y = 0; y < DssRef.world.tileGrid.Size.Y; ++y)
             {
-                for (int x = 0; x < DssRef.world.Size.X; ++x)
+                for (int x = 0; x < DssRef.world.tileGrid.Size.X; ++x)
                 {
-                    t = DssRef.world.tileGrid.Get(x, y);//.GetTile(x, y);
+                    t = DssRef.world.tileGrid.Get(x, y);
                     if (t.HasBorderImage())
                     {
                         Vector3 tileCenter = new Vector3(x, t.GroundY() + HeightAboveGround_Color, y);

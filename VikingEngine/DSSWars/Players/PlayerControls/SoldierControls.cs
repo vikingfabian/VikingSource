@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                                                 {
                                                                     var city = tArmy.GetCity();
 
-                                                                    if (DssRef.world.tileGrid.Get(WP.SubtileToTilePos(loop.Position)).CityIndex == city.myIndex)
+                                                                    if (DssRef.world.tileGrid.Get(WP.SubtileToTilePos(loop.Position)).pcity.cityIndex == city.myIndex)
                                                                     {
                                                                         WallPosition wallPosition = new WallPosition();
                                                                         wallPosition.Position = loop.Position;

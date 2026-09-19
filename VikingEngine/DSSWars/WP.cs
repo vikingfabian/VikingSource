@@ -247,6 +247,10 @@ namespace VikingEngine.DSSWars
         {
             return mapTilePos / SumTile4_4.TileWidth;
         }
+        public static IntVector2 MaptileToSumTile_centered(IntVector2 mapTilePos)
+        {
+            return (mapTilePos + (SumTile4_4.TileWidth / 2)) / SumTile4_4.TileWidth;
+        }
         public static IntVector2 MaptileToChunk(IntVector2 mapTilePos)
         {
             return mapTilePos / MapChunkData8_8.TileWidth;

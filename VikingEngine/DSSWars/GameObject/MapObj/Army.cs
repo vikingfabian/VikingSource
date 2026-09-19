@@ -1123,7 +1123,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (!DssRef.storage.ruleset_instance.centralGold && time > 0)
                 {
-                    var onCity = DssRef.world.tileGrid.Get(maptilePos).City();
+                    var onCity = DssRef.world.tileGrid.Get(maptilePos).pcity.City();
 
                     if (onCity.pfaction == pfaction)
                     {

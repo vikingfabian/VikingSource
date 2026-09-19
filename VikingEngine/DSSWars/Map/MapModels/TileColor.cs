@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
@@ -10,45 +11,123 @@ using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map.MapModels
 {
-    /// <summary>
-    /// Combines data from different tile data types
-    /// </summary>
-    struct CombinedTile
-    {
-        public MapTile1_1 mapTile;
-        public SumTile4_4 sumTile;
-
-        public CombinedTile() 
-        { 
-            
-        }
-
-        public CombinedTile(GenTile genTile)
-        {
-            mapTile = new MapTile1_1()
-            {
-                heightValue = MapLib.MapHeight2.HeightY_Interval.GetValueBytePercentPos(genTile.groundY),
-            };
-
-            sumTile = new SumTile4_4()
-            {
-                biom1 = genTile.biom1,
-                biom2 = genTile.biom2,
-                secondBiomWeight = (byte)(genTile.secondBiomWeight * byte.MaxValue),
-            };
-        }
-    }
+    
 
 
     static class TileColor
     {
+        static readonly Color MapCol_HeadCity = new Color(255, 174, 184);
+        static readonly Color MapCol_LargeCity = new Color(253, 0, 30);
+        static readonly Color MapCol_SmallCity = new Color(148, 0, 17);
+        static readonly Color MapCol_CampsiteCity = new Color(148, 0, 17);
+        static readonly Color MapCol_UnclaimedCity = Color.Blue;
+
+        static readonly Color MiniMapCol_HeadCity = new Color(251, 37, 114);
+        static readonly Color MiniMapCol_LargeCity = new Color(226, 11, 88);
+        static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
+        static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
+        static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
+        public static void cityColor(City city, out Color center, out Color outline, out Color factionCol)
+        {
+            switch (city.cityType)
+            {
+                default: center = MapCol_HeadCity; break;
+                case CityType.Town: center = MapCol_LargeCity; break;
+                case CityType.Village: center = MapCol_SmallCity; break;
+                case CityType.Campsite: center = MapCol_CampsiteCity; break;
+                case CityType.UnClaimed: center = MapCol_UnclaimedCity; break;
+
+            }
+            outline = Color.LightPink;
+            factionCol = city.pfaction.GetPlayer().profile.flag.col0_Main;
+        }
         public static Color FactionAndTerrainColor(CombinedTile tile, int leanY)
         {
-            return TerrainColor(tile, leanY);
+            
+            Color color = TerrainColor(tile, leanY);
+
+            if (tile.mapTile.IsLandOrWaterPlane() && tile.sumTile.pcity.HasValue())
+            {
+                //Color factionCol = 
+                var pf = tile.sumTile.pcity.City().pfaction;
+                if (pf.TryGetPlayer(out var player))
+                {
+                    if (tile.sumTile.IsBorderTile)
+                    {
+                        color = player.profile.flag.col0_Main;
+                    }
+                    else
+                    {
+                        color = ColorExt.Mix(color, player.profile.flag.col0_Main, 0.5f);
+                    }
+                }
+            }
+
+            return color;
         }
+
+        public static Color BorderAndTerrainColor(CombinedTile tile, int leanY)
+        {
+
+            Color color = TerrainColor(tile, leanY);
+
+            if (tile.sumTile.IsBorderTile && tile.mapTile.IsLandOrWaterPlane() && tile.sumTile.pcity.HasValue())
+            {
+                //Color factionCol = 
+                var pf = tile.sumTile.pcity.City().pfaction;
+                if (pf.TryGetPlayer(out var player))
+                {
+                    color = player.profile.flag.col0_Main;                    
+                }
+            }
+
+            return color;
+        }
+
         public static Color MinimapColor(CombinedTile tile, int leanY)
         {
-            return TerrainColor(tile, leanY);
+            if (tile.mapTile.IsWater())
+            {
+                return WaterColor(tile.mapTile.heightValue);
+                //if (tile.mapTile.heightValue >= MapHeight2.ShallowWaterHeight)
+                //{
+                //    return WorldData.WaterEdgeColorBright;
+                //}
+                //else
+                //{
+                //    return WorldData.WaterDarkCol1;
+                //}
+            }
+            return FactionAndTerrainColor(tile, leanY);
+        }
+
+        public static Color IconmapColor(CombinedTile tile)
+        {
+            if (tile.mapTile.IsWater())
+            {
+                return WaterColor(tile.mapTile.heightValue);
+                //if (tile.mapTile.heightValue >= MapHeight2.ShallowWaterHeight)
+                //{
+                //    return WorldData.WaterEdgeColorBright;
+                //}
+                //else
+                //{
+                //    return WorldData.WaterDarkCol1;
+                //}
+            }
+            return TerrainColor(tile, 0);
+        }
+
+        public static Color WaterColor(byte height)
+        {
+            if (height >= MapHeight2.ShallowWaterHeight)
+            {
+                return WorldData.WaterEdgeColorBright;
+            }
+            else
+            {
+                return ColorExt.MultiplyRGB( WorldData.WaterDarkCol1,  0.7f + 0.3f * height / MapHeight2.ShallowWaterHeight);
+            }
         }
         public static Color TerrainColor(CombinedTile tile, int leanY)
         {
@@ -86,9 +165,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         public static Color factionColor(CombinedTile tile)
         {
-            if (tile.sumTile.CityIndex != ushort.MaxValue)
+            if (tile.sumTile.pcity.HasValue())
             {   
-                if (DssRef.world.cities[tile.sumTile.CityIndex].pfaction.TryGetPlayer(out var p) && 
+                if (tile.sumTile.pcity.City().pfaction.TryGetPlayer(out var p) && 
                     p.profile.flag != null)
                 {
                     return p.profile.flag.col0_Main;
@@ -105,12 +184,12 @@ namespace VikingEngine.DSSWars.Map.MapModels
             float red = 0;
             float green = 0;
 
-            if (tile.sumTile.CityIndex == ushort.MaxValue)
+            if (tile.sumTile.pcity.IsEmpty())
             {
                 return ColorExt.VeryDarkGray;
             }
 
-            var pfaction = DssRef.world.cities[tile.sumTile.CityIndex].pfaction;
+            var pfaction = tile.sumTile.pcity.City().pfaction;
             if (pfaction == playerFaction.pfaction)
             {
                 brightness *= 0.5f;

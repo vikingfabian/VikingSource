@@ -187,7 +187,7 @@ namespace VikingEngine.DSSWars.Work
             switch (work)
             {
                 case WorkType.TrossCityTrade:
-                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).City();
+                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
 
                     ItemResourceType foodType = (ItemResourceType)workSubType;
                     //if (toCity.GetGroupedResource(EntityComponent.CityResoureIndex.ConservedFood).amount >= ItemPropertyColl.DefaultCarry)
@@ -1311,7 +1311,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.LocalTrade:
                     ItemResourceType tradeForItem = (ItemResourceType)workSubType;
-                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).City();
+                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                     int payment = carry.amount;
                     ItemResource recieved = toCity.MakeTrade(tradeForItem, payment);
 
@@ -1969,7 +1969,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.LocalTrade:
                     {
                         ItemResourceType tradeForItem = (ItemResourceType)workSubType;
-                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).City();
+                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                         int goldCost = tradeForItem == ItemResourceType.ConservedFood? DssConst.ConservedFoodGoldValue : DssConst.FoodGoldValue;// toCity.SellCost(tradeForItem);
 
                         carry = new ItemResource(ItemResourceType.Gold, /*1, 1,*/ goldCost * DssConst.Worker_TrossWorkerCarryWeight);
@@ -1978,7 +1978,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.TrossCityTrade:
                     {
-                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).City();
+                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                         int goldCost = DssConst.FoodGoldValue;//toCity.SellCost(ItemResourceType.Food_G);
 
                         carry = new ItemResource(ItemResourceType.Gold, /*1, 1,*/ goldCost);

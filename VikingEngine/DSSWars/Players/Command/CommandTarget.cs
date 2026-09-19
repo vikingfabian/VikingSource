@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
             if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(player.gameControls.map.hover.subTile.subTilePos), out var tile))
             {
-                available = tile.City().cityType == CityType.UnClaimed;
+                available = tile.pcity.City().cityType == CityType.UnClaimed;
             }
 
             model.Color = available ? Color.White : HudLib.NotAvailableColor;

@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (DssRef.world.tileGrid.TryGet(player.gameControls.map.tilePosition, out var tile))
                 {
-                    var hoverCity = tile.City();
+                    var hoverCity = tile.pcity.City();
                     hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
 
                     if (hoverCity.pfaction == player.pfaction &&

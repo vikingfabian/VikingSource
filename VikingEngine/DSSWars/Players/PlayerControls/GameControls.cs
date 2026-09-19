@@ -915,7 +915,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (map.selection.obj == null &&
                 DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
             {
-                var city = tile.City();
+                var city = tile.pcity.City();
                 if (city.pfaction == player.pfaction)
                 {
                     mapSelect(city);

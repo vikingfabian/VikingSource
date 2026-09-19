@@ -43,8 +43,7 @@ namespace VikingEngine.DSSWars
 
             Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
 
-            instance.scale.X = scale;
-            instance.scale.Y = 0;
+            instance.scale =new Vector3( scale);
 #if DEBUG
             instance.DebugName = name.ToString();
 #endif
@@ -60,9 +59,9 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             instance.DebugName = name.ToString() + ", fac" + myIndex.ToString();
 #endif
-            instance.scale.X = scale;
-            instance.scale.Y = 0;
-
+            //instance.scale.X = scale;
+            //instance.scale.Y = 0;
+            instance.scale = new Vector3(scale);
             getOrCreateMaster(name, instance);
 
             Ref.draw.drawBatch.Add(instance);
@@ -77,8 +76,9 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             instance.DebugName = modelData.ToString() + ", fac" + myIndex.ToString();
 #endif
-            instance.scale.X = scale;
-            instance.scale.Y = 0;
+            //instance.scale.X = scale;
+            //instance.scale.Y = 0;
+            instance.scale = new Vector3(scale);
 
             Graphics.AbsVoxelObj master = null;
 
