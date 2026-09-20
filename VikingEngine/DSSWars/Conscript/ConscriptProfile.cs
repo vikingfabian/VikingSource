@@ -73,6 +73,15 @@ namespace VikingEngine.DSSWars.Conscript
             return data.workForceCount();
         }
 
+        public void checkFollowsSimplifiedConscript()
+        {
+            shield = ItemResourceType.NONE;
+            animal = ItemResourceType.NONE;
+            mountArmor = ItemResourceType.NONE;
+            vehicle = ItemResourceType.NONE;
+            specialization = SpecializationType.None;
+        }
+
         public float copperUpkeepPerSoldier()
         {
             var result = DssConst.TrainingCopperUpkeep[(int)training];

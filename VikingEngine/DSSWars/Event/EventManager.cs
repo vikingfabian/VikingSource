@@ -125,8 +125,8 @@ namespace VikingEngine.DSSWars.Event
                 {
                     
 
-                        if (loop.OtherFaction(out var otherFaction) && otherFaction.isAlive)
-                        {
+                    if (loop.OtherFaction(out var otherFaction) && otherFaction.isAlive)
+                    {
                        
                         var relation = loop.Relation();
 
@@ -154,7 +154,6 @@ namespace VikingEngine.DSSWars.Event
                             {
                                 peaceStrength += otherFaction.PotensialMilitaryStrength();
                             }
-                        //}
                     }
                 }
 
@@ -186,7 +185,7 @@ namespace VikingEngine.DSSWars.Event
                 int missingCities = 0;
                 foreach (var city in DssRef.world.cities)
                 {
-                    if (city.cityType > CityType.UnClaimed && city.pfaction != p.pfaction)
+                    if (!city.IsInitialized || (city.cityType > CityType.UnClaimed && city.pfaction != p.pfaction))
                     {
                         missingCities++;
                         if (missingCities > dominationCount)

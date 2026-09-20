@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Players.Orders
 {
@@ -16,6 +17,8 @@ namespace VikingEngine.DSSWars.Players.Orders
         public int priority;
         static int NextId = 1;
         public int id;
+
+        virtual public void refreshYpos() { }
 
         virtual public void onAdd(int playerIx)
         { }
@@ -51,10 +54,14 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             w.Write((byte)priority);
         }
-        virtual public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        
+        /// <returns>Read success</returns>
+        virtual public bool readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             priority = r.ReadByte();
             id = NextId++;
+
+            return true;
         }
 
         virtual public DemolishOrder GetDemolish()

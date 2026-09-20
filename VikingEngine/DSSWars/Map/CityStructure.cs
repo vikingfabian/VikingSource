@@ -276,7 +276,7 @@ namespace VikingEngine.DSSWars.Map
 
             Rectangle2 emptyArea = Rectangle2.Zero;
             buildingPosition = new BuildingPosition();
-            BuildingStructure buildingStructure = new BuildingStructure();
+            BuildingStructure buildingStructure = new BuildingStructure() { gotUpdate = true };
             TerrainStructure terrainStructure = new TerrainStructure();
 
             //IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);

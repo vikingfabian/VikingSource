@@ -242,12 +242,12 @@ namespace VikingEngine.DSSWars
             if (player.IsRemotePlayer())
             {
                 w.Write((ushort)player.GetRemotePlayer().previousFactionType);
-                player.GetRemotePlayer().previousPlayer.writeGameState(w);
+                player.GetRemotePlayer().previousPlayer.writeGameState(w, false);
             }
             else
             {
                 w.Write((ushort)factiontype);
-                player.writeGameState(w);
+                player.writeGameState(w, false);
             }            
 
             w.Write(money.copper);
@@ -305,7 +305,7 @@ namespace VikingEngine.DSSWars
                         break;
                 }
 
-                player.readGameState(r, subVersion, pointers);
+                player.readGameState(r, false, subVersion, pointers);
 
             
 
@@ -1156,7 +1156,7 @@ namespace VikingEngine.DSSWars
                 IconName.Relation(relation, out SpriteName relIcon, out string relName);
                 content.Add(new RbImage(relIcon));
             }
-            if (player.IsRemotePlayer())
+            if (player != null && player.IsRemotePlayer())
             {
                 content.space(0.5f);
                 content.Add(new RbGamerIcon(((RemotePlayer)player).networkPeer.peer, 0.8f));
