@@ -346,7 +346,7 @@ namespace VikingEngine.DSSWars.Build
 
     struct BuildingStructure
     {
-
+        public bool gotUpdate;
         public bool manorLord;
         public bool greatHall;
         public int buildingLevel_logistics;
