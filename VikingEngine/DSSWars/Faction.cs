@@ -1156,7 +1156,7 @@ namespace VikingEngine.DSSWars
                 IconName.Relation(relation, out SpriteName relIcon, out string relName);
                 content.Add(new RbImage(relIcon));
             }
-            if (player.IsRemotePlayer())
+            if (player != null && player.IsRemotePlayer())
             {
                 content.space(0.5f);
                 content.Add(new RbGamerIcon(((RemotePlayer)player).networkPeer.peer, 0.8f));
