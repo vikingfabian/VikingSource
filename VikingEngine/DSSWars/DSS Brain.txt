@@ -4,6 +4,7 @@ Change log:
 
 ## QoL Part 2 ##
 * The color range of voxel models have been adjusted
+* Truce timer is pinned to hud
 
 Performance
 * Work has been put into keeping down the creeping memory (RAM) usage (contribution made by Uygar "Agent" Yilmaz)

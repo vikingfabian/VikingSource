@@ -1140,7 +1140,7 @@ namespace VikingEngine.DSSWars
                     new RbBeginTitle(),
                     new RbImage(SpriteName.WarsHudIconOpen),
                     new RbTab(ButtonTextTabbing),
-                    new RbText(DssRef.lang.GameMenu_ContinueFromSave),
+                    new RbText(DssRef.lang.GameMenu_ContinueFromSave/*, new Color(165, 144, 82)*/),
                     //new RbTab(MoreArrowTabbing),
                 },
                 new RbAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), new RbTooltip_Text(saves[0].InfoString()));

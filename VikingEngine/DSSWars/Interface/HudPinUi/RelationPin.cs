@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,6 +28,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                         {
                             remove = pin;
                         }
+
                         RichBoxContent buttoncontent = new RichBoxContent();
                         IconName.Relation(relation.Relation, out SpriteName opprelIcon, out string opprelName);
                         buttoncontent.Add(faction.FlagTextureToHud());
@@ -48,7 +50,14 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                               DiplomacyDisplay.FactionRelationDisplay(pFaction.GetFaction(), relation.Relation, content, true);
                           }, pin), true, HudPin.BgCol));
                     } }
+
+                if (remove.HasValue())
+                {
+                    relationPins.Remove(remove);
+                }
             }
+
+           
         }
 
         public static bool DisplayRelation(RelationType relation)
