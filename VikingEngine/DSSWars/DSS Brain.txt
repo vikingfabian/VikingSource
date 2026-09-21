@@ -2,15 +2,8 @@
 Change log:
 * 
 
-KNOWN ISSUES
-x reassign dont work with controller
-x hide achievements
-X timeline checkbox on steamworks
-x adjust "all facts"
-
 ## QoL Part 2 ##
 * The color range of voxel models have been adjusted
-
 
 Performance
 * Work has been put into keeping down the creeping memory (RAM) usage (contribution made by Uygar "Agent" Yilmaz)
@@ -19,6 +12,7 @@ Performance
 * Fixed memory leaks in path finding (Uygar "Agent" Yilmaz)
 * Model instance rendering (Uygar "Agent" Yilmaz)
 * The terrain shadow renderer now supports textures (Uygar "Agent" Yilmaz)
+
 
 
 
