@@ -230,7 +230,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         public void readGameState(int playerIx, BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             int ordersCount;
-            if (subversion >= 133)
+            if (subversion >= 138)
             {
                 ordersCount = StreamLib.ReadGrowing_UShort_Add(r);
             }

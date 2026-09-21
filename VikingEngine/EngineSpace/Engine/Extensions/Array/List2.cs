@@ -41,11 +41,18 @@ namespace VikingEngine
             return false;
         }
 
+        public bool InBound(int index)
+        {
+            return index >= 0 && index < this.Count;
+        }
+
         public void SelectIndex(int index)
         {
-
-            sel = this[index];
-            selIndex = index;
+            if (InBound(index))
+            {
+                sel = this[index];
+                selIndex = index;
+            }
         }
 
         public void Add(T item, bool select)

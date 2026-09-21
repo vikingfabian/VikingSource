@@ -471,7 +471,7 @@ namespace VikingEngine.DSSWars.Players
                         PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy(rpfaction);
 
                         tp.readGameState(r, subversion);
-                        toPlayerDiplomacies.Add(rpfaction, tp);
+                        toPlayerDiplomacies.TryAdd(rpfaction, tp);
                     }
                     else
                     {
@@ -483,7 +483,7 @@ namespace VikingEngine.DSSWars.Players
 
             automation.readGameState(r, subversion);
 
-            if (subversion >= 133)
+            if (subversion >= 138)
             {
                 Debug.ReadCheck(r);
             }
@@ -542,7 +542,7 @@ namespace VikingEngine.DSSWars.Players
         }
         public void readBlackMarket(BinaryReader r, int subversion)
         {
-            if (subversion >= 132)
+            if (subversion >= 138)
             {
                 BlackMarketCount = r.ReadUInt16();
                 PrevCityCount = r.ReadUInt16();
@@ -609,7 +609,7 @@ namespace VikingEngine.DSSWars.Players
         }
         public void readClientSave(int playerIx, BinaryReader r, int subversion)
         {
-            if (subversion < 133)
+            if (subversion < 138)
             {
                 orders.readGameState(playerIx, r, subversion, null);
 
