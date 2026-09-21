@@ -6,7 +6,7 @@ KNOWN ISSUES
 x reassign dont work with controller
 x hide achievements
 X timeline checkbox on steamworks
-
+x adjust "all facts"
 
 ## QoL Part 2 ##
 * The color range of voxel models have been adjusted

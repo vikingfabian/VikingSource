@@ -264,30 +264,30 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, SoundDir + "out_of_ammo");
 
             string StingerDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "stinger" + DataStream.FilePath.Dir;
-            eventRepeatSound = new SoundContainerSingle(StingerDir + "stringer_repeat", 0.6f);
-            eventRelationWar = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship War", 0.6f));
-            eventRelationEnemy = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Enemy  ", 0.6f));
-            eventRelationGood = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Good", 0.6f));
-            eventRelationAlly = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Ally", 0.6f));
-            eventRelationTotalWar = new MessageTimer(new SoundContainerSingle(StingerDir + "Total War", 0.6f));
-            eventRelationGainVassal = new SoundContainerSingle(StingerDir + "Gaining a vassalv2", 0.6f);
+            eventRepeatSound = new SoundContainerSingle(StingerDir + "stringer_repeat", 0.4f);
+            eventRelationWar = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship War", 0.4f));
+            eventRelationEnemy = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Enemy  ", 0.4f));
+            eventRelationGood = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Good", 0.4f));
+            eventRelationAlly = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Ally", 0.4f));
+            eventRelationTotalWar = new MessageTimer(new SoundContainerSingle(StingerDir + "Total War", 0.4f));
+            eventRelationGainVassal = new SoundContainerSingle(StingerDir + "Gaining a vassalv2", 0.4f);
 
-            eventBattle = new MessageTimer(new SoundContainerSingle(StingerDir + "Entered battlev4", 0.6f));
-            eventSiege = new MessageTimer(new SoundContainerSingle(StingerDir + "Under Siege", 0.6f));
+            eventBattle = new MessageTimer(new SoundContainerSingle(StingerDir + "Entered battlev4", 0.4f));
+            eventSiege = new MessageTimer(new SoundContainerSingle(StingerDir + "Under Siege", 0.4f));
             eventLost = new MessageTimer(new SoundContainerSingle(StingerDir + "Lost battlev1", 1.3f));
 
-            eventResourceLow = new MessageTimer(new SoundContainerSingle(StingerDir + "Out of Resource Eventv4", 0.6f));
-            eventDeserters = new MessageTimer(new SoundContainerSingle(StingerDir + "UnitsDesertedModified", 0.6f));
+            eventResourceLow = new MessageTimer(new SoundContainerSingle(StingerDir + "Out of Resource Eventv4", 0.4f));
+            eventDeserters = new MessageTimer(new SoundContainerSingle(StingerDir + "UnitsDesertedModified", 0.4f));
 
-            sillyFanfare = new SoundContainerSingle(StingerDir + "Silly fanfarev3-volumen+7", 0.6f);
-            forYourInformation = new SoundContainerSingle(StingerDir + "For Your Information", 0.6f);
-            goodNews = new SoundContainerSingle(StingerDir + "Good News", 0.6f);
-            storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 0.6f);
-            warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 0.6f);
+            sillyFanfare = new SoundContainerSingle(StingerDir + "Silly fanfarev3-volumen+7", 0.4f);
+            forYourInformation = new SoundContainerSingle(StingerDir + "For Your Information", 0.4f);
+            goodNews = new SoundContainerSingle(StingerDir + "Good News", 0.4f);
+            storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 0.4f);
+            warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 0.4f);
             saving = new SoundContainerSingle(StingerDir + "Saving game", 0.4f);
             loading = new SoundContainerSingle(StingerDir + "Loading Game", 0.4f);
             joining = new SoundContainerSingle(StingerDir + "Joining multiplayer gamev1", 0.4f);
-            recievedGift = new MessageTimer(new SoundContainerSingle(StingerDir + "Received gifts", 0.6f));
+            recievedGift = new MessageTimer(new SoundContainerSingle(StingerDir + "Received gifts", 0.4f));
 
         }
         public static void SubTab(Resource.ResourceManagementType subTab)

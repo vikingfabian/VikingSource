@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Interface
         public PlayerHud_Head(LocalPlayer player)
         {
             this.player = player;
-            float headWidth = HudLib.HeadDisplayWidth * 1.6f;
+            float headWidth = HudLib.HeadDisplayWidth * 1.8f;
             var headMenuArea = player.playerData.view.wideScreenSafeScreenArea;
             headMenuArea.Width = headWidth;
             menu = new RichMenu(HudLib.RbSettings_Head, headMenuArea, new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Interface
             if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
             {
                 VectorRect flagBgArea = new VectorRect(headMenuArea.Position, new Vector2(menu.backgroundArea.Height * 1.05f));
-                flagBgArea.Width *= 0.7f;
+                flagBgArea.Width *= 0.86f;
                 //flagBgArea.Position.Y += 4;
                 var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
                 flagBgArea.Round();
@@ -58,8 +58,8 @@ namespace VikingEngine.DSSWars.Interface
                 menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
                 flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 8));
                 
-                Graphics.Image flagBgTex = new Image(SpriteName.WhiteArea_LFtiles, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer +1, false);
-                flagBgTex.Color = player.profile.flag.col0_Main;
+                //Graphics.Image flagBgTex = new Image(SpriteName.WhiteArea_LFtiles, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer +1, false);
+                //flagBgTex.Color = player.profile.flag.col0_Main;
 
                 flagBgArea.Position.Y += (flagBgArea.Height - flagBgArea.Width) * 0.5f;
                 flagBgArea.Height = flagBgArea.Width;

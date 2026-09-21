@@ -709,9 +709,12 @@ namespace VikingEngine.SteamWrapping
         {
             Debug.CrashIfThreaded();
 
-            for (int i = remoteGamers.Count - 1; i >= 0; --i)
+            if (remoteGamers.Count > 0)
             {
-                RemovePeer(remoteGamers[i]);
+                for (int i = remoteGamers.Count - 1; i >= 0; --i)
+                {
+                    RemovePeer(remoteGamers[i]);
+                }
             }
 
             localPeer = null;

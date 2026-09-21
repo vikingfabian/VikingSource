@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float strengthValue = -1;
         public float mobilityValue = 0;
 
-        public IntVector2 tilePos;
+        public IntVector2 tilePos = IntVector2.NegativeOne;
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);

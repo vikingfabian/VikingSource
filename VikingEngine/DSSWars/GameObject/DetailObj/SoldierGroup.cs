@@ -350,17 +350,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             GroupState rState = (GroupState)r.ReadByte();
             state = rState;
-            //Debug.ReadCheck(r);
-
+            
             readGameState(tArmy, r, int.MaxValue, needInit, rState <= GroupState.FindArmyPlacement, null);
-            //Debug.ReadCheck(r);
+            
             setGroundY();
             
-
-            //Debug.Log("## Soldiergroup read Net, state: " + state.ToString());
-            //Debug.Log($"goal: {goalWp}, pos: {position}" );
-
-
             switch (rState)
             {
                 default:
@@ -585,6 +579,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             int xStart;
 
+            
+
             if (builder.IsShip())
             {
                 soldierConscript.shipSetup(ref soldierData);
@@ -664,6 +660,8 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
 
+            
+
             bool create(int x, int y, bool banner, AbsSoldierBuilder builder, ref SoldierData soldierData)
             {
                 AbsSoldierUnit unit = createUnit(builder, new IntVector2(x + xStart, y),
@@ -682,22 +680,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            //AbsSoldierUnit unit = createUnit(typeProfile, new IntVector2(x + xStart, y), 
-            //    bannerPos.Equals(x, y), tilePos, ref soldierData, createModels);
-
-            //if (unit == null)
-            //{
-            //    return;
-            //}
-            //else
-            //{
-            //    unit.firstUpdate();
-            //}
-
-            //if (--count <= 0)
-            //{
-            //    return;
-            //}
         }
 
         void deleteAllSoldiers(DeleteReason reason)
