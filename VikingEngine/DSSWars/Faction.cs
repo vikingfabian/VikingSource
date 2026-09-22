@@ -394,34 +394,6 @@ namespace VikingEngine.DSSWars
 
             readResources(r, subVersion);
         }
-            //void writeRelations(System.IO.BinaryWriter w)
-            //{
-            //    for (int i = 0; i < diplomaticRelations.Length; ++i)
-            //    {
-            //        if (diplomaticRelations[i] != null &&
-            //            diplomaticRelations[i].IsFactionOne(this))
-            //        {
-            //            diplomaticRelations[i].write(w);
-            //        }
-            //    }
-            //    w.Write(short.MinValue);
-            //}
-
-            //void readRelations(System.IO.BinaryReader r, int subVersion)
-            //{
-            //    while (true)
-            //    {
-            //        DiplomaticRelation relation = new DiplomaticRelation();
-            //        if (relation.read(r, subVersion))
-            //        {
-            //            relation.addToFactions();
-            //        }
-            //        else
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
 
         void writeResources(System.IO.BinaryWriter w)
         {

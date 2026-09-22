@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Data
             FriendlySoldiersLost = r.ReadInt32();
             EnemySoldiersKilled = r.ReadInt32();
 
-            if (subVersion >= 133)
+            if (subVersion >= 138)
             {
                 CitiesCaptured = r.ReadInt32();
                 CitiesLost = r.ReadInt32();

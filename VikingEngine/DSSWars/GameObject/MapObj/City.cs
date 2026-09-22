@@ -654,7 +654,7 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.readGameState(r, subversion, true);
             readClientResources(r, subversion);
 
-            if (subversion >= 133)
+            if (subversion >= 138)
             { 
                 readAutomation(r);
 
