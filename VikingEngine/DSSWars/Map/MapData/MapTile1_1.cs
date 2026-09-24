@@ -53,14 +53,15 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public static readonly Vector2 ModelScaleV2 = new Vector2(ModelScale);
         public static readonly float SubTileHalfWidth = ModelScale * 0.5f;
-
-        
-        //public Color color;
+                
         public byte heightValue;
+
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
 
-        //public int landDataIndex = -1;
         public byte subTerrain = byte.MaxValue;
+
+        public GroundType groundType = GroundType.Default;
+
         /// <summary>
         /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
         /// </summary>
@@ -69,8 +70,6 @@ namespace VikingEngine.DSSWars.Map.MapData
         public byte health = 100;
 
         public byte orientation = 0;
-
-        //public byte terrainQuality = 0;
 
         /// <summary>
         /// Pointer to array with all resources found lying on ground

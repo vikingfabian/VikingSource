@@ -6,136 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
+using VikingEngine.LootFest.Display;
 
 namespace VikingEngine.DSSWars.Map.Settings
 {
-    class WorldBioms
-    {
-        public Biom[] bioms = new Biom[(int)BiomType.NUM];
-        public WorldBioms()
-        {
-            bioms[(int)BiomType.WetGreen] = new Biom(
-                new TileColor( dampColors(new Color(94, 118, 25)), SurfaceTextureType.Grass),
-
-                new TileColor(dampColors(new Color(210, 209, 136)), SurfaceTextureType.Sand),
-                new TileColor(dampColors(new Color(68, 85, 20)), SurfaceTextureType.Grass), 
-                new TileColor(dampColors(new Color(75, 76, 73)), SurfaceTextureType.None),
-                1.1f, 0.6f, 0
-                );
-
-            bioms[(int)BiomType.Swamp] = new Biom(
-                new TileColor(dampColors(new Color(113, 123, 31)), SurfaceTextureType.Grass),
-
-                new TileColor(dampColors(new Color(208, 207, 148)), SurfaceTextureType.Sand),
-                new TileColor(dampColors(new Color(40, 43, 19)), SurfaceTextureType.Grass),
-                new TileColor(dampColors(new Color(75,82, 59)), SurfaceTextureType.None),
-                1.1f, 0.2f, 0
-                );
-
-            bioms[(int)BiomType.Green] = new Biom(
-                new TileColor(dampColors(new Color(104,146,70)), SurfaceTextureType.Grass),
-
-                new TileColor(dampColors(new Color(255,254,181)), SurfaceTextureType.Sand),
-                new TileColor(dampColors(ColorExt.ChangeBrighness( new Color(8, 71, 6), -10)), SurfaceTextureType.Grass), 
-                new TileColor(dampColors(ColorExt.ChangeBrighness(new Color(73, 76, 73), -10)), SurfaceTextureType.None),
-                1f, 0.25f, 0
-                );
-
-            bioms[(int)BiomType.Hills] = new Biom(
-               new TileColor(dampColors(new Color(115, 198, 68)), SurfaceTextureType.Grass),
-
-               new TileColor(dampColors(new Color(216, 230, 129)), SurfaceTextureType.Sand),
-               new TileColor(dampColors(new Color(70, 151, 41)), SurfaceTextureType.Grass),
-               new TileColor(dampColors(new Color(73, 76, 73)), SurfaceTextureType.None),
-               1.2f, 0.1f, 0
-               );
-
-            bioms[(int)BiomType.GreenDry] = new Biom(
-               new TileColor(dampColors(new Color(208, 188, 119)), SurfaceTextureType.Grass),
-
-               new TileColor(dampColors(new Color(230, 214, 162)), SurfaceTextureType.Sand),
-               new TileColor(dampColors(ColorExt.ChangeBrighness(new Color(180, 161, 97), -10)), SurfaceTextureType.Grass),
-               new TileColor(dampColors(ColorExt.ChangeBrighness(new Color(124, 128, 107), -10)), SurfaceTextureType.None),
-               0.5f, 0.9f, 0.5f
-               );
-
-            bioms[(int)BiomType.YellowDry] = new Biom(
-                new TileColor(dampColors(new Color(171,162,54)), SurfaceTextureType.Sand), 
-
-                new TileColor(dampColors(new Color(255,237,130)), SurfaceTextureType.Sand), 
-                new TileColor(dampColors(new Color(80, 60, 2)), SurfaceTextureType.None), 
-                new TileColor(dampColors(new Color(81, 79, 68)), SurfaceTextureType.None),
-                0.5f, 0, 0.6f
-                );
-
-            bioms[(int)BiomType.RedDry] = new Biom(
-                new TileColor(dampColors(new Color(171,120,54)), SurfaceTextureType.Sand),  
-
-               new TileColor(dampColors(new Color(255,220,130)), SurfaceTextureType.Sand),
-                new TileColor(dampColors(new Color(60, 33, 9)), SurfaceTextureType.None), 
-                new TileColor(dampColors(new Color(90, 79, 65)), SurfaceTextureType.None),
-                0.6f, 0, 0.5f
-                );
-
-            bioms[(int)BiomType.DarkLands] = new Biom(
-                new TileColor(dampColors(new Color(58, 94, 108)), SurfaceTextureType.None),
-
-               new TileColor(dampColors(new Color(102, 115, 116)), SurfaceTextureType.Sand),
-                new TileColor(dampColors(new Color(58, 94, 108)), SurfaceTextureType.None),
-                new TileColor(dampColors(new Color(39, 59, 57)), SurfaceTextureType.None),
-                0.6f, 0, 0.6f)
-                { 
-                    mudColor= dampColors(new Color(24, 56, 67)), 
-                    treeHard = LootFest.VoxelModelName.fol_tree_hard_lava,
-                    treeSoft = LootFest.VoxelModelName.fol_tree_soft_lava,
-                };
-
-            bioms[(int)BiomType.Frozen] = new Biom(
-                new TileColor(dampColors(new Color(86, 109, 83)), SurfaceTextureType.Grass), 
-
-                new TileColor(dampColors(new Color(197, 242, 242)), SurfaceTextureType.Sand), 
-                new TileColor(dampColors(new Color(40, 53, 47)), SurfaceTextureType.None), 
-                new TileColor(dampColors(new Color(97, 114, 114)), SurfaceTextureType.None),
-                1.3f, 0.8f, 0.2f
-                )
-            {
-                treeHard = LootFest.VoxelModelName.fol_tree_hard_snow,
-                treeSoft = LootFest.VoxelModelName.fol_tree_soft_snow,
-            };
-
-            bioms[(int)BiomType.Tundra] = new Biom(
-                new TileColor(dampColors(new Color(148,133,55)), SurfaceTextureType.Grass),
-
-                new TileColor(dampColors(new Color(178, 188, 152)), SurfaceTextureType.Sand),
-                new TileColor(dampColors(new Color(100, 91, 42)), SurfaceTextureType.Grass),
-                new TileColor(dampColors(new Color(86, 91, 75)), SurfaceTextureType.None),
-                0.5f, 0.9f, 0.5f
-                );
-
-            Color dampColors(Color color)
-            { 
-                color.Deconstruct(out byte r, out byte g, out byte b);
-
-                r = (byte)(26 + contrast(r));
-                g = (byte)(16 + contrast(g));
-                b = (byte)(10 + contrast(b));
-
-                int contrast(int value)
-                {
-                    if (value < 140)
-                    {
-                        return (int)(value * 0.8);
-                    }
-                    else
-                    {
-                        return (int)(value * 0.9);
-                    }
-                }
-
-                return new Color(r, g, b);
-            }
-        }
-    }
+    
 
     class Biom
     {
@@ -152,14 +28,30 @@ namespace VikingEngine.DSSWars.Map.Settings
         public LootFest.VoxelModelName treeHard = LootFest.VoxelModelName.fol_tree_hard;
         public LootFest.VoxelModelName treeSoft = LootFest.VoxelModelName.fol_tree_soft;
 
+        BiomGroundType defaultGround;
+        public BiomGroundType beachGround;
+        BiomGroundType[] stoneNoiseGround;
+        BiomGroundType[] herbNoiseGround;
+        BiomGroundType[] treeNoiseGround;
+
 
         public Biom(TileColor mainCol, 
             TileColor brightCoast, TileColor darkGradient, TileColor mountain,
-            float percTree, float percSoftTree, float percDryWood)
+            /*float percTree, float percSoftTree, float percDryWood*/
+            BiomGroundType defaultGround,
+            BiomGroundType beachGround,
+            BiomGroundType[] treeNoiseGround,
+            BiomGroundType[] stoneNoiseGround, 
+            BiomGroundType[] herbNoiseGround)
         {
-            this.percTree = percTree;
-            this.percSoftTree = percSoftTree;
-            this.percDryWood = percDryWood;
+            this.defaultGround = defaultGround;
+            this.beachGround = beachGround;
+            this.treeNoiseGround = treeNoiseGround;
+            this.stoneNoiseGround = stoneNoiseGround;
+            this.herbNoiseGround = herbNoiseGround;
+            //this.percTree = percTree;
+            //this.percSoftTree = percSoftTree;
+            //this.percDryWood = percDryWood;
             this.brightCoast = brightCoast;
             TileColor mountainTop = mountain;
             mountainTop.Color = ColorExt.Mix(mountain.Color, Color.White, 0.7f);
@@ -197,13 +89,13 @@ namespace VikingEngine.DSSWars.Map.Settings
             //Mix towards dark mountain
             {
                 //int height = MainColorHeight + 1;
-                float percDark = 0.2f;
+                //float percDark = 0.2f;
                 colors_height[6] = mountain;//Settings.TileColor.Mix(darkGradient, mainCol, percDark);
             }
 
             {
                // const int MountainStart = 5;
-                float percDark = 0.4f;
+                //float percDark = 0.4f;
                 colors_height[7] = mountainTop;//Settings.TileColor.Mix(darkGradient, mainCol, percDark);
 
                 //float percMountainGray = 0.8f;
@@ -212,8 +104,47 @@ namespace VikingEngine.DSSWars.Map.Settings
 
                 colors_height[BiomHeightColor.MaxHeight] = mountainTop;
             }
+        }
 
+        public BiomGroundType GetTileGroundType(int x, int y, EngineSpace.Maths.SimplexNoise2D noiseMap)
+        {
+            if (stoneNoiseGround != null)
+            {
+                float stonenoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, -x, y);
+                foreach (var ground in stoneNoiseGround)
+                {
+                    if (ground.noiseValue.IsWithinRange(stonenoise))
+                    {
+                        return ground;
+                    }
+                }
+            }
 
+            if (treeNoiseGround != null)
+            {
+                float treenoise = noiseMap.OctaveNoise2D_Normal(4, 0.75f, 1, x, y);
+                foreach (var ground in treeNoiseGround)
+                {
+                    if (ground.noiseValue.IsWithinRange(treenoise))
+                    { 
+                        return ground;
+                    }
+                }
+            }
+            
+            if (herbNoiseGround != null)
+            {
+                float herbnoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, x, -y);
+                foreach (var ground in herbNoiseGround)
+                {
+                    if (ground.noiseValue.IsWithinRange(herbnoise))
+                    {
+                        return ground;
+                    }
+                }
+            }
+
+            return defaultGround;
         }
 
         public TileColor TileColor(SumTile4_4 tile)
@@ -239,6 +170,8 @@ namespace VikingEngine.DSSWars.Map.Settings
 
         }
     }
+
+    
 
     struct TileColor
     {

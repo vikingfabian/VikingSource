@@ -5,6 +5,29 @@ using System.Text;
 
 namespace VikingEngine
 {
+    struct SpriteVariantCount
+    {
+        SpriteName first;
+        int variants;
+
+        public SpriteVariantCount(SpriteName first, int variants = 1)
+        {
+            this.first = first;
+            this.variants = variants;
+        }
+
+        public SpriteName GetRandom(PcgRandom random)
+        {
+            if (variants <= 1)
+            {
+                return first;
+            }
+            return (SpriteName)((int)first + random.Int(variants));
+        }
+
+
+    }
+
     enum SpriteName : short
     {
         NO_IMAGE = 0,
@@ -2423,6 +2446,37 @@ namespace VikingEngine
         #endregion
 
         #region DSS WARS
+        
+        
+        DssMapTextureSand,
+        DssMapTextureHardPan,
+        DssMapTextureFertile,
+        DssMapTextureRubble,
+        DssMapTextureRootmat,
+
+        DssMapTextureMadeSolid,
+        DssMapTextureMud,
+        DssMapTextureSwamp,
+        DssMapTextureFrozen,
+
+        DssMapTextureGrass1,
+        DssMapTextureGrass2,
+        DssMapTextureGrass3,
+
+        DssMapTextureRock1,
+        DssMapTextureRock2,
+        DssMapTextureRock3,
+
+        DssMapTextureRockFoil1,
+        DssMapTextureRockFoil2,
+        DssMapTextureRockFoil3,
+
+        DssMapTextureGrassFoil1,
+        DssMapTextureGrassFoil2,
+        DssMapTextureGrassFoil3,
+
+        DssMapTextureRockSide,
+
         WarsHudMessageBg,
         WarsHudScrollerBg,
         WarsHudScrollerSlider,

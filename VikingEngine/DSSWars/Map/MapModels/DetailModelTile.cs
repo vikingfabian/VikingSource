@@ -88,7 +88,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
             waterEdgeModel.Effect = WaveXzEffect.GetWaveSingletonSafe();
             waterEdgeModel.Visible = false;
         }
-        
+
+        static readonly Vector2 TopQuadScale = new Vector2(MapTile1_1.ModelScale / 24 * 30);
+        static readonly Vector2 TopQuadOffset = new Vector2((TopQuadScale.X- MapTile1_1.ModelScale)*0.5f);
+
         public void generateModel_async(IntVector2 chunkGrindex, MapChunkData8_8 chunk)
         {
             const int ChunkSumTilesW = Map.MapData.MapChunkData8_8.TileWidth / Map.MapData.SumTile4_4.TileWidth;
@@ -110,7 +113,6 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 DssRef.state.detailMap.terrainPolygons.Clear();
 
                 Vector2 topLeft = VectorExt.V2NegHalf * MapChunkData8_8.ModelScale;
-                //IntVector2 subTileStart = chunkGrindex * Map.MapData.MapChunkData8_8.TileWidth;
                 
 
                 for (int sumy = 0; sumy < ChunkSumTilesW; ++sumy)
@@ -147,7 +149,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
                                 bool bSurfacePolygonTexture = true;
                                 SurfaceTextureType surfacePolygonTexture = col.Texture;
-                                SpriteName surfaceSprite = SpriteName.WhiteArea_LFtiles;
+                                SpriteName surfaceSprite = SpriteName.NO_IMAGE;
+                               
 
                                 int leanY;
                                 if (mapY + 1 < DssRef.world.subTileGrid.Size.Y)
@@ -242,61 +245,143 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 //    generateWaterEdge_async(chunkGrindex, tile);
                 //}
                 
+               
 
                 void block(Vector2 subTopLeft, SpriteName texture, Color color, ref MapTile1_1 subTile)
                 {
-                    var top = Graphics.PolygonColor.QuadXZ(
+                    SpriteName sideTexture = SpriteName.WhiteArea_LFtiles;
+                    if (texture == SpriteName.NO_IMAGE)
+                    {
+                        var ground = GroundPropertiesLib.GroundProperties[(int)subTile.groundType];
+                        texture = ground.texture.GetRandom(Ref.rnd);
+                        sideTexture = ground.sidetexture.GetRandom(Ref.rnd);
+                    }
+                    //int tileIx = Ref.rnd.Int_HighToLowProbability1(3);
+                    //switch (tileIx)
+                    //{
+                    //    case 0:
+                    //        texture = SpriteName.DssMapTextureGrass1; break;
+                    //    case 1:
+                    //        texture = SpriteName.DssMapTextureGrass2; break;
+                    //    case 2:
+                    //        texture = SpriteName.DssMapTextureGrass3; break;
+                    //}
+
+                    //SpriteName sideTexture = SpriteName.WhiteArea_LFtiles;
+                    //SpriteName foilTexture = SpriteName.DssMapTextureRockFoil1;
+
+                    //if (subTile.heightValue > MapHeight2.MountainStarHeight)
+                    //{
+                    //    switch (tileIx)
+                    //    {
+                    //        case 0:
+                    //            texture = SpriteName.DssMapTextureRock1; break;
+                    //        case 1:
+                    //            texture = SpriteName.DssMapTextureRock2; break;
+                    //        case 2:
+                    //            texture = SpriteName.DssMapTextureRock3; break;
+
+                    //    }
+                    //    sideTexture = SpriteName.DssMapTextureRockSide;
+                    //}
+
+                    var topQuad = Graphics.PolygonColor.QuadXZ(
+                        subTopLeft - TopQuadOffset,
+                        TopQuadScale, false, subTile.groundY,
+                        texture,
+                        Ref.peRnd.Bool() ? Dir4.N : Dir4.S,
+                        color);
+
+                    var topShape = Graphics.PolygonColor.QuadXZ(
                         subTopLeft,
-                        Map.MapData.MapTile1_1.ModelScaleV2, false, subTile.groundY,
+                        MapTile1_1.ModelScaleV2, false, subTile.groundY,
                         texture,
                         Dir4.N,
                         color);
 
-                    var bottom = top;
+                    var bottom = topShape;
                     Color bottomCol;
 
-                    //if (tile.IsLand())
-                    //{
-                        bottom.Move(VectorExt.V3FromY(-0.4f));
-                        bottomCol = ColorExt.VeryDarkGray;
-                    //}
-                    //else
-                    //{
-                    //    bottom.Move(VectorExt.V3FromY(-0.1f));
-                    //    bottomCol = MapSettings.DeepWaterCol1;
-                    //}
+                    bottom.Move(VectorExt.V3FromY(-0.4f));
+                    bottomCol = ColorExt.VeryDarkGray;
+
+
+
                     Graphics.PolygonColor left = new Graphics.PolygonColor(
                         bottom.V1nw.Position, bottom.V3ne.Position,
-                        top.V1nw.Position, top.V3ne.Position,
-                        SpriteName.WhiteArea_LFtiles, Dir4.N,
+                        topShape.V1nw.Position, topShape.V3ne.Position,
+                        sideTexture, Dir4.N,
                         ColorExt.ChangeBrighness(color, -5));
                     left.V1nw.Color = bottomCol;
                     left.V3ne.Color = bottomCol;
 
                     Graphics.PolygonColor right = new Graphics.PolygonColor(
-                        top.V0sw.Position, top.V2se.Position,
+                        topShape.V0sw.Position, topShape.V2se.Position,
                         bottom.V0sw.Position, bottom.V2se.Position,
-                        SpriteName.WhiteArea_LFtiles, Dir4.N,
+                        sideTexture, Dir4.N,
                         ColorExt.ChangeBrighness(color, -5));
                     right.V0sw.Color = bottomCol;
                     right.V2se.Color = bottomCol;
 
                     Graphics.PolygonColor front = new Graphics.PolygonColor(
                         bottom.V0sw.Position, bottom.V1nw.Position,
-                        top.V0sw.Position, top.V1nw.Position,
-                        SpriteName.WhiteArea_LFtiles, Dir4.N,
+                        topShape.V0sw.Position, topShape.V1nw.Position,
+                        sideTexture, Ref.rnd.Dir4(),
                         ColorExt.ChangeBrighness(color, -10));
                     front.V1nw.Color = bottomCol;
                     front.V3ne.Color = bottomCol;
 
 
-                    DssRef.state.detailMap.terrainPolygons.Add(top);
+                    DssRef.state.detailMap.terrainPolygons.Add(topQuad);
                     DssRef.state.detailMap.terrainPolygons.Add(front);
                     DssRef.state.detailMap.terrainPolygons.Add(left);
                     DssRef.state.detailMap.terrainPolygons.Add(right);
+
+                    /*
+                    topQuad.Move(VectorExt.V3FromY(-TopQuadOffset.Y));
+                    var foilTop = topQuad;
+                    foilTop.Move(VectorExt.V3FromY(TopQuadScale.Y));
+
+                    if (Ref.peRnd.ChanceF(0.25f))
+                    {
+                        int foilCount = Ref.peRnd.Int(6);
+                        for (int i = 0; i < foilCount; ++i)
+                        {
+
+                            switch (Ref.rnd.Int(3))
+                            {
+
+                                case 0:
+                                    foilTexture = SpriteName.DssMapTextureGrassFoil1; break;
+                                case 1:
+                                    foilTexture = SpriteName.DssMapTextureGrassFoil2; break;
+                                case 2:
+                                    foilTexture = SpriteName.DssMapTextureGrassFoil3; break;
+                            }
+
+                            float z1 = -Ref.peRnd.Float(0.2f, 0.8f) * TopQuadScale.X;
+                            float z2 = -Ref.peRnd.Float(0.2f, 0.8f) * TopQuadScale.X;
+
+                            Graphics.PolygonColor foil = new Graphics.PolygonColor(
+                                topQuad.V0sw.Position, topQuad.V1nw.Position,
+                                foilTop.V0sw.Position, foilTop.V1nw.Position,
+                                foilTexture, Dir4.S, ColorExt.ChangeBrighness(color, Ref.peRnd.Int(25, 35)));
+                            foil.V1nw.Position.Z += z1;
+                            foil.V2se.Position.Z += z1;
+                            foil.V3ne.Position.Z += z2;
+                            foil.V0sw.Position.Z += z2;
+
+                            bottomCol = ColorExt.ChangeBrighness(color, 5);
+                            foil.V1nw.Color = bottomCol;
+                            foil.V3ne.Color = bottomCol;
+
+                            DssRef.state.detailMap.terrainPolygons.Add(foil);
+                        }
+                    }
+                
+*/
                 }
 
-               
             }
         }
 

@@ -13,13 +13,13 @@ namespace VikingEngine.DSSWars.Map.Settings
         public static readonly Color DeepWaterCol2 = ColorExt.Multiply(DeepWaterCol1, 1.1f);
 
         public BiomHeightColor[] heigts;
-        public WorldBioms bioms;
+        public MapLib.WorldBioms bioms;
 
         public MapSettings()
         {
             DssRef.map = this;
 
-            bioms = new WorldBioms();
+            bioms = new MapLib.WorldBioms();
             heigts = new BiomHeightColor[BiomHeightColor.MaxHeight + 1];
 
             for (int height = 0; height <= BiomHeightColor.MaxHeight; ++height)

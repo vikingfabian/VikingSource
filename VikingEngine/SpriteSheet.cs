@@ -2157,6 +2157,31 @@ namespace VikingEngine
                 add(SpriteName.WarsRelationMobilizing);
                 add(SpriteName.WarsHudIconMultiplayerJoin, 2, 1);
 
+                currentIndex += 6;
+                add(SpriteName.DssMapTextureSand);
+                add(SpriteName.DssMapTextureHardPan);
+                add(SpriteName.DssMapTextureFertile);
+                
+                add(SpriteName.DssMapTextureGrass1);
+                add(SpriteName.DssMapTextureGrass2);
+                add(SpriteName.DssMapTextureGrass3);
+                add(SpriteName.DssMapTextureRock1);
+                add(SpriteName.DssMapTextureRock2);
+                add(SpriteName.DssMapTextureRock3);
+                add(SpriteName.DssMapTextureRockFoil1);
+                add(SpriteName.DssMapTextureRockFoil2);
+                add(SpriteName.DssMapTextureRockFoil3);
+                add(SpriteName.DssMapTextureGrassFoil1);
+                add(SpriteName.DssMapTextureGrassFoil2);
+                add(SpriteName.DssMapTextureGrassFoil3);
+
+                add(SpriteName.DssMapTextureRubble);
+                add(SpriteName.DssMapTextureRootmat);
+
+                add(SpriteName.DssMapTextureMadeSolid);
+                add(SpriteName.DssMapTextureMud);
+                add(SpriteName.DssMapTextureSwamp);
+                add(SpriteName.DssMapTextureFrozen);
             }
 
 
@@ -3094,8 +3119,9 @@ namespace VikingEngine
                 add(SpriteName.cmdDieTexRetreat);
                 add(SpriteName.cmdDieTexHit);
                 add(SpriteName.cmdDieTexMiss);
-
-                addWithSizeDef(SpriteName.hqRegularDoorEdge, currentIndex, 32, 8);
+                currentIndex++;
+                add(SpriteName.DssMapTextureRockSide);
+                //addWithSizeDef(SpriteName.hqRegularDoorEdge, currentIndex, 32, 8);
             }
                        
 

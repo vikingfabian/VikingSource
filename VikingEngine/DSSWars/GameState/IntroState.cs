@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
@@ -129,7 +130,8 @@ namespace VikingEngine.DSSWars
             dataProcessPart++;
             BuildLib.Init();
             dataProcessPart++;
-            
+            GroundPropertiesLib.Init(); 
+            dataProcessPart++;
 
             int loops = 0;
             while (!bSpriteSheetTexture)

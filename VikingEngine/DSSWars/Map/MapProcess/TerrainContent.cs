@@ -378,36 +378,79 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         }
 
         const int TerrainCutOff = MapHeight2.MountainStarHeight;
+        const int BeachCutOff = MapHeight2.WaterPlaneHeight + 6;
 
         public static void createSubTileContent(int x, int y, 
-            //float distanceToCity,
-            //SumTile4_4 tile,
-            //BiomHeightColor height,
-            //Biom biom,
-            //ref IntervalF mudRadius,
+           
             ref CombinedTile cTile, 
             WorldData world, 
             EngineSpace.Maths.SimplexNoise2D noiseMap,
             List<IntVector2> mineLocations,
             List<IntVector2> animalSpawns)
         {
-            if (cTile.mapTile.IsLand() && cTile.mapTile.heightValue < TerrainCutOff /*&& !height.isMountainPeek*/)
+            if (cTile.mapTile.IsLand())
             {
-                //if (distanceToCity <= mudRadius.Max)
-                //{
-                //    if (distanceToCity <= mudRadius.Min || world.rnd.Chance(0.5))
-                //    {
-                //        subTile.SetType(TerrainMainType.Destroyed, 0, 1);
-                //        return;
-                //    }
-                //}
-
-                if (world.rnd.Chance(0.6))
+                if (cTile.mapTile.heightValue <= BeachCutOff)
                 {
-                    float stonenoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, -x, y);
+                    if (waterNoiseBuild())
+                    {
+                        cTile.mapTile.groundType = GroundType.Default;
+                    }
+                    else
+                    {
+                        cTile.sumTile.GetBiom(out BiomHeightColor biomHeight, out Biom biom);
+                        cTile.mapTile.groundType = biom.beachGround.groundType;
+                    }
+                }
+                else if (cTile.mapTile.heightValue < TerrainCutOff)
+                {
+                    cTile.sumTile.GetBiom(out BiomHeightColor biomHeight, out Biom biom);
 
+                    var groundType = biom.GetTileGroundType(x, y, noiseMap);
+                    groundType.set(world.rnd, ref cTile);
+
+                    if (groundType.mineSpawn && 
+                        cTile.sumTile.biomColorHeight >= BiomHeightColor.MineHeightStart &&
+                        world.rnd.Chance(0.008))
+                    {
+                        mineLocations.Add(new IntVector2(x, y));
+                    }
+
+                    if (groundType.animalSpawn && world.rnd.Chance(0.012))
+                    {
+                        animalSpawns.Add(new IntVector2(x, y));
+                    }
+                }
+                else
+                { //Mountain 
+                    cTile.mapTile.groundType = world.rnd.Chance(0.1)? GroundType.Rubble : GroundType.Rock;
+                }
+            }
+            else 
+            { //Water
+                if (waterNoiseBuild())
+                {
+                    cTile.mapTile.groundType = GroundType.Default;
+                }
+                else
+                {
+                    cTile.mapTile.groundType = GroundType.Mud;
+                }
+            }
+
+            bool waterNoiseBuild()
+            {
+                float waterBottomNoise = noiseMap.OctaveNoise2D(2, 0.8f, 5, x, y);
+                return waterBottomNoise > 0;
+            }
+
+/*
+                if (world.rnd.Chance(0.6))
+                {                    
+                    
                     if (stonenoise > 0.1)
                     {
+                        
                         if (cTile.sumTile.biomColorHeight >= BiomHeightColor.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
@@ -468,7 +511,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     }
                 }
 
-                cTile.sumTile.GetBiom(out BiomHeightColor biomHeight, out Biom biom);
+                
                 var percTree = biomHeight.percTree * biom.percTree;
                 if (percTree > 0)
                 {
@@ -509,7 +552,8 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         }
                     //}
                 }
-            }
+*/
+            
         }
 
 
