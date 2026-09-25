@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
-                IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
+                IntVector2 subTilePos = WP.ToMapTilePos(goalWp);
                 if (DssRef.world.subTileGrid.TryGet(subTilePos, out MapTile1_1 subTile))
                 {
                     if (subTile.mainTerrain != TerrainMainType.DefaultSea)
@@ -473,7 +473,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                         Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
-                        IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
+                        IntVector2 subTilePos = WP.ToMapTilePos(goalWp);
                         if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
                         {
                             if ((subTile.mainTerrain == TerrainMainType.DefaultSea) != endAsShip)

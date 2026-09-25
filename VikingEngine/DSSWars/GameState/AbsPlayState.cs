@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.GameState
        
         protected ExitGameStateThreads exitGameStateThreads;
 
+        protected bool bResourceMinuteUpdate = true;
         TimeStamp gameStartTime = TimeStamp.Now();
 
         public AbsPlayState() 
@@ -331,6 +332,23 @@ namespace VikingEngine.DSSWars.GameState
             return exitThreads;
         }
 
+        protected bool asyncResourcesUpdate(int id, float time)
+        {
+            //This thread is the only thay may edit subtiles
+            if (UpdateReady())
+            {
+                resources.asyncEditTiles();
+                //Runs every minute to upate any resource progression: trees grow, food spoil, etc
+                if (bResourceMinuteUpdate || StartupSettings.DebugResoursesSuperSpeed)
+                {
+                    bResourceMinuteUpdate = false;
+
+                    resources.asyncGrowUpdate();
+                }
+            }
+            return exitThreads;
+        }
+
         protected override void createDrawManager()
         {
             draw = new DSSWars.DrawGame();
@@ -483,6 +501,8 @@ namespace VikingEngine.DSSWars.GameState
         {
             throw new NotImplementedException();
         }
+
+        abstract public bool GodPowers();
 
         public override bool MayUseLowLatencyGC()
         {

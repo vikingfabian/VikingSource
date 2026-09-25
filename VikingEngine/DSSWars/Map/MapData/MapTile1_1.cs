@@ -48,6 +48,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         public const int ModelScale_Inv = 8;
         public const int ModelScale_Inv_Half = ModelScale_Inv / 2;
         public const float ModelScale = 1f / ModelScale_Inv;
+        public const float ModelScaleHalf = ModelScale * 0.5f;
 
         public const int ModelScale_Inv_MaxIndex = ModelScale_Inv - 1;
 

@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public PArmy pointer()
+        public PArmy armyPointer()
         {
             return new PArmy(pfaction, myIndex);
         }

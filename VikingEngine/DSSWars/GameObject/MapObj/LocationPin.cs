@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void basicInit()
         {
             
-            maptilePos = WP.ToTilePos(position);
+            maptilePos = WP.ToSumTilePos(position);
 
             
             name.setDefault("Pin " + myIndex.ToString());
@@ -290,7 +290,7 @@ namespace VikingEngine.DSSWars.GameObject
             var f = pfaction.GetFaction();
             if (f != null && Net_IsVisible())
             {
-                maptilePos = WP.ToTilePos(position);
+                maptilePos = WP.ToSumTilePos(position);
                 this.position.Y = DssRef.world.subTileGrid.Get(maptilePos).groundY + 0.05f;
                 bound = new BoundingSphere(position, 0.3f);
 

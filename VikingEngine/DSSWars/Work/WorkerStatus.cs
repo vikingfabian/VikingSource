@@ -202,7 +202,7 @@ namespace VikingEngine.DSSWars.Work
                     ItemResource recieved = toCity.MakeTrade(foodType, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(army.maptilePos), null);
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE, -1, army.maptilePos, null);
                     break;
                 case WorkType.TrossReturnToArmy:
                     if (carry.type == ItemResourceType.ConservedFood)

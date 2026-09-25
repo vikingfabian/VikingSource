@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             while (loop.Next())
             {
                 IntVector2 topLeftMapTile = loop.Position * CrossTileWidth;
-                Vector3 centerWp = new Vector3(loop.Position.X * CrossTileScale + CrossTileHalfScale, 1, loop.Position.Y * CrossTileScale + CrossTileHalfScale);
+                Vector3 centerWp = new Vector3(loop.Position.X * CrossTileScale - MapTile1_1.ModelScaleHalf + CrossTileHalfScale, 1, loop.Position.Y * CrossTileScale - MapTile1_1.ModelScaleHalf + CrossTileHalfScale);
                 uv.Position = uv.Size * loop.Position.Vec;
                 Graphics.CrossPolygonColor polygon = new CrossPolygonColor(
                     verticePos(centerWp, 0, 0, topLeftMapTile, CrossTileHalfWidth, CrossTileHalfWidth),
@@ -54,40 +54,12 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     verticePos(centerWp, CrossTileHalfScale, CrossTileHalfScale, topLeftMapTile, CrossTileWidth, CrossTileWidth),//se
                     uv, Color.White);
 
-                //float verticalLean = polygon.rectangle.V1nw.Position.Y + polygon.rectangle.V3ne.Position.Y -
-                //     polygon.rectangle.V0sw.Position.Y + polygon.rectangle.V2se.Position.Y;
-                //float horizontalLean = polygon.rectangle.V1nw.Position.Y + polygon.rectangle.V0sw.Position.Y -
-                //     polygon.rectangle.V3ne.Position.Y + polygon.rectangle.V2se.Position.Y;
-
-                //Color color = Color.White;
-                //const float MinLean = MapHeight2.HeightY * 4;
-                //if (Math.Abs(verticalLean) > Math.Abs(horizontalLean))
-                //{
-                //    if (verticalLean < -MinLean)
-                //    {
-                //        color = new Color(240, 240, 240);
-                //    }
-                //}
-                //else
-                //{
-                //    if (horizontalLean > MinLean)
-                //    {
-                //        color = new Color(246, 242, 242);
-                //    }
-                //    else if (horizontalLean < -MinLean)
-                //    {
-                //        color = new Color(245, 245, 255);
-                //    }
-                //}
-
-                //polygon.SetColor(color);
-
                 crossPolygons.Add(polygon);
 
                 Vector3 verticePos(Vector3 centerWp, float addX, float addZ, IntVector2 tileTopLeft, int tileAddX, int tileAddY)
                 {
-                    centerWp.X += addX - CrossTileHalfScale;
-                    centerWp.Z += addZ - CrossTileHalfScale;
+                    centerWp.X += addX;
+                    centerWp.Z += addZ;
 
                     tileTopLeft.Add(tileAddX, tileAddY);
                     centerWp.Y = DssRef.world.subTileGrid.Get(tileTopLeft).groundY;

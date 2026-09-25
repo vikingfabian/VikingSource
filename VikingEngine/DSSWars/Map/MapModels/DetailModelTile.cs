@@ -112,13 +112,17 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
                 DssRef.state.detailMap.terrainPolygons.Clear();
 
-                Vector2 topLeft = VectorExt.V2NegHalf * MapChunkData8_8.ModelScale;
+                Vector2 topLeft = new Vector2(-MapTile1_1.ModelScaleHalf);// VectorExt.V2NegHalf * MapChunkData8_8.ModelScale;
                 
 
                 for (int sumy = 0; sumy < ChunkSumTilesW; ++sumy)
                 {
                     for (int sumx = 0; sumx < ChunkSumTilesW; ++sumx)
                     {
+                        if (sumx == 0 && sumy == 0)
+                        {
+                            lib.DoNothing();
+                        }
                         CombinedTile comTile = new CombinedTile()
                         {
                             sumTile = DssRef.world.tileGrid.Get(
@@ -144,7 +148,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                 rnd.SetSeed(mapX * 3 + mapY * 11);
                                 
                                 Vector2 subTopLeft = new Vector2(
-                                    topLeft.X + (x + sumx * SumTile4_4.TileWidth) * Map.MapData.MapTile1_1.ModelScale, 
+                                    topLeft.X + (x + sumx * SumTile4_4.TileWidth) * Map.MapData.MapTile1_1.ModelScale,
                                     topLeft.Y + (y + sumy * SumTile4_4.TileWidth) * Map.MapData.MapTile1_1.ModelScale);
 
                                 bool bSurfacePolygonTexture = true;

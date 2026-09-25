@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city, bool autoBuild)
         {
-            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || (StartupSettings.UnlockAllProgress && city.pfaction.TryGetLocalPlayer(out _))) && !autoBuild;
+            bool godPowers = (DssRef.state.GodPowers() || (StartupSettings.UnlockAllProgress && city.pfaction.TryGetLocalPlayer(out _))) && !autoBuild;
 
             bool devUnlockAll = StartupSettings.UnlockAllProgress;
 
@@ -623,7 +623,7 @@ namespace VikingEngine.DSSWars.Build
             }
 
 
-            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            if (DssRef.state.GodPowers())
             {
                 list.Add(BuildAndExpandType.TreeSoft);
                 list.Add(BuildAndExpandType.TreeHard);

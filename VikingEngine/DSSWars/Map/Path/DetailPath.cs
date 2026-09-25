@@ -323,12 +323,12 @@ namespace VikingEngine.DSSWars.Map.Path
             if (complete)
             {
                 ship = false;
-                return  WP.SubtileToWorldPosXZ(goal);
+                return  WP.MaptileToWorldPosXZ(goal);
             }
 
             ship = nodes[node_sp].ship;
             IntVector2 to = nodes[node_sp].position;
-            Vector3 toWp = WP.SubtileToWorldPosXZ(to);
+            Vector3 toWp = WP.MaptileToWorldPosXZ(to);
             Vector2 diff = new Vector2( toWp.X - myPos.X, toWp.Z - myPos.Z);
             if (diff.Length() <= NodeMinDistance)
             {

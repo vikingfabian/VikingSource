@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             if (model != null)
             {
-                IntVector2 tilepos = WP.SubtileToTilePos(subTile);
+                IntVector2 tilepos = WP.MaptileToSumTile(subTile);
                 model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref tilepos);
             }
         }

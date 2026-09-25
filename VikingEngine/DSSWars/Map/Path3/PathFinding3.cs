@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             DetailPathFinding detailPath = DssRef.world.detailPathFindingPool.GetPf();
             detailPath.ApplyParentPath(parentPath);
 
-            var result = detailPath.FindPath(WP.ToSubTilePos(start), startDir, WP.ToSubTilePos(goal),
+            var result = detailPath.FindPath(WP.ToMapTilePos(start), startDir, WP.ToMapTilePos(goal),
                     startAsShip, endAsShip, isTravelNode);
             return result;
         }

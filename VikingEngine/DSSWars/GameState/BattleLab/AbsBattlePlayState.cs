@@ -275,7 +275,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             }
             return exitThreads;
         }
-
+        public override bool GodPowers()
+        {
+            return false;
+        }
         public override int PathThreadCount()
         {
             return 1;

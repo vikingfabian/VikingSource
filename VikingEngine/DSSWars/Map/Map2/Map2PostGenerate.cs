@@ -31,11 +31,22 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             cityAreaClaim();
 
+            world.init_FactionComponents(0);
+            world.Init_CityComponents(world.cities.Count);
+
             factionStartAreas(world.metaData.mapSize,
                 DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full,
                 generateSettings);
 
             placeCityBuildings();
+
+            Task.Factory.StartNew(() =>
+            {
+                foreach (var c in world.cities)
+                {
+                    world.unitCollAreaGrid.add(c);
+                }
+            });
         }
 
         public async void cityAreaClaim()

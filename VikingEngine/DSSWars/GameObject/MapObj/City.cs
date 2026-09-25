@@ -319,6 +319,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void onEditorStart()
         {
             refreshPos();
+            refreshCitySize();
         }
 
         public void generateCultureAndEconomy(WorldData world, float storyPlacementScale, CityCultureCollection cityCultureCollection)
@@ -1241,7 +1242,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         /*t.MayBuild() &&*/ t.pcity.cityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
-                                    IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
+                                    IntVector2 topLeft = edgeLoop.Position;
 
                                     for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
                                     {
@@ -1595,7 +1596,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (newTile)
                     {
                         IntVector2 prevTilePos = maptilePos;
-                        maptilePos = WP.SubtileToTilePos(subtile);
+                        maptilePos = WP.MaptileToSumTile(subtile);
 
                         ref var prevTile = ref DssRef.world.tileGrid.GetRef(prevTilePos);
                         ref var tile = ref DssRef.world.tileGrid.GetRef(maptilePos);
@@ -2439,8 +2440,9 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 //if (args.ShowFull)
                 {
-                    if (pfaction== args.player.pfaction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
-                    {
+                   if (pfaction == args.player.pfaction ||
+                    DssRef.state.GodPowers())
+                {
                         CityDetailsHud(true, args.player, args.content);
                         new MapObjMenu(args.player, this, args.content, out secondMenuContent);
                     }
@@ -4295,7 +4297,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return pfaction.GetFaction().ClosestFriendlyArmy(position, 3.6f);
         }
-
+        public PCity Pointer()
+        {
+            return new PCity(myIndex);
+        }
         public override City GetCity()
         {
             return this;

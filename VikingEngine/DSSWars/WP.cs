@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars
         //}
         public static float SubTileHeight(Vector3 wp)
         {
-            return DssRef.world.subTileGrid.Get(ToSubTilePos(wp)).groundY;
+            return DssRef.world.subTileGrid.Get(ToMapTilePos(wp)).groundY;
         }
 
         public static Vector2 ToWorldPosXZ(IntVector2 tile)
@@ -36,19 +36,19 @@ namespace VikingEngine.DSSWars
             return new Vector3(tile.X * MapChunkData8_8.ModelScale, y, tile.Y * MapChunkData8_8.ModelScale);
         }
 
-        public static IntVector2 ToTilePos(Vector3 pos)
+        public static IntVector2 ToSumTilePos(Vector3 pos)
         {
-            return new IntVector2(pos.X, pos.Z);
+            return new IntVector2(pos.X * SumTile4_4.ModelScale_Inv, pos.Z * SumTile4_4.ModelScale_Inv);
         }
 
-        public static IntVector2 ToTilePos(Vector2 pos)
-        {
-            return new IntVector2(pos.X, pos.Y);
-        }
+        //public static IntVector2 ToTilePos(Vector2 pos)
+        //{
+        //    return new IntVector2(pos.X, pos.Y);
+        //}
 
-        public static IntVector2 ToSubTilePos(Vector3 pos)
+        public static IntVector2 ToMapTilePos(Vector3 pos)
         {
-            return new IntVector2((pos.X - MapTile1_1.SubTileHalfWidth) * Map.MapData.MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half, (pos.Z - MapTile1_1.SubTileHalfWidth) * Map.MapData.MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half);
+            return new IntVector2(pos.X * Map.MapData.MapTile1_1.ModelScale_Inv, pos.Z  * Map.MapData.MapTile1_1.ModelScale_Inv);
         }
         public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
         {
@@ -65,24 +65,36 @@ namespace VikingEngine.DSSWars
             area *= Map.MapData.MapTile1_1.ModelScale_Inv;
             return area;
         }
-
-        public static Vector3 SubtileToWorldPosXZ(IntVector2 subtilePos)
+        public static Vector3 MaptileToWorldPosXZ_TopLeft(IntVector2 maptilePos)
         {
-            return new Vector3(subtilePos.X * MapTile1_1.ModelScale - WorldData.TileHalfWidth, 0, subtilePos.Y * MapTile1_1.ModelScale - WorldData.TileHalfWidth);
+            return new Vector3(maptilePos.X * MapTile1_1.ModelScale - MapTile1_1.ModelScaleHalf, 0, maptilePos.Y * MapTile1_1.ModelScale - MapTile1_1.ModelScaleHalf);
+        }
+        public static Vector3 MaptileToWorldPosXZ(IntVector2 maptilePos)
+        {
+            return new Vector3(maptilePos.X * MapTile1_1.ModelScale /*- WorldData.TileHalfWidth*/, 0, maptilePos.Y * MapTile1_1.ModelScale/* - WorldData.TileHalfWidth*/);
+        }
+        public static Vector3 MaptileToWorldPosXYZ(IntVector2 maptilePos)
+        {
+            Vector3 worldPos = MaptileToWorldPosXZ(maptilePos);
+            if (DssRef.world.subTileGrid.TryGet(maptilePos, out var tile))
+            {
+                worldPos.Y = tile.groundY;
+            }
+            return worldPos;
         }
 
-        public static Vector3 SubtileToWorldPosXZ_Centered(IntVector2 subtilePos)
-        {
-            return new Vector3(
-                subtilePos.X * MapTile1_1.ModelScale - WorldData.TileHalfWidth + MapTile1_1.SubTileHalfWidth, 
-                0, 
-                subtilePos.Y * MapTile1_1.ModelScale - WorldData.TileHalfWidth + MapTile1_1.SubTileHalfWidth);
-        }
+        //public static Vector3 SubtileToWorldPosXZ_Centered(IntVector2 subtilePos)
+        //{
+        //    return new Vector3(
+        //        (subtilePos.X + 0.5f )* MapTile1_1.ModelScale /*- WorldData.TileHalfWidth + MapTile1_1.SubTileHalfWidth*/,
+        //        0, 
+        //        (subtilePos.Y + 0.5f) * MapTile1_1.ModelScale /*- WorldData.TileHalfWidth + MapTile1_1.mod*/);
+        //}
 
         public static Vector3 WorldPosToClosestSubtile_Centered(Vector3 worldPos)
         {
-            var subtile = ToSubTilePos(worldPos);
-            worldPos = SubtileToWorldPosXZ_Centered(subtile);
+            var subtile = ToMapTilePos(worldPos);
+            worldPos = MaptileToWorldPosXZ(subtile);
             worldPos.Y = DssRef.world.subTileGrid.Get(subtile).groundY;
 
             return worldPos;
@@ -106,9 +118,13 @@ namespace VikingEngine.DSSWars
         public static Vector3 SubtileToWorldPosXZgroundY_Centered(IntVector2 subtilePos)
         {
             var result = new Vector3(
-                subtilePos.X * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth,
-                0,
-                subtilePos.Y * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth);
+               (subtilePos.X + 0.5f) * MapTile1_1.ModelScale,
+               0,
+               (subtilePos.Y + 0.5f) * MapTile1_1.ModelScale);
+            //var result = new Vector3(
+            //    subtilePos.X * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth,
+            //    0,
+            //    subtilePos.Y * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth);
 
             if (DssRef.world.subTileGrid.TryGet(subtilePos, out MapTile1_1 subTile))
             {
@@ -118,12 +134,12 @@ namespace VikingEngine.DSSWars
             return result;
         }
 
-        public static IntVector2 SubtileToTilePos(IntVector2 subtilePos)
-        {
-            subtilePos.X = (subtilePos.X) / Map.MapData.MapTile1_1.ModelScale_Inv;
-            subtilePos.Y = (subtilePos.Y) / Map.MapData.MapTile1_1.ModelScale_Inv;
-            return subtilePos;
-        }
+        //public static IntVector2 MaptileToSumTile(IntVector2 subtilePos)
+        //{
+        //    //subtilePos.X = subtilePos.X / SumTile4_4.TileWidth;
+        //    //subtilePos.Y = (subtilePos.Y) / Map.MapData.MapTile1_1.ModelScale_Inv;
+        //    return subtilePos / SumTile4_4.TileWidth;
+        //}
 
         //public static Vector3 ChunkToMapPos(IntVector2 tile)
         //{
@@ -133,13 +149,13 @@ namespace VikingEngine.DSSWars
         //        tile.Y * TileDrawScale);
         //}
 
-        public static Vector3 ToSubTileWP_Centered(IntVector2 tilePos)
-        {
-            return new Vector3(
-                tilePos.X * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth,
-                DssRef.world.subTileGrid.Get(tilePos).groundY,
-                tilePos.Y * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth);
-        }
+        //public static Vector3 ToSubTileWP_Centered(IntVector2 tilePos)
+        //{
+        //    return new Vector3(
+        //        tilePos.X * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth,
+        //        DssRef.world.subTileGrid.Get(tilePos).groundY,
+        //        tilePos.Y * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth);
+        //}
         
         /// <summary>
         /// Picks ground height from subtiles, not bound safe

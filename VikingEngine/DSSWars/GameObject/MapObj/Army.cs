@@ -863,7 +863,7 @@ namespace VikingEngine.DSSWars.GameObject
                         DssRef.world.unitBounds.KeepPointInsideBound_TilePositionXZref(ref newPosition);
                         position = newPosition;
 
-                        maptilePos = WP.ToSubTilePos(position);
+                        maptilePos = WP.ToMapTilePos(position);
                         var tile = DssRef.world.subTileGrid.Get(maptilePos);
                         position.Y = tile.GroundY_aboveWater();
 

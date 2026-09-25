@@ -65,6 +65,12 @@ namespace VikingEngine
             array = new int[arrayLength * entityCount];
         }
 
+        public void Resize(int arrayLength, int entityCount)
+        {
+            this.arrayLength = arrayLength;
+            Array.Resize(ref array, arrayLength * entityCount);
+        }
+
         /// <summary>
         /// Adds a value to this entity’s subarray.
         /// The entity’s count is passed by ref and incremented.

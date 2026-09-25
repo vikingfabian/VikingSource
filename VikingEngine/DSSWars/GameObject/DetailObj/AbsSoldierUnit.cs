@@ -499,7 +499,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))
             {
-                MapTile1_1 subTile = DssRef.world.subTileGrid.Get(WP.ToSubTilePos(position));
+                MapTile1_1 subTile = DssRef.world.subTileGrid.Get(WP.ToMapTilePos(position));
                 float y = subTile.groundY + ModelGroundYAdj;
 
                 if (y < MapHeight2.UnitMinY)
@@ -864,7 +864,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asyncBattleUpdate()
         {
-            var newTilePos = WP.ToTilePos(position);
+            var newTilePos = WP.ToSumTilePos(position);
 
             //if (newTilePos != tilePos)
             //{

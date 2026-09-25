@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Defence
         public Vector3 WorldPos()
         {
             var subPos = conv.IntToIntVector2(idAndPosition);
-            return WP.SubtileToWorldPosXZ_Centered(subPos);
+            return WP.MaptileToWorldPosXZ(subPos);
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

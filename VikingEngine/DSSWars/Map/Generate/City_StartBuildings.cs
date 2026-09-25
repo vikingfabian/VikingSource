@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
-                var subtile = WP.ToSubTilePos_Centered(maptilePos);
+                var subtile = /*WP.ToSubTilePos_Centered(*/maptilePos/*)*/;
                 subtile.X += rnd.Plus_Minus(3);
                 subtile.Y += rnd.Plus_Minus(3);
 
@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case CityTemplateCellType.CityHall:
                                 sub = centerHall;
-                                //cityHallSubtilePos = pos;
+                                maptilePos = pos;
                                 break;
                             case CityTemplateCellType.CityCenterSquare:
                                 main = TerrainMainType.Decor;

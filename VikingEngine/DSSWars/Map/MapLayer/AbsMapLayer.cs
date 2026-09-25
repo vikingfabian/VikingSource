@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
         public static VectorVolume WaterModelVolume()
         {
-            Vector3 surfacePos = new Vector3(DssRef.world.unitSize.X * 0.5f - 0.5f, MapHeight2.WaterSurfaceY, DssRef.world.unitSize.Y * 0.5f - 0.5f);
+            Vector3 surfacePos = new Vector3(DssRef.world.unitSize.X * 0.5f /*- 0.5f*/, MapHeight2.WaterSurfaceY, DssRef.world.unitSize.Y * 0.5f /*- 0.5f*/);
             Vector3 waterScale = new Vector3(DssRef.world.unitSize.X, 1f, DssRef.world.unitSize.Y);
 
             return new VectorVolume(surfacePos, waterScale);

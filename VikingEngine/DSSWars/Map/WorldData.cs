@@ -558,7 +558,7 @@ namespace VikingEngine.DSSWars
                 //faction.initClient(this);
                 factions.Add(faction);
             }
-            init_FactionComponents();
+            init_FactionComponents(factionCount);
 
         }
 
@@ -862,7 +862,7 @@ namespace VikingEngine.DSSWars
                 {
                     int factionLength = r.ReadInt32();
                     factions = new SpottedArray<Faction>(factionLength);
-                    init_FactionComponents();
+                    init_FactionComponents(factionLength);
 
                     for (int i = 0; i < factionLength; ++i)
                     {
@@ -1165,14 +1165,14 @@ namespace VikingEngine.DSSWars
         //    return subTile.groundY;
         //}
 
-        public SumTile4_4 GetTile(Vector2 pos)
-        {
-            return tileGrid.Get(WP.ToTilePos(pos));
-        }
+        //public SumTile4_4 GetTile(Vector2 pos)
+        //{
+        //    return tileGrid.Get(WP.ToTilePos(pos));
+        //}
 
         public SumTile4_4 GetTile(Vector3 pos)
         {
-            return tileGrid.Get(WP.ToTilePos(pos));
+            return tileGrid.Get(WP.ToSumTilePos(pos));
         }
 
 

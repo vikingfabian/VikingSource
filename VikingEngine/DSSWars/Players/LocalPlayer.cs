@@ -743,7 +743,7 @@ namespace VikingEngine.DSSWars.Players
             pinTab = tab == 0? MenuTab.Info : MenuTab.Tag;
         }
 
-        public List<MenuTab> AvailableCityTabs()
+        virtual public List<MenuTab> AvailableCityTabs()
         {
             if (profile.casualControls)
             {
@@ -934,7 +934,7 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void userUpdate(bool cityUpdate)
+        virtual public void userUpdate(bool cityUpdate)
         {
             gameControls.update();
 
@@ -963,7 +963,7 @@ namespace VikingEngine.DSSWars.Players
             if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
             {
                 RichBoxContent c = new RichBoxContent();
-                c.text(gameControls.map.tilePosition.ToString());
+                c.text(gameControls.map.sumtilePosition.ToString());
                 hud.messages.Add(c);
             }
 
@@ -1293,7 +1293,7 @@ namespace VikingEngine.DSSWars.Players
             DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
 
 
-            IntVector2 position = gameControls.map.tilePosition;
+            IntVector2 position = gameControls.map.sumtilePosition;
 
             Army friendlyArmy, enemyArmy;
 
@@ -1373,7 +1373,7 @@ namespace VikingEngine.DSSWars.Players
             //DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
-            IntVector2 position = gameControls.map.tilePosition;
+            IntVector2 position = gameControls.map.sumtilePosition;
 
             Army friendlyArmy, enemyArmy;
 
@@ -1615,7 +1615,7 @@ namespace VikingEngine.DSSWars.Players
             DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
 
 
-            IntVector2 position = gameControls.map.tilePosition;
+            IntVector2 position = gameControls.map.sumtilePosition;
 
             Army friendlyArmy, enemyArmy;
 
@@ -1706,7 +1706,7 @@ namespace VikingEngine.DSSWars.Players
             DssRef.world.diplomacy.declareWar(pfaction, enemyFac.pfaction, false);
 
 
-            IntVector2 position = gameControls.map.tilePosition;
+            IntVector2 position = gameControls.map.sumtilePosition;
 
             Army friendlyArmy, enemyArmy;
 

@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Players
         float multiSelectHoldTime = 0;
 
 
-        public IntVector2 tilePosition, subTilePosition;
+        public IntVector2 sumtilePosition, mapTilePosition;
         public bool onNewTile = false;
 
         public Graphics.TopViewCamera camera;
@@ -209,8 +209,14 @@ namespace VikingEngine.DSSWars.Players
         {
             if (onNewTile)
             {
-                var newCity = DssRef.world.tileGrid.Get(tilePosition).pcity.City();
-                if (newCity != selection.obj && newCity.pfaction == player.pfaction)
+                var newCity = DssRef.world.tileGrid.Get(sumtilePosition).pcity.City();
+
+                //if (newCity == null && DssRef.state.GodPowers() && player.gameControls.map.selection.objectType() == GameObjectType.City)
+                //{
+                //    newCity = player.gameControls.map.selection.obj.GetCity();
+                //}
+
+                if (newCity != null && newCity != selection.obj && (newCity.pfaction == player.pfaction /*|| DssRef.state.GodPowers()*/))
                 {
                     selection.obj = newCity;
                     player.hud.needRefresh = true;
@@ -228,9 +234,9 @@ namespace VikingEngine.DSSWars.Players
         {
             prevPointerPosWP = pointerPosWP;
             pointerPosWP = screenPosToWorldPos(pointerPos());
-            IntVector2 prevTile = tilePosition;
-            tilePosition = DssRef.world.maptileBounds.KeepTilePointInArea(WP.ToTilePos(pointerPosWP));
-            onNewTile = prevTile != tilePosition;
+            IntVector2 prevTile = sumtilePosition;
+            sumtilePosition = DssRef.world.maptileBounds.KeepTilePointInArea(WP.ToSumTilePos(pointerPosWP));
+            onNewTile = prevTile != sumtilePosition;
             if (onNewTile)
             {
                 player.hud.needRefresh = true;
@@ -358,7 +364,7 @@ namespace VikingEngine.DSSWars.Players
 
                                 if (rectangleBound.vectorRect.SideLength() > 1f)
                                 {
-                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.pfaction);
+                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToSumTilePos(topLeft), WP.ToSumTilePos(bottomRight), player.pfaction);
 
                                     if (Input.Keyboard.Ctrl)
                                     {
@@ -391,7 +397,7 @@ namespace VikingEngine.DSSWars.Players
                         case MapDetailLayerType.UnitDetail1:
                             {
                                 var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearGroups_Rectangle(
-                                    WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.pfaction, rectangleBound);
+                                    WP.ToSumTilePos(topLeft), WP.ToSumTilePos(bottomRight), player.pfaction, rectangleBound);
 
                                 if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.DetailCollection)
                                 {
@@ -486,7 +492,7 @@ namespace VikingEngine.DSSWars.Players
             //Place cubes and find the exact spot of the subtile
             bool hasValue;
             Vector3 result = this.camera.CastRayInto3DPlane(ray, groundPlane, out hasValue);
-            subTilePosition = WP.ToSubTilePos(pointerPosWP);
+            mapTilePosition = WP.ToMapTilePos(pointerPosWP);
 
             IntVector2 subTilePositionInLoop= IntVector2.Zero;
             
@@ -494,12 +500,17 @@ namespace VikingEngine.DSSWars.Players
             MapTile1_1 subTile;
             for (int y = 6; y >= -1; --y)
             {
-                subTilePositionInLoop.Y = subTilePosition.Y + y;
+                subTilePositionInLoop.Y = mapTilePosition.Y + y;
                 for (int x = -1; x <= 1; ++x)
                 {
-                    subTilePositionInLoop.X = subTilePosition.X + x;
+                    subTilePositionInLoop.X = mapTilePosition.X + x;
 
-                    Vector3 min = WP.SubtileToWorldPosXZ(subTilePositionInLoop);
+                    if (subTilePositionInLoop.Y == 0)
+                    {
+                        lib.DoNothing();
+                    }
+
+                    Vector3 min = WP.MaptileToWorldPosXZ_TopLeft(subTilePositionInLoop);
                     if (DssRef.world.subTileGrid.TryGet(subTilePositionInLoop, out subTile))
                     {
                         min.Y = subTile.groundY - SubTileBoxSz.Y;
@@ -510,7 +521,7 @@ namespace VikingEngine.DSSWars.Players
                         float? distance = ray.Intersects(subTileBoundingBox);
                         if (distance.HasValue) 
                         {
-                            subTilePosition = subTilePositionInLoop;
+                            mapTilePosition = subTilePositionInLoop;
 
                             goto exitLoop;
                         }
@@ -582,7 +593,7 @@ namespace VikingEngine.DSSWars.Players
 
                 bool checkDistance(AbsMapObject obj)
                 {
-                    if (tilePosition.SideLength(obj.maptilePos) <= MapObjRadius)
+                    if (sumtilePosition.SideLength(obj.maptilePos) <= MapObjRadius)
                     {
                         nearMapObjects.processList.Add(obj);
                         return true;
@@ -602,7 +613,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
             {
-                hover.subTile.update(subTilePosition, player);
+                hover.subTile.update(mapTilePosition, player);
             }
             else
             {
@@ -652,7 +663,7 @@ namespace VikingEngine.DSSWars.Players
                     return;
                 }
 
-                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
+                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(mapTilePosition, false);
                 foreach (var m in nearMapObjects)
                 {
                     if (m != null && m.rayCollision(ray))
@@ -754,7 +765,7 @@ namespace VikingEngine.DSSWars.Players
                     maxDistance_friend = 1.5f;
                 }
 
-                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, true);
+                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(sumtilePosition, true);
                 AbsMapObject closestObj= null;
                 float closest = float.MaxValue;
                 foreach (var m in nearMapObjects)
@@ -826,7 +837,7 @@ namespace VikingEngine.DSSWars.Players
 
         void detailHoverUpdate()
         {
-            var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(tilePosition);
+            var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(sumtilePosition);
 
             BoundingSphere bound = new BoundingSphere(Vector3.Zero, 0f);
 
@@ -843,7 +854,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bound.Radius = DssVar.Worker_StandardBoundRadius;
-            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_PlusWorkers(tilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
+            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_PlusWorkers(sumtilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
             foreach (var m in nearMapObjects)
             {
                 switch (m.gameobjectType())
@@ -1412,7 +1423,7 @@ namespace VikingEngine.DSSWars.Players
             playerPointerPos = camera.LookTarget;
 
             DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
-            playerPointerPos.Y = DssRef.world.subTileGrid.Get( WP.ToSubTilePos(playerPointerPos)).groundY + 0.5f;
+            playerPointerPos.Y = DssRef.world.subTileGrid.Get( WP.ToMapTilePos(playerPointerPos)).groundY + 0.5f;
         }
 
         public void loadCamPos()

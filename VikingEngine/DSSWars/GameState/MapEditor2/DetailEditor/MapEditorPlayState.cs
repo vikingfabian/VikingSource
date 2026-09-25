@@ -101,6 +101,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             Ref.music.OnGameStart();
             
             startMapThreads();
+            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
 
             foreach (var m in DssRef.world.cities)
             {
@@ -270,6 +271,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
                 }
             }
             return exitThreads;
+        }
+
+        public override bool GodPowers()
+        {
+            return true;
         }
 
         public override int PathThreadCount()

@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.mapLayersManager.current.DrawDetailLayer)
             {
-                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.subTilePosition);
+                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.mapTilePosition);
                 SoldierGroup target = null;
                 if (player.gameControls.map.armyMayAttackHoverObj())
                 {
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 IntVector2 subTile = player.gameControls.map.hover.subTile.subTilePos;
                 var city = player.gameControls.map.hover.subTile.city;
 
-                Task.Run(() =>
+                Task.Run((Action)(() =>
                 {
                     try
                     {
@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                                                 {
                                                                     var city = tArmy.GetCity();
 
-                                                                    if (DssRef.world.tileGrid.Get(WP.SubtileToTilePos(loop.Position)).pcity.cityIndex == city.myIndex)
+                                                                    if (DssRef.world.tileGrid.Get(WP.MaptileToSumTile(loop.Position)).pcity.cityIndex == city.myIndex)
                                                                     {
                                                                         WallPosition wallPosition = new WallPosition();
                                                                         wallPosition.Position = loop.Position;
@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
 
                     
-                });
+                }));
             }
         }
     }

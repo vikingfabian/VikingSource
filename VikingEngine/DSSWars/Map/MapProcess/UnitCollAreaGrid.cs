@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             {
                 for (int i = 0; i < area.cities.Count; ++i)
                 {
-                    playerNearMapObjects.Add(DssRef.world.cities[area.cities[i]]);
+                    playerNearMapObjects.Add(area.cities[i].City());
                 }
                 lock (area.armies)
                 {
@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         {
                             for (int i = 0; i < area.cities.Count; ++i)
                             {
-                                playerNearMapObjects.Add(DssRef.world.cities[area.cities[i]]);
+                                playerNearMapObjects.Add(area.cities[i].City());
                             }
 
                             lock(area.armies)
@@ -335,7 +335,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     {
                         for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                         {
-                            playerNearMapObjects.Add(DssRef.world.cities[area.cities[i]]);
+                            playerNearMapObjects.Add(area.cities[i].City());
                         }
                         lock (area.armies)
                         {
@@ -484,8 +484,8 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                             for (int i = 0; i < area.cities.Count; ++i)
                             {
-                                var city = DssRef.world.cities[area.cities[i]];
-                                if (DssRef.world.diplomacy.GetRelation(faction, city.pfaction).InWar())
+                            var city = area.cities[i].City();
+                            if (DssRef.world.diplomacy.GetRelation(faction, city.pfaction).InWar())
                                 {
                                     var groupsC = city.groups.counter();
                                     while (groupsC.Next())
@@ -530,7 +530,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                         for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                         {
-                            var city = DssRef.world.cities[area.cities[i]];
+                            var city = area.cities[i].City();
                             var groupsC = city.groups.counter();
                             while (groupsC.Next())
                             {
@@ -745,7 +745,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         {
             IntVector2 areaPos = city.maptilePos / UnitGridSquareWidth;
 
-            grid.Get(areaPos).cities.Add(city.myIndex);
+            grid.Get(areaPos).cities.Add(city.Pointer());
         }
 
 
@@ -779,7 +779,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 {
                     for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                     {
-                        var city = DssRef.world.cities[area.cities[i]];
+                        var city = area.cities[i].City();
                         closest.Next(city.maptilePos.Length(tilePos), city);
                     }
                 }
@@ -823,7 +823,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 {
                     for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                     {
-                        var city = DssRef.world.cities[area.cities[i]];
+                        var city = area.cities[i].City();
                         if (factionFilter.HasValue())
                         {
                             if (city.pfaction == factionFilter)
@@ -869,7 +869,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 {
                     for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                     {
-                        var city = DssRef.world.cities[area.cities[i]];
+                        var city = area.cities[i].City();
                         if (city.strengthValue + city.ai_armyDefenceValue <= maxStrengthValue)
                         {
                             if (factionFilter.HasValue())
@@ -925,7 +925,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         public List<PArmy> processingArmies = new List<PArmy>(2);//null;
         public List<PArmy> armies = new List<PArmy>(2);//null;
 
-        public List<int> cities = new List<int>(2);
+        public List<PCity> cities = new List<PCity>(2);
 
         public void processAdd(GameObject.SoldierGroup group)
         {
@@ -939,7 +939,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 processingArmies = new List<PArmy>(2);
             }
 
-            processingArmies.Add(army.pointer());
+            processingArmies.Add(army.armyPointer());
         }
 
         public void beginProcess()

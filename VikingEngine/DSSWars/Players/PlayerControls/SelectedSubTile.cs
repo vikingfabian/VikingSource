@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Players
                     this.subTilePos = subTilePos;
                     isNew = true;
                     tileOfInterest = false;
-                    if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                    if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(subTilePos), out var tile))
                     {
                         city = tile.pcity.City();
                     }
@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         selectTileResult = player.gameControls.build.buildMode;
                         hasSelection = true;
-                        model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                        model.position = WP.MaptileToWorldPosXYZ(subTilePos);
                         //model.position.Y = subTile.groundY;
 
                         
@@ -200,6 +200,11 @@ namespace VikingEngine.DSSWars.Players
 
         public MayBuildResult mayBuild(LocalPlayer player, out bool upgrade)
         {
+            if (DssRef.state.GodPowers())
+            {
+                upgrade = false;
+                return MayBuildResult.Yes;
+            }
             return MayBuild(subTilePos, player, out upgrade, out _);
         }
 
@@ -207,7 +212,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             { 
-                if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(subTilePos), out var tile))
                 {
                     //if (tile.MayBuild())
                     {
@@ -228,7 +233,7 @@ namespace VikingEngine.DSSWars.Players
             upgrade = false;
             if (city != null)
             {
-                if (city.pfaction.GetPlayer() == player || DssRef.difficulty.GodPowers())
+                if (city.pfaction.GetPlayer() == player || DssRef.state.GodPowers())
                 {
                     if (subTile.MayBuild(player.gameControls.build.placeBuildingType, out upgrade))
                     {
@@ -293,7 +298,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             {
-                IntVector2 tilePos = WP.SubtileToTilePos(subTilePos);
+                IntVector2 tilePos = WP.MaptileToSumTile(subTilePos);
                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                 {
                     city = tile.pcity.City();

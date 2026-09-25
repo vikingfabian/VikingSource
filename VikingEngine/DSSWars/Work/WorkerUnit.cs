@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Work
             model = mapObject.pfaction.GetFaction().AutoLoadModelInstance_batched(
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
-            model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+            model.position = WP.MaptileToWorldPosXZ(status.subTileStart);
 
 #if DEBUG
             if (Debug.CorruptValue(model.position))
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.Work
 #endif
                         updateGroudY(false);
 
-                        IntVector2 maptile = WP.ToSubTilePos(model.position);
+                        IntVector2 maptile = WP.ToMapTilePos(model.position);
                         if (maptile != prevmapTile)//Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
                         {
                             prevmapTile = maptile;
@@ -431,7 +431,7 @@ namespace VikingEngine.DSSWars.Work
                 {
                     //remove hidden status
                     model.Visible = true;
-                    model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+                    model.position = WP.MaptileToWorldPosXZ(status.subTileStart);
 #if DEBUG
                     if (Debug.CorruptValue(model.position))
                     {
@@ -520,7 +520,7 @@ namespace VikingEngine.DSSWars.Work
         {
             ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             walkDist_beforeRefresh = 0;
-            goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
+            goalPos = WP.MaptileToWorldPosXZ(status.subTileEnd);
             goalPos.X += Map.MapData.MapTile1_1.ModelScale * 0.25f;
             goalPos.Z += Map.MapData.MapTile1_1.ModelScale * 0.1f;
 

@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         public const int TileWidth = 4;
 
         public const float ModelScale = MapTile1_1.ModelScale * TileWidth;
+        public const float ModelScale_Inv = 1f / ModelScale;
         public const ushort NoBorderRegion = ushort.MaxValue;
         public const ushort SeaBorder = ushort.MaxValue -1;
         const int CompareToAmountCities = 8;

@@ -850,7 +850,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             if (map.hover.obj != null &&
-                (map.hover.obj.pfaction.GetFaction() == player.pfaction.GetFaction() || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
+                (map.hover.obj.pfaction.GetFaction() == player.pfaction.GetFaction() || DssRef.state.GodPowers()))
             {
                 SoundLib.click.Play();
                 map.onSelect();
@@ -913,7 +913,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void selectAreaCity()
         {
             if (map.selection.obj == null &&
-                DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
+                DssRef.world.tileGrid.TryGet(map.sumtilePosition, out var tile))
             {
                 var city = tile.pcity.City();
                 if (city.pfaction == player.pfaction)

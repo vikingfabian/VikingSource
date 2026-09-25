@@ -399,7 +399,7 @@ namespace VikingEngine.DSSWars
             attensionArea = enterArea;
             attensionArea.AddRadius(20);
 
-            attensionArea_subTile = new Rectangle2(WP.ToSubTilePos_TopLeft(attensionArea.pos), (attensionArea.size + 1) * Map.MapData.MapChunkData8_8.TileWidth);
+            attensionArea_subTile = new Rectangle2(attensionArea.pos, (attensionArea.size + 1) * Map.MapData.MapChunkData8_8.TileWidth);
 
             //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
 

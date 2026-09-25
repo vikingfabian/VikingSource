@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.Players.Command
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.hover.subTile.subTilePos);
             available = false;
 
-            if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(player.gameControls.map.hover.subTile.subTilePos), out var tile))
+            if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(player.gameControls.map.hover.subTile.subTilePos), out var tile))
             {
                 available = tile.pcity.City().cityType == CityType.UnClaimed;
             }
@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
         public static void OrderSettler(SoldierGroup soldierGroup, IntVector2 subTilePos)
         {
-            new MoveCommand(soldierGroup, WP.SubtileToWorldPosXZ(subTilePos), float.MinValue, false);
+            new MoveCommand(soldierGroup, WP.MaptileToWorldPosXZ(subTilePos), float.MinValue, false);
             new ClaimCityGommand(soldierGroup, subTilePos, true);
         }
 

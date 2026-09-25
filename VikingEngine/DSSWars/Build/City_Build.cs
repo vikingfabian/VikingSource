@@ -375,7 +375,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case TerrainMainType.Destroyed:
                     case TerrainMainType.DefaultLand:
-                        var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
+                        var tile = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTilePos));
                         return /*tile.MayBuild() &&*/ tile.pcity.cityIndex == myIndex;
 
                 }

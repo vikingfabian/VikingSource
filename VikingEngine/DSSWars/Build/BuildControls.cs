@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Build
 
                     if (commit)
                     {
-                        if (DssRef.difficulty.GodPowers())
+                        if (DssRef.state.GodPowers())
                         {
                             var build = BuildLib.BuildOptions[(int)placeBuildingType];
                             MapTile1_1 subTile = DssRef.world.subTileGrid.Get(subTilePos);
@@ -500,7 +500,7 @@ namespace VikingEngine.DSSWars.Build
                                     var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
                                     if (tile.pcity.cityIndex == city.myIndex /*&& tile.MayBuild()*/)
                                     {
-                                        topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                                        topleft = /*WP.ToSubTilePos_TopLeft(*/cirkleLoop.Position/*)*/;
                                         subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
                                         while (subTileLoop.Next())
@@ -851,7 +851,7 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Filter,
             };
 
-            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            if (DssRef.state.GodPowers())
             {
                 buildCategories.Insert(buildCategories.Count - 1, BuildCategoryTab.GodPower);
             }
