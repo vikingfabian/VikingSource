@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canTerraform = true,
                 moveCost = 1f,
 
-                texture = new SpriteVariantCount(SpriteName.DssMapTextureFertile, 3),
+                texture = new SpriteVariantCount(SpriteName.DssMapTextureFertile, 1),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
             };
 

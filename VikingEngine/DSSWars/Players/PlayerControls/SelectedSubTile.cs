@@ -303,7 +303,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     city = tile.pcity.City();
                     
-                        if (city.pfaction.GetPlayer() == player || DssRef.difficulty.GodPowers())
+                        if (city.pfaction.GetPlayer() == player || DssRef.state.GodPowers())
                         {
                             if (subTilePos != city.citySquareSubtilePos && subTilePos != city.maptilePos) //center tile is protected
                             {
@@ -376,6 +376,10 @@ namespace VikingEngine.DSSWars.Players
         Build,
         ClearTerrain,
         Demolish,
+
+        EditorBuild,
+        EditorDemolish,
+
     }
 
     enum MayBuildResult

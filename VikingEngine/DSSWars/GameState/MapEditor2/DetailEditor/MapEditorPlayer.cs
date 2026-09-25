@@ -18,6 +18,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
         {
             display = new DetailEditorDisplay();
             infoDisplay = new InfoDisplay();
+            
+        }
+
+        public override void onGameStart(bool newGame)
+        {
+            base.onGameStart(newGame);
+            gameControls.build.editorTool = new DetailEditorTool();
         }
 
         public override bool updateObjectDisplay()

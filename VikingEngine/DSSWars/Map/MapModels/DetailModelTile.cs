@@ -257,8 +257,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     if (texture == SpriteName.NO_IMAGE)
                     {
                         var ground = GroundPropertiesLib.GroundProperties[(int)subTile.groundType];
-                        texture = ground.texture.GetRandom(Ref.rnd);
-                        sideTexture = ground.sidetexture.GetRandom(Ref.rnd);
+                        texture = ground.texture.GetRandom(rnd);
+                        sideTexture = ground.sidetexture.GetRandom(rnd);
                     }
                     //int tileIx = Ref.rnd.Int_HighToLowProbability1(3);
                     //switch (tileIx)
@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         subTopLeft - TopQuadOffset,
                         TopQuadScale, false, subTile.groundY,
                         texture,
-                        Ref.peRnd.Bool() ? Dir4.N : Dir4.S,
+                        rnd.Bool() ? Dir4.N : Dir4.S,
                         color);
 
                     var topShape = Graphics.PolygonColor.QuadXZ(
@@ -330,7 +330,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     Graphics.PolygonColor front = new Graphics.PolygonColor(
                         bottom.V0sw.Position, bottom.V1nw.Position,
                         topShape.V0sw.Position, topShape.V1nw.Position,
-                        sideTexture, Ref.rnd.Dir4(),
+                        sideTexture, rnd.Dir4(),
                         ColorExt.ChangeBrighness(color, -10));
                     front.V1nw.Color = bottomCol;
                     front.V3ne.Color = bottomCol;

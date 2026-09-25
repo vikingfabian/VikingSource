@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             //Debug.CrashIfThreaded();
             model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.godfire, Map.MapData.MapTile1_1.ModelScale * 1.0f);
-            model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
+            model.position = WP.MaptileToWorldPosXYZ(subTile);
 
         }
 

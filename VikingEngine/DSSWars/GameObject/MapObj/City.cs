@@ -316,11 +316,7 @@ namespace VikingEngine.DSSWars.GameObject
             position = WP.SubtileToWorldPosXZgroundY_Centered(maptilePos);
         }
 
-        public void onEditorStart()
-        {
-            refreshPos();
-            refreshCitySize();
-        }
+        
 
         public void generateCultureAndEconomy(WorldData world, float storyPlacementScale, CityCultureCollection cityCultureCollection)
         {
@@ -1473,10 +1469,18 @@ namespace VikingEngine.DSSWars.GameObject
             }
             setTimeOnAllWorkers();
 
-            setTimeOnAllWorkers();
+            //setTimeOnAllWorkers();
         }
 
-        
+        public void onEditorStart()
+        {
+            refreshPos();
+            refreshCitySize();
+            if (!name.custom)
+            {
+                name.name = Data.NameGenerator.CityName(maptilePos);
+            }
+        }
 
         void initEconomy(/*bool newGame,*/ WorldData world)
         {
@@ -2320,13 +2324,20 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name(out bool mayEdit)
         {
-            Faction faction = pfaction.GetFaction();
-            if (faction == null)
+            if (DssRef.state.GodPowers())
             {
-                mayEdit = false;
-                return TextLib.Error;
+                mayEdit = true;
             }
-            mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
+            else
+            {
+                Faction faction = pfaction.GetFaction();
+                if (faction == null)
+                {
+                    mayEdit = false;
+                    return TextLib.Error;
+                }
+                mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
+            }
             return name.GetName();
         }
 

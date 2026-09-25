@@ -14,6 +14,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapProcess;
@@ -58,6 +59,8 @@ namespace VikingEngine.DSSWars.Build
         City city;
         bool blockBuildUpdate = false;
         public bool ordersDifferFromPriority = false;
+
+        public DetailEditorTool editorTool = null;
 
         public BuildAndExpandType CompressedBuildMode()
         {
@@ -104,78 +107,90 @@ namespace VikingEngine.DSSWars.Build
 
         bool actOnTile(IntVector2 subTilePos, bool commit, out int usesBuildQue, out City city)
         {
-            if (buildMode == SelectTileResult.Build)
+            switch (buildMode)
             {
-                usesBuildQue = 1;
-                var mayBuild = adjustMayBuild(SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city));
-                
-                //if (!availableBuildingType)
-                //{
-                //    mayBuild = MayBuildResult.No_OutsideRegion;
-                //}
-                
-                if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
-                {
-
-                    if (commit)
+                case SelectTileResult.Build:
                     {
-                        if (DssRef.state.GodPowers())
+                        usesBuildQue = 1;
+                        var mayBuild = adjustMayBuild(SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city));
+
+                        //if (!availableBuildingType)
+                        //{
+                        //    mayBuild = MayBuildResult.No_OutsideRegion;
+                        //}
+
+                        if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                         {
-                            var build = BuildLib.BuildOptions[(int)placeBuildingType];
-                            MapTile1_1 subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                            if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
+
+                            if (commit)
                             {
-                                EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true, true, false);
-                                edit.Submit();
+                                if (DssRef.state.GodPowers())
+                                {
+                                    var build = BuildLib.BuildOptions[(int)placeBuildingType];
+                                    MapTile1_1 subTile = DssRef.world.subTileGrid.Get(subTilePos);
+                                    if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
+                                    {
+                                        EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true, true, false);
+                                        edit.Submit();
+                                    }
+
+                                    new GodBuild(subTilePos);
+                                }
+                                else if (placeBuildingOption().blueprint.meetsRequirements(city))
+                                {
+                                    player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
+                                }
+                                else
+                                {
+                                    //Remove current orders
+                                    player.orders.orderConflictingSubTile(subTilePos, true);
+                                }
+                            }
+                            else
+                            {
+                                if (player.orders.orderConflictingSubTile(subTilePos, false))
+                                {
+                                    usesBuildQue = -1;
+                                }
                             }
 
-                            new GodBuild(subTilePos);
-                        }
-                        else if (placeBuildingOption().blueprint.meetsRequirements(city))
-                        {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
-                        }
-                        else
-                        {
-                            //Remove current orders
-                            player.orders.orderConflictingSubTile(subTilePos, true);
+                            return true;
                         }
                     }
-                    else
+                    break;
+                case SelectTileResult.Demolish:
                     {
-                        if (player.orders.orderConflictingSubTile(subTilePos, false))
+                        usesBuildQue = 0;
+                        if (SelectedSubTile.MayDemolish(subTilePos, player, out city))
                         {
-                            usesBuildQue = -1;
+                            if (commit)
+                            {
+                                if (DssRef.difficulty.GodPowers())
+                                {
+                                    BuildLib.Demolish(city, subTilePos);
+                                    new GodBuild(subTilePos);
+                                }
+                                else
+                                {
+                                    player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.FollowTool, toolAdd);
+                                }
+                            }
+
+                            return true;
                         }
                     }
+                    break;
 
-                    return true;
-                }
-            }
-            else if (buildMode == SelectTileResult.Demolish)
-            {
-                usesBuildQue = 0;
-                if (SelectedSubTile.MayDemolish(subTilePos, player, out city))
-                {
-                    if (commit)
+                case SelectTileResult.EditorBuild:
+                    city = null;
+                    usesBuildQue = 0;
+                    return editorTool.actOnTile(subTilePos, commit);
+
+                default:
                     {
-                        if (DssRef.difficulty.GodPowers())
-                        {
-                            BuildLib.Demolish(city, subTilePos);
-                            new GodBuild(subTilePos);
-                        }
-                        else
-                        {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.FollowTool, toolAdd);
-                        }
+                        usesBuildQue = 0;
                     }
-
-                    return true;
-                }
-            }
-            else
-            {
-                usesBuildQue = 0;
+                    break;
             }
 
             city = null;
