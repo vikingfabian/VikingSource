@@ -84,24 +84,24 @@ namespace VikingEngine.DSSWars.Net
             int.TryParse(Values[CustomStartIx + 5], out maxPlayerCount);
         }
 
-        public GameModeMainType GameMode()
-        {
-            GameModeMainType gameMode = GameModeMainType.NUM;
-            if (int.TryParse(Values[4], out int value))
-            {
-                gameMode = (GameModeMainType)value;
-            }
-            return gameMode;
-        }
+        //public GameModeMainType GameMode()
+        //{
+        //    GameModeMainType gameMode = GameModeMainType.NUM;
+        //    if (int.TryParse(Values[4], out int value))
+        //    {
+        //        gameMode = (GameModeMainType)value;
+        //    }
+        //    return gameMode;
+        //}
 
-        public int TotalDifficulty()
-        {
-            if (int.TryParse(Values[5], out int value))
-            {
-                return value;
-            }
-            return -1;
-        }
+        //public int TotalDifficulty()
+        //{
+        //    if (int.TryParse(Values[5], out int value))
+        //    {
+        //        return value;
+        //    }
+        //    return -1;
+        //}
 
     }
 }
