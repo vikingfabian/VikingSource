@@ -207,6 +207,15 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public void flushCityReserves(City city)
+        {
+            int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;
+            for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
+            {
+                cityResouces[i].reservedUseCount = 0;
+            }
+        }
+
         public void setCityStockPile(City city, int limit)
         {
             int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;

@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (buildingStructure.buildingLevel_logistics == 0)
                 {
-                    if (CraftBuildingLib.CraftLogistics.hasResources(this))
+                    if (CraftBuildingLib.CraftLogistics.available(this))
                     {
                         if (commit)
                         {
@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else if (buildingStructure.buildingLevel_logistics == 1)
                 {
-                    if (CraftBuildingLib.CraftLogisticsLevel2.hasResources(this))
+                    if (CraftBuildingLib.CraftLogisticsLevel2.available(this))
                     {
                         if (commit)
                         {
