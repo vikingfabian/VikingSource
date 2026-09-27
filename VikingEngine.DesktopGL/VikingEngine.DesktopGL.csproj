@@ -28,15 +28,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <!--
+    <!---->
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
-    -->
+    <!---->
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
+    <!--
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj">
       <SetPlatform>Platform=x64</SetPlatform>
     </ProjectReference>
+    -->
     <ProjectReference Include="..\..\..\Steamworks repo\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
       <SetConfiguration Condition="'$(Configuration)' != 'Release'">Configuration=Windows</SetConfiguration>
       <SetPlatform>Platform=x64</SetPlatform>
