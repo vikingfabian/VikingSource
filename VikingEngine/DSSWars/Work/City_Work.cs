@@ -205,10 +205,9 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
-                    if (Ref.peRnd.ChanceF(0.5f))
+                    if (Ref.peRnd.ChanceF(0.05f))
                     {
-                        res_water.reservedUseCount = 0;
-                        DssRef.world.flushCityReserves(this);
+                        refreshItemReserve();
                     }
                     
                     if (workQue.Count > 1)
@@ -1388,6 +1387,18 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
+        void refreshItemReserve()
+        {
+            res_water.reservedUseCount = 0;
+            DssRef.world.flushCityReserves(this);
+
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+               WorkerStatus status = workerStatuses.array[i];
+                reserveItems(new WorkQueMember(){ work = status.work, subWork = status.workSubType });
+            }
+        }
+
         void reserveItems(WorkQueMember work)
         {
             switch (work.work)
@@ -1398,7 +1409,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case WorkType.Craft:
                     ItemResourceType item = (ItemResourceType)work.subWork;
                     ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
-                    if (bp2.available(this))
+                    if (bp2 != null && bp2.available(this))
                     {
                         reserve(bp2);
                     }
@@ -1413,7 +1424,14 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 foreach (var m in blueprint.resources)
                 {
-                    this.GetRefGroupedResource(m.type).reserve(m.amount);
+                    if (m.type == ItemResourceType.Water_G)
+                    {
+                        res_water.reserve(m.amount);
+                    }
+                    else
+                    {
+                        this.GetRefGroupedResource(m.type).reserve(m.amount);
+                    }
                 }
             }
         }
@@ -1421,7 +1439,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             foreach (var m in blueprint.resources)
             {
-                this.GetRefGroupedResource(m.type).unreserve(m.amount);
+                if (m.type == ItemResourceType.Water_G)
+                {
+                    res_water.unreserve(m.amount);
+                }
+                else
+                {
+                    this.GetRefGroupedResource(m.type).unreserve(m.amount);
+                }
             }
         }
     } 
