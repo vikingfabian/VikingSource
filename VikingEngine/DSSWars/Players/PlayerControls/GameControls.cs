@@ -258,26 +258,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (input.Controller_ObjectMenuToggle.DownEvent)
                 {
-                    if (input.inputSource.useTouchAsMouseSim)
-                    {
-                        togglePointerToMenu(player.hud.objMenu);
-                    }
-                    else
-                    {
-                        //Toggle menu focus
-                        bool toFocus = controllerPointer == null;
-                        bool objectMenu = true;
-
-                        if (toFocus && player.hud.factionMenu.IsOpen())
-                        {
-                            objectMenu = false;
-                        }
-                        else if (toFocus && map.selection.obj == null)
-                        {
-                            mapSelect();
-                        }
-                        setMenuFocus(toFocus, objectMenu);
-                    }
+                    onToggleMenuInput();
                 }
 
                 if (input.Controller_Faction.DownEvent &&
@@ -363,6 +344,36 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             gameSpeedInput();
 
             updateObjectTabbing();
+        }
+
+        private void onToggleMenuInput()
+        {
+            if (input.inputSource.useTouchAsMouseSim)
+            {
+                togglePointerToMenu(player.hud.objMenu);
+            }
+            else
+            {
+                //Toggle menu focus
+                bool toFocus = controllerPointer == null;
+                int menuIx = 0;
+                if (!toFocus && player.hud.objMenu.secondMenu != null && controllerPointer.menu != player.hud.objMenu.secondMenu)
+                {
+                    menuIx = 1;
+                    toFocus = true;
+                }
+                bool objectMenu = true;
+
+                if (toFocus && player.hud.factionMenu.IsOpen())
+                {
+                    objectMenu = false;
+                }
+                else if (toFocus && map.selection.obj == null)
+                {
+                    mapSelect();
+                }
+                setMenuFocus(toFocus, objectMenu, menuIx);
+            }
         }
 
         public void UiUpdateOnly()
@@ -539,14 +550,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             return false;
         }
 
-        public void setMenuFocus(bool set, bool objectMenu)
+        public void setMenuFocus(bool set, bool objectMenu, int menuIndex = 0)
         {
             if (input.inputSource.ControllerMode) 
             {
                 if (set)
                 {
-                    if (controllerPointer == null)
+                    if (controllerPointer == null || menuIndex != controllerPointer.menuIx)
                     {
+                        if (controllerPointer != null)
+                        {
+                            controllerPointer.DeleteMe(out controllerPointer_storedPos_faction);
+                        }
+
                         controllerPointer = new RichMenuControllerPointer(input);
                         if (objectMenu)
                         {
@@ -568,11 +584,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                     break;
                             }
                             player.hud.objMenu.createMenu(true, player);
-                            controllerPointer.setMenu(player.hud.objMenu.menu, storedPos);
+                            if (menuIndex == 1)
+                            {
+                                player.hud.objMenu.createMenu(false, player);
+                                controllerPointer.setMenu(player.hud.objMenu.secondMenu, menuIndex, storedPos);
+                            }
+                            else
+                            {
+                                controllerPointer.setMenu(player.hud.objMenu.menu, menuIndex, storedPos);
+                            }
+
                         }
                         else
                         {
-                            controllerPointer.setMenu(player.hud.factionMenu.menu, controllerPointer_storedPos_faction);
+                            controllerPointer.setMenu(player.hud.factionMenu.menu, menuIndex, controllerPointer_storedPos_faction);
                         }
                         player.hud.needRefresh = true;
                     }

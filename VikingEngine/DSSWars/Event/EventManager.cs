@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface.CutScene;
+using VikingEngine.DSSWars.Interface.HudPinUi;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
 
@@ -121,41 +122,53 @@ namespace VikingEngine.DSSWars.Event
                 float peaceStrength = p.pfaction.GetFaction().PotensialMilitaryStrength();
 
                 RelationsLoop loop = new RelationsLoop(p.pfaction);
+
                 while (loop.Next())
                 {
-                    
-
-                        if (loop.OtherFaction(out var otherFaction) && otherFaction.isAlive)
-                        {
-                       
+                    if (loop.OtherFaction(out var otherFaction) && otherFaction.isAlive)
+                    {
                         var relation = loop.Relation();
 
-                            if (relation.Relation >= RelationType.RelationType3_Ally)
+                        //if (relation.Relation == RelationType.RelationTypeN2_Truce)
+                        //{
+                        //    lib.DoNothing();
+                        //}
+
+
+                        if (relation.Relation >= RelationType.RelationType3_Ally)
+                        {
+                            p.alliedFactions_build.Add(loop.OtherFaction_P());
+                            //allyCount++;
+                            if (otherFaction.factiontype == FactionType.BramblebrookHill ||
+                                otherFaction.factiontype == FactionType.Tumblehill)
                             {
-                                p.alliedFactions_build.Add(loop.OtherFaction_P());
-                                //allyCount++;
-                                if (otherFaction.factiontype == FactionType.BramblebrookHill ||
-                                    otherFaction.factiontype == FactionType.Tumblehill)
+                                hillFriends++;
+                            }
+                        }
+                        else if (relation.Relation <= RelationType.RelationTypeN2_Truce)
+                        {
+                            warCount++;
+                            warStrength += otherFaction.PotensialMilitaryStrength();
+
+                            if (HudPinManager.DisplayRelation(relation.Relation))
+                            {
+                                lock (p.hud.pins.relationPins)
                                 {
-                                    hillFriends++;
+                                    p.hud.pins.relationPins.Add(loop.OtherFaction_P());
                                 }
                             }
-                            else if (relation.Relation <= RelationType.RelationTypeN3_Mobilization)
-                            { 
-                                warCount++;
-                                warStrength += otherFaction.PotensialMilitaryStrength();
-                            }
+                        }
 
-                            if (relation.Relation < RelationType.RelationType1_Peace && relation.SpeakTerms != SpeakTerms.SpeakTermsN2_None)
-                            {
-                                worldPeace = false;
-                            }
-                            else
-                            {
-                                peaceStrength += otherFaction.PotensialMilitaryStrength();
-                            }
-                        //}
+                        if (relation.Relation < RelationType.RelationType1_Peace && relation.SpeakTerms != SpeakTerms.SpeakTermsN2_None)
+                        {
+                            worldPeace = false;
+                        }
+                        else
+                        {
+                            peaceStrength += otherFaction.PotensialMilitaryStrength();
+                        }
                     }
+
                 }
 
                 p.warCount = warCount;
@@ -165,7 +178,7 @@ namespace VikingEngine.DSSWars.Event
                     p.alliedFactions = p.alliedFactions_build;
                     p.alliedFactions_build = store;
                 }
-                if (p.alliedFactions.Count != p.alliedFactions_build.Count)//allyCount != p.allyCount)
+                if (p.alliedFactions.Count != p.alliedFactions_build.Count)
                 { 
                     DssRef.achieve.onAllyCount(p.alliedFactions.Count);
                 }
@@ -174,7 +187,7 @@ namespace VikingEngine.DSSWars.Event
                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
                 }
 
-                if (worldPeace && peaceStrength > warStrength && p.pfaction.GetFaction().cities.Count < DssRef.world.cities.Count / 2)
+                if (worldPeace && peaceStrength > warStrength && p.pfaction.GetFaction().cities.Count < DssRef.world.claimedCityCount / 2)
                 {
                     Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));
                     return;
@@ -186,7 +199,7 @@ namespace VikingEngine.DSSWars.Event
                 int missingCities = 0;
                 foreach (var city in DssRef.world.cities)
                 {
-                    if (city.pfaction != p.pfaction)
+                    if (!city.IsInitialized || (city.cityType > CityType.UnClaimed && city.pfaction != p.pfaction))
                     {
                         missingCities++;
                         if (missingCities > dominationCount)
@@ -205,20 +218,6 @@ namespace VikingEngine.DSSWars.Event
             }            
             
         }
-
-        //void asyncCheckPlayerDominance()
-        //{
-        //    foreach (var p in DssRef.state.localPlayers)
-        //    {
-        //        if (p.faction.cities.Count >= p.nextDominationSize)
-        //        {
-        //            //p.nextDominationSize = p.faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
-        //            p.cohalitionEvent = true;
-
-        //            collectAllianceAgainstPlayerDomination(p);
-        //        }
-        //    }
-        //}
 
         public bool RunAi()
         {

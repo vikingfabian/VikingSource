@@ -2040,7 +2040,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_Specialization_Sea => "해상전";
         public override string Conscript_Specialization_Siege => "공성전";
         public override string Conscript_Specialization_Traditional => "전통전";
-        public override string Conscript_Specialization_AntiCavalry => "대기병";
+        public override string Conscript_Ability_AntiCavalry => "대기병";
 
         public override string Conscription_Status_CollectingEquipment => "장비 수집 중: {0}";
         public override string Conscription_Status_CollectingMen => "병력 모집 중: {0}";

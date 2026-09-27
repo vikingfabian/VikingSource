@@ -5,9 +5,9 @@ using Xunit;
 
 namespace VikingEngine.Tests
 {
-    public class Phase3BattlePoolTests
+    public class SoldierBattleDataPoolTests
     {
-        public Phase3BattlePoolTests()
+        public SoldierBattleDataPoolTests()
         {
             SoldierBattleData.ClearPool();
         }

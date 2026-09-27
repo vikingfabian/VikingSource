@@ -1415,7 +1415,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Conscript_Specialization_Sea { get; }
         public abstract string Conscript_Specialization_Siege { get; }
         public abstract string Conscript_Specialization_Traditional { get; }
-        public abstract string Conscript_Specialization_AntiCavalry { get; }
+        public abstract string Conscript_Ability_AntiCavalry { get; }
 
         public abstract string Conscription_Status_CollectingEquipment { get; }
         public abstract string Conscription_Status_CollectingMen { get; }

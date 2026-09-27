@@ -108,6 +108,10 @@ namespace VikingEngine.SteamWrapping
             get
             {
                 var controller = Ref.steam.input.controllers[controllerIx];
+                if (controller == null)
+                {
+                    return false;
+                }
 
                 return controller.digital_isDown_current[(int)actionType] &&
                       !controller.digital_isDown_previous[(int)actionType];

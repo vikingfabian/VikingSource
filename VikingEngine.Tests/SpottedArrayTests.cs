@@ -4,7 +4,7 @@ using Xunit;
 
 namespace VikingEngine.Tests
 {
-    public class Phase4SpottedArrayTests
+    public class SpottedArrayTests
     {
         [Fact]
         public void TrimExcess_WhenOversized_ShrinksCapacityAndPreservesElements()

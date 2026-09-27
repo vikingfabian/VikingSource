@@ -101,10 +101,6 @@ namespace VikingEngine.DSSWars.Delivery
                 return;
             }
 
-            //var citiesC = player.faction.cities.counter();
-
-            //while (citiesC.Next())
-            //{
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref player.pfaction.GetFaction().cities))
             {
@@ -115,6 +111,42 @@ namespace VikingEngine.DSSWars.Delivery
             }
 
             profile.toCity = -1;
+        }
+
+        public void writeClientState(System.IO.BinaryWriter w)
+        {
+            w.Write(idAndPosition);
+
+            w.Write(useSenderMin);
+            w.Write(useRecieverMax);
+
+            w.Write((ushort)senderMin);
+            w.Write((ushort)recieverMax);
+
+            profile.writeGameState(w);
+        }
+
+        public void readClientState(System.IO.BinaryReader r, int subVersion)
+        {
+            idAndPosition = r.ReadInt32();
+
+            useSenderMin = r.ReadBoolean();
+            useRecieverMax = r.ReadBoolean();
+
+            senderMin = r.ReadUInt16();
+            recieverMax = r.ReadUInt16();
+
+            profile.readGameState(r, subVersion);
+        }
+
+        public void ApplyClientSetup(DeliveryStatus status)
+        { 
+            this.useSenderMin = status.useSenderMin;
+            this.useRecieverMax= status.useRecieverMax;
+            this.senderMin = status.senderMin;
+            this.recieverMax = status.recieverMax;
+
+            this.profile = status.profile;
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

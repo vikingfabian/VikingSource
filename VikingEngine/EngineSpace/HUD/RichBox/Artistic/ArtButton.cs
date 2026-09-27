@@ -11,6 +11,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
 {
     enum RbButtonStyle
     { 
+        SuperPrimary,
         Primary,
         Secondary,
         GodPower,
@@ -61,6 +62,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.CheckBox:
                     textureSett = group.settings.artCheckButtonTex;
+                    break;
+                case RbButtonStyle.SuperPrimary:
+                    textureSett = group.settings.artSuperPrimaryButtonTex;
                     break;
                 case RbButtonStyle.Secondary:
                     textureSett = group.settings.artSecondaryButtonTex;

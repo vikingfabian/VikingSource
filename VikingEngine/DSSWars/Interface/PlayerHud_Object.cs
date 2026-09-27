@@ -77,6 +77,12 @@ namespace VikingEngine.DSSWars.Interface
             secondMenu = null;
         }
 
+        public void deleteSecondMenu()
+        {
+            secondMenu?.DeleteMe();
+            secondMenu = null;
+        }
+
         void historyDisplay(Players.LocalPlayer player)
         {
             createMenu(true, player, false);
@@ -220,9 +226,9 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        public void refreshObject(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected)
+        public void refreshObject(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected, out bool bUseSecondMenu)
         {
-            bool bUseSecondMenu = false;
+            bUseSecondMenu = false;
 
 
             if (menu != null && menu.BlockRefresh())
@@ -276,11 +282,7 @@ namespace VikingEngine.DSSWars.Interface
                 selectHistory.Add(obj);                
             }
 
-            if (!bUseSecondMenu)
-            {
-                secondMenu?.DeleteMe();
-                secondMenu = null;
-            }
+            
         }
 
         /// <returns>need refresh</returns>

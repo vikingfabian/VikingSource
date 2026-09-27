@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars
                 case SpecializationType.AntiCavalry:
 
                     icon = SpriteName.WarsSpecializeAntiCavalry;
-                    name = DssRef.lang.Conscript_Specialization_AntiCavalry;
+                    name = DssRef.lang.Conscript_Ability_AntiCavalry;
                     break;
                 case SpecializationType.CityGuard:
 

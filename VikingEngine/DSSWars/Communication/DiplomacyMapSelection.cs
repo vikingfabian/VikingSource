@@ -27,6 +27,8 @@ namespace VikingEngine.DSSWars.Communication
 
         public void updateSelectBox(LocalPlayer player, RelationFlag relation)
         {
+            Hide();
+
             if (relation != null)
             {
                 if (relation.bg != null)
@@ -64,7 +66,7 @@ namespace VikingEngine.DSSWars.Communication
             }
             else
             {
-                Hide();
+                
             }
         }
 

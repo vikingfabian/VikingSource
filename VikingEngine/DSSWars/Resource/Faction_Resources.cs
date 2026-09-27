@@ -699,6 +699,12 @@ namespace VikingEngine.DSSWars
                 resourceMinuteUpdates--;
                 
                 int end = resourceComponentStartIndex + CityResourceIndex.COUNT;
+
+                if (end > DssRef.world.factionResourceOverviews.Length)
+                {
+                    return;
+                }
+
                 for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
                 {
                     DssRef.world.factionResourceOverviews[itemIx].clearFactionOverView();
@@ -708,6 +714,11 @@ namespace VikingEngine.DSSWars
                 while (citiesC.Next(ref cities))
                 {
                     int start = citiesC.sel * CityResourceIndex.COUNT;
+
+                    if (start + CityResourceIndex.COUNT > DssRef.world.factionResourceOverviews.Length)
+                    {
+                        continue;
+                    }
 
                     for (int index = 0; index < CityResourceIndex.COUNT; index++)
                     {

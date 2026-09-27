@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -30,12 +30,19 @@ namespace VikingEngine
 
         public static int NextThreadIx { get { threadIndex++; return threadIndex; } }
 #if PCGAME
-        public static bool IsMainThread { get { return System.Threading.Thread.CurrentThread.ManagedThreadId == mainThreadID; } }
+        public static bool IsMainThread =>
+            Thread.CurrentThread.ManagedThreadId == _mainThreadId;
 #endif
         /* Static Fields */
         static bool gameIsActive = false;
         static int threadIndex = 0;
-        static int mainThreadID;
+        private static int _mainThreadId;
+
+        internal static void SetMainThreadForTest()
+        {
+            _mainThreadId = Thread.CurrentThread.ManagedThreadId;
+        }
+
         public bool criticalContentIsLoaded = false;
 
         /* Static Methods */
@@ -52,6 +59,7 @@ namespace VikingEngine
         bool halfUpdate = true;
         GameTime gameTime;
         DateTime start;
+        int _updatesThisFrame = 0;
         //public TaskScheduler taskScheduler;
 
         /* Constructors */
@@ -133,13 +141,54 @@ namespace VikingEngine
         //    RegisterFocusedButtonForTextInput(OnTextInput);
         //}
 
+        private void ProcessScreenshot(GameTime gameTime)
+        {
+            var isScreenshotKeyPressed =
+                Input.Keyboard.KeyDownEvent(Keys.F9)
+                || Input.Keyboard.KeyDownEvent(Keys.PrintScreen);
+
+            if (Engine.Draw.IsScreenshotRequested)
+            {
+                if (!isScreenshotKeyPressed)
+                {
+                    Engine.Draw.IsScreenshotRequested = false;
+                }
+            }
+            else
+            {
+                if (isScreenshotKeyPressed)
+                {
+                    Engine.Draw.IsScreenshotRequested = true;
+                }
+            }
+        }
+
+        private void ProcessDebugHotkeys(GameTime gameTime)
+        {
+            ProcessScreenshot(gameTime);
+
+            if (Input.Keyboard.KeyDownEvent(Keys.F10))
+            {
+                PlatformSettings.DebugPerformanceText =
+                    !PlatformSettings.DebugPerformanceText;
+            }
+
+            if (Input.Keyboard.KeyDownEvent(Keys.F8))
+            {
+                Ref.update?.DumpUpdateListToFile();
+            }
+        }
 
         protected override void Update(GameTime gameTime)
         {
-            //if (PlatformSettings.RunProgram == StartProgram.LootFest3 && Input.Keyboard.KeyDownEvent(Keys.D5))
-            //{ PlatformSettings.DebugWindow = !PlatformSettings.DebugWindow; }
-            
-            if (PlatformSettings.DebugPerformanceText) start = DateTime.Now;
+            ProcessDebugHotkeys(gameTime);
+
+            _updatesThisFrame++;
+            long startTimestamp = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                startTimestamp = Stopwatch.GetTimestamp();
+            }
 
             this.gameTime = gameTime;
             gameIsActive = IsActive;
@@ -149,17 +198,44 @@ namespace VikingEngine
             DebugExtensions.BlueScreen.TryCatch(updateLoop, DebugExtensions.TryMethodType.U);
             DebugExtensions.BlueScreen.CatchThreadExeception();
 
-
-            if (PlatformSettings.DebugPerformanceText) Engine.StateHandler.UpdateTimePass(DateTime.Now.Subtract(start).TotalMilliseconds);
+            if (PlatformSettings.DebugPerformanceText && startTimestamp > 0)
+            {
+                var updateTimeMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;
+                DebugExtensions.RenderOverlay.Instance.RecordUpdate(updateTimeMs);
+                Engine.StateHandler.UpdateTimePass(updateTimeMs);
+            }
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                DebugExtensions.RenderOverlay.Instance.RecordUpdatesPerFrame(_updatesThisFrame);
+            }
+            _updatesThisFrame = 0;
+
             DebugExtensions.BlueScreen.TryCatch(Ref.draw.MainDrawLoop, DebugExtensions.TryMethodType.D);
             
             base.Draw(gameTime);
+        }
+
+        protected override void EndDraw()
+        {
+            long startTimestamp = 0;
+            if (PlatformSettings.DebugPerformanceText)
+            {
+                startTimestamp = Stopwatch.GetTimestamp();
+            }
+
+            base.EndDraw();
+
+            if (PlatformSettings.DebugPerformanceText && startTimestamp > 0)
+            {
+                var presentMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;
+                DebugExtensions.RenderOverlay.Instance.RecordPresent(presentMs);
+            }
         }
 
        
@@ -178,7 +254,7 @@ namespace VikingEngine
         {
             int targetFrameRate = 60;
 #if PCGAME
-            mainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            _mainThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif
             var sett = new GameSettings();
             new Network.NetworkSettings();

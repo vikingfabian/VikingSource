@@ -10,7 +10,7 @@ using Xunit;
 
 namespace VikingEngine.Tests
 {
-    public class Phase1StructTests
+    public class MapTileStructTests
     {
         [Fact]
         public void SubTile_PackedSize_Is16Bytes()
@@ -170,6 +170,34 @@ namespace VikingEngine.Tests
             Assert.Equal(BiomType.Tundra, loaded.biom);
             Assert.Equal((byte)7, loaded.heightLevel);
             Assert.Equal(TileContent.City, loaded.tileContent);
+        }
+
+        [Fact]
+        public void LegacySubTile_CurrentSize_Is28Bytes()
+        {
+            int size = Marshal.SizeOf<LegacySubTile>();
+            Assert.Equal(28, size);
+        }
+
+        [Fact]
+        public void LegacyTile_CurrentSize_Is64Bytes()
+        {
+            int size = Marshal.SizeOf<LegacyTile>();
+            Assert.Equal(64, size);
+        }
+
+        [Fact]
+        public void SubTile_IsSmallerThanLegacyBaseline()
+        {
+            Assert.True(Marshal.SizeOf<SubTile>() < Marshal.SizeOf<LegacySubTile>());
+            Assert.Equal(16, Marshal.SizeOf<SubTile>());
+        }
+
+        [Fact]
+        public void Tile_IsSmallerThanLegacyBaseline()
+        {
+            Assert.True(Marshal.SizeOf<Tile>() < Marshal.SizeOf<LegacyTile>());
+            Assert.Equal(34, Marshal.SizeOf<Tile>());
         }
     }
 }

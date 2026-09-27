@@ -207,6 +207,15 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public void flushCityReserves(City city)
+        {
+            int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;
+            for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
+            {
+                cityResouces[i].reservedUseCount = 0;
+            }
+        }
+
         public void setCityStockPile(City city, int limit)
         {
             int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;
@@ -228,7 +237,7 @@ namespace VikingEngine.DSSWars
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
 
-            int resourceStart = 0;
+            //int resourceStart = 0;
             //int workStart = 0;
 
             int startWood, startLinnen, startFood;
@@ -256,7 +265,7 @@ namespace VikingEngine.DSSWars
             {
                 for (int resourceIx = 0; resourceIx < CityResourceIndex.COUNT; ++resourceIx)
                 {
-                    cityResouces[resourceStart + resourceIx] = new GroupedResource();
+                    cityResouces[resStartIndex + resourceIx] = new GroupedResource();
                 }
 
                 cityResouces[resStartIndex + CityResourceIndex.wood].amount = startWood;
@@ -266,7 +275,7 @@ namespace VikingEngine.DSSWars
                 cityResouces[resStartIndex + CityResourceIndex.skinLinnen].amount = startLinnen;                
                 cityResouces[resStartIndex + CityResourceIndex.iron].amount = 20;
 
-                resourceStart += CityResourceIndex.COUNT;
+                resStartIndex += CityResourceIndex.COUNT;
 
                 WorkTemplate.InitComponents(cityWork, startIndex);
 
@@ -287,11 +296,32 @@ namespace VikingEngine.DSSWars
                 cityStorage[i].write(w);
             }
         }
-        public void readComponents(System.IO.BinaryReader r, int subVersion)
+        public void readComponents(System.IO.BinaryReader r, int subVersion) //TODO move to city read
         {
             for (int i = 0; i < cityStorage.Length; i++)
             {
                 cityStorage[i].read(r, subVersion);
+            }
+        }
+
+        public void writeCityStorage(System.IO.BinaryWriter w, City city)
+        {
+            for (StorageType storageType = 0; storageType < StorageType.NUM_NONE; storageType++)
+            {
+                cityStorage[StorageSize.COUNT * city.myIndex + (int)storageType].write(w);
+            }
+        }
+        public void readCityStorage(System.IO.BinaryReader r, City city)
+        {
+            for (StorageType storageType = 0; storageType < StorageType.NUM_NONE; storageType++)
+            {
+                StorageSize size = new StorageSize();
+                size.read(r, int.MaxValue);
+                int ix = StorageSize.COUNT * city.myIndex + (int)storageType;
+                if (arraylib.InBound(cityStorage, ix))
+                {
+                    cityStorage[ix] = size;
+                } 
             }
         }
     }

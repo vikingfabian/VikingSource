@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -127,6 +127,28 @@ namespace VikingEngine.Voxels
             { return null; }
 
             VerticeDataColorNormal verticeData = new VerticeDataColorNormal(vertices, indexDrawOrder);
+            return verticeData;
+        }
+
+        public static IVerticeData BuildVerticesHD_Texture(List<VoxelObjGridDataHD> grids, Vector3 posAdjust, 
+            out List<Frame> framesData)
+        {
+            List<VertexPositionColorTexture> vertices = new List<VertexPositionColorTexture>(MinVertexCount * grids.Count);
+            List<int> indexDrawOrder = new List<int>(MinDrawOrderLenght);
+            framesData = new List<Frame>(grids.Count);
+
+            foreach (VoxelObjGridDataHD grid in grids)
+            {
+                Frame frameData = VoxelGridToVerticesHD(grid, posAdjust, ref vertices, ref indexDrawOrder);
+                framesData.Add(frameData);
+            }
+
+            if (vertices.Count == 0)
+            {
+                return null;
+            }
+
+            VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
             return verticeData;
         }
 

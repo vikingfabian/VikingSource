@@ -105,14 +105,13 @@ namespace VikingEngine.DSSWars.Build
         }
 
         public bool execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade, bool payResources = true)
-        {
-            
+        {            
             if (city.executeBuildEffectsOnCity(true, subPos, ref subTile, terrainType.mainTerrain, terrainType.subTerrain))
             {
                 if (payResources)
                 {
                     CraftBlueprint bp;
-                    if (altBlueprint != null && altBlueprint.hasResources(city))
+                    if (altBlueprint != null && altBlueprint.available(city))
                     {
                         bp = altBlueprint;
                     }
@@ -128,6 +127,7 @@ namespace VikingEngine.DSSWars.Build
                     else
                     {
                         bp.payResources_BuildAndUpgrade(city);
+                        city.unreserveItems(bp);
                     }
                 }
                 subTile.SetType(terrainType.mainTerrain, terrainType.subTerrain, 1);
@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.Build
 
         public bool availableBlueprintResources(City city)
         {
-            return blueprint.hasResources(city) || (altBlueprint != null && altBlueprint.hasResources(city));
+            return blueprint.available(city) || (altBlueprint != null && altBlueprint.available(city));
         }
 
         public bool availableBlueprintResources_ignorewater(City city)

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +59,7 @@ namespace VikingEngine.DSSWars.Map
             images.AddRange(cameraOutline.lines);
 
             renderTargetDrawContainer = new RenderTargetDrawContainer(area.Position, area.Size, HudLib.GUILayer, images);
+            renderTargetDrawContainer.alwaysRedraw = true;
 
             refreshScale();
 

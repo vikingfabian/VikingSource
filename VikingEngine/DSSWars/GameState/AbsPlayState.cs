@@ -475,7 +475,7 @@ namespace VikingEngine.DSSWars.GameState
         }
         virtual public PlayState playstate()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override bool MayUseLowLatencyGC()

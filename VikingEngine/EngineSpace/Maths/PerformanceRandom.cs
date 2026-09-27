@@ -21,18 +21,19 @@ namespace VikingEngine.EngineSpace.Maths
         {
             Random rng = new Random();
             // Generate shuffled float values (1f to 0.01f)
-            const float Step = 1f / VALUE_SIZE;
+            //const float Step = 1f / VALUE_SIZE;
 
             //Larger than VALUE_SIZE for thread safety
             percValuesF = new float[256];
 
-            for (int i = 0; i < VALUE_SIZE; ++i)
+            for (int i = 1; i < VALUE_SIZE; ++i)
             {
-                percValuesF[i] = 1f - Step - (i * Step);
+                percValuesF[i] = i / (float)VALUE_SIZE; //1f - Step - (i * Step);
             }
 
             for (int i = VALUE_SIZE; i < percValuesF.Length; ++i)
             {
+                //Fill the thread safe indexes
                 percValuesF[i] = 0.5f;
             }
 
@@ -41,8 +42,7 @@ namespace VikingEngine.EngineSpace.Maths
         }
 
         private void Shuffle<T>(T[] array, Random rng)
-        {
-                
+        {                
             for (int i = VALUE_SIZE - 1; i > 0; i--)
             {
                 int j = rng.Next(i + 1);

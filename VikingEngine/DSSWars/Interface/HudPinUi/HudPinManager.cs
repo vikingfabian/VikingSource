@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -22,11 +24,18 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
     //HUD Pins
     
 
-    class HudPinManager : Dictionary<int, CityHudPin>
+    partial class HudPinManager
     {
-        public HudPinManager() :
-            base(8)
+        Dictionary<int, CityHudPin> cityPins = new Dictionary<int, CityHudPin>(8);
+        
+        
+        public HudPinManager()
         { }
+
+        public bool HasContent()
+        {
+            return cityPins.Count > 0 || relationPins.Count > 0 || Ref.netSession.InMultiplayerSession;
+        }
 
         public void toggleButton(RichBoxContent content, CityHudPinId pinId)
         {
@@ -38,13 +47,13 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
 
         public void clear(City city)
         {
-            Remove(city.myIndex);
+            cityPins.Remove(city.myIndex);
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write((ushort)Count);
-            foreach (var kv in this)
+            w.Write((ushort)cityPins.Count);
+            foreach (var kv in cityPins)
             {
                 w.Write((ushort)kv.Key);
                 kv.Value.writeGameState(w);
@@ -60,7 +69,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
 
                 CityHudPin pins = new CityHudPin();
                 pins.readGameState(r, subversion);
-                Add(city, pins);
+                cityPins.Add(city, pins);
             }
         }
 
@@ -112,7 +121,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                 }
             }
 
-            foreach (var kv in this)
+            foreach (var kv in cityPins)
             {
                 City city = DssRef.world.cities[kv.Key];
                 if (city.ToPinHud(new ObjectHudArgs(content, player, false))) 
@@ -124,6 +133,8 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                     content.space(2);
                 }
             }
+
+            relationsToHUD(player, content);
         }
 
         public bool isPinnedProperty(object tag, bool set, bool value)
@@ -138,7 +149,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
 
         public bool TryGet(CityHudPinId id)
         {
-            if (TryGetValue(id.cityIndex, out CityHudPin pins))
+            if (cityPins.TryGetValue(id.cityIndex, out CityHudPin pins))
             {
                 return pins.TryGet(id.hudPin);
             }
@@ -147,7 +158,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
 
         public void Set(CityHudPinId id, bool add)
         {
-            if (TryGetValue(id.cityIndex, out CityHudPin pins))
+            if (cityPins.TryGetValue(id.cityIndex, out CityHudPin pins))
             {
                 if (add)
                 {
@@ -160,15 +171,15 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
                 {
                     pins.TryRemove(id.hudPin);
                     if (pins.Count == 0)
-                    { 
-                        Remove(id.cityIndex);
+                    {
+                        cityPins.Remove(id.cityIndex);
                     }
                 }
             }
             else if (add)
             {
                 pins = new CityHudPin() { id.hudPin };
-                Add(id.cityIndex, pins);
+                cityPins.Add(id.cityIndex, pins);
             }
 
         }

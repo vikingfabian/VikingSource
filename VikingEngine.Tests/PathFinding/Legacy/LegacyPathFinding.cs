@@ -110,16 +110,7 @@ namespace VikingEngine.Tests.Pathfinding.Legacy
             }
 
             //List<PathNodeResult> result = new List<PathNodeResult>();
-            WalkingPath path;
-
-            if (pathThreadIndex < 0)
-            {
-                path = new WalkingPath();
-            }
-            else
-            {
-                path = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetRes();
-            }
+            WalkingPath path = new WalkingPath();
 
             while (currentNode.Position != startNode.Position)
             {

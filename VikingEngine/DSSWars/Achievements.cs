@@ -83,12 +83,12 @@ namespace VikingEngine.DSSWars
                         }
                     }
 
-                    if (playerFaction.militaryStrength > NationStrengthLeaderBoard.SizeUploaded)
+                    if (playerFaction.militaryStrength > NationStrengthLeaderBoard.SizeUploaded + 5)
                     {
-                        ArmyStrengthLeaderBoard.SizeUploaded = playerFaction.militaryStrength;
+                        NationStrengthLeaderBoard.SizeUploaded = playerFaction.militaryStrength;
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            new NationStrengthLeaderBoard(ArmyStrengthLeaderBoard.SizeUploaded);
+                            new NationStrengthLeaderBoard(NationStrengthLeaderBoard.SizeUploaded);
                         }));
                     }
 

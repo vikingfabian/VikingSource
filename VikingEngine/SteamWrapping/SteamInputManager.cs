@@ -634,6 +634,10 @@ namespace VikingEngine.SteamWrapping
 
         public bool IsActive(int controllerIx, SteamDigitalAction actionType)
         {
+            if (digitalHandles == null)
+            {
+                return false;
+            }
             InputHandle_t controllerHandle = controllerHandles[controllerIx];
             InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[(int)actionType]);
             return actionData.bActive == 1;

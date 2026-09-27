@@ -136,6 +136,11 @@ namespace VikingEngine.DSSWars.Battle
             return false;
         }
 
+        public void BreakBlocking()
+        {
+            blocks = Bound.Max(blocks, 1);
+        }
+
         Vector2 collisionForce = Vector2.Zero;
         public void update(AbsSoldierUnit parent)
         {

@@ -801,7 +801,7 @@ namespace VikingEngine.DSSWars.Build
                             CraftBuildingLib.CraftLogisticsLevel2.listResources(content, city);
                             content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(cityFaction.totalWorkForce));
 
-                        }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
+                        }), CraftBuildingLib.CraftLogisticsLevel2.available(city) && city.CanBuildLogistics(2)));
                 }
 
 

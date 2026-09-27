@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -92,10 +92,12 @@ namespace VikingEngine.DSSWars.Map
 
         public void drawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
+            shader.CurrentTechnique = shader.Techniques["RenderVertexColorTexture"];
+            shader.Parameters["Texture"]?.SetValue(Engine.LoadContent.Texture(LoadedTexture.SpriteSheet));
+
             var tilesC = tiles.counter();
             while (tilesC.Next())
             {
-
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
                 {
                     tilesC.sel.model.DrawWithShadow(cameraIndex, camera, shader, light);

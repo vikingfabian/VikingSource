@@ -812,7 +812,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Work_Cook:
                                     if (
                                         workTemplate.Get(WorkPriorityType.craftFood).HasPrio_r(out prio) && needMore(CityResourceIndex.food) &&
-                                        (CraftResourceLib.Food2.hasResources(this) || CraftResourceLib.Food1.hasResources(this)) &&
+                                        (CraftResourceLib.Food2.available(this) || CraftResourceLib.Food1.available(this)) &&
                                         work_isFreeTile(pos))
                                     {
                                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, 0, WorkPriorityType.craftFood, pos, prio, 0, distanceValue));
@@ -820,7 +820,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     if (
                                         workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio_r(out prio) && needMore(CityResourceIndex.ConservedFood) &&
-                                        CraftResourceLib.ConservedFood_Barrel.hasResources(this) &&
+                                        CraftResourceLib.ConservedFood_Barrel.available(this) &&
                                         work_isFreeTile(pos))
                                     {
                                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.ConservedFood, 0, WorkPriorityType.craftConservedFood, pos, prio, 0, distanceValue));
@@ -838,7 +838,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Work_CoalPit:
                                     if (
                                        workTemplate.Get(WorkPriorityType.craftFuel).HasPrio() && needMore(CityResourceIndex.food) &&
-                                       CraftResourceLib.Charcoal.hasResources(this) &&
+                                       CraftResourceLib.Charcoal.available(this) &&
                                        work_isFreeTile(pos))
                                     {
                                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Coal, 0, WorkPriorityType.craftFuel, pos, workTemplate.Get(WorkPriorityType.craftFuel).value, 0, distanceValue));
@@ -848,7 +848,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Brewery:
                                     if (workTemplate.Get(WorkPriorityType.craftBeer).HasPrio() &&
                                         needMore(CityResourceIndex.beer) &&//res_beer.needMore() &&
-                                        CraftResourceLib.Beer.hasResources(this) &&
+                                        CraftResourceLib.Beer.available(this) &&
                                         work_isFreeTile(pos))
                                     {
                                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, 0, WorkPriorityType.craftBeer, pos, workTemplate.Get(WorkPriorityType.craftBeer).value, 0, distanceValue));
@@ -885,7 +885,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Smoker:
                                     if (
                                         workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio() && needMore(CityResourceIndex.ConservedFood) &&
-                                        CraftResourceLib.ConservedFood_Smoked.hasResources(this) &&
+                                        CraftResourceLib.ConservedFood_Smoked.available(this) &&
                                         work_isFreeTile(pos)
                                         )
                                     {
@@ -895,7 +895,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Dryer:
                                     if (
                                         workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio() && needMore(CityResourceIndex.ConservedFood) &&
-                                        CraftResourceLib.ConservedFood_Dried.hasResources(this) &&
+                                        CraftResourceLib.ConservedFood_Dried.available(this) &&
                                         work_isFreeTile(pos)
                                         )
                                     {
@@ -939,7 +939,7 @@ namespace VikingEngine.DSSWars.GameObject
                         void getMintPriority(WorkPriorityType prioType, ItemResourceType item, CraftBlueprint blueprint)
                         {
                             WorkPriority priority = workTemplate.Get(prioType);
-                            if (priority.value > topPrio && blueprint.hasResources(this))
+                            if (priority.value > topPrio && blueprint.available(this))
                             {
                                 topPrio = priority.value;
                                 topPrioType = prioType;

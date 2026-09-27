@@ -464,6 +464,7 @@ namespace VikingEngine.DSSWars
                             content.icontext(SpriteName.WarsHudIconOpen, DssRef.lang.Multiplayer_LoadingClientSave);
                         }
                         LocalHost().hud.messages.Add(content);
+                        //LocalHost().orders.refreshYpos();
                     }
                     break;
 

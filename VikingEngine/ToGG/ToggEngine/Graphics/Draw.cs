@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,15 +10,6 @@ namespace VikingEngine.ToGG
     class Draw : Engine.Draw
     {
         public const int Draw3dOverlay_Layer = 1;
-        public List<Graphics.RenderTargetDraw3dContainer> drawContainers = new List<Graphics.RenderTargetDraw3dContainer>();
-
-        protected override void drawInContainersEvent()
-        {
-            foreach (var m in drawContainers)
-            {
-                m.DrawModelsToTarget();
-            }
-        }
 
         protected override void drawEvent()
         {

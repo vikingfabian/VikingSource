@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars
             wildcatModel = lionModel.Copy(VoxelModelName.wildcat1, 0.9f);
             warlionModel = lionModel.Copy(VoxelModelName.warlion1, 1.2f);
 
-            elephantModel = new AnimalProfile(VoxelModelName.Phant_elephant, DssConst.Men_StandardModelScale * 1.9f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2), AnimalNoiseType.elephant, WalkSoundType.Heavy);
+            elephantModel = new AnimalProfile(VoxelModelName.Phant_elephant, DssConst.Men_StandardModelScale * 1.9f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2), AnimalNoiseType.elephant, WalkSoundType.Heavy, 0, -0.4f);
             elephantModel.riderY = 0.38f * elephantModel.scale;
             warElephantModel = elephantModel.Copy(VoxelModelName.Phant_warelephant, 1.1f);
 

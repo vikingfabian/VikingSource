@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -357,9 +357,13 @@ namespace VikingEngine.DSSWars
                 List<VoxelObjGridDataHD> loadedFrames = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
 
                 if (centerY)
+                {
                     centerAdjust += loadedFrames[0].CenterAdj();
+                }
                 else
+                {
                     centerAdjust += loadedFrames[0].BottomCenterAdj();
+                }
 
                 IntVector3 gridSz = loadedFrames[0].Size;
 

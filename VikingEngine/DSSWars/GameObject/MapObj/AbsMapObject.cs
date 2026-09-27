@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float strengthValue = -1;
         public float mobilityValue = 0;
 
-        public IntVector2 tilePos;
+        public IntVector2 tilePos = IntVector2.NegativeOne;
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
@@ -163,18 +163,24 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void updateDetailLevel()
         {
+            bool changed = false;
             if (enterRender_overviewLayer_async != inRender_overviewLayer)
             {
                 inRender_overviewLayer = enterRender_overviewLayer_async;
-                setInRenderState();
+                changed = true;
             }
-            else if (enterRender_detailLayer_async != inRender_detailLayer)
+            if (enterRender_detailLayer_async != inRender_detailLayer)
             {
                 if (this.gameobjectType() == GameObjectType.Army)
                 {
                     lib.DoNothing();
                 }
                 inRender_detailLayer = enterRender_detailLayer_async;
+                changed = true;
+            }
+
+            if (changed)
+            {
                 setInRenderState();
             }
         }

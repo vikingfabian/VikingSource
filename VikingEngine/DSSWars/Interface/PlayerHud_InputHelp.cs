@@ -79,9 +79,12 @@ namespace VikingEngine.DSSWars.Interface
                         input_buttonmap(map.mouseOrder, DssRef.lang.Tutorial_MoveInput);
                         input_buttonmap(map.Controller_ObjectMenuToggle, DssRef.lang.InputActionName_ToggleMenu);
                         input_buttonmap(map.Controller_Faction, DssRef.lang.FactionSettings_Titel);
+                        input_directionmap(map.cameraStick, DssRef.lang.ButtonAction_Zoom);
                     }
-                    input_directionmap(map.RbScroll(), DssRef.lang.ButtonAction_Zoom);
-
+                    else
+                    {
+                        input_directionmap(map.RbScroll(), DssRef.lang.ButtonAction_Zoom);
+                    }
                     if (!casual)
                     {
                         input_buttonmap(map.Build, DssRef.lang.InputActionName_Build);

@@ -214,7 +214,8 @@ namespace VikingEngine.DSSWars.Conscript
             //soldierData.applySkillBonus(skillBonus, mobileBonus_PercAdd);
 
             var armorData = ItemPropertyColl.Get(conscript.armorLevel).soldierData;
-            
+            var shieldData = ItemPropertyColl.Get(conscript.shield).soldierData;
+
             soldierData.modelData.armor = armorData.modelData.armor;
 
             soldierData.modelData.shield = conscript.shield;
@@ -222,6 +223,9 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.applySkillBonus(skillBonus, mobileBonus_PercAdd);
 
             soldierData.modelData.specialization = conscript.specialization;
+
+            soldierData.parry = (byte)(soldierData.parry + armorData.parry + shieldData.parry);
+            soldierData.abilities.Combine(shieldData.abilities);
 
             if (conscript.vehicle != ItemResourceType.NONE)
             {
@@ -383,8 +387,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 soldierData.basehealth += armorData.basehealth;
             }
-            //ShieldProperties.AddToConscript(ref soldierData, ref conscript);
-
+            
             return soldierData;
 
             

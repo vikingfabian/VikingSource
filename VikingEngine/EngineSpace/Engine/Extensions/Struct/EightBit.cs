@@ -159,6 +159,22 @@ namespace VikingEngine
             read(r);
         }
 
+        public bool InFilter(EightBit filter)
+        {
+            // A bitwise AND will return a non-zero value if 
+            // there is at least one matching 'true' bit in both arrays.
+            return (this.bitArray & filter.bitArray) != 0;
+        }
+
+        /// <summary>
+        /// Bitwise OR combines the bits, keeping all 'true' bits from both
+        /// </summary>
+        public void Combine(EightBit other)
+        {
+
+            this.bitArray |= other.bitArray;
+        }
+
         public static EightBit FromStream(System.IO.BinaryReader r)
         {
             EightBit result = EightBit.Zero;

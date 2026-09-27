@@ -28,5 +28,17 @@ namespace VikingEngine.Tests
             Assert.Equal(15.0f, overlay.MinFrameTimeMs);
             Assert.Equal(20.0f, overlay.MaxFrameTimeMs);
         }
+
+        [Fact]
+        public void MemoryOverlay_DoesNotThrow_WithPreciseFalse()
+        {
+            var overlay = new MemoryOverlay();
+            overlay.RecordFrame(16.0f);
+            overlay.UpdateOneSecond();
+
+            Assert.True(overlay.TotalHeapBytes > 0);
+            Assert.Contains("Heap:", overlay.FormattedText);
+            Assert.Contains("Alloc:", overlay.FormattedText);
+        }
     }
 }

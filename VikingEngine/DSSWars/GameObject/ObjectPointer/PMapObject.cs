@@ -62,6 +62,25 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             return null;
         }
 
+        public City GetCity()
+        {
+            return DssRef.world.cities[objectIndex];
+        }
+
+        public bool TryGetCity(out City city)
+        {
+            if (objectIndex >= 0 && objectIndex < DssRef.world.cities.Count)
+            {
+                city = DssRef.world.cities[objectIndex];
+                return city != null;
+            }
+            else
+            {
+                city = null;
+                return false;
+            }
+        }
+
         public bool TryGetAbsArmy(out AbsArmy army)
         {
             army = Get() as AbsArmy;
@@ -106,6 +125,27 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
                 {
                     objectIndex = -1;
                 }                
+            }
+        }
+
+        public void writeCity(System.IO.BinaryWriter w)
+        {
+            if (objectIndex < 0)
+            {
+                w.Write(ushort.MaxValue);
+            }
+            else
+            {
+                w.Write((ushort)objectIndex);
+            }
+        }
+        public void readCity(System.IO.BinaryReader r)
+        {
+            objectType = GameObjectType.City;
+            objectIndex = r.ReadUInt16();
+            if (objectIndex == ushort.MaxValue)
+            {
+                objectIndex = -1;
             }
         }
 
