@@ -153,6 +153,7 @@ namespace VikingEngine.HUD.RichBox
                     interactionStack.end(mouse.Position.X, out needRefresh);
                     interactionStack = null;
                 }
+                menu.needsReDraw();
                 return result;
             }
 

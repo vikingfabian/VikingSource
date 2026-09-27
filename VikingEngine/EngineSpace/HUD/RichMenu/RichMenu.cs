@@ -71,7 +71,19 @@ namespace VikingEngine.HUD.RichMenu
         public PlayerData playerData;
         RichTooltip tooltip = null;
         public string activeDropDown = null;
+
+        /// <summary>
+        /// Refresh rebuild all images and text
+        /// </summary>
         public bool needRefresh = false;
+
+        /// <summary>
+        /// Redraw renders the current images to the rendertarget
+        /// </summary>
+        public void needsReDraw()
+        {
+            renderList.isDirty = true;
+        }
         public List<string> menuStack = new List<string>();
 
         public Action OnPageDelete = null;
@@ -470,8 +482,8 @@ namespace VikingEngine.HUD.RichMenu
 
         void updateContentScroll()
         {
-
             richBox.SetOffset( new Vector2(renderEdge.X, renderEdge.Y + scrollBar.scrollResult));
+            needsReDraw();
         }
     }
 
