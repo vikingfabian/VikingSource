@@ -45,12 +45,27 @@ namespace VikingEngine.DSSWars.EntityComponent
         
         public bool useStockLimit;
 
+        public short reservedUseCount;
+
         public ResourceChangeRate changeRate;
 
         public GroupedResource()
         {
             stockPileLimit = DssConst.StorageStartSize;
             useStockLimit = false;
+        }
+
+        public void reserve(int count)
+        {
+            reservedUseCount = (short)(reservedUseCount + count);
+        }
+        public void unreserve(int count)
+        {
+            reservedUseCount = (short)(reservedUseCount - count);
+            if (reservedUseCount < 0)
+            {
+                reservedUseCount = 0;
+            }
         }
 
         public void copyLimitFrom(GroupedResource copyFrom, bool respectCapacity)
