@@ -10,7 +10,7 @@ using VikingEngine.LootFest.BlockMap;
 
 namespace VikingEngine.LootFest.Players
 {
-    abstract class AbsPlayer : AbsInput
+    public abstract class AbsPlayer : AbsInput
 
     {
         #region VISUAL_MODE

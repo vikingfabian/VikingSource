@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.SteamWrapping
 {
-    struct SteamUserOld
+    public struct SteamUserOld
     {
         public string name;
         public CSteamID id;
@@ -44,7 +44,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    class SteamUserList
+    public class SteamUserList
     {
         public List<SteamUserOld> members = new List<SteamUserOld>();
 

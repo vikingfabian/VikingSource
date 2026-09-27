@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType Condition="'$(Configuration)' == 'Debug'">Exe</OutputType>
+    <OutputType Condition="'$(Configuration)' != 'Debug'">WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <PlatformTarget>x64</PlatformTarget>
+    <!--<DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>-->
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <AssemblyName>VikingEngine</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\Vikingengine\Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <!--<ItemGroup>
+    <None Remove="Icon.ico" />
+    <None Remove="Icon.bmp" />
+  </ItemGroup>-->
+  <ItemGroup>
+    <EmbeddedResource Include="..\Vikingengine\Icon.ico">
+      <LogicalName>Icon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Vikingengine\Icon.bmp">
+      <LogicalName>Icon.bmp</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <!--
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    -->
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj">
+      <SetPlatform>Platform=x64</SetPlatform>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Steamworks repo\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
+      <SetConfiguration Condition="'$(Configuration)' != 'Release'">Configuration=Windows</SetConfiguration>
+      <SetPlatform>Platform=x64</SetPlatform>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VikingEngine\VikingEngine.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="steam_api64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="..\VikingBuilder\BuildContent.targets" />
+</Project>

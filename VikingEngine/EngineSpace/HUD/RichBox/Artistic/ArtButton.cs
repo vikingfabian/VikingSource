@@ -9,7 +9,7 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.HUD.RichBox.Artistic
 {
-    enum RbButtonStyle
+    public enum RbButtonStyle
     { 
         SuperPrimary,
         Primary,
@@ -31,7 +31,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
         HoverArea,
     }
 
-    class ArtButton : AbsRbButton
+    public class ArtButton : AbsRbButton
     {
         public static readonly Color MouseDownCol = Color.LightGray;
         protected RbButtonStyle buttonStyle;

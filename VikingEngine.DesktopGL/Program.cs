@@ -2,7 +2,6 @@
 using VikingEngine;
 using VikingEngine.SteamWrapping;
 
-
 new SteamManager();
 
 using var game = new VikingEngine.MainGame();

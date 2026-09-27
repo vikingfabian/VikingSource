@@ -10,7 +10,7 @@ using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.Voxels
 {
-    class EditorInputMap
+    public class EditorInputMap
     {
         const float DefaultPencilMoveSpeed = 0.01f;
         const float ZoomSpeed = 0.05f;

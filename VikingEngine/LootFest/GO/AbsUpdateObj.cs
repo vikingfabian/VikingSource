@@ -12,7 +12,7 @@ using VikingEngine.LootFest.BlockMap;
 
 namespace VikingEngine.LootFest.GO
 {
-    abstract class AbsUpdateObj : AbsChildObject, IDeleteable, ISpottedArrayMember, ILightSource
+    public abstract class AbsUpdateObj : AbsChildObject, IDeleteable, ISpottedArrayMember, ILightSource
     {
         public int characterLevel = 0;
         public AbsPhysics physics;

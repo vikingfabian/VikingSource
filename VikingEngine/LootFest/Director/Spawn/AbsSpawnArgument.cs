@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest
 {
-    struct SpawnArgumentCounter
+    public struct SpawnArgumentCounter
     {
         public AbsSpawnArgument current;
         AbsSpawnArgument next;
@@ -26,7 +26,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    class AbsSpawnArgument
+    public class AbsSpawnArgument
     {
         public AbsSpawnArgument linkedArgs;
 
@@ -46,7 +46,7 @@ namespace VikingEngine.LootFest
         { }
     }
 
-    class SleepingSpawnArg : AbsSpawnArgument
+    public class SleepingSpawnArg : AbsSpawnArgument
     {
         public static SleepingSpawnArg ins = new SleepingSpawnArg();
     }

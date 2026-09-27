@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VikingEngine.Graphics
 {
-    interface IRenderTargetContainer
+    public interface IRenderTargetContainer
     {
         void DrawToTarget();
     }

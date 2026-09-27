@@ -8,7 +8,7 @@ namespace VikingEngine.LootFest.Players
     /// <summary>
     /// An action that occupies the hero, mostly attacks
     /// </summary>
-    abstract class AbsPlayerAction
+    public abstract class AbsPlayerAction
     {
         protected Time performAndCooldownTime, performTime;
 
@@ -25,7 +25,7 @@ namespace VikingEngine.LootFest.Players
         virtual public bool HeroAttackAnimation { get { return false; } }
     }
 
-    class PlayerActionTimer : AbsPlayerAction
+    public class PlayerActionTimer : AbsPlayerAction
     {
         //Time time;
         bool blockSecondaryAction;
@@ -45,7 +45,7 @@ namespace VikingEngine.LootFest.Players
         override public bool HeroAttackAnimation { get { return heroAttackAnimation; } }
     }
 
-    class DashAttackAction : AbsPlayerAction
+    public class DashAttackAction : AbsPlayerAction
     {
         //ime time;
         VikingEngine.LootFest.GO.PlayerCharacter.AbsHero hero;

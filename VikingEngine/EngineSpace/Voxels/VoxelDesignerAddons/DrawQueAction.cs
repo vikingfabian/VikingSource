@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.Voxels
 {
-    class DrawQueAction
+    public class DrawQueAction
     {
         public ushort material1, material2; 
         public PaintFillType fill; 
@@ -79,7 +79,7 @@ namespace VikingEngine.Voxels
         }
     }
 
-    enum DrawQueType
+    public enum DrawQueType
     {
         FillVolume,
         StampSelection,

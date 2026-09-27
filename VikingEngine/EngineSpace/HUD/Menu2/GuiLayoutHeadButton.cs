@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.HUD
 {
-    class GuiLayoutHeadButton
+    public class GuiLayoutHeadButton
     {
         VectorRect area;
         Graphics.Image image, highlight, input;

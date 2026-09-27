@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.LootFest.Map.HDvoxel
 {
-    class MeshBuilder
+    public class MeshBuilder
     {
         const int BlueTintAddR = -6;
         const int BlueTintAddG = -6;

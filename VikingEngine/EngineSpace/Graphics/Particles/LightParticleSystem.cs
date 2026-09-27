@@ -21,7 +21,7 @@ namespace VikingEngine.Graphics
     /// <summary>
     /// Will render a sphere of light or darkness around it
     /// </summary>
-    interface ILightSource
+    public interface ILightSource
     {
         Vector3 LightSourcePosition { get; }
         float LightSourceRadius { get; }
@@ -30,10 +30,10 @@ namespace VikingEngine.Graphics
         LightSourcePrio LightSourcePrio { get; }
         float LightSourceDistanceToGamer { get; set; }
     }
-     
 
 
-    class LightSystem : AbsLightParticleSystem
+
+    public class LightSystem : AbsLightParticleSystem
     {
         
 
@@ -84,8 +84,8 @@ namespace VikingEngine.Graphics
         }
     }
 
-    
-    abstract class AbsLightParticleSystem : AbsParticleSystem
+
+    public abstract class AbsLightParticleSystem : AbsParticleSystem
     {
         List<ILightSource> lightsAndShadows = new List<ILightSource>();
 
@@ -160,7 +160,7 @@ namespace VikingEngine.Graphics
     }
 
 
-    enum LightParticleType
+    public enum LightParticleType
     {
         Shadow,
         Fire,
@@ -168,7 +168,7 @@ namespace VikingEngine.Graphics
         MagicLight,
         NUM_NON,
     }
-    enum LightSourcePrio
+    public enum LightSourcePrio
     {
         /// <summary>
         /// For the hero alone basically

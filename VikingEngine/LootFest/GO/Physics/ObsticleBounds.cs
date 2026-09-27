@@ -9,7 +9,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest
 {
-    class ObsticleBounds
+    public class ObsticleBounds
     {
         int objHeight;
         public int heightCheck;

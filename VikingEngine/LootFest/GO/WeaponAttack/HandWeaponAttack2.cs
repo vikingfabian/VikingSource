@@ -175,7 +175,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         }
     }
 
-    struct HandWeaponAttackSettings
+    public struct HandWeaponAttackSettings
     {
         public const float SwordBoundScaleW = 2.6f;
         public const float SwordBoundScaleH = 4f;

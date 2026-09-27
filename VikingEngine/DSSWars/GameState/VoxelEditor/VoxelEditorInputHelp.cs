@@ -161,7 +161,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         }
     }
 
-    enum VoxelEditorInputState
+    public enum VoxelEditorInputState
     { 
         NONE,
         HideHud,

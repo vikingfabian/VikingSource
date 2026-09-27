@@ -9,7 +9,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
 {
-    class InputMap : PlayerInputMap
+    public class InputMap : PlayerInputMap
     {
         IButtonMap wasd_up, wasd_down, wasd_left, wasd_right;
         IButtonMap cameraTiltLeft, cameraTiltRight;
@@ -1025,7 +1025,7 @@ namespace VikingEngine.DSSWars
         }
     }
 
-    enum InputActionType
+    public enum InputActionType
     {
         StopStart,
         ToggleHudDetail,
@@ -1069,7 +1069,7 @@ namespace VikingEngine.DSSWars
         NUM,
     }
 
-    enum MouseButtonAction
+    public enum MouseButtonAction
     { 
         None,
         Select,

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VikingEngine
 {
-    struct Time
+    public struct Time
     {
         public static readonly Time Zero = new Time(0);
 

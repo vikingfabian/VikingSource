@@ -31,7 +31,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    class SteamAchievements
+    public class SteamAchievements
     {
         Callback<UserAchievementStored_t> UserAchievementStoredCallback;
 

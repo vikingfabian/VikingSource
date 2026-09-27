@@ -38,7 +38,7 @@ namespace VikingEngine
         }
     }
 
-    struct TimeStamp
+    public struct TimeStamp
     {
         public static readonly TimeStamp None = new TimeStamp(-1000000);
 
@@ -295,7 +295,7 @@ namespace VikingEngine
         { get { return total > 0; } }
     }
 
-    struct IntInLowBound
+    public struct IntInLowBound
     {
         int value;
         public int lowerBound;
@@ -312,7 +312,7 @@ namespace VikingEngine
         }
     }
 
-    struct ValueBar
+    public struct ValueBar
     {
         public static readonly ValueBar None = new ValueBar(0);
 
@@ -437,7 +437,7 @@ namespace VikingEngine
         }
     }
 
-    struct FloatInBound
+    public struct FloatInBound
     {
         float value;
         bool rollOver;
@@ -532,7 +532,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    struct CircleCounter
+    public struct CircleCounter
     {
         int value;
         public int Value
@@ -594,7 +594,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    struct CircleCounterUp : ICircleCounter
+    public struct CircleCounterUp : ICircleCounter
     {
         public int value;
         public int Value
@@ -738,7 +738,7 @@ namespace VikingEngine
     /// <summary>
     /// Will count back n forward between bounds
     /// </summary>
-    struct PingPongCounter
+    public struct PingPongCounter
     {
         public int dir;
         public int Min;
@@ -771,7 +771,7 @@ namespace VikingEngine
         }
     }
 
-    struct LeftRight
+    public struct LeftRight
     {
         const int LeftDir = -1;
         const int RightDir = 1;
@@ -866,7 +866,7 @@ namespace VikingEngine
     }
 
 
-    struct Pan
+    public struct Pan
     {
         public static readonly Pan Center = new Pan(0);
         float side;
@@ -943,8 +943,8 @@ namespace VikingEngine
             return side.ToString();
         }
     }
-   
-    struct Percent
+
+    public struct Percent
     {
         public const float MaxPercentage = 1;
         public const int MaxTextPercentage = 100;

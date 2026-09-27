@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest.Map.HDvoxel
 {
-    enum MaterialProperty
+    public enum MaterialProperty
     {
         Empty = BlockHD.EmptyBlockMaterial,
         Default = BlockHD.DefaultBlockMaterial,

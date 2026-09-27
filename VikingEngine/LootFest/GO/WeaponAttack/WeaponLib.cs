@@ -53,7 +53,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         }
     }
 
-    struct DamageData
+    public struct DamageData
     {
         public WeaponAttack.WeaponUserType User;
         public NetworkId UserIndex;
@@ -327,13 +327,13 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
     //    //TwoHandMelee,
     //    Other,
     //}
-    enum FriendlyFireType
+    public enum FriendlyFireType
     {
         HurtsAll,
         AllButOwner, //fixa ID
         NoFriendly,
     }
-    enum WeaponUserType
+    public enum WeaponUserType
     {
         Player,
         Enemy,
@@ -348,7 +348,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         //Chaotic, //against all
         NON,
     }
-    enum WeaponPush
+    public enum WeaponPush
     {
         NON,
         Small,
@@ -358,7 +358,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         GoFlying,
         NUM
     }
-    enum SpecialDamage
+    public enum SpecialDamage
     {
         NONE,
         TinyBoost,

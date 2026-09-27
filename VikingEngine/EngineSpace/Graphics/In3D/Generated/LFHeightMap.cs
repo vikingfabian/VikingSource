@@ -12,7 +12,7 @@ using VikingEngine.LootFest.Map.Terrain;
 
 namespace VikingEngine.Graphics
 {
-    class LFHeightMap : Abs3DModel
+    public class LFHeightMap : Abs3DModel
     {
         public const float ChunkRadius = LootFest.Map.WorldPosition.ChunkHalfHeight * 1.2f;
         static Effect customEffectGround;

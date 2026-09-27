@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest
 {
-    struct NetworkId
+    public struct NetworkId
     {
         public static NetworkId Empty = new NetworkId();
 

@@ -11,7 +11,7 @@ namespace VikingEngine.LootFest.GO
     /// <summary>
     /// A complete package of attacks and movement
     /// </summary>
-    abstract class AbsSuit : Process.ILoadImage
+    public abstract class AbsSuit : Process.ILoadImage
     {
         public static SpriteName SuitIcon(SuitType type)
         {
@@ -288,7 +288,7 @@ namespace VikingEngine.LootFest.GO
     }
 
 
-    struct SuitAppearance
+    public struct SuitAppearance
     {
         public Players.HatType hat;
         public Players.BeardType beard;
@@ -301,7 +301,7 @@ namespace VikingEngine.LootFest.GO
     }
 
 
-    enum SuitType
+    public enum SuitType
     {
         Basic,
         

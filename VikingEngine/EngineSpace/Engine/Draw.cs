@@ -13,7 +13,7 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.Engine
 {
-    class Draw2D : Draw
+    public class Draw2D : Draw
     {
         public Draw2D()
             : base()
@@ -25,7 +25,7 @@ namespace VikingEngine.Engine
         } 
     }
 
-    class Draw
+    public class Draw
     {
         /* Readonly & const */
         const int NUM_RENDERTARGETS = 1;
@@ -745,7 +745,7 @@ namespace VikingEngine.Engine
         #endregion
     }
     
-    class RenderList
+    public class RenderList
     {
         public Matrix TransformMatrix { get; private set; }
         Vector2 store2Dtrans = Vector2.Zero;
@@ -829,7 +829,7 @@ namespace VikingEngine.Engine
             return result;
         }
     }
-    struct GroundTexturePart
+    public struct GroundTexturePart
     {
         public List<Graphics.Image> Images;
         int myIndex;
@@ -841,7 +841,7 @@ namespace VikingEngine.Engine
         }
         
     }
-    class AddDrawObj : OneTimeTrigger
+    public class AddDrawObj : OneTimeTrigger
     {
         Graphics.AbsDraw obj; bool add;
         public AddDrawObj(Graphics.AbsDraw obj, bool add)
@@ -866,7 +866,7 @@ namespace VikingEngine.Engine
             }
         }
     }
-    struct AddToRenderObj
+    public struct AddToRenderObj
     {
         public AbsDraw img;
         public int layer;
@@ -879,7 +879,7 @@ namespace VikingEngine.Engine
         }
     }
 
-    enum ShaderChangeType
+    public enum ShaderChangeType
     {
         ShadowMap,
     }

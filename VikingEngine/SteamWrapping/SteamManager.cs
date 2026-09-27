@@ -17,7 +17,7 @@ using Steamworks;//
 namespace VikingEngine.SteamWrapping
 {
 #if PCGAME
-    struct SteamApplicationSettings
+    public struct SteamApplicationSettings
     {
         /* Fields */
         public AppId_t appId;
@@ -30,7 +30,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    partial class SteamManager
+    public partial class SteamManager
     {
         public bool IsGameOverlayActive { get; private set; }
         public SteamAchievements Achievements = null;

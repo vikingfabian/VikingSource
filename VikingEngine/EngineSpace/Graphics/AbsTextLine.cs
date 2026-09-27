@@ -7,7 +7,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsTextLine: AbsText
+    public abstract class AbsTextLine: AbsText
     {
         /* Properties */
         public override CamObjType Type

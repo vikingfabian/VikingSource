@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsDraw2D : AbsDraw
+    public abstract class AbsDraw2D : AbsDraw
     {
     //    abstract class AbsDraw2DSimple : AbsDraw
     //{

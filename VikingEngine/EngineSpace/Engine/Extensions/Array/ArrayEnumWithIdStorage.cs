@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine
 {
-    class ArrayEnumWithIdStorage<TEnum>
+    public class ArrayEnumWithIdStorage<TEnum>
     {
         KeyValuePair<TEnum, int>[] Enum_Id;
         bool[] stored;

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace VikingEngine.EngineSpace.Maths
 {
-    struct NoiseOptions
+    public struct NoiseOptions
     {
         public static NoiseOptions None = new NoiseOptions() { useNoise = false };
 
@@ -26,7 +26,7 @@ namespace VikingEngine.EngineSpace.Maths
             this.scale = scale;
         }
     }
-    class SimplexNoise2D
+    public class SimplexNoise2D
     {
         /* Constants */
         private const uint PERMUTATION_COUNT = 512;

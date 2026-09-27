@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Input
 {
-    class XController
+    public class XController
     {
         const float TriggerBuffer = 0.01f;
 

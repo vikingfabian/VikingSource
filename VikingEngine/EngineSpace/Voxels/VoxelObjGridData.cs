@@ -10,7 +10,7 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.Voxels
 {
-    class VoxelObjGridData
+    public class VoxelObjGridData
     {
         public int Rotation;
         public IntVector3 Size

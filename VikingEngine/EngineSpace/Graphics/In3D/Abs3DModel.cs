@@ -15,7 +15,7 @@ namespace VikingEngine.Graphics
     /// <summary>
     /// Class to connect the common properties of a loaded model and generated mesh
     /// </summary>
-    abstract class Abs3DModel : AbsDraw
+    public abstract class Abs3DModel : AbsDraw
     {
         public Vector3 position = Vector3.Zero;
         public Vector3 scale = Vector3.One;

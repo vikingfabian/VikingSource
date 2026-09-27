@@ -5,13 +5,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    interface IDrawContainer
+    public interface IDrawContainer
     {
         void AddImage(Graphics.AbsDraw image);
         void RemoveImage(Graphics.AbsDraw image);
     }
 
-    abstract class AbsDrawContainer : AbsDraw, IDrawContainer
+    public abstract class AbsDrawContainer : AbsDraw, IDrawContainer
     {
         protected List<Graphics.AbsDraw> drawList = new List<AbsDraw>();
 

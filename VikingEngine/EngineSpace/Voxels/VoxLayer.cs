@@ -10,7 +10,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.Voxels
 {
-    class VoxLayer
+    public class VoxLayer
     {
         public string name = null;
         public bool visible = true;

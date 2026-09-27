@@ -10,7 +10,7 @@ using VikingEngine.Network;
 
 namespace VikingEngine.HUD
 {
-    struct NineSplitSettings
+    public struct NineSplitSettings
     {
         public SpriteName baseTexture;
         
@@ -79,7 +79,7 @@ namespace VikingEngine.HUD
     /// <summary>
     /// Takes an image, splits it in nine pieces, corners, edges, center - to create any area of that style
     /// </summary>
-    class NineSplitAreaTexture
+    public class NineSplitAreaTexture
     {
         public List<Graphics.Image> images;
         VectorRect area;

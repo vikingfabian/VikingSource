@@ -12,13 +12,13 @@ using VikingEngine.PJ.Match3;
 
 namespace VikingEngine.HUD.RichBox
 {
-    abstract class AbsRbInteraction
+    public abstract class AbsRbInteraction
     {
         abstract public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll);
         abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
         abstract public void end(float pointerX, out bool needRefresh);
     }
-    class RbInteraction: AbsRbInteraction
+    public class RbInteraction : AbsRbInteraction
     {
         public AbsRbButton hover = null;
         public List<AbsRbButton> buttons = new List<AbsRbButton>(4);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VikingEngine.Network
 {
-    abstract class AbsAvailableSession
+    public abstract class AbsAvailableSession
     {
         public bool IsAvailable = true;
 

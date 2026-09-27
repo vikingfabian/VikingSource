@@ -15,7 +15,7 @@ namespace VikingEngine.LootFest
         public static readonly Rectangle2 SquareArea = new Rectangle2(IntVector2.Zero, new IntVector2(SquareBlockWidth));
     }
 
-    struct HeightMapMaterials
+    public struct HeightMapMaterials
     {
         public ushort topMaterial, firstLayerMaterial, bottomMaterial;
 
@@ -36,7 +36,7 @@ namespace VikingEngine.LootFest
         
     }
 
-    struct TerrainModel
+    public struct TerrainModel
     {
         public Map.WorldPosition position;
         public VoxelModelNameAndRotation name;
@@ -50,7 +50,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    struct ModelJoint
+    public struct ModelJoint
     {
         public int joint;
         public Map.WorldPosition wp;
@@ -63,18 +63,18 @@ namespace VikingEngine.LootFest
         }
     }
 
-    class LevelChunk
+    public class LevelChunk
     {
         public List<TerrainModel> models = new List<TerrainModel>();
     }
 
-    enum PaintType
+    public enum PaintType
     {
         BlockType,
         SpecialType,
     }
 
-    enum MapBlockType : byte
+    public enum MapBlockType : byte
     {
         Occupied,
         Open,
@@ -85,7 +85,7 @@ namespace VikingEngine.LootFest
         NUM
     }
 
-    enum MapBlockSpecialType : byte
+    public enum MapBlockSpecialType : byte
     {
         None,
         Entrance,
@@ -98,7 +98,7 @@ namespace VikingEngine.LootFest
         NUM
     }
 
-    enum SegmentHeadType : byte
+    public enum SegmentHeadType : byte
     {
         Normal,
         NormalLarge,

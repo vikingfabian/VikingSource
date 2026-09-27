@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.LootFest.GO
 {
-    abstract class AbsChildObject : IChildObject
+    public abstract class AbsChildObject : IChildObject
     {
         public IChildObject childObjects = null;
         virtual public IChildObject LinkedChildObject { get { return childObjects; } set { childObjects = value; } }

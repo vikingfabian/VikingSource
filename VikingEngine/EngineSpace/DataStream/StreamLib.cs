@@ -457,7 +457,7 @@ namespace VikingEngine
         
     }
 
-    interface IStreamIOCallback
+    public interface IStreamIOCallback
     {
         void SaveComplete(bool save, int player, bool completed, byte[] value);
     }

@@ -7,7 +7,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.LootFest.GO.Bounds
 {
-    class ObjectBound : IDeleteable
+    public class ObjectBound : IDeleteable
     {
 
         public AbsBound[] Bounds;

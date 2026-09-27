@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine
 {
-    enum SpriteName : short
+    public enum SpriteName : short
     {
         NO_IMAGE = 0,
 

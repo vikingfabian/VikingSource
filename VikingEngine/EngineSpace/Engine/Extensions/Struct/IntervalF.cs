@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine
 {
-    struct IntervalF
+    public struct IntervalF
     {
         public static readonly IntervalF Zero = new IntervalF(0, 0);
 

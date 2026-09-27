@@ -9,7 +9,7 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.SteamWrapping
 {
-    enum WorkshopUploadState
+    public enum WorkshopUploadState
     {
         None,
         Uploading,
@@ -205,7 +205,7 @@ namespace VikingEngine.SteamWrapping
 
         }
     }
-    struct WorkshopItem
+    public struct WorkshopItem
     {
         /// <summary>
         /// tags will place items in a category

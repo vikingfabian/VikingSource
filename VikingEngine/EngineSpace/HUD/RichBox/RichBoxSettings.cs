@@ -6,7 +6,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichBox
 {
-    struct RichBoxSettings
+    public struct RichBoxSettings
     {
         public TextFormat breadText;
         public TextFormat head1, head2;
