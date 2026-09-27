@@ -1428,7 +1428,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         res_water.reserve(m.amount);
                     }
-                    else
+                    else if (m.type != ItemResourceType.Gold)
                     {
                         this.GetRefGroupedResource(m.type).reserve(m.amount);
                     }
@@ -1443,7 +1443,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     res_water.unreserve(m.amount);
                 }
-                else
+                else if (m.type != ItemResourceType.Gold)
                 {
                     this.GetRefGroupedResource(m.type).unreserve(m.amount);
                 }
