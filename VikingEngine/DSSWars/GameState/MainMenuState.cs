@@ -943,11 +943,15 @@ namespace VikingEngine.DSSWars
 
         void createUpdateBackground(VectorRect bgArea)
         { 
-            Graphics.Image snowflake = new Image( SpriteName.warsArmyTag_GoldShield, bgArea.PercentToPosition(new Vector2(0.03f)),
+            Graphics.Image updateIcon = new Image( SpriteName.warsArmyTag_GoldShield, bgArea.PercentToPosition(new Vector2(0.03f)),
                 Screen.IconSizeV2 * 1.0f, ImageLayers.Background4 );
-            snowflake.Rotation = 0.05f;
-            snowflake.Color = Color.LightGray;
-            snowflake.Opacity = 0.7f;
+            updateIcon.Rotation = 0.05f;
+            updateIcon.Color = Color.LightGray;
+            updateIcon.Opacity = 0.7f;
+
+            Graphics.Image updateIcon2 = (Graphics.Image)updateIcon.CloneMe();
+            updateIcon2.position += updateIcon2.size * 0.3f;
+            updateIcon2.LayerBelow(updateIcon);
         }
 
         void createBanners(VectorRect bgArea)
