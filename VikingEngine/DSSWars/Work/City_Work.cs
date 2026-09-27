@@ -211,6 +211,11 @@ namespace VikingEngine.DSSWars.GameObject
                     CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
                     //Last position = highest priority
+                    if (Ref.peRnd.ChanceF(0.05f))
+                    {
+                        refreshItemReserve();
+                    }
+
                     if (workQue.Count > 1)
                     {
                         workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
@@ -337,7 +342,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                 ref var status = ref workerStatuses.array[worderIx];
                                 status.createWorkOrder(work.work, work.subWork, work.workBonus, experienceType, work.workPriority, work.orderId, work.subTile, this);
-                                
+                                reserveItems(work);
                                 --maxWorkerOrderCount;
 
                                 if (work.orderId >= 0)
@@ -1420,6 +1425,69 @@ namespace VikingEngine.DSSWars.GameObject
             }
             completeTimeSec = -1;
             return false;
+        }
+
+        void refreshItemReserve()
+        {
+            res_water.reservedUseCount = 0;
+            DssRef.world.flushCityReserves(this);
+
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+                WorkerStatus status = workerStatuses.array[i];
+                reserveItems(new WorkQueMember() { work = status.work, subWork = status.workSubType });
+            }
+        }
+
+        void reserveItems(WorkQueMember work)
+        {
+            switch (work.work)
+            {
+                case WorkType.Build:
+                    reserve(BuildLib.BuildOptions[work.subWork].blueprint);
+                    break;
+                case WorkType.Craft:
+                    ItemResourceType item = (ItemResourceType)work.subWork;
+                    ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
+                    if (bp2 != null && bp2.available(this))
+                    {
+                        reserve(bp2);
+                    }
+                    else
+                    {
+                        reserve(bp1);
+                    }
+                    break;
+            }
+
+            void reserve(CraftBlueprint blueprint)
+            {
+                foreach (var m in blueprint.resources)
+                {
+                    if (m.type == ItemResourceType.Water_G)
+                    {
+                        res_water.reserve(m.amount);
+                    }
+                    else
+                    {
+                        this.GetRefGroupedResource_Safe(m.type).reserve(m.amount);
+                    }
+                }
+            }
+        }
+        public void unreserveItems(CraftBlueprint blueprint)
+        {
+            foreach (var m in blueprint.resources)
+            {
+                if (m.type == ItemResourceType.Water_G)
+                {
+                    res_water.unreserve(m.amount);
+                }
+                else
+                {
+                    this.GetRefGroupedResource_Safe(m.type).unreserve(m.amount);
+                }
+            }
         }
 
     } 

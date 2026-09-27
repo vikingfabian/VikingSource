@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int maxWaterTotal = DssConst.Maxwater;
         FloatingInt nextWater = new FloatingInt();
         public float waterAddPerSec;
-        static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
+        static GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
         
         public GroupedResource res_water = new GroupedResource();
@@ -332,6 +332,18 @@ namespace VikingEngine.DSSWars.GameObject
                 //throw new NotImplementedException();
             }
 #endif
+            ItemPropertyColl.CityIndex(type);
+            return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+        }
+
+        public ref GroupedResource GetRefGroupedResource_Safe(ItemResourceType type)
+        {
+            int cityResourceIndex = ItemPropertyColl.CityIndex(type);
+
+            if (cityResourceIndex < 0)
+            {
+                return ref Res_Nothing;
+            }
             ItemPropertyColl.CityIndex(type);
             return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
