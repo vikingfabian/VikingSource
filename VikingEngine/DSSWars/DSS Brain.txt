@@ -10,6 +10,9 @@ x adjust "all facts"
 
 ## QoL Part 2 ## (December 17)
 * The color range of voxel models have been adjusted
+* Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
+* Truce timer is pinned to hud
+
 
 Soldier abilities
 * Added a parry system. Weapons with high parry will block melee attacks from those with low.
