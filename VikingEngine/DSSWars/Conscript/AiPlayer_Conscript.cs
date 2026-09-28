@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Players
             if ((!aggresive || city.groups.Count < minGuardCount) && city.AvailableGuardHousing() >= DssConst.SoldierGroup_GuardCount)
             {
                 int emptyCount = 0;
-                lock (city.defenceBuildings.array)
+                lock (city.defenceBuildings.Array)
                 {
                     int needEmpty = city.defenceBuildings.Count / 3;
 

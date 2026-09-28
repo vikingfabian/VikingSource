@@ -745,11 +745,11 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write((ushort)defenceBuildingsCount);
                 if (defenceBuildingsCount > 0)
                 {
-                    lock (defenceBuildings.array)
+                    lock (defenceBuildings.Array)
                     {
                         for (int i = 0; i < defenceBuildingsCount; ++i)
                         {
-                            defenceBuildings.array[i].writeGameState(w);
+                            defenceBuildings.Array[i].writeGameState(w);
                         }
                     }
                 }
@@ -758,12 +758,12 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write((ushort)cesspitsCount);
                 if (cesspitsCount > 0)
                 {
-                    lock (cesspits.array)
+                    lock (cesspits.Array)
                     {
 
                         for (int i = 0; i < cesspitsCount; ++i)
                         {
-                            cesspits.array[i].writeGameState(w);
+                            cesspits.Array[i].writeGameState(w);
                         }
                     }
                 }
@@ -982,17 +982,20 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Debug.WriteCheck(w);
 
-            w.Write(/*(ushort)*/workerStatuses.Count);
-            writeStatusesStartEnd(part, workerStatuses.Count, out bool meta, out int start, out int end);
-
-            if (meta)
-            {   
-                cityHallSubtilePos.write(w);
-            }
-
-            for (int i = start; i < end; i++)
+            lock (WorkerStatusLock)
             {
-                workerStatuses[i].writeGameState(this, w, netPacket);
+                w.Write(/*(ushort)*/workerStatuses.Count);
+                writeStatusesStartEnd(part, workerStatuses.Count, out bool meta, out int start, out int end);
+
+                if (meta)
+                {   
+                    cityHallSubtilePos.write(w);
+                }
+
+                for (int i = start; i < end; i++)
+                {
+                    workerStatuses[i].writeGameState(this, w, netPacket);
+                }
             }
 
             Debug.WriteCheck(w);
@@ -1028,25 +1031,28 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            for (int i = start; i < end; i++)
+            lock (WorkerStatusLock)
             {
-                WorkerStatus readWorker = new WorkerStatus(true)
+                for (int i = start; i < end; i++)
                 {
-                    work = WorkType.Idle,
-                    processTimeStartStampSec = Ref.TotalGameTimeSec,
-                    subTileEnd = startPos,
-                    subTileStart = startPos,
-                };
+                    WorkerStatus readWorker = new WorkerStatus(true)
+                    {
+                        work = WorkType.Idle,
+                        processTimeStartStampSec = Ref.TotalGameTimeSec,
+                        subTileEnd = startPos,
+                        subTileStart = startPos,
+                    };
 
-                readWorker.readGameState(this, r, netPacket, subversion);
+                    readWorker.readGameState(this, r, netPacket, subversion);
 
-                if (i >= workerStatuses.Count)
-                {
-                    workerStatuses.Add(readWorker);
-                }
-                else
-                {
-                    workerStatuses[i] = readWorker;
+                    if (i >= workerStatuses.Count)
+                    {
+                        workerStatuses.Add(readWorker);
+                    }
+                    else
+                    {
+                        workerStatuses[i] = readWorker;
+                    }
                 }
             }
 

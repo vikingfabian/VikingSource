@@ -280,7 +280,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                ref WorkerStatus status = ref workerStatuses.array[i];
+                ref WorkerStatus status = ref workerStatuses.Array[i];
                 if (status.work > WorkType.Idle &&
                     Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
                 {

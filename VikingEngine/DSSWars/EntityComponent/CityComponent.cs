@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars
                 //Clear out!
                 for (int i = 0; i < WorkerXpCOUNT; ++i)
                 {
-                    workerXp.array[i + start] = WorkExperience.Empty;
+                    workerXp.Array[i + start] = WorkExperience.Empty;
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars
             int arrayIx = index * WorkerXpCOUNT + (int)type;
             if (workerXp.InBound_Array(arrayIx))
             {
-                return workerXp.array[arrayIx];
+                return workerXp.Array[arrayIx];
             }
 
             return empty;
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars
                 throw new Exception();
             }
 #endif
-            workerXp.array[index * WorkerXpCOUNT + (int)type].xp = xp;
+            workerXp.Array[index * WorkerXpCOUNT + (int)type].xp = xp;
         }
 
         WorkExperience empty = new WorkExperience();
@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars
 #endif
             if (index >= 0)
             {
-                return ref workerXp.array[arrayIx];
+                return ref workerXp.Array[arrayIx];
             }
 
             return ref empty;
@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars
 
                 for (int i = 0; i < WorkerXpCOUNT; ++i)
                 {
-                    workerXp.array[i + start].write(w);
+                    workerXp.Array[i + start].write(w);
                 }
             }
             else
@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars
 
             for (int i = 0; i < WorkerXpCOUNT; ++i)
             {
-                workerXp.array[i + start].read(r);
+                workerXp.Array[i + start].read(r);
             }
         }
 
@@ -172,7 +172,7 @@ namespace VikingEngine.DSSWars
 
                 for (int i = 0; i < WorkerXpCOUNT; ++i)
                 {
-                    score += MathExt.Square(workerXp.array[i + start].xp);
+                    score += MathExt.Square(workerXp.Array[i + start].xp);
                 } 
             }
             return score;
@@ -186,9 +186,9 @@ namespace VikingEngine.DSSWars
 
             for (int i = 0; i < WorkerXpCOUNT; ++i)
             {
-                if (workerXp.array[i + start].xp >= DssConst.WorkXpToLevel)
+                if (workerXp.Array[i + start].xp >= DssConst.WorkXpToLevel)
                 {
-                    xpPairs.Add(new (workerXp.array[i + start], (WorkExperienceType)i));
+                    xpPairs.Add(new (workerXp.Array[i + start], (WorkExperienceType)i));
                 }
             }
             
