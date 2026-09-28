@@ -204,8 +204,8 @@ float4 InstancedMainPS(VSOutput input) : SV_TARGET
 //-----------------------------------------------------------------------------
 struct VSDepthOutput
 {
-    float4 Position : SV_POSITION;
-    float2 Depth : TEXCOORD0;
+    float4 Position : SV_Position0;
+    float Depth : TEXCOORD0;
 };
 
 VSDepthOutput InstancedDepthVS(VSGeometryInput geom, VSInstanceInput inst)
@@ -222,15 +222,18 @@ VSDepthOutput InstancedDepthVS(VSGeometryInput geom, VSInstanceInput inst)
     float4 worldPos = mul(geom.Position, instanceWorld);
     float4 lightViewPos = mul(worldPos, LightView);
     output.Position = mul(lightViewPos, LightProjection);
-    output.Depth = output.Position.zw;
+    output.Depth = output.Position.z / output.Position.w;
+
+    // Prevent DXC from stripping unused vertex attributes,
+    // so that attribute locations match 1:1 sequential location mapping in Vulkan (0..7).
+    output.Position.z += 1e-7f * (geom.Color.a + geom.Normal.y + inst.InstanceData.w);
 
     return output;
 }
 
 float4 InstancedDepthPS(VSDepthOutput input) : SV_TARGET
 {
-    float depth = input.Depth.x / input.Depth.y;
-    return float4(depth + 0.0015f, 0, 0, 1.0f);
+    return float4(input.Depth + 0.0015f, 0, 0, 1.0f);
 }
 
 //-----------------------------------------------------------------------------
