@@ -416,6 +416,10 @@ namespace VikingEngine.DSSWars.GameState
 
         public Players.AbsHumanPlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
         {
+            if (peer == null)
+            {
+                return null;
+            }
             Players.AbsHumanPlayer player = peer.instancePeers?[SplitScreenIndex].Tag as Players.AbsHumanPlayer;
             if (player != null)
             {

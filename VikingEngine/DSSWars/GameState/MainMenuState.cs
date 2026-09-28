@@ -788,11 +788,11 @@ namespace VikingEngine.DSSWars
                     buttonContent.newLine();
 
                     HudLib.BulletSeperationPoint(buttonContent);
-                    LangLib.GameModeText(meta.GameMode(), out string modeName, out _);
+                    LangLib.GameModeText(meta.mode, out string modeName, out _);
                     buttonContent.Add(new RbText(modeName, HudLib.InfoYellow_Dark));
 
                     HudLib.BulletSeperationPoint(buttonContent);
-                    buttonContent.Add(new RbText(TextLib.PercentTextWithSymbol(meta.TotalDifficulty()), HudLib.InfoYellow_Dark));
+                    buttonContent.Add(new RbText(TextLib.PercentTextWithSymbol(meta.difficulty), HudLib.InfoYellow_Dark));
 
                     HudLib.BulletSeperationPoint(buttonContent);
                     buttonContent.Add(new RbImage(SpriteName.WarsHudIconPlayerCount));

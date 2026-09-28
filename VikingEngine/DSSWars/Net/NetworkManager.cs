@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars
 
             //Debug.Log(packet.type.ToString());
 
-#if !DEBUG
+#if !_DEBUG
             try
             {
 #endif
@@ -792,11 +792,11 @@ namespace VikingEngine.DSSWars
                     break;
                
             }
-#if !DEBUG
-            }
-            catch
+#if !_DEBUG
+        }
+            catch (Exception e)
             {
-                NetEvent_ErrorMessage($"Net packet failure: {packet.type}", sender.networkPeer.peer, true);
+                NetEvent_ErrorMessage($"Net packet failure: {packet.type}", DebugExtensions.BlueScreen.ErrorMessage(e, TryMethodType.N), sender?.networkPeer.peer, true);
             }
 #endif
 
@@ -1089,24 +1089,34 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public override void NetEvent_ErrorMessage(string message, AbsNetworkPeer peer, bool peerIsSender)
+        public override void NetEvent_ErrorMessage(string message, string stacktrace, AbsNetworkPeer peer, bool peerIsSender)
         {
             RichBoxContent content = new RichBoxContent();
 
             content.h1(SpriteName.RedErrorCross, DssRef.lang.Multiplayer_NetworkError, HudLib.NotAvailableColor);
             content.text(message);
 
-            var player = GetPlayer(peer.fullId) as RemotePlayer;
-
+            RemotePlayer player = null;
+            if (peer != null)
+            {
+                player = GetPlayer(peer.fullId) as RemotePlayer;
+            }
+            
+            content.newLine();
+                
             if (player != null)
             {
-                content.newLine();
                 HudLib.Label(content, peerIsSender ? DssRef.lang.Multiplayer_Sender : DssRef.lang.Multiplayer_Receiver);
                 content.newLine();
                 player.addNetGamerToHud(content, true, false);
-
-                LocalHost().hud.messages.Add(content);
             }
+                if (stacktrace != null)
+                {
+                    content.newLine();
+                    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Print log") }, new RbAction1Arg<string>(BlueScreen.saveLogFile, stacktrace), new RbTooltip_Text(stacktrace)));
+                }
+                LocalHost().hud.messages.Add(content);
+            
         }
         public override void NetEvent_ConnectionLost(string reason)
         {

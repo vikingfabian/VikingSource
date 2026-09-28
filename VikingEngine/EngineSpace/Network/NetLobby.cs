@@ -10,7 +10,7 @@ namespace VikingEngine.Network
     {
         void NetworkStatusMessage(Network.NetworkStatusMessage message);
 
-        void NetEvent_ErrorMessage(string message, Network.AbsNetworkPeer peer, bool peerIsSender);
+        void NetEvent_ErrorMessage(string message, string stacktrace, Network.AbsNetworkPeer peer, bool peerIsSender);
         void NetEvent_PeerJoined(Network.AbsNetworkPeer gamer);
         void NetEvent_JoinedLobby(string name, ulong lobbyHost, bool fromInvite);
         void NetEvent_GotNetworkId();
@@ -148,7 +148,7 @@ namespace VikingEngine.Network
                 }
             }
         }
-        virtual public void NetEvent_ErrorMessage(string message, Network.AbsNetworkPeer peer, bool peerIsSender)
+        virtual public void NetEvent_ErrorMessage(string message, string stacktrace, Network.AbsNetworkPeer peer, bool peerIsSender)
         { }
 
         public void tryJoin(AbsAvailableSession session)

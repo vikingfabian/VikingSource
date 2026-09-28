@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Net
                 { //Cancel the handover
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
-                        Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", peer, false);
+                        Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", null, peer, false);
                     }));
                     part = HandoverPart.DONE;
                     return false;

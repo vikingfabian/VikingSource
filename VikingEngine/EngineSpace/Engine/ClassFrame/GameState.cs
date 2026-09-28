@@ -149,7 +149,7 @@ namespace VikingEngine.Engine
         virtual public void NetEvent_ConnectionLost(string reason)
         { }
 
-        virtual public void NetEvent_ErrorMessage(string message, Network.AbsNetworkPeer peer, bool peerIsSender)
+        virtual public void NetEvent_ErrorMessage(string message, string stacktrace, Network.AbsNetworkPeer peer, bool peerIsSender)
         { }
         virtual public void NetEvent_SessionsFound(
             List<Network.AbsAvailableSession> availableSessions)
