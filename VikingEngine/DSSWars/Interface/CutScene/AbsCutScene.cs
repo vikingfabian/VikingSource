@@ -18,14 +18,14 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             DssRef.state.cutScene = this;
         }
 
-        virtual public void Close()
+        public virtual void Close()
         {
             DssRef.state.cutScene = null;
             GC.Collect();
         }
 
-        abstract public void Time_Update(float time);
+        public abstract void Time_Update(float time);
 
-        virtual public PlayerNetState NetState() { return PlayerNetState.InMenu; }
+        public virtual PlayerNetState NetState() { return PlayerNetState.InMenu; }
     }
 }

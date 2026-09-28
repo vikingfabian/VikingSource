@@ -46,9 +46,10 @@ sampler2D TextureSampler = sampler_state
 #define SAMPLE_TEXTURE_DIFFUSE(coords) tex2D(TextureSampler, coords)
 
 // Point-filtered sampler for pixel-art sprite atlas terrain tiles
+texture TerrainTexture;
 sampler2D TerrainTextureSampler = sampler_state
 {
-    Texture = (Texture);
+    Texture = (TerrainTexture);
     MinFilter = POINT;
     MagFilter = POINT;
     MipFilter = POINT;
@@ -82,16 +83,17 @@ sampler TextureSampler : register(s1) = sampler_state
 };
 #define SAMPLE_TEXTURE_DIFFUSE(coords) Texture.Sample(TextureSampler, coords)
 
+Texture2D<float4> TerrainTexture : register(t2);
 sampler TerrainTextureSampler : register(s2) = sampler_state
 {
-    Texture = (Texture);
+    Texture = (TerrainTexture);
     MinFilter = POINT;
     MagFilter = POINT;
     MipFilter = POINT;
     AddressU = Wrap;
     AddressV = Wrap;
 };
-#define SAMPLE_TERRAIN(coords) Texture.Sample(TerrainTextureSampler, coords)
+#define SAMPLE_TERRAIN(coords) TerrainTexture.Sample(TerrainTextureSampler, coords)
 
 #else
 
@@ -118,16 +120,17 @@ sampler TextureSampler : register(s1) = sampler_state
 };
 #define SAMPLE_TEXTURE_DIFFUSE(coords) Texture.Sample(TextureSampler, coords)
 
+Texture2D TerrainTexture : register(t2);
 sampler TerrainTextureSampler : register(s2) = sampler_state
 {
-    Texture = (Texture);
+    Texture = (TerrainTexture);
     MinFilter = POINT;
     MagFilter = POINT;
     MipFilter = POINT;
     AddressU = Wrap;
     AddressV = Wrap;
 };
-#define SAMPLE_TERRAIN(coords) Texture.Sample(TerrainTextureSampler, coords)
+#define SAMPLE_TERRAIN(coords) TerrainTexture.Sample(TerrainTextureSampler, coords)
 
 #endif
 

@@ -108,10 +108,6 @@ namespace VikingEngine
 
         public static int TimePassed16ms = 0;
 
-        public static void ClearGarbage()
-        {
-            System.GC.Collect();
-        }
         public static void TogglePause()
         {
             SetPause(!isPaused);

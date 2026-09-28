@@ -1425,7 +1425,7 @@ namespace VikingEngine.DSSWars.Map
 
             for (int i = 0; i < foliageModels.Count; ++i)
             {
-                ref var m = ref foliageModels.array[i];
+                ref var m = ref foliageModels.Array[i];
                 m.addToRender();
             }
            

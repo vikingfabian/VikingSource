@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Players.Command
         {
             if (city.defenceBuildings.InBound_List( defenceIndex))
             {
-                ref var defence = ref city.defenceBuildings.array[defenceIndex];
+                ref var defence = ref city.defenceBuildings.Array[defenceIndex];
 
                 defence.soldierGroupId = group.myIndex;
             }
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Players.Command
             //var id = conv.IntVector2ToInt(subtilePos);
             int defenceIndex = city.defenceIxFromSubTile(subtilePos);
             
-            ref var defence = ref city.defenceBuildings.array[defenceIndex];
+            ref var defence = ref city.defenceBuildings.Array[defenceIndex];
 
 
             if (defence.CheckIsEmpty(city)) //.soldierGroupId == DefenceStatus.NoSoldiers)
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Players.Command
                 int defenceIndex = city.defenceIxFromPosId(group.assignedToPost_IdAndPosition);
                 if (city.defenceBuildings.InBound_List(defenceIndex))
                 {
-                    ref var defence = ref city.defenceBuildings.array[defenceIndex];
+                    ref var defence = ref city.defenceBuildings.Array[defenceIndex];
                     defence.soldierGroupId = DefenceStatus.NoSoldiers;
                 }
             }

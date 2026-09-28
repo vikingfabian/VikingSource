@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Steamworks;
 using System;
@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         storeStack = true;
                         RichBoxContent content = new RichBoxContent();
-                        HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
+                        HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.CloseMenu);
                         SettingsToMenu(content, menu, false);
                         menu.Refresh(content);
                     }
@@ -172,7 +172,7 @@ namespace VikingEngine.DSSWars.Interface
                 case UnderMenu_ControllerDisconnected:
                     {
                         RichBoxContent content = new RichBoxContent();
-                        HudLib.returnButton(content, menu, true, DssRef.state.menuSystem.closeMenu);
+                        HudLib.returnButton(content, menu, true, DssRef.state.menuSystem.CloseMenu);
 
                         content.h1(DssRef.lang.GameMenu_ControllerDisconnected, HudLib.TitleColor_Head);
 
@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.Interface
             menu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), layer + 2);
         }
 
-        public void closeMenu()
+        public void CloseMenu()
         {
             if (menu != null)
             {
@@ -329,12 +329,6 @@ namespace VikingEngine.DSSWars.Interface
                 menu = null;
 
                 DssRef.state.updateMouseVisible();
-                GC.Collect();
-
-                //foreach (var p in DssRef.state.localPlayers)
-                //{
-                //    p.tutorial?.onCloseMenu();
-                //}
             }
         }
 
@@ -349,13 +343,13 @@ namespace VikingEngine.DSSWars.Interface
 
             void watchEpilogue()
         {
-            closeMenu();
+            CloseMenu();
             new CutScene.NightmarePrologue();
         }
 
         void saveGameState()
         {
-            closeMenu();
+            CloseMenu();
 
             if (DssRef.state.cutScene == null)
             {
@@ -375,7 +369,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void saveAndExit()
         {
-            closeMenu();
+            CloseMenu();
 
             if (DssRef.state.cutScene == null)
             {
@@ -404,7 +398,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 Ref.steam.stats.upload();
             }
-            closeMenu();
+            CloseMenu();
             DssRef.state.beginExit();
         }
 
@@ -424,7 +418,7 @@ namespace VikingEngine.DSSWars.Interface
             content.text(DssRef.lang.Tutorial_AdvisorDescription);
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(closeMenu))
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(CloseMenu))
             {
                 fillWidth = true
             });
@@ -439,7 +433,7 @@ namespace VikingEngine.DSSWars.Interface
             openMenu();
             RichBoxContent content = new RichBoxContent();
            
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(closeMenu))
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(CloseMenu))
                 {
                     fillWidth = true
                 });
@@ -497,7 +491,7 @@ namespace VikingEngine.DSSWars.Interface
 
 //#if DEBUG
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); closeMenu(); }))
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_NextSong) }, new RbAction(() => { Ref.music.debugNext(); CloseMenu(); }))
                     {
                         fillWidth = true
                     });
@@ -558,7 +552,7 @@ namespace VikingEngine.DSSWars.Interface
                 new RbSpace(),
                 new RbText(Ref.langOpt.Settings_LoadCameraPosition)
                 }, new RbAction(() => {
-                    closeMenu();
+                    CloseMenu();
                     XGuide.LocalHost.view.Camera.ResetToPosition(DssRef.state.LocalHost().storedCameraPos);
                     DssRef.state.LocalHost().gameControls.map.loadCamPos();
 
@@ -819,7 +813,7 @@ namespace VikingEngine.DSSWars.Interface
         public static void keyboardOptions(RichMenu menu, bool lobby)
         {
             RichBoxContent content = new RichBoxContent();
-            HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
+            HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.CloseMenu);
 
             content.h1(Ref.langOpt.KeyboardSettings_Title, HudLib.TitleColor_Head);
 
@@ -849,7 +843,7 @@ namespace VikingEngine.DSSWars.Interface
         {
 
             RichBoxContent content = new RichBoxContent();
-            HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
+            HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.CloseMenu);
 
             content.h1(LangLib.InputActionName(CurrentEditInput), HudLib.TitleColor_Head);
 
@@ -901,7 +895,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             RichBoxContent content = new RichBoxContent();
 
-            HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
+            HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.CloseMenu);
 
             content.h1(Ref.langOpt.MouseSettings_Title, HudLib.TitleColor_Head);
 
@@ -962,7 +956,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 p.tutorial?.EndCurrentTutorialMode();
             }
-            closeMenu();
+            CloseMenu();
         }
 
         public void debugMenu()
@@ -971,13 +965,13 @@ namespace VikingEngine.DSSWars.Interface
 
             RichBoxContent content = new RichBoxContent();
 
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(closeMenu))
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(CloseMenu))
             {
                 fillWidth = true
             });
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText($"Next event ({DssRef.state.events.StoryIndex()})") }, new RbAction(()=> { 
                 DssRef.state.events.TestNextEvent();
-                closeMenu();
+                CloseMenu();
             })));
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Find city from id (broken)") }, new RbAction(beginFindCityId))
@@ -989,7 +983,7 @@ namespace VikingEngine.DSSWars.Interface
                 new RbAction(()=>
                 {
                     DssRef.state.LocalHost().EnterBattleLab();
-                    closeMenu();
+                    CloseMenu();
                 }))
             {
                 fillWidth = true
@@ -1034,7 +1028,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void beginFindCityId()
         {
-            closeMenu();
+            CloseMenu();
             new TextInputScene("City id", findCityIdEvent);
             //var reciever = new TextInputState(string.Empty, findCityIdEvent, null);
             //SteamInputManager.tryOpenSteamKeyboard(reciever);

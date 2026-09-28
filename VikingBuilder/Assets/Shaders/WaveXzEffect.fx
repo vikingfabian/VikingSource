@@ -76,7 +76,7 @@ struct VSInput
 {
     float4 Position : POSITION0; // Vertex position
     //float3 Normal : NORMAL0; // Vertex normal
-    float4 vcolor : COLOR0; // Vertex color
+    //float4 vcolor : COLOR0; // Vertex color
     float2 TexCoord : TEXCOORD0; // (Optional) if you need textures
 };
 
@@ -87,7 +87,7 @@ struct VSOutput
 {
     float4 Position : SV_POSITION;
     //float3 Normal : TEXCOORD0;
-    float4 vcolor : COLOR0;
+    //float4 vcolor : COLOR0;
     float2 TexCoord : TEXCOORD1;
     float3 worldPos : TEXCOORD2; // NEW
 };
@@ -123,7 +123,7 @@ VSOutput VS_FlatVertexColored(VSInput input)
     
     //output.Position = mul(input.Position, wvp);
     output.TexCoord = input.TexCoord;
-    output.vcolor = input.vcolor;
+    //output.vcolor = input.vcolor;
     output.worldPos = worldPosition.xyz;
     return output;
 }
