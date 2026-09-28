@@ -12,6 +12,17 @@
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Framework.Content.Pipeline.Builder;
+using System.Globalization;
+
+#region SPIR-V Shader Reflection Culture Fix
+
+// Force InvariantCulture so that SPIR-V shader reflection parses floats with dots on non-US locales.
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+#endregion SPIR-V Shader Reflection Culture Fix
 
 var contentCollectionArgs = new ContentBuilderParams()
 {
