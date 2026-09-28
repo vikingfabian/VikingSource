@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine
 {
-    struct ForXYZLoop
+    public struct ForXYZLoop
     {
         IntervalIntV3 volume;
         IntVector3 nextPos;

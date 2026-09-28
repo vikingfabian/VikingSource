@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.LootFest.GO
 {
-    abstract class AbsNoImageObj : AbsUpdateObj
+    public abstract class AbsNoImageObj : AbsUpdateObj
     {
         protected Vector3 position;
 

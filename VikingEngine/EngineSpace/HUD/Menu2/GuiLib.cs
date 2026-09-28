@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.HUD
 {
-    enum GuiMemberSizeType
+    public enum GuiMemberSizeType
     {
         FullWidth,
         StandardButtonSize,
@@ -18,14 +18,14 @@ namespace VikingEngine.HUD
         
     }
 
-    enum GuiMemberSelectionType
+    public enum GuiMemberSelectionType
     {
         None, //Selection will jump over this member
         Selectable, //Button
         Scrollable, //Longer text that can be scrolled through
     }
 
-    enum GuiLayoutMode
+    public enum GuiLayoutMode
     {
         SingleColumn,
         MultipleColumns,

@@ -9,7 +9,7 @@ namespace VikingEngine.Network
     //internal class StoredNetworkGamer
     //{
     //}
-    struct GamerCommunicationSetting
+    public struct GamerCommunicationSetting
     {
         public bool muteVoice, muteText, mutePins, muteInGameCommunications, muteCreations, muteErrors;
         public float voiceVolume;
@@ -35,7 +35,7 @@ namespace VikingEngine.Network
         }
     }
 
-    struct StoredNetworkGamer
+    public struct StoredNetworkGamer
     {
         public int index;
         public ulong id;
@@ -74,9 +74,9 @@ namespace VikingEngine.Network
         }
     }
 
-     
 
-    enum BanStatus
+
+    public enum BanStatus
     { 
         None,
         Warning,

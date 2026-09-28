@@ -12,7 +12,7 @@ using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine.Graphics
 {
-    class VoxelModel : AbsVoxelObj
+    public class VoxelModel : AbsVoxelObj
     {
         public override int NumFrames { get { return VB.NumFrames; } }
 

@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Voxels
 {
-    class VolumeGUI
+    public class VolumeGUI
     {
         Graphics.Mesh pencilMultiSelection;
 

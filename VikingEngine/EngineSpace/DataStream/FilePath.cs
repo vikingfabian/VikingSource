@@ -7,7 +7,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.DataStream
 {
-    struct FilePath
+    public struct FilePath
     {
         public static readonly char Dir = System.IO.Path.DirectorySeparatorChar;
 

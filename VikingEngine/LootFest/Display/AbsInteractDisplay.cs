@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.LootFest.Display
 {
-    abstract class AbsInteractDisplay
+    public abstract class AbsInteractDisplay
     {
         protected bool inputToRemove_notTimed = false;
 

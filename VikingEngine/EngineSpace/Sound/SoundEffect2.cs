@@ -14,7 +14,7 @@ using VikingEngine.PJ;
 
 namespace VikingEngine.Sound
 {
-    static class SoundStackManager
+    public static class SoundStackManager
     {
         static TimeStamp NextRareSound = new TimeStamp();
 
@@ -51,7 +51,7 @@ namespace VikingEngine.Sound
     }
 
 
-    abstract class SoundContainerBase
+    public abstract class SoundContainerBase
     {
         protected float volume = 1;
         protected float randomPitch = 0;

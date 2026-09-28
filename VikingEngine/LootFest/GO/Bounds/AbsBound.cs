@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.LootFest.GO.Bounds
 {
-    abstract class AbsBound
+    public abstract class AbsBound
     {
         public Vector3 center;
         public Vector3 halfSize;
@@ -224,7 +224,7 @@ namespace VikingEngine.LootFest.GO.Bounds
         public abstract bool UsesRotation { get; }
     }
 
-    class BoundCollisionResult //null is no collision
+    public class BoundCollisionResult //null is no collision
     {
         public AbsBound MyBound;
         public AbsBound OtherBound;
@@ -271,9 +271,9 @@ namespace VikingEngine.LootFest.GO.Bounds
         }
     }
 
-    
 
-    enum BoundShape
+
+    public enum BoundShape
     {
         Box1axisRotation,
         BoundingBox,

@@ -10,7 +10,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichMenu
 {
-    class RichMenuControllerPointer
+    public class RichMenuControllerPointer
     {
         public InputMap inputMap;
         public Image pointer;

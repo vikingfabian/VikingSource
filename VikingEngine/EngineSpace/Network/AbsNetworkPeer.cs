@@ -12,7 +12,7 @@ namespace VikingEngine.Network
     /// <summary>
     /// One of potiensially multiple people sharing a computer 
     /// </summary>
-    class NetworkInstancePeer
+    public class NetworkInstancePeer
     { 
         public AbsNetworkPeer peer;
         public int SplitScreenIndex = 0;
@@ -47,7 +47,7 @@ namespace VikingEngine.Network
         }        
     }
 
-    abstract class AbsNetworkPeer
+    public abstract class AbsNetworkPeer
     {
         public byte id = byte.MaxValue;
         public ulong fullId;

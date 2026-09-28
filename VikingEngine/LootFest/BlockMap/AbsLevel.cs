@@ -11,7 +11,7 @@ using VikingEngine.LootFest.GO;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    abstract class AbsLevel
+    public abstract class AbsLevel
     {
         protected static readonly VoxelModelName[] NormalDefaultModels = new VoxelModelName[]
         { 

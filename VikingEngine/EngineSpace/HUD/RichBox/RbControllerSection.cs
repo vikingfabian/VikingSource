@@ -7,7 +7,7 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.EngineSpace.HUD.RichBox
 {
-    class RbControllerSection : AbsRichBoxMember
+    public class RbControllerSection : AbsRichBoxMember
     {
         string id;
         /// <summary>
@@ -39,7 +39,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox
         }
     }
 
-    struct ControllerSection
+    public struct ControllerSection
     {
         public VectorRect area;
         public string id;

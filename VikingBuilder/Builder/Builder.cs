@@ -1,4 +1,4 @@
-﻿#define DSS
+#define DSS
 
 /// <summary>
 /// Entry point for the Content Builder project, 
@@ -18,7 +18,7 @@ var contentCollectionArgs = new ContentBuilderParams()
     Mode = ContentBuilderMode.Builder,
     WorkingDirectory = $"{AppContext.BaseDirectory}../../", // path to where your content folder can be located
     SourceDirectory = "Assets", // Not actually needed as this is the default, but added for reference
-    Platform = TargetPlatform.DesktopGL
+    Platform = TargetPlatform.DesktopGL,
 };
 var builder = new Builder();
 
@@ -110,6 +110,8 @@ public class Builder : ContentBuilder
         //contentCollection.Include<WildcardRule>("*.wav", new WavImporter());
         contentCollection.Exclude<WildcardRule>("Shaders/DeferredRenderer/*.*");
         contentCollection.Exclude<WildcardRule>("Shaders/Old/*.*");
+        contentCollection.Exclude<WildcardRule>("Shaders/EffectOld.fx");
+        contentCollection.Exclude<WildcardRule>("Shaders/*.fxh");
         
         contentCollection.IncludeCopy<WildcardRule>("*.vox", null);
         contentCollection.IncludeCopy<WildcardRule>("*.sav", null);

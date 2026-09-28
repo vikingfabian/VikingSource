@@ -9,7 +9,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsVertexAndIndexBuffer : Abs3DModel
+    public abstract class AbsVertexAndIndexBuffer : Abs3DModel
     {
         /* Properties */
         public abstract int NumFrames { get; }
@@ -116,7 +116,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    class VertexAndIndexBuffer : AbsVertexAndIndexBuffer
+    public class VertexAndIndexBuffer : AbsVertexAndIndexBuffer
     {
         /* Properties */
         public override int NumFrames { get { return 1; } }
@@ -156,7 +156,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    class VertexAndIndexBufferAnimated : AbsVertexAndIndexBuffer
+    public class VertexAndIndexBufferAnimated : AbsVertexAndIndexBuffer
     {
         /* Properties */
         override public int NumFrames { get { return frames.Count; } }

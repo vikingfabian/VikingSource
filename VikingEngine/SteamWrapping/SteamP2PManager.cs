@@ -10,7 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.SteamWrapping
 {
-    class SteamP2PManager
+    public class SteamP2PManager
     {
         public const int SteamPackageByteLimit = 1200;
 

@@ -15,7 +15,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
 {
-    struct VoxelJoint
+    public struct VoxelJoint
     {
         public static readonly VoxelJoint Empty = new VoxelJoint(IntVector3.NegativeOne, BlockHD.EmptyBlock);
 
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars
         }
     }
 
-    abstract class AbsWeaponModel
+    public abstract class AbsWeaponModel
     {
         protected List<VoxelHD> idle;
         public VoxelJoint idle_jointPos;
@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars
         abstract public void addToGrid(VoxelObjGridDataHD grid, IntVector3 armJointPos, int state);
     }
 
-    class ShieldModel : AbsWeaponModel
+    public class ShieldModel : AbsWeaponModel
     {
         public ShieldModel()
         {
@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars
         }
     }
 
-    class WeaponModel : AbsWeaponModel
+    public class WeaponModel : AbsWeaponModel
     {
         public const int IdleFrame = 0;
         public const int AttackFrame = 1;

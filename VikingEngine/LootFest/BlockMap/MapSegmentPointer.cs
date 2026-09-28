@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    struct SquareItem
+    public struct SquareItem
     {
         public IntVector2 position;
         public BlockMapSquare square;
@@ -17,7 +17,7 @@ namespace VikingEngine.LootFest.BlockMap
         }
     }
 
-    class MapSegmentPointer
+    public class MapSegmentPointer
     {
         IntVector2 topLeft;
         public List<SquareItem> entrances = new List<SquareItem>();

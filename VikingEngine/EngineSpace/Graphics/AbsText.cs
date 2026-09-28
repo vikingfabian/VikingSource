@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsText : AbsDraw2D
+    public abstract class AbsText : AbsDraw2D
     {
         static protected Vector2[] BorderRender8Directions;
 
@@ -147,7 +147,7 @@ namespace VikingEngine.Graphics
         //}
     }
 
-    enum TextOutlineType
+    public enum TextOutlineType
     {
         NoBorder,
         Border8Dir,

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.HUD
 {
-    struct GuiStyle
+    public struct GuiStyle
     {
         public const float LargeButtonScaleUp = 1.3f;
         public static readonly Color StandardMidColor = new Color(48, 48, 48);

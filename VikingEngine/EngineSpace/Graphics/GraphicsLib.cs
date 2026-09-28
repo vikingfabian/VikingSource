@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 namespace VikingEngine.Graphics
 {
-    static class GraphicsLib
+    public static class GraphicsLib
     {
         public const float LayerDiff = 1f / (int)ImageLayers.NUM;
         public const int PolygonIndicesCount = 4;
@@ -27,7 +27,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    struct CollitionPlane
+    public struct CollitionPlane
     {
         public int PlaneXYZ;
         public bool MinPos;
@@ -46,7 +46,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    struct Align
+    public struct Align
     {
         public Vector2 Center;
         public Align(Vector2 center)
@@ -67,7 +67,7 @@ namespace VikingEngine.Graphics
         
     }
 
-    enum MotionType
+    public enum MotionType
     {
         NON = 0,
         ANIMATE,
@@ -82,7 +82,7 @@ namespace VikingEngine.Graphics
         NUM
     }
 
-    enum ParticleSystemType
+    public enum ParticleSystemType
     {   
 
         LightSparks,
@@ -107,7 +107,7 @@ namespace VikingEngine.Graphics
         Sparkle,
     }
 
-    struct ParticleInitData
+    public struct ParticleInitData
     {
         public Vector3 Position;
         public Vector3 StartSpeed;
@@ -123,7 +123,7 @@ namespace VikingEngine.Graphics
         { }
     }
 
-    enum PixelShader
+    public enum PixelShader
     {
         Default,
         Inverse,
@@ -146,7 +146,7 @@ namespace VikingEngine.Graphics
     //    NUM
     //}
 
-    enum MotionRepeate
+    public enum MotionRepeate
     {
         NO_REPEAT = 0,
         BackNForwardLoop,
@@ -155,7 +155,7 @@ namespace VikingEngine.Graphics
         NUM
     }
 
-    enum TextureEffectType
+    public enum TextureEffectType
     {
         
         //Specular,
@@ -194,7 +194,7 @@ namespace VikingEngine.Graphics
     //    Generated,
     //}
 
-    struct ChildRelation
+    public struct ChildRelation
     {
         public static ChildRelation None = new ChildRelation(false, false, false);
         public static ChildRelation PositionOnly = new ChildRelation(true, false, false);
@@ -224,7 +224,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    struct TextureSourceLib
+    public struct TextureSourceLib
     {
         public const string ColorPos = "SourcePos";
         public const string ColorSz = "SourceSize";

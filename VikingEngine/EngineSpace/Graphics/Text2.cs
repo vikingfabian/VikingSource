@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.Graphics
 {
-    class Text2 : AbsTextLine
+    public class Text2 : AbsTextLine
     {
         protected string textString;
         float? multilineWidth;

@@ -18,7 +18,7 @@ using VikingEngine.Input;
 
 namespace VikingEngine.HUD.RichMenu
 {
-    interface IRichMenuInputMap
+    public interface IRichMenuInputMap
     {
         MouseInstance RbMouseInstance();
         IButtonMap RbClick();
@@ -28,7 +28,7 @@ namespace VikingEngine.HUD.RichMenu
         bool RbHasController { get; }
     }
 
-    class DefaultRichMenuInputMap : IRichMenuInputMap
+    public class DefaultRichMenuInputMap : IRichMenuInputMap
     { 
         public static DefaultRichMenuInputMap Singleton = new DefaultRichMenuInputMap();
 
@@ -48,7 +48,7 @@ namespace VikingEngine.HUD.RichMenu
     /// <summary>
     /// Creates a scrollable container of richbox content. Will update input, and create tooltips.
     /// </summary>
-    class RichMenu
+    public class RichMenu
     {
         public static readonly Vector2 DefaultRenderEdge = new Vector2(4);
 
@@ -487,7 +487,7 @@ namespace VikingEngine.HUD.RichMenu
         }
     }
 
-    enum StackOption
+    public enum StackOption
     { 
         Stack,
         ClearStack,

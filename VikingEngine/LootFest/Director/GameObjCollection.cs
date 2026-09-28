@@ -11,7 +11,7 @@ using VikingEngine.HUD;
 
 namespace VikingEngine.LootFest.Director
 {
-    class GameObjCollection
+    public class GameObjCollection
     {
         #region VARIABLES
         public SpottedArray<GO.AbsUpdateObj> LocalMembers = new SpottedArray<GO.AbsUpdateObj>();
@@ -324,7 +324,7 @@ namespace VikingEngine.LootFest.Director
         #endregion
     }
 
-    class LostClientObject
+    public class LostClientObject
     {
         const int MissEventsBeforeRequest = 20;
         const int TimeOutChecks = 30;
@@ -346,7 +346,7 @@ namespace VikingEngine.LootFest.Director
     /// <summary>
     /// Sounds that the enemie in the game can hear and react to
     /// </summary>
-    class VirtualSoundSphere
+    public class VirtualSoundSphere
     {
         public VirtualSoundType type;
         float radius;
@@ -366,7 +366,7 @@ namespace VikingEngine.LootFest.Director
         }
     }
 
-    enum VirtualSoundType
+    public enum VirtualSoundType
     {
         DeathPop,
         Alarm,

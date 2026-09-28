@@ -22,7 +22,7 @@ namespace VikingEngine.LootFest.Players
         }
     }
 
-    class PlayerGearSetup
+    public class PlayerGearSetup
     {
         Player localPlayer;
         AbsPlayer player;

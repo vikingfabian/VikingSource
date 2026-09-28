@@ -5,13 +5,13 @@ using System.Text;
 
 namespace VikingEngine
 {
-    delegate T ResizeGrid2D_GetDefault<T>(int x, int y);
-    delegate void ResizeGrid2D_Removing<T>(T item, int x, int y);
+    public delegate T ResizeGrid2D_GetDefault<T>(int x, int y);
+    public delegate void ResizeGrid2D_Removing<T>(T item, int x, int y);
 
     /// <summary>
     /// Extended functions for a 2d array
     /// </summary>
-    class Grid2D<T>
+    public class Grid2D<T>
     {
         IntVector2 size;
         

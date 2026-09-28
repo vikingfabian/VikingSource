@@ -13,7 +13,7 @@ namespace VikingEngine.Engine
 {
     delegate void TimeUpdate(float time);
 
-    class Update
+    public class Update
     {
         //const Keys DebugNormalSpeed = Keys.D1;
         //const Keys DebugSlowSpeed = Keys.D2;
@@ -648,7 +648,7 @@ namespace VikingEngine.Engine
     //        thread.Abort();
     //    }
 
-        
+
     //}
 
     //struct WatchData
@@ -667,7 +667,7 @@ namespace VikingEngine.Engine
     //        return Name + "[" + Time.ToString() + "] ";
     //    }
     //}
-    enum LasyUpdatePart
+    public enum LasyUpdatePart
     {
         Part1,
         Part2,
@@ -680,7 +680,7 @@ namespace VikingEngine.Engine
         NUM,
     }
 
-    enum DebugTime
+    public enum DebugTime
     {
         Normal,
         Slow,

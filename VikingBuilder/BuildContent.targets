@@ -34,7 +34,7 @@
 			</BundledResource>
 
 			<Content Include="@(GeneratedAsset)"
-			  Condition="'$(MonoGamePlatform)' == 'DesktopGL' Or '$(MonoGamePlatform)' == 'Windows'">
+			  Condition="'$(MonoGamePlatform)' == 'DesktopGL' Or '$(MonoGamePlatform)' == 'Windows' Or '$(MonoGamePlatform)' == 'DesktopVK'">
 				<TargetPath>Content\%(GeneratedAsset.RecursiveDir)%(GeneratedAsset.Filename)%(GeneratedAsset.Extension)</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

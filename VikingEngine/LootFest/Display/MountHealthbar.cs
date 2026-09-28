@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.LootFest
 {
-    class MountHealthbar : HealthBar2
+    public class MountHealthbar : HealthBar2
     {
         Graphics.Image headIcon;
 

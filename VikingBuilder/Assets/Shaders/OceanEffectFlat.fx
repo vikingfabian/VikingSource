@@ -1,16 +1,4 @@
-#if OPENGL
-
-#define SV_Position0 POSITION
-#define NORMAL0 NORMAL
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
-
-#else
-
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
-
-#endif
+#include "VikingMacros.fxh"
 
 float4x4 wvp;
 
@@ -18,42 +6,95 @@ float4 ColorAndAlpha = float4(1, 1, 1, 1);
 float2 SourcePos = float2(0, 0);
 float2 SourceSize = float2(1, 1);
 
+// used by both shadow and shadow map
+float4x4 ModelToLight;
+
+#if OPENGL
+
 texture ColorMap;
 sampler ColorMapSampler = sampler_state
 {
     texture = <ColorMap>;
-
     AddressU = WRAP;
     AddressV = WRAP;
-
-	// Add filtering mode if necessary (e.g., linear filtering)
     MinFilter = POINT;
     MagFilter = POINT;
-    MipFilter = POINT; // Or consider LINEAR here if you still want some mip-map smoothing
+    MipFilter = POINT;
 };
+#define SAMPLE_COLORMAP(coords) tex2D(ColorMapSampler, coords)
 
-
-// used by both shadow and shadow map
-float4x4 ModelToLight;
-
-// Scene/camera depth texture (should be the depth BEFORE water is drawn)
 texture SceneDepthMap;
 sampler2D SceneDepthSampler = sampler_state
 {
     Texture = (SceneDepthMap);
-    MinFilter = point;
-    MagFilter = point;
-    MipFilter = point;
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
     AddressU = Clamp;
     AddressV = Clamp;
 };
+#define SAMPLE_SCENEDEPTH(coords) tex2D(SceneDepthSampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> ColorMap : register(t0);
+sampler ColorMapSampler : register(s0) = sampler_state
+{
+    Texture = (ColorMap);
+    AddressU = WRAP;
+    AddressV = WRAP;
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+};
+#define SAMPLE_COLORMAP(coords) ColorMap.Sample(ColorMapSampler, coords)
+
+Texture2D<float4> SceneDepthMap : register(t1);
+sampler SceneDepthSampler : register(s1) = sampler_state
+{
+    Texture = (SceneDepthMap);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_SCENEDEPTH(coords) SceneDepthMap.Sample(SceneDepthSampler, coords)
+
+#else
+
+Texture2D ColorMap : register(t0);
+sampler ColorMapSampler : register(s0) = sampler_state
+{
+    Texture = (ColorMap);
+    AddressU = WRAP;
+    AddressV = WRAP;
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+};
+#define SAMPLE_COLORMAP(coords) ColorMap.Sample(ColorMapSampler, coords)
+
+Texture2D SceneDepthMap : register(t1);
+sampler SceneDepthSampler : register(s1) = sampler_state
+{
+    Texture = (SceneDepthMap);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_SCENEDEPTH(coords) SceneDepthMap.Sample(SceneDepthSampler, coords)
+
+#endif
 
 struct VS_IN
 {
     float4 Position : SV_Position0;
     float2 TexCoord : TEXCOORD0;
     float3 Normal : NORMAL0;
-    float3 Tangent : NORMAL0;
+    float3 Tangent : TANGENT0;
 };
 
 struct VS_OUT
@@ -82,12 +123,12 @@ VS_OUT VS_Flat(VS_IN input)
     return output;
 }
 
-float4 PS_Flat(VS_OUT input) : COLOR0
+float4 PS_Flat(VS_OUT input) : SV_TARGET
 {
 		// Repeat the texture based on the TexCoord values directly
 		//float2 repeatedTexCoord = frac(input.TexCoord);
 	
-    float sampledDepth = tex2D(SceneDepthSampler, input.SMPosition).x;
+    float sampledDepth = SAMPLE_SCENEDEPTH(input.SMPosition).x;
     
     float diff = abs(sampledDepth - input.SMDepth);
     if (diff < 0.002)
@@ -95,7 +136,7 @@ float4 PS_Flat(VS_OUT input) : COLOR0
         return float4(1, 1, 1, 1);
     }
     
-    float4 texCol = tex2D(ColorMapSampler, (input.TexCoord * SourceSize + SourcePos));
+    float4 texCol = SAMPLE_COLORMAP((input.TexCoord * SourceSize + SourcePos));
     float4 output = texCol * ColorAndAlpha;
 	
     output.rgb *= ColorAndAlpha.a;

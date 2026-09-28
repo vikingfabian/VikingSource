@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.Timer
 {
-    abstract class AbsTimer : AbsUpdateable
+    public abstract class AbsTimer : AbsUpdateable
     {
         protected float timeLeft;
         protected UpdateType updateType;

@@ -8,7 +8,7 @@ namespace VikingEngine
     /// <summary>
     /// Same properties as a list except it cant change length due to thread safety
     /// </summary>
-    class StaticList<T>
+    public class StaticList<T>
     {
         public T[] Array;
         public int Count = 0;
@@ -204,7 +204,7 @@ namespace VikingEngine
         }
     }
 
-    class StaticCountingList<T> : StaticList<T>
+    public class StaticCountingList<T> : StaticList<T>
     {
         public T CurrentMember;
         int currentIndex;
@@ -255,7 +255,7 @@ namespace VikingEngine
         }
     }
 
-    struct StaticList_PreviousCounter<T>
+    public struct StaticList_PreviousCounter<T>
     {
         public T sel;
         public int selIndex;

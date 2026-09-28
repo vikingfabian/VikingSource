@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine
 {
-    struct ForXYLoop
+    public struct ForXYLoop
     {
         IntVector2 min;
         IntVector2 max;

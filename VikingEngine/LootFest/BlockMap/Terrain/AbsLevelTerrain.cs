@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    abstract class AbsLevelTerrain
+    public abstract class AbsLevelTerrain
     {
         protected AbsLevel level;
         public VikingEngine.LootFest.Map.BackgroundSceneryData backgroundScenery;

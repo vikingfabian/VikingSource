@@ -13,7 +13,7 @@ using VikingEngine.ToGG.GameState;
 namespace VikingEngine.Input
 {
 
-    interface ITextInputReciever
+    public interface ITextInputReciever
     {
         void textInput_refresh(bool textLengthChanged);
         
@@ -25,7 +25,7 @@ namespace VikingEngine.Input
         //object textInput_Tag();
     }
 
-    class TextInput
+    public class TextInput
     {
         string preMarkerText = string.Empty, postMarkerText = string.Empty;
         bool flashMarker = false;

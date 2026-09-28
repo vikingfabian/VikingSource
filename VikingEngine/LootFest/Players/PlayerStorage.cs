@@ -12,7 +12,7 @@ namespace VikingEngine.LootFest.Players
     /// <summary>
     /// Saved data connected to a gamer, used in all worlds
     /// </summary>
-    class PlayerStorage
+    public class PlayerStorage
     {
         //PROGRESS
         public int StorageGroupIx;
@@ -562,7 +562,7 @@ namespace VikingEngine.LootFest.Players
         }
     }
 
-    class CompletedLevel
+    public class CompletedLevel
     {
         public bool completed;
         public bool unlocked;
@@ -586,7 +586,7 @@ namespace VikingEngine.LootFest.Players
         }
     }
 
-    struct PlayerCurrentLevelStatus
+    public struct PlayerCurrentLevelStatus
     {
         public bool CorrectlyLoaded;
         public  VikingEngine.LootFest.BlockMap.LevelEnum continueLevel;
@@ -643,7 +643,7 @@ namespace VikingEngine.LootFest.Players
         }
     }
 
-    struct SuitAppearance
+    public struct SuitAppearance
     {
         public Players.BeardType beard;
         public Players.HatType hat;
@@ -709,8 +709,8 @@ namespace VikingEngine.LootFest.Players
         }
     }
 
-    
-    enum ClientPermissions
+
+    public enum ClientPermissions
     {
         Error,
         Build,

@@ -114,7 +114,7 @@ namespace VikingEngine.Graphics
     /// <summary>
     /// The main component in charge of displaying particles.
     /// </summary>
-    abstract class AbsParticleSystem
+    public abstract class AbsParticleSystem
     {
         #region Fields
 

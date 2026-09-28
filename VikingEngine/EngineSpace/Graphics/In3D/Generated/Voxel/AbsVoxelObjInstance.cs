@@ -7,7 +7,7 @@ using VikingEngine.EngineSpace.Graphics.DrawProcess;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsVoxelModelInstance : AbsVoxelObj
+    public abstract class AbsVoxelModelInstance : AbsVoxelObj
     {
         /* Properties */
         public override Color Color

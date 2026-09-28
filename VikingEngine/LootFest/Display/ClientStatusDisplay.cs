@@ -6,7 +6,7 @@ using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.LootFest.Display
 {
-    class ClientStatusDisplay
+    public class ClientStatusDisplay
     {
         /* Fields */
         public Graphics.Image bg; 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest.GO.Magic
 {
-    static class MagicLib
+    public static class MagicLib
     {
         //public static Dictionary<Gadgets.GoodsType, MagicElement> GemToMagic;
         //public static readonly List<Gadgets.GoodsType> GemTypes = new List<Gadgets.GoodsType> 
@@ -216,7 +216,7 @@ namespace VikingEngine.LootFest.GO.Magic
         //    return MagicElement.NoMagic;
         //}
     }
-    enum MagicElement
+    public enum MagicElement
     {
         NoMagic,
         Fire,
@@ -228,13 +228,13 @@ namespace VikingEngine.LootFest.GO.Magic
         
     }
 
-    enum MagicUnderType
+    public enum MagicUnderType
     {
         WiseLadyAttack,
         NUM_NON,
     }
 
-    enum MagicRingSkill
+    public enum MagicRingSkill
     {
         NO_SKILL,
         Recylcling_bowman, //percent chance that the arrows will reappear after use

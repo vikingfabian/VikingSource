@@ -8,7 +8,7 @@ namespace VikingEngine.Graphics
     /// <summary>
     /// Keeps a list of images and render them in a restricted area, with the help of a rendertarget
     /// </summary>
-    class RenderTargetDrawContainer : RenderTargetImage, IDrawContainer, IRenderTargetContainer
+    public class RenderTargetDrawContainer : RenderTargetImage, IDrawContainer, IRenderTargetContainer
     {
         public List<Graphics.AbsDraw> renderList;
         public bool alwaysRedraw = false;

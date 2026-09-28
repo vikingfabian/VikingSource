@@ -9,7 +9,7 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.LootFest.GO
 {
-    abstract class AbsVoxelObj : AbsUpdateObj
+    public abstract class AbsVoxelObj : AbsUpdateObj
     {
         /* Static readonlies */
         //protected static readonly Data.TempVoxelReplacementSett TempSwordImage = new Data.TempVoxelReplacementSett(VoxelModelName.Sword1, false);

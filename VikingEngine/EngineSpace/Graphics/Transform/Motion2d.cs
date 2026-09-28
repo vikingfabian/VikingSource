@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace VikingEngine.Graphics
 {
-    class Motion2d : AbsMotion
+    public class Motion2d : AbsMotion
     {
         AbsDraw2D image;
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.Graphics
 {
-    struct Sprite
+    public struct Sprite
     {
 
         public Rectangle Source;

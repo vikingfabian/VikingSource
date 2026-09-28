@@ -6,7 +6,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.Voxels
 {
-    abstract class AbsVoxelObjDataAnimHD
+    public abstract class AbsVoxelObjDataAnimHD
     {
         public List<VoxelObjGridDataHD> Frames;
 
@@ -105,7 +105,7 @@ namespace VikingEngine.Voxels
         }
     }
 
-    class VoxelObjGridDataAnimHD : AbsVoxelObjDataAnimHD
+    public class VoxelObjGridDataAnimHD : AbsVoxelObjDataAnimHD
     {
         public VoxelObjGridDataAnimHD()
         { }
