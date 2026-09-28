@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
     class MapEditorPlayer : Players.LocalPlayer
     {
         public static List<MenuTab> EditorCityTabs = new List<MenuTab> { MenuTab.Info, MenuTab.Build };
-        DetailEditorDisplay display;
+        public DetailEditorDisplay display;
         InfoDisplay infoDisplay;
         public MapEditorPlayer(Faction faction)
             : base(faction, true)
@@ -21,10 +21,15 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             
         }
 
+        public void onEditorStart()
+        { 
+             gameControls.build.editorTool = new DetailEditorTool((MapEditorPlayState)DssRef.state);
+        }
+
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
-            gameControls.build.editorTool = new DetailEditorTool();
+           
         }
 
         public override bool updateObjectDisplay()

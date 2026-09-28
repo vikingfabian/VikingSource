@@ -42,6 +42,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Vector2 controllerPointer_storedPos_defaultObject;
         Vector2 controllerPointer_storedPos_faction;
         Vector2 controllerPointer_storedPos_diplomacy;
+
+        public bool editorBuildMode = false;
        
         public GameControls(LocalPlayer player, InputMap input)
         {
@@ -1223,6 +1225,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         public bool InBuildOrdersMode(bool includeZoomLevel = true)
         {
+            if (editorBuildMode)
+            {
+                return true;
+            }
+
             return player.cityTab == MenuTab.Build &&
                 map.selection.obj != null &&
                 map.selection.obj.gameobjectType() == GameObjectType.City &&

@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
     class MapEditorPlayState : AbsPlayState
     {
         //bool isReady = false;
-
+        public MapEditorPlayer player;
         public MapEditorPlayState()
             : base()
         {
@@ -90,7 +90,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
 
         virtual protected LocalPlayer createLocalPlayer(Faction faction)
         {
-            return new MapEditorPlayer(faction);
+            player = new MapEditorPlayer(faction);
+            return player;
         }
 
         virtual protected void initScenario()
@@ -107,6 +108,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             {
                 m.onEditorStart();
             }
+
+            EditorPlayer().onEditorStart();
 
             isReady = true;
         }
@@ -281,6 +284,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
         public override int PathThreadCount()
         {
             return 1;
+        }
+
+        public MapEditorPlayer EditorPlayer()
+        { 
+            return (MapEditorPlayer)localPlayers[0];
         }
     }
 }
