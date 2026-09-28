@@ -1036,6 +1036,11 @@ namespace VikingEngine.DSSWars
                     managementName = ".Max worker count";
                     break;
 
+                case ResourceManagementType.Delivery:
+                    managementIcon = SpriteName.WarsDelivery;
+                    managementName = DssRef.lang.MenuTab_Delivery;
+                    break;
+
                 //case ResourceManagementType.Auto:
                 //    categoryIcon = SpriteName.MissingImage; // Assumed icon for Auto
                 //    category = ".Auto"; // Placeholder or DssRef.lang.Auto

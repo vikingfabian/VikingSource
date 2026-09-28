@@ -81,8 +81,8 @@ namespace VikingEngine.DSSWars
         public static readonly Color GodPower_ColorBg = new Color(80, 0, 80);//(R:139,G:0,B:139,A:255)
         public static readonly Color GodPower_Color = Color.LightPink;
 
-        public static readonly Color ColFilterSelected = ColorExt.AlmostWhite;
-        public static readonly Color ColFilterUnSelected = Color.Gray;
+        public static readonly Color ColFilterSelected = ColorExt.GrayScale(0.8f);//ColorExt.AlmostWhite;
+        public static readonly Color ColFilterUnSelected = ColorExt.GrayScale(0.5f);
 
 
         public const ImageLayers PopMenuLayer = ImageLayers.Lay5_Back;
@@ -210,6 +210,10 @@ namespace VikingEngine.DSSWars
             RbSettings.artSubTabTex = new NineSplitSettings(SpriteName.WarsHudSubTabSelected, 1, 8, nineTextureEdge, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudSubTabNotSelected,
+            };
+            RbSettings.artFilterButtonTex = new NineSplitSettings(SpriteName.WarsHudFilterButtonSelected, 1, 12, nineTextureEdge, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudFilterButton,
             };
 
             PopMenuButtonTexture = new HUD.NineSplitSettings(SpriteName.WarsHudPopUpButton, 1, 8, nineTextureEdge, true, true);

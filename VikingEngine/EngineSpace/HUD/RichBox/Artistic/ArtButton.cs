@@ -29,6 +29,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
         SubTabSelected,
         SubTabNotSelected,
         HoverArea,
+
+        Filter,
+        FilterSelected,
     }
 
     class ArtButton : AbsRbButton
@@ -110,6 +113,12 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.HoverArea:
                     textureSett = group.settings.artHoverAreaTex;
+                    break;
+                case RbButtonStyle.FilterSelected:
+                    textureSett = group.settings.artFilterButtonTex;
+                    break;
+                case RbButtonStyle.Filter:
+                    textureSett = group.settings.artFilterButtonTex.Selected(false);
                     break;
             }
             texture = new HUD.NineSplitAreaTexture(textureSett.Enabled(enabled), area, layer + 1);

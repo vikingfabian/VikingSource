@@ -928,7 +928,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                     IconName.Tab(group, out SpriteName groupIcon, out string groupName);
                     //var tab = new ResourcesSubTab(managementType, group);
-                    content.Add(new RbButton(
+                    content.Add(new ArtButton(group == player.resourcesSubTab.resourceGroup ? RbButtonStyle.FilterSelected : RbButtonStyle.Filter,
                         new List<AbsRichBoxMember> { new RbImage(groupIcon) },
                         new RbAction1Arg<ResourceGroupType>((ResourceGroupType selected) =>
                         {
@@ -936,8 +936,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                         }, group, RbSoundType.Option),
                         new RbTooltip(resourceGroupToolTip, group),
-                        true,
-                        group == player.resourcesSubTab.resourceGroup ? HudLib.ColFilterSelected : HudLib.ColFilterUnSelected));
+                        true));
                 }
                 content.newParagraph();
             }
@@ -962,6 +961,11 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 case ResourceManagementType.Stockpile:
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     new StockPileMenu(content, city, city.pfaction.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
+                    break;
+                
+                case ResourceManagementType.Delivery:
+                    content.h2(DssRef.lang.MenuTab_Delivery, HudLib.TitleColor_Head);
+                    new DeliveryRequestMenu(content, city, city.pfaction.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
                     break;
             }
 

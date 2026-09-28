@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Work
 {
     class WorkerLimitMenu
     {
-        static readonly List<float> DragButtonOptions = new List<float> { 10, 100/*, 1000*/ };
+        static readonly List<float> DragButtonOptions = new List<float> { 10, 100 };
 
         const int MinLimit = 1;
         const int MaxLimit = 10_000;
@@ -40,82 +40,84 @@ namespace VikingEngine.DSSWars.Work
 
                 IconName.Item(item, out SpriteName itemIcon, out string itemName);
                 WorkPriority workPriority;
-                content.newLine();
 
+                if (item == ItemResourceType.Food_G)
+                {
+                    lib.DoNothing();
+                }
                 //GroupedResource groupedResource;
-                var workPriorityType = ItemPropertyColl.Get(item).work;
-                BoolGetSet_Tag useLimitProperty;
-                
-                if (city != null)
+                var itemp = ItemPropertyColl.Get(item);
+                listWork(itemp.work1);
+                listWork(itemp.work2);
+
+
+                void listWork( WorkPriorityType workPriorityType)
                 {
-                    //groupedResource = city.GetGroupedResource(item);
-                    workPriority = city.workTemplate.Get(workPriorityType);
-
-                    useLimitProperty = (object tag, bool set, bool value) =>
+                    if (workPriorityType != WorkPriorityType.NUM_NONE)
                     {
-                        var res = city.workTemplate.Get(workPriorityType);
+                        content.newLine();
+                        BoolGetSet_Tag useLimitProperty;
 
-                        if (set)
+                        if (city != null)
                         {
-                            res.useWorkerCountLimit = value;
+                            //groupedResource = city.GetGroupedResource(item);
+                            workPriority = city.workTemplate.Get(workPriorityType);
 
-                            city.workTemplate.SetWorkPriority(item, res);
+                            useLimitProperty = (object tag, bool set, bool value) =>
+                            {
+                                var res = city.workTemplate.Get(workPriorityType);
+
+                                if (set)
+                                {
+                                    res.useWorkerCountLimit = value;
+
+                                    city.workTemplate.Set(workPriorityType, res);
+                                }
+                                return res.useWorkerCountLimit;
+                            };
                         }
-                        return res.useWorkerCountLimit;
-                    };
-                }
-                else
-                {
-                    //groupedResource = faction.GetRefResourceOverview(item);
-                    workPriority = faction.workTemplate.Get(workPriorityType);
-
-                    useLimitProperty = (object tag, bool set, bool value) =>
-                    {
-                        var res = faction.workTemplate.Get(workPriorityType);
-
-                        if (set)
+                        else
                         {
-                            res.useWorkerCountLimit = value;
+                            //groupedResource = faction.GetRefResourceOverview(item);
+                            workPriority = faction.workTemplate.Get(workPriorityType);
 
-                            faction.workTemplate.SetWorkPriority(item, res);
+                            useLimitProperty = (object tag, bool set, bool value) =>
+                            {
+                                var res = faction.workTemplate.Get(workPriorityType);
+
+                                if (set)
+                                {
+                                    res.useWorkerCountLimit = value;
+
+                                    faction.workTemplate.Set(workPriorityType, res);
+                                }
+                                return res.useWorkerCountLimit;
+                            };
                         }
-                        return res.useWorkerCountLimit;
-                    };
-                }
 
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                 new RbImage(itemIcon),
                 new RbSpace(0.5f),
                 new RbImage(SpriteName.WarsIcon_WorkQueueTotal) },
-                    useLimitProperty, new RbTooltip((RichBoxContent content, object tag) => {
-                        content.h1(".Max worker count", HudLib.TitleColor_Head);
-                        content.text("Limit how many workers who will do the same task.");
+                            useLimitProperty, new RbTooltip((RichBoxContent content, object tag) =>
+                            {
+                                content.h1(".Max worker count", HudLib.TitleColor_Head);
+                                content.text("Limit how many workers who will do the same task.");
 
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        ResourceLib.FullResourceInfo(faction, city, item, content);
-                    })));
+                                content.newParagraph();
+                                content.Add(new RbSeperationLine());
+                                ResourceLib.FullResourceInfo(faction, city, item, content);
+                            })));
 
-                if (workPriority.useWorkerCountLimit)
-                {
-                    workCountEdit(content, workPriorityType, workPriority);
-                }
-                else
-                {
-                    content.Add(new RbText(DssRef.lang.Hud_NoLimit));
-                    //List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(2);
-                    //IconName.Storage(ItemPropertyColl.Get(item).storageType, out SpriteName storageIcon, out string storageName);
-                    //buttonContent.Add(new RbImage(storageIcon));
-                    //buttonContent.Add(new RbSpace());
-                    //if (city == null)
-                    //{
-                    //    buttonContent.Add(new RbText(DssRef.lang.Hud_Maximum));
-                    //}
-                    //else
-                    //{
-                    //    buttonContent.Add(new RbText(groupedResource.capacity.ToString()));
-                    //}
-                    //content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null, new RbTooltip_Text(storageName)));
+                        if (workPriority.useWorkerCountLimit)
+                        {
+                            workCountEdit(content, workPriorityType, workPriority);
+                        }
+                        else
+                        {
+                            content.Add(new RbText(DssRef.lang.Hud_NoLimit));
+                        }
+                    }
                 }
 
             }

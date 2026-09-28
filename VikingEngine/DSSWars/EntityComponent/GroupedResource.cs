@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public bool useStockLimit;
 
-       
+        public bool requestDelivery;
 
         /// <summary>
         /// Player set limit

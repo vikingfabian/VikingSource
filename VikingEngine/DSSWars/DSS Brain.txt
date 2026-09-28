@@ -1,7 +1,7 @@
 
 Change log:
 * Compressed the size of resources
-X Worker count limit to better control the flow of work
+
 
 KNOWN ISSUES
 x reassign dont work with controller
@@ -14,6 +14,13 @@ x adjust "all facts"
 * Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
 * Truce timer is pinned to hud
 
+Worker count limit
+* Made to better control the flow of work
+! Prototype: ui be improved if it works
+
+Delivery request
+* Affects any auto delivery (auto city or auto item)
+! Prototype: ui be improved if it works
 
 Soldier abilities
 * Added a parry system. Weapons with high parry will block melee attacks from those with low.

@@ -2491,6 +2491,8 @@ namespace VikingEngine
         WarsHudListArrowNotSelected,
         WarsHudGoldOutline,
         WarsHudGoldOutline_Gray,
+        WarsHudFilterButtonSelected,
+        WarsHudFilterButton,
 
         WarsHudIconExit,
         WarsHudIconSettings,

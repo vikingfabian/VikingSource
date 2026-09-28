@@ -268,7 +268,7 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority GetWorkPriority(ItemResourceType item, out bool hasPriority, out WorkPriorityType priorityType)
         {
             
-            priorityType = ItemPropertyColl.Get(item).work;
+            priorityType = ItemPropertyColl.Get(item).work1;
             if (priorityType == WorkPriorityType.NUM_NONE)
             {
                 hasPriority = false;
@@ -289,195 +289,15 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority Get(WorkPriorityType priorityType)
         {
             return Work()[workComponentStartIndex + (int)priorityType];
-            //switch (priorityType)
-            //{
-            //    case WorkPriorityType.move:
-            //        return move;
-            //    case WorkPriorityType.wood:
-            //        return wood;
-            //    case WorkPriorityType.stone:
-            //        return stone;
-            //    case WorkPriorityType.craftFuel:
-            //        return craft_fuel;
-            //    case WorkPriorityType.craftFood:
-            //        return craft_food;
-            //    case WorkPriorityType.craftBeer:
-            //        return craft_beer;
-            //    case WorkPriorityType.craftCoolingFluid:
-            //        return craft_coolingfluid;
-
-            //    case WorkPriorityType.smeltIron:
-            //        return craft_iron;
-            //    case WorkPriorityType.smeltTin:
-            //        return craft_tin;
-            //    case WorkPriorityType.smeltCopper:
-            //        return craft_cupper;
-            //    case WorkPriorityType.smeltLead:
-            //        return craft_lead;
-            //    case WorkPriorityType.smeltSilver:
-            //        return craft_silver;
-            //    case WorkPriorityType.craftBronze:
-            //        return craft_bronze;
-            //    case WorkPriorityType.craftCastIron:
-            //        return craft_castiron;
-            //    case WorkPriorityType.craftBloomeryIron:
-            //        return craft_bloomeryiron;
-            //    case WorkPriorityType.craftSteel:
-            //        return craft_steel;
-            //    case WorkPriorityType.craftMithril:
-            //        return craft_mithril;
-
-            //    case WorkPriorityType.craftPalisade:
-            //        return craft_palisade;
-            //    case WorkPriorityType.craftToolkit:
-            //        return craft_toolkit;
-            //    case WorkPriorityType.craftWagon2Wheel:
-            //        return craft_wagonlight;
-            //    case WorkPriorityType.craftWagon4Wheel:
-            //        return craft_wagonheavy;
-            //    case WorkPriorityType.craftBlackPowder:
-            //        return craft_blackpowder;
-            //    case WorkPriorityType.craftGunPowder:
-            //        return craft_gunpowder;
-            //    case WorkPriorityType.craftBullet:
-            //        return craft_bullet;
-
-            //    case WorkPriorityType.craftSharpStick:
-            //        return craft_sharpstick;
-            //    case WorkPriorityType.craftBronzeSword:
-            //        return craft_bronzesword;
-            //    case WorkPriorityType.craftShortSword:
-            //        return craft_shortsword;
-            //    case WorkPriorityType.craftSword:
-            //        return craft_sword;
-            //    case WorkPriorityType.craftLongSword:
-            //        return craft_longsword;
-            //    case WorkPriorityType.craftHandSpear:
-            //        return craft_handspear;
-
-            //    case WorkPriorityType.craftWarhammer:
-            //        return craft_warhammer;
-            //    case WorkPriorityType.craftTwoHandSword:
-            //        return craft_twohandsword;
-            //    case WorkPriorityType.craftKnightsLance:
-            //        return craft_knightslance;
-            //    case WorkPriorityType.craftMithrilSword:
-            //        return craft_mithrilsword;
-            //    case WorkPriorityType.craftMithrilbow:
-            //        return craft_mithrilbow;
-
-            //    case WorkPriorityType.craftSlingshot:
-            //        return craft_slingshot;
-            //    case WorkPriorityType.craftThrowingspear:
-            //        return craft_throwingspear;
-            //    case WorkPriorityType.craftBow:
-            //        return craft_bow;
-            //    case WorkPriorityType.craftLongbow:
-            //        return craft_longbow;
-            //    case WorkPriorityType.craftCrossbow:
-            //        return craft_crossbow;
-
-            //    case WorkPriorityType.craftHandCannon:
-            //        return craft_handcannon;
-            //    case WorkPriorityType.craftHandCulverin:
-            //        return craft_handculverin;
-            //    case WorkPriorityType.craftRifle:
-            //        return craft_rifle;
-            //    case WorkPriorityType.craftBlunderbuss:
-            //        return craft_blunderbus;
-
-            //    case WorkPriorityType.craftBallista:
-            //        return craft_ballista;
-            //    case WorkPriorityType.craftManuBallista:
-            //        return craft_manuballista;
-            //    case WorkPriorityType.craftCatapult:
-            //        return craft_catapult;
-            //    case WorkPriorityType.craftBatteringRam:
-            //        return craft_batteringram;
-
-            //    case WorkPriorityType.craftSiegeCannonBronze:
-            //        return craft_siegecannonbronze;
-            //    case WorkPriorityType.craftManCannonBronze:
-            //        return craft_mancannonbronze;
-            //    case WorkPriorityType.craftSiegeCannonIron:
-            //        return craft_siegecannoniron;
-            //    case WorkPriorityType.craftManCannonIron:
-            //        return craft_mancannoniron;
-
-            //    case WorkPriorityType.craftPaddedArmor:
-            //        return craft_paddedarmor;
-            //    case WorkPriorityType.craftHeavyPaddedArmor:
-            //        return craft_heavypaddedarmor;
-            //    case WorkPriorityType.craftBronzeArmor:
-            //        return craft_bronzearmor;
-            //    case WorkPriorityType.craftMailArmor:
-            //        return craft_mailarmor;
-            //    case WorkPriorityType.craftHeavyMailArmor:
-            //        return craft_heavymailarmor;
-            //    case WorkPriorityType.craftPlateArmor:
-            //        return craft_platearmor;
-            //    case WorkPriorityType.craftFullPlateArmor:
-            //        return craft_fullplatearmor;
-            //    case WorkPriorityType.craftMithrilArmor:
-            //        return craft_mithrilarmor;
-
-            //    case WorkPriorityType.farmfood:
-            //        return farm_food;
-            //    case WorkPriorityType.farmfuel:
-            //        return farm_fuel;
-            //    case WorkPriorityType.farmlinen:
-            //        return farm_linen;
-
-            //    case WorkPriorityType.bogiron:
-            //        return bogiron;
-
-            //    case WorkPriorityType.miningIron:
-            //        return mining_iron;
-            //    case WorkPriorityType.miningTin:
-            //        return mining_tin;
-            //    case WorkPriorityType.miningCopper:
-            //        return mining_copper;
-            //    case WorkPriorityType.miningLead:
-            //        return mining_lead;
-            //    case WorkPriorityType.miningSilver:
-            //        return mining_silver;
-            //    case WorkPriorityType.miningGold:
-            //        return mining_gold;
-            //    case WorkPriorityType.miningMithril:
-            //        return mining_mithril;
-            //    case WorkPriorityType.miningSulfur:
-            //        return mining_sulfur;
-            //    case WorkPriorityType.miningCoal:
-            //        return mining_coal;
-
-            //    case WorkPriorityType.trading:
-            //        return trading;
-            //    case WorkPriorityType.autoBuild:
-            //        return autoBuild;
-            //    case WorkPriorityType.buildOrders:
-            //        return buildOrder;
-            //    case WorkPriorityType.expandFarms:
-            //        return expandFarms;
-            //    case WorkPriorityType.smeltGold:
-            //        return smeltgold;
-
-            //    case WorkPriorityType.coinmaker_copper:
-            //        return coinmaker_copper;
-            //    case WorkPriorityType.coinmaker_bronze:
-            //        return coinmaker_bronze;
-            //    case WorkPriorityType.coinmaker_silver:
-            //        return coinmaker_silver;
-            //    case WorkPriorityType.coinmaker_mithril:
-            //        return coinmaker_mithril;
-
-            //    default:
-            //        throw new NotImplementedException();
-            //}
+        }
+        public void Set(WorkPriorityType priorityType, WorkPriority work)
+        {
+            Work()[workComponentStartIndex + (int)priorityType] = work;
         }
 
         public void SetWorkPriority(ItemResourceType item, WorkPriority work)
         {
-            var priorityType = ItemPropertyColl.Get(item).work;
+            var priorityType = ItemPropertyColl.Get(item).work1;
             if (priorityType != WorkPriorityType.NUM_NONE)
             {
                 Work()[workComponentStartIndex + (int)priorityType] = work;

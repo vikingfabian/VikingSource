@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.SoftWood, CityResourceIndex.wood, 1f / 30, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.DryWood, CityResourceIndex.wood, 1f / 60, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
 
-            new ItemProperties(ItemResourceType.Wood_Group, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
+            new ItemProperties(ItemResourceType.Wood_Group, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.wood, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
             new ItemProperties(ItemResourceType.Clay, CityResourceIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.ClayPit));
 
             // basic resources
@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Fuel_G, CityResourceIndex.fuel, DefaultWeight, WorkPriorityType.craftFuel, CraftResourceLib.Fuel1, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.CoalPit), new ItemSource(Map.TerrainMineType.Coal));
             new ItemProperties(ItemResourceType.Coal, CityResourceIndex.fuel, DefaultWeight, WorkPriorityType.miningCoal, CraftResourceLib.Charcoal, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Salt, CityResourceIndex.Salt, DefaultWeight, WorkPriorityType.miningSalt, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.Salt), new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.DryingPan));
-            new ItemProperties(ItemResourceType.Food_G, CityResourceIndex.food, 1f / CarryFood, WorkPriorityType.craftFood, CraftResourceLib.Food1, CraftResourceLib.Food2, StorageType.FoodStorage).AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OrchardApple));
+            new ItemProperties(ItemResourceType.Food_G, CityResourceIndex.food, 1f / CarryFood, WorkPriorityType.farmFood, CraftResourceLib.Food1, CraftResourceLib.Food2, StorageType.FoodStorage) { work2 = WorkPriorityType.craftFood }.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OrchardApple));
             new ItemProperties(ItemResourceType.ConservedFood, CityResourceIndex.ConservedFood, 1f / CarryConservedFood, WorkPriorityType.craftConservedFood, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked, StorageType.FoodStorage).AddItemSource(new ItemSource(Build.BuildAndExpandType.Cook), new ItemSource(Build.BuildAndExpandType.Smoker), new ItemSource(Build.BuildAndExpandType.Dryer));
             new ItemProperties(ItemResourceType.Beer, CityResourceIndex.beer, DefaultWeight, WorkPriorityType.craftBeer, CraftResourceLib.Beer, null, StorageType.FoodStorage);
             new ItemProperties(ItemResourceType.CoolingFluid, CityResourceIndex.coolingfluid, DefaultWeight, WorkPriorityType.craftCoolingFluid, CraftResourceLib.CoolingFluid, null, StorageType.MaterialStorage);

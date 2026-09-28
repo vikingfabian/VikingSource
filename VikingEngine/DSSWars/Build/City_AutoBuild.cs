@@ -829,9 +829,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                 ItemProperties properties = ItemPropertyColl.Get(item);
 
-                if (properties.work != WorkPriorityType.NUM_NONE)
+                if (properties.work1 != WorkPriorityType.NUM_NONE)
                 {
-                    if (workTemplate.Get(properties.work).value == WorkTemplate.NoPrio)
+                    if (workTemplate.Get(properties.work1).value == WorkTemplate.NoPrio)
                     {
                         return false;
                     }

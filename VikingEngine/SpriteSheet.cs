@@ -504,6 +504,9 @@ namespace VikingEngine
                 add(SpriteName.EditorToolOptionAdd);
                 add(SpriteName.EditorToolOptionRemove);
                 add(SpriteName.EditorToolOptionToggle);
+
+                add(SpriteName.WarsHudFilterButtonSelected);
+                add(SpriteName.WarsHudFilterButton);
             }
 
             //BIRD TILES

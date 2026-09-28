@@ -597,7 +597,7 @@ namespace VikingEngine.DSSWars.Delivery
                         content.newLine();
                         HudLib.BulletPoint(content);
                         var text = new RbText(DssRef.lang.Delivery_ItemsReady);
-                        bool ready = isSending || currentStatus.CanSend(city, out currentStatus.inProgress.type);
+                        bool ready = isSending || currentStatus.CanSend_CheckMinMax(city, out currentStatus.inProgress.type);
                         text.overrideColor = ready ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
 

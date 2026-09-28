@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                 if (status.que > 0 &&
                                     status.profile.toCity > 0 &&
-                                    status.CanSend(this, out ItemResourceType sendItem))
+                                    status.CanSend_CheckMinMax(this, out ItemResourceType sendItem))
                                 {
                                     City othercity = findOtherCity(sendItem, ref status);
 

@@ -303,6 +303,9 @@ namespace VikingEngine.DSSWars
                 case Resource.ResourceManagementType.Stockpile:
                     tab_stockpile.Play();
                     break;
+                case Resource.ResourceManagementType.Delivery:
+                    tab_delivery.Play();
+                    break;
 
             }
         }

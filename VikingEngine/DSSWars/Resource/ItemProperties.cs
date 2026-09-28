@@ -28,7 +28,9 @@ namespace VikingEngine.DSSWars.Resource
         /// </summary>
         public float weight;
         public int carryCount;
-        public WorkPriorityType work;
+        public WorkPriorityType work1;
+        public WorkPriorityType work2 = WorkPriorityType.NUM_NONE;
+
         public CraftBlueprint bp1;
         public CraftBlueprint bp2;
         public StorageType storageType;
@@ -59,7 +61,7 @@ namespace VikingEngine.DSSWars.Resource
             {
                 this.carryCount = MathExt.DivideInt(1.0, weight);
             }
-            this.work = work;
+            this.work1 = work;
             this.bp1 = bp1;
             this.bp2 = bp2;
             this.storageType = storageType;
