@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.GameState
                         Ref.netsett.settingsHasChanged = false;
                         DssRef.storage.Save(null);
                     }
-                    menuSystem.closeMenu();
+                    menuSystem.CloseMenu();
                     blockInput = true;
                 }
 
