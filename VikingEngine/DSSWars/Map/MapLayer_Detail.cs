@@ -93,7 +93,9 @@ namespace VikingEngine.DSSWars.Map
         public void drawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
             shader.CurrentTechnique = shader.Techniques["RenderVertexColorTexture"];
-            shader.Parameters["Texture"]?.SetValue(Engine.LoadContent.Texture(LoadedTexture.SpriteSheet));
+            var spriteSheet = Engine.LoadContent.Texture(LoadedTexture.SpriteSheet);
+            shader.Parameters["Texture"]?.SetValue(spriteSheet);
+            shader.Parameters["TerrainTexture"]?.SetValue(spriteSheet);
 
             var tilesC = tiles.counter();
             while (tilesC.Next())
