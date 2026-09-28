@@ -54,6 +54,8 @@ namespace VikingEngine.Engine
        
         public static void Init()
         {
+            LoadContent.WarmupDefaultEffects(graphicsDeviceManager.GraphicsDevice);
+
             //Set the technique names
             //Graphics.TextureEffectLib.Init();
 
