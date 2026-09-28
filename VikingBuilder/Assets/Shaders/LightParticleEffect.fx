@@ -2,15 +2,7 @@
 // LightParticleEffect.fx
 //-----------------------------------------------------------------------------
 
-	#if OPENGL
-	#define SV_POSITION POSITION
-	#define VS_SHADERMODEL vs_3_0
-	#define PS_SHADERMODEL ps_3_0
-	#else
-	#define VS_SHADERMODEL vs_4_0_level_9_1
-	#define PS_SHADERMODEL ps_4_0_level_9_1
-	#endif
-
+	#include "VikingMacros.fxh"
 
 #define DepthColor 0.01
 
@@ -42,32 +34,70 @@ float2 EndSize;
 
 
 // Particle texture and sampler.
-texture Texture;
+#if OPENGL
 
+texture Texture;
 sampler Sampler = sampler_state
 {
     Texture = (Texture);
-    
     MinFilter = Linear;
     MagFilter = Linear;
     MipFilter = Point;
-    
     AddressU = Clamp;
     AddressV = Clamp;
 };
-
-
-//texture SceneMap;
-//sampler SceneMapSampler = sampler_state
-//{
-//	texture = <SceneMap>;	
-//};
+#define SAMPLE_PARTICLE_TEX(coords) tex2D(Sampler, coords)
 
 texture DepthMap;
 sampler DepthMapSampler = sampler_state 
 {
     texture = <DepthMap>;    
 };
+#define SAMPLE_DEPTHMAP(coords) tex2D(DepthMapSampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> Texture : register(t0);
+sampler Sampler : register(s0) = sampler_state
+{
+    Texture = (Texture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Point;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_PARTICLE_TEX(coords) Texture.Sample(Sampler, coords)
+
+Texture2D<float4> DepthMap : register(t1);
+sampler DepthMapSampler : register(s1) = sampler_state 
+{
+    Texture = (DepthMap);    
+};
+#define SAMPLE_DEPTHMAP(coords) DepthMap.Sample(DepthMapSampler, coords)
+
+#else
+
+Texture2D Texture : register(t0);
+sampler Sampler : register(s0) = sampler_state
+{
+    Texture = (Texture);
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Point;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_PARTICLE_TEX(coords) Texture.Sample(Sampler, coords)
+
+Texture2D DepthMap : register(t1);
+sampler DepthMapSampler : register(s1) = sampler_state 
+{
+    Texture = (DepthMap);    
+};
+#define SAMPLE_DEPTHMAP(coords) DepthMap.Sample(DepthMapSampler, coords)
+
+#endif
 
 // Vertex shader input structure describes the start position and
 // velocity of the particle, and the time at which it was created,
@@ -84,7 +114,7 @@ struct VertexShaderInput
 // Vertex shader output structure specifies the position and color of the particle.
 struct VertexShaderOutput
 {
-    float4 Position : POSITION0;
+    float4 Position : SV_Position0;
     float4 Color : COLOR0;
     float2 TextureCoordinate : COLOR1;
 	float4 ScreenPos : TEXCOORD0;
@@ -112,20 +142,20 @@ float4 Empty = float4(0,0,0,0);
 
 
 // Pixel shader for drawing particles.
-float4 ParticlePixelShader(VertexShaderOutput input) : COLOR0
+float4 ParticlePixelShader(VertexShaderOutput input) : SV_TARGET
 {
 //return  float4(0,0,0,0.3);
 
 
 
-    float4 tex = tex2D(Sampler, input.TextureCoordinate);
+    float4 tex = SAMPLE_PARTICLE_TEX(input.TextureCoordinate);
 
 	float2 depthtexCoord = input.ScreenPos.xy / input.ScreenPos.w; 
     depthtexCoord = (depthtexCoord + 1.0)/2; 
     depthtexCoord.y = 1.0 - depthtexCoord.y; 
 	
 	//float2 depthtexCoord = 1 - ((input.ScreenPos.xy / input.ScreenPos.w) + 1.0 / 2);
-	float4 depthMapCol = tex2D(DepthMapSampler, depthtexCoord);
+	float4 depthMapCol = SAMPLE_DEPTHMAP(depthtexCoord);
 	
 	//float2 depthtexSampleCoord = depthtexCoord;
 	//depthtexSampleCoord.y += 0.005;
@@ -137,7 +167,7 @@ float4 ParticlePixelShader(VertexShaderOutput input) : COLOR0
 	
 	if (tex.r * depthMapCol.a == 0 )//* depthMapCol.a
 	{
-		return Empty; //Ljusets textur t‰cker inte detta omrÂdet, snabb exit
+		return Empty; //Ljusets textur t√§cker inte detta omr√•det, snabb exit
 	}
 	//float4 depthMapCol = tex2D(DepthMapSampler, input.Position.xy);
 	float myDepth = input.ScreenPos.z * DepthColor;

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType Condition="'$(Configuration)' == 'Debug'">Exe</OutputType>
     <OutputType Condition="'$(Configuration)' != 'Debug'">WinExe</OutputType>
@@ -33,6 +33,12 @@
     <PackageReference Include="MonoGame.Runtime.Mac.Vulkan" Version="3.8.5.1" />
     <PackageReference Include="MonoGame.Runtime.Linux.Vulkan" Version="3.8.5.1" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Steamworks repo\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
+      <SetConfiguration Condition="'$(Configuration)' != 'Release'">Configuration=Windows</SetConfiguration>
+      <SetPlatform>Platform=x64</SetPlatform>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VikingEngine\VikingEngine.Core.csproj" />

@@ -1,24 +1,45 @@
-	#if OPENGL
-	#define SV_POSITION POSITION
-	#define VS_SHADERMODEL vs_3_0
-	#define PS_SHADERMODEL ps_3_0
-	#else
-	#define VS_SHADERMODEL vs_4_0_level_9_1
-	#define PS_SHADERMODEL ps_4_0_level_9_1
-	#endif
-
+	#include "VikingMacros.fxh"
 
 float4x4 WVP;
-texture cubeTexture;
 static const float invAtlasDim = 1.0 / 32.0;
 
+#if OPENGL
+
+texture cubeTexture;
 sampler TextureSampler = sampler_state
 {
     texture = <cubeTexture>;
-    mipfilter = LINEAR;
     minfilter = LINEAR;
     magfilter = LINEAR;
+    mipfilter = LINEAR;
 };
+#define SAMPLE_CUBETEXTURE(coords) tex2D(TextureSampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> cubeTexture : register(t0);
+sampler TextureSampler : register(s0) = sampler_state
+{
+    Texture = (cubeTexture);
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+};
+#define SAMPLE_CUBETEXTURE(coords) cubeTexture.Sample(TextureSampler, coords)
+
+#else
+
+Texture2D cubeTexture : register(t0);
+sampler TextureSampler : register(s0) = sampler_state
+{
+    Texture = (cubeTexture);
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+};
+#define SAMPLE_CUBETEXTURE(coords) cubeTexture.Sample(TextureSampler, coords)
+
+#endif
 
 struct GeometryVSinput
 {
@@ -35,7 +56,7 @@ struct InstanceVSinput
 
 struct InstancingVSoutput
 {
-    float4 position : POSITION0;
+    float4 position : SV_Position0;
     float4 color : COLOR0;
     float2 texCoord : TEXCOORD0;
 };
@@ -52,9 +73,9 @@ InstancingVSoutput InstancingVS(GeometryVSinput geometry,
     return output;
 }
 
-float4 InstancingPS(InstancingVSoutput input) : COLOR0
+float4 InstancingPS(InstancingVSoutput input) : SV_TARGET
 {
-    float4 src = tex2D(TextureSampler, input.texCoord);
+    float4 src = SAMPLE_CUBETEXTURE(input.texCoord);
     return lerp(src, input.color, src.a) * input.color.a;
 }
 

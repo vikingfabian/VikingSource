@@ -1,13 +1,6 @@
 //From the monogame 3d platformer
 
-#if OPENGL
-    #define SV_POSITION POSITION
-    #define VS_SHADERMODEL vs_3_0
-    #define PS_SHADERMODEL ps_3_0
-#else
-    #define VS_SHADERMODEL vs_4_0_level_9_1
-    #define PS_SHADERMODEL ps_4_0_level_9_1
-#endif
+#include "VikingMacros.fxh"
 
 // used by both shadow and shadow map
 float4x4 ModelToLight;
@@ -27,6 +20,8 @@ float EdgeFadeScale;
 
 static const int ShadowSamples = 64;
 
+#if OPENGL
+
 texture ShadowMap;
 sampler2D ShadowMapSampler = sampler_state
 {
@@ -37,6 +32,7 @@ sampler2D ShadowMapSampler = sampler_state
     AddressU = Clamp;
     AddressV = Clamp;
 };
+#define SAMPLE_SHADOWMAP(coords) tex2D(ShadowMapSampler, coords)
 
 texture Texture;
 sampler2D TextureSampler = sampler_state
@@ -47,6 +43,7 @@ sampler2D TextureSampler = sampler_state
     AddressU = Wrap;
     AddressV = Wrap;
 };
+#define SAMPLE_TEXTURE_DIFFUSE(coords) tex2D(TextureSampler, coords)
 
 // Point-filtered sampler for pixel-art sprite atlas terrain tiles
 sampler2D TerrainTextureSampler = sampler_state
@@ -58,6 +55,81 @@ sampler2D TerrainTextureSampler = sampler_state
     AddressU = Wrap;
     AddressV = Wrap;
 };
+#define SAMPLE_TERRAIN(coords) tex2D(TerrainTextureSampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> ShadowMap : register(t0);
+sampler ShadowMapSampler : register(s0) = sampler_state
+{
+    Texture = (ShadowMap);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_SHADOWMAP(coords) ShadowMap.Sample(ShadowMapSampler, coords)
+
+Texture2D<float4> Texture : register(t1);
+sampler TextureSampler : register(s1) = sampler_state
+{
+    Texture = (Texture);
+    Filter = ANISOTROPIC;
+    MaxAnisotropy = 16;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+#define SAMPLE_TEXTURE_DIFFUSE(coords) Texture.Sample(TextureSampler, coords)
+
+sampler TerrainTextureSampler : register(s2) = sampler_state
+{
+    Texture = (Texture);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+#define SAMPLE_TERRAIN(coords) Texture.Sample(TerrainTextureSampler, coords)
+
+#else
+
+Texture2D ShadowMap : register(t0);
+sampler ShadowMapSampler : register(s0) = sampler_state
+{
+    Texture = (ShadowMap);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_SHADOWMAP(coords) ShadowMap.Sample(ShadowMapSampler, coords)
+
+Texture2D Texture : register(t1);
+sampler TextureSampler : register(s1) = sampler_state
+{
+    Texture = (Texture);
+    Filter = ANISOTROPIC;
+    MaxAnisotropy = 16;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+#define SAMPLE_TEXTURE_DIFFUSE(coords) Texture.Sample(TextureSampler, coords)
+
+sampler TerrainTextureSampler : register(s2) = sampler_state
+{
+    Texture = (Texture);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+#define SAMPLE_TERRAIN(coords) Texture.Sample(TerrainTextureSampler, coords)
+
+#endif
 
 struct VSInputDepth
 {
@@ -125,7 +197,7 @@ float4 ApplyLightingModel(V2P input, float4 color)
         float2 edgeDist = min(samplePosition, 1.0 - samplePosition);
         float edgeFade = saturate(min(edgeDist.x, edgeDist.y) * EdgeFadeScale); 
         
-        float sampledDepth = tex2D(ShadowMapSampler, samplePosition).x;
+        float sampledDepth = SAMPLE_SHADOWMAP(samplePosition).x;
         if (sampledDepth < input.SMDepth)
         {
             shadowScalar -= (1.0f / ShadowSamples) * edgeFade;
@@ -160,9 +232,9 @@ V2P VShader(VSInput input)
     return output;
 }
 
-float4 PShaderTextureColor(V2P input) : COLOR
+float4 PShaderTextureColor(V2P input) : SV_TARGET
 {
-    float4 diffuse = input.Color * tex2D(TextureSampler, input.TextureCoords);
+    float4 diffuse = input.Color * SAMPLE_TEXTURE_DIFFUSE(input.TextureCoords);
     return ApplyLightingModel(input, diffuse);
 }
 
@@ -176,7 +248,7 @@ V2PDepth VSDepthMap(VSInputDepth input)
     return output;
 };
 
-float4 PSDepthMap(V2PDepth input) : COLOR
+float4 PSDepthMap(V2PDepth input) : SV_TARGET
 {
     // Add a little bias to the final depth to avoid shadow acne.
     return float4(input.Depth + 0.0015, 0, 0, 1);
@@ -215,7 +287,7 @@ V2P VShaderVertexColor(VSInputVC input)
 }
 
 // --- NEW: vertex-color PS
-float4 PShaderVertexColor(V2P input) : COLOR
+float4 PShaderVertexColor(V2P input) : SV_TARGET
 {
     // Use the interpolated vertex color as the base
     return ApplyLightingModel(input, input.Color);
@@ -279,9 +351,9 @@ V2P VShaderVertexColorTexture(VSInputVCT input)
     return output;
 }
 
-float4 PShaderVertexColorTexture(V2P input) : COLOR
+float4 PShaderVertexColorTexture(V2P input) : SV_TARGET
 {
-    float4 texCol = tex2D(TerrainTextureSampler, input.TextureCoords);
+    float4 texCol = SAMPLE_TERRAIN(input.TextureCoords);
     clip(texCol.a - 0.5f);
 
     float4 diffuse = float4(input.Color.rgb * texCol.rgb, input.Color.a * texCol.a);

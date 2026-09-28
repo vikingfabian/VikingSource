@@ -1,4 +1,4 @@
-﻿#define DSS
+#define DSS
 
 /// <summary>
 /// Entry point for the Content Builder project, 
@@ -110,6 +110,8 @@ public class Builder : ContentBuilder
         //contentCollection.Include<WildcardRule>("*.wav", new WavImporter());
         contentCollection.Exclude<WildcardRule>("Shaders/DeferredRenderer/*.*");
         contentCollection.Exclude<WildcardRule>("Shaders/Old/*.*");
+        contentCollection.Exclude<WildcardRule>("Shaders/EffectOld.fx");
+        contentCollection.Exclude<WildcardRule>("Shaders/*.fxh");
         
         contentCollection.IncludeCopy<WildcardRule>("*.vox", null);
         contentCollection.IncludeCopy<WildcardRule>("*.sav", null);
