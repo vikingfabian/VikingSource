@@ -1427,11 +1427,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 foreach (var m in blueprint.resources)
                 {
-                    if (m.type == ItemResourceType.Water_G)
-                    {
-                        res_water.reserve(m.amount);
-                    }
-                    else
+                    if (this.IsGroupedResource(m.type))
                     {
                         this.GetRefGroupedResource(m.type).reserve(m.amount);
                     }
@@ -1442,11 +1438,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             foreach (var m in blueprint.resources)
             {
-                if (m.type == ItemResourceType.Water_G)
-                {
-                    res_water.unreserve(m.amount);
-                }
-                else
+                if (this.IsGroupedResource(m.type))
                 {
                     this.GetRefGroupedResource(m.type).unreserve(m.amount);
                 }
