@@ -711,10 +711,6 @@ namespace VikingEngine.DSSWars.Build
                     }
 
                    
-
-                    
-
-
                     content.newParagraph();
                     autoBuildButton(content, DssRef.lang.Build_AutoPlace, 1, buildOpt);
                     if (buildOpt != null && !buildOpt.uniqueBuilding)
@@ -893,7 +889,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(LangLib.Filter(tag)) },
                         new RbAction1Arg<BuildFilterTag>((BuildFilterTag tag) => { player.buildFilterTag = tag; }, tag),
-                        null, true, player.buildFilterTag == tag ? Color.White : Color.Gray));
+                        null, true, player.buildFilterTag == tag ? HudLib.ColFilterSelected : HudLib.ColFilterUnSelected));
                 }
             }
             content.Add(new RichBoxScale(2.1f));

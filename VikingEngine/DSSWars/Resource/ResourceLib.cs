@@ -718,6 +718,37 @@ namespace VikingEngine.DSSWars.Resource
         WorkPrio,
         WorkCount,
         Stockpile,
+        Delivery,
         Auto,
+    }
+
+    enum ResourceFilterTag
+    { 
+        All,
+
+        General,
+        Base,
+        Food,
+        Tech,
+        
+        Metals,
+        Ore,
+        PureMetals,
+
+        Weapons,
+        Shields,
+        Melee,
+        Ranged,
+        Warmachine,
+        Gun,
+
+        Armor,
+        ManArmor,
+        AnimalArmor,
+
+        Animals,
+
+        Mint,
+        NUM,
     }
 }
