@@ -312,9 +312,19 @@ namespace VikingEngine.Graphics
         private readonly List<FrameGroup> _frameGroups = new List<FrameGroup>(8);
         private readonly Dictionary<int, List<AbsVoxelModelInstance>> _framePartitions = new Dictionary<int, List<AbsVoxelModelInstance>>(8);
 
-        // Double-buffered dynamic instance vertex buffer per batch
-        private DynamicVertexBuffer _instanceBuffer;
-        private int _bufferCapacity = 0;
+        // Hack to work-around MonoGame Vulkan backend bug:
+        // In native Vulkan backend (as of 3.8.5.1), GraphicsDevice.Native.cs drops the baseInstance parameter when calling MGG.GraphicsDevice_DrawIndexedInstanced,
+        // and MGG_Vulkan.cpp hardcodes 'firstInstance = 0' in vkCmdDrawIndexed.
+        // If all animation frames are packed into a single instance buffer and rendered with baseInstance > 0,
+        // the Vulkan backend always fetches instances starting from index 0.
+        // Consequently, soldiers / instanced models cycling animation frames appear and disappear throughout the game.
+        // To bypass this upstream bug until I get a fix in,
+        // we maintain a dedicated DynamicVertexBuffer per active animation frame group and always draw with baseInstance = 0.
+        // But actually, this is likely even better,
+        // because we now avoid the GC overhead of VertexBufferBindings by reusing the same buffer for all instances in a frame.
+        private readonly List<DynamicVertexBuffer> _frameInstanceBuffers = new List<DynamicVertexBuffer>(4);
+        private readonly List<int> _frameBufferCapacities = new List<int>(4);
+        private readonly VertexBufferBinding[] _bindings = new VertexBufferBinding[2];
         private VertexVoxelInstance[] _cpuData;
         private int _preparedCount = 0;
         private VoxelModel _masterModel = null;
@@ -329,28 +339,49 @@ namespace VikingEngine.Graphics
 
         private void EnsureCapacity(int required)
         {
-            if (required <= _bufferCapacity && _instanceBuffer != null)
+            if (_cpuData != null && _cpuData.Length >= required)
             {
                 return;
             }
 
-            int newCap = Math.Max(Math.Max(_bufferCapacity * 2, required), 64);
-            _bufferCapacity = newCap;
+            var currentCap = _cpuData?.Length ?? 0;
+            int newCap = Math.Max(Math.Max(currentCap * 2, required), 64);
             _cpuData = new VertexVoxelInstance[newCap];
+        }
 
-            var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
-            if (gd == null)
+        private DynamicVertexBuffer getOrCreateFrameBuffer(int frameGroupIndex, int requiredCapacity, GraphicsDevice gd)
+        {
+            while (_frameInstanceBuffers.Count <= frameGroupIndex)
             {
-                return;
+                _frameInstanceBuffers.Add(null);
+                _frameBufferCapacities.Add(0);
             }
 
-            _instanceBuffer?.Dispose();
-            _instanceBuffer = new DynamicVertexBuffer(
+            var existingBuffer = _frameInstanceBuffers[frameGroupIndex];
+            int currentCap = _frameBufferCapacities[frameGroupIndex];
+
+            if (existingBuffer != null && currentCap >= requiredCapacity)
+            {
+                return existingBuffer;
+            }
+
+            if (existingBuffer != null && !existingBuffer.IsDisposed)
+            {
+                existingBuffer.Dispose();
+            }
+
+            int newCap = Math.Max(Math.Max(currentCap * 2, requiredCapacity), 32);
+            var newBuffer = new DynamicVertexBuffer(
                 gd,
                 VertexVoxelInstance.VertexDeclaration,
-                _bufferCapacity,
+                newCap,
                 BufferUsage.WriteOnly
             );
+
+            _frameInstanceBuffers[frameGroupIndex] = newBuffer;
+            _frameBufferCapacities[frameGroupIndex] = newCap;
+
+            return newBuffer;
         }
 
         public void Prepare(int cameraIndex, int frameNumber, List<AbsDraw> fallbackList)
@@ -480,11 +511,20 @@ namespace VikingEngine.Graphics
             }
 
             _preparedCount = writeIndex;
-            if (_instanceBuffer != null)
-            {
-                _instanceBuffer.SetData(_cpuData, 0, _preparedCount, SetDataOptions.Discard);
-            }
             UploadedBytesThisFrame = _preparedCount * VertexVoxelInstance.VertexDeclaration.VertexStride;
+
+            var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
+            if (gd == null)
+            {
+                return;
+            }
+
+            for (int f = 0; f < _frameGroups.Count; f++)
+            {
+                var group = _frameGroups[f];
+                var buf = getOrCreateFrameBuffer(f, group.InstanceCount, gd);
+                buf.SetData(_cpuData, group.InstanceStartIndex, group.InstanceCount, SetDataOptions.Discard);
+            }
         }
 
         public void Draw(bool depthOnly, GraphicsDevice gd, ref int instancedDrawCalls, ref int totalRenderedInstances, ref int totalFrameSlices)
@@ -510,11 +550,7 @@ namespace VikingEngine.Graphics
                 DrawBatchCollection.InstancedVoxelEffect.Parameters["MainTexture"]?.SetValue(texture);
             }
 
-            var bindings = new VertexBufferBinding[2];
-            bindings[0] = new VertexBufferBinding(_masterModel.VB.GetVertexBuffer(), 0, 0);
-            bindings[1] = new VertexBufferBinding(_instanceBuffer, 0, 1);
-
-            gd.SetVertexBuffers(bindings);
+            _bindings[0] = new VertexBufferBinding(_masterModel.VB.GetVertexBuffer(), 0, 0);
             gd.Indices = _masterModel.VB.GetIndexBuffer();
 
             foreach (var pass in DrawBatchCollection.InstancedVoxelEffect.CurrentTechnique.Passes)
@@ -526,14 +562,17 @@ namespace VikingEngine.Graphics
                     var group = _frameGroups[f];
                     var frameData = _masterModel.VB.GetFrame(group.FrameIndex);
 
-                    if (frameData.numVertices > 0 && group.InstanceCount > 0)
+                    if (frameData.numVertices > 0 && group.InstanceCount > 0 && f < _frameInstanceBuffers.Count && _frameInstanceBuffers[f] != null)
                     {
+                        _bindings[1] = new VertexBufferBinding(_frameInstanceBuffers[f], 0, 1);
+                        gd.SetVertexBuffers(_bindings);
+
                         gd.DrawInstancedPrimitives(
                             PrimitiveType.TriangleList,
                             0,
                             frameData.startDrawOrderIndex,
                             frameData.primitiveCount,
-                            group.InstanceStartIndex,
+                            0, // baseInstance is ALWAYS 0 to bypass MonoGame Vulkan's hardcoded firstInstance=0 bug
                             group.InstanceCount
                         );
 
@@ -547,8 +586,15 @@ namespace VikingEngine.Graphics
 
         public void Dispose()
         {
-            _instanceBuffer?.Dispose();
-            _instanceBuffer = null;
+            for (int i = 0; i < _frameInstanceBuffers.Count; i++)
+            {
+                if (_frameInstanceBuffers[i] != null && !_frameInstanceBuffers[i].IsDisposed)
+                {
+                    _frameInstanceBuffers[i].Dispose();
+                }
+            }
+            _frameInstanceBuffers.Clear();
+            _frameBufferCapacities.Clear();
         }
     }
 }
