@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
@@ -11,6 +12,19 @@ namespace VikingEngine.Graphics
 {
     public class DrawBatchCollection
     {
+        private readonly struct PendingAddition
+        {
+            public readonly int MasterId;
+            public readonly AbsDraw Model;
+
+            public PendingAddition(int masterId, AbsDraw model)
+            {
+                MasterId = masterId;
+                Model = model;
+            }
+        }
+
+        private readonly ConcurrentQueue<PendingAddition> _pendingAdditions = new ConcurrentQueue<PendingAddition>();
         private readonly Queue<AbsVoxelModelInstance> _loadingQueue = new Queue<AbsVoxelModelInstance>();
         private readonly Dictionary<int, InstancedDrawBatch> _batches = new Dictionary<int, InstancedDrawBatch>(128);
         private readonly List<AbsDraw> _fallbackDrawList = new List<AbsDraw>(64);
@@ -62,18 +76,28 @@ namespace VikingEngine.Graphics
 
         public void Add(int masterId, AbsDraw model)
         {
-            //Debug.CrashIfThreaded();
-            lock (_batches)
+            _pendingAdditions.Enqueue(new PendingAddition(masterId, model));
+            model.OnDrawBatchAdd();
+        }
+
+        private void DrainPendingAdditions()
+        {
+            while (_pendingAdditions.TryDequeue(out var pending))
             {
-                if (!_batches.TryGetValue(masterId, out var batch))
+                if (!pending.Model.InRenderList)
                 {
-                    batch = new InstancedDrawBatch(masterId);
-                    _batches.Add(masterId, batch);
+                    pending.Model.OnDrawBatchRemove();
+                    continue;
                 }
 
-                batch.Add(model);
+                if (!_batches.TryGetValue(pending.MasterId, out var batch))
+                {
+                    batch = new InstancedDrawBatch(pending.MasterId);
+                    _batches.Add(pending.MasterId, batch);
+                }
+
+                batch.Add(pending.Model);
             }
-            model.OnDrawBatchAdd();
         }
 
         private void ProcessLoadingQueue()
@@ -160,6 +184,8 @@ namespace VikingEngine.Graphics
 
         private void RenderBatches(bool depthOnly, bool shadow, int cameraIndex, AbsCamera camera, LightProjection light, Effect fallbackShader)
         {
+            DrainPendingAdditions();
+
             // Step 1: Prepare all batches (runs only once per frame per camera)
             var prepStart = Stopwatch.GetTimestamp();
             if (_lastPreparedFrameCollection != _currentRenderFrame || _lastPreparedCameraCollection != cameraIndex)
@@ -173,94 +199,28 @@ namespace VikingEngine.Graphics
             Span<int> removeStack = stackalloc int[16];
             int removeCount = 0;
 
-            lock (_batches)
+            foreach (var kv in _batches)
             {
-                foreach (var kv in _batches)
+                var batch = kv.Value;
+                batch.Prepare(cameraIndex, _currentRenderFrame, _fallbackDrawList);
+                totalUploadedBytes += batch.UploadedBytesThisFrame;
+
+                if (batch.Count == 0 && removeCount < removeStack.Length)
                 {
-                    var batch = kv.Value;
-                    batch.Prepare(cameraIndex, _currentRenderFrame, _fallbackDrawList);
-                    totalUploadedBytes += batch.UploadedBytesThisFrame;
-
-                    if (batch.Count == 0 && removeCount < removeStack.Length)
-                    {
-                        removeStack[removeCount++] = kv.Key;
-                    }
+                    removeStack[removeCount++] = kv.Key;
                 }
-                _accumulatedPrepTimeMs += (float)Stopwatch.GetElapsedTime(prepStart).TotalMilliseconds;
+            }
+            _accumulatedPrepTimeMs += (float)Stopwatch.GetElapsedTime(prepStart).TotalMilliseconds;
 
-                var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
-                if (gd == null)
-                {
-                    for (int i = 0; i < removeCount; i++)
-                    {
-                        if (_batches.TryGetValue(removeStack[i], out var emptyBatch))
-                        {
-                            emptyBatch.Dispose();
-                            _batches.Remove(removeStack[i]);
-                        }
-                    }
-
-                    if (!depthOnly)
-                    {
-                        if (!_depthDrawnThisFrame)
-                        {
-                            LastFrameDrawDepthTimeMs = 0f;
-                        }
-                        _depthDrawnThisFrame = false;
-                        _currentRenderFrame++;
-                    }
-                    return;
-                }
-
-                // Step 2: Draw all prepared batches
-                int instancedDrawCalls = 0;
-                int totalRenderedInstances = 0;
-                int activeBatches = 0;
-                int totalFrameSlices = 0;
-
-                foreach (var kv in _batches)
-                {
-                    var batch = kv.Value;
-                    batch.Draw(depthOnly, gd, ref instancedDrawCalls, ref totalRenderedInstances, ref totalFrameSlices);
-                    if (batch.Count > 0)
-                    {
-                        activeBatches++;
-                    }
-                }
-
-                // Unbind vertex buffers before fallback drawing to prevent state corruption
-                gd.SetVertexBuffers(null);
-                gd.Indices = null;
-
+            var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
+            if (gd == null)
+            {
                 for (int i = 0; i < removeCount; i++)
                 {
                     if (_batches.TryGetValue(removeStack[i], out var emptyBatch))
                     {
                         emptyBatch.Dispose();
                         _batches.Remove(removeStack[i]);
-                    }
-                }
-
-
-                // Step 3: Fallback Rendering
-                int standardDrawCalls = 0;
-                if (_fallbackDrawList.Count > 0)
-                {
-                    for (int i = 0; i < _fallbackDrawList.Count; i++)
-                    {
-                        if (depthOnly)
-                        {
-                            (_fallbackDrawList[i] as Abs3DModel)?.DrawDepthOnly(true, fallbackShader, light, cameraIndex);
-                        }
-                        else if (shadow)
-                        {
-                            _fallbackDrawList[i].DrawWithShadow(cameraIndex, camera, fallbackShader, light);
-                        }
-                        else
-                        {
-                            _fallbackDrawList[i].Draw(cameraIndex);
-                        }
-                        standardDrawCalls++;
                     }
                 }
 
@@ -271,25 +231,88 @@ namespace VikingEngine.Graphics
                         LastFrameDrawDepthTimeMs = 0f;
                     }
                     _depthDrawnThisFrame = false;
-
-                    // Advance frame counter after lit pass completes
                     _currentRenderFrame++;
-
-                    LastFrameStandardDrawCalls = standardDrawCalls;
-                    LastFrameInstancedDrawCalls = instancedDrawCalls;
-                    LastFrameRenderedInstances = totalRenderedInstances;
-                    LastFrameBatchCount = activeBatches;
-                    LastFrameFrameSlices = totalFrameSlices;
-                    LastFrameUploadedBytes = totalUploadedBytes;
-                    LastFramePrepBatchesTimeMs = _accumulatedPrepTimeMs;
-                    _accumulatedPrepTimeMs = 0f;
                 }
+                return;
+            }
+
+            // Step 2: Draw all prepared batches
+            int instancedDrawCalls = 0;
+            int totalRenderedInstances = 0;
+            int activeBatches = 0;
+            int totalFrameSlices = 0;
+
+            foreach (var kv in _batches)
+            {
+                var batch = kv.Value;
+                batch.Draw(depthOnly, gd, ref instancedDrawCalls, ref totalRenderedInstances, ref totalFrameSlices);
+                if (batch.Count > 0)
+                {
+                    activeBatches++;
+                }
+            }
+
+            // Unbind vertex buffers before fallback drawing to prevent state corruption
+            gd.SetVertexBuffers(null);
+            gd.Indices = null;
+
+            for (int i = 0; i < removeCount; i++)
+            {
+                if (_batches.TryGetValue(removeStack[i], out var emptyBatch))
+                {
+                    emptyBatch.Dispose();
+                    _batches.Remove(removeStack[i]);
+                }
+            }
+
+            // Step 3: Fallback Rendering
+            int standardDrawCalls = 0;
+            if (_fallbackDrawList.Count > 0)
+            {
+                for (int i = 0; i < _fallbackDrawList.Count; i++)
+                {
+                    if (depthOnly)
+                    {
+                        (_fallbackDrawList[i] as Abs3DModel)?.DrawDepthOnly(true, fallbackShader, light, cameraIndex);
+                    }
+                    else if (shadow)
+                    {
+                        _fallbackDrawList[i].DrawWithShadow(cameraIndex, camera, fallbackShader, light);
+                    }
+                    else
+                    {
+                        _fallbackDrawList[i].Draw(cameraIndex);
+                    }
+                    standardDrawCalls++;
+                }
+            }
+
+            if (!depthOnly)
+            {
+                if (!_depthDrawnThisFrame)
+                {
+                    LastFrameDrawDepthTimeMs = 0f;
+                }
+                _depthDrawnThisFrame = false;
+
+                // Advance frame counter after lit pass completes
+                _currentRenderFrame++;
+
+                LastFrameStandardDrawCalls = standardDrawCalls;
+                LastFrameInstancedDrawCalls = instancedDrawCalls;
+                LastFrameRenderedInstances = totalRenderedInstances;
+                LastFrameBatchCount = activeBatches;
+                LastFrameFrameSlices = totalFrameSlices;
+                LastFrameUploadedBytes = totalUploadedBytes;
+                LastFramePrepBatchesTimeMs = _accumulatedPrepTimeMs;
+                _accumulatedPrepTimeMs = 0f;
             }
         }
 
         public void Remove(int masterId, AbsDraw model)
         {
             Debug.CrashIfThreaded();
+            DrainPendingAdditions();
             if (_batches.TryGetValue(masterId, out var batch))
             {
                 if (batch.Count <= 1)
