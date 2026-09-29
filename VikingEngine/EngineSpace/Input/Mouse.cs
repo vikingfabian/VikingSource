@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,6 +33,10 @@ namespace VikingEngine.Input
             Instances.Add(mouse);
             Ref.main.IsMouseVisible = true;
             MenuMode = true;
+#if PCGAME
+            hasLastLockedPos = false;
+#endif
+            hiddenFramesCount = 0;
 
             mouse.RefreshMouseVisible();
         }
@@ -108,6 +112,22 @@ namespace VikingEngine.Input
         public static Vector2 Position, PrevPosition, PrevRealPosition, RealPosition;
         static int hiddenFramesCount = 0;
 
+#if PCGAME
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        static extern bool GetCursorPos(out POINT lpPoint);
+
+        static POINT lastLockedCursorScreenPos;
+        static bool hasLastLockedPos = false;
+#endif
+
         public static void Update()
         {
             if (Ref.update.textInput != null)
@@ -129,6 +149,9 @@ namespace VikingEngine.Input
             if (!mouse.centerlockAndHide)//Ref.main.IsMouseVisible)
             {
                 hiddenFramesCount = 0;
+#if PCGAME
+                hasLastLockedPos = false;
+#endif
                 RealMoveDistance = RealPosition - PrevRealPosition;
                 MoveDistance = Position - PrevPosition;
             }
@@ -136,7 +159,25 @@ namespace VikingEngine.Input
             {
                 if (++hiddenFramesCount > 2)
                 {
+#if PCGAME
+                    if (OperatingSystem.IsWindows())
+                    {
+                        if (GetCursorPos(out POINT currentScreenPos) && hasLastLockedPos)
+                        {
+                            RealMoveDistance = new Vector2(currentScreenPos.X - lastLockedCursorScreenPos.X, currentScreenPos.Y - lastLockedCursorScreenPos.Y);
+                        }
+                        else
+                        {
+                            RealMoveDistance = Vector2.Zero;
+                        }
+                    }
+                    else
+                    {
+                        RealMoveDistance = RealPosition - Engine.Screen.MonitorCenter.Vec;
+                    }
+#else
                     RealMoveDistance = RealPosition - Engine.Screen.MonitorCenter.Vec;
+#endif
                     MoveDistance = RealMoveDistance * Engine.Screen.WindowScaleF;
                 }
                 else
@@ -150,6 +191,23 @@ namespace VikingEngine.Input
             {
                 ins.Update();
             }
+
+#if PCGAME
+            if (mouse.centerlockAndHide && OperatingSystem.IsWindows())
+            {
+                if (MainGame.GameIsActive)
+                {
+                    if (GetCursorPos(out lastLockedCursorScreenPos))
+                    {
+                        hasLastLockedPos = true;
+                    }
+                }
+                else
+                {
+                    hasLastLockedPos = false;
+                }
+            }
+#endif
         }
 
         public static void refreshCursor()

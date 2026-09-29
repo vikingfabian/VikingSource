@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -79,6 +79,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
             scale = 1;
+            image.size = textureSize * zoom * scale;
+            image.Visible = true;
         }
 
 
@@ -90,6 +92,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
             scale = 4;
+            image.size = textureSize * zoom * scale;
             image.Visible = true;
         }
 
@@ -103,6 +106,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
             scale = 2;
+            image.size = textureSize * zoom * scale;
             image.Visible = true;
         }
 
