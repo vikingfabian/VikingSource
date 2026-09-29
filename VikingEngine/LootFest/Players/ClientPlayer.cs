@@ -9,7 +9,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.LootFest.Players
 {
-    class ClientPlayer : AbsPlayer
+    public class ClientPlayer : AbsPlayer
     {
         public bool InBuildMode = false;
         public IntVector2 BuildingPos;

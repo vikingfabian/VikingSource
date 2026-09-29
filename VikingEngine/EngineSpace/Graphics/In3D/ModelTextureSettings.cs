@@ -5,7 +5,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    struct ModelTextureSettings
+    public struct ModelTextureSettings
     {
         public Sprite TextureSource;
         public Texture2D texture;

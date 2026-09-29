@@ -6,7 +6,7 @@ using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.LootFest.GO.WeaponAttack
 {
-    class Shield : AbsVoxelObj, Process.ILoadImage
+    public class Shield : AbsVoxelObj, Process.ILoadImage
     {
         const float ShieldScale = 1.6f;
         public const float StandardShieldDistance = 0.76f;

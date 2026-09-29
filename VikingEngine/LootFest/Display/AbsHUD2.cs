@@ -9,7 +9,7 @@ using VikingEngine.Engine;
 
 namespace VikingEngine.LootFest
 {
-    abstract class AbsHUD2
+    public abstract class AbsHUD2
     {
         protected const float ShakeTimeSec = 0.13f;
         protected Time shakeTimer = 0;
@@ -39,7 +39,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    class CoinsHUD : AbsHUD2
+    public class CoinsHUD : AbsHUD2
     {
         public static readonly Color TextCol = Color.Yellow;
         Graphics.Image icon;
@@ -94,7 +94,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    class SuitUseHUD : AbsHUD2
+    public class SuitUseHUD : AbsHUD2
     {
         /* Fields */
         public bool useDotsForAmount;
@@ -275,7 +275,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    class ItemHUD : SuitUseHUD
+    public class ItemHUD : SuitUseHUD
     {
         Vector2 bgPos;
 

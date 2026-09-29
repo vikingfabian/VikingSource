@@ -9,7 +9,7 @@ using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.HUD.RichBox
 {
-    abstract class AbsRichBoxMember
+    public abstract class AbsRichBoxMember
     {
         public static List<AbsRichBoxMember> FromText(string text)
         {
@@ -108,7 +108,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbBeginTitle : AbsRichBoxMember
+    public class RbBeginTitle : AbsRichBoxMember
     {
         int level;
         public RbBeginTitle(int level = 2)
@@ -122,7 +122,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbText : AbsRichBoxMember
+    public class RbText : AbsRichBoxMember
     {
         public string text;
         public Text2 pointer;
@@ -206,7 +206,7 @@ namespace VikingEngine.HUD.RichBox
     //        group.carriage.position.X += spaces * group.lineSpacing;
     //    }
     //}
-    abstract class AbsRichBoxImage : AbsRichBoxMember
+    public abstract class AbsRichBoxImage : AbsRichBoxMember
     {
         protected float scale;
         protected float addLeftSpace, addRightSpace;
@@ -252,7 +252,7 @@ namespace VikingEngine.HUD.RichBox
        
     }
 
-    class RbImage : AbsRichBoxImage
+    public class RbImage : AbsRichBoxImage
     {
         SpriteName sprite;
         public Color? color;

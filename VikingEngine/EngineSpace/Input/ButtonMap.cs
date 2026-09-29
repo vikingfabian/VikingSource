@@ -11,7 +11,7 @@ using VikingEngine.ToGG.HeroQuest.Display;
 
 namespace VikingEngine.Input
 {
-    enum ButtonMapType
+    public enum ButtonMapType
     { //Index får inte förändras
         NoButtonMap,
         AlternativeButtonsMap,
@@ -23,8 +23,8 @@ namespace VikingEngine.Input
         XController_TriggerAlts,
         SteamInput,
     }
-    
-    interface IButtonMap
+
+    public interface IButtonMap
     {
         bool IsDown { get; }
         bool DownEvent { get; }
@@ -52,7 +52,7 @@ namespace VikingEngine.Input
         void read(System.IO.BinaryReader r);
     }
 
-    static class MapRead
+    public static class MapRead
     {
         public static IButtonMap Button(System.IO.BinaryReader r)
         {

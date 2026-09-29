@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    class RectangleLines
+    public class RectangleLines
     {
         public VectorRect rectangle;
         public float thickness;

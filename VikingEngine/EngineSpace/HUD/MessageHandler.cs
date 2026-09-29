@@ -183,7 +183,7 @@ namespace VikingEngine.HUD
     }
 
 
-    class ChatMessageData
+    public class ChatMessageData
     {
         public string Text;
         public string Sender;

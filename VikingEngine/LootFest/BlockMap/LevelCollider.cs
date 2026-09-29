@@ -7,7 +7,7 @@ using VikingEngine.LootFest.BlockMap.Level;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    abstract class AbsLevelCollider
+    public abstract class AbsLevelCollider
     {
         public AbsLevel level;
         virtual public void updateCollisions() { }
@@ -25,7 +25,7 @@ namespace VikingEngine.LootFest.BlockMap
         virtual public bool isBlocked(Map.WorldPosition wp) { return false; }
     }
 
-    class LevelPointer : AbsLevelCollider
+    public class LevelPointer : AbsLevelCollider
     {
         public LevelPointer(AbsLevel level)
         {
@@ -37,7 +37,7 @@ namespace VikingEngine.LootFest.BlockMap
         }
     }
 
-    class LevelCollider : AbsLevelCollider
+    public class LevelCollider : AbsLevelCollider
     {
         Vector3 prevPos;
         public GO.AbsUpdateObj parent;
@@ -182,7 +182,7 @@ namespace VikingEngine.LootFest.BlockMap
             return false;
         }
 
-        enum LevelCollisionType
+        public enum LevelCollisionType
         {
             Hero,
             LockedToAreaUntilHeroEnters,

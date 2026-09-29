@@ -6,7 +6,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.LootFest
 {
-    class HeroPhysics : AbsPhysics
+    public class HeroPhysics : AbsPhysics
     {
         public bool jumpableGround = false;
         Graphics.Mesh collisionBound;

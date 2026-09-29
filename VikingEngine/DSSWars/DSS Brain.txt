@@ -27,7 +27,7 @@ Soldier abilities
 * Armor and shields will add parry.
 * Added and reworked abilities: AntiSpear, AntiCavalry, AntiPlateArmor, ArrowWeakness and DefenceBreak
 * Removed the locked specialization on long hand weapons and warmachines
-* Warhammer are now only strong against plate armor 
+* Warhammer is now only strong against plate armor 
 
 Performance
 * Work has been put into keeping down the creeping memory (RAM) usage (contribution made by Uygar "Agent" Yilmaz)
@@ -37,7 +37,11 @@ Performance
 * Model instance rendering (Uygar "Agent" Yilmaz)
 * The terrain shadow renderer now supports textures (Uygar "Agent" Yilmaz)
 * Fixed stuck game process on exit (Uygar "Agent" Yilmaz)
+* Reduced menu render calls (Uygar "Agent" Yilmaz)
 
+Vulkan
+* DSS now runs on Vulkan, which is more perfomant and modern than OpenGL (Uygar "Agent" Yilmaz)
+* Map loading is now done on multiple CPU cores and runs smoother
 
 #MAP 2.0 UPDATE
 

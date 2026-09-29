@@ -8,7 +8,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.Engine
 {
-    class PlayerView
+    public class PlayerView
     {
         public const float SafeSpaceBetweenPlayers = 8;
         public Graphics.CameraType camType = Graphics.CameraType.TopView;

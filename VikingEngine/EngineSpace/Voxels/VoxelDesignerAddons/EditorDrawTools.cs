@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace VikingEngine.Voxels
 {
-    class EditorDrawTools
+    public class EditorDrawTools
     {
         AbsVoxelDesigner designer;
         public DrawQueAction currentDrawAction = null;

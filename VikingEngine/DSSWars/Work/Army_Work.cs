@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -182,16 +182,19 @@ namespace VikingEngine.DSSWars.GameObject
             int getOrCreateFreeWorker()
             {
                 var worker = new WorkerStatus(true) { subTileEnd = WP.ToSubTilePos_Centered(tilePos) };
-                for (int i = 0; i < workerStatuses.Count; i++)
+                lock (WorkerStatusLock)
                 {
-                    if (workerStatuses.array[i].work == WorkType.IsDeleted)
+                    for (int i = 0; i < workerStatuses.Count; i++)
                     {
-                        workerStatuses.array[i] = worker;
-                        return i;
+                        if (workerStatuses.Array[i].work == WorkType.IsDeleted)
+                        {
+                            workerStatuses.Array[i] = worker;
+                            return i;
+                        }
                     }
+                    workerStatuses.Add(worker);
+                    return workerStatuses.Count - 1;
                 }
-                workerStatuses.Add(worker);
-                return workerStatuses.Count - 1;
             }
         }
 

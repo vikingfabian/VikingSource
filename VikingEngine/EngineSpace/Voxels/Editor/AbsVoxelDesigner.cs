@@ -17,13 +17,13 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.Voxels
 {
-    interface IVoxelDesigner
+    public interface IVoxelDesigner
     {
         void SetVoxel(int frame, IntVector3 drawPoint, ushort material);
         ushort GetVoxel(int frame, IntVector3 drawPoint);
     }
 
-    abstract class AbsVoxelDesigner : VikingEngine.AbsInput, IVoxelDesigner, IVoxelDesignerInterfaceParent
+    public abstract class AbsVoxelDesigner : VikingEngine.AbsInput, IVoxelDesigner, IVoxelDesignerInterfaceParent
     {
         protected const float PencilMoveSpeedNomal = 0.01f;
         public VoxelDesignerInterface designerInterface;
@@ -895,7 +895,7 @@ namespace VikingEngine.Voxels
         //{ 
         //    return voxelProject.CurretVoxelGrid.Get(pos);
         //}
-        virtual protected void UpdatePencilInfo()
+        protected virtual void UpdatePencilInfo()
         {
             int state_empty0_contact1_inside2 = 0;
 
@@ -1226,14 +1226,14 @@ namespace VikingEngine.Voxels
         }
     }
 
-    enum MoveFrameType
+    public enum MoveFrameType
     {
         Forward,
         Back,
         ToStart,
         ToEnd,
     }
-    enum PaintToolType
+    public enum PaintToolType
     {
         Rectangle,
         Bucket,
@@ -1251,7 +1251,7 @@ namespace VikingEngine.Voxels
         NUM,
     }
 
-    enum PaintFillType
+    public enum PaintFillType
     {
         Fill,
         Select,

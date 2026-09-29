@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
-            lock (workerStatuses.array)
+            lock (WorkerStatusLock)
             {
                 bool hostUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
 
@@ -229,7 +229,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //Collect idle workers
                 for (int i = 0; i < workerStatuses.Count; i++)
                 {
-                    ref WorkerStatus status = ref workerStatuses.array[i];
+                    ref WorkerStatus status = ref workerStatuses.Array[i];
 
                     if (status.work == WorkType.Idle)
                     {
@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars.GameObject
                             for (int i = 0; i < idleWorkers.Count; ++i)
                             {
                                 var worderIx = idleWorkers[i];
-                                var worker = workerStatuses.array[worderIx];
+                                var worker = workerStatuses.Array[worderIx];
 
                                 var xp = worker.getXpFor(experienceType);
 
@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 idleWorkers.RemoveAt(bestWorkerListIx);
                                 CurrentWorkerCount[(int)work.workPriority]++;
 
-                                ref var status = ref workerStatuses.array[worderIx];
+                                ref var status = ref workerStatuses.Array[worderIx];
                                 status.createWorkOrder(work.work, work.subWork, work.workBonus, experienceType, work.workPriority, work.orderId, work.subTile, this);
                                 reserveItems(work);
                                 --maxWorkerOrderCount;
@@ -366,7 +366,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //Set remaning workers to wait
                 foreach (var workerIx in idleWorkers)
                 {
-                    ref var worker = ref workerStatuses.array[workerIx];
+                    ref var worker = ref workerStatuses.Array[workerIx];
                     worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
                     worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
                     //workerStatuses[workerIx] = worker;
@@ -1214,7 +1214,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int i = 0; i < workerStatuses.Count; ++i)
                 {
-                    var status = workerStatuses.array[i];
+                    var status = workerStatuses.Array[i];
                     if (status.work != WorkType.Idle &&
                         status.subTileEnd == subtile)
                     {
@@ -1258,9 +1258,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                if (workerStatuses.array[i].work != WorkType.IsDeleted)
+                if (workerStatuses.Array[i].work != WorkType.IsDeleted)
                 {
-                    int score = workerStatuses.array[i].GetXpScore();
+                    int score = workerStatuses.Array[i].GetXpScore();
 
                     // Check against lowest1
                     if (lowest1.Value1 < 0 || score < lowest1.Value2)
@@ -1413,14 +1413,17 @@ namespace VikingEngine.DSSWars.GameObject
         {
             IntVector2 pos = conv.IntToIntVector2(idAndPosition);
             //Warning! this checkup is badly optimized, only use it for player info
-            for (int i = 0; i < workerStatuses.Count; ++i)
+            lock (WorkerStatusLock)
             {
-                var status = workerStatuses.array[i];
-                if (status.work == WorkType.School &&
-                    status.subTileEnd == pos)
+                for (int i = 0; i < workerStatuses.Count; ++i)
                 {
-                    completeTimeSec = status.processTimeStartStampSec + status.processTimeLengthSec;
-                    return true;
+                    var status = workerStatuses.Array[i];
+                    if (status.work == WorkType.School &&
+                        status.subTileEnd == pos)
+                    {
+                        completeTimeSec = status.processTimeStartStampSec + status.processTimeLengthSec;
+                        return true;
+                    }
                 }
             }
             completeTimeSec = -1;
@@ -1434,8 +1437,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                WorkerStatus status = workerStatuses.array[i];
-                reserveItems(new WorkQueMember() { work = status.work, subWork = status.workSubType });
+               WorkerStatus status = workerStatuses.Array[i];
+                reserveItems(new WorkQueMember(){ work = status.work, subWork = status.workSubType });
             }
         }
 
@@ -1464,14 +1467,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 foreach (var m in blueprint.resources)
                 {
-                    if (m.type == ItemResourceType.Water_G)
-                    {
-                        res_water.reserve(m.amount);
-                    }
-                    else
-                    {
-                        this.GetRefGroupedResource_Safe(m.type).reserve(m.amount);
-                    }
+                    this.GetRefGroupedResource_Safe(m.type).reserve(m.amount);
                 }
             }
         }
@@ -1479,14 +1475,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             foreach (var m in blueprint.resources)
             {
-                if (m.type == ItemResourceType.Water_G)
-                {
-                    res_water.unreserve(m.amount);
-                }
-                else
-                {
-                    this.GetRefGroupedResource_Safe(m.type).unreserve(m.amount);
-                }
+                this.GetRefGroupedResource_Safe(m.type).unreserve(m.amount);
             }
         }
 

@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 else if (tilesC.sel.renderState == DetailMapTileState.AddToRender)
                 {
-                    tilesC.sel.synchToRender();
+                    //tilesC.sel.synchToRender();
                 }
 
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
@@ -93,7 +93,9 @@ namespace VikingEngine.DSSWars.Map
         public void drawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
             shader.CurrentTechnique = shader.Techniques["RenderVertexColorTexture"];
-            shader.Parameters["Texture"]?.SetValue(Engine.LoadContent.Texture(LoadedTexture.SpriteSheet));
+            var spriteSheet = Engine.LoadContent.Texture(LoadedTexture.SpriteSheet);
+            shader.Parameters["Texture"]?.SetValue(spriteSheet);
+            shader.Parameters["TerrainTexture"]?.SetValue(spriteSheet);
 
             var tilesC = tiles.counter();
             while (tilesC.Next())
@@ -193,7 +195,7 @@ namespace VikingEngine.DSSWars.Map
                                 //maptile.add = true;
                                 maptile.generateModel_async(loop.Position, tile);
                                 maptile.renderState = DetailMapTileState.AddToRender;
-                               
+                                maptile.synchToRender();
                                 tiles.Add(maptile);
 
                                 if (++toRenderCount > MaxSychToRenderCount)

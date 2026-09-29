@@ -49,11 +49,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (cesspits.Count > 0)
             {
-                lock (cesspits.array)
+                lock (cesspits.Array)
                 {
                     if (cesspits.InBound_List(selectedCessPit))
                     {
-                        CesspitStatus currentStatus = cesspits.array[selectedCessPit];
+                        CesspitStatus currentStatus = cesspits.Array[selectedCessPit];
                         //selected view
 
                         HudLib.buildingMenuTitle(content, SpriteName.WarsBuild_Cesspit, DssRef.lang.BuildingType_Cesspit, currentStatus.idAndPosition,
@@ -83,11 +83,11 @@ namespace VikingEngine.DSSWars.GameObject
                                 new List<AbsRichBoxMember> { new RbImage(icon) },
                                 new RbAction1Arg<ItemResourceType>((ItemResourceType item) =>
                                 {
-                                    lock (cesspits.array)
+                                    lock (cesspits.Array)
                                     {
                                         if (cesspits.InBound_List(selectedCessPit))
                                         {
-                                            cesspits.array[selectedCessPit].type = item;
+                                            cesspits.Array[selectedCessPit].type = item;
                                             refreshResourceCesspits();
                                         }
                                     }
@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         for (int i = 0; i < cesspits.Count; ++i)
                         {
-                            ItemResourceType item = cesspits.array[i].type;
+                            ItemResourceType item = cesspits.Array[i].type;
                             hasAnySelected |= item != ItemResourceType.NONE;
                             IconName.Item(item, out var icon, out var name);
 
@@ -119,16 +119,16 @@ namespace VikingEngine.DSSWars.GameObject
                         HudLib.copyPaste(content, player, new RbAction(() =>
                             {
                                 player.cesspitsCopy.Clear();
-                                player.cesspitsCopy.AddRange(cesspits.array);
+                                player.cesspitsCopy.AddRange(cesspits.Array);
                             }),
                             new RbAction(() =>
                             {
-                                lock (cesspits.array)
+                                lock (cesspits.Array)
                                 {
                                     int count = Math.Min(cesspits.Count, player.cesspitsCopy.Count);
                                     for (int i = 0; i < count; ++i)
                                     {
-                                        cesspits.array[i].type = player.cesspitsCopy[i].type;
+                                        cesspits.Array[i].type = player.cesspitsCopy[i].type;
                                     }
                                 }
                                 refreshResourceCesspits();
@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 for (int i = 0; i < cesspits.Count; ++i)
                                 {
-                                    cesspits.array[i].type = ItemResourceType.NONE;
+                                    cesspits.Array[i].type = ItemResourceType.NONE;
                                 }
                                 refreshResourceCesspits();
                             })));
@@ -175,13 +175,13 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 try
                 {
-                    if (cesspits.array != null)
+                    if (cesspits.Array != null)
                     {
                         Span<bool> span = stackalloc bool[EntityComponent.CityResourceIndex.COUNT];
 
-                        lock (cesspits.array)
+                        lock (cesspits.Array)
                         {
-                            foreach (var cp in cesspits.array)
+                            foreach (var cp in cesspits.Array)
                             {
                                 if (cp.type != ItemResourceType.NONE)
                                 {
@@ -211,12 +211,12 @@ namespace VikingEngine.DSSWars.GameObject
                 type = ItemResourceType.NONE,
             };
 
-            if (cesspits.array == null)
+            if (cesspits.Array == null)
             {
                 cesspits.Init(4);
             }
 
-            lock (cesspits.array)
+            lock (cesspits.Array)
             {
                 cesspits.Add(status);
             }
@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void destroyCesspit(IntVector2 subPos)
         {
-            lock (cesspits.array)
+            lock (cesspits.Array)
             {
                 int index = deliveryIxFromSubTile(subPos);
                 
@@ -238,7 +238,7 @@ namespace VikingEngine.DSSWars.GameObject
             int id = conv.IntVector2ToInt(subTilePos);
             for (int i = 0; i < cesspits.Count; ++i)
             {
-                if (cesspits.array[i].idAndPosition == id)
+                if (cesspits.Array[i].idAndPosition == id)
                 {
                     return i;
                 }
@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = 0; i < cesspits.Count; ++i)
             {
-                if (cesspits.array[i].type == item)
+                if (cesspits.Array[i].type == item)
                 {
                     selectedCessPit = i;
                     player.cityTab = MenuTab.CessPit;

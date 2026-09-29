@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace VikingEngine
 {
 
-    struct EightBit : IBinaryIOobj
+    public struct EightBit : IBinaryIOobj
     {
         public static readonly EightBit Zero = new EightBit(byte.MinValue);
         public static readonly EightBit AllTrue = new EightBit(byte.MaxValue);

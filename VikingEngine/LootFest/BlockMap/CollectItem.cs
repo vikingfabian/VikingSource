@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    struct CollectItem
+    public struct CollectItem
     {
         public int goalCount, collectedCount;
         public SpriteName collectDisplayIcon;

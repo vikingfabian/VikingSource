@@ -2,14 +2,14 @@
 
 namespace VikingEngine
 {
-    interface IUpdateable : ISpottedArrayMember
+    public interface IUpdateable : ISpottedArrayMember
     {
         UpdateType UpdateType { get; }
         bool RunDuringPause { get; }
         void Time_Update(float time_ms);
         //bool SavingThread { get; }
     }
-    abstract class AbsUpdateable : IUpdateable, IDeleteable
+    public abstract class AbsUpdateable : IUpdateable, IDeleteable
     {
         public AbsUpdateable(bool addToUpdate)
         {
@@ -83,7 +83,7 @@ namespace VikingEngine
     }
 
 
-    abstract class OneTimeTrigger : AbsUpdateable
+    public abstract class OneTimeTrigger : AbsUpdateable
     {
         public OneTimeTrigger(bool addToUpdate)
             : base(addToUpdate)
@@ -100,9 +100,9 @@ namespace VikingEngine
         override public UpdateType UpdateType { get { return UpdateType.Lazy; } }
     }
 
-    
 
-    
+
+
 
     //abstract class OneTimeQueTrigger2 : IQuedObject
     //{
@@ -171,7 +171,7 @@ namespace VikingEngine
     //            }
     //        }
     //    }
-        
+
     //    //override public void runQuedTask(MultiThreadType threadType)
     //    //{
 
@@ -185,7 +185,7 @@ namespace VikingEngine
 
 
 
-    enum UpdateType
+    public enum UpdateType
     {
         Full,
         Lazy,

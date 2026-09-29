@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,21 +23,21 @@ namespace VikingEngine.EngineSpace
     //Example: ref WorkerStatus status = ref workerStatuses.array[i];
     struct StructList<T> where T : struct
     {
-        public T[] array;
+        public T[] Array;
         public int Count;
 
         //public int Count => _count;
-        public int Capacity => array.Length;
+        public int Capacity => Array.Length;
 
         public StructList(int initialCapacity)
         {
             if (initialCapacity == 0)
             {
-                array = null;
+                Array = null;
             }
             else
             {
-                array = new T[initialCapacity];
+                Array = new T[initialCapacity];
             }
             Count = 0;
         }
@@ -49,16 +49,18 @@ namespace VikingEngine.EngineSpace
 
         public void Init(int initialCapacity)
         {
-            array = new T[initialCapacity];
+            Array = new T[initialCapacity];
             Count = 0;
         }
 
         public void Add(T item)
         {
-            if (Count >= array.Length)
+            if (Array == null || Count >= Array.Length)
+            {
                 Resize();
+            }
 
-            array[Count++] = item;
+            Array[Count++] = item;
         }
 
         public ref T this[int index]
@@ -66,9 +68,11 @@ namespace VikingEngine.EngineSpace
             get
             {
                 if (index < 0 || index >= Count)
+                {
                     throw new IndexOutOfRangeException();
+                }
 
-                return ref array[index]; //ref access!
+                return ref Array[index]; //ref access!
             }
         }
 
@@ -79,12 +83,12 @@ namespace VikingEngine.EngineSpace
 
         public void Resize()
         {
-            Resize(array.Length * 2);
+            Resize(Array == null || Array.Length == 0 ? 16 : Array.Length * 2);
         }
 
         public void Resize(int newSize)
         {
-            Array.Resize(ref array, newSize);
+            System.Array.Resize(ref Array, newSize);
         }
 
         /// <summary>
@@ -92,9 +96,12 @@ namespace VikingEngine.EngineSpace
         /// </summary>
         public void RemoveAtSwapBack(int index)
         {
-            if (index < 0 || index >= Count) return;
+            if (index < 0 || index >= Count)
+            {
+                return;
+            }
             Count--;
-            array[index] = array[Count];
+            Array[index] = Array[Count];
         }
 
         /// <summary>
@@ -103,11 +110,14 @@ namespace VikingEngine.EngineSpace
         /// </summary>
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= Count) return; // Or throw ArgumentOutOfRangeException
+            if (index < 0 || index >= Count)
+            {
+                return; // Or throw ArgumentOutOfRangeException
+            }
 
             for (int i = index; i < Count - 1; i++)
             {
-                array[i] = array[i + 1];
+                Array[i] = Array[i + 1];
             }
 
             Count--;
@@ -118,9 +128,13 @@ namespace VikingEngine.EngineSpace
             while (index < array.Count)
             {
                 if (array[index].isDeleted)
+                {
                     ++index;
+                }
                 else
+                {
                     return true;
+                }
             }
 
             return false;
@@ -130,9 +144,13 @@ namespace VikingEngine.EngineSpace
             while (index < array.Count)
             {
                 if (array[index].isDeleted)
+                {
                     ++index;
+                }
                 else
+                {
                     return true;
+                }
             }
 
             return false;
@@ -144,7 +162,7 @@ namespace VikingEngine.EngineSpace
         }
         public bool InBound_Array(int index)
         {
-            return index >= 0 && index < array.Length;
+            return index >= 0 && index < Array.Length;
         }
     }    
 }

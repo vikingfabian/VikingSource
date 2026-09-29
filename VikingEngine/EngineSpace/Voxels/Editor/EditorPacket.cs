@@ -7,7 +7,7 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.Voxels
 {
-    class EditorPacket
+    public class EditorPacket
     {
         Network.ReceivedPacket packet;
         IntervalIntV3 volume;

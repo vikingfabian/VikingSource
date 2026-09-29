@@ -8,3 +8,4 @@ obj
 /VikingEngine/Content
 
 *.user
+**/.vscode/

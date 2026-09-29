@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine
 {
-    interface ISpottedArrayCounter<T>
+    public interface ISpottedArrayCounter<T>
     {
         bool Next();
         T GetSelection { get; }
@@ -16,13 +16,13 @@ namespace VikingEngine
         int CurrentIndex { get; }
     }
 
-    interface ISpottedArrayMember
+    public interface ISpottedArrayMember
     {
         int SpottedArrayMemberIndex { get; set; }
         bool SpottedArrayUseIndex { get; }
     }
 
-    struct SpottedArrayCounter<T> : ISpottedArrayCounter<T>
+    public struct SpottedArrayCounter<T> : ISpottedArrayCounter<T>
     {
         int selIndex;
         public SpottedArray<T> array;
@@ -282,7 +282,7 @@ namespace VikingEngine
     /// <summary>
     /// Will search up the next free spot to place a member, members will never move around due to thread safety
     /// </summary>
-    class SpottedArray<T>
+    public class SpottedArray<T>
     {
         public int mostLeftFreePosition = 0;
         /// <summary>

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine
 {
-    struct IntervalIntV3 : IBinaryIOobj
+    public struct IntervalIntV3 : IBinaryIOobj
     {
         public IntVector3 Min;
         public IntVector3 Max;

@@ -10,7 +10,7 @@ using VikingEngine.DSSWars;
 
 namespace VikingEngine.Input
 {
-    static class InputLib
+    public static class InputLib
     {
         public const float ButtonMaxClickTimeMs = 250;
         public const float ButtonHoldTimeMs = 500;
@@ -221,7 +221,7 @@ namespace VikingEngine.Input
         //}
     }
 
-    struct ButtonGroup
+    public struct ButtonGroup
     {
         public int Count;
         public Buttons button1, button2, button3;
@@ -250,16 +250,16 @@ namespace VikingEngine.Input
     }
 
 
-    enum MouseEdgePush
+    public enum MouseEdgePush
     { 
         None,
         Passive,
         Active,
         NUM
     }
-   
 
-    enum PlayerControllerSelection
+
+    public enum PlayerControllerSelection
     {
         KeyboardMouse,
         Keyboard,
@@ -271,7 +271,7 @@ namespace VikingEngine.Input
         Num_Non,
     }
 
-    enum ControllerActionSetType
+    public enum ControllerActionSetType
     {
         InGameControls,
         MenuControls,
@@ -280,7 +280,7 @@ namespace VikingEngine.Input
         NUM
     }
 
-    enum ButtonActionType
+    public enum ButtonActionType
     {
         // Gameplay
         GameMainAttack,
@@ -345,7 +345,7 @@ namespace VikingEngine.Input
         NUM_NON,
     }
 
-    enum DirActionType
+    public enum DirActionType
     {
         // Gameplay
         GamePlayerMovement,

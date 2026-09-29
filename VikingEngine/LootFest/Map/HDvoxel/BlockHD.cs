@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.LootFest.Map.HDvoxel
 {
-    struct BlockHD
+    public struct BlockHD
     {
         public const byte EmptyBlockMaterial = 0;
         public const byte DefaultBlockMaterial = 1;
@@ -254,7 +254,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
     }
 
-    struct BlockHDPair
+    public struct BlockHDPair
     {
         public ushort block1, block2;
 

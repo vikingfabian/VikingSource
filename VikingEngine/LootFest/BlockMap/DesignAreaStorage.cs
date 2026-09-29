@@ -6,7 +6,7 @@ using VikingEngine.DataStream;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    class AreaDesignStorageCollection
+    public class AreaDesignStorageCollection
     {
         public bool netRecieved = false;
         public List<DesignAreaStorage> areas = new List<DesignAreaStorage>();
@@ -62,7 +62,7 @@ namespace VikingEngine.LootFest.BlockMap
         }
     }
 
-    class DesignAreaStorage
+    public class DesignAreaStorage
     {
         const int Edited_BitIndex = 0;
         public const int NetRecieved_BitIndex = 1;
@@ -213,7 +213,7 @@ namespace VikingEngine.LootFest.BlockMap
         }
     }
 
-    enum AreaDesignType
+    public enum AreaDesignType
     {
         PublicBuild,
     }

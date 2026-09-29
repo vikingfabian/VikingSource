@@ -9,7 +9,7 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.Graphics
 {
-    class TopViewCamera : AbsCamera
+    public class TopViewCamera : AbsCamera
     {
         /* Constants */
         const int ITERATIONS_PER_BLOCK = 3;

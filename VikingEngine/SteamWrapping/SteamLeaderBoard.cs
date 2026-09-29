@@ -9,7 +9,7 @@ using VikingEngine.DSSWars;
 
 namespace VikingEngine.SteamWrapping
 {
-    class SteamLeaderBoard
+    public class SteamLeaderBoard
     {
         static readonly DateTime Year2000 = new DateTime(2000, 1, 1, 0, 0, 0);
 
@@ -48,7 +48,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    abstract class AbsSteamLeaderBoardInstance
+    public abstract class AbsSteamLeaderBoardInstance
     {
         protected const int MaxScoreDetails = 64;
         //const int CasualDetailIndex = 5;
@@ -58,7 +58,7 @@ namespace VikingEngine.SteamWrapping
        
     }
 
-    class SteamLeaderBoardLocal : AbsSteamLeaderBoardInstance
+    public class SteamLeaderBoardLocal : AbsSteamLeaderBoardInstance
     {        
         protected string name;
         bool uploadOnFind;
@@ -156,7 +156,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    class SteamLeaderBoardRemote : AbsSteamLeaderBoardInstance
+    public class SteamLeaderBoardRemote : AbsSteamLeaderBoardInstance
     {
         public CSteamID user;
         public string userName;

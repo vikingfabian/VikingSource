@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -323,16 +323,21 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
 
+        public bool IsGroupedResource(ItemResourceType type)
+        {
+            return ItemPropertyColl.CityIndex(type) >= 0;
+        }
+
         public ref GroupedResource GetRefGroupedResource(ItemResourceType type)
         {
             int cityResourceIndex = ItemPropertyColl.CityIndex(type);
+
 #if DEBUG
             if (cityResourceIndex < 0)
             {
-                //throw new NotImplementedException();
+                throw new NotImplementedException();
             }
 #endif
-            ItemPropertyColl.CityIndex(type);
             return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
 

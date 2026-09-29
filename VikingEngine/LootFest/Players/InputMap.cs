@@ -8,7 +8,7 @@ using VikingEngine.Input;
 
 namespace VikingEngine.LootFest.Players
 {
-    class InputMap : PlayerInputMap
+    public class InputMap : PlayerInputMap
     {
         public IDirectionalMap movement;
         public IButtonMap holdMovement;

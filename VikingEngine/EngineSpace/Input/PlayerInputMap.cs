@@ -3,7 +3,7 @@ using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.Input
 {
-    abstract class PlayerInputMap : IRichMenuInputMap
+    public abstract class PlayerInputMap : IRichMenuInputMap
     {
         /* Static readonlies */
         public static readonly DirectionalButtonsMap arrowKeys = new DirectionalButtonsMap(

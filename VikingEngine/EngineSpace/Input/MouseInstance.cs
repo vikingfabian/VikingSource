@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 namespace VikingEngine.Input
 {
 
-    class MouseInstance
+    public class MouseInstance
     {
         public Vector2 Position, PrevPosition, MoveDistance;
 

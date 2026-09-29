@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsVoxelObj : Abs3DModel
+    public abstract class AbsVoxelObj : Abs3DModel
     {
         public LoadedTexture texture = LoadedTexture.NO_TEXTURE;
         /* Static */

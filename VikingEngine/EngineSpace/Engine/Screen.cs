@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -217,6 +217,11 @@ namespace VikingEngine.Engine
 
             RenderScaleF = 1f;
 #endif
+
+            RenderingResolution.X &= ~1;
+            RenderingResolution.Y &= ~1;
+            MonitorTargetResolution.X &= ~1;
+            MonitorTargetResolution.Y &= ~1;
 
             MonitorTargetRect = new Rectangle(0, 0, MonitorTargetResolution.X, MonitorTargetResolution.Y);
 

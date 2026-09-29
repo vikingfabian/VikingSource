@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.LootFest
 {
-    class HealthBar2 : AbsHUD2
+    public class HealthBar2 : AbsHUD2
     {
         float largeHeartScale;
         float smallHeartScale;

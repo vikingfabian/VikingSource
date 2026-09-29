@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichBox
 {
-    abstract class AbsRbAction
+    public abstract class AbsRbAction
     {
         public int tagId = 0;
         public RbSoundType sound;
@@ -19,9 +19,9 @@ namespace VikingEngine.HUD.RichBox
         virtual public RichBoxContent tooltip() { return null; }
     }
 
-    delegate void TooltipContent(RichBoxContent content, object tag);
+    public delegate void TooltipContent(RichBoxContent content, object tag);
 
-    class RbTooltip : AbsRbAction
+    public class RbTooltip : AbsRbAction
     { 
         TooltipContent delTooltipContent;
         object tag;
@@ -42,7 +42,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbTooltip_Text : AbsRbAction
+    public class RbTooltip_Text : AbsRbAction
     {
         string text;
         public RbTooltip_Text(string text)
@@ -62,7 +62,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbAction : AbsRbAction
+    public class RbAction : AbsRbAction
     {
         public Action action;
 
@@ -82,7 +82,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbAction1Arg<Arg1> : AbsRbAction
+    public class RbAction1Arg<Arg1> : AbsRbAction
     {
         public Action<Arg1> action;
         Arg1 arg1;
@@ -104,7 +104,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbAction2Arg<Arg1, Arg2> : AbsRbAction
+    public class RbAction2Arg<Arg1, Arg2> : AbsRbAction
     {
         public Action<Arg1, Arg2> action;
         Arg1 arg1; 
@@ -128,7 +128,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbAction3Arg<Arg1, Arg2, Arg3> : AbsRbAction
+    public class RbAction3Arg<Arg1, Arg2, Arg3> : AbsRbAction
     {
         public Action<Arg1, Arg2, Arg3> action;
         Arg1 arg1;
@@ -154,7 +154,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbAction4Arg<Arg1, Arg2, Arg3, Arg4> : AbsRbAction
+    public class RbAction4Arg<Arg1, Arg2, Arg3, Arg4> : AbsRbAction
     {
         public Action<Arg1, Arg2, Arg3, Arg4> action;
         Arg1 arg1;
@@ -181,7 +181,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbAction5Arg<Arg1, Arg2, Arg3, Arg4, Arg5> : AbsRbAction
+    public class RbAction5Arg<Arg1, Arg2, Arg3, Arg4, Arg5> : AbsRbAction
     {
         public Action<Arg1, Arg2, Arg3, Arg4, Arg5> action;
         Arg1 arg1;
@@ -210,7 +210,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbAction_ChangeInt : AbsRbAction
+    public class RbAction_ChangeInt : AbsRbAction
     {
         Action refreshCAllback;
         IntGetSetIx property;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest
 {
-    struct VoxelModelNameAndRotation
+    public struct VoxelModelNameAndRotation
     {
         public VoxelModelName name;
         public int rotation;
@@ -27,7 +27,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    enum VoxelModelName
+    public enum VoxelModelName
     {
         //--
         CATEGORY_CHARACTER_0,
@@ -448,7 +448,7 @@ namespace VikingEngine.LootFest
         NUM_NON
     }
 
-    enum ModelCategory
+    public enum ModelCategory
     {
         Character,
         Weapon,

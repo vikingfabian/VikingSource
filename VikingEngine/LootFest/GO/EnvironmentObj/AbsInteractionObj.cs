@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
     //    bool autoInteract { get; }
     //}
 
-    abstract class AbsInteractionObj : AbsVoxelObj 
+    public abstract class AbsInteractionObj : AbsVoxelObj 
     {
         public AbsInteractionObj(GoArgs args)
             : base(args)
@@ -79,7 +79,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
         }
     }
 
-    abstract class AbsInteractionNoImageObj : AbsNoImageObj
+    public abstract class AbsInteractionNoImageObj : AbsNoImageObj
     {
         protected bool runInteractionCheck = true;
         public AbsInteractionNoImageObj(GoArgs args)

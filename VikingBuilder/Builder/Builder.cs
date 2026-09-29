@@ -1,4 +1,4 @@
-﻿#define DSS
+#define DSS
 
 /// <summary>
 /// Entry point for the Content Builder project, 
@@ -12,13 +12,24 @@
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Framework.Content.Pipeline.Builder;
+using System.Globalization;
+
+#region SPIR-V Shader Reflection Culture Fix
+
+// Force InvariantCulture so that SPIR-V shader reflection parses floats with dots on non-US locales.
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+#endregion SPIR-V Shader Reflection Culture Fix
 
 var contentCollectionArgs = new ContentBuilderParams()
 {
     Mode = ContentBuilderMode.Builder,
     WorkingDirectory = $"{AppContext.BaseDirectory}../../", // path to where your content folder can be located
     SourceDirectory = "Assets", // Not actually needed as this is the default, but added for reference
-    Platform = TargetPlatform.DesktopGL
+    Platform = TargetPlatform.DesktopGL,
 };
 var builder = new Builder();
 
@@ -110,6 +121,8 @@ public class Builder : ContentBuilder
         //contentCollection.Include<WildcardRule>("*.wav", new WavImporter());
         contentCollection.Exclude<WildcardRule>("Shaders/DeferredRenderer/*.*");
         contentCollection.Exclude<WildcardRule>("Shaders/Old/*.*");
+        contentCollection.Exclude<WildcardRule>("Shaders/EffectOld.fx");
+        contentCollection.Exclude<WildcardRule>("Shaders/*.fxh");
         
         contentCollection.IncludeCopy<WildcardRule>("*.vox", null);
         contentCollection.IncludeCopy<WildcardRule>("*.sav", null);

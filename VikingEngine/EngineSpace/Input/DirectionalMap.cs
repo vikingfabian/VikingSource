@@ -7,7 +7,7 @@ using System;
 
 namespace VikingEngine.Input
 {
-    enum DirectionalMapType
+    public enum DirectionalMapType
     {//Index får inte förändras
         AlternativeDirectionalMap,
         KeyPlusDirectionalMap,
@@ -20,7 +20,7 @@ namespace VikingEngine.Input
         GenericDpad,
     }
 
-    interface IDirectionalMap
+    public interface IDirectionalMap
     {
         bool plusKeyIsDown { get; }
         Vector2 direction { get; }
@@ -36,7 +36,7 @@ namespace VikingEngine.Input
         void read(System.IO.BinaryReader r);
     }
 
-    struct EmptyDirectionalMap : IDirectionalMap
+    public struct EmptyDirectionalMap : IDirectionalMap
     {
         // Properties
         public bool plusKeyIsDown => false;
@@ -67,7 +67,7 @@ namespace VikingEngine.Input
         }
     }
 
-    struct AlternativeDirectionalMap : IDirectionalMap
+    public struct AlternativeDirectionalMap : IDirectionalMap
     {
         public IDirectionalMap dirMap1, dirMap2;
 
@@ -116,7 +116,7 @@ namespace VikingEngine.Input
         }
     }
 
-    struct Alternative5DirectionalMap : IDirectionalMap
+    public struct Alternative5DirectionalMap : IDirectionalMap
     {
         IDirectionalMap dirMap1, dirMap2, dirMap3, dirMap4, dirMap5;
         int count;
@@ -240,7 +240,7 @@ namespace VikingEngine.Input
         }
     }
 
-    struct DirectionalButtonsMap : IDirectionalMap
+    public struct DirectionalButtonsMap : IDirectionalMap
     {
         IButtonMap up, down, left, right;
         public DirectionalButtonsMap(IButtonMap up, IButtonMap down, IButtonMap left, IButtonMap right)

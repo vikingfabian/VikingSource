@@ -9,7 +9,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    class Point3D : Abs3DModel, IRotationCallBack
+    public class Point3D : Abs3DModel, IRotationCallBack
     {
         public Point3D(Vector3 pos, Vector3 size, bool addToRender)
             : base(addToRender)

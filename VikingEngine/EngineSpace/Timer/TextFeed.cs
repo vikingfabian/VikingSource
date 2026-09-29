@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.Timer
 {
-    class TextFeed : AbsTimer
+    public class TextFeed : AbsTimer
     {
         string text = TextLib.EmptyString;
         int currentLetter = 0;

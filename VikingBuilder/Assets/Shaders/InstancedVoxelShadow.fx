@@ -1,11 +1,4 @@
-#if OPENGL
-    #define SV_POSITION POSITION
-    #define VS_SHADERMODEL vs_3_0
-    #define PS_SHADERMODEL ps_3_0
-#else
-    #define VS_SHADERMODEL vs_4_0_level_9_1
-    #define PS_SHADERMODEL ps_4_0_level_9_1
-#endif
+#include "VikingMacros.fxh"
 
 // Global Camera & Light Matrices
 float4x4 View;
@@ -20,6 +13,8 @@ float4 DiffuseColor;
 float ZBias = 0.005f;
 
 // Textures & Samplers
+#if OPENGL
+
 texture MainTexture;
 sampler2D MainSampler = sampler_state
 {
@@ -30,6 +25,7 @@ sampler2D MainSampler = sampler_state
     AddressU = Clamp;
     AddressV = Clamp;
 };
+#define SAMPLE_MAIN_TEX(coords) tex2D(MainSampler, coords)
 
 texture ShadowMap;
 sampler2D ShadowSampler = sampler_state
@@ -41,6 +37,61 @@ sampler2D ShadowSampler = sampler_state
     AddressU = Clamp;
     AddressV = Clamp;
 };
+#define SAMPLE_SHADOWMAP(coords) tex2D(ShadowSampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> MainTexture : register(t0);
+sampler MainSampler : register(s0) = sampler_state
+{
+    Texture = (MainTexture);
+    MinFilter = Point;
+    MagFilter = Point;
+    MipFilter = Point;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_MAIN_TEX(coords) MainTexture.Sample(MainSampler, coords)
+
+Texture2D<float4> ShadowMap : register(t1);
+sampler ShadowSampler : register(s1) = sampler_state
+{
+    Texture = (ShadowMap);
+    MinFilter = Point;
+    MagFilter = Point;
+    MipFilter = None;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_SHADOWMAP(coords) ShadowMap.Sample(ShadowSampler, coords)
+
+#else
+
+Texture2D MainTexture : register(t0);
+sampler MainSampler : register(s0) = sampler_state
+{
+    Texture = (MainTexture);
+    MinFilter = Point;
+    MagFilter = Point;
+    MipFilter = Point;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_MAIN_TEX(coords) MainTexture.Sample(MainSampler, coords)
+
+Texture2D ShadowMap : register(t1);
+sampler ShadowSampler : register(s1) = sampler_state
+{
+    Texture = (ShadowMap);
+    MinFilter = Point;
+    MagFilter = Point;
+    MipFilter = None;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_SHADOWMAP(coords) ShadowMap.Sample(ShadowSampler, coords)
+
+#endif
 
 // Stream 0: Shared Voxel Mesh Geometry (VertexPositionColorNormal)
 struct VSGeometryInput
@@ -102,7 +153,7 @@ VSOutput InstancedMainVS(VSGeometryInput geom, VSInstanceInput inst)
 //-----------------------------------------------------------------------------
 // Pixel Shader: Lit Pass with Shadow Sampling
 //-----------------------------------------------------------------------------
-float4 InstancedMainPS(VSOutput input) : COLOR0
+float4 InstancedMainPS(VSOutput input) : SV_TARGET
 {
     float4 baseColor = input.Color;
 
@@ -121,7 +172,7 @@ float4 InstancedMainPS(VSOutput input) : COLOR0
         shadowTexCoord.y >= 0.0f && shadowTexCoord.y <= 1.0f)
     {
         float currentDepth = input.ShadowPosition.z / input.ShadowPosition.w;
-        float shadowDepth = tex2D(ShadowSampler, shadowTexCoord).r;
+        float shadowDepth = SAMPLE_SHADOWMAP(shadowTexCoord).r;
 
         if (currentDepth - ZBias > shadowDepth)
         {
@@ -153,8 +204,8 @@ float4 InstancedMainPS(VSOutput input) : COLOR0
 //-----------------------------------------------------------------------------
 struct VSDepthOutput
 {
-    float4 Position : SV_POSITION;
-    float2 Depth : TEXCOORD0;
+    float4 Position : SV_Position0;
+    float Depth : TEXCOORD0;
 };
 
 VSDepthOutput InstancedDepthVS(VSGeometryInput geom, VSInstanceInput inst)
@@ -171,21 +222,24 @@ VSDepthOutput InstancedDepthVS(VSGeometryInput geom, VSInstanceInput inst)
     float4 worldPos = mul(geom.Position, instanceWorld);
     float4 lightViewPos = mul(worldPos, LightView);
     output.Position = mul(lightViewPos, LightProjection);
-    output.Depth = output.Position.zw;
+    output.Depth = output.Position.z / output.Position.w;
+
+    // Prevent DXC from stripping unused vertex attributes,
+    // so that attribute locations match 1:1 sequential location mapping in Vulkan (0..7).
+    output.Position.z += 1e-7f * (geom.Color.a + geom.Normal.y + inst.InstanceData.w);
 
     return output;
 }
 
-float4 InstancedDepthPS(VSDepthOutput input) : COLOR0
+float4 InstancedDepthPS(VSDepthOutput input) : SV_TARGET
 {
-    float depth = input.Depth.x / input.Depth.y;
-    return float4(depth + 0.0015f, 0, 0, 1.0f);
+    return float4(input.Depth + 0.0015f, 0, 0, 1.0f);
 }
 
 //-----------------------------------------------------------------------------
 // Pixel Shader: Lit Pass without Shadows (for shadow = false passes)
 //-----------------------------------------------------------------------------
-float4 InstancedLitPS(VSOutput input) : COLOR0
+float4 InstancedLitPS(VSOutput input) : SV_TARGET
 {
     float4 baseColor = input.Color;
 

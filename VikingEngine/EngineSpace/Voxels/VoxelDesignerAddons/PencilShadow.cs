@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Voxels
 {
-    class PencilShadow
+    public class PencilShadow
     {
         const float LayerAboveSurface = 0.05f;
 

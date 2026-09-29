@@ -13,13 +13,13 @@ namespace VikingEngine.HUD.RichBox
     /// <summary>
     /// Track placement of next item
     /// </summary>
-    struct RichBoxCarriage
+    public struct RichBoxCarriage
     {
         public Vector2 position;
         public int lineCount;
     }
 
-    class RichBoxGroup : ImageGroup
+    public class RichBoxGroup : ImageGroup
     {
         static int NextId = 1;
         public int PageId = NextId++;

@@ -15,7 +15,7 @@ using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.Engine
 {
-    struct PlayerId
+    public struct PlayerId
     {
         public byte netWorkId;
         public bool isAi;
@@ -48,7 +48,7 @@ namespace VikingEngine.Engine
         }
     }
 
-    abstract class AbsPlayerData
+    public abstract class AbsPlayerData
     {
         public PlayerView view = null;
         public int localPlayerIndex = -1;
@@ -154,8 +154,8 @@ namespace VikingEngine.Engine
 
         override public PlayerType Type { get { return PlayerType.Ai; }  }
     }
-    
-    class PlayerData : AbsPlayerData
+
+    public class PlayerData : AbsPlayerData
     {
         public const int AllPlayers = -1;
         public VikingEngine.Input.PlayerInputMap inputMap = null;
@@ -255,12 +255,12 @@ namespace VikingEngine.Engine
         override public PlayerType Type { get { return PlayerType.Local; } }
     }
 
-    abstract class AbsApiGamer
+    public abstract class AbsApiGamer
     {
-        abstract public string Name();
+        public abstract string Name();
     }
 
-    enum PlayerType
+    public enum PlayerType
     {
         Local,
         Ai,

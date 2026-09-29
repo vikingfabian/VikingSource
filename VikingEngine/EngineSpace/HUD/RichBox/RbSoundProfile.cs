@@ -10,7 +10,7 @@ using VikingEngine.Sound;
 namespace VikingEngine.HUD.RichBox
 {
 
-    class RbSoundProfile
+    public class RbSoundProfile
     {
         SoundContainerBase yes;
         SoundContainerBase no;
@@ -35,7 +35,7 @@ namespace VikingEngine.HUD.RichBox
     }
 
 
-    class RbSoundAction : AbsRbAction
+    public class RbSoundAction : AbsRbAction
     {
         public RbSoundAction(RbSoundType sound)
         {
@@ -48,7 +48,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    static class RbSoundSetup
+    public static class RbSoundSetup
     {
         public static RbSoundProfile Get(RbSoundType type)
         {
@@ -84,7 +84,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    enum RbSoundType
+    public enum RbSoundType
     { 
         Default,
         Option,

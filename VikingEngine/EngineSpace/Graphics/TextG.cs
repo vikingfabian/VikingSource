@@ -13,7 +13,7 @@ namespace VikingEngine.Graphics
     /// <summary>
     /// By ref type of visual text, prefered when the text string will change often
     /// </summary>
-    class TextG : AbsTextLine
+    public class TextG : AbsTextLine
     {
         /* Properties */
         public override string TextString

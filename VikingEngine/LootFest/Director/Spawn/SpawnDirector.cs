@@ -8,9 +8,9 @@ using VikingEngine.LootFest.BlockMap;
 
 namespace VikingEngine.LootFest
 {
-    delegate void CreateGameObjectDelegate(GoArgs args);
+    public delegate void CreateGameObjectDelegate(GoArgs args);
 
-    class GenerateChunk
+    public class GenerateChunk
     {
         public bool host;
         public Map.Chunk chunk;
@@ -23,7 +23,7 @@ namespace VikingEngine.LootFest
     /// <summary>
     /// All spawns must go through and be cleared by this, also for network
     /// </summary>
-    class SpawnDirector
+    public class SpawnDirector
     {
         const bool DebugInfo = false;
 
@@ -154,13 +154,13 @@ namespace VikingEngine.LootFest
         }
     }
 
-    struct SpawnDirectorHeroData
+    public struct SpawnDirectorHeroData
     {
         public int LevelMonsterCount;
         public float heat, goalHeat;
     }
 
-    class SuggestedSpawns
+    public class SuggestedSpawns
     {
         SpawnPointData onlyOne;
         public List<SpawnPointData> suggestedSpawns;
@@ -203,7 +203,7 @@ namespace VikingEngine.LootFest
     }
 
 
-    struct SpawnPointData
+    public struct SpawnPointData
     {
         public static readonly SpawnPointData Empty = new SpawnPointData();
 
@@ -252,7 +252,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    enum SpawnImportance
+    public enum SpawnImportance
     {
         Must_0,
         Should_1,
