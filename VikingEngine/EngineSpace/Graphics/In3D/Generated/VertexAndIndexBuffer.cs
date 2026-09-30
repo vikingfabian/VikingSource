@@ -107,11 +107,12 @@ namespace VikingEngine.Graphics
         /* Novelty methods */
         public void SetBuffer()
         {
-            if (bufferId != Engine.Draw.PreviousVertexBuffer)
+            var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
+            if (gd != null && vertexBuffer_GPU != null)
             {
                 Engine.Draw.PreviousVertexBuffer = bufferId;
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(vertexBuffer_GPU);
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = indexBuffer;
+                gd.SetVertexBuffer(vertexBuffer_GPU);
+                gd.Indices = indexBuffer;
             }
         }
     }

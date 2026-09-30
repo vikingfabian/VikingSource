@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                 bool mouseOverHud = false;
                 display.update(ref mouseOverHud);
 
-                //map.userInput(mouseOverHud);                
+                map.userInput(Ref.gamesett.keyboardMap, mouseOverHud);                
             }
         }
 
