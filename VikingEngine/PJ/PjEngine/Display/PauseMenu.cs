@@ -19,6 +19,8 @@ namespace VikingEngine.PJ.Display
 
         public PauseMenu(int pIx, AbsPJGameState gamestate, Input.InputSource inputType)
         {
+            HudLib.KeyboardDisplayMode = inputType.sourceType == InputSourceType.Keyboard;
+
             this.gamestate = gamestate;
 
             darkBg = HudLib.DarkBgOverlay(HudLib.LayPopupBg);
@@ -43,8 +45,8 @@ namespace VikingEngine.PJ.Display
             resume = new MenuButton(VectorRect.FromCenterSize(VectorExt.AddX(buttonsCenter, buttonSideAdj), bigButtonsSize), 
                 true, SpriteName.pjPlayIcon, HudLib.LayPopup, HudLib.LargeButtonSettings);
 
-            SpriteName exitButtonImage = inputType.sourceType == InputSourceType.XController? SpriteName.ButtonVIEW : SpriteName.KeyBack;
-            SpriteName resumeButtonImage = inputType.sourceType == InputSourceType.XController ? SpriteName.ButtonMENU : SpriteName.KeyEsc;
+            SpriteName exitButtonImage = HudLib.InputIcon(SpriteName.KeyBack, SteamDigitalAction.Action_Back, SpriteName.ButtonVIEW);//inputType.sourceType == InputSourceType.XController? SpriteName.ButtonVIEW : SpriteName.KeyBack;
+            SpriteName resumeButtonImage = HudLib.InputIcon(SpriteName.KeyEsc, SteamDigitalAction.Action_Start, SpriteName.ButtonMENU);//inputType.sourceType == InputSourceType.XController ? SpriteName.ButtonMENU : SpriteName.KeyEsc;
 
             exitGame.createInputIcon(Dir4.W, exitButtonImage);
             resume.createInputIcon(Dir4.E, resumeButtonImage);
@@ -66,21 +68,35 @@ namespace VikingEngine.PJ.Display
                 }
             }
 
-            foreach (var controller in Input.XInput.controllers)
+            if (Ref.steam.isInitialized)
             {
-                if (controller.Connected)
+                if (Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Back))
+                { 
+                    input_1Exit_2Resume = 1;
+                }
+
+                if (Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Start))
                 {
-                    if (controller.KeyDownEvent(Buttons.Back))
+                    input_1Exit_2Resume = 2;
+                }
+            }
+            else
+            {
+                foreach (var controller in Input.XInput.controllers)
+                {
+                    if (controller.Connected)
                     {
-                        input_1Exit_2Resume = 1;
-                    }
-                    if (controller.KeyDownEvent(Buttons.Start))
-                    {
-                        input_1Exit_2Resume = 2;
+                        if (controller.KeyDownEvent(Buttons.Back))
+                        {
+                            input_1Exit_2Resume = 1;
+                        }
+                        if (controller.KeyDownEvent(Buttons.Start))
+                        {
+                            input_1Exit_2Resume = 2;
+                        }
                     }
                 }
             }
-            
 
             if (exitGame.update() ||
                 Input.Keyboard.KeyDownEvent(Keys.Back))

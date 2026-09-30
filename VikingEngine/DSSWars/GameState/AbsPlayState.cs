@@ -79,7 +79,11 @@ namespace VikingEngine.DSSWars.GameState
         virtual protected void onGameStart(bool newGame)
         {
             gameStartTime = TimeStamp.Now();
+#if DSS
             Input.Mouse.SetMenuMode(SteamWrapping.SteamActionSet.InGameControls);
+#else
+            Input.Mouse.SetMenuMode(true);
+#endif
         }
 
         public bool resourceCheckTime()

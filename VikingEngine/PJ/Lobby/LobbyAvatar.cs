@@ -69,7 +69,7 @@ namespace VikingEngine.PJ
             {
                 if (removeInput == null && PjRef.ViewExtraControllerInput())
                 {
-                    removeInput = new Graphics.Image(SpriteName.DpadLeft,
+                    removeInput = new Graphics.Image(HudLib.InputIcon(SpriteName.NO_IMAGE, SteamWrapping.SteamDigitalAction.Action_RemovePlayer, SpriteName.DpadLeft),
                         removeArea.RightCenter, Engine.Screen.IconSizeV2, ImageLayers.Lay2, true);
                     removeInput.Xpos += removeInput.Width * 0.5f;
                 }

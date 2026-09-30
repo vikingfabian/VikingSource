@@ -9,6 +9,7 @@ using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
@@ -132,6 +133,25 @@ namespace VikingEngine.PJ
                 startInput = new KeyboardButtonMap(Keys.Enter);
                 modeInput = new KeyboardButtonMap(Lobby.ModeDisplay.NextKeyboardInput);
             }
+        }
+
+        public static bool KeyboardDisplayMode = true;
+        public static SpriteName InputIcon(SpriteName keyboard, SteamDigitalAction steamAction, SpriteName defaultIcon)
+        {
+            if (KeyboardDisplayMode && keyboard != SpriteName.NO_IMAGE)
+            {
+                return keyboard;
+            }
+            else if (Ref.steam.isInitialized)
+            { 
+                SpriteName result = Ref.steam.input.actionIcon(0, SteamActionSet.DefaultSet, steamAction);
+                if (result != SpriteName.NO_IMAGE)
+                {
+                    return result;
+                }
+            }
+
+            return defaultIcon;
         }
 
         public static Vector2 BigButtonsSize => new Vector2(Engine.Screen.IconSize * 2f);

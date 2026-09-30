@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.ToGG.HeroQuest.Display;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -151,7 +152,7 @@ namespace VikingEngine.SteamWrapping
 
         public bool IsMouse { get { return false; } }
         public string ButtonName { get { return actionType.ToString(); } }
-        public InputSourceType inputSource { get { return InputSourceType.XController; } }
+        public InputSourceType inputSource { get { return InputSourceType.SteamInput; } }
         public int buttonIndex { get { return (int)actionType; } }
         public int ControllerIndex { get { return controllerIx; } set { controllerIx = value; } }
 
@@ -184,11 +185,19 @@ namespace VikingEngine.SteamWrapping
 
         public void write(System.IO.BinaryWriter w)
         {
-            throw new NotImplementedException();
+            w.Write((byte)ButtonMapType.SteamInput);
+            w.Write((byte)controllerIx);
+            w.Write((byte)actionSet);
+            w.Write((byte)actionType);
+            //throw new NotImplementedException();
         }
         public void read(System.IO.BinaryReader r)
         {
-            throw new NotImplementedException();
+            controllerIx = r.ReadByte();
+            actionSet = (SteamActionSet)r.ReadByte();
+            actionType = (SteamDigitalAction)r.ReadByte();
+
+            //throw new NotImplementedException();
         }
 
         public override bool Equals(object obj)

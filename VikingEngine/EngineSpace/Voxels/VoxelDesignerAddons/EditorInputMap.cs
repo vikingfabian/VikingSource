@@ -233,6 +233,7 @@ namespace VikingEngine.Voxels
         }
         public void steamSetup(int controllerIndex, IDirectionalMap gamemove, IDirectionalMap gamecamera)
         {
+#if DSS
             moveXZ = new SteamAnalogMap(SteamActionSet.EditorControls, false, SteamAnalogAction.editor_moveXZ, controllerIndex);
             cameraXMoveY = new SteamAnalogMap(SteamActionSet.EditorControls, false, SteamAnalogAction.editor_cameraXMoveY, controllerIndex);
             toggleCameraMode = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_YmovementToggle, controllerIndex);
@@ -250,6 +251,7 @@ namespace VikingEngine.Voxels
             undo = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_undo, controllerIndex);
             previous = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_tab_left, controllerIndex);
             next = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_tab_right, controllerIndex);
+#endif
         }
         public void xboxSetup(int controllerIndex, IDirectionalMap gamemove, IDirectionalMap gamecamera)
         {

@@ -39,7 +39,15 @@ namespace VikingEngine.Input
 
         public static void SetMenuMode(bool menu)
         {
+#if DSS
             SetMenuMode(menu? SteamWrapping.SteamActionSet.MenuControls : SteamWrapping.SteamActionSet.InGameControls);
+#else
+            MenuMode = menu;
+            foreach (var ins in Instances)
+            {
+                ins.RefreshMouseVisible();
+            }
+#endif
         }
 
         public static void SetMenuMode(SteamWrapping.SteamActionSet actionSet)

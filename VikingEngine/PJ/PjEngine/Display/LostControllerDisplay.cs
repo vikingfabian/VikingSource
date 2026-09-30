@@ -37,19 +37,19 @@ namespace VikingEngine.PJ.Display
 
         void controllerLayout(out Vector2 controllerSz, out int viewCount)
         {
-            int connected = Input.XInput.MaxIndex() + 1;
-            if (connected >= 5)
-            {
-                viewCount = Input.XInput.controllers.Count;
-            }
-            else if (connected >= 3)
-            {
-                viewCount = 6;
-            }
-            else
-            {
-                viewCount = 4;
-            }
+            viewCount = Ref.steam.isInitialized ? Ref.steam.input.connectMaxCount : 4;//Input.XInput.MaxIndex() + 1;
+            //if (connected >= 5)
+            //{
+            //    viewCount = Input.XInput.controllers.Count;
+            //}
+            //else if (connected >= 3)
+            //{
+            //    viewCount = 6;
+            //}
+            //else
+            //{
+            //    viewCount = 4;
+            //}
 
             controllerSz = new Vector2(Engine.Screen.IconSize *
                 (viewCount <= 4? 1.6f : 2f));
@@ -64,7 +64,8 @@ namespace VikingEngine.PJ.Display
             {
                 var area = Table.CellPlacement(center, true, i, viewCount, controllerSz,
                     new Vector2(Engine.Screen.BorderWidth));
-                controllerIcons.Add(new ControllerIcon(area, Input.XInput.controllers[i]));
+
+                controllerIcons.Add(new ControllerIcon(area, Ref.steam.isInitialized? Ref.steam.input.controllers[i] : Input.XInput.controllers[i]));
             }
 
             update();
@@ -100,9 +101,9 @@ namespace VikingEngine.PJ.Display
         class ControllerIcon
         {
             Graphics.Image image, disconnect;
-            Input.XController controller;
+            Input.AbsController controller;
 
-            public ControllerIcon(VectorRect area, Input.XController controller)
+            public ControllerIcon(VectorRect area, Input.AbsController controller)
             {
                 this.controller = controller;
                 image = new Graphics.Image(SpriteName.NO_IMAGE, area.Position, area.Size, HudLib.LayPopup);

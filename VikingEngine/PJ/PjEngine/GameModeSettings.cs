@@ -23,14 +23,14 @@ namespace VikingEngine.PJ
                 case PartyGameMode.Jousting:
                     localPlayerRange = new Range(2, PjLib.SharedControllerMaxPlayers);
                     hasNetwork = false;
-                    access = GameModeAccessibility.Free_5;
+                    access = GameModeAccessibility.FullGame_5;
                     avatarType = ModeAvatarType.Joust;
                     break;
 
                 case PartyGameMode.Bagatelle:
                     localPlayerRange = new Range(2, PjLib.SharedControllerMaxPlayers);
                     hasNetwork = true;
-                    access = GameModeAccessibility.Paid_4;
+                    access = GameModeAccessibility.FullGame_5;
                     avatarType = ModeAvatarType.Joust;
                     break;
 
@@ -44,14 +44,14 @@ namespace VikingEngine.PJ
                 case PartyGameMode.MiniGolf:
                     localPlayerRange = new Range(2, PjLib.SharedControllerMaxPlayers);
                     hasNetwork = false;
-                    access = GameModeAccessibility.Paid_4;
+                    access = GameModeAccessibility.FullGame_5;
                     avatarType = ModeAvatarType.Joust;
                     break;
                     
                 case PartyGameMode.CarBall:
                     localPlayerRange = new Range(2, 8);//12 Begränsat till jag har fler djur bilderf
                     hasNetwork = false;
-                    access = GameModeAccessibility.Paid_4;
+                    access = GameModeAccessibility.FullGame_5;
                     avatarType = ModeAvatarType.Car;
                     break;
                     
@@ -86,7 +86,7 @@ namespace VikingEngine.PJ
                 case PartyGameMode.Match3:
                     localPlayerRange = new Range(2, 8);
                     hasNetwork = false;
-                    access = GameModeAccessibility.Paid_4;
+                    access = GameModeAccessibility.FullGame_5;
                     avatarType = ModeAvatarType.Joust;
                     break;
 
@@ -100,7 +100,7 @@ namespace VikingEngine.PJ
                 case PartyGameMode.MeatPie:
                     localPlayerRange = new Range(2, PjLib.SharedControllerMaxPlayers);
                     hasNetwork = false;
-                    access = GameModeAccessibility.Free_5;
+                    access = GameModeAccessibility.FullGame_5;
                     avatarType = ModeAvatarType.Joust;
                     break;
 

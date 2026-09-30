@@ -159,15 +159,27 @@ namespace VikingEngine.PJ.Lobby
             }
 
             bool highlightNext = false;
-            foreach (var m in Input.XInput.controllers)
-            {
-                if (m.IsButtonDown(NextXInput))
-                {
-                    highlightNext = true;
 
-                    if (m.KeyDownEvent(NextXInput))
+            if (Ref.steam.isInitialized)
+            {
+                if (Ref.steam.input.AnyKeyDownEvent(SteamWrapping.SteamDigitalAction.Action_NextMode))
+                { 
+                    highlightNext = true;
+                    nextMode(1);
+                }
+            }
+            else
+            {
+                foreach (var m in Input.XInput.controllers)
+                {
+                    if (m.IsButtonDown(NextXInput))
                     {
-                        nextMode(1);
+                        highlightNext = true;
+
+                        if (m.KeyDownEvent(NextXInput))
+                        {
+                            nextMode(1);
+                        }
                     }
                 }
             }

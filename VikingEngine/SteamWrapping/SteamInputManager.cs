@@ -549,10 +549,13 @@ namespace VikingEngine.SteamWrapping
             return SpriteName.MissingImage;
         }
 
+        public int connectMaxCount = 1;
+        public int connectCount = 0;
+
         public void update()
         {
             InputLayerChange = false;
-
+            int connected = 0;
             if (Ref.main.IsActive)
             {
                 if (lostFocus)
@@ -564,49 +567,63 @@ namespace VikingEngine.SteamWrapping
                 if (isReady)
                 {
                     int count = SteamInput.GetConnectedControllers(controllerHandles);
-                    for (int controllerIx = 0; controllerIx < count; controllerIx++)
+                    connectMaxCount = Math.Max(connectMaxCount, count);
+                    for (int controllerIx = 0; controllerIx < controllers.Length/*count*/; controllerIx++)
                     {
-                        InputHandle_t controllerHandle = controllerHandles[controllerIx];
-
-                        // Skip disconnected controllers
-                        if (controllerHandle.m_InputHandle == 0) continue;
-
                         //INPUT
-                        var ins = controllers[controllerIx];
+                        SteamControllerInstance ins = controllers[controllerIx];
 
-                        //LAYERS
-                        // Get the current layers for this specific controller
-                        int layerCount = SteamInput.GetActiveActionSetLayers(controllerHandle, _currentLayersBuffer);
-                        if (layerCount != ins.layerCount)
+                        if (controllerIx < count)
                         {
-                            InputLayerChange = true;
-                            ins.layerCount = layerCount;                            
-                        }
+                            InputHandle_t controllerHandle = controllerHandles[controllerIx];
+                            ins.connected = controllerHandle.m_InputHandle != 0;
 
-                        SteamInput.ActivateActionSet(controllerHandle, actionSets[(int)ins.actionSet]);
+                            // Skip disconnected controllers
+                            if (controllerHandle.m_InputHandle == 0) continue;
 
-                        for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
-                        {
-                            ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
-                            InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[daIx]);
-                            ins.digital_isDown_current[daIx] = actionData.bState == 1 && actionData.bActive == 1;
-                        }
+                            connected++;
+                            //LAYERS
+                            // Get the current layers for this specific controller
+                            int layerCount = SteamInput.GetActiveActionSetLayers(controllerHandle, _currentLayersBuffer);
+                            if (layerCount != ins.layerCount)
+                            {
+                                InputLayerChange = true;
+                                ins.layerCount = layerCount;
+                            }
 
-                        if (ins.muteKeyChange > 0)
-                        {
-                            ins.muteKeyChange -= Ref.DeltaTimeMs;
-                            //Kill all key change events
+                            SteamInput.ActivateActionSet(controllerHandle, actionSets[(int)ins.actionSet]);
+
                             for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
                             {
                                 ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
+                                InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[daIx]);
+                                ins.digital_isDown_current[daIx] = actionData.bState == 1 && actionData.bActive == 1;
+                                //if (ins.digital_isDown_current[daIx])
+                                //{
+                                //    lib.DoNothing();
+                                //}
+                            }
+
+                            if (ins.muteKeyChange > 0)
+                            {
+                                ins.muteKeyChange -= Ref.DeltaTimeMs;
+                                //Kill all key change events
+                                for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
+                                {
+                                    ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
+                                }
+                            }
+
+                            for (int aaIx = 0; aaIx < analogHandles.Length; aaIx++)
+                            {
+                                InputAnalogActionData_t analogData = SteamInput.GetAnalogActionData(controllerHandle, analogHandles[aaIx]);
+
+                                ins.analog_current[aaIx] = analogData;
                             }
                         }
-
-                        for (int aaIx = 0; aaIx < analogHandles.Length; aaIx++)
+                        else
                         {
-                            InputAnalogActionData_t analogData = SteamInput.GetAnalogActionData(controllerHandle, analogHandles[aaIx]);
-
-                            ins.analog_current[aaIx] = analogData;
+                            ins.connected = false;
                         }
                     }
                 }
@@ -615,6 +632,7 @@ namespace VikingEngine.SteamWrapping
             {
                 lostFocus = true;
             }
+            connectCount = connected;
         }
 
         public bool AnyKeyDownEvent()
@@ -625,6 +643,21 @@ namespace VikingEngine.SteamWrapping
                 {
                     if (c.AnyKeyDownEvent())
                     { 
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool AnyKeyDownEvent(SteamDigitalAction actionType)
+        {
+            if (isReady)
+            {
+                foreach (var c in controllers)
+                {
+                    if (c.connected && c.KeyDownEvent(actionType))
+                    {
                         return true;
                     }
                 }
@@ -674,14 +707,20 @@ namespace VikingEngine.SteamWrapping
 
     enum SteamActionSet
     {
+#if DSS
         InGameControls,
         MenuControls,
         EditorControls,
+#else
+        DefaultSet,
+        MenuControls,
+#endif
         NUM
     }
 
     enum SteamDigitalAction
     {
+#if DSS
         // InGameControls & Shared
         select,
         order,
@@ -730,11 +769,38 @@ namespace VikingEngine.SteamWrapping
         editor_selection_mirrorY,
         editor_selection_rotateCCW,
         editor_selection_rotateCW,
+#else
+        Action_01,
+        
+        Action_02,
+
+        Action_03,
+
+        Action_04,
+
+        Action_05,
+
+        Action_06,
+
+        Action_07,
+
+        Action_08,
+
+        Action_NextMode,
+        Action_RemovePlayer,
+        Action_Start,
+        Action_Back,
+
+        // MenuControls
+        close_menu,
+
+#endif
         NUM
     }
 
     enum SteamAnalogAction
     {
+#if DSS
         // InGameControls
         PanCamera,
         CameraStick,
@@ -749,25 +815,35 @@ namespace VikingEngine.SteamWrapping
         editor_moveXZ,
         editor_cameraXMoveY,
         editor_cameraZoom,
-
+#else
+        MoveCursor,
+#endif
         NUM
     }
 
-    class SteamControllerInstance
+    class SteamControllerInstance : AbsController
     {
-        public int index;
+        public bool connected;
+
+        public override bool Connected => connected;
+        //public bool hasUser;
+        //public int Index;
         public int layerCount  =0;
         public float muteKeyChange = 0;
 
         public bool[] digital_isDown_previous;
         public bool[] digital_isDown_current;
         public InputAnalogActionData_t[] analog_current;
-        public SteamActionSet actionSet = SteamActionSet.MenuControls;
-        
+        public SteamActionSet actionSet =
+#if DSS
+            SteamActionSet.MenuControls;
+#else
+            SteamActionSet.DefaultSet;
+#endif
 
         public SteamControllerInstance(int index)
         {
-            this.index = index;
+            this.Index = index;
             digital_isDown_previous = new bool[(int)SteamDigitalAction.NUM];
             digital_isDown_current = new bool[(int)SteamDigitalAction.NUM];
 
@@ -784,6 +860,12 @@ namespace VikingEngine.SteamWrapping
                 }
             }
             return false;
+        }
+
+        public bool KeyDownEvent(SteamDigitalAction action)
+        {
+            int actionIx = (int)action;
+            return digital_isDown_current[actionIx] && !digital_isDown_previous[actionIx];
         }
     }
 

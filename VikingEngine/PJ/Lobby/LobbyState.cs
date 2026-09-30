@@ -10,6 +10,7 @@ using VikingEngine.Network;
 using VikingEngine.PJ.Display;
 using VikingEngine.PJ.Lobby;
 using VikingEngine.PJ.PjEngine;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
@@ -525,7 +526,7 @@ namespace VikingEngine.PJ
 
         Range localPlayersCountLimits()
         {
-            Range count = PjRef.storage.modeSettings.localPlayerRange;//PjLib.ModeSettings(PjRef.storage.mode).localPlayerRange;
+            Range count = PjRef.storage.modeSettings.localPlayerRange;
 
             if (joinedRemotes.Count > 0)
             {
@@ -550,7 +551,7 @@ namespace VikingEngine.PJ
         public void CloseMenu()
         {
             if (menusystem != null)
-            {
+            {               
                 menusystem.closeMenu();
                 menusystem = null;
             }
@@ -558,6 +559,8 @@ namespace VikingEngine.PJ
 
         public MenuSystem openMenu()
         {
+            Ref.steam.input.SetActionSet(SteamActionSet.MenuControls);
+
             menusystem = new MenuSystem(this);
 
             return menusystem;
@@ -623,6 +626,8 @@ namespace VikingEngine.PJ
             refreshRemoteGamersDisplay();
             refreshPlayerCount(false);
         }
+
+
 
         List<Player.RemoteGamerData> listRemoteGamers()
         {
@@ -1137,13 +1142,16 @@ namespace VikingEngine.PJ
                     return PlatformSettings.DevBuild;
                     
                 case GameModeAccessibility.Beta_3:
-                    PjRef.RefreshDlcStatus();
+                    //PjRef.RefreshDlcStatus();
+#if DEBUG
                     return true;
+#endif
+                    return PjLib.ViewBetaModes;
 
-                case GameModeAccessibility.Paid_4:
-                    PjRef.RefreshDlcStatus();
-                    //canPlay = PjRef.Dlc1Characters || PjRef.Dlc2BETA;
-                    return true;
+                //case GameModeAccessibility.Paid_4:
+                //    PjRef.RefreshDlcStatus();
+                //    //canPlay = PjRef.Dlc1Characters || PjRef.Dlc2BETA;
+                //    return true;
 
                 default:
                     return true;
@@ -1230,24 +1238,48 @@ namespace VikingEngine.PJ
                 removeGamerInput();
             }
 #endif
-            
 
-            //XBOX JOIN
-            foreach (var xboxController in Input.XInput.controllers)
+
+
+            if (Ref.steam.isInitialized)
             {
-                if (xboxController.Connected)
+                foreach (var ctrl in Ref.steam.input.controllers)
                 {
-                    foreach (var button in PjLib.XinputAvailableJoinButtons)
+                    if (ctrl != null && ctrl.connected)
                     {
-                        if (xboxController.KeyDownEvent(button))
+                        for (SteamDigitalAction action = PjLib.FirstSteamJoinButton; action <= PjLib.LastSteamJoinButton; action++)
                         {
-                            tryAddLocalGamer(new XboxButtonMap(button, xboxController.Index));
+                            if (ctrl.KeyDownEvent(action))
+                            {
+                                tryAddLocalGamer(new SteamButtonMap(SteamActionSet.DefaultSet, action, ctrl.Index));
+                            }
+                        }
+                        if (ctrl.KeyDownEvent(SteamDigitalAction.Action_RemovePlayer))
+                        {
+                            removeGamerInput();
                         }
                     }
-
-                    if (xboxController.KeyDownEvent(Buttons.DPadLeft))
+                }
+            }
+            else
+            {
+                //XBOX JOIN
+                foreach (var xboxController in Input.XInput.controllers)
+                {
+                    if (xboxController.Connected)
                     {
-                        removeGamerInput();
+                        foreach (var button in PjLib.XinputAvailableJoinButtons)
+                        {
+                            if (xboxController.KeyDownEvent(button))
+                            {
+                                tryAddLocalGamer(new XboxButtonMap(button, xboxController.Index));
+                            }
+                        }
+
+                        if (xboxController.KeyDownEvent(Buttons.DPadLeft))
+                        {
+                            removeGamerInput();
+                        }
                     }
                 }
             }

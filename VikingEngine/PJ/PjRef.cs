@@ -81,7 +81,7 @@ namespace VikingEngine.PJ
 
         public static bool ViewExtraControllerInput()
         {
-            return XboxLayout || Input.XInput.HasConnectedController();
+            return XboxLayout || Input.XInput.HasConnectedController() || Ref.steam.input.connectCount > 0;
         }
     }
 }

@@ -93,14 +93,29 @@ namespace VikingEngine.PJ
                 return true;
             }
 
-            foreach (XController controller in Input.XInput.controllers)
+            if (Ref.steam.isInitialized)
             {
-                if (controller.Connected && 
-                    (controller.KeyDownEvent(Buttons.Start) || controller.BackButtonDownEvent()))
+                foreach (var controller in Input.XInput.controllers)
                 {
-                    Engine.XGuide.LocalHostIndex = controller.Index;
-                    inputType = new InputSource(InputSourceType.XController, controller.Index);
-                    return true;
+                    if (Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Start))
+                    {
+                        Engine.XGuide.LocalHostIndex = controller.Index;
+                        inputType = new InputSource(InputSourceType.SteamInput, controller.Index);
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                foreach (XController controller in Input.XInput.controllers)
+                {
+                    if (controller.Connected &&
+                        (controller.KeyDownEvent(Buttons.Start) || controller.BackButtonDownEvent()))
+                    {
+                        Engine.XGuide.LocalHostIndex = controller.Index;
+                        inputType = new InputSource(InputSourceType.XController, controller.Index);
+                        return true;
+                    }
                 }
             }
 
@@ -223,7 +238,11 @@ namespace VikingEngine.PJ
 
             foreach (var m in joinedLocalGamers)
             {
-                if (m.button.inputSource == InputSourceType.XController)
+                if (m.button.inputSource == InputSourceType.SteamInput)
+                {
+                    Ref.steam.input.controllers[m.button.ControllerIndex].hasUser = true;
+                }
+                else if (m.button.inputSource == InputSourceType.XController)
                 {
                     Input.XInput.Instance(m.button.ControllerIndex).hasUser = true;
                 }
@@ -239,6 +258,15 @@ namespace VikingEngine.PJ
                 foreach (var m in Input.XInput.controllers)
                 {
                     if (m.hasUser && !m.Connected)
+                    {
+                        onLostController();
+                        return;
+                    }
+                }
+
+                foreach (var m in Ref.steam.input.controllers)
+                {
+                    if (m != null && m.hasUser && !m.connected)
                     {
                         onLostController();
                         return;

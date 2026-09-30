@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
     static class PjLib
     {
+        public const bool ViewBetaModes = false;
+
         public static readonly PartyGameMode[] ModeViewOrder = 
         {
             PartyGameMode.Jousting,
@@ -43,6 +46,10 @@ namespace VikingEngine.PJ
                 Buttons.LeftTrigger,
                 Buttons.RightTrigger,
             };
+
+        public const SteamDigitalAction FirstSteamJoinButton = SteamDigitalAction.Action_01;
+        public const SteamDigitalAction LastSteamJoinButton = SteamDigitalAction.Action_08;
+        
 
         public static readonly PartyGameMode? DebugAutoStartMode = null;//PartyGameMode.SuperSmashBirds;
 
@@ -202,19 +209,33 @@ namespace VikingEngine.PJ
             menuInput = Input.Keyboard.KeyDownEvent(Keys.Escape);
             user = Input.InputSource.DefaultPC;
 
-            foreach (var m in Input.XInput.controllers)
+            if (Ref.steam.isInitialized)
             {
-                if (m.KeyDownEvent(Buttons.Start))
+                if ( Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Start))
                 {
                     startInput = true;
-                    user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
                 }
-
-                if (m.BackButtonDownEvent())
+                if (Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Back))
                 {
-                    bool bdown = m.KeyDownEvent(Buttons.B);
                     menuInput = true;
-                    user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
+                }
+            }
+            else
+            {
+                foreach (var m in Input.XInput.controllers)
+                {
+                    if (m.KeyDownEvent(Buttons.Start))
+                    {
+                        startInput = true;
+                        user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
+                    }
+
+                    if (m.BackButtonDownEvent())
+                    {
+                        bool bdown = m.KeyDownEvent(Buttons.B);
+                        menuInput = true;
+                        user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
+                    }
                 }
             }
         }
@@ -243,8 +264,8 @@ namespace VikingEngine.PJ
         DevOnly_1,
         DevAndDemo_2,
         Beta_3,
-        Paid_4,
-        Free_5,
+        //Paid_4,
+        FullGame_5,
         NUM
     }
 

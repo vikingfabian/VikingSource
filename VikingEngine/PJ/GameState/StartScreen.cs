@@ -131,7 +131,7 @@ namespace VikingEngine.PJ
 
         protected override void asyncStorageLoading(ref int part)
         {
-            new Storage();
+            new Storage(true);
             part++;
         }
 

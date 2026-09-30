@@ -14,6 +14,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
@@ -96,8 +97,9 @@ namespace VikingEngine.PJ
                 blackFade = null;
                 menu.DeleteMe();
                 menu = null;
-                
-                GC.Collect();
+
+                Ref.steam.input.SetActionSet(SteamActionSet.DefaultSet);
+                //GC.Collect();
             }
         }
 
@@ -356,7 +358,8 @@ namespace VikingEngine.PJ
         {
             return Input.Keyboard.KeyDownEvent(Keys.Escape) ||
                 Input.XInput.KeyDownEvent(Buttons.Start) ||
-                Input.XInput.KeyDownEvent(Buttons.Back);
+                Input.XInput.KeyDownEvent(Buttons.Back) ||
+                Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.close_menu);
         }
     }
 }

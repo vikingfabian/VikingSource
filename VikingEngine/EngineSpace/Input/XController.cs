@@ -8,17 +8,24 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Input
 {
-    class XController
+    abstract class AbsController
+    { 
+        abstract public bool Connected { get; }
+        public int Index;
+        public bool hasUser = false;
+    }
+
+    class XController: AbsController
     {
         const float TriggerBuffer = 0.01f;
 
         ThumbStick[] thumbSticks;
-        int index;
+        
 
-        public int Index { get { return index; } }
+        //public int Index { get { return index; } }
         public GamePadState currentPadState;
         public GamePadState previousPadState;
-        public bool hasUser = false;
+        
         public bool var_waitingForStickRelease = false;
 
         Time vibrationTime = Time.Zero;
@@ -26,7 +33,7 @@ namespace VikingEngine.Input
 
         public XController(int index)
         {
-            this.index = index;
+            this.Index = index;
             thumbSticks = new ThumbStick[(int)ThumbStickType.NUM_NON];
             for (int i = 0; i < thumbSticks.Length; i++)
             {
@@ -48,7 +55,7 @@ namespace VikingEngine.Input
             }
 
             previousPadState = currentPadState;
-            currentPadState = GamePad.GetState(index);
+            currentPadState = GamePad.GetState(Index);
 #if XBOX
             if (currentPadState.IsButtonUp(Buttons.B) && previousPadState.IsButtonDown(Buttons.B))
             {
@@ -57,7 +64,7 @@ namespace VikingEngine.Input
 #endif
             if (vibrationTime.HasTime)
             {
-                GamePad.SetVibration(index, vibrationLeftMotor, vibrationRightMotor);
+                GamePad.SetVibration(Index, vibrationLeftMotor, vibrationRightMotor);
 
                 if (vibrationTime.CountDown())
                 {
@@ -79,7 +86,7 @@ namespace VikingEngine.Input
 
         
 
-         public bool Connected
+        override public bool Connected
         {
             get { return currentPadState.IsConnected || PlatformSettings.SimulateJoinedControllers; }
         }
@@ -296,7 +303,7 @@ namespace VikingEngine.Input
                     vibrationRightMotor = Math.Max(rightMotor, vibrationRightMotor);
                     vibrationTime.MilliSeconds = Math.Max(time, vibrationTime.MilliSeconds);
                 }
-                GamePad.SetVibration(index, vibrationLeftMotor, vibrationRightMotor);
+                GamePad.SetVibration(Index, vibrationLeftMotor, vibrationRightMotor);
             }
         }
 
@@ -308,7 +315,7 @@ namespace VikingEngine.Input
 
         void endVibration()
         {
-            GamePad.SetVibration(index, 0, 0);
+            GamePad.SetVibration(Index, 0, 0);
             vibrationLeftMotor = 0;
             vibrationRightMotor = 0;
             vibrationTime.setZero();
@@ -317,7 +324,7 @@ namespace VikingEngine.Input
 
         public override string ToString()
         {
-            return "Xinput controller(" + TextLib.IndexToString(index) + ")";
+            return "Xinput controller(" + TextLib.IndexToString(Index) + ")";
         }
     }
 }

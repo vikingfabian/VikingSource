@@ -1,0 +1,224 @@
+﻿"In Game Actions"
+{
+
+"configurations"
+	{
+		"controller_xboxone"
+		{
+			"0"
+			{
+				"path" "official_pj_controller_xbox.vdf"
+			}
+		}
+	}
+	
+	"actions"
+	{
+		"DefaultSet"
+		{
+			"title"	"#Set_Default"
+			
+			"Button"
+			{
+				"Action_01"			{ "title" "#Action_01" }
+				"Action_02"			{ "title" "#Action_02" }
+				"Action_03"			{ "title" "#Action_03" }
+				"Action_04"			{ "title" "#Action_04" }
+				"Action_05"			{ "title" "#Action_05" }
+				"Action_06"			{ "title" "#Action_06" }
+				"Action_07"			{ "title" "#Action_07" }
+				"Action_08"			{ "title" "#Action_08" }
+
+				"Action_NextMode"		{ "title" "#Action_NextMode" }
+				"Action_RemovePlayer"		{ "title" "#Action_RemovePlayer" }
+				"Action_Start"			{ "title" "#Action_Start" }
+				"Action_Back"			{ "title" "#Action_Back" }
+
+			}			
+		}
+		"MenuControls"
+		{
+			"title"	"#Set_Menu"
+			
+			"Button"
+			{
+				"close_menu"	"#Action_Start"
+			}
+		}
+		
+	}
+	"localization"
+{
+	"english"
+	{
+		"Set_Default"			"Default"
+		"Set_Menu"				"Menu"
+
+		"Action_01"				"Button 1"
+		"Action_02"				"Button 2"
+		"Action_03"				"Button 3"
+		"Action_04"				"Button 4"
+		"Action_05"				"Button 5"
+		"Action_06"				"Button 6"
+		"Action_07"				"Button 7"
+		"Action_08"				"Button 8"
+		
+		"Action_NextMode"		"Next mode"
+		"Action_RemovePlayer"	"Remove player"
+		"Action_Start"			"Play/Pause"
+		"Action_Back"			"Back"
+	}
+	"schinese"
+	{
+		"Set_Default"			"默认"
+		"Set_Menu"				"菜单"
+
+		"Action_01"				"按钮 1"
+		"Action_02"				"按钮 2"
+		"Action_03"				"按钮 3"
+		"Action_04"				"按钮 4"
+		"Action_05"				"按钮 5"
+		"Action_06"				"按钮 6"
+		"Action_07"				"按钮 7"
+		"Action_08"				"按钮 8"
+		
+		"Action_NextMode"		"下一模式"
+		"Action_RemovePlayer"	"移除玩家"
+		"Action_Start"			"播放/暂停"
+		"Action_Back"			"返回"
+	}
+	"french"
+	{
+		"Set_Default"			"Par défaut"
+		"Set_Menu"				"Menu"
+
+		"Action_01"				"Bouton 1"
+		"Action_02"				"Bouton 2"
+		"Action_03"				"Bouton 3"
+		"Action_04"				"Bouton 4"
+		"Action_05"				"Bouton 5"
+		"Action_06"				"Bouton 6"
+		"Action_07"				"Bouton 7"
+		"Action_08"				"Bouton 8"
+		
+		"Action_NextMode"		"Mode suivant"
+		"Action_RemovePlayer"	"Retirer le joueur"
+		"Action_Start"			"Jouer/Pause"
+		"Action_Back"			"Retour"
+	}
+	"german"
+	{
+		"Set_Default"			"Standard"
+		"Set_Menu"				"Menü"
+
+		"Action_01"				"Taste 1"
+		"Action_02"				"Taste 2"
+		"Action_03"				"Taste 3"
+		"Action_04"				"Taste 4"
+		"Action_05"				"Taste 5"
+		"Action_06"				"Taste 6"
+		"Action_07"				"Taste 7"
+		"Action_08"				"Taste 8"
+		
+		"Action_NextMode"		"Nächster Modus"
+		"Action_RemovePlayer"	"Spieler entfernen"
+		"Action_Start"			"Spielen/Pause"
+		"Action_Back"			"Zurück"
+	}
+	"japanese"
+	{
+		"Set_Default"			"デフォルト"
+		"Set_Menu"				"メニュー"
+
+		"Action_01"				"ボタン 1"
+		"Action_02"				"ボタン 2"
+		"Action_03"				"ボタン 3"
+		"Action_04"				"ボタン 4"
+		"Action_05"				"ボタン 5"
+		"Action_06"				"ボタン 6"
+		"Action_07"				"ボタン 7"
+		"Action_08"				"ボタン 8"
+		
+		"Action_NextMode"		"次のモード"
+		"Action_RemovePlayer"	"プレイヤーを削除"
+		"Action_Start"			"再生/一時停止"
+		"Action_Back"			"戻る"
+	}
+	"russian"
+	{
+		"Set_Default"			"По умолчанию"
+		"Set_Menu"				"Меню"
+
+		"Action_01"				"Кнопка 1"
+		"Action_02"				"Кнопка 2"
+		"Action_03"				"Кнопка 3"
+		"Action_04"				"Кнопка 4"
+		"Action_05"				"Кнопка 5"
+		"Action_06"				"Кнопка 6"
+		"Action_07"				"Кнопка 7"
+		"Action_08"				"Кнопка 8"
+		
+		"Action_NextMode"		"Следующий режим"
+		"Action_RemovePlayer"	"Удалить игрока"
+		"Action_Start"			"Играть/Пауза"
+		"Action_Back"			"Назад"
+	}
+	"spanish"
+	{
+		"Set_Default"			"Predeterminado"
+		"Set_Menu"				"Menú"
+
+		"Action_01"				"Botón 1"
+		"Action_02"				"Botón 2"
+		"Action_03"				"Botón 3"
+		"Action_04"				"Botón 4"
+		"Action_05"				"Botón 5"
+		"Action_06"				"Botón 6"
+		"Action_07"				"Botón 7"
+		"Action_08"				"Botón 8"
+		
+		"Action_NextMode"		"Siguiente modo"
+		"Action_RemovePlayer"	"Eliminar jugador"
+		"Action_Start"			"Jugar/Pausar"
+		"Action_Back"			"Atrás"
+	}
+	"brazilian"
+	{
+		"Set_Default"			"Padrão"
+		"Set_Menu"				"Menu"
+
+		"Action_01"				"Botão 1"
+		"Action_02"				"Botão 2"
+		"Action_03"				"Botão 3"
+		"Action_04"				"Botão 4"
+		"Action_05"				"Botão 5"
+		"Action_06"				"Botão 6"
+		"Action_07"				"Botão 7"
+		"Action_08"				"Botão 8"
+		
+		"Action_NextMode"		"Próximo modo"
+		"Action_RemovePlayer"	"Remover jogador"
+		"Action_Start"			"Jogar/Pausar"
+		"Action_Back"			"Voltar"
+	}
+	"polish"
+	{
+		"Set_Default"			"Domyślne"
+		"Set_Menu"				"Menu"
+
+		"Action_01"				"Przycisk 1"
+		"Action_02"				"Przycisk 2"
+		"Action_03"				"Przycisk 3"
+		"Action_04"				"Przycisk 4"
+		"Action_05"				"Przycisk 5"
+		"Action_06"				"Przycisk 6"
+		"Action_07"				"Przycisk 7"
+		"Action_08"				"Przycisk 8"
+		
+		"Action_NextMode"		"Następny tryb"
+		"Action_RemovePlayer"	"Usuń gracza"
+		"Action_Start"			"Graj/Pauza"
+		"Action_Back"			"Wstecz"
+	}
+}
+}

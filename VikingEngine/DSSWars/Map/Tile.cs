@@ -639,7 +639,7 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            Color color = Color.Multiply(factionCol, brightness);
+            Color color = ColorExt.Multiply(factionCol, brightness);
             return color;
         }
 

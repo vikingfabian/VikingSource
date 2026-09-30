@@ -1,10 +1,5 @@
 ﻿
-
-
-
-
-* updated to the latest monogame framework
-* updated to .NET10 which should be slightly faster
+* Added proper Steam input support
 
 x steam input, action file
 

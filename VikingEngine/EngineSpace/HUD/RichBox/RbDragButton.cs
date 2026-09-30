@@ -210,8 +210,14 @@ namespace VikingEngine.HUD.RichBox
 #endif
                 }
                 else
-                { 
+                {
+#if DSS
                     DSSWars.SoundLib.soft_buzz_error.Play();
+#endif
+#if PJ
+                    PJ.SoundManager.soft_buzz_error.Play();
+#endif
+
                 }
             }
         }
