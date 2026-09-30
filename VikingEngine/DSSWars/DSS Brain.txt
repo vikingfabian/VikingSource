@@ -72,6 +72,11 @@ The game is a strategy wargame, with medieval and low fantasy theme.
 Where English is used in gaming, use a “hybrid” translation.
 For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
 
+#Languages above 2%
+English, German, French, Japanese, Simplified Chinese, Russian, Spanish
+
+Steam page prompt:
+output the text inside a Markdown code block rather than generating a .txt
 
 ##
 Translate all strings to French.
