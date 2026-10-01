@@ -16,7 +16,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="MonoGame.Framework.Native" Version="3.8.5.1">
+    <PackageReference Include="MonoGame.Framework.Native" Version="3.8.6-preview.*">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
