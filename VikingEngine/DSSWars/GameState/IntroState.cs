@@ -245,7 +245,11 @@ namespace VikingEngine.DSSWars
                 }
                 else
                 {
+#if BLACK
+                    new Core.BlackBolts.BlackIntroScene();
+#else
                     new MainMenuState(bgTex);
+#endif
                 }
             }
         }
