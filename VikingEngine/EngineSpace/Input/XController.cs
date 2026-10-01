@@ -11,6 +11,8 @@ namespace VikingEngine.Input
     public class XController
     {
         const float TriggerBuffer = 0.01f;
+        const float TriggerKeyDownValue = 0.5f;
+        const float TriggerKeyUpValue = 0.2f;
 
         ThumbStick[] thumbSticks;
         int index;
@@ -18,6 +20,9 @@ namespace VikingEngine.Input
         public int Index { get { return index; } }
         public GamePadState currentPadState;
         public GamePadState previousPadState;
+
+        public bool currentLeftTrigger, currentRightTrigger;
+
         public bool hasUser = false;
         public bool var_waitingForStickRelease = false;
 
@@ -49,12 +54,39 @@ namespace VikingEngine.Input
 
             previousPadState = currentPadState;
             currentPadState = GamePad.GetState(index);
-#if XBOX
-            if (currentPadState.IsButtonUp(Buttons.B) && previousPadState.IsButtonDown(Buttons.B))
+
+            /*
+            if (currentLeftTrigger)
             {
-                ButtonB_KeyUpTime = 4;
-            }            
-#endif
+                if (currentPadState.Triggers.Left < TriggerKeyUpValue)
+                {
+                    currentLeftTrigger = false;
+                }
+            }
+            else
+            {
+                if (currentPadState.Triggers.Left > TriggerKeyDownValue)
+                {
+                    currentLeftTrigger = true;
+                }
+            }
+
+            if (currentRightTrigger)
+            {
+                if (currentPadState.Triggers.Right < TriggerKeyUpValue)
+                {
+                    currentRightTrigger = false;
+                }
+            }
+            else
+            {
+                if (currentPadState.Triggers.Right > TriggerKeyDownValue)
+                {
+                    currentRightTrigger = true;
+                }
+            }
+            */
+
             if (vibrationTime.HasTime)
             {
                 GamePad.SetVibration(index, vibrationLeftMotor, vibrationRightMotor);
@@ -66,16 +98,16 @@ namespace VikingEngine.Input
             }
         }
 
-        public bool BackButtonDownEvent()
-        { //Locks the Back button three frames after B keyUp
-#if XBOX
-            if (ButtonB_KeyUpTime > 0)
-            {
-                return false;
-            }
-#endif
-            return currentPadState.IsButtonDown(Buttons.Back) && previousPadState.IsButtonUp(Buttons.Back);
-        }
+//        public bool BackButtonDownEvent()
+//        { //Locks the Back button three frames after B keyUp
+//#if XBOX
+//            if (ButtonB_KeyUpTime > 0)
+//            {
+//                return false;
+//            }
+//#endif
+//            return currentPadState.IsButtonDown(Buttons.Back) && previousPadState.IsButtonUp(Buttons.Back);
+//        }
 
         
 
@@ -145,11 +177,18 @@ namespace VikingEngine.Input
         /// </summary>
         public bool KeyDownEvent(Buttons button)
         {
-            if (button == Buttons.Back)
-            {
-                return BackButtonDownEvent();
-            }
-
+            //if (button == Buttons.Back)
+            //{
+            //    return BackButtonDownEvent();
+            //}
+            //switch (button)
+            //{
+            //    case Buttons.LeftTrigger:
+            //        return currentLeftTrigger;
+            //    case Buttons.RightTrigger:
+            //        return currentRightTrigger;
+            //}
+            
             bool result = previousPadState.IsButtonUp(button) && currentPadState.IsButtonDown(button);
             return result;
         }

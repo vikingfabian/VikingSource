@@ -209,12 +209,12 @@ namespace VikingEngine.PJ
                     user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
                 }
 
-                if (m.BackButtonDownEvent())
-                {
-                    bool bdown = m.KeyDownEvent(Buttons.B);
-                    menuInput = true;
-                    user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
-                }
+                //if (m.BackButtonDownEvent())
+                //{
+                //    bool bdown = m.KeyDownEvent(Buttons.B);
+                //    menuInput = true;
+                //    user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
+                //}
             }
         }
     }    

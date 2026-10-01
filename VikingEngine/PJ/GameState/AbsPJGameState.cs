@@ -96,7 +96,7 @@ namespace VikingEngine.PJ
             foreach (XController controller in Input.XInput.controllers)
             {
                 if (controller.Connected && 
-                    (controller.KeyDownEvent(Buttons.Start) || controller.BackButtonDownEvent()))
+                    (controller.KeyDownEvent(Buttons.Start)))
                 {
                     Engine.XGuide.LocalHostIndex = controller.Index;
                     inputType = new InputSource(InputSourceType.XController, controller.Index);
