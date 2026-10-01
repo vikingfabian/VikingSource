@@ -2,6 +2,7 @@
 Change log:
 * Compressed the size of resources
 
+* 
 
 KNOWN ISSUES
 x reassign dont work with controller
@@ -13,6 +14,8 @@ x adjust "all facts"
 * The color range of voxel models have been adjusted
 * Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
 * Truce timer is pinned to hud
+* Made the dark horde slow and idle
+* All animal pens have double upkeep
 
 Worker count limit
 * Made to better control the flow of work
@@ -40,7 +43,7 @@ Performance
 * Reduced menu render calls (Uygar "Agent" Yilmaz)
 
 Vulkan
-* DSS now runs on Vulkan, which is more perfomant and modern than OpenGL (Uygar "Agent" Yilmaz)
+* DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
 * Map loading is now done on multiple CPU cores and runs smoother
 
 #MAP 2.0 UPDATE

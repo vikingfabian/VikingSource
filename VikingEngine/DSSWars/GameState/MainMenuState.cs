@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
-            Ref.draw.ClrColor = new Color(2, 9, 12);//Ref.draw.ClrColor = ColorExt.ChangeBrighness( new Color(29,54,67), -2);//new Color(11, 30, 34);
+            Ref.draw.ClrColor = new Color(2, 9, 12);
 
             menuSystem = new Interface.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Interface.MenuType.Lobby);
             DssRef.storage.checkConnected();
@@ -706,6 +706,7 @@ namespace VikingEngine.DSSWars
             if (underMenu == null)
             {
                 underMenu = new RichMenu(HudLib.RbSettings, underMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
+                underMenu.renderList.alwaysRedraw = true;
                 underMenu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), ImageLayers.Lay9).SetOpacity(MenuBgOpacity);
 
                 networkSettingsMenu = new NetworkSettingsMenu(underMenu, true);
