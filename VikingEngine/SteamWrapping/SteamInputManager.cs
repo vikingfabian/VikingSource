@@ -576,10 +576,10 @@ namespace VikingEngine.SteamWrapping
                         if (controllerIx < count)
                         {
                             InputHandle_t controllerHandle = controllerHandles[controllerIx];
-                            ins.connected = controllerHandle.m_InputHandle != 0;
+                            ins.connected = !ins.disconnect && controllerHandle.m_InputHandle != 0;
 
                             // Skip disconnected controllers
-                            if (controllerHandle.m_InputHandle == 0) continue;
+                            if (!ins.connected) continue;
 
                             connected++;
                             //LAYERS
@@ -703,6 +703,23 @@ namespace VikingEngine.SteamWrapping
                 content.Add(new RbText("(ALT)", Color.DarkGray));
                 content.hspace();           
         }
+
+        /// <param name="tag">Controller index</param>
+        public bool KeepConnectedProperty(object tag, bool set, bool value)
+        {
+            int index = (int)tag;
+
+            if ( controllers[index] == null)
+            {
+                return true;
+            }
+
+            if (set)
+            {
+                controllers[index].disconnect = !value;
+            }
+            return !controllers[index].disconnect;
+        }
     }
 
     enum SteamActionSet
@@ -824,6 +841,11 @@ namespace VikingEngine.SteamWrapping
     class SteamControllerInstance : AbsController
     {
         public bool connected;
+
+        /// <summary>
+        /// Option to remove bad controllers
+        /// </summary>
+        public bool disconnect;
 
         public override bool Connected => connected;
         //public bool hasUser;

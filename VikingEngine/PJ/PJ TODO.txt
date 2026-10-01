@@ -1,7 +1,6 @@
 ﻿
-* Added proper Steam input support
-
-x steam input, action file
+* Option to disconnect controllers
+* Repaired controller icons next to avatars
 
 
 Kolla "nano golf", kopiera :)

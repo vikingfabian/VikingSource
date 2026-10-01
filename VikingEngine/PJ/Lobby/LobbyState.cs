@@ -1041,6 +1041,8 @@ namespace VikingEngine.PJ
                 CloseMenu();
                 lostControllerDisplay = new LostControllerDisplay();
             }
+
+            IgnoredLostController = true;
         }
 
         void removeDisconnectedGamers()

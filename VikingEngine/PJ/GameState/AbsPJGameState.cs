@@ -22,6 +22,8 @@ namespace VikingEngine.PJ
         public List2<GamerData> joinedLocalGamers;
         public int matchCount;
         public float timeSinceInput = 0;
+
+        public bool IgnoredLostController = false;
               
 
         public AbsPJGameState(bool isPlayState)
@@ -253,23 +255,28 @@ namespace VikingEngine.PJ
 
         protected void updateLostControllers()
         {
-            if (lostControllerTimer.CountDown())
+            if (!IgnoredLostController && lostControllerTimer.CountDown())
             {
-                foreach (var m in Input.XInput.controllers)
+                if (Ref.steam.isInitialized)
                 {
-                    if (m.hasUser && !m.Connected)
+                    foreach (var m in Ref.steam.input.controllers)
                     {
-                        onLostController();
-                        return;
+                        if (m != null && m.hasUser && !m.connected)
+                        {
+                            onLostController();
+                            return;
+                        }
                     }
                 }
-
-                foreach (var m in Ref.steam.input.controllers)
+                else
                 {
-                    if (m != null && m.hasUser && !m.connected)
+                    foreach (var m in Input.XInput.controllers)
                     {
-                        onLostController();
-                        return;
+                        if (m.hasUser && !m.Connected)
+                        {
+                            onLostController();
+                            return;
+                        }
                     }
                 }
             }

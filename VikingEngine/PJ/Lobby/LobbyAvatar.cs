@@ -136,9 +136,9 @@ namespace VikingEngine.PJ
 
 
             if (gamer.button != null &&
-                (gamer.button.inputSource == Input.InputSourceType.XController))
+                (gamer.button.inputSource == Input.InputSourceType.XController || gamer.button.inputSource == Input.InputSourceType.SteamInput))
             {
-                controllerIcon = new Graphics.Image((SpriteName)((int)SpriteName.PixController1 + Bound.Set(gamer.button.ControllerIndex, 0, 5)),
+                controllerIcon = new Graphics.Image((SpriteName)((int)SpriteName.PixController1 + Bound.Set(gamer.button.ControllerIndex, 0, 7)),
                     button.Position, button.Size, ImageLayers.AbsoluteBottomLayer, true);
                 controllerIcon.LayerBelow(button);
                 controllerIcon.Xpos -= controllerIcon.Height * 1.0f;

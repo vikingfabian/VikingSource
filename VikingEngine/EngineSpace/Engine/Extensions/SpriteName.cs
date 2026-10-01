@@ -210,9 +210,11 @@ namespace VikingEngine
         PixController4,
         PixController5,
         PixController6,
+        PixController7,
+        PixController8,
 
         DisconnectSquare,
-
+        DoConnectDevice,
         
 
         GenericButton0,

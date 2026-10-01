@@ -179,6 +179,7 @@ namespace VikingEngine
                 add(SpriteName.PixController4);
                 add(SpriteName.PixController5);
                 add(SpriteName.PixController6);
+                
             }
 
             currentIndex = numTilesWidth * 1;
@@ -499,7 +500,12 @@ namespace VikingEngine
             add(SpriteName.DeckTouchR, 2, 2);
             add(SpriteName.ButtonRZ, 2, 2);
             add(SpriteName.ButtonLZ, 2, 2);
-                        
+
+            //More input icons
+            currentIndex = numTilesWidth * 20;
+            add(SpriteName.PixController7);
+            add(SpriteName.PixController8);
+            add(SpriteName.DoConnectDevice);
 
             //BIRD TILES
             currentIndex = numTilesWidth * 24;

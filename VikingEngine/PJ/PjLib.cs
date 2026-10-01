@@ -10,7 +10,7 @@ namespace VikingEngine.PJ
 {
     static class PjLib
     {
-        public const bool ViewBetaModes = false;
+        public const bool ViewBetaModes = true;
 
         public static readonly PartyGameMode[] ModeViewOrder = 
         {
