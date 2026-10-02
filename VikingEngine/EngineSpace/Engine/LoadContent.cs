@@ -316,6 +316,10 @@ namespace VikingEngine
         NO_TEXTURE = 0,
         LF_TargetSheet,
         BlockTextures,
+
+        /// <summary>
+        /// LF_Tiles
+        /// </summary>
         SpriteSheet,
         TargetColor0,
         ptrace,
