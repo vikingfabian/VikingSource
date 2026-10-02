@@ -17,6 +17,8 @@ namespace VikingEngine.Core.BlackBolts.Player
         public IButtonMap click;
         public IButtonMap back;
         public IButtonMap rotate;
+
+        public IButtonMap toggleEditMode;
         public InputMap(int playerIx)
             : base(playerIx)
         {
@@ -30,6 +32,7 @@ namespace VikingEngine.Core.BlackBolts.Player
             click = new AlternativeButtonsMap(new MouseButtonMap(MouseButton.Left), new KeyboardButtonMap(Keys.Enter));
             back = new AlternativeButtonsMap(new MouseButtonMap(MouseButton.Right), new KeyboardButtonMap(Keys.Back));
             rotate = new Input.KeyboardButtonMap(Keys.Tab);
+            toggleEditMode = new Input.KeyboardButtonMap(Keys.Space);
 
             menuInput.keyboardSetup();
         }

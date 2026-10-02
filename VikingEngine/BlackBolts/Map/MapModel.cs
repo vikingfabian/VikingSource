@@ -30,9 +30,9 @@ namespace VikingEngine.Core.BlackBolts.Map
             IntVector2 pos = IntVector2.Zero;
             List<PolygonColor> polygons = new List<PolygonColor>();
             //Tiles
-            for (pos.Y = 0; pos.Y < BlackRef.floorData.Size.Y; ++pos.Y)
+            for (pos.Y = 0; pos.Y < BlackRef.mapData.Size.Y; ++pos.Y)
             {
-                for (pos.X = 0; pos.X < BlackRef.floorData.Size.X; ++pos.X)
+                for (pos.X = 0; pos.X < BlackRef.mapData.Size.X; ++pos.X)
                 {
                     polygons.Add(PolygonColor.QuadXZ(pos.Vec, Vector2.One, true, 0f, 
                         SpriteName.WhiteArea_LFtiles, Dir4.N, lib.IsEven(pos.X + pos.Y)? Color.Gray : Color.DarkGray));
@@ -42,6 +42,8 @@ namespace VikingEngine.Core.BlackBolts.Map
             model = new Graphics.GeneratedObjColor(
                 new Graphics.PolygonsAndTrianglesColor(polygons),
                 LoadedTexture.SpriteSheet, false);
+            
+            
             //newConent.model.Color = ColorExt.GrayScale(10);//Color.Gray;
 
         }

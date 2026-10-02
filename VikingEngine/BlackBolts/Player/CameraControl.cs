@@ -26,7 +26,7 @@ namespace VikingEngine.Core.BlackBolts.Player
 
         public bool mouseDownOnMapPan = false;
 
-        MapSelect mapSelect = new MapSelect();
+        
 
         public CameraControl()
         {
@@ -107,9 +107,9 @@ namespace VikingEngine.Core.BlackBolts.Player
         //    this.inCamCheck = inCamCheck;
         //}
 
-        public void update(InputMap input)
+        public void update(Player player)
         {
-            panCamera(toggLib.ToV3(-input.movement.directionAndTime * PanSpeed));
+            panCamera(toggLib.ToV3(-player.inputMap.movement.directionAndTime * PanSpeed));
 
             float scrollValue = Input.Mouse.ScrollValue * 0.02f;
             zoom(scrollValue);
@@ -129,14 +129,14 @@ namespace VikingEngine.Core.BlackBolts.Player
             else
             {
                 mouseDownOnMapPan = false;
-                setSelectionPos(toggLib.ToV2(mapPos));
+                setSelectionPos(player, toggLib.ToV2(mapPos));
             }
 
 
             camera.Time_Update(Ref.DeltaTimeMs);
         }
 
-        void setSelectionPos(Vector2 newSelPos)
+        void setSelectionPos(Player player, Vector2 newSelPos)
         {
             pointerPos3D.X = newSelPos.X;
             pointerPos3D.Z = newSelPos.Y;
@@ -145,7 +145,7 @@ namespace VikingEngine.Core.BlackBolts.Player
             if (tile != tilePos)
             {
                 tilePos = tile;
-                mapSelect.Select(tilePos);
+                player.onNewTile(tile);
             }
             
         }
