@@ -35,7 +35,11 @@ namespace VikingEngine.Core.BlackBolts.GO
         Worker,
         Belt,
         Spin_plate,
-        NUM
+
+        Table,
+        Dispencer,
+        Delivery_point,
+        NUM_NONE
     }
 
     enum ObjectListType
@@ -43,5 +47,15 @@ namespace VikingEngine.Core.BlackBolts.GO
         Unknown,
         Creature,
         Static,
+        SolidResource,
+    }
+
+    enum ResourceType
+    { 
+        Box,
+        Flesh,
+        Bone,
+        Grilled_meat,
+        NUM
     }
 }

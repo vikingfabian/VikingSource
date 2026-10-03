@@ -9,11 +9,17 @@ namespace VikingEngine.Core.BlackBolts.Player
     {
         public Dir4 toolDir = Dir4.S;
         public GameObjectType selectedObjectType = GameObjectType.Worker;
+        public ResourceType selectedResourceType = ResourceType.Box;
 
         public void selectTool(GameObjectType objectType)
         {
             selectedObjectType = objectType;
             checkToolDir();
+        }
+
+        public void selectResource(ResourceType res)
+        {
+            selectedResourceType = res;
         }
 
         public void checkToolDir()

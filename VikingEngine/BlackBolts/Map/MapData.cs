@@ -15,6 +15,7 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public SpottedArray<Worker> creatureList = new SpottedArray<Worker>(1024);
         public SpottedArray<AbsMachine> staticObjectList = new SpottedArray<AbsMachine>(1024);
+        public SpottedArray<SolidResource> resourceList = new SpottedArray<SolidResource>(1024);
         public Grid2D_L<Tile> tileGrid;
 
         public MapData(IntVector2 size)
@@ -42,6 +43,15 @@ namespace VikingEngine.Core.BlackBolts.Map
             tileGrid.GetRef(go.currentPos.tilePos).pMachine = go.pointer;
         }
 
+        public SolidResource SpawnResource(ResourceType type)
+        {
+            SolidResource resource = new SolidResource(type);
+            int ix = resourceList.Add(resource);
+            resource.pointer = new ObjectPointer() { listType = ObjectListType.SolidResource, hasValue = true, objIndex = ix };
+
+            return resource;
+        }
+
         public Tile GetTile(IntVector2 pos)
         {
             if (tileGrid.TryGet(pos, out Tile tile))
@@ -58,6 +68,7 @@ namespace VikingEngine.Core.BlackBolts.Map
         public TileType tileType = TileType.Floor;
         public ObjectPointer pCreature = ObjectPointer.Empty;
         public ObjectPointer pMachine = ObjectPointer.Empty;
+        public ObjectPointer pResource = ObjectPointer.Empty;
         public List<ObjectPointer> nextPosList = new List<ObjectPointer>(4);
 
         public bool IsEmpty()

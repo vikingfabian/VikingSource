@@ -39,7 +39,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         {
                             var next = creaturesC.sel.currentPos.ForwardPos();
                             var ToTile = BlackRef.mapData.GetTile(next.tilePos);
-                            if (ToTile.tileType == Map.TileType.Floor)
+                            if (TileIsWalkable(ToTile))
                             {
                                 creaturesC.sel.nextPos = next;
                             }
@@ -83,61 +83,6 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
                         checkDirectWalkColl();
 
-                        /*
-                        //Clear map
-                        for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
-                        {
-                            BlackRef.mapData.tileGrid.array[i].nextPosList.Clear();
-                        }
-
-                        //#Make belt moves
-                        creaturesC.Reset();
-                        while (creaturesC.Next())
-                        {
-                            creaturesC.sel.hasBeltMove = false;
-
-                            var pMachine = BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos).pMachine;
-                            if (pMachine.hasValue)
-                            {
-                                Belt machine = pMachine.GetStaticItem();
-                                var moveTo = machine.currentPos.ForwardPos();
-
-                                var toTile = BlackRef.mapData.tileGrid.Get(moveTo.tilePos);
-                                //Quick check for impossible move
-                                if (toTile.tileType != Map.TileType.Wall && !HasOpposingBelt(machine))
-                                {
-                                    creaturesC.sel.beltPos = new MapPlacement(moveTo.tilePos, creaturesC.sel.nextPos.direction);
-                                    creaturesC.sel.hasBeltMove = true;
-                                    toTile.nextPosList.Add(creaturesC.sel.pointer);
-                                }
-                            }
-
-                            if (!creaturesC.sel.hasBeltMove)
-                            {
-                                BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos).nextPosList.Add(creaturesC.sel.pointer);
-                            }
-                        }
-
-                        //Check belt move collisions
-                        //Belt push is weak and will just stop if it collides with another unit
-                        creaturesC.Reset();
-                        while (creaturesC.Next())
-                        {
-                            if (creaturesC.sel.hasBeltMove)
-                            {
-                                var toTile = BlackRef.mapData.tileGrid.Get(creaturesC.sel.beltPos.tilePos);
-                                if (toTile.nextPosList.Count > 1)
-                                {
-                                    creaturesC.sel.hasBeltMove = false;
-                                }
-                            }
-
-                            if (creaturesC.sel.hasBeltMove)
-                            {
-                                creaturesC.sel.nextPos = creaturesC.sel.beltPos;
-                            }
-                        }
-                        */
                         step++;
                     }
                     break;
@@ -180,7 +125,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
                                     var toTile = BlackRef.mapData.tileGrid.Get(moveTo.tilePos);
                                     //Quick check for impossible move
-                                    if (toTile.tileType != Map.TileType.Wall && !HasOpposingBelt(belt))
+                                    if (TileIsWalkable(toTile) && !HasOpposingBelt(belt))
                                     {
                                         creaturesC.sel.beltPos = new MapPlacement(moveTo.tilePos, creaturesC.sel.nextPos.direction);
                                         creaturesC.sel.hasBeltMove = true;
@@ -248,6 +193,19 @@ namespace VikingEngine.Core.BlackBolts.Laws
             }
         }
 
+        private static bool TileIsWalkable(Tile ToTile)
+        {
+            if ( ToTile.tileType == Map.TileType.Wall)
+                return false;
+
+            if (ToTile.pMachine.hasValue)
+            {
+                return ToTile.pMachine.GetStaticItem().WalkableTile();
+            }
+
+            return true;
+        }
+
         private static void finalizeAllMoves()
         {
             //Clear map
@@ -313,9 +271,12 @@ namespace VikingEngine.Core.BlackBolts.Laws
             if (toTile.pMachine.hasValue)
             {
                 Belt otherMachine = toTile.pMachine.GetStaticItem() as Belt;
-                if (otherMachine.currentPos.ForwardPos().tilePos == machine.currentPos.tilePos)
+                if (otherMachine != null)
                 {
-                    return true;
+                    if (otherMachine.currentPos.ForwardPos().tilePos == machine.currentPos.tilePos)
+                    {
+                        return true;
+                    }
                 }
             }
 

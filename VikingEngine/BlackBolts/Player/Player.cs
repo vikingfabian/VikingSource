@@ -115,8 +115,27 @@ namespace VikingEngine.Core.BlackBolts.Player
                                 BlackRef.mapData.AddObject(obj);
                             }
                             break;
+                        case GameObjectType.Table:
+                            {
+                                var obj = new ItemTable(placement);
+                                BlackRef.mapData.AddObject(obj);
+                            }
+                            break;
+                        case GameObjectType.Dispencer:
+                            {
+                                var obj = new Dispencer(placement, toolShop.selectedResourceType);
+                                BlackRef.mapData.AddObject(obj);
+                            }
+                            break;
+                        case GameObjectType.Delivery_point:
+                            {
+                                var obj = new DeliveryPoint(placement);
+                                BlackRef.mapData.AddObject(obj);
+                            }
+                            break;
+
                     }
-                    
+
                 }
             }
         }

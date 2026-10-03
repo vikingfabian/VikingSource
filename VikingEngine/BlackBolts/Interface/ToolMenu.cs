@@ -8,6 +8,7 @@ using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.PJ.MiniGolf;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.Core.BlackBolts.Interface
@@ -16,7 +17,6 @@ namespace VikingEngine.Core.BlackBolts.Interface
     {
         Player.Player player;
         RichMenu menu;
-        
 
         public ToolMenu(Player.Player player)
         {
@@ -40,9 +40,11 @@ namespace VikingEngine.Core.BlackBolts.Interface
         {
             RichBoxContent content = new RichBoxContent();           
             content.h1("Industry of Chaos", HudLib.TitleColor_Head);
+            content.newParagraph();
+            HudLib.Label(content, "Component");
             content.newLine();
             //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
-            for (GameObjectType objectType = 0; objectType < GameObjectType.NUM; objectType++)
+            for (GameObjectType objectType = 0; objectType < GameObjectType.NUM_NONE; objectType++)
             {
                 content.Add(new ArtOption(objectType == player.toolShop.selectedObjectType,new List<AbsRichBoxMember> { new RbText(objectType.ToString()) }, 
                     new RbAction1Arg<GameObjectType>((GameObjectType selected)=>
@@ -51,10 +53,22 @@ namespace VikingEngine.Core.BlackBolts.Interface
                         player.OnToolRefresh();
                     }, objectType), null));
             }
+
+            content.newParagraph();
+            HudLib.Label(content, "Resource");
+            content.newLine();
+            for (ResourceType resource = 0; resource < ResourceType.NUM; resource++)
+            {
+                content.Add(new ArtOption(resource == player.toolShop.selectedResourceType, new List<AbsRichBoxMember> { new RbText(resource.ToString()) },
+                    new RbAction1Arg<ResourceType>((ResourceType selected) =>
+                    {
+                        player.toolShop.selectResource(selected);
+                    }, resource), null));
+            }
+            content.newLine();
+
             menu.Refresh(content);
         }
-
-        
 
         public void update(ref bool mouseOver)
         {

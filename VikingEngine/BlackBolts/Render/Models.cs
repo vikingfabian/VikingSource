@@ -24,6 +24,8 @@ namespace VikingEngine.Core.BlackBolts.Render
             loadVoxelModel(VoxelModelName.goblin_worker, false);
             loadVoxelModel(VoxelModelName.bb_belt, false);
             loadVoxelModel(VoxelModelName.bb_rotate, false);
+            loadVoxelModel(VoxelModelName.bb_onetile, false);
+            loadVoxelModel(VoxelModelName.bb_item, false);
 
             void loadVoxelModel(VoxelModelName modelName, bool centerY)
             {
