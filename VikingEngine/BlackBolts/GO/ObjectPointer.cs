@@ -11,7 +11,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         public int objIndex;
         public ObjectListType listType;
 
-        public Worker Get()
+        public Worker GetCreature()
         {
             if (hasValue)
             {
@@ -25,6 +25,14 @@ namespace VikingEngine.Core.BlackBolts.GO
             if (hasValue)
             {
                 return BlackRef.mapData.staticObjectList.GetIndex_Safe(objIndex);
+            }
+            return null;
+        }
+        public SolidResource GetSolidResource()
+        {
+            if (hasValue)
+            {
+                return BlackRef.mapData.resourceList.GetIndex_Safe(objIndex);
             }
             return null;
         }

@@ -37,6 +37,8 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         var creaturesC = BlackRef.mapData.creatureList.counter();
                         while (creaturesC.Next())
                         {
+                            creaturesC.sel.lockItem = false;
+
                             var next = creaturesC.sel.currentPos.ForwardPos();
                             var ToTile = BlackRef.mapData.GetTile(next.tilePos);
                             if (TileIsWalkable(ToTile))
@@ -45,6 +47,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                             }
                             else
                             {
+                                CheckPickUpEvent(creaturesC.sel, ToTile);
                                 creaturesC.sel.nextPos = creaturesC.sel.currentPos.TurnAroundPos();
                             }
 
@@ -68,11 +71,24 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         //Collide all objects moving to the same tile
                         for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
                         {
-                            if (BlackRef.mapData.tileGrid.array[i].nextPosList.Count > 1)
+                            var posList = BlackRef.mapData.tileGrid.array[i].nextPosList;
+                            if (posList.Count > 1)
                             {
-                                foreach (var pobj in BlackRef.mapData.tileGrid.array[i].nextPosList)
+                                //Check item trade
+                                for (int posIx =0; posIx < posList.Count; ++posIx)
                                 {
-                                    var gameobject = pobj.Get();
+                                    var creature1 = posList[posIx].GetCreature();
+                                    for (int otherposIx = posIx +1; otherposIx < posList.Count; ++otherposIx)
+                                    {
+                                        var creature2 = posList[otherposIx].GetCreature();
+                                        checkItemTrade(creature1, creature2);
+                                    }
+                                }
+
+                                //Turn around
+                                foreach (var pobj in posList)
+                                {
+                                    var gameobject = pobj.GetCreature();
                                     if (!gameobject.NoMovement())
                                     {
                                         gameobject.nextPos = gameobject.currentPos.TurnAroundPos();
@@ -188,12 +204,39 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
                 case RunStep.FinalizeSteps:
                     finalizeAllMoves();
+                    var mashinesC = BlackRef.mapData.staticObjectList.counter();
+                    while (mashinesC.Next())
+                    {
+                        mashinesC.sel.OnCykleEnd();
+                    }
                     step = 0;
                     break;
             }
         }
 
-        private static bool TileIsWalkable(Tile ToTile)
+        void checkItemTrade(Worker creature1, Worker creature2)
+        {
+            //Must face each other to trade items
+            if (lib.OppositeDir(creature1.nextPos.direction) == creature2.nextPos.direction &&
+                !creature1.lockItem && !creature2.lockItem)
+            {
+                var returnItem = creature2.HandoverItem(creature1.pResource);
+                creature1.pResource = ObjectPointer.Empty;
+
+                creature1.HandoverItem(returnItem);
+
+                //if (creature1.pResource.hasValue)
+                //{ 
+                    creature1.lockItem = true;
+                //}
+                //if (creature2.pResource.hasValue)
+                //{
+                    creature2.lockItem = true;
+                //}
+            }
+        }
+
+        private bool TileIsWalkable(Tile ToTile)
         {
             if ( ToTile.tileType == Map.TileType.Wall)
                 return false;
@@ -206,7 +249,33 @@ namespace VikingEngine.Core.BlackBolts.Laws
             return true;
         }
 
-        private static void finalizeAllMoves()
+        private void CheckPickUpEvent(Worker creature, Tile ToTile)
+        {
+            if (ToTile.pMachine.hasValue)
+            {
+                var machine = ToTile.pMachine.GetStaticItem();
+                machine.ItemHandle(out bool mayPick, out bool mayDrop);
+
+                if (creature.pResource.hasValue && mayDrop)
+                {
+                    ObjectPointer res = creature.pResource;
+                    creature.pResource = ObjectPointer.Empty;
+
+                    var returnItem = machine.HandoverItem(res);
+                    if (returnItem.hasValue)
+                    {
+                        creature.HandoverItem(returnItem);
+                    }
+                }
+                else if (mayPick && machine.pResource.hasValue && !creature.pResource.hasValue)
+                {
+                    creature.HandoverItem(machine.pResource);
+                    machine.pResource = ObjectPointer.Empty;
+                }
+            }
+        }
+
+        private void finalizeAllMoves()
         {
             //Clear map
             for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
@@ -259,7 +328,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
         {
             if (tile.pCreature.hasValue)
             {
-                return !tile.pCreature.Get().hasBeltMove;
+                return !tile.pCreature.GetCreature().hasBeltMove;
             }
             return false;
         }
@@ -283,7 +352,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
             return false;
         }
 
-        private static void checkDirectWalkColl()
+        private void checkDirectWalkColl()
         {
             bool hasCollision = true;
 
@@ -297,9 +366,11 @@ namespace VikingEngine.Core.BlackBolts.Laws
                     if (!objectsC.sel.NoMovement() && BlackRef.mapData.tileGrid.Get(objectsC.sel.nextPos.tilePos).pCreature.hasValue)
                     {
                         //Is the other unit moving away?
-                        var otherObj = BlackRef.mapData.tileGrid.Get(objectsC.sel.nextPos.tilePos).pCreature.Get();
+                        var otherObj = BlackRef.mapData.tileGrid.Get(objectsC.sel.nextPos.tilePos).pCreature.GetCreature();
                         if (otherObj.NoMovement() || otherObj.nextPos.tilePos == objectsC.sel.currentPos.tilePos)
                         {
+                            checkItemTrade(objectsC.sel, otherObj);
+
                             //No moving into it
                             objectsC.sel.nextPos = objectsC.sel.currentPos.TurnAroundPos();
                             hasCollision = true;

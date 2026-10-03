@@ -65,7 +65,19 @@ namespace VikingEngine.Core.BlackBolts.Interface
                         player.toolShop.selectResource(selected);
                     }, resource), null));
             }
+
+            content.Add(new RbSeperationLine());
+            content.newParagraph();
+
+            content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Reset") }, new RbAction(() =>
+            {
+                new BlackPlayScene();    
+            }), null){fillWidth=true});
+
             content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Exit") }, 
+                new RbAction(Ref.update.Exit), null)
+            { fillWidth = true });
 
             menu.Refresh(content);
         }

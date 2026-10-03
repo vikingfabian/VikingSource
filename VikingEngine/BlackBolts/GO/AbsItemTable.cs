@@ -27,6 +27,14 @@ namespace VikingEngine.Core.BlackBolts.GO
         override public void AnimateUpdate()
         {
         }
+        //public override void RefreshResourcePos()
+        //{
+        //    if (pResource.hasValue)
+        //    {
+        //        var resource = pResource.GetSolidResource();
+        //        resource.model.position = model.position + ResourceOffset();
+        //    }
+        //}
         public override bool WalkableTile()
         {
             return false;
@@ -38,6 +46,18 @@ namespace VikingEngine.Core.BlackBolts.GO
             : base(placement, LootFest.VoxelModelName.bb_onetile, 0)
         { }
         public override GameObjectType GameObjectType => GameObjectType.Table;
+
+        public override void ItemHandle(out bool mayPick, out bool mayDrop)
+        {
+            mayDrop = true;
+            mayPick = true;
+        }
+
+        static readonly Vector3 ResourcePos = new Vector3(0, 0.25f, 0);
+        public override Vector3 ResourceOffset()
+        {
+            return ResourcePos;
+        }
     }
 
     class Dispencer: AbsItemTable
@@ -62,13 +82,19 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             var resource = BlackRef.mapData.SpawnResource(resourceType);
             pResource = resource.pointer;
-            resource.model.position = model.position + ResourcePos;
+            RefreshResourcePos();
         }
 
         static readonly Vector3 ResourcePos = new Vector3(0, 0.5f, 0);
         public override Vector3 ResourceOffset()
         {
             return ResourcePos;
+        }
+
+        public override void ItemHandle(out bool mayPick, out bool mayDrop)
+        {
+            mayDrop = false;
+            mayPick = true;
         }
         public override GameObjectType GameObjectType => GameObjectType.Dispencer;
     }
@@ -79,6 +105,30 @@ namespace VikingEngine.Core.BlackBolts.GO
            : base(placement, LootFest.VoxelModelName.bb_onetile, 2)
         {
             WP.DirToQuaterion(model, Dir4.W);
+        }
+
+        public override void ItemHandle(out bool mayPick, out bool mayDrop)
+        {
+            mayDrop = true;
+            mayPick = false;
+        }
+        public override void OnCykleEnd()
+        {
+            if (pResource.hasValue)
+            {
+                var resource = pResource.GetSolidResource();
+                Engine.ParticleHandler.AddExpandingParticleArea(ParticleSystemType.Dust, 
+                    VectorExt.AddY( resource.model.position, 0.5f), 0.2f, 40, 0.5f);
+                resource.DeleteMe();
+                BlackRef.mapData.resourceList.RemoveAt(pResource.objIndex);
+                pResource = ObjectPointer.Empty;
+            }
+        }
+
+        static readonly Vector3 ResourcePos = new Vector3(0, 0.1f, 0);
+        public override Vector3 ResourceOffset()
+        {
+            return ResourcePos;
         }
         public override GameObjectType GameObjectType => GameObjectType.Delivery_point;
     }

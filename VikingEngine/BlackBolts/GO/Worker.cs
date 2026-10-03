@@ -33,6 +33,8 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             model.position = WP.TileToWp(currentPos.tilePos);
             WP.DirToQuaterion(model, currentPos.direction);
+
+            RefreshResourcePos();
         }
 
         public void TweenUpdate(bool beltMove, float tween)
@@ -51,6 +53,8 @@ namespace VikingEngine.Core.BlackBolts.GO
                     Vector3 to = WP.TileToWp(nextPos.tilePos);
                     model.position = from * (1 - tween) + to * tween;
                 }
+
+                RefreshResourcePos();
             }
         }
 
@@ -64,6 +68,23 @@ namespace VikingEngine.Core.BlackBolts.GO
         public bool NoMovement()
         {
             return currentPos.tilePos == nextPos.tilePos;
+        }
+
+        public override void RefreshResourcePos()
+        {
+            if (pResource.hasValue)
+            {
+                var resource = pResource.GetSolidResource();
+                resource.model.Rotation = model.Rotation;
+                resource.model.position = model.Rotation.TranslateAlongAxis(
+                    new Vector3(0, 0.25f, 0.4f), model.position);
+            }
+        }
+
+        static Vector3 diff = new Vector3(0, 0.4f, 0.4f);
+        public override Vector3 ResourceOffset()
+        {
+            return diff;
         }
 
         public override GameObjectType GameObjectType =>  GameObjectType.Worker;

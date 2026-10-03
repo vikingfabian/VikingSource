@@ -37,6 +37,12 @@ namespace VikingEngine.Graphics
                 settings.Duration = TimeSpan.FromSeconds(3f);
                 settings.MinColor = new Color(102, 66, 26, 20);
                 settings.MaxColor = new Color(198, 156, 10);
+
+#if BLACK
+                const float ScaleUp = 10f;
+                MinSize *= ScaleUp;
+                MaxSize *= ScaleUp;
+#endif
             }
             else
             {
