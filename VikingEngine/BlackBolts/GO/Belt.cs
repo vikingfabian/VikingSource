@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Render;
 using VikingEngine.Graphics;
@@ -11,9 +12,10 @@ namespace VikingEngine.Core.BlackBolts.GO
     class Belt : AbsMachine
     {
         Animation animation;
-        public Belt(Map.MapPlacement placement)
+        public Belt(PlaceObjectData placementData)
+            : base(placementData)
         {
-            this.currentPos = placement;
+            this.currentPos = placementData.mapPlacement;
             model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.bb_belt], true);
             model.scale = new Vector3(1.3f * model.SizeToScale);
 

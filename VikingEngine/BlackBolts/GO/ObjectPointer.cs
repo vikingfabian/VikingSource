@@ -20,11 +20,11 @@ namespace VikingEngine.Core.BlackBolts.GO
             return null;
         }
 
-        public AbsMachine GetStaticItem()
+        public AbsMachine GetMachine()
         {
             if (hasValue)
             {
-                return BlackRef.mapData.staticObjectList.GetIndex_Safe(objIndex);
+                return BlackRef.mapData.machineList.GetIndex_Safe(objIndex);
             }
             return null;
         }
@@ -47,6 +47,8 @@ namespace VikingEngine.Core.BlackBolts.GO
         Table,
         Dispencer,
         Delivery_point,
+
+        Stone_pillar,
         NUM_NONE
     }
 

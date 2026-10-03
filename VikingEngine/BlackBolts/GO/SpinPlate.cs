@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Render;
@@ -15,13 +16,14 @@ namespace VikingEngine.Core.BlackBolts.GO
         const float AngleSpeed = MathExt.TauOver4 / RunExecuter.MoveTime;
         Rotation1D angle = Rotation1D.D0;
         public int rotateDir;
-        public SpinPlate(Map.MapPlacement placement)
+        public SpinPlate(PlaceObjectData placementData)
+            : base(placementData)
         {
-            this.currentPos = placement;
+            this.currentPos = placementData.mapPlacement;
             model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.bb_rotate], true);
             model.scale = new Vector3(1.3f * model.SizeToScale);
 
-            bool clockwise = placement.direction == Dir4.E;
+            bool clockwise = placementData.mapPlacement.direction == Dir4.E;
             rotateDir = lib.BoolToLeftRight(clockwise);
             if (!clockwise)
             {

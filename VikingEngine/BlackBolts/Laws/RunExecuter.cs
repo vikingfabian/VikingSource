@@ -17,8 +17,12 @@ namespace VikingEngine.Core.BlackBolts.Laws
         float time = 0;
 
         public void Start()
-        { 
-            
+        {
+            var creaturesC = BlackRef.mapData.creatureList.counter();
+            while (creaturesC.Next())
+            {
+                creaturesC.sel.refreshAnimation();
+            }
         }
 
         void resetTime()
@@ -134,7 +138,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                             var pMachine = BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos).pMachine;
                             if (pMachine.hasValue)
                             {
-                                Belt belt = pMachine.GetStaticItem() as Belt;
+                                Belt belt = pMachine.GetMachine() as Belt;
                                 if (belt != null)
                                 {
                                     var moveTo = belt.currentPos.ForwardPos();
@@ -178,7 +182,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                             Tile toTile = BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos);
                             if (toTile.pMachine.hasValue)
                             {
-                                var spin = toTile.pMachine.GetStaticItem() as SpinPlate;
+                                var spin = toTile.pMachine.GetMachine() as SpinPlate;
                                 if (spin != null)
                                 {
                                     creaturesC.sel.nextPos.Rotate(spin.rotateDir);
@@ -204,7 +208,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
                 case RunStep.FinalizeSteps:
                     finalizeAllMoves();
-                    var mashinesC = BlackRef.mapData.staticObjectList.counter();
+                    var mashinesC = BlackRef.mapData.machineList.counter();
                     while (mashinesC.Next())
                     {
                         mashinesC.sel.OnCykleEnd();
@@ -243,7 +247,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
             if (ToTile.pMachine.hasValue)
             {
-                return ToTile.pMachine.GetStaticItem().WalkableTile();
+                return ToTile.pMachine.GetMachine().WalkableTile();
             }
 
             return true;
@@ -253,7 +257,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
         {
             if (ToTile.pMachine.hasValue)
             {
-                var machine = ToTile.pMachine.GetStaticItem();
+                var machine = ToTile.pMachine.GetMachine();
                 machine.ItemHandle(out bool mayPick, out bool mayDrop);
 
                 if (creature.pResource.hasValue && mayDrop)
@@ -316,7 +320,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
             if (beltMove)
             {
-                var itemsC = BlackRef.mapData.staticObjectList.counter();
+                var itemsC = BlackRef.mapData.machineList.counter();
                 while (itemsC.Next())
                 {
                     itemsC.sel.AnimateUpdate();
@@ -339,7 +343,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
             var toTile = BlackRef.mapData.tileGrid.Get(moveTo.tilePos);
             if (toTile.pMachine.hasValue)
             {
-                Belt otherMachine = toTile.pMachine.GetStaticItem() as Belt;
+                Belt otherMachine = toTile.pMachine.GetMachine() as Belt;
                 if (otherMachine != null)
                 {
                     if (otherMachine.currentPos.ForwardPos().tilePos == machine.currentPos.tilePos)

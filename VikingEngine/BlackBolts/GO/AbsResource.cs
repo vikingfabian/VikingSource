@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Graphics;
 
@@ -14,17 +15,18 @@ namespace VikingEngine.Core.BlackBolts.GO
 
     class SolidResource : AbsGameObject
     {
-        ResourceType resourceType;
-        public SolidResource(/*Map.MapPlacement placement, */ResourceType resourceType)
+        //ResourceType resourceType;
+        public SolidResource(PlaceObjectData placementData)
+            :base(placementData)
         {
-            this.resourceType = resourceType;
+            //this.resourceType = resourceType;
             //this.currentPos = placement;
 
             model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.bb_item], true);            
 
             float scale = 0.95f;
             int frame = 0;
-            switch (resourceType)
+            switch (placementData.resourceType)
             {
                 case ResourceType.Box:
                     scale = 0.95f;

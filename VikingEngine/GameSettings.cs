@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.Core.BlackBolts;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameObject;
@@ -847,6 +848,29 @@ namespace VikingEngine
             graphicsHasChanged = true;
             settingsHasChanged = true;
 
+        }
+
+        public void fullScreenOptions(RichBoxContent content)
+        {
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_Fullscreen) },
+                new BoolGetSet_Tag(bool (object tag, bool set, bool value) =>
+                {
+                    if (set)
+                    {
+                        Screen.PcDisplayMode = value?  WindowDisplayMode.HardwareFullscreen : WindowDisplayMode.Windowed;
+                        if (Screen.PcDisplayMode == WindowDisplayMode.Windowed)
+                        {
+                            Engine.Screen.WindowScalePerc = 90;
+                        }
+                        Engine.Screen.ApplyScreenSettings();
+                        graphicsHasChanged = true;
+                        settingsHasChanged = true;
+
+                        new BlackPlayScene();
+                    }
+
+                    return Screen.PcDisplayMode != WindowDisplayMode.Windowed;
+                }), new RbTooltip_Text("Will reset game!")));
         }
 
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)

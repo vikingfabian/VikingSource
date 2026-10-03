@@ -22,6 +22,13 @@ namespace VikingEngine.Core.BlackBolts.Render
             timePassed = 0;
         }
 
+        public void Add(int add)
+        {
+            startframe += add;
+            endFrame += add;
+            currentFrame = startframe;
+        }
+
         public void update(float timeMs, Graphics.AbsVoxelObj model, out bool enterEvenFrame)
         {
             enterEvenFrame = false;

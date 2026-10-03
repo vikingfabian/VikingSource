@@ -31,6 +31,12 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
             refreshMenu();
         }
+
+        public void NeedRefresh()
+        { 
+            menu.needRefresh = true;
+        }
+
         public void refreshMenu()
         {
             iconMenu();
@@ -39,33 +45,69 @@ namespace VikingEngine.Core.BlackBolts.Interface
         void iconMenu()
         {
             RichBoxContent content = new RichBoxContent();           
-            content.h1("Industry of Chaos", HudLib.TitleColor_Head);
+            content.h1("Black Bolt Industries", HudLib.TitleColor_Head);
             content.newParagraph();
-            HudLib.Label(content, "Component");
-            content.newLine();
-            //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
-            for (GameObjectType objectType = 0; objectType < GameObjectType.NUM_NONE; objectType++)
+
+            if (player.editMode)
             {
-                content.Add(new ArtOption(objectType == player.toolShop.selectedObjectType,new List<AbsRichBoxMember> { new RbText(objectType.ToString()) }, 
-                    new RbAction1Arg<GameObjectType>((GameObjectType selected)=>
+                HudLib.Label(content, "Component");
+                content.newLine();
+                //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
+                for (GameObjectType objectType = 0; objectType < GameObjectType.NUM_NONE; objectType++)
+                {
+                    content.Add(new ArtOption(objectType == player.toolShop.placementData.gameObjectType, new List<AbsRichBoxMember> { new RbText(objectType.ToString()) },
+                        new RbAction1Arg<GameObjectType>((GameObjectType selected) =>
+                        {
+                            player.toolShop.selectTool(selected);
+                            player.OnToolRefresh();
+                        }, objectType), null));
+                }
+
+                if (player.toolShop.placementData.gameObjectType == GameObjectType.Dispencer)
+                {
+                    content.newParagraph();
+                    HudLib.Label(content, "Resource");
+                    content.newLine();
+                    for (ResourceType resource = 0; resource < ResourceType.NUM; resource++)
                     {
-                        player.toolShop.selectTool(selected);
-                        player.OnToolRefresh();
-                    }, objectType), null));
+                        content.Add(new ArtOption(resource == player.toolShop.placementData.resourceType, new List<AbsRichBoxMember> { new RbText(resource.ToString()) },
+                            new RbAction1Arg<ResourceType>((ResourceType selected) =>
+                            {
+                                player.toolShop.selectResource(selected);
+                            }, resource), null));
+                    }
+                }
+
+                content.newParagraph();
+                player.inputMap.rotate.ToRichContent(content);
+                content.hspace();
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW), new RbSpace(),
+                new RbText("Rotate")}, new RbAction(player.rotateToolAction)));
+
+                content.newLine();
+                player.inputMap.toggleEditMode.ToRichContent(content);
+                content.hspace();
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon), new RbSpace(),
+                new RbText("Run production")}, new RbAction(player.toggleRunSimulation)));
+            }
+            else
+            {
+                player.inputMap.toggleEditMode.ToRichContent(content);
+                content.hspace();
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPauseIcon), new RbSpace(),
+                new RbText("Stop")}, new RbAction(player.toggleRunSimulation)));
+                content.text("Running...", Color.Gray);
             }
 
             content.newParagraph();
-            HudLib.Label(content, "Resource");
-            content.newLine();
-            for (ResourceType resource = 0; resource < ResourceType.NUM; resource++)
-            {
-                content.Add(new ArtOption(resource == player.toolShop.selectedResourceType, new List<AbsRichBoxMember> { new RbText(resource.ToString()) },
-                    new RbAction1Arg<ResourceType>((ResourceType selected) =>
-                    {
-                        player.toolShop.selectResource(selected);
-                    }, resource), null));
-            }
 
+
+            content.Add(new RbSeperationLine());
+            content.newParagraph();
+            Ref.gamesett.fullScreenOptions(content);
             content.Add(new RbSeperationLine());
             content.newParagraph();
 

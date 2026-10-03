@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.LootFest.GO;
 using VikingEngine.PJ.Tanks;
@@ -14,9 +15,11 @@ namespace VikingEngine.Core.BlackBolts.Map
         public IntVector2 Size;
 
         public SpottedArray<Worker> creatureList = new SpottedArray<Worker>(1024);
-        public SpottedArray<AbsMachine> staticObjectList = new SpottedArray<AbsMachine>(1024);
+        public SpottedArray<AbsMachine> machineList = new SpottedArray<AbsMachine>(1024);
         public SpottedArray<SolidResource> resourceList = new SpottedArray<SolidResource>(1024);
         public Grid2D_L<Tile> tileGrid;
+
+        List<PlaceObjectData> restorePoint = new List<PlaceObjectData>(1024);
 
         public MapData(IntVector2 size)
         {
@@ -38,14 +41,14 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public void AddObject(AbsMachine go)
         {
-            int ix = staticObjectList.Add(go);
+            int ix = machineList.Add(go);
             go.pointer = new ObjectPointer() { listType = ObjectListType.Static, hasValue = true, objIndex = ix };
             tileGrid.GetRef(go.currentPos.tilePos).pMachine = go.pointer;
         }
 
         public SolidResource SpawnResource(ResourceType type)
         {
-            SolidResource resource = new SolidResource(type);
+            SolidResource resource = new SolidResource(new PlaceObjectData() { resourceType = type });
             int ix = resourceList.Add(resource);
             resource.pointer = new ObjectPointer() { listType = ObjectListType.SolidResource, hasValue = true, objIndex = ix };
 
@@ -58,7 +61,42 @@ namespace VikingEngine.Core.BlackBolts.Map
                 return tile;
             else
                 return wallTile;
-        } 
+        }
+
+        public void CreateStorePoint()
+        {
+            restorePoint.Clear();
+
+            var creatureC = creatureList.counter();
+            while (creatureC.Next())
+            {
+                restorePoint.Add(creatureC.sel.placementData);
+            }
+
+            var machineC = machineList.counter();
+            while (machineC.Next())
+            {
+                restorePoint.Add(machineC.sel.placementData);
+            }
+        }
+
+        public void ClearMap()
+        {
+            foreach (var tile in tileGrid.array)
+            {
+                tile.ClearTile();
+            }
+        }
+
+        public void RestoreMap()
+        {
+            foreach (var p in restorePoint)
+            {
+                ObjectBuilder.Create(p, false);
+            }
+
+            restorePoint.Clear();
+        }
     }
 
     
@@ -74,6 +112,34 @@ namespace VikingEngine.Core.BlackBolts.Map
         public bool IsEmpty()
         { 
             return pCreature.hasValue == false && pMachine.hasValue == false;
+        }
+
+        public PlaceObjectData? ClearTile()
+        {
+            PlaceObjectData? result = null; 
+            if (pCreature.hasValue)
+            {
+                var obj = pCreature.GetCreature();
+                result = obj.placementData;
+                obj.DeleteMe();
+                pCreature.hasValue = false;
+            }
+            else if (pMachine.hasValue)
+            {
+                var obj = pMachine.GetMachine();
+                result = obj.placementData;
+                obj.DeleteMe();
+                pMachine.hasValue = false;
+            }
+
+            if (pResource.hasValue)
+            {
+                var obj =pResource.GetSolidResource();
+                obj.DeleteMe();
+                pResource.hasValue = false;
+            }
+
+            return result;
         }
     }
 

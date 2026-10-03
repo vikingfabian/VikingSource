@@ -2,15 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Map;
+using VikingEngine.Core.BlackBolts.Render;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts.GO
 {
     class Worker: AbsGameObject
     {
-        //public IntVector2 tilePos;
-        
         public MapPlacement nextPos;
 
         public bool hasBeltMove = false;
@@ -18,10 +18,13 @@ namespace VikingEngine.Core.BlackBolts.GO
 
         MapPlacement spawnPos;
         
+        Animation animation;
 
-        public Worker(MapPlacement placement) 
+        public Worker(PlaceObjectData placementData) 
+            :base(placementData)
         {
-            this.currentPos = placement;
+            this.currentPos = placementData.mapPlacement;
+            nextPos = currentPos;
             model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.goblin_worker], true);
             //model.Color = Color.Green;
             model.scale = new Vector3(1.15f * model.SizeToScale);
@@ -35,6 +38,20 @@ namespace VikingEngine.Core.BlackBolts.GO
             WP.DirToQuaterion(model, currentPos.direction);
 
             RefreshResourcePos();
+        }
+        protected override void OnResourceChanged()
+        {
+            base.OnResourceChanged();
+            refreshAnimation();
+        }
+
+        public void refreshAnimation()
+        {
+            animation = new Animation(1, 5, 120);
+            if (pResource.hasValue)
+            {
+                animation.Add(5);
+            }
         }
 
         public void TweenUpdate(bool beltMove, float tween)
@@ -52,6 +69,11 @@ namespace VikingEngine.Core.BlackBolts.GO
                     Vector3 from = WP.TileToWp(currentPos.tilePos);
                     Vector3 to = WP.TileToWp(nextPos.tilePos);
                     model.position = from * (1 - tween) + to * tween;
+                }
+
+                if (!beltMove)
+                {
+                    animation.update(Ref.DeltaGameTimeMs, model, out _);
                 }
 
                 RefreshResourcePos();
@@ -87,6 +109,11 @@ namespace VikingEngine.Core.BlackBolts.GO
             return diff;
         }
 
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+            BlackRef.mapData.creatureList.RemoveAt(pointer.objIndex);
+        }
         public override GameObjectType GameObjectType =>  GameObjectType.Worker;
     }
 }

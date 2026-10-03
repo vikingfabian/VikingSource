@@ -107,32 +107,34 @@ namespace VikingEngine.Core.BlackBolts.Player
         //    this.inCamCheck = inCamCheck;
         //}
 
-        public void update(Player player)
+        public void update(Player player, bool overHud)
         {
-            panCamera(toggLib.ToV3(-player.inputMap.movement.directionAndTime * PanSpeed));
-
-            float scrollValue = Input.Mouse.ScrollValue * 0.02f;
-            zoom(scrollValue);
-
-            Vector3 mapPos = Ref.draw.Camera.ScreenPosTo3D(Input.Mouse.Position, out bool foundScreenPos);
-            if (Input.Mouse.ButtonDownEvent(MouseButton.Right))
+            if (!overHud)
             {
-                mouseDownOnMapPan = true;
-            }
-            if (Input.Mouse.IsButtonDown(MouseButton.Right) && mouseDownOnMapPan)
-            {
-                //unlockEdgePush = false;
-                Vector3 diff = mapPos - pointerPos3D;
+                panCamera(toggLib.ToV3(-player.inputMap.movement.directionAndTime * PanSpeed));
 
-                panCamera(diff);
-            }
-            else
-            {
-                mouseDownOnMapPan = false;
-                setSelectionPos(player, toggLib.ToV2(mapPos));
-            }
+                float scrollValue = Input.Mouse.ScrollValue * 0.02f;
+                zoom(scrollValue);
 
+                Vector3 mapPos = Ref.draw.Camera.ScreenPosTo3D(Input.Mouse.Position, out bool foundScreenPos);
+                if (Input.Mouse.ButtonDownEvent(MouseButton.Right))
+                {
+                    mouseDownOnMapPan = true;
+                }
+                if (Input.Mouse.IsButtonDown(MouseButton.Right) && mouseDownOnMapPan)
+                {
+                    //unlockEdgePush = false;
+                    Vector3 diff = mapPos - pointerPos3D;
 
+                    panCamera(diff);
+                }
+                else
+                {
+                    mouseDownOnMapPan = false;
+                    setSelectionPos(player, toggLib.ToV2(mapPos));
+                }
+
+            }
             camera.Time_Update(Ref.DeltaTimeMs);
         }
 

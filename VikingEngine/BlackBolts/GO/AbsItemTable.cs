@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Graphics;
 
@@ -9,10 +10,11 @@ namespace VikingEngine.Core.BlackBolts.GO
 {
     abstract class AbsItemTable : AbsMachine
     {
-        public AbsItemTable(Map.MapPlacement placement,
+        public AbsItemTable(PlaceObjectData placementData,
             LootFest.VoxelModelName modelName, int frame)
+            :base(placementData)
         {
-            this.currentPos = placement;
+            this.currentPos = placementData.mapPlacement;
 
             model = new VoxelModelInstance(BlackRef.models.voxelModels[modelName], true);
             model.scale = new Vector3(1.3f * model.SizeToScale);
@@ -42,8 +44,8 @@ namespace VikingEngine.Core.BlackBolts.GO
     }
     class ItemTable: AbsItemTable
     {
-        public ItemTable(Map.MapPlacement placement)
-            : base(placement, LootFest.VoxelModelName.bb_onetile, 0)
+        public ItemTable(PlaceObjectData placementData)
+            : base(placementData, LootFest.VoxelModelName.bb_onetile, 0)
         { }
         public override GameObjectType GameObjectType => GameObjectType.Table;
 
@@ -63,11 +65,12 @@ namespace VikingEngine.Core.BlackBolts.GO
     class Dispencer: AbsItemTable
     {
         
-        ResourceType resourceType;
-        public Dispencer(Map.MapPlacement placement, ResourceType resourceType)
-           : base(placement, LootFest.VoxelModelName.bb_onetile, 1)
+        //ResourceType resourceType;
+        public Dispencer(PlaceObjectData placementData)
+           : base(placementData, LootFest.VoxelModelName.bb_onetile, 1)
         { 
-            this.resourceType = resourceType;
+            //this.resourceType = placementData.resourceType;
+            this.placementData = placementData;
             generateResource();
         }
         public override void OnCykleEnd()
@@ -80,7 +83,7 @@ namespace VikingEngine.Core.BlackBolts.GO
 
         void generateResource()
         {
-            var resource = BlackRef.mapData.SpawnResource(resourceType);
+            var resource = BlackRef.mapData.SpawnResource(placementData.resourceType);
             pResource = resource.pointer;
             RefreshResourcePos();
         }
@@ -101,8 +104,8 @@ namespace VikingEngine.Core.BlackBolts.GO
 
     class DeliveryPoint: AbsItemTable
     {
-        public DeliveryPoint(Map.MapPlacement placement)
-           : base(placement, LootFest.VoxelModelName.bb_onetile, 2)
+        public DeliveryPoint(PlaceObjectData placementData)
+           : base(placementData, LootFest.VoxelModelName.bb_onetile, 2)
         {
             WP.DirToQuaterion(model, Dir4.W);
         }

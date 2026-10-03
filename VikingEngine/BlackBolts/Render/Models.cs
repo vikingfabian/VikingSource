@@ -21,6 +21,7 @@ namespace VikingEngine.Core.BlackBolts.Render
 
         public void load()
         {
+            loadVoxelModel(VoxelModelName.ErrorCube, false);
             loadVoxelModel(VoxelModelName.goblin_worker, false);
             loadVoxelModel(VoxelModelName.bb_belt, false);
             loadVoxelModel(VoxelModelName.bb_rotate, false);
