@@ -30,5 +30,10 @@ namespace VikingEngine.Core.BlackBolts.Map
         {
             direction = lib.Rotate(direction, 2);
         }
+
+        public void Rotate(int dir)
+        {
+            direction = lib.Rotate(direction, dir);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace VikingEngine.Core.BlackBolts.GO
             return null;
         }
 
-        public Belt GetStaticItem()
+        public AbsMachine GetStaticItem()
         {
             if (hasValue)
             {
@@ -34,6 +34,7 @@ namespace VikingEngine.Core.BlackBolts.GO
     {
         Worker,
         Belt,
+        Spin_plate,
         NUM
     }
 

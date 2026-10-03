@@ -14,7 +14,7 @@ namespace VikingEngine.Core.BlackBolts.Map
         public IntVector2 Size;
 
         public SpottedArray<Worker> creatureList = new SpottedArray<Worker>(1024);
-        public SpottedArray<Belt> staticObjectList = new SpottedArray<Belt>(1024);
+        public SpottedArray<AbsMachine> staticObjectList = new SpottedArray<AbsMachine>(1024);
         public Grid2D_L<Tile> tileGrid;
 
         public MapData(IntVector2 size)
@@ -35,7 +35,7 @@ namespace VikingEngine.Core.BlackBolts.Map
             tileGrid.GetRef(go.currentPos.tilePos).pCreature = go.pointer;
         }
 
-        public void AddObject(Belt go)
+        public void AddObject(AbsMachine go)
         {
             int ix = staticObjectList.Add(go);
             go.pointer = new ObjectPointer() { listType = ObjectListType.Static, hasValue = true, objIndex = ix };

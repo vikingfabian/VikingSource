@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts.GO
 {
-    class Belt : AbsGameObject
+    class Belt : AbsMachine
     {
         Animation animation;
         public Belt(Map.MapPlacement placement)
@@ -28,9 +28,11 @@ namespace VikingEngine.Core.BlackBolts.GO
             WP.DirToQuaterion(model, currentPos.direction);
         }
 
-        public void AnimateUpdate()
+        override public void AnimateUpdate()
         {
             animation.update(Ref.DeltaGameTimeMs, model, out _);
         }
+
+        public override GameObjectType GameObjectType => GameObjectType.Belt;
     }
 }

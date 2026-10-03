@@ -14,11 +14,13 @@ namespace VikingEngine.Core.BlackBolts.Interface
 {
     class ToolMenu
     {
+        Player.Player player;
         RichMenu menu;
-        public GameObjectType selectedObjectType = GameObjectType.Worker;
+        
 
-        public ToolMenu()
+        public ToolMenu(Player.Player player)
         {
+            this.player = player;
             HudLib.Init();
 
             var area = Screen.SafeArea;
@@ -42,12 +44,18 @@ namespace VikingEngine.Core.BlackBolts.Interface
             //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
             for (GameObjectType objectType = 0; objectType < GameObjectType.NUM; objectType++)
             {
-                content.Add(new ArtOption(objectType == selectedObjectType,new List<AbsRichBoxMember> { new RbText(objectType.ToString()) }, 
-                    new RbAction1Arg<GameObjectType>((GameObjectType selected) => { 
-                        selectedObjectType = selected; }, objectType), null));
+                content.Add(new ArtOption(objectType == player.toolShop.selectedObjectType,new List<AbsRichBoxMember> { new RbText(objectType.ToString()) }, 
+                    new RbAction1Arg<GameObjectType>((GameObjectType selected)=>
+                    {
+                        player.toolShop.selectTool(selected);
+                        player.OnToolRefresh();
+                    }, objectType), null));
             }
             menu.Refresh(content);
         }
+
+        
+
         public void update(ref bool mouseOver)
         {
             menu.updateMouseInput(ref mouseOver);

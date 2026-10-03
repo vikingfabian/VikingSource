@@ -11,6 +11,7 @@ namespace VikingEngine.Core.BlackBolts.Player
 {
     class Player
     {
+        public ToolShop toolShop = new ToolShop();
         MapSelect mapSelect = new MapSelect();
         CameraControl cameraControl;
         public InputMap inputMap;
@@ -19,16 +20,19 @@ namespace VikingEngine.Core.BlackBolts.Player
 
         Interface.ToolMenu toolMenu;
 
-        Dir4 toolDir = Dir4.S;
+        
 
         public bool editMode = true;
+
+        bool drawButtonDown = false;
+
 
         public Player()
         {
             cameraControl = new CameraControl();
             inputMap = new InputMap(0);
-            toolMenu = new Interface.ToolMenu();
-            mapSelect.Rotation(toolDir);
+            toolMenu = new Interface.ToolMenu(this);
+            mapSelect.Rotation(toolShop.toolDir);
         }
         public void update()
         {
@@ -52,16 +56,18 @@ namespace VikingEngine.Core.BlackBolts.Player
                 {
                     if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
                     {
-                        onMapClick();
+                        paintOnTile();
+                        drawButtonDown = true;
                     }
                     if (inputMap.rotate.DownEvent)
                     {
-                        toolDir++;
-                        if (toolDir >= Dir4.NUM_NON)
-                        {
-                            toolDir = Dir4.N;
-                        }
-                        mapSelect.Rotation(toolDir);
+                        //toolDir++;
+                        //if (toolDir >= Dir4.NUM_NON)
+                        //{
+                        //    toolDir = Dir4.N;
+                        //}
+                        toolShop.RotateTool();
+                        OnToolRefresh();
                     }
                 }
                 else
@@ -69,17 +75,27 @@ namespace VikingEngine.Core.BlackBolts.Player
                     runExecuter.Update();
                 }
             }
+
+            if (inputMap.click.UpEvent)
+            {
+                drawButtonDown = false;
+            }
         }
 
-        void onMapClick()
+        public void OnToolRefresh()
+        { 
+            mapSelect.Rotation(toolShop.toolDir);
+        }
+
+        void paintOnTile()
         {
             if (BlackRef.mapData.tileGrid.TryGet(cameraControl.tilePos, out var tile))
             {
                 if (tile.IsEmpty())
                 {
-                    var placement = new MapPlacement(cameraControl.tilePos, toolDir);
+                    var placement = new MapPlacement(cameraControl.tilePos, toolShop.toolDir);
 
-                    switch (toolMenu.selectedObjectType)
+                    switch (toolShop.selectedObjectType)
                     {
                         case GameObjectType.Worker:
                             {
@@ -93,6 +109,12 @@ namespace VikingEngine.Core.BlackBolts.Player
                                 BlackRef.mapData.AddObject(obj);
                             }
                             break;
+                        case GameObjectType.Spin_plate:
+                            {
+                                var obj = new SpinPlate(placement);
+                                BlackRef.mapData.AddObject(obj);
+                            }
+                            break;
                     }
                     
                 }
@@ -102,6 +124,10 @@ namespace VikingEngine.Core.BlackBolts.Player
         public void onNewTile(IntVector2 tilePos)
         {
             mapSelect.Select(tilePos);
+            if (drawButtonDown)
+            {
+                paintOnTile();
+            }
         }
     }
 }

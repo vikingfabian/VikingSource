@@ -12,8 +12,8 @@ namespace VikingEngine.Core.BlackBolts.Laws
         RunStep step = RunStep.CalcMove;
         float moveTween = 0;
 
-        float MoveTime = 600;
-        float HoldTime = 200;
+        public const float MoveTime = 500;
+        //float HoldTime = 200;
         float time = 0;
 
         public void Start()
@@ -83,6 +83,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
                         checkDirectWalkColl();
 
+                        /*
                         //Clear map
                         for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
                         {
@@ -136,7 +137,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                                 creaturesC.sel.nextPos = creaturesC.sel.beltPos;
                             }
                         }
-
+                        */
                         step++;
                     }
                     break;
@@ -148,55 +149,161 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
                 case RunStep.AllMove:
                     {
-                        time += Ref.DeltaGameTimeMs;
-                        moveTween = time / MoveTime;
-                        if (moveTween >= 1f)
-                        {
-                            moveTween = 1f;
-                            step++;
-                        }
-
-                        var creaturesC = BlackRef.mapData.creatureList.counter();
-                        while (creaturesC.Next())
-                        {
-                            creaturesC.sel.TweenUpdate(moveTween);
-                        }
-
-                        var itemsC = BlackRef.mapData.staticObjectList.counter();
-                        while (itemsC.Next())
-                        {
-                            itemsC.sel.AnimateUpdate();
-                        }
+                        updateMove();
                     }
                     break;
 
-                case RunStep.BeginHold:
+                case RunStep.BeginBelt:
                     {
+                        finalizeAllMoves();
+
                         //Clear map
                         for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
                         {
-                            BlackRef.mapData.tileGrid.array[i].pCreature = ObjectPointer.Empty;
+                            BlackRef.mapData.tileGrid.array[i].nextPosList.Clear();
                         }
 
-                        //Complete all moves and refill map
-                        var objectsC = BlackRef.mapData.creatureList.counter();
-                        while (objectsC.Next())
+                        var creaturesC = BlackRef.mapData.creatureList.counter();
+                        //Calc all belt moves
+                        creaturesC.Reset();
+                        while (creaturesC.Next())
                         {
-                            objectsC.sel.FinalizeMove();
+                            creaturesC.sel.hasBeltMove = false;
 
+                            var pMachine = BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos).pMachine;
+                            if (pMachine.hasValue)
+                            {
+                                Belt belt = pMachine.GetStaticItem() as Belt;
+                                if (belt != null)
+                                {
+                                    var moveTo = belt.currentPos.ForwardPos();
+
+                                    var toTile = BlackRef.mapData.tileGrid.Get(moveTo.tilePos);
+                                    //Quick check for impossible move
+                                    if (toTile.tileType != Map.TileType.Wall && !HasOpposingBelt(belt))
+                                    {
+                                        creaturesC.sel.beltPos = new MapPlacement(moveTo.tilePos, creaturesC.sel.nextPos.direction);
+                                        creaturesC.sel.hasBeltMove = true;
+                                        toTile.nextPosList.Add(creaturesC.sel.pointer);
+                                    }
+                                }
+                            }
                         }
-                        time = 0;
+
+                        //Check belt move collisions
+                        //Belt push is weak and will just stop if it collides with another unit
+                        creaturesC.Reset();
+                        while (creaturesC.Next())
+                        {
+                            if (creaturesC.sel.hasBeltMove)
+                            {
+                                Tile toTile = BlackRef.mapData.tileGrid.Get(creaturesC.sel.beltPos.tilePos);
+                                if (toTile.nextPosList.Count > 1 || HasStaticCreature_belts(toTile))
+                                {
+                                    creaturesC.sel.hasBeltMove = false;
+                                }
+                            }
+
+                            if (creaturesC.sel.hasBeltMove)
+                            {
+                                creaturesC.sel.nextPos = creaturesC.sel.beltPos;
+                            }
+                        }
+
+                        //Apply rotators
+                        creaturesC.Reset();
+                        while (creaturesC.Next())
+                        {
+                            Tile toTile = BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos);
+                            if (toTile.pMachine.hasValue)
+                            {
+                                var spin = toTile.pMachine.GetStaticItem() as SpinPlate;
+                                if (spin != null)
+                                {
+                                    creaturesC.sel.nextPos.Rotate(spin.rotateDir);
+                                    creaturesC.sel.hasBeltMove = true;
+                                }
+                            }
+                        }
+
+                        resetTime();
                         step++;
                     }
                     break;
-                case RunStep.Hold:
-                    time += Ref.DeltaGameTimeMs;
-                    if (time >= HoldTime)
+                case RunStep.RunBelts:
+                    //time += Ref.DeltaGameTimeMs;
+                    //if (time >= HoldTime)
+                    //{
+                    //    step = 0;
+                    //}
                     {
-                        step = 0;
+                        updateMove();
                     }
                     break;
+
+                case RunStep.FinalizeSteps:
+                    finalizeAllMoves();
+                    step = 0;
+                    break;
             }
+        }
+
+        private static void finalizeAllMoves()
+        {
+            //Clear map
+            for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
+            {
+                BlackRef.mapData.tileGrid.array[i].pCreature = ObjectPointer.Empty;
+            }
+
+            //Complete all moves and refill map
+            var creaturesC = BlackRef.mapData.creatureList.counter();
+            while (creaturesC.Next())
+            {
+                creaturesC.sel.FinalizeMove();
+
+            }
+        }
+
+        private void updateMove()
+        {
+            bool beltMove = step == RunStep.RunBelts;
+
+            time += Ref.DeltaGameTimeMs;
+            moveTween = time / MoveTime;
+            if (moveTween >= 1f)
+            {
+                moveTween = 1f;
+                step++;
+                //if (step >= RunStep.NUM)
+                //{
+                //    step = 0;
+                //}
+            }
+
+            var creaturesC = BlackRef.mapData.creatureList.counter();
+            while (creaturesC.Next())
+            {
+                creaturesC.sel.TweenUpdate(beltMove, moveTween);
+            }
+
+            if (beltMove)
+            {
+                var itemsC = BlackRef.mapData.staticObjectList.counter();
+                while (itemsC.Next())
+                {
+                    itemsC.sel.AnimateUpdate();
+                }
+            }
+        }
+
+        static bool HasStaticCreature_belts(Tile tile)
+        {
+            if (tile.pCreature.hasValue)
+            {
+                return !tile.pCreature.Get().hasBeltMove;
+            }
+            return false;
         }
 
         static bool HasOpposingBelt(Belt machine)
@@ -205,7 +312,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
             var toTile = BlackRef.mapData.tileGrid.Get(moveTo.tilePos);
             if (toTile.pMachine.hasValue)
             {
-                Belt otherMachine = toTile.pMachine.GetStaticItem();
+                Belt otherMachine = toTile.pMachine.GetStaticItem() as Belt;
                 if (otherMachine.currentPos.ForwardPos().tilePos == machine.currentPos.tilePos)
                 {
                     return true;
@@ -251,9 +358,10 @@ namespace VikingEngine.Core.BlackBolts.Laws
         BeginMove,
         AllMove,
 
-        BeginHold,
-        Hold,
+        BeginBelt,
+        RunBelts,
 
+        FinalizeSteps,
         NUM
     }
 }

@@ -35,19 +35,22 @@ namespace VikingEngine.Core.BlackBolts.GO
             WP.DirToQuaterion(model, currentPos.direction);
         }
 
-        public void TweenUpdate(float tween)
+        public void TweenUpdate(bool beltMove, float tween)
         {
-            if (NoMovement())
+            //if (NoMovement())
+            if (!beltMove || hasBeltMove)
             {
-                float from = WP.DirToAngle(currentPos.direction);
-                float to = WP.DirToAngle(nextPos.direction);
-                WP.Rotation1DToQuaterion(model, from * (1 - tween) + to * tween);
-            }
-            else
-            {
-                Vector3 from = WP.TileToWp(currentPos.tilePos);
-                Vector3 to = WP.TileToWp(nextPos.tilePos);
-                model.position = from * (1 - tween) + to * tween;
+                {
+                    float from = WP.DirToAngle(currentPos.direction);
+                    float to = WP.DirToAngle(nextPos.direction);
+                    WP.Rotation1DToQuaterion(model, from * (1 - tween) + to * tween);
+                }
+                //else
+                {
+                    Vector3 from = WP.TileToWp(currentPos.tilePos);
+                    Vector3 to = WP.TileToWp(nextPos.tilePos);
+                    model.position = from * (1 - tween) + to * tween;
+                }
             }
         }
 
@@ -63,5 +66,6 @@ namespace VikingEngine.Core.BlackBolts.GO
             return currentPos.tilePos == nextPos.tilePos;
         }
 
+        public override GameObjectType GameObjectType =>  GameObjectType.Worker;
     }
 }
