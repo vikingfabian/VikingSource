@@ -77,8 +77,24 @@ namespace VikingEngine.Core.BlackBolts.Player
             {
                 if (tile.IsEmpty())
                 {
-                    var obj = new Worker(new MapPlacement() { tilePos = cameraControl.tilePos, direction = toolDir });
-                    BlackRef.mapData.AddObject(obj);
+                    var placement = new MapPlacement(cameraControl.tilePos, toolDir);
+
+                    switch (toolMenu.selectedObjectType)
+                    {
+                        case GameObjectType.Worker:
+                            {
+                                var obj = new Worker(placement);
+                                BlackRef.mapData.AddObject(obj);
+                            }
+                            break;
+                        case GameObjectType.Belt:
+                            {
+                                var obj = new Belt(placement);
+                                BlackRef.mapData.AddObject(obj);
+                            }
+                            break;
+                    }
+                    
                 }
             }
         }

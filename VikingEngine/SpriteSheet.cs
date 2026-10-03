@@ -3098,7 +3098,10 @@ namespace VikingEngine
                 add(SpriteName.cmdDieTexHit);
                 add(SpriteName.cmdDieTexMiss);
 
-                addWithSizeDef(SpriteName.hqRegularDoorEdge, currentIndex, 32, 8);
+                currentIndex += 2;
+                addFullQtile(SpriteName.bb_floor1, SpriteName.bb_floor2, SpriteName.bb_floor3, SpriteName.bb_floor4, currentIndex);
+
+                //addWithSizeDef(SpriteName.hqRegularDoorEdge, currentIndex, 32, 8);
             }
                        
 

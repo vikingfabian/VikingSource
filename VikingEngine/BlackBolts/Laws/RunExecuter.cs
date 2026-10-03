@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.Core.BlackBolts.Map;
 
 namespace VikingEngine.Core.BlackBolts.Laws
@@ -33,18 +34,18 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 case RunStep.CalcMove:
                     {
                         //Reserve next position
-                        var objectsC = BlackRef.mapData.worldObjects.counter();
-                        while (objectsC.Next())
+                        var creaturesC = BlackRef.mapData.creatureList.counter();
+                        while (creaturesC.Next())
                         {
-                            var next = objectsC.sel.currentPos.ForwardPos();
+                            var next = creaturesC.sel.currentPos.ForwardPos();
                             var ToTile = BlackRef.mapData.GetTile(next.tilePos);
                             if (ToTile.tileType == Map.TileType.Floor)
                             {
-                                objectsC.sel.nextPos = next;
+                                creaturesC.sel.nextPos = next;
                             }
                             else
                             {
-                                objectsC.sel.nextPos = objectsC.sel.currentPos.TurnAroundPos();
+                                creaturesC.sel.nextPos = creaturesC.sel.currentPos.TurnAroundPos();
                             }
 
                         }
@@ -58,10 +59,10 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         //Find colliding Objects
                         checkDirectWalkColl();
 
-                        objectsC.Reset();
-                        while (objectsC.Next())
+                        creaturesC.Reset();
+                        while (creaturesC.Next())
                         {
-                            BlackRef.mapData.tileGrid.Get(objectsC.sel.nextPos.tilePos).nextPosList.Add(objectsC.sel.pointer);
+                            BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos).nextPosList.Add(creaturesC.sel.pointer);
                         }
 
                         //Collide all objects moving to the same tile
@@ -82,6 +83,60 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
                         checkDirectWalkColl();
 
+                        //Clear map
+                        for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
+                        {
+                            BlackRef.mapData.tileGrid.array[i].nextPosList.Clear();
+                        }
+
+                        //#Make belt moves
+                        creaturesC.Reset();
+                        while (creaturesC.Next())
+                        {
+                            creaturesC.sel.hasBeltMove = false;
+
+                            var pMachine = BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos).pMachine;
+                            if (pMachine.hasValue)
+                            {
+                                Belt machine = pMachine.GetStaticItem();
+                                var moveTo = machine.currentPos.ForwardPos();
+
+                                var toTile = BlackRef.mapData.tileGrid.Get(moveTo.tilePos);
+                                //Quick check for impossible move
+                                if (toTile.tileType != Map.TileType.Wall && !HasOpposingBelt(machine))
+                                {
+                                    creaturesC.sel.beltPos = new MapPlacement(moveTo.tilePos, creaturesC.sel.nextPos.direction);
+                                    creaturesC.sel.hasBeltMove = true;
+                                    toTile.nextPosList.Add(creaturesC.sel.pointer);
+                                }
+                            }
+
+                            if (!creaturesC.sel.hasBeltMove)
+                            {
+                                BlackRef.mapData.tileGrid.Get(creaturesC.sel.nextPos.tilePos).nextPosList.Add(creaturesC.sel.pointer);
+                            }
+                        }
+
+                        //Check belt move collisions
+                        //Belt push is weak and will just stop if it collides with another unit
+                        creaturesC.Reset();
+                        while (creaturesC.Next())
+                        {
+                            if (creaturesC.sel.hasBeltMove)
+                            {
+                                var toTile = BlackRef.mapData.tileGrid.Get(creaturesC.sel.beltPos.tilePos);
+                                if (toTile.nextPosList.Count > 1)
+                                {
+                                    creaturesC.sel.hasBeltMove = false;
+                                }
+                            }
+
+                            if (creaturesC.sel.hasBeltMove)
+                            {
+                                creaturesC.sel.nextPos = creaturesC.sel.beltPos;
+                            }
+                        }
+
                         step++;
                     }
                     break;
@@ -101,10 +156,16 @@ namespace VikingEngine.Core.BlackBolts.Laws
                             step++;
                         }
 
-                        var objectsC = BlackRef.mapData.worldObjects.counter();
-                        while (objectsC.Next())
+                        var creaturesC = BlackRef.mapData.creatureList.counter();
+                        while (creaturesC.Next())
                         {
-                            objectsC.sel.TweenUpdate(moveTween);
+                            creaturesC.sel.TweenUpdate(moveTween);
+                        }
+
+                        var itemsC = BlackRef.mapData.staticObjectList.counter();
+                        while (itemsC.Next())
+                        {
+                            itemsC.sel.AnimateUpdate();
                         }
                     }
                     break;
@@ -114,11 +175,11 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         //Clear map
                         for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
                         {
-                            BlackRef.mapData.tileGrid.array[i].gameobject = ObjectPointer.Empty;
+                            BlackRef.mapData.tileGrid.array[i].pCreature = ObjectPointer.Empty;
                         }
 
                         //Complete all moves and refill map
-                        var objectsC = BlackRef.mapData.worldObjects.counter();
+                        var objectsC = BlackRef.mapData.creatureList.counter();
                         while (objectsC.Next())
                         {
                             objectsC.sel.FinalizeMove();
@@ -138,6 +199,22 @@ namespace VikingEngine.Core.BlackBolts.Laws
             }
         }
 
+        static bool HasOpposingBelt(Belt machine)
+        {
+            var moveTo = machine.currentPos.ForwardPos();
+            var toTile = BlackRef.mapData.tileGrid.Get(moveTo.tilePos);
+            if (toTile.pMachine.hasValue)
+            {
+                Belt otherMachine = toTile.pMachine.GetStaticItem();
+                if (otherMachine.currentPos.ForwardPos().tilePos == machine.currentPos.tilePos)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static void checkDirectWalkColl()
         {
             bool hasCollision = true;
@@ -145,14 +222,14 @@ namespace VikingEngine.Core.BlackBolts.Laws
             while (hasCollision)
             {
                 hasCollision = false;
-                var objectsC = BlackRef.mapData.worldObjects.counter();
+                var objectsC = BlackRef.mapData.creatureList.counter();
                 while (objectsC.Next())
                 {
                     //Moving directly into another unit check
-                    if (!objectsC.sel.NoMovement() && BlackRef.mapData.tileGrid.Get(objectsC.sel.nextPos.tilePos).gameobject.hasValue)
+                    if (!objectsC.sel.NoMovement() && BlackRef.mapData.tileGrid.Get(objectsC.sel.nextPos.tilePos).pCreature.hasValue)
                     {
                         //Is the other unit moving away?
-                        var otherObj = BlackRef.mapData.tileGrid.Get(objectsC.sel.nextPos.tilePos).gameobject.Get();
+                        var otherObj = BlackRef.mapData.tileGrid.Get(objectsC.sel.nextPos.tilePos).pCreature.Get();
                         if (otherObj.NoMovement() || otherObj.nextPos.tilePos == objectsC.sel.currentPos.tilePos)
                         {
                             //No moving into it

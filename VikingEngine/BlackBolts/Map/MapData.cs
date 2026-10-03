@@ -13,7 +13,8 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public IntVector2 Size;
 
-        public SpottedArray<Worker> worldObjects = new SpottedArray<Worker>(1024);
+        public SpottedArray<Worker> creatureList = new SpottedArray<Worker>(1024);
+        public SpottedArray<Belt> staticObjectList = new SpottedArray<Belt>(1024);
         public Grid2D_L<Tile> tileGrid;
 
         public MapData(IntVector2 size)
@@ -29,9 +30,16 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public void AddObject(Worker go)
         {
-            int ix=  worldObjects.Add(go);
-            go.pointer = new ObjectPointer(){ hasValue = true, objIndex =ix};
-            tileGrid.GetRef(go.currentPos.tilePos).gameobject = go.pointer;
+            int ix=  creatureList.Add(go);
+            go.pointer = new ObjectPointer(){ listType = ObjectListType.Creature, hasValue = true, objIndex =ix};
+            tileGrid.GetRef(go.currentPos.tilePos).pCreature = go.pointer;
+        }
+
+        public void AddObject(Belt go)
+        {
+            int ix = staticObjectList.Add(go);
+            go.pointer = new ObjectPointer() { listType = ObjectListType.Static, hasValue = true, objIndex = ix };
+            tileGrid.GetRef(go.currentPos.tilePos).pMachine = go.pointer;
         }
 
         public Tile GetTile(IntVector2 pos)
@@ -48,30 +56,17 @@ namespace VikingEngine.Core.BlackBolts.Map
     class Tile
     {
         public TileType tileType = TileType.Floor;
-        public ObjectPointer gameobject = ObjectPointer.Empty;
+        public ObjectPointer pCreature = ObjectPointer.Empty;
+        public ObjectPointer pMachine = ObjectPointer.Empty;
         public List<ObjectPointer> nextPosList = new List<ObjectPointer>(4);
 
         public bool IsEmpty()
         { 
-            return gameobject.hasValue == false;
+            return pCreature.hasValue == false && pMachine.hasValue == false;
         }
     }
 
-    struct ObjectPointer
-    {
-        public static readonly ObjectPointer Empty = new ObjectPointer();
-        public bool hasValue;
-        public int objIndex;
-
-        public Worker Get()
-        {
-            if (hasValue)
-            {
-                return BlackRef.mapData.worldObjects.GetIndex_Safe(objIndex);
-            }
-            return null;
-        }
-    }
+    
 
     enum TileType
     {

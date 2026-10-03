@@ -21,7 +21,8 @@ namespace VikingEngine.Core.BlackBolts.Render
 
         public void load()
         {
-            loadVoxelModel(VoxelModelName.war_worker, false);
+            loadVoxelModel(VoxelModelName.goblin_worker, false);
+            loadVoxelModel(VoxelModelName.bb_belt, false);
 
             void loadVoxelModel(VoxelModelName modelName, bool centerY)
             {

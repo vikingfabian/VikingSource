@@ -3235,6 +3235,14 @@ namespace VikingEngine
 
         #endregion
 
+        #region BLACK
+        bb_floor1,
+        bb_floor2,
+        bb_floor3,
+        bb_floor4,
+
+        #endregion
+
         NUM
     }
 

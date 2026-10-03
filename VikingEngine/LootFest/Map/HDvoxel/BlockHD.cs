@@ -39,19 +39,19 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
         //const int ColorStepCount = (byte.MaxValue - StartColor) / ColorStep;
 
-        public Color color;
+        public Color flatcolor;
         public MaterialProperty material;
         public static ushort JointUp, JointForward, JointBack;
 
         public BlockHD(Color color, MaterialProperty material)
         {
-            this.color = color;
+            this.flatcolor = color;
             this.material = material;
         }
 
         public BlockHD(Color color)
         {
-            this.color = color;
+            this.flatcolor = color;
             this.material = MaterialProperty.Default;
         }
 
@@ -72,7 +72,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
         public void SetColor(Color col)
         {
-            this.color = col;
+            this.flatcolor = col;
             if (material == MaterialProperty.BlockPattern)
             {
                 material = MaterialProperty.Default;
@@ -83,18 +83,18 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             switch (dim)
             {
-                case Dimensions.X: color.R = value; break;
-                case Dimensions.Y: color.G = value; break;
-                case Dimensions.Z: color.B = value; break;
+                case Dimensions.X: flatcolor.R = value; break;
+                case Dimensions.Y: flatcolor.G = value; break;
+                case Dimensions.Z: flatcolor.B = value; break;
             }
         }
         public byte GetColor(Dimensions dim)
         {
             switch (dim)
             {
-                case Dimensions.X: return color.R;
-                case Dimensions.Y: return color.G;
-                case Dimensions.Z: return color.B;
+                case Dimensions.X: return flatcolor.R;
+                case Dimensions.Y: return flatcolor.G;
+                case Dimensions.Z: return flatcolor.B;
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -103,11 +103,11 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             get
             {
-                return BlockHD.ToBlockValue(color, (int)material);
+                return BlockHD.ToBlockValue(flatcolor, (int)material);
             }
             set
             {
-                color = BlockHD.ToColor(value);
+                flatcolor = BlockHD.ToColor(value);
                 material = BlockHD.ToMaterial(value);
             }
         }
@@ -119,11 +119,11 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         {
             if (material == MaterialProperty.BlockPattern)
             {
-                return "Pattern-" + ((BlockPatternMaterial)color.R).ToString();
+                return "Pattern-" + ((BlockPatternMaterial)flatcolor.R).ToString();
             }
             else
             {
-                return material.ToString() + "-R" + color.R.ToString() + " G" + color.G.ToString() + " B" + color.B.ToString();
+                return material.ToString() + "-R" + flatcolor.R.ToString() + " G" + flatcolor.G.ToString() + " B" + flatcolor.B.ToString();
             }
         }
    
@@ -187,7 +187,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
         public void tintSteps(int addR, int addG, int addB)
         {
-            color = FilterColor(ColorExt.ChangeColor(color, addR * ColorStep, addG * ColorStep, addB * ColorStep));
+            flatcolor = FilterColor(ColorExt.ChangeColor(flatcolor, addR * ColorStep, addG * ColorStep, addB * ColorStep));
         }
 
         public static MaterialProperty ToMaterial(ushort blockValue)

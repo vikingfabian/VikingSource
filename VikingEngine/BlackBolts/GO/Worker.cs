@@ -7,22 +7,24 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts.GO
 {
-    class Worker
+    class Worker: AbsGameObject
     {
         //public IntVector2 tilePos;
-        public MapPlacement currentPos;
+        
         public MapPlacement nextPos;
 
+        public bool hasBeltMove = false;
+        public MapPlacement beltPos;
+
         MapPlacement spawnPos;
-        VoxelModelInstance model;
-        public ObjectPointer pointer;
+        
 
         public Worker(MapPlacement placement) 
         {
             this.currentPos = placement;
-            model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.war_worker], true);
-            model.Color = Color.Green;
-            model.scale = new Vector3(1.7f * model.SizeToScale);
+            model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.goblin_worker], true);
+            //model.Color = Color.Green;
+            model.scale = new Vector3(1.15f * model.SizeToScale);
 
             refreshPos();
         }
@@ -52,7 +54,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         public void FinalizeMove()
         {
             currentPos = nextPos;
-            BlackRef.mapData.tileGrid.Get(currentPos.tilePos).gameobject = pointer;
+            BlackRef.mapData.tileGrid.Get(currentPos.tilePos).pCreature = pointer;
             refreshPos();
         }
 

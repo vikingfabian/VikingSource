@@ -265,10 +265,14 @@ namespace VikingEngine.Voxels
 
             string folder;
 
-            if (name > VoxelModelName.CATEGORY_WARS_1)
+            if (name > VoxelModelName.CATEGORY_BLACK_2)
+            {
+                folder = LfLib.ModelsCategoryBlack;
+            }
+            else if (name > VoxelModelName.CATEGORY_WARS_1)
             {
                 folder = LfLib.ModelsCategoryWars;
-            }
+            } 
             //else if (name > VoxelModelName.CATEGORY_OTHER_5)
             //{
             //    folder = LfLib.ModelsCategoryOther;

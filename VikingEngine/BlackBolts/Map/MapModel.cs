@@ -35,7 +35,7 @@ namespace VikingEngine.Core.BlackBolts.Map
                 for (pos.X = 0; pos.X < BlackRef.mapData.Size.X; ++pos.X)
                 {
                     polygons.Add(PolygonColor.QuadXZ(pos.Vec, Vector2.One, true, 0f, 
-                        SpriteName.WhiteArea_LFtiles, Dir4.N, lib.IsEven(pos.X + pos.Y)? Color.Gray : Color.DarkGray));
+                        (SpriteName)((int)SpriteName.bb_floor1 + Ref.rnd.Int(4)), Dir4.N, lib.IsEven(pos.X + pos.Y)? Color.White : Color.LightGray));
                 }
             }
 

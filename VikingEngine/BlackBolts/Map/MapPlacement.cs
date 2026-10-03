@@ -9,6 +9,12 @@ namespace VikingEngine.Core.BlackBolts.Map
         public IntVector2 tilePos;
         public Dir4 direction;
 
+        public MapPlacement(IntVector2 tilePos, Dir4 direction)
+        {
+            this.tilePos = tilePos;
+            this.direction = direction;
+        }
+
         public MapPlacement ForwardPos()
         {
            return new MapPlacement( ) { tilePos = tilePos +  IntVector2.FromDir4(direction), direction = direction };

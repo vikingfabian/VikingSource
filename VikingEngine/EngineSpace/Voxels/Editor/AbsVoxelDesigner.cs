@@ -436,7 +436,7 @@ namespace VikingEngine.Voxels
             UpdateInput();
 
             selectionModel.update();
-            designerInterface.Update(HasSelection, drawTools, inputMap.toggleCameraMode.IsDown, SelectedMaterial.color);
+            designerInterface.Update(HasSelection, drawTools, inputMap.toggleCameraMode.IsDown, SelectedMaterial.flatcolor);
             //designerInterface.inputDisplay.update(HasSelection, undolist.Count, drawCoordMaterial.HasMaterial(), inputMap);
 
             Ref.draw.Camera.Time_Update(time);

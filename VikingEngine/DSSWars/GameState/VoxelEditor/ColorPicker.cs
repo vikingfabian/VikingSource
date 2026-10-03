@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             Input.Mouse.SetMenuMode(true);//.View();//Input.Mouse.Visible = true;
             pickSurface = new Graphics.PixelImage(Engine.Screen.CenterScreen, new Vector2(Engine.Screen.Height * 0.24f), ImageLayers.Foreground7, false, new IntVector2(Width), true);
             pickSurface.Position -= pickSurface.Size * 0.5f;
-            hls = lib.RGB2HSL(current.color);
+            hls = lib.RGB2HSL(current.flatcolor);
             pickArea = pickSurface.Area;
 
             pickSlider = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, new Vector2(3), ImageLayers.AbsoluteBottomLayer, true);
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             refresh();
             HlsToSurfacePos();
 
-            currentColor.Color = current.color;
+            currentColor.Color = current.flatcolor;
             prevColor.Color = currentColor.Color;
 
             VectorRect buttonArea = new VectorRect(VectorExt.AddX(currentColor.RightTop, barW), new Vector2(Engine.Screen.IconSize * 1.2f));

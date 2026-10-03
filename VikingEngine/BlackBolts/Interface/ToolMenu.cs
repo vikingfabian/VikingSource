@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
@@ -14,6 +15,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
     class ToolMenu
     {
         RichMenu menu;
+        public GameObjectType selectedObjectType = GameObjectType.Worker;
 
         public ToolMenu()
         {
@@ -35,9 +37,15 @@ namespace VikingEngine.Core.BlackBolts.Interface
         void iconMenu()
         {
             RichBoxContent content = new RichBoxContent();           
-            content.h1("Hello Jam", HudLib.TitleColor_Head);
+            content.h1("Industry of Chaos", HudLib.TitleColor_Head);
             content.newLine();
-            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
+            //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
+            for (GameObjectType objectType = 0; objectType < GameObjectType.NUM; objectType++)
+            {
+                content.Add(new ArtOption(objectType == selectedObjectType,new List<AbsRichBoxMember> { new RbText(objectType.ToString()) }, 
+                    new RbAction1Arg<GameObjectType>((GameObjectType selected) => { 
+                        selectedObjectType = selected; }, objectType), null));
+            }
             menu.Refresh(content);
         }
         public void update(ref bool mouseOver)

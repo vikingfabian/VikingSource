@@ -56,7 +56,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
             if (bRed)
             {
                 BlockHD red = baseBlock;
-                red.color.R = Bound.Byte(red.color.R + BlockHD.ColorStep);
+                red.flatcolor.R = Bound.Byte(red.flatcolor.R + BlockHD.ColorStep);
                 redTint = red.BlockValue;
             }
             else
@@ -64,13 +64,13 @@ namespace VikingEngine.LootFest.Map.HDvoxel
                 redTint = BlockHD.EmptyBlock;
             }
 
-            bright.color.R = Bound.Byte(bright.color.R + BlockHD.ColorStep);
-            bright.color.G = Bound.Byte(bright.color.G + BlockHD.ColorStep);
-            bright.color.B = Bound.Byte(bright.color.B + BlockHD.ColorStep);
+            bright.flatcolor.R = Bound.Byte(bright.flatcolor.R + BlockHD.ColorStep);
+            bright.flatcolor.G = Bound.Byte(bright.flatcolor.G + BlockHD.ColorStep);
+            bright.flatcolor.B = Bound.Byte(bright.flatcolor.B + BlockHD.ColorStep);
 
-            dark.color.R = Bound.Byte(dark.color.R - BlockHD.ColorStep);
-            dark.color.G = Bound.Byte(dark.color.G - BlockHD.ColorStep);
-            dark.color.B = Bound.Byte(dark.color.B - BlockHD.ColorStep);
+            dark.flatcolor.R = Bound.Byte(dark.flatcolor.R - BlockHD.ColorStep);
+            dark.flatcolor.G = Bound.Byte(dark.flatcolor.G - BlockHD.ColorStep);
+            dark.flatcolor.B = Bound.Byte(dark.flatcolor.B - BlockHD.ColorStep);
 
             baseColor = baseBlock.BlockValue;
             
