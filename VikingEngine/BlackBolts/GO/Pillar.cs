@@ -15,8 +15,9 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             this.currentPos = placementData.mapPlacement;
 
-            model = new VoxelModelInstance(BlackRef.models.voxelModels[ LootFest.VoxelModelName.ErrorCube], true);
-            model.scale = new Vector3(1.3f * model.SizeToScale);
+            model = new VoxelModelInstance(BlackRef.models.voxelModels[ LootFest.VoxelModelName.bb_onetile], true);
+            model.scale = new Vector3(1.5f * model.SizeToScale);
+            model.Frame = 6;
             refreshPos();
         }
 

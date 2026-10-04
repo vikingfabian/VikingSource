@@ -20,6 +20,14 @@ namespace VikingEngine.Core.BlackBolts.Data
                     AbsGameObject result = null;
                     switch (placementData.gameObjectType)
                     {
+                        case GameObjectType.Floor_drop:
+                            {
+                                var obj = new DropToFloor(placementData);
+                                BlackRef.mapData.AddObject(obj);
+                                result = obj;
+                            }
+                            break;
+
                         case GameObjectType.Belt_dispencer:
                             {
                                 var obj = new BeltDispencer(placementData);

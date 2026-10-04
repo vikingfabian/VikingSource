@@ -35,16 +35,11 @@ namespace VikingEngine.Core.BlackBolts.GO
             if (BlackRef.mapData.tileGrid.TryGet(toPos.tilePos, out Tile tile) && tile.canPlaceResource(out Vector3 offset))
             {
                 var resource = BlackRef.mapData.SpawnResource(placementData.resourceType);
-                resource.model.position = WP.TileToWp(toPos.tilePos) + offset;
-                tile.pResource = resource.pointer;
-                toPos.refreshGroundY();
-                resource.currentPos = toPos;
-                resource.nextPos = toPos;
-                resource.onFloor = true;
-
-                resource.checkFloorTransformation();
+                resource.placeResourceOnFloor(toPos.tilePos);
             }
         }
+
+        
 
         public override bool WalkableTile()
         {

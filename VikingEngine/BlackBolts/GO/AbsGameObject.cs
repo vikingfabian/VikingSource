@@ -29,6 +29,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         public AbsGameObject(PlaceObjectData placementData)
         { 
             this.placementData = placementData;
+            currentPos = placementData.mapPlacement;
         }
 
         virtual public void ItemHandle(out bool mayPick, out bool mayDrop)

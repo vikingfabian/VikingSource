@@ -122,6 +122,10 @@ namespace VikingEngine.Core.BlackBolts.Interface
                 new RbAction(Ref.update.Exit), null)
             { fillWidth = true });
 
+
+            content.newParagraph();
+            content.text(string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion), Color.DarkGray);
+
             menu.Refresh(content);
         }
 

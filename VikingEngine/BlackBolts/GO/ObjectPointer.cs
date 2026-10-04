@@ -44,7 +44,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         Belt,
         Spin_plate,
         Table,
-        Floor_pick,
+        //Floor_pick,
         Dispencer,
         Delivery_point,
 

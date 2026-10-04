@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,20 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             model.position = WP.TileToWp(currentPos.tilePos);
         }
+        public void placeResourceOnFloor(IntVector2 toPos)
+        {
+            BlackRef.mapData.tileGrid.Get(toPos).pResource = pointer;
+            currentPos.tilePos = toPos;
+            currentPos.refreshGroundY();
 
+            model.position = WP.TileToWp(toPos);
+            model.position.Y = currentPos.groundY;
+
+            nextPos = currentPos;
+            onFloor = true;
+
+            checkFloorTransformation();
+        }
         public void checkFloorTransformation()
         {
             if (onFloor)

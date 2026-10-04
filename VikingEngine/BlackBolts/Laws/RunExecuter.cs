@@ -335,17 +335,20 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
                 if (creature.pResource.hasValue && mayDrop)
                 {
-                    ObjectPointer res = creature.pResource;
+                    ObjectPointer pres = creature.pResource;
                     creature.pResource = ObjectPointer.Empty;
+                    var res = pres.GetSolidResource();
+                    res.currentPos.direction = creature.nextPos.direction;
+                    res.nextPos = res.currentPos;
 
-                    var returnItem = machine.HandoverItem(res);
+                    var returnItem = machine.HandoverItem(pres);
                     if (returnItem.hasValue)
                     {
                         creature.HandoverItem(returnItem);
                     }
                 }
                 else if (mayPick && machine.pResource.hasValue && !creature.pResource.hasValue)
-                {
+                {                    
                     creature.HandoverItem(machine.pResource);
                     machine.pResource = ObjectPointer.Empty;
                 }

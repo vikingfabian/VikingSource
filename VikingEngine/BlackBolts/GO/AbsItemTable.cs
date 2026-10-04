@@ -62,7 +62,7 @@ namespace VikingEngine.Core.BlackBolts.GO
            : base(placementData, LootFest.VoxelModelName.bb_onetile, 1)
         { 
             //this.resourceType = placementData.resourceType;
-            this.placementData = placementData;
+            //this.placementData = placementData;
             generateResource();
         }
         public override void OnCykleEnd()
