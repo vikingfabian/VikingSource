@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Map;
+using VikingEngine.Core.BlackBolts.Render;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts.GO
@@ -13,6 +14,8 @@ namespace VikingEngine.Core.BlackBolts.GO
         public PlaceObjectData placementData;
 
         public MapPlacement currentPos;
+        public MapPlacement nextPos;
+        public bool hasBeltMove = false;
         public VoxelModelInstance model;
         public ObjectPointer pointer;
 
@@ -56,6 +59,24 @@ namespace VikingEngine.Core.BlackBolts.GO
             {
                 var resource = pResource.GetSolidResource();
                 resource.model.position = model.position + ResourceOffset();
+            }
+        }
+        virtual public void TweenUpdate(bool beltMove, float tween)
+        {
+            if (!beltMove || hasBeltMove)
+            {
+                {
+                    float from = WP.DirToAngle(currentPos.direction);
+                    float to = WP.DirToAngle(nextPos.direction);
+                    WP.Rotation1DToQuaterion(model, from * (1 - tween) + to * tween);
+                }
+                {
+                    Vector3 from = WP.TileToWp(currentPos.tilePos);
+                    from.Y = currentPos.groundY;
+                    Vector3 to = WP.TileToWp(nextPos.tilePos);
+                    to.Y = nextPos.groundY;
+                    model.position = from * (1 - tween) + to * tween;
+                }
             }
         }
 

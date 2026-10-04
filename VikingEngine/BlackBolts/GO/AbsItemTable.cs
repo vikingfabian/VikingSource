@@ -29,14 +29,6 @@ namespace VikingEngine.Core.BlackBolts.GO
         override public void AnimateUpdate()
         {
         }
-        //public override void RefreshResourcePos()
-        //{
-        //    if (pResource.hasValue)
-        //    {
-        //        var resource = pResource.GetSolidResource();
-        //        resource.model.position = model.position + ResourceOffset();
-        //    }
-        //}
         public override bool WalkableTile()
         {
             return false;
@@ -55,7 +47,7 @@ namespace VikingEngine.Core.BlackBolts.GO
             mayPick = true;
         }
 
-        static readonly Vector3 ResourcePos = new Vector3(0, 0.25f, 0);
+        static readonly Vector3 ResourcePos = new Vector3(0, 0.3f, 0);
         public override Vector3 ResourceOffset()
         {
             return ResourcePos;

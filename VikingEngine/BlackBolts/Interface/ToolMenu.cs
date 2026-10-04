@@ -63,7 +63,8 @@ namespace VikingEngine.Core.BlackBolts.Interface
                         }, objectType), null));
                 }
 
-                if (player.toolShop.placementData.gameObjectType == GameObjectType.Dispencer)
+                if (player.toolShop.placementData.gameObjectType == GameObjectType.Dispencer ||
+                    player.toolShop.placementData.gameObjectType == GameObjectType.Belt_dispencer)
                 {
                     content.newParagraph();
                     HudLib.Label(content, "Resource");

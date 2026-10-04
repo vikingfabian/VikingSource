@@ -11,12 +11,9 @@ namespace VikingEngine.Core.BlackBolts.GO
 {
     class Worker: AbsGameObject
     {
-        public MapPlacement nextPos;
-
-        public bool hasBeltMove = false;
         public MapPlacement beltPos;
 
-        MapPlacement spawnPos;
+        //MapPlacement spawnPos;
         
         Animation animation;
 
@@ -54,30 +51,16 @@ namespace VikingEngine.Core.BlackBolts.GO
             }
         }
 
-        public void TweenUpdate(bool beltMove, float tween)
+        public override void TweenUpdate(bool beltMove, float tween)
         {
-            //if (NoMovement())
-            if (!beltMove || hasBeltMove)
+            base.TweenUpdate(beltMove, tween);
+
+            if (!beltMove)
             {
-                {
-                    float from = WP.DirToAngle(currentPos.direction);
-                    float to = WP.DirToAngle(nextPos.direction);
-                    WP.Rotation1DToQuaterion(model, from * (1 - tween) + to * tween);
-                }
-                //else
-                {
-                    Vector3 from = WP.TileToWp(currentPos.tilePos);
-                    Vector3 to = WP.TileToWp(nextPos.tilePos);
-                    model.position = from * (1 - tween) + to * tween;
-                }
-
-                if (!beltMove)
-                {
-                    animation.update(Ref.DeltaGameTimeMs, model, out _);
-                }
-
-                RefreshResourcePos();
+                animation.update(Ref.DeltaGameTimeMs, model, out _);
             }
+
+            RefreshResourcePos();
         }
 
         public void FinalizeMove()

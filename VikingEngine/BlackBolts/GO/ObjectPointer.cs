@@ -43,10 +43,13 @@ namespace VikingEngine.Core.BlackBolts.GO
         Worker,
         Belt,
         Spin_plate,
-
         Table,
+        Floor_pick,
         Dispencer,
         Delivery_point,
+
+        Floor_drop,
+        Belt_dispencer,
 
         Stone_pillar,
         NUM_NONE

@@ -35,6 +35,12 @@ namespace VikingEngine.Core.BlackBolts.GO
             animation.update(Ref.DeltaGameTimeMs, model, out _);
         }
 
+        static readonly Vector3 ResourcePos = new Vector3(0, 0.22f, 0);
+        public override Vector3 ResourceOffset()
+        {
+            return ResourcePos;
+        }
+
         public override GameObjectType GameObjectType => GameObjectType.Belt;
     }
 }

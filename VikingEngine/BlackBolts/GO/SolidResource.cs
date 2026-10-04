@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,8 @@ namespace VikingEngine.Core.BlackBolts.GO
     class SolidResource : AbsGameObject
     {
         //ResourceType resourceType;
+        public bool onFloor = false;
+
         public SolidResource(PlaceObjectData placementData)
             :base(placementData)
         {
@@ -50,6 +53,25 @@ namespace VikingEngine.Core.BlackBolts.GO
         void refreshPos()
         {
             model.position = WP.TileToWp(currentPos.tilePos);
+        }
+
+        public void checkFloorTransformation()
+        {
+            if (onFloor)
+            {
+                var tile = BlackRef.mapData.tileGrid.Get(currentPos.tilePos);
+                var pM = tile.pMachine;
+                if (pM.hasValue)
+                {
+                    var m = pM.GetMachine();
+                    if (m.GameObjectType == GameObjectType.Table)
+                    {
+                        onFloor = false;
+                        m.pResource = pointer;
+                        tile.pResource.hasValue = false;
+                    }
+                }
+            }
         }
         
         public override GameObjectType GameObjectType => GameObjectType.NUM_NONE;

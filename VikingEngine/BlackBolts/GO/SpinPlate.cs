@@ -44,7 +44,11 @@ namespace VikingEngine.Core.BlackBolts.GO
             angle.Add(rotateDir * AngleSpeed * Ref.DeltaGameTimeMs);
             WP.Rotation1DToQuaterion(model, angle.radians);
         }
-
+        static readonly Vector3 ResourcePos = new Vector3(0, 0.2f, 0);
+        public override Vector3 ResourceOffset()
+        {
+            return ResourcePos;
+        }
         public override GameObjectType GameObjectType => GameObjectType.Spin_plate;
     }
 }

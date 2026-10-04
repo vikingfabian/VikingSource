@@ -6,6 +6,7 @@ namespace VikingEngine.Core.BlackBolts.Map
 {
     struct MapPlacement
     {
+        public float groundY;
         public IntVector2 tilePos;
         public Dir4 direction;
 
@@ -13,6 +14,11 @@ namespace VikingEngine.Core.BlackBolts.Map
         {
             this.tilePos = tilePos;
             this.direction = direction;
+        }
+
+        public void refreshGroundY()
+        {
+            groundY = BlackRef.mapData.GetTile(tilePos).groundY();
         }
 
         public MapPlacement ForwardPos()

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
@@ -86,6 +88,10 @@ namespace VikingEngine.Core.BlackBolts.Map
             {
                 tile.ClearTile();
             }
+
+            creatureList.Clear();
+            machineList.Clear();
+            resourceList.Clear();
         }
 
         public void RestoreMap()
@@ -112,6 +118,35 @@ namespace VikingEngine.Core.BlackBolts.Map
         public bool IsEmpty()
         { 
             return pCreature.hasValue == false && pMachine.hasValue == false;
+        }
+
+        public bool canPlaceResource(out Vector3 offset)
+        {
+            offset = Vector3.Zero;
+            if (tileType == TileType.Floor && (pResource.hasValue == false || pResource.GetSolidResource().hasBeltMove))
+            {
+                if (pMachine.hasValue)
+                {
+                    var machine = pMachine.GetMachine();
+                    offset = machine.ResourceOffset();
+                    return machine.WalkableTile() || (machine.GameObjectType == GO.GameObjectType.Table && !machine.pResource.hasValue);
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public float groundY()
+        {
+            if (pMachine.hasValue)
+            {
+                return pMachine.GetMachine().ResourceOffset().Y;
+            }
+            return 0;
         }
 
         public PlaceObjectData? ClearTile()
