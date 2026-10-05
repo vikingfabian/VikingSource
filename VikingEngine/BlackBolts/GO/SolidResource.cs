@@ -17,20 +17,25 @@ namespace VikingEngine.Core.BlackBolts.GO
 
     class SolidResource : AbsGameObject
     {
-        //ResourceType resourceType;
         public bool onFloor = false;
 
         public SolidResource(PlaceObjectData placementData)
             :base(placementData)
         {
-            //this.resourceType = resourceType;
-            //this.currentPos = placement;
+            ResourceModel(placementData.resourceType, out LootFest.VoxelModelName modelName, out int frame, out float scale);
+            model = new VoxelModelInstance(BlackRef.models.voxelModels[modelName], true);            
 
-            model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.bb_item], true);            
+            model.scale = new Vector3(scale * model.SizeToScale);
+            model.Frame = frame;
+            refreshPos();
+        }
 
-            float scale = 0.95f;
-            int frame = 0;
-            switch (placementData.resourceType)
+        public static void ResourceModel(ResourceType resourceType, out LootFest.VoxelModelName modelName,out int frame,out float scale)
+        {
+            modelName = LootFest.VoxelModelName.bb_item;
+            scale = 0.95f;
+            frame = 0;
+            switch (resourceType)
             {
                 case ResourceType.Box:
                     scale = 0.95f;
@@ -45,10 +50,41 @@ namespace VikingEngine.Core.BlackBolts.GO
                 case ResourceType.Grilled_meat:
                     frame = 1;
                     break;
+                case ResourceType.Dragon_egg:
+                    frame = 5;
+                    break;
+                case ResourceType.Void_egg:
+                    frame = 6;
+                    break;
+                case ResourceType.Magic_crystal:
+                    frame = 7;
+                    break;
+                case ResourceType.Fire_crystal:
+                    frame = 8;
+                    break;
+                case ResourceType.Void_cube:
+                    frame = 9;
+                    break;
+                case ResourceType.Poop:
+                    frame = 10;
+                    break;
+                case ResourceType.Burned_shit:
+                    frame = 11;
+                    break;
+                case ResourceType.Old_shoe:
+                    frame = 12;
+                    break;
+                case ResourceType.Chicken:
+                    modelName = LootFest.VoxelModelName.Hen;
+                    frame = 1;
+                    break;
+                case ResourceType.Chicken_egg:
+                    frame = 13;
+                    break;
+                case ResourceType.Feather:
+                    frame = 14;
+                    break;
             }
-            model.scale = new Vector3(scale * model.SizeToScale);
-            model.Frame = frame;
-            refreshPos();
         }
 
         void refreshPos()

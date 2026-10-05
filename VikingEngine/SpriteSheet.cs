@@ -507,6 +507,25 @@ namespace VikingEngine
 
                 add(SpriteName.WarsHudFilterButtonSelected);
                 add(SpriteName.WarsHudFilterButton);
+
+                addFullQtile(SpriteName.bb_stain_blood, SpriteName.bb_stain_void, SpriteName.bb_stain_acid, SpriteName.bb_stain_lava, currentIndex);
+                addFullQtile(SpriteName.bb_stain_frost, SpriteName.bb_stain_shit, SpriteName.bb_reservedQ2, SpriteName.bb_reservedQ3, currentIndex);
+                add(SpriteName.bb_voidWarp);
+
+                add(SpriteName.bb_resicon_burnedshit);
+                add(SpriteName.bb_resicon_flesh);
+                add(SpriteName.bb_resicon_grilledmeat);
+                add(SpriteName.bb_resicon_bone);
+                add(SpriteName.bb_resicon_box);
+                add(SpriteName.bb_resicon_voidegg);
+                add(SpriteName.bb_resicon_dragonegg);
+                add(SpriteName.bb_resicon_firecrystal);
+                add(SpriteName.bb_resicon_voidcube);
+                add(SpriteName.bb_resicon_poop);
+                add(SpriteName.bb_resicon_magiccrystal);
+                add(SpriteName.bb_resicon_feather);
+                add(SpriteName.bb_resicon_chickenegg);
+                add(SpriteName.bb_resicon_oldshoe);
             }
 
             //BIRD TILES
@@ -3100,10 +3119,11 @@ namespace VikingEngine
 
                 currentIndex += 2;
                 addFullQtile(SpriteName.bb_floor1, SpriteName.bb_floor2, SpriteName.bb_floor3, SpriteName.bb_floor4, currentIndex);
+                addFullQtile(SpriteName.bb_spawnwarning_texture, SpriteName.bb_noBuildZone1, SpriteName.bb_reservedQ1, SpriteName.bb_noBuildZone2, currentIndex);
 
                 //addWithSizeDef(SpriteName.hqRegularDoorEdge, currentIndex, 32, 8);
             }
-                       
+
 
             currentIndex = numTilesWidth * 126;
             {

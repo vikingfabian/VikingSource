@@ -526,5 +526,7 @@ namespace VikingEngine
 
             return totalSum - remainingSum;
         }
+
+
     }
 }

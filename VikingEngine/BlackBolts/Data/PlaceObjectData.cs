@@ -11,5 +11,6 @@ namespace VikingEngine.Core.BlackBolts.Data
         public MapPlacement mapPlacement;
         public GameObjectType gameObjectType;
         public ResourceType resourceType;
+        public MachineId machineId;
     }
 }

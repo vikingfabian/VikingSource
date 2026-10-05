@@ -27,6 +27,7 @@ namespace VikingEngine.Core.BlackBolts.Render
             loadVoxelModel(VoxelModelName.bb_rotate, false);
             loadVoxelModel(VoxelModelName.bb_onetile, false);
             loadVoxelModel(VoxelModelName.bb_item, false);
+            loadVoxelModel(VoxelModelName.Hen, false);
 
             void loadVoxelModel(VoxelModelName modelName, bool centerY)
             {

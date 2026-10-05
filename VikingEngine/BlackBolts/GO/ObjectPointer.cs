@@ -52,6 +52,8 @@ namespace VikingEngine.Core.BlackBolts.GO
         Belt_dispencer,
 
         Stone_pillar,
+
+        IOunit,
         NUM_NONE
     }
 
@@ -69,6 +71,21 @@ namespace VikingEngine.Core.BlackBolts.GO
         Flesh,
         Bone,
         Grilled_meat,
-        NUM
+        Dragon_egg,
+        Void_egg,
+        Magic_crystal,
+        Fire_crystal,
+        Void_cube,
+        Poop,
+        Burned_shit,
+        Old_shoe,
+        Feather,
+        Chicken_egg,
+        Chicken,
+        
+        NUM,
+
+        Any,
+        Heat,
     }
 }

@@ -3241,7 +3241,35 @@ namespace VikingEngine
         bb_floor3,
         bb_floor4,
 
+        bb_spawnwarning_texture,
+        bb_noBuildZone1,
+        bb_noBuildZone2,
+        bb_reservedQ1,
+
+        bb_stain_blood,
+        bb_stain_void,
+        bb_stain_acid,
+        bb_stain_lava,
+        bb_stain_frost,
+        bb_stain_shit,
+        bb_reservedQ2,
+        bb_reservedQ3,
+        bb_voidWarp,
         #endregion
+        bb_resicon_burnedshit,
+        bb_resicon_flesh,
+        bb_resicon_grilledmeat,
+        bb_resicon_bone,
+        bb_resicon_box,
+        bb_resicon_voidegg,
+        bb_resicon_dragonegg,
+        bb_resicon_firecrystal,
+        bb_resicon_voidcube,
+        bb_resicon_poop,
+        bb_resicon_magiccrystal,
+        bb_resicon_feather,
+        bb_resicon_chickenegg,
+        bb_resicon_oldshoe,
 
         NUM
     }

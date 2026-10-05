@@ -20,6 +20,15 @@ namespace VikingEngine.Core.BlackBolts.Data
                     AbsGameObject result = null;
                     switch (placementData.gameObjectType)
                     {
+
+                        case GameObjectType.IOunit:
+                            {
+                                var obj = new IO_unit(placementData);
+                                BlackRef.mapData.AddObject(obj);
+                                result = obj;
+                            }
+                            break;
+
                         case GameObjectType.Floor_drop:
                             {
                                 var obj = new DropToFloor(placementData);

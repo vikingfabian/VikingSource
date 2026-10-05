@@ -19,6 +19,8 @@ namespace VikingEngine.Core.BlackBolts.GO
         public VoxelModelInstance model;
         public ObjectPointer pointer;
 
+        public IntVector2 tilesize = IntVector2.One;
+
         public bool lockItem = false;
         public ObjectPointer pResource = ObjectPointer.Empty;
 

@@ -182,7 +182,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                                         var toPos = mashinesC.sel.currentPos.ForwardPos();
                                         if (BlackRef.mapData.tileGrid.TryGet(toPos.tilePos, out Tile totile) &&
                                             totile.nextPosList.Count == 0 &&
-                                            totile.canPlaceResource(out var offset))
+                                            totile.canPlaceResource())
                                         {
 
                                             resource.hasBeltMove = true;

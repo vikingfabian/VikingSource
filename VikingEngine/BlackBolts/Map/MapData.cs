@@ -120,15 +120,15 @@ namespace VikingEngine.Core.BlackBolts.Map
             return pCreature.hasValue == false && pMachine.hasValue == false;
         }
 
-        public bool canPlaceResource(out Vector3 offset)
+        public bool canPlaceResource(/*out Vector3 offset*/)
         {
-            offset = Vector3.Zero;
+            //offset = Vector3.Zero;
             if (tileType == TileType.Floor && (pResource.hasValue == false || pResource.GetSolidResource().hasBeltMove))
             {
                 if (pMachine.hasValue)
                 {
                     var machine = pMachine.GetMachine();
-                    offset = machine.ResourceOffset();
+                    //offset = machine.ResourceOffset();
                     return machine.WalkableTile() || (machine.GameObjectType == GO.GameObjectType.Table && !machine.pResource.hasValue);
                 }
                 else

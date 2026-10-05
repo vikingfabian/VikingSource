@@ -35,7 +35,7 @@ namespace VikingEngine.Core.BlackBolts.GO
             if (pResource.hasValue)
             {
                 var toPos = currentPos.ForwardPos();
-                if (BlackRef.mapData.tileGrid.TryGet(toPos.tilePos, out Tile tile) && tile.canPlaceResource(out Vector3 offset))
+                if (BlackRef.mapData.tileGrid.TryGet(toPos.tilePos, out Tile tile) && tile.canPlaceResource())
                 {
                     SolidResource resource = pResource.GetSolidResource();
                     resource.placeResourceOnFloor(toPos.tilePos);

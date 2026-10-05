@@ -1,4 +1,4 @@
-﻿#define DAMP_COLORS
+﻿//#define DAMP_COLORS
 
 using System;
 using System.Collections.Generic;

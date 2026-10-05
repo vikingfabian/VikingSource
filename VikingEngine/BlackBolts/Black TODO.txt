@@ -1,0 +1,13 @@
+﻿
+White knight spawner
+Kill 10 mission
+Speed up
+Blood fluid (foot stomping)
+Item drop spread
+Sword and shield item
+Goblin knight
+No build zone
+Limited shop
+position string
+
+star for: dragon kill, demon kill, goblin kill

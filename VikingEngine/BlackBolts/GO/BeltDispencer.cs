@@ -1,8 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
+﻿
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Graphics;
 
@@ -32,10 +31,14 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             base.OnCykleEnd();
             var toPos = currentPos.ForwardPos();
-            if (BlackRef.mapData.tileGrid.TryGet(toPos.tilePos, out Tile tile) && tile.canPlaceResource(out Vector3 offset))
+            //if (BlackRef.mapData.tileGrid.TryGet(toPos.tilePos, out Tile tile) && tile.canPlaceResource())
+            //{
+            //    var resource = BlackRef.mapData.SpawnResource(placementData.resourceType);
+            //    resource.placeResourceOnFloor(toPos.tilePos);
+            //}
+            if (ResourceManager.CanDispenceResource(toPos.tilePos))
             {
-                var resource = BlackRef.mapData.SpawnResource(placementData.resourceType);
-                resource.placeResourceOnFloor(toPos.tilePos);
+                ResourceManager.DispenceResource(toPos.tilePos, placementData.resourceType);
             }
         }
 
