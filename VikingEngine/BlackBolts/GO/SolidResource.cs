@@ -66,13 +66,13 @@ namespace VikingEngine.Core.BlackBolts.GO
                     frame = 9;
                     break;
                 case ResourceType.Poop:
-                    frame = 10;
+                    frame = 9;
                     break;
                 case ResourceType.Burned_shit:
-                    frame = 11;
+                    frame = 10;
                     break;
                 case ResourceType.Old_shoe:
-                    frame = 12;
+                    frame = 11;
                     break;
                 case ResourceType.Chicken:
                     modelName = LootFest.VoxelModelName.Hen;
@@ -114,7 +114,7 @@ namespace VikingEngine.Core.BlackBolts.GO
                 if (pM.hasValue)
                 {
                     var m = pM.GetMachine();
-                    if (m.GameObjectType == GameObjectType.Table)
+                    if (m.GameObjectType == FactoryObjectType.Table)
                     {
                         onFloor = false;
                         m.pResource = pointer;
@@ -124,6 +124,6 @@ namespace VikingEngine.Core.BlackBolts.GO
             }
         }
         
-        public override GameObjectType GameObjectType => GameObjectType.NUM_NONE;
+        public override FactoryObjectType GameObjectType => FactoryObjectType.NUM_NONE;
     }
 }

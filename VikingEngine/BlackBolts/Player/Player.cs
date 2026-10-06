@@ -88,6 +88,8 @@ namespace VikingEngine.Core.BlackBolts.Player
             {
                 BlackRef.mapData.ClearMap();
                 BlackRef.mapData.RestoreMap();
+
+                BlackRef.playScene.mapmodel.decalsNeedsUpdate = true;
             }
             else
             {

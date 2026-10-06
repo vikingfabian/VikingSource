@@ -48,6 +48,6 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             return false;
         }
-        public override GameObjectType GameObjectType =>  GameObjectType.Belt_dispencer;
+        public override FactoryObjectType GameObjectType =>  FactoryObjectType.Belt_dispencer;
     }
 }

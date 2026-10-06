@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,7 +40,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         public ItemTable(PlaceObjectData placementData)
             : base(placementData, LootFest.VoxelModelName.bb_onetile, 0)
         { }
-        public override GameObjectType GameObjectType => GameObjectType.Table;
+        public override FactoryObjectType GameObjectType => FactoryObjectType.Table;
 
         public override void ItemHandle(out bool mayPick, out bool mayDrop)
         {
@@ -91,7 +92,7 @@ namespace VikingEngine.Core.BlackBolts.GO
             mayDrop = false;
             mayPick = true;
         }
-        public override GameObjectType GameObjectType => GameObjectType.Dispencer;
+        public override FactoryObjectType GameObjectType => FactoryObjectType.Dispencer;
     }
 
     class DeliveryPoint: AbsItemTable
@@ -125,6 +126,41 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             return ResourcePos;
         }
-        public override GameObjectType GameObjectType => GameObjectType.Delivery_point;
+        public override FactoryObjectType GameObjectType => FactoryObjectType.Delivery_point;
+    }
+
+    class GarbageDisposal: AbsItemTable
+    { 
+        public GarbageDisposal(PlaceObjectData placementData)
+           : base(placementData, LootFest.VoxelModelName.bb_onetile, 8)
+        {
+            WP.DirToQuaterion(model, Dir4.S);
+        }
+
+        public override void ItemHandle(out bool mayPick, out bool mayDrop)
+        {
+            mayDrop = true;
+            mayPick = false;
+        }
+        public override void OnCykleEnd()
+        {
+            if (pResource.hasValue)
+            {
+                var resource = pResource.GetSolidResource();
+                Engine.ParticleHandler.AddExpandingParticleArea(ParticleSystemType.Dust,
+                    VectorExt.AddY(resource.model.position, 0.5f), 0.2f, 40, 0.5f);
+                resource.DeleteMe();
+                BlackRef.mapData.resourceList.RemoveAt(pResource.objIndex);
+                pResource = ObjectPointer.Empty;
+            }
+        }
+
+        static readonly Vector3 ResourcePos = new Vector3(0, 0.13f, 0);
+        public override Vector3 ResourceOffset()
+        {
+            return ResourcePos;
+        }
+        public override FactoryObjectType GameObjectType => FactoryObjectType.Garbage_disposal;
     }
 }
+

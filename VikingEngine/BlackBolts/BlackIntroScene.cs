@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Render;
 
 namespace VikingEngine.Core.BlackBolts
@@ -11,6 +12,8 @@ namespace VikingEngine.Core.BlackBolts
             :base(true)
         {
             new Models();
+            FactoryObjectLib.init();
+            ResourceLib.Init();
         }
         public override void Time_Update(float time)
         {

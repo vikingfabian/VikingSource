@@ -23,8 +23,9 @@ namespace VikingEngine.Core.BlackBolts.GO
 
         public bool lockItem = false;
         public ObjectPointer pResource = ObjectPointer.Empty;
+        
 
-        abstract public GameObjectType GameObjectType { get; }
+        abstract public FactoryObjectType GameObjectType { get; }
 
         virtual public Vector3 ResourceOffset() { return Vector3.Zero; }
 
@@ -50,10 +51,14 @@ namespace VikingEngine.Core.BlackBolts.GO
                 OnResourceChanged();
                 return returnItem;
             }
-            return ObjectPointer.Empty;
+            else
+            {
+                OnResourceChanged();
+                return ObjectPointer.Empty;
+            }
         }
 
-        virtual protected void OnResourceChanged()
+        virtual public void OnResourceChanged()
         { }
 
         virtual public void RefreshResourcePos()

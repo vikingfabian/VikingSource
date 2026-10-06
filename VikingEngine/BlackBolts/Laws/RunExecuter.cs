@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Resources;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.Core.BlackBolts.Map;
 
@@ -177,7 +178,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         {
                             switch (mashinesC.sel.GameObjectType)
                             {
-                                case GameObjectType.Belt:
+                                case FactoryObjectType.Belt:
                                     {
                                         var toPos = mashinesC.sel.currentPos.ForwardPos();
                                         if (BlackRef.mapData.tileGrid.TryGet(toPos.tilePos, out Tile totile) &&
@@ -209,7 +210,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                     if (pMachine.hasValue)
                     {
                        var mashine =  pMachine.GetMachine();
-                        if (mashine.GameObjectType == GameObjectType.Spin_plate)
+                        if (mashine.GameObjectType == FactoryObjectType.Spin_plate)
                         {
                             resourcesC.sel.nextPos.Rotate(((SpinPlate)mashine).rotateDir);
                             resourcesC.sel.hasBeltMove = true;
@@ -345,6 +346,10 @@ namespace VikingEngine.Core.BlackBolts.Laws
                     if (returnItem.hasValue)
                     {
                         creature.HandoverItem(returnItem);
+                    }
+                    else
+                    {
+                        creature.OnResourceChanged();
                     }
                 }
                 else if (mayPick && machine.pResource.hasValue && !creature.pResource.hasValue)

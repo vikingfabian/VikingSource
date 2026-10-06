@@ -16,7 +16,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             WP.DirToQuaterion(model, placementData.mapPlacement.direction);
         }
-        public override GameObjectType GameObjectType => GameObjectType.Table;
+        public override FactoryObjectType GameObjectType => FactoryObjectType.Table;
 
         public override void ItemHandle(out bool mayPick, out bool mayDrop)
         {

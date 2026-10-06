@@ -12,9 +12,9 @@ namespace VikingEngine.Core.BlackBolts.GO
     class Worker: AbsGameObject
     {
         public MapPlacement beltPos;
-
+        public Fluid stompSmear = Fluid.Empty;
         //MapPlacement spawnPos;
-        
+
         Animation animation;
 
         public Worker(PlaceObjectData placementData) 
@@ -36,7 +36,7 @@ namespace VikingEngine.Core.BlackBolts.GO
 
             RefreshResourcePos();
         }
-        protected override void OnResourceChanged()
+        public override void OnResourceChanged()
         {
             base.OnResourceChanged();
             refreshAnimation();
@@ -65,9 +65,39 @@ namespace VikingEngine.Core.BlackBolts.GO
 
         public void FinalizeMove()
         {
+            bool didMove = currentPos.tilePos != nextPos.tilePos;
             currentPos = nextPos;
-            BlackRef.mapData.tileGrid.Get(currentPos.tilePos).pCreature = pointer;
+            var tile = BlackRef.mapData.tileGrid.Get(currentPos.tilePos);
+            tile.pCreature = pointer;
             refreshPos();
+
+            if (didMove)
+            {
+                //Check stomp
+                if (stompSmear.HasValue)
+                {
+                    tile.fluid = stompSmear;
+                    BlackRef.playScene.mapmodel.decalsNeedsUpdate = true;
+                    stompSmear.amount--;
+                }
+                else if (tile.fluid.HasValue)
+                {
+                    stompSmear = tile.fluid.GetOne();
+                }
+
+                if (tile.pResource.hasValue)
+                {
+                    var resource = tile.pResource.GetSolidResource();
+                    if (ResourceLib.Get(resource.placementData.resourceType).stompEffect)
+                    {
+                        resource.DeleteMe();
+                        tile.pResource.hasValue = false;
+                        tile.fluid = new Fluid(resource.placementData.resourceType);
+                        stompSmear = tile.fluid;
+                        BlackRef.playScene.mapmodel.decalsNeedsUpdate = true;
+                    }
+                }
+            }
         }
 
         public bool NoMovement()
@@ -97,6 +127,6 @@ namespace VikingEngine.Core.BlackBolts.GO
             base.DeleteMe();
             BlackRef.mapData.creatureList.RemoveAt(pointer.objIndex);
         }
-        public override GameObjectType GameObjectType =>  GameObjectType.Worker;
+        public override FactoryObjectType GameObjectType =>  FactoryObjectType.GoblinWorker;
     }
 }

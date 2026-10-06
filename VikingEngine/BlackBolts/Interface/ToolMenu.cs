@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.DSSWars;
 using VikingEngine.Engine;
@@ -53,23 +54,23 @@ namespace VikingEngine.Core.BlackBolts.Interface
                 HudLib.Label(content, "Component");
                 content.newLine();
                 //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
-                for (GameObjectType objectType = 0; objectType < GameObjectType.NUM_NONE; objectType++)
+                for (FactoryObjectType objectType = 0; objectType < FactoryObjectType.NUM_NONE; objectType++)
                 {
-                    content.Add(new ArtOption(objectType == player.toolShop.placementData.gameObjectType, new List<AbsRichBoxMember> { new RbText(objectType.ToString()) },
-                        new RbAction1Arg<GameObjectType>((GameObjectType selected) =>
+                    content.Add(new ArtOption(objectType == player.toolShop.placementData.factoryObjectType, new List<AbsRichBoxMember> { new RbText(objectType.ToString()) },
+                        new RbAction1Arg<FactoryObjectType>((FactoryObjectType selected) =>
                         {
                             player.toolShop.selectTool(selected);
                             player.OnToolRefresh();
                         }, objectType), null));
                 }
 
-                if (player.toolShop.placementData.gameObjectType == GameObjectType.Dispencer ||
-                    player.toolShop.placementData.gameObjectType == GameObjectType.Belt_dispencer)
+                if (player.toolShop.placementData.factoryObjectType == FactoryObjectType.Dispencer ||
+                    player.toolShop.placementData.factoryObjectType == FactoryObjectType.Belt_dispencer)
                 {
                     content.newParagraph();
                     HudLib.Label(content, "Resource");
                     content.newLine();
-                    for (ResourceType resource = 0; resource < ResourceType.NUM; resource++)
+                    for (ResourceType resource = 0; resource < ResourceType.NUM_NONE; resource++)
                     {
                         content.Add(new ArtOption(resource == player.toolShop.placementData.resourceType, new List<AbsRichBoxMember> { new RbText(resource.ToString()) },
                             new RbAction1Arg<ResourceType>((ResourceType selected) =>

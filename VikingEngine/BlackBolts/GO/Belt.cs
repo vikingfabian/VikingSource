@@ -41,6 +41,6 @@ namespace VikingEngine.Core.BlackBolts.GO
             return ResourcePos;
         }
 
-        public override GameObjectType GameObjectType => GameObjectType.Belt;
+        public override FactoryObjectType GameObjectType => FactoryObjectType.Belt;
     }
 }

@@ -9,7 +9,8 @@ namespace VikingEngine.Core.BlackBolts.Data
     struct PlaceObjectData
     {
         public MapPlacement mapPlacement;
-        public GameObjectType gameObjectType;
+        public FactoryObjectType factoryObjectType;
+        public bool includeItem;
         public ResourceType resourceType;
         public MachineId machineId;
     }

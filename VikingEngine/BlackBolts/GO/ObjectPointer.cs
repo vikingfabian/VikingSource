@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Data;
 
 namespace VikingEngine.Core.BlackBolts.GO
 {
@@ -38,54 +39,4 @@ namespace VikingEngine.Core.BlackBolts.GO
         }
     }
 
-    enum GameObjectType
-    {
-        Worker,
-        Belt,
-        Spin_plate,
-        Table,
-        //Floor_pick,
-        Dispencer,
-        Delivery_point,
-
-        Floor_drop,
-        Belt_dispencer,
-
-        Stone_pillar,
-
-        IOunit,
-        NUM_NONE
-    }
-
-    enum ObjectListType
-    {
-        Unknown,
-        Creature,
-        Static,
-        SolidResource,
-    }
-
-    enum ResourceType
-    { 
-        Box,
-        Flesh,
-        Bone,
-        Grilled_meat,
-        Dragon_egg,
-        Void_egg,
-        Magic_crystal,
-        Fire_crystal,
-        Void_cube,
-        Poop,
-        Burned_shit,
-        Old_shoe,
-        Feather,
-        Chicken_egg,
-        Chicken,
-        
-        NUM,
-
-        Any,
-        Heat,
-    }
 }

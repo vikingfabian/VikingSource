@@ -44,7 +44,7 @@ namespace VikingEngine.Core.BlackBolts.Map
         public void AddObject(AbsMachine go)
         {
             int ix = machineList.Add(go);
-            go.pointer = new ObjectPointer() { listType = ObjectListType.Static, hasValue = true, objIndex = ix };
+            go.pointer = new ObjectPointer() { listType = ObjectListType.Machine, hasValue = true, objIndex = ix };
             tileGrid.GetRef(go.currentPos.tilePos).pMachine = go.pointer;
         }
 
@@ -92,6 +92,8 @@ namespace VikingEngine.Core.BlackBolts.Map
             creatureList.Clear();
             machineList.Clear();
             resourceList.Clear();
+
+
         }
 
         public void RestoreMap()
@@ -113,6 +115,7 @@ namespace VikingEngine.Core.BlackBolts.Map
         public ObjectPointer pCreature = ObjectPointer.Empty;
         public ObjectPointer pMachine = ObjectPointer.Empty;
         public ObjectPointer pResource = ObjectPointer.Empty;
+        public Fluid fluid = Fluid.Empty;
         public List<ObjectPointer> nextPosList = new List<ObjectPointer>(4);
 
         public bool IsEmpty()
@@ -129,7 +132,7 @@ namespace VikingEngine.Core.BlackBolts.Map
                 {
                     var machine = pMachine.GetMachine();
                     //offset = machine.ResourceOffset();
-                    return machine.WalkableTile() || (machine.GameObjectType == GO.GameObjectType.Table && !machine.pResource.hasValue);
+                    return machine.WalkableTile() || (machine.GameObjectType == FactoryObjectType.Table && !machine.pResource.hasValue);
                 }
                 else
                 {
@@ -173,6 +176,8 @@ namespace VikingEngine.Core.BlackBolts.Map
                 obj.DeleteMe();
                 pResource.hasValue = false;
             }
+
+            fluid.clear();
 
             return result;
         }

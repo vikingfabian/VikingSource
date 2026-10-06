@@ -18,10 +18,10 @@ namespace VikingEngine.Core.BlackBolts.Data
                 if (tile.IsEmpty())
                 {
                     AbsGameObject result = null;
-                    switch (placementData.gameObjectType)
+                    switch (placementData.factoryObjectType)
                     {
 
-                        case GameObjectType.IOunit:
+                        case FactoryObjectType.IOunit:
                             {
                                 var obj = new IO_unit(placementData);
                                 BlackRef.mapData.AddObject(obj);
@@ -29,7 +29,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                             }
                             break;
 
-                        case GameObjectType.Floor_drop:
+                        case FactoryObjectType.Floor_drop:
                             {
                                 var obj = new DropToFloor(placementData);
                                 BlackRef.mapData.AddObject(obj);
@@ -37,7 +37,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                             }
                             break;
 
-                        case GameObjectType.Belt_dispencer:
+                        case FactoryObjectType.Belt_dispencer:
                             {
                                 var obj = new BeltDispencer(placementData);
                                 BlackRef.mapData.AddObject(obj);
@@ -45,56 +45,68 @@ namespace VikingEngine.Core.BlackBolts.Data
                             }
                             break;
 
-                        case GameObjectType.Stone_pillar:
+                        case FactoryObjectType.Stone_pillar:
                             {
                                 var obj = new Pillar(placementData);
                                 BlackRef.mapData.AddObject(obj);
                                 result = obj;
                             }
                             break;
-                        case GameObjectType.Worker:
+                        case FactoryObjectType.GoblinWorker:
                             {
                                 var obj = new Worker(placementData);
                                 BlackRef.mapData.AddObject(obj);
                                 result = obj;
                             }
                             break;
-                        case GameObjectType.Belt:
+                        case FactoryObjectType.Belt:
                             {
                                 var obj = new Belt(placementData);
                                 BlackRef.mapData.AddObject(obj);
                                 result = obj;
                             }
                             break;
-                        case GameObjectType.Spin_plate:
+                        case FactoryObjectType.Spin_plate:
                             {
                                 var obj = new SpinPlate(placementData);
                                 BlackRef.mapData.AddObject(obj);
                                 result = obj;
                             }
                             break;
-                        case GameObjectType.Table:
+                        case FactoryObjectType.Table:
                             {
                                 var obj = new ItemTable(placementData);
                                 BlackRef.mapData.AddObject(obj);
                                 result = obj;
                             }
                             break;
-                        case GameObjectType.Dispencer:
+                        case FactoryObjectType.Dispencer:
                             {
                                 var obj = new Dispencer(placementData);
                                 BlackRef.mapData.AddObject(obj);
                                 result = obj;
                             }
                             break;
-                        case GameObjectType.Delivery_point:
+                        case FactoryObjectType.Delivery_point:
                             {
                                 var obj = new DeliveryPoint(placementData);
                                 BlackRef.mapData.AddObject(obj);
                                 result = obj;
                             }
                             break;
+                        case FactoryObjectType.Garbage_disposal:
+                            {
+                                var obj = new GarbageDisposal(placementData);
+                                BlackRef.mapData.AddObject(obj);
+                                result = obj;
+                            }
+                            break;
 
+                    }
+
+                    if (result != null && placementData.includeItem)
+                    {
+                        Laws.ResourceManager.TryCreateResource(placementData.mapPlacement.tilePos, placementData.resourceType);
                     }
                     //return true;
                 }
