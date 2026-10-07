@@ -866,7 +866,7 @@ namespace VikingEngine
                         graphicsHasChanged = true;
                         settingsHasChanged = true;
 
-                        new BlackPlayScene();
+                        new BlackPlayScene(BlackRef.playScene.missionSetup);
                     }
 
                     return Screen.PcDisplayMode != WindowDisplayMode.Windowed;

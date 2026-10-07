@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
+using VikingEngine.Core.BlackBolts.Mission;
 
 namespace VikingEngine.Core.BlackBolts.Player
 {
@@ -12,11 +13,12 @@ namespace VikingEngine.Core.BlackBolts.Player
         //public GameObjectType selectedObjectType = GameObjectType.Worker;
         //public ResourceType selectedResourceType = ResourceType.Box;
         public PlaceObjectData  placementData = new PlaceObjectData() { 
-            factoryObjectType = FactoryObjectType.GoblinWorker, resourceType = ResourceType.Box };
+            component = new ToolSetupComponent(FactoryObjectType.GoblinWorker), resourceType = ResourceType.Box };
 
-        public void selectTool(FactoryObjectType objectType)
+        public void selectTool(ToolSetupComponent objectType)
         {
-            placementData.factoryObjectType = objectType;
+            placementData.machineId.hasValue = false;
+            placementData.component = objectType;
             checkToolDir();
         }
 
@@ -27,7 +29,8 @@ namespace VikingEngine.Core.BlackBolts.Player
 
         public void checkToolDir()
         {
-            if (placementData.factoryObjectType == FactoryObjectType.Spin_plate)
+
+            if (placementData.component.properties().rotationType == RotationType.LeftRight)
             {
                 if (placementData.mapPlacement.direction != Dir4.W && placementData.mapPlacement.direction != Dir4.E)
                 {
@@ -48,6 +51,15 @@ namespace VikingEngine.Core.BlackBolts.Player
             {
                 placementData.mapPlacement.direction = Dir4.N;
             }
+        }
+
+        public bool IncludeItemProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                placementData.includeItem = value;
+            }
+            return placementData.includeItem;
         }
     }
 }

@@ -10,10 +10,6 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts.GO
 {
-    //abstract class AbsResource : AbsGameObject
-    //{
-
-    //}
 
     class SolidResource : AbsGameObject
     {
@@ -42,7 +38,7 @@ namespace VikingEngine.Core.BlackBolts.GO
                     frame = 3;
                     break;
                 case ResourceType.Flesh:
-                    frame = 4;
+                    frame = 14;
                     break;
                 case ResourceType.Bone:
                     frame = 2;
@@ -51,19 +47,19 @@ namespace VikingEngine.Core.BlackBolts.GO
                     frame = 1;
                     break;
                 case ResourceType.Dragon_egg:
-                    frame = 5;
+                    frame = 4;
                     break;
                 case ResourceType.Void_egg:
-                    frame = 6;
+                    frame = 5;
                     break;
                 case ResourceType.Magic_crystal:
-                    frame = 7;
+                    frame = 6;
                     break;
                 case ResourceType.Fire_crystal:
-                    frame = 8;
+                    frame = 7;
                     break;
                 case ResourceType.Void_cube:
-                    frame = 9;
+                    frame = 8;
                     break;
                 case ResourceType.Poop:
                     frame = 9;
@@ -79,10 +75,10 @@ namespace VikingEngine.Core.BlackBolts.GO
                     frame = 1;
                     break;
                 case ResourceType.Chicken_egg:
-                    frame = 13;
+                    frame = 12;
                     break;
                 case ResourceType.Feather:
-                    frame = 14;
+                    frame = 13;
                     break;
             }
         }

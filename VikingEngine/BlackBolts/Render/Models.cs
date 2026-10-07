@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using VikingEngine.DSSWars;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
@@ -12,6 +13,7 @@ namespace VikingEngine.Core.BlackBolts.Render
     class Models
     {
         public Dictionary<VoxelModelName, VoxelModel> voxelModels = new Dictionary<VoxelModelName, VoxelModel>();
+        public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>();
 
         public Models()
         {
@@ -28,6 +30,10 @@ namespace VikingEngine.Core.BlackBolts.Render
             loadVoxelModel(VoxelModelName.bb_onetile, false);
             loadVoxelModel(VoxelModelName.bb_item, false);
             loadVoxelModel(VoxelModelName.Hen, false);
+
+            loadRawModel(VoxelModelName.bb_io_base);
+            loadRawModel(VoxelModelName.bb_io_mark);
+
 
             void loadVoxelModel(VoxelModelName modelName, bool centerY)
             {
@@ -61,6 +67,32 @@ namespace VikingEngine.Core.BlackBolts.Render
                 //loadedData.Add(new VoxelModelData(modelName, verticeData, gridSz, framesData));
 
                 voxelModels.Add(modelName, new VoxelModelData(modelName, verticeData, gridSz, framesData).sychedProcessing());
+            }
+
+            void loadRawModel(VoxelModelName modelName)
+            {
+               
+                    DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
+                    byte[] data = DataStream.FileToDiskManager.Read(path);
+                    //Task.Run(() =>
+                    //{
+                    //    try
+                    //    {
+                            System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+                            System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+
+                            var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+                            var result = new VoxelObjGridDataAnimHD(grids);
+
+                            rawModels.Add(modelName, result);
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    DebugExtensions.BlueScreen.ThreadException = ex;
+                        //}
+                    //});
+                
+
             }
         }
     }

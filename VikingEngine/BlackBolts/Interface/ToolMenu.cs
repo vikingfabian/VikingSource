@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
+using VikingEngine.Core.BlackBolts.Mission;
 using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
@@ -51,43 +52,77 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
             if (player.editMode)
             {
+                var mission = BlackRef.playScene.missionSetup;
+
                 HudLib.Label(content, "Component");
                 content.newLine();
                 //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
-                for (FactoryObjectType objectType = 0; objectType < FactoryObjectType.NUM_NONE; objectType++)
+                foreach (var comp in mission.componentList)//for (FactoryObjectType objectType = 0; objectType < FactoryObjectType.NUM_NONE; objectType++)
                 {
-                    content.Add(new ArtOption(objectType == player.toolShop.placementData.factoryObjectType, new List<AbsRichBoxMember> { new RbText(objectType.ToString()) },
-                        new RbAction1Arg<FactoryObjectType>((FactoryObjectType selected) =>
+                    content.Add(new ArtOption(comp == player.toolShop.placementData.component, new List<AbsRichBoxMember> { new RbText(comp.objectType.ToString()) },
+                        new RbAction1Arg<ToolSetupComponent>((ToolSetupComponent selected) =>
                         {
                             player.toolShop.selectTool(selected);
                             player.OnToolRefresh();
-                        }, objectType), null));
+                        }, comp), null));
                 }
 
-                if (player.toolShop.placementData.factoryObjectType == FactoryObjectType.Dispencer ||
-                    player.toolShop.placementData.factoryObjectType == FactoryObjectType.Belt_dispencer)
+                var toolProp = player.toolShop.placementData.component.properties();
+
+                if (toolProp.holdResourceType != HoldResourceType.NoResource)
                 {
                     content.newParagraph();
-                    HudLib.Label(content, "Resource");
-                    content.newLine();
-                    for (ResourceType resource = 0; resource < ResourceType.NUM_NONE; resource++)
+                    if (toolProp.includeResource == IncludeType.Optional)
                     {
-                        content.Add(new ArtOption(resource == player.toolShop.placementData.resourceType, new List<AbsRichBoxMember> { new RbText(resource.ToString()) },
-                            new RbAction1Arg<ResourceType>((ResourceType selected) =>
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Include item") },
+                            player.toolShop.IncludeItemProperty));
+                    }
+
+                    if (toolProp.includeResource == IncludeType.Required ||
+                        player.toolShop.placementData.includeItem)
+                    {
+                        HudLib.Label(content, "Resource");
+                        content.newLine();
+                        for (ResourceType resource = 0; resource < ResourceType.NUM_NONE; resource++)
+                        {
+                            var resProp = ResourceLib.Get(resource);
+                            if (resProp.debugLevel > ObjectDebugLevel.Incomplete && resProp.isSolid)
                             {
-                                player.toolShop.selectResource(selected);
-                            }, resource), null));
+                                content.Add(new ArtOption(resource == player.toolShop.placementData.resourceType, new List<AbsRichBoxMember> { new RbText(resource.ToString()) },
+                                    new RbAction1Arg<ResourceType>((ResourceType selected) =>
+                                    {
+                                        player.toolShop.selectResource(selected);
+                                    }, resource), null));
+                            }
+                        }
                     }
                 }
 
                 content.newParagraph();
-                player.inputMap.rotate.ToRichContent(content);
-                content.hspace();
-                content.Add(new ArtButton(RbButtonStyle.Primary,
-                    new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW), new RbSpace(),
-                new RbText("Rotate")}, new RbAction(player.rotateToolAction)));
+                HudLib.Label(content, "Machine");
+                
+                foreach (var io in BlackRef.playScene.missionSetup.ioUnits)
+                {
+                    content.newLine();
+                    content.Add(new ArtOption(io.id == player.toolShop.placementData.machineId, 
+                        new List<AbsRichBoxMember> { new RbText(io.name) }, new RbAction1Arg<MachineId>((MachineId selected)=>
+                        {
+                            player.toolShop.placementData.component = new ToolSetupComponent(FactoryObjectType.IOunit);
+                            player.toolShop.placementData.machineId = io.id;
+                        }, io.id)));
+                }
 
-                content.newLine();
+                content.newParagraph();
+
+                if (player.toolShop.placementData.component.properties().rotationType != RotationType.None)
+                {
+                    player.inputMap.rotate.ToRichContent(content);
+                    content.hspace();
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                        new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW), new RbSpace(),
+                new RbText("Rotate")}, new RbAction(player.rotateToolAction)));
+                    content.newLine();
+                }
                 player.inputMap.toggleEditMode.ToRichContent(content);
                 content.hspace();
                 content.Add(new ArtButton(RbButtonStyle.Primary,
@@ -115,7 +150,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
             content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Reset") }, new RbAction(() =>
             {
-                new BlackPlayScene();    
+                new BlackPlayScene(BlackRef.playScene.missionSetup);    
             }), null){fillWidth=true});
 
             content.newLine();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.Core.BlackBolts.Mission;
 using VikingEngine.Core.BlackBolts.Render;
 
 namespace VikingEngine.Core.BlackBolts
@@ -18,7 +19,8 @@ namespace VikingEngine.Core.BlackBolts
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
-            new BlackPlayScene();
+            //new BlackPlayScene(new SandboxSetup());
+            new LoadMissionScene();
         }
     }
 }

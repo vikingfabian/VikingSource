@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.Core.BlackBolts.Interface;
 using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Graphics;
@@ -14,9 +16,9 @@ namespace VikingEngine.Core.BlackBolts.GO
 
     class IO_unit : AbsMachine
     {
-        int productionPoints = 0;
         List<VoxelModelInstance> resourceIcons = new List<VoxelModelInstance>();
-        List<IO_port> ports = new List<IO_port>(4);
+        List<IO_port> ports;
+        ResourceType lastFedResource;
 
         public override void AnimateUpdate()
         {
@@ -26,25 +28,24 @@ namespace VikingEngine.Core.BlackBolts.GO
            : base(placementData)
         {
             this.currentPos = placementData.mapPlacement;
-            tilesize = new IntVector2(2, 1);
-            model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.bb_onetile], true);
-            model.scale = new Vector3(1.3f * model.SizeToScale)/* * VectorExt.V2toV3XZ(tilesize.Vec)*/;
-            model.Frame = 0;
-            
+            var template = placementData.machineId.GetTemplate();
+            ports = new List<IO_port>(template.ports);
+           
 
-            //Hard code ports
-            ports.Add(new IO_port(true, new MapPlacement(new IntVector2(0, 0), Dir4.W),
-                 ResourceType.Flesh, 1));
-            ports.Add(new IO_port(false, new MapPlacement(new IntVector2(1, 0), Dir4.E),
-                ResourceType.Grilled_meat, 1));
+            tilesize = template.tilesize;
+            model = new VoxelModelInstance(template.model, true);
+            model.scale = new Vector3(2f * model.SizeToScale);
 
             refreshPos();
-
         }
 
         void refreshPos()
         {
             model.position = WP.TileToWp(currentPos.tilePos);
+            IntVector2 offset = IntVector2.RotateVector_D4(this.tilesize - 1, (int)placementData.mapPlacement.direction);
+            model.position += VectorExt.V2toV3XZ(offset.Vec * 0.5f);
+
+            WP.DirToQuaterion(model, currentPos.direction);
 
             for (int i = 0; i < ports.Count; ++i)
             {
@@ -52,23 +53,17 @@ namespace VikingEngine.Core.BlackBolts.GO
                 port.refreshPlacement(currentPos);
                 ports[i] = port;
             }
+        }
 
-
+        public override bool RefreshUiDisplay(IOdisplay display)
+        {
             foreach (var p in ports)
             {
-                SolidResource.ResourceModel(p.resourceType, out LootFest.VoxelModelName modelName, out int frame, out float scale);
-                VoxelModelInstance resmodel = new VoxelModelInstance(BlackRef.models.voxelModels[modelName], true);
-                resmodel.scale = new Vector3(0.4f * scale * resmodel.SizeToScale);
-                resmodel.Frame = frame;
-
-                resmodel.position = WP.TileToWp(p.mapPlacement.ForwardPos().tilePos);
-                resmodel.position.Y = 0.1f;
-
-                resourceIcons.Add(resmodel);
+                display.AddInput(p);
             }
-
-
+            return true;
         }
+
 
         public override void DeleteMe()
         {
@@ -84,41 +79,35 @@ namespace VikingEngine.Core.BlackBolts.GO
             base.OnCykleEnd();
 
             //OUT
-            if (productionPoints > 0)
+            bool mayProduce = true;
+            for (int i = 0; i < ports.Count; ++i)
             {
-                bool allFree = true;
-                foreach (var port in ports)
+                var port = ports[i];
+                if (!port.input && port.collected > 0)
                 {
-                    if (!port.input)
+                    var toPos = port.mapPlacement.ForwardPos();
+                    bool canDrop = ResourceManager.CanDispenceResource(toPos.tilePos);
+                    if (canDrop)
                     {
-                        var toPos = port.mapPlacement.ForwardPos();
-                        bool canDrop = ResourceManager.CanDispenceResource(toPos.tilePos);
-                        if (!canDrop)
+                        ResourceType resourceType = port.resourceType;
+                        switch (resourceType)
                         {
-                            allFree = false;
-                            break;
-                        }
-                    }
-                }
+                            case ResourceType.Any:
+                                resourceType = lastFedResource;
+                                break;
 
-                if (allFree)
-                {
-                    for (int i = 0; i < ports.Count; ++i)
-                    {
-                        var port = ports[i];
-                        if (!port.input)
-                        {
-                            ResourceManager.DispenceResource(port.mapPlacement.ForwardPos().tilePos, port.resourceType);
                         }
+                        ResourceManager.DispenceResource(port.mapPlacement.ForwardPos().tilePos, resourceType);
+                        port.collected--;
+                        ports[i] = port;
                     }
 
-                    productionPoints--;
+                    mayProduce = false;
                 }
+
             }
 
-            //IN
-
-            if (productionPoints > 0)
+            if (!mayProduce)
             {
                 return;
             }
@@ -190,15 +179,23 @@ namespace VikingEngine.Core.BlackBolts.GO
                 for (int i = 0; i < ports.Count; ++i)
                 {
                     var port = ports[i];
-                    port.collected = 0;
+                    if (port.input)
+                    {
+                        port.collected = 0;
+                    }
+                    else
+                    {
+                        port.collected = port.amount;
+                    }
                     ports[i] = port;
                 }
 
-                productionPoints++;
+                //productionPoints++;
             }
-        
+
             void feedResource(SolidResource resource, int toPort)
             {
+                lastFedResource = resource.placementData.resourceType;
                 var port = ports[toPort];
                 port.collected++;
                 ports[toPort] = port;

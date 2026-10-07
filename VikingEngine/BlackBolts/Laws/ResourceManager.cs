@@ -27,7 +27,14 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 if (tile.pCreature.hasValue)
                 {
                     var resource = BlackRef.mapData.SpawnResource(resourceType);
-                    tile.pCreature.GetCreature().HandoverItem(resource.pResource);
+                    tile.pCreature.GetCreature().HandoverItem(resource.pointer);
+                }
+                else
+                {
+                    if (CanDispenceResource(tilePos))
+                    {
+                        DispenceResource(tilePos, resourceType);
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.Core.BlackBolts.Map;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.Core.BlackBolts.Data
 {
@@ -70,13 +71,53 @@ namespace VikingEngine.Core.BlackBolts.Data
         {
             return !(left == right);
         }
+
+        public IOTemplate GetTemplate()
+        {
+            foreach (var m in BlackRef.playScene.missionSetup.ioUnits)
+            {
+                if (this.Equals(m.id))
+                {
+                    return m;
+                }
+            }
+
+            throw new Exception();
+        }
     }
 
     class IOTemplate
     {
+        public Graphics.VoxelModel model;
         public MachineId id;
+        public string name;
         public IntVector2 tilesize;
         public List<IO_port> ports = new List<IO_port>(4);
+
+        public void buildModel()
+        {
+            ModelBuilder modelBuilder = new ModelBuilder();
+            VoxelObjGridDataAnimHD grid = new VoxelObjGridDataAnimHD(
+                new List<VoxelObjGridDataHD> { BlackRef.models.rawModels[LootFest.VoxelModelName.bb_io_base].Frame(0).Clone() });
+            foreach (var port in ports)
+            {
+                IntVector3 offset = IntVector3.Zero;
+                int frame = (int)port.localPlacement.direction;
+                if (!port.input)
+                {
+                    frame += 4;
+                }
+                offset.X += 16;
+                offset.XZ -= port.localPlacement.tilePos * 16;
+
+                grid.Frame(0).Merge(BlackRef.models.rawModels[LootFest.VoxelModelName.bb_io_mark].Frame(frame),
+                    true, true, offset);
+            }
+
+            var centerAdjust = grid.Frame(0).BottomCenterAdj();
+            modelBuilder.buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
+            model = modelBuilder.modelFromVertices();
+        }
 
         public void buildId()
         {

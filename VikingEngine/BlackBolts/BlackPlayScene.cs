@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Map;
+using VikingEngine.Core.BlackBolts.Mission;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts
@@ -11,9 +12,11 @@ namespace VikingEngine.Core.BlackBolts
     {
         Player.Player player;
         public MapModel mapmodel;
-        public BlackPlayScene()
+        public AbsMissionSetup missionSetup;
+        public BlackPlayScene(AbsMissionSetup missionSetup)
             : base(true)
         {
+            this.missionSetup = missionSetup;
             BlackRef.playScene = this;
             MapData floorData = new MapData(new IntVector2(20, 20));
             mapmodel = new MapModel();

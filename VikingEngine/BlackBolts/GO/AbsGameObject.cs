@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.Core.BlackBolts.Interface;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Render;
 using VikingEngine.Graphics;
@@ -76,6 +77,10 @@ namespace VikingEngine.Core.BlackBolts.GO
                 {
                     float from = WP.DirToAngle(currentPos.direction);
                     float to = WP.DirToAngle(nextPos.direction);
+                    if (to < from)
+                    {
+                        to += MathExt.Tau;
+                    }
                     WP.Rotation1DToQuaterion(model, from * (1 - tween) + to * tween);
                 }
                 {
@@ -86,6 +91,11 @@ namespace VikingEngine.Core.BlackBolts.GO
                     model.position = from * (1 - tween) + to * tween;
                 }
             }
+        }
+
+        virtual public bool RefreshUiDisplay(IOdisplay display)
+        {
+            return false;
         }
 
         virtual public void DeleteMe()

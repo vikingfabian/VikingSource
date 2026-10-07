@@ -18,7 +18,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                 if (tile.IsEmpty())
                 {
                     AbsGameObject result = null;
-                    switch (placementData.factoryObjectType)
+                    switch (placementData.component.objectType)
                     {
 
                         case FactoryObjectType.IOunit:

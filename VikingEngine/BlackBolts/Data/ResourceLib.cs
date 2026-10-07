@@ -24,6 +24,8 @@ namespace VikingEngine.Core.BlackBolts.Data
         public CategoryAndType fireConvert;
         public CategoryAndType cutConvert;
 
+        public SpriteName icon;
+
         
     }
     static class ResourceLib
@@ -42,6 +44,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Box] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_box,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -50,6 +53,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Flesh] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_flesh,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Flesh),
                 fireConvert = new CategoryAndType(ResourceType.Grilled_meat),
@@ -57,6 +61,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Bone] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_bone,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -64,6 +69,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Grilled_meat] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_grilledmeat,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -71,6 +77,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Dragon_egg] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_dragonegg,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(FactoryObjectType.Dragon),
@@ -78,6 +85,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Void_egg] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_voidegg,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(FactoryObjectType.VoidDemon),
@@ -85,6 +93,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Magic_crystal] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_magiccrystal,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -93,6 +102,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Fire_crystal] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_firecrystal,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -100,6 +110,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Void_cube] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_voidcube,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -107,6 +118,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Poop] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_poop,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -115,6 +127,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Burned_shit] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_burnedshit,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -123,6 +136,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Old_shoe] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_oldshoe,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -130,6 +144,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Feather] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_feather,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -144,6 +159,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Chicken] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.WarsResource_Hen,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -151,6 +167,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Job_knight] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Incomplete,
+                icon = SpriteName.MissingImage,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
@@ -158,6 +175,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Job_worker] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Incomplete,
+                icon = SpriteName.MissingImage,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
