@@ -1,6 +1,7 @@
 ﻿
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.Core.BlackBolts.Interface;
 using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Graphics;
@@ -27,18 +28,20 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
         }
 
+        public override bool RefreshUiDisplay(IOdisplay display)
+        {
+            display.AddInput(new IO_port(false, placementData.mapPlacement, placementData.resourceType, 1));
+            return true;
+        }
+
         public override void OnCykleEnd()
         {
             base.OnCykleEnd();
             var toPos = currentPos.ForwardPos();
-            //if (BlackRef.mapData.tileGrid.TryGet(toPos.tilePos, out Tile tile) && tile.canPlaceResource())
-            //{
-            //    var resource = BlackRef.mapData.SpawnResource(placementData.resourceType);
-            //    resource.placeResourceOnFloor(toPos.tilePos);
-            //}
-            if (ResourceManager.CanDispenceResource(toPos.tilePos))
+            
+            if (ResourceLaws.CanDispenceResource(toPos.tilePos))
             {
-                ResourceManager.DispenceResource(toPos.tilePos, placementData.resourceType);
+                ResourceLaws.DispenceResource(toPos.tilePos, placementData.resourceType);
             }
         }
 

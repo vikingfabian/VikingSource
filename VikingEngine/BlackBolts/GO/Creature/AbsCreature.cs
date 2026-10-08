@@ -3,33 +3,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Render;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.Graphics;
 
-namespace VikingEngine.Core.BlackBolts.GO
+namespace VikingEngine.Core.BlackBolts.GO.Creature
 {
-    class Worker: AbsGameObject
+    abstract class AbsCreature : AbsGameObject
     {
         public MapPlacement beltPos;
         public Fluid stompSmear = Fluid.Empty;
-        //MapPlacement spawnPos;
+        protected Animation animation;
 
-        Animation animation;
-
-        public Worker(PlaceObjectData placementData) 
-            :base(placementData)
+        public AbsCreature(PlaceObjectData placementData)
+            : base(placementData)
         {
             this.currentPos = placementData.mapPlacement;
             nextPos = currentPos;
-            model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.goblin_worker], true);
-            //model.Color = Color.Green;
-            model.scale = new Vector3(1.15f * model.SizeToScale);
-
-            refreshPos();
+            
         }
 
-        void refreshPos()
+        protected void refreshPos()
         {
             model.position = WP.TileToWp(currentPos.tilePos);
             WP.DirToQuaterion(model, currentPos.direction);
@@ -42,7 +38,7 @@ namespace VikingEngine.Core.BlackBolts.GO
             refreshAnimation();
         }
 
-        public void refreshAnimation()
+        virtual public void refreshAnimation()
         {
             animation = new Animation(1, 5, 120);
             if (pResource.hasValue)
@@ -55,7 +51,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             base.TweenUpdate(beltMove, tween);
 
-            if (!beltMove)
+            if (!beltMove && nextPos != currentPos)
             {
                 animation.update(Ref.DeltaGameTimeMs, model, out _);
             }
@@ -122,11 +118,28 @@ namespace VikingEngine.Core.BlackBolts.GO
             return diff;
         }
 
+        abstract public bool WillMoveItems();
+
+        /// <summary>
+        /// The attack will replace the move
+        /// </summary>
+        virtual public bool CheckAttackAction(AbsCreature counterAttackFrom) { return false; }
+
+        /// <summary>
+        /// Bumping into another creature
+        /// </summary>
+        virtual public void onWalkingIntoSameTile(List<ObjectPointer> collideWidth, List<TwoCreatures> preparedAttackers)
+        {
+            nextPos = currentPos.TurnAroundPos();
+        }
+
+        virtual public void applyAttack(AbsCreature otherCreature)
+        {  }
+
         public override void DeleteMe()
         {
             base.DeleteMe();
             BlackRef.mapData.creatureList.RemoveAt(pointer.objIndex);
         }
-        public override FactoryObjectType GameObjectType =>  FactoryObjectType.GoblinWorker;
     }
 }

@@ -615,6 +615,10 @@ namespace VikingEngine
 
             return vec.X == this.X && vec.Y == this.Y;
         }
+        public bool Equals(IntVector2 vec)
+        {
+            return vec.X == this.X && vec.Y == this.Y;
+        }
         public static bool operator ==(IntVector2 value1, IntVector2 value2)
         {
             return value1.X == value2.X && value1.Y == value2.Y;

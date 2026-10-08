@@ -29,12 +29,12 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             this.currentPos = placementData.mapPlacement;
             var template = placementData.machineId.GetTemplate();
-            ports = new List<IO_port>(template.ports);
-           
+            ports = new List<IO_port>(template.ports);           
 
             tilesize = template.tilesize;
             model = new VoxelModelInstance(template.model, true);
-            model.scale = new Vector3(2f * model.SizeToScale);
+            model.Frame = template.frame;
+            model.scale = new Vector3(template.scale * model.SizeToScale);
 
             refreshPos();
         }
@@ -86,7 +86,7 @@ namespace VikingEngine.Core.BlackBolts.GO
                 if (!port.input && port.collected > 0)
                 {
                     var toPos = port.mapPlacement.ForwardPos();
-                    bool canDrop = ResourceManager.CanDispenceResource(toPos.tilePos);
+                    bool canDrop = ResourceLaws.CanDispenceResource(toPos.tilePos);
                     if (canDrop)
                     {
                         ResourceType resourceType = port.resourceType;
@@ -95,9 +95,11 @@ namespace VikingEngine.Core.BlackBolts.GO
                             case ResourceType.Any:
                                 resourceType = lastFedResource;
                                 break;
-
+                            case ResourceType.Heat:
+                                resourceType = ResourceLib.Get( lastFedResource).fireConvert.resource;
+                                break;
                         }
-                        ResourceManager.DispenceResource(port.mapPlacement.ForwardPos().tilePos, resourceType);
+                        ResourceLaws.DispenceResource(port.mapPlacement.ForwardPos().tilePos, resourceType);
                         port.collected--;
                         ports[i] = port;
                     }

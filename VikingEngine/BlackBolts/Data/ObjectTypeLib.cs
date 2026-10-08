@@ -39,8 +39,8 @@ namespace VikingEngine.Core.BlackBolts.Data
     {
 
         GoblinWorker,
-        GoblinKnight,
-        VoidDemon,
+        BlackKnight,
+        NightDemon,
         Dragon,
         WhiteKnight,
         
@@ -83,6 +83,7 @@ namespace VikingEngine.Core.BlackBolts.Data
         Void_cube,
         Poop,
         Burned_shit,
+        Rubble,
         Old_shoe,
         Feather,
         Chicken_egg,
@@ -111,6 +112,14 @@ namespace VikingEngine.Core.BlackBolts.Data
         Good,
         Evil,
         Creature,
-        WorkingMachine,
+        //WorkingMachine,
+        Hindering,
+    }
+
+    enum DestroyType
+    { 
+        Default,
+        Void,
+        Fire,
     }
 }

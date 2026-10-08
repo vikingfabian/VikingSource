@@ -14,11 +14,13 @@ namespace VikingEngine.Core.BlackBolts.Data
         public ResourceType resourceType;
         public int amount;
         public int collected;
+        public bool isTabledispence;
 
         public IO_port(bool input, MapPlacement localPlacement, ResourceType resource, int amount)
         {
             this.input = input;
             this.localPlacement = localPlacement;
+            mapPlacement = localPlacement;
             this.resourceType = resource;
             this.amount = amount;
         }
@@ -38,6 +40,11 @@ namespace VikingEngine.Core.BlackBolts.Data
         {
             return HashCode.Combine((int)localPlacement.direction + localPlacement.tilePos.X * 4 + localPlacement.tilePos.Y * 8, 
                 (int)resourceType, amount);
+        }
+
+        public IntVector2 ForwardPos()
+        {
+            return isTabledispence ? mapPlacement.tilePos : mapPlacement.ForwardPos().tilePos;
         }
     }
 
@@ -89,6 +96,8 @@ namespace VikingEngine.Core.BlackBolts.Data
     class IOTemplate
     {
         public Graphics.VoxelModel model;
+        public int frame = 0;
+        public float scale = 1.9f;
         public MachineId id;
         public string name;
         public IntVector2 tilesize;
@@ -96,27 +105,30 @@ namespace VikingEngine.Core.BlackBolts.Data
 
         public void buildModel()
         {
-            ModelBuilder modelBuilder = new ModelBuilder();
-            VoxelObjGridDataAnimHD grid = new VoxelObjGridDataAnimHD(
-                new List<VoxelObjGridDataHD> { BlackRef.models.rawModels[LootFest.VoxelModelName.bb_io_base].Frame(0).Clone() });
-            foreach (var port in ports)
+            if (model == null)
             {
-                IntVector3 offset = IntVector3.Zero;
-                int frame = (int)port.localPlacement.direction;
-                if (!port.input)
+                ModelBuilder modelBuilder = new ModelBuilder();
+                VoxelObjGridDataAnimHD grid = new VoxelObjGridDataAnimHD(
+                    new List<VoxelObjGridDataHD> { BlackRef.models.rawModels[LootFest.VoxelModelName.bb_io_base].Frame(0).Clone() });
+                foreach (var port in ports)
                 {
-                    frame += 4;
+                    IntVector3 offset = IntVector3.Zero;
+                    int frame = (int)port.localPlacement.direction;
+                    if (!port.input)
+                    {
+                        frame += 4;
+                    }
+                    offset.X += 16;
+                    offset.XZ -= port.localPlacement.tilePos * 16;
+
+                    grid.Frame(0).Merge(BlackRef.models.rawModels[LootFest.VoxelModelName.bb_io_mark].Frame(frame),
+                        true, true, offset);
                 }
-                offset.X += 16;
-                offset.XZ -= port.localPlacement.tilePos * 16;
 
-                grid.Frame(0).Merge(BlackRef.models.rawModels[LootFest.VoxelModelName.bb_io_mark].Frame(frame),
-                    true, true, offset);
+                var centerAdjust = grid.Frame(0).BottomCenterAdj();
+                modelBuilder.buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
+                model = modelBuilder.modelFromVertices();
             }
-
-            var centerAdjust = grid.Frame(0).BottomCenterAdj();
-            modelBuilder.buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
-            model = modelBuilder.modelFromVertices();
         }
 
         public void buildId()

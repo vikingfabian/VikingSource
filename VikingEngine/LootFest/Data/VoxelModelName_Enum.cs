@@ -454,6 +454,10 @@ namespace VikingEngine.LootFest
         bb_rotate,
         bb_vat,
         goblin_worker,
+        bb_nightdemon,
+        bb_dragon,
+        bb_whiteknight,
+        bb_blackknight,
         bb_io_base,
         bb_io_mark,
 

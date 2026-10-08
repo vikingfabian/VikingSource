@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
+using VikingEngine.Core.BlackBolts.GO.Creature;
 using VikingEngine.LootFest.GO;
 using VikingEngine.PJ.Tanks;
 
@@ -16,7 +17,7 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public IntVector2 Size;
 
-        public SpottedArray<Worker> creatureList = new SpottedArray<Worker>(1024);
+        public SpottedArray<AbsCreature> creatureList = new SpottedArray<AbsCreature>(1024);
         public SpottedArray<AbsMachine> machineList = new SpottedArray<AbsMachine>(1024);
         public SpottedArray<SolidResource> resourceList = new SpottedArray<SolidResource>(1024);
         public Grid2D_L<Tile> tileGrid;
@@ -34,7 +35,7 @@ namespace VikingEngine.Core.BlackBolts.Map
             }
         }
 
-        public void AddObject(Worker go)
+        public void AddObject(AbsCreature go)
         {
             int ix=  creatureList.Add(go);
             go.pointer = new ObjectPointer(){ listType = ObjectListType.Creature, hasValue = true, objIndex =ix};

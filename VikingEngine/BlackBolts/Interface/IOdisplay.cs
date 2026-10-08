@@ -26,14 +26,14 @@ namespace VikingEngine.Core.BlackBolts.Interface
     }
     struct IOInputDisplayMember
     {
-        public List<ImageAndOffset> icons/* = new List<ImageAndOffset>(4)*/;
+        public List<ImageAndOffset> icons;
 
         public Vector3 tileCenter;
 
         public void update(AbsCamera camera)
         {
             Vector2 center =camera.From3DToScreenPos(tileCenter, Engine.Draw.defaultViewport);
-           // Vector2 center =Ref.draw.ActivePlayerScreens[0].view.From3DToScreenPos(tileCenter);
+
             foreach (var ic in icons)
             {
                 ic.update(center);
@@ -96,10 +96,13 @@ namespace VikingEngine.Core.BlackBolts.Interface
                 case ResourceType.Any:
                     sprite = SpriteName.pjNumQuestion;
                     break;
+                case ResourceType.Heat:
+                    sprite = SpriteName.birdFireball;
+                    break;
             }
             IOInputDisplayMember displayMember = new IOInputDisplayMember()
             {
-                tileCenter = WP.TileToWp(port.mapPlacement.ForwardPos().tilePos),
+                tileCenter = WP.TileToWp( port.ForwardPos()),
             };
 
             displayMember.icons = new List<ImageAndOffset>(4);
@@ -128,19 +131,21 @@ namespace VikingEngine.Core.BlackBolts.Interface
                     break;
             }
 
-            var arrow = new ImageAndOffset()
+            if (!port.isTabledispence)
             {
-                image = new Image(SpriteName.cmdAttackDirectionWhite, Vector2.Zero, Engine.Screen.IconSizeV2 * 1.5f, ImageLayers.Foreground5, true),
-                offset = Vector2.Zero,
-            };
-            arrow.image.Color = port.input ? Color.Pink : Color.LightGreen;
-            arrow.image.Rotation = Rotation1D.FromDir4(port.mapPlacement.direction).radians /*+ MathExt.TauOver2*/;
-            if (!port.input)
-            {
-                arrow.image.Rotation += MathExt.TauOver2;
+                var arrow = new ImageAndOffset()
+                {
+                    image = new Image(SpriteName.cmdAttackDirectionWhite, Vector2.Zero, Engine.Screen.IconSizeV2 * 1.5f, ImageLayers.Foreground5, true),
+                    offset = Vector2.Zero,
+                };
+                arrow.image.Color = port.input ? Color.Pink : Color.LightGreen;
+                arrow.image.Rotation = Rotation1D.FromDir4(port.mapPlacement.direction).radians /*+ MathExt.TauOver2*/;
+                if (!port.input)
+                {
+                    arrow.image.Rotation += MathExt.TauOver2;
+                }
+                displayMember.icons.Add(arrow);
             }
-            displayMember.icons.Add(arrow);
-
             var shadow = new ImageAndOffset()
             {
                 image = new Image(SpriteName.WhiteCirkle, Vector2.Zero, Engine.Screen.IconSizeV2 * 1f, ImageLayers.Foreground6, true),

@@ -88,7 +88,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                 icon = SpriteName.bb_resicon_voidegg,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
-                fireConvert = new CategoryAndType(FactoryObjectType.VoidDemon),
+                fireConvert = new CategoryAndType(FactoryObjectType.NightDemon),
             };
             resourceProperties[(int)ResourceType.Magic_crystal] = new ResourceProperties()
             {
@@ -141,6 +141,14 @@ namespace VikingEngine.Core.BlackBolts.Data
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
             };
+            resourceProperties[(int)ResourceType.Rubble] = new ResourceProperties()
+            {
+                debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.MissingImage,
+                isSolid = true,
+                cutConvert = new CategoryAndType(ResourceType.Rubble),
+                fireConvert = new CategoryAndType(ResourceType.Burned_shit),
+            };
             resourceProperties[(int)ResourceType.Feather] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
@@ -152,17 +160,18 @@ namespace VikingEngine.Core.BlackBolts.Data
             resourceProperties[(int)ResourceType.Chicken_egg] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.bb_resicon_chickenegg,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Flesh),
-                fireConvert = new CategoryAndType(ResourceType.Grilled_meat),
+                fireConvert = new CategoryAndType(ResourceType.Chicken),
             };
             resourceProperties[(int)ResourceType.Chicken] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.WarsResource_Hen,
                 isSolid = true,
-                cutConvert = new CategoryAndType(ResourceType.Poop),
-                fireConvert = new CategoryAndType(ResourceType.Burned_shit),
+                cutConvert = new CategoryAndType(ResourceType.Flesh),
+                fireConvert = new CategoryAndType(ResourceType.Grilled_meat),
             };
             resourceProperties[(int)ResourceType.Job_knight] = new ResourceProperties()
             {
@@ -180,6 +189,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
             };
+
         }
     }
 

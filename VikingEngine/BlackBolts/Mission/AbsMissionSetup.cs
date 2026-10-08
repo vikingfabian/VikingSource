@@ -64,23 +64,39 @@ namespace VikingEngine.Core.BlackBolts.Mission
                 }
             }
 
-            IOTemplate chickenSeperator = new IOTemplate() { name = "Chicken seperator", tilesize = new IntVector2(2, 1) };
-            chickenSeperator.ports.Add(new IO_port(true, new Map.MapPlacement(IntVector2.Zero, Dir4.W),
-                ResourceType.Chicken, 1));
-            chickenSeperator.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Right, Dir4.N),
-                ResourceType.Feather, 2));
-            chickenSeperator.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Right, Dir4.S),
-                ResourceType.Flesh, 1));
-
-            IOTemplate duplicator = new IOTemplate() { name = "Duplicator", tilesize = new IntVector2(2, 1) };
-            duplicator.ports.Add(new IO_port(true, new Map.MapPlacement(IntVector2.Zero, Dir4.W),
-                ResourceType.Any, 1));
-            duplicator.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Right, Dir4.N),
-                ResourceType.Any, 1));
-            duplicator.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Right, Dir4.S),
-                ResourceType.Any, 1));
-
-            ioUnits = new List<IOTemplate> { chickenSeperator, duplicator };
+            ioUnits = new List<IOTemplate>(8);
+            {
+                IOTemplate template = new IOTemplate() { name = "Heater", tilesize = new IntVector2(1, 1) };
+                template.ports.Add(new IO_port(true, new Map.MapPlacement(IntVector2.Zero, Dir4.S),
+                    ResourceType.Any, 1));
+                template.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Zero, Dir4.N),
+                    ResourceType.Heat, 1));
+                template.model = BlackRef.models.voxelModels[LootFest.VoxelModelName.bb_onetile]; //one tile 7
+                template.frame = 7;
+                template.scale = 1.6f;
+                ioUnits.Add(template);
+            }
+            {
+                IOTemplate template = new IOTemplate() { name = "Chicken seperator", tilesize = new IntVector2(2, 1) };
+                template.ports.Add(new IO_port(true, new Map.MapPlacement(IntVector2.Zero, Dir4.W),
+                    ResourceType.Chicken, 1));
+                template.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Right, Dir4.N),
+                    ResourceType.Feather, 2));
+                template.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Right, Dir4.S),
+                    ResourceType.Flesh, 1));
+                ioUnits.Add(template);
+            }
+            {
+                IOTemplate template = new IOTemplate() { name = "Duplicator", tilesize = new IntVector2(2, 1) };
+                template.ports.Add(new IO_port(true, new Map.MapPlacement(IntVector2.Zero, Dir4.W),
+                    ResourceType.Any, 1));
+                template.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Right, Dir4.N),
+                    ResourceType.Any, 1));
+                template.ports.Add(new IO_port(false, new Map.MapPlacement(IntVector2.Right, Dir4.S),
+                    ResourceType.Any, 1));
+                ioUnits.Add(template);
+            }
+            //ioUnits = new List<IOTemplate> { chickenSeperator, duplicator };
             foreach (var io in ioUnits)
             {
                 io.buildModel();

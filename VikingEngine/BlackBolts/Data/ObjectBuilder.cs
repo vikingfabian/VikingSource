@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.GO;
+using VikingEngine.Core.BlackBolts.GO.Creature;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Player;
 
@@ -59,6 +60,27 @@ namespace VikingEngine.Core.BlackBolts.Data
                                 result = obj;
                             }
                             break;
+                        case FactoryObjectType.NightDemon:
+                            {
+                                var obj = new NightDemon(placementData);
+                                BlackRef.mapData.AddObject(obj);
+                                result = obj;
+                            }
+                            break;
+                        case FactoryObjectType.BlackKnight:
+                            {
+                                var obj = new BlackKnight(placementData);
+                                BlackRef.mapData.AddObject(obj);
+                                result = obj;
+                            }
+                            break;
+                        case FactoryObjectType.WhiteKnight:
+                            {
+                                var obj = new WhiteKnight(placementData);
+                                BlackRef.mapData.AddObject(obj);
+                                result = obj;
+                            }
+                            break;
                         case FactoryObjectType.Belt:
                             {
                                 var obj = new Belt(placementData);
@@ -106,7 +128,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
                     if (result != null && placementData.includeItem)
                     {
-                        Laws.ResourceManager.TryCreateResource(placementData.mapPlacement.tilePos, placementData.resourceType);
+                        Laws.ResourceLaws.TryCreateResource(placementData.mapPlacement.tilePos, placementData.resourceType);
                     }
                     //return true;
                 }

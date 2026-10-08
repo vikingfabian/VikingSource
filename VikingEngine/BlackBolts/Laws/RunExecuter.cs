@@ -5,10 +5,18 @@ using System.Resources;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
+using VikingEngine.Core.BlackBolts.GO.Creature;
 using VikingEngine.Core.BlackBolts.Map;
 
 namespace VikingEngine.Core.BlackBolts.Laws
 {
+    struct TwoCreatures
+    {
+        public AbsCreature creature1;
+        public AbsCreature creature2;
+
+    }
+
     class RunExecuter
     {
         RunStep step = RunStep.CalcMove;
@@ -16,6 +24,8 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
         public const float MoveTime = 500;
         float time = 0;
+
+        List<TwoCreatures> preparedAttackers = new List<TwoCreatures>(4);
 
         public void Start()
         {
@@ -44,18 +54,20 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         {
                             creaturesC.sel.lockItem = false;
 
-                            var next = creaturesC.sel.currentPos.ForwardPos();
-                            var ToTile = BlackRef.mapData.GetTile(next.tilePos);
-                            if (TileIsWalkable(ToTile))
+                            if (!creaturesC.sel.CheckAttackAction(null))
                             {
-                                creaturesC.sel.nextPos = next;
+                                var next = creaturesC.sel.currentPos.ForwardPos();
+                                var ToTile = BlackRef.mapData.GetTile(next.tilePos);
+                                if (TileIsWalkable(ToTile))
+                                {
+                                    creaturesC.sel.nextPos = next;
+                                }
+                                else
+                                {
+                                    CheckPickUpEvent(creaturesC.sel, ToTile);
+                                    creaturesC.sel.nextPos = creaturesC.sel.currentPos.TurnAroundPos();
+                                }
                             }
-                            else
-                            {
-                                CheckPickUpEvent(creaturesC.sel, ToTile);
-                                creaturesC.sel.nextPos = creaturesC.sel.currentPos.TurnAroundPos();
-                            }
-
                         }
 
                         //Clear map
@@ -74,6 +86,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         }
 
                         //Collide all objects moving to the same tile
+                        preparedAttackers.Clear();
                         for (int i = 0; i < BlackRef.mapData.tileGrid.array.Length; ++i)
                         {
                             var posList = BlackRef.mapData.tileGrid.array[i].nextPosList;
@@ -90,16 +103,23 @@ namespace VikingEngine.Core.BlackBolts.Laws
                                     }
                                 }
 
+                               
                                 //Turn around
                                 foreach (var pobj in posList)
                                 {
                                     var gameobject = pobj.GetCreature();
                                     if (!gameobject.NoMovement())
                                     {
-                                        gameobject.nextPos = gameobject.currentPos.TurnAroundPos();
+                                        gameobject.onWalkingIntoSameTile(posList, preparedAttackers);//gameobject.nextPos = gameobject.currentPos.TurnAroundPos();
                                     }
                                 }
+
+                                
                             }
+                        }
+                        foreach (var attacker in preparedAttackers)
+                        {
+                            attacker.creature1.applyAttack(attacker.creature2);
                         }
 
                         checkDirectWalkColl();
@@ -292,10 +312,11 @@ namespace VikingEngine.Core.BlackBolts.Laws
             }
         }
 
-        void checkItemTrade(Worker creature1, Worker creature2)
+        void checkItemTrade(AbsCreature creature1, AbsCreature creature2)
         {
             //Must face each other to trade items
-            if (lib.OppositeDir(creature1.nextPos.direction) == creature2.nextPos.direction &&
+            if (creature1.WillMoveItems() && creature2.WillMoveItems() &&
+                lib.OppositeDir(creature1.nextPos.direction) == creature2.nextPos.direction &&
                 !creature1.lockItem && !creature2.lockItem)
             {
                 var returnItem = creature2.HandoverItem(creature1.pResource);
@@ -327,9 +348,9 @@ namespace VikingEngine.Core.BlackBolts.Laws
             return true;
         }
 
-        private void CheckPickUpEvent(Worker creature, Tile ToTile)
+        private void CheckPickUpEvent(AbsCreature creature, Tile ToTile)
         {
-            if (ToTile.pMachine.hasValue)
+            if (creature.WillMoveItems() && ToTile.pMachine.hasValue)
             {
                 var machine = ToTile.pMachine.GetMachine();
                 machine.ItemHandle(out bool mayPick, out bool mayDrop);

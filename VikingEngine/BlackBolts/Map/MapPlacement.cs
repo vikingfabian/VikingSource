@@ -23,7 +23,17 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public MapPlacement ForwardPos()
         {
-           return new MapPlacement( ) { tilePos = tilePos +  IntVector2.FromDir4(direction), direction = direction };
+            return new MapPlacement() { tilePos = tilePos + IntVector2.FromDir4(direction), direction = direction };
+        }
+        public MapPlacement LeftPos()
+        {
+            Dir4 leftDir = lib.SumFacingAngles(direction, Dir4.W);
+            return new MapPlacement() { tilePos = tilePos + IntVector2.FromDir4(leftDir), direction = leftDir };
+        }
+        public MapPlacement RightPos()
+        {
+            Dir4 rightDir = lib.SumFacingAngles(direction, Dir4.E);
+            return new MapPlacement() { tilePos = tilePos + IntVector2.FromDir4(rightDir), direction = rightDir };
         }
 
         public MapPlacement TurnAroundPos()
@@ -40,6 +50,31 @@ namespace VikingEngine.Core.BlackBolts.Map
         public void Rotate(int dir)
         {
             direction = lib.Rotate(direction, dir);
+        }
+
+        public bool Equals(MapPlacement other)
+        {
+            return tilePos.Equals(other.tilePos) && direction == other.direction;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is MapPlacement other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(tilePos, direction);
+        }
+
+        public static bool operator ==(MapPlacement left, MapPlacement right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(MapPlacement left, MapPlacement right)
+        {
+            return !left.Equals(right);
         }
     }
 }

@@ -6,6 +6,7 @@ using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.Core.BlackBolts.Mission;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -161,6 +162,12 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
             content.newParagraph();
             content.text(string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion), Color.DarkGray);
+
+#if DEBUG
+            content.newLine();
+            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_Editor_VoxelEditor) },
+                new RbAction(() => { new StartEditor(0, true, EditorType.Voxel); })));
+#endif
 
             menu.Refresh(content);
         }

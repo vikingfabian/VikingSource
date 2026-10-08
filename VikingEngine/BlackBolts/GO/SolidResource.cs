@@ -38,7 +38,7 @@ namespace VikingEngine.Core.BlackBolts.GO
                     frame = 3;
                     break;
                 case ResourceType.Flesh:
-                    frame = 14;
+                    frame = 0;
                     break;
                 case ResourceType.Bone:
                     frame = 2;
@@ -79,6 +79,12 @@ namespace VikingEngine.Core.BlackBolts.GO
                     break;
                 case ResourceType.Feather:
                     frame = 13;
+                    break;
+                case ResourceType.Rubble:
+                    frame = 14;
+                    break;
+                case ResourceType.Job_knight:
+                    frame = 15;
                     break;
             }
         }

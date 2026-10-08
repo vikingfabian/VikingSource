@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.Core.BlackBolts.Interface;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Graphics;
 
@@ -65,6 +66,12 @@ namespace VikingEngine.Core.BlackBolts.GO
             //this.resourceType = placementData.resourceType;
             //this.placementData = placementData;
             generateResource();
+        }
+        public override bool RefreshUiDisplay(IOdisplay display)
+        {
+            display.AddInput(new IO_port(false, placementData.mapPlacement, placementData.resourceType, 1)
+                { isTabledispence = true } );
+            return true;
         }
         public override void OnCykleEnd()
         {

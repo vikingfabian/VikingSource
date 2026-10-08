@@ -30,6 +30,10 @@ namespace VikingEngine.Core.BlackBolts.Render
             loadVoxelModel(VoxelModelName.bb_onetile, false);
             loadVoxelModel(VoxelModelName.bb_item, false);
             loadVoxelModel(VoxelModelName.Hen, false);
+            loadVoxelModel(VoxelModelName.bb_nightdemon, false);
+            loadVoxelModel(VoxelModelName.bb_dragon, false);
+            loadVoxelModel(VoxelModelName.bb_whiteknight, false);
+            loadVoxelModel(VoxelModelName.bb_blackknight, false);
 
             loadRawModel(VoxelModelName.bb_io_base);
             loadRawModel(VoxelModelName.bb_io_mark);

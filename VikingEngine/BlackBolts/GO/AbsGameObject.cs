@@ -74,6 +74,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             if (!beltMove || hasBeltMove)
             {
+                if (currentPos.direction != nextPos.direction)
                 {
                     float from = WP.DirToAngle(currentPos.direction);
                     float to = WP.DirToAngle(nextPos.direction);
@@ -81,8 +82,14 @@ namespace VikingEngine.Core.BlackBolts.GO
                     {
                         to += MathExt.Tau;
                     }
+                    else if (to - from > MathExt.TauOver2)
+                    {
+                        to -= MathExt.Tau;
+                    }
+
                     WP.Rotation1DToQuaterion(model, from * (1 - tween) + to * tween);
                 }
+
                 {
                     Vector3 from = WP.TileToWp(currentPos.tilePos);
                     from.Y = currentPos.groundY;
