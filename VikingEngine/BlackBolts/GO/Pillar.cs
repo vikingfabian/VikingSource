@@ -34,7 +34,7 @@ namespace VikingEngine.Core.BlackBolts.GO
             return false;
         }
 
-        public override FactoryObjectType GameObjectType => FactoryObjectType.Stone_pillar;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.Stone_pillar;
 
     }
 }

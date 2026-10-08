@@ -74,8 +74,18 @@ namespace VikingEngine.Core.BlackBolts.Map
                     var tile = BlackRef.mapData.tileGrid.Get(pos);
                     if (tile.fluid.HasValue)
                     {
-                        SpriteName sprite = SpriteName.bb_stain_shit;
-                        polygons.Add(PolygonColor.QuadXZ(pos.Vec, Vector2.One, true, 0.02f,
+                        SpriteName sprite = SpriteName.MissingImage;
+                        switch (tile.fluid.resourceType)
+                        {
+                            case Data.ResourceType.FluidPoopStain:
+                                sprite = SpriteName.bb_stain_shit;
+                                break;
+                            case Data.ResourceType.FluidBlood:
+                                sprite = SpriteName.bb_stain_blood;
+                                break;
+
+                        }
+                        polygons.Add(PolygonColor.QuadXZ(pos.Vec, Vector2.One, true, 0.01f,
                             sprite, Dir4.N, Color.White));
                     }
                 }

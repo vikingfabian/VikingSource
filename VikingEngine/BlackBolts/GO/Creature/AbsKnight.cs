@@ -12,6 +12,9 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
     abstract class AbsKnight : AbsCreature
     {
         abstract protected bool IsGoodSide { get; }
+        virtual protected DestroyType DestroyType => DestroyType.Default;
+
+        virtual protected int AttackFrame => 1;
 
         public AbsKnight(PlaceObjectData placementData)
             : base(placementData)
@@ -45,14 +48,14 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                     if (tile.pCreature.hasValue)
                     {
                         var otherCreature = tile.pCreature.GetCreature();
-                        if (FactoryObjectLib.Get(otherCreature.GameObjectType).IsEnemyTarget(IsGoodSide))
+                        if (FactoryObjectLib.Get(otherCreature.FactoryObjectType).IsEnemyTarget(IsGoodSide))
                         {
                             if (otherCreature.pointer.objIndex > this.pointer.objIndex)
                             {
                                 //Havent done their attack yet
                                 otherCreature.CheckAttackAction(this);
                             }
-                            DestructionLaws.Destroy(otherCreature, tile, DestroyType.Default);
+                            DestructionLaws.Destroy(otherCreature, tile, DestroyType);
 
                             onAttack(placement);
                             return true;
@@ -62,11 +65,9 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                     if (IsGoodSide && tile.pMachine.hasValue)
                     {
                         var machine = tile.pMachine.GetMachine();
-                        if (FactoryObjectLib.Get(machine.GameObjectType).IsEnemyTarget(IsGoodSide))
+                        if (FactoryObjectLib.Get(machine.FactoryObjectType).IsEnemyTarget(IsGoodSide))
                         {
-                            //machine.DeleteMe();
-                            //tile.pMachine.hasValue = false;
-                            DestructionLaws.Destroy(machine, tile, DestroyType.Default);
+                            DestructionLaws.Destroy(machine, tile, DestroyType);
 
                             onAttack(placement);
                             return true;
@@ -87,13 +88,8 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                 if (other != pointer)
                 {
                     var otherCreature = other.GetCreature();
-                    if (FactoryObjectLib.Get(otherCreature.GameObjectType).IsEnemyTarget(IsGoodSide))
+                    if (FactoryObjectLib.Get(otherCreature.FactoryObjectType).IsEnemyTarget(IsGoodSide))
                     {
-                        //DestructionLaws.Destroy(otherCreature,
-                        //    BlackRef.mapData.tileGrid.Get(otherCreature.currentPos.tilePos), DestroyType.Default);
-
-                        //onAttack(currentPos);
-
                         preparedAttackers.Add(new TwoCreatures() { creature1 = this, creature2 = otherCreature });
                         return;
                     }
@@ -115,7 +111,7 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
         {
             currentPos.direction = attackPos.direction;
             nextPos = currentPos;
-            model.Frame = 1;
+            model.Frame = AttackFrame;
             refreshPos();
         }
 

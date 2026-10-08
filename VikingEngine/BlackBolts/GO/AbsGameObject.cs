@@ -26,7 +26,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         public ObjectPointer pResource = ObjectPointer.Empty;
         
 
-        abstract public FactoryObjectType GameObjectType { get; }
+        abstract public FactoryObjectType FactoryObjectType { get; }
 
         virtual public Vector3 ResourceOffset() { return Vector3.Zero; }
 

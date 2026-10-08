@@ -67,6 +67,13 @@ namespace VikingEngine.Core.BlackBolts.Data
                                 result = obj;
                             }
                             break;
+                        case FactoryObjectType.Dragon:
+                            {
+                                var obj = new Dragon(placementData);
+                                BlackRef.mapData.AddObject(obj);
+                                result = obj;
+                            }
+                            break;
                         case FactoryObjectType.BlackKnight:
                             {
                                 var obj = new BlackKnight(placementData);
@@ -126,7 +133,8 @@ namespace VikingEngine.Core.BlackBolts.Data
 
                     }
 
-                    if (result != null && placementData.includeItem)
+                    if (result != null && placementData.includeItem &&
+                        FactoryObjectLib.Get( placementData.component.objectType).includeResource != IncludeType.NoInclude)
                     {
                         Laws.ResourceLaws.TryCreateResource(placementData.mapPlacement.tilePos, placementData.resourceType);
                     }

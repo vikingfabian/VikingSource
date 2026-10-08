@@ -49,6 +49,6 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             return ResourcePos;
         }
-        public override FactoryObjectType GameObjectType => FactoryObjectType.Spin_plate;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.Spin_plate;
     }
 }

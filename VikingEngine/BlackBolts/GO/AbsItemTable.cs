@@ -41,7 +41,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         public ItemTable(PlaceObjectData placementData)
             : base(placementData, LootFest.VoxelModelName.bb_onetile, 0)
         { }
-        public override FactoryObjectType GameObjectType => FactoryObjectType.Table;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.Table;
 
         public override void ItemHandle(out bool mayPick, out bool mayDrop)
         {
@@ -99,7 +99,7 @@ namespace VikingEngine.Core.BlackBolts.GO
             mayDrop = false;
             mayPick = true;
         }
-        public override FactoryObjectType GameObjectType => FactoryObjectType.Dispencer;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.Dispencer;
     }
 
     class DeliveryPoint: AbsItemTable
@@ -133,7 +133,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             return ResourcePos;
         }
-        public override FactoryObjectType GameObjectType => FactoryObjectType.Delivery_point;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.Delivery_point;
     }
 
     class GarbageDisposal: AbsItemTable
@@ -167,7 +167,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         {
             return ResourcePos;
         }
-        public override FactoryObjectType GameObjectType => FactoryObjectType.Garbage_disposal;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.Garbage_disposal;
     }
 }
 

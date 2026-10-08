@@ -23,6 +23,6 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
             refreshPos();
         }
         protected override bool IsGoodSide => true;
-        public override FactoryObjectType GameObjectType => FactoryObjectType.WhiteKnight;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.WhiteKnight;
     }
 }

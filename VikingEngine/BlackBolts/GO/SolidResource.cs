@@ -13,6 +13,7 @@ namespace VikingEngine.Core.BlackBolts.GO
 
     class SolidResource : AbsGameObject
     {
+        const float Yadj = 0.04f;
         public bool onFloor = false;
 
         public SolidResource(PlaceObjectData placementData)
@@ -84,6 +85,7 @@ namespace VikingEngine.Core.BlackBolts.GO
                     frame = 14;
                     break;
                 case ResourceType.Job_knight:
+                    scale = 1.5f;
                     frame = 15;
                     break;
             }
@@ -92,6 +94,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         void refreshPos()
         {
             model.position = WP.TileToWp(currentPos.tilePos);
+            model.position.Y += Yadj;
         }
         public void placeResourceOnFloor(IntVector2 toPos)
         {
@@ -100,7 +103,7 @@ namespace VikingEngine.Core.BlackBolts.GO
             currentPos.refreshGroundY();
 
             model.position = WP.TileToWp(toPos);
-            model.position.Y = currentPos.groundY;
+            model.position.Y = currentPos.groundY + Yadj;
 
             nextPos = currentPos;
             onFloor = true;
@@ -116,7 +119,7 @@ namespace VikingEngine.Core.BlackBolts.GO
                 if (pM.hasValue)
                 {
                     var m = pM.GetMachine();
-                    if (m.GameObjectType == FactoryObjectType.Table)
+                    if (m.FactoryObjectType == FactoryObjectType.Table)
                     {
                         onFloor = false;
                         m.pResource = pointer;
@@ -126,6 +129,6 @@ namespace VikingEngine.Core.BlackBolts.GO
             }
         }
         
-        public override FactoryObjectType GameObjectType => FactoryObjectType.NUM_NONE;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.NUM_NONE;
     }
 }

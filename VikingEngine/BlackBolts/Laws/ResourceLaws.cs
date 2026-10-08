@@ -56,6 +56,50 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 }
             }
         }
+
+        public static void DropFluid(IntVector2 tilePos, ResourceType resourceType)
+        {
+            checkTileLoop.start(tilePos);
+
+            while (checkTileLoop.Next(out IntVector2 tryPos))
+            {
+                if (BlackRef.mapData.tileGrid.TryGet(tryPos, out Tile tile) &&
+                    (!tile.fluid.HasValue || tile.fluid.resourceType != resourceType))
+                {
+                    tile.fluid = new Fluid(resourceType);
+                    BlackRef.playScene.mapmodel.decalsNeedsUpdate = true;
+                    return;
+                }
+            }
+        }
+
+        public static void ConvertResource(IntVector2 tilePos, ResourceType convertType)
+        {
+            var tile = BlackRef.mapData.tileGrid.Get(tilePos);
+            if (tile.pResource.hasValue)
+            {
+                CategoryAndType conversion;
+                var res = tile.pResource.GetSolidResource();
+                switch (convertType)
+                {
+                    default:
+                        return;
+
+                    case ResourceType.Heat:
+                        conversion = ResourceLib.Get(res.placementData.resourceType).fireConvert;
+                        break;
+                }
+
+                tile.pResource.hasValue = false;
+                res.DeleteMe();
+                switch (conversion.category)
+                {
+                    case ObjectCategory.Resource:
+                        DispenceResource(tilePos, conversion.resource);
+                        break;
+                }
+            }
+        }
     }
 
     class CheckTileLoop

@@ -14,12 +14,13 @@ namespace VikingEngine.Core.BlackBolts.Data
         public ObjectDebugLevel debugLevel;
 
         public bool isSolid;
-        public bool isProffession;
+        public bool isJob;
 
         /// <summary>
         /// Reacts to being walked over
         /// </summary>
         public bool stompEffect;
+        
 
         public CategoryAndType fireConvert;
         public CategoryAndType cutConvert;
@@ -180,6 +181,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
+                isJob = true,
             };
             resourceProperties[(int)ResourceType.Job_worker] = new ResourceProperties()
             {
@@ -188,6 +190,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
+                isJob = true,
             };
 
         }

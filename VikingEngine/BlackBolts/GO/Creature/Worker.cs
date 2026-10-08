@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Render;
 using VikingEngine.Graphics;
@@ -20,7 +21,13 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
 
             refreshPos();
         }
-        public override FactoryObjectType GameObjectType =>  FactoryObjectType.GoblinWorker;
+        protected override void onJobItem(Tile tile, SolidResource job)
+        {
+            tile.pResource.hasValue = false;
+            job.DeleteMe();
+            DestructionLaws.ConvertCreature(this, tile, FactoryObjectType.BlackKnight);
+        }
+        public override FactoryObjectType FactoryObjectType =>  FactoryObjectType.GoblinWorker;
         public override bool WillMoveItems()
         {
             return true;

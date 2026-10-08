@@ -196,7 +196,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         var resource = pRes.GetSolidResource();
                         if (!resource.hasBeltMove)
                         {
-                            switch (mashinesC.sel.GameObjectType)
+                            switch (mashinesC.sel.FactoryObjectType)
                             {
                                 case FactoryObjectType.Belt:
                                     {
@@ -230,7 +230,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                     if (pMachine.hasValue)
                     {
                        var mashine =  pMachine.GetMachine();
-                        if (mashine.GameObjectType == FactoryObjectType.Spin_plate)
+                        if (mashine.FactoryObjectType == FactoryObjectType.Spin_plate)
                         {
                             resourcesC.sel.nextPos.Rotate(((SpinPlate)mashine).rotateDir);
                             resourcesC.sel.hasBeltMove = true;

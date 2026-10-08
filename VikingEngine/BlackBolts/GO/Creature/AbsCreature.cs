@@ -72,9 +72,13 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                 //Check stomp
                 if (stompSmear.HasValue)
                 {
-                    tile.fluid = stompSmear;
-                    BlackRef.playScene.mapmodel.decalsNeedsUpdate = true;
-                    stompSmear.amount--;
+                    if (tile.fluid.resourceType != stompSmear.resourceType ||
+                        tile.fluid.amount == 0)
+                    {
+                        tile.fluid = stompSmear;
+                        BlackRef.playScene.mapmodel.decalsNeedsUpdate = true;
+                        stompSmear.amount--;
+                    }
                 }
                 else if (tile.fluid.HasValue)
                 {
@@ -84,7 +88,8 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                 if (tile.pResource.hasValue)
                 {
                     var resource = tile.pResource.GetSolidResource();
-                    if (ResourceLib.Get(resource.placementData.resourceType).stompEffect)
+                    var resProp = ResourceLib.Get(resource.placementData.resourceType);
+                    if (resProp.stompEffect)
                     {
                         resource.DeleteMe();
                         tile.pResource.hasValue = false;
@@ -92,9 +97,16 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                         stompSmear = tile.fluid;
                         BlackRef.playScene.mapmodel.decalsNeedsUpdate = true;
                     }
+                    else if (resProp.isJob)
+                    {
+                        onJobItem(tile, resource);
+                    }
                 }
             }
         }
+
+        virtual protected void onJobItem(Tile tile, SolidResource job)
+        { }
 
         public bool NoMovement()
         {

@@ -133,7 +133,7 @@ namespace VikingEngine.Core.BlackBolts.Map
                 {
                     var machine = pMachine.GetMachine();
                     //offset = machine.ResourceOffset();
-                    return machine.WalkableTile() || (machine.GameObjectType == FactoryObjectType.Table && !machine.pResource.hasValue);
+                    return machine.WalkableTile() || (machine.FactoryObjectType == FactoryObjectType.Table && !machine.pResource.hasValue);
                 }
                 else
                 {

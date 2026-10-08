@@ -88,8 +88,12 @@ namespace VikingEngine.Core.BlackBolts.Data
             
             factoryObjectProperties[(int)FactoryObjectType.Dragon] = new FactoryObjectProperties()
             {
-                debugLevel = ObjectDebugLevel.Incomplete,
-            };
+                debugLevel = ObjectDebugLevel.Retail,
+                rotationType = RotationType.Dir4,
+                holdResourceType = HoldResourceType.NoResource,
+                includeResource = IncludeType.NoInclude,
+                isCreature = true,
+            }.AddTag(TargetTag.Evil, TargetTag.Hindering, TargetTag.Creature);
 
             factoryObjectProperties[(int)FactoryObjectType.WhiteKnight] = new FactoryObjectProperties()
             {

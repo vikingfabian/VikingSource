@@ -7,15 +7,14 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts.GO.Creature
 {
-    class NightDemon : AbsCreature
+    class NightDemon : AbsKnight
     {
         public NightDemon(PlaceObjectData placementData)
             : base(placementData)
         {
-            model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.goblin_worker], true);
-            //model.Color = Color.Green;
-            model.scale = new Vector3(1.2f * model.SizeToScale);
-            model.Color = Color.DarkMagenta;
+            model = new VoxelModelInstance(BlackRef.models.voxelModels[LootFest.VoxelModelName.bb_nightdemon], true);
+           
+            model.scale = new Vector3(1.4f * model.SizeToScale);
 
             refreshPos();
         }
@@ -23,6 +22,9 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
         {
             return false;
         }
-        public override FactoryObjectType GameObjectType => FactoryObjectType.NightDemon;
+        protected override DestroyType DestroyType => DestroyType.Void;
+        protected override int AttackFrame => 0;
+        protected override bool IsGoodSide => false;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.NightDemon;
     }
 }

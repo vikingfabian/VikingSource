@@ -133,8 +133,8 @@ namespace VikingEngine.Core.BlackBolts.GO
                             port.resourceType == ResourceType.Any)
                         {
                             var machine = inTile.pMachine.GetMachine();
-                            if ((machine.GameObjectType == FactoryObjectType.Belt ||
-                                machine.GameObjectType == FactoryObjectType.Floor_drop)
+                            if ((machine.FactoryObjectType == FactoryObjectType.Belt ||
+                                machine.FactoryObjectType == FactoryObjectType.Floor_drop)
                                 && machine.currentPos.direction == inputPos.direction)
                             {
                                 inTile.pResource.hasValue = false;
@@ -210,6 +210,6 @@ namespace VikingEngine.Core.BlackBolts.GO
             return false;
         }
 
-        public override FactoryObjectType GameObjectType => FactoryObjectType.IOunit;
+        public override FactoryObjectType FactoryObjectType => FactoryObjectType.IOunit;
     }
 }
