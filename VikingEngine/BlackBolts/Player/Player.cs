@@ -112,7 +112,7 @@ namespace VikingEngine.Core.BlackBolts.Player
         {
             var place = toolShop.placementData;
             place.mapPlacement.tilePos = cameraControl.tilePos;
-            ObjectBuilder.Create(place, true);
+            ObjectBuilder.Create(place, true, false);
             iodisplay.refresh(cameraControl.tilePos);
         }
 

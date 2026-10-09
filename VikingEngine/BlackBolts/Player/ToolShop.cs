@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
@@ -10,13 +11,21 @@ namespace VikingEngine.Core.BlackBolts.Player
     class ToolShop
     {
         public PlaceObjectData  placementData = new PlaceObjectData() { 
-            component = new ToolSetupComponent(FactoryObjectType.GoblinWorker), resourceType = ResourceType.Box };
+            component = new ToolSetupComponent(), resourceType = ResourceType.Box };
+
+
+        public ToolShop()
+        {
+            placementData.component = BlackRef.missionSetup.componentList.First();
+            placementData.spawn = FactoryObjectType.WhiteKnight;
+        }
 
         public void selectTool(ToolSetupComponent objectType)
         {
+            
             placementData.machineId.hasValue = false;
             placementData.component = objectType;
-            placementData.spawn = FactoryObjectType.WhiteKnight;
+            
             checkToolDir();
         }
 

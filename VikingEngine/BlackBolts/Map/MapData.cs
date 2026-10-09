@@ -25,7 +25,7 @@ namespace VikingEngine.Core.BlackBolts.Map
         public SpottedArray<CreatureSpawner> spawnerList = new SpottedArray<CreatureSpawner>(8);
         public Grid2D_L<Tile> tileGrid;
 
-        List<PlaceObjectData> restorePoint = new List<PlaceObjectData>(1024);
+        //List<PlaceObjectData> restorePoint = new List<PlaceObjectData>(1024);
 
         public MapData(IntVector2 size)
         {
@@ -36,6 +36,8 @@ namespace VikingEngine.Core.BlackBolts.Map
             {
                 tileGrid.array[i] = new Tile();
             }
+
+            RestoreMap();
         }
 
         public void AddObject(AbsCreature go)
@@ -97,24 +99,37 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public void CreateStorePoint()
         {
-            restorePoint.Clear();
+            BlackRef.storage.restorePoint.Clear();
 
             var creatureC = creatureList.counter();
             while (creatureC.Next())
             {
-                restorePoint.Add(creatureC.sel.placementData);
+                BlackRef.storage.restorePoint.Add(creatureC.sel.placementData);
             }
 
             var machineC = machineList.counter();
             while (machineC.Next())
             {
-                restorePoint.Add(machineC.sel.placementData);
+                BlackRef.storage.restorePoint.Add(machineC.sel.placementData);
             }
 
             var spawnC = spawnerList.counter();
             while (spawnC.Next())
             {
-                restorePoint.Add(spawnC.sel.placementData);
+                BlackRef.storage.restorePoint.Add(spawnC.sel.placementData);
+            }
+
+            ForXYLoop loop = new ForXYLoop(tileGrid.Size);
+            while (loop.Next())
+            {
+                if (tileGrid.GetRef(loop.Position).tileEffect == TileEffect.NoBuildZone)
+                {
+                    BlackRef.storage.restorePoint.Add(new PlaceObjectData()
+                    {
+                        mapPlacement = new MapPlacement(loop.Position, Dir4.N),
+                        component = new Mission.ToolSetupComponent(FactoryObjectType.NoBuildZone),
+                    });
+                }
             }
         }
 
@@ -134,12 +149,16 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public void RestoreMap()
         {
-            foreach (var p in restorePoint)
+            foreach (var p in BlackRef.storage.restorePoint)
             {
-                ObjectBuilder.Create(p, false);
+                ObjectBuilder.Create(p, false, false);
+                if (p.locked)
+                {
+                    tileGrid.Get(p.mapPlacement.tilePos).isLocked = true;
+                }
             }
 
-            restorePoint.Clear();
+            BlackRef.storage.restorePoint.Clear();
         }
     }
 
@@ -147,6 +166,7 @@ namespace VikingEngine.Core.BlackBolts.Map
 
     class Tile
     {
+        public bool isLocked = false;
         public TileType tileType = TileType.Floor;
         public TileEffect tileEffect = TileEffect.None;
         public ObjectPointer pCreature = ObjectPointer.Empty;
@@ -157,7 +177,7 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public bool IsEmpty()
         { 
-            return pCreature.hasValue == false && pMachine.hasValue == false;
+            return pCreature.hasValue == false && pMachine.hasValue == false && tileEffect == TileEffect.None;
         }
 
         public bool canPlaceResource(/*out Vector3 offset*/)
@@ -189,26 +209,26 @@ namespace VikingEngine.Core.BlackBolts.Map
             return 0;
         }
 
-        public PlaceObjectData? ClearTile()
+        public void ClearTile()
         {
-            PlaceObjectData? result = null; 
+            
             if (pCreature.hasValue)
             {
                 var obj = pCreature.GetCreature();
-                result = obj.placementData;
+                //result = obj.placementData;
                 obj.DeleteMe();
                 pCreature.hasValue = false;
             }
-            else if (pMachine.hasValue)
+            if (pMachine.hasValue)
             {
                 var obj = pMachine.GetMachine();
                 if (obj != null)
                 {
-                    result = obj.placementData;
+                    //result = obj.placementData;
                     obj.DeleteMe();
                     DestructionLaws.RemoveMachineMapPointers(obj);
                 }
-                //pMachine.hasValue = false;
+                pMachine.hasValue = false;
             }
 
             if (pResource.hasValue)
@@ -220,7 +240,12 @@ namespace VikingEngine.Core.BlackBolts.Map
 
             fluid.clear();
 
-            return result;
+
+
+            tileEffect = TileEffect.None;
+             isLocked = false;
+
+            //return result;
         }
     }
 

@@ -11,13 +11,14 @@ namespace VikingEngine.Core.BlackBolts
         public LoadMissionScene()
             : base(true)
         {
-            missionSetup = new SandboxSetup();
+            missionSetup = new WhiteKnightSetup();
+            missionSetup.LoadMissionMap();
         }
 
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
-            new BlackPlayScene(missionSetup);
+            new BlackPlayScene();
         }
     }
 }

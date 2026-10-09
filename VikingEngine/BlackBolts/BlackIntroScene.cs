@@ -15,6 +15,7 @@ namespace VikingEngine.Core.BlackBolts
             new Models();
             FactoryObjectLib.init();
             ResourceLib.Init();
+            new MapStorage();
         }
         public override void Time_Update(float time)
         {

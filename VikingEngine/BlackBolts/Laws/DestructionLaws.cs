@@ -22,7 +22,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 { 
                     mapPlacement = target.currentPos, 
                     component = new Mission.ToolSetupComponent(convertTo)
-                }, false);
+                }, false, true);
 
             if (tile.pCreature.hasValue)
             { 
@@ -91,6 +91,10 @@ namespace VikingEngine.Core.BlackBolts.Laws
             ForXYLoop loop = new ForXYLoop(MapPlacement.CoverArea(target.placementData.mapPlacement, target.tilesize));
             while (loop.Next())
             {
+                if (!BlackRef.mapData.tileGrid.Get(loop.Position).pMachine.hasValue)
+                {
+                    throw new Exception();
+                }
                 BlackRef.mapData.tileGrid.Get(loop.Position).pMachine.hasValue = false;
             }
         }

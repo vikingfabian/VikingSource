@@ -53,7 +53,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
             if (player.editMode)
             {
-                var mission = BlackRef.playScene.missionSetup;
+                var mission = BlackRef.missionSetup;
 
                 HudLib.Label(content, "Component");
                 content.newLine();
@@ -70,7 +70,8 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
                 var toolProp = player.toolShop.placementData.component.properties();
 
-                if (toolProp.holdResourceType != HoldResourceType.NoResource)
+                if (toolProp.holdResourceType != HoldResourceType.NoResource && 
+                    BlackRef.missionSetup.IsSandbox)
                 {
                     content.newParagraph();
                     if (toolProp.includeResource == IncludeType.Optional)
@@ -120,7 +121,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
                 content.newParagraph();
                 HudLib.Label(content, "Machine");
                 
-                foreach (var io in BlackRef.playScene.missionSetup.ioUnits)
+                foreach (var io in BlackRef.missionSetup.ioUnits)
                 {
                     content.newLine();
                     content.Add(new ArtOption(io.id == player.toolShop.placementData.machineId, 
@@ -167,9 +168,13 @@ namespace VikingEngine.Core.BlackBolts.Interface
             content.Add(new RbSeperationLine());
             content.newParagraph();
 
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Save") }, new RbAction(BlackRef.storage.Save), null));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Load") }, new RbAction1Arg<bool>(BlackRef.storage.Load, true), null));
+
+            content.newParagraph();
             content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Reset") }, new RbAction(() =>
             {
-                new BlackPlayScene(BlackRef.playScene.missionSetup);    
+                new BlackPlayScene();    
             }), null){fillWidth=true});
 
             content.newLine();

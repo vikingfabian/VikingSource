@@ -74,13 +74,16 @@ namespace VikingEngine.Core.BlackBolts.Interface
                 tile.pMachine.hasValue)
             {
                 var match = tile.pMachine.GetMachine();
-                if (match.RefreshUiDisplay(this))
+                if (match != null)
                 {
-                    currentDisplayObj = match;
-                }
-                else
-                {
-                    currentDisplayObj = null;
+                    if (match.RefreshUiDisplay(this))
+                    {
+                        currentDisplayObj = match;
+                    }
+                    else
+                    {
+                        currentDisplayObj = null;
+                    }
                 }
             }
         }

@@ -16,6 +16,18 @@ namespace VikingEngine.Core.BlackBolts.Map
             this.direction = direction;
         }
 
+        public void write(System.IO.BinaryWriter w)
+        {
+            tilePos.writeUshort(w);
+            w.Write((byte)direction);
+        }
+
+        public void read(System.IO.BinaryReader r, int version)
+        {
+            tilePos.readUshort(r);
+            direction = (Dir4)r.ReadByte();
+        }
+
         public static Rectangle2 CoverArea(MapPlacement mapPlacement, IntVector2 tilesize)
         {
             Rectangle2 area = new Rectangle2(mapPlacement.tilePos, tilesize);
@@ -34,8 +46,6 @@ namespace VikingEngine.Core.BlackBolts.Map
                         area.pos -= area.size - 1;
                         break;
                 }
-
-
             }
 
             return area;

@@ -199,6 +199,11 @@ namespace VikingEngine.Core.BlackBolts.Data
                 holdResourceType = HoldResourceType.NoResource,
                 includeResource = IncludeType.NoInclude,
             }.AddTag(TargetTag.Evil, TargetTag.Hindering);
+
+            factoryObjectProperties[(int)FactoryObjectType.NoBuildZone] = new FactoryObjectProperties()
+            {
+                debugLevel = ObjectDebugLevel.Retail,
+            };
         }
     }
 

@@ -77,14 +77,15 @@ namespace VikingEngine.Core.BlackBolts.GO
                 {
                     float from = WP.DirToAngle(currentPos.direction);
                     float to = WP.DirToAngle(nextPos.direction);
-                    if (to < from)
-                    {
-                        to += MathExt.Tau;
-                    }
-                    else if (to - from > MathExt.TauOver2)
-                    {
-                        to -= MathExt.Tau;
-                    }
+                    var diff = Rotation1D.AngleDifference(from, to);
+                    //if (to < from && to == 0)
+                    //{
+                    //    to += MathExt.Tau;
+                    //}
+                    //else if (to - from > MathExt.TauOver2)
+                    //{
+                    //    to -= MathExt.Tau;
+                    //}
 
                     WP.Rotation1DToQuaterion(model, from * (1 - tween) + to * tween);
                 }

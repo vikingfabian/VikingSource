@@ -158,10 +158,8 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
             if (spawner.hasValue)
             {
                 var spawnerObj = BlackRef.mapData.spawnerList.GetIndex_Safe(spawner.objIndex);
-                if (spawnerObj != null)
-                {
-                    spawnerObj.needRespawn = true;
-                }
+                spawnerObj?.SetRespawn();
+                
             }
         }
     }

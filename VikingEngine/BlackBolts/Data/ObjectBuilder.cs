@@ -5,6 +5,7 @@ using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.Core.BlackBolts.GO.Creature;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Player;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.Core.BlackBolts.Data
 {
@@ -12,12 +13,19 @@ namespace VikingEngine.Core.BlackBolts.Data
     {
         
 
-        public static AbsGameObject Create(PlaceObjectData placementData, bool toggleDestroy)
+        public static AbsGameObject Create(PlaceObjectData placementData, bool toggleDestroy, bool iscreatureSpawn)
         {
             AbsGameObject result = null;
             if (BlackRef.mapData.tileGrid.TryGet(placementData.mapPlacement.tilePos, out var tile))
             {
-                if (tile.IsEmpty())
+                if (tile.isLocked && !iscreatureSpawn)
+                {
+                    return null;
+                }
+
+                bool empty = iscreatureSpawn ? !tile.pCreature.hasValue : tile.IsEmpty();
+
+                if (empty)
                 {
                    
                     switch (placementData.component.objectType)
@@ -177,7 +185,10 @@ namespace VikingEngine.Core.BlackBolts.Data
                                 result = obj;
                             }
                             break;
-
+                        case FactoryObjectType.NoBuildZone:
+                            tile.tileEffect = TileEffect.NoBuildZone;
+                            BlackRef.playScene.mapmodel.floorNeedsUpdate = true;
+                            break;
                     }
 
                     if (result != null && placementData.includeItem &&
@@ -187,9 +198,23 @@ namespace VikingEngine.Core.BlackBolts.Data
                     }
                     //return true;
                 }
-                else
-                { 
+                else if (toggleDestroy)
+                {
+                    if (tile.tileEffect != TileEffect.None)
+                    {
+                        BlackRef.playScene.mapmodel.floorNeedsUpdate = true;
+                    }
                     tile.ClearTile();
+
+                    var spawnerC = BlackRef.mapData.spawnerList.counter();
+                    while (spawnerC.Next())
+                    {
+                        if (spawnerC.sel.placementData.mapPlacement.tilePos == placementData.mapPlacement.tilePos)
+                        {
+                            spawnerC.sel.DeleteMe();
+                            break;
+                        }
+                    }
                 }
             }
             return result;

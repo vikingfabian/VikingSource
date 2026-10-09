@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.Core.BlackBolts.Mission
 {
@@ -9,25 +10,32 @@ namespace VikingEngine.Core.BlackBolts.Mission
 
     abstract class AbsMissionSetup
     {
+        public IntVector2 mapSize = new IntVector2(25, 20);
+        public string missionName;
         public List<ToolSetupComponent> componentList;
         public List<IOTemplate> ioUnits;
-    }
 
-    class SandboxSetup : AbsMissionSetup
-    {
-        public SandboxSetup()
+        public AbsMissionSetup()
         {
-            componentList = new List<ToolSetupComponent>((int)FactoryObjectType.NUM_NONE);
+            BlackRef.missionSetup = this;
+        }
 
-            for (FactoryObjectType fobj = 0; fobj < FactoryObjectType.NUM_NONE; fobj++)
+        public void LoadMissionMap()
+        {
+            if (!IsSandbox)
             {
-                if (FactoryObjectLib.Get(fobj).debugLevel > ObjectDebugLevel.Incomplete)
+                BlackRef.storage.Load(false);
+                for(int i = 0; i < BlackRef.storage.restorePoint.Count; ++i)//each (var m in BlackRef.storage.restorePoint)
                 {
-                    componentList.Add(new ToolSetupComponent(fobj));
+                    var m = BlackRef.storage.restorePoint[i];
+                    m.locked = true;
+                    BlackRef.storage.restorePoint[i] = m;
                 }
             }
+        }
 
-            ioUnits = new List<IOTemplate>(8);
+        protected void mission1units()
+        {
             {
                 IOTemplate template = new IOTemplate() { name = "Heater", tilesize = new IntVector2(1, 1) };
                 template.ports.Add(new IO_port(true, new Map.MapPlacement(IntVector2.Zero, Dir4.S),
@@ -88,12 +96,85 @@ namespace VikingEngine.Core.BlackBolts.Mission
 
                 ioUnits.Add(template);
             }
-            //ioUnits = new List<IOTemplate> { chickenSeperator, duplicator };
+
             foreach (var io in ioUnits)
             {
                 io.buildModel();
                 io.buildId();
             }
         }
+
+        virtual public bool IsSandbox => false;
     }
+
+    class TutorialSetup : AbsMissionSetup
+    {
+        public TutorialSetup()
+             :base()
+        {
+            missionName = "tutorial";
+
+            componentList = new List<ToolSetupComponent>
+            {
+                new ToolSetupComponent( FactoryObjectType.Spin_plate),
+                new ToolSetupComponent( FactoryObjectType.Belt),
+                new ToolSetupComponent( FactoryObjectType.Table),
+                new ToolSetupComponent( FactoryObjectType.Floor_drop),
+            };
+
+            ioUnits = new List<IOTemplate>(0);
+        }
+
+    }
+    class WhiteKnightSetup : AbsMissionSetup
+    {
+        public WhiteKnightSetup()
+             : base()
+        {
+            missionName = "whiteknight";
+
+            componentList = new List<ToolSetupComponent>
+            {
+                new ToolSetupComponent( FactoryObjectType.Spin_plate),
+                new ToolSetupComponent( FactoryObjectType.Belt),
+                new ToolSetupComponent( FactoryObjectType.Table),
+                new ToolSetupComponent( FactoryObjectType.Floor_drop),
+                new ToolSetupComponent( FactoryObjectType.Stone_pillar),
+            };
+
+            ioUnits = new List<IOTemplate>(8);
+            mission1units();
+        }
+
+    }
+
+    class SandboxSetup : AbsMissionSetup
+    {
+        public SandboxSetup()
+            :base()
+        {
+            missionName = "sandbox";
+            mapSize = new IntVector2(25, 20);
+            componentList = new List<ToolSetupComponent>((int)FactoryObjectType.NUM_NONE);
+
+            for (FactoryObjectType fobj = 0; fobj < FactoryObjectType.NUM_NONE; fobj++)
+            {
+                if (FactoryObjectLib.Get(fobj).debugLevel > ObjectDebugLevel.Incomplete)
+                {
+                    componentList.Add(new ToolSetupComponent(fobj));
+                }
+            }
+
+            ioUnits = new List<IOTemplate>(8);
+            mission1units();
+
+            
+        }
+
+       
+
+        public override bool IsSandbox => true;
+    }
+
+    
 }

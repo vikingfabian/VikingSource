@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Mission;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts
@@ -12,15 +13,19 @@ namespace VikingEngine.Core.BlackBolts
     {
         Player.Player player;
         public MapModel mapmodel;
-        public AbsMissionSetup missionSetup;
-        public BlackPlayScene(AbsMissionSetup missionSetup)
+
+        public MessageGroup_Editor messages;
+
+
+        public BlackPlayScene()
             : base(true)
         {
-            this.missionSetup = missionSetup;
+            messages = new MessageGroup_Editor();
             BlackRef.playScene = this;
-            MapData floorData = new MapData(new IntVector2(20, 20));
             mapmodel = new MapModel();
+            MapData floorData = new MapData(BlackRef.missionSetup.mapSize);
             player = new Player.Player();
+
 
             //Mesh centerCube = new Mesh(LoadedMesh.cube_repeating, Vector3.Zero, Vector3.One, TextureEffectType.Flat, SpriteName.NextFrame, Color.White);
 
@@ -31,6 +36,9 @@ namespace VikingEngine.Core.BlackBolts
             base.Time_Update(time);
             player.update();
             mapmodel.update();
+
+            bool mouseOverHud = false;
+            messages.Update(ref mouseOverHud);
         }
 
     }

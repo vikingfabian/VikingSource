@@ -135,7 +135,8 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         foreach (var dir in IntVector2.Dir4Array)
                         {
                             var nPos = dir + pos;
-                            if (!checkedTiles.Contains(nPos))
+                            if (!checkedTiles.Contains(nPos) &&
+                                 BlackRef.mapData.tileGrid.InBounds(nPos))
                             {
                                 CheckItemOrder.Add(nPos);
                             }

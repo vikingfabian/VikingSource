@@ -22,7 +22,7 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
         }
         override public void refreshAnimation()
         {
-            animation = new Animation(2, 5, 120);
+            animation = new Animation(2, 5, 160);
         }
         public override bool CheckAttackAction(AbsCreature counterAttackFrom)
         {
@@ -65,12 +65,15 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                     if (IsGoodSide && tile.pMachine.hasValue)
                     {
                         var machine = tile.pMachine.GetMachine();
-                        if (FactoryObjectLib.Get(machine.FactoryObjectType).IsEnemyTarget(IsGoodSide))
+                        if (machine != null)
                         {
-                            DestructionLaws.Destroy(machine, tile, DestroyType);
+                            if (FactoryObjectLib.Get(machine.FactoryObjectType).IsEnemyTarget(IsGoodSide))
+                            {
+                                DestructionLaws.Destroy(machine, tile, DestroyType);
 
-                            onAttack(placement);
-                            return true;
+                                onAttack(placement);
+                                return true;
+                            }
                         }
                     }
                 }

@@ -8,13 +8,15 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
 {
     class CreatureSpawner : AbsGameObject
     {
-        public bool needRespawn = false;
+        int spawnCountDown = 0;
+        bool needRespawn = false;
 
         public CreatureSpawner(PlaceObjectData placementData)
             : base(placementData)
         {
             pointer = new ObjectPointer() { hasValue = true, objIndex = BlackRef.mapData.spawnerList.Add(this) };
             BlackRef.mapData.tileGrid.Get(placementData.mapPlacement.tilePos).tileEffect = Map.TileEffect.Spawner;
+
 
             BlackRef.playScene.mapmodel.floorNeedsUpdate = true;
         }
@@ -26,6 +28,12 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
             BlackRef.mapData.spawnerList.RemoveAt(pointer.objIndex);
 
             BlackRef.playScene.mapmodel.floorNeedsUpdate = true;
+        }
+
+        public void SetRespawn()
+        {
+            needRespawn = true;
+            spawnCountDown = 1;
         }
 
         public override bool RefreshUiDisplay(IOdisplay display)
@@ -41,7 +49,11 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
 
         public void OnCycleStart()
         {
-            if (needRespawn)
+            if (spawnCountDown > 0)
+            {
+                spawnCountDown--;
+            }
+            else if (needRespawn)
             {
                 spawn();                
             }
@@ -51,13 +63,13 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
         {
             PlaceObjectData place = placementData;
             place.component = new Mission.ToolSetupComponent(placementData.spawn);
-            var creature = ObjectBuilder.Create(placementData, false) as AbsCreature;
+            var creature = ObjectBuilder.Create(place, false, true) as AbsCreature;
             if (creature != null)
             {
+                creature.refreshAnimation();
                 creature.spawner = pointer;
+                needRespawn = false;
             }
-
-            needRespawn = false;
         }
 
         public override FactoryObjectType FactoryObjectType => FactoryObjectType.CreatureSpawner;

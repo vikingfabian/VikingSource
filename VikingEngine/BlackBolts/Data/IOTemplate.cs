@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.Core.BlackBolts.Map;
@@ -79,9 +80,31 @@ namespace VikingEngine.Core.BlackBolts.Data
             return !(left == right);
         }
 
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(hasValue);
+            if (hasValue)
+            {
+                w.Write(inputHash);
+                w.Write(outputHash);
+                w.Write(mashineHash);
+            }
+        }
+
+        public void read(System.IO.BinaryReader r, int version)
+        {
+            hasValue = r.ReadBoolean();
+            if (hasValue)
+            {
+                inputHash = r.ReadInt32();
+                outputHash = r.ReadInt32();
+                mashineHash = r.ReadInt32();
+            }
+        }
+
         public IOTemplate GetTemplate()
         {
-            foreach (var m in BlackRef.playScene.missionSetup.ioUnits)
+            foreach (var m in BlackRef.missionSetup.ioUnits)
             {
                 if (this.Equals(m.id))
                 {

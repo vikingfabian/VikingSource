@@ -19,7 +19,8 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         public MapModel()
         {
-            beginGenerateFloorModel();
+            floorNeedsUpdate = true;
+            //beginGenerateFloorModel();
         }
 
         public void update()
@@ -51,6 +52,7 @@ namespace VikingEngine.Core.BlackBolts.Map
 
         void generateAsynch()
         {
+            PcgRandom rnd = new PcgRandom(1);
             IntVector2 pos = IntVector2.Zero;
             List<PolygonColor> polygons = new List<PolygonColor>();
             //Tiles
@@ -58,15 +60,17 @@ namespace VikingEngine.Core.BlackBolts.Map
             {
                 for (pos.X = 0; pos.X < BlackRef.mapData.Size.X; ++pos.X)
                 {
+                    rnd.SetSeed(pos.GetHashCode());
+
                     var tile = BlackRef.mapData.tileGrid.Get(pos);
                     SpriteName sprite;
                     switch (tile.tileEffect)
                     {
                         default:
-                            sprite = (SpriteName)((int)SpriteName.bb_floor1 + Ref.rnd.Int(4));
+                            sprite = (SpriteName)((int)SpriteName.bb_floor1 + rnd.Int(4));
                             break;
                         case TileEffect.NoBuildZone:
-                            sprite = (SpriteName)((int)SpriteName.bb_noBuildZone1 + Ref.rnd.Int(2));
+                            sprite = (SpriteName)((int)SpriteName.bb_noBuildZone1 + rnd.Int(2));
                             break;
                         case TileEffect.Spawner:
                             sprite = SpriteName.bb_spawnwarning_texture;

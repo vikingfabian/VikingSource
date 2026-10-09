@@ -9,6 +9,16 @@ namespace VikingEngine.Core.BlackBolts.Mission
     {
         public FactoryObjectType objectType;
 
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)objectType);
+        }
+
+        public void read(System.IO.BinaryReader r, int version)
+        {
+            objectType = (FactoryObjectType)r.ReadByte();
+        }
+
         public ToolSetupComponent(FactoryObjectType objectType)
         {
             this.objectType = objectType;

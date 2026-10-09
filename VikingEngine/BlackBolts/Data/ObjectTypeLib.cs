@@ -43,7 +43,6 @@ namespace VikingEngine.Core.BlackBolts.Data
         NightDemon,
         Dragon,
         WhiteKnight,
-
         Belt_dispencer,
         Belt,
         Spin_plate,
@@ -54,8 +53,10 @@ namespace VikingEngine.Core.BlackBolts.Data
         Delivery_point,
         Garbage_disposal,
         Stone_pillar,
-
         IOunit,
+
+        NoBuildZone,
+
         NUM_NONE
     }
 
