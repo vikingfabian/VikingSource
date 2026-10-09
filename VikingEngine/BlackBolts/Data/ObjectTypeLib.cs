@@ -37,25 +37,22 @@ namespace VikingEngine.Core.BlackBolts.Data
 
     enum FactoryObjectType
     {
-
+        CreatureSpawner,
         GoblinWorker,
         BlackKnight,
         NightDemon,
         Dragon,
         WhiteKnight,
-        
+
+        Belt_dispencer,
         Belt,
         Spin_plate,
+        Floor_drop,
         Table,
         //Floor_pick,
         Dispencer,
         Delivery_point,
-
         Garbage_disposal,
-
-        Floor_drop,
-        Belt_dispencer,
-
         Stone_pillar,
 
         IOunit,
@@ -77,7 +74,7 @@ namespace VikingEngine.Core.BlackBolts.Data
         Bone,
         Grilled_meat,
         Dragon_egg,
-        Void_egg,
+        Night_egg,
         Magic_crystal,
         Fire_crystal,
         Void_cube,

@@ -14,5 +14,6 @@ namespace VikingEngine.Core.BlackBolts.Data
         public bool includeItem;
         public ResourceType resourceType;
         public MachineId machineId;
+        public FactoryObjectType spawn;
     }
 }

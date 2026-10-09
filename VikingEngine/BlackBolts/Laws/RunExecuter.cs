@@ -34,6 +34,12 @@ namespace VikingEngine.Core.BlackBolts.Laws
             {
                 creaturesC.sel.refreshAnimation();
             }
+
+            var spawnC = BlackRef.mapData.spawnerList.counter();
+            while (spawnC.Next())
+            {
+                spawnC.sel.OnRunStart();
+            }
         }
 
         void resetTime()
@@ -129,6 +135,11 @@ namespace VikingEngine.Core.BlackBolts.Laws
                     break;
 
                 case RunStep.BeginMove:
+                    var spawnC = BlackRef.mapData.spawnerList.counter();
+                    while (spawnC.Next())
+                    {
+                        spawnC.sel.OnCycleStart();
+                    }
                     resetTime();
                     step++;
                     break;

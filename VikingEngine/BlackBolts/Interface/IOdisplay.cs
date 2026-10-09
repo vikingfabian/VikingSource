@@ -73,16 +73,46 @@ namespace VikingEngine.Core.BlackBolts.Interface
             if (BlackRef.mapData.tileGrid.TryGet(tilepos, out var tile) &&
                 tile.pMachine.hasValue)
             {
-                var mach = tile.pMachine.GetMachine();
-                if (mach.RefreshUiDisplay(this))
+                var match = tile.pMachine.GetMachine();
+                if (match.RefreshUiDisplay(this))
                 {
-                    currentDisplayObj = mach;
+                    currentDisplayObj = match;
                 }
                 else
                 {
                     currentDisplayObj = null;
                 }
             }
+        }
+
+        public void AddSpawn(MapPlacement mapPlacement)
+        {
+            IOInputDisplayMember displayMember = new IOInputDisplayMember()
+            {
+                tileCenter = WP.TileToWp(mapPlacement.tilePos),
+            };
+
+            displayMember.icons = new List<ImageAndOffset>(2);
+            
+            var arrow = new ImageAndOffset()
+            {
+                image = new Image(SpriteName.cmdAttackDirectionWhite, Vector2.Zero, Engine.Screen.IconSizeV2 * 1.5f, ImageLayers.Foreground5, true),
+                offset = Vector2.Zero,
+            };
+            arrow.image.Color = Color.LightGreen;
+            arrow.image.Rotation = Rotation1D.FromDir4(mapPlacement.direction).radians /*+ MathExt.TauOver2*/;
+               
+            displayMember.icons.Add(arrow);
+            
+            var shadow = new ImageAndOffset()
+            {
+                image = new Image(SpriteName.WhiteCirkle, Vector2.Zero, Engine.Screen.IconSizeV2 * 1f, ImageLayers.Foreground6, true),
+                offset = Vector2.Zero,
+            };
+            shadow.image.ColorAndAlpha(Color.Black, 0.5f);
+            displayMember.icons.Add(shadow);
+
+            inputs.Add(displayMember);
         }
 
         public void AddInput(IO_port port)

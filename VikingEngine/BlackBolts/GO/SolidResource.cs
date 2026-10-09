@@ -50,7 +50,7 @@ namespace VikingEngine.Core.BlackBolts.GO
                 case ResourceType.Dragon_egg:
                     frame = 4;
                     break;
-                case ResourceType.Void_egg:
+                case ResourceType.Night_egg:
                     frame = 5;
                     break;
                 case ResourceType.Magic_crystal:

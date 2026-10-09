@@ -9,9 +9,6 @@ namespace VikingEngine.Core.BlackBolts.Player
 {
     class ToolShop
     {
-        //public Dir4 toolDir = Dir4.S;
-        //public GameObjectType selectedObjectType = GameObjectType.Worker;
-        //public ResourceType selectedResourceType = ResourceType.Box;
         public PlaceObjectData  placementData = new PlaceObjectData() { 
             component = new ToolSetupComponent(FactoryObjectType.GoblinWorker), resourceType = ResourceType.Box };
 
@@ -19,6 +16,7 @@ namespace VikingEngine.Core.BlackBolts.Player
         {
             placementData.machineId.hasValue = false;
             placementData.component = objectType;
+            placementData.spawn = FactoryObjectType.WhiteKnight;
             checkToolDir();
         }
 

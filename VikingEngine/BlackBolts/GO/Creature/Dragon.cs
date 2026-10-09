@@ -6,7 +6,6 @@ using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Render;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.Data.Property;
 

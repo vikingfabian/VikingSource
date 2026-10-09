@@ -23,8 +23,7 @@ namespace VikingEngine.Core.BlackBolts.GO
         public IntVector2 tilesize = IntVector2.One;
 
         public bool lockItem = false;
-        public ObjectPointer pResource = ObjectPointer.Empty;
-        
+        public ObjectPointer pResource = ObjectPointer.Empty;        
 
         abstract public FactoryObjectType FactoryObjectType { get; }
 
@@ -115,6 +114,7 @@ namespace VikingEngine.Core.BlackBolts.GO
                 resource.DeleteMe();
             }
         }
+
     }
 
 

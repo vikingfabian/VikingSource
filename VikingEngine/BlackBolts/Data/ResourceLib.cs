@@ -83,7 +83,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                 cutConvert = new CategoryAndType(ResourceType.Poop),
                 fireConvert = new CategoryAndType(FactoryObjectType.Dragon),
             };
-            resourceProperties[(int)ResourceType.Void_egg] = new ResourceProperties()
+            resourceProperties[(int)ResourceType.Night_egg] = new ResourceProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_voidegg,

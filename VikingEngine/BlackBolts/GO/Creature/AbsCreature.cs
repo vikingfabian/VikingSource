@@ -17,6 +17,8 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
         public Fluid stompSmear = Fluid.Empty;
         protected Animation animation;
 
+        public ObjectPointer spawner = ObjectPointer.Empty;
+
         public AbsCreature(PlaceObjectData placementData)
             : base(placementData)
         {
@@ -59,7 +61,7 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
             RefreshResourcePos();
         }
 
-        public void FinalizeMove()
+        virtual public void FinalizeMove()
         {
             bool didMove = currentPos.tilePos != nextPos.tilePos;
             currentPos = nextPos;
@@ -152,6 +154,15 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
         {
             base.DeleteMe();
             BlackRef.mapData.creatureList.RemoveAt(pointer.objIndex);
+
+            if (spawner.hasValue)
+            {
+                var spawnerObj = BlackRef.mapData.spawnerList.GetIndex_Safe(spawner.objIndex);
+                if (spawnerObj != null)
+                {
+                    spawnerObj.needRespawn = true;
+                }
+            }
         }
     }
 }

@@ -12,20 +12,67 @@ namespace VikingEngine.Core.BlackBolts.Data
     {
         
 
-        public static void Create(PlaceObjectData placementData, bool toggleDestroy)
+        public static AbsGameObject Create(PlaceObjectData placementData, bool toggleDestroy)
         {
+            AbsGameObject result = null;
             if (BlackRef.mapData.tileGrid.TryGet(placementData.mapPlacement.tilePos, out var tile))
             {
                 if (tile.IsEmpty())
                 {
-                    AbsGameObject result = null;
+                   
                     switch (placementData.component.objectType)
                     {
 
                         case FactoryObjectType.IOunit:
                             {
+                                bool canPlace = true;
                                 var obj = new IO_unit(placementData);
-                                BlackRef.mapData.AddObject(obj);
+
+                                if (obj.tilesize.SideLength() > 1)
+                                {
+                                    //Check is inside bounds
+                                    //Check for locked tiles
+                                    //Delete objects in the way
+                                   
+                                    ForXYLoop loop = new ForXYLoop( MapPlacement.CoverArea(obj.placementData.mapPlacement, obj.tilesize));
+                                    while (loop.Next())
+                                    {
+                                        if (BlackRef.mapData.tileGrid.TryGet(loop.Position, out var checkTile))
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            canPlace = false;
+                                            break;
+                                        }
+                                    }
+
+                                    if (canPlace)
+                                    {
+                                        loop.Reset();
+                                        while (loop.Next())
+                                        {
+                                            BlackRef.mapData.tileGrid.Get(loop.Position).ClearTile();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        obj.DeleteMe();
+                                    }
+                                }
+
+                                if (canPlace)
+                                {
+                                    BlackRef.mapData.AddObject(obj);
+                                    result = obj;
+                                }
+                            }
+                            break;
+
+                        case FactoryObjectType.CreatureSpawner:
+                            {
+                                var obj = new CreatureSpawner(placementData);
                                 result = obj;
                             }
                             break;
@@ -145,7 +192,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                     tile.ClearTile();
                 }
             }
-            //return false;
+            return result;
         }
     }
 }

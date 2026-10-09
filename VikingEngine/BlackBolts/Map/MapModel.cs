@@ -12,13 +12,14 @@ namespace VikingEngine.Core.BlackBolts.Map
     class MapModel
     {
         public bool decalsNeedsUpdate = false;
-        public bool isGenerating = false;
+        public bool floorNeedsUpdate = false;
+        public bool isGeneratingFloor = false;
         public bool isGeneratingDecals = false;
-        GeneratedObjColor floormodel, decalsModel, newdecalsModel;
+        GeneratedObjColor floormodel, newFloorModel, decalsModel, newdecalsModel;
 
         public MapModel()
         {
-            beginGenerateModel();
+            beginGenerateFloorModel();
         }
 
         public void update()
@@ -26,6 +27,11 @@ namespace VikingEngine.Core.BlackBolts.Map
             if (decalsNeedsUpdate && !isGeneratingDecals)
             {
                 beginGenerateDecalModel();
+            }
+
+            if (floorNeedsUpdate && !isGeneratingFloor)
+            {
+                beginGenerateFloorModel();
             }
         }
         public void beginGenerateDecalModel()
@@ -35,9 +41,10 @@ namespace VikingEngine.Core.BlackBolts.Map
 
             new QueAndSynchTask(generateDecalsAsynch, onGenerateDecalsComplete);
         }
-        public void beginGenerateModel()
+        public void beginGenerateFloorModel()
         {
-            isGenerating = true;
+            floorNeedsUpdate = false;
+            isGeneratingFloor = true;
 
             new QueAndSynchTask(generateAsynch, onGenerateComplete);
         }
@@ -51,12 +58,26 @@ namespace VikingEngine.Core.BlackBolts.Map
             {
                 for (pos.X = 0; pos.X < BlackRef.mapData.Size.X; ++pos.X)
                 {
+                    var tile = BlackRef.mapData.tileGrid.Get(pos);
+                    SpriteName sprite;
+                    switch (tile.tileEffect)
+                    {
+                        default:
+                            sprite = (SpriteName)((int)SpriteName.bb_floor1 + Ref.rnd.Int(4));
+                            break;
+                        case TileEffect.NoBuildZone:
+                            sprite = (SpriteName)((int)SpriteName.bb_noBuildZone1 + Ref.rnd.Int(2));
+                            break;
+                        case TileEffect.Spawner:
+                            sprite = SpriteName.bb_spawnwarning_texture;
+                            break;
+                    }
                     polygons.Add(PolygonColor.QuadXZ(pos.Vec, Vector2.One, true, 0f, 
-                        (SpriteName)((int)SpriteName.bb_floor1 + Ref.rnd.Int(4)), Dir4.N, lib.IsEven(pos.X + pos.Y)? Color.White : Color.LightGray));
+                       sprite, Dir4.N, lib.IsEven(pos.X + pos.Y)? Color.White : Color.LightGray));
                 }
             }
 
-            floormodel = new Graphics.GeneratedObjColor(
+            newFloorModel = new Graphics.GeneratedObjColor(
                 new Graphics.PolygonsAndTrianglesColor(polygons),
                 LoadedTexture.SpriteSheet, false);
 
@@ -98,7 +119,10 @@ namespace VikingEngine.Core.BlackBolts.Map
         }
         void onGenerateComplete()
         {
-            isGenerating = false;
+            isGeneratingFloor = false;
+            floormodel?.DeleteMe();
+            floormodel = newFloorModel;
+            newFloorModel = null;
             floormodel.AddToRender();
         }
         void onGenerateDecalsComplete()

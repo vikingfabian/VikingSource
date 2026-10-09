@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,33 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
             model.scale = new Vector3(1.4f * model.SizeToScale);
 
             refreshPos();
+        }
+        public override void FinalizeMove()
+        {
+            base.FinalizeMove();
+
+            checkTile(currentPos.tilePos);
+            foreach (var dir in IntVector2.Dir4Array)
+            {
+                var ntile = dir + currentPos.tilePos;
+                checkTile(ntile);
+            }
+
+            void checkTile(IntVector2 pos)
+            {
+                if (BlackRef.mapData.tileGrid.TryGet(pos, out var tile))
+                {
+                    if (tile.pResource.hasValue)
+                    {
+                        var res = tile.pResource.GetSolidResource();
+                        if (res.placementData.resourceType == ResourceType.Void_cube)
+                        {
+                            tile.pResource.hasValue = false;
+                            res.DeleteMe();
+                        }
+                    }
+                }
+            }
         }
         public override bool WillMoveItems()
         {

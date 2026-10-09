@@ -37,6 +37,7 @@ namespace VikingEngine.Core.BlackBolts.Player
             inputMap = new InputMap(0);
             toolMenu = new Interface.ToolMenu(this);
             mapSelect.Rotation(toolShop.placementData.mapPlacement.direction);
+
         }
         public void update()
         {

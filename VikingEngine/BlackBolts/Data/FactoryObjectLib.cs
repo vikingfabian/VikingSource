@@ -68,6 +68,13 @@ namespace VikingEngine.Core.BlackBolts.Data
         {
             factoryObjectProperties = new FactoryObjectProperties[(int)FactoryObjectType.NUM_NONE];
 
+
+            factoryObjectProperties[(int)FactoryObjectType.CreatureSpawner] = new FactoryObjectProperties()
+            {
+                debugLevel = ObjectDebugLevel.Retail,
+                rotationType = RotationType.Dir4,
+            };
+
             factoryObjectProperties[(int)FactoryObjectType.GoblinWorker] = new FactoryObjectProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,

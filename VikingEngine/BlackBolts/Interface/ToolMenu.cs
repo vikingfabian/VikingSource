@@ -99,6 +99,24 @@ namespace VikingEngine.Core.BlackBolts.Interface
                     }
                 }
 
+                if (player.toolShop.placementData.component.objectType == FactoryObjectType.CreatureSpawner)
+                {
+                    HudLib.Label(content, "Spawn creature");
+                    content.newLine();
+                    for (FactoryObjectType cType = 0; cType < FactoryObjectType.NUM_NONE; cType++)
+                    {
+                        if (FactoryObjectLib.Get(cType).isCreature)
+                        {
+                            content.Add(new ArtOption(cType == player.toolShop.placementData.spawn,
+                                new List<AbsRichBoxMember> { new RbText(cType.ToString()) },
+                                new RbAction1Arg<FactoryObjectType>((FactoryObjectType selected) =>
+                                {
+                                    player.toolShop.placementData.spawn = selected;
+                                }, cType)));
+                        }
+                    }
+                }
+
                 content.newParagraph();
                 HudLib.Label(content, "Machine");
                 

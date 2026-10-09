@@ -16,6 +16,31 @@ namespace VikingEngine.Core.BlackBolts.Map
             this.direction = direction;
         }
 
+        public static Rectangle2 CoverArea(MapPlacement mapPlacement, IntVector2 tilesize)
+        {
+            Rectangle2 area = new Rectangle2(mapPlacement.tilePos, tilesize);
+            if (tilesize.SideLength() > 1)
+            {
+                switch (mapPlacement.direction)
+                {
+                    case Dir4.E:
+                        area.size = area.size.SwapXY();
+                        break;
+                    case Dir4.S:
+                        area.pos -= area.size - 1;
+                        break;
+                    case Dir4.W:
+                        area.size = area.size.SwapXY();
+                        area.pos -= area.size - 1;
+                        break;
+                }
+
+
+            }
+
+            return area;
+        }
+
         public void refreshGroundY()
         {
             groundY = BlackRef.mapData.GetTile(tilePos).groundY();

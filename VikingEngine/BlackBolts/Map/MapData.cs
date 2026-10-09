@@ -6,8 +6,10 @@ using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.Core.BlackBolts.GO.Creature;
+using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.LootFest.GO;
 using VikingEngine.PJ.Tanks;
+using VikingEngine.ToGG.Data.Property;
 
 namespace VikingEngine.Core.BlackBolts.Map
 {
@@ -20,6 +22,7 @@ namespace VikingEngine.Core.BlackBolts.Map
         public SpottedArray<AbsCreature> creatureList = new SpottedArray<AbsCreature>(1024);
         public SpottedArray<AbsMachine> machineList = new SpottedArray<AbsMachine>(1024);
         public SpottedArray<SolidResource> resourceList = new SpottedArray<SolidResource>(1024);
+        public SpottedArray<CreatureSpawner> spawnerList = new SpottedArray<CreatureSpawner>(8);
         public Grid2D_L<Tile> tileGrid;
 
         List<PlaceObjectData> restorePoint = new List<PlaceObjectData>(1024);
@@ -46,7 +49,33 @@ namespace VikingEngine.Core.BlackBolts.Map
         {
             int ix = machineList.Add(go);
             go.pointer = new ObjectPointer() { listType = ObjectListType.Machine, hasValue = true, objIndex = ix };
-            tileGrid.GetRef(go.currentPos.tilePos).pMachine = go.pointer;
+            if (go.tilesize.SideLength() == 1)
+            {
+                tileGrid.GetRef(go.currentPos.tilePos).pMachine = go.pointer;
+            }
+            else
+            {
+                //Rectangle2 area = new Rectangle2(go.placementData.mapPlacement.tilePos, go.tilesize);
+                //switch (go.placementData.mapPlacement.direction)
+                //{
+                //    case Dir4.E:
+                //        area.size = area.size.SwapXY();
+                //        break;
+                //    case Dir4.S:
+                //        area.pos -= area.size;
+                //        break;
+                //    case Dir4.W:
+                //        area.size = area.size.SwapXY();
+                //        area.pos -= area.size;
+                //        break;
+                //}
+
+                ForXYLoop loop = new ForXYLoop(MapPlacement.CoverArea(go.placementData.mapPlacement, go.tilesize));
+                while(loop.Next())
+                {
+                    tileGrid.GetRef(loop.Position).pMachine = go.pointer;
+                }
+            }
         }
 
         public SolidResource SpawnResource(ResourceType type)
@@ -81,6 +110,12 @@ namespace VikingEngine.Core.BlackBolts.Map
             {
                 restorePoint.Add(machineC.sel.placementData);
             }
+
+            var spawnC = spawnerList.counter();
+            while (spawnC.Next())
+            {
+                restorePoint.Add(spawnC.sel.placementData);
+            }
         }
 
         public void ClearMap()
@@ -93,7 +128,7 @@ namespace VikingEngine.Core.BlackBolts.Map
             creatureList.Clear();
             machineList.Clear();
             resourceList.Clear();
-
+            spawnerList.Clear();
 
         }
 
@@ -113,6 +148,7 @@ namespace VikingEngine.Core.BlackBolts.Map
     class Tile
     {
         public TileType tileType = TileType.Floor;
+        public TileEffect tileEffect = TileEffect.None;
         public ObjectPointer pCreature = ObjectPointer.Empty;
         public ObjectPointer pMachine = ObjectPointer.Empty;
         public ObjectPointer pResource = ObjectPointer.Empty;
@@ -166,9 +202,13 @@ namespace VikingEngine.Core.BlackBolts.Map
             else if (pMachine.hasValue)
             {
                 var obj = pMachine.GetMachine();
-                result = obj.placementData;
-                obj.DeleteMe();
-                pMachine.hasValue = false;
+                if (obj != null)
+                {
+                    result = obj.placementData;
+                    obj.DeleteMe();
+                    DestructionLaws.RemoveMachineMapPointers(obj);
+                }
+                //pMachine.hasValue = false;
             }
 
             if (pResource.hasValue)
@@ -191,5 +231,13 @@ namespace VikingEngine.Core.BlackBolts.Map
         Floor,
         Wall,
         
+    }
+
+    enum TileEffect
+    { 
+        None,
+        NoBuildZone,
+        Spawner,
+
     }
 }

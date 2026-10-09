@@ -77,12 +77,22 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 
             }
             else
-            {   
-                tile.pMachine.hasValue = false;
+            {
+                //tile.pMachine.hasValue = false;
+                RemoveMachineMapPointers(target);
                 ResourceLaws.DropResource(target.currentPos.tilePos, ResourceType.Rubble);
             }
 
             target.DeleteMe();
+        }
+
+        public static void RemoveMachineMapPointers(AbsGameObject target)
+        {
+            ForXYLoop loop = new ForXYLoop(MapPlacement.CoverArea(target.placementData.mapPlacement, target.tilesize));
+            while (loop.Next())
+            {
+                BlackRef.mapData.tileGrid.Get(loop.Position).pMachine.hasValue = false;
+            }
         }
 
        
