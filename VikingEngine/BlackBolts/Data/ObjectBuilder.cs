@@ -198,24 +198,32 @@ namespace VikingEngine.Core.BlackBolts.Data
                 }
                 else if (toggleDestroy)
                 {
-                    if (tile.tileEffect != TileEffect.None)
-                    {
-                        BlackRef.playScene.mapmodel.floorNeedsUpdate = true;
-                    }
-                    tile.ClearTile();
-
-                    var spawnerC = BlackRef.mapData.spawnerList.counter();
-                    while (spawnerC.Next())
-                    {
-                        if (spawnerC.sel.placementData.mapPlacement.tilePos == placementData.mapPlacement.tilePos)
-                        {
-                            spawnerC.sel.DeleteMe();
-                            break;
-                        }
-                    }
+                    Destroy(placementData.mapPlacement.tilePos);
                 }
             }
             return result;
+        }
+
+        public static void Destroy(IntVector2 pos)
+        {
+            if (BlackRef.mapData.tileGrid.TryGet(pos, out var tile) && !tile.isLocked)
+            {
+                if (tile.tileEffect != TileEffect.None)
+                {
+                    BlackRef.playScene.mapmodel.floorNeedsUpdate = true;
+                }
+                tile.ClearTile();
+
+                var spawnerC = BlackRef.mapData.spawnerList.counter();
+                while (spawnerC.Next())
+                {
+                    if (spawnerC.sel.placementData.mapPlacement.tilePos == pos)
+                    {
+                        spawnerC.sel.DeleteMe();
+                        break;
+                    }
+                }
+            }
         }
     }
 }

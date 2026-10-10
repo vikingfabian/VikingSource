@@ -34,9 +34,9 @@ namespace VikingEngine.Core.BlackBolts.Scene
 
             VectorRect menuArea = Engine.Screen.SafeArea;
 
-            menuArea.Width = Engine.Screen.IconSize * 10;
+            menuArea.Width = Engine.Screen.IconSize * 9;
             menuArea.X = Engine.Screen.CenterScreen.X - menuArea.Width / 2;
-
+            menuArea.AddYRadius(-Engine.Screen.IconSize);
             menu = new RichMenu(HudLib.RbSettings, menuArea, new Vector2(8), RichMenu.DefaultRenderEdge, layer, new PlayerData(PlayerData.AllPlayers));
             menu.addBackground(HudLib.HudMenuBackground, layer + 4);
             refreshMenu();
@@ -49,8 +49,13 @@ namespace VikingEngine.Core.BlackBolts.Scene
 
             missionButton(MissionType.Tutorial);
             missionButton(MissionType.WhiteKnight);
-            content.Add(new RbSeperationLine());
+            //content.Add(new RbSeperationLine() { thick = true });
             missionButton(MissionType.Sandbox);
+            
+
+            content.newParagraph();
+            Ref.gamesett.fullScreenOptions(content);
+            content.Add(new RbSeperationLine());
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Exit") },
                 new RbAction(Ref.update.Exit), null)
@@ -61,7 +66,7 @@ namespace VikingEngine.Core.BlackBolts.Scene
             content.text("Prototype; the game is a proof of concept test, to see if it worth being worked on at all.");
             content.text("- No sound");
             content.text("- Use sandbox to learn features");
-            content.text("Please let me know what you think!");
+            content.text("- Please let me know what you think!");
 
 
 
@@ -71,8 +76,32 @@ namespace VikingEngine.Core.BlackBolts.Scene
             menu.Refresh(content);
 
             void missionButton(MissionType mission)
-            { 
-                
+            {
+                string caption, description;
+
+                switch (mission)
+                {
+                    default:
+                        caption = "Contract: Practice";
+                        description = "Learn the value of success, and to make your bosses richer";
+                        break;
+                    case MissionType.WhiteKnight:
+                        caption = "Contract: White knights";
+                        description = "Girls are supposed to like bad boys, get rid of those knights!";
+                        break;
+                    case MissionType.Sandbox:
+                        caption = "Sandbox";
+                        description = "Freely play around with all the tools, like the baby you are!";
+                        break;
+                }
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary,
+                    new List<AbsRichBoxMember> { new RbText(caption) },
+                    new RbAction(()=> {
+                        new Scene.LoadMissionScene(mission);
+                    }), new RbTooltip_Text(description))
+                { fillWidth = true });
             }
         }
 
@@ -96,7 +125,6 @@ namespace VikingEngine.Core.BlackBolts.Scene
                 area.Position, area.Size, ImageLayers.Background5, false);
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
-            //bgImage.Color = ColorExt.GrayScale(0.8f);
             bgImage.Opacity = 1;//0.8f;
 
         }

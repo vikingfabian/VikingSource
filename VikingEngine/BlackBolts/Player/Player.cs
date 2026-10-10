@@ -22,9 +22,7 @@ namespace VikingEngine.Core.BlackBolts.Player
 
         public RunExecuter runExecuter = new RunExecuter();
 
-        public Interface.ToolMenu toolMenu;
-
-        
+        public Interface.ToolMenu toolMenu;        
 
         public bool editMode = true;
 
@@ -65,6 +63,19 @@ namespace VikingEngine.Core.BlackBolts.Player
                 if (inputMap.rotate.DownEvent)
                 {
                     rotateToolAction();
+                }
+                if (inputMap.copy.DownEvent)
+                {
+                    toolShop.copy(cameraControl.tilePos);
+                    OnToolRefresh();
+                    toolMenu.NeedRefresh();
+                }
+                if (inputMap.cut.DownEvent)
+                {
+                    toolShop.copy(cameraControl.tilePos);
+                    ObjectBuilder.Destroy(cameraControl.tilePos);
+                    OnToolRefresh();
+                    toolMenu.NeedRefresh();
                 }
             }
             else

@@ -12,6 +12,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.PJ.MiniGolf;
+using VikingEngine.Voxels;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.Core.BlackBolts.Interface
@@ -47,7 +48,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
         void iconMenu()
         {
-            RichBoxContent content = new RichBoxContent();           
+            RichBoxContent content = new RichBoxContent();
             content.h1("Black Bolt Industries", HudLib.TitleColor_Head);
             content.newParagraph();
 
@@ -70,7 +71,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
                 var toolProp = player.toolShop.placementData.component.properties();
 
-                if (toolProp.holdResourceType != HoldResourceType.NoResource && 
+                if (toolProp.holdResourceType != HoldResourceType.NoResource &&
                     BlackRef.missionSetup.IsSandbox)
                 {
                     content.newParagraph();
@@ -120,12 +121,12 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
                 content.newParagraph();
                 HudLib.Label(content, "Machine");
-                
+
                 foreach (var io in BlackRef.missionSetup.ioUnits)
                 {
                     content.newLine();
-                    content.Add(new ArtOption(io.id == player.toolShop.placementData.machineId, 
-                        new List<AbsRichBoxMember> { new RbText(io.name) }, new RbAction1Arg<MachineId>((MachineId selected)=>
+                    content.Add(new ArtOption(io.id == player.toolShop.placementData.machineId,
+                        new List<AbsRichBoxMember> { new RbText(io.name) }, new RbAction1Arg<MachineId>((MachineId selected) =>
                         {
                             player.toolShop.placementData.component = new ToolSetupComponent(FactoryObjectType.IOunit);
                             player.toolShop.placementData.machineId = io.id;
@@ -140,13 +141,23 @@ namespace VikingEngine.Core.BlackBolts.Interface
                     content.hspace();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                         new List<AbsRichBoxMember> { new RbImage(SpriteName.RotateCW), new RbSpace(),
-                new RbText("Rotate")}, new RbAction(player.rotateToolAction)));
-                    content.newLine();
+                    new RbText("Rotate")}, new RbAction(player.rotateToolAction)));
+                    content.space(2);
                 }
+
+                player.inputMap.copy.ToRichContent(content);
+                content.hspace();
+                content.Add(new RbText("Copy"));
+                content.space(2);
+                player.inputMap.cut.ToRichContent(content);
+                content.hspace();
+                content.Add(new RbText("Cut"));
+
+                content.newLine();
                 player.inputMap.toggleEditMode.ToRichContent(content);
                 content.hspace();
                 content.Add(new ArtButton(RbButtonStyle.Primary,
-                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon), new RbSpace(),
+                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon), new RbSpace(),                
                 new RbText("Run production")}, new RbAction(player.toggleRunSimulation)));
             }
             else
@@ -166,10 +177,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
 
 
             content.Add(new RbSeperationLine());
-            content.newParagraph();
-            Ref.gamesett.fullScreenOptions(content);
-            content.Add(new RbSeperationLine());
-            content.newParagraph();
+
 
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Save") }, new RbAction(BlackRef.storage.Save), null));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Load") }, new RbAction1Arg<bool>(BlackRef.storage.Load, true), null));
@@ -181,8 +189,8 @@ namespace VikingEngine.Core.BlackBolts.Interface
             //}), null){fillWidth=true});
 
             content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Exit") }, 
-                new RbAction(Ref.update.Exit), null)
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Exit") },
+                new RbAction(() => { new Scene.BlackMainScene(); }), null)
             { fillWidth = true });
 
 

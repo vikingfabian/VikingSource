@@ -8,10 +8,22 @@ namespace VikingEngine.Core.BlackBolts.Scene
     class LoadMissionScene : Engine.GameState
     {
         AbsMissionSetup missionSetup;
-        public LoadMissionScene()
+        public LoadMissionScene(MissionType mission)
             : base(true)
         {
-            missionSetup = new TutorialSetup();
+            switch (mission)
+            {
+                default:
+                    missionSetup = new SandboxSetup();
+                    break;
+                case MissionType.Tutorial:
+                    missionSetup = new TutorialSetup();
+                    break;
+                case MissionType.WhiteKnight:
+                    missionSetup = new WhiteKnightSetup();
+                    break;
+            }
+            
             missionSetup.LoadMissionMap();
         }
 

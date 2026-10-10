@@ -866,11 +866,11 @@ namespace VikingEngine
                         graphicsHasChanged = true;
                         settingsHasChanged = true;
 
-                        new Core.BlackBolts.Scene.BlackPlayScene();
+                        new Core.BlackBolts.Scene.BlackMainScene();
                     }
 
                     return Screen.PcDisplayMode != WindowDisplayMode.Windowed;
-                }), new RbTooltip_Text("Will reset game!")));
+                })));
         }
 
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
+using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Mission;
 
 namespace VikingEngine.Core.BlackBolts.Player
@@ -20,9 +21,27 @@ namespace VikingEngine.Core.BlackBolts.Player
             placementData.spawn = FactoryObjectType.WhiteKnight;
         }
 
-        public void selectTool(ToolSetupComponent objectType)
+        public void copy(IntVector2 position)
         {
-            
+            if (BlackRef.mapData.tileGrid.TryGet(position, out Tile tile) && tile.isLocked == false)
+            {
+                if (tile.pMachine.hasValue)
+                {
+                    placementData = tile.pMachine.GetMachine().placementData;
+                }
+                else if (tile.pCreature.hasValue)
+                {
+                    placementData = tile.pCreature.GetCreature().placementData;
+                }
+                else
+                { 
+                    
+                }
+            }
+        }
+
+        public void selectTool(ToolSetupComponent objectType)
+        {            
             placementData.machineId.hasValue = false;
             placementData.component = objectType;
             
