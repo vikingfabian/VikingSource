@@ -80,7 +80,7 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                                     //Havent done their attack yet
                                     otherCreature.CheckAttackAction(this);
                                 }
-                                DestructionLaws.Destroy(otherCreature, tile, DestroyType.Fire);
+                                DestructionLaws.Destroy(otherCreature, this, tile, DestroyType.Fire);
 
                                 onAttack(placement);
                                 return true;
@@ -134,7 +134,7 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
         }
         public override void applyAttack(AbsCreature otherCreature)
         {
-            DestructionLaws.Destroy(otherCreature,
+            DestructionLaws.Destroy(otherCreature, this,
                 BlackRef.mapData.tileGrid.Get(otherCreature.currentPos.tilePos), DestroyType.Default);
 
             onAttack(currentPos);

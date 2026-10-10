@@ -11,7 +11,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 {
     class MapStorage: IStreamIOCallback
     {
-
+        public static readonly string ContentFolder = "BlackBolt";
         public List<PlaceObjectData> restorePoint = new List<PlaceObjectData>(1024);
 
         public MapStorage()
@@ -21,7 +21,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
         public DataStream.FilePath Path(bool playerStorage)
         {
-            string folder = "BlackBolt";
+            string folder = ContentFolder;
             if (playerStorage)
             {
                 folder = Ref.steam.UserCloudPath + DataStream.FilePath.Dir + folder;

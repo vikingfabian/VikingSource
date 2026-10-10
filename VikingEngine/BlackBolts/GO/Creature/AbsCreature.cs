@@ -92,11 +92,13 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
                     var resource = tile.pResource.GetSolidResource();
                     var resProp = ResourceLib.Get(resource.placementData.resourceType);
                     if (resProp.stompEffect)
-                    {
+                    {                        
                         resource.DeleteMe();
                         tile.pResource.hasValue = false;
-                        tile.fluid = new Fluid(resource.placementData.resourceType);
+                        tile.fluid = new Fluid( ResourceType.FluidPoopStain);
                         stompSmear = tile.fluid;
+
+                        BlackRef.missionSetup.runStatistics.poopStomps++;
                         BlackRef.playScene.mapmodel.decalsNeedsUpdate = true;
                     }
                     else if (resProp.isJob)

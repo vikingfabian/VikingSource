@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Mission;
 
-namespace VikingEngine.Core.BlackBolts
+namespace VikingEngine.Core.BlackBolts.Scene
 {
     class LoadMissionScene : Engine.GameState
     {
@@ -11,7 +11,7 @@ namespace VikingEngine.Core.BlackBolts
         public LoadMissionScene()
             : base(true)
         {
-            missionSetup = new WhiteKnightSetup();
+            missionSetup = new TutorialSetup();
             missionSetup.LoadMissionMap();
         }
 

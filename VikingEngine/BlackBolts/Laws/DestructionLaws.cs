@@ -30,7 +30,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
             }
         }
 
-        public static void Destroy(AbsGameObject target, Tile tile, DestroyType destroyType)
+        public static void Destroy(AbsGameObject target, AbsGameObject attacker, Tile tile, DestroyType destroyType)
         {
             var objProp = FactoryObjectLib.Get(target.FactoryObjectType);
             if (objProp.isCreature)
@@ -61,7 +61,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         }
                         break;
 
-                    case FactoryObjectType.GoblinWorker:
+                    case FactoryObjectType.Worker:
                     case FactoryObjectType.Dragon:
                         Engine.ParticleHandler.AddExpandingParticleArea(Graphics.ParticleSystemType.DssDamage, VectorExt.AddY(target.model.position, 0.3f), 0.3f, 100, 0.8f);
                         ResourceLaws.DropResource(target.currentPos.tilePos, ResourceType.Flesh);
@@ -73,8 +73,6 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         new Render.VoidEffect(target.currentPos.tilePos);
                         break;
                 }
-
-                
             }
             else
             {
@@ -82,7 +80,11 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 RemoveMachineMapPointers(target);
                 ResourceLaws.DropResource(target.currentPos.tilePos, ResourceType.Rubble);
             }
-
+            BlackRef.missionSetup.runStatistics.destroyedCount[(int)target.FactoryObjectType]++;
+            if (attacker != null)
+            {
+                BlackRef.missionSetup.runStatistics.killsBy[(int)attacker.FactoryObjectType]++;
+            }
             target.DeleteMe();
         }
 
@@ -91,10 +93,10 @@ namespace VikingEngine.Core.BlackBolts.Laws
             ForXYLoop loop = new ForXYLoop(MapPlacement.CoverArea(target.placementData.mapPlacement, target.tilesize));
             while (loop.Next())
             {
-                if (!BlackRef.mapData.tileGrid.Get(loop.Position).pMachine.hasValue)
-                {
-                    throw new Exception();
-                }
+                //if (!BlackRef.mapData.tileGrid.Get(loop.Position).pMachine.hasValue)
+                //{
+                //    throw new Exception();
+                //}
                 BlackRef.mapData.tileGrid.Get(loop.Position).pMachine.hasValue = false;
             }
         }

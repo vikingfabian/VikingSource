@@ -27,8 +27,15 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
         List<TwoCreatures> preparedAttackers = new List<TwoCreatures>(4);
 
+        bool levelComplete = false;
+
         public void Start()
         {
+            levelComplete = false;
+            Ref.SetGameSpeed(1f);
+
+            BlackRef.missionSetup.runStatistics = new Mission.RunStatistics();
+
             var creaturesC = BlackRef.mapData.creatureList.counter();
             while (creaturesC.Next())
             {
@@ -42,6 +49,16 @@ namespace VikingEngine.Core.BlackBolts.Laws
             }
         }
 
+        public void OnSuccess()
+        {
+            if (!levelComplete)
+            {
+                BlackRef.playScene.messages.Add("SUCCESS!!!");
+
+                levelComplete = true;
+            }
+        }
+
         void resetTime()
         {
             moveTween = 0;
@@ -50,6 +67,20 @@ namespace VikingEngine.Core.BlackBolts.Laws
 
         public void Update() 
         {
+            if (levelComplete)
+            {
+                return;
+            }
+
+            if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.LeftControl))
+            {
+                Ref.SetGameSpeed(25f);
+            }
+            else if (Input.Keyboard.KeyUpEvent(Microsoft.Xna.Framework.Input.Keys.LeftControl))
+            {
+                Ref.SetGameSpeed(1f);
+            }
+
             switch (step)
             {
                 case RunStep.CalcMove:
@@ -174,6 +205,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                         mashinesC.sel.OnCykleEnd();
                     }
                     step = 0;
+                    BlackRef.playScene.player.toolMenu.NeedRefresh();
                     break;
             }
         }
@@ -388,6 +420,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 {                    
                     creature.HandoverItem(machine.pResource);
                     machine.pResource = ObjectPointer.Empty;
+                    BlackRef.missionSetup.runStatistics.workersUsed.Add(creature.pointer.objIndex);
                 }
             }
         }

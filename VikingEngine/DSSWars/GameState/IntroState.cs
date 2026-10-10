@@ -7,7 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VikingEngine.Core.BlackBolts.Scene;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
@@ -108,7 +109,12 @@ namespace VikingEngine.DSSWars
             part++;
             UserGeneratedContent.UGClib.GameContentInit();
             part++;
+#if BLACK
+            BlackMainScene.bgTex = Ref.main.Content.Load<Texture2D>(Core.BlackBolts.Data.MapStorage.ContentFolder + FilePath.Dir + 
+                "black bold box 2_plain");
+#else
             bgTex = MainMenuState.LoadBg();
+#endif
             part++;
         }
 
@@ -248,7 +254,7 @@ namespace VikingEngine.DSSWars
                 else
                 {
 #if BLACK
-                    new Core.BlackBolts.BlackIntroScene();
+                    new Core.BlackBolts.Scene.BlackIntroScene();
 #else
                     new MainMenuState(bgTex);
 #endif

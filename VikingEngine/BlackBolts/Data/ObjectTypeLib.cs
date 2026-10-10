@@ -38,7 +38,7 @@ namespace VikingEngine.Core.BlackBolts.Data
     enum FactoryObjectType
     {
         CreatureSpawner,
-        GoblinWorker,
+        Worker,
         BlackKnight,
         NightDemon,
         Dragon,
@@ -48,13 +48,11 @@ namespace VikingEngine.Core.BlackBolts.Data
         Spin_plate,
         Floor_drop,
         Table,
-        //Floor_pick,
         Dispencer,
         Delivery_point,
         Garbage_disposal,
         Stone_pillar,
         IOunit,
-
         NoBuildZone,
 
         NUM_NONE
@@ -110,7 +108,6 @@ namespace VikingEngine.Core.BlackBolts.Data
         Good,
         Evil,
         Creature,
-        //WorkingMachine,
         Hindering,
     }
 

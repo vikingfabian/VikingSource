@@ -75,7 +75,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                 rotationType = RotationType.Dir4,
             };
 
-            factoryObjectProperties[(int)FactoryObjectType.GoblinWorker] = new FactoryObjectProperties()
+            factoryObjectProperties[(int)FactoryObjectType.Worker] = new FactoryObjectProperties()
             {
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,

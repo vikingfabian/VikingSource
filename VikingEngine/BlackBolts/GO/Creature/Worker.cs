@@ -27,7 +27,7 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
             job.DeleteMe();
             DestructionLaws.ConvertCreature(this, tile, FactoryObjectType.BlackKnight);
         }
-        public override FactoryObjectType FactoryObjectType =>  FactoryObjectType.GoblinWorker;
+        public override FactoryObjectType FactoryObjectType =>  FactoryObjectType.Worker;
         public override bool WillMoveItems()
         {
             return true;

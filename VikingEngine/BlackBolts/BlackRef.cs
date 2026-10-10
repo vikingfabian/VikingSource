@@ -5,6 +5,7 @@ using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Mission;
 using VikingEngine.Core.BlackBolts.Render;
+using VikingEngine.Core.BlackBolts.Scene;
 
 namespace VikingEngine.Core.BlackBolts
 {

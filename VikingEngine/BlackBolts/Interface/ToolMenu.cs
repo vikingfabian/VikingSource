@@ -24,7 +24,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
         public ToolMenu(Player.Player player)
         {
             this.player = player;
-            HudLib.Init();
+            
 
             var area = Screen.SafeArea;
             area.Width = Screen.IconSize * 8;
@@ -155,8 +155,11 @@ namespace VikingEngine.Core.BlackBolts.Interface
                 content.hspace();
                 content.Add(new ArtButton(RbButtonStyle.Primary,
                     new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPauseIcon), new RbSpace(),
-                new RbText("Stop")}, new RbAction(player.toggleRunSimulation)));
-                content.text("Running...", Color.Gray);
+                    new RbText("Stop")}, new RbAction(player.toggleRunSimulation)));
+                content.icontext(SpriteName.KeyCtrl, "High speed");
+                //content.text("Running...", Color.Gray);
+                content.newParagraph();
+                BlackRef.missionSetup.ToHud(content);
             }
 
             content.newParagraph();
@@ -172,10 +175,10 @@ namespace VikingEngine.Core.BlackBolts.Interface
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Load") }, new RbAction1Arg<bool>(BlackRef.storage.Load, true), null));
 
             content.newParagraph();
-            content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Reset") }, new RbAction(() =>
-            {
-                new BlackPlayScene();    
-            }), null){fillWidth=true});
+            //content.Add(new ArtButton( RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Reset") }, new RbAction(() =>
+            //{
+            //    new BlackPlayScene();    
+            //}), null){fillWidth=true});
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Exit") }, 
@@ -183,8 +186,6 @@ namespace VikingEngine.Core.BlackBolts.Interface
             { fillWidth = true });
 
 
-            content.newParagraph();
-            content.text(string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion), Color.DarkGray);
 
 #if DEBUG
             content.newLine();

@@ -7,11 +7,11 @@ using VikingEngine.Core.BlackBolts.Mission;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.Graphics;
 
-namespace VikingEngine.Core.BlackBolts
+namespace VikingEngine.Core.BlackBolts.Scene
 {
     class BlackPlayScene : Engine.GameState
     {
-        Player.Player player;
+        public Player.Player player;
         public MapModel mapmodel;
 
         public MessageGroup_Editor messages;

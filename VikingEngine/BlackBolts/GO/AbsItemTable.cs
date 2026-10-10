@@ -125,6 +125,8 @@ namespace VikingEngine.Core.BlackBolts.GO
                 resource.DeleteMe();
                 BlackRef.mapData.resourceList.RemoveAt(pResource.objIndex);
                 pResource = ObjectPointer.Empty;
+
+                BlackRef.missionSetup.runStatistics.itemDelivered[(int)resource.placementData.resourceType]++;
             }
         }
 

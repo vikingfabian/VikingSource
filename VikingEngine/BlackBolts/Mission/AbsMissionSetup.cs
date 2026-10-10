@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.DSSWars;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.Core.BlackBolts.Mission
 {
@@ -10,6 +12,8 @@ namespace VikingEngine.Core.BlackBolts.Mission
 
     abstract class AbsMissionSetup
     {
+        public RunStatistics runStatistics;
+
         public IntVector2 mapSize = new IntVector2(25, 20);
         public string missionName;
         public List<ToolSetupComponent> componentList;
@@ -25,7 +29,7 @@ namespace VikingEngine.Core.BlackBolts.Mission
             if (!IsSandbox)
             {
                 BlackRef.storage.Load(false);
-                for(int i = 0; i < BlackRef.storage.restorePoint.Count; ++i)//each (var m in BlackRef.storage.restorePoint)
+                for(int i = 0; i < BlackRef.storage.restorePoint.Count; ++i)
                 {
                     var m = BlackRef.storage.restorePoint[i];
                     m.locked = true;
@@ -104,11 +108,33 @@ namespace VikingEngine.Core.BlackBolts.Mission
             }
         }
 
+        virtual public void ToHud(RichBoxContent content)
+        {
+#if DEBUG
+            content.text("Workers used: " + runStatistics.workersUsed.Count.ToString());
+            content.text("Box deliver: " + runStatistics.itemDelivered[(int)ResourceType.Box].ToString());
+            content.text("Night demon kills: " + runStatistics.killsBy[(int)FactoryObjectType.NightDemon].ToString());
+            content.text("Dragon kills: " + runStatistics.killsBy[(int)FactoryObjectType.Dragon].ToString());
+            content.text("Black knight kills: " + runStatistics.killsBy[(int)FactoryObjectType.BlackKnight].ToString());
+            content.text("White knight deaths: " + runStatistics.destroyedCount[(int)FactoryObjectType.WhiteKnight].ToString());
+            content.text("Poop stomp: " + runStatistics.poopStomps.ToString());
+#endif
+        }
+
         virtual public bool IsSandbox => false;
+
+        protected SpriteName SuccessIcon(bool success)
+        {
+            return success ? HudLib.AvailableIcon : HudLib.NotAvailableIcon;
+        }
+
+        
     }
 
     class TutorialSetup : AbsMissionSetup
     {
+        const int DeliverCount = 3;
+
         public TutorialSetup()
              :base()
         {
@@ -124,7 +150,22 @@ namespace VikingEngine.Core.BlackBolts.Mission
 
             ioUnits = new List<IOTemplate>(0);
         }
+        public override void ToHud(RichBoxContent content)
+        {
+            bool boxSuccess = runStatistics.itemDelivered[(int)ResourceType.Box] >= DeliverCount;
 
+            content.h1("Mission", Color.Yellow);
+            content.icontext(SuccessIcon(boxSuccess), $"Deliver {DeliverCount} boxes");
+
+            content.newParagraph();
+            content.h1("Bonus objective", Color.Yellow);
+            content.icontext(SuccessIcon(runStatistics.workersUsed.Count > 1), $"Use both workers");
+
+            if (boxSuccess)
+            {
+                BlackRef.playScene.player.runExecuter.OnSuccess();
+            }
+        }
     }
     class WhiteKnightSetup : AbsMissionSetup
     {
@@ -135,6 +176,7 @@ namespace VikingEngine.Core.BlackBolts.Mission
 
             componentList = new List<ToolSetupComponent>
             {
+                new ToolSetupComponent( FactoryObjectType.Worker),
                 new ToolSetupComponent( FactoryObjectType.Spin_plate),
                 new ToolSetupComponent( FactoryObjectType.Belt),
                 new ToolSetupComponent( FactoryObjectType.Table),
@@ -146,6 +188,31 @@ namespace VikingEngine.Core.BlackBolts.Mission
             mission1units();
         }
 
+        public override void ToHud(RichBoxContent content)
+        {
+            const int WhiteKnightKills = 10;
+
+            bool missionSuccess = runStatistics.destroyedCount[(int)FactoryObjectType.WhiteKnight] >= WhiteKnightKills;
+            bool nightDemonKill = runStatistics.killsBy[(int)FactoryObjectType.NightDemon] > 0;
+            bool dragonKill = runStatistics.killsBy[(int)FactoryObjectType.Dragon] > 0;
+            bool blackknightKill = runStatistics.killsBy[(int)FactoryObjectType.BlackKnight] > 0;
+            bool noPoopSuccess = runStatistics.poopStomps <= 0;
+
+            content.h1("Mission", Color.Yellow);
+            content.icontext(SuccessIcon(missionSuccess), $"Kill {WhiteKnightKills} white knights");
+
+            content.newParagraph();
+            content.h1("Bonus objective", Color.Yellow);
+            content.icontext(SuccessIcon(nightDemonKill), $"Get a Night Demon kill");
+            content.icontext(SuccessIcon(dragonKill), $"Get a Dragon kill");
+            content.icontext(SuccessIcon(blackknightKill), $"Get a Black Knight kill");
+            content.icontext(SuccessIcon(noPoopSuccess), $"Don't step in shit");
+
+            if (missionSuccess)
+            {
+                BlackRef.playScene.player.runExecuter.OnSuccess();
+            }
+        }
     }
 
     class SandboxSetup : AbsMissionSetup
@@ -154,7 +221,6 @@ namespace VikingEngine.Core.BlackBolts.Mission
             :base()
         {
             missionName = "sandbox";
-            mapSize = new IntVector2(25, 20);
             componentList = new List<ToolSetupComponent>((int)FactoryObjectType.NUM_NONE);
 
             for (FactoryObjectType fobj = 0; fobj < FactoryObjectType.NUM_NONE; fobj++)
@@ -170,11 +236,13 @@ namespace VikingEngine.Core.BlackBolts.Mission
 
             
         }
-
-       
-
         public override bool IsSandbox => true;
     }
 
-    
+    enum MissionType
+    { 
+        Sandbox,
+        Tutorial,
+        WhiteKnight,
+    }
 }

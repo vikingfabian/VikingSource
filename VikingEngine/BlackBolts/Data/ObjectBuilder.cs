@@ -11,8 +11,6 @@ namespace VikingEngine.Core.BlackBolts.Data
 {
     static class ObjectBuilder
     {
-        
-
         public static AbsGameObject Create(PlaceObjectData placementData, bool toggleDestroy, bool iscreatureSpawn)
         {
             AbsGameObject result = null;
@@ -108,7 +106,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                                 result = obj;
                             }
                             break;
-                        case FactoryObjectType.GoblinWorker:
+                        case FactoryObjectType.Worker:
                             {
                                 var obj = new Worker(placementData);
                                 BlackRef.mapData.AddObject(obj);

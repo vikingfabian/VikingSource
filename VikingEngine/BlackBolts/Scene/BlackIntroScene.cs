@@ -5,13 +5,14 @@ using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Mission;
 using VikingEngine.Core.BlackBolts.Render;
 
-namespace VikingEngine.Core.BlackBolts
+namespace VikingEngine.Core.BlackBolts.Scene
 {
     class BlackIntroScene : Engine.GameState
     {
         public BlackIntroScene() 
             :base(true)
         {
+            DSSWars.HudLib.Init();
             new Models();
             FactoryObjectLib.init();
             ResourceLib.Init();
@@ -21,7 +22,7 @@ namespace VikingEngine.Core.BlackBolts
         {
             base.Time_Update(time);
             //new BlackPlayScene(new SandboxSetup());
-            new LoadMissionScene();
+            new BlackMainScene();
         }
     }
 }

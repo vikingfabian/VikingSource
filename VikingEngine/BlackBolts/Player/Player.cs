@@ -20,9 +20,9 @@ namespace VikingEngine.Core.BlackBolts.Player
         CameraControl cameraControl;
         public InputMap inputMap;
 
-        RunExecuter runExecuter = new RunExecuter();
+        public RunExecuter runExecuter = new RunExecuter();
 
-        Interface.ToolMenu toolMenu;
+        public Interface.ToolMenu toolMenu;
 
         
 
