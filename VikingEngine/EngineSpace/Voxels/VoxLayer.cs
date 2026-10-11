@@ -19,14 +19,21 @@ namespace VikingEngine.Voxels
 
         public void write(System.IO.BinaryWriter w)
         {
-            StreamLib.WriteString(w, name);
+            StreamLib.WriteString2(w, name);
             w.Write(visible);
             w.Write(animatedLayer);
             animationFrames.WriteBinaryStream(w);
         }
         public void read(System.IO.BinaryReader r, int version)
         {
-            name = StreamLib.ReadString(r);
+            if (version < 2)
+            {
+                name = StreamLib.ReadString(r);
+            }
+            else
+            {
+                name = StreamLib.ReadString2(r);
+            }
             visible = r.ReadBoolean();
             animatedLayer = r.ReadBoolean();
             animationFrames = new VoxelObjGridDataAnimHD();

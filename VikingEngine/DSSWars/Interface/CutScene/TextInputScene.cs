@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             if (!string.IsNullOrEmpty(result))
             {
                 var w = Ref.netSession.BeginWritingPacket(PacketType.TextChat, PacketReliability.Reliable);
-                StreamLib.WriteString(w, result);
+                StreamLib.WriteString2(w, result);
 
                 RichBoxContent content = new RichBoxContent();
                 DssRef.state.LocalHost().addNetGamerToHud(content, true, false);

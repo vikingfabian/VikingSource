@@ -373,7 +373,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 w.Write(SaveGamestate.SubVersion);
 
-                StreamLib.WriteString(w, playerName);
+                StreamLib.WriteString2(w, playerName);
                 w.Write(casual);
                 statistics.writeGameState(w);
                 w.Write(matchWinner);
@@ -390,7 +390,15 @@ namespace VikingEngine.DSSWars.Data
                 }
 #endif
 
-                playerName = StreamLib.ReadString(r);
+                if (metaVersion < 139)
+                {
+                    playerName = StreamLib.ReadString(r);
+                }
+                else
+                {
+                    playerName = StreamLib.ReadString2(r);
+                }
+                
                 casual = r.ReadBoolean();
                 statistics = new Statistics();
                 statistics.readGameState(r, metaVersion);

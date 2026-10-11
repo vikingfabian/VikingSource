@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.TextChat:
                     {
-                        var message = new ChatLogMessage(sender.networkPeer.peer, StreamLib.ReadString_safe(packet.r));
+                        var message = new ChatLogMessage(sender.networkPeer.peer, StreamLib.ReadString2(packet.r));
                         chatLog.Add(message);
                         RichBoxContent content = new RichBoxContent();
 
