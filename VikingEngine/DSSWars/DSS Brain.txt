@@ -1,7 +1,6 @@
 
 Change log:
 * Compressed the size of resources
-
 * 
 
 KNOWN ISSUES

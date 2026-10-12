@@ -97,7 +97,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                 icon = SpriteName.bb_resicon_magiccrystal,
                 isSolid = true,
                 cutConvert = new CategoryAndType(ResourceType.Poop),
-                fireConvert = new CategoryAndType(ResourceType.Burned_shit),
+                fireConvert = new CategoryAndType(ResourceType.Fire_crystal),
                 
             };
             resourceProperties[(int)ResourceType.Fire_crystal] = new ResourceProperties()

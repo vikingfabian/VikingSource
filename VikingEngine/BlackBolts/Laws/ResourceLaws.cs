@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
+using VikingEngine.Core.BlackBolts.GO.Creature;
 using VikingEngine.Core.BlackBolts.Map;
 
 namespace VikingEngine.Core.BlackBolts.Laws
@@ -20,6 +22,31 @@ namespace VikingEngine.Core.BlackBolts.Laws
         {
             var resource = BlackRef.mapData.SpawnResource(resourceType);
             resource.placeResourceOnFloor(tilePos);
+        }
+
+        public static void Dispence(MapPlacement placement, CategoryAndType item)
+        {
+            switch (item.category)
+            {
+                case ObjectCategory.Resource:
+                    DispenceResource(placement.tilePos, item.resource);
+                    break;
+                
+                case ObjectCategory.FactoryObject:
+                    PlaceObjectData place = new PlaceObjectData()
+                    {
+                        mapPlacement = placement,
+                        component = new Mission.ToolSetupComponent(item.factoryobject)
+                    };
+                    var creature = ObjectBuilder.Create(place, false, true) as AbsCreature;
+                    if (creature != null)
+                    {
+                        creature.refreshAnimation();
+                    }
+                    break;
+
+            }
+            
         }
 
         public static void TryCreateResource(IntVector2 tilePos, ResourceType resourceType)

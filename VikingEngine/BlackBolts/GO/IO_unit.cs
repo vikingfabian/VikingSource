@@ -89,17 +89,22 @@ namespace VikingEngine.Core.BlackBolts.GO
                     bool canDrop = ResourceLaws.CanDispenceResource(toPos.tilePos);
                     if (canDrop)
                     {
-                        ResourceType resourceType = port.resourceType;
-                        switch (resourceType)
+                        CategoryAndType output;
+                        switch (port.resourceType)
                         {
+                            default:
+                                output = new CategoryAndType(port.resourceType);
+                                break;
                             case ResourceType.Any:
-                                resourceType = lastFedResource;
+                                output = new CategoryAndType(lastFedResource);
                                 break;
                             case ResourceType.Heat:
-                                resourceType = ResourceLib.Get( lastFedResource).fireConvert.resource;
+                                output = ResourceLib.Get( lastFedResource).fireConvert;
                                 break;
                         }
-                        ResourceLaws.DispenceResource(port.mapPlacement.ForwardPos().tilePos, resourceType);
+                        
+                        ResourceLaws.Dispence(port.mapPlacement.ForwardPos(), output);
+
                         port.collected--;
                         ports[i] = port;
                     }
