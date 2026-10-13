@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             foreach (City c in world.cities)
             {
-                if (c.pfaction.IsEmpty() && c.cityType > CityType.UnClaimed)
+                if (c.pfaction.IsEmpty() /*&& c.cityType > CityType.UnClaimed*/)
                 {
                     int size = goalWorkForce;
                     bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
@@ -512,7 +512,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             while (collection.Count > 0)
             {
                 var city = arraylib.RandomListMemberPop(collection, world.rnd);
-                if (city.pfaction.IsEmpty() && city.cityType > CityType.UnClaimed)
+                if (city.pfaction.IsEmpty()/* && city.cityType > CityType.UnClaimed*/)
                 {
                     return city;
                 }
@@ -526,7 +526,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             int ix = world.rnd.Int(world.cities.Count);
 
-            while (world.cities[ix].pfaction.HasValue() || world.cities[ix].cityType == CityType.UnClaimed)
+            while (world.cities[ix].pfaction.HasValue()/* || world.cities[ix].cityType == CityType.UnClaimed*/)
             {
                 ix++;
                 if (ix >= world.cities.Count)

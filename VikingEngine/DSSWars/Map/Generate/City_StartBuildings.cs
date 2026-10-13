@@ -10,17 +10,77 @@ using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.PJ.Moba.GO;
 using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars.GameObject
 {
+
+    struct CityTypeSetup
+    {
+        public int tower;
+        public int wall;
+        public int lowWall;
+        public int servicehouse;
+        public bool largeServiceHouse;
+        public int road;
+        public int centerHall;
+        public double percBuilding;
+        public double percWallGuard;
+        public bool large = false;
+
+        public int cityServiceCount;
+
+        public CityTypeSetup(CityType cityType)
+        {
+            switch (cityType)
+            {
+                case CityType.Village:
+                    tower = (int)TerrainWallType.DirtTower;
+                    wall = (int)TerrainWallType.DirtWall;
+                    lowWall = (int)TerrainWallType.DirtWall;
+                    servicehouse = (int)TerrainBuildingType.ServiceMenHouse_small;
+                    largeServiceHouse = false;
+                    road = (int)TerrainDecorType.CobbleStones;
+                    centerHall = (int)TerrainBuildingType.CityHall_Village;
+                    percBuilding = 0.15;
+                    percWallGuard = 0;
+                    cityServiceCount = DssConst.VillageHall_RequiredStaff;
+                    break;
+                case CityType.Town:
+                    tower = (int)TerrainWallType.WoodTower;
+                    wall = (int)TerrainWallType.WoodWall;
+                    lowWall = (int)TerrainWallType.DirtWall;
+                    servicehouse = (int)TerrainBuildingType.ServiceMenHouse_small;
+                    largeServiceHouse = false;
+                    road = (int)TerrainDecorType.Square;
+                    centerHall = (int)TerrainBuildingType.CityHall_Town;
+                    percBuilding = 0.15;
+                    percWallGuard = 0.1;
+                    cityServiceCount = DssConst.TownHall_RequiredStaff;
+                    break;
+                default:
+                    large = true;
+                    tower = (int)TerrainWallType.StoneTower;
+                    wall = (int)TerrainWallType.StoneWall;
+                    lowWall = (int)TerrainWallType.WoodWall;
+                    servicehouse = (int)TerrainBuildingType.ServiceMenHouse_Large;
+                    largeServiceHouse = true;
+                    road = (int)TerrainDecorType.Square;
+                    centerHall = (int)TerrainBuildingType.CityHall_Capital;
+                    percBuilding = 0.15;
+                    percWallGuard = 0.25;
+                    cityServiceCount = DssConst.CapitalHall_RequiredStaff;
+                    break;
+
+            }
+        }
+    }
+
     partial class City
     {        
         IntVector2 barracksReservedSpot;
         public IntVector2 citySquareSubtilePos;
-
-
-        
 
         public void createCampSite(IntVector2 subtilepos)
         {
@@ -60,16 +120,35 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void createHallSubtiles(WorldData world)
+        {
+            CityTypeSetup setup = new CityTypeSetup(this.cityType);
+            freeServiceMen.amount -= setup.cityServiceCount;
+
+            {
+                EditSubTile hallTile = new EditSubTile(IsNetHosted, false, maptilePos,
+                    new MapTile1_1(TerrainMainType.Building, setup.centerHall), true, false, false);
+                hallTile.SubmitOrExecute();
+            }
+            {
+                citySquareSubtilePos = VectorExt.AddY(maptilePos, 1);
+                EditSubTile squareTile = new EditSubTile(IsNetHosted, false, citySquareSubtilePos,
+                    new MapTile1_1(TerrainMainType.Decor, (int)TerrainDecorType.Square), true, false, false);
+                squareTile.SubmitOrExecute();
+            }
+        }
+
         public void createBuildingSubtiles(WorldData world, CityTemplateCollection templateCollection)
         {
-            if (cityType == CityType.UnClaimed)
-            {
-                //maptilePos = WP.ToSubTilePos_Centered(maptilePos);
-                var subTile = world.subTileGrid.Get(maptilePos);
-                subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Unclaimed, 1);
-                world.subTileGrid.Set(maptilePos, subTile);
-            }
-            else if (cityType == CityType.Campsite)
+            //if (cityType == CityType.UnClaimed)
+            //{
+            //    //maptilePos = WP.ToSubTilePos_Centered(maptilePos);
+            //    var subTile = world.subTileGrid.Get(maptilePos);
+            //    subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Unclaimed, 1);
+            //    world.subTileGrid.Set(maptilePos, subTile);
+            //}
+            //else 
+            if (cityType == CityType.Campsite)
             {
                 PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
@@ -88,70 +167,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                 IntVector2 topleft = maptilePos + startSubTilePos;
 
-                int tower;
-                //int gate = (int)TerrainWallType.StoneGate;
-                int wall;
-                int lowWall;
-                int servicehouse;
-                bool largeServiceHouse;
-                int road;
-                int centerHall;
-                double percBuilding;
-                double percWallGuard;
-                bool large = false;
-
-                int cityServiceCount;
-
-                switch (this.cityType)
-                {
-                    case CityType.Village:
-                        tower = (int)TerrainWallType.DirtTower;
-                        wall = (int)TerrainWallType.DirtWall;
-                        lowWall = (int)TerrainWallType.DirtWall;
-                        servicehouse = (int)TerrainBuildingType.ServiceMenHouse_small;
-                        largeServiceHouse = false;
-                        road = (int)TerrainDecorType.CobbleStones;
-                        centerHall = (int)TerrainBuildingType.CityHall_Village;
-                        percBuilding = 0.15;
-                        percWallGuard = 0;
-                        cityServiceCount = DssConst.VillageHall_RequiredStaff;
-                        break;
-                    case CityType.Town:
-                        tower = (int)TerrainWallType.WoodTower;
-                        wall = (int)TerrainWallType.WoodWall;
-                        lowWall = (int)TerrainWallType.DirtWall;
-                        servicehouse = (int)TerrainBuildingType.ServiceMenHouse_small;
-                        largeServiceHouse = false;
-                        road = (int)TerrainDecorType.Square;
-                        centerHall = (int)TerrainBuildingType.CityHall_Town;
-                        percBuilding = 0.15;
-                        percWallGuard = 0.1;
-                        cityServiceCount = DssConst.TownHall_RequiredStaff;
-                        break;
-                    default:
-                        large = true;
-                        tower = (int)TerrainWallType.StoneTower;
-                        wall = (int)TerrainWallType.StoneWall;
-                        lowWall = (int)TerrainWallType.WoodWall;
-                        servicehouse = (int)TerrainBuildingType.ServiceMenHouse_Large;
-                        largeServiceHouse = true;
-                        road = (int)TerrainDecorType.Square;
-                        centerHall = (int)TerrainBuildingType.CityHall_Capital;
-                        percBuilding = 0.15;
-                        percWallGuard = 0.25;
-                        cityServiceCount = DssConst.CapitalHall_RequiredStaff;
-                        break;
-
-                }
-
-                
-
-                //cityServiceCount += 1;
-
-                //string[] template = SquareCity;
-                List<TerrainBuildingType> craftStations = new List<TerrainBuildingType>
+                CityTypeSetup setup = new CityTypeSetup(this.cityType);
+              
+            List<TerrainBuildingType> craftStations = new List<TerrainBuildingType>
             {
-                (large? TerrainBuildingType.GuardHouse_Large: TerrainBuildingType.GuardHouse_Small),
+                (setup.large? TerrainBuildingType.GuardHouse_Large: TerrainBuildingType.GuardHouse_Small),
                 TerrainBuildingType.Work_Bench,
                 //TerrainBuildingType.Work_Cook,
             };
@@ -169,15 +189,15 @@ namespace VikingEngine.DSSWars.GameObject
                         switch (template.Get(templateLoop.Position))
                         {
                             case CityTemplateCellType.General:
-                                if (rnd.Chance(percBuilding))
+                                if (rnd.Chance(setup.percBuilding))
                                 {
-                                    sub = servicehouse;
-                                    onServiceHouseBuild(true, largeServiceHouse);
+                                    sub = setup.servicehouse;
+                                    onServiceHouseBuild(true, setup.largeServiceHouse);
                                 }
                                 else
                                 {
                                     main = TerrainMainType.Decor;
-                                    sub = road;
+                                    sub = setup.road;
                                     emptyGeneral.Add(pos);
                                 }
                                 break;
@@ -185,8 +205,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     DefenceStatus defence = new DefenceStatus();
                                     main = TerrainMainType.Wall;
-                                    sub = wall;
-                                    defence.autoAssign = rnd.Chance(percWallGuard);
+                                    sub = setup.wall;
+                                    defence.autoAssign = rnd.Chance(setup.percWallGuard);
 
                                     defence.init(pos, false);
                                     defenceBuildings.Add(defence);
@@ -196,8 +216,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     DefenceStatus defence = new DefenceStatus();
                                     main = TerrainMainType.Wall;
-                                    sub = lowWall;
-                                    defence.autoAssign = rnd.Chance(percWallGuard);
+                                    sub = setup.lowWall;
+                                    defence.autoAssign = rnd.Chance(setup.percWallGuard);
 
                                     defence.init(pos, false);
                                     defenceBuildings.Add(defence);
@@ -207,7 +227,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     DefenceStatus defence = new DefenceStatus();
                                     main = TerrainMainType.Wall;
-                                    sub = tower;
+                                    sub = setup.tower;
                                     defence.autoAssign = true;
 
                                     defence.init(pos, true);
@@ -217,12 +237,12 @@ namespace VikingEngine.DSSWars.GameObject
                             case CityTemplateCellType.Gate:
                                 {
                                     main = TerrainMainType.Decor;
-                                    sub = road;
+                                    sub = setup.road;
                                 }
                                 break;
                             case CityTemplateCellType.Road:
                                 main = TerrainMainType.Decor;
-                                sub = road;
+                                sub = setup.road;
                                 break;
 
                             case CityTemplateCellType.CraftArea:
@@ -243,12 +263,12 @@ namespace VikingEngine.DSSWars.GameObject
                                 else
                                 {
                                     main = TerrainMainType.Decor;
-                                    sub = road;
+                                    sub = setup.road;
                                     barracksReservedSpot = pos;
                                 }
                                 break;
                             case CityTemplateCellType.CityHall:
-                                sub = centerHall;
+                                sub = setup.centerHall;
                                 maptilePos = pos;
                                 break;
                             case CityTemplateCellType.CityCenterSquare:
@@ -267,16 +287,16 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                freeServiceMen.amount -= cityServiceCount;
+                freeServiceMen.amount -= setup.cityServiceCount;
                 //int total = workingAndFreeServiceMen;
 
                 while (freeServiceMen.amount < 1 && emptyGeneral.Count > 0)
                 {
                     var pos = arraylib.RandomListMemberPop(emptyGeneral, rnd);
                     var subTile = world.subTileGrid.Get(pos);
-                    subTile.SetType(TerrainMainType.Building, servicehouse, 1);
+                    subTile.SetType(TerrainMainType.Building, setup.servicehouse, 1);
                     world.subTileGrid.Set(pos, subTile);
-                    onServiceHouseBuild(true, largeServiceHouse);
+                    onServiceHouseBuild(true, setup.largeServiceHouse);
                 }
 
             }

@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapModels;
@@ -21,6 +22,7 @@ using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
+using VikingEngine.ToGG.Commander.LevelSetup;
 
 namespace VikingEngine.DSSWars
 {   
@@ -128,6 +130,46 @@ namespace VikingEngine.DSSWars
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
+        }
+
+        public void AddCity(IntVector2 mapPos, CityType cityType, bool runTime, bool buildings)
+        {
+            City city = new City(cities.Count, mapPos, cityType, this);
+            cities.Add(city);
+
+            if (CurrentCityComponentCount() <= cities.Count)
+            {
+                ExpandCityComponents(cities.Count * 2);
+            }
+
+            unitCollAreaGrid.add(city);
+
+            if (runTime)
+            {
+                if (buildings)
+                {
+                    CityTemplateCollection templateCollection = new CityTemplateCollection();
+                    city.createBuildingSubtiles(this, templateCollection);
+
+                    Rectangle2 refreshArea = Rectangle2.FromCenterTileAndRadius(WP.MaptileToChunk(mapPos), 1);
+                    ForXYLoop loop = new ForXYLoop(refreshArea);
+                    while(loop.Next())
+                    { 
+                        DssRef.world.chunkGrid.GetRef(loop.Position).subtileVisualEdits++;
+                    }                    
+                }
+                else
+                {
+                    city.createHallSubtiles(this);
+                }
+
+                var faction = new Faction(this, FactionType.DefaultAi);
+                faction.AddCity(city, true);
+                new Players.AiPlayer(faction, true);
+                CityMapClaim2.CityClaim(city);
+
+                city.onEditorStart();
+            }
         }
 
         public CombinedTile GetCombinedTile(IntVector2 mapTilePos)

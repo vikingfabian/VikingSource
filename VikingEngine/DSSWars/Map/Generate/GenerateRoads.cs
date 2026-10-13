@@ -36,11 +36,12 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                     double chance= 0.2f;
 
-                    if (lib.EqualToAny(CityType.UnClaimed, city.cityType, nCity.cityType))
-                    {
-                        chance = 0.02f;
-                    }
-                    else if (lib.EqualToAny(CityType.Capital, city.cityType, nCity.cityType))
+                    //if (lib.EqualToAny(CityType.UnClaimed, city.cityType, nCity.cityType))
+                    //{
+                    //    chance = 0.02f;
+                    //}
+                    //else 
+                    if (lib.EqualToAny(CityType.Capital, city.cityType, nCity.cityType))
                     {
                         chance = 0.6f;
                     }

@@ -61,6 +61,21 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             return setHeightValue;
         }
 
+        public static readonly CityPaintTool[] CityPaintToolOptions = new CityPaintTool[] { CityPaintTool.CityAdd, CityPaintTool.CityRemove };
+
+        public CityPaintTool cityPaintTool = CityPaintTool.CityAdd;
+        public bool cityPaint_IncludeBuildings = true;
+
+        public CityType cityType = CityType.Town;
+        public bool IncludeBuildingsProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                cityPaint_IncludeBuildings = value;
+            }
+            return cityPaint_IncludeBuildings;
+        }
+
 
         public DetailEditorTool(MapEditorPlayState state)
         {
@@ -102,9 +117,28 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
                             new Players.Orders.GodBuild(subTilePos);
                         }
                         break;
+                    case DetailEditorTab.Cities:
+                        switch (cityPaintTool)
+                        {
+                            case CityPaintTool.CityAdd:
+                                DssRef.world.AddCity(subTilePos, cityType, true, cityPaint_IncludeBuildings);
+                                break;
+                        }
+                        break;
                 }
             }
             return true;
         }
+    }
+
+    enum CityPaintTool
+    { 
+        CityAdd,
+        CityRemove,
+        ExpansionAdd,
+        ExpansionRemove,
+
+
+
     }
 }

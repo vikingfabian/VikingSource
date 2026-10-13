@@ -1476,6 +1476,7 @@ namespace VikingEngine.DSSWars.Players
 
         void settlerCheck()
         {
+            /*
             var faction = pfaction.GetFaction();
             if (faction.cities.Count > 0)
             {
@@ -1500,10 +1501,12 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
+            */
         }
 
         void armiesWithSettlerUpdate()
         {
+            /*
             var armiesC = pfaction.GetFaction().armies.counter();
             while (armiesC.Next())
             {
@@ -1518,6 +1521,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
+            */
         }
 
         void diplomacyCheck(List<PFaction> wars)
@@ -2432,7 +2436,7 @@ namespace VikingEngine.DSSWars.Players
                 //TODO pick random city
                 foreach (var city in DssRef.world.unitCollAreaGrid.cities_aiUpdate)
                 {
-                    if (city.cityType > CityType.UnClaimed && army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
+                    if (/*city.cityType > CityType.UnClaimed &&*/ army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
                     {
                         if (DssRef.world.diplomacy.botMayStartWar(pfaction.GetFaction(), city.pfaction.GetFaction(), warCount))//mayAttackFaction(city.GetFaction()))
                         {

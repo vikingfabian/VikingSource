@@ -1042,12 +1042,12 @@ namespace VikingEngine.DSSWars.Players
             {
                 switch (obj.gameobjectType())
                 {
-                    case GameObjectType.City:
-                        if (obj.GetCity().cityType == CityType.UnClaimed)
-                        {
-                            return false;
-                        }
-                        break;
+                    //case GameObjectType.City:
+                    //    if (obj.GetCity().cityType == CityType.UnClaimed)
+                    //    {
+                    //        return false;
+                    //    }
+                    //    break;
                     case GameObjectType.LocationPin:
                         return false;
                 }

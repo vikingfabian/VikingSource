@@ -1442,7 +1442,7 @@ namespace VikingEngine.DSSWars.GameObject
             //position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
             refreshCitySize();
                         
-            if (newGame && cityType > CityType.UnClaimed)
+            //if (newGame && cityType > CityType.UnClaimed)
             {
                 refreshWorkerSubtiles();
                 int maxGuards = Bound.Max(HousingCount_Guard, 6);
@@ -1527,6 +1527,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool claimCity(Faction faction, IntVector2 subtile)
         {
+            /*
             if (cityType == CityType.UnClaimed && faction != null)
             {
                 if (DssRef.state.host)
@@ -1611,10 +1612,13 @@ namespace VikingEngine.DSSWars.GameObject
                         position = WP.ToWorldPos(tilePos, tile.ModelGroundY());
 
                         */
-                    }
-                }
-                return true;
-            }
+            //        }
+            //    }
+            //    return true;
+            //}
+
+
+
             return false;
 
 
@@ -1703,8 +1707,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (cityType)
             {
-                case CityType.UnClaimed:
-                    return 1f;
+                //case CityType.UnClaimed:
+                //    return 1f;
                 case CityType.Campsite:
                     return 0.64f;
                 case CityType.Village:
@@ -2281,9 +2285,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             switch (cityType)
             {
-                case CityType.UnClaimed:
-                    scale = new Vector3(1.2f);
-                    break;
+                //case CityType.UnClaimed:
+                //    scale = new Vector3(1.2f);
+                //    break;
                 case CityType.Campsite:
                     scale = new Vector3(0.6f);
                     break;
@@ -4393,7 +4397,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum CityType
     {
-        UnClaimed,
+        //UnClaimed,
         Campsite,
         Village,
         Town,

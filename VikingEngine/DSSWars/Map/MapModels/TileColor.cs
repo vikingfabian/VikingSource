@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 case CityType.Town: center = MapCol_LargeCity; break;
                 case CityType.Village: center = MapCol_SmallCity; break;
                 case CityType.Campsite: center = MapCol_CampsiteCity; break;
-                case CityType.UnClaimed: center = MapCol_UnclaimedCity; break;
+                //case CityType.UnClaimed: center = MapCol_UnclaimedCity; break;
 
             }
             outline = Color.LightPink;

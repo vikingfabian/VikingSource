@@ -281,7 +281,10 @@ namespace VikingEngine.DSSWars
             }
             */
         }
-
+        public int CurrentCityComponentCount()
+        {
+            return cityResouces.Length / CityResourceIndex.COUNT;
+        }
         public void ExpandCityComponents(int cityCount)
         {
             /*

@@ -73,6 +73,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
         public override bool update(LocalPlayer player)
         {
+            /*
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.hover.subTile.subTilePos);
             available = false;
 
@@ -83,6 +84,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
             model.Color = available ? Color.White : HudLib.NotAvailableColor;
 
+            */
             return base.update(player);
         }
 

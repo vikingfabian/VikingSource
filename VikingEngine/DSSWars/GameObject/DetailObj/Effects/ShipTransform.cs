@@ -222,17 +222,17 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void completeTransform()
         {
             
-            var city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTile)).pcity.City();
+            //var city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTile)).pcity.City();
 
-            if (group.soldierCount > 0 &&
-                city.cityType == CityType.UnClaimed)
-            {
-                if (city.claimCity(group.pfaction.GetFaction(), subTile))
-                {
-                    group.DeleteMe(DeleteReason.Transform, true);
-                    return;
-                }
-            }
+            //if (group.soldierCount > 0 &&
+            //    city.cityType == CityType.UnClaimed)
+            //{
+            //    if (city.claimCity(group.pfaction.GetFaction(), subTile))
+            //    {
+            //        group.DeleteMe(DeleteReason.Transform, true);
+            //        return;
+            //    }
+            //}
 
             //Fail
             group.completeTransform(SoldierTransformType.Canceled, -1);

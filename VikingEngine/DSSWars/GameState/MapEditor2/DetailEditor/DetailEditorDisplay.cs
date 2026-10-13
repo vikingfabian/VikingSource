@@ -76,6 +76,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
                             new StartIconEditor(DssRef.world);
                         }), null));
                     break;
+
                 case DetailEditorTab.Tiles:
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Edit height") }, tool.editHeightProperty));
                     if (tool.editHeight)
@@ -110,6 +111,19 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
                                 }, type)));
                         }
                     }
+                    break;
+
+                case DetailEditorTab.Cities:
+                    foreach (CityPaintTool cityPaintTool in DetailEditorTool.CityPaintToolOptions)
+                    {
+                        content.Add(new ArtOption(cityPaintTool == tool.cityPaintTool, new List<AbsRichBoxMember> { new RbText(cityPaintTool.ToString()) },
+                            new RbAction1Arg<CityPaintTool>((CityPaintTool selected) =>
+                            {
+                                tool.cityPaintTool = selected;
+                            }, cityPaintTool)));
+                    }
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Include buildings") }, tool.IncludeBuildingsProperty));
                     break;
             }
 

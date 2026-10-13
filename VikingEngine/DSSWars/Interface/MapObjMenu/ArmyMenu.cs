@@ -232,6 +232,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
         public static void settlerButton(LocalPlayer player, RichBoxContent content, SoldierGroup unit)
         {
+            /*
             if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(unit.maptilePos), out var tile))
             {
                 bool unclaimedLand = tile.pcity.City().cityType == CityType.UnClaimed;
@@ -248,6 +249,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                 content.newLine();
             }
+            */
         }
 
         void divideTab(RichBoxContent content)

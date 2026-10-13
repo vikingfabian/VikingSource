@@ -62,10 +62,8 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             foreach (var cityPos in generator.iconWorldScaledUp.cities)
             {
-                City c = new City(world.cities.Count, cityPos.pos, CityType.Village, world);
-                //c.generateCultureAndEconomy(world, cityCultureCollection);
+                City c = new City(world.cities.Count, cityPos.pos, CityType.Village, world);                
                 world.cities.Add(c);
-                //world.unitCollAreaGrid.add(c);
             }
         }
 
