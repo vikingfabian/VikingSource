@@ -728,6 +728,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.viewOnLargeMap = false;
                     faction.storyProtectedFaction = true;
                     faction.hasDeserters = false;
+                    nextDecisionTimer = new Time(20, TimeUnit.Minutes);
 
                     techSetup();
                     break;
@@ -1470,6 +1471,12 @@ namespace VikingEngine.DSSWars.Players
             {
                 timeMulti = 2;
             }
+
+            if (faction.factiontype == FactionType.Barbarians)
+            {
+                timeMulti *= 20;
+            }
+
             nextDecisionTimer.MilliSeconds = Ref.peRnd.Float(5000, 10000) * timeMulti;
             return false;
         }

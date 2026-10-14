@@ -58,6 +58,15 @@ namespace VikingEngine.Graphics
 
                 settings.MinEndSize = 0.010f;//0.4f;
                 settings.MaxEndSize = 0.022f;//0.6f;
+
+#if BLACK
+                const float ScaleUp = 10f;
+                settings.MinStartSize *= ScaleUp;
+                settings.MaxStartSize *= ScaleUp;
+
+                settings.MinEndSize *= ScaleUp;
+                settings.MaxEndSize *= ScaleUp;
+#endif
             }
             else
             {

@@ -7,7 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VikingEngine.Core.BlackBolts.Scene;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
@@ -69,6 +70,9 @@ namespace VikingEngine.DSSWars
             part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
             bSpriteSheetTexture = true;
+
+
+#if !BLACK
             part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.waterEdge, DssLib.ContentDir + "wave_mask1");
             part++;
@@ -85,19 +89,22 @@ namespace VikingEngine.DSSWars
             part++;
             ElephantModelBuilder.Init();
             part++;
-
+#endif
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");
             Engine.LoadContent.LoadMesh(LoadedMesh.plane, Engine.LoadContent.ModelPath + "plane");
             Engine.LoadContent.LoadMesh(LoadedMesh.sphere, Engine.LoadContent.ModelPath + "sphere");
+#if !BLACK
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectSquareDotted, Engine.LoadContent.ModelPath + "SelectSquareDotted");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectSquareSolid, Engine.LoadContent.ModelPath + "SelectSquareSolid");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleDotted, Engine.LoadContent.ModelPath + "SelectCircleDotted");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleSolid, Engine.LoadContent.ModelPath + "SelectCircleSolid");
             Engine.LoadContent.LoadMesh(LoadedMesh.SelectCircleThick, Engine.LoadContent.ModelPath + "SelectCircleThick");
+
             //EffectVertexColorShadow.LoadContent();
             part++;
-
+#endif
             SoundLib.LoadContent();
+
             part++;
             Engine.LoadContent.LoadSteamVersion();
             part++;
@@ -110,17 +117,24 @@ namespace VikingEngine.DSSWars
             part++;
             UserGeneratedContent.UGClib.GameContentInit();
             part++;
+#if BLACK
+            BlackMainScene.bgTex = Ref.main.Content.Load<Texture2D>(Core.BlackBolts.Data.MapStorage.ContentFolder + FilePath.Dir +
+                "black bolt_bg");
+#else
             bgTex = MainMenuState.LoadBg();
+#endif
             part++;
         }
 
         protected override async void asyncDataProcessLoading()
         {
+
             ConscriptDataLib.Init();
             dataProcessPart++;
             FlagDesign.Init();
             dataProcessPart++;
             Block.Init();
+#if !BLACK
             dataProcessPart++;
             FlagAndColor.Init();
             dataProcessPart++;
@@ -131,6 +145,7 @@ namespace VikingEngine.DSSWars
             dataProcessPart++;
             BuildLib.Init();
             dataProcessPart++;
+#endif
             GroundPropertiesLib.Init(); 
             dataProcessPart++;
 
@@ -161,7 +176,9 @@ namespace VikingEngine.DSSWars
 
         protected override void asyncLoadIntro()
         {
-
+#if BLACK
+            introSound = null;
+#else
             try
             {
                 introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.5f);
@@ -172,7 +189,7 @@ namespace VikingEngine.DSSWars
                 
                 introSound = null;
             }
-
+#endif
         }
 
         override protected void asyncStorageLoading(ref int part)
@@ -203,17 +220,20 @@ namespace VikingEngine.DSSWars
 
         protected override void launch()
         {
+#if !BLACK
             DssRef.models.rawModels_temporary = null;
             Ref.main.criticalContentIsLoaded = true;
             new Achievements();
             //new GameStats();
             DssRef.stats.startUp.addOne();
 
+
             if (Ref.gamesett.language == LanguageType.NONE)
             {
                 new SelectLanguageMenu();
             }
             else
+#endif
             {
 #if DEBUG
                 //for (int i = 0; i < 1000000; ++i)
@@ -228,7 +248,7 @@ namespace VikingEngine.DSSWars
                 //    }
                 //}
 
-                
+
 #endif
 
                 //if (Ref.netSession.InMultiplayerSession)
@@ -251,7 +271,11 @@ namespace VikingEngine.DSSWars
                 }
                 else
                 {
+#if BLACK
+                    new Core.BlackBolts.Scene.BlackIntroScene();
+#else
                     new MainMenuState(bgTex);
+#endif
                 }
             }
         }

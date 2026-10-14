@@ -178,6 +178,14 @@ namespace VikingEngine.SteamWrapping
                 setStat();
             }
         }
+        public void addOne_ifUnchanged()
+        {
+            if (value == valueAtGameStart)
+            {
+                this.value++;
+                setStat();
+            }
+        }
 
         public bool getStat()
         {

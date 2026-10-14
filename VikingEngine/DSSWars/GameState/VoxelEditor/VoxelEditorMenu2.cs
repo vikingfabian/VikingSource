@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 HudLib.NextArrow(
                 new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.VoxelEditorColorCube, 1, designer.SelectedMaterial.color),
+                    new RbImage(SpriteName.VoxelEditorColorCube, 1, designer.SelectedMaterial.flatcolor),
                     new RbSpace(),
                     new RbText(DssRef.lang.Editor_Color)
                 }), new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Color, StackOption.Stack)));
@@ -241,7 +241,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
                     new RbImage(SpriteName.IconColorPick), new RbSpace(),
-                    new RbImage(SpriteName.VoxelEditorColorCube, 1, designer.drawCoordMaterial.color), new RbSpace(), 
+                    new RbImage(SpriteName.VoxelEditorColorCube, 1, designer.drawCoordMaterial.flatcolor), new RbSpace(), 
                     new RbText(designer.drawCoordMaterial.ToString()) }, new RbAction(designer.linkPickMaterial)));
             }
             content.newLine();
@@ -700,7 +700,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             }
             else
             {
-                content.Add(new RbImage(SpriteName.VoxelEditorColorCube, 1, from.color));
+                content.Add(new RbImage(SpriteName.VoxelEditorColorCube, 1, from.flatcolor));
             }
             content.space();
             content.Add(new RbText(DssRef.lang.Editor_Color_RecolorTo, HudLib.TitleColor_Head));
@@ -774,7 +774,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.h1(DssRef.lang.Editor_SelectOptionsMenu, HudLib.TitleColor_Head);
 
             content.newLine();
-            Color current = BlockHD.FilterColor(designer.SelectedMaterial.color);
+            Color current = BlockHD.FilterColor(designer.SelectedMaterial.flatcolor);
             content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.NextArrow(new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.VoxelEditorColorCube, 1f, current), new RbSpace(),
                 new RbText(DssRef.lang.Editor_Color_Recolor)
@@ -990,7 +990,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         void selectColorMenu()
         {
-            Color current = BlockHD.FilterColor(designer.SelectedMaterial.color);
+            Color current = BlockHD.FilterColor(designer.SelectedMaterial.flatcolor);
 
             RichBoxContent content = new RichBoxContent();
             HudLib.returnButton(content, menu, true, closeMenu);
@@ -1094,7 +1094,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             //    icon.iconImage.Size *= 0.7f;
             //}
 
-            content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, bigButton? 1 : 0.8f, color.color) },
+            content.Add(new ArtImageButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, bigButton? 1 : 0.8f, color.flatcolor) },
                new RbAction1Arg<BlockHD>(link, color), new RbTooltip_Text(name))
             { SpaceAfter = 0, });
         }

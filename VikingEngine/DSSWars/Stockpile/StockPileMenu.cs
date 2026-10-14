@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Resource
 {
     class StockPileMenu
     {
-        static readonly List<float> StockPileControls = new List<float> { 100, 1000 };
+        static readonly List<float> DragButtonOptions = new List<float> { 100, 1000 };
 
         RichBoxContent content;
         City city; 
@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Resource
                                 else
                                 {
                                     ref GroupedResource resources = ref faction.GetRefResourceOverview(item);
-                                    resources.capacity = value;
+                                    resources.capacity = (ushort)value;
                                     resources.setLimit(value);
                                 }
                             }
@@ -432,7 +432,7 @@ namespace VikingEngine.DSSWars.Resource
                     var res = city.GetGroupedResource(item);
                     if (set)
                     {
-                        res.stockPileLimit = value;
+                        res.stockPileLimit = (ushort)value;
                         city.SetGroupedResource(item, res);
                     }
                     return res.stockPileLimit;
@@ -446,7 +446,7 @@ namespace VikingEngine.DSSWars.Resource
                     ref var res = ref faction.GetRefResourceOverview(item);
                     if (set)
                     {
-                        res.stockPileLimit = value;
+                        res.stockPileLimit = (ushort)value;
                         //todo set all cities
                     }
 
@@ -454,7 +454,7 @@ namespace VikingEngine.DSSWars.Resource
                 };
             }
 
-            RbDragButton.RbDragButtonGroup(content, StockPileControls, new DragButtonSettings(DssConst.StockPileMinBound, max, 100),
+            RbDragButton.RbDragButtonGroup(content, DragButtonOptions, new DragButtonSettings(DssConst.StockPileMinBound, max, 100),
                 property, true);
         }
     }

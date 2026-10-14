@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.Work
         }
     }
 
-    enum WorkType
+    enum WorkType : byte
     {
         IsDeleted,
         Idle,

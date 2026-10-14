@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
-            Ref.draw.ClrColor = new Color(2, 9, 12);//Ref.draw.ClrColor = ColorExt.ChangeBrighness( new Color(29,54,67), -2);//new Color(11, 30, 34);
+            Ref.draw.ClrColor = new Color(2, 9, 12);
 
             menuSystem = new Interface.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Interface.MenuType.Lobby);
             DssRef.storage.checkConnected();
@@ -392,6 +392,11 @@ namespace VikingEngine.DSSWars
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_Commander) }),
                             new RbAction(extra_PlayCommanderVersus), new RbTooltip_Text(DssRef.lang.Lobby_Mode_Commander_Description), !PlatformSettings.STEAM_DEMO));
+
+                        content.newLine();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(string.Format(DssRef.todoLang.PlayX, DssRef.todoLang.Minigame_BlackBolt_Name)) }),
+                            new RbAction(extra_PlayBlackBolt), new RbTooltip_Text(DssRef.todoLang.Minigame_BlackBolt_Description), !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
 
@@ -707,6 +712,7 @@ namespace VikingEngine.DSSWars
             if (underMenu == null)
             {
                 underMenu = new RichMenu(HudLib.RbSettings, underMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
+                underMenu.renderList.alwaysRedraw = true;
                 underMenu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), ImageLayers.Lay9).SetOpacity(MenuBgOpacity);
 
                 networkSettingsMenu = new NetworkSettingsMenu(underMenu, true);
@@ -2427,25 +2433,13 @@ namespace VikingEngine.DSSWars
 
         void extra_PlayCommanderVersus()
         {
-            //VikingEngine.ToGG.toggLib.Init();
-            //VikingEngine.ToGG.Commander.BattleLib.Init();
-            //new ToGG.ToggEngine.Map.SquareDic();
-            //ToGG.ToggEngine.Map.MainTerrainProperties.Init();
-            //new VikingEngine.ToGG.InputMap(0);
-            ////new Network.Session();
-
-            //ToGG.Commander.LevelSetup.GameSetup setup = new ToGG.Commander.LevelSetup.GameSetup();
-            //setup.lobbyMembers = new List<ToGG.AbsLobbyMember>
-            //{
-            //    new ToGG.LocalLobbyMember(0),
-            //    new ToGG.AiLobbyMember(),
-            //};
-
-            //new ToGG.Commander.CmdPlayState(setup);
-            new StartExtra();
+            new StartExtra(true);
+        }
+        void extra_PlayBlackBolt()
+        {
+            new StartExtra(false);
         }
 
-              
 
         public bool allowPauseProperty(object tag, bool set, bool value)
         {

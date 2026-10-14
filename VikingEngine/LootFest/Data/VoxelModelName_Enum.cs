@@ -445,6 +445,22 @@ namespace VikingEngine.LootFest
         city_garden,
         #endregion
 
+        CATEGORY_BLACK_2,
+        bb_belt,
+        bb_blades,
+        bb_hobbit,
+        bb_item,
+        bb_onetile,
+        bb_rotate,
+        bb_vat,
+        goblin_worker,
+        bb_nightdemon,
+        bb_dragon,
+        bb_whiteknight,
+        bb_blackknight,
+        bb_io_base,
+        bb_io_mark,
+
         NUM_NON
     }
 

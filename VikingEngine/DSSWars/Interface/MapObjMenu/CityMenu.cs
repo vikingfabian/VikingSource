@@ -759,6 +759,30 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
         }
 
+        void resourceManagementTabToolTip(RichBoxContent content, object tag)
+        {
+            ResourceManagementType tab = (ResourceManagementType)tag;
+            IconName.Tab(tab, out SpriteName categoryIcon, out string category);
+            //IconName.Tab(tab.resourceGroup, out SpriteName tabIcon, out string tabName);
+
+            content.text(".Select resource management", HudLib.TitleColor_Action);
+            content.newParagraph();
+            content.Add(new RbBeginTitle());
+            content.Add(new RbImage(categoryIcon));
+            content.space();
+            content.Add(new RbText(category, HudLib.TitleColor_Head));
+
+            //content.icontext(tabIcon, tabName);
+        }
+        void resourceGroupToolTip(RichBoxContent content, object tag)
+        {
+            ResourceGroupType tab = (ResourceGroupType)tag;
+            IconName.Tab(tab, out SpriteName tabIcon, out string tabName);
+
+            content.text(DssRef.lang.Work_SelectCategory, HudLib.TitleColor_Action);
+            content.newParagraph();
+            content.icontext(tabIcon, tabName);
+        }
         void resourceTabToolTip(RichBoxContent content, object tag)
         {
             ResourcesSubTab tab = (ResourcesSubTab)tag;
@@ -809,7 +833,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                     break;
 
-                case ResourceManagementType.Work:
+                case ResourceManagementType.WorkPrio:
                     content.text( string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
                     break;
 
@@ -834,6 +858,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             if (player.tutorial == null || player.tutorial.DisplayResourseSubTabs())
             {
+                /*
                 for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
                 {
                     IconName.Tab(managementType, out SpriteName managementIcon, out string managementName);
@@ -847,7 +872,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     {
                         if (group == ResourceGroupType.Mint)
                         {
-                            bool includeMint = managementType == ResourceManagementType.Work && city.buildingStructure.CoinMinter_count > 0;
+                            bool includeMint = managementType == ResourceManagementType.WorkPrio && city.buildingStructure.CoinMinter_count > 0;
                             if (!includeMint)
                             {
                                 continue;
@@ -874,6 +899,50 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     HudLib.InfoButton(content, new RbTooltip(resourceTabsInfo, managementType));
 
                 }
+                */
+                for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
+                {
+                    IconName.Tab(managementType, out SpriteName managementIcon, out string managementName);
+
+                    content.Add(new ArtButton(player.resourcesSubTab.managementType == managementType ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                        new List<AbsRichBoxMember> { new RbImage(managementIcon) },
+                        new RbAction1Arg<ResourceManagementType>((ResourceManagementType selected) =>
+                        {
+                            if (player.resourcesSubTab.managementType != selected)
+                            {
+                                SoundLib.SubTab(selected);
+                            }
+                            player.resourcesSubTab.managementType = selected;
+
+                        }, managementType, RbSoundType.Option),
+                        new RbTooltip(resourceManagementTabToolTip, managementType)));
+                }
+                content.newLine();
+
+                for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
+                {
+                    if (group == ResourceGroupType.Mint)
+                    {
+                        bool includeMint = player.resourcesSubTab.managementType == ResourceManagementType.WorkPrio && city.buildingStructure.CoinMinter_count > 0;
+                        if (!includeMint)
+                        {
+                            continue;
+                        }
+                    }
+
+                    IconName.Tab(group, out SpriteName groupIcon, out string groupName);
+                    //var tab = new ResourcesSubTab(managementType, group);
+                    content.Add(new ArtButton(group == player.resourcesSubTab.resourceGroup ? RbButtonStyle.FilterSelected : RbButtonStyle.Filter,
+                        new List<AbsRichBoxMember> { new RbImage(groupIcon) },
+                        new RbAction1Arg<ResourceGroupType>((ResourceGroupType selected) =>
+                        {
+                            player.resourcesSubTab.resourceGroup = selected;
+
+                        }, group, RbSoundType.Option),
+                        new RbTooltip(resourceGroupToolTip, group),
+                        true));
+                }
+                content.newParagraph();
             }
         
 
@@ -883,14 +952,24 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     resourceOverview(content, player.resourcesSubTab.resourceGroup); 
                     break;                
 
-                case ResourceManagementType.Work:
+                case ResourceManagementType.WorkPrio:
                     content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
                     city.workTemplate.toHud(player, content, player.resourcesSubTab.resourceGroup, city.pfaction.GetFaction(), city);
+                    break;
+
+                case ResourceManagementType.WorkCount:
+                    content.h2(".Worker count", HudLib.TitleColor_Head);
+                    new WorkerLimitMenu(content, city, city.pfaction.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
                     break;
 
                 case ResourceManagementType.Stockpile:
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     new StockPileMenu(content, city, city.pfaction.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
+                    break;
+                
+                case ResourceManagementType.Delivery:
+                    content.h2(DssRef.lang.MenuTab_Delivery, HudLib.TitleColor_Head);
+                    new DeliveryRequestMenu(content, city, city.pfaction.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
                     break;
             }
 

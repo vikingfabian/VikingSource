@@ -744,9 +744,9 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 RichBoxContent content = new RichBoxContent();
                 HudLib.Label(content, DssRef.lang.Editor_PickedColor);
                 content.newLine();
-                content.Add(new RbImage(SpriteName.VoxelEditorColorCube, 1f, Settings.Material.color));
+                content.Add(new RbImage(SpriteName.VoxelEditorColorCube, 1f, Settings.Material.flatcolor));
                 content.hspace();
-                content.Add(new RbText(string.Format(DssRef.lang.Editor_ColorRGBvalues, Settings.Material.color.R, Settings.Material.color.G, Settings.Material.color.B)));
+                content.Add(new RbText(string.Format(DssRef.lang.Editor_ColorRGBvalues, Settings.Material.flatcolor.R, Settings.Material.flatcolor.G, Settings.Material.flatcolor.B)));
 
                 content.space(2);
                 content.Add(new RbImage(SpriteName.VoxelEditorMaterialCube));

@@ -130,6 +130,7 @@ public class Builder : ContentBuilder
         contentCollection.IncludeCopy<WildcardRule>("*.lvl", null);
         contentCollection.IncludeCopy<WildcardRule>("*.txt", null);
         contentCollection.IncludeCopy<WildcardRule>("*.vdf", null);
+        contentCollection.IncludeCopy<WildcardRule>("*.bbs", null);
 
         return contentCollection;
     }

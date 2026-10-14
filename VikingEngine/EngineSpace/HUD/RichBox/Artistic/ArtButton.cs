@@ -30,6 +30,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
         SubTabNotSelected,
         HoverArea,
 
+        Filter,
+        FilterSelected,
+
         TechHover,
         TechSelect,
     }
@@ -113,6 +116,12 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.HoverArea:
                     textureSett = group.settings.artHoverAreaTex;
+                    break;
+                case RbButtonStyle.FilterSelected:
+                    textureSett = group.settings.artFilterButtonTex;
+                    break;
+                case RbButtonStyle.Filter:
+                    textureSett = group.settings.artFilterButtonTex.Selected(false);
                     break;
                 case RbButtonStyle.TechSelect:
                     textureSett = group.settings.TechSelect;

@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Players
                     bool hasBetterCraft = false;
                     foreach (var weaponType in ConscriptWeaponPrioOrder)
                     {
-                        var work = city.workTemplate.GetWorkPriority(weaponType.item, out _);
+                        var work = city.workTemplate.GetWorkPriority(weaponType.item, out _, out _);
                         if (adjustWorkToMilitaryCrafting(city, ItemPropertyColl.Get(weaponType.item).bp1, ref work, hasBetterCraft, out bool available))
                         {
                             city.workTemplate.SetWorkPriority(weaponType.item, work);
@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.Players
                     hasBetterCraft = false;
                     foreach (var armorType in conscriptArmorPrioOrder)
                     {
-                        var work = city.workTemplate.GetWorkPriority(armorType, out _);
+                        var work = city.workTemplate.GetWorkPriority(armorType, out _, out _);
                         if (adjustWorkToMilitaryCrafting(city, ItemPropertyColl.Get(armorType).bp1, ref work, hasBetterCraft, out hasBetterCraft))
                         {
                             city.workTemplate.SetWorkPriority(armorType, work);

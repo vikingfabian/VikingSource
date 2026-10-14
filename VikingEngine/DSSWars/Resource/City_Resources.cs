@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int maxWaterTotal = DssConst.Maxwater;
         FloatingInt nextWater = new FloatingInt();
         public float waterAddPerSec;
-        static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
+        static GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
         
         public GroupedResource res_water = new GroupedResource();
@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.GameObject
                             amount = money.GetGold32();
                         }
 
-                        return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue, capacity = int.MaxValue };
+                        return new GroupedResource() { amount = amount, stockPileLimit = ushort.MaxValue, capacity = ushort.MaxValue, };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.NobleMen:
@@ -325,44 +325,31 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool IsGroupedResource(ItemResourceType type)
         {
-            if (ItemPropertyColl.CityIndex(type) >= 0)
-            {
-                return true;
-            }
-
-            switch (type)
-            {
-                case ItemResourceType.Men:
-                case ItemResourceType.NobleMen:
-                case ItemResourceType.ServiceMen:
-                case ItemResourceType.Water_G:
-                    return true;
-                default:
-                    return false;
-            }
+            return ItemPropertyColl.CityIndex(type) >= 0;
         }
 
         public ref GroupedResource GetRefGroupedResource(ItemResourceType type)
         {
             int cityResourceIndex = ItemPropertyColl.CityIndex(type);
 
+#if DEBUG
             if (cityResourceIndex < 0)
             {
-                switch (type)
-                {
-                    case ItemResourceType.Men:
-                        return ref workForce;
-                    case ItemResourceType.NobleMen:
-                        return ref freeNobelMen;
-                    case ItemResourceType.ServiceMen:
-                        return ref freeServiceMen;
-                    case ItemResourceType.Water_G:
-                        return ref res_water;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(type), type, "Not a grouped resource.");
-                }
+                throw new NotImplementedException();
             }
+#endif
+            return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+        }
 
+        public ref GroupedResource GetRefGroupedResource_Safe(ItemResourceType type)
+        {
+            int cityResourceIndex = ItemPropertyColl.CityIndex(type);
+
+            if (cityResourceIndex < 0)
+            {
+                return ref Res_Nothing;
+            }
+            ItemPropertyColl.CityIndex(type);
             return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
 

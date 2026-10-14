@@ -1,18 +1,31 @@
 
 Change log:
+* Compressed the size of resources
 * 
 
 x adjust "all facts"
 
 ## QoL Part 2 ## (December 17)
 * The color range of voxel models have been adjusted
+* Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
+* Truce timer is pinned to hud
+* Made the dark horde slow and idle
+* All animal pens have double upkeep
+
+Worker count limit
+* Made to better control the flow of work
+! Prototype: ui be improved if it works
+
+Delivery request
+* Affects any auto delivery (auto city or auto item)
+! Prototype: ui be improved if it works
 
 Soldier abilities
 * Added a parry system. Weapons with high parry will block melee attacks from those with low.
 * Armor and shields will add parry.
 * Added and reworked abilities: AntiSpear, AntiCavalry, AntiPlateArmor, ArrowWeakness and DefenceBreak
 * Removed the locked specialization on long hand weapons and warmachines
-* Warhammer are now only strong against plate armor 
+* Warhammer is now only strong against plate armor 
 
 Performance
 * Work has been put into keeping down the creeping memory (RAM) usage (contribution made by Uygar "Agent" Yilmaz)
@@ -22,9 +35,16 @@ Performance
 * Model instance rendering (Uygar "Agent" Yilmaz)
 * The terrain shadow renderer now supports textures (Uygar "Agent" Yilmaz)
 * Fixed stuck game process on exit (Uygar "Agent" Yilmaz)
+* Reduced menu render calls (Uygar "Agent" Yilmaz)
 
+Vulkan
+* DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
+* Map loading is now done on multiple CPU cores and runs smoother
 
 #MAP 2.0 UPDATE
+
+Worker max count
+* A new way to manage city work (prototype version)
 
 World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
@@ -124,10 +144,11 @@ Pixel perfect font:
 https://github.com/FontStashSharp/FontStashSharp/wiki/Using-FontStashSharp-in-MonoGame-or-FNA
 
 #Export
-cd VikingEngine
+cd VikingEngine.DesktopVK
 dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
 
 old:
+cd VikingEngine
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
 
 #LINUX

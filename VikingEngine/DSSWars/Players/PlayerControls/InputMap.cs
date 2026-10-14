@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars
         public InputMap(int playerIx)
             : base(playerIx)
         {
-            Engine.XGuide.GetPlayer(playerIx).inputMap = this;
+            Engine.XGuide.GetOrCreatePlayer(playerIx).inputMap = this;
         }
 
         public override IButtonMap MenuClick => mouseSelect;

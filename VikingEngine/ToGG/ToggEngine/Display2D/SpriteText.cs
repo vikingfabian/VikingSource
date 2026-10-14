@@ -7,7 +7,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
 {
     class SpriteText : VikingEngine.Graphics.AbsSpriteText
     {
-        const float LetterWidthScale = 0.68f;
+        public const float LetterWidthScale = 0.68f;
 
         public SpriteText(string textString, Vector2 position, float height, ImageLayers layer, Vector2 relCenter, Color color, bool addToRender)
             : base(LetterWidthScale, textString, position, height, layer, relCenter, color, addToRender)

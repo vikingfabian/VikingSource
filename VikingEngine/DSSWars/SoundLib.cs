@@ -299,11 +299,14 @@ namespace VikingEngine.DSSWars
                 case Resource.ResourceManagementType.Overview:
                     tab_resources.Play();
                     break;
-                case Resource.ResourceManagementType.Work:
+                case Resource.ResourceManagementType.WorkPrio:
                     tab_work.Play();
                     break;
                 case Resource.ResourceManagementType.Stockpile:
                     tab_stockpile.Play();
+                    break;
+                case Resource.ResourceManagementType.Delivery:
+                    tab_delivery.Play();
                     break;
 
             }

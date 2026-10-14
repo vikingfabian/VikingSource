@@ -40,6 +40,7 @@ namespace VikingEngine.LootFest
         public static readonly string ModelsCategoryBlockpattern = VoxelModelFolder + "BlockPattern";
         public static readonly string ModelsCategoryWeapon = VoxelModelFolder + "Weapon";
         public static readonly string ModelsCategoryWars = VoxelModelFolder + "LfWars";
+        public static readonly string ModelsCategoryBlack = VoxelModelFolder + "Black";
 
         public static readonly string SceneFolder = DataFolder + "Scene";
         public static readonly string SceneModelFolder = SceneFolder + Path.DirectorySeparatorChar + "Models";

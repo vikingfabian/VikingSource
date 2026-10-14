@@ -1032,9 +1032,19 @@ namespace VikingEngine.DSSWars
                     managementName = DssRef.lang.Resource_Tab_Stockpile;
                     break;
 
-                case ResourceManagementType.Work:
+                case ResourceManagementType.WorkPrio:
                     managementIcon = SpriteName.WarsHammer;
                     managementName = DssRef.lang.MenuTab_Work;
+                    break;
+
+                case ResourceManagementType.WorkCount:
+                    managementIcon = SpriteName.WarsIcon_WorkQueueTotal;
+                    managementName = ".Max worker count";
+                    break;
+
+                case ResourceManagementType.Delivery:
+                    managementIcon = SpriteName.WarsDelivery;
+                    managementName = DssRef.lang.MenuTab_Delivery;
                     break;
 
                 //case ResourceManagementType.Auto:

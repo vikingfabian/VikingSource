@@ -36,6 +36,7 @@ namespace VikingEngine.HUD.RichBox
         public NineSplitSettings artTabTex;
         public NineSplitSettings artSubTabTex;
         public NineSplitSettings artHoverAreaTex;
+public NineSplitSettings artFilterButtonTex;
         public ThreeSplitSettings dragButtonTex;
         public NineSplitSettings windowBackground;
 

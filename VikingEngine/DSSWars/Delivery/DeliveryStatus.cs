@@ -204,7 +204,7 @@ namespace VikingEngine.DSSWars.Delivery
             level = r.ReadByte();            
         }
 
-        public bool CanSend(City city, out ItemResourceType item)
+        public bool CanSend_CheckMinMax(City city, out ItemResourceType item)
         {
             item = profile.type;
             int min = useSenderMin ? senderMin : 0;
@@ -247,7 +247,7 @@ namespace VikingEngine.DSSWars.Delivery
                     var resource = recievingCity.GetGroupedResource(sendItem);                    
                     recieverHasAmountPlusDeliveries = resource.amountPlusDelivery();
 
-                    if (resource.reachedBuffer())
+                    if (resource.reachedBuffer() || (!resource.requestDelivery && containsAuto()))
                     {
                         return false;
                     }
@@ -266,6 +266,11 @@ namespace VikingEngine.DSSWars.Delivery
                 recieverHasAmountPlusDeliveries = 0;
                 return false;
             }
+        }
+
+        bool containsAuto()
+        {
+            return profile.type == ItemResourceType.AutomatedItem || profile.toCity == DeliveryProfile.ToCityAuto;
         }
 
         public bool CountDownQue()

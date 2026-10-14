@@ -292,7 +292,7 @@ namespace VikingEngine.DSSWars
             //{
             //    p.resourcesSubTab = ResourcesSubTab.Work_Resources;
             //}
-            p.resourcesSubTab.managementType = ResourceManagementType.Work;
+            p.resourcesSubTab.managementType = ResourceManagementType.WorkPrio;
 
             content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
             content.newLine();

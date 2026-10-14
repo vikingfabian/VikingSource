@@ -63,12 +63,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                 model.Frame = currentFrame;
                 enterEvenFrame = lib.IsEven(currentFrame);
-                  
-
-                //if (lib.IsEven(currentFrame) && Ref.peRnd.ChanceF_Low(0.04f))
-                //{
-                //    SoundLib.footstep.Play(model.position);
-                //}
             }
         }
 
