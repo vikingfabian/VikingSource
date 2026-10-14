@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine
 {
-    struct SpriteVariantCount
+    public struct SpriteVariantCount
     {
         SpriteName first;
         int variants;
@@ -28,7 +28,7 @@ namespace VikingEngine
 
     }
 
-    enum SpriteName : short
+    public enum SpriteName : short
     {
         NO_IMAGE = 0,
 

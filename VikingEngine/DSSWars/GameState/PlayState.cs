@@ -917,7 +917,7 @@ namespace VikingEngine.DSSWars
                 int cityCount = 0;
                 foreach (var m in DssRef.world.cities)
                 {
-                    if (m.cityType > CityType.UnClaimed)
+                    //if (m.cityType > CityType.UnClaimed)
                     {
                         m.asynchGameObjectsUpdate(minute);
                         cityCount++;

@@ -8,14 +8,14 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Input
 {
-    abstract class AbsController
+    public abstract class AbsController
     { 
         abstract public bool Connected { get; }
         public int Index;
         public bool hasUser = false;
     }
 
-    class XController: AbsController
+    public class XController: AbsController
     {
         const float TriggerBuffer = 0.01f;
 

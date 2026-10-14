@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars
             factionCount = Math.Max(factionCount, DefaultFactionCount);
             factionResourceOverviews = new GroupedResource[factionCount * CityResourceIndex.COUNT];
             factionWork = new WorkPriority[factionCount * WorkTemplate.COUNT];
-            faction_techNodes = new TechTreeNodeProgress_Faction[length * TechTreeNodeProgress_City.NodeCount];
+            faction_techNodes = new TechTreeNodeProgress_Faction[factionCount * TechTreeNodeProgress_City.NodeCount];
             //diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
             diplomacy = new Diplomacy(factionCount);
 
@@ -38,11 +38,11 @@ namespace VikingEngine.DSSWars
 
         public void factionComponentsAdd(Faction faction)
         {
-            if (factionResourceOverviews == null)
-            {
-                init_FactionComponents();
-                return;
-            }
+            //if (factionResourceOverviews == null)
+            //{
+            //    init_FactionComponents();
+            //    return;
+            //}
 
             if (factions.Array.Length * CityResourceIndex.COUNT >= factionResourceOverviews.Length)
             {

@@ -533,7 +533,7 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.WriteCheck(w);
         }
 
-        public bool IsInitialized => tilePos.X >= 0;
+        public bool IsInitialized => maptilePos.X >= 0;
 
         public void readMapFile(WorldData world, System.IO.BinaryReader r, int saveMapVersion)
         {

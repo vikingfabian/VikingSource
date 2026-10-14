@@ -138,6 +138,7 @@ namespace VikingEngine.PJ
         public static bool KeyboardDisplayMode = true;
         public static SpriteName InputIcon(SpriteName keyboard, SteamDigitalAction steamAction, SpriteName defaultIcon)
         {
+#if PJ
             if (KeyboardDisplayMode && keyboard != SpriteName.NO_IMAGE)
             {
                 return keyboard;
@@ -150,7 +151,7 @@ namespace VikingEngine.PJ
                     return result;
                 }
             }
-
+#endif
             return defaultIcon;
         }
 

@@ -47,8 +47,18 @@ namespace VikingEngine.PJ
                 Buttons.RightTrigger,
             };
 
-        public const SteamDigitalAction FirstSteamJoinButton = SteamDigitalAction.Action_01;
-        public const SteamDigitalAction LastSteamJoinButton = SteamDigitalAction.Action_08;
+        public const SteamDigitalAction FirstSteamJoinButton =
+#if PJ
+            SteamDigitalAction.Action_01;
+#else
+            0;
+#endif
+        public const SteamDigitalAction LastSteamJoinButton = 
+#if PJ
+            SteamDigitalAction.Action_08;
+#else
+            0;
+#endif
         
 
         public static readonly PartyGameMode? DebugAutoStartMode = null;//PartyGameMode.SuperSmashBirds;
@@ -205,10 +215,11 @@ namespace VikingEngine.PJ
 
         public static void UpdateManagerInput(out bool startInput, out bool menuInput, out Input.InputSource user)
         {
+
             startInput = Input.Keyboard.KeyDownEvent(Keys.Enter);
             menuInput = Input.Keyboard.KeyDownEvent(Keys.Escape);
             user = Input.InputSource.DefaultPC;
-
+#if PJ
             if (Ref.steam.isInitialized)
             {
                 if ( Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Start))
@@ -238,6 +249,7 @@ namespace VikingEngine.PJ
                     }
                 }
             }
+#endif
         }
     }    
 

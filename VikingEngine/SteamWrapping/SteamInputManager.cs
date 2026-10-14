@@ -841,7 +841,7 @@ namespace VikingEngine.SteamWrapping
         NUM
     }
 
-    class SteamControllerInstance : AbsController
+    public class SteamControllerInstance : AbsController
     {
         public bool connected;
 

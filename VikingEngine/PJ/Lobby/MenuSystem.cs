@@ -71,6 +71,7 @@ namespace VikingEngine.PJ
         }
         public void closeMenu()
         {
+#if PJ
             if (menu != null)
             {
                
@@ -89,6 +90,7 @@ namespace VikingEngine.PJ
                 Ref.steam.input.SetActionSet(SteamActionSet.DefaultSet);
                 //GC.Collect();
             }
+#endif
         }
 
         public bool menuUpdate()

@@ -199,7 +199,7 @@ namespace VikingEngine.DSSWars.Event
                 int missingCities = 0;
                 foreach (var city in DssRef.world.cities)
                 {
-                    if (!city.IsInitialized || (city.cityType > CityType.UnClaimed && city.pfaction != p.pfaction))
+                    if (!city.IsInitialized || (/*city.cityType > CityType.UnClaimed &&*/ city.pfaction != p.pfaction))
                     {
                         missingCities++;
                         if (missingCities > dominationCount)

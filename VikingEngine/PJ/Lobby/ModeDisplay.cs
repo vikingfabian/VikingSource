@@ -145,6 +145,7 @@ namespace VikingEngine.PJ.Lobby
 
         public void update()
         {
+#if PJ
             if (!PjRef.XboxLayout)
             {
                 if (prev.update())
@@ -187,8 +188,9 @@ namespace VikingEngine.PJ.Lobby
             next.highlight.Visible = highlightNext || next.mouseOver;
             
             unlockDlc.update();
+#endif
         }
-        
+
         void nextMode(int dir)
         {
             if (dir != 0)

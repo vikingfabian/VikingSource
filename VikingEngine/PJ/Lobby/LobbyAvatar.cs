@@ -63,6 +63,7 @@ namespace VikingEngine.PJ
 
         public void refreshIsLast(bool isLast)
         {
+#if PJ
             removeIcon.Visible = true;
 
             if (isLast)
@@ -84,6 +85,7 @@ namespace VikingEngine.PJ
                     removeIcon.Visible = false;
                 }
             }
+#endif
         }
 
         public static void GamerAvatarFrameAndJoustAnimal(VectorRect area, ImageLayers layer, GamerData gamerdata,

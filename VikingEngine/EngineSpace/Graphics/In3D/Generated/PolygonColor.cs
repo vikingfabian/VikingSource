@@ -114,7 +114,7 @@ namespace VikingEngine.Graphics
     /// <summary>
     /// Polygon with four triangles in a cross structure
     /// </summary>
-    struct CrossPolygonColor
+    public struct CrossPolygonColor
     {
         public PolygonColor rectangle;
         public VertexPositionColorTexture centerVertex;
@@ -135,7 +135,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    struct PolygonColor
+    public struct PolygonColor
     {        
         public VertexPositionColorTexture V0sw;
         public VertexPositionColorTexture V1nw;

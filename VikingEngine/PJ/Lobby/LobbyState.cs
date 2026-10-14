@@ -1185,6 +1185,7 @@ namespace VikingEngine.PJ
 
         void updateJoinInput()
         {
+#if PJ
 #if PCGAME
             for (int i = suggestJoinIcons.Count - 1; i >= 0; --i)
             {
@@ -1295,6 +1296,7 @@ namespace VikingEngine.PJ
                 }
                 joinedLocalGamers[i].lobbyUpdate(this);
             }
+#endif
         }
 
         public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)

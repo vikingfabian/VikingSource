@@ -19,6 +19,7 @@ namespace VikingEngine.PJ.Display
 
         public PauseMenu(int pIx, AbsPJGameState gamestate, Input.InputSource inputType)
         {
+#if PJ
             HudLib.KeyboardDisplayMode = inputType.sourceType == InputSourceType.Keyboard;
 
             this.gamestate = gamestate;
@@ -52,10 +53,12 @@ namespace VikingEngine.PJ.Display
             resume.createInputIcon(Dir4.E, resumeButtonImage);
 
             buttonsY = exitGame.area.Y;
+#endif
         }
 
         public bool Update()
         {
+#if PJ
             int input_1Exit_2Resume = 0;
 
             if (lostControllerDisplay != null)
@@ -121,7 +124,7 @@ namespace VikingEngine.PJ.Display
             {
                 return true;
             }
-
+#endif
             return false;
         }
 

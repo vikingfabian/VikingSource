@@ -89,6 +89,7 @@ namespace VikingEngine.PJ
 
         protected bool pauseInput(out InputSource inputType)
         {
+#if PJ
             if (Input.Keyboard.KeyDownEvent(Keys.Escape))
             {
                 inputType = new InputSource( InputSourceType.Keyboard);
@@ -123,7 +124,7 @@ namespace VikingEngine.PJ
 
             checkIdlePlay();
 
-
+#endif
             inputType = InputSource.Empty;
             return false;
         }
