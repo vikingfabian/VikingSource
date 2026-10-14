@@ -84,6 +84,11 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt commander_won = new StatsInt("commander_won");
         public StatsInt commander_lost = new StatsInt("commander_lost");
 
+        public StatsInt start_blackbolt = new StatsInt("start_blackbolt");
+        public StatsInt blackbolt_tutorial_success = new StatsInt("blackbolt_tutorial_success");
+        public StatsInt blackbolt_whiteknight_success = new StatsInt("blackbolt_whiteknight_success");
+        public StatsInt blackbolt_whiteknight_bonuses_success = new StatsInt("blackbolt_whiteknight_bonuses_success");
+
         public StatsInt startHostingMultiplayer_2 = new StatsInt("startHostingMultiplayer_2");
         public StatsInt startHostingMultiplayer_3 = new StatsInt("startHostingMultiplayer_3");
         public StatsInt startHostingMultiplayer_4 = new StatsInt("startHostingMultiplayer_4");

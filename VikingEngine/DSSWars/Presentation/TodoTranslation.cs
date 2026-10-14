@@ -27,5 +27,11 @@ namespace VikingEngine.DSSWars.Presentation
         public string Conscript_Ability_ArrowWeakness => "Weak to projectiles";
         //public string Conscript_Ability_DefenceBreak => "Breaks soldier block";
 
+
+        public string PlayX => "Play {0}";
+        public string Minigame_BlackBolt_Name => "Black Bolt Industries";
+        public string Minigame_BlackBolt_Description => "Factory puzzle minigame. English only.";
+
+
     }
 }

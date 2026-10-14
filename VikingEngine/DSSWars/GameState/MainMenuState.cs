@@ -394,6 +394,11 @@ namespace VikingEngine.DSSWars
 
                         content.newLine();
 
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(string.Format(DssRef.todoLang.PlayX, DssRef.todoLang.Minigame_BlackBolt_Name)) }),
+                            new RbAction(extra_PlayBlackBolt), new RbTooltip_Text(DssRef.todoLang.Minigame_BlackBolt_Description), !PlatformSettings.STEAM_DEMO));
+
+                        content.newLine();
+
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_MusicPlayList) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_ListMusic, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
 
@@ -2426,25 +2431,13 @@ namespace VikingEngine.DSSWars
 
         void extra_PlayCommanderVersus()
         {
-            //VikingEngine.ToGG.toggLib.Init();
-            //VikingEngine.ToGG.Commander.BattleLib.Init();
-            //new ToGG.ToggEngine.Map.SquareDic();
-            //ToGG.ToggEngine.Map.MainTerrainProperties.Init();
-            //new VikingEngine.ToGG.InputMap(0);
-            ////new Network.Session();
-
-            //ToGG.Commander.LevelSetup.GameSetup setup = new ToGG.Commander.LevelSetup.GameSetup();
-            //setup.lobbyMembers = new List<ToGG.AbsLobbyMember>
-            //{
-            //    new ToGG.LocalLobbyMember(0),
-            //    new ToGG.AiLobbyMember(),
-            //};
-
-            //new ToGG.Commander.CmdPlayState(setup);
-            new StartExtra();
+            new StartExtra(true);
+        }
+        void extra_PlayBlackBolt()
+        {
+            new StartExtra(false);
         }
 
-              
 
         public bool allowPauseProperty(object tag, bool set, bool value)
         {

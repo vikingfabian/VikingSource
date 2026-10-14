@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.BlackBolts.Scene;
 using VikingEngine.DSSWars.GameState.FlagEditor;
 
 namespace VikingEngine.DSSWars.GameState
@@ -13,10 +14,12 @@ namespace VikingEngine.DSSWars.GameState
         int waitUpdates = 2;
         int ProfileIx;
         bool controller;
-        public StartExtra()
+
+        bool commander;
+        public StartExtra(bool commander)
             : base()
         {
-            
+            this.commander = commander;
             draw.ClrColor = Color.Black;
             Ref.lobby?.disconnect(null);
         }
@@ -26,22 +29,29 @@ namespace VikingEngine.DSSWars.GameState
             base.Time_Update(time);
             if (--waitUpdates <= 0)
             {
-                VikingEngine.ToGG.toggLib.Init();
-                VikingEngine.ToGG.Commander.BattleLib.Init();
-                new ToGG.ToggEngine.Map.SquareDic();
-                ToGG.ToggEngine.Map.MainTerrainProperties.Init();
-                new VikingEngine.ToGG.InputMap(0);
-                //new Network.Session();
-
-                ToGG.Commander.LevelSetup.GameSetup setup = new ToGG.Commander.LevelSetup.GameSetup();
-                setup.lobbyMembers = new List<ToGG.AbsLobbyMember>
+                if (commander)
                 {
-                    new ToGG.LocalLobbyMember(0),
-                    new ToGG.AiLobbyMember(),
-                };
+                    VikingEngine.ToGG.toggLib.Init();
+                    VikingEngine.ToGG.Commander.BattleLib.Init();
+                    new ToGG.ToggEngine.Map.SquareDic();
+                    ToGG.ToggEngine.Map.MainTerrainProperties.Init();
+                    new VikingEngine.ToGG.InputMap(0);
+                    //new Network.Session();
 
-                new ToGG.Commander.CmdPlayState(setup);
-                DssRef.stats.start_commander.addOne();
+                    ToGG.Commander.LevelSetup.GameSetup setup = new ToGG.Commander.LevelSetup.GameSetup();
+                    setup.lobbyMembers = new List<ToGG.AbsLobbyMember>
+                    {
+                        new ToGG.LocalLobbyMember(0),
+                        new ToGG.AiLobbyMember(),
+                    };
+
+                    new ToGG.Commander.CmdPlayState(setup);
+                    DssRef.stats.start_commander.addOne();
+                }
+                else
+                {
+                    new BlackIntroScene();
+                }
             }
         }
     }

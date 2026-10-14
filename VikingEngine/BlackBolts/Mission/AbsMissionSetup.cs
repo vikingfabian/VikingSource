@@ -127,7 +127,6 @@ namespace VikingEngine.Core.BlackBolts.Mission
         {
             return success ? HudLib.AvailableIcon : HudLib.NotAvailableIcon;
         }
-
         
     }
 
@@ -163,6 +162,7 @@ namespace VikingEngine.Core.BlackBolts.Mission
 
             if (boxSuccess)
             {
+                VikingEngine.DSSWars.DssRef.stats.blackbolt_tutorial_success.addOne_ifUnchanged();
                 BlackRef.playScene.player.runExecuter.OnSuccess();
             }
         }
@@ -210,6 +210,11 @@ namespace VikingEngine.Core.BlackBolts.Mission
 
             if (missionSuccess)
             {
+                VikingEngine.DSSWars.DssRef.stats.blackbolt_whiteknight_success.addOne_ifUnchanged();
+                if (nightDemonKill && dragonKill && noPoopSuccess && blackknightKill)
+                {
+                    VikingEngine.DSSWars.DssRef.stats.blackbolt_whiteknight_bonuses_success.addOne_ifUnchanged();
+                }
                 BlackRef.playScene.player.runExecuter.OnSuccess();
             }
         }
