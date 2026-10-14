@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public PArmy pointer()
+        public PArmy armyPointer()
         {
             return new PArmy(pfaction, myIndex);
         }
@@ -330,7 +330,7 @@ namespace VikingEngine.DSSWars.GameObject
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
                             var localplayer = pfaction.GetPlayer().GetLocalPlayer();
-                            if (localplayer.battleMessageCheck(tilePos))
+                            if (localplayer.battleMessageCheck(maptilePos))
                             {
                                 RichBoxContent content = new RichBoxContent();
                                 MessageGroup_Ingame.Title(content, DssRef.lang.Hud_Battle);

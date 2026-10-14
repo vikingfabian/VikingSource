@@ -498,6 +498,7 @@ namespace VikingEngine.DSSWars.Event
 
         public static Army spawnBarbarians(City city, bool tutorial)
         {
+            /*
             for (int trial = 1; trial <= 2; trial++)
             {
                 
@@ -510,7 +511,7 @@ namespace VikingEngine.DSSWars.Event
                     {
                         if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
                             tile.IsLand() &&
-                            tile.tileContent != Map.TileContent.City &&
+                            tile.tileContent != Map.MapData.TileContent.City &&
                             (trial > 1 || tile.CityIndex == city.myIndex)) //require same city area on first trial
                         {
                             //Available for spawn
@@ -612,6 +613,7 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
             }
+            */
 #if DEBUG
             throw new Exception("No enemy spawn");
 #endif
@@ -650,9 +652,9 @@ namespace VikingEngine.DSSWars.Event
             int mostSouth = 0;
             foreach (var p in DssRef.state.localPlayers)
             {
-                if (p.pfaction.GetFaction().mainCity != null && p.pfaction.GetFaction().mainCity.tilePos.Y > mostSouth)
+                if (p.pfaction.GetFaction().mainCity != null && p.pfaction.GetFaction().mainCity.maptilePos.Y > mostSouth)
                 {
-                    mostSouth = p.pfaction.GetFaction().mainCity.tilePos.Y;
+                    mostSouth = p.pfaction.GetFaction().mainCity.maptilePos.Y;
                 }
             }
 
@@ -720,7 +722,7 @@ namespace VikingEngine.DSSWars.Event
                         army.startInOnePoint();
 
                         DssRef.world.diplomacy.declareWar(enemyFac.pfaction, DssRef.state.localPlayers[playerIx].pfaction, false);
-                        army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
+                        army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].maptilePos, 3));
                     }
                 }
 
@@ -733,6 +735,7 @@ namespace VikingEngine.DSSWars.Event
 
         private void calcSouthSpawn()
         {
+            /*
             List<IntVector2> usedTiles = new List<IntVector2>();
             IntVector2[] checkPos = new IntVector2[2];
 
@@ -788,7 +791,7 @@ namespace VikingEngine.DSSWars.Event
 
                         foreach (var pos in checkPos)
                         {
-                            if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
+                            if (DssRef.world.tileGrid.TryGet(pos, out Map.MapData.SumTile4_4 tile))
                             {
                                 if (tile.IsWater())
                                 {
@@ -816,6 +819,7 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
             }
+            */
         }
 
         public override void writeGameState(BinaryWriter w)

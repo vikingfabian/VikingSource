@@ -7,7 +7,8 @@ using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.EngineSpace.Graphics.In3D;
@@ -38,7 +39,7 @@ namespace VikingEngine.DSSWars.Players
         Plane groundPlane = new Plane(Vector3.UnitY, 0);
 
         BoundingBox subTileBoundingBox = new BoundingBox();
-        static readonly Vector3 SubTileBoxSz = new Vector3(WorldData.SubTileWidth, WorldData.SubTileWidth * 3f, WorldData.SubTileWidth);
+        static readonly Vector3 SubTileBoxSz = new Vector3(Map.MapData.MapTile1_1.ModelScale, Map.MapData.MapTile1_1.ModelScale * 3f, Map.MapData.MapTile1_1.ModelScale);
 
         SafeCollectAsynchList<AbsMapObject> nearMapObjects = new SafeCollectAsynchList<AbsMapObject>(8);
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
@@ -50,7 +51,7 @@ namespace VikingEngine.DSSWars.Players
         float multiSelectHoldTime = 0;
 
 
-        public IntVector2 tilePosition, subTilePosition;
+        public IntVector2 sumtilePosition, mapTilePosition;
         public bool onNewTile = false;
 
         public Graphics.TopViewCamera camera;
@@ -73,7 +74,7 @@ namespace VikingEngine.DSSWars.Players
 
             targetZoom = MapLayerManager.StartZoom;
             camera = new TopViewCamera(MapLayerManager.StartZoom, 
-                new Vector2(MathHelper.PiOver2, Map.MapLayerManager.NormalCamAngle),
+                new Vector2(MathHelper.PiOver2, MapLayerManager.NormalCamAngle),
                 player.playerData.view.DrawAreaF.Width, player.playerData.view.DrawAreaF.Height);
             camera.FarPlane = 800;
             
@@ -93,7 +94,7 @@ namespace VikingEngine.DSSWars.Players
 
             controllerMode = player.gameControls.input.inputSource.ControllerMode;
 
-            rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.Height.DeepWaterHeight-1, Map.Settings.Height.MaxHeight +1);
+            rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.BiomHeightColor.DeepWaterHeight-1, Map.Settings.BiomHeightColor.MaxHeight +1);
 
             refreshSetting();
 
@@ -115,7 +116,7 @@ namespace VikingEngine.DSSWars.Players
             return player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f);
         }
 
-        public void terrainSearchClick(SubTile terrain)
+        public void terrainSearchClick(MapTile1_1 terrain)
         {
             var city = selection.obj?.GetCity();
             if (city != null)
@@ -208,8 +209,14 @@ namespace VikingEngine.DSSWars.Players
         {
             if (onNewTile)
             {
-                var newCity = DssRef.world.tileGrid.Get(tilePosition).City();
-                if (newCity != selection.obj && newCity.pfaction == player.pfaction)
+                var newCity = DssRef.world.tileGrid.Get(sumtilePosition).pcity.City();
+
+                //if (newCity == null && DssRef.state.GodPowers() && player.gameControls.map.selection.objectType() == GameObjectType.City)
+                //{
+                //    newCity = player.gameControls.map.selection.obj.GetCity();
+                //}
+
+                if (newCity != null && newCity != selection.obj && (newCity.pfaction == player.pfaction /*|| DssRef.state.GodPowers()*/))
                 {
                     selection.obj = newCity;
                     player.hud.needRefresh = true;
@@ -227,9 +234,9 @@ namespace VikingEngine.DSSWars.Players
         {
             prevPointerPosWP = pointerPosWP;
             pointerPosWP = screenPosToWorldPos(pointerPos());
-            IntVector2 prevTile = tilePosition;
-            tilePosition = DssRef.world.tileBounds.KeepTilePointInArea(WP.ToTilePos(pointerPosWP));
-            onNewTile = prevTile != tilePosition;
+            IntVector2 prevTile = sumtilePosition;
+            sumtilePosition = DssRef.world.maptileBounds.KeepTilePointInArea(WP.ToSumTilePos(pointerPosWP));
+            onNewTile = prevTile != sumtilePosition;
             if (onNewTile)
             {
                 player.hud.needRefresh = true;
@@ -357,7 +364,7 @@ namespace VikingEngine.DSSWars.Players
 
                                 if (rectangleBound.vectorRect.SideLength() > 1f)
                                 {
-                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.pfaction);
+                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToSumTilePos(topLeft), WP.ToSumTilePos(bottomRight), player.pfaction);
 
                                     if (Input.Keyboard.Ctrl)
                                     {
@@ -390,7 +397,7 @@ namespace VikingEngine.DSSWars.Players
                         case MapDetailLayerType.UnitDetail1:
                             {
                                 var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearGroups_Rectangle(
-                                    WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.pfaction, rectangleBound);
+                                    WP.ToSumTilePos(topLeft), WP.ToSumTilePos(bottomRight), player.pfaction, rectangleBound);
 
                                 if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.DetailCollection)
                                 {
@@ -485,20 +492,25 @@ namespace VikingEngine.DSSWars.Players
             //Place cubes and find the exact spot of the subtile
             bool hasValue;
             Vector3 result = this.camera.CastRayInto3DPlane(ray, groundPlane, out hasValue);
-            subTilePosition = WP.ToSubTilePos(pointerPosWP);
+            mapTilePosition = WP.ToMapTilePos(pointerPosWP);
 
             IntVector2 subTilePositionInLoop= IntVector2.Zero;
             
 
-            SubTile subTile;
+            MapTile1_1 subTile;
             for (int y = 6; y >= -1; --y)
             {
-                subTilePositionInLoop.Y = subTilePosition.Y + y;
+                subTilePositionInLoop.Y = mapTilePosition.Y + y;
                 for (int x = -1; x <= 1; ++x)
                 {
-                    subTilePositionInLoop.X = subTilePosition.X + x;
+                    subTilePositionInLoop.X = mapTilePosition.X + x;
 
-                    Vector3 min = WP.SubtileToWorldPosXZ(subTilePositionInLoop);
+                    if (subTilePositionInLoop.Y == 0)
+                    {
+                        lib.DoNothing();
+                    }
+
+                    Vector3 min = WP.MaptileToWorldPosXZ_TopLeft(subTilePositionInLoop);
                     if (DssRef.world.subTileGrid.TryGet(subTilePositionInLoop, out subTile))
                     {
                         min.Y = subTile.groundY - SubTileBoxSz.Y;
@@ -509,7 +521,7 @@ namespace VikingEngine.DSSWars.Players
                         float? distance = ray.Intersects(subTileBoundingBox);
                         if (distance.HasValue) 
                         {
-                            subTilePosition = subTilePositionInLoop;
+                            mapTilePosition = subTilePositionInLoop;
 
                             goto exitLoop;
                         }
@@ -581,7 +593,7 @@ namespace VikingEngine.DSSWars.Players
 
                 bool checkDistance(AbsMapObject obj)
                 {
-                    if (tilePosition.SideLength(obj.tilePos) <= MapObjRadius)
+                    if (sumtilePosition.SideLength(obj.maptilePos) <= MapObjRadius)
                     {
                         nearMapObjects.processList.Add(obj);
                         return true;
@@ -601,7 +613,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
             {
-                hover.subTile.update(subTilePosition, player);
+                hover.subTile.update(mapTilePosition, player);
             }
             else
             {
@@ -651,7 +663,7 @@ namespace VikingEngine.DSSWars.Players
                     return;
                 }
 
-                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
+                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(mapTilePosition, false);
                 foreach (var m in nearMapObjects)
                 {
                     if (m != null && m.rayCollision(ray))
@@ -753,7 +765,7 @@ namespace VikingEngine.DSSWars.Players
                     maxDistance_friend = 1.5f;
                 }
 
-                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, true);
+                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(sumtilePosition, true);
                 AbsMapObject closestObj= null;
                 float closest = float.MaxValue;
                 foreach (var m in nearMapObjects)
@@ -825,7 +837,7 @@ namespace VikingEngine.DSSWars.Players
 
         void detailHoverUpdate()
         {
-            var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(tilePosition);
+            var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(sumtilePosition);
 
             BoundingSphere bound = new BoundingSphere(Vector3.Zero, 0f);
 
@@ -842,7 +854,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bound.Radius = DssVar.Worker_StandardBoundRadius;
-            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_PlusWorkers(tilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
+            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_PlusWorkers(sumtilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
             foreach (var m in nearMapObjects)
             {
                 switch (m.gameobjectType())
@@ -1226,7 +1238,7 @@ namespace VikingEngine.DSSWars.Players
                 currentTiltYAngleOption = -1;
             }
 
-            player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * TiltYUpAngle;
+            player.mapLayersManager.TiltYAdd = currentTiltYAngleOption * 0.25f;
         }
 
         void controllerCameraUp()
@@ -1394,7 +1406,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void setCameraPos(IntVector2 tile)
         {
-            playerPointerPos = WP.ToWorldPos(tile);
+            playerPointerPos = WP.ChunkToWorldPos(tile);
             camera.LookTarget = playerPointerPos;
             camera.clearGoalTarget();
             cameraFocus = null;
@@ -1411,7 +1423,7 @@ namespace VikingEngine.DSSWars.Players
             playerPointerPos = camera.LookTarget;
 
             DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
-            playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
+            playerPointerPos.Y = DssRef.world.subTileGrid.Get( WP.ToMapTilePos(playerPointerPos)).groundY + 0.5f;
         }
 
         public void loadCamPos()

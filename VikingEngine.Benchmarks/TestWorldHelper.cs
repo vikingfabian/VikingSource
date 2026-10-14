@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using VikingEngine;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.Benchmarks.Pathfinding
@@ -11,10 +10,10 @@ namespace VikingEngine.Benchmarks.Pathfinding
     {
         public static void SetupFlatWorld(
             int width, int height,
-            byte landHeight = Height.MinLandHeight,
+            byte landHeight = BiomHeightColor.MinLandHeight,
             HashSet<IntVector2>? waterTiles = null)
         {
-            Tile.Init();
+            SumTile4_4.Init();
 
             var world = new WorldData();
             world.refreshSize(new IntVector2(width, height));
@@ -24,11 +23,11 @@ namespace VikingEngine.Benchmarks.Pathfinding
                 for (int x = 0; x < width; x++)
                 {
                     var pos = new IntVector2(x, y);
-                    var tile = new Tile();
+                    var tile = new SumTile4_4();
 
                     if (waterTiles != null && waterTiles.Contains(pos))
                     {
-                        tile.heightLevel = Height.DeepWaterHeight;
+                        tile.heightLevel = BiomHeightColor.DeepWaterHeight;
                     }
                     else
                     {

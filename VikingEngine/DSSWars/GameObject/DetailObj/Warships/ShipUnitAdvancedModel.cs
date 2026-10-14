@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -84,7 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
                     foamModel = new Mesh(LoadedMesh.plane, Vector3.Zero, DssConst.Men_StandardModelScale * 3f * new Vector3(0.96f, 1, 2), TextureEffectType.Flat,
                         SpriteName.WaterEdgeMask_ship, Color.White, false);
                     foamModel.Opacity = WaterEdgeBuilder.Opacity;
-                    foamModel.position.Y = Tile.WaterFoamY - 0.005f;
+                    foamModel.position.Y = MapHeight2.WaterFoamY - 0.005f;
 #if DEBUG
                     FoamModelIndex++;
                     foamModel.DebugName = "Foam model " + FoamModelIndex.ToString();
@@ -128,7 +129,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
                 {
-                    Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterFoamY),
+                    Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, MapHeight2.WaterFoamY),
                     DssConst.Men_StandardModelScale * 0.8f, 5);
                 }
             }

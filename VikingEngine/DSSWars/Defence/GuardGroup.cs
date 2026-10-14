@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Players.Command;
 
 namespace VikingEngine.DSSWars.Defence
@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Defence
 
         public override float GroupMoveBoundRadius()
         {
-            return WorldData.SubTileHalfWidth;
+            return MapTile1_1.SubTileHalfWidth;
         }
         void refreshGuardPosition(bool hostedAction, bool bRefreshArmyPos)
         {
@@ -111,7 +111,7 @@ namespace VikingEngine.DSSWars.Defence
             assignedToPost_IdAndPosition = IdAndPosition;
             //soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
-            if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out SubTile subTile))
+            if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out MapTile1_1 subTile))
             {
                 if (soldierData.unitFilter.Contains(UnitFilterType.Ranged))
                 {
@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Defence
 
             if (count > 0)
             {
-                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, false, tilePos, ref soldierData, createModels);
+                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, false, maptilePos, ref soldierData, createModels);
                 unit.firstUpdate();
                 refillGuardUnits(typeProfile, count - 1, createModels);
             }
@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.Defence
                 if (i < IntVector2.AllDiagonalsArray.Length)
                 {
                     AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], 
-                        false, tilePos, ref soldierData, createModels);
+                        false, maptilePos, ref soldierData, createModels);
                     unit.firstUpdate();
                 }
             }

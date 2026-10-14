@@ -608,7 +608,7 @@ namespace VikingEngine.DSSWars
             while (armyC.Next())
             {
                 if ((armyC.sel.objective == ArmyObjective.None || armyC.sel.objective == ArmyObjective.Halt) &&
-                    armyC.sel.tilePos == tilepos)
+                    armyC.sel.maptilePos == tilepos)
                 { 
                     return true;
                 }
@@ -819,12 +819,13 @@ namespace VikingEngine.DSSWars
 
         public void asynchCullingUpdate(float time, bool bStateA)
         {
-            
-            foreach (var p in DssRef.state.localPlayers)
+            if (DssRef.state.PlayType() != GameState.PlayStateType.MapEditor)
             {
-                p.unitsPixelTexture.updateColorProfile(pfaction);
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.updateColorProfile(pfaction);
+                }
             }
-            
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
@@ -865,7 +866,7 @@ namespace VikingEngine.DSSWars
 
                         RichBoxContent content = new RichBoxContent();
                         
-                        if (localplayer.battleMessageCheck(city.tilePos))
+                        if (localplayer.battleMessageCheck(city.maptilePos))
                         {
                             MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
 
@@ -917,7 +918,7 @@ namespace VikingEngine.DSSWars
             if (mainCity_sp != null)
             {
                 cityPosition = true;
-                return mainCity_sp.tilePos - IntVector2.One;
+                return mainCity_sp.maptilePos - IntVector2.One;
             }
             else if (armies.Count > 0)
             {
@@ -926,7 +927,7 @@ namespace VikingEngine.DSSWars
                 if (first != null)
                 {
                     cityPosition = false;
-                    return first.tilePos;
+                    return first.maptilePos;
                 }
             }
 

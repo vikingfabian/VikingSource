@@ -9,7 +9,8 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -498,11 +499,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))
             {
-                float y = DssRef.world.SubTileHeight(position, out SubTile subTile) + ModelGroundYAdj;
+                MapTile1_1 subTile = DssRef.world.subTileGrid.Get(WP.ToMapTilePos(position));
+                float y = subTile.groundY + ModelGroundYAdj;
 
-                if (y < Map.Tile.UnitMinY)
+                if (y < MapHeight2.UnitMinY)
                 {
-                    y = Map.Tile.UnitMinY;
+                    y = MapHeight2.UnitMinY;
                 }
 
                 if (y != position.Y)
@@ -862,7 +864,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asyncBattleUpdate()
         {
-            var newTilePos = WP.ToTilePos(position);
+            var newTilePos = WP.ToSumTilePos(position);
 
             //if (newTilePos != tilePos)
             //{
@@ -1434,7 +1436,7 @@ namespace VikingEngine.DSSWars.GameObject
                 float blockReduce = soldierData.blockReducingAttack_Inv;
 
                 //Height advantage
-                if (group.position.Y + position.Y - Map.Settings.Height.DefaultGroundYoffset >= target.group.position.Y + target.position.Y &&
+                if (group.position.Y + position.Y - Map.Settings.BiomHeightColor.DefaultGroundYoffset >= target.group.position.Y + target.position.Y &&
                     !IsShipType())
                 {
                     blockReduce *= DssConst.HeightAdvantageBlockReduce_multiply;

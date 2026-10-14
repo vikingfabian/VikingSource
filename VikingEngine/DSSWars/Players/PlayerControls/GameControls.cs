@@ -10,7 +10,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Engine;
@@ -42,6 +42,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Vector2 controllerPointer_storedPos_defaultObject;
         Vector2 controllerPointer_storedPos_faction;
         Vector2 controllerPointer_storedPos_diplomacy;
+
+        public bool editorBuildMode = false;
        
         public GameControls(LocalPlayer player, InputMap input)
         {
@@ -60,7 +62,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             map = new Players.MapControls(player);
             if (player.pfaction.GetFaction().mainCity != null)
             {
-                map.setCameraPos(player.pfaction.GetFaction().mainCity.tilePos);
+                map.setCameraPos(player.pfaction.GetFaction().mainCity.maptilePos);
             }
             refreshFaction();
             refreshGameSpeedOptions(true);
@@ -875,7 +877,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             if (map.hover.obj != null &&
-                (map.hover.obj.pfaction.GetFaction() == player.pfaction.GetFaction() || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
+                (map.hover.obj.pfaction.GetFaction() == player.pfaction.GetFaction() || DssRef.state.GodPowers()))
             {
                 SoundLib.click.Play();
                 map.onSelect();
@@ -938,9 +940,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void selectAreaCity()
         {
             if (map.selection.obj == null &&
-                DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
+                DssRef.world.tileGrid.TryGet(map.sumtilePosition, out var tile))
             {
-                var city = tile.City();
+                var city = tile.pcity.City();
                 if (city.pfaction == player.pfaction)
                 {
                     mapSelect(city);
@@ -1248,6 +1250,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         public bool InBuildOrdersMode(bool includeZoomLevel = true)
         {
+            if (editorBuildMode)
+            {
+                return true;
+            }
+
             return player.cityTab == MenuTab.Build &&
                 map.selection.obj != null &&
                 map.selection.obj.gameobjectType() == GameObjectType.City &&

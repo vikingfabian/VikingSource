@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             while (templates.Count > 0)
             {
                 CityTemplate_Default t = arraylib.RandomListMemberPop( templates, world.rnd );
-                if (t.followsRequirements(city.tilePos, out int rotation, world))
+                if (t.followsRequirements(city.maptilePos, out int rotation, world))
                 { 
                     return t.Get(rotation, out startSubTilePos);
                 }                
@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             for (int i = 0; i < IntVector2.Dir4Array.Length; i++)
             {
                 IntVector2 nPos = tilePos + IntVector2.Dir4Array[i];
-                if (world.tileGrid.Get(nPos).IsLand())
+                if (world.subTileGrid.TryGet(nPos, out var tile) && tile.IsLand())
                 {
                     availableGateRotations.Add((Dir4)i);
                 }
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             for (int i = 0; i < IntVector2.Dir8Array.Length; i++)
             {
                 IntVector2 nPos = tilePos + IntVector2.Dir8Array[i];
-                if (world.tileGrid.Get(nPos).IsLand())
+                if (world.subTileGrid.TryGet(nPos, out var tile) && tile.IsLand())
                 {
                     landCount++;
                 }

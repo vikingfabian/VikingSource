@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Map.Path3
                 for (int dir = 0; dir < 8; dir++)
                 {
                     IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
+                    if (DssRef.world.maptileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
                     {
                         //add a node to open list
                         LayerPathNode node = new LayerPathNode(pos, dir, layer, currentNode, goal, endAsShip);

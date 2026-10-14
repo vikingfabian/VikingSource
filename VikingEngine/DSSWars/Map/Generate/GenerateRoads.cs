@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Map.Settings;
 
@@ -17,7 +19,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         //{ 
 
         //}
-        const float RoadHeight = -Height.DefaultGroundYoffset;
+        const int RoadHeight = -1;//-ColorHeight.DefaultGroundYoffset;
 
         public void fromCity(WorldData world, City city)
         {
@@ -34,11 +36,12 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                     double chance= 0.2f;
 
-                    if (lib.EqualToAny(CityType.UnClaimed, city.cityType, nCity.cityType))
-                    {
-                        chance = 0.02f;
-                    }
-                    else if (lib.EqualToAny(CityType.Capital, city.cityType, nCity.cityType))
+                    //if (lib.EqualToAny(CityType.UnClaimed, city.cityType, nCity.cityType))
+                    //{
+                    //    chance = 0.02f;
+                    //}
+                    //else 
+                    if (lib.EqualToAny(CityType.Capital, city.cityType, nCity.cityType))
                     {
                         chance = 0.6f;
                     }
@@ -57,10 +60,10 @@ namespace VikingEngine.DSSWars.Map.Generate
                         //}
 
                         PathFinding largePath = new PathFinding();
-                        var largePathResult = largePath.FindPath(-1, city.tilePos, (int)conv.ToDir8(nCity.tilePos - city.tilePos), nCity.tilePos, false);
-                        largePathResult.nodes.Add(new PathNodeResult(city.tilePos, false));
+                        var largePathResult = largePath.FindPath(-1, city.maptilePos, (int)conv.ToDir8(nCity.maptilePos - city.maptilePos), nCity.maptilePos, false);
+                        largePathResult.nodes.Add(new PathNodeResult(city.maptilePos, false));
 
-                        IntVector2 subTilePos = nCity.cityHallSubtilePos;
+                        IntVector2 subTilePos = nCity.maptilePos;
 
                         foreach (var node in largePathResult.nodes)
                         {
@@ -87,7 +90,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                         void placeOnSubTile(IntVector2 pos)
                         {
-                            ref SubTile subTile = ref world.subTileGrid.GetRef(pos);// [pos.X, pos.Y];
+                            ref MapTile1_1 subTile = ref world.subTileGrid.GetRef(pos);// [pos.X, pos.Y];
 
                             bool canBuild = false;
                             switch (subTile.mainTerrain)
@@ -114,7 +117,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             if (canBuild)
                             {
                                 subTile.SetType(TerrainMainType.Road, 0, 1);
-                                subTile.groundY += RoadHeight;
+                                subTile.heightValue = (byte)(subTile.heightValue + RoadHeight);
                             }
                         }
                     }

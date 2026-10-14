@@ -8,7 +8,6 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface.HudPinUi;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
@@ -48,7 +47,7 @@ namespace VikingEngine.DSSWars.Interface
         public PlayerHud_InputHelp inputHelp;
 
 
-        public Map.MiniMap miniMap;
+        public MiniMap miniMap;
 
         public PopMenu popMenu = null;
         public Vector2 MessageStart;

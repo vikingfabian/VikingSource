@@ -115,6 +115,16 @@ namespace VikingEngine.DSSWars.Players
 
             return false;
         }
+
+        public GameObjectType objectType()
+        {
+            if (obj != null)
+            {
+                return obj.gameobjectType();
+            }
+
+            return GameObjectType.NONE;
+        }
                 
     }
 

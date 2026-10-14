@@ -2,10 +2,6 @@
 Change log:
 * 
 
-KNOWN ISSUES
-x reassign dont work with controller
-x hide achievements
-X timeline checkbox on steamworks
 x adjust "all facts"
 
 ## QoL Part 2 ## (December 17)
@@ -34,6 +30,15 @@ World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
 * Worlds are now twice the size.
 
+Ground properties
+* Tiles have a ground type, these limit what you can build and soldier movement
+* Some tiles can be terraformed into others
+
+Dynamic world
+Factions and cities are now dynamic and can be added during runtime.
+The unclamied city areas are replaced with a "place anywhere" city founding.
+Cities can grow and claim more land.
+
 Path 3.0
 A new high performance path finding algorithm with four hierarchy levels.
 * Is better adapted to handle terrain and walls.
@@ -45,6 +50,8 @@ Map editor 2.0
 * Icon editor: Allows fast editing in 1/16 scale
 * Height map: Load images and use them to generate the world
 
+Performance
+* More work has been put into keeping down the creeping memory usage (RAM)
 
 
 
@@ -85,6 +92,11 @@ The game is a strategy wargame, with medieval and low fantasy theme.
 Where English is used in gaming, use a “hybrid” translation.
 For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
 
+#Languages above 2%
+English, German, French, Japanese, Simplified Chinese, Russian, Spanish
+
+Steam page prompt:
+output the text inside a Markdown code block rather than generating a .txt
 
 ##
 Translate all strings to French.

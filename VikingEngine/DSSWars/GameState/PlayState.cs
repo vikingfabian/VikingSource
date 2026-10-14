@@ -1,4 +1,4 @@
-//#define DEBUG_CLIENT
+﻿//#define DEBUG_CLIENT
 
 
 using Microsoft.Xna.Framework;
@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars
         public bool casualControls;
 
         TechnologyManager technologyManager = new TechnologyManager();
-        bool bResourceMinuteUpdate = true;
+        
         bool slowMinuteUpdate = true;
         bool netMapUpdate = false;
 
@@ -703,10 +703,14 @@ namespace VikingEngine.DSSWars
             
             overviewMap.update();
 
-            if (profiling && mapStart > 0)
-            {
-                mapMs = (float)Stopwatch.GetElapsedTime(mapStart).TotalMilliseconds;
-            }
+            //if (bUserUpdate)
+            //{
+            updateUserInput(bUserMapUpdate);
+            //}
+            //else
+            //{ 
+                
+            //}
 
             // --- User Input Update (runs unconditionally) ---
             float userInputMs = 0f;
@@ -961,22 +965,7 @@ namespace VikingEngine.DSSWars
             return exitThreads;
         }
 
-        bool asyncResourcesUpdate(int id, float time)
-        {
-            //This thread is the only thay may edit subtiles
-            if (UpdateReady())
-            {
-                resources.asyncEditTiles();
-                //Runs every minute to upate any resource progression: trees grow, food spoil, etc
-                if (bResourceMinuteUpdate || StartupSettings.DebugResoursesSuperSpeed)
-                {
-                    bResourceMinuteUpdate = false;
-
-                    resources.asyncGrowUpdate();
-                }
-            }
-            return exitThreads;
-        }
+        
 
         bool asyncSlowUpdate(int id, float time)
         {
@@ -1032,7 +1021,10 @@ namespace VikingEngine.DSSWars
         {
             return this;
         }
-
+        public override bool GodPowers()
+        {
+            return DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator;
+        }
         public override PlayStateType PlayType()
         {
             return PlayStateType.Play;

@@ -12,8 +12,9 @@ using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapLayer;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -31,9 +32,9 @@ namespace VikingEngine.DSSWars.GameState
         public bool isReady = false;
         public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
-        public Map.MapLayer_Factions factionsMap;
-        protected Map.MapLayer_Overview overviewMap;
-        public Map.MapLayer_Detail detailMap;
+        public MapLayer_Factions factionsMap;
+        public MapLayer_Overview overviewMap;
+        public MapLayer_Detail detailMap;
         public Culling culling;
 
         public PathUpdateThread[] pathUpdates;
@@ -63,6 +64,7 @@ namespace VikingEngine.DSSWars.GameState
        
         protected ExitGameStateThreads exitGameStateThreads;
 
+        protected bool bResourceMinuteUpdate = true;
         TimeStamp gameStartTime = TimeStamp.Now();
 
         public AbsPlayState() 
@@ -127,9 +129,14 @@ namespace VikingEngine.DSSWars.GameState
             DssRef.ambience.gameStart();
             culling = new Culling();
 
-            factionsMap = new MapLayer_Factions();
-            overviewMap = new Map.MapLayer_Overview(factionsMap);
-            detailMap = new Map.MapLayer_Detail();
+            CrossHeightMap crossHeightMap = new CrossHeightMap();
+
+            factionsMap = new MapLayer_Factions(crossHeightMap);
+            overviewMap = new MapLayer_Overview(factionsMap, crossHeightMap);
+            detailMap = new MapLayer_Detail(crossHeightMap);
+
+            crossHeightMap.init();
+
             ((DrawGame)draw).initMapShaders();
 
             foreach (var p in localPlayers)
@@ -329,6 +336,23 @@ namespace VikingEngine.DSSWars.GameState
             return exitThreads;
         }
 
+        protected bool asyncResourcesUpdate(int id, float time)
+        {
+            //This thread is the only thay may edit subtiles
+            if (UpdateReady())
+            {
+                resources.asyncEditTiles();
+                //Runs every minute to upate any resource progression: trees grow, food spoil, etc
+                if (bResourceMinuteUpdate || StartupSettings.DebugResoursesSuperSpeed)
+                {
+                    bResourceMinuteUpdate = false;
+
+                    resources.asyncGrowUpdate();
+                }
+            }
+            return exitThreads;
+        }
+
         protected override void createDrawManager()
         {
             draw = new DSSWars.DrawGame();
@@ -485,6 +509,8 @@ namespace VikingEngine.DSSWars.GameState
         {
             return null;
         }
+
+        abstract public bool GodPowers();
 
         public override bool MayUseLowLatencyGC()
         {

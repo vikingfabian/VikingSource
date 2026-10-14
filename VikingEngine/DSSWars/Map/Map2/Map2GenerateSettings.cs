@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Map.Map2
 {
@@ -12,12 +13,12 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public MapStartAs StartAs = MapStartAs.Water;
 
-        public bool bCustomSize = false;
-        public IntVector2 customMapSize = new IntVector2(WorldData.CustomMapSize_Min);
-        public MapSize mapSize = MapSize.Medium;
+        public MapScale mapScale = new MapScale();
 
         public int nodeFillPerc = 15;
         public int nodeConnectPerc = 70;
+
+        public float percentageUnclaimed = 0.25f;
 
         public int nodeFillPercProperty(object tag, bool set, int value)
         {
@@ -47,16 +48,13 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             if (set)
             {
-                bCustomSize = value;
+                mapScale.bCustomSize = value;
                 (value ? SoundLib.click : SoundLib.back).Play();
             }
-            return bCustomSize;
+            return mapScale.bCustomSize;
         }
 
-        public IntVector2 IconSize()
-        {
-            return bCustomSize ? customMapSize : WorldData.SizeDimentions(mapSize);
-        }
+        
 
         public int loopCount(PcgRandom rnd, int mediumCount)
         {
@@ -71,24 +69,24 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             if (set)
             {
-                customMapSize.X = value;
+                mapScale.customMapSize.X = value;
             }
-            return customMapSize.X;
+            return mapScale.customMapSize.X;
         }
         public int MapYProperty(object tag, bool set, int value)
         {
             if (set)
             {
-                customMapSize.Y = value;
+                mapScale.customMapSize.Y = value;
             }
-            return customMapSize.Y;
+            return mapScale.customMapSize.Y;
         }
 
         public void setCustomSize(IntVector2 customMapSize)
         {
-            this.customMapSize = customMapSize;
+            this.mapScale.customMapSize = customMapSize;
 
-            bCustomSize = true;
+            mapScale.bCustomSize = true;
         }
 
     }

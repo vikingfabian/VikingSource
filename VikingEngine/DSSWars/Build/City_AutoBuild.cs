@@ -13,7 +13,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.EntityComponent;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;
@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (BuildLib.BuildOptions[(int)wallType].availableBlueprintResources(this))
                     {
-                        ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(cityHallSubtilePos, currentWallRadius));
+                        ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, currentWallRadius));
                         while (loop.Next())
                         {
                             if (!(loop.AtBottom && loop.AtCenterX) && //place for opening

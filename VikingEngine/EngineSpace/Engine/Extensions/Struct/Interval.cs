@@ -68,6 +68,14 @@ namespace VikingEngine
         {
             return rnd.Interval(Min, Max);
         }
+        public int GetRandom_WithCheck(PcgRandom rnd)
+        {
+            if (Min == Max)
+            {
+                return Min;
+            }
+            return rnd.Interval(Min, Max);
+        }
         public static Range FromRadius(int center, int radius)
         {
             return new Range(center - radius, center + radius);

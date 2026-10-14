@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -58,7 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_workUpdate(int updateSpeed)
         {
-            if (pfaction.IsEmpty() || cityType == CityType.UnClaimed)
+            if (pfaction.IsEmpty() /*|| cityType == CityType.UnClaimed*/)
             {
                 CityStructure.WorkInstance.update(DssRef.world, this, 0);
                 return; 

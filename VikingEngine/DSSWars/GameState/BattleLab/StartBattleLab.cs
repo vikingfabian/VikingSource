@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.Map2;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {
@@ -32,16 +33,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             : base()
         {
             lab = false;
-            MapGenerateSettings generateSettings = new MapGenerateSettings();
-            generateSettings.storage.customSeed = true;
-            generateSettings.storage.seed = 1;
+            Map2GenerateSettings generateSettings = new Map2GenerateSettings();
             generateSettings.useGenerate = true;
-            generateSettings.DigChainsCount_per100Tiles *= 0.2f;
-            generateSettings.repeatBuildDigCount = 2;
-
             generateSettings.setCustomSize(WorldData.SizeDimentions(MapSize.Tiny));
             generateSettings.StartAs = MapStartAs.Land;
-            generateSettings.factionsOnMap = false;
             
             loading = new MapBackgroundLoading(generateSettings);
         }

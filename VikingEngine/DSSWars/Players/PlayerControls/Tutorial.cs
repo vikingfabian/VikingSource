@@ -18,7 +18,7 @@ using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface.HudPinUi;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -409,12 +409,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 if (cityarea.X == 0)
                 {
-                    cityarea.pos = citySel.tilePos;
+                    cityarea.pos = citySel.maptilePos;
                     cityarea.size = IntVector2.One;
                 }
                 else
                 {
-                    cityarea.includeTile(citySel.tilePos);
+                    cityarea.includeTile(citySel.maptilePos);
                 }
             }
 

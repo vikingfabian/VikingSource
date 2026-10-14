@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.hspace();
                     content.Add(new RbText(relName));
 
-                    if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+                    if (DssRef.state.GodPowers())
                     {
                         content.space();
                         foreach (var forceRelation in RelationOptionsAsGod)

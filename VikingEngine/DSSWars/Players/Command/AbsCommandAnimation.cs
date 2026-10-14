@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Players.Command
         public MoveHereAnimation(Vector3 wp)
             :base()
         {
-            startScale = WorldData.SubTileWidth * 2.5f;
+            startScale = Map.MapData.MapTile1_1.ModelScale * 2.5f;
             scaleDown = startScale / ScaleDownTimeMs;
 
             //wp.Y += WP.GroundY(wp) - 0.0001f;

@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 SoundLib.ordermove.Play();
                 //int radius = 0;
-                ForXYEdgeLoop nextPlacementLoop = new ForXYEdgeLoop(player.gameControls.map.tilePosition, player.gameControls.map.tilePosition);
+                ForXYEdgeLoop nextPlacementLoop = new ForXYEdgeLoop(player.gameControls.map.sumtilePosition, player.gameControls.map.sumtilePosition);
 
                 foreach (var m in collection.objects)
                 {

@@ -273,6 +273,14 @@ namespace VikingEngine
         {
             return Double() <= chance;
         }
+
+        public bool ChanceWithCheck(double chance)
+        {
+            if (chance <= 0) return false;
+            if (chance >= 1) return true;
+            return Double() <= chance;
+        }
+
         override public bool Chance(int percent)
         {
             return Double() <= percent * 0.01;
@@ -347,12 +355,6 @@ namespace VikingEngine
             }
 
             return result;
-
-            //double a1 = Double() * Math.PI;
-            //double a2 = Double() * Math.PI * 2.0;
-            //return new Vector3((float)(Math.Sin(a1) * Math.Cos(a2)),
-            //                   (float)(Math.Sin(a1) * Math.Sin(a2)),
-            //                   (float)(Math.Cos(a1)));
         }
 
         public Vector2 vector2_cirkle(float length = 1f)

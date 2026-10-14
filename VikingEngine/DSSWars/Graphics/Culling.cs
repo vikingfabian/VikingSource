@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.Engine;
 using VikingEngine.LootFest.Data;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.PJ.Moba.GO;
+using VikingEngine.DSSWars.Map.MapLayer;
 
 namespace VikingEngine.DSSWars
 {
@@ -64,11 +64,10 @@ namespace VikingEngine.DSSWars
             
             asynch_updateTiles();
             
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    p.unitsPixelTexture.asynch_Begin();
-                }
-            
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.asynch_Begin();
+            }
 
             var factions = DssRef.world.factions.counter();
             while (factions.Next())
@@ -119,7 +118,7 @@ namespace VikingEngine.DSSWars
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 pos)
         {
-            if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
+            if (DssRef.world.chunkGrid.TryGet(pos, out Map.MapData.MapChunkData8_8 tile))
             {
                 if (cullingStateA)
                 { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
@@ -285,7 +284,7 @@ namespace VikingEngine.DSSWars
 
         public void asynch_update(bool bStateA, ref bool detailView)
         {
-            Map.MapLayerManager detailLayer = Map.MapLayerManager.CameraIndexToView[index];
+            MapLayerManager detailLayer = MapLayerManager.CameraIndexToView[index];
             bool hasValue1, hasValue2, hasValue3, hasValue4;
             Vector3 topleft = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.Position, playerData.view.Viewport, mapPlane, out hasValue1);
             Vector3 topright = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.RightTop, playerData.view.Viewport, mapPlane, out hasValue2);
@@ -365,8 +364,8 @@ namespace VikingEngine.DSSWars
             Rectangle2 enter = area;
             PlayerCulling.MaxUpdateArea(ref enter);
 
-            area.SetBounds(DssRef.world.tileBounds);
-            enter.SetBounds(DssRef.world.tileBounds);
+            area.SetBounds(DssRef.world.maptileBounds);
+            enter.SetBounds(DssRef.world.maptileBounds);
 
             screenAreaRaw = area;
             enterArea = enter;
@@ -376,7 +375,7 @@ namespace VikingEngine.DSSWars
             midLayer = r.ReadBoolean();
         }
 
-        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, Map.MapLayer layer)
+        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, MapLayer layer)
         {
             this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;
@@ -394,20 +393,20 @@ namespace VikingEngine.DSSWars
                 enterArea.AddWidthRadius(-1);
             }
 
-            enterArea.SetTileBounds(DssRef.world.tileBounds);
+            enterArea.SetTileBounds(DssRef.world.maptileBounds);
             exitArea = enterArea;
             exitArea.AddRadius(1);
             attensionArea = enterArea;
             attensionArea.AddRadius(20);
 
-            attensionArea_subTile = new Rectangle2(WP.ToSubTilePos_TopLeft(attensionArea.pos), (attensionArea.size + 1) * WorldData.TileSubDivitions);
+            attensionArea_subTile = new Rectangle2(attensionArea.pos, (attensionArea.size + 1) * Map.MapData.MapChunkData8_8.TileWidth);
 
             //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
 
             var loopArea = exitArea;
             loopArea.size += 1;
 
-            loopArea.SetTileBounds(DssRef.world.tileBounds);
+            loopArea.SetTileBounds(DssRef.world.chunkBounds);
 
             if (loopArea.size.X > 0 && loopArea.size.Y > 0)
             {
@@ -422,7 +421,7 @@ namespace VikingEngine.DSSWars
                         enterRender = true;
                     }
 
-                    var tile = DssRef.world.tileGrid.Get(loop.Position);
+                    var tile = DssRef.world.chunkGrid.Get(loop.Position);
                     //Debug.Log("Tile Get(A) " + loop.Position.ToString() + ", " + tile.ToString());
                     if (bStateA)
                     {
@@ -434,7 +433,7 @@ namespace VikingEngine.DSSWars
                         Culling.SetRenderState(ref tile.bits_renderStateB, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
                         //if (value > tile.renderStateB) { tile.renderStateB = value; }
                     }
-                    DssRef.world.tileGrid.Set(loop.Position, tile);
+                    DssRef.world.chunkGrid.Set(loop.Position, tile);
                     //Debug.Log("Tile Set(A) " + loop.Position.ToString() + ", " + tile.ToString());
 
                 }
@@ -447,7 +446,7 @@ namespace VikingEngine.DSSWars
             var loopArea = exitArea;
             loopArea.size += 1;
 
-            loopArea.SetTileBounds(DssRef.world.tileBounds);
+            loopArea.SetTileBounds(DssRef.world.chunkBounds);
 
             ForXYLoop loop = new ForXYLoop(loopArea);
             if (loopArea.Width > 0 && loopArea.Height > 0)
@@ -455,7 +454,7 @@ namespace VikingEngine.DSSWars
 
                 while (loop.Next())
                 {
-                    var tile = DssRef.world.tileGrid.Get(loop.Position);
+                    var tile = DssRef.world.chunkGrid.Get(loop.Position);
                     if (bStateA)
                     {
                         tile.bits_renderStateA = Culling.NoRender;
@@ -464,7 +463,7 @@ namespace VikingEngine.DSSWars
                     {
                         tile.bits_renderStateB = Culling.NoRender;
                     }
-                    DssRef.world.tileGrid.Set(loop.Position, tile);
+                    DssRef.world.chunkGrid.Set(loop.Position, tile);
                 }
             }
         }

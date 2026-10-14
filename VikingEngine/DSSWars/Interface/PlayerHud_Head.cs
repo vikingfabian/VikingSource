@@ -7,7 +7,8 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLayer;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Graphics;
@@ -246,7 +247,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space(0.5f);
             }
 
-            if (player.mapLayer() >= Map.MapDetailLayerType.FactionColors3 && !prepareLayout)
+            if (player.mapLayer() >= MapDetailLayerType.FactionColors3 && !prepareLayout)
             {
                 mapFilterTabs(content);
             }

@@ -312,8 +312,8 @@ namespace VikingEngine.Graphics
         {
             Vector3 pos = Position;// + positionOffset;
             Vector3 target = LookTarget;// + positionOffset;
-            float near = NearPlane;
-            float far = FarPlane;
+            //float near = NearPlane;
+            //float far = FarPlane;
 
             lookFocalOffset = 0.1f;
 
@@ -330,7 +330,7 @@ namespace VikingEngine.Graphics
 
 
             Vector2 offsetDir = lib.AngleToV2(tilt.X + MathExt.TauOver4, lookFocalOffset);
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(angle), aspectRatio, near, far);
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(angle), aspectRatio, NearPlane, FarPlane);
             ViewMatrix = Matrix.CreateLookAt(pos, VectorExt.AddXZ(target, offsetDir), Vector3.Up);
             ViewProjection = ViewMatrix * Projection;
             Frustum.Matrix = ViewProjection;

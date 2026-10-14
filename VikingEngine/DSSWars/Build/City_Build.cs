@@ -1,6 +1,7 @@
 ﻿using System;
 using VikingEngine.DSSWars.Delivery;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -8,7 +9,7 @@ namespace VikingEngine.DSSWars.GameObject
     //AUTO BUILD
     partial class City
     {
-        public bool executeBuildEffectsOnCity(bool build, IntVector2 subPos, ref SubTile subTile, TerrainMainType mainType, int subType)
+        public bool executeBuildEffectsOnCity(bool build, IntVector2 subPos, ref MapTile1_1 subTile, TerrainMainType mainType, int subType)
         {
             if (!build)
             {
@@ -374,8 +375,8 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case TerrainMainType.Destroyed:
                     case TerrainMainType.DefaultLand:
-                        var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
-                        return tile.MayBuild() && tile.CityIndex == myIndex;
+                        var tile = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTilePos));
+                        return /*tile.MayBuild() &&*/ tile.pcity.cityIndex == myIndex;
 
                 }
             }

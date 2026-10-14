@@ -13,21 +13,21 @@ namespace VikingEngine.DSSWars
     {
         public Diplomacy diplomacy;
         const int DefaultFactionCount = 64;
-        public GroupedResource[] factionResourceOverviews = new GroupedResource[DefaultFactionCount * CityResourceIndex.COUNT];
-        public WorkPriority[] factionWork = new WorkPriority[DefaultFactionCount * WorkTemplate.COUNT];
+        public GroupedResource[] factionResourceOverviews;
+        public WorkPriority[] factionWork;
 
-        void init_FactionComponents()
+        public void init_FactionComponents(int factionCount)
         {
-            factionResourceOverviews = new GroupedResource[factions.Array.Length * CityResourceIndex.COUNT];
-            factionWork = new WorkPriority[factions.Array.Length * WorkTemplate.COUNT];
+            factionCount = Math.Max(factionCount, DefaultFactionCount);
+            factionResourceOverviews = new GroupedResource[factionCount * CityResourceIndex.COUNT];
+            factionWork = new WorkPriority[factionCount * WorkTemplate.COUNT];
             //diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
-            diplomacy = new Diplomacy(factions.Array.Length);
+            diplomacy = new Diplomacy(factionCount);
 
             for (int i = 0; i < factions.Array.Length; i++)
             {
                 if (factions.Array[i] != null)
                 { 
-                    //factions.Array[i].resourceComponentStartIndex = i * CityResoureIndex.COUNT;
                     initFaction(factions.Array[i]);
                 }
             }

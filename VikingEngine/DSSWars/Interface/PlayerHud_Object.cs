@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -125,13 +126,13 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                if (DssRef.world.tileGrid.TryGet(player.gameControls.map.tilePosition, out var tile))
+                if (DssRef.world.tileGrid.TryGet(player.gameControls.map.sumtilePosition, out var tile))
                 {
-                    var hoverCity = tile.City();
+                    var hoverCity = tile.pcity.City();
                     hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
 
                     if (hoverCity.pfaction == player.pfaction &&
-                        player.mapLayer() <= Map.MapDetailLayerType.TerrainOverview2)
+                        player.mapLayer() <= MapDetailLayerType.TerrainOverview2)
                     {
                         content.newLine();
 

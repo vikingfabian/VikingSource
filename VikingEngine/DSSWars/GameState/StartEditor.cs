@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameState.FlagEditor;
+using VikingEngine.DSSWars.GameState.MapEditor2.IconEditor;
 using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars.GameState
@@ -55,9 +56,9 @@ namespace VikingEngine.DSSWars.GameState
                     case EditorType.Files:
                         new FileLab.FileLabScene();
                         break;
-                    case EditorType.Map2:
-                        new MapEditor2.MapEditor2_Scene();
-                        break;
+                    //case EditorType.Map2:
+                    //    new MapEditor2_Scene();
+                    //    break;
                 }
             }
         }
@@ -70,6 +71,6 @@ namespace VikingEngine.DSSWars.GameState
         Character,
         Shader,
         Files,
-        Map2,
+        //Map2,
     }
 }

@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players.Command
@@ -64,7 +65,7 @@ namespace VikingEngine.DSSWars.Players.Command
         { 
             this.soldierGroup = soldierGroup;
             player.gameControls.mapSelect(soldierGroup);
-            player.gameControls.map.SetTargetZoom(Map.MapDetailLayerType.UnitDetail1);
+            player.gameControls.map.SetTargetZoom(MapDetailLayerType.UnitDetail1);
 
             model = SelectedSubTile.CreateOutlineModel(player, true);
             model.Visible = true;            
@@ -72,16 +73,18 @@ namespace VikingEngine.DSSWars.Players.Command
 
         public override bool update(LocalPlayer player)
         {
+            /*
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.hover.subTile.subTilePos);
             available = false;
 
-            if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(player.gameControls.map.hover.subTile.subTilePos), out var tile))
+            if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(player.gameControls.map.hover.subTile.subTilePos), out var tile))
             {
-                available = tile.City().cityType == CityType.UnClaimed;
+                available = tile.pcity.City().cityType == CityType.UnClaimed;
             }
 
             model.Color = available ? Color.White : HudLib.NotAvailableColor;
 
+            */
             return base.update(player);
         }
 
@@ -96,7 +99,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
         public static void OrderSettler(SoldierGroup soldierGroup, IntVector2 subTilePos)
         {
-            new MoveCommand(soldierGroup, WP.SubtileToWorldPosXZ(subTilePos), float.MinValue, false);
+            new MoveCommand(soldierGroup, WP.MaptileToWorldPosXZ(subTilePos), float.MinValue, false);
             new ClaimCityGommand(soldierGroup, subTilePos, true);
         }
 

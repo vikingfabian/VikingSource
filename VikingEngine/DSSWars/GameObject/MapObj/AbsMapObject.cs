@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,6 @@ namespace VikingEngine.DSSWars.GameObject
         /// <summary>
         /// Pågående strider, om order ges läggs inte battle till förrän armeerna är intill varandra
         /// </summary>
-
         public bool enterRender_overviewLayer_async = false;
         public bool enterRender_detailLayer_async = false;
         public bool inRender_overviewLayer = false;
@@ -35,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float strengthValue = -1;
         public float mobilityValue = 0;
 
-        public IntVector2 tilePos = IntVector2.NegativeOne;
+        public IntVector2 maptilePos= IntVector2.NegativeOne;
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
@@ -139,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (IsNetHosted || lastNetUpdate.belowTime_sec(20))
             {
-                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
+                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, maptilePos);
             }
             else
             {
@@ -197,9 +196,9 @@ namespace VikingEngine.DSSWars.GameObject
             return VectorExt.Length(position.X - tilePos.X, position.Z - tilePos.Y);
         }
 
-        public Map.Tile Tile()
+        public Map.MapData.SumTile4_4 Tile()
         {
-            return DssRef.world.tileGrid.Get(tilePos);
+            return DssRef.world.tileGrid.Get(maptilePos);
         }
         public override void toButtonContent(RichBoxContent content, bool dark)
         {
@@ -269,7 +268,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override IntVector2 TilePos()
         {
-            return tilePos;
+            return maptilePos;
         }
         public override Vector3 WorldPos()
         {

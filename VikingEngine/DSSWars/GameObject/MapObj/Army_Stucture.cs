@@ -8,7 +8,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.PJ.CarBall;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -94,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void armyColumnWidthClick(int w)
         {
             armyColumnWidth = w;
-            refreshGroupPlacements2(tilePos, false, false);
+            refreshGroupPlacements2(maptilePos, false, false);
         }
 
         protected void refreshGroupPlacements2(IntVector2 walkToTilePos, bool resetCommand, bool teleport, bool async = true)
@@ -419,10 +420,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
-                IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
-                if (DssRef.world.subTileGrid.TryGet(subTilePos, out SubTile subTile))
+                IntVector2 subTilePos = WP.ToMapTilePos(goalWp);
+                if (DssRef.world.subTileGrid.TryGet(subTilePos, out MapTile1_1 subTile))
                 {
-                    if (subTile.mainTerrain != Map.TerrainMainType.DefaultSea)
+                    if (subTile.mainTerrain != TerrainMainType.DefaultSea)
                     {
                         currentColX = colX + 1;
                         return true;
@@ -472,10 +473,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                         localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                         Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
-                        IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
+                        IntVector2 subTilePos = WP.ToMapTilePos(goalWp);
                         if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
                         {
-                            if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                            if ((subTile.mainTerrain == TerrainMainType.DefaultSea) != endAsShip)
                             {
                                 failedPlacements.Add(group);
                             }

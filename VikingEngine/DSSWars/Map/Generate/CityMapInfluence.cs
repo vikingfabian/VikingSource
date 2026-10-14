@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 
@@ -20,15 +21,10 @@ namespace VikingEngine.DSSWars.Map
         public bool generate(WorldData world) 
         {
             inflenceMap = new Grid2D<Influence>(world.Size);
-            //inflenceMap.LoopBegin();
-            //while (inflenceMap.LoopNext())
-            //{
-            //    inflenceMap.LoopValueSet(new Influence());
-            //}
+           
+            cities = new MapCity[world.cities.Count];
 
-            cities = new MapCity[world.cities.Count];//new List<MapCity>(world.cities.Count);
-
-            int verticalDivitions = world.Size.X / (Generate.GenerateMap.HeadCityNeededFreeRadius * 4);
+            int verticalDivitions = world.Size.X / 128;
             
             bool result = Task.Run(async ()=> {
 
@@ -102,7 +98,7 @@ namespace VikingEngine.DSSWars.Map
                                                 {
                                                     activeCities = true;
 
-                                                    if (area.IntersectTilePoint(cities[cityIx].city.tilePos))
+                                                    if (area.IntersectTilePoint(cities[cityIx].city.maptilePos))
                                                     {
                                                         cities[cityIx].next(inflenceMap, world);
                                                     }
@@ -263,7 +259,7 @@ namespace VikingEngine.DSSWars.Map
                     StringBuilder line = new StringBuilder();
                     for (int x = 0; x < inflenceMap.Width; ++x)
                     {
-                        line.Append(string.Format("{0:D6}", inflenceMap.array[x, y].city.ToString()));
+                        line.Append(string.Format("{0:D6}", inflenceMap.Get(x, y).city.ToString()));
                         line.Append(',');
                     }
 
@@ -274,49 +270,48 @@ namespace VikingEngine.DSSWars.Map
 
         void cleanUpEdges(WorldData world, Rectangle2 area)
         {
-            //Rectangle2 area = inflenceMap.Area;
-            //area.AddRadius(-1);
-            ForXYLoop loop = new ForXYLoop(area);
-            while (loop.Next())
-            {
-                if (world.tileGrid.Get(loop.Position).IsLand())
-                {
-                    Dictionary<int, int> cityInfluence = new Dictionary<int, int>();
-                    ref var inf = ref inflenceMap.GetRef(loop.Position);
-                    cityInfluence.Add(inf.city.myIndex, 1);
+           
+            //ForXYLoop loop = new ForXYLoop(area);
+            //while (loop.Next())
+            //{
+            //    if (world.tileGrid.Get(loop.Position).IsLand())
+            //    {
+            //        Dictionary<int, int> cityInfluence = new Dictionary<int, int>();
+            //        ref var inf = ref inflenceMap.GetRef(loop.Position);
+            //        cityInfluence.Add(inf.city.myIndex, 1);
 
-                    int mostInfluence = 1;
-                    int mostInfluenceCity = inf.city.myIndex;
+            //        int mostInfluence = 1;
+            //        int mostInfluenceCity = inf.city.myIndex;
 
-                    foreach (var dir in IntVector2.Dir8Array)
-                    {
-                        IntVector2 npos = loop.Position + dir;
-                        if (world.tileGrid.Get(npos).IsLand())
-                        {
-                            var city = inflenceMap.Get(npos).city;
-                            if (cityInfluence.ContainsKey(city.myIndex))
-                            {
-                                ++cityInfluence[city.myIndex];
-                            }
-                            else
-                            {
-                                cityInfluence.Add(city.myIndex, 1);
-                            }
-                        }
-                    }
+            //        foreach (var dir in IntVector2.Dir8Array)
+            //        {
+            //            IntVector2 npos = loop.Position + dir;
+            //            if (world.tileGrid.Get(npos).IsLand())
+            //            {
+            //                var city = inflenceMap.Get(npos).city;
+            //                if (cityInfluence.ContainsKey(city.myIndex))
+            //                {
+            //                    ++cityInfluence[city.myIndex];
+            //                }
+            //                else
+            //                {
+            //                    cityInfluence.Add(city.myIndex, 1);
+            //                }
+            //            }
+            //        }
 
-                    foreach (var kv in cityInfluence)
-                    {
-                        if (kv.Value > mostInfluence)
-                        {
-                            mostInfluence = kv.Value;
-                            mostInfluenceCity = kv.Key;
-                        }
-                    }
+            //        foreach (var kv in cityInfluence)
+            //        {
+            //            if (kv.Value > mostInfluence)
+            //            {
+            //                mostInfluence = kv.Value;
+            //                mostInfluenceCity = kv.Key;
+            //            }
+            //        }
 
-                    inf.city = world.cities[ mostInfluenceCity];
-                }
-            }
+            //        inf.city = world.cities[ mostInfluenceCity];
+            //    }
+            //}
         }
 
         void bindTiles(WorldData world, Rectangle2 area)
@@ -336,7 +331,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 
                 var tile = world.tileGrid.Get(loop.Position);
-                tile.CityIndex = (short)city.myIndex;
+                tile.pcity = new PCity( city.myIndex);
                 world.tileGrid.Set(loop.Position, tile);
 
                 //var r = loop.Position.SideLength(city.tilePos);
@@ -377,7 +372,7 @@ namespace VikingEngine.DSSWars.Map
                 this.city = city;
                 //Workforce är ca 300
                 int startInfluence = 20000 + city.HousingCount_Workers * 200;
-                Rectangle2 startArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 1);
+                Rectangle2 startArea = Rectangle2.FromCenterTileAndRadius(city.maptilePos, 1);
                 ForXYLoop startloop = new ForXYLoop(startArea);
                 while(startloop.Next())
                 {
@@ -445,8 +440,8 @@ namespace VikingEngine.DSSWars.Map
                                     ref var adjInf = ref inflenceMap.GetRef(npos);
                                     if (!adjInf.locked)
                                     {
-                                        double length = (npos-city.tilePos).Length64();
-                                        int cost = world.tileGrid.Get(npos).heightSett().influenceCost + adjInf.influence;
+                                        double length = (npos-city.maptilePos).Length64();
+                                        int cost = world.tileGrid.Get(npos).mapInflenceCost() + adjInf.influence;
                                         cost += Convert.ToInt32(length * length) * 10;
 
                                         if (adjInf.city == null || cost < influence)

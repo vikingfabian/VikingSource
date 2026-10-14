@@ -9,7 +9,9 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.PJ.GameState;
@@ -252,7 +254,7 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city, bool autoBuild)
         {
-            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || (StartupSettings.UnlockAllProgress && city.pfaction.TryGetLocalPlayer(out _))) && !autoBuild;
+            bool godPowers = (DssRef.state.GodPowers() || (StartupSettings.UnlockAllProgress && city.pfaction.TryGetLocalPlayer(out _))) && !autoBuild;
 
             bool devUnlockAll = StartupSettings.UnlockAllProgress;
 
@@ -621,7 +623,7 @@ namespace VikingEngine.DSSWars.Build
             }
 
 
-            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            if (DssRef.state.GodPowers())
             {
                 list.Add(BuildAndExpandType.TreeSoft);
                 list.Add(BuildAndExpandType.TreeHard);
@@ -1386,7 +1388,7 @@ namespace VikingEngine.DSSWars.Build
             return BuildAndExpandType.NUM_NONE;
         }
 
-        public static bool CanAutoBuildHere(ref SubTile subTile)
+        public static bool CanAutoBuildHere(ref MapTile1_1 subTile)
         {
             switch (subTile.mainTerrain)
             {
@@ -1410,7 +1412,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static bool TryAutoBuild(PFaction pfaction, IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
         {
-            SubTile subTile;
+            MapTile1_1 subTile;
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out subTile))
             {
                 if (CanAutoBuildHere(ref subTile))
@@ -1452,8 +1454,8 @@ namespace VikingEngine.DSSWars.Build
                             DssRef.state.resources.addItem(
                                 new Resource.ItemResource(
                                   r.type,
-                                  subTile.terrainQuality,
-                                  0,
+                                  //subTile.terrainQuality,
+                                  //0,
                                   returnAmount),
                               ref subTile.collectionPointer);
                         }

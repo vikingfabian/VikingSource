@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.Timer;
 
@@ -87,7 +88,7 @@ namespace VikingEngine.DSSWars.Map.Path
     class DetailPathFinding
     {
         public const int MaxNodeLength = 30000;
-        const int MaxTileRadius = 64 * WorldData.TileSubDivitions;
+        const int MaxTileRadius = 64 * Map.MapData.MapTile1_1.ModelScale_Inv;
 
         // Min-heap open list ordered by: (TotalCost, Heuristic)
         PriorityQueue<DetailPathNode, (float Value, float Heuristic)> open = new PriorityQueue<DetailPathNode, (float, float)>();
@@ -286,7 +287,7 @@ namespace VikingEngine.DSSWars.Map.Path
         List<Graphics.Mesh> nodeImages;
 #endif
         const int IgnoreDirChangeTimes = 10;
-        static readonly float NodeMinDistance = 0.3f * WorldData.SubTileWidth;
+        static readonly float NodeMinDistance = 0.3f * Map.MapData.MapTile1_1.ModelScale;
 
         public int currentNodeIx;
         public IntVector2 goal;
@@ -322,12 +323,12 @@ namespace VikingEngine.DSSWars.Map.Path
             if (complete)
             {
                 ship = false;
-                return  WP.SubtileToWorldPosXZ(goal);
+                return  WP.MaptileToWorldPosXZ(goal);
             }
 
             ship = nodes[node_sp].ship;
             IntVector2 to = nodes[node_sp].position;
-            Vector3 toWp = WP.SubtileToWorldPosXZ(to);
+            Vector3 toWp = WP.MaptileToWorldPosXZ(to);
             Vector2 diff = new Vector2( toWp.X - myPos.X, toWp.Z - myPos.Z);
             if (diff.Length() <= NodeMinDistance)
             {
@@ -361,9 +362,9 @@ namespace VikingEngine.DSSWars.Map.Path
             foreach (var n in nodes)
             {
                 Vector3 pos = WP.SubtileToWorldPosXZgroundY_Centered(n.position);
-                pos.Y += WorldData.SubTileHalfWidth;
+                pos.Y += MapTile1_1.SubTileHalfWidth;
                 var mesh = new Graphics.Mesh(LoadedMesh.cube_repeating, pos,
-                   new Vector3(WorldData.SubTileHalfWidth), Graphics.TextureEffectType.Flat, SpriteName.KeyArrowRight, Color.Pink, false);
+                   new Vector3(MapTile1_1.SubTileHalfWidth), Graphics.TextureEffectType.Flat, SpriteName.KeyArrowRight, Color.Pink, false);
                 mesh.AddToRender(DrawGame.UnitDetailLayer);
                 nodeImages.Add(mesh);
             }
@@ -524,11 +525,11 @@ namespace VikingEngine.DSSWars.Map.Path
                 moveCost -= 1f;
             }
 
-            SubTile subtile = world.subTileGrid.Get(pos);
+            MapTile1_1 subtile = world.subTileGrid.Get(pos);
             moveCost *= subtile.TerrainBlockMultipleValue();
 
-            Tile tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);
-            waterTile = tile.IsWater();
+            //SumTile4_4 tile = world.tileGrid.Get(pos / Map.MapData.MapTile1_1.ModelScale_Inv);
+            waterTile = subtile.IsWater();
 
             if (waterTile != parent.waterTile)
             {
@@ -543,7 +544,7 @@ namespace VikingEngine.DSSWars.Map.Path
             }
             ship = this.waterTile;
 
-            moveCost *= tile.TroupWalkingDistance(ship);
+            moveCost *= DssRef.world.moveLayer0.Get(pos).GetMoveCost(ship);//DssRef.world.TerrainSpeedMultiplier//tile.TroupWalkingDistance(ship);
 
             moveCost += parent.moveCost;
 

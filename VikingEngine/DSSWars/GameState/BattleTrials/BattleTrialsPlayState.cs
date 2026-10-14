@@ -26,7 +26,6 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
 
         protected override void initPlayers()
         {
-            //base.initPlayers();
             var enemy = new Faction(DssRef.world, FactionType.DarkLord);
             DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(enemy, true);
 
@@ -39,11 +38,6 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
             local.assignPlayer(0, playerCount, true);
             localPlayers.Add(local);
 
-            //var factionsCounter = DssRef.world.factions.counter();
-            //while (factionsCounter.Next())
-            //{
-            //    factionsCounter.sel.initDiplomacy(DssRef.world);
-            //}
         }
 
         //protected override void initScenario()

@@ -20,7 +20,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -364,18 +364,21 @@ namespace VikingEngine.DSSWars.Interface
                         }
                         break;
                 }
-                title.overrideColor = avaialableAction ? HudLib.TitleColor_Action : HudLib.NotAvailableColor;
 
+                if (title != null)
+                {
+                    title.overrideColor = avaialableAction ? HudLib.TitleColor_Action : HudLib.NotAvailableColor;
+                }
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
 
             }
-            //else
-            //{
-            //    lib.DoNothing();
-            //}
-            content.h2(DssRef.lang.TerrainType, HudLib.TitleColor_Label);
-            content.newLine();
+            HudLib.Label(content, ".Ground type");
+            content.space();
+            content.Add(new RbText(subTile.subTile.groundType.ToString()));
+
+            HudLib.Label(content, DssRef.lang.TerrainType);
+            content.space();
             IconName.Terrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain, out SpriteName tileIcon, out string tileName);
             if (tileIcon != SpriteName.NO_IMAGE)
             {

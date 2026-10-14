@@ -7,11 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.Build
 {
@@ -21,7 +22,7 @@ namespace VikingEngine.DSSWars.Build
         public CraftBlueprint blueprint;
         public CraftBlueprint altBlueprint = null;
         
-        public SubTile terrainType;
+        public MapTile1_1 terrainType;
         public SpriteName sprite;
         public bool uniqueBuilding = false;
         public bool canAutoBuild;
@@ -46,7 +47,7 @@ namespace VikingEngine.DSSWars.Build
             this.sprite = sprite;
             this.buildType = buildType;
             this.blueprint = blueprint;
-            terrainType = new SubTile(mainType, subType) { terrainAmount = 1 };
+            terrainType = new MapTile1_1(mainType, subType) { terrainAmount = 1 };
             //this.experienceType = experienceType;
             this.buildCategory = buildCategory;
             this.filterTag1 = filterTag1;
@@ -99,12 +100,12 @@ namespace VikingEngine.DSSWars.Build
 
         public void destroy_async(City city, IntVector2 subPos)
         {
-            var sutile = new SubTile();
+            var sutile = new MapTile1_1();
             city.executeBuildEffectsOnCity(false, subPos, ref sutile, terrainType.mainTerrain, terrainType.subTerrain);
 
         }
 
-        public bool execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade, bool payResources = true)
+        public bool execute_async(City city, IntVector2 subPos, ref MapTile1_1 subTile, bool upgrade, bool payResources = true)
         {            
             if (city.executeBuildEffectsOnCity(true, subPos, ref subTile, terrainType.mainTerrain, terrainType.subTerrain))
             {

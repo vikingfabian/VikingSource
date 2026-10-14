@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         protected void createModel(int frame, int playerIx)
         {
             //Debug.CrashIfThreaded();
-            model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f);
+            model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.buildarea, Map.MapData.MapTile1_1.ModelScale * 1.4f);
             model.Frame = frame;
             //refreshYpos();
             model.setVisibleCamera(playerIx);
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             if (model != null)
             {
-                IntVector2 tilepos = WP.SubtileToTilePos(subTile);
+                IntVector2 tilepos = WP.MaptileToSumTile(subTile);
                 model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref tilepos);
             }
         }

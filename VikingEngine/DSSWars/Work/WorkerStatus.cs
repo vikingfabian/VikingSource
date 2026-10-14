@@ -8,7 +8,9 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
@@ -104,8 +106,8 @@ namespace VikingEngine.DSSWars.Work
                 int secondsPassed = Convert.ToInt32(processTimeStartStampSec - Ref.TotalGameTimeSec);
                 w.Write(Bound.Byte(secondsPassed / TimeNetShareDiv));
                 w.Write(Bound.Byte((int)processTimeLengthSec / TimeNetShareDiv));
-                (subTileEnd - city.cityHallSubtilePos).writeShort(w);
-                (subTileStart - city.cityHallSubtilePos).writeShort(w);
+                (subTileEnd - city.maptilePos).writeShort(w);
+                (subTileStart - city.maptilePos).writeShort(w);
             }
         }
         public void readGameState(City city, System.IO.BinaryReader r, bool netPacket, int subversion)
@@ -123,8 +125,8 @@ namespace VikingEngine.DSSWars.Work
                 int secondsPassed = r.ReadByte() * TimeNetShareDiv;
                 processTimeStartStampSec = Ref.TotalGameTimeSec - secondsPassed;
                 processTimeLengthSec = r.ReadByte() * TimeNetShareDiv;
-                subTileEnd = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
-                subTileStart = IntVector2.FromReadShort(r) + city.cityHallSubtilePos;
+                subTileEnd = IntVector2.FromReadShort(r) + city.maptilePos;
+                subTileStart = IntVector2.FromReadShort(r) + city.maptilePos;
             }
         }
 
@@ -185,7 +187,7 @@ namespace VikingEngine.DSSWars.Work
             switch (work)
             {
                 case WorkType.TrossCityTrade:
-                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / WorldData.TileSubDivitions).City();
+                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
 
                     ItemResourceType foodType = (ItemResourceType)workSubType;
                     //if (toCity.GetGroupedResource(EntityComponent.CityResoureIndex.ConservedFood).amount >= ItemPropertyColl.DefaultCarry)
@@ -200,7 +202,7 @@ namespace VikingEngine.DSSWars.Work
                     ItemResource recieved = toCity.MakeTrade(foodType, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE, -1, army.maptilePos, null);
                     break;
                 case WorkType.TrossReturnToArmy:
                     if (carry.type == ItemResourceType.ConservedFood)
@@ -392,7 +394,7 @@ namespace VikingEngine.DSSWars.Work
                 return;
             }
 
-            ref SubTile subTile = ref DssRef.world.subTileGrid.GetRef(subTileEnd);
+            ref MapTile1_1 subTile = ref DssRef.world.subTileGrid.GetRef(subTileEnd);
 
             bool tryRepeatWork = false;
 
@@ -702,8 +704,8 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.TreeBanana:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Food_G,
-                                        subTile.terrainQuality,
-                                        Convert.ToInt32(processTimeLengthSec),
+                                        //subTile.terrainQuality,
+                                        //Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(DssConst.OrchidFoodAmount, city/*, false*/));
 
                                 subTile.terrainAmount = TerrainContent.OrchardPlucked;
@@ -715,8 +717,8 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.WheatFarmUpgraded:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Wheat,
-                                        subTile.terrainQuality,
-                                        Convert.ToInt32(processTimeLengthSec),
+                                        //subTile.terrainQuality,
+                                        //Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(DssConst.WheatFoodAmount, city/*, foilType == TerrainSubFoilType.WheatFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
@@ -729,8 +731,8 @@ namespace VikingEngine.DSSWars.Work
 
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Linen,
-                                        subTile.terrainQuality,
-                                        Convert.ToInt32(processTimeLengthSec),
+                                        //subTile.terrainQuality,
+                                        //Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(DssConst.LinenHarvestAmount, city/*, foilType == TerrainSubFoilType.LinenFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
@@ -743,8 +745,8 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Rapeseed,
-                                        subTile.terrainQuality,
-                                        Convert.ToInt32(processTimeLengthSec),
+                                        //subTile.terrainQuality,
+                                        //Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city/*, foilType == TerrainSubFoilType.RapeSeedFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
@@ -758,8 +760,8 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.HempFarmUpgraded:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Hemp,
-                                        subTile.terrainQuality,
-                                        Convert.ToInt32(processTimeLengthSec),
+                                        //subTile.terrainQuality,
+                                        //Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city/*, foilType == TerrainSubFoilType.HempFarmUpgraded*/));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
@@ -770,7 +772,7 @@ namespace VikingEngine.DSSWars.Work
 
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
-                                int amount = 4;
+                                int amount = ItemPropertyColl.CarryStones;
                                 if (workBonus > 0)
                                 {
                                     amount = MathExt.AddPercentage(amount, workBonus);
@@ -781,18 +783,18 @@ namespace VikingEngine.DSSWars.Work
                                     amount *= 2;
                                 }
 
-                                carry = new ItemResource(ItemResourceType.Stone_G, amount, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
+                                carry = new ItemResource(ItemResourceType.Stone_G, amount/*, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones*/);
 
                                 gainXp = WorkExperienceType.StoneCutter;
                                 break;
 
                             case TerrainSubFoilType.BogIron:
-                                carry = new ItemResource(ItemResourceType.IronOre_G, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.DefaultMineAmount);
+                                carry = new ItemResource(ItemResourceType.IronOre_G, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
 
                                 gainXp = WorkExperienceType.Mining;
                                 break;
                             case TerrainSubFoilType.ClayPit:
-                                carry = new ItemResource(ItemResourceType.Clay, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.DefaultMineAmount);
+                                carry = new ItemResource(ItemResourceType.Clay, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
 
                                 gainXp = WorkExperienceType.StoneCutter;
                                 break;
@@ -1279,7 +1281,7 @@ namespace VikingEngine.DSSWars.Work
                             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
 
 
-                            carry = new ItemResource(resourceType, 1, Convert.ToInt32(processTimeLengthSec), 1);
+                            carry = new ItemResource(resourceType, /*1, Convert.ToInt32(processTimeLengthSec),*/ 1);
                         }
 
 
@@ -1310,7 +1312,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.LocalTrade:
                     ItemResourceType tradeForItem = (ItemResourceType)workSubType;
-                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / WorldData.TileSubDivitions).City();
+                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                     int payment = carry.amount;
                     ItemResource recieved = toCity.MakeTrade(tradeForItem, payment);
 
@@ -1387,8 +1389,8 @@ namespace VikingEngine.DSSWars.Work
 
                         carry = new ItemResource(
                             resourceType,
-                            subTile.terrainQuality,
-                            Convert.ToInt32(processTimeLengthSec),
+                            //subTile.terrainQuality,
+                            //Convert.ToInt32(processTimeLengthSec),
                             amount);
 
                         gainXp = WorkExperienceType.Mining;
@@ -1912,7 +1914,7 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-        void gatherWood(Resource.ItemResourceType resourceType, ref SubTile subTile, City city)
+        void gatherWood(Resource.ItemResourceType resourceType, ref MapTile1_1 subTile, City city)
         {
             int amount = subTile.terrainAmount;
 
@@ -1928,15 +1930,15 @@ namespace VikingEngine.DSSWars.Work
 
             carry = new Resource.ItemResource(
                 resourceType,
-                subTile.terrainQuality,
-                Convert.ToInt32(processTimeLengthSec),
+                //subTile.terrainQuality,
+                //Convert.ToInt32(processTimeLengthSec),
                 Resource.ItemPropertyColl.Get(resourceType).carryCount);
 
             DssRef.state.resources.addItem(
                 new Resource.ItemResource(
                     resourceType,
-                    subTile.terrainQuality,
-                    Convert.ToInt32(processTimeLengthSec),
+                    //subTile.terrainQuality,
+                    //Convert.ToInt32(processTimeLengthSec),
                     amount),
                 ref subTile.collectionPointer);
 
@@ -1956,7 +1958,7 @@ namespace VikingEngine.DSSWars.Work
             subTileStart = subTileEnd;
             subTileEnd = targetSubTile;
             processTimeStartStampSec = Ref.TotalGameTimeSec;
-            float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions; //Convrst to WP length
+            float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / Map.MapData.MapTile1_1.ModelScale_Inv; //Convrst to WP length
 
             processTimeLengthSec = finalizeWorkTime(experienceType, city) +
                 dist / DssVar.Men_StandardWalkingSpeed_PerSec;
@@ -1967,19 +1969,19 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.LocalTrade:
                     {
                         ItemResourceType tradeForItem = (ItemResourceType)workSubType;
-                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
+                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                         int goldCost = tradeForItem == ItemResourceType.ConservedFood? DssConst.ConservedFoodGoldValue : DssConst.FoodGoldValue;// toCity.SellCost(tradeForItem);
 
-                        carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost * DssConst.Worker_TrossWorkerCarryWeight);
+                        carry = new ItemResource(ItemResourceType.Gold, /*1, 1,*/ goldCost * DssConst.Worker_TrossWorkerCarryWeight);
                     }
                     break;
 
                 case WorkType.TrossCityTrade:
                     {
-                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
+                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                         int goldCost = DssConst.FoodGoldValue;//toCity.SellCost(ItemResourceType.Food_G);
 
-                        carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost);
+                        carry = new ItemResource(ItemResourceType.Gold, /*1, 1,*/ goldCost);
                     }
                     break;
             }
@@ -2014,7 +2016,7 @@ namespace VikingEngine.DSSWars.Work
                     timeSec = DssConst.WorkTime_LocalTrade;
                     break;
                 case WorkType.GatherFoil:
-                    if (DssRef.world.subTileGrid.TryGet(subTileEnd, out SubTile subTile))
+                    if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
                     {
                         switch ((TerrainSubFoilType)subTile.subTerrain)
                         {

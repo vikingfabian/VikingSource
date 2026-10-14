@@ -1,6 +1,5 @@
 using System;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.Benchmarks.Pathfinding.Legacy
 {
@@ -56,7 +55,7 @@ namespace VikingEngine.Benchmarks.Pathfinding.Legacy
                 moveCost -= 1f;
             }
 
-            Tile tile = world.tileGrid.Get(pos);
+            SumTile4_4 tile = world.tileGrid.Get(pos);
             waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)

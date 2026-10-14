@@ -373,7 +373,7 @@ namespace VikingEngine.Voxels
                 grid.DeleteMe();
             }
             grid = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
-                gridPolys, new List<Graphics.TriangleColor>()), LoadedTexture.SpriteSheet, true);
+                gridPolys, null), LoadedTexture.SpriteSheet, true);
 
             moveFreePencil(Vector3.Zero, false);
 

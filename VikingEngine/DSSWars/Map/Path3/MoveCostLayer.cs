@@ -104,14 +104,14 @@ namespace VikingEngine.DSSWars.Map.Path3
         public static IntVector2 WpToLay4(Vector3 wp)
         { 
             return new IntVector2(
-                wp.X * WorldData.TileSubDivitions / MoveCostLayer.Layer4TileWidth, 
-                wp.Z * WorldData.TileSubDivitions / MoveCostLayer.Layer4TileWidth);
+                wp.X * Map.MapData.MapTile1_1.ModelScale_Inv / MoveCostLayer.Layer4TileWidth, 
+                wp.Z * Map.MapData.MapTile1_1.ModelScale_Inv / MoveCostLayer.Layer4TileWidth);
         }
         public static IntVector2 WpToLay2(Vector3 wp)
         {
             return new IntVector2(
-                wp.X * WorldData.TileSubDivitions / MoveCostLayer.Layer2TileWidth, 
-                wp.Z * WorldData.TileSubDivitions / MoveCostLayer.Layer2TileWidth);
+                wp.X * Map.MapData.MapTile1_1.ModelScale_Inv / MoveCostLayer.Layer2TileWidth, 
+                wp.Z * Map.MapData.MapTile1_1.ModelScale_Inv / MoveCostLayer.Layer2TileWidth);
         }
     }
 

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars.Map.Map2
@@ -64,7 +65,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                      
                     if (icon.iconGrid.TryGet(tryPos, out var tile) &&
-                        tile.groundY >= Map2Generator.Height_LowGround && tile.groundY <= Map2Generator.Height_MountainStart)
+                        tile.groundY >= MapHeight2.LowGroundY && tile.groundY <= MapHeight2.MountainStartY)
                     {
                         //find closest city
 

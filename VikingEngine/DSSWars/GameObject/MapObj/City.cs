@@ -18,8 +18,10 @@ using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
@@ -51,7 +53,7 @@ namespace VikingEngine.DSSWars.GameObject
         public FloatingInt childrenAge0 = new FloatingInt();
         public int childrenAge1 = 0;
 
-        public IntVector2 cityHallSubtilePos;
+        //public IntVector2 cityHallSubtilePos;
         IntVector2 armySpawnTilePos = IntVector2.Zero;
         public GroupedResource workForce = new GroupedResource();
         bool needServiceMenRefresh = true;
@@ -119,6 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public IntVector2 ArmySpawnTilePos()
         {
+            /*
             if (armySpawnTilePos.HasValue())
             {
                 return armySpawnTilePos;
@@ -129,7 +132,7 @@ namespace VikingEngine.DSSWars.GameObject
                 ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
                 while (loop.Next())
                 {
-                    Tile t = DssRef.world.tileGrid.Get(loop.Position);
+                    SumTile4_4 t = DssRef.world.tileGrid.Get(loop.Position);
                     if (t.IsLand())
                     {
                         armySpawnTilePos = loop.Position;
@@ -137,9 +140,9 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-
-            Debug.LogError("GetFreeTile" + tilePos.ToString());
-            return tilePos;
+            */
+            Debug.LogError("GetFreeTile" + maptilePos.ToString());
+            return maptilePos;
         }
 
        
@@ -284,10 +287,11 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate = new WorkTemplate(true, index);
             
             world.InitCity(this);
-            this.tilePos = pos;
-            cityTileArea = Rectangle2.FromCenterTileAndRadius(tilePos, 1);
+            this.maptilePos = pos;
+            cityTileArea = Rectangle2.FromCenterTileAndRadius(maptilePos, 1);
             this.cityType = type;
-            
+            //refreshPos();
+
         }
 
         public City(int index, WorldData world)
@@ -295,6 +299,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.myIndex = index;
             workTemplate = new WorkTemplate(true, index);
             world.InitCity(this);
+            //refreshPos();
         }
 
         public City(WorldData world, int index, System.IO.BinaryReader r, int version)
@@ -303,7 +308,15 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate = new WorkTemplate(true, index);
             world.InitCity(this);
             readMapFile(world, r, version);
+            //refreshPos();
         }
+
+        void refreshPos()
+        {
+            position = WP.SubtileToWorldPosXZgroundY_Centered(maptilePos);
+        }
+
+        
 
         public void generateCultureAndEconomy(WorldData world, float storyPlacementScale, CityCultureCollection cityCultureCollection)
         {
@@ -495,7 +508,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
-            tilePos.writeUshort(w);
+            maptilePos.writeUshort(w);
 
             w.Write(Debug.Byte_OrCrash((int)cityType));
             w.Write(Debug.Ushort_OrCrash(areaSize));
@@ -524,7 +537,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readMapFile(WorldData world, System.IO.BinaryReader r, int saveMapVersion)
         {
-            tilePos.readUshort(r);
+            maptilePos.readUshort(r);
 
             cityType = (CityType)r.ReadByte();
            
@@ -572,7 +585,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Bound.Short(freeNobelMen.amount));
             w.Write(Bound.UShort(PenFoodUpkeep_minute));
 
-            WP.writeSubTilePos(w, cityHallSubtilePos);
+            WP.writeSubTilePos(w, maptilePos);
             WP.writeSubTilePos(w, citySquareSubtilePos);
 
             //cityHallSubtilePos.writeUshort(w);
@@ -607,17 +620,10 @@ namespace VikingEngine.DSSWars.GameObject
             freeNobelMen.amount = r.ReadInt16();
             PenFoodUpkeep_minute = r.ReadUInt16();
 
-            if (subversion >= 132)
-            {
-                cityHallSubtilePos = WP.readSubTilePos(r);
-                citySquareSubtilePos = WP.readSubTilePos(r);
-            }
-            else
-            { 
-                cityHallSubtilePos.readUshort(r);
-                citySquareSubtilePos.readUshort(r);
-            }
 
+            maptilePos = WP.readSubTilePos(r);
+            citySquareSubtilePos = WP.readSubTilePos(r);
+            
             Debug.ReadCheck(r);
 
             childrenAge0.read16bit(r);
@@ -798,7 +804,7 @@ namespace VikingEngine.DSSWars.GameObject
             catch (Exception e)
             {
                 BlueScreen.AttachMessage =
-                   $"workforce {workForce.amount}, HousingCount_Workers {HousingCount_Workers}, HousingCount_Guard {HousingCount_Guard}, cityHallSubtilePos {cityHallSubtilePos}, cityStorageCenter {citySquareSubtilePos}, childrenAge0 {childrenAge0}, childrenAge1 {childrenAge1}, immigrants {immigrants}, ";
+                   $"workforce {workForce.amount}, HousingCount_Workers {HousingCount_Workers}, HousingCount_Guard {HousingCount_Guard}, cityHallSubtilePos {maptilePos}, cityStorageCenter {citySquareSubtilePos}, childrenAge0 {childrenAge0}, childrenAge1 {childrenAge1}, immigrants {immigrants}, ";
 
                 BlueScreen.ThreadException = e;
             }
@@ -987,10 +993,10 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(/*(ushort)*/workerStatuses.Count);
                 writeStatusesStartEnd(part, workerStatuses.Count, out bool meta, out int start, out int end);
 
-                if (meta)
-                {   
-                    cityHallSubtilePos.write(w);
-                }
+            if (meta)
+            {
+                maptilePos.write(w);
+            }
 
                 for (int i = start; i < end; i++)
                 {
@@ -1008,14 +1014,8 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 startPos = citySquareSubtilePos;//WP.ToSubTilePos_Centered(tilePos);
 
             int workerStatusesCount;
-            if (subversion >= 132)
-            {
-                workerStatusesCount = r.ReadInt32();
-            }
-            else
-            {
-                workerStatusesCount = r.ReadUInt16();
-            }
+            workerStatusesCount = r.ReadInt32();
+            
             //if (myIndex == 1804)
             //{
             //    //workerStatusesCount += ushort.MaxValue;
@@ -1025,10 +1025,8 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (meta)
             {
-                if (subversion >= 65)
-                {
-                    cityHallSubtilePos.read(r);
-                }
+                maptilePos.read(r);
+                
             }
 
             lock (WorkerStatusLock)
@@ -1114,6 +1112,7 @@ namespace VikingEngine.DSSWars.GameObject
         /// </summary>
         public void writeNet_map(System.IO.BinaryWriter w)
         {
+            /*
             writeMapFile(w);
 
             pfaction.write(w);
@@ -1121,10 +1120,12 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((byte)Tile().heightLevel);
 
             terrainStructure.write(w);
+            */
         }
 
         public void readNet_map(WorldData world, System.IO.BinaryReader r)
         {
+            /*
             readMapFile(world, r, int.MaxValue);
             
             //int r_pfaction = r.ReadUInt16();
@@ -1138,7 +1139,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             onGameStart(false);
             byte height = r.ReadByte();
-            var tile = new Tile();
+            var tile = new SumTile4_4();
             tile.heightLevel = height;
             position.Y = tile.ModelGroundY();
             if (overviewModel != null)
@@ -1149,6 +1150,7 @@ namespace VikingEngine.DSSWars.GameObject
             terrainStructure.read(r);
 
             DssRef.world.unitCollAreaGrid.add(this);
+            */
         }
 
         public void net_roundtrip_asyncupdate(out int packetCount)
@@ -1271,7 +1273,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     try
                     {
-                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, 1));
+                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, 1));
                         edgeLoop.RandomPosition(true);
 
                         int maxLoops = 10000;
@@ -1281,17 +1283,17 @@ namespace VikingEngine.DSSWars.GameObject
                             if (edgeLoop.Next())
                             {
 
-                                if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out Tile t) &&
-                                        t.MayBuild() && t.CityIndex == myIndex)
+                                if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out SumTile4_4 t) &&
+                                        /*t.MayBuild() &&*/ t.pcity.cityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
-                                    IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
+                                    IntVector2 topLeft = edgeLoop.Position;
 
                                     for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
                                     {
                                         IntVector2 subPos = topLeft;
-                                        subPos.X += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
-                                        subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
+                                        subPos.X += Ref.peRnd.Int(1, Map.MapData.MapTile1_1.ModelScale_Inv - 1);
+                                        subPos.Y += Ref.peRnd.Int(1, Map.MapData.MapTile1_1.ModelScale_Inv - 1);
 
 
                                         //var faction = GetFaction();
@@ -1486,10 +1488,10 @@ namespace VikingEngine.DSSWars.GameObject
             CalcRecruitToTile();
             armyGoalRotation = rotation.radians;
 
-            position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
+            //position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
             refreshCitySize();
                         
-            if (newGame && cityType > CityType.UnClaimed)
+            //if (newGame && cityType > CityType.UnClaimed)
             {
                 refreshWorkerSubtiles();
                 int maxGuards = Bound.Max(HousingCount_Guard, 6);
@@ -1512,14 +1514,22 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (!name.custom)
             {
-                name.name = Data.NameGenerator.CityName(tilePos);
+                name.name = Data.NameGenerator.CityName(maptilePos);
             }
             setTimeOnAllWorkers();
 
-            setTimeOnAllWorkers();
+            //setTimeOnAllWorkers();
         }
 
-        
+        public void onEditorStart()
+        {
+            refreshPos();
+            refreshCitySize();
+            if (!name.custom)
+            {
+                name.name = Data.NameGenerator.CityName(maptilePos);
+            }
+        }
 
         void initEconomy(/*bool newGame,*/ WorldData world)
         {
@@ -1566,6 +1576,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool claimCity(Faction faction, IntVector2 subtile)
         {
+            /*
             if (cityType == CityType.UnClaimed && faction != null)
             {
                 if (DssRef.state.host)
@@ -1603,7 +1614,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (!name.custom)
                     {
-                        name.name = Data.NameGenerator.CityName(tilePos);
+                        name.name = Data.NameGenerator.CityName(maptilePos);
                     }
 
                     //Send hosted action
@@ -1633,24 +1644,30 @@ namespace VikingEngine.DSSWars.GameObject
 
                 void updateTileData()
                 {
-                    bool newTile = cityHallSubtilePos != subtile;
+                    bool newTile = this.maptilePos != subtile;
                     cityType = CityType.Campsite;
 
                     if (newTile)
                     {
-                        IntVector2 prevTilePos = tilePos;
-                        tilePos = WP.SubtileToTilePos(subtile);
+                        IntVector2 prevTilePos = maptilePos;
+                        maptilePos = WP.MaptileToSumTile(subtile);
 
                         ref var prevTile = ref DssRef.world.tileGrid.GetRef(prevTilePos);
-                        ref var tile = ref DssRef.world.tileGrid.GetRef(tilePos);
+                        ref var tile = ref DssRef.world.tileGrid.GetRef(maptilePos);
 
+                        /*
                         prevTile.tileContent = TileContent.NONE;
                         tile.tileContent = TileContent.City;
                         position = WP.ToWorldPos(tilePos, tile.ModelGroundY());
-                    }
-                }
-                return true;
-            }
+
+                        */
+            //        }
+            //    }
+            //    return true;
+            //}
+
+
+
             return false;
 
 
@@ -1722,8 +1739,7 @@ namespace VikingEngine.DSSWars.GameObject
             else if (faction.player.profile.flag != null)
             {
                 setModel(faction.AutoLoadModelInstance(
-                   LootFest.VoxelModelName.cityicon, IconScale()));
-                
+                   LootFest.VoxelModelName.cityicon, IconScale()/* * 0.1f*/));                
             }
 
             void setModel(Graphics.AbsVoxelObj model)
@@ -1740,8 +1756,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (cityType)
             {
-                case CityType.UnClaimed:
-                    return 1f;
+                //case CityType.UnClaimed:
+                //    return 1f;
                 case CityType.Campsite:
                     return 0.64f;
                 case CityType.Village:
@@ -1966,7 +1982,7 @@ namespace VikingEngine.DSSWars.GameObject
                 try
                 {
                     
-                    PFaction newPOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
+                    PFaction newPOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 16);
                     if (newPOwner != pfaction && newPOwner.TryGetFaction(out var newOwner))                    
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
@@ -2118,13 +2134,13 @@ namespace VikingEngine.DSSWars.GameObject
             const int DominanceTileRadius = 4;
 
             //Faction faction = GetFaction();
-            DssRef.world.unitCollAreaGrid.collectArmies(pfaction, tilePos, 2,
+            DssRef.world.unitCollAreaGrid.collectArmies(pfaction, maptilePos, 2,
                 DssRef.world.unitCollAreaGrid.armies_nearUpdate);
 
             foreach (var p in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
             {
                 var m = p.GetArmy();
-                if (m.tilePos.SideLength(tilePos) <= DominanceTileRadius)
+                if (m.maptilePos.SideLength(maptilePos) <= DominanceTileRadius)
                 {
                     armyDefence += m.strengthValue;
                 }
@@ -2318,9 +2334,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             switch (cityType)
             {
-                case CityType.UnClaimed:
-                    scale = new Vector3(1.2f);
-                    break;
+                //case CityType.UnClaimed:
+                //    scale = new Vector3(1.2f);
+                //    break;
                 case CityType.Campsite:
                     scale = new Vector3(0.6f);
                     break;
@@ -2361,13 +2377,20 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name(out bool mayEdit)
         {
-            Faction faction = pfaction.GetFaction();
-            if (faction == null)
+            if (DssRef.state.GodPowers())
             {
-                mayEdit = false;
-                return TextLib.Error;
+                mayEdit = true;
             }
-            mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
+            else
+            {
+                Faction faction = pfaction.GetFaction();
+                if (faction == null)
+                {
+                    mayEdit = false;
+                    return TextLib.Error;
+                }
+                mayEdit = faction != null && faction.player != null && faction.player.IsLocalPlayer();
+            }
             return name.GetName();
         }
 
@@ -2481,8 +2504,9 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 //if (args.ShowFull)
                 {
-                    if (pfaction== args.player.pfaction || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
-                    {
+                   if (pfaction == args.player.pfaction ||
+                    DssRef.state.GodPowers())
+                {
                         CityDetailsHud(true, args.player, args.content);
                         new MapObjMenu(args.player, this, args.content, out secondMenuContent);
                     }
@@ -4086,7 +4110,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     
                     newFaction.AddCity(this, false);
-                    EditSubTile.OntileChange(tilePos);
+                    EditSubTile.OntileChange(maptilePos);
                 }
 
                 OnNewOwner(newFaction, convert || duringStartup, convertReason);
@@ -4328,9 +4352,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
 
-                SubTile subTile = new SubTile();
+                MapTile1_1 subTile = new MapTile1_1();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-                new EditSubTile(pfaction, true, cityHallSubtilePos, subTile, true, false, false).Submit();
+                new EditSubTile(pfaction, true, maptilePos, subTile, true, false, false).Submit();
 
                 refreshCitySize();
             }
@@ -4340,7 +4364,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return pfaction.GetFaction().ClosestFriendlyArmy(position, 3.6f);
         }
-
+        public PCity Pointer()
+        {
+            return new PCity(myIndex);
+        }
         public override City GetCity()
         {
             return this;
@@ -4422,7 +4449,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum CityType
     {
-        UnClaimed,
+        //UnClaimed,
         Campsite,
         Village,
         Town,

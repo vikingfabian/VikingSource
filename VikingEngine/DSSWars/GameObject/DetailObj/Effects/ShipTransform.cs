@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO.NPC;
 
@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (lookingForTerrain)
             {
-                if (DssRef.world.tileGrid.TryGet(group.tilePos, out Tile tile) &&
+                if (DssRef.world.subTileGrid.TryGet(group.maptilePos, out MapTile1_1 tile) &&
                     tile.IsWater() == toShip)
                 {
                     begin();
@@ -222,17 +222,17 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void completeTransform()
         {
             
-            var city = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTile)).City();
+            //var city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTile)).pcity.City();
 
-            if (group.soldierCount > 0 &&
-                city.cityType == CityType.UnClaimed)
-            {
-                if (city.claimCity(group.pfaction.GetFaction(), subTile))
-                {
-                    group.DeleteMe(DeleteReason.Transform, true);
-                    return;
-                }
-            }
+            //if (group.soldierCount > 0 &&
+            //    city.cityType == CityType.UnClaimed)
+            //{
+            //    if (city.claimCity(group.pfaction.GetFaction(), subTile))
+            //    {
+            //        group.DeleteMe(DeleteReason.Transform, true);
+            //        return;
+            //    }
+            //}
 
             //Fail
             group.completeTransform(SoldierTransformType.Canceled, -1);

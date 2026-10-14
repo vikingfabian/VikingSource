@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Physics;
@@ -33,7 +34,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.mapLayersManager.current.DrawDetailLayer)
             {
-                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.subTilePosition);
+                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.mapTilePosition);
                 SoldierGroup target = null;
                 if (player.gameControls.map.armyMayAttackHoverObj())
                 {
@@ -58,7 +59,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 IntVector2 subTile = player.gameControls.map.hover.subTile.subTilePos;
                 var city = player.gameControls.map.hover.subTile.city;
 
-                Task.Run(() =>
+                Task.Run((Action)(() =>
                 {
                     try
                     {
@@ -212,14 +213,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                                     {
                                                         if (DssRef.world.subTileGrid.TryGet(loop.Position, out var tile))
                                                         {
-                                                            if (tile.mainTerrain == Map.TerrainMainType.Wall &&
+                                                            if (tile.mainTerrain == TerrainMainType.Wall &&
                                                                 !containsWall(loop.Position))
                                                             {
                                                                 if (group.army.TryGetTarget(out var tArmy))
                                                                 {
                                                                     var city = tArmy.GetCity();
 
-                                                                    if (DssRef.world.tileGrid.Get(WP.SubtileToTilePos(loop.Position)).CityIndex == city.myIndex)
+                                                                    if (DssRef.world.tileGrid.Get(WP.MaptileToSumTile(loop.Position)).pcity.cityIndex == city.myIndex)
                                                                     {
                                                                         WallPosition wallPosition = new WallPosition();
                                                                         wallPosition.Position = loop.Position;
@@ -278,7 +279,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
 
                     
-                });
+                }));
             }
         }
     }

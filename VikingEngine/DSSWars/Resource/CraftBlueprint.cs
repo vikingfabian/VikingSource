@@ -530,6 +530,11 @@ namespace VikingEngine.DSSWars.Resource
 
         public void listResources(RichBoxContent content, City city, CraftBlueprint optionalBp = null)
         {
+            if (city == null)
+            {
+                return;
+            }
+
             bool reachedBuffer = false;
             content.newLine();
             foreach (var r in resources)

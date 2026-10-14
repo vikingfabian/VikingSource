@@ -1,0 +1,142 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+
+namespace VikingEngine.DSSWars.Map.MapProcess
+{
+    struct EditSubTile
+    {
+        public IntVector2 position;
+        public MapTile1_1 value;
+        public bool editTerrain;
+        public bool editAmount;
+        public bool editCollection;
+        public bool hostedTile;
+        public bool isPlayer;
+        public bool netShare;
+
+        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editAmount, bool editCollection)
+        {
+            hostedTile = pfaction.TryGetFaction(out var faction) && faction.IsNetHosted();
+            isPlayer = faction.player != null && faction.player.IsLocalPlayer();
+            this.netShare = netShare && isPlayer;
+            this.position = position;
+            this.value = value;
+            this.editTerrain = editTerrain;
+            this.editAmount = editAmount;
+            this.editCollection = editCollection;
+        }
+
+        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editAmount, bool editCollection)
+        {
+            hostedTile = hosted;
+            this.isPlayer = isPlayer;
+            this.position = position;
+            this.value = value;
+            this.editTerrain = editTerrain;
+            this.editAmount = editAmount;
+            this.editCollection = editCollection;
+        }
+
+        void write(System.IO.BinaryWriter w)
+        { 
+            position.writeUshort(w);
+            new EightBit(editTerrain, editAmount, editCollection).write(w);
+            if (editTerrain)
+            {
+                w.Write((byte)value.mainTerrain);
+                w.Write(Debug.Byte_OrCrash(value.subTerrain));
+            }
+            if (editAmount)
+            {
+                w.Write((byte)value.terrainAmount);
+            }
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            value = new MapTile1_1();
+
+            position.readShort(r);
+            EightBit eightBit = new EightBit(r);
+            eightBit.Get(out editTerrain, out editAmount, out editCollection);
+            if (editTerrain)
+            {
+                value.mainTerrain = (TerrainMainType)r.ReadByte();
+                value.subTerrain = r.ReadByte();
+            }
+            if (editAmount)
+            {
+                value.terrainAmount = r.ReadByte();
+            }
+
+            hostedTile = true;
+        }
+
+        public void SubmitOrExecute()
+        {
+            if (DssRef.state != null)
+            {
+                Submit();
+            }
+            else
+            {
+                //During map generating
+                ExecuteEdit();
+            }
+        }
+
+        public void Submit()
+        {
+            if (hostedTile)
+            {
+                DssRef.state.resources.editSubTiles.Enqueue(this);
+            }
+        }
+
+        public void ExecuteEdit()
+        {
+            ref var subTile = ref DssRef.world.subTileGrid.GetRef(position);
+            if (editTerrain)
+            {
+                subTile.mainTerrain = value.mainTerrain;
+                subTile.subTerrain = value.subTerrain;
+
+                if (DssRef.state != null && DssRef.state.culling.insidePlayerAttension_sub(position))
+                {
+                    DssRef.world.chunkGrid.GetRef(WP.MaptileToChunk(position)).subtileVisualEdits++;
+                }
+            }
+
+            if (editAmount)
+            {
+                subTile.terrainAmount = value.terrainAmount;
+            }
+
+            if (editCollection)
+            {
+                subTile.collectionPointer = value.collectionPointer;
+            }
+
+            if (netShare && Ref.netSession.InMultiplayerSession)
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssEditSubTile, isPlayer ? Network.PacketReliability.Reliable : Network.PacketReliability.Unrelyable, out var packet);
+                write(w);
+                packet.EndWrite_Asynch();
+            }
+        }
+
+        public static void OntileChange(IntVector2 maptilePos)
+        {
+            if (!DssRef.state.culling.outsidePlayerAttension(maptilePos))
+            {
+                DssRef.world.chunkGrid.GetRef(WP.MaptileToChunk( maptilePos)).subtileVisualEdits++;
+            }
+        }
+    }
+}

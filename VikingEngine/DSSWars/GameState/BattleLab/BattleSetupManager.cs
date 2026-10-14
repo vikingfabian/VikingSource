@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public void beginBattleSetup()
         {
             LocalPlayer player = DssRef.state.LocalHost();
-            beginBattleSetup(WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter));
+            beginBattleSetup(WP.ToSumTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter));
         }
 
         public void beginBattleSetup(IntVector2 center)
