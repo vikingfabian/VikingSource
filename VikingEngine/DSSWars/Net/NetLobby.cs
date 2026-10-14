@@ -81,9 +81,9 @@ namespace VikingEngine.DSSWars.Net
             DssRef.state?.NetEvent_PeerLost(gamer);
         }
 
-        public override void NetEvent_ErrorMessage(string message, AbsNetworkPeer peer, bool peerIsSender)
+        public override void NetEvent_ErrorMessage(string message, string stacktrace, AbsNetworkPeer peer, bool peerIsSender)
         {
-            DssRef.state?.NetEvent_ErrorMessage(message, peer, peerIsSender);
+            DssRef.state?.NetEvent_ErrorMessage(message, stacktrace, peer, peerIsSender);
         }
 
         public override AbsLobbyMetaData NetEvent_StartLobbyMetaData()

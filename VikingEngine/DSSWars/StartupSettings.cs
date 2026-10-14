@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars
     {
         public static string LeaderboardVersion = "aug2026";
         public static bool LeaderboardInBeta = PlatformSettings.DevBuild ? true :
-           true; //RETAIL
+           false; //RETAIL
 
         //public static bool AutoStartLevel = false;
 

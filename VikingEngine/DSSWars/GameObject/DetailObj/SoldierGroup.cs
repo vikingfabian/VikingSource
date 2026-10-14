@@ -1378,7 +1378,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (state == GroupState.Idle)
                 {
                     //Passive check of souroundings
-                    if (Ref.peRnd.ChanceF(0.2f))
+                    if (fullUpdate && Ref.peRnd.ChanceF(0.2f))
                     {
                         var soldiers_sp = soldiers;
                         if (soldiers_sp != null)

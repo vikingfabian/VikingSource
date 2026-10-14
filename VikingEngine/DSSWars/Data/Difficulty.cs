@@ -214,7 +214,7 @@ namespace VikingEngine.DSSWars.Data
             }
 
             var wsize = DssRef.storage.ruleset.mapSize;
-            if (Ref.gamestate is PlayState)
+            if (Ref.gamestate is PlayState && DssRef.world != null)
             {
                 wsize = WorldData.CustomMapSizeToSize(DssRef.world.Size);
             }

@@ -72,6 +72,42 @@ namespace VikingEngine
             return new Color(
                 r.ReadByte(), r.ReadByte(), r.ReadByte());
         }
+
+        public static void WriteString2(System.IO.BinaryWriter w, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                w.Write((byte)0);
+                return;
+            }
+
+            // 1. Convert the string to actual UTF-8 bytes
+            byte[] stringBytes = System.Text.Encoding.UTF8.GetBytes(value);
+
+            // 2. Safety check: ensure the byte count fits in a single byte (max 255)
+            if (stringBytes.Length > 255)
+            {
+                throw new ArgumentException("String byte size exceeds the 255-byte limit.");
+            }
+
+            // 3. Write the actual byte length, followed by the raw bytes
+            w.Write((byte)stringBytes.Length);
+            w.Write(stringBytes);
+        }
+
+        public static string ReadString2(System.IO.BinaryReader r)
+        {
+            byte length = r.ReadByte();
+            if (length == 0)
+                return null;
+
+            // 1. Read the exact number of bytes, preventing over-reading
+            byte[] stringBytes = r.ReadBytes(length);
+
+            // 2. Decode the bytes into a string (assuming UTF-8, BinaryReader's default)
+            return System.Text.Encoding.UTF8.GetString(stringBytes);
+        }
+
         public static void WriteString(System.IO.BinaryWriter w, string value)
         {
             if (string.IsNullOrEmpty(value))

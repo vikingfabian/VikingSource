@@ -25,7 +25,7 @@ namespace VikingEngine.DebugExtensions
     class BlueScreen : Engine.GameState
     {
         string detailedText;
-        protected string logFullPath;
+        //protected string logFullPath;
 
         protected Gui menu;
         public static Exception ThreadException = null;
@@ -43,7 +43,7 @@ namespace VikingEngine.DebugExtensions
         {
             cleanUp();
 
-            logError(Engine.LoadContent.EngineVersion + (AttachMessage== null? string.Empty : AttachMessage + Environment.NewLine) + errorMessageDetailed);
+            saveLogFile(Engine.LoadContent.EngineVersion + (AttachMessage== null? string.Empty : AttachMessage + Environment.NewLine) + errorMessageDetailed);
             
             errorMessageDetailed = Engine.LoadContent.EngineVersion + errorMessageDetailed;
 
@@ -59,7 +59,7 @@ namespace VikingEngine.DebugExtensions
                 {
                     if (PlatformSettings.PC_platform)
                     {
-                        new GuiLabel("A file with the crash details is created, see " + logFullPath, layout);
+                        new GuiLabel("A file with the crash details is created, see " + LogSavePath(), layout);
                         new GuiLabel("F12-Print screen. (share it on Steam and we will see it)", layout);
                         new GuiTextButton("Restart game", null, restart, false, layout);
                         new GuiTextButton("Exit to desktop", null, exitToDash, false, layout);
@@ -103,7 +103,7 @@ namespace VikingEngine.DebugExtensions
                 Ref.netSession.Disconnect("Blue screen");
         }
 
-        protected void logError(string errorMessageDetailed)
+        public static void saveLogFile(string errorMessageDetailed)
         {
             Ref.sentry?.sendReport(errorMessageDetailed);
 
@@ -111,18 +111,8 @@ namespace VikingEngine.DebugExtensions
             {
                 try
                 {
-                    var now = DateTime.Now;
-
-                    var logFilePath = new DataStream.FilePath(
-                         "Logs",
-                         string.Format("{0}_{1}_{2}__{3}_{4}", now.Year, now.Month, now.Day, now.Hour, now.Minute),
-                         ".txt", true, false);
-
-                    System.IO.Directory.CreateDirectory(logFilePath.CompleteDirectory);
-
-                    //create a log file
-                    logFullPath = logFilePath.CompletePath(true);
-                    DataLib.SaveLoad.CreateTextFile(logFullPath, new List<string>
+                   
+                    DataLib.SaveLoad.CreateTextFile(LogSavePath(), new List<string>
                     {
                         PlatformSettings.SteamVersion,
                         errorMessageDetailed,
@@ -133,6 +123,21 @@ namespace VikingEngine.DebugExtensions
                     Debug.LogError(e.Message);
                 }
             }
+        }
+
+        static string LogSavePath()
+        { 
+             var now = DateTime.Now;
+
+                    var logFilePath = new DataStream.FilePath(
+                         "Logs",
+                         string.Format("{0}_{1}_{2}__{3}_{4}", now.Year, now.Month, now.Day, now.Hour, now.Minute),
+                         ".txt", true, false);
+
+                    System.IO.Directory.CreateDirectory(logFilePath.CompleteDirectory);
+
+                    //create a log file
+                    return logFilePath.CompletePath(true);
         }
 
         protected GuiLayout createMenu(string title)
@@ -364,5 +369,10 @@ namespace VikingEngine.DebugExtensions
         /// Asynch update
         /// </summary>
         A,
+
+        /// <summary>
+        /// Net packet
+        /// </summary>
+        N,
     }
 }
