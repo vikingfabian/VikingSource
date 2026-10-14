@@ -2,14 +2,7 @@
 // LightParticleEffect.fx
 //-----------------------------------------------------------------------------
 
-#if OPENGL
-#define SV_POSITION POSITION
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
-#else
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
-#endif
+#include "VikingMacros.fxh"
 
 float4x4 View;
 float4x4 Projection;
@@ -38,6 +31,8 @@ float2 EndSize;
 
 
 // Particle texture and sampler.
+#if OPENGL
+
 texture Texture;
 
 sampler Sampler = sampler_state
@@ -51,6 +46,46 @@ sampler Sampler = sampler_state
     AddressU = Clamp;
     AddressV = Clamp;
 };
+
+#define SAMPLE_PARTICLE(coords) tex2D(Sampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> Texture : register(t0);
+
+sampler Sampler : register(s0) = sampler_state
+{
+    Texture = (Texture);
+    
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Point;
+    
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+
+#define SAMPLE_PARTICLE(coords) Texture.Sample(Sampler, coords)
+
+#else
+
+Texture2D Texture : register(t0);
+
+sampler Sampler : register(s0) = sampler_state
+{
+    Texture = (Texture);
+    
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Point;
+    
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+
+#define SAMPLE_PARTICLE(coords) Texture.Sample(Sampler, coords)
+
+#endif
 
 
 // Vertex shader input structure describes the start position and
@@ -69,7 +104,7 @@ struct VertexShaderInput
 // Vertex shader output structure specifies the position and color of the particle.
 struct VertexShaderOutput
 {
-    float4 Position : POSITION0;
+    float4 Position : SV_Position0;
     float4 Color : COLOR0;
     float2 TextureCoordinate : COLOR1;
 };
@@ -182,9 +217,9 @@ VertexShaderOutput ParticleVertexShader(VertexShaderInput input)
 
 
 // Pixel shader for drawing particles.
-float4 ParticlePixelShader(VertexShaderOutput input) : COLOR0
+float4 ParticlePixelShader(VertexShaderOutput input) : SV_TARGET
 {
-    return tex2D(Sampler, input.TextureCoordinate) * input.Color;
+    return SAMPLE_PARTICLE(input.TextureCoordinate) * input.Color;
 }
 
 

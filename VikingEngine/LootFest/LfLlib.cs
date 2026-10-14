@@ -234,7 +234,7 @@ namespace VikingEngine.LootFest
 #endregion
     }
 
-    class TeleportLocation
+    public class TeleportLocation
     {
         public TeleportLocationId location;
         public TeleportLocationId setRespawnTo;
@@ -269,7 +269,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    enum TeleportLocationId : byte
+    public enum TeleportLocationId : byte
     {
         TutorialStart,
         TutorialLobby,
@@ -291,7 +291,7 @@ namespace VikingEngine.LootFest
     }
 
 
-    enum Trophies
+    public enum Trophies
     {
         CraftMithrilBodyArmor, CraftGoldSword,//-crafta en mithril rustning, guld svärd
         Hit4EnemiesInOneSwordAttack, Hit3EnemiesInOneAxeAttack, Hit2EnemiesInOneSpearAttack,//-träffa/döda flera i ett sving (4svärd, 3yxa, 2spjut)
@@ -308,7 +308,7 @@ namespace VikingEngine.LootFest
         NUM,
     }
 
-    enum TeleportReason
+    public enum TeleportReason
     {
         Debug,
         StartPosition,

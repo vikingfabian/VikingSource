@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,23 +67,25 @@ namespace VikingEngine.Engine
         { 
             frameCount++;
         }
+
         public static void OneSecUpdate()
         {
             if (PlatformSettings.DebugPerformanceText)
             {
-                int gccount = Debug.GarbageCollectionCount();
+                DebugExtensions.MemoryOverlay.Instance.UpdateOneSecond();
+                DebugExtensions.RenderOverlay.Instance.UpdateOneSecond(frameCount, renderTimePeak, updateTimePeak);
 
-                Engine.Draw.DebugUpdateTimeText = Convert.ToString(frameCount) +
-                    "(r" + Convert.ToString(renderTimePeak) +
-                    ", u" + Convert.ToString(updateTimePeak) + 
-                    "), GC colls:" + gccount.ToString() + ", GC alo:" + TextLib.FileSizeText(GC.GetTotalMemory(false));
+                Engine.Draw.DebugUpdateTimeText =
+                    $"{DebugExtensions.RenderOverlay.Instance.FormattedText} | {DebugExtensions.MemoryOverlay.Instance.FormattedText}";
+            }
+            else
+            {
+                Engine.Draw.DebugUpdateTimeText = null;
             }
             frameCount = 0;
             updateTimePeak = 0;
             renderTimePeak = 0;
         }
-
-        
     }
     enum Language
     {

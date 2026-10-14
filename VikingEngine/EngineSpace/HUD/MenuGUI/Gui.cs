@@ -9,7 +9,7 @@ using VikingEngine.Engine;
 
 namespace VikingEngine.HUD
 {
-    class Gui
+    public class Gui
     {
         public static void LoadContent()
         {

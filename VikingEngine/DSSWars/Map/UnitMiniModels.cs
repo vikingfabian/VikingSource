@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.Map
                                         new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians - MathExt.TauOver4);
                                     polygons.Add(topPoly);
                                     
-                                    topPoly.quadXZSides(0.2f, SpriteName.WhiteArea_LFtiles, Dir4.N, second, polygons);
+                                    topPoly.quadXZSides(0.08f, SpriteName.WhiteArea_LFtiles, Dir4.N, second, polygons);
 
                                     PolygonColor typeSymbol = topPoly;
                                     typeSymbol.Move(new Vector3(0, 0.01f, 0));

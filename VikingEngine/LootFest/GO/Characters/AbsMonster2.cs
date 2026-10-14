@@ -291,8 +291,8 @@ namespace VikingEngine.LootFest.GO.Characters
         }
     }
 
-    
-    enum Monster2Type
+
+    public enum Monster2Type
     {
         Crocodile,
         Ent,

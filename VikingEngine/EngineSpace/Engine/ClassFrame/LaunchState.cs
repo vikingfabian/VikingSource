@@ -312,7 +312,11 @@ namespace VikingEngine.Engine
                         exceptionString = "Sentry fail + " + exceptionString;
                     }
                 }
-                Ref.sentry?.sendReport("Launch fail: " + exceptionString);
+
+                var errorMessage = $"Launch fail: {exceptionString}";
+                System.Diagnostics.Trace.TraceError(errorMessage);
+                Ref.sentry?.sendReport(errorMessage);
+
 
                 if (bgImage != null)
                 {

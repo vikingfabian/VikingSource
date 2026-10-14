@@ -7,7 +7,7 @@ using VikingEngine.EngineSpace.Maths;
 
 namespace VikingEngine.HUD
 {
-    class GuiLayout : IDeleteable
+    public class GuiLayout : IDeleteable
     {
         /* Static */
         static int NextId = 0;

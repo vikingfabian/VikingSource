@@ -21,23 +21,24 @@ namespace VikingEngine.DSSWars.Defence
         public GuardGroup(City city, SoldierConscriptProfile conscript, Vector3 startPos)
             : base(city, conscript, startPos)
         {
-
         }
+
         public GuardGroup(AbsArmy army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
             : base(army, r, version, pointers)
         {
         }
+
         public GuardGroup(AbsArmy army)
             : base(army)
         { }
 
-        //public override void writeGameState(BinaryWriter w)
         public override void writeGameState(BinaryWriter w, bool includePosition)
         {
             base.writeGameState(w, includePosition);
        
             w.Write(assignedToPost_IdAndPosition);
         }
+
         public override void readGameState(AbsArmy tArmy, BinaryReader r, int subVersion, bool needInit, bool includePosition, ObjectPointerCollection pointers)
         {
             base.readGameState(tArmy, r, subVersion, needInit, includePosition, pointers);
@@ -45,18 +46,12 @@ namespace VikingEngine.DSSWars.Defence
             assignedToPost_IdAndPosition = r.ReadInt32();
             if (assignedToPost_IdAndPosition >= 0)
             {
-                //refreshSoldierDefence();
                 onEnterGuard(GetCity(), assignedToPost_IdAndPosition);
-                refreshGuardPosition(false);
+                refreshGuardPosition(false, false);
             }
 
             goalWp = position;
         }
-
-        //public void refreshSoldierDefence()
-        //{
-
-        //}
 
         public override void completeTransform(SoldierTransformType transformType, int positionId)
         {
@@ -88,7 +83,7 @@ namespace VikingEngine.DSSWars.Defence
         {
             city.defence_assignGuard_toIndex(this, defenceIndex);
 
-            refreshGuardPosition(true);
+            refreshGuardPosition(true, true);
 
 
         }
@@ -97,14 +92,17 @@ namespace VikingEngine.DSSWars.Defence
         {
             return WorldData.SubTileHalfWidth;
         }
-        void refreshGuardPosition(bool hostedAction)
+        void refreshGuardPosition(bool hostedAction, bool bRefreshArmyPos)
         {
             IntVector2 subPos = conv.IntToIntVector2(assignedToPost_IdAndPosition);
             Vector3 center = WP.SubtileToWorldPosXZgroundY_Centered(subPos);
             if (DssRef.world.subTileGrid.TryGet(subPos, out var tile))
             {
                 postYPos = center.Y + tile.BuildingHeight();
-                setArmyPlacement2(center, false, true, hostedAction);
+                if (bRefreshArmyPos)
+                {
+                    setArmyPlacement2(center, false, true, hostedAction);
+                }
             }
         }
 
@@ -117,7 +115,6 @@ namespace VikingEngine.DSSWars.Defence
             {
                 if (soldierData.unitFilter.Contains(UnitFilterType.Ranged))
                 {
-                    //var tile = DssRef.world.subTileGrid.Get(conv.IntToIntVector2(IdAndPosition));
                     soldierAttackRangeBonus = subTile.BuildingHeight() * 2f;
                 }
                 else
@@ -126,35 +123,12 @@ namespace VikingEngine.DSSWars.Defence
                 }
 
                 damageBlockChance_fromTerrain = DefenceStatus.WallDefenceChance(subTile.GetWallType(), out soldierAttackDamageBonus);
-                //soldierAttackDamageBonus = 3;
-
-                //switch (subTile.GetWallType())
-                //{
-                //    case Map.TerrainWallType.NUM_NONE:
-                //        damageBlockChance_fromTerrain = 0;
-                //        break;
-                //    case Map.TerrainWallType.Palisade:
-                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Palisade;
-                //        soldierAttackDamageBonus = 2;
-                //        break;
-                //    case Map.TerrainWallType.DirtWall:
-                //    case Map.TerrainWallType.DirtTower:
-                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Dirt;
-                //        break;
-                //    case Map.TerrainWallType.WoodWall:
-                //    case Map.TerrainWallType.WoodTower:
-                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Wood;
-                //        break;
-                //    default:
-                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Stone;
-                //        break;
-                //}
+               
             }
         }
 
         void onExitGuard()
         {
-            //var ix = army.GetCity().defenceIxFromPosId(assignedToPost_IdAndPosition);
             EnterPostCommand.ExitPost(this);
             assignedToPost_IdAndPosition = -1;
             soldierAttackRangeBonus = 0;
@@ -162,55 +136,14 @@ namespace VikingEngine.DSSWars.Defence
             damageBlockChance_fromTerrain = 0;
         }
 
-        //void setRestingMode(bool set)
-        //{
-        //    if (set != restingGuardMode)
-        //    {
-        //        restingGuardMode = set;
-
-        //        if (set)
-        //        {
-        //            int count = 0;
-        //            var soldiersC = soldiers.counter();
-        //            while (soldiersC.Next())
-        //            {
-        //                count++;
-        //                if (count == 1)
-        //                {
-        //                    soldiersC.sel.groupOffset = Vector2.Zero;
-        //                }
-        //                else
-        //                {
-        //                    soldiersC.sel.DeleteMe(DeleteReason.Transform, false);
-        //                    soldiersC.RemoveAtCurrent();
-        //                }
-        //            }
-        //            soldierCount = count;
-        //        }
-        //        else
-        //        {
-        //            var first = FirstSoldier();
-        //            if (first != null)
-        //            {
-        //                refillGuardUnits(first.SoldierProfile(), soldierCount - 1, first.model != null);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public override void update(float time, bool fullUpdate)
-        //{
-        //    if (attackTarget_soldierGroupOrCity != null)
-        //    {
-        //        lib.DoNothing();
-        //    }
-        //    base.update(time, fullUpdate);
-        //}
-
         public override void setGroundY()
         {
             if (assignedToPost_IdAndPosition >= 0)
             {
+                if (postYPos == 0)
+                {
+                    refreshGuardPosition(true, false);
+                }
                 position.Y = postYPos;
             }
             else
@@ -235,6 +168,8 @@ namespace VikingEngine.DSSWars.Defence
                 unit.firstUpdate();
                 refillGuardUnits(typeProfile, count - 1, createModels);
             }
+
+            setGroundY();
         }
 
         private void refillGuardUnits(AbsSoldierBuilder typeProfile, int count, bool createModels)

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Presentation;
@@ -267,6 +268,48 @@ namespace VikingEngine.DSSWars.Resource
             else
             {
                 content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
+            }
+        }
+
+        public static void SoldierAbilities(ItemResourceType item, RichBoxContent content)
+        {
+            SoldierAbilities(ItemPropertyColl.Get(item).soldierData, content);
+        }
+
+        public static void SoldierAbilities(SoldierData soldier, RichBoxContent content)
+        {
+            if (soldier.parry > 0)
+            {
+                HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.todoLang.Conscript_Parry, soldier.parry.ToString());
+                content.text(DssRef.todoLang.Conscript_Parry_Description, HudLib.InfoYellow_Light);
+            }
+            for (SoldierAbility ability = 0; ability < SoldierAbility.NUM; ability++)
+            {
+                if (soldier.abilities.Get((int)ability))
+                {
+                    string name;
+                    switch (ability)
+                    {
+                        case SoldierAbility.AntiSpear:
+                            name = DssRef.todoLang.Conscript_Ability_AntiSpear;
+                            break;
+                        case SoldierAbility.AntiCavalry:
+                            name = DssRef.lang.Conscript_Ability_AntiCavalry;
+                            break;
+                        case SoldierAbility.AntiPlateArmor:
+                            name = DssRef.todoLang.Conscript_Ability_AntiPlate;
+                            break;
+                        case SoldierAbility.ArrowWeakness:
+                            name = DssRef.todoLang.Conscript_Ability_ArrowWeakness;
+                            break;
+                        default:
+                            name = TextLib.Error;
+                            break;
+                    }
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(name));
+                }
             }
         }
 

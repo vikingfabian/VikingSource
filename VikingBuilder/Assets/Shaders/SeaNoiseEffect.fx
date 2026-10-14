@@ -1,12 +1,4 @@
-﻿#if OPENGL
-#define SV_Position0 POSITION
-#define NORMAL0 NORMAL
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
-#else
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
-#endif
+#include "VikingMacros.fxh"
 
 //=====================================================================
 // File: SeaNoiseEffect.fx
@@ -69,7 +61,7 @@ float Hash21(float2 p)
 //------------------------------------
 // Pixel Shader
 //------------------------------------
-float4 PS_Main(VSOutput input) : COLOR0
+float4 PS_Main(VSOutput input) : SV_TARGET
 {
     // Convert world position to 2D coordinate for noise (or use screen if you pass it)
     float2 coord = input.WorldPosition.xy;

@@ -7,7 +7,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    class RenderTargetImage : AbsRenderTargetImage
+    public class RenderTargetImage : AbsRenderTargetImage
     {
         /* Properties */
         protected override BlendState blendState { get { return BlendState.AlphaBlend; } }

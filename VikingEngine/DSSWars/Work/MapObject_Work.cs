@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,7 @@ namespace VikingEngine.DSSWars.GameObject
     partial class AbsArmy
     {
         protected StructList<WorkerStatus> workerStatuses = new StructList<WorkerStatus>(16);
+        protected object WorkerStatusLock = new object();
         public List<WorkerUnit> workerUnits = null;
 
         protected void updateWorkerUnits()
@@ -58,14 +59,14 @@ namespace VikingEngine.DSSWars.GameObject
                     ExistingWorkers.Add(unit.myIndex);
                 }
 
-                lock (workerStatuses.array)
+                lock (WorkerStatusLock)
                 {
                     for (int i = 0; i < workerStatuses.Count; i++)
                     {
-                        if (workerStatuses.array[i].work != WorkType.IsDeleted &&
+                        if (workerStatuses.Array[i].work != WorkType.IsDeleted &&
                             !ExistingWorkers.Contains(i))
                         {
-                            workerUnits.Add(new WorkerUnit(this, workerStatuses.array[i], i));
+                            workerUnits.Add(new WorkerUnit(this, workerStatuses.Array[i], i));
                         }
                     }
                 }
@@ -76,7 +77,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = 0; i < workerStatuses.Count; ++i)
             {
-                ref var status = ref workerStatuses.array[i];
+                ref var status = ref workerStatuses.Array[i];
                 status.processTimeStartStampSec = Ref.TotalGameTimeSec;
             }
         }
@@ -109,20 +110,20 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //lock (workerStatuses.array)
             //{
-                return workerStatuses.array[index];
+                return workerStatuses.Array[index];
             //}
         }
 
         public ref WorkerStatus getRefWorkerStatus(int index)
         {
-            return ref workerStatuses.array[index];
+            return ref workerStatuses.Array[index];
         }
 
         public void setWorkerStatus(int index, ref WorkerStatus status)
         {
-            lock (workerStatuses.array)
+            lock (WorkerStatusLock)
             {
-                workerStatuses.array[index] = status;
+                workerStatuses.Array[index] = status;
             }
         }
     }

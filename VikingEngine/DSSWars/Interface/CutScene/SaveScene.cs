@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             bg.Color = Color.Black;
             bg.Opacity = 0.8f;
 
-            SoundLib.saving.Play();
+            
         }
 
         public override void Time_Update(float time)
@@ -91,6 +91,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             : base()
         {
             this.autoSave = auto;
+            SoundLib.saving.Play();
         }
 
         protected override string SaveString => DssRef.lang.Progressbar_SaveProgress;
@@ -188,6 +189,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             this.meta = load;
             saveGamestate = new SaveGamestate(load);
             saveGamestate.load();
+            
         }
 
         public LoadScene(System.IO.BinaryReader readWorld)

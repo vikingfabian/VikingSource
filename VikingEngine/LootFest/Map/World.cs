@@ -12,7 +12,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest.Map
 {
-    class World
+    public class World
     {
         #region  OUTDATED
         List<IntVector2> outDatedChunks = new List<IntVector2>();
@@ -937,7 +937,7 @@ namespace VikingEngine.LootFest.Map
         }
     }
 
-    class EnvironmentObjectChanged
+    public class EnvironmentObjectChanged
     {
         EnvironmentChangedType type;
         byte[] data;
@@ -998,7 +998,7 @@ namespace VikingEngine.LootFest.Map
         //    //}
         //}
     }
-    enum EnvironmentChangedType
+    public enum EnvironmentChangedType
     {
         DoorOpenClose,
         ObjectRemoved,

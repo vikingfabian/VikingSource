@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsMotion : AbsUpdateable
+    public abstract class AbsMotion : AbsUpdateable
     {
         public event Action OnComplete;
 

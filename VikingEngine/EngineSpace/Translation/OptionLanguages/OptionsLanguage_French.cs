@@ -8,6 +8,12 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_French : AbsOptionsLanguage
     {
+        //QoL Update
+
+        public override string GameSettings_UltraWide => "Ultrawide";
+        public override string GameSettings_UltraWide_LeftEdge => "Bord gauche de l'UI";
+        public override string GameSettings_UltraWide_RightEdge => "Bord droit de l'UI";
+        //
         public override string GameSettings_WideScrollbar => "Barre de défilement large";
         public override string GameSettings_DisplayInputHelp => "Aide aux commandes";
         public override string GameSettings_InputSmoothing => "Lissage des commandes";

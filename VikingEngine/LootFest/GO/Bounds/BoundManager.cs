@@ -454,7 +454,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    class BoundSaveData
+    public class BoundSaveData
     {
         public GO.Bounds.BoundShape type;
         public Vector3 scale;

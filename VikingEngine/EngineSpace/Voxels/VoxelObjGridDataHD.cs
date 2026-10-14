@@ -5,8 +5,8 @@ using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.Voxels
 {
-    
-        class VoxelObjGridDataHD : Grid3D_L<ushort>
+
+    public class VoxelObjGridDataHD : Grid3D_L<ushort>
         {
             public int Rotation;
             public List<ushort> special = null;

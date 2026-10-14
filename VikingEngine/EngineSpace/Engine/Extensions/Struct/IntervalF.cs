@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine
 {
-    struct IntervalF
+    public struct IntervalF
     {
         public static readonly IntervalF Zero = new IntervalF(0, 0);
 
@@ -222,6 +222,16 @@ namespace VikingEngine
             IntervalF result = new IntervalF();
             result.Read(r);
             return result;
+        }
+
+        public void sort_LowToHigh()
+        {
+            if (Max < Min)
+            {
+                var store = Max;
+                Max = Min;
+                Min = store;
+            }
         }
 
         public override string ToString()

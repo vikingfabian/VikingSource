@@ -8,7 +8,7 @@ using VikingEngine.Engine;
 
 namespace VikingEngine.LootFest.Display
 {
-    class SelectControllerMenu
+    public class SelectControllerMenu
     {
         List<ControllerChoice> controllers;
         int selectedIndex = 0;

@@ -10,7 +10,7 @@ using VikingEngine.Graphics;
 namespace VikingEngine.HUD.RichBox
 {
 
-    abstract class AbsRbButton : AbsRichBoxMember
+    public abstract class AbsRbButton : AbsRichBoxMember
     {
         protected AbsRbAction click, enter;
         protected List<AbsRichBoxMember> content;
@@ -20,7 +20,7 @@ namespace VikingEngine.HUD.RichBox
         public float SpaceAfter = 8;
         public float AddXRadius = 2;
 
-        virtual protected float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
+        protected virtual float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
         {
             const float HoriSpace = 8;
             return HoriSpace;
@@ -187,7 +187,7 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RbButton : AbsRbButton
+    public class RbButton : AbsRbButton
     {
         protected Graphics.Image bgPointer;
         public Color? overrideBgColor;

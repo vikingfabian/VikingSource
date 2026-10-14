@@ -10,14 +10,14 @@ using VikingEngine.Engine;
 
 namespace VikingEngine.SteamWrapping
 {
-    enum SteamImageLoadState
+    public enum SteamImageLoadState
     {
         ThereIsNoImageToFetch,
         ImageNotLoadedYet_RetrySoon,
         ImageLoadedCorrectly,
         NUM
     }
-    struct SteamImageLoadData
+    public struct SteamImageLoadData
     {
         /* Fields */
         public SteamImageLoadState state;
@@ -29,9 +29,9 @@ namespace VikingEngine.SteamWrapping
             this.state = state;
             this.texture = texture;
         }
-    }       
+    }
 
-    class SteamNetworkPeer : Network.AbsNetworkPeer
+    public class SteamNetworkPeer : Network.AbsNetworkPeer
     {
         string gamertag = null;
         bool localPeer;

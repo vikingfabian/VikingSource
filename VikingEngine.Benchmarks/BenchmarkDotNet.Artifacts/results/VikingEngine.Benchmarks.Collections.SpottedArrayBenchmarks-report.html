@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>VikingEngine.Benchmarks.Collections.SpottedArrayBenchmarks-20260831-200412</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26340.9233)
+AMD Ryzen 9 5900X 3.70GHz, 1 CPU, 24 logical and 12 physical cores
+.NET SDK 11.0.100-preview.7.26381.103
+  [Host] : .NET 10.0.11 (10.0.11, 10.0.1126.37416), X64 RyuJIT x86-64-v3
+</code></pre>
+<pre><code>Job=MediumRun  Toolchain=InProcessEmitToolchain  IterationCount=15  
+LaunchCount=2  WarmupCount=10  
+</code></pre>
+
+<table>
+<thead><tr><th>Method                         </th><th>Mean</th><th>Error</th><th>StdDev</th><th>Ratio</th><th>RatioSD</th><th>Gen0</th><th>Allocated</th><th>Alloc Ratio</th>
+</tr>
+</thead><tbody><tr><td>Legacy_BurstThenShrink_NoTrim</td><td>1.901 &mu;s</td><td>0.0245 &mu;s</td><td>0.0352 &mu;s</td><td>1.00</td><td>0.03</td><td>0.4997</td><td>8.2 KB</td><td>1.00</td>
+</tr><tr><td>Modern_BurstThenShrink_WithTrimExcess</td><td>2.045 &mu;s</td><td>0.0497 &mu;s</td><td>0.0729 &mu;s</td><td>1.08</td><td>0.04</td><td>0.5112</td><td>8.38 KB</td><td>1.02</td>
+</tr></tbody></table>
+</body>
+</html>

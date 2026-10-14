@@ -8,13 +8,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace VikingEngine.Voxels
 {
-    interface IVoxelDesignerInterfaceParent
+    public interface IVoxelDesignerInterfaceParent
     {
         void SetPencilBounds(ref Vector3 freePencilGridPos);
         void NewBlockPosEvent(IntVector3 newCoord, IntVector3 posDiff);
     }
 
-    class VoxelDesignerInterface
+    public class VoxelDesignerInterface
     {
         static readonly Color EmptySelection = Color.White;
         static readonly Color ContactSelection = new Color(255, 200, 255);

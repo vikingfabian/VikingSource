@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 else if (tilesC.sel.renderState == DetailMapTileState.AddToRender)
                 {
-                    tilesC.sel.synchToRender();
+                    //tilesC.sel.synchToRender();
                 }
 
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
@@ -92,10 +92,14 @@ namespace VikingEngine.DSSWars.Map
 
         public void drawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
         {
+            shader.CurrentTechnique = shader.Techniques["RenderVertexColorTexture"];
+            var spriteSheet = Engine.LoadContent.Texture(LoadedTexture.SpriteSheet);
+            shader.Parameters["Texture"]?.SetValue(spriteSheet);
+            shader.Parameters["TerrainTexture"]?.SetValue(spriteSheet);
+
             var tilesC = tiles.counter();
             while (tilesC.Next())
             {
-
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
                 {
                     tilesC.sel.model.DrawWithShadow(cameraIndex, camera, shader, light);
@@ -191,7 +195,7 @@ namespace VikingEngine.DSSWars.Map
                                 //maptile.add = true;
                                 maptile.generateModel_async(loop.Position, tile);
                                 maptile.renderState = DetailMapTileState.AddToRender;
-                               
+                                maptile.synchToRender();
                                 tiles.Add(maptile);
 
                                 if (++toRenderCount > MaxSychToRenderCount)

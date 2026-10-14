@@ -13,7 +13,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
     /// Move between the levels in lootfest3.
     /// Look at the public static readonly Vector3 HalfSize to see the size.
     /// </summary>
-    class Teleport : AbsInteractionNoImageObj
+    public class Teleport : AbsInteractionNoImageObj
     {
         /* Static readonly */
         public static readonly Vector3 HalfSize = new Vector3(2f);

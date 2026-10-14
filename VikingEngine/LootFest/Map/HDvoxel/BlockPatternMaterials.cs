@@ -42,7 +42,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         }
     }
 
-    class ColorGrid
+    public class ColorGrid
     {
         public ushort[, ,] colors;
         public IntVector3 size;
@@ -62,7 +62,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
 
     }
 
-    enum BlockPatternMaterial
+    public enum BlockPatternMaterial
     {
         Grass,
         Sand,

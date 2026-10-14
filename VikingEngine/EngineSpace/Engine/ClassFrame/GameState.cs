@@ -14,7 +14,7 @@ using VikingEngine.Network;
 
 namespace VikingEngine.Engine
 {
-    abstract class GameState : VikingEngine.AbsInput, VikingEngine.Network.INetworkUpdateReciever
+    public abstract class GameState : VikingEngine.AbsInput, VikingEngine.Network.INetworkUpdateReciever
     {
         /// <summary>
         /// Overriding another gamestate

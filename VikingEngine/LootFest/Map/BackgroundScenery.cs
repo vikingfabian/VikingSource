@@ -8,7 +8,7 @@ namespace VikingEngine.LootFest.Map
     /// <summary>
     /// Mountains shown around the player
     /// </summary>
-    class BackgroundScenery
+    public class BackgroundScenery
     {
         const float SkyRadius =  3000;
         const float Height = 2000;
@@ -388,7 +388,7 @@ namespace VikingEngine.LootFest.Map
         }
     }
 
-    struct BackgroundSceneryData
+    public struct BackgroundSceneryData
     {
         public bool underground;
 

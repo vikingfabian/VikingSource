@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Physics
 {
-    class Collision3D //null is no collision
+    public class Collision3D //null is no collision
     {
         public IBound3D MyBound;
         public IBound3D OtherBound;

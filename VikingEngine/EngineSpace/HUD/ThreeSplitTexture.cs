@@ -9,7 +9,7 @@ using VikingEngine.ToGG;
 
 namespace VikingEngine.HUD
 {
-    struct ThreeSplitSettings
+    public struct ThreeSplitSettings
     {
         public SpriteName baseTexture;
         public SpriteName disableTexture;
@@ -39,7 +39,7 @@ namespace VikingEngine.HUD
 
     }
 
-    class ThreeSplitTexture_Hori
+    public class ThreeSplitTexture_Hori
     {
         public List<Graphics.Image> images;
         VectorRect area;

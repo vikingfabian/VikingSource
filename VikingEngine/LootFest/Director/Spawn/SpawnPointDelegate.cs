@@ -6,7 +6,7 @@ using VikingEngine.LootFest.GO;
 
 namespace VikingEngine.LootFest
 {
-    class SpawnPointDelegate : AbsSpawnPoint
+    public class SpawnPointDelegate : AbsSpawnPoint
     {
         CreateGameObjectDelegate action;
         SpawnPointData spawnData;

@@ -9,7 +9,7 @@ namespace VikingEngine.LootFest
     /// <summary>
     /// Lootfest3 player HUD
     /// </summary>
-    class PlayerStatusDisplay
+    public class PlayerStatusDisplay
     {
         public HealthBar2 healthBar;
         public SuitUseHUD primaryAttackHUD;

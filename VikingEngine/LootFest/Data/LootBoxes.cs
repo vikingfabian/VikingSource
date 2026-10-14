@@ -6,7 +6,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.LootFest.Data
 {
-    class LootBoxes
+    public class LootBoxes
     {
         
 
@@ -155,7 +155,7 @@ namespace VikingEngine.LootFest.Data
         }
     }
 
-    struct LootBoxData
+    public struct LootBoxData
     {
         public static readonly LootBoxData Empty = new LootBoxData(LootBoxType.Empty, 0, LootBoxUnlockGroup.Empty, 0);
 
@@ -183,7 +183,7 @@ namespace VikingEngine.LootFest.Data
         }
     }
 
-    enum LootBoxType
+    public enum LootBoxType
     {
         Empty,
 
@@ -197,7 +197,7 @@ namespace VikingEngine.LootFest.Data
         UnlockCape,
     }
 
-    enum LootBoxUnlockGroup
+    public enum LootBoxUnlockGroup
     {
         Empty,
 

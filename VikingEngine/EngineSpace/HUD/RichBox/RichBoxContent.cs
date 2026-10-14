@@ -14,7 +14,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.HUD.RichBox
 {
-    class RichBoxContent : List<AbsRichBoxMember>
+    public class RichBoxContent : List<AbsRichBoxMember>
     {
         public RichBoxContent()
             : base(16)

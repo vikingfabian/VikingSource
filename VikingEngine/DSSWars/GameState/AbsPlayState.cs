@@ -1,4 +1,4 @@
-﻿using Steamworks;
+using Steamworks;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.GameState
                         Ref.netsett.settingsHasChanged = false;
                         DssRef.storage.Save(null);
                     }
-                    menuSystem.closeMenu();
+                    menuSystem.CloseMenu();
                     blockInput = true;
                 }
 
@@ -371,10 +371,12 @@ namespace VikingEngine.DSSWars.GameState
                     end = DssRef.world.factions.Count - 1;
                 }
                 pathUpdates[i] = new PathUpdateThread(i, startIx, end);
+                //pathUpdates[i].PreallocatePools(1, 1);
                 startIx = end + 1;
             }
             pathUpdates[count] = new PathUpdateThread_Player(count);
-
+            //pathUpdates[count].PreallocatePools(1, 1);
+            DssRef.world.PreallocatePools(count, count);
         }
 
         public void updateMouseVisible()
@@ -390,6 +392,19 @@ namespace VikingEngine.DSSWars.GameState
             Ref.music.stop(true);
             exitThreads = true;
             DssRef.ambience.gameEnd();
+
+            DssRef.world.ClearPools();
+                
+            Battle.SoldierBattleData.ClearPool();
+
+            if (DssRef.world?.factions != null)
+            {
+                var factionsC = DssRef.world.factions.counter();
+                while (factionsC.Next())
+                {
+                    factionsC.sel?.ClearModels();
+                }
+            }
 
             if (cutScene is EndScene)
             {
@@ -464,7 +479,7 @@ namespace VikingEngine.DSSWars.GameState
         }
         virtual public PlayState playstate()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override bool MayUseLowLatencyGC()

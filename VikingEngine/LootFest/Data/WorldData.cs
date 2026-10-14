@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest.Data
 {
-    class WorldData
+    public class WorldData
     {
         public bool hostingWorld;
         public int seed;

@@ -13,7 +13,7 @@ using VikingEngine.LootFest.Map;
 namespace VikingEngine.Graphics
 {
 
-    class Mesh : Point3D
+    public class Mesh : Point3D
     {
         const string WVP = "wvp";
 
@@ -55,7 +55,9 @@ namespace VikingEngine.Graphics
             SetSpriteName(sprite);
         }
 
-        public Mesh(LoadedMesh mesh, Vector3 pos, Vector3 scale,
+        public Mesh(LoadedMesh mesh,
+            Vector3 pos,
+            Vector3 scale,
             ModelTextureSettings textureSettings,
              bool addToRender = true)
             : base(pos, scale, addToRender)

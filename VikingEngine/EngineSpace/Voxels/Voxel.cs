@@ -6,7 +6,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.Voxels
 {
-    struct Voxel : IBinaryIOobj
+    public struct Voxel : IBinaryIOobj
     {
         public static readonly Voxel Empty = new Voxel(IntVector3.Zero, 0);
         public IntVector3 Position;
@@ -50,7 +50,7 @@ namespace VikingEngine.Voxels
         }
     }
 
-    struct VoxelHD : IBinaryIOobj
+    public struct VoxelHD : IBinaryIOobj
     {
         public static readonly VoxelHD Empty = new VoxelHD(IntVector3.Zero, BlockHD.EmptyBlock);
         public IntVector3 Position;

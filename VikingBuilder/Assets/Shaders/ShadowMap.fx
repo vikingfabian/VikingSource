@@ -1,5 +1,7 @@
-﻿
 
+
+
+#include "VikingMacros.fxh"
 
 //matrix  LightViewProj;
 float4x4 World;
@@ -10,12 +12,12 @@ float4x4 Projection;
 
 struct CreateShadowMap_VSOut
 {
-    float4 Position : POSITION;
+    float4 Position : SV_Position0;
     float Depth : TEXCOORD0;
 };
 
 //  CREATE SHADOW MAP
-CreateShadowMap_VSOut CreateShadowMap_VertexShader(float4 Position : SV_POSITION)
+CreateShadowMap_VSOut CreateShadowMap_VertexShader(float4 Position : SV_Position0)
 {
     //float4 worldPosition = mul(Position, World);
     //float4 viewPosition = mul(worldPosition, View);
@@ -30,7 +32,7 @@ CreateShadowMap_VSOut CreateShadowMap_VertexShader(float4 Position : SV_POSITION
     return Out;
 }
 
-float4 CreateShadowMap_PixelShader(CreateShadowMap_VSOut input) : COLOR
+float4 CreateShadowMap_PixelShader(CreateShadowMap_VSOut input) : SV_TARGET
 {
     return float4(input.Depth / 2, 0, 0, 1);
 }
@@ -40,7 +42,7 @@ technique CreateShadowMap
 {
     pass Pass1
     {
-        VertexShader = compile vs_3_0 CreateShadowMap_VertexShader();
-        PixelShader = compile ps_3_0 CreateShadowMap_PixelShader();
+        VertexShader = compile VS_SHADERMODEL CreateShadowMap_VertexShader();
+        PixelShader = compile PS_SHADERMODEL CreateShadowMap_PixelShader();
     }
 }

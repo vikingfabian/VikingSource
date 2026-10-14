@@ -9,7 +9,7 @@ namespace VikingEngine.LootFest.Director
     /// <summary>
     /// Wrapper to take care of boss death or restart
     /// </summary>
-    class BossManager : AbsUpdateable
+    public class BossManager : AbsUpdateable
     {
         List<GO.AbsUpdateObj> boss;
         List<GO.AbsUpdateObj> bossMinions;

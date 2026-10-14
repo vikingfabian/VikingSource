@@ -860,23 +860,23 @@ namespace VikingEngine.DSSWars.Conscript
                 content.Add(new RbText(splashCount < 6 ? DssRef.lang.Conscript_SplashDamage : DssRef.lang.Conscript_HighSplashDamage));
             }
 
-            var spez = ConscriptProfile.LockedSpecialization(weapon);
-            if (spez != SpecializationType.None)
-            {
-                content.newLine();
-                HudLib.BulletPoint(content);
-                string text = null;
-                switch (spez)
-                {
-                    case SpecializationType.AntiCavalry:
-                        text = DssRef.lang.Conscript_Specialization_AntiCavalry;
-                        break;
-                    case SpecializationType.Siege:
-                        text = DssRef.lang.Conscript_Specialization_Siege;
-                        break;
-                }
-                content.Add(new RbText(text));
-            }
+            //var spez = ConscriptProfile.LockedSpecialization(weapon);
+            //if (spez != SpecializationType.None)
+            //{
+            //    content.newLine();
+            //    HudLib.BulletPoint(content);
+            //    string text = null;
+            //    switch (spez)
+            //    {
+            //        case SpecializationType.AntiCavalry:
+            //            text = DssRef.lang.Conscript_Ability_AntiCavalry;
+            //            break;
+            //        case SpecializationType.Siege:
+            //            text = DssRef.lang.Conscript_Specialization_Siege;
+            //            break;
+            //    }
+            //    content.Add(new RbText(text));
+            //}
             
             switch (weapon)
             {
@@ -896,6 +896,9 @@ namespace VikingEngine.DSSWars.Conscript
                 HudLib.BulletPoint(content);
                 content.Add(new RbText(DssRef.lang.Conscript_BlockReducingAttack));
             }
+            Resource.ResourceLib.SoldierAbilities(weapon, content);
+
+
             content.newLine();
             content.Add(new RbImage(SpriteName.cmdParry));
             content.space();
@@ -906,11 +909,7 @@ namespace VikingEngine.DSSWars.Conscript
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
             ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, weapon, content); 
-            //var res = city.GetGroupedResource(weapon);
-
-            //content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
-            //bool reachedBuffer = false;
-            //res.toMenu(content, weapon, false, ref reachedBuffer);
+           
         }
 
         struct ManTooltipArgs
@@ -956,8 +955,12 @@ namespace VikingEngine.DSSWars.Conscript
 
                 DssVar.Shields[item].ToHud(content);
 
+                Resource.ResourceLib.SoldierAbilities(item, content);
+
                 content.newParagraph();
                 content.Add(new RbSeperationLine() { thick = true });
+
+
             }
             ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, item, content);
         }
@@ -1031,6 +1034,8 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (armor != ItemResourceType.NONE)
             {
+                Resource.ResourceLib.SoldierAbilities(armor, content);
+
                 content.newParagraph();
                 content.Add(new RbSeperationLine() { thick = true });
                 ResourceLib.FullResourceInfo(player.pfaction.GetFaction(), city, armor, content);

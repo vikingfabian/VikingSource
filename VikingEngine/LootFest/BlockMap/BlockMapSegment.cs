@@ -7,7 +7,7 @@ using VikingEngine.DataStream;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    struct SegmentHeader
+    public struct SegmentHeader
     {
         public ushort id;
         public byte northWays, eastWays, southWays, westWays;
@@ -68,7 +68,7 @@ namespace VikingEngine.LootFest.BlockMap
         }
     }
 
-    class BlockMapSegment
+    public class BlockMapSegment
     {
         public SegmentHeader header;
         public IntVector2 chunkSize = new IntVector2(4, 4);

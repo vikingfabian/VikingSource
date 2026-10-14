@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,7 +15,7 @@ namespace VikingEngine.Graphics
     /// <summary>
     /// Class to connect the common properties of a loaded model and generated mesh
     /// </summary>
-    abstract class Abs3DModel : AbsDraw
+    public abstract class Abs3DModel : AbsDraw
     {
         public Vector3 position = Vector3.Zero;
         public Vector3 scale = Vector3.One;
@@ -36,6 +36,24 @@ namespace VikingEngine.Graphics
         public RotationQuarterion Rotation = RotationQuarterion.Identity;
 
         public bool customShader = false;
+
+        public Matrix WorldMatrix = Matrix.Identity;
+        protected Vector3 _prevPosition = new Vector3(float.MinValue);
+        protected Vector3 _prevScale = new Vector3(float.MinValue);
+        protected RotationQuarterion _prevRotation = new RotationQuarterion(new Quaternion(float.MinValue, 0, 0, 0));
+
+        public void UpdateWorldMatrix()
+        {
+            if (position != _prevPosition || scale != _prevScale || Rotation.QuadRotation != _prevRotation.QuadRotation)
+            {
+                WorldMatrix = Matrix.CreateScale(scale) *
+                              Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+                              Matrix.CreateTranslation(position);
+                _prevPosition = position;
+                _prevScale = scale;
+                _prevRotation = Rotation;
+            }
+        }
 
         public Abs3DModel(bool add)
             : base(add)

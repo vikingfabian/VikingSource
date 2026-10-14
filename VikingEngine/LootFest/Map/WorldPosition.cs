@@ -9,7 +9,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 namespace VikingEngine.LootFest.Map
 {
 
-    struct WorldPosition
+    public struct WorldPosition
     {
         #region CONSTANTS
 

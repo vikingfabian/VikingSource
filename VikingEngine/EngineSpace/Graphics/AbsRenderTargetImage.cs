@@ -7,7 +7,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsRenderTargetImage : AbsDraw2D
+    public abstract class AbsRenderTargetImage : AbsDraw2D
     {
         /* Properties */
         abstract protected BlendState blendState { get; }

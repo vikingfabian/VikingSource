@@ -6,7 +6,7 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.LootFest.Director
 {
-    enum GenerateOwnerResult
+    public enum GenerateOwnerResult
     {
         GenerateNow,
         OwnedByOther,
@@ -21,7 +21,7 @@ namespace VikingEngine.LootFest.Director
     /// <summary>
     /// Decide who will host the gameobjects for a chunk
     /// </summary>
-    class ChunkHostDirector
+    public class ChunkHostDirector
     {
         //client kanske måste requesta att få stänga en chunk
         Dictionary<IntVector2, Players.AbsPlayer> markedChunks = new Dictionary<IntVector2, Players.AbsPlayer>();
@@ -259,7 +259,7 @@ namespace VikingEngine.LootFest.Director
             }
         }
     }
-    class WaitingEnvObjGenerator : OneTimeTrigger
+    public class WaitingEnvObjGenerator : OneTimeTrigger
     {
         //public IEnvObjGenerator Generator;
         public IntVector2 chunkPos;

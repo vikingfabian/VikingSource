@@ -1,4 +1,4 @@
-﻿//#define VISUAL_NODES
+//#define VISUAL_NODES
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -20,8 +20,11 @@ namespace VikingEngine.DSSWars.Map
         //Represents a thread-safe last in-first out (LIFO) collection.
         ConcurrentStack<PathFinding> poolPf = new ConcurrentStack<PathFinding>();
         ConcurrentQueue<WalkingPath> poolRes = new ConcurrentQueue<WalkingPath>();
-        //Stack<WalkingPath> poolResOut = new Stack<WalkingPath>();
+        int createdPfCount = 0;
 
+        public int PfCount => poolPf.Count;
+        public int ResCount => poolRes.Count;
+        public int CreatedPfCount => createdPfCount;
         
         public PathFinding GetPf()
         {
@@ -31,6 +34,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
+                System.Threading.Interlocked.Increment(ref createdPfCount);
                 return new PathFinding();
             }
         }
@@ -39,12 +43,6 @@ namespace VikingEngine.DSSWars.Map
         {
             if (poolRes.TryDequeue(out WalkingPath path))
             {
-                if (path.timeStamp + 2 >= Ref.TotalFrameCount)
-                {
-                    poolRes.Enqueue(new WalkingPath());
-                    poolRes.Enqueue(new WalkingPath());
-                    System.Threading.Thread.Sleep(32);
-                }
                 path.recycle();
                 return path;
             }
@@ -69,10 +67,23 @@ namespace VikingEngine.DSSWars.Map
             // Reset the node to a default state
             if (pathresult != null)
             {
-                //path.recycle();
-                pathresult.timeStamp = Ref.TotalFrameCount;
                 poolRes.Enqueue(pathresult);
             }
+        }
+
+        public void Preallocate(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                poolPf.Push(new PathFinding());
+                System.Threading.Interlocked.Increment(ref createdPfCount);
+            }
+        }
+
+        public void Clear()
+        {
+            poolPf.Clear();
+            poolRes.Clear();
         }
     }
 
@@ -82,93 +93,60 @@ namespace VikingEngine.DSSWars.Map
     {
         public const int MaxNodeLength = 30000;
 
-        List<PathNode> open = new List<PathNode>();
-
+        // Min-heap open list ordered by (TotalCost, Heuristic)
+        PriorityQueue<PathNode, (float Value, float Heuristic)> open = new PriorityQueue<PathNode, (float, float)>();
         Grid2D_L<PathNode> nodeGrid;
 
-        
+        // Generation counter for O(1) visited checks.
+        private int _currentRunId = 1;
+
         public PathFinding()
         {
-            nodeGrid = new Grid2D_L<PathNode>(DssRef.world.Size);//new PathNode[DssRef.world.Size.X, DssRef.world.Size.Y];
+            nodeGrid = new Grid2D_L<PathNode>(DssRef.world.Size);
         }
 
-
-        //conv.ToDir8_INT(startDir)
         public WalkingPath FindPath(int pathThreadIndex, IntVector2 center, int startDir, IntVector2 goal, bool startAsShip)
         {
-            /*
-            * Path finding algorithm
-            * ruta in världen, kanske var fjärde ruta
-            * 1. Kolla 8riktingar
-            * 2. Ge värde till rutorna
-            * G - kostnad att gå dit, 10 rakt, 14 diagonalt
-            * H - Avståndet till målet X + Y
-            * F - totalt värde G+H
-            * Parent - håll reda på parent ruta
-            * -värdet ska vara oändligt om det finns hinder
-            * -en liten bonus (2poäng) om man behåller riktingen, checka mot parentDir
-            * 3.Varje kollad center ruta ska till en sluten lista
-            * 4.Varje ny ruta ska till en öppen lista
-            */
-
-            if (!DssRef.world.tileGrid.InBounds(center) ||
+            // Short circuit if already at goal or coordinates are out of bounds.
+            if (center == goal ||
+                !DssRef.world.tileGrid.InBounds(center) ||
                 !DssRef.world.tileGrid.InBounds(goal))
             {
                 return new WalkingPath();
             }
 
-            PathNode startNode = new PathNode(center, startDir, startAsShip);
-
-            //nodeGrid[center.X, center.Y] = startNode;
-            nodeGrid.Set(center, startNode);    
+            PathNode startNode = new PathNode(center, startDir, startAsShip, _currentRunId);
+            nodeGrid.Set(center, startNode);
 
             bool endAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
             PathNode currentNode = startNode;
 
             int numLoops = 0;
 
-
             while (true)
             {
+                // Expand neighbours not yet visited in this run.
                 for (int dir = 0; dir < 8; dir++)
                 {
                     IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
+                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && nodeGrid.Get(pos).RunId != _currentRunId)
                     {
-                        //add a node to open list
-                        PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
-                        open.Add(node);
+                        PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip, _currentRunId);
+                        
+                        // Enqueue neighbor with (TotalCost, Heuristic) priority for min-heap ordering.
+                        open.Enqueue(node, (node.Value, node.Heuristic));
                         nodeGrid.Set(pos, node);
                     }
                 }
 
-                var lowValue = float.MaxValue;
-                var lowHeuristic = float.MaxValue;
-                int lowIndex = -1;
-                for (int i = 0; i < open.Count; i++)
+                // Break if no reachable path left.
+                if (open.Count == 0)
                 {
-                    if (Math.Abs(open[i].Value - lowValue) < 0.5f)
-                    {
-                        // Pick the node that is closer to the goal
-                        if (open[i].Heuristic < lowHeuristic)
-                        {
-                            lowHeuristic = open[i].Heuristic;
-                            lowIndex = i;
-                        }
-                    }
-                    else if (open[i].Value < lowValue)
-                    {
-                        lowValue = open[i].Value;
-                        lowHeuristic = open[i].Heuristic; // Store H
-                        lowIndex = i;
-                    } 
+                    break;
                 }
 
-                if (open.Count > 1)
-                {
-                    currentNode = open[lowIndex];
-                    open.RemoveAt(lowIndex);
-                }
+                // Dequeue the lowest cost candidate.
+                currentNode = open.Dequeue();
 
                 currentNode.closed = true;
                 nodeGrid.Set(currentNode.Position, currentNode);
@@ -185,7 +163,6 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            //List<PathNodeResult> result = new List<PathNodeResult>();
             WalkingPath path;
 
             if (pathThreadIndex < 0)
@@ -194,9 +171,10 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                path = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetRes();
+                path = DssRef.world.pathFindingPool.GetRes();
             }
 
+            // Backtrack path from goal to start.
             while (currentNode.Position != startNode.Position)
             {
                 path.nodes.Add(new PathNodeResult(currentNode.Position, currentNode.ship));
@@ -205,25 +183,27 @@ namespace VikingEngine.DSSWars.Map
 
                 numLoops++;
                 if (numLoops > MaxNodeLength)
+                {
                     throw new EndlessLoopException("");
-
+                }
             }
-                        
+
             path.init();
             return path;
         }
 
         public void recycle()
         {
+            // O(1) recycle.
             open.Clear();
-            nodeGrid.Clear();
-            //for (int y = 0; y < DssRef.world.Size.Y; ++y)
-            //{
-            //    for (int x = 0; x < DssRef.world.Size.X; ++x)
-            //    {
-            //        nodeGrid[x, y] = PathNode.Empty;
-            //    }
-            //}
+            _currentRunId++;
+            if (_currentRunId == int.MaxValue)
+            {
+                // Safety guard for integer overflow.
+                // Reset counter and clear grid.
+                _currentRunId = 1;
+                nodeGrid.Clear();
+            }
         }
     }
 
@@ -257,7 +237,6 @@ namespace VikingEngine.DSSWars.Map
         const int IgnoreDirChangeTimes = 10;
         const float NodeMinDistance = 0.3f;
 
-        public double timeStamp;
         public int currentNodeIx;
         public List<PathNodeResult> nodes = new List<PathNodeResult>(64);
 
@@ -278,6 +257,10 @@ namespace VikingEngine.DSSWars.Map
         public void recycle()
         {
             nodes.Clear();
+            if (nodes.Capacity > 512)
+            {
+                nodes.Capacity = 256;
+            }
         }
 
 //        public WalkingPath(List<PathNodeResult> nodes)
@@ -476,19 +459,19 @@ namespace VikingEngine.DSSWars.Map
         public IntVector2 Position;
         public IntVector2 PreviousPosition;
 
-        public bool HasValue;
+        public int RunId;
         public bool closed;
         public bool waterTile;
         public bool ship;
 
         int dir8;
 
-        public PathNode(IntVector2 pos, int dir8, bool ship)
+        public PathNode(IntVector2 pos, int dir8, bool ship, int runId)
         {
-            this.Position = pos;
+            Position = pos;
             this.dir8 = dir8;
             this.ship = ship;
-            HasValue = true;
+            RunId = runId;
             closed = true;
 
             moveCost = 0;
@@ -497,11 +480,12 @@ namespace VikingEngine.DSSWars.Map
             waterTile = ship;
         }
 
-        public PathNode(IntVector2 pos, int dir8, WorldData world, PathNode parent, IntVector2 goalPos, bool endAsShip)
+        public PathNode(IntVector2 pos, int dir8, WorldData world, PathNode parent, IntVector2 goalPos, bool endAsShip, int runId)
         {
-            this.Position = pos;
+            Position = pos;
             this.dir8 = dir8;
-            this.PreviousPosition = parent.Position;
+            PreviousPosition = parent.Position;
+            RunId = runId;
             closed = false;
 
             moveCost = lib.IsEven(dir8) ? MoveCostStraight : MoveCostDiagonal;
@@ -530,21 +514,11 @@ namespace VikingEngine.DSSWars.Map
 
             moveCost += parent.moveCost;
 
-
-            //Value = moveCost + (Math.Abs(pos.X - goalPos.X) + Math.Abs(pos.Y - goalPos.Y)) * MoveCostStraight;
-            // Octile distance formula: 
-            // 10 * (dx + dy) + (14 - 2 * 10) * min(dx, dy)
-            //goalPos.Length()
-            //int dx = Math.Abs(pos.X - goalPos.X);
-            //int dy = Math.Abs(pos.Y - goalPos.Y);
-            //Heuristic = (MoveCostStraight * (dx + dy)) + ((MoveCostDiagonal - 2 * MoveCostStraight) * Math.Min(dx, dy));
             Heuristic = (pos - goalPos).Length() * MoveCostStraight;
 
             const float DistanceToGoalWeight = 1.5f;
             Heuristic *= DistanceToGoalWeight;
             this.Value = moveCost + Heuristic;
-
-            HasValue = true;
         }
     }
 

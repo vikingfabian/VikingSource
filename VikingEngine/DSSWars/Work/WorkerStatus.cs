@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -423,6 +423,7 @@ namespace VikingEngine.DSSWars.Work
                         var me = this;
                                                 
                         useBlueprint.craftItemResult(out int amount1, out ItemResourceType item1, out int amount2, out ItemResourceType item2);
+                        city.unreserveItems(useBlueprint);
 
                         if (item1 != workitem)
                         {
@@ -654,11 +655,11 @@ namespace VikingEngine.DSSWars.Work
 
                         if (alwaysNeedMore || city.GetGroupedResource(workitem).needMore())
                         {
-                            if (bp1.hasResources(city))
+                            if (bp1.available(city))
                             {
                                 tryRepeatWork = true;
                             }
-                            else if (bp2 != null && bp2.hasResources(city))
+                            else if (bp2 != null && bp2.available(city))
                             {
                                 tryRepeatWork = true;
                             }
@@ -1270,7 +1271,7 @@ namespace VikingEngine.DSSWars.Work
 
                         if (subTile.terrainAmount >= size.harvestReady)
                         {
-                            subTile.terrainAmount -= size.maxSize;
+                            subTile.terrainAmount = (byte)(subTile.terrainAmount - size.maxSize);
 
                             EditSubTile editTile = new EditSubTile(city.pfaction, false, subTileEnd, subTile, false, true, false);
                             editTile.Submit();
@@ -1520,19 +1521,18 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Upgrade:
                 case WorkType.Build:
-#if DEBUG
-                    if (BuildLib.BuildOptions[workSubType].buildType == BuildAndExpandType.OrchardApple)
-                    {
-                        lib.DoNothing();
-                    }
-#endif
+//#if DEBUG
+//                    if (BuildLib.BuildOptions[workSubType].buildType == BuildAndExpandType.OrchardApple)
+//                    {
+//                        lib.DoNothing();
+//                    }
+//#endif
                     if (orderIsActive(city))
                     {
                         bool upgrade = work == WorkType.Upgrade;
                         var build = BuildLib.BuildOptions[workSubType];
                         if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
                         {
-
                             EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, true, false);
                             edit.Submit();
                         }

@@ -561,7 +561,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    struct BoundData2
+    public struct BoundData2
     {
         public Physics.IBound3D Bound;
         public Vector3 Offset;
@@ -606,7 +606,7 @@ namespace VikingEngine.LootFest
         //    return new BoundSaveData(
         //}
     }
-    struct TerrainColl
+    public struct TerrainColl
     {
         public static readonly TerrainColl NoCollision = new TerrainColl(); 
         public bool Collition;

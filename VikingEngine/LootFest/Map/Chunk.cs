@@ -13,7 +13,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.LootFest.Map
 {
-    class Chunk : ISpottedArrayMember
+    public class Chunk : ISpottedArrayMember
     {
         /* Constants */
         //public const int RecycleBinSize = 128;
@@ -1235,7 +1235,7 @@ namespace VikingEngine.LootFest.Map
         }
     }
 
-    enum ScreenOpenStatus
+    public enum ScreenOpenStatus
     {
         Closed_0,
         HeightMap_1a,
@@ -1245,20 +1245,20 @@ namespace VikingEngine.LootFest.Map
         //GameObjects_4,
         NUM
     }
-    enum ChunkDataOrigin
+    public enum ChunkDataOrigin
     {
         NON,
         Generated,
         Loaded,
         RecievedByNet,
     }
-    enum ChunkModifiableType
+    public enum ChunkModifiableType
     {
         Modifiable_NoSave,
         Modifiable_WillSave,
         PrivateOwner,
     }
-    enum ChunkSaveType
+    public enum ChunkSaveType
     {
         NoSave,
         Save,

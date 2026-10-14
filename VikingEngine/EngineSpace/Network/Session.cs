@@ -525,8 +525,8 @@ namespace VikingEngine.Network
             }
         }
     }
-    
-    enum NetworkStatusMessage
+
+    public enum NetworkStatusMessage
     {
         Need_to_sign_in,
         Need_Gold_membership,
@@ -545,7 +545,7 @@ namespace VikingEngine.Network
         Session_ended,
         NUM_NON,
     }
-    enum PacketReliability
+    public enum PacketReliability
     {
         Reliable,
         //ReliableLasy,

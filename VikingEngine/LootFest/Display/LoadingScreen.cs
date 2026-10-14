@@ -6,7 +6,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.LootFest
 {
-    class LoadingScreen : AbsUpdateable
+    public class LoadingScreen : AbsUpdateable
     {
         /* Events */
         public event Action<LoadingScreen> FadeToBlackComplete;

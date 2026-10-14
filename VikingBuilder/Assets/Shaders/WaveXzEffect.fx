@@ -1,19 +1,7 @@
-﻿#if OPENGL
-
-#define SV_Position0 POSITION
-#define NORMAL0 NORMAL
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
-
-#else
-
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
-
-#endif
+#include "VikingMacros.fxh"
 
 //=====================================================================
-// File: FlagWaveEffect.fx
+// File: WaveXzEffect.fx
 // Description: HLSL effect to distort (wave) a flag in the wind,
 //              with a secondary frequency modulating the wave amplitude.
 //=====================================================================
@@ -31,19 +19,49 @@ float2 SourceSize = float2(1, 1);
 // Time value for animation (e.g., pass total game time here)
 float Time : TIME = 0.0;
 
+#if OPENGL
+
 texture ColorMap;
 sampler ColorMapSampler = sampler_state
 {
     texture = <ColorMap>;
-
     AddressU = WRAP;
     AddressV = WRAP;
-
-	// Add filtering mode if necessary (e.g., linear filtering)
     MinFilter = POINT;
     MagFilter = POINT;
-    MipFilter = POINT; // Or consider LINEAR here if you still want some mip-map smoothing
+    MipFilter = POINT;
 };
+#define SAMPLE_COLORMAP(coords) tex2D(ColorMapSampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> ColorMap : register(t0);
+sampler ColorMapSampler : register(s0) = sampler_state
+{
+    Texture = (ColorMap);
+    AddressU = WRAP;
+    AddressV = WRAP;
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+};
+#define SAMPLE_COLORMAP(coords) ColorMap.Sample(ColorMapSampler, coords)
+
+#else
+
+Texture2D ColorMap : register(t0);
+sampler ColorMapSampler : register(s0) = sampler_state
+{
+    Texture = (ColorMap);
+    AddressU = WRAP;
+    AddressV = WRAP;
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+};
+#define SAMPLE_COLORMAP(coords) ColorMap.Sample(ColorMapSampler, coords)
+
+#endif
 
 
 //------------------------------------
@@ -58,7 +76,7 @@ struct VSInput
 {
     float4 Position : POSITION0; // Vertex position
     //float3 Normal : NORMAL0; // Vertex normal
-    float4 vcolor : COLOR0; // Vertex color
+    //float4 vcolor : COLOR0; // Vertex color
     float2 TexCoord : TEXCOORD0; // (Optional) if you need textures
 };
 
@@ -69,7 +87,7 @@ struct VSOutput
 {
     float4 Position : SV_POSITION;
     //float3 Normal : TEXCOORD0;
-    float4 vcolor : COLOR0;
+    //float4 vcolor : COLOR0;
     float2 TexCoord : TEXCOORD1;
     float3 worldPos : TEXCOORD2; // NEW
 };
@@ -105,7 +123,7 @@ VSOutput VS_FlatVertexColored(VSInput input)
     
     //output.Position = mul(input.Position, wvp);
     output.TexCoord = input.TexCoord;
-    output.vcolor = input.vcolor;
+    //output.vcolor = input.vcolor;
     output.worldPos = worldPosition.xyz;
     return output;
 }
@@ -183,7 +201,7 @@ float fbm(float3 p, int octaves, float gain, float lacunarity)
 //------------------------------------
 // Pixel Shader
 //------------------------------------
-float4 PS_Main(VSOutput input) : COLOR0
+float4 PS_Main(VSOutput input) : SV_TARGET
 {
     // Build 3D sample point from world xyz and time
     float3 p = input.worldPos * NoiseScale + float3(Time * NoiseSpeed, 0, -Time * NoiseSpeed);
@@ -196,7 +214,7 @@ float4 PS_Main(VSOutput input) : COLOR0
     if (factor > cutOff)
     {
     
-        float4 texCol = tex2D(ColorMapSampler, (input.TexCoord * SourceSize + SourcePos));
+        float4 texCol = SAMPLE_COLORMAP((input.TexCoord * SourceSize + SourcePos));
   
         float4 output = texCol * ColorAndAlpha * factor;
 

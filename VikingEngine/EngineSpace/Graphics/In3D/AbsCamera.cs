@@ -15,14 +15,14 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.Graphics
 {
-    enum CameraType
+    public enum CameraType
     {
         TopView,
         TopDown,
         FirstPerson,
     }
 
-    abstract class AbsCamera : Mesh
+    public abstract class AbsCamera : Mesh
     {
         /* Constants */
         public const float StandardFOV = 45;
@@ -174,7 +174,7 @@ namespace VikingEngine.Graphics
         //        targetZoom = value;
         //    }
         //}
-        abstract public CameraType CamType { get; }
+        public abstract CameraType CamType { get; }
         protected override bool drawable
         {
             get { return false; }

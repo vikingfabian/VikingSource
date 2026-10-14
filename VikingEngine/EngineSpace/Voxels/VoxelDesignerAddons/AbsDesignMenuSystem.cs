@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Voxels
 {
-    abstract class AbsDesignMenuSystem_Base
+    public abstract class AbsDesignMenuSystem_Base
     {
         abstract public void closeMenu();
         abstract public bool InMenu { get; }
@@ -21,7 +21,7 @@ namespace VikingEngine.Voxels
         abstract public void selectionMenu();
     }
 
-    class AbsDesignMenuSystem : AbsDesignMenuSystem_Base
+    public class AbsDesignMenuSystem : AbsDesignMenuSystem_Base
     {
         public HUD.Gui menu;
         AbsVoxelDesigner designer;

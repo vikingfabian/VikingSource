@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.Network
 {
-    abstract class AbsLobbyMetaData
+    public abstract class AbsLobbyMetaData
     {
         public const string LobbyTimeDataKey = "TIME";
         public const string NameKey = "NAME";

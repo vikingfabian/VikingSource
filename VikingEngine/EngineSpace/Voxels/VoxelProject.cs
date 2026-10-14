@@ -11,7 +11,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 namespace VikingEngine.Voxels
 {
 
-    class VoxelProject
+    public class VoxelProject
     {
         /// <summary>
         /// All the data used and saved when working in the voxel editor

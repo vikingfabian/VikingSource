@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsSpriteText
+    public abstract class AbsSpriteText
     {
         float letterSideEdge, letterWidthScale;
 

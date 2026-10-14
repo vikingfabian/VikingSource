@@ -7,7 +7,7 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.LootFest.GO
 {
-    struct GoArgs
+    public struct GoArgs
     {
         public static readonly GoArgs Empty = new GoArgs();
 

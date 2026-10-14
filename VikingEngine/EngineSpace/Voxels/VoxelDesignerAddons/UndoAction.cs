@@ -11,7 +11,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.Voxels
 {
-    class UndoList
+    public class UndoList
     {
         List<Voxels.UndoAction> undoActions = new List<Voxels.UndoAction>();
 
@@ -63,7 +63,7 @@ namespace VikingEngine.Voxels
         public int Count { get { return undoActions.Count; } }
     }
 
-    class UndoAction
+    public class UndoAction
     {
         public int frame;
         public int layer;

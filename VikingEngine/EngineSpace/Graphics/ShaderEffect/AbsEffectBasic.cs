@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -34,15 +34,34 @@ namespace VikingEngine.Graphics
     }
     class EffectBasicNormal : AbsEffectBasic
     {
-        public static EffectBasicNormal Singleton = new EffectBasicNormal(VikingEngine.LootFest.LfLib.BlockTexture);
+        private static volatile EffectBasicNormal _singleton;
+        private static readonly object _lock = new object();
+
+        public static EffectBasicNormal Singleton
+        {
+            get
+            {
+                return GetSingletonSafe();
+            }
+            set
+            {
+                _singleton = value;
+            }
+        }
 
         public static EffectBasicNormal GetSingletonSafe()
         {
-            if (Singleton == null)
+            if (_singleton == null)
             {
-                Singleton = new EffectBasicNormal(VikingEngine.LootFest.LfLib.BlockTexture);
+                lock (_lock)
+                {
+                    if (_singleton == null)
+                    {
+                        _singleton = new EffectBasicNormal(VikingEngine.LootFest.LfLib.BlockTexture);
+                    }
+                }
             }
-            return Singleton;
+            return _singleton;
         }
 
         public EffectBasicNormal(LoadedTexture texture)
@@ -86,7 +105,20 @@ namespace VikingEngine.Graphics
     }
     class EffectBasicColor : AbsEffectBasic
     {
-        public static EffectBasicColor Singleton;
+        private static volatile EffectBasicColor _singleton;
+        private static readonly object _lock = new object();
+
+        public static EffectBasicColor Singleton
+        {
+            get
+            {
+                return GetSingletonSafe();
+            }
+            set
+            {
+                _singleton = value;
+            }
+        }
 
         public EffectBasicColor(LoadedTexture tex)
         {
@@ -101,17 +133,36 @@ namespace VikingEngine.Graphics
 
         public static EffectBasicColor GetSingletonSafe()
         {
-            if (Singleton == null)
+            if (_singleton == null)
             {
-                Singleton = new EffectBasicColor(LoadedTexture.WhiteArea);
+                lock (_lock)
+                {
+                    if (_singleton == null)
+                    {
+                        _singleton = new EffectBasicColor(LoadedTexture.WhiteArea);
+                    }
+                }
             }
-            return Singleton;
+            return _singleton;
         }
     }
 
     class EffectBasicVertexColor : AbsEffectBasic
     {
-        public static EffectBasicVertexColor Singleton;
+        private static volatile EffectBasicVertexColor _singleton;
+        private static readonly object _lock = new object();
+
+        public static EffectBasicVertexColor Singleton
+        {
+            get
+            {
+                return GetSingletonSafe();
+            }
+            set
+            {
+                _singleton = value;
+            }
+        }
 
         public EffectBasicVertexColor()
         {
@@ -158,12 +209,19 @@ namespace VikingEngine.Graphics
 
         public static EffectBasicVertexColor GetSingletonSafe()
         {
-            if (Singleton == null)
+            if (_singleton == null)
             {
-                Singleton = new EffectBasicVertexColor();
-                Singleton.ObjectShader();
+                lock (_lock)
+                {
+                    if (_singleton == null)
+                    {
+                        var instance = new EffectBasicVertexColor();
+                        instance.ObjectShader();
+                        _singleton = instance;
+                    }
+                }
             }
-            return Singleton;
+            return _singleton;
         }
     }
 }

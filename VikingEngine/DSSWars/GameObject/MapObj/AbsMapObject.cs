@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float strengthValue = -1;
         public float mobilityValue = 0;
 
-        public IntVector2 tilePos;
+        public IntVector2 tilePos = IntVector2.NegativeOne;
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
@@ -163,28 +163,29 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void updateDetailLevel()
         {
+            bool changed = false;
             if (enterRender_overviewLayer_async != inRender_overviewLayer)
             {
                 inRender_overviewLayer = enterRender_overviewLayer_async;
-                setInRenderState();
+                changed = true;
             }
-            else if (enterRender_detailLayer_async != inRender_detailLayer)
+            if (enterRender_detailLayer_async != inRender_detailLayer)
             {
                 if (this.gameobjectType() == GameObjectType.Army)
                 {
                     lib.DoNothing();
                 }
                 inRender_detailLayer = enterRender_detailLayer_async;
+                changed = true;
+            }
+
+            if (changed)
+            {
                 setInRenderState();
             }
         }
 
         abstract public void setInRenderState();
-
-        //virtual public void ExitBattleGroup()
-        //{
-        //    battleGroup = null;
-        //}
 
         public float distanceTo(AbsMapObject obj)
         {
@@ -250,8 +251,6 @@ namespace VikingEngine.DSSWars.GameObject
             get { return pfaction.GetPlayer().IsLocal; }
         }
 
-        //abstract public Faction Faction();
-
         virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert, ConvertReason convertReason, bool netShare)
         {
             this.pfaction = newFaction.pfaction;
@@ -260,11 +259,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             IsNetHosted = newFaction.IsNetHosted();
         }
-
-        //override public Faction GetFaction()
-        //{
-        //    return faction;
-        //}
 
         abstract public void OnNewOwner(Faction newFaction, bool convert, ConvertReason convertReason);
 
@@ -286,7 +280,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                ref WorkerStatus status = ref workerStatuses.array[i];
+                ref WorkerStatus status = ref workerStatuses.Array[i];
                 if (status.work > WorkType.Idle &&
                     Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
                 {

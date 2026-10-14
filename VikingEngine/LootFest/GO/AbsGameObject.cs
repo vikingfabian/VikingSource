@@ -6,7 +6,7 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.LootFest.GO
 {
-    abstract class AbsGameObject : AbsVoxelObj
+    public abstract class AbsGameObject : AbsVoxelObj
     {
         
         protected float lastDamageLevel = float.MinValue;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -1463,7 +1463,7 @@ namespace VikingEngine.DSSWars.Build
                 if (addRubble)
                 {
                     subTile.mainTerrain = TerrainMainType.Resourses;
-                    subTile.subTerrain = (int)TerrainResourcesType.Rubble;
+                    subTile.subTerrain = (byte)TerrainResourcesType.Rubble;
                 }
                 else
                 {

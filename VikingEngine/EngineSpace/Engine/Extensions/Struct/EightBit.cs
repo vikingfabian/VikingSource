@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace VikingEngine
 {
 
-    struct EightBit : IBinaryIOobj
+    public struct EightBit : IBinaryIOobj
     {
         public static readonly EightBit Zero = new EightBit(byte.MinValue);
         public static readonly EightBit AllTrue = new EightBit(byte.MaxValue);
@@ -157,6 +157,22 @@ namespace VikingEngine
         {
             bitArray = 0;
             read(r);
+        }
+
+        public bool InFilter(EightBit filter)
+        {
+            // A bitwise AND will return a non-zero value if 
+            // there is at least one matching 'true' bit in both arrays.
+            return (this.bitArray & filter.bitArray) != 0;
+        }
+
+        /// <summary>
+        /// Bitwise OR combines the bits, keeping all 'true' bits from both
+        /// </summary>
+        public void Combine(EightBit other)
+        {
+
+            this.bitArray |= other.bitArray;
         }
 
         public static EightBit FromStream(System.IO.BinaryReader r)

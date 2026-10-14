@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Graphics
 {
-    class ImageGroupParent2D
+    public class ImageGroupParent2D
     {
         Vector2 parentPos;
         public Vector2 ParentPosition
@@ -212,7 +212,7 @@ namespace VikingEngine.Graphics
         public bool Empty { get { return images == null || images.Count == 0; } }
     }
 
-    class ImageGroup2DMember
+    public class ImageGroup2DMember
     {
         public AbsDraw2D image;
         public Vector2 relativePostion;

@@ -19,13 +19,14 @@ namespace VikingEngine.DSSWars.Players.Orders
         public DemolishOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile)
         {
             baseInit(priority);
-            this.city = city;
+            this.pcity = city.mapObjPointer();
             this.subTile = subTile;
         }
 
         public override void onAdd(int playerIx)
         {
             createModel(1, playerIx);
+            refreshYpos();
         }
 
         public WorkQueMember createWorkQue()
@@ -73,7 +74,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         override public OrderType GetWorkType(City city)
         {
-            if (this.city == city)
+            if (this.pcity.objectIndex == city.myIndex)
             {
                 return OrderType.Demolish;
             }

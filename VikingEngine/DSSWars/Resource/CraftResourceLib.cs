@@ -698,7 +698,7 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.SkinLinen_Group, 2),
                 new UseResource(ItemResourceType.Wood_Group, 4),
-                new UseResource(ItemResourceType.Iron_G, 2),
+                new UseResource(ItemResourceType.Iron_G, 3),
             },
             XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
@@ -712,7 +712,7 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.SkinLinen_Group, 2),
                 new UseResource(ItemResourceType.Wood_Group, 4),
-                new UseResource(ItemResourceType.Bronze, 2),
+                new UseResource(ItemResourceType.Bronze, 3),
             },
             XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,

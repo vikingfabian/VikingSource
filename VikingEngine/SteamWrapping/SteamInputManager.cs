@@ -8,8 +8,7 @@ using VikingEngine.ToGG.HeroQuest.HeroStrategy;
 
 namespace VikingEngine.SteamWrapping
 {
-    class 
-        SteamInputManager
+    public class SteamInputManager
     {
         public static bool InputLayerChange = false;
         Callback<SteamInputConfigurationLoaded_t> m_InputConfigLoaded;
@@ -667,6 +666,10 @@ namespace VikingEngine.SteamWrapping
 
         public bool IsActive(int controllerIx, SteamDigitalAction actionType)
         {
+            if (digitalHandles == null)
+            {
+                return false;
+            }
             InputHandle_t controllerHandle = controllerHandles[controllerIx];
             InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[(int)actionType]);
             return actionData.bActive == 1;
@@ -722,7 +725,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    enum SteamActionSet
+    public enum SteamActionSet
     {
 #if DSS
         InGameControls,
@@ -735,7 +738,7 @@ namespace VikingEngine.SteamWrapping
         NUM
     }
 
-    enum SteamDigitalAction
+    public enum SteamDigitalAction
     {
 #if DSS
         // InGameControls & Shared
@@ -815,7 +818,7 @@ namespace VikingEngine.SteamWrapping
         NUM
     }
 
-    enum SteamAnalogAction
+    public enum SteamAnalogAction
     {
 #if DSS
         // InGameControls

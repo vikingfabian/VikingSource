@@ -5,12 +5,14 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface.HudPinUi;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Players;
@@ -179,6 +181,37 @@ namespace VikingEngine.DSSWars.Interface
             return maximizedHud;
         }
 
+        public void StartQuickReassign(List<SoldierGroup> groups)
+        {
+            
+            if (groups[0].army.TryGetTarget(out var tArmy))
+            {
+                if (tArmy.IsCity())
+                {
+                    player.cityTab = MenuTab.Reassign;
+                }
+                else
+                {
+                    player.armyTab = MenuTab.Reassign;
+                }
+                player.gameControls.mapSelect(tArmy);
+                if (player.gameControls.input.inputSource.HasControllerInput)
+                { 
+                    player.gameControls.setMenuFocus(true, true, 1);
+                }
+                //args.player.movingGroupsCollection.mainArmy.
+                player.movingGroupsCollection = new MovingGroupsCollection(tArmy);
+                foreach (var group in groups)
+                {
+                    if (group.army.TryGetTarget(out var tArmy2) && tArmy == tArmy2)
+                    {
+                        player.movingGroupsCollection.mainArmy.AddGroup(new SoldierGroupAndCount(-1, group, true), player.movingGroupsCollection.otherArmies.Selected(), true, false);
+                    }
+                }
+            }
+            
+        }
+
         public bool minimapProperty(object tag, bool set, bool value)
         {
             if (set)
@@ -305,7 +338,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void updateMenuDisplays(bool refresh)
         {
-           
+            bool bUseSecondMenu = false;
+
             if (player.gameControls.diplomacy != null)
             {
                 var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
@@ -340,12 +374,16 @@ namespace VikingEngine.DSSWars.Interface
                 updateObjectDisplay(null, false, refresh);
             }
 
+            if (!bUseSecondMenu)
+            {
+                objMenu.deleteSecondMenu();
+            }
+
             void updateObjectDisplay(GameObject.AbsGameObject obj, bool selected, bool refresh)
             {
                 if (refresh)
                 {
-                    objMenu.refreshObject(player, obj, selected);
-                    
+                    objMenu.refreshObject(player, obj, selected, out bUseSecondMenu);                    
                 }
             }
         }

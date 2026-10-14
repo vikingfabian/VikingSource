@@ -13,7 +13,7 @@ namespace VikingEngine.Graphics
     /// <summary>
     /// By ref type of visual text, prefered when the text string will change often
     /// </summary>
-    class TextG : AbsTextLine
+    public class TextG : AbsTextLine
     {
         /* Properties */
         public override string TextString
@@ -59,7 +59,7 @@ namespace VikingEngine.Graphics
             {
                 if (outline != TextOutlineType.NoBorder)
                 {
-                    Color col = ColorExt.Multiply(outlineColor, Opacity);
+                    Color col = ColorExt.MultiplyRGBA(outlineColor, Opacity);
                     float layer = PaintLayer + PublicConstants.LayerMinDiff;
 
                     if (outline == TextOutlineType.Border8Dir)

@@ -10,11 +10,12 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichMenu
 {
-    class RichMenuControllerPointer
+    public class RichMenuControllerPointer
     {
         public InputMap inputMap;
         public Image pointer;
         public RichMenu menu;
+        public int menuIx;
         public float maxInteractDistance;
 
         float LowAccelerate;
@@ -27,10 +28,11 @@ namespace VikingEngine.HUD.RichMenu
             this.inputMap = inputMap;
         }
 
-        public void setMenu(RichMenu menu, Vector2 storedPosition)
+        public void setMenu(RichMenu menu, int menuIx, Vector2 storedPosition)
         {
-            this.menu = menu;
 
+            this.menu = menu;
+            this.menuIx = menuIx;
             if (pointer == null)
             {
                 maxInteractDistance = Engine.Screen.IconSize;

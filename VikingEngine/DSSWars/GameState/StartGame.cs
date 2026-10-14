@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.storage.runTutorial = false;
                 }
-                                    
+
                 switch (DssRef.difficulty.setting_gameMode)
                 {
                     case GameModeMainType.FullStory:
@@ -173,7 +173,7 @@ namespace VikingEngine.DSSWars
                 if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
                     if (DssRef.storage.runTutorial)
-                    { 
+                    {
                         DssRef.stats.startTutorial.addOne();
                     }
                     else if (PlatformSettings.STEAM_DEMO)
@@ -211,6 +211,10 @@ namespace VikingEngine.DSSWars
                         DssRef.stats.startNew_MapHuge.addOne();
                         break;
                 }
+            }
+            else
+            {
+                SoundLib.loading.Play();
             }
 
             Ref.lobby.startSearchLobbies(false);

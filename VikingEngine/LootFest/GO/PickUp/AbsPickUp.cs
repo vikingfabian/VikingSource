@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.LootFest.GO.PickUp
 {
-    abstract class AbsPickUp : AbsVoxelObj
+    public abstract class AbsPickUp : AbsVoxelObj
     {
        // protected //static readonly Data.TempBlockReplacementSett BoneTempImage = new Data.TempBlockReplacementSett(new Color(239, 236, 212), new Vector3(0.3f, 0.3f, 1.5f));
         //protected //static readonly Data.TempBlockReplacementSett AppleTempImage = new Data.TempBlockReplacementSett(new Color(255, 65, 27), new Vector3(1));

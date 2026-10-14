@@ -7,21 +7,37 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map.Map2
 {
+    struct WorldMetaData2
+    {
+        public ushort seed;
+
+        public WorldMetaData2()
+        { 
+            seed = Ref.rnd.Ushort();
+        }
+    }
+    struct CityPlacementData
+    {
+        public int myIndex;
+        public IntVector2 pos;
+
+    }
+
+    
+
     class WorldData2
     {
-        public ushort seed = Ref.rnd.Ushort();
-        public Grid2D_L<Map.SubTile> iconGrid;
-        public Grid2D_L<Map.SubTile> tileGrid;
+        public WorldMetaData2 metaData2;
+        public Grid2D_L<GenTile> tileGrid;
         public PcgRandom rnd;
 
-        public WorldData2(MapSize size)
-        { 
-            rnd = new PcgRandom(seed);
+        public WorldData2(IconWorldData icon)
+        {
+            metaData2 = icon.metaData2;
 
-            IntVector2 tileSz = WorldData.SizeDimentions(size) * 8 * 2;
+            rnd = new PcgRandom(metaData2.seed);
 
-            iconGrid = new Grid2D_L<Map.SubTile>(tileSz / 16);
-            //tileGrid = new Grid2D<Tile2>(tileSz);
+            IntVector2 tileSz = icon.iconGrid.Size * 16;
             
         }
 

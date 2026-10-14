@@ -65,6 +65,10 @@ namespace VikingEngine.DSSWars.GameObject
         { 
             throw new NotImplementedException();
         }
+
+        //public void ReassignButton(RichBoxContent) { return false; }
+
+        //virtual public void OnReassign(LocalPlayer player) { }
     }
 
 

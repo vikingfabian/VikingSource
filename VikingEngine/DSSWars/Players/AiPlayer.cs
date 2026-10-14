@@ -20,8 +20,8 @@ namespace VikingEngine.DSSWars.Players
     {
         public Time nextDecisionTimer = new Time(1000);
 
-        const int PurchaseOrderType_None = 0;
-        const int PurchaseOrderType_Army = 1;
+        //const int PurchaseOrderType_None = 0;
+        //const int PurchaseOrderType_Army = 1;
         
         string name;
 
@@ -57,9 +57,9 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void writeGameState(BinaryWriter w)
+        public override void writeGameState(BinaryWriter w, bool isNetClient)
         {
-            base.writeGameState(w);
+            base.writeGameState(w, isNetClient);
 
            //w.Write(IsPlayerNeighbor);
             w.Write((byte)aggressionLevel);
@@ -71,9 +71,9 @@ namespace VikingEngine.DSSWars.Players
 
             profile.writeBot(w);
         }
-        public override void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        public override void readGameState(BinaryReader r, bool isNetClient, int subversion, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, subversion, pointers);
+            base.readGameState(r, isNetClient, subversion, pointers);
 
             readAiPlayerGameState(r, subversion);
             if (subversion < 88)

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsVertexAndIndexBuffer : Abs3DModel
+    public abstract class AbsVertexAndIndexBuffer : Abs3DModel
     {
         /* Properties */
         public abstract int NumFrames { get; }
@@ -33,6 +33,16 @@ namespace VikingEngine.Graphics
         /* Fields */
         protected VertexBuffer vertexBuffer_GPU;
         protected IndexBuffer indexBuffer;
+
+        public VertexBuffer GetVertexBuffer()
+        {
+            return vertexBuffer_GPU;
+        }
+
+        public IndexBuffer GetIndexBuffer()
+        {
+            return indexBuffer;
+        }
 
         private float opacity = 1;
 
@@ -97,16 +107,17 @@ namespace VikingEngine.Graphics
         /* Novelty methods */
         public void SetBuffer()
         {
-            if (bufferId != Engine.Draw.PreviousVertexBuffer)
+            var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
+            if (gd != null && vertexBuffer_GPU != null)
             {
                 Engine.Draw.PreviousVertexBuffer = bufferId;
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(vertexBuffer_GPU);
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = indexBuffer;
+                gd.SetVertexBuffer(vertexBuffer_GPU);
+                gd.Indices = indexBuffer;
             }
         }
     }
 
-    class VertexAndIndexBuffer : AbsVertexAndIndexBuffer
+    public class VertexAndIndexBuffer : AbsVertexAndIndexBuffer
     {
         /* Properties */
         public override int NumFrames { get { return 1; } }
@@ -146,7 +157,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    class VertexAndIndexBufferAnimated : AbsVertexAndIndexBuffer
+    public class VertexAndIndexBufferAnimated : AbsVertexAndIndexBuffer
     {
         /* Properties */
         override public int NumFrames { get { return frames.Count; } }
@@ -193,12 +204,25 @@ namespace VikingEngine.Graphics
                 }
             }
         }
+        public Frame GetFrame(int frame)
+        {
+            if (frames.Count == 0)
+            {
+                return default(Frame);
+            }
+            if (frame < 0 || frame >= frames.Count)
+            {
+                frame = 0;
+            }
+            return frames[frame];
+        }
+
         public override void updateBoundingSphere(ref BoundingSphere boundingSphere)
         {
             boundingSphere = CullingBound;
         }
     }
-    struct Frame
+    public struct Frame
     {
         /* Constants */
         const int VerticesPerPoly = 4;

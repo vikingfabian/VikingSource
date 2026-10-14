@@ -114,42 +114,6 @@ namespace VikingEngine.Voxels
             return new FilePath(VoxelModelFolder, saveFileName, Voxels.VoxelLib.VoxelObjByteArrayEnding, true, false);
         }
 
-        //public async Task save()
-        //public void save()
-        //{
-        //    //designer.print("Saving...");
-
-        //    FilePath voxpath = SavePath();
-        //    var projectPath = voxpath;
-        //    projectPath.FileEnd = VoxelLib.VoxelProjectArrayEnding;
-
-        //    VoxelObjGridDataAnimHD allMergedData = null;
-        //    var mergeTask = Task.Run(() =>
-        //    {
-        //        allMergedData = designer.voxelProject.refreshMerged(true);
-        //    });
-
-        //    new WriteBinaryIO(projectPath,
-        //        designer.voxelProject.write, this);
-
-        //    if (designer.voxelProject.currentFrame.Length > 1)
-        //    {
-        //       var layers = designer.voxelProject.LayersCopy();
-        //        for (int i = 0; i < layers.Count; ++i)
-        //        {
-        //            var layerPath = voxpath;
-        //            layerPath.FileName += "_" + layers[i].Name(i);
-        //            new WriteBinaryIO(layerPath,
-        //               layers[i].animationFrames.WriteBinaryStream, this);
-        //        }
-        //    }
-
-        //    await mergeTask; //how do my main thread waih for this task?
-
-        //    new WriteBinaryIO(voxpath,
-        //        allMergedData.WriteBinaryStream, this);
-
-        //}
         public void save()
         {
             FilePath voxpath = VoxSavePath();
@@ -169,7 +133,7 @@ namespace VikingEngine.Voxels
                 designer.voxelProject.write, null);
 
             // Save each layer
-           
+
             var layers = designer.voxelProject.LayersCopy();
             if (layers.Count > 1)
             {
@@ -190,27 +154,12 @@ namespace VikingEngine.Voxels
                 allMergedData.WriteBinaryStream, this);
 
             FilePath iconPath = projectPath;
-            iconPath.FileEnd = ".png";
-
-
-            const int Size = 64;
-
-            try
-            {
-                using (FileStream stream = new FileStream(iconPath.CompleteLocalPath(true), FileMode.Create))
-                {
-                    renderModel().SaveAsPng(stream, Size, Size);
-                }
-            }
-            catch (Exception ex)
-            {
-#if DEBUG
-                throw;
-#endif
-            }
+            StreamLib.saveTextureAsPNG(renderModel(), iconPath);
 
             RenderTarget2D renderModel()
             {
+                const int Size = 64;
+
                 RenderTargetImage target = new RenderTargetImage(Vector2.Zero, new Vector2(Size), ImageLayers.Foreground4, false);
                 TopViewCamera modelView = new TopViewCamera(22, new Vector2(MathHelper.PiOver2 - 0.8f, MathHelper.PiOver4 + 0.12f),
                         Size, Size);
@@ -224,6 +173,8 @@ namespace VikingEngine.Voxels
                 target.DrawImagesToTarget(null, new List<AbsDraw> { designer.voxelObj }, true, 0);
                 return target.renderTarget;
             }
+
+            
         }
 
         public void saveCurrentFrame(int frame, string name)

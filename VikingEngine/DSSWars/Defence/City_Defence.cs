@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void addDefenceBuilding_async(IntVector2 subPos, bool tower)
         {   
-            lock (defenceBuildings.array)
+            lock (defenceBuildings.Array)
             {
                 DefenceStatus newDefence = new DefenceStatus();
                 newDefence.init(subPos, tower);
@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 for (int i = 0; i < defenceBuildings.Count; ++i)
                 {
-                    if (!defenceBuildings.array[i].active)
+                    if (!defenceBuildings.Array[i].active)
                     {
                         defenceBuildings[i] = newDefence;
                         return;
@@ -51,13 +51,13 @@ namespace VikingEngine.DSSWars.GameObject
         public void destroyDefenceBuilding_async(IntVector2 subPos)
         {
             int id = conv.IntVector2ToInt(subPos);
-            lock (defenceBuildings.array)
+            lock (defenceBuildings.Array)
             {
                 for (int i = 0; i < defenceBuildings.Count; ++i)
                 {
-                    if (defenceBuildings.array[i].idAndPosition == id)
+                    if (defenceBuildings.Array[i].idAndPosition == id)
                     {
-                        var soldiers = defenceBuildings.array[i].soldierGroupId;
+                        var soldiers = defenceBuildings.Array[i].soldierGroupId;
                         if (soldiers != DefenceStatus.NoSoldiers)
                         {
                             var group = groups.GetIndex_Safe(soldiers);
@@ -80,14 +80,14 @@ namespace VikingEngine.DSSWars.GameObject
                 int closestIx = -1;
                 float closestDist = float.MaxValue;
 
-                    lock (defenceBuildings.array)
+                    lock (defenceBuildings.Array)
                     {
                         for (int i = 0; i < defenceBuildings.Count; ++i)
                         {
-                            var defence = defenceBuildings.array[i];
+                            var defence = defenceBuildings.Array[i];
                             if (defence.checkSoldierAssignment(this))
                             {
-                                defenceBuildings.array[i] = defence;
+                                defenceBuildings.Array[i] = defence;
                             }
 
                             if (defence.AvailableForAutoAssign())
@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (closestIx >= 0)
                         {
-                            var defence = defenceBuildings.array[closestIx];
+                            var defence = defenceBuildings.Array[closestIx];
                             if (inRender_detailLayer)
                             {
                                 new MoveCommand(group, defence.WorldPos(), float.MinValue, false);
@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int defenceIxFromPosId(int idAndPosition)
         {
-            lock (defenceBuildings.array)
+            lock (defenceBuildings.Array)
             {
                 for (int i = 0; i < defenceBuildings.Count; ++i)
                 {
@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool tryGetDefence(IntVector2 position, out DefenceStatus defence)
         {
             int idAndPosition = conv.IntVector2ToInt(position);
-            lock (defenceBuildings.array)
+            lock (defenceBuildings.Array)
             {
                 for (int i = 0; i < defenceBuildings.Count; ++i)
                 {
@@ -175,11 +175,11 @@ namespace VikingEngine.DSSWars.GameObject
                 try
                 {
                     int count = 0;
-                    lock (defenceBuildings.array)
+                    lock (defenceBuildings.Array)
                     {                        
                         for (int i = 0; i < defenceBuildings.Count; ++i)
                         {
-                            ref var defence = ref defenceBuildings.array[i];
+                            ref var defence = ref defenceBuildings.Array[i];
                             if (!towersOnly || defence.tower)
                             {
                                 if (defence.autoAssign != toValue)
@@ -209,9 +209,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void defence_assignGuard_toIndex(GuardGroup guard, int index)
         {
-            lock (defenceBuildings.array)
+            lock (defenceBuildings.Array)
             {
-                if (arraylib.InBound(defenceBuildings.array, index))
+                if (arraylib.InBound(defenceBuildings.Array, index))
                 {
                     var defence = defenceBuildings[index];
                     guard.onEnterGuard(this, defence.idAndPosition);

@@ -82,7 +82,7 @@ namespace VikingEngine.LootFest.Players
             text.DeleteMe();
         }
     }
-    enum ZoomMode
+    public enum ZoomMode
     {
         Debug,
         TopView,
@@ -90,7 +90,7 @@ namespace VikingEngine.LootFest.Players
         CloseUp,
         NUM
     }
-    enum VisualMode
+    public enum VisualMode
     {
         Non,
         RC,
@@ -99,7 +99,7 @@ namespace VikingEngine.LootFest.Players
         //XboxGuide,
         SteamGuide,
     }
-    enum ValueLink
+    public enum ValueLink
     {
         //bAutoEquip,
         bTutorial,
@@ -121,7 +121,7 @@ namespace VikingEngine.LootFest.Players
         //bSpawnAtPricateHome,
     }
 
-    enum Link
+    public enum Link
     {
         ManualControls,
         ManualQuests,

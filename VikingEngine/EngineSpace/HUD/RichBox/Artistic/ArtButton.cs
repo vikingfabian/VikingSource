@@ -9,8 +9,9 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.HUD.RichBox.Artistic
 {
-    enum RbButtonStyle
+    public enum RbButtonStyle
     { 
+        SuperPrimary,
         Primary,
         Secondary,
         GodPower,
@@ -30,7 +31,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
         HoverArea,
     }
 
-    class ArtButton : AbsRbButton
+    public class ArtButton : AbsRbButton
     {
         public static readonly Color MouseDownCol = Color.LightGray;
         protected RbButtonStyle buttonStyle;
@@ -61,6 +62,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.CheckBox:
                     textureSett = group.settings.artCheckButtonTex;
+                    break;
+                case RbButtonStyle.SuperPrimary:
+                    textureSett = group.settings.artSuperPrimaryButtonTex;
                     break;
                 case RbButtonStyle.Secondary:
                     textureSett = group.settings.artSecondaryButtonTex;

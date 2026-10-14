@@ -18,7 +18,7 @@ using VikingEngine.Input;
 
 namespace VikingEngine.HUD.RichMenu
 {
-    interface IRichMenuInputMap
+    public interface IRichMenuInputMap
     {
         MouseInstance RbMouseInstance();
         IButtonMap RbClick();
@@ -28,7 +28,7 @@ namespace VikingEngine.HUD.RichMenu
         bool RbHasController { get; }
     }
 
-    class DefaultRichMenuInputMap : IRichMenuInputMap
+    public class DefaultRichMenuInputMap : IRichMenuInputMap
     { 
         public static DefaultRichMenuInputMap Singleton = new DefaultRichMenuInputMap();
 
@@ -48,7 +48,7 @@ namespace VikingEngine.HUD.RichMenu
     /// <summary>
     /// Creates a scrollable container of richbox content. Will update input, and create tooltips.
     /// </summary>
-    class RichMenu
+    public class RichMenu
     {
         public static readonly Vector2 DefaultRenderEdge = new Vector2(4);
 
@@ -71,7 +71,19 @@ namespace VikingEngine.HUD.RichMenu
         public PlayerData playerData;
         RichTooltip tooltip = null;
         public string activeDropDown = null;
+
+        /// <summary>
+        /// Refresh rebuild all images and text
+        /// </summary>
         public bool needRefresh = false;
+
+        /// <summary>
+        /// Redraw renders the current images to the rendertarget
+        /// </summary>
+        public void needsReDraw()
+        {
+            renderList.isDirty = true;
+        }
         public List<string> menuStack = new List<string>();
 
         public Action OnPageDelete = null;
@@ -470,12 +482,12 @@ namespace VikingEngine.HUD.RichMenu
 
         void updateContentScroll()
         {
-
             richBox.SetOffset( new Vector2(renderEdge.X, renderEdge.Y + scrollBar.scrollResult));
+            needsReDraw();
         }
     }
 
-    enum StackOption
+    public enum StackOption
     { 
         Stack,
         ClearStack,

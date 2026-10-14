@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Voxels
 {
-    class VoxelObjListData
+    public class VoxelObjListData
     {
         public IntVector3 Size;
         public List<Voxel> Voxels;

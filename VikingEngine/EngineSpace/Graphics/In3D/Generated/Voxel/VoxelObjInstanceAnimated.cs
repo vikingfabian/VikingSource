@@ -76,7 +76,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    struct AnimationsSettings
+    public struct AnimationsSettings
     {
         public static readonly AnimationsSettings OneFrame = new AnimationsSettings(1, float.MaxValue, false);
         public static readonly AnimationsSettings BasicAnimation = new AnimationsSettings(2, float.MaxValue, 0);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 using System.Collections.Generic;
@@ -47,6 +47,23 @@ namespace VikingEngine.Engine
         public static void Init(ContentManager contentManager)
         { 
             Content = contentManager;
+        }
+
+        public static void WarmupDefaultEffects(GraphicsDevice device)
+        {
+            if (device == null)
+            {
+                return;
+            }
+
+            using (var basic = new BasicEffect(device)) { }
+            using (var alphaTest = new AlphaTestEffect(device)) { }
+            using (var dualTex = new DualTextureEffect(device)) { }
+            using (var envMap = new EnvironmentMapEffect(device)) { }
+            using (var skinned = new SkinnedEffect(device)) { }
+
+            VikingEngine.Graphics.EffectBasicVertexColor.GetSingletonSafe();
+            VikingEngine.Graphics.EffectBasicColor.GetSingletonSafe();
         }
 
         public static void LoadConsoleFont()

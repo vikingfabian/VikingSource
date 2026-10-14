@@ -6,7 +6,7 @@ using VikingEngine.LootFest.BlockMap;
 
 namespace VikingEngine.LootFest
 {
-    abstract class AbsSpawnPoint
+    public abstract class AbsSpawnPoint
     {
         public int spawnLock = 0;
 

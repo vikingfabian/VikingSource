@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.LootFest.GO.Characters
 {
-    abstract class AbsCharacter : AbsGameObject
+    public abstract class AbsCharacter : AbsGameObject
     {
         public AiState aiState = AiState.Waiting;
         protected Time aiStateTimer = 0;

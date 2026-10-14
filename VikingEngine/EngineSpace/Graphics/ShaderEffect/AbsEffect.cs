@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsEffect
+    public abstract class AbsEffect
     {
         public Effect shader = null;
 

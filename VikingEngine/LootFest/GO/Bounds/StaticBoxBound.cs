@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.LootFest.GO.Bounds
 {
-    class StaticBoxBound : AbsBound
+    public class StaticBoxBound : AbsBound
     {
         //VectorVolume volume;
         //public VectorVolume CenterScale { get { return volume; } set { volume = value; } }

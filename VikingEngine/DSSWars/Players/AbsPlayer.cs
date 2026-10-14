@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Players
             this.pfaction = faction.Pointer();
             //faction.player = this;
             faction.SetStartOwner(this);
-            faction.onNewPlayerModels();
+            faction.OnNewPlayerModels();
             DssRef.world.BordersUpdated = true;
         }
 
@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Players
         virtual public void refreshFlag()
         {
             flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
-            pfaction.GetFaction()?.onNewPlayerModels();
+            pfaction.GetFaction()?.OnNewPlayerModels();
             
             DssRef.world.BordersUpdated = true;
         }
@@ -128,13 +128,18 @@ namespace VikingEngine.DSSWars.Players
         virtual public void Update()
         { }
 
-        virtual public void writeGameState(System.IO.BinaryWriter w)
+        virtual public void writeGameState(System.IO.BinaryWriter w, bool isNetClient)
         {
             
         }
         virtual public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             
+        }
+
+        virtual public void readGameState(System.IO.BinaryReader r, bool isNetClient, int version, ObjectPointerCollection pointers)
+        {
+
         }
 
         protected void readAiPlayerGameState(BinaryReader r, int subversion)
@@ -153,6 +158,7 @@ namespace VikingEngine.DSSWars.Players
                 
             }
         }
+               
 
         virtual public void oneSecUpdate()
         { }

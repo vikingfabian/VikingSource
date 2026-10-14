@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
-            lock (workerStatuses.array)
+            lock (WorkerStatusLock)
             {
                 bool hostUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
 
@@ -116,7 +116,19 @@ namespace VikingEngine.DSSWars.GameObject
                 cityExperienceLevels = SkillCollector.ExportData();
                 
                 int workTeamGoalCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
-                int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount/* + 1*/);
+                int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount);
+
+                if (exitCount > 0 && immigrants.value > WorkTeamSize)
+                {
+                    int spendImmigrantTeams = (int)(immigrants.value / WorkTeamSize);
+                    if (spendImmigrantTeams > exitCount)
+                    {
+                        spendImmigrantTeams = exitCount;
+                    }
+
+                    immigrants.value = -spendImmigrantTeams * WorkTeamSize;
+                    exitCount -= spendImmigrantTeams;
+                }
 
                 if (myIndex == 383)
                 {
@@ -178,12 +190,12 @@ namespace VikingEngine.DSSWars.GameObject
                         ++idleCount;
                     }
                 }
-                else if (exitCount > 0)//workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)
+                else if (exitCount > 0)
                 {
-                    if (myIndex == 54)
-                    {
-                        lib.DoNothing();
-                    }
+                    //if (myIndex == 54)
+                    //{
+                    //    lib.DoNothing();
+                    //}
 
                     findLowXpWorkers();
                 }
@@ -193,7 +205,11 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
-                    //Last position = highest priority
+                    if (Ref.peRnd.ChanceF(0.05f))
+                    {
+                        refreshItemReserve();
+                    }
+                    
                     if (workQue.Count > 1)
                     {
                         workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
@@ -207,7 +223,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //Collect idle workers
                 for (int i = 0; i < workerStatuses.Count; i++)
                 {
-                    ref WorkerStatus status = ref workerStatuses.array[i];
+                    ref WorkerStatus status = ref workerStatuses.Array[i];
 
                     if (status.work == WorkType.Idle)
                     {
@@ -277,7 +293,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 while (workQue.Count > 0 && idleWorkers.Count > 0 && maxWorkerOrderCount > 0)
                 {
-                    var work = arraylib.PullLastMember(workQue);
+                    WorkQueMember work = arraylib.PullLastMember(workQue);
 
                     if (checkAvailable(work.work, work.subWork) &&
                         work_isFreeTile(work.subTile))
@@ -294,7 +310,7 @@ namespace VikingEngine.DSSWars.GameObject
                             for (int i = 0; i < idleWorkers.Count; ++i)
                             {
                                 var worderIx = idleWorkers[i];
-                                var worker = workerStatuses.array[worderIx];
+                                var worker = workerStatuses.Array[worderIx];
 
                                 var xp = worker.getXpFor(experienceType);
 
@@ -316,9 +332,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 var worderIx = idleWorkers[bestWorkerListIx];
                                 idleWorkers.RemoveAt(bestWorkerListIx);
 
-                                ref var status = ref workerStatuses.array[worderIx];
+                                ref var status = ref workerStatuses.Array[worderIx];
                                 status.createWorkOrder(work.work, work.subWork, work.workBonus, experienceType, work.orderId, work.subTile, this);
-                                
+                                reserveItems(work);
+
                                 --maxWorkerOrderCount;
 
                                 if (work.orderId >= 0)
@@ -342,7 +359,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //Set remaning workers to wait
                 foreach (var workerIx in idleWorkers)
                 {
-                    ref var worker = ref workerStatuses.array[workerIx];
+                    ref var worker = ref workerStatuses.Array[workerIx];
                     worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
                     worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
                     //workerStatuses[workerIx] = worker;
@@ -757,7 +774,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Work_Cook:
                                     if (
                                         workTemplate.Get(WorkPriorityType.craftFood).HasPrio_r(out prio) && needMore(CityResourceIndex.food) &&
-                                        (CraftResourceLib.Food2.hasResources(this) || CraftResourceLib.Food1.hasResources(this)) &&
+                                        (CraftResourceLib.Food2.available(this) || CraftResourceLib.Food1.available(this)) &&
                                         work_isFreeTile(pos))
                                     {
                                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, 0, pos, prio, 0, distanceValue));
@@ -765,7 +782,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     if (
                                         workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio_r(out prio) && needMore(CityResourceIndex.ConservedFood) &&
-                                        CraftResourceLib.ConservedFood_Barrel.hasResources(this) &&
+                                        CraftResourceLib.ConservedFood_Barrel.available(this) &&
                                         work_isFreeTile(pos))
                                     {
                                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.ConservedFood, 0, pos, prio, 0, distanceValue));
@@ -783,7 +800,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Work_CoalPit:
                                     if (
                                        workTemplate.Get(WorkPriorityType.craftFuel).HasPrio() && needMore(CityResourceIndex.food) &&
-                                       CraftResourceLib.Charcoal.hasResources(this) &&
+                                       CraftResourceLib.Charcoal.available(this) &&
                                        work_isFreeTile(pos))
                                     {
                                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Coal, 0, pos, workTemplate.Get(WorkPriorityType.craftFuel).value, 0, distanceValue));
@@ -793,7 +810,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Brewery:
                                     if (workTemplate.Get(WorkPriorityType.craftBeer).HasPrio() &&
                                         needMore(CityResourceIndex.beer) &&//res_beer.needMore() &&
-                                        CraftResourceLib.Beer.hasResources(this) &&
+                                        CraftResourceLib.Beer.available(this) &&
                                         work_isFreeTile(pos))
                                     {
                                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, 0, pos, workTemplate.Get(WorkPriorityType.craftBeer).value, 0, distanceValue));
@@ -830,7 +847,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Smoker:
                                     if (
                                         workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio() && needMore(CityResourceIndex.ConservedFood) &&
-                                        CraftResourceLib.ConservedFood_Smoked.hasResources(this) &&
+                                        CraftResourceLib.ConservedFood_Smoked.available(this) &&
                                         work_isFreeTile(pos)
                                         )
                                     {
@@ -840,7 +857,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case TerrainBuildingType.Dryer:
                                     if (
                                         workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio() && needMore(CityResourceIndex.ConservedFood) &&
-                                        CraftResourceLib.ConservedFood_Dried.hasResources(this) &&
+                                        CraftResourceLib.ConservedFood_Dried.available(this) &&
                                         work_isFreeTile(pos)
                                         )
                                     {
@@ -882,7 +899,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         void getMintPriority(WorkPriority priority, ItemResourceType item, CraftBlueprint blueprint)
                         {
-                            if (priority.value > topPrio && blueprint.hasResources(this))
+                            if (priority.value > topPrio && blueprint.available(this))
                             {
                                 topPrio = priority.value;
                                 topItem = item;
@@ -1163,7 +1180,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int i = 0; i < workerStatuses.Count; ++i)
                 {
-                    var status = workerStatuses.array[i];
+                    var status = workerStatuses.Array[i];
                     if (status.work != WorkType.Idle &&
                         status.subTileEnd == subtile)
                     {
@@ -1207,9 +1224,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                if (workerStatuses.array[i].work != WorkType.IsDeleted)
+                if (workerStatuses.Array[i].work != WorkType.IsDeleted)
                 {
-                    int score = workerStatuses.array[i].GetXpScore();
+                    int score = workerStatuses.Array[i].GetXpScore();
 
                     // Check against lowest1
                     if (lowest1.Value1 < 0 || score < lowest1.Value2)
@@ -1356,20 +1373,77 @@ namespace VikingEngine.DSSWars.GameObject
         {
             IntVector2 pos = conv.IntToIntVector2(idAndPosition);
             //Warning! this checkup is badly optimized, only use it for player info
-            for (int i = 0; i < workerStatuses.Count; ++i)
+            lock (WorkerStatusLock)
             {
-                var status = workerStatuses.array[i];
-                if (status.work == WorkType.School &&
-                    status.subTileEnd == pos)
+                for (int i = 0; i < workerStatuses.Count; ++i)
                 {
-                    completeTimeSec = status.processTimeStartStampSec + status.processTimeLengthSec;
-                    return true;
+                    var status = workerStatuses.Array[i];
+                    if (status.work == WorkType.School &&
+                        status.subTileEnd == pos)
+                    {
+                        completeTimeSec = status.processTimeStartStampSec + status.processTimeLengthSec;
+                        return true;
+                    }
                 }
             }
             completeTimeSec = -1;
             return false;
         }
 
+        void refreshItemReserve()
+        {
+            res_water.reservedUseCount = 0;
+            DssRef.world.flushCityReserves(this);
+
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+               WorkerStatus status = workerStatuses.Array[i];
+                reserveItems(new WorkQueMember(){ work = status.work, subWork = status.workSubType });
+            }
+        }
+
+        void reserveItems(WorkQueMember work)
+        {
+            switch (work.work)
+            {
+                case WorkType.Build:
+                    reserve(BuildLib.BuildOptions[work.subWork].blueprint);
+                    break;
+                case WorkType.Craft:
+                    ItemResourceType item = (ItemResourceType)work.subWork;
+                    ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
+                    if (bp2 != null && bp2.available(this))
+                    {
+                        reserve(bp2);
+                    }
+                    else
+                    {
+                        reserve(bp1);
+                    }
+                    break;
+            }
+
+            void reserve(CraftBlueprint blueprint)
+            {
+                foreach (var m in blueprint.resources)
+                {
+                    if (this.IsGroupedResource(m.type))
+                    {
+                        this.GetRefGroupedResource(m.type).reserve(m.amount);
+                    }
+                }
+            }
+        }
+        public void unreserveItems(CraftBlueprint blueprint)
+        {
+            foreach (var m in blueprint.resources)
+            {
+                if (this.IsGroupedResource(m.type))
+                {
+                    this.GetRefGroupedResource(m.type).unreserve(m.amount);
+                }
+            }
+        }
     } 
 
     struct WorkQueMember
@@ -1395,6 +1469,8 @@ namespace VikingEngine.DSSWars.GameObject
             this.subTile = subTile;
             this.priority = priority * 1000000 + midPrio * 1000 + subPrio;
         }
+
+        
     }
         
 }

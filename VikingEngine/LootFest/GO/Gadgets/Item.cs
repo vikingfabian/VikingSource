@@ -8,7 +8,7 @@ namespace VikingEngine.LootFest.GO.Gadgets
 {
     delegate bool ItemUse();
 
-    class Item
+    public class Item
     {
         public int MaxAmount = 0;
         public SpriteName Icon = SpriteName.NO_IMAGE;
@@ -217,7 +217,7 @@ namespace VikingEngine.LootFest.GO.Gadgets
         }
     }
 
-    enum ItemType
+    public enum ItemType
     {
         Apple,
         ApplePie,

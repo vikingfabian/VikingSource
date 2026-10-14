@@ -14,7 +14,7 @@ using VikingEngine.Voxels;
 namespace VikingEngine.LootFest
 {
 
-    class PlayState : Engine.GameState 
+    public class PlayState : Engine.GameState 
     {
         public int NumEnemies = 0;
         

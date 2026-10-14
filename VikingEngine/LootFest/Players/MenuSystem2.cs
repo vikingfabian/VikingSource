@@ -28,7 +28,7 @@ namespace VikingEngine.LootFest
     /// <summary>
     /// Handler of all the in game menus (version 2) 
     /// </summary>
-    class MenuSystem2
+    public class MenuSystem2
     {
         public Gui menu;
         Players.Player player;

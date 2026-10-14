@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.Voxels
 {
-    class InputDisplay
+    public class InputDisplay
     {
         const ImageLayers Layer = ImageLayers.Background4;
 

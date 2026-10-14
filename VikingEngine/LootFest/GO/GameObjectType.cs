@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest.GO
 {
-    enum GameObjectType
+    public enum GameObjectType
     {
         Error = 0,
         CHARACTER_0,//-----------------

@@ -10,7 +10,7 @@ using VikingEngine.Graphics;
 namespace VikingEngine.Physics
 {
     //this version only have 1d rotation
-    interface IBound3D
+    public interface IBound3D
     {
         /// <summary>
         /// The radius of a square that surronds the whole bound shape, this is to make a quick and CPU cheap coll check
@@ -46,7 +46,7 @@ namespace VikingEngine.Physics
 
     
 
-    struct CylinderBound : IBound3D
+    public struct CylinderBound : IBound3D
     {
         VectorVolumeC outerBound;
         CylinderVolume volume;
@@ -414,7 +414,7 @@ namespace VikingEngine.Physics
         }
     }
 
-    enum Bound3DType
+    public enum Bound3DType
     {
         Box1axisRotation,
         BoundingBox,

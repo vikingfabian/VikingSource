@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Map
             Tile t;
             Vector3 cornerNW = Vector3.Zero, cornerNE = Vector3.Zero, cornerSW = Vector3.Zero, cornerSE = Vector3.Zero, innerCornerNW = Vector3.Zero, innerCornerNE = Vector3.Zero, innerCornerSW = Vector3.Zero, innerCornerSE = Vector3.Zero;
 
-            Sprite tex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
+            Sprite tex = Sprite.FromName(SpriteName.WhiteArea_LFtiles);
             List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>();
 
             for (int y = 0; y < DssRef.world.Size.Y; ++y)

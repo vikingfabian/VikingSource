@@ -11,7 +11,7 @@ using VikingEngine.LootFest.BlockMap;
 
 namespace VikingEngine.LootFest.GO.EnvironmentObj
 {
-    class AreaLock : AbsInteractionObj
+    public class AreaLock : AbsInteractionObj
     {
         const int Key_RequiredKeyCount = 1;
         const int ThreeKeys_RequiredKeyCount = 3;
@@ -291,7 +291,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
 
     }
 
-    enum AreaUnLockType
+    public enum AreaUnLockType
     {
         Key,
         ThreeKeys,

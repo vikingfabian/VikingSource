@@ -9,7 +9,7 @@ namespace VikingEngine.LootFest.GO
     /// <summary>
     /// Items that need to get their position update from a parent GO, like weapon attacks or shield
     /// </summary>
-    interface IChildObject
+    public interface IChildObject
     {
         /// <summary>
         /// Update position from parent
@@ -22,7 +22,7 @@ namespace VikingEngine.LootFest.GO
         IChildObject LinkedChildObject { get; set; }
     }
 
-    struct ChildObjectsCounter
+    public struct ChildObjectsCounter
     {
         public IChildObject currentChild;
         IChildObject nextChild;
@@ -76,7 +76,7 @@ namespace VikingEngine.LootFest.GO
     /// <summary>
     /// Trigger on next frame
     /// </summary>
-    class GameObjectEventTrigger : OneTimeTrigger
+    public class GameObjectEventTrigger : OneTimeTrigger
     {
         Action eventTrigger;
         AbsUpdateObj go;
@@ -96,7 +96,7 @@ namespace VikingEngine.LootFest.GO
         }
     }
 
-    struct NetworkShare
+    public struct NetworkShare
     {
         public static readonly NetworkShare FullExceptClientDel = new NetworkShare(true, true, false, true);
         public static readonly NetworkShare Full = new NetworkShare(true, true, true, true);
@@ -119,7 +119,7 @@ namespace VikingEngine.LootFest.GO
         }
     }
 
-    struct UpdateArgs
+    public struct UpdateArgs
     {
         public float time;
         public float halfUpdateTime;
@@ -153,10 +153,10 @@ namespace VikingEngine.LootFest.GO
 
     //}
 
-    
 
-    
-    enum ObjPhysicsType
+
+
+    public enum ObjPhysicsType
     {
         NO_PHYSICS,
         CharacterSimple,
@@ -172,21 +172,21 @@ namespace VikingEngine.LootFest.GO
         BouncingObj2,
     }
 
-    enum ObjLevelCollType
+    public enum ObjLevelCollType
     {
         None,
         Standard,
         DefinedArea,
     }
 
-    enum NetworkClientRotationUpdateType
+    public enum NetworkClientRotationUpdateType
     {
         NoRotation,
         FromSpeed,
         Plane1D,
         Full3D,
     }
-    enum AiState
+    public enum AiState
     {
         Init,
         Waiting,
@@ -250,7 +250,7 @@ namespace VikingEngine.LootFest.GO
         NUM_None
     }
 
-    enum RecieveDamageType
+    public enum RecieveDamageType
     {
         /// <summary>
         /// The object dont react to damage what so ever
@@ -274,7 +274,7 @@ namespace VikingEngine.LootFest.GO
         ReceiveDamage,
     }
 
-    enum MountType
+    public enum MountType
     {
         Rider,
         Mount,

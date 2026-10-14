@@ -6,7 +6,7 @@ using VikingEngine.LootFest.BlockMap;
 
 namespace VikingEngine.LootFest.Players
 {
-    class PlayerProgress
+    public class PlayerProgress
     {
         public static readonly KeyValuePair<BabyLocation, int>[] BabyLocation_Id = new KeyValuePair<BabyLocation, int>[]
         {
@@ -193,14 +193,14 @@ namespace VikingEngine.LootFest.Players
         }
     }
 
-    enum ProgressPoint
+    public enum ProgressPoint
     {
         TutorialLobby,
         MainLobby,
         NUM
     }
 
-    enum BabyLocation
+    public enum BabyLocation
     {
         Introduction,
         Goblin,
@@ -214,7 +214,7 @@ namespace VikingEngine.LootFest.Players
         NUM,
     }
 
-    enum UnlockType
+    public enum UnlockType
     {
         Cards,
         Cape,

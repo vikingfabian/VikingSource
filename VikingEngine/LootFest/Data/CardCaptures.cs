@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest
 {
-    struct CardCaptures
+    public struct CardCaptures
     {
         public int BaseCards, SilverCards, GoldCards;
 
@@ -130,14 +130,14 @@ namespace VikingEngine.LootFest
             CardAvailableType.StartDeck,//ScrollDoubleAttack,
         };
     }
-    enum CardAvailableType : byte
+    public enum CardAvailableType : byte
     {
         StartDeck,
         Collectable,
         Unlock,
         NotAvailable,
     }
-    enum CardType
+    public enum CardType
     {
         CritterPig = 0,
         CritterHen = 1,

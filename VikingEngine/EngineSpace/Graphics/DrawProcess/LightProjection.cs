@@ -10,7 +10,7 @@ using VikingEngine.ToGG.ToggEngine;
 
 namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 {
-    class LightProjection
+    public class LightProjection
     {
         public Matrix LightViewMatrix;
         public Matrix LightProjectionMatrix;

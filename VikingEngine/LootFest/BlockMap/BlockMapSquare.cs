@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    struct BlockMapSquare
+    public struct BlockMapSquare
     {
         public static readonly BlockMapSquare Empty = new BlockMapSquare();
 

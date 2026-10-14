@@ -62,34 +62,34 @@ namespace VikingEngine.DSSWars.Data
             });
         }
 
-        public void ToHud(RichBoxContent content, LocalPlayer player, RemotePlayer remotePlayer, NetSessionDisplay netSessionDisplay)
-        {
-            if (recieved == null)
-            {
-                recieved = new List<GiftedAchievementsTypeAndTime>(3);
-            }
+        //public void ToHud(RichBoxContent content, LocalPlayer player, RemotePlayer remotePlayer, NetSessionDisplay netSessionDisplay)
+        //{
+        //    if (recieved == null)
+        //    {
+        //        recieved = new List<GiftedAchievementsTypeAndTime>(3);
+        //    }
 
-            List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
-            foreach (var m in recieved)
-            {
-                if (!m.time.TimeOut())
-                {
-                    buttonContent.Add(new RbImage(GiftedAchievement.DefaultIcon));
-                }
-            }
+        //    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
+        //    foreach (var m in recieved)
+        //    {
+        //        if (!m.time.TimeOut())
+        //        {
+        //            buttonContent.Add(new RbImage(GiftedAchievement.DefaultIcon));
+        //        }
+        //    }
 
-            int emptyCount = MaxRecieveCount - buttonContent.Count;
-            for (int i = 0; i < emptyCount; i++)
-            {
-                buttonContent.Add(new RbImage(GiftedAchievement.EmptyIcon));
-            }
+        //    int emptyCount = MaxRecieveCount - buttonContent.Count;
+        //    for (int i = 0; i < emptyCount; i++)
+        //    {
+        //        buttonContent.Add(new RbImage(GiftedAchievement.EmptyIcon));
+        //    }
 
-            content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction(() =>
-            {
-                netSessionDisplay.sendGiftTo = remotePlayer;
-                player.hud.needRefresh = true;
-            }), new RbTooltip(toolTip, player), remotePlayer != null && emptyCount > 0));
-        }
+        //    content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction(() =>
+        //    {
+        //        netSessionDisplay.sendGiftTo = remotePlayer;
+        //        player.hud.needRefresh = true;
+        //    }), new RbTooltip(toolTip, player), remotePlayer != null && emptyCount > 0));
+        //}
 
         void toolTip(RichBoxContent content, object tag )
         {

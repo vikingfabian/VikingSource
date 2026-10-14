@@ -8,10 +8,35 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+
+
+        public override string Multiplayer_Invite => "Пригласить";
+        public override string JoinFailure_NoAvailableFaction => "Не удалось присоединиться, нет доступных фракций.";
+
+        public override string UnitType_Faction => "Фракция";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => "Перераспределить";
+        public override string ArmyOption_SendHalf => "Отправить половину";
+
+        public override string Tutorial_OpenManual => "Откройте меню паузы и прочитайте о {0} в {1}";
+
+        public override string Hud_ApplyToAll => "Применить ко всем";
+        public override string Hud_OutOfStock => "Нет в наличии";
+
+        public override string Leaderboards_NationStrength => "Военная мощь нации";
+
+        public override string AutoSaveTime => "Интервал автосохранения";
+
+        public override string Editor_ToolOption_Add => "Добавить";
+        public override string Editor_ToolOption_Remove => "Удалить";
+        public override string Editor_ToolOption_Toggle => "Переключить";
         //Multiplayer update
-       
+
         //--
-       
+
         //--
         public override string Unlock_PublicGames => "публичные игры";
         public override string UnlockPublic_Warning1 => "Не играйте с незнакомцами";
@@ -1989,7 +2014,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_Specialization_Sea => "Море";
         public override string Conscript_Specialization_Siege => "Осада";
         public override string Conscript_Specialization_Traditional => "Традиционная";
-        public override string Conscript_Specialization_AntiCavalry => "Против кавалерии";
+        public override string Conscript_Ability_AntiCavalry => "Против кавалерии";
 
         public override string Conscription_Status_CollectingEquipment => "Сбор снаряжения: {0}";
         public override string Conscription_Status_CollectingMen => "Сбор солдат: {0}";

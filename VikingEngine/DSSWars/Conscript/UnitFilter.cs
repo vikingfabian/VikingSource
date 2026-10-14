@@ -32,9 +32,7 @@ namespace VikingEngine.DSSWars.Conscript
         public bool MeleeNotWarMachine()
         {
             return value.Get((int)UnitFilterType.Melee) && !value.Get((int)UnitFilterType.WarMachine);
-        }
-
-        
+        }        
     }
 
     static class UnitFilterLib

@@ -9,7 +9,7 @@ using VikingEngine.LootFest.GO.Bounds;
 
 namespace VikingEngine.LootFest
 {
-    abstract class AbsPhysics
+    public abstract class AbsPhysics
     {
         protected const float CheckMaxHeight = Map.WorldPosition.ChunkHeight - 4;
         public GO.AbsUpdateObj parent;
@@ -267,7 +267,7 @@ namespace VikingEngine.LootFest
         virtual public int MaxBounces { set { throw new NotImplementedException(); } }
     }
 
-    struct GroundWithSlopesData
+    public struct GroundWithSlopesData
     {
         public float BasicY;
         public float slopeY;
@@ -285,7 +285,7 @@ namespace VikingEngine.LootFest
         }
     }
 
-    class NoPhysics : AbsPhysics
+    public class NoPhysics : AbsPhysics
     {
         public NoPhysics()
             : base(null)
@@ -296,7 +296,7 @@ namespace VikingEngine.LootFest
         }
         override public bool HasGroundPhysics { get { return false; } }
     }
-    class ProjectilePhysics : AbsPhysics
+    public class ProjectilePhysics : AbsPhysics
     {
         public ProjectilePhysics(GO.AbsUpdateObj parent)
             : base(parent)
@@ -315,8 +315,8 @@ namespace VikingEngine.LootFest
     }
     //ska wrappa ihop fysiken för varje object
     //kan göras abstract för att ha olika fysik för olika object
-    
-    class FlyingObjPhysics : AbsPhysics
+
+    public class FlyingObjPhysics : AbsPhysics
     {
         public FlyingObjPhysics(GO.AbsUpdateObj parent)
             : base(parent)
@@ -333,7 +333,7 @@ namespace VikingEngine.LootFest
         }
         
     }
-    class BouncingObjPhysics : AbsPhysics
+    public class BouncingObjPhysics : AbsPhysics
     {
         public float Bounciness = 1;
         bool sleeping = false;

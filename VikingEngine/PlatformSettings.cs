@@ -13,7 +13,7 @@ namespace VikingEngine
     {
         public static readonly BuildDebugLevel DebugLevel
 #if DEBUG
-            = BuildDebugLevel.Release;
+            = BuildDebugLevel.Dev;
 #else
             = BuildDebugLevel.Release;
 #endif
@@ -51,7 +51,7 @@ namespace VikingEngine
 
         const bool Debug_BlueScreen = false;
 
-        const bool Debug_DebugWindow = false;
+        private static readonly bool Debug_DebugWindow = false;
 
         const bool Debug_ViewSlowDown = true;
 

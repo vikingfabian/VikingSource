@@ -44,6 +44,13 @@ namespace VikingEngine
         }
     }
 
+    enum ToolAddType
+    {   
+        Add,
+        Remove,
+        Toggle,
+        NUM_NONE
+    }
 
     public enum TimeUnit
     { 

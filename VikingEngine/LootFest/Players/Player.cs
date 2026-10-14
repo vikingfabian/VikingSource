@@ -14,7 +14,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest.Players 
 {
-    partial class Player : AbsPlayer, IMessageHandlerParent
+    public partial class Player : AbsPlayer, IMessageHandlerParent
     {
 
 #region CONSTANTS

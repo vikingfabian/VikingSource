@@ -7,9 +7,9 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.LootFest.BlockMap
 {
-    delegate void RequestWorldCallBack2(AbsLevel level, VikingEngine.LootFest.GO.PlayerCharacter.AbsHero hero, object args);
+    public delegate void RequestWorldCallBack2(AbsLevel level, VikingEngine.LootFest.GO.PlayerCharacter.AbsHero hero, object args);
 
-    class LevelsManager
+    public class LevelsManager
     {
         public Director.ChunkHostDirector chunkHostDirector;
         
@@ -496,7 +496,7 @@ namespace VikingEngine.LootFest.BlockMap
         }
     }
 
-    class WaitingForLevel2
+    public class WaitingForLevel2
     {
         LevelEnum level;
         RequestWorldCallBack2 callback;
@@ -523,7 +523,7 @@ namespace VikingEngine.LootFest.BlockMap
         }
     }
 
-    enum LevelEnum
+    public enum LevelEnum
     {
         Debug,
         Tutorial,

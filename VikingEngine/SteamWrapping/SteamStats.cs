@@ -5,7 +5,7 @@ using Steamworks;
 
 namespace VikingEngine.SteamWrapping
 {
-    class SteamStats
+    public class SteamStats
     {
         //TimeStamp prevCollectTime;
         float prevTotalTimeSec;
@@ -78,7 +78,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    abstract class AbsGameStats
+    public abstract class AbsGameStats
     {
         abstract public List<IStatsValue> collectTimedValues();
         abstract public List<IStatsValue> listGlobalStats();
@@ -87,7 +87,7 @@ namespace VikingEngine.SteamWrapping
         abstract public void collectValues(float prevTotalTimeSec);
     }
 
-    class TestGameStats : AbsGameStats
+    public class TestGameStats : AbsGameStats
     {
         StatsInt testint = new StatsInt("testint");
         StatsFloat testfloat = new StatsFloat("testfloat");
@@ -120,7 +120,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    interface IStatsValue
+    public interface IStatsValue
     {
         bool getStat();
         bool setStat();
@@ -131,7 +131,7 @@ namespace VikingEngine.SteamWrapping
         public string Name { get; }
     }
 
-    struct StatsInt : IStatsValue
+    public struct StatsInt : IStatsValue
     {
         public int value;
         public int valueAtGameStart;

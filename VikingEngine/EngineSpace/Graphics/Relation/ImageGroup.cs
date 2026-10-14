@@ -7,7 +7,7 @@ using VikingEngine.DSSWars;
 
 namespace VikingEngine.Graphics
 {
-    class ImageGroup
+    public class ImageGroup
     {
         public List<AbsDraw> images;
         protected Vector2 posOffset = Vector2.Zero;

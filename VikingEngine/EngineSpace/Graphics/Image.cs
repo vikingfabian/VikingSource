@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace VikingEngine.Graphics
 {
-    class Image : AbsDraw2D
+    public class Image : AbsDraw2D
     {
         public SpriteEffects spriteEffects = SpriteEffects.None;
         protected int spriteIndex;

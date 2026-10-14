@@ -8,12 +8,31 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
-        //Multiplayer update
-        
-        //--
-    
 
-        //--
+        public override string Multiplayer_Invite => "招待";
+        public override string JoinFailure_NoAvailableFaction => "参加に失敗しました。利用可能な勢力がありません。";
+
+        public override string UnitType_Faction => "勢力";
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public override string MenuTab_Reassign => "再配置";
+        public override string ArmyOption_SendHalf => "半分送る";
+
+        public override string Tutorial_OpenManual => "ポーズメニューを開き、{1}で{0}について読んでください";
+
+        public override string Hud_ApplyToAll => "すべてに適用";
+        public override string Hud_OutOfStock => "在庫切れ";
+
+        public override string Leaderboards_NationStrength => "国家軍事力";
+
+        public override string AutoSaveTime => "オートセーブ間隔";
+
+        public override string Editor_ToolOption_Add => "追加";
+        public override string Editor_ToolOption_Remove => "削除";
+        public override string Editor_ToolOption_Toggle => "切り替え";
+        //Multiplayer update
         public override string Unlock_PublicGames => "パブリックゲーム";
         public override string UnlockPublic_Warning1 => "知らないプレイヤーとは遊ばないでください";
         public override string UnlockPublic_Warning2 => "このゲームにはチートや荒らしに対する保護はありません";
@@ -2002,7 +2021,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_Specialization_Sea => "海";
         public override string Conscript_Specialization_Siege => "攻城";
         public override string Conscript_Specialization_Traditional => "伝統的";
-        public override string Conscript_Specialization_AntiCavalry => "対騎兵";
+        public override string Conscript_Ability_AntiCavalry => "対騎兵";
 
         public override string Conscription_Status_CollectingEquipment => "装備を集めています: {0}";
         public override string Conscription_Status_CollectingMen => "兵士を集めています: {0}";

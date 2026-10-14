@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    class CustomEffect_NoColor : CustomEffect
+    public class CustomEffect_NoColor : CustomEffect
     {
         public CustomEffect_NoColor(string TechniqueName, bool usesWorldPos)
             :base(TechniqueName, usesWorldPos)
@@ -33,7 +33,7 @@ namespace VikingEngine.Graphics
 
     }
 
-    class CustomEffect : AbsEffect
+    public class CustomEffect : AbsEffect
     {
         public const string ColorArgument = "ColorAndAlpha";
 

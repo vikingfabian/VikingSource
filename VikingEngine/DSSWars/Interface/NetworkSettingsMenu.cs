@@ -147,17 +147,17 @@ namespace VikingEngine.DSSWars.Interface
 
             for (int i = 0; i < Ref.netsett.storedGamers.Count; i++)
             {
-                if (Ref.netsett.storedGamers.array[i].ban == BanStatus.Banned)
+                if (Ref.netsett.storedGamers.Array[i].ban == BanStatus.Banned)
                 {
                     count++;
                     content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> { new RbText(Ref.netsett.storedGamers.array[i].name) },
+                        new List<AbsRichBoxMember> { new RbText(Ref.netsett.storedGamers.Array[i].name) },
                         new RbAction1Arg<int>((int selected) =>
                         {
-                            var m = Ref.netsett.storedGamers.array[selected];
+                            var m = Ref.netsett.storedGamers.Array[selected];
                             m.ban = BanStatus.None;
-                            Ref.netsett.storedGamers.array[selected] = m;
+                            Ref.netsett.storedGamers.Array[selected] = m;
                             DssRef.storage.Save(null);
                         }, i), new RbTooltip_Text(DssRef.lang.ClickToRemoveBan)));
                 }

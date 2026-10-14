@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -242,12 +242,12 @@ namespace VikingEngine.DSSWars
             if (player.IsRemotePlayer())
             {
                 w.Write((ushort)player.GetRemotePlayer().previousFactionType);
-                player.GetRemotePlayer().previousPlayer.writeGameState(w);
+                player.GetRemotePlayer().previousPlayer.writeGameState(w, false);
             }
             else
             {
                 w.Write((ushort)factiontype);
-                player.writeGameState(w);
+                player.writeGameState(w, false);
             }            
 
             w.Write(money.copper);
@@ -305,7 +305,7 @@ namespace VikingEngine.DSSWars
                         break;
                 }
 
-                player.readGameState(r, subVersion, pointers);
+                player.readGameState(r, false, subVersion, pointers);
 
             
 
@@ -394,34 +394,6 @@ namespace VikingEngine.DSSWars
 
             readResources(r, subVersion);
         }
-            //void writeRelations(System.IO.BinaryWriter w)
-            //{
-            //    for (int i = 0; i < diplomaticRelations.Length; ++i)
-            //    {
-            //        if (diplomaticRelations[i] != null &&
-            //            diplomaticRelations[i].IsFactionOne(this))
-            //        {
-            //            diplomaticRelations[i].write(w);
-            //        }
-            //    }
-            //    w.Write(short.MinValue);
-            //}
-
-            //void readRelations(System.IO.BinaryReader r, int subVersion)
-            //{
-            //    while (true)
-            //    {
-            //        DiplomaticRelation relation = new DiplomaticRelation();
-            //        if (relation.read(r, subVersion))
-            //        {
-            //            relation.addToFactions();
-            //        }
-            //        else
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
 
         void writeResources(System.IO.BinaryWriter w)
         {
@@ -1156,7 +1128,7 @@ namespace VikingEngine.DSSWars
                 IconName.Relation(relation, out SpriteName relIcon, out string relName);
                 content.Add(new RbImage(relIcon));
             }
-            if (player.IsRemotePlayer())
+            if (player != null && player.IsRemotePlayer())
             {
                 content.space(0.5f);
                 content.Add(new RbGamerIcon(((RemotePlayer)player).networkPeer.peer, 0.8f));
@@ -1246,6 +1218,8 @@ namespace VikingEngine.DSSWars
                 DssRef.state.events.onFactionDestroyed(this);
                 DssRef.world.diplomacy.onFactionDeath(this.pfaction);
 
+                ClearModels();
+
                 if (factiontype == FactionType.Player)
                 {
                     DssRef.state.events.onPlayerDeath();
@@ -1255,7 +1229,7 @@ namespace VikingEngine.DSSWars
                 {
                     Debug.CrashIfThreaded();
                     var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionDeath, PacketReliability.Reliable);
-;                   pfaction.write(w);
+                    pfaction.write(w);
                 }
             }
         }
@@ -1401,7 +1375,7 @@ namespace VikingEngine.DSSWars
             {
                 if (loop.Relation().InWar())
                 {
-                    if (loop.OtherFaction(out var opponent) && opponent.player.IsHumanPlayer())
+                    if (loop.OtherFaction(out var opponent) && opponent.player != null && opponent.player.IsHumanPlayer())
                     {
                         ++playerWars;
                     }

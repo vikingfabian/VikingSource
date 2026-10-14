@@ -16,7 +16,7 @@ namespace VikingEngine.SteamWrapping
         5. There may or may not be a user interface associated with the lobby; if there is, the lobby data communications functions can be used to send chat messages between lobby members. Voice data can also be sent, but needs to sent using the peer-to-peer networking API.
         6. Once the game is ready to launch, the users all join the game server, or connect to the user nominated to host the game, and then leave the lobby. Once all users have left a lobby, it is automatically destroyed.
     */
-    class SteamLobbyMatchmaker
+    public class SteamLobbyMatchmaker
     {
         public CSteamID currentLobbyID = CSteamID.Nil;
         public CSteamID inviteFromLobby = CSteamID.Nil;

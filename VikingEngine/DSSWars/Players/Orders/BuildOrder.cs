@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 {
     abstract class AbsBuildOrder : AbsOrder
     {
-        public City city;
+        public PMapObject pcity;
         protected IntVector2 subTile;
         protected VoxelModelInstance model;
 
@@ -28,8 +28,13 @@ namespace VikingEngine.DSSWars.Players.Orders
             //Debug.CrashIfThreaded();
             model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f);
             model.Frame = frame;
-            model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
+            //refreshYpos();
             model.setVisibleCamera(playerIx);
+        }
+
+        override public void refreshYpos()
+        { 
+            model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
         }
 
         public override bool IsBuildOnSubTile(IntVector2 subTile)
@@ -72,7 +77,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             this.upgrade = upgrade;
             baseInit(priority);
-            this.city = city;
+            this.pcity = city.mapObjPointer();
             this.subTile = subTile;
             this.buildingType = buildingType;
             this.upgrade = upgrade;
@@ -84,18 +89,26 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
 
             createModel(0, playerIx);
+            
 
-            Vector3 iconPos = model.position;
-            iconPos.Y += model.scale.Y * 6f;
-            iconPos.Z += model.scale.Y * 0.3f;
 
-            icon = new Mesh(LoadedMesh.plane, iconPos, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].sprite, Color.White, false);
+            icon = new Mesh(LoadedMesh.plane, Vector3.Zero, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].sprite, Color.White, false);
 #if DEBUG
             icon.DebugName = "BuildOrder icon";
 #endif
             icon.Opacity = 0.8f;
             icon.Rotation = DssLib.FaceForwardRotation;
             icon.AddToRender(DrawGame.UnitDetailLayer);
+            refreshYpos();
+        }
+
+        public override void refreshYpos()
+        {
+            base.refreshYpos();
+            Vector3 iconPos = model.position;
+            iconPos.Y += model.scale.Y * 6f;
+            iconPos.Z += model.scale.Y * 0.3f;
+            icon.position = iconPos;
         }
 
         public override RichBoxContent ToHud()
@@ -103,14 +116,14 @@ namespace VikingEngine.DSSWars.Players.Orders
            
             RichBoxContent content = new RichBoxContent();
             content.h2(SpriteName.WarsConstructBuildingIcon, upgrade ? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
-            BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city, upgrade);
+            BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, pcity.GetCity(), upgrade);
 
             content.newLine();
             HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
             content.space();
             content.Add(new RbText(priority.ToString()));
 
-            BuildControls.buildTooltip_YouOwn(city, content, buildingType);
+            BuildControls.buildTooltip_YouOwn(pcity.GetCity(), content, buildingType);
 
             return content;
         }
@@ -119,16 +132,19 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             base.writeGameState(w);
 
-            w.Write((ushort)city.myIndex);
+            //w.Write((ushort)pcity.myIndex);
+            pcity.writeCity(w);
             //subTile.write(w);
             WP.writeSubTilePos(w, subTile);
             w.Write((byte)buildingType);
         }
-        override public void readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        override public bool readGameState(int playerIx, System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             base.readGameState(playerIx, r, subversion, pointers);
 
-            city = DssRef.world.cities[r.ReadUInt16()];
+            //int cityIndex = r.ReadUInt16();
+            pcity.readCity(r);
+            //pcity = DssRef.world.cities[cityIndex];
             if (subversion >= 132)
             {
                 subTile = WP.readSubTilePos(r);
@@ -139,7 +155,13 @@ namespace VikingEngine.DSSWars.Players.Orders
             }
             buildingType = (BuildAndExpandType)r.ReadByte();
 
-            onAdd(playerIx);
+            if (pcity.TryGetCity(out _))
+            {
+                onAdd(playerIx);
+                return true;
+            }
+            return false;
+            
         }
 
         override public void DeleteMe()
@@ -155,7 +177,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         
         public override bool BuildQueue(City city)
         {
-            if (this.city == city && orderStatus != OrderStatus.Complete)
+            if (this.pcity.objectIndex == city.myIndex && orderStatus != OrderStatus.Complete)
             {
                 return true;
             }
@@ -171,16 +193,14 @@ namespace VikingEngine.DSSWars.Players.Orders
             return result;
         }
 
-      
-
         public override bool refreshAvailable(PFaction faction)
         {
-            return city.pfaction == faction;
+            return pcity.pfaction == faction;
         }
 
         override public OrderType GetWorkType(City city)
         {
-            if (this.city == city)
+            if (this.pcity.objectIndex == city.myIndex)
             {
                 return OrderType.Build;
             }

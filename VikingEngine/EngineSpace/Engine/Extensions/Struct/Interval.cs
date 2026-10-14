@@ -46,9 +46,9 @@ namespace VikingEngine
     //        return "Range Min" + Min.ToString() + " Max" + Max.ToString();
     //    }
     //}
-    
-    
-    struct Range
+
+
+    public struct Range
     {
         public static readonly Range Zero = new Range();
 

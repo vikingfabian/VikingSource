@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -336,7 +336,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 
                 var tile = world.tileGrid.Get(loop.Position);
-                tile.CityIndex = city.myIndex;
+                tile.CityIndex = (short)city.myIndex;
                 world.tileGrid.Set(loop.Position, tile);
 
                 //var r = loop.Position.SideLength(city.tilePos);

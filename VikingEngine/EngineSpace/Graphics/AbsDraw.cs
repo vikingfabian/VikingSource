@@ -8,7 +8,7 @@ using VikingEngine.ToGG;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsDraw : IDeleteable, IPosition, ISpottedArrayMember
+    public abstract class AbsDraw : IDeleteable, IPosition, ISpottedArrayMember
     {
         /* Properties */
         //public int InDrawBatchCount = 0;

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.LootFest.GO.PickUp
 {
-    abstract class AbsHeroPickUp : AbsPickUp
+    public abstract class AbsHeroPickUp : AbsPickUp
     {
         public bool isUnlockItem = false;
         protected float RotationSpeed = 0.002f;

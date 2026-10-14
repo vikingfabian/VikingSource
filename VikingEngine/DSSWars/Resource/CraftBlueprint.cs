@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.Resource
             foreach (var r in resources)
             {
                 var res = city.GetGroupedResource(r.type);
-                if (res.amount < r.amount)
+                if (res.amount - res.reservedUseCount < r.amount)
                 {
                     return false;
                 }
@@ -96,18 +96,18 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
-        public bool hasResources(City city)
-        {
-            foreach (var r in resources)
-            {
-                var res = city.GetGroupedResource(r.type);
-                if (res.amount < r.amount)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+        //public bool available(City city)
+        //{
+        //    foreach (var r in resources)
+        //    {
+        //        var res = city.GetGroupedResource(r.type);
+        //        if (res.amount  < r.amount)
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    return true;
+        //}
 
         public bool hasResources_ignorewater(City city)
         {

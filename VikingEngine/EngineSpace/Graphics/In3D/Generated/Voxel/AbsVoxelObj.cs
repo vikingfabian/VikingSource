@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Graphics
 {
-    abstract class AbsVoxelObj : Abs3DModel
+    public abstract class AbsVoxelObj : Abs3DModel
     {
         public LoadedTexture texture = LoadedTexture.NO_TEXTURE;
         /* Static */
@@ -14,7 +14,7 @@ namespace VikingEngine.Graphics
 
         static int NextIndex()
         {
-            int result = CurrentVoxelModelIndex++;
+            int result = System.Threading.Interlocked.Increment(ref CurrentVoxelModelIndex) - 1;
             if (result == 52)
             {
                 lib.DoNothing();

@@ -9,7 +9,7 @@ using VikingEngine.DSSWars;
 
 namespace VikingEngine.SteamWrapping
 {
-    struct DlcDescriptor
+    public struct DlcDescriptor
     {
         public AppId_t appId;
         public bool owned;
@@ -42,7 +42,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    class SteamDLC
+    public class SteamDLC
     {        
         Callback<DlcInstalled_t> DlcInstalledCB;
                 

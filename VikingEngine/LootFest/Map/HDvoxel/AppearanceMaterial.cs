@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 namespace VikingEngine.LootFest.Map.HDvoxel
 {
 
-    struct TwoAppearanceMaterials
+    public struct TwoAppearanceMaterials
     {
         public AppearanceMaterial mat1, mat2;
 
@@ -17,7 +17,7 @@ namespace VikingEngine.LootFest.Map.HDvoxel
         }
     }
 
-    struct AppearanceMaterial
+    public struct AppearanceMaterial
     {
         public static AppearanceMaterial Material1, Material2, Material3, Material4, Material5;
 

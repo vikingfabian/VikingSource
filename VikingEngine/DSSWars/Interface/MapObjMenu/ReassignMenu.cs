@@ -128,7 +128,11 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             RichBoxContent content = new RichBoxContent();
 
             content.h1(string.Format( DssRef.lang.ArmyOption_SendToX, string.Empty), HudLib.TitleColor_Head);
-
+            if (player.gameControls.input.inputSource.HasControllerInput)
+            { 
+                content.icontext(player.gameControls.input.Controller_ObjectMenuToggle.Icon, DssRef.lang.InputActionName_ToggleMenu, HudLib.TitleColor_Action);
+            }
+            
             content.newParagraph();
             //TABS
             var tabs = new List<ArtTabMember>(player.movingGroupsCollection.otherArmies.Count);

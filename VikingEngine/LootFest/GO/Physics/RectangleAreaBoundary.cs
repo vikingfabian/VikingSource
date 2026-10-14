@@ -8,7 +8,7 @@ namespace VikingEngine.LootFest.GO.Physics
     /// <summary>
     /// Limits a gameObject to a limited area
     /// </summary>
-    class RectangleAreaBoundary
+    public class RectangleAreaBoundary
     {
         public Rectangle2 areaWorldXZ;
         public bool hardBound = true;

@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
 
     struct HudPin
     {
-        static readonly Color BgCol = new Color(0, 0, 0.1f, 0.4f);
+        public static readonly Color BgCol = new Color(0, 0, 0.1f, 0.4f);
         public static readonly HudPin Empty = new HudPin();
 
         public HudPinType type;

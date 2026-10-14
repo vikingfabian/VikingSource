@@ -9,7 +9,7 @@ namespace VikingEngine
     /// <summary>
     /// Used for obiect culling out side an area
     /// </summary>
-    struct Intvector2MinMax
+    public struct Intvector2MinMax
     {
         public IntVector2 min, max;
 

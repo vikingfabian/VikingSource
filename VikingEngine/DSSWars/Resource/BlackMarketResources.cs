@@ -209,7 +209,7 @@ namespace VikingEngine.DSSWars.Resource
                         if (outOfStock)
                         {
                             content.newLine();
-                            content.iconicontext(SpriteName.WarsStockpileLimit, HudLib.NotAvailableIcon, DssRef.todoLang.Hud_OutOfStock);
+                            content.iconicontext(SpriteName.WarsStockpileLimit, HudLib.NotAvailableIcon, DssRef.lang.Hud_OutOfStock);
                         }
 
                         content.newParagraph();

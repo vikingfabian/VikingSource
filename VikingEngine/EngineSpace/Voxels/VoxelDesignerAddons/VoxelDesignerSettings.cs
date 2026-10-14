@@ -9,7 +9,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.Voxels
 {
-    struct PaintSettings
+    public struct PaintSettings
     {
         public PaintToolType drawTool = PaintToolType.Rectangle;
         public int pencilSize = 3;
@@ -48,7 +48,7 @@ namespace VikingEngine.Voxels
         }
     }
 
-    class VoxelDesignerSettings
+    public class VoxelDesignerSettings
     {
         public BlockHD Material = new BlockHD(Color.LightBlue, MaterialProperty.Default);//new BlockHD(Color.Red);
         public BlockHD SecondaryMaterial = new BlockHD(Color.Yellow, MaterialProperty.Default);//new BlockHD(Color.Yellow);

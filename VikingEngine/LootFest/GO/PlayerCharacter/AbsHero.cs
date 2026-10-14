@@ -14,7 +14,7 @@ using VikingEngine.Input;
 
 namespace VikingEngine.LootFest.GO.PlayerCharacter
 {
-    abstract class AbsHero : Characters.AbsCharacter, IFirstPerson
+    public abstract class AbsHero : Characters.AbsCharacter, IFirstPerson
     {
         const float DamageImmortalyTimeMs = 500;
         public Players.InputMap inputMap;

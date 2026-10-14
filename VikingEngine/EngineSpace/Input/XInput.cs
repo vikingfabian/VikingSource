@@ -254,9 +254,9 @@ namespace VikingEngine.Input
             }
         }
     }
-    
 
-    class ThumbStick
+
+    public class ThumbStick
     {
         JoyStickValue value = new JoyStickValue();
         DirXYstepping stepping = new DirXYstepping();
@@ -278,7 +278,7 @@ namespace VikingEngine.Input
         public IntVector2 Stepping => value.Stepping;
     }
 
-    struct DirXYstepping
+    public struct DirXYstepping
     {
         public DirectionalStepping x;
         public DirectionalStepping y;
@@ -293,7 +293,7 @@ namespace VikingEngine.Input
         }
     }
 
-    struct DirectionalStepping
+    public struct DirectionalStepping
     {
         float accumulation;
         bool keyDown;

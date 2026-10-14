@@ -22,7 +22,24 @@ namespace VikingEngine.DSSWars.Map.Map2
             // 1. GENERATE CORNERS
             // Get 4 random angles in radians
             angles = new float[4];
-            for (int i = 0; i < 4; i++)
+
+            //Forcing at least 90 degrees
+            float a1 = rnd.Rotation();
+            float a2 = a1 + MathExt.TauOver2 + rnd.Float(-MathExt.TauOver4, MathExt.TauOver4);
+
+            if (a2 < 0)
+            {
+                a2 += MathHelper.Tau;
+            }
+            else if(a2 >= MathHelper.Tau)
+            { 
+                a2 -= MathHelper.Tau;
+            }
+            
+            angles[0] = a1;
+            angles[1] = a2;
+
+            for (int i = 2; i < 4; i++)
             {
                 angles[i] = rnd.Rotation();
             }
@@ -37,7 +54,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             
         //}
 
-        public Intvector2MinMax BeginDraw(WorldData2 world /*PcgRandom rnd, Vector2 center, float radius*/)
+        public Intvector2MinMax BeginDraw(IconWorldData world /*PcgRandom rnd, Vector2 center, float radius*/)
         {
             //Random rnd = new Random();
 

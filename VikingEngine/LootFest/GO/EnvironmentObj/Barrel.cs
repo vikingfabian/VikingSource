@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.LootFest.GO.EnvironmentObj
 {
-    class AbsCarryObject : AbsGameObject
+    public class AbsCarryObject : AbsGameObject
     {
          
 

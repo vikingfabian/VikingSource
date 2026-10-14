@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars
                 //Clear out!
                 for (int i = 0; i < WorkerXpCOUNT; ++i)
                 {
-                    workerXp.array[i + start] = WorkExperience.Empty;
+                    workerXp.Array[i + start] = WorkExperience.Empty;
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars
             int arrayIx = index * WorkerXpCOUNT + (int)type;
             if (workerXp.InBound_Array(arrayIx))
             {
-                return workerXp.array[arrayIx];
+                return workerXp.Array[arrayIx];
             }
 
             return empty;
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars
                 throw new Exception();
             }
 #endif
-            workerXp.array[index * WorkerXpCOUNT + (int)type].xp = xp;
+            workerXp.Array[index * WorkerXpCOUNT + (int)type].xp = xp;
         }
 
         WorkExperience empty = new WorkExperience();
@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars
 #endif
             if (index >= 0)
             {
-                return ref workerXp.array[arrayIx];
+                return ref workerXp.Array[arrayIx];
             }
 
             return ref empty;
@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars
 
                 for (int i = 0; i < WorkerXpCOUNT; ++i)
                 {
-                    workerXp.array[i + start].write(w);
+                    workerXp.Array[i + start].write(w);
                 }
             }
             else
@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars
 
             for (int i = 0; i < WorkerXpCOUNT; ++i)
             {
-                workerXp.array[i + start].read(r);
+                workerXp.Array[i + start].read(r);
             }
         }
 
@@ -172,7 +172,7 @@ namespace VikingEngine.DSSWars
 
                 for (int i = 0; i < WorkerXpCOUNT; ++i)
                 {
-                    score += MathExt.Square(workerXp.array[i + start].xp);
+                    score += MathExt.Square(workerXp.Array[i + start].xp);
                 } 
             }
             return score;
@@ -186,9 +186,9 @@ namespace VikingEngine.DSSWars
 
             for (int i = 0; i < WorkerXpCOUNT; ++i)
             {
-                if (workerXp.array[i + start].xp >= DssConst.WorkXpToLevel)
+                if (workerXp.Array[i + start].xp >= DssConst.WorkXpToLevel)
                 {
-                    xpPairs.Add(new (workerXp.array[i + start], (WorkExperienceType)i));
+                    xpPairs.Add(new (workerXp.Array[i + start], (WorkExperienceType)i));
                 }
             }
             
@@ -204,6 +204,15 @@ namespace VikingEngine.DSSWars
             for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
             {
                 cityResouces[i].amount = 0;
+            }
+        }
+
+        public void flushCityReserves(City city)
+        {
+            int ex_end = city.resourceComponentStartIndex + CityResourceIndex.COUNT;
+            for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
+            {
+                cityResouces[i].reservedUseCount = 0;
             }
         }
 
@@ -224,11 +233,11 @@ namespace VikingEngine.DSSWars
             initWorkerXp(cityCount);
 
             cityResouces = new GroupedResource[CityResourceIndex.COUNT * cityCount];
-            neighborCities = new EcsStaticIndexArray(16, cityCount);
+            neighborCities = new EcsStaticIndexArray(18, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
 
-            int resourceStart = 0;
+            //int resourceStart = 0;
             //int workStart = 0;
 
             int startWood, startLinnen, startFood;
@@ -256,7 +265,7 @@ namespace VikingEngine.DSSWars
             {
                 for (int resourceIx = 0; resourceIx < CityResourceIndex.COUNT; ++resourceIx)
                 {
-                    cityResouces[resourceStart + resourceIx] = new GroupedResource();
+                    cityResouces[resStartIndex + resourceIx] = new GroupedResource();
                 }
 
                 cityResouces[resStartIndex + CityResourceIndex.wood].amount = startWood;
@@ -266,7 +275,7 @@ namespace VikingEngine.DSSWars
                 cityResouces[resStartIndex + CityResourceIndex.skinLinnen].amount = startLinnen;                
                 cityResouces[resStartIndex + CityResourceIndex.iron].amount = 20;
 
-                resourceStart += CityResourceIndex.COUNT;
+                resStartIndex += CityResourceIndex.COUNT;
 
                 WorkTemplate.InitComponents(cityWork, startIndex);
 
@@ -287,11 +296,32 @@ namespace VikingEngine.DSSWars
                 cityStorage[i].write(w);
             }
         }
-        public void readComponents(System.IO.BinaryReader r, int subVersion)
+        public void readComponents(System.IO.BinaryReader r, int subVersion) //TODO move to city read
         {
             for (int i = 0; i < cityStorage.Length; i++)
             {
                 cityStorage[i].read(r, subVersion);
+            }
+        }
+
+        public void writeCityStorage(System.IO.BinaryWriter w, City city)
+        {
+            for (StorageType storageType = 0; storageType < StorageType.NUM_NONE; storageType++)
+            {
+                cityStorage[StorageSize.COUNT * city.myIndex + (int)storageType].write(w);
+            }
+        }
+        public void readCityStorage(System.IO.BinaryReader r, City city)
+        {
+            for (StorageType storageType = 0; storageType < StorageType.NUM_NONE; storageType++)
+            {
+                StorageSize size = new StorageSize();
+                size.read(r, int.MaxValue);
+                int ix = StorageSize.COUNT * city.myIndex + (int)storageType;
+                if (arraylib.InBound(cityStorage, ix))
+                {
+                    cityStorage[ix] = size;
+                } 
             }
         }
     }

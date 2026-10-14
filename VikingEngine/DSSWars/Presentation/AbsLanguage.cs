@@ -9,8 +9,35 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
-        //Multiplayer update
         
+
+   
+
+        //QoL Update
+        public abstract string Multiplayer_Invite { get; }
+        public abstract string JoinFailure_NoAvailableFaction { get; }
+        public abstract string UnitType_Faction { get; }
+
+        /// <summary>
+        /// Move soldiers between armies
+        /// </summary>
+        public abstract string MenuTab_Reassign { get; }
+        public abstract string ArmyOption_SendHalf { get; }
+        public abstract string Tutorial_OpenManual { get; }
+
+        public abstract string Hud_ApplyToAll { get; }
+        public abstract string Hud_OutOfStock { get; }
+        public abstract string Leaderboards_NationStrength { get; }
+        public abstract string AutoSaveTime { get; }
+
+        public abstract string Editor_ToolOption_Add { get; }
+        public abstract string Editor_ToolOption_Remove { get; }
+        public abstract string Editor_ToolOption_Toggle { get; }
+
+
+
+        //Multiplayer update
+
         abstract public string Unlock_PublicGames { get; }
         abstract public string UnlockPublic_Warning1 { get; }
         abstract public string UnlockPublic_Warning2 { get; }
@@ -1388,7 +1415,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Conscript_Specialization_Sea { get; }
         public abstract string Conscript_Specialization_Siege { get; }
         public abstract string Conscript_Specialization_Traditional { get; }
-        public abstract string Conscript_Specialization_AntiCavalry { get; }
+        public abstract string Conscript_Ability_AntiCavalry { get; }
 
         public abstract string Conscription_Status_CollectingEquipment { get; }
         public abstract string Conscription_Status_CollectingMen { get; }

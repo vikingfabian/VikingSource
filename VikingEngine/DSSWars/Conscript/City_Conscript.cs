@@ -61,6 +61,10 @@ namespace VikingEngine.DSSWars.GameObject
                                     status.inProgress = status.profile;
                                     status.unitsCollected = 0;
                                 }
+                                if (!buildingStructure.greatHall && buildingStructure.gotUpdate)
+                                {
+                                    status.profile.checkFollowsSimplifiedConscript();
+                                }
                                 break;
 
                             case ConscriptActiveStatus.CollectingEquipment:

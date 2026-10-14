@@ -133,14 +133,7 @@
 
 
 // -------- Platform defines (same as your cutout) -----------------------------
-#if OPENGL
-#define SV_POSITION POSITION
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
-#else
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
-#endif
+#include "VikingMacros.fxh"
 
 // -------- Shared matrices you already use elsewhere --------------------------
 float4x4 ModelToView;
@@ -177,6 +170,8 @@ float3 HighlightColor = float3(1, 1, 1); // solid highlight color
 float SpecularThreshold = 0.6; // higher = smaller highlight patch
 
 // -------- Textures -----------------------------------------------------------
+#if OPENGL
+
 texture Texture;
 sampler2D TextureSampler = sampler_state
 {
@@ -186,8 +181,8 @@ sampler2D TextureSampler = sampler_state
     AddressU = Wrap;
     AddressV = Wrap;
 };
+#define SAMPLE_WATER_TEX(coords) tex2D(TextureSampler, coords)
 
-// Scene/camera depth texture (should be the depth BEFORE water is drawn)
 texture SceneDepthMap;
 sampler2D SceneDepthSampler = sampler_state
 {
@@ -198,6 +193,59 @@ sampler2D SceneDepthSampler = sampler_state
     AddressU = Clamp;
     AddressV = Clamp;
 };
+#define SAMPLE_SCENEDEPTH(coords) tex2D(SceneDepthSampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> Texture : register(t0);
+sampler TextureSampler : register(s0) = sampler_state
+{
+    Texture = (Texture);
+    Filter = ANISOTROPIC;
+    MaxAnisotropy = 16;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+#define SAMPLE_WATER_TEX(coords) Texture.Sample(TextureSampler, coords)
+
+Texture2D<float4> SceneDepthMap : register(t1);
+sampler SceneDepthSampler : register(s1) = sampler_state
+{
+    Texture = (SceneDepthMap);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_SCENEDEPTH(coords) SceneDepthMap.Sample(SceneDepthSampler, coords)
+
+#else
+
+Texture2D Texture : register(t0);
+sampler TextureSampler : register(s0) = sampler_state
+{
+    Texture = (Texture);
+    Filter = ANISOTROPIC;
+    MaxAnisotropy = 16;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+#define SAMPLE_WATER_TEX(coords) Texture.Sample(TextureSampler, coords)
+
+Texture2D SceneDepthMap : register(t1);
+sampler SceneDepthSampler : register(s1) = sampler_state
+{
+    Texture = (SceneDepthMap);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+#define SAMPLE_SCENEDEPTH(coords) SceneDepthMap.Sample(SceneDepthSampler, coords)
+
+#endif
 
 // -------- Vertex / Pixel structs --------------------------------------------
 struct VSInput
@@ -339,10 +387,10 @@ V2P VShader_Water(VSInput input)
 }
 
 // -------- Pixel shader: toon + depth-based foam ------------------------------
-float4 PShader_Water(V2P i) : COLOR
+float4 PShader_Water(V2P i) : SV_TARGET
 {
     // Base albedo from texture, tinted
-    float3 texCol = tex2D(TextureSampler, i.UV).rgb;
+    float3 texCol = SAMPLE_WATER_TEX(i.UV).rgb;
     float3 baseColor = texCol * WaterAlbedo;
 
     // Lighting (view space)
@@ -351,7 +399,7 @@ float4 PShader_Water(V2P i) : COLOR
     float3 lit = ApplyToonLighting(baseColor, i.ViewNormal, V, L);
 
     // Sample scene depth and remap to [0,1] if needed
-    float sceneDepthSample = tex2D(SceneDepthSampler, i.ScreenUV).r;
+    float sceneDepthSample = SAMPLE_SCENEDEPTH(i.ScreenUV).r;
     float sceneDepth01 = sceneDepthSample * DepthRemapA + DepthRemapB;
 
     // Positive when geometry is behind water along the eye ray (i.e., underwater)

@@ -9,7 +9,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest.Map
 {
-    struct PreparedFace
+    public struct PreparedFace
     {
         const float ShadowSideDarkness = 0.5f;
         const float LightSideDarkness = 0.15f;

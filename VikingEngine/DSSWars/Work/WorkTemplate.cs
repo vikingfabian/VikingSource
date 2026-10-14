@@ -267,6 +267,7 @@ namespace VikingEngine.DSSWars.Work
 
         public WorkPriority GetWorkPriority(ItemResourceType item, out bool hasPriority)
         {
+            
             var priorityType = ItemPropertyColl.Get(item).work;
             if (priorityType == WorkPriorityType.NUM_NONE)
             {

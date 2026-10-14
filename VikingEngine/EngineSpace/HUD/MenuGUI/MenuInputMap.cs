@@ -9,7 +9,7 @@ using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.HUD
 {
-    class MenuInputMap
+    public class MenuInputMap
     {
         public IButtonMap OpenCloseKeyBoard;
         public IButtonMap OpenCloseController;

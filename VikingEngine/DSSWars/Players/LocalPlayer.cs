@@ -382,34 +382,37 @@ namespace VikingEngine.DSSWars.Players
             }   
         }
 
-        public override void writeGameState(BinaryWriter w)
+        public override void writeGameState(BinaryWriter w, bool isNetClient)
         {
-            base.writeGameState(w);
-
             w.Write((short)diplomaticPoints.Int());
 
             statistics.writeGameState(w);
 
-
-            foreach (var kv in toPlayerDiplomacies)
+            if (!isNetClient)
             {
-                kv.Key.write(w);
-                kv.Value.writeGameState(w);
-            }
-            w.Write(ushort.MaxValue);
+                foreach (var kv in toPlayerDiplomacies)
+                {
+                    kv.Key.write(w);
+                    kv.Value.writeGameState(w);
+                }
 
+                w.Write(ushort.MaxValue);
+            }
             automation.writeGameState(w);
 
             Debug.WriteCheck(w);
 
-            tutorial_writeGameState(w);
+            if (!isNetClient)
+            {
+                tutorial_writeGameState(w);
+            }
             orders.writeGameState(w);
 
             cityHudSettings.write(w);   
             armyHudSettings.write(w);
 
             firstAttacker.write(w);
-            //w.Write((ushort)firstAttacker);
+            
             w.Write((ushort)nextDominationSize);
             w.Write(cohalitionEvent);
             w.Write(barbarianKiller);
@@ -423,18 +426,15 @@ namespace VikingEngine.DSSWars.Players
             hud.pins.writeGameState(w);
 
             tooPeacefulCheckTimer.write(w);
-            //gameControls.build.buildPriority.writeGameState(w, false);
 
             writeBlackMarket(w);
 
             Debug.WriteCheck(w);
         }
 
-        
-        public override void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        public override void readGameState(BinaryReader r, bool isNetClient, int subversion, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, subversion, pointers);
-
+            
             if (isDropInPlayer)
             {
                 readAiPlayerGameState(r, subversion);
@@ -442,21 +442,19 @@ namespace VikingEngine.DSSWars.Players
             }
 
             diplomaticPoints.value = r.ReadInt16();
-
+            
             statistics.readGameState(r, subversion);
 
-            if (subversion >= 59)
+            if (!isNetClient)
             {
                 while (true)
                 {
 
                     var rpfaction = PFaction.Empty;
-                    //int factionIndex = -1;
 
                     if (subversion >= 114)
                     {
                         rpfaction.read(r);
-                        //factionIndex = r.ReadUInt16();
                     }
                     else
                     {
@@ -473,7 +471,7 @@ namespace VikingEngine.DSSWars.Players
                         PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy(rpfaction);
 
                         tp.readGameState(r, subversion);
-                        toPlayerDiplomacies.Add(rpfaction, tp);                        
+                        toPlayerDiplomacies.TryAdd(rpfaction, tp);
                     }
                     else
                     {
@@ -481,11 +479,11 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
+            
 
             automation.readGameState(r, subversion);
 
-            // Debug.ReadCheck(r);//TEMP!
-            if (subversion >= 133)
+            if (subversion >= 138)
             {
                 Debug.ReadCheck(r);
             }
@@ -493,7 +491,10 @@ namespace VikingEngine.DSSWars.Players
             {
                 var none1 = r.ReadInt32();
             }
-            tutorial_readGameState(r, subversion);
+            if (!isNetClient)
+            {
+                tutorial_readGameState(r, subversion);
+            }
 
             orders.readGameState(playerData.localPlayerIndex, r, subversion, pointers);
 
@@ -508,37 +509,22 @@ namespace VikingEngine.DSSWars.Players
                 armyHudSettings.read(r, subversion);
             }
 
-            if (subversion >= 73)
-            {
-                firstAttacker.read(r);
-                //firstAttacker = r.ReadUInt16();
-            }
+            
+            firstAttacker.read(r);
             nextDominationSize = r.ReadUInt16();
-            if (subversion < 72)
-            {
-                r.ReadUInt16();
-            }
-            else
-            {
-                cohalitionEvent = r.ReadBoolean();
-                barbarianKiller = r.ReadBoolean();
-                factionsTerminated = r.ReadUInt16();
-            }
+            
+            cohalitionEvent = r.ReadBoolean();
+            barbarianKiller = r.ReadBoolean();
+            factionsTerminated = r.ReadUInt16();
+            
 
-            if (subversion > 53)
-            {
-                readPins(r, subversion);
-            }
+            readPins(r, subversion);
+            
 
-            if (subversion >= 66)
-            {
-                storedCameraPos.readGameState(r, subversion);
-            }
-            if (subversion >= 69)
-            {
-                hud.pins.readGameState(r, subversion);
-            }
-
+            storedCameraPos.readGameState(r, subversion);
+            
+            hud.pins.readGameState(r, subversion);
+            
             if (subversion >= 85)
             {
                 tooPeacefulCheckTimer.read(r);
@@ -556,7 +542,7 @@ namespace VikingEngine.DSSWars.Players
         }
         public void readBlackMarket(BinaryReader r, int subversion)
         {
-            if (subversion >= 132)
+            if (subversion >= 138)
             {
                 BlackMarketCount = r.ReadUInt16();
                 PrevCityCount = r.ReadUInt16();
@@ -582,9 +568,11 @@ namespace VikingEngine.DSSWars.Players
         }
         public void writeClientSave(BinaryWriter w)
         {
-            orders.writeGameState(w);
+            //orders.writeGameState(w);
 
-            writePins(w);
+            //writePins(w);
+            writeGameState(w, true);
+
             Debug.WriteCheck(w);
 
             pfaction.GetFaction().writeClientState(w);
@@ -621,9 +609,16 @@ namespace VikingEngine.DSSWars.Players
         }
         public void readClientSave(int playerIx, BinaryReader r, int subversion)
         {
-            orders.readGameState(playerIx, r, subversion, null);
+            if (subversion < 138)
+            {
+                orders.readGameState(playerIx, r, subversion, null);
 
-            readPins(r, subversion);
+                readPins(r, subversion);
+            }
+            else
+            {
+                readGameState(r, true, subversion, null);
+            }
             Debug.ReadCheck(r);
                         
             var f = pfaction.GetFaction();
@@ -1200,9 +1195,9 @@ namespace VikingEngine.DSSWars.Players
                     var buildOrder = orders.orders[i].GetBuild();
                     if (buildOrder != null)
                     {
-                        if (!Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.city))
+                        if (!Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.pcity.GetCity()))
                         {
-                            buildOrder.city.WorkerStats_StuckBuildings_Process++;
+                            buildOrder.pcity.GetCity().WorkerStats_StuckBuildings_Process++;
                         }
 
                         differentPrio |= buildOrder.priority != prio;

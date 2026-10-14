@@ -522,7 +522,7 @@ namespace VikingEngine.LootFest.Map
         }
     }
 
-    class WalkingPath
+    public class WalkingPath
     {
 #if VISUAL_NODES
         List<Graphics.Mesh> nodeImages;

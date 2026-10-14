@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +7,11 @@ using VikingEngine.HUD;
 
 namespace VikingEngine
 {
-    interface ISyncAction
+    public interface ISyncAction
     {
         void runSyncAction();
     }
-    struct SyncAction : ISyncAction
+    public class SyncAction : ISyncAction
     {
         public Action action;
 
@@ -29,7 +29,7 @@ namespace VikingEngine
         }
     }
 
-    struct SyncActionIndex : ISyncAction
+    public class SyncActionIndex : ISyncAction
     {
         public ActionIndexEvent action;
         int index;
@@ -46,7 +46,7 @@ namespace VikingEngine
         }
     }
 
-    struct SyncAction1Arg<Arg1> : ISyncAction
+    public class SyncAction1Arg<Arg1> : ISyncAction
     {
         Action<Arg1> action;
         Arg1 arg1;
@@ -62,7 +62,7 @@ namespace VikingEngine
         }
     }
 
-    struct SyncAction2Arg<Arg1, Arg2> : ISyncAction
+    public class SyncAction2Arg<Arg1, Arg2> : ISyncAction
     {
         Action<Arg1, Arg2> action;
         Arg1 arg1;
@@ -80,7 +80,7 @@ namespace VikingEngine
         }
     }
 
-    struct SyncAction2ArgNoReturn<Arg1, Arg2> : ISyncAction
+    public class SyncAction2ArgNoReturn<Arg1, Arg2> : ISyncAction
     {
         public delegate object GuiNoReturn2Arg(Arg1 arg1, Arg2 arg2);
 
@@ -100,7 +100,7 @@ namespace VikingEngine
         }
     }
 
-    struct SyncAction3Arg<Arg1, Arg2, Arg3> : ISyncAction
+    public class SyncAction3Arg<Arg1, Arg2, Arg3> : ISyncAction
     {
         Action<Arg1, Arg2, Arg3> action;
         Arg1 arg1;
@@ -120,7 +120,7 @@ namespace VikingEngine
         }
     }
 
-    struct SyncAction4Arg<Arg1, Arg2, Arg3, Arg4> : ISyncAction
+    public class SyncAction4Arg<Arg1, Arg2, Arg3, Arg4> : ISyncAction
     {
         Action<Arg1, Arg2, Arg3, Arg4> action;
         Arg1 arg1;
@@ -142,7 +142,7 @@ namespace VikingEngine
         }
     }
 
-    struct SyncAction5Arg<Arg1, Arg2, Arg3, Arg4, Arg5> : ISyncAction
+    public class SyncAction5Arg<Arg1, Arg2, Arg3, Arg4, Arg5> : ISyncAction
     {
         Action<Arg1, Arg2, Arg3, Arg4, Arg5> action;
         Arg1 arg1;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.Graphics
 {
-    class Text2 : AbsTextLine
+    public class Text2 : AbsTextLine
     {
         protected string textString;
         float? multilineWidth;
@@ -35,7 +35,7 @@ namespace VikingEngine.Graphics
             {
                 if (outline != TextOutlineType.NoBorder)
                 {
-                    Color col = ColorExt.Multiply(outlineColor, Opacity);
+                    Color col = ColorExt.MultiplyRGBA(outlineColor, Opacity);
                     float layer = PaintLayer + PublicConstants.LayerMinDiff;
 
                     if (outline == TextOutlineType.Border8Dir)

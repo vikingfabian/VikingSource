@@ -10,7 +10,7 @@ using VikingEngine.DSSWars;
 
 namespace VikingEngine.Input
 {
-    struct InputSource
+    public struct InputSource
     {
         public static readonly InputSource DefaultPC = new InputSource(InputSourceType.KeyboardMouse);
         public static readonly InputSource Empty = new InputSource(InputSourceType.Num_None);
@@ -201,7 +201,7 @@ namespace VikingEngine.Input
         }
     }
 
-    enum InputSourceType
+    public enum InputSourceType
     {
         KeyboardMouse,
         XController,

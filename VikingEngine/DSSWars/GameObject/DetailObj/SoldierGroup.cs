@@ -24,6 +24,7 @@ using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.MiniGolf;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
 
@@ -349,17 +350,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             GroupState rState = (GroupState)r.ReadByte();
             state = rState;
-            //Debug.ReadCheck(r);
-
+            
             readGameState(tArmy, r, int.MaxValue, needInit, rState <= GroupState.FindArmyPlacement, null);
-            //Debug.ReadCheck(r);
+            
             setGroundY();
             
-
-            //Debug.Log("## Soldiergroup read Net, state: " + state.ToString());
-            //Debug.Log($"goal: {goalWp}, pos: {position}" );
-
-
             switch (rState)
             {
                 default:
@@ -584,6 +579,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             int xStart;
 
+            
+
             if (builder.IsShip())
             {
                 soldierConscript.shipSetup(ref soldierData);
@@ -663,6 +660,8 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
 
+            
+
             bool create(int x, int y, bool banner, AbsSoldierBuilder builder, ref SoldierData soldierData)
             {
                 AbsSoldierUnit unit = createUnit(builder, new IntVector2(x + xStart, y),
@@ -681,22 +680,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            //AbsSoldierUnit unit = createUnit(typeProfile, new IntVector2(x + xStart, y), 
-            //    bannerPos.Equals(x, y), tilePos, ref soldierData, createModels);
-
-            //if (unit == null)
-            //{
-            //    return;
-            //}
-            //else
-            //{
-            //    unit.firstUpdate();
-            //}
-
-            //if (--count <= 0)
-            //{
-            //    return;
-            //}
         }
 
         void deleteAllSoldiers(DeleteReason reason)
@@ -1482,10 +1465,7 @@ namespace VikingEngine.DSSWars.GameObject
         void SoldiersPresentationHud(ObjectHudArgs args, bool tooltipOrGroup, bool compact)
         {
             var faction = pfaction.GetFaction();
-            //if (faction == null)
-            //{ return; }
-
-
+           
 
             if (pfaction != args.player.pfaction &&
                 args.player.gameControls.map.selection.obj != null &&
@@ -1537,6 +1517,8 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbImage(SpriteName.WarsMobilityIcon));
             args.content.hspace();
             args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
+
+           
         }
 
         public override void toTooltip(ObjectHudArgs args)
@@ -1655,7 +1637,21 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 args.content.Add(new RbSeperationLine());
             }
-            
+
+            args.content.newLine();
+            args.content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.MenuTab_Reassign) },
+                 new RbAction(() => { args.player.hud.StartQuickReassign(new List<SoldierGroup> { this }); })));
+            //    new RbAction(() =>
+            //{
+            //    if (army.TryGetTarget(out var tArmy))
+            //    {
+            //        args.player.armyTab = MenuTab.Reassign;
+            //        args.player.gameControls.mapSelect(tArmy);
+            //        args.player.movingGroupsCollection = new MovingGroupsCollection(tArmy);
+            //        args.player.movingGroupsCollection.mainArmy.AddGroup(new SoldierGroupAndCount(-1, this, true), args.player.movingGroupsCollection.otherArmies.Selected(), true, false);
+            //    }
+            //})));
+
             args.content.newLine();
 
             if (soldierConscript.conscript.weapon == ItemResourceType.Settler)
@@ -2017,7 +2013,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //lock (DssRef.state.pathFindingPool)
                 //{
-                    DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(path);
+                    DssRef.world.pathFindingPool.Return(path);
                     path = null;
                 //}
             }
@@ -2026,7 +2022,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //lock (DssRef.state.detailPathFindingPool)
                 //{
-                DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.Return(detailPath);
+                DssRef.world.detailPathFindingPool.Return(detailPath);
                     detailPath = null;
                 //}
             }
@@ -2411,11 +2407,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             recyclePath(true, false, pathThreadIndex);
 
-            PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
+            PathFinding pf = DssRef.world.pathFindingPool.GetPf();
             { 
                 path = pf.FindPath(pathThreadIndex, tilePos, conv.ToDir8_INT(rotation), WP.ToTilePos( goalWp), isShip);
             }
-            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
+            DssRef.world.pathFindingPool.Return(pf);
         }
 
 
@@ -2434,12 +2430,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             recyclePath(false, true, pathThreadIndex);
 
-            DetailPathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetPf();
+            DetailPathFinding pf = DssRef.world.detailPathFindingPool.GetPf();
             {
-                detailPath = pf.FindPath(pathThreadIndex, WP.ToSubTilePos(position), rotation, goal,
+                detailPath = pf.FindPath(WP.ToSubTilePos(position), rotation, goal,
                     isShip, tArmy.walkGoalAsShip, isTravelNode);
             }
-            DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.Return(pf);
+            DssRef.world.detailPathFindingPool.Return(pf);
 
             var detailPath_sp = detailPath;
 

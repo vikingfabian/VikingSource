@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars.Resource
          new UseResource[]
          {
                new UseResource(ItemResourceType.GoldOre, 5),
+               new UseResource(ItemResourceType.Fuel_G, 5),
          },
             XP.WorkExperienceType.Smelting, XP.ExperienceLevel.Beginner_1,  Build.BuildAndExpandType.Smelter
         );

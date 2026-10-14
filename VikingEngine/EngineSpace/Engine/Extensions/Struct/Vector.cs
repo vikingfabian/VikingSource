@@ -14,7 +14,7 @@ namespace VikingEngine //VECTOR
     /// <summary>
     /// Wrapper to take care of both 2D and 3D speed, Y is up
     /// </summary>
-    struct Velocity
+    public struct Velocity
     {
         public static readonly Velocity Zero = new Velocity();
         public Vector3 Value;

@@ -12,7 +12,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.Graphics
 {
-    struct PolygonsAndTrianglesColor : IPolygonsAndTriangles
+    public struct PolygonsAndTrianglesColor : IPolygonsAndTriangles
     {
         public List<PolygonColor> Polygons;
         public List<TriangleColor> Triangles;
@@ -95,7 +95,7 @@ namespace VikingEngine.Graphics
         public int NumPolygons { get { return Polygons.Count; } }
         public int NumTriangles { get { return Triangles == null? 0 : Triangles.Count; } }
     }
-    struct PolygonColor
+    public struct PolygonColor
     {
         
         public VertexPositionColorTexture V0sw;
@@ -626,9 +626,9 @@ namespace VikingEngine.Graphics
             return polygons;
         }
     }
-    
-    
-    struct TriangleColor
+
+
+    public struct TriangleColor
     {
         public VertexPositionColorTexture[] VerticeData;
         public const int NumCorners = 3;

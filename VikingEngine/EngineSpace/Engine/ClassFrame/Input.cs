@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace VikingEngine
 {
-    abstract class AbsInput : IDeleteable, IUpdateable
+    public abstract class AbsInput : IDeleteable, IUpdateable
     {
         protected bool inInputList = false;
         public AbsInput()

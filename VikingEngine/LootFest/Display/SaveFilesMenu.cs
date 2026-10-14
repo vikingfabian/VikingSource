@@ -7,7 +7,7 @@ using VikingEngine.Engine;
 
 namespace VikingEngine.LootFest.Display 
 {
-    class SaveFilesMenu
+    public class SaveFilesMenu
     {
         const int RowLength = 3;
 

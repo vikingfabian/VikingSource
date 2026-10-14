@@ -10,7 +10,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.Graphics
 {
-    struct PolygonsAndTrianglesNormal : IPolygonsAndTriangles
+    public struct PolygonsAndTrianglesNormal : IPolygonsAndTriangles
     {
         public List<PolygonNormal> Polygons;
         public List<TriangleNormal> Triangles;
@@ -57,7 +57,7 @@ namespace VikingEngine.Graphics
         public int NumPolygons { get { return Polygons.Count; } }
         public int NumTriangles { get { return  (Triangles == null?  0 : Triangles.Count); } }
     }
-    struct PolygonNormal
+    public struct PolygonNormal
     {
         public VertexPositionNormalTexture Vertex0sw;
         public VertexPositionNormalTexture Vertex1nw;
@@ -246,12 +246,12 @@ namespace VikingEngine.Graphics
 
         }
     }
-    
+
     //enum CubeFace
     //{
 
     //}
-    struct TriangleNormal
+    public struct TriangleNormal
     {
         public VertexPositionNormalTexture[] VerticeData;
         public const int NumCorners = 3;

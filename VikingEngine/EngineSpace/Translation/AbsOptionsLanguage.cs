@@ -9,6 +9,12 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+
+        //QoL Update
+        public abstract string GameSettings_UltraWide { get; }
+        public abstract string GameSettings_UltraWide_LeftEdge { get; }
+        public abstract string GameSettings_UltraWide_RightEdge { get; }
+
         //Multiplayer update
         abstract public string GameSettings_WideScrollbar { get; }
         abstract public string GameSettings_DisplayInputHelp { get; }
@@ -138,6 +144,29 @@ namespace VikingEngine.EngineSpace.Translation
                     return Ref.langOpt.Option_High;
                 default:
                     throw new NotImplementedException();
+            }
+        }
+
+        public void ToolAddType(ToolAddType addType, out SpriteName icon, out string name)
+        {
+            switch (addType)
+            {
+                case VikingEngine.ToolAddType.Add:
+                    icon = SpriteName.EditorToolOptionAdd;
+                    name = DssRef.lang.Editor_ToolOption_Add;
+                    break;
+                case VikingEngine.ToolAddType.Remove:
+                    icon = SpriteName.EditorToolOptionRemove;
+                    name = DssRef.lang.Editor_ToolOption_Remove;
+                    break;
+                case VikingEngine.ToolAddType.Toggle:
+                    icon = SpriteName.EditorToolOptionToggle;
+                    name = DssRef.lang.Editor_ToolOption_Toggle;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(addType.ToString());
+
             }
         }
     }

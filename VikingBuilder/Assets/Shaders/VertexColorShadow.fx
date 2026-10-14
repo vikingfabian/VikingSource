@@ -1,14 +1,4 @@
-﻿#if OPENGL
-#define SV_Position0 POSITION
-#define NORMAL0 NORMAL
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
-#else
-#define SV_Position0 SV_POSITION
-#define NORMAL0 NORMAL
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
-#endif
+#include "VikingMacros.fxh"
 
 float4x4 World;
 float4x4 View;
@@ -22,7 +12,9 @@ float3 AmbientColor = float3(0.7, 0.7, 0.7);
 
 float ZBias = 0.001;
 
-Texture2D ShadowMap;
+#if OPENGL
+
+texture ShadowMap;
 sampler2D ShadowSampler = sampler_state
 {
     Texture = <ShadowMap>;
@@ -32,6 +24,37 @@ sampler2D ShadowSampler = sampler_state
     AddressU = CLAMP;
     AddressV = CLAMP;
 };
+#define SAMPLE_SHADOWMAP(coords) tex2D(ShadowSampler, coords)
+
+#elif VULKAN
+
+Texture2D<float4> ShadowMap : register(t0);
+sampler ShadowSampler : register(s0) = sampler_state
+{
+    Texture = (ShadowMap);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = NONE;
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+};
+#define SAMPLE_SHADOWMAP(coords) ShadowMap.Sample(ShadowSampler, coords)
+
+#else
+
+Texture2D ShadowMap : register(t0);
+sampler ShadowSampler : register(s0) = sampler_state
+{
+    Texture = (ShadowMap);
+    MinFilter = POINT;
+    MagFilter = POINT;
+    MipFilter = NONE;
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+};
+#define SAMPLE_SHADOWMAP(coords) ShadowMap.Sample(ShadowSampler, coords)
+
+#endif
 
 struct VSI
 {
@@ -66,11 +89,11 @@ VSO VS(VSI input)
     return output;
 }
 
-float4 PS(VSO input) : COLOR0
+float4 PS(VSO input) : SV_TARGET
 {
     float2 uv = input.ShadowCoord.xy;
     float currentDepth = input.ShadowCoord.z;
-    float shadowDepth = tex2D(ShadowSampler, uv).r;
+    float shadowDepth = SAMPLE_SHADOWMAP(uv).r;
 
     float shadow = (currentDepth - ZBias > shadowDepth) ? 0.1 : 1.0;
 
@@ -109,11 +132,11 @@ VSO VS_ShadowDebug(VSI input)
     return output;
 }
 
-float4 PS_ShadowDebug(VSO input) : COLOR0
+float4 PS_ShadowDebug(VSO input) : SV_TARGET
 {
     float2 uv = input.ShadowCoord.xy;
     float currentDepth = input.ShadowCoord.z;
-    float shadowDepth = tex2D(ShadowSampler, uv).r;
+    float shadowDepth = SAMPLE_SHADOWMAP(uv).r;
 
     float shadow = (currentDepth > shadowDepth) ? 0.2 : 1.0;
 

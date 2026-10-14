@@ -10,13 +10,13 @@ namespace VikingEngine
     using System.Collections.Generic;
     using System.Text;
 
-    delegate T ResizeGrid3DL_GetDefault<T>(int x, int y, int z);
-    delegate void ResizeGrid3DL_Removing<T>(T item, int x, int y, int z);
+    public delegate T ResizeGrid3DL_GetDefault<T>(int x, int y, int z);
+    public delegate void ResizeGrid3DL_Removing<T>(T item, int x, int y, int z);
 
     /// <summary>
     /// Extended functions for a 1D array representing a 3D grid/volume
     /// </summary>
-    class Grid3D_L<T>
+    public class Grid3D_L<T>
     {
         IntVector3 size;
 

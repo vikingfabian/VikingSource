@@ -18,7 +18,7 @@ namespace VikingEngine //AreaVolyme
         Right
     }
 
-    struct BorderedSquare
+    public struct BorderedSquare
     {
         public int sideWidth;
         public int borderWidth;
@@ -41,7 +41,7 @@ namespace VikingEngine //AreaVolyme
         }
     }
 
-    struct Circle
+    public struct Circle
     {
         public Vector2 Center; public float Radius;
 
@@ -82,7 +82,7 @@ namespace VikingEngine //AreaVolyme
         }
     }
 
-    struct RectangleCentered
+    public struct RectangleCentered
     {
         public static readonly RectangleCentered Zero = new RectangleCentered();
 
@@ -501,7 +501,7 @@ namespace VikingEngine //AreaVolyme
     /// <summary>
     /// A bounding cylinder dimentions with its position in center
     /// </summary>
-    struct CylinderVolume
+    public struct CylinderVolume
     {
         public Vector3 Center;
         public float HalfHeight;
@@ -536,7 +536,7 @@ namespace VikingEngine //AreaVolyme
         }
     }
 
-    struct VectorVolume
+    public struct VectorVolume
     {
         public Vector3 Position;
         public Vector3 Scale;
@@ -557,7 +557,7 @@ namespace VikingEngine //AreaVolyme
     /// <summary>
     /// A bounding box dimentions with its position in center
     /// </summary>
-    struct VectorVolumeC
+    public struct VectorVolumeC
     {
         public static readonly VectorVolumeC ZeroOne = new VectorVolumeC(Vector3.Zero, Vector3.One);
  
@@ -678,7 +678,7 @@ namespace VikingEngine //AreaVolyme
         }
     }
 
-    struct VectorRect
+    public struct VectorRect
     {
         public Vector2 Position;
         public Vector2 Size;

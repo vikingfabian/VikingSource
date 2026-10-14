@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.Graphics
 {
-    struct StoredCameraPos
+    public struct StoredCameraPos
     {
         public bool hasValue;
         public Vector3 Position;

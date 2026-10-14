@@ -6,7 +6,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.Voxels
 {
-    class VoxelObjListDataHD
+    public class VoxelObjListDataHD
     {
         public IntVector3 Size;
         public List<VoxelHD> Voxels;

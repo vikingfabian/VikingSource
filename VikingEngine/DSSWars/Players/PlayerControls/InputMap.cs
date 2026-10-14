@@ -9,7 +9,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
 {
-    class InputMap : PlayerInputMap
+    public class InputMap : PlayerInputMap
     {
         IButtonMap wasd_up, wasd_down, wasd_left, wasd_right;
         IButtonMap cameraTiltLeft, cameraTiltRight;
@@ -159,6 +159,7 @@ namespace VikingEngine.DSSWars
 
         override public void keyboardSetup()
         {
+            moveCursor = new EmptyDirectionalMap();
             //ControllerCancel = new NoButtonMap();
             Controller_ObjectMenuToggle = new NoButtonMap();
             ControllerMessageClick = new NoButtonMap();
@@ -434,6 +435,7 @@ namespace VikingEngine.DSSWars
             //wasd = new DirectionalButtonsMap(null, null, null, null);
             move = new DirectionalXboxMap(ThumbStickType.Left, false, inputSource.controllerIndex);
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);
+            moveCursor = move;
 
             guiScroll = new EmptyDirectionalMap();
             cameraStick =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
@@ -1025,7 +1027,7 @@ namespace VikingEngine.DSSWars
         }
     }
 
-    enum InputActionType
+    public enum InputActionType
     {
         StopStart,
         ToggleHudDetail,
@@ -1069,7 +1071,7 @@ namespace VikingEngine.DSSWars
         NUM,
     }
 
-    enum MouseButtonAction
+    public enum MouseButtonAction
     { 
         None,
         Select,

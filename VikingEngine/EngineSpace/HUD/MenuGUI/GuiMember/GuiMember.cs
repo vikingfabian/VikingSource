@@ -8,7 +8,7 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.HUD
 {
-    
+
     //enum GuiMemberSizeType
     //{
     //    FullWidth,
@@ -20,7 +20,7 @@ namespace VikingEngine.HUD
     //    Scrollbar,
     //}
 
-    class GuiMember : ImageGroupParent2D
+    public class GuiMember : ImageGroupParent2D
     {
         protected GuiLayout layoutParent;
         protected GuiStyle style;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.LootFest.Players
 {
-    enum HatType
+    public enum HatType
     {
         None,
         Vendel,
@@ -43,7 +43,7 @@ namespace VikingEngine.LootFest.Players
         Bucket,
         NUM,
     }
-    enum BeardType
+    public enum BeardType
     {
         Shaved,
         BeardSmall,
@@ -64,7 +64,7 @@ namespace VikingEngine.LootFest.Players
 
         NUM
     }
-    enum MouthType
+    public enum MouthType
     {
         Smile,
         BigSmile,
@@ -91,7 +91,7 @@ namespace VikingEngine.LootFest.Players
 
         NUM,
     }
-    enum EyeType
+    public enum EyeType
     {
         Normal,
         Sunshine,
@@ -121,7 +121,7 @@ namespace VikingEngine.LootFest.Players
         NUM,
     }
 
-    enum HairType
+    public enum HairType
     {
         NoHair,
         Normal,
@@ -138,7 +138,7 @@ namespace VikingEngine.LootFest.Players
         Emo1, Emo2, Emo3,
         NUM
     }
-    enum BeltType
+    public enum BeltType
     {
         No_belt,
         Slim,
@@ -146,7 +146,7 @@ namespace VikingEngine.LootFest.Players
         NUM
     }
 
-    enum ShieldType
+    public enum ShieldType
     {
         Round1, Round2, Round3, Round4,
         Spartan1, Spartan2, Spartan3, 

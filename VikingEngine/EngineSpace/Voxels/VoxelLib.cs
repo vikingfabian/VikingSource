@@ -939,7 +939,7 @@ namespace VikingEngine.Voxels
     //    ushort GetVoxelFromPortal(LootFest.Map.WorldPosition wp);
     //    void SetVoxelToPortal(LootFest.Map.WorldPosition wp, ushort material);
     //}
-    interface IPreparedFaceCorners
+    public interface IPreparedFaceCorners
     {
         bool Empty { get; }
         float C0 { get; }
@@ -948,7 +948,7 @@ namespace VikingEngine.Voxels
         float C3 { get; }
 
     }
-    struct PreparedFaceEmptyCorners : IPreparedFaceCorners
+    public struct PreparedFaceEmptyCorners : IPreparedFaceCorners
     {
         public static readonly PreparedFaceEmptyCorners GetEmpty = new PreparedFaceEmptyCorners();
         public bool Empty { get { return true; } }
@@ -958,7 +958,7 @@ namespace VikingEngine.Voxels
         public float C3 { get { return 1; } }
 
     }
-    struct PreparedFaceCorners : IPreparedFaceCorners
+    public struct PreparedFaceCorners : IPreparedFaceCorners
     {
         public static readonly PreparedFaceCorners Zero = new PreparedFaceCorners(0,0,0,0);
         public static readonly PreparedFaceCorners Two = new PreparedFaceCorners(2, 2, 2, 2);
@@ -988,7 +988,7 @@ namespace VikingEngine.Voxels
             Corner3 = 1;
         }
     }
-    struct FaceCornerColorYS
+    public struct FaceCornerColorYS
     {
         const float LeftSideR = 1.1f;
         const float LeftSideG = 0.9f;
@@ -1098,7 +1098,7 @@ namespace VikingEngine.Voxels
             }
         }
     }
-    struct FaceCornerColor
+    public struct FaceCornerColor
     {
         public Color Col0;
         public Color Col1;
@@ -1121,7 +1121,7 @@ namespace VikingEngine.Voxels
         }
 
     }
-    struct MergeModelsOption
+    public struct MergeModelsOption
     {
         public bool KeepOldGridSize;
         public bool NewBlocksReplaceOld;
@@ -1136,7 +1136,7 @@ namespace VikingEngine.Voxels
         }
     }
 
-    enum MergeFramesOptions
+    public enum MergeFramesOptions
     {
         NewFirstOnOldFrames,
         FrameByFrame,

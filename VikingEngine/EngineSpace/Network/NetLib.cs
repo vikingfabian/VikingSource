@@ -42,7 +42,7 @@ namespace VikingEngine.Network
             PlatformSettings.DevBuild ? PlatformSettings.Debug_AllowDisconnect : true;
     }
 
-    struct SendPacketToOptions
+    public struct SendPacketToOptions
     {
         public static readonly SendPacketToOptions SendToAll = new SendPacketToOptions(SendPacketTo.All, ulong.MaxValue);
         public static readonly SendPacketToOptions SendToHost = new SendPacketToOptions(SendPacketTo.Host, ulong.MaxValue);
@@ -63,7 +63,7 @@ namespace VikingEngine.Network
         }
     }
 
-    struct ReceivedPacket
+    public struct ReceivedPacket
     {
         public static readonly ReceivedPacket Empty = new ReceivedPacket();
 
@@ -88,7 +88,7 @@ namespace VikingEngine.Network
         }
     }
 
-    enum BadBehaviourType
+    public enum BadBehaviourType
     { 
         Other,
         Annoying,
@@ -99,7 +99,7 @@ namespace VikingEngine.Network
         BadConnection,
         NUM
     }
-    enum VoiceOption
+    public enum VoiceOption
     { 
         Off,
         ButtonHold,
@@ -108,7 +108,7 @@ namespace VikingEngine.Network
         NUM,
     }
 
-    enum SendPacketTo
+    public enum SendPacketTo
     {
         All,
         /// <summary>
@@ -131,7 +131,7 @@ namespace VikingEngine.Network
     //    NUM,
     //}
 
-    enum NetInteractLevel
+    public enum NetInteractLevel
     { 
         Hidden,
         OnePlayer,
@@ -140,7 +140,7 @@ namespace VikingEngine.Network
         NUM
     }
 
-    enum LobbyPublicity
+    public enum LobbyPublicity
     {
         Private = 0,
         FriendsOnly,
@@ -150,7 +150,7 @@ namespace VikingEngine.Network
         ERROR,
     }
 
-    enum PlayerDiplomacyAllowType
+    public enum PlayerDiplomacyAllowType
     { 
         PlayersChoose,
         Allow,
@@ -158,7 +158,7 @@ namespace VikingEngine.Network
         NUM
     }
 
-    enum GiftRecieveOption
+    public enum GiftRecieveOption
     { 
         Allow,
         FriendsOnly,
@@ -166,7 +166,7 @@ namespace VikingEngine.Network
         NUM
     }
 
-    enum HandicapLevel
+    public enum HandicapLevel
     { 
         High,
         Default,
@@ -174,7 +174,7 @@ namespace VikingEngine.Network
         None,
     }
 
-    enum PacketType : byte
+    public enum PacketType : byte
     {
         NON,
 

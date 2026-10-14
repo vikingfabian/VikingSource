@@ -10,7 +10,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Graphics
 {
-    interface IPolygonsAndTriangles
+    public interface IPolygonsAndTriangles
     {
         int NumPolygons { get; }
         int NumTriangles { get; }
@@ -25,8 +25,8 @@ namespace VikingEngine.Graphics
         void AddRange(IPolygonsAndTriangles add);
     }
 
-    
-    interface IVerticeData
+
+    public interface IVerticeData
     {
         PolygonType Type { get; }
         VerticeDrawOrderData DrawData { get; }
@@ -35,7 +35,7 @@ namespace VikingEngine.Graphics
         
         void SetVertexBuffer(VertexBuffer VB);
     }
-    struct VerticeDrawOrderData
+    public struct VerticeDrawOrderData
     {
         public ushort[] indexDrawOrder16;
         public uint[] indexDrawOrder32;
@@ -289,7 +289,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    struct Face
+    public struct Face
     {
         public Vector3 Corner1;
         public Vector3 Corner2;
@@ -632,14 +632,14 @@ namespace VikingEngine.Graphics
 
     }
 
-    enum PolygonType
+    public enum PolygonType
     {
         Color,
         Normal,
         ColorAndNormal
     }
 
-    enum AssignNormals
+    public enum AssignNormals
     {
         DontAssign,
         AsPlane,

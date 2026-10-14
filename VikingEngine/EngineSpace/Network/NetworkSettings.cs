@@ -346,7 +346,7 @@ namespace VikingEngine.Network
             w.Write((ushort)storedGamers.Count);
             for (int i = 0; i < storedGamers.Count; i++)
             {
-                storedGamers.array[i].write(w);
+                storedGamers.Array[i].write(w);
             }
 
             Debug.WriteCheck(w);
@@ -701,9 +701,9 @@ namespace VikingEngine.Network
         {
             for (int i = 0; i < storedGamers.Count; i++)
             {
-                if (storedGamers.array[i].id == id)
+                if (storedGamers.Array[i].id == id)
                 { 
-                    return storedGamers.array[i];
+                    return storedGamers.Array[i];
                 }
             }
 
@@ -718,9 +718,9 @@ namespace VikingEngine.Network
         {
             for (int i = 0; i < storedGamers.Count; i++)
             {
-                if (storedGamers.array[i].id == id)
+                if (storedGamers.Array[i].id == id)
                 {
-                    return storedGamers.array[i].ban;
+                    return storedGamers.Array[i].ban;
                 }
             }
             return BanStatus.None;
@@ -729,9 +729,9 @@ namespace VikingEngine.Network
 
         public void setUpdatedStoredGamer(StoredNetworkGamer gamer)
         {
-            if (storedGamers.array[gamer.index].id == gamer.id)
+            if (storedGamers.Array[gamer.index].id == gamer.id)
             {
-                storedGamers.array[gamer.index] = gamer;
+                storedGamers.Array[gamer.index] = gamer;
             }
         }
 

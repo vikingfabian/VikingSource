@@ -57,7 +57,7 @@ namespace VikingEngine.LootFest.Effects
             block.DeleteMe();
         }
     }
-    struct BouncingBlockColors
+    public struct BouncingBlockColors
     {
         Data.MaterialType M1;
         Data.MaterialType M2;

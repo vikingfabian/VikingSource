@@ -9,6 +9,10 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Japanese : AbsOptionsLanguage
     {
+
+        public override string GameSettings_UltraWide => "ウルトラワイド";
+        public override string GameSettings_UltraWide_LeftEdge => "UIの左端";
+        public override string GameSettings_UltraWide_RightEdge => "UIの右端";
         public override string GameSettings_WideScrollbar => "ワイドスクロールバー";
         public override string GameSettings_DisplayInputHelp => "操作ヘルプ";
         public override string GameSettings_InputSmoothing => "入力スムージング";

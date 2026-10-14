@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,6 +133,24 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case ItemResourceType.Men:
                         workForce.amount += add;
+                        return;
+
+                    case ItemResourceType.ImmigrantsOrWorkers:
+                        if (add > 0)
+                        {
+                            workForce.amount += add;
+                            if (workForce.amount > HousingCount_Workers)
+                            {
+                                immigrants.value += workForce.amount - HousingCount_Workers;
+                                workForce.amount = HousingCount_Workers;
+                            }
+                        }
+                        else
+                        {
+                            int spendImmigrants = Math.Min(immigrants.Int(), -add);
+                            immigrants.value -= spendImmigrants;
+                            workForce.amount += add + spendImmigrants;
+                        }
                         return;
 
                     case ItemResourceType.NobleMen:
@@ -288,7 +306,7 @@ namespace VikingEngine.DSSWars.GameObject
                             amount = money.GetGold32();
                         }
 
-                        return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue };
+                        return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue, capacity = int.MaxValue };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.NobleMen:
@@ -305,16 +323,46 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
 
+        public bool IsGroupedResource(ItemResourceType type)
+        {
+            if (ItemPropertyColl.CityIndex(type) >= 0)
+            {
+                return true;
+            }
+
+            switch (type)
+            {
+                case ItemResourceType.Men:
+                case ItemResourceType.NobleMen:
+                case ItemResourceType.ServiceMen:
+                case ItemResourceType.Water_G:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public ref GroupedResource GetRefGroupedResource(ItemResourceType type)
         {
             int cityResourceIndex = ItemPropertyColl.CityIndex(type);
-#if DEBUG
+
             if (cityResourceIndex < 0)
             {
-                //throw new NotImplementedException();
+                switch (type)
+                {
+                    case ItemResourceType.Men:
+                        return ref workForce;
+                    case ItemResourceType.NobleMen:
+                        return ref freeNobelMen;
+                    case ItemResourceType.ServiceMen:
+                        return ref freeServiceMen;
+                    case ItemResourceType.Water_G:
+                        return ref res_water;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(type), type, "Not a grouped resource.");
+                }
             }
-#endif
-            ItemPropertyColl.CityIndex(type);
+
             return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
 
