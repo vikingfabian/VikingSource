@@ -373,10 +373,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newParagraph();
 
             }
-            HudLib.Label(content, ".Ground type");
-            content.space();
-            content.Add(new RbText(subTile.subTile.groundType.ToString()));
-
+            
             HudLib.Label(content, DssRef.lang.TerrainType);
             content.space();
             IconName.Terrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain, out SpriteName tileIcon, out string tileName);
@@ -386,6 +383,11 @@ namespace VikingEngine.DSSWars.Interface
                 content.hspace();
             }
             content.Add(new RbText(tileName));
+
+            HudLib.Label(content, ".Ground type");
+            content.space();
+            content.Add(new RbText(subTile.subTile.groundType.ToString()));
+
 
             if (BuildLib.BuildTypeFromTerrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain) != BuildAndExpandType.NUM_NONE)
             {
