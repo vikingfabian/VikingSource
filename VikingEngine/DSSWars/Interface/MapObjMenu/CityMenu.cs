@@ -513,6 +513,10 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             switch (player.progressSubTab)
             {
                 default:
+                    
+                    new TechtreeMenu().ToHud(city, player, content, player.hud.objMenu.menu);
+
+                    content.newParagraph();
                     new TechnologyHud(player, city).technologyHud(content, city.pfaction.GetFaction());
                     break;
 

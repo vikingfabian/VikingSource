@@ -6,6 +6,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 
 namespace VikingEngine.DSSWars
 {
@@ -15,12 +16,14 @@ namespace VikingEngine.DSSWars
         const int DefaultFactionCount = 64;
         public GroupedResource[] factionResourceOverviews;
         public WorkPriority[] factionWork;
+        public TechTreeNodeProgress_Faction[] faction_techNodes /*= new TechTreeNodeProgress[DefaultFactionCount * TechTreeNodeProgress.NodeCount]*/;
 
         public void init_FactionComponents(int factionCount)
         {
             factionCount = Math.Max(factionCount, DefaultFactionCount);
             factionResourceOverviews = new GroupedResource[factionCount * CityResourceIndex.COUNT];
             factionWork = new WorkPriority[factionCount * WorkTemplate.COUNT];
+            faction_techNodes = new TechTreeNodeProgress_Faction[length * TechTreeNodeProgress_City.NodeCount];
             //diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
             diplomacy = new Diplomacy(factionCount);
 
@@ -35,11 +38,18 @@ namespace VikingEngine.DSSWars
 
         public void factionComponentsAdd(Faction faction)
         {
+            if (factionResourceOverviews == null)
+            {
+                init_FactionComponents();
+                return;
+            }
+
             if (factions.Array.Length * CityResourceIndex.COUNT >= factionResourceOverviews.Length)
             {
                 int startIndex = factionResourceOverviews.Length;
                 Array.Resize(ref factionResourceOverviews, factionResourceOverviews.Length * 2);
                 Array.Resize(ref factionWork, factionWork.Length * 2);
+                Array.Resize(ref faction_techNodes, faction_techNodes.Length * 2);
                 //Array.Resize(ref diplomaticRelations, MathExt.GaussSum((factions.Array.Length -1) * 2));
                 diplomacy = new Diplomacy((factions.Array.Length - 1) * 2);
             }

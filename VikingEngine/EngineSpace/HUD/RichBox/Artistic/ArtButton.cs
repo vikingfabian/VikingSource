@@ -29,6 +29,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
         SubTabSelected,
         SubTabNotSelected,
         HoverArea,
+
+        TechHover,
+        TechSelect,
     }
 
     public class ArtButton : AbsRbButton
@@ -111,6 +114,13 @@ namespace VikingEngine.HUD.RichBox.Artistic
                 case RbButtonStyle.HoverArea:
                     textureSett = group.settings.artHoverAreaTex;
                     break;
+                case RbButtonStyle.TechSelect:
+                    textureSett = group.settings.TechSelect;
+                    break;
+                case RbButtonStyle.TechHover:
+                    textureSett = group.settings.TechHover;
+                    break;
+
             }
             texture = new HUD.NineSplitAreaTexture(textureSett.Enabled(enabled), area, layer + 1);
 

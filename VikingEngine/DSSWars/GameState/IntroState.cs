@@ -20,6 +20,7 @@ using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Network;
@@ -146,6 +147,9 @@ namespace VikingEngine.DSSWars
             new SpriteSheet();
             dataProcessPart++;
             WaterEdgeBuilder.Init();
+            dataProcessPart++;
+
+            XpLib.TechTree = new TechTreeStructure();
             dataProcessPart++;
         }
 

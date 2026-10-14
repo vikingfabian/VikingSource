@@ -13,11 +13,23 @@ namespace VikingEngine
     /// </summary>
     public struct FlatArray_Eight<T> where T : struct
     {
+        public FlatArray_Eight(T value1)
+        {
+            this.value1 = value1;
+            this.count = 1;
+        }
         public FlatArray_Eight(T value1, T value2)
         {
             this.value1 = value1;
             this.value2 = value2;
             this.count = 2;
+        }
+        public FlatArray_Eight(T value1, T value2, T value3)
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            this.value3 = value3;
+            this.count = 3;
         }
         public FlatArray_Eight(T value1, T value2, T value3, T value4)
         {
