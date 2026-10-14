@@ -6,6 +6,7 @@ using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.GO;
 using VikingEngine.Core.BlackBolts.GO.Creature;
 using VikingEngine.Core.BlackBolts.Map;
+using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.Core.BlackBolts.Laws
 {
@@ -13,15 +14,44 @@ namespace VikingEngine.Core.BlackBolts.Laws
     {
         static CheckTileLoop checkTileLoop = new CheckTileLoop();
 
-        public static bool CanDispenceResource(IntVector2 tilePos)
+        public static bool CanDispenceResource(MapPlacement placement, CategoryAndType item)
         {
-            return BlackRef.mapData.tileGrid.TryGet(tilePos, out Tile tile) && tile.canPlaceResource();
+            if (BlackRef.mapData.tileGrid.TryGet(placement.tilePos, out Tile tile))
+            {               
+                if (tile.pMachine.hasValue)
+                {
+                    var iO_Unit = tile.pMachine.GetMachine() as IO_unit;
+                    if (iO_Unit != null)
+                    {
+                        return iO_Unit.DispenceResource(placement, item, false);
+                    }
+                }
+                if (tile.canPlaceResource())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public static void DispenceResource(IntVector2 tilePos, ResourceType resourceType)
+        public static void DispenceResource(MapPlacement placement, ResourceType resourceType)
         {
+            if (BlackRef.mapData.tileGrid.TryGet(placement.tilePos, out Tile tile))
+            {
+                if (tile.pMachine.hasValue)
+                {
+                    var iO_Unit = tile.pMachine.GetMachine() as IO_unit;
+                    if (iO_Unit != null)
+                    {
+                        if (iO_Unit.DispenceResource(placement, new CategoryAndType(resourceType), true))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
             var resource = BlackRef.mapData.SpawnResource(resourceType);
-            resource.placeResourceOnFloor(tilePos);
+            resource.placeResourceOnFloor(placement.tilePos);
         }
 
         public static void Dispence(MapPlacement placement, CategoryAndType item)
@@ -29,7 +59,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
             switch (item.category)
             {
                 case ObjectCategory.Resource:
-                    DispenceResource(placement.tilePos, item.resource);
+                    DispenceResource(placement, item.resource);
                     break;
                 
                 case ObjectCategory.FactoryObject:
@@ -49,9 +79,9 @@ namespace VikingEngine.Core.BlackBolts.Laws
             
         }
 
-        public static void TryCreateResource(IntVector2 tilePos, ResourceType resourceType)
+        public static void TryCreateResource(MapPlacement placement, ResourceType resourceType)
         {
-            if (BlackRef.mapData.tileGrid.TryGet(tilePos, out Tile tile))
+            if (BlackRef.mapData.tileGrid.TryGet(placement.tilePos, out Tile tile))
             {
                 if (tile.pCreature.hasValue)
                 {
@@ -60,9 +90,9 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 }
                 else
                 {
-                    if (CanDispenceResource(tilePos))
+                    if (CanDispenceResource(placement, new CategoryAndType(resourceType)))
                     {
-                        DispenceResource(tilePos, resourceType);
+                        DispenceResource(placement, resourceType);
                     }
                 }
             }
@@ -78,7 +108,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                     !tile.pResource.hasValue &&
                     tile.canPlaceResource())
                 {
-                    DispenceResource(tryPos, resourceType);
+                    DispenceResource(new MapPlacement(tryPos, Dir4.NUM_NON), resourceType);
                     return;
                 }
             }
@@ -100,9 +130,9 @@ namespace VikingEngine.Core.BlackBolts.Laws
             }
         }
 
-        public static void ConvertResource(IntVector2 tilePos, ResourceType convertType)
+        public static void ConvertResource(MapPlacement placement, ResourceType convertType)
         {
-            var tile = BlackRef.mapData.tileGrid.Get(tilePos);
+            var tile = BlackRef.mapData.tileGrid.Get(placement.tilePos);
             if (tile.pResource.hasValue)
             {
                 CategoryAndType conversion;
@@ -122,7 +152,7 @@ namespace VikingEngine.Core.BlackBolts.Laws
                 switch (conversion.category)
                 {
                     case ObjectCategory.Resource:
-                        DispenceResource(tilePos, conversion.resource);
+                        DispenceResource(placement, conversion.resource);
                         break;
                 }
             }

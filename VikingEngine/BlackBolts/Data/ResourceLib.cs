@@ -27,7 +27,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
         public SpriteName icon;
 
-        
+        public string name;   
     }
     static class ResourceLib
     {
@@ -44,6 +44,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             resourceProperties[(int)ResourceType.Box] = new ResourceProperties()
             {
+                name = "Box",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_box,
                 isSolid = true,
@@ -53,6 +54,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             resourceProperties[(int)ResourceType.Flesh] = new ResourceProperties()
             {
+                name = "Flesh",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_flesh,
                 isSolid = true,
@@ -61,6 +63,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Bone] = new ResourceProperties()
             {
+                name = "Bone",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_bone,
                 isSolid = true,
@@ -69,6 +72,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Grilled_meat] = new ResourceProperties()
             {
+                name = "Grilled meat",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_grilledmeat,
                 isSolid = true,
@@ -77,6 +81,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Dragon_egg] = new ResourceProperties()
             {
+                name = "Dragon egg",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_dragonegg,
                 isSolid = true,
@@ -85,6 +90,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Night_egg] = new ResourceProperties()
             {
+                name = "Night egg",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_voidegg,
                 isSolid = true,
@@ -93,6 +99,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Magic_crystal] = new ResourceProperties()
             {
+                name = "Magic crystal",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_magiccrystal,
                 isSolid = true,
@@ -102,6 +109,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Fire_crystal] = new ResourceProperties()
             {
+                name = "Fire crystal",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_firecrystal,
                 isSolid = true,
@@ -110,6 +118,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Void_cube] = new ResourceProperties()
             {
+                name = "Void cube",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_voidcube,
                 isSolid = true,
@@ -118,6 +127,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Poop] = new ResourceProperties()
             {
+                name = "Poop",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_poop,
                 isSolid = true,
@@ -127,6 +137,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Burned_shit] = new ResourceProperties()
             {
+                name = "Burned shit",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_burnedshit,
                 isSolid = true,
@@ -136,6 +147,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Old_shoe] = new ResourceProperties()
             {
+                name = "Old shoe",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_oldshoe,
                 isSolid = true,
@@ -144,6 +156,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Rubble] = new ResourceProperties()
             {
+                name = "Rubble",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.MissingImage,
                 isSolid = true,
@@ -152,6 +165,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Feather] = new ResourceProperties()
             {
+                name = "Feather",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_feather,
                 isSolid = true,
@@ -160,6 +174,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Chicken_egg] = new ResourceProperties()
             {
+                name = "Chicken egg",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.bb_resicon_chickenegg,
                 isSolid = true,
@@ -168,6 +183,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Chicken] = new ResourceProperties()
             {
+                name = "Chicken",
                 debugLevel = ObjectDebugLevel.Retail,
                 icon = SpriteName.WarsResource_Hen,
                 isSolid = true,
@@ -176,15 +192,17 @@ namespace VikingEngine.Core.BlackBolts.Data
             };
             resourceProperties[(int)ResourceType.Job_knight] = new ResourceProperties()
             {
-                debugLevel = ObjectDebugLevel.Incomplete,
-                icon = SpriteName.MissingImage,
+                name = "Job: knight",
+                debugLevel = ObjectDebugLevel.Retail,
+                icon = SpriteName.WarsResource_Longsword,
                 isSolid = true,
-                cutConvert = new CategoryAndType(ResourceType.Poop),
+                cutConvert = new CategoryAndType(ResourceType.Rubble),
                 fireConvert = new CategoryAndType(ResourceType.Burned_shit),
                 isJob = true,
             };
             resourceProperties[(int)ResourceType.Job_worker] = new ResourceProperties()
             {
+                name = "",
                 debugLevel = ObjectDebugLevel.Incomplete,
                 icon = SpriteName.MissingImage,
                 isSolid = true,

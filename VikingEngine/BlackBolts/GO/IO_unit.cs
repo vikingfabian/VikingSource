@@ -8,6 +8,7 @@ using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Interface;
 using VikingEngine.Core.BlackBolts.Laws;
 using VikingEngine.Core.BlackBolts.Map;
+using VikingEngine.Core.BlackBolts.Render;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts.GO
@@ -73,6 +74,34 @@ namespace VikingEngine.Core.BlackBolts.GO
                 res.DeleteMe();
             }
         }
+        public bool DispenceResource(MapPlacement placement, CategoryAndType item, bool commit)
+        {
+            for (int i = 0; i < ports.Count; ++i)
+            {
+                var port = ports[i];
+                if (port.input && !port.filled() &&
+                    (port.resourceType == item.resource || port.resourceType == ResourceType.Any) &&
+                    port.mapPlacement.tilePos == placement.tilePos &&
+                    port.mapPlacement.direction == lib.Rotate(placement.direction, 2))
+                {
+                    if (commit)
+                    {
+                        lastFedResource = item.resource;
+                        port.collected++;
+                        ports[i] = port;
+                        Icon3DEffect.GetOrCreate().init(lastFedResource, ports[i].mapPlacement);
+                    }
+                    return true;
+                }
+
+                //port.collected++;
+                //ports[toPort] = port;
+                //resource.DeleteMe();
+
+                //Icon3DEffect.GetOrCreate().init(lastFedResource, ports[toPort].mapPlacement);
+            }
+            return false;
+        }
 
         public override void OnCykleEnd()
         {
@@ -86,23 +115,23 @@ namespace VikingEngine.Core.BlackBolts.GO
                 if (!port.input && port.collected > 0)
                 {
                     var toPos = port.mapPlacement.ForwardPos();
-                    bool canDrop = ResourceLaws.CanDispenceResource(toPos.tilePos);
-                    if (canDrop)
+                    CategoryAndType output;
+                    switch (port.resourceType)
                     {
-                        CategoryAndType output;
-                        switch (port.resourceType)
-                        {
-                            default:
-                                output = new CategoryAndType(port.resourceType);
-                                break;
-                            case ResourceType.Any:
-                                output = new CategoryAndType(lastFedResource);
-                                break;
-                            case ResourceType.Heat:
-                                output = ResourceLib.Get( lastFedResource).fireConvert;
-                                break;
-                        }
-                        
+                        default:
+                            output = new CategoryAndType(port.resourceType);
+                            break;
+                        case ResourceType.Any:
+                            output = new CategoryAndType(lastFedResource);
+                            break;
+                        case ResourceType.Heat:
+                            output = ResourceLib.Get(lastFedResource).fireConvert;
+                            break;
+                    }
+
+                    bool canDrop = ResourceLaws.CanDispenceResource(toPos, output);
+                    if (canDrop)
+                    {   
                         ResourceLaws.Dispence(port.mapPlacement.ForwardPos(), output);
 
                         port.collected--;
@@ -207,6 +236,8 @@ namespace VikingEngine.Core.BlackBolts.GO
                 port.collected++;
                 ports[toPort] = port;
                 resource.DeleteMe();
+
+                Icon3DEffect.GetOrCreate().init(lastFedResource, ports[toPort].mapPlacement);
             }
         }
 

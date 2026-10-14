@@ -192,7 +192,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                     if (result != null && placementData.includeItem &&
                         FactoryObjectLib.Get( placementData.component.objectType).includeResource != IncludeType.NoInclude)
                     {
-                        Laws.ResourceLaws.TryCreateResource(placementData.mapPlacement.tilePos, placementData.resourceType);
+                        Laws.ResourceLaws.TryCreateResource(placementData.mapPlacement, placementData.resourceType);
                     }
                     //return true;
                 }

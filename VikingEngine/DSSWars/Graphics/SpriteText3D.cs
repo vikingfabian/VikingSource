@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars
             letters = new List<Mesh>(4);
         }
 
-        public void init(ItemResourceType item, int add, Vector3 center, ResourceEffectType type)//string text, Vector3 center, float height, Color color)
+        public void init(ItemResourceType item, int add, Vector3 center, ResourceEffectType type)
         {
             stateTime = MoveTime;
             moveState = true;
@@ -93,15 +93,7 @@ namespace VikingEngine.DSSWars
                 center.X += letterSpacing;
             }
 
-            //foreach (var c in text)
-            //{
-            //    //Mesh l = new Mesh(LoadedMesh.plane, center, sz, TextureEffectType.Flat,
-            //    //    SpriteText.CharTile(c), textCol);
-            //    //letters.Add(l);
-            //    nextMesh(SpriteText.CharTile(c));
-
-            //    center.X += letterSpacing;
-            //}
+            
 
             textCol = Color.White;
 
@@ -136,45 +128,6 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        //public SpriteText3D(string text, Vector3 center, float height, Color color)
-        //    : base(false)
-        //{
-        //    letters = new List<Mesh>(text.Length);
-        //    float letterSpacing = SpriteText.LetterWidthScale * height;
-        //    float totalWidth = Table.TotalWidth(text.Length, SpriteText.LetterWidthScale * height, 0f);
-        //    center.X -= (totalWidth - letterSpacing) * 0.5f;
-
-        //    Vector3 sz = new Vector3(height);
-        //    foreach (var c in text)
-        //    {
-        //        Mesh l = new Mesh(LoadedMesh.plane, center, sz, TextureEffectType.Flat,
-        //            SpriteText.CharTile(c), color);
-        //        letters.Add(l);
-
-        //        center.X += letterSpacing;
-        //    }
-        //}
-
-        //public override void Time_Update(float time_ms)
-        //{
-        //    if (beginFade.CountDown())
-        //    {
-        //        letters[0].Opacity -= fadeSpeed * time_ms;
-
-        //        if (letters[0].Opacity <= 0)
-        //        {
-        //            AddToOrRemoveFromUpdateList(false);
-        //            recycle();
-        //        }
-        //        else
-        //        {
-        //            for (int i = 1; i < letters.Count; ++i)
-        //            {
-        //                letters[i].Opacity = letters[0].Opacity;
-        //            }
-        //        }
-        //    }
-        //}
         public override void Time_Update(float time_ms)
         {
             stateTime -= time_ms;

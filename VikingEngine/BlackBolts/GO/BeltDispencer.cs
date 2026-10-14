@@ -39,9 +39,9 @@ namespace VikingEngine.Core.BlackBolts.GO
             base.OnCykleEnd();
             var toPos = currentPos.ForwardPos();
             
-            if (ResourceLaws.CanDispenceResource(toPos.tilePos))
+            if (ResourceLaws.CanDispenceResource(toPos, new CategoryAndType( placementData.resourceType)))
             {
-                ResourceLaws.DispenceResource(toPos.tilePos, placementData.resourceType);
+                ResourceLaws.DispenceResource(toPos, placementData.resourceType);
             }
         }
 

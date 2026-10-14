@@ -17,6 +17,8 @@ namespace VikingEngine.Core.BlackBolts.Data
 
         public ThirtyTwoBit tags;
 
+        public string name;
+
         public bool isCreature;
 
         public FactoryObjectProperties AddTag(TargetTag tag)
@@ -71,12 +73,14 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.CreatureSpawner] = new FactoryObjectProperties()
             {
+                name = "Creature spawner",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,
             };
 
             factoryObjectProperties[(int)FactoryObjectType.Worker] = new FactoryObjectProperties()
             {
+                name = "Worker",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,
                 holdResourceType = HoldResourceType.OnCreature,
@@ -86,6 +90,7 @@ namespace VikingEngine.Core.BlackBolts.Data
                         
             factoryObjectProperties[(int)FactoryObjectType.NightDemon] = new FactoryObjectProperties()
             {
+                name = "Night demon",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,
                 holdResourceType = HoldResourceType.NoResource,
@@ -95,6 +100,7 @@ namespace VikingEngine.Core.BlackBolts.Data
             
             factoryObjectProperties[(int)FactoryObjectType.Dragon] = new FactoryObjectProperties()
             {
+                name = "Dragon",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,
                 holdResourceType = HoldResourceType.NoResource,
@@ -104,6 +110,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.WhiteKnight] = new FactoryObjectProperties()
             {
+                name = "White knight",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,
                 holdResourceType = HoldResourceType.NoResource,
@@ -113,6 +120,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.BlackKnight] = new FactoryObjectProperties()
             {
+                name = "Black knight",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,
                 holdResourceType = HoldResourceType.NoResource,
@@ -122,6 +130,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Belt] = new FactoryObjectProperties()
             {
+                name = "Belt",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,
                 holdResourceType = HoldResourceType.OnFloor,
@@ -130,6 +139,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Spin_plate] = new FactoryObjectProperties()
             {
+                name = "Spin plate",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.LeftRight,
                 holdResourceType = HoldResourceType.OnFloor,
@@ -138,6 +148,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Table] = new FactoryObjectProperties()
             {
+                name = "Table",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.None,
                 holdResourceType = HoldResourceType.OnMachine,
@@ -146,6 +157,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Floor_drop] = new FactoryObjectProperties()
             {
+                name = "Floor drop",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.Dir4,
                 holdResourceType = HoldResourceType.OnMachine,
@@ -154,6 +166,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Dispencer] = new FactoryObjectProperties()
             {
+                name = "Top dispencer",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.None,
                 holdResourceType = HoldResourceType.MachineSettings,
@@ -162,6 +175,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Belt_dispencer] = new FactoryObjectProperties()
             {
+                name = "Belt dispencer",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.None,
                 holdResourceType = HoldResourceType.MachineSettings,
@@ -170,6 +184,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Delivery_point] = new FactoryObjectProperties()
             {
+                name = "Delivery point",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.None,
                 holdResourceType = HoldResourceType.MachineSettings,
@@ -178,6 +193,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Garbage_disposal] = new FactoryObjectProperties()
             {
+                name = "Garbage disposal",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.None,
                 holdResourceType = HoldResourceType.NoResource,
@@ -186,6 +202,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.Stone_pillar] = new FactoryObjectProperties()
             {
+                name = "Pillar",
                 debugLevel = ObjectDebugLevel.Retail,
                 rotationType = RotationType.None,
                 holdResourceType = HoldResourceType.NoResource,
@@ -194,6 +211,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.IOunit] = new FactoryObjectProperties()
             {
+                name = null,
                 debugLevel = ObjectDebugLevel.Incomplete,
                 rotationType = RotationType.Dir4,
                 holdResourceType = HoldResourceType.NoResource,
@@ -202,6 +220,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
             factoryObjectProperties[(int)FactoryObjectType.NoBuildZone] = new FactoryObjectProperties()
             {
+                name = "No build zone",
                 debugLevel = ObjectDebugLevel.Retail,
             };
         }

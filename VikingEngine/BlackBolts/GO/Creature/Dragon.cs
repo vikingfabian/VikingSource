@@ -151,7 +151,7 @@ namespace VikingEngine.Core.BlackBolts.GO.Creature
 
                 if (fireEffect.tilePos != attackPos.tilePos)
                 {
-                    ResourceLaws.ConvertResource(fireEffect.tilePos, Data.ResourceType.Heat);
+                    ResourceLaws.ConvertResource(fireEffect, Data.ResourceType.Heat);
                 }
                 fireEffect = fireEffect.ForwardPos();
             }

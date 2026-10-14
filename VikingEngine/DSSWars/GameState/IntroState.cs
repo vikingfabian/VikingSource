@@ -116,8 +116,8 @@ namespace VikingEngine.DSSWars
             UserGeneratedContent.UGClib.GameContentInit();
             part++;
 #if BLACK
-            BlackMainScene.bgTex = Ref.main.Content.Load<Texture2D>(Core.BlackBolts.Data.MapStorage.ContentFolder + FilePath.Dir + 
-                "black bold box 2_plain");
+            BlackMainScene.bgTex = Ref.main.Content.Load<Texture2D>(Core.BlackBolts.Data.MapStorage.ContentFolder + FilePath.Dir +
+                "black bolt_bg");
 #else
             bgTex = MainMenuState.LoadBg();
 #endif

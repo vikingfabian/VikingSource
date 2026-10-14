@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Mission;
+using VikingEngine.Core.BlackBolts.Render;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.Graphics;
 
@@ -11,6 +12,7 @@ namespace VikingEngine.Core.BlackBolts.Scene
 {
     class BlackPlayScene : Engine.GameState
     {
+        public Stack<Icon3DEffect> Text3DPool = new Stack<Icon3DEffect>();
         public Player.Player player;
         public MapModel mapmodel;
 

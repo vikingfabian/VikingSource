@@ -61,7 +61,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
                 //content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Click me") }, null));
                 foreach (var comp in mission.componentList)//for (FactoryObjectType objectType = 0; objectType < FactoryObjectType.NUM_NONE; objectType++)
                 {
-                    content.Add(new ArtOption(comp == player.toolShop.placementData.component, new List<AbsRichBoxMember> { new RbText(comp.objectType.ToString()) },
+                    content.Add(new ArtOption(comp == player.toolShop.placementData.component, new List<AbsRichBoxMember> { new RbText(FactoryObjectLib.Get(comp.objectType).name) },
                         new RbAction1Arg<ToolSetupComponent>((ToolSetupComponent selected) =>
                         {
                             player.toolShop.selectTool(selected);
@@ -91,7 +91,7 @@ namespace VikingEngine.Core.BlackBolts.Interface
                             var resProp = ResourceLib.Get(resource);
                             if (resProp.debugLevel > ObjectDebugLevel.Incomplete && resProp.isSolid)
                             {
-                                content.Add(new ArtOption(resource == player.toolShop.placementData.resourceType, new List<AbsRichBoxMember> { new RbText(resource.ToString()) },
+                                content.Add(new ArtOption(resource == player.toolShop.placementData.resourceType, new List<AbsRichBoxMember> { new RbText(resProp.name) },
                                     new RbAction1Arg<ResourceType>((ResourceType selected) =>
                                     {
                                         player.toolShop.selectResource(selected);

@@ -39,7 +39,7 @@ namespace VikingEngine.Core.BlackBolts.Data
 
         public override int GetHashCode()
         {
-            return HashCode.Combine((int)localPlacement.direction + localPlacement.tilePos.X * 4 + localPlacement.tilePos.Y * 8, 
+            return new HashBuilder().Combine((int)localPlacement.direction + localPlacement.tilePos.X * 4 + localPlacement.tilePos.Y * 8, 
                 (int)resourceType, amount);
         }
 
@@ -69,7 +69,7 @@ namespace VikingEngine.Core.BlackBolts.Data
         }
         public override int GetHashCode()
         {
-            return HashCode.Combine(inputHash, outputHash, mashineHash);
+            return new HashBuilder().Combine(inputHash, outputHash, mashineHash);
         }
         public static bool operator ==(MachineId left, MachineId right)
         {

@@ -49,7 +49,6 @@ namespace VikingEngine.Core.BlackBolts.Scene
 
             missionButton(MissionType.Tutorial);
             missionButton(MissionType.WhiteKnight);
-            //content.Add(new RbSeperationLine() { thick = true });
             missionButton(MissionType.Sandbox);
             
 
@@ -66,7 +65,6 @@ namespace VikingEngine.Core.BlackBolts.Scene
             content.text("Prototype; the game is a proof of concept test, to see if it worth being worked on at all.");
             content.text("- No sound");
             content.text("- Use sandbox to learn features");
-            content.text("- Bug: machines can't feed directly into other mashines, use one belt in between");
             content.text("- Please let me know what you think!");
 
 

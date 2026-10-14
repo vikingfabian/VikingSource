@@ -9,6 +9,15 @@ namespace VikingEngine
         int count;
         uint hash;
 
+
+        public int Combine(int value1, int value2, int value3)
+        {
+            Add(value1);
+            Add(value2);
+            Add(value3);
+            return GetHash();
+        }
+
         public void Add(int value)
         {
             if (count == 0)
