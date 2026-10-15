@@ -119,8 +119,7 @@ namespace VikingEngine.Graphics
 
         private void ProcessLoadingQueue()
         {
-            int count = _loadingQueue.Count;
-            while (count-- > 0 && _loadingQueue.TryDequeue(out var model))
+            while (_loadingQueue.TryDequeue(out var model))
             {
                 if (!model.InRenderList)
                 {
