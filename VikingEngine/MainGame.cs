@@ -228,9 +228,9 @@ namespace VikingEngine
             {
                 startTimestamp = Stopwatch.GetTimestamp();
             }
-
+            
             base.EndDraw();
-
+            
             if (PlatformSettings.DebugPerformanceText && startTimestamp > 0)
             {
                 var presentMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;

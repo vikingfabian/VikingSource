@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 }
                 else if (tilesC.sel.renderState == DetailMapTileState.AddToRender)
                 {
-                    //tilesC.sel.synchToRender();
+                    tilesC.sel.synchToRender();
                 }
 
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                                 //maptile.add = true;
                                 maptile.generateModel_async(loop.Position, tile);
                                 maptile.renderState = DetailMapTileState.AddToRender;
-                                maptile.synchToRender();
+                                //maptile.synchToRender();
                                 tiles.Add(maptile);
 
                                 if (++toRenderCount > MaxSychToRenderCount)

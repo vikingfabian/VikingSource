@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.Core.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.GameObject
 {

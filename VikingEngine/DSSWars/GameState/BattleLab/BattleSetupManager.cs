@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Timer;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.Core.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {

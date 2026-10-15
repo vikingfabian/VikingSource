@@ -3,8 +3,11 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DataStream;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
@@ -167,10 +170,43 @@ namespace VikingEngine.DSSWars
                 var faction = new Faction(this, FactionType.DefaultAi);
                 faction.AddCity(city, true);
                 new Players.AiPlayer(faction, true);
-                CityMapClaim2.CityClaim(city);
-
+                Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        CityMapClaim2.CityClaim(city);
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                });
                 city.onEditorStart();
             }
+        }
+
+        public bool CanPlaceCity(IntVector2 mapPos)
+        {
+            //const int MinEdgeDistance = 3;
+
+            IntVector2 sumTilePos = WP.MaptileToSumTile(mapPos);
+
+            if (DssRef.world.tileGrid.TryGet(sumTilePos, out var tile))
+            {
+                if (tile.pcity.IsEmpty())
+                {
+                    foreach (var dir in IntVector2.Dir8Array)
+                    {
+                        if (!DssRef.world.tileGrid.TryGet(sumTilePos+dir, out var edgetile) ||
+                            edgetile.pcity.HasValue())
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
         }
 
         public CombinedTile GetCombinedTile(IntVector2 mapTilePos)

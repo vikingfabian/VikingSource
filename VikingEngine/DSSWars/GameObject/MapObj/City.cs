@@ -8,6 +8,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;

@@ -18,6 +18,12 @@ namespace VikingEngine
         public T[] array;
         public T sel;
 
+
+        /// <summary>
+        /// Allows the grid to represent an area that dont start at 0, 0
+        /// </summary>
+        public IntVector2 offset = IntVector2.Zero;
+
         public Grid2D_L()
         { }
 
@@ -35,6 +41,13 @@ namespace VikingEngine
         public Grid2D_L(IntVector2 size)
         {
             this.size = size;
+            array = new T[size.Area()];
+        }
+
+        public Grid2D_L(Rectangle2 area)
+        {
+            this.offset = -area.pos;
+            this.size = area.size;
             array = new T[size.Area()];
         }
 
@@ -136,6 +149,10 @@ namespace VikingEngine
         {
             return array[GetIndex(position.X, position.Y)];
         }
+        public T Get_offset(IntVector2 position)
+        {
+            return array[GetIndex(position.X + offset.X, position.Y + offset.Y)];
+        }
         public ref T GetRef(int x, int y)
         {
             return ref array[GetIndex(x, y)];
@@ -153,6 +170,11 @@ namespace VikingEngine
         public void Set(IntVector2 position, T value)
         {
             array[GetIndex(position.X, position.Y)] = value;
+        }
+
+        public void Set_offset(IntVector2 position, T value)
+        {
+            array[GetIndex(position.X + offset.X, position.Y + offset.Y)] = value;
         }
 
         public void SetRef(ref IntVector2 position, ref T value)
@@ -177,6 +199,12 @@ namespace VikingEngine
                 value = default(T);
                 return false;
             }
+        }
+
+        public bool TryGet_offset(IntVector2 position, out T value)
+        {
+            position += offset;
+            return TryGet(position, out value);
         }
 
         public bool TryGet(int x, int y, out T value)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.Graphics;
 

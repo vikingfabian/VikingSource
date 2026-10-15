@@ -46,5 +46,30 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             }
             return DssRef.world.cities[cityIndex].pfaction.GetFaction();
         }
+
+        public bool Equals(PCity other)
+        {
+            return cityIndex == other.cityIndex;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PCity other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return cityIndex.GetHashCode();
+        }
+
+        public static bool operator ==(PCity left, PCity right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(PCity left, PCity right)
+        {
+            return !left.Equals(right);
+        }
     }
 }

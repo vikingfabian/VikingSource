@@ -14,6 +14,7 @@ using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.EngineSpace;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.Core.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.GameObject
 {

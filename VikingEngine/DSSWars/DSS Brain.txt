@@ -5,41 +5,6 @@ Change log:
 
 x adjust "all facts"
 
-## QoL Part 2 ## (December 17)
-* The color range of voxel models have been adjusted
-* Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
-* Truce timer is pinned to hud
-* Made the dark horde slow and idle
-* All animal pens have double upkeep
-
-Worker count limit
-* Made to better control the flow of work
-! Prototype: ui be improved if it works
-
-Delivery request
-* Affects any auto delivery (auto city or auto item)
-! Prototype: ui be improved if it works
-
-Soldier abilities
-* Added a parry system. Weapons with high parry will block melee attacks from those with low.
-* Armor and shields will add parry.
-* Added and reworked abilities: AntiSpear, AntiCavalry, AntiPlateArmor, ArrowWeakness and DefenceBreak
-* Removed the locked specialization on long hand weapons and warmachines
-* Warhammer is now only strong against plate armor 
-
-Performance
-* Work has been put into keeping down the creeping memory (RAM) usage (contribution made by Uygar "Agent" Yilmaz)
-* Memory: Object lists will trim down in size (Uygar "Agent" Yilmaz)
-* Path finding have been optimized (Uygar "Agent" Yilmaz)
-* Fixed memory leaks in path finding (Uygar "Agent" Yilmaz)
-* Model instance rendering (Uygar "Agent" Yilmaz)
-* The terrain shadow renderer now supports textures (Uygar "Agent" Yilmaz)
-* Fixed stuck game process on exit (Uygar "Agent" Yilmaz)
-* Reduced menu render calls (Uygar "Agent" Yilmaz)
-
-Vulkan
-* DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
-* Map loading is now done on multiple CPU cores and runs smoother
 
 #MAP 2.0 UPDATE
 
@@ -73,8 +38,8 @@ Map editor 2.0
 Performance
 * More work has been put into keeping down the creeping memory usage (RAM)
 
-
-
+Black Bolt Industries
+Made an evil factory puzzle game in a one week game jam. Available as extra content.
 
 
 ##ICONS TODO

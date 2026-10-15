@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Text;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState.MapEditor2.IconEditor;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.HUD.RichBox;
@@ -124,6 +125,21 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
                     }
                     content.newLine();
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Include buildings") }, tool.IncludeBuildingsProperty));
+
+                    if (tool.cityPaintTool == CityPaintTool.CityAdd)
+                    {
+                        content.newLine();
+                        HudLib.Label(content, "City size");
+                        content.newLine();
+                        for (CityType cityType = 0; cityType < CityType.NUM; cityType++)
+                        {
+                            content.Add(new ArtOption(cityType == tool.cityType, new List<AbsRichBoxMember> { new RbText(cityType.ToString()) },
+                                new RbAction1Arg<CityType>((CityType selected) =>
+                                {
+                                    tool.cityType = selected;
+                                }, cityType)));
+                        }
+                    }
                     break;
             }
 
