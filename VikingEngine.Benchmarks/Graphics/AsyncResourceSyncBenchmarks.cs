@@ -212,6 +212,9 @@ namespace VikingEngine.Benchmarks.Graphics
         [GlobalSetup]
         public void Setup()
         {
+            MainGame.SetMainThreadForTest();
+            PlatformSettings.LoadResourcesInBackground = true;
+
             _tiles = new SimulatedTile[TileCount];
             for (int i = 0; i < TileCount; i++)
             {
@@ -250,19 +253,28 @@ namespace VikingEngine.Benchmarks.Graphics
         [Benchmark(Baseline = true)]
         public int RenderThread_1_Original_SyncIngestion()
         {
-            var batch = new DrawBatchCollection();
-
-            for (int t = 0; t < TileCount; t++)
+            MainGame.SetMainThreadForTest();
+            PlatformSettings.LoadResourcesInBackground = false;
+            try
             {
-                var tile = _tiles[t];
-                for (int f = 0; f < tile.FoliageModels.Length; f++)
-                {
-                    batch.Add(tile.MasterIds[f], tile.FoliageModels[f]);
-                }
-            }
+                var batch = new DrawBatchCollection();
 
-            batch.RemoveAndDraw(false, 0, null, null, null);
-            return batch.FallbackDrawListCount;
+                for (int t = 0; t < TileCount; t++)
+                {
+                    var tile = _tiles[t];
+                    for (int f = 0; f < tile.FoliageModels.Length; f++)
+                    {
+                        batch.Add(tile.MasterIds[f], tile.FoliageModels[f]);
+                    }
+                }
+
+                batch.RemoveAndDraw(false, 0, null, null, null);
+                return batch.FallbackDrawListCount;
+            }
+            finally
+            {
+                PlatformSettings.LoadResourcesInBackground = true;
+            }
         }
 
         /// <summary>

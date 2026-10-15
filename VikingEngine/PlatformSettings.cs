@@ -1,4 +1,4 @@
-﻿using VikingEngine.LootFest;
+using VikingEngine.LootFest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,10 @@ namespace VikingEngine
     /// <summary>
     /// Variables that change depending on platform and startup game
     /// </summary>
-    static class PlatformSettings
+    public static class PlatformSettings
     {
+        public static bool LoadResourcesInBackground = false;
+
         public static readonly BuildDebugLevel DebugLevel
 #if DEBUG
             = BuildDebugLevel.Dev;
@@ -205,11 +207,17 @@ namespace VikingEngine
             get
             {
                 if (Engine.LoadContent.EngineVersion == null)
+                {
                     return "Unknown Version";
+                }
                 else if (PlatformSettings.STEAM_DEMO)
+                {
                     return "Demo v. " + Engine.LoadContent.EngineVersion;
+                }
                 else
+                {
                     return "Version " + Engine.LoadContent.EngineVersion;
+                }
             }
         }
         public static string XboxVersion = "UNKNOWN";
@@ -226,7 +234,7 @@ namespace VikingEngine
 #endif
     }
 
-    enum ReleasePlatform
+    public enum ReleasePlatform
     {
         PC,
         Xbox,

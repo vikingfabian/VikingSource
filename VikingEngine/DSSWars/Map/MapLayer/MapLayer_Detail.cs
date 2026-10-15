@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 {
                     tilesC.sel.DeleteMe();
                 }
-                else if (tilesC.sel.renderState == DetailMapTileState.AddToRender)
+                else if (!PlatformSettings.LoadResourcesInBackground && tilesC.sel.renderState == DetailMapTileState.AddToRender)
                 {
                     tilesC.sel.synchToRender();
                 }
@@ -205,7 +205,10 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                                 //maptile.add = true;
                                 maptile.generateModel_async(loop.Position, tile);
                                 maptile.renderState = DetailMapTileState.AddToRender;
-                                //maptile.synchToRender();
+                                if (PlatformSettings.LoadResourcesInBackground)
+                                {
+                                    maptile.synchToRender();
+                                }
                                 tiles.Add(maptile);
 
                                 if (++toRenderCount > MaxSychToRenderCount)
