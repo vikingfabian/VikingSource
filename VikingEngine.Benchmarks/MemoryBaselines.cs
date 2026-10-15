@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using VikingEngine.Benchmarks.Legacy;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.Benchmarks
 {
@@ -64,7 +66,7 @@ namespace VikingEngine.Benchmarks
         public object AllocateTileChunk_Current()
         {
             var chunk = new SumTile4_4[4096];
-            chunk[0].CityIndex = 1;
+            chunk[0].pcity = new PCity(1);
             return chunk;
         }
     }
