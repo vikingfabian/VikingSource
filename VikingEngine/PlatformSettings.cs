@@ -207,17 +207,11 @@ namespace VikingEngine
             get
             {
                 if (Engine.LoadContent.EngineVersion == null)
-                {
                     return "Unknown Version";
-                }
                 else if (PlatformSettings.STEAM_DEMO)
-                {
                     return "Demo v. " + Engine.LoadContent.EngineVersion;
-                }
                 else
-                {
                     return "Version " + Engine.LoadContent.EngineVersion;
-                }
             }
         }
         public static string XboxVersion = "UNKNOWN";
