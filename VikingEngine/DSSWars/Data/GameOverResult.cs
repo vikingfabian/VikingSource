@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 content.text(string.Format(DssRef.lang.Settings_DifficultyLevel, difficulty.PercDifficulty));
             }
-            content.icontext(SpriteName.WarsMapIcon, DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(DssRef.world.metaData.mapSize));
+            content.icontext(SpriteName.WarsMapIcon, DssRef.lang.Lobby_MapSizeTitle + ": " + DssRef.world.metaData.mapScale.SizeString());
 
             if (!tooltip)
             {

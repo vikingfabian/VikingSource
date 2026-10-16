@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
             content.text(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty));
 
-            content.icontext(SpriteName.WarsMapIcon, DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(DssRef.world.metaData.mapSize));
+            content.icontext(SpriteName.WarsMapIcon, DssRef.lang.Lobby_MapSizeTitle + ": " + DssRef.world.metaData.mapScale.SizeString());
             
             content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.centralGold), DssRef.lang.Settings_CentralGold);
             content.icontext(HudLib.CheckImage(DssRef.difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);

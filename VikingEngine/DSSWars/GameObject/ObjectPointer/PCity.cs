@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             {
                 return null;
             }
-            return DssRef.world.cities[cityIndex];
+            return DssRef.world.cities.GetIndex_Safe(cityIndex);
         }
 
         public Faction Faction()

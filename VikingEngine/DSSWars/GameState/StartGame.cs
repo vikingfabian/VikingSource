@@ -196,18 +196,18 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.keyboard_user.addOne();
                 }
 
-                switch (DssRef.storage.ruleset.mapSize)
+                switch (DssRef.storage.ruleset.mapSize.GetSizeCategory())
                 {
-                    case MapSize.Tiny:
-                    case MapSize.Small:
+                    case MapSizeCategory.Tiny:
+                    case MapSizeCategory.Small:
                         DssRef.stats.startNew_MapSmall.addOne();
                         break;
-                    case MapSize.Medium:
-                    case MapSize.Large:
+                    case MapSizeCategory.Medium:
+                    case MapSizeCategory.Large:
                         DssRef.stats.startNew_MapLarge.addOne();
                         break;
-                    case MapSize.Huge:
-                    case MapSize.Epic:
+                    case MapSizeCategory.Huge:
+                    case MapSizeCategory.Epic:
                         DssRef.stats.startNew_MapHuge.addOne();
                         break;
                 }

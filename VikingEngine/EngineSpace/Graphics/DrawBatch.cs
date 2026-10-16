@@ -411,16 +411,16 @@ namespace VikingEngine.Graphics
 
             if (existingBuffer != null && !existingBuffer.IsDisposed)
             {
-                existingBuffer.Dispose();
+                GpuResourceSync.Release(existingBuffer);
             }
 
             int newCap = Math.Max(Math.Max(currentCap * 2, requiredCapacity), 32);
-            var newBuffer = new DynamicVertexBuffer(
+            var newBuffer = GpuResourceSync.Track(new DynamicVertexBuffer(
                 gd,
                 VertexVoxelInstance.VertexDeclaration,
                 newCap,
                 BufferUsage.WriteOnly
-            );
+            ));
 
             _frameInstanceBuffers[frameGroupIndex] = newBuffer;
             _frameBufferCapacities[frameGroupIndex] = newCap;
@@ -634,7 +634,7 @@ namespace VikingEngine.Graphics
             {
                 if (_frameInstanceBuffers[i] != null && !_frameInstanceBuffers[i].IsDisposed)
                 {
-                    _frameInstanceBuffers[i].Dispose();
+                    GpuResourceSync.Release(_frameInstanceBuffers[i]);
                 }
             }
             _frameInstanceBuffers.Clear();

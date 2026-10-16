@@ -1427,7 +1427,7 @@ namespace VikingEngine.DSSWars.Build
             return false;
         }
 
-        public static void Demolish(City city, IntVector2 subTilePos)
+        public static void Demolish(City city, IntVector2 subTilePos, bool editor)
         {
             var subTile = DssRef.world.subTileGrid.Get(subTilePos);
             var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
@@ -1437,31 +1437,33 @@ namespace VikingEngine.DSSWars.Build
                 opt.destroy_async(city, subTilePos);
 
                 bool addRubble = false;
-                var bp = opt.blueprint;
-                foreach (var r in bp.resources)
+                if (!editor)
                 {
-                    if (r.type == ItemResourceType.ServiceMen)
+                    var bp = opt.blueprint;
+                    foreach (var r in bp.resources)
                     {
-                        city.freeServiceMen.amount += r.amount;
-                    }
-                    else if (r.type != ItemResourceType.Water_G)
-                    {
-                        int returnAmount = r.amount / 2;
-                        if (returnAmount > 4)
+                        if (r.type == ItemResourceType.ServiceMen)
                         {
-                            addRubble = true;
+                            city.freeServiceMen.amount += r.amount;
+                        }
+                        else if (r.type != ItemResourceType.Water_G)
+                        {
+                            int returnAmount = r.amount / 2;
+                            if (returnAmount > 4)
+                            {
+                                addRubble = true;
 
-                            DssRef.state.resources.addItem(
-                                new Resource.ItemResource(
-                                  r.type,
-                                  //subTile.terrainQuality,
-                                  //0,
-                                  returnAmount),
-                              ref subTile.collectionPointer);
+                                DssRef.state.resources.addItem(
+                                    new Resource.ItemResource(
+                                      r.type,
+                                      //subTile.terrainQuality,
+                                      //0,
+                                      returnAmount),
+                                  ref subTile.collectionPointer);
+                            }
                         }
                     }
                 }
-
                 if (addRubble)
                 {
                     subTile.mainTerrain = TerrainMainType.Resourses;

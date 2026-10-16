@@ -56,14 +56,17 @@ namespace VikingEngine.Engine
                 return;
             }
 
-            using (var basic = new BasicEffect(device)) { }
-            using (var alphaTest = new AlphaTestEffect(device)) { }
-            using (var dualTex = new DualTextureEffect(device)) { }
-            using (var envMap = new EnvironmentMapEffect(device)) { }
-            using (var skinned = new SkinnedEffect(device)) { }
+            using (GpuResourceSync.Acquire())
+            {
+                using (var basic = new BasicEffect(device)) { }
+                using (var alphaTest = new AlphaTestEffect(device)) { }
+                using (var dualTex = new DualTextureEffect(device)) { }
+                using (var envMap = new EnvironmentMapEffect(device)) { }
+                using (var skinned = new SkinnedEffect(device)) { }
 
-            VikingEngine.Graphics.EffectBasicVertexColor.GetSingletonSafe();
-            VikingEngine.Graphics.EffectBasicColor.GetSingletonSafe();
+                VikingEngine.Graphics.EffectBasicVertexColor.GetSingletonSafe();
+                VikingEngine.Graphics.EffectBasicColor.GetSingletonSafe();
+            }
         }
 
         public static void LoadConsoleFont()

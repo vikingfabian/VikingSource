@@ -12,6 +12,14 @@ namespace VikingEngine
     public static class PlatformSettings
     {
         public static bool LoadResourcesInBackground = false;
+        /// <summary>
+        /// Workaround for MonoGame Vulkan backend thread-safety bugs in resource creation, upload, and destruction.
+        /// When true (together with LoadResourcesInBackground), serializes background GPU resource creation/uploads with Draw+EndDraw and routes all GraphicsResource disposals (including finalizers) to the main thread.
+        /// All file I/O, XNB decompression, PNG decoding, voxel mesh generation, Texture2D instantiation, VertexBuffer instantiation, and SetData still execute on the background threads.
+        /// Nothing is marshaled or queued onto the main thread.
+        /// Must be configured once at program startup.
+        /// </summary>
+        public static bool ForceForegroundDestructors = true;
 
         public static readonly BuildDebugLevel DebugLevel
 #if DEBUG

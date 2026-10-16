@@ -1,18 +1,18 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
-
 using System.Runtime.InteropServices;
+using System.Text;
+using VikingEngine.Core.EngineSpace.Engine.Extensions.Struct.VikingEngine;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.LootFest.Players;
-using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Map.MapData
 {
@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public byte health = 100;
 
-        public byte orientation = 0;
+        public TwoNibble orientation_variant = TwoNibble.Zero;
 
         /// <summary>
         /// Pointer to array with all resources found lying on ground
@@ -540,7 +540,7 @@ namespace VikingEngine.DSSWars.Map.MapData
                    $"  SubTerrain: {subTerrain}\n" +
                    $"  Amount: {terrainAmount}\n" +
                    $"  Health: {health}\n" +
-                   $"  Orientation: {orientation}\n" +
+                   $"  Orientation: {orientation_variant}\n" +
                    $"  CollectionPointer: {collectionPointer}";
         }
     }

@@ -779,6 +779,12 @@ namespace VikingEngine
                 size.Y += minMaxTiles.Bottom - BottomTile;
         }
 
+        public void includeArea(Rectangle2 area)
+        {
+            includeTile(area.pos);
+            includeTile(area.BottomRight);
+        }
+
         /// <summary>
         /// Expand the rectangle so it will cover the tile position
         /// </summary>

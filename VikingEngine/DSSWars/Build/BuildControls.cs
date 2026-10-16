@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 if (DssRef.difficulty.GodPowers())
                                 {
-                                    BuildLib.Demolish(city, subTilePos);
+                                    BuildLib.Demolish(city, subTilePos, true);
                                     new GodBuild(subTilePos);
                                 }
                                 else
@@ -502,7 +502,7 @@ namespace VikingEngine.DSSWars.Build
                         IntVector2 topleft;
                         ForXYLoop subTileLoop;
 
-                        int cityradius = city.cityTileArea.size.SideLength() / 2;
+                        int cityradius = city.citySumTileArea.size.SideLength() / 2;
                         for (int radius = 1; radius <= cityradius; ++radius)
                         {
                             int distanceValue = -radius;

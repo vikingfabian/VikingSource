@@ -253,14 +253,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.Hud_Vector_X + ":", HudLib.TitleColor_Label));
                 content.space();
-                RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.generator.generateSettings.MapXProperty, false);
+                RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(MapScale.CustomMapSize_Min, MapScale.CustomMapSize_Max, 8), state.generator.generateSettings.MapXProperty, false);
 
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.Hud_Vector_Y + ":", HudLib.TitleColor_Label));
                 content.space();
-                RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.generator.generateSettings.MapYProperty, false);
+                RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(MapScale.CustomMapSize_Min, MapScale.CustomMapSize_Max, 8), state.generator.generateSettings.MapYProperty, false);
 
-                content.text(WorldData.SizeString(WorldData.ToMapSize(state.generator.generateSettings.mapScale.customMapSize), state.generator.generateSettings.mapScale.customMapSize), HudLib.InfoYellow_Light);
+                content.text(state.generator.generateSettings.mapScale.SizeString(), HudLib.InfoYellow_Light);
 
             }
             else
@@ -268,13 +268,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 
                 DropDownBuilder mapSzOptions = new DropDownBuilder("mapSz");
                 {
-                    for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
+                    for (MapSizeCategory sz = 0; sz < MapSizeCategory.NUM; ++sz)
                     {
-                        mapSzOptions.AddOption(WorldData.SizeString(sz), sz == state.generator.generateSettings.mapScale.mapSize, sz == MapSize.Medium,
-                            new RbAction1Arg<MapSize>((MapSize selected) =>
+                        mapSzOptions.AddOption(new MapScale(sz).SizeString(), sz == state.generator.generateSettings.mapScale.sizeCategory, sz == MapSizeCategory.Medium,
+                            new RbAction1Arg<MapSizeCategory>((MapSizeCategory selected) =>
                             {
-                                state.generator.generateSettings.mapScale.mapSize = selected;
-                                state.generator.generateSettings.mapScale.customMapSize = WorldData.SizeDimentions(DssRef.storage.ruleset.mapSize);
+                                state.generator.generateSettings.mapScale.sizeCategory = selected;
+                                state.generator.generateSettings.mapScale.customMapSize = DssRef.storage.ruleset.mapSize.Size(false);
                                 menu.CloseDropDown();
 
                             }, sz), null);

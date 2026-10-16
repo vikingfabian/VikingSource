@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 cityIx = city.myIndex;
                 this.terrainType = terrainType;
 
-                area = WP.ToSubTilePos(city.cityTileArea);
+                area = WP.ToSubTilePos(city.citySumTileArea);
 
                 currentPos = area.pos;
             }

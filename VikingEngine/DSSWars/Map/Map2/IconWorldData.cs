@@ -38,13 +38,17 @@ namespace VikingEngine.DSSWars.Map.Map2
         
         public IconWorldData()
         {
+            if (metaData == null)
+            {
+                metaData = new WorldMetaData(Ref.rnd.Ushort(), new MapLib.MapScale( MapSizeCategory.Medium), -1);
+            }
             rnd = new PcgRandom(metaData.worldId.seed);
 
         }
 
         public IconWorldData(IntVector2 iconSize)
         {
-            metaData = new WorldMetaData(Ref.rnd.Ushort(), MapSize.Medium, -1);
+            metaData = new WorldMetaData(Ref.rnd.Ushort(), new MapLib.MapScale(MapSizeCategory.Medium), -1);
 
             rnd = new PcgRandom(metaData.worldId.seed);
 
@@ -68,7 +72,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             int version = r.ReadInt32();
 
-            metaData = new WorldMetaData(Ref.rnd.Ushort(), MapSize.Medium, -1);
+            metaData = new WorldMetaData(Ref.rnd.Ushort(), new MapLib.MapScale(MapSizeCategory.Medium), -1);
+            
             iconGrid = new Grid2D_L<GenTile>(IntVector2.FromReadUshort(r));
             for (int i = 0; i < iconGrid.array.Length; i++)
             {

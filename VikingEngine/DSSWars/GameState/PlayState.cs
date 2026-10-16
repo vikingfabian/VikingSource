@@ -424,9 +424,10 @@ namespace VikingEngine.DSSWars
                     LocalHost().baseOnGameStart();
                 }
 
-                foreach (var m in DssRef.world.cities)
+                var citiesC = DssRef.world.cities.counter();
+                while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                 {
-                    m.onGameStart(newGame);
+                    citiesC.sel.onGameStart(newGame);
                 }
 
                 if (newGame && (DssRef.storage.runTutorial == false || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
@@ -588,9 +589,10 @@ namespace VikingEngine.DSSWars
                         citiesStart = Stopwatch.GetTimestamp();
                     }
 
-                    foreach (var m in DssRef.world.cities)
+                    var citiesC = DssRef.world.cities.counter();
+                    while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                     {
-                        m.update();
+                        citiesC.sel.update();
                     }
 
                     if (profiling && citiesStart > 0)
@@ -662,9 +664,10 @@ namespace VikingEngine.DSSWars
             {   
                 if (isReady)
                 {
-                    foreach (var m in DssRef.world.cities)
+                    var citiesC = DssRef.world.cities.counter();
+                    while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                     {
-                        m.PauseUpdate();
+                        citiesC.sel.PauseUpdate();
                     }
 
                     var factions = DssRef.world.factions.counter();
@@ -874,19 +877,20 @@ namespace VikingEngine.DSSWars
 
                 if (!Ref.isPaused)
                 {
-                    foreach (var m in DssRef.world.cities)
+                    var citiesC = DssRef.world.cities.counter();
+                    while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                     {
-                        if (m.IsNetHosted)
+                        if (citiesC.sel.IsNetHosted)
                         {
-                            m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
-                            m.async_conscriptUpdate(time);
-                            m.async_deliveryUpdate();
+                            citiesC.sel.async_workUpdate((int)Ref.TargetGameTimeSpeed);
+                            citiesC.sel.async_conscriptUpdate(time);
+                            citiesC.sel.async_deliveryUpdate();
                         }
                         else
                         {
-                            if (arraylib.HasMembers(m.workerUnits))
+                            if (arraylib.HasMembers(citiesC.sel.workerUnits))
                             {
-                                m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
+                                citiesC.sel.async_workUpdate((int)Ref.TargetGameTimeSpeed);
                             }
                         }
                     }
@@ -915,11 +919,12 @@ namespace VikingEngine.DSSWars
                 bool minute = DssRef.time.pullMinute(ref asynchGameObjectsMinutes);
 
                 int cityCount = 0;
-                foreach (var m in DssRef.world.cities)
+                var citiesC = DssRef.world.cities.counter();
+                while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                 {
                     //if (m.cityType > CityType.UnClaimed)
                     {
-                        m.asynchGameObjectsUpdate(minute);
+                        citiesC.sel.asynchGameObjectsUpdate(minute);
                         cityCount++;
                     }
                 }
@@ -947,9 +952,11 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.world.unitCollAreaGrid.asynchUpdate();
 
-                foreach (var m in DssRef.world.cities)
+                var citiesC = DssRef.world.cities.counter();
+
+                while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                 {
-                    m.asyncNearObjectsUpdate();
+                    citiesC.sel.asyncNearObjectsUpdate();
                 }
 
                 var factions = DssRef.world.factions.counter();

@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.Data
             if (worldmeta != null)
             {
                 result += string.Format(DssRef.lang.Settings_TotalDifficulty, difficulty) + Environment.NewLine +
-                    DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(worldmeta.mapSize) + Environment.NewLine;
+                    DssRef.lang.Lobby_MapSizeTitle + ": " + worldmeta.mapScale.SizeString() + Environment.NewLine;
             }
 
             if (setting_foodMulti > 0)

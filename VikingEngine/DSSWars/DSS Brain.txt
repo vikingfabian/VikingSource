@@ -20,7 +20,7 @@ Ground properties
 * Some tiles can be terraformed into others
 
 Dynamic world
-Factions and cities are now dynamic and can be added during runtime.
+Factions and cities are now dynamic and can be added/removed during runtime.
 The unclamied city areas are replaced with a "place anywhere" city founding.
 Cities can grow and claim more land.
 

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapProcess;
@@ -34,7 +36,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             world.init_FactionComponents(0);
             world.Init_CityComponents(world.cities.Count);
 
-            factionStartAreas(world.metaData.mapSize,
+            factionStartAreas(world.metaData.mapScale.GetSizeCategory(),
                 DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full,
                 generateSettings);
 
@@ -42,9 +44,10 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             Task.Factory.StartNew(() =>
             {
-                foreach (var c in world.cities)
+                var citiesC = DssRef.world.cities.counter();
+                while (citiesC.Next()) //foreach (var c in world.cities)
                 {
-                    world.unitCollAreaGrid.add(c);
+                    world.unitCollAreaGrid.add(citiesC.sel);
                 }
             });
         }
@@ -52,10 +55,10 @@ namespace VikingEngine.DSSWars.Map.Map2
         public async void cityAreaClaim()
         {
             List<Task> tasks = new List<Task>();
-
-            foreach (var c in world.cities)
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (var c in world.cities)
             {
-                City city = c;
+                City city = citiesC.sel;
                 
                 // Start the task and add it to the list
                 tasks.Add(Task.Factory.StartNew(() =>
@@ -83,9 +86,10 @@ namespace VikingEngine.DSSWars.Map.Map2
             // Create a list to hold the tasks
             List<Task> tasks = new List<Task>();
 
-            foreach (var c in world.cities)
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (var c in world.cities)
             {
-                City city = c;
+                City city = citiesC.sel;
 
 
                 // Start the task and add it to the list
@@ -107,21 +111,21 @@ namespace VikingEngine.DSSWars.Map.Map2
             await Task.WhenAll(tasks);
         }
 
-        void factionStartAreas(MapSize mapSize, bool oneCity, Map2GenerateSettings generateSettings)
+        void factionStartAreas(MapSizeCategory mapSize, bool oneCity, Map2GenerateSettings generateSettings)
         {
             int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
 
-            if (mapSize >= MapSize.Epic)
+            if (mapSize >= MapSizeCategory.Epic)
             {
                 goalWorkForce += DssConst.HeadCityStartMaxWorkForce;
             }
-            else if (mapSize >= MapSize.Huge)
+            else if (mapSize >= MapSizeCategory.Huge)
             {
                 goalWorkForce += DssConst.LargeCityStartMaxWorkForce;
             }
 
-            bool useRandomEmpires = mapSize >= MapSize.Medium;
-            IntervalF randomEmpiresSizeMulti = new IntervalF(1.5f, 2f + (mapSize - MapSize.Medium));
+            bool useRandomEmpires = mapSize >= MapSizeCategory.Medium;
+            IntervalF randomEmpiresSizeMulti = new IntervalF(1.5f, 2f + (mapSize - MapSizeCategory.Medium));
 
             //if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
             //{
@@ -132,10 +136,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                 namedFactionsOnMap(goalWorkForce, oneCity);
             }
             //var last = world.cities.Last();
-
-            foreach (City c in world.cities)
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (City c in world.cities)
             {
-                if (c.pfaction.IsEmpty() /*&& c.cityType > CityType.UnClaimed*/)
+                if (citiesC.sel.pfaction.IsEmpty() /*&& c.cityType > CityType.UnClaimed*/)
                 {
                     int size = goalWorkForce;
                     bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
@@ -148,7 +152,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                     //region.Reset((int)size);
                     var faction = new Faction(world, FactionType.DefaultAi);
-                    int regionCurrentWorkforce = region.GetStartFactionRegion(size, oneCity, c, world, faction);
+                    int regionCurrentWorkforce = region.GetStartFactionRegion(size, oneCity, citiesC.sel, world, faction);
 
 
                     if ((regionCurrentWorkforce >= size && !rndEmpire) || oneCity)
@@ -183,7 +187,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
 
             // figure out which tile is closest to which city, version 2
-            new CityMapInfluence().generate(world);
+            //new CityMapInfluence().generate(world);
             /*
 
             //calc what tiles are in border to eachother
@@ -250,10 +254,10 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                         // Create a list to hold the tasks
                         List<Task> tasks = new List<Task>();
-
-                        foreach (var c in world.cities)
+                        var citiesC = DssRef.world.cities.counter();
+                        while (citiesC.Next()) // foreach (var c in world.cities)
                         {
-                            City city = c;
+                            City city = citiesC.sel;
 
 
                             // Start the task and add it to the list
@@ -400,7 +404,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             }
 
-            if (world.metaData.mapSize >= MapSize.Medium)
+            if (world.metaData.mapScale.GetSizeCategory() >= MapSizeCategory.Medium)
             {
                 {
                     var faction = new Faction(world, FactionType.DyingMonger);

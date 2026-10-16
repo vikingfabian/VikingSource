@@ -74,10 +74,10 @@ namespace VikingEngine.DSSWars
             {
                 factions.sel.asynchCullingUpdate(time, cullingStateA);
             }
-
-            foreach (var m in DssRef.world.cities)
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
             {
-                m.asynchCullingUpdate(time, cullingStateA);
+                citiesC.sel.asynchCullingUpdate(time, cullingStateA);
             }
 
             foreach (var lp in DssRef.state.localPlayers)

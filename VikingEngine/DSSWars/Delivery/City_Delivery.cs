@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                             if (status.countdown.TimeOut())
                             {
-                                City othercity = DssRef.world.cities[status.inProgress.ToCity()];
+                                City othercity = DssRef.world.cities.GetIndex_Safe(status.inProgress.ToCity());
 
                                 if (othercity.pfaction != pfaction && !othercity.IsNetHosted)
                                 {

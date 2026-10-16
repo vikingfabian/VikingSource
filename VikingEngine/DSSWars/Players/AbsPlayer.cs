@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Sentry;
 using System;
@@ -79,7 +79,9 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void refreshFlag()
         {
+            var previousFlag = flagTexture;
             flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+            Graphics.GpuResourceSync.Release(previousFlag);
             pfaction.GetFaction()?.OnNewPlayerModels();
             
             DssRef.world.BordersUpdated = true;

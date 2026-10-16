@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                     mapTile.mainTerrain = mapTile.heightValue > MapHeight2.WaterPlaneHeight ? TerrainMainType.DefaultLand : TerrainMainType.DefaultSea;
                     world.subTileGrid.Set(x, y, mapTile);
+
                 }
             });
 
@@ -84,9 +85,10 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
 
             icon.cities = new List<CityPlacementData>(world.cities.Count);
-            foreach (var c in world.cities)
+            var citiesC = world.cities.counter();
+            while(citiesC.Next())//foreach (var c in world.cities)
             {
-                icon.cities.Add(new CityPlacementData() { myIndex = c.myIndex, pos = c.maptilePos / ScaleDown });
+                icon.cities.Add(new CityPlacementData() { myIndex = citiesC.sel.myIndex, pos = citiesC.sel.maptilePos / ScaleDown });
             }
 
             return icon;

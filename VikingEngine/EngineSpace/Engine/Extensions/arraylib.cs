@@ -437,6 +437,10 @@ namespace VikingEngine
         {
             return array != null && array.Length > 0;
         }
+        public static bool HasMembers<T>(SpottedArray<T> list)
+        {
+            return list != null && list.Count > 0;
+        }
 
         public static int SafeCount<T>(T[] array)
         {

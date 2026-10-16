@@ -208,33 +208,53 @@ namespace VikingEngine
             base.Update(gameTime);
         }
 
+        private bool _gpuFrameLock;
+
         protected override void Draw(GameTime gameTime)
         {
-            if (PlatformSettings.DebugPerformanceText)
+            _gpuFrameLock = Graphics.GpuResourceSync.EnterFrame();
+            try
             {
-                DebugExtensions.RenderOverlay.Instance.RecordUpdatesPerFrame(_updatesThisFrame);
-            }
-            _updatesThisFrame = 0;
+                if (PlatformSettings.DebugPerformanceText)
+                {
+                    DebugExtensions.RenderOverlay.Instance.RecordUpdatesPerFrame(_updatesThisFrame);
+                }
+                _updatesThisFrame = 0;
 
-            DebugExtensions.BlueScreen.TryCatch(Ref.draw.MainDrawLoop, DebugExtensions.TryMethodType.D);
-            
-            base.Draw(gameTime);
+                DebugExtensions.BlueScreen.TryCatch(Ref.draw.MainDrawLoop, DebugExtensions.TryMethodType.D);
+                
+                base.Draw(gameTime);
+            }
+            catch
+            {
+                Graphics.GpuResourceSync.ExitFrame(_gpuFrameLock);
+                _gpuFrameLock = false;
+                throw;
+            }
         }
 
         protected override void EndDraw()
         {
-            long startTimestamp = 0;
-            if (PlatformSettings.DebugPerformanceText)
+            try
             {
-                startTimestamp = Stopwatch.GetTimestamp();
+                long startTimestamp = 0;
+                if (PlatformSettings.DebugPerformanceText)
+                {
+                    startTimestamp = Stopwatch.GetTimestamp();
+                }
+                
+                base.EndDraw();
+                
+                if (PlatformSettings.DebugPerformanceText && startTimestamp > 0)
+                {
+                    var presentMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;
+                    DebugExtensions.RenderOverlay.Instance.RecordPresent(presentMs);
+                }
             }
-            
-            base.EndDraw();
-            
-            if (PlatformSettings.DebugPerformanceText && startTimestamp > 0)
+            finally
             {
-                var presentMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;
-                DebugExtensions.RenderOverlay.Instance.RecordPresent(presentMs);
+                Graphics.GpuResourceSync.ExitFrame(_gpuFrameLock);
+                _gpuFrameLock = false;
             }
         }
 
@@ -247,7 +267,7 @@ namespace VikingEngine
             Engine.Draw.graphicsDeviceManager = new GraphicsDeviceManager(this);
             Engine.Draw.graphicsDeviceManager.IsFullScreen = false;
                      
-            Content.RootDirectory = "Content";            
+            Content = new Engine.SyncContentManager(Services, "Content");            
         }
         
         void init2_Initialize()
