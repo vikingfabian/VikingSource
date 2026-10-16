@@ -201,7 +201,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                     break;
 
                 case Map2Pass.IconCities:
-                    
+                    if (generateCities == null)
+                    {
+                        generateCities = new GenerateCities();
+                    }
                     generateCities.generateCities(generateSettings, nodeMap, iconWorld);
                     break;
 
