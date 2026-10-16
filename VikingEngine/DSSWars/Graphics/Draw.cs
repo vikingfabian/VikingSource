@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,10 @@ namespace VikingEngine.DSSWars
         public DrawGame()
             : base()
         {
-            overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            using (Graphics.GpuResourceSync.Acquire())
+            {
+                overviewMapTarget = Graphics.GpuResourceSync.Track(new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24));
+            }
 
             drawBatch = new DrawBatchCollection();
 
@@ -81,7 +84,7 @@ namespace VikingEngine.DSSWars
         public override void DeleteMe()
         {
             base.DeleteMe();
-            overviewMapTarget.Dispose();
+            Graphics.GpuResourceSync.Release(overviewMapTarget);
         }
        
         protected override void drawEvent()

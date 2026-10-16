@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -44,7 +44,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         public void initTexture()
         {
+            var previousTexture = texture;
             texture = new Graphics.PixelTexture(PixelTextureScale());
+            Graphics.GpuResourceSync.Release(previousTexture);
         }
 
         public static IntVector2 PixelTextureScale()

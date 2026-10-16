@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -455,10 +455,14 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public Texture2D CreateTexture(FlagAndColor factionVisual)
         {
-            var texture = new Texture2D(Engine.Draw.graphicsDeviceManager.GraphicsDevice, 
-                DssLib.UserHeraldicWidth, DssLib.UserHeraldicWidth);
-            texture.SetData(toColorArray(factionVisual));
-            return texture; 
+            Color[] colors = toColorArray(factionVisual);
+            using (Graphics.GpuResourceSync.Acquire())
+            {
+                var texture = new Texture2D(Engine.Draw.graphicsDeviceManager.GraphicsDevice, 
+                    DssLib.UserHeraldicWidth, DssLib.UserHeraldicWidth);
+                texture.SetData(colors);
+                return Graphics.GpuResourceSync.Track(texture);
+            }
         }
         
         public FlagDesign CloneFlag()

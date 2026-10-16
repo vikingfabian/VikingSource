@@ -122,11 +122,15 @@ namespace VikingEngine.Engine
 
         protected static void CreateMainTarget(bool splitscreen)
         {
-            MainRenderTarget?.Dispose();
-            MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice,
-                 Bound.Min(Screen.RenderingResolution.X, MinWidth),
-                 Bound.Min(Screen.RenderingResolution.Y, MinHeigth),
-                false, SurfaceFormat.Color, DepthFormat.Depth24, 0, splitscreen ? RenderTargetUsage.PreserveContents : RenderTargetUsage.DiscardContents);
+            var previousTarget = MainRenderTarget;
+            using (Graphics.GpuResourceSync.Acquire())
+            {
+                MainRenderTarget = Graphics.GpuResourceSync.Track(new RenderTarget2D(graphicsDeviceManager.GraphicsDevice,
+                     Bound.Min(Screen.RenderingResolution.X, MinWidth),
+                     Bound.Min(Screen.RenderingResolution.Y, MinHeigth),
+                    false, SurfaceFormat.Color, DepthFormat.Depth24, 0, splitscreen ? RenderTargetUsage.PreserveContents : RenderTargetUsage.DiscardContents));
+            }
+            Graphics.GpuResourceSync.Release(previousTarget);
         }
 
         /* Properties */

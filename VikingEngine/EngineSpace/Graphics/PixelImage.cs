@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,19 +27,34 @@ namespace VikingEngine.Graphics
     {
         Color[] pixels;
 
+        private PixelTexture(GpuResourceSync.Scope scope, GraphicsDevice gd, int width, int height)
+            : base(gd, width, height)
+        {
+            try
+            {
+                GpuResourceSync.Track(this);
+            }
+            finally
+            {
+                scope.Dispose();
+            }
+        }
+
         public PixelTexture(IntVector2 texureSize)
-            : base(Engine.Draw.graphicsDeviceManager.GraphicsDevice, texureSize.X, texureSize.Y)
+            : this(GpuResourceSync.Acquire(), Engine.Draw.graphicsDeviceManager.GraphicsDevice, texureSize.X, texureSize.Y)
         {
             pixels = new Color[texureSize.X * texureSize.Y];
         }
         public PixelTexture(Texture2D sourceTexture)
-        : base(sourceTexture.GraphicsDevice, sourceTexture.Width, sourceTexture.Height)
+            : this(GpuResourceSync.Acquire(), sourceTexture.GraphicsDevice, sourceTexture.Width, sourceTexture.Height)
         {
             pixels = new Color[sourceTexture.Width * sourceTexture.Height];
 
-            sourceTexture.GetData(pixels);
-
-            this.SetData(pixels);
+            using (GpuResourceSync.Acquire())
+            {
+                sourceTexture.GetData(pixels);
+                this.SetData(pixels);
+            }
         }
         public bool InBound(IntVector2 pos)
         {
@@ -111,17 +126,26 @@ namespace VikingEngine.Graphics
 
         public void ApplyPixelsToTexture()
         {
-            SetData(pixels);
+            using (GpuResourceSync.Acquire())
+            {
+                SetData(pixels);
+            }
         }
         public void ApplyPixelsToTexture(Color[] pixels)
         {
             this.pixels = pixels;
-            base.SetData(pixels);
+            using (GpuResourceSync.Acquire())
+            {
+                base.SetData(pixels);
+            }
         }
 
         public void PullPixelsFromTexture()
         {
-            GetData(pixels);
+            using (GpuResourceSync.Acquire())
+            {
+                GetData(pixels);
+            }
         }
 
         public void ClearPixelArray(Color color)
