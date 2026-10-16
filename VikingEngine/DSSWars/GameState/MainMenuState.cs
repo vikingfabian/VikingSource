@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars
             Ref.isPaused = false;
             loadPreviousInput();
             Engine.Screen.SetupSplitScreen(1);
-            if (startLoadingMap && !StartupSettings.BlockBackgroundLoading)
+            if (startLoadingMap)
             {
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }

@@ -21,6 +21,12 @@ namespace VikingEngine.Tests.Legacy
         }
     }
 
+    public enum TileContent : byte
+    {
+        NONE,
+        City,
+    }
+
     public struct LegacyTile
     {
         public const int NoBorderRegion = -2;

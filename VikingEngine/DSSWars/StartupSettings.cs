@@ -51,9 +51,6 @@ namespace VikingEngine.DSSWars
         public static bool DebugResoursesSuperSpeed = PlatformSettings.DevBuild ? false :
            false;//DO NOT CHANGE
         
-        public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? true :
-            false;//DO NOT CHANGE
-
         public static bool BlockMessages = PlatformSettings.DevBuild ? false :
            false;//DO NOT CHANGE
 

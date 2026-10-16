@@ -47,7 +47,7 @@ namespace VikingEngine.Tests.Pathfinding.Legacy
             //nodeGrid[center.X, center.Y] = startNode;
             nodeGrid.Set(center, startNode);
 
-            bool endAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
+            bool endAsShip = false;//DssRef.world.tileGrid.Get(goal).IsWater();
             LegacyPathNode currentNode = startNode;
 
             int numLoops = 0;
@@ -57,7 +57,7 @@ namespace VikingEngine.Tests.Pathfinding.Legacy
                 for (int dir = 0; dir < 8; dir++)
                 {
                     IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
+                    if (DssRef.world.maptileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
                     {
                         //add a node to open list
                         LegacyPathNode node = new LegacyPathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);

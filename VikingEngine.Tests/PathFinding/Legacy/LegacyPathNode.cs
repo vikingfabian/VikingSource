@@ -1,5 +1,6 @@
 using System;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.Tests.Pathfinding.Legacy
 {
@@ -56,7 +57,7 @@ namespace VikingEngine.Tests.Pathfinding.Legacy
             }
 
             SumTile4_4 tile = world.tileGrid.Get(pos);
-            waterTile = tile.IsWater();
+            //waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)
             {
@@ -71,7 +72,7 @@ namespace VikingEngine.Tests.Pathfinding.Legacy
             }
             ship = this.waterTile;
 
-            moveCost *= tile.TroupWalkingDistance(ship);
+            //moveCost *= tile.TroupWalkingDistance(ship);
 
             moveCost += parent.moveCost;
 
