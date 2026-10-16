@@ -69,9 +69,16 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
            return image.Area.PercentToPosition(tilePos.Vec / tileSize.Vec);
         }
 
+        private bool _isTextureOwned = false;
+
         public void generate()
         {
+            if (!_isTextureOwned)
+            {
+                texture.texture = null;
+            }
             texture.initTexture();
+            _isTextureOwned = true;
             texture.filter = arraylib.HasMembers(DssRef.world.cities)? FactionMapFilter.FactionCols : FactionMapFilter.Terrain;
             texture.refreshWorld();
            
@@ -86,8 +93,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public void generateNodes(Map.Map2.NodeMap map)
         {
-            
+            if (_isTextureOwned && texture.texture != map.texture)
+            {
+                Graphics.GpuResourceSync.Release(texture.texture);
+            }
             texture.texture = map.texture;
+            _isTextureOwned = false;
             image.Texture = map.texture;
             image.SetFullTextureSource();
             textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
@@ -98,7 +109,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public void generateIcon(Map.Map2.IconWorldData world)
         {
+            var previousTexture = _isTextureOwned ? texture.texture : null;
             texture.texture = new Graphics.PixelTexture(world.iconGrid.Size);
+            _isTextureOwned = true;
+            Graphics.GpuResourceSync.Release(previousTexture);
 
             refreshTexture(world);
 

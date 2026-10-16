@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -154,7 +154,9 @@ namespace VikingEngine.Voxels
                 allMergedData.WriteBinaryStream, this);
 
             FilePath iconPath = projectPath;
-            StreamLib.saveTextureAsPNG(renderModel(), iconPath);
+            var renderedIcon = renderModel();
+            StreamLib.saveTextureAsPNG(renderedIcon, iconPath);
+            Graphics.GpuResourceSync.Release(renderedIcon);
 
             RenderTarget2D renderModel()
             {

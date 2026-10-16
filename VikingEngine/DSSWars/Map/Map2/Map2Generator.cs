@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -98,9 +98,13 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
 
         public void addHeightMap(HeightMapTexture heightMap)
-        { 
-            this.heightMapTexture = heightMap;
-            
+        {
+            var previousPixelTexture = heightMapTexture?.pixelTexture;
+            heightMapTexture = heightMap;
+            if (previousPixelTexture != null && previousPixelTexture != heightMap?.pixelTexture)
+            {
+                Graphics.GpuResourceSync.Release(previousPixelTexture);
+            }
         }
 
         public void generateHeightMap()
@@ -183,6 +187,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     break;
 
                 case Map2Pass.NodeGrid:
+                    Graphics.GpuResourceSync.Release(nodeMap?.texture);
                     nodeMap = new NodeMap();
                     nodeMap.Generate(iconWorld, generateSettings);
                     break;

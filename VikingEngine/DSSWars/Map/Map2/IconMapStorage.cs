@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Steamworks;
 using System;
@@ -52,6 +52,13 @@ namespace VikingEngine.DSSWars.Map.Map2
                 {
                     BlueScreen.ThreadException = ex;
                     callbackObj.SaveComplete(true, 0, false, null);
+                }
+                finally
+                {
+                    if (!ReferenceEquals(iconTexture, texture))
+                    {
+                        GpuResourceSync.Release(iconTexture);
+                    }
                 }
             }, true);           
         }

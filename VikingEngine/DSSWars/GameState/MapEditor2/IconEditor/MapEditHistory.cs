@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.Map.Map2;
@@ -71,6 +71,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
         public override void restore(MapEditor2_Scene scene)
         {
             base.restore(scene);
+            if (scene.generator.nodeMap?.texture != null && scene.generator.nodeMap.texture != nodeMap?.texture)
+            {
+                Graphics.GpuResourceSync.Release(scene.generator.nodeMap.texture);
+            }
             scene.generator.nodeMap = nodeMap;
         }
     }

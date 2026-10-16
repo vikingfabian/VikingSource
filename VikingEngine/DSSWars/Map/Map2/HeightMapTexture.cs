@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map.MapLib;
@@ -21,8 +21,13 @@ namespace VikingEngine.DSSWars.Map.Map2
         public HeightMapTexture(string path)
         {
             Name = System.IO.Path.GetFileName(path);
-            Texture2D texture = Texture2D.FromFile(Draw.graphicsDeviceManager.GraphicsDevice, path);
+            Texture2D texture;
+            using (GpuResourceSync.Acquire())
+            {
+                texture = GpuResourceSync.Track(Texture2D.FromFile(Draw.graphicsDeviceManager.GraphicsDevice, path));
+            }
             pixelTexture = new PixelTexture(texture);
+            GpuResourceSync.Release(texture);
         }
 
         public IntVector2 Size()

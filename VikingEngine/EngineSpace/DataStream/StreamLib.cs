@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,10 @@ namespace VikingEngine
                 using (FileStream stream = new FileStream(iconPath.CompleteLocalPath(true), FileMode.Create))
                 {
                     //renderModel().SaveAsPng(stream, Size, Size);
-                    texture.SaveAsPng(stream, texture.Width, texture.Height);
+                    using (GpuResourceSync.Acquire())
+                    {
+                        texture.SaveAsPng(stream, texture.Width, texture.Height);
+                    }
                 }
             }
             catch (Exception ex)
