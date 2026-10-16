@@ -322,12 +322,13 @@ namespace VikingEngine.DSSWars.GameState
                         factions.sel.asynchSleepObjectsUpdate(time);                        
                     }
 
-
-                    foreach (var m in DssRef.world.cities)
+                    var citiesC = DssRef.world.cities.counter();
+                    //foreach (var m in DssRef.world.cities)
+                    while(citiesC.Next())
                     {
-                        if (m.IsNetHosted)
+                        if (citiesC.sel.IsNetHosted)
                         {
-                            m.async_sleepUpate(time);
+                            citiesC.sel.async_sleepUpate(time);
                         }
                     }
 

@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Event
                 return;
             }
 
-            int dominationCount = DssRef.storage.ruleset_instance.mapSize > MapSize.Small ? 5 : 3;
+            int dominationCount = DssRef.storage.ruleset_instance.mapSize.GetSizeCategory() > MapSizeCategory.Small ? 5 : 3;
             
             foreach (var p in DssRef.state.localPlayers)
             {
@@ -197,9 +197,11 @@ namespace VikingEngine.DSSWars.Event
                 bool domination = true;
 
                 int missingCities = 0;
-                foreach (var city in DssRef.world.cities)
+                var citiesC = DssRef.world.cities.counter();
+                //foreach (var city in DssRef.world.cities)
+                while (citiesC.Next())
                 {
-                    if (!city.IsInitialized || (/*city.cityType > CityType.UnClaimed &&*/ city.pfaction != p.pfaction))
+                    if (!citiesC.sel.IsInitialized || (/*city.cityType > CityType.UnClaimed &&*/ citiesC.sel.pfaction != p.pfaction))
                     {
                         missingCities++;
                         if (missingCities > dominationCount)

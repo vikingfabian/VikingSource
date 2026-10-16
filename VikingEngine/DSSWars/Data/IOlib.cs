@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Data
                 case GameObjectType.City:
                     {
                         var index = r.ReadUInt16();
-                        return DssRef.world.cities[index];
+                        return DssRef.world.cities.GetIndex_Safe(index);
                     }
                 case GameObjectType.Faction:
                     {

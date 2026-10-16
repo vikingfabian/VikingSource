@@ -189,15 +189,21 @@ namespace VikingEngine.DataStream
         }
         public static List<FilePath> ListFilesInStorageDir2(FilePath searchPattern)
         {
-            var files = System.IO.Directory.GetFiles(searchPattern.CompleteDirectory, "*", SearchOption.AllDirectories);
             List<FilePath> list = new List<FilePath>();
-            foreach (var f in files)
-            {
 
-                if (string.CompareOrdinal(searchPattern.FileEnd, 0, f, f.Length - searchPattern.FileEnd.Length, searchPattern.FileEnd.Length) == 0)
+            var directory = searchPattern.CompleteDirectory;
+            if (Directory.Exists(directory))
+            {
+                var files = System.IO.Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
+                
+                foreach (var f in files)
                 {
-                    list.Add(FilePath.FromString(f));
-                }
+
+                    if (string.CompareOrdinal(searchPattern.FileEnd, 0, f, f.Length - searchPattern.FileEnd.Length, searchPattern.FileEnd.Length) == 0)
+                    {
+                        list.Add(FilePath.FromString(f));
+                    }
+                }                
             }
 
             return list;

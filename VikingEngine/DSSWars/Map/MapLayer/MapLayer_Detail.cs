@@ -148,94 +148,98 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
         public void asynchUpdate()
         {
-            var tileC = tiles.counter();
-            while (tileC.Next())
+            var world_sp = DssRef.world;
+            if (world_sp != null)
             {
-                if (tileC.sel.renderState == DetailMapTileState.InRender)
+                var tileC = tiles.counter();
+                while (tileC.Next())
                 {
-                    ref var chunkData = ref DssRef.world.chunkGrid.GetRef(tileC.sel.chunkGrindex);
-                    byte render = DssRef.state.culling.cullingStateA ? chunkData.bits_renderStateA : chunkData.bits_renderStateB;
-                    if (render == Culling.NoRender || (oneSecondUpdate && chunkData.subtileVisualEdits > 0))
+                    if (tileC.sel.renderState == DetailMapTileState.InRender)
                     {
-                        chunkData.hasTileInRender = false;
-                        chunkData.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
-                        tileC.sel.exitRender = DetailMapTileExitState.Prepare;                        
+                        ref var chunkData = ref world_sp.chunkGrid.GetRef(tileC.sel.chunkGrindex);
+                        byte render = DssRef.state.culling.cullingStateA ? chunkData.bits_renderStateA : chunkData.bits_renderStateB;
+                        if (render == Culling.NoRender || (oneSecondUpdate && chunkData.subtileVisualEdits > 0))
+                        {
+                            chunkData.hasTileInRender = false;
+                            chunkData.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
+                            tileC.sel.exitRender = DetailMapTileExitState.Prepare;
+                        }
+                    }
+                    else if (tileC.sel.renderState == DetailMapTileState.None)
+                    {
+                        tilePool.Push(tileC.sel);
+                        tileC.RemoveAtCurrent();
                     }
                 }
-                else if (tileC.sel.renderState == DetailMapTileState.None)
+
+                int toRenderCount = 0;
+
+                for (int pIx = 0; pIx < DssRef.state.culling.players.Length; ++pIx)
                 {
-                    tilePool.Push(tileC.sel);
-                    tileC.RemoveAtCurrent();
-                }
-            }
-                       
-            int toRenderCount = 0;
-
-            for (int pIx = 0; pIx < DssRef.state.culling.players.Length; ++pIx)
-            {
-                if (DssRef.state.localPlayers[pIx].mapLayersManager.DoUpdateDetailLayer())
-                {
-                    var p = DssRef.state.culling.players[pIx];
-
-                    var state = DssRef.state.culling.cullingStateA ? p.stateA : p.stateB;
-                    var loopArea = state.enterArea;
-                    loopArea.size += 1;
-
-                    loopArea.SetTileBounds(DssRef.world.chunkBounds);
-
-                    if (loopArea.Width > 0 && loopArea.Height > 0)
+                    if (DssRef.state.localPlayers[pIx].mapLayersManager.DoUpdateDetailLayer())
                     {
-                        ForXYLoop loop = new ForXYLoop(loopArea);
+                        var p = DssRef.state.culling.players[pIx];
 
-                        while (loop.Next())
+                        var state = DssRef.state.culling.cullingStateA ? p.stateA : p.stateB;
+                        var loopArea = state.enterArea;
+                        loopArea.size += 1;
+
+                        loopArea.SetTileBounds(world_sp.chunkBounds);
+
+                        if (loopArea.Width > 0 && loopArea.Height > 0)
                         {
-                            var tile = DssRef.world.chunkGrid.Get(loop.Position);
+                            ForXYLoop loop = new ForXYLoop(loopArea);
 
-                            if (!tile.hasTileInRender)
+                            while (loop.Next())
                             {
-                                tile.hasTileInRender = true;
-                                tile.subtileVisualEdits = 0;
-                                DssRef.world.chunkGrid.Set(loop.Position, tile);
+                                var tile = world_sp.chunkGrid.Get(loop.Position);
 
-                                DetailModelTile maptile;
-                                if (!tilePool.TryPop(out maptile))
+                                if (!tile.hasTileInRender)
                                 {
-                                    maptile = new DetailModelTile();
-                                }
-                                //maptile.add = true;
-                                maptile.generateModel_async(loop.Position, tile);
-                                maptile.renderState = DetailMapTileState.AddToRender;
-                                if (PlatformSettings.LoadResourcesInBackground)
-                                {
-                                    maptile.synchToRender();
-                                }
-                                tiles.Add(maptile);
+                                    tile.hasTileInRender = true;
+                                    tile.subtileVisualEdits = 0;
+                                    world_sp.chunkGrid.Set(loop.Position, tile);
 
-                                if (++toRenderCount > MaxSychToRenderCount)
-                                {
-                                    pauseEvent.WaitOne(); // Wait until signaled
-                                    toRenderCount = 0;
+                                    DetailModelTile maptile;
+                                    if (!tilePool.TryPop(out maptile))
+                                    {
+                                        maptile = new DetailModelTile();
+                                    }
+                                    //maptile.add = true;
+                                    maptile.generateModel_async(loop.Position, tile);
+                                    maptile.renderState = DetailMapTileState.AddToRender;
+                                    if (PlatformSettings.LoadResourcesInBackground)
+                                    {
+                                        maptile.synchToRender();
+                                    }
+                                    tiles.Add(maptile);
+
+                                    if (++toRenderCount > MaxSychToRenderCount)
+                                    {
+                                        pauseEvent.WaitOne(); // Wait until signaled
+                                        toRenderCount = 0;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            oneSecondUpdate = false;
-            int removeCount = 0;
+                oneSecondUpdate = false;
+                int removeCount = 0;
 
-            tileC.Reset();
-            while (tileC.Next())
-            {
-                if (tileC.sel.exitRender == DetailMapTileExitState.Prepare)
+                tileC.Reset();
+                while (tileC.Next())
                 {
-                    tileC.sel.exitRender = DetailMapTileExitState.ExitRender;
-                    
-                    if (++removeCount > MaxRemoveCount)
+                    if (tileC.sel.exitRender == DetailMapTileExitState.Prepare)
                     {
-                        pauseEvent.WaitOne(); // Wait until signaled
-                        removeCount = 0;
+                        tileC.sel.exitRender = DetailMapTileExitState.ExitRender;
+
+                        if (++removeCount > MaxRemoveCount)
+                        {
+                            pauseEvent.WaitOne(); // Wait until signaled
+                            removeCount = 0;
+                        }
                     }
                 }
             }

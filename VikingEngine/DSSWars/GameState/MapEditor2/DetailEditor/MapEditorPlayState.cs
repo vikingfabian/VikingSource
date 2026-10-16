@@ -104,9 +104,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             startMapThreads();
             new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
 
-            foreach (var m in DssRef.world.cities)
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
             {
-                m.onEditorStart();
+                citiesC.sel.onEditorStart();
             }
 
             EditorPlayer().onEditorStart();
@@ -175,9 +176,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             //{
                 if (isReady)
                 {
-                    foreach (var m in DssRef.world.cities)
-                    {
-                        m.PauseUpdate();
+                var citiesC = DssRef.world.cities.counter();
+                while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
+                {
+                    citiesC.sel.PauseUpdate();
                     }
 
                     var factions = DssRef.world.factions.counter();

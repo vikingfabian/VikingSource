@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Map2;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {
@@ -35,7 +36,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             lab = false;
             Map2GenerateSettings generateSettings = new Map2GenerateSettings();
             generateSettings.useGenerate = true;
-            generateSettings.setCustomSize(WorldData.SizeDimentions(MapSize.Tiny));
+            generateSettings.setCustomSize(MapScale.SizeDimentions(MapSizeCategory.Tiny));
             generateSettings.StartAs = MapStartAs.Land;
             
             loading = new MapBackgroundLoading(generateSettings);

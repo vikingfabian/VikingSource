@@ -459,6 +459,17 @@ namespace VikingEngine
             return default(T);
         }
 
+        public bool TryGetIndex(int index, out T value)
+        {
+            if (index >= 0 && index < Array.Length)
+            {
+                value = Array[index];
+                return value != null;
+            }
+            value = default(T);
+            return false;
+        }
+
         public T PullIndex_Safe(int index)
         {
             if (index >= 0 && index < Array.Length)

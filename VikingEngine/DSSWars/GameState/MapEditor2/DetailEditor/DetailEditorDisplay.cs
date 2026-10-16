@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
                         content.newLine();
                         HudLib.Label(content, "City size");
                         content.newLine();
-                        for (CityType cityType = 0; cityType < CityType.NUM; cityType++)
+                        for (CityType cityType = CityType.Campsite; cityType < CityType.NUM; cityType++)
                         {
                             content.Add(new ArtOption(cityType == tool.cityType, new List<AbsRichBoxMember> { new RbText(cityType.ToString()) },
                                 new RbAction1Arg<CityType>((CityType selected) =>

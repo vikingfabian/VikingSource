@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             int wood = 4;
             int stone = 2;
 
-            int cityradius = city.cityTileArea.size.SideLength() / 2;
+            int cityradius = city.citySumTileArea.size.SideLength() / 2;
             for (int radius = 2; radius <= cityradius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         {
             IntVector2 topleft;
             ForXYLoop subTileLoop;
-            int maxRadius = city.cityTileArea.size.SideLength();
+            int maxRadius = city.citySumTileArea.size.SideLength();
             for (int radius = 0; radius < maxRadius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
@@ -161,7 +161,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         {
             IntVector2 topleft;
             ForXYLoop subTileLoop;
-            int maxRadius = city.cityTileArea.size.SideLength();
+            int maxRadius = city.citySumTileArea.size.SideLength();
             for (int radius = 0; radius < maxRadius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         {
             freeSubTilePos = IntVector2.Zero;
 
-            int maxRadius = city.cityTileArea.size.SideLength();
+            int maxRadius = city.citySumTileArea.size.SideLength();
             for (int radius = 0; radius < maxRadius; ++radius)
             {
                 //ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
@@ -297,7 +297,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             //    {
             //        if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
             //        {
-            ForXYLoop loop = new ForXYLoop(city.cityTileArea);
+            ForXYLoop loop = new ForXYLoop(city.citySumTileArea);
             while (loop.Next())
             {
 

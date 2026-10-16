@@ -129,6 +129,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
                                     new GodBuild(subTilePos);
                                 }
                                 break;
+                            case CityPaintTool.CityRemove:
+                                DssRef.world.DestroyCity(subTilePos, cityPaint_IncludeBuildings);
+                                break;
                         }
                         break;
                 }

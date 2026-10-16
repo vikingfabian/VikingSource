@@ -229,11 +229,11 @@ namespace VikingEngine.DSSWars.Data
 
                 fileCheck.start(version, Version);
 
-                if (version <= 27)
-                {
-                    readOld(r, version, gamestate);
-                    return;
-                }
+                //if (version <= 27)
+                //{
+                //    readOld(r, version, gamestate);
+                //    return;
+                //}
 
                 metaProgression.read(r);
 
@@ -328,79 +328,79 @@ namespace VikingEngine.DSSWars.Data
 
         
 
-        public void readOld(System.IO.BinaryReader r, int version, bool gamestate)
-        {
-            FileCheck fileCheck = new FileCheck();
-            try
-            {
-                //int version = r.ReadInt32();
-                fileCheck.start(version, Version);
+//        public void readOld(System.IO.BinaryReader r, int version, bool gamestate)
+//        {
+//            FileCheck fileCheck = new FileCheck();
+//            try
+//            {
+//                //int version = r.ReadInt32();
+//                fileCheck.start(version, Version);
                 
-                if (version > Version || version <= 4)
-                {
-                    return;
-                }
+//                if (version > Version || version <= 4)
+//                {
+//                    return;
+//                }
 
-                ruleset.mapSize = (MapSize)r.ReadInt32();
+//                ruleset.mapSize = (MapSizeCategory)r.ReadInt32();
 
-                if (!gamestate || version < 16)
-                {
-                    bool verticalScreenSplit = r.ReadBoolean();
+//                if (!gamestate || version < 16)
+//                {
+//                    bool verticalScreenSplit = r.ReadBoolean();
 
-                    for (int i = 0; i < MaxLocalPlayerCount; ++i)
-                    {
-                        localPlayers[i].read(r, version);
-                    }
-                }
+//                    for (int i = 0; i < MaxLocalPlayerCount; ++i)
+//                    {
+//                        localPlayers[i].read(r, version);
+//                    }
+//                }
 
-                generateNewMaps = r.ReadBoolean();
-                autoSave = r.ReadBoolean();
+//                generateNewMaps = r.ReadBoolean();
+//                autoSave = r.ReadBoolean();
 
-                multiplayerGameSpeed = r.ReadSingle();
+//                multiplayerGameSpeed = r.ReadSingle();
 
-                DssRef.difficulty.read(r, version);
+//                DssRef.difficulty.read(r, version);
 
-                if (version >= 15)
-                {
-                    runTutorial = r.ReadByte() > 0;
-                }
+//                if (version >= 15)
+//                {
+//                    runTutorial = r.ReadByte() > 0;
+//                }
 
-                if (version >= 18)
-                {
-                    speed5x = r.ReadBoolean();
-                }
-                if (version >= 19)
-                {
-                    var longerBuildQueue = r.ReadBoolean();
-                }
-                if (version >= 21)
-                {
-                    ruleset.centralGold = r.ReadBoolean();
-                }
-                mapSettings.read(r, version);
+//                if (version >= 18)
+//                {
+//                    speed5x = r.ReadBoolean();
+//                }
+//                if (version >= 19)
+//                {
+//                    var longerBuildQueue = r.ReadBoolean();
+//                }
+//                if (version >= 21)
+//                {
+//                    ruleset.centralGold = r.ReadBoolean();
+//                }
+//                mapSettings.read(r, version);
 
-                generateNewMaps = true;//temp
+//                generateNewMaps = true;//temp
 
 
-                if (version == 26)
-                {
-                    metaProgression.totalGameTimeMinutes = r.ReadInt64();
-                    metaProgression.unlockedDangerousSettings = r.ReadBoolean();
-                }
+//                if (version == 26)
+//                {
+//                    metaProgression.totalGameTimeMinutes = r.ReadInt64();
+//                    metaProgression.unlockedDangerousSettings = r.ReadBoolean();
+//                }
 
-                fileCheck.end();
+//                fileCheck.end();
 
-#if DEMO
-                demoSetup();
-#endif
-            }
-            catch (Exception e)
-            {
-                fileCheck.exception = e;
-            }
+//#if DEMO
+//                demoSetup();
+//#endif
+//            }
+//            catch (Exception e)
+//            {
+//                fileCheck.exception = e;
+//            }
 
-            IOLib.fileCheck_gamestorage = fileCheck;
-        }
+//            IOLib.fileCheck_gamestorage = fileCheck;
+//        }
 
         public void checkPlayerDoublettes()
         {

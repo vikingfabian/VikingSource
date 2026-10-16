@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.GameObject
         public TerrainStructure terrainStructure = new TerrainStructure();
 
         Intvector2MinMax guardCullingMinMax;
-        public Rectangle2 cityTileArea;
+        public Rectangle2 citySumTileArea;
         public CityCulture cityCulture = CityCulture.NUM_NONE;
         public CityBiome cityBiome = CityBiome.Default_Fields;
 
@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             world.InitCity(this);
             this.maptilePos = pos;
-            cityTileArea = Rectangle2.FromCenterTileAndRadius(maptilePos, 1);
+            citySumTileArea = Rectangle2.FromCenterTileAndRadius(WP.MaptileToSumTile(maptilePos), 1);
             this.cityType = type;
             //refreshPos();
 
@@ -514,8 +514,8 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Debug.Byte_OrCrash((int)cityType));
             w.Write(Debug.Ushort_OrCrash(areaSize));
             //w.Write(Debug.Byte_OrCrash(cityTileRadius));
-            cityTileArea.pos.writeUshort(w);
-            cityTileArea.size.writeByte(w);
+            citySumTileArea.pos.writeUshort(w);
+            citySumTileArea.size.writeByte(w);
 
 
             w.Write(Debug.Byte_OrCrash(workHutStyle));
@@ -545,8 +545,8 @@ namespace VikingEngine.DSSWars.GameObject
             areaSize = r.ReadUInt16();
 
             
-            cityTileArea.pos.readUshort(r);
-            cityTileArea.size.readByte(r);
+            citySumTileArea.pos.readUshort(r);
+            citySumTileArea.size.readByte(r);
            
 
             workHutStyle = r.ReadByte();
@@ -1832,7 +1832,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            Intvector2MinMax minMax = cityTileArea.MinMax;//workerCullingMinMax;
+            Intvector2MinMax minMax = (citySumTileArea * SumTile4_4.TileWidth).MinMax;//workerCullingMinMax;
             minMax.Combine(guardCullingMinMax);
            
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
@@ -4451,6 +4451,7 @@ namespace VikingEngine.DSSWars.GameObject
     enum CityType
     {
         //UnClaimed,
+        SiegeCamp,
         Campsite,
         Village,
         Town,
