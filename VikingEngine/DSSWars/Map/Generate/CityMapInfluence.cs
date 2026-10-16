@@ -338,7 +338,7 @@ namespace VikingEngine.DSSWars.Map
 
                 lock (city)
                 {
-                   city.cityTileArea.includeTile(loop.Position);
+                   city.citySumTileArea.includeTile(loop.Position);
                 }
                 
                 //if (city.cityTileArea.size.X == 0)

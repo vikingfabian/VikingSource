@@ -6,20 +6,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
@@ -36,26 +39,7 @@ namespace VikingEngine.DSSWars
 
         
 
-        const int ScaleUpMap2 = 16;
-
-        //Måste vara delbart med UnitGridSquareWidth
-        //Must be in sizes of 8
-        public const int TinyMapWidth = 200 * ScaleUpMap2;
-        public const int TinyMapHeigth = 176 * ScaleUpMap2;
-        public const int SmallMapWidth = 320 * ScaleUpMap2;
-        public const int SmallMapHeigth = 232 * ScaleUpMap2;
-        public const int MediumMapWidth = 512 * ScaleUpMap2;
-        public const int MediumMapHeigth = 432 * ScaleUpMap2;
-        public const int LargeMapWidth = 720 * ScaleUpMap2;
-        public const int LargeMapHeigth = 624 * ScaleUpMap2;
-        public const int HugeMapWidth = 912 * ScaleUpMap2;
-        public const int HugeMapHeigth = 832 * ScaleUpMap2;
-        public const int EpicMapWidth = 1184 * ScaleUpMap2;
-        public const int EpicMapHeigth = 1024 * ScaleUpMap2;
-        public const double TileWidthInKm = 0.008;
-
-        public const int CustomMapSize_Min = 160;
-        public const int CustomMapSize_Max = 4096;
+       
 
 
         //public const int TileSubDivitions = 8;
@@ -92,7 +76,7 @@ namespace VikingEngine.DSSWars
         public UnitCollAreaGrid unitCollAreaGrid;
 
         public int claimedCityCount = int.MaxValue;
-        public List<City> cities = new List<City>(0); 
+        public SpottedArray<City> cities = new SpottedArray<City>(256); 
         public SpottedArray<Faction> factions;
 
         public bool BordersUpdated = true;
@@ -134,6 +118,71 @@ namespace VikingEngine.DSSWars
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
+        }
+
+        public void DestroyCity(IntVector2 mapPos, bool buildings)
+        {
+            if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(mapPos), out var tile) && tile.pcity.HasValue())
+            {
+                City city = tile.pcity.City();
+
+                ForXYLoop loop = new ForXYLoop(city.citySumTileArea);
+                while (loop.Next())
+                {
+                    if (DssRef.world.tileGrid.TryGet(loop.Position, out var citytile))
+                    {
+                        if (buildings)
+                        {
+                            IntVector2 mapTileStart = loop.Position * SumTile4_4.TileWidth;
+                            IntVector2 mapTileEnd = mapTileStart + SumTile4_4.TileWidth;
+                            IntVector2 pos = IntVector2.Zero;
+                            for (pos.Y = mapTileStart.Y; pos.Y < mapTileEnd.Y; pos.Y++)
+                            {
+                                for (pos.X = mapTileStart.X; pos.X < mapTileEnd.X; pos.X++)
+                                {
+                                    //if(SelectedSubTile.MayDemolish(pos, null, out _))
+                                    //{                                        
+                                    //    BuildLib.Demolish(city, pos, true);
+                                    //    new GodBuild(pos);                                        
+                                    //}
+                                    destroyTile(pos);
+                                }
+                            }
+                        }
+                        
+                        citytile.pcity = PCity.Empty;
+                        citytile.IsBorderTile = false;
+                        DssRef.world.tileGrid.Set(loop.Position, citytile);
+                    }
+                }
+
+                if (!buildings)
+                {
+                    destroyTile(city.maptilePos);
+                    destroyTile(city.citySquareSubtilePos);
+                }
+
+                cities.RemoveAt(city.myIndex);
+
+            }
+
+            void destroyTile(IntVector2 tilePos)
+            {
+                var subTile = DssRef.world.subTileGrid.Get(tilePos);
+                switch (subTile.mainTerrain)
+                {
+                    case TerrainMainType.Building:
+                    case TerrainMainType.Decor:
+                    case TerrainMainType.Road:
+                    case TerrainMainType.Wall:
+                        subTile.mainTerrain = TerrainMainType.DefaultLand;
+                        subTile.subTerrain = 0;
+                        EditSubTile edit = new EditSubTile(true, true, tilePos, subTile, true, true, true);
+                        edit.Submit();
+                        new GodBuild(tilePos);
+                        break;
+            }
+            }
         }
 
         public void AddCity(IntVector2 mapPos, CityType cityType, bool runTime, bool buildings)
@@ -341,94 +390,9 @@ namespace VikingEngine.DSSWars
         }
 
 
-        public static MapSize CustomMapSizeToSize(IntVector2 size)
-        {
-            var area = size.Area();
+        
 
-            for (MapSize sz = MapSize.Small; sz < MapSize.Epic; sz++)
-            {
-                if (SizeDimentions(sz).Area() > area)
-                {
-                    return sz - 1;
-                }
-            }
-
-            return MapSize.Epic;
-        }
-
-        public static IntVector2 SizeDimentions(MapSize mapSize)
-        {
-            IntVector2 result;
-            switch (mapSize)
-            {
-                case MapSize.Tiny:
-                    result = new IntVector2(TinyMapWidth, TinyMapHeigth);
-                    break;
-                case MapSize.Small:
-                    result = new IntVector2(SmallMapWidth, SmallMapHeigth);
-                    break;
-                case MapSize.Medium:
-                    result = new IntVector2(MediumMapWidth, MediumMapHeigth);
-                    break;
-                case MapSize.Large:
-                    result = new IntVector2(LargeMapWidth, LargeMapHeigth);
-                    break;
-                case MapSize.Huge:
-                    result = new IntVector2(HugeMapWidth, HugeMapHeigth);
-                    break;
-                case MapSize.Epic:
-                    result = new IntVector2(EpicMapWidth, EpicMapHeigth);
-                    break;
-                case MapSize.EpicPlus:
-                    result = new IntVector2(WorldData.CustomMapSize_Max, WorldData.CustomMapSize_Max);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-
-            return result;
-        }
-        public static MapSize ToMapSize(IntVector2 tileSize)
-        {
-            var area = tileSize.Area();
-
-            for (MapSize sz = MapSize.Epic; sz >= 0; sz--)
-            {
-                if (area > SizeDimentions(sz).Area())
-                {
-                    return sz + 1;
-                }
-            }
-
-            return MapSize.Tiny;
-        }
-
-        public static string SizeString(MapSize mapSize)
-        {
-            return SizeString(mapSize, SizeDimentions(mapSize));
-        }
-
-
-        public static string SizeString(MapSize mapSize, IntVector2 tileSize)
-        {
-            string name = null;
-            switch (mapSize)
-            {
-                case MapSize.Tiny: name = DssRef.lang.Lobby_MapSizeOptTiny; break;
-                case MapSize.Small: name = DssRef.lang.Lobby_MapSizeOptSmall; break;
-                case MapSize.Medium: name = DssRef.lang.Lobby_MapSizeOptMedium; break;
-                case MapSize.Large: name = DssRef.lang.Lobby_MapSizeOptLarge; break;
-                case MapSize.Huge: name = DssRef.lang.Lobby_MapSizeOptHuge; break;
-                case MapSize.Epic: name = DssRef.lang.Lobby_MapSizeOptEpic; break;
-                case MapSize.EpicPlus: name = DssRef.lang.Lobby_MapSizeOptEpic + "+"; break;
-            }
-            name += " " +
-                string.Format(DssRef.lang.Lobby_MapSizeDesc,
-                    Math.Round(tileSize.X * WorldData.TileWidthInKm),
-                    Math.Round(tileSize.Y * WorldData.TileWidthInKm));
-
-            return name;
-        }
+       
 
         public void refreshSize(IntVector2 sz)
         {
@@ -452,6 +416,7 @@ namespace VikingEngine.DSSWars
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
             chunkBounds = chunkGrid.TileBound();
+
         }
 
         bool subTileHasRepeatValue(ref MapTile1_1 subtile)
@@ -475,9 +440,10 @@ namespace VikingEngine.DSSWars
 
             Debug.WriteCheck(w);
 
-            foreach (City city in cities)
+            var citiesC = cities.counter();
+            while (citiesC.Next()) //foreach (City city in cities)
             {
-                city.writeGameState(w);
+                citiesC.sel.writeGameState(w);
             }
 
             Debug.WriteCheck(w);
@@ -538,9 +504,10 @@ namespace VikingEngine.DSSWars
             
             Debug.ReadCheck(r);
 
-            foreach (City city in cities)
+            var citiesC = cities.counter();
+            while (citiesC.Next()) //foreach (City city in cities)
             {
-                city.readGameState(r, subversion, pointers);
+                citiesC.sel.readGameState(r, subversion, pointers);
             }
 
             Debug.ReadCheck(r);
@@ -619,7 +586,7 @@ namespace VikingEngine.DSSWars
             refreshSize(Size);
 
             int cityCount = r.ReadInt32();
-            cities = new List<City>(cityCount);
+            cities = new SpottedArray<City>(cityCount);
             Init_CityComponents(cityCount);
             for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
             {
@@ -854,9 +821,10 @@ namespace VikingEngine.DSSWars
             if (arraylib.HasMembers(cities))
             {
                 w.Write(cities.Count);
-                foreach (var m in cities)
+                var citiesC = cities.counter();
+                while (citiesC.Next()) //foreach (var m in cities)
                 {
-                    m.writeMapFile(w);
+                    citiesC.sel.writeMapFile(w);
                 }
 
 
@@ -918,7 +886,7 @@ namespace VikingEngine.DSSWars
 
             if (cityCount > 0)
             {
-                cities = new List<City>(cityCount);
+                cities = new SpottedArray<City>(cityCount);
                 Init_CityComponents(cityCount);
                 for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
                 {

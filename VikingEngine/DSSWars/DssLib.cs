@@ -274,7 +274,7 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
-    enum MapSize { Tiny, Small, Medium, Large, Huge, Epic, EpicPlus, NUM }
+    enum MapSizeCategory { Tiny, Small, Medium, Large, Huge, Epic, EpicPlus, NUM }
 
     enum SoldierTransformType
     { 

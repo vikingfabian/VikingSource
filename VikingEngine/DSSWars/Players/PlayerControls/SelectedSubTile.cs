@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.Players
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             {
                 IntVector2 tilePos = WP.MaptileToSumTile(subTilePos);
-                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile) && tile.pcity.HasValue())
                 {
                     city = tile.pcity.City();
                     

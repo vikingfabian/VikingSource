@@ -1031,9 +1031,9 @@ namespace VikingEngine.DSSWars.Interface
         void findCityIdEvent(string result, object tag)
         {
             //Engine.Screen.SetupSplitScreen(DssRef.state.localPlayers.Count);
-            if (int.TryParse(result, out int id) && arraylib.InBound(DssRef.world.cities, id))
+            if (int.TryParse(result, out int id) &&  DssRef.world.cities.TryGetIndex(id, out var city))
             { 
-                DssRef.state.LocalHost().gameControls.map.setCameraPos( DssRef.world.cities[id].maptilePos);
+                DssRef.state.LocalHost().gameControls.map.setCameraPos(city.maptilePos);
             }
             
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Event;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -213,12 +214,12 @@ namespace VikingEngine.DSSWars.Data
                     break;
             }
 
-            var wsize = DssRef.storage.ruleset.mapSize;
+            var wsize = DssRef.storage.ruleset.mapSize.GetSizeCategory();
             if (Ref.gamestate is PlayState && DssRef.world != null)
             {
-                wsize = WorldData.CustomMapSizeToSize(DssRef.world.Size);
+                wsize = MapScale.CustomMapSizeToSize(DssRef.world.Size, out _);
             }
-            if (wsize <= MapSize.Tiny)
+            if (wsize <= MapSizeCategory.Tiny)
             {
                 result -= 50;
             }

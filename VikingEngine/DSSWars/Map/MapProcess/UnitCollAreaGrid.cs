@@ -86,9 +86,10 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 }
             }
 
-            foreach (var city in DssRef.world.cities)
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (var city in DssRef.world.cities)
             {
-                var groups = city.groups.counter();
+                var groups = citiesC.sel.groups.counter();
                 while (groups.Next())
                 {
                     IntVector2 area = groups.sel.maptilePos / UnitGridSquareWidth;

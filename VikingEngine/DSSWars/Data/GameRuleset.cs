@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Data
 {
@@ -17,7 +18,7 @@ namespace VikingEngine.DSSWars.Data
         public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickBoss, /*GameModeMainType.QuickMatch,*/ GameModeMainType.Sandbox, GameModeMainType.Peaceful/*, GameModeMainType.Spectator*/];
         public static readonly TwoInts[] QuickBossOptions_Time_Difficulty = [new TwoInts(3, 100), new TwoInts(5, 50), new TwoInts(8, 25)];
 
-        public MapSize mapSize = MapSize.Medium;
+        public MapScale mapSize = new MapScale(MapSizeCategory.Medium);
         public bool centralGold = true;
         public FactionStartSize factionStartSize = FactionStartSize.OneCity;
         public int QuickBossTimeOption = 1;
@@ -54,13 +55,14 @@ namespace VikingEngine.DSSWars.Data
         }
             
         
-        const int Version = 3;
+        const int Version = 4;
         public void write(System.IO.BinaryWriter w, bool storage)
         {
             if (storage)
             {
                 w.Write(Version);
-                w.Write((int)mapSize);
+                //w.Write((int)mapSize);
+                mapSize.write(w);
             }
             w.Write(centralGold);
 
@@ -83,7 +85,14 @@ namespace VikingEngine.DSSWars.Data
             if (storage)
             {
                 version = r.ReadInt32();
-                mapSize = (MapSize)r.ReadInt32();
+                if (version < 4)
+                {
+                    mapSize = new MapScale((MapSizeCategory)r.ReadInt32());
+                }
+                else
+                {
+                    mapSize.read(r);
+                }
             }
             centralGold = r.ReadBoolean();
             if (storage)
@@ -113,13 +122,13 @@ namespace VikingEngine.DSSWars.Data
         }
         public void defaultGameSettings()
         {
-            mapSize = MapSize.Medium;
+            mapSize = new MapScale( MapSizeCategory.Medium);
             centralGold = true;
             factionStartSize = FactionStartSize.Full;
         }
         public void demoSetup()
         {
-            mapSize = MapSize.Medium;
+            mapSize = new MapScale(MapSizeCategory.Medium);
             centralGold = true;
             factionStartSize = FactionStartSize.Full;
         }

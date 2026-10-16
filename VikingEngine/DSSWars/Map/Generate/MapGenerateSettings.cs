@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.Map.Generate
@@ -53,7 +54,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public MapStartAs StartAs = MapStartAs.Water;
 
         public bool bCustomSize = false;
-        public IntVector2 customMapSize = new IntVector2(WorldData.CustomMapSize_Min);
+        public IntVector2 customMapSize = new IntVector2(MapScale.CustomMapSize_Min);
         public bool cleanUpSingleTiles = false;
         public bool factionsOnMap = true;
 

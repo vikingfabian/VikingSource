@@ -340,10 +340,11 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         void AddCityIcons()
         {
-            foreach (var city in DssRef.world.cities)
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (var city in DssRef.world.cities)
             {
-                TileColor.cityColor(city, out Color centerCol, out Color outline, out Color factionCol);
-                IntVector2 center = (city.maptilePos + (TilesPerPixelScale / 2))/ TilesPerPixelScale;
+                TileColor.cityColor(citiesC.sel, out Color centerCol, out Color outline, out Color factionCol);
+                IntVector2 center = (citiesC.sel.maptilePos + (TilesPerPixelScale / 2))/ TilesPerPixelScale;
                 texture.SetPixel(center, centerCol);
                 Rectangle2 cityArea = Rectangle2.FromCenterTileAndRadius(center, 1);
                 ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(cityArea);

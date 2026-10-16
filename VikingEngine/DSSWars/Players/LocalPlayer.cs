@@ -1083,18 +1083,18 @@ namespace VikingEngine.DSSWars.Players
         //    //}
         //}
 
-        void debugAddResources()
-        {
-            foreach (var c in DssRef.world.cities)
-            {
-                //foreach (var type in City.MovableCityResourceTypes)
-                //{
-                //    var res = c.GetGroupedResource(type);
-                //    res.amount += 1000;
-                //    c.SetGroupedResource(type, res);
-                //}
-            }
-        }
+        //void debugAddResources()
+        //{
+        //    foreach (var c in DssRef.world.cities)
+        //    {
+        //        //foreach (var type in City.MovableCityResourceTypes)
+        //        //{
+        //        //    var res = c.GetGroupedResource(type);
+        //        //    res.amount += 1000;
+        //        //    c.SetGroupedResource(type, res);
+        //        //}
+        //    }
+        //}
 
         //void battleLineTest(UnitType type, bool sea)
         //{

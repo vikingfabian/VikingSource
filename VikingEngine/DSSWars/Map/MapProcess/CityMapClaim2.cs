@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 
-namespace VikingEngine.DSSWars.Map.Map2
+namespace VikingEngine.Core.DSSWars.Map.MapProcess
 {
     static class CityMapClaim2
     {
-        const int ClaimRadius_Campsite = 6;
+        const int ClaimRadius_Campsite = 8;
         const int ClaimRadius_Village = ClaimRadius_Campsite +2;
         const int ClaimRadius_Town = ClaimRadius_Village +2;
         const int ClaimRadius_Capital = ClaimRadius_Town + 2;
@@ -19,7 +21,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public static void CityClaim(City city)
         {
-            var pcity = new GameObject.ObjectPointer.PCity(city.myIndex);
+            var pcity = new VikingEngine.DSSWars.GameObject.ObjectPointer.PCity(city.myIndex);
 
             IntVector2 center = WP.MaptileToSumTile(city.maptilePos);
             float cityHeight = DssRef.world.subTileGrid.Get(city.maptilePos).groundY;
@@ -76,30 +78,39 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             }
 
-            {//Finalize with edge check                
+            {//Finalize with edge check
+                Rectangle2 sumArea = Rectangle2.FromCenterTileAndRadius(center, 2);
+
                 ForXYLoop loop = new ForXYLoop(maxArea);
                 while (loop.Next())
                 {
                     if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile))
                     {
-                        if (tile.pcity == pcity && tile.biomColorHeight > 1)
+                        if (tile.pcity == pcity)
                         {
-                            tile.IsBorderTile = false;
-                            foreach (var dir in IntVector2.Dir8Array)
+                            sumArea.includeTile(loop.Position);
+
+                            if (tile.biomColorHeight > 1)
                             {
-                                if ((DssRef.world.tileGrid.TryGet(loop.Position + dir, out var ntile) && 
-                                    ntile.pcity == pcity &&
-                                    ntile.biomColorHeight > 1) == false)
+                                tile.IsBorderTile = false;
+                                foreach (var dir in IntVector2.Dir8Array)
                                 {
-                                    tile.IsBorderTile = true;
-                                    break;
+                                    if ((DssRef.world.tileGrid.TryGet(loop.Position + dir, out var ntile) &&
+                                        ntile.pcity == pcity &&
+                                        ntile.biomColorHeight > 1) == false)
+                                    {
+                                        tile.IsBorderTile = true;
+                                        break;
+                                    }
                                 }
+                                DssRef.world.tileGrid.Set(loop.Position, tile);
+
                             }
-                            DssRef.world.tileGrid.Set(loop.Position, tile);
-                            
                         }
                     }
                 }
+
+                city.citySumTileArea.includeArea(sumArea);
             }
 
             //ForXYLoop loop = new ForXYLoop(area);

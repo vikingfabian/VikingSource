@@ -48,35 +48,36 @@ namespace VikingEngine.DSSWars.XP
 
             if (runSpread)
             {
-                foreach (var city in DssRef.world.cities)
+                var citiesC = DssRef.world.cities.counter();
+                while (citiesC.Next()) //foreach (var city in DssRef.world.cities)
                 {
-                    if (city.IsNetHosted)
+                    if (citiesC.sel.IsNetHosted)
                     {
-                        if (city.debugTagged || city.myIndex == 192)
+                        if (citiesC.sel.debugTagged || citiesC.sel.myIndex == 192)
                         {
                             lib.DoNothing();
                         }
-                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        EcsStaticArrayCounter neighbors = citiesC.sel.CityNeighbors();
                         while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var ni in city.neighborCities)
                         {
                             
                             //var nCity = DssRef.world.cities[ni];
-                            if (city.pfaction == nCity.pfaction)
+                            if (citiesC.sel.pfaction == nCity.pfaction)
                             {
-                                TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
+                                TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
                                 //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
                             }
                             else
                             {
-                                switch (DssRef.world.diplomacy.GetRelation(city.pfaction, nCity.pfaction).Relation)
+                                switch (DssRef.world.diplomacy.GetRelation(citiesC.sel.pfaction, nCity.pfaction).Relation)
                                 {
                                     case RelationType.RelationType2_Good:
-                                        TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
+                                        TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
 
                                         //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
                                         break;
                                     case RelationType.RelationType3_Ally:
-                                        TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
+                                        TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
 
                                         //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
                                         break;

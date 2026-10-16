@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars
     {
         public const int MapCountPerSize = 16;
 
-        MapSize loadingSz = 0;
+        MapSizeCategory loadingSz = 0;
         int loadingNumber = 1;
 
         Graphics.TextBoxSimple loadingStatusText;
@@ -65,8 +65,8 @@ namespace VikingEngine.DSSWars
                     }
                     else
                     {
-                        MapSize startSize = 0;
-                        for (loadingSz = startSize; loadingSz < MapSize.NUM; ++loadingSz)
+                        MapSizeCategory startSize = 0;
+                        for (loadingSz = startSize; loadingSz < MapSizeCategory.NUM; ++loadingSz)
                         {
                             for (loadingNumber = 1; loadingNumber <= MapCountPerSize; ++loadingNumber)
                             {
@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars
                     complete = true;
 
 
-                    async Task generateLoopUntilSucess(MapSize size, int number)
+                    async Task generateLoopUntilSucess(MapSizeCategory size, int number)
                     {
                         while (true)
                         {

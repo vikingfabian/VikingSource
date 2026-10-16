@@ -910,6 +910,11 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             if (generateCities != null)
             {
+                if (icon.cities == null)
+                {
+                    icon.cities = new List<CityPlacementData>();
+                }
+
                 foreach (var c in icon.cities)
                 {
                     var tile = dataGrid.Get(c.pos);

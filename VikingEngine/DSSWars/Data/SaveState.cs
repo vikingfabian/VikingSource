@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Data
                     }
                     break;
                 case GameObjectType.City:
-                    return DssRef.world.cities[id];
+                    return DssRef.world.cities.GetIndex_Safe(id);
             }
 
             //throw new Exception("GetObject from Pointer");

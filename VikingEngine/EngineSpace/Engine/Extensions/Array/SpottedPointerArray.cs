@@ -50,6 +50,22 @@ namespace VikingEngine
             }
         }
 
+        public bool Next<T>(ref SpottedPointerArray array, SpottedArray<T> objects, out T selected)
+        {
+            int value = array.NextIteration(ref selIndex);
+            sel = value;
+            if (sel != SpottedPointerArray.NullPointer)
+            {
+                selected = objects.Array[value];
+                return true;
+            }
+            else
+            {
+                selected = default(T);
+                return false;
+            }
+        }
+
         /// <summary>
         /// Returns true if there’s still a valid current selection.
         /// </summary>
@@ -422,6 +438,21 @@ namespace VikingEngine
 
             return list;
         }
+        public List<T> toList<T>(SpottedArray<T> pullFromList)
+        {
+            List<T> list = new List<T>(Count);
+
+            for (int i = 0; i < SpottedLength; ++i)
+            {
+                int pointer = Array[i];
+                if (pointer != NullPointer)
+                {
+                    list.Add(pullFromList.Array[pointer]);
+                }
+            }
+
+            return list;
+        }
 
 
         public T GetRandom<T>(AbsRandom rnd, List<T> pullFromList)
@@ -430,6 +461,15 @@ namespace VikingEngine
             if (pointer != NullPointer)
             {
                 return pullFromList[pointer];
+            }
+            return default(T);
+        }
+        public T GetRandom<T>(AbsRandom rnd, SpottedArray<T> pullFromList)
+        {
+            int pointer = GetRandom(rnd);
+            if (pointer != NullPointer)
+            {
+                return pullFromList.Array[pointer];
             }
             return default(T);
         }

@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars
         public static bool BlockTooltip = PlatformSettings.DevBuild ? false :
           false;//DO NOT CHANGE
 
-        public static MapSize? SaveLoadSpecificMap = PlatformSettings.DevBuild ? null :
+        public static MapSizeCategory? SaveLoadSpecificMap = PlatformSettings.DevBuild ? null :
             null;//DO NOT CHANGE
 
 

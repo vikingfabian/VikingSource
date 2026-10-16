@@ -38,6 +38,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
         /// </summary>
         Sand,
 
+        SaltDesert,
+
         /// <summary>
         /// Hard dry clay desert
         /// </summary>
@@ -182,6 +184,19 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 moveCost = 2f,
 
                 texture = new SpriteVariantCount(SpriteName.DssMapTextureSand),
+                sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
+            };
+
+            GroundProperties[(int)GroundType.SaltDesert] = new GroundTypeProperties()
+            {
+                canPlant = GroundCanBuildType.No,
+                canBuildLight = GroundCanBuildType.Yes,
+                canBuild = GroundCanBuildType.No,
+                canBuildHeavy = GroundCanBuildType.No,
+                canTerraform = false,
+                moveCost = 1.4f,
+
+                texture = new SpriteVariantCount(SpriteName.MissingImage),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
             };
 

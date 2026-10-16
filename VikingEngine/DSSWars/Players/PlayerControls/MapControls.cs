@@ -582,11 +582,11 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                var cities = DssRef.world.cities;
-
-                foreach (var m in cities)
+                //var cities = DssRef.world.cities;
+                var citiesC = DssRef.world.cities.counter();
+                while (citiesC.Next()) //foreach (var m in cities)
                 {
-                    checkDistance(m);
+                    checkDistance(citiesC.sel);
                 }
 
                 nearMapObjects.onAsynchProcessComplete();

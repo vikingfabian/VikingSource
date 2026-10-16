@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Map2;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.Characters.Monsters;
@@ -198,6 +199,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             editHistory.undo(this);
 
             generator.iconWorld = data;
+            generator.generateSettings.mapScale.setTextureSize(data.iconGrid.Size);
             loadingState = true;
             display.loadingDisplay.Show();
             generator.refreshPass();
@@ -232,8 +234,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             editHistory.AddStorePoint(this);
 
             IntVector2 size = generator.heightMapTexture.Size();
-            size.X = Bound.Max(size.X, WorldData.CustomMapSize_Max);
-            size.Y = Bound.Max(size.Y, WorldData.CustomMapSize_Max);
+            size.X = Bound.Max(size.X, MapScale.CustomMapSize_Max);
+            size.Y = Bound.Max(size.Y, MapScale.CustomMapSize_Max);
             //generator.generateSettings.mapScale.customMapSize = size;
             //generator.generateSettings.mapScale.bCustomSize = true;
             generator.generateSettings.mapScale.setTextureSize(size);
@@ -308,7 +310,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             };
 
             result.itemDescription =
-                $"{WorldData.SizeString(WorldData.ToMapSize(generator.generateSettings.mapScale.customMapSize), generator.generateSettings.mapScale.customMapSize)}. {string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion)}.";
+                $"{generator.generateSettings.mapScale.SizeString()}. {string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion)}.";
 
             return result;
         }

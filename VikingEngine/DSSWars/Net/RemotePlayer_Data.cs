@@ -244,7 +244,7 @@ namespace VikingEngine.DSSWars.Players
 
                 int cityIx = pfaction.GetFaction().cities.GetRandom(Ref.rnd);
                 var city = DssRef.world.cities[cityIx];
-                ForXYLoop loop = new ForXYLoop(city.cityTileArea);
+                ForXYLoop loop = new ForXYLoop(city.citySumTileArea);
                 while (loop.Next() && chunkSize > 0)
                 {
                     var hasRecieved = remoteTileGrid.Get(loop.Position);

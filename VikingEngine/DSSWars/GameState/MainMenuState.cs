@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.GameState.MapEditor;
 using VikingEngine.DSSWars.GameState.MapEditor2;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Presentation;
@@ -1712,16 +1713,16 @@ namespace VikingEngine.DSSWars
             {
                 DropDownBuilder mapSzOptions = new DropDownBuilder("mapSz");
                 {
-                    for (MapSize sz = 0; sz < MapSize.Epic; ++sz)
+                    for (MapSizeCategory sz = 0; sz < MapSizeCategory.Epic; ++sz)
                     {
-                       var dropOpt =  mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.ruleset.mapSize == sz, defaultOptions.ruleset.mapSize == sz,
-                            new RbAction1Arg<MapSize>(setMapSize, sz), null);
+                       var dropOpt =  mapSzOptions.AddOption(new MapScale( sz).SizeString(), DssRef.storage.ruleset.mapSize.sizeCategory == sz, defaultOptions.ruleset.mapSize.sizeCategory == sz,
+                            new RbAction1Arg<MapSizeCategory>(setMapSize, sz), null);
                         switch (sz)
                         {
                             case 0:
                                 dropOpt.iconAfter = SpriteName.MenuIconPerformanceCold;
                                 break;
-                            case MapSize.Epic -1:
+                            case MapSizeCategory.Epic -1:
                                 dropOpt.iconAfter = SpriteName.MenuIconPerformanceHot;
                                 break;
                         }
@@ -2474,21 +2475,21 @@ namespace VikingEngine.DSSWars
             return DssRef.difficulty.runStory;
         }
 
-        public MapSize mapSizeProperty(bool set, MapSize value)
+        public MapSizeCategory mapSizeProperty(bool set, MapSizeCategory value)
         {
-            if (set && DssRef.storage.ruleset.mapSize != value)
+            if (set && DssRef.storage.ruleset.mapSize.sizeCategory != value)
             {
-                DssRef.storage.ruleset.mapSize = value;
+                DssRef.storage.ruleset.mapSize = new MapScale(value);
                 DssRef.storage.Save(null);
 
                 restartBackgroundLoading();
             }
-            return DssRef.storage.ruleset.mapSize;
+            return DssRef.storage.ruleset.mapSize.sizeCategory;
         }
 
-        public void setMapSize(MapSize value)
+        public void setMapSize(MapSizeCategory value)
         {
-            DssRef.storage.ruleset.mapSize = value;
+            DssRef.storage.ruleset.mapSize = new MapScale( value);
             DssRef.storage.Save(null);
             underMenu.CloseDropDown();
 

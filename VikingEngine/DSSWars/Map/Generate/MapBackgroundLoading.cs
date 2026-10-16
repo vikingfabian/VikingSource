@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             if (loadMeta != null)
             {
                 DssRef.storage.generateNewMaps = loadMeta.worldmeta.IsGenerated;
-                DssRef.storage.ruleset.mapSize = loadMeta.worldmeta.mapSize;
+                DssRef.storage.ruleset.mapSize = loadMeta.worldmeta.mapScale;
             }
 
             if (GenerateNewMap())
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (StartupSettings.SaveLoadSpecificMap.HasValue)
                 {
-                    DssRef.storage.ruleset.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
+                    DssRef.storage.ruleset.mapSize = new MapLib.MapScale( StartupSettings.SaveLoadSpecificMap.Value);
                     loadingNumber = 1;
                 }
                 storage.loadMap(worldMeta);
