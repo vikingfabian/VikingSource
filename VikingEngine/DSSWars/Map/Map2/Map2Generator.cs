@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     break;
 
                 case Map2Pass.Bioms:
-                    biomsLayout = new BiomsLayout(iconWorld.rnd);
+                    biomsLayout = new BiomsLayout(iconWorld.rnd, generateSettings.mapScale.GetSizeCategory());
                     biomsLayout.GenerateNodes(iconWorld);
                     break;
 
@@ -727,107 +727,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             return BlendTiles(tileBuffer, count, biomeBuffer);
         }
-        //void scaleUp4()
-        //{
-        //    Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
-
-        //    // Parallel.For handles the splitting automatically.
-        //    // We iterate over the X-axis in parallel, and let each thread handle a full column (Y-loop).
-        //    Parallel.For(0, dataGrid.Size.X, x =>
-        //    {
-        //        for (int y = 0; y < dataGrid.Size.Y; y++)
-        //        {
-        //            // --- Standard Interpolation Logic ---
-
-        //            int lgX = x * 2;
-        //            int lgY = y * 2;
-
-        //            int nextX = (x + 1 < dataGrid.Size.X) ? x + 1 : x;
-        //            int nextY = (y + 1 < dataGrid.Size.Y) ? y + 1 : y;
-
-        //            float hTL = dataGrid.Get(x, y).groundY;
-        //            float hTR = dataGrid.Get(nextX, y).groundY;
-        //            float hBL = dataGrid.Get(x, nextY).groundY;
-        //            float hBR = dataGrid.Get(nextX, nextY).groundY;
-
-        //            float avgTop = (hTL + hTR) * 0.5f;
-        //            float avgLeft = (hTL + hBL) * 0.5f;
-        //            float avgCenter = (hTL + hTR + hBL + hBR) * 0.25f;
-
-        //            largeGrid.Set(lgX, lgY, new GenTile { groundY = hTL });
-        //            largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
-        //            largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
-        //            largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
-        //        }
-        //    });
-
-        //    dataGrid = largeGrid;
-        //    iconWorld.iconGrid = largeGrid;
-        //}
-        //void scaleUp8()
-        //{
-        //    Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
-
-        //    Parallel.For(0, dataGrid.Size.X, x =>
-        //    {
-        //        for (int y = 0; y < dataGrid.Size.Y; y++)
-        //        {
-        //            int lgX = x * 2;
-        //            int lgY = y * 2;
-
-        //            // 1. Get smoothed values for the 4 corners of the current "quad"
-        //            // We calculate the 8-neighbor average for each corner involved
-        //            float sTL = GetSmoothedHeight(x, y);
-        //            float sTR = GetSmoothedHeight(x + 1, y);
-        //            float sBL = GetSmoothedHeight(x, y + 1);
-        //            float sBR = GetSmoothedHeight(x + 1, y + 1);
-
-        //            // 2. Interpolate the gaps using these smoothed values
-        //            float avgTop = (sTL + sTR) * 0.5f;
-        //            float avgLeft = (sTL + sBL) * 0.5f;
-        //            float avgCenter = (sTL + sTR + sBL + sBR) * 0.25f;
-
-        //            // 3. Assign to Large Grid
-        //            largeGrid.Set(lgX, lgY, new GenTile { groundY = sTL });
-        //            largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
-        //            largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
-        //            largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
-        //        }
-        //    });
-
-        //    dataGrid = largeGrid;
-        //    iconWorld.iconGrid = largeGrid;
-        //    //dataGrid = largeGrid;
-        //    //world.tileGrid = largeGrid;
-        //}
-
-        //// Helper to get average of a tile and its 8 neighbors
-        //float GetSmoothedHeight(int cx, int cy)
-        //{
-        //    // Clamp center to grid bounds to prevent errors at the far edges
-        //    cx = (cx >= dataGrid.Size.X) ? dataGrid.Size.X - 1 : cx;
-        //    cy = (cy >= dataGrid.Size.Y) ? dataGrid.Size.Y - 1 : cy;
-
-        //    float totalHeight = 0;
-        //    int count = 0;
-
-        //    // Loop through 3x3 block centered on (cx, cy)
-        //    for (int nx = cx - 1; nx <= cx + 1; nx++)
-        //    {
-        //        for (int ny = cy - 1; ny <= cy + 1; ny++)
-        //        {
-        //            // Check bounds for neighbors
-        //            if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
-        //            {
-        //                totalHeight += dataGrid.Get(nx, ny).groundY;
-        //                count++;
-        //            }
-        //        }
-        //    }
-
-        //    return totalHeight / count;
-        //}
-
+       
         void addNoiseTexture()
         {
             var dataGrid = DataGrid();

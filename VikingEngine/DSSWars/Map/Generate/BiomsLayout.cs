@@ -18,15 +18,24 @@ namespace VikingEngine.DSSWars.Map.Generate
 
     class BiomsLayout
     {
-        const int Width = 6;
-        const int Height = 4;
+        
 
         RandomObjects<BiomType>[,] biomGrid;
 
-        public BiomsLayout(PcgRandom rnd)
+        public BiomsLayout(PcgRandom rnd, MapSizeCategory sizeCategory)
         {
+            int add = 0;
+            if (sizeCategory > MapSizeCategory.Medium)
+            {
+                add = (sizeCategory - MapSizeCategory.Medium);
+            }
+            int Width = 6 + add;
+            int Height = 4 + add;
+
             biomGrid = new RandomObjects<BiomType>[Width, Height];
 
+            //todo loop y
+            xxx
             {
                 int y = 0;
                               
@@ -36,7 +45,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     BiomType defaultBiom;
                     BiomType secondaryBiom;
 
-                    if (x < 4)
+                    if (x < MathExt.MultiplyInt(0.75, Width))
                     {
                         defaultBiom = BiomType.Frozen;
                         secondaryBiom = BiomType.Tundra;
@@ -99,7 +108,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     }
                     if (rnd.Chance(0.1))
                     {
-                        if (x < 4)
+                        if (x < MathExt.MultiplyInt(0.75, Width))
                         {
                             options.AddItem(BiomType.Frozen, 20);
                         }
@@ -131,7 +140,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     }
                     if (rnd.Chance(0.1))
                     {
-                        if (x < 2)
+                        if (x < MathExt.MultiplyInt(0.35, Width))
                         {
                             options.AddItem(BiomType.DarkLands, 20);
                         }
@@ -155,14 +164,14 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                     RandomObjects<BiomType> options;
 
-                    if (x < 2)
+                    if (x < MathExt.MultiplyInt(0.35, Width))
                     {
                         options = new RandomObjects<BiomType>(new ObjectCommonessPair<BiomType>(10, BiomType.Green));
                         options.AddItem(BiomType.GreenDry, 6);
                     }
                     else
                     {
-                        if (x < 4)
+                        if (x < MathExt.MultiplyInt(0.75, Width))
                         {
                             options = new RandomObjects<BiomType>(new ObjectCommonessPair<BiomType>(10, BiomType.DarkLands));
 
