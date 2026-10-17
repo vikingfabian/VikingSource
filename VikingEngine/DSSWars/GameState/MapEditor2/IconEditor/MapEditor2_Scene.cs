@@ -115,18 +115,18 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 
                     if (generator.currentPass <= Map2Pass.NewWorld)
                     {
-                        map.hide();
+                        map.Hide();
                     }
                     else if (generator.currentPass < Map2Pass.Icon)
                     {
-                        map.generateNodes(generator.nodeMap);
+                        map.GenerateNodes(generator.nodeMap);
                     }
                     else
                     {
-                        map.generateIcon(generator.ActiveIconWorld);
+                        map.GenerateIcon(generator.ActiveIconWorld);
                         if (generator.currentPass >= Map2Pass.ScaleUp)
                         {
-                            map.scale = 0.25f;
+                            map.Scale = 0.25f;
                         }
                     }
                 }
@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
                 {
                     foreach (var input in controller)
                     {
-                        map.userInput(input, mouseOverHud);
+                        map.UserInput(input, mouseOverHud);
 
                         tool.paintInput(input);
                     }
@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
                 Task.Run(() =>
                 {
                     generator.processTexturePixels();
-                    map.refreshTexture(generator.ActiveIconWorld);
+                    map.RefreshTexture(generator.ActiveIconWorld);
                     redrawLock = false;
                 });
             }
@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 
             if (start <= Map2Pass.Empty)
             {
-                map.resetPos();
+                map.ResetPos();
             }
 
             loadingState = true;
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             SoundLib.saving.Play();
             process = ProcessState.Saving;
             //display.processMenu();
-            storage.save(iconMeta, generator.ActiveIconWorld, map.texture.texture, this);
+            storage.save(iconMeta, generator.ActiveIconWorld, map._texture.texture, this);
         }
 
         public void uploadIconMap()
@@ -261,7 +261,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             SoundLib.saving.Play();
             process = ProcessState.WorkshopUploadSave;
             //display.processMenu();
-            storage.save(iconMeta, generator.ActiveIconWorld, map.texture.texture, this);
+            storage.save(iconMeta, generator.ActiveIconWorld, map._texture.texture, this);
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)

@@ -215,14 +215,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
                         SoundLib.editorKeyDown(false, Input.Mouse.Position.X);
                         finalizePaintStroke();
                     }
-                    else if (scene.map.pointerToTilePos(Input.Mouse.Position, tileSize, out var tilePos))
+                    else if (scene.map.PointerToTilePos(Input.Mouse.Position, tileSize, out var tilePos))
                     {   
                         paintOnTile(tilePos, tileSize);
                     }
                 }
                 else if (input.editorInput.draw.DownEvent)
                 {
-                    if (scene.map.pointerToTilePos(Input.Mouse.Position, tileSize, out var tilePos))
+                    if (scene.map.PointerToTilePos(Input.Mouse.Position, tileSize, out var tilePos))
                     {
                         SoundLib.editorKeyDown(true, Input.Mouse.Position.X);
                         bPaintKeyDown = true;

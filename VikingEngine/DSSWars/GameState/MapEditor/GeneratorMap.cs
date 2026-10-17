@@ -13,49 +13,55 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 {
     class GeneratorMap
     {
-        public FactionPixelTexture texture;
-        Graphics.ImageAdvanced image;
 
-        Vector2 textureSize;
-        float zoom = 1;
-        public float scale = 1;
-
-        Vector2 topLeft;
+        /// <summary>
+        /// Max preview texture side. The ScaleUp pass makes the icon grid 16x larger,
+        /// and a full-resolution texture exceeds Vulkan's allocation limits (VK_ERROR_OUT_OF_DEVICE_MEMORY).
+        /// </summary>
+        private const int MaxPreviewTextureSize = 4096;
+        private int _iconSampleStep = 1;
+        private bool _isTextureOwned = false;
+        private readonly Graphics.ImageAdvanced _image;
+        private Vector2 _textureSize;
+        private float _zoom = 1;
+        private readonly Vector2 _topLeft;
+        public float Scale = 1;
+        public FactionPixelTexture _texture;
 
         public GeneratorMap(Vector2 pos)
         {
-            topLeft = pos;
-            texture = new FactionPixelTexture(-1, false, FactionMapFilter.Terrain);
-            image = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, pos, Vector2.One, ImageLayers.Lay8, false);
+            _topLeft = pos;
+            _texture = new FactionPixelTexture(-1, false, FactionMapFilter.Terrain);
+            _image = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, pos, Vector2.One, ImageLayers.Lay8, false);
         }
 
-        public void resetPos()
+        public void ResetPos()
         {
-            image.position = topLeft;
+            _image.position = _topLeft;
         }
 
-        public void userInput(InputMap input, bool mouseOverHud)
+        public void UserInput(InputMap input, bool mouseOverHud)
         {
             if ( !mouseOverHud)
             {
                 if (input.mousePan.IsDown)
                 {
-                    image.position += Input.Mouse.MoveDistance + input.moveCursor.direction;
+                    _image.position += Input.Mouse.MoveDistance + input.moveCursor.direction;
                 }
-                image.position -= input.move.directionAndTime * 4f;
+                _image.position -= input.move.directionAndTime * 4f;
 
-                zoom = Bound.Set(zoom + input.ZoomValue() * -0.014f * zoom, 0.25f, 4f);
+                _zoom = Bound.Set(_zoom + input.ZoomValue() * -0.014f * _zoom, 0.25f, 4f);
 
 
 
             }
-            image.size = textureSize * zoom * scale;
+            _image.size = _textureSize * _zoom * Scale;
         }
 
-        public bool pointerToTilePos(Vector2 pointer, IntVector2 tileSize, out IntVector2 tilePos)
+        public bool PointerToTilePos(Vector2 pointer, IntVector2 tileSize, out IntVector2 tilePos)
         {
             tilePos = IntVector2.Zero;
-            var ar = image.Area;
+            var ar = _image.Area;
             if (ar.IntersectPoint(pointer))
             {
                 tilePos.Vec = ar.PositionToPercent(pointer) * tileSize.Vec;
@@ -66,66 +72,92 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public Vector2 TileToScreenPos(IntVector2 tilePos, IntVector2 tileSize)
         {
-           return image.Area.PercentToPosition(tilePos.Vec / tileSize.Vec);
+           return _image.Area.PercentToPosition(tilePos.Vec / tileSize.Vec);
         }
 
-        public void generate()
+        public void Generate()
         {
-            texture.initTexture();
-            texture.filter = arraylib.HasMembers(DssRef.world.cities)? FactionMapFilter.FactionCols : FactionMapFilter.Terrain;
-            texture.refreshWorld();
-           
-            image.Texture = texture.texture;
-            image.SetFullTextureSource();
-            textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
-            scale = 1;
-            image.size = textureSize * zoom * scale;
-            image.Visible = true;
-        }
-
-
-        public void generateNodes(Map.Map2.NodeMap map)
-        {
-            
-            texture.texture = map.texture;
-            image.Texture = map.texture;
-            image.SetFullTextureSource();
-            textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
-            scale = 4;
-            image.size = textureSize * zoom * scale;
-            image.Visible = true;
-        }
-
-        public void generateIcon(Map.Map2.IconWorldData world)
-        {
-            texture.texture = new Graphics.PixelTexture(world.iconGrid.Size);
-
-            refreshTexture(world);
-
-            image.Texture = texture.texture;
-            image.SetFullTextureSource();
-            textureSize = new Vector2(texture.texture.Width, texture.texture.Height);
-            scale = 2;
-            image.size = textureSize * zoom * scale;
-            image.Visible = true;
-        }
-
-        public void refreshTexture(Map.Map2.IconWorldData world)
-        {
-            var loop = world.iconGrid.LoopInstance();
-            while (loop.Next())
+            if (!_isTextureOwned)
             {
-                var t = world.iconGrid.Get(loop.Position);
-                texture.texture.SetPixel(loop.Position, t.color);
+                _texture.texture = null;
+            }
+            _texture.initTexture();
+            _isTextureOwned = true;
+            _texture.filter = arraylib.HasMembers(DssRef.world.cities)? FactionMapFilter.FactionCols : FactionMapFilter.Terrain;
+            _texture.refreshWorld();
+           
+            _image.Texture = _texture.texture;
+            _image.SetFullTextureSource();
+            _textureSize = new Vector2(_texture.texture.Width, _texture.texture.Height);
+            Scale = 1;
+            _image.size = _textureSize * _zoom * Scale;
+            _image.Visible = true;
+        }
+
+
+        public void GenerateNodes(Map.Map2.NodeMap map)
+        {
+            if (_isTextureOwned && _texture.texture != map.texture)
+            {
+                Graphics.GpuResourceSync.Release(_texture.texture);
+            }
+            _texture.texture = map.texture;
+            _isTextureOwned = false;
+            _image.Texture = map.texture;
+            _image.SetFullTextureSource();
+            _textureSize = new Vector2(_texture.texture.Width, _texture.texture.Height);
+            Scale = 4;
+            _image.size = _textureSize * _zoom * Scale;
+            _image.Visible = true;
+        }
+
+        public void GenerateIcon(Map.Map2.IconWorldData world)
+        {
+            IntVector2 gridSize = world.iconGrid.Size;
+            int maxSide = Math.Max(gridSize.X, gridSize.Y);
+            _iconSampleStep = Math.Max(1, (maxSide + MaxPreviewTextureSize - 1) / MaxPreviewTextureSize);
+            IntVector2 texSize = new IntVector2(
+                (gridSize.X + _iconSampleStep - 1) / _iconSampleStep,
+                (gridSize.Y + _iconSampleStep - 1) / _iconSampleStep);
+
+            var previousTexture = _isTextureOwned ? _texture.texture : null;
+            _texture.texture = new Graphics.PixelTexture(texSize);
+            _isTextureOwned = true;
+            Graphics.GpuResourceSync.Release(previousTexture);
+
+            RefreshTexture(world);
+
+            _image.Texture = _texture.texture;
+            _image.SetFullTextureSource();
+            // Use the logical grid size so on-screen size and tile picking are unchanged
+            _textureSize = gridSize.Vec;
+            Scale = 2;
+            _image.size = _textureSize * _zoom * Scale;
+            _image.Visible = true;
+        }
+
+        public void RefreshTexture(Map.Map2.IconWorldData world)
+        {
+            var texture = _texture.texture;
+            var grid = world.iconGrid;
+            int step = _iconSampleStep;
+
+            for (int y = 0; y < texture.Height; y++)
+            {
+                int gy = Math.Min(y * step, grid.Size.Y - 1);
+                for (int x = 0; x < texture.Width; x++)
+                {
+                    int gx = Math.Min(x * step, grid.Size.X - 1);
+                    texture.SetPixel(x, y, grid.Get(gx, gy).color);
+                }
             }
 
-            texture.texture.ApplyPixelsToTexture();
-
+            texture.ApplyPixelsToTexture();
         }
 
-        public void hide()
+        public void Hide()
         {
-            image.Visible = false;
+            _image.Visible = false;
         }
     }
 }
