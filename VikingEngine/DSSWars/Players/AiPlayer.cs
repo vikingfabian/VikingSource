@@ -9,7 +9,6 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.MapData;
-using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
@@ -1938,10 +1937,10 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(mainArmy.maptilePos), out SumTile4_4 tile))
+                        if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(mainArmy.maptilePos), out SumTile4_4 tile) && tile.pcity.HasValue())
                         {
                             var city = tile.pcity.City();
-                            if (city.pfaction == pfaction)
+                            if (city != null && city.pfaction == pfaction)
                             {
                                 if (city.distanceTo(mainArmy) <= 2)
                                 {

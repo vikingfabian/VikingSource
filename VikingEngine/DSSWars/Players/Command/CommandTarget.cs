@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Players.Command
         { 
             this.soldierGroup = soldierGroup;
             player.gameControls.mapSelect(soldierGroup);
-            player.gameControls.map.SetTargetZoom(MapDetailLayerType.UnitDetail1);
+            player.gameControls.map.SetTargetZoom(MapDetailLayerType.Layer1_Near);
 
             model = SelectedSubTile.CreateOutlineModel(player, true);
             model.Visible = true;            

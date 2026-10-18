@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Map.Path
     class DetailPathFinding
     {
         public const int MaxNodeLength = 30000;
-        const int MaxTileRadius = 64 * Map.MapData.MapTile1_1.ModelScale_Inv;
+        const int MaxTileRadius = 128 * Map.MapData.MapTile1_1.ModelScale_Inv;
 
         // Min-heap open list ordered by: (TotalCost, Heuristic)
         PriorityQueue<DetailPathNode, (float Value, float Heuristic)> open = new PriorityQueue<DetailPathNode, (float, float)>();

@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
            
             waterSurface.texture = WaterTex()[0];
-            int repeatCount = layer == DrawGame.UnitDetailLayer ? 2 : 1;
+            int repeatCount = layer == DrawGame.NearLayer ? 2 : 1;
             waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.chunkGrid.Size * repeatCount);
            
             waterSurface.Scale = vol.Scale;
@@ -51,7 +51,10 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             
         }
 
-        abstract protected Texture2D[] WaterTex();
+        virtual protected Texture2D[] WaterTex()
+        {
+            return DssRef.models.seaTextures;
+        }
 
         public static VectorVolume WaterModelVolume()
         {

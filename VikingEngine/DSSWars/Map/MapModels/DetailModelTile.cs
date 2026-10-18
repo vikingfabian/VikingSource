@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
         public DetailMapTileExitState exitRender =  DetailMapTileExitState.None;
         public DetailModelTile()
         {            
-            model.Effect = MapLayer_Detail.ModelEffect;
+            model.Effect = MapLayer1_Near.ModelEffect;
             model.Visible = false;
 
             waterEdgeModel.Effect = WaveXzEffect.GetWaveSingletonSafe();

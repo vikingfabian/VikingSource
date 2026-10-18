@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path;
 
@@ -24,6 +25,10 @@ namespace VikingEngine.DSSWars.Map.Path3
         public LayerWalkingPath FindHighPath(Vector3 start, Vector3 goal, int startDir, bool startAsShip, bool endAsShip)
         {
             float tileLength = VectorExt.SideLength_XZ(start, goal);
+
+            DssRef.world.generateLayer4Tile(this, MoveCostLayer.WpToLay4(start));
+            DssRef.world.generateLayer4Tile(this, MoveCostLayer.WpToLay4(goal));
+
 
             LayerWalkingPath lay4Path = null;
             if (tileLength > MoveCostLayer.Layer4TileWidth * 2)

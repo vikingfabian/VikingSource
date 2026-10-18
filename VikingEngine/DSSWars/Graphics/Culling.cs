@@ -308,20 +308,20 @@ namespace VikingEngine.DSSWars
                 Rectangle2 screenAreaRaw = screenArea;
                 DssRef.state.localPlayers[index].cullingTileArea = screenArea;
 
-                if (detailLayer.current.DrawFar)
+                if (detailLayer.current.DrawFarLayer)
                 {
                     //screenArea.SetMaxRadius(120, 100);
                     MaxUpdateArea(ref screenArea);
                 }
                
                 PlayerCullingState state = bStateA ? stateA : stateB;
-                state.detailLayer = detailLayer.current.DrawDetailLayer;
+                state.detailLayer = detailLayer.current.DrawNearLayer;
                 detailView |= state.detailLayer;
-                state.midLayer = detailLayer.current.DrawMid;
-                state.farLayer = detailLayer.current.DrawFar;
+                state.midLayer = detailLayer.current.DrawMidLayer;
+                state.farLayer = detailLayer.current.DrawFarLayer;
                 if (detailLayer.prevLayer != null)
                 {
-                    state.midLayer |= detailLayer.prevLayer.DrawMid;
+                    state.midLayer |= detailLayer.prevLayer.DrawMidLayer;
                 }
                 state.async_playerViewToRenderState(bStateA, screenArea, screenAreaRaw, detailLayer.current);
             }
@@ -425,12 +425,12 @@ namespace VikingEngine.DSSWars
                     //Debug.Log("Tile Get(A) " + loop.Position.ToString() + ", " + tile.ToString());
                     if (bStateA)
                     {
-                        Culling.SetRenderState(ref tile.bits_renderStateA, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
+                        Culling.SetRenderState(ref tile.bits_renderStateA, !enterRender, enterRender, layer.DrawVeryFarLayer, layer.DrawNearLayer);
                         //if (value > tile.renderStateA) { tile.renderStateA = value; }
                     }
                     else
                     {
-                        Culling.SetRenderState(ref tile.bits_renderStateB, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
+                        Culling.SetRenderState(ref tile.bits_renderStateB, !enterRender, enterRender, layer.DrawVeryFarLayer, layer.DrawNearLayer);
                         //if (value > tile.renderStateB) { tile.renderStateB = value; }
                     }
                     DssRef.world.chunkGrid.Set(loop.Position, tile);

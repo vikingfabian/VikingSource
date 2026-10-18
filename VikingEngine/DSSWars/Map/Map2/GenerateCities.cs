@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                 List<IntVector2> cityNodePositions = new List<IntVector2>();
 
-                IntVector2 CityGridSz = icon.iconGrid.Size / CityGridPixSz;
+                IntVector2 CityGridSz = generateSettings.mapScale.Size(true) / CityGridPixSz;
                 Rectangle2 area = new Rectangle2(IntVector2.One, CityGridSz - 2);
                 ForXYLoop loop = new ForXYLoop(area);
                 while (loop.Next())

@@ -247,7 +247,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space(0.5f);
             }
 
-            if (player.mapLayer() >= MapDetailLayerType.FactionColors3 && !prepareLayout)
+            if (player.mapLayer() >= MapDetailLayerType.Layer3_Far && !prepareLayout)
             {
                 mapFilterTabs(content);
             }

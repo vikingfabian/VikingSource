@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
             */
-            Debug.LogError("GetFreeTile" + maptilePos.ToString());
+            //Debug.LogError("GetFreeTile" + maptilePos.ToString());
             return maptilePos;
         }
 
@@ -1475,7 +1475,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return HousingCount_Workers * 0.75;
         }
-
+        public void onEditorStart()
+        {
+            refreshPos();
+            refreshCitySize();
+            if (!name.custom)
+            {
+                name.name = Data.NameGenerator.CityName(maptilePos);
+            }
+        }
         public void onGameStart(bool newGame)
         {            
             groupRadius = 0.6f;
@@ -1490,6 +1498,7 @@ namespace VikingEngine.DSSWars.GameObject
             armyGoalRotation = rotation.radians;
 
             //position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
+            refreshPos();
             refreshCitySize();
                         
             //if (newGame && cityType > CityType.UnClaimed)
@@ -1522,15 +1531,7 @@ namespace VikingEngine.DSSWars.GameObject
             //setTimeOnAllWorkers();
         }
 
-        public void onEditorStart()
-        {
-            refreshPos();
-            refreshCitySize();
-            if (!name.custom)
-            {
-                name.name = Data.NameGenerator.CityName(maptilePos);
-            }
-        }
+        
 
         void initEconomy(/*bool newGame,*/ WorldData world)
         {

@@ -561,7 +561,7 @@ namespace VikingEngine.DSSWars.Work
 #if DEBUG
                     resourceModel.DebugName = "resourceModel";
 #endif
-                    resourceModel.AddToRender(DrawGame.UnitDetailLayer);
+                    resourceModel.AddToRender(DrawGame.NearLayer);
                     resourceModel.Rotation = DssLib.FaceCameraRotation;
                 }
                 updateResourceModel();

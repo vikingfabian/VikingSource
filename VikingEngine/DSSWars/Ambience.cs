@@ -225,10 +225,10 @@ namespace VikingEngine.DSSWars
             var detailLayer = MapLayerManager.CameraIndexToView[0];
             switch (detailLayer.current.type)
             {
-                case MapDetailLayerType.UnitDetail1:
+                case MapDetailLayerType.Layer1_Near:
                     goalFade = 0;
                     break;
-                case MapDetailLayerType.TerrainOverview2:
+                case MapDetailLayerType.Layer2_Mid:
                     goalFade = 0.4f;
                     break;
                 default:
@@ -243,7 +243,7 @@ namespace VikingEngine.DSSWars
                 musicReduceFade = Bound.Set(musicReduceFade - FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(Ref.music.IsPlayingNowOrSoon()) * Ref.DeltaGameTimeSec, 0f, 1f);
             }
 
-            bool playerLookingAtBattle = detailLayer.current.type == MapDetailLayerType.UnitDetail1 &&
+            bool playerLookingAtBattle = detailLayer.current.type == MapDetailLayerType.Layer1_Near &&
                 DssRef.world.unitCollAreaGrid.PlayerInBattle(tileCenter, DssRef.state.LocalHost().pfaction);
             bool hadBattleSound = battleFade > 0;
             battleFade = Bound.Set(battleFade + FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(playerLookingAtBattle) * Ref.DeltaGameTimeSec, 0f, 1f);

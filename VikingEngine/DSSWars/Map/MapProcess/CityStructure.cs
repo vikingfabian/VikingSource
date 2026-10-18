@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         {
                             if (sumTile.pcity.cityIndex == city.myIndex && mapTile.IsLand())
                             {
-                                IntVector2 topleft = WP.ToSubTilePos_TopLeft(edgeRandomizer.Position);
+                                IntVector2 topleft = edgeRandomizer.Position;
                                 ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
                                 while (subTileLoop.Next())

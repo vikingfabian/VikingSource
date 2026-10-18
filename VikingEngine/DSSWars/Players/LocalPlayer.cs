@@ -1237,7 +1237,7 @@ namespace VikingEngine.DSSWars.Players
 
         void updateMapOverlays()
         {
-            if (mapLayersManager.current.DrawFar)
+            if (mapLayersManager.current.DrawFarLayer)
             {
                 gameControls.map.hover.subTile.clear();
                 //gameControls.map.selection.subTile.clear();
@@ -1257,7 +1257,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            if (mapLayersManager.current.DrawMid)
+            if (mapLayersManager.current.DrawMidLayer)
             {
                 gameControls.map.hover.subTile.clear();
                 //gameControls.map.selection.subTile.clear();
@@ -1949,7 +1949,7 @@ namespace VikingEngine.DSSWars.Players
             if (MapLayerManager.CameraIndexToView == null ||
                 MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex] == null)
             {
-                return MapDetailLayerType.TerrainOverview2;
+                return MapDetailLayerType.Layer2_Mid;
             }
 
             return MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex].current.type;

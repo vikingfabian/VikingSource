@@ -1698,7 +1698,7 @@ namespace VikingEngine.DSSWars
             GameStorage defaultOptions = new GameStorage();
 
             //var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
-            WorldData customWorld = mapBackgroundLoading.WorldData();//mapBackgroundLoading?.dataGenerate?.world;
+            WorldData customWorld = mapBackgroundLoading?.WorldData();//mapBackgroundLoading?.dataGenerate?.world;
 
             bool continueCustomMap = customWorld !=null && customWorld.metaData.customEditorMap;
             if (continueCustomMap)
@@ -1816,7 +1816,83 @@ namespace VikingEngine.DSSWars
             }
 
             content.newParagraph();
-            content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
+            content.h2("Modules", HudLib.TitleColor_Head2);
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.WarsResource_Water),
+                 new RbSpace(0.5f),
+                new RbText(".Thirst and Stravation", HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.WarsResource_FoodEmpty),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText("+100%", HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.rtsUpkeep),
+                 new RbSpace(0.5f),
+                new RbText(".Debt and Deserters", HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.unitEmoteAngry),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText("+50%", HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.WarsBuild_Bank),
+                 new RbSpace(0.5f),
+                new RbText(".Physical gold", HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.WarsBuild_GoldDeliver),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText("+50%", HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.cmdIconTimeOut),
+                 new RbSpace(0.5f),
+                new RbText(".No pause and command", HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.cmdIconTimeOut),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText("+50%", HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+
+            content.newParagraph();
+            content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head2);
 
             if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {

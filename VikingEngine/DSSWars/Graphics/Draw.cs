@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars
     {
         RenderTarget2D overviewMapTarget;
         
-        public const int UnitDetailLayer = 0;
+        public const int NearLayer = 0;
         public const int MidLayer = 1;
         public const int FarLayer = 2;
         public const int WaterEffectLayer = 3;
@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars
             else
             {
                 EffectBasicVertexColor.Singleton.basicEffect.AmbientLightColor = DssRef.time.ShaderDayLight_Objects;
-                MapLayer_Detail.ModelEffect.SetColor(DssRef.time.ShaderDayLight_Map);
+                MapLayer1_Near.ModelEffect.SetColor(DssRef.time.ShaderDayLight_Map);
             }
         }
 
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars
 
             switch (lay.type)
             {
-                case MapDetailLayerType.UnitDetail1:
+                case MapDetailLayerType.Layer1_Near:
 
                     //SHADOW
                     if (Ref.gamesett.modelShadow)
@@ -210,27 +210,27 @@ namespace VikingEngine.DSSWars
                         shadowProcessor.light.updateScene(Camera, area.Width, area.Height);
                         shadowProcessor.BeginShadowMapPass();
                         {
-                            shadowProcessor.DrawRenderListMembersDepthOnly(UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
+                            shadowProcessor.DrawRenderListMembersDepthOnly(NearLayer, DrawObjType.MeshGenerated, cameraIndex);
                             DssRef.state.detailMap.updateAndDraw(true, shadowProcessor.shader, shadowProcessor.light, cameraIndex, localPlayer);
                             drawBatch.DrawDepth(cameraIndex, shadowProcessor.light, shadowProcessor.shader);
                         }
                         graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                         graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
 
-                        shadowProcessor.DrawModelsWithShadow(UnitDetailLayer, Graphics.DrawObjType.MeshGenerated, Camera, cameraIndex);
+                        shadowProcessor.DrawModelsWithShadow(NearLayer, Graphics.DrawObjType.MeshGenerated, Camera, cameraIndex);
                         DssRef.state.detailMap.drawWithShadow(cameraIndex, Camera, shadowProcessor.shader, shadowProcessor.light);
                         drawBatch.RemoveAndDraw(true, cameraIndex, Camera, shadowProcessor.shader, shadowProcessor.light);
                     }
                     else
                     {
-                        DrawGenerated(UnitDetailLayer, cameraIndex);
+                        DrawGenerated(NearLayer, cameraIndex);
                         DssRef.state.detailMap.updateAndDraw(false, shadowProcessor.shader, shadowProcessor.light, cameraIndex, localPlayer);
                         drawBatch.RemoveAndDraw(false, cameraIndex, Camera, null, shadowProcessor.light);
                     }
                     graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                     graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     DssRef.state.detailMap.drawCrossMap(cameraIndex, localPlayer);
-                    Draw3d(UnitDetailLayer, cameraIndex);
+                    Draw3d(NearLayer, cameraIndex);
                     //oceanProcess.draw(UnitDetailLayer, Camera, cameraIndex, shadowProcessor.light, shadowProcessor._shadowMap);
 
                     if (Ref.gamesett.waterFoam)
@@ -248,7 +248,7 @@ namespace VikingEngine.DSSWars
                     //graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                     break;
 
-                case MapDetailLayerType.TerrainOverview2:
+                case MapDetailLayerType.Layer2_Mid:
                     //graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
                     DssRef.state.detailMap.Update_outOfFocus();
@@ -262,8 +262,8 @@ namespace VikingEngine.DSSWars
                     localPlayer.DrawMidLayer_Mesh(cameraIndex);
                     break;
 
-                case MapDetailLayerType.FullOverview4:
-                case MapDetailLayerType.FactionColors3:
+                case MapDetailLayerType.Layer4_VeryFar:
+                case MapDetailLayerType.Layer3_Far:
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
                     DssRef.state.detailMap.Update_outOfFocus();
                     DrawGenerated(FarLayer, cameraIndex);

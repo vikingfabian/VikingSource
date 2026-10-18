@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
@@ -26,7 +27,7 @@ namespace VikingEngine.DSSWars.Map
 
             DeleteMe();
 
-            if (path != null)
+            if (path != null && path.nodes.Count > 0)
             {
                 midLayer = true;
                 for (int i = path.currentNodeIx; i >= 0; --i)
@@ -38,7 +39,7 @@ namespace VikingEngine.DSSWars.Map
                     dot.Opacity = opacity;
                     //dot.AddToRender(DrawGame.TerrainLayer);
                     //dot.AddToRender(DrawGame.UnitDetailLayer);
-                    dot.AddToLayer1(DrawGame.UnitDetailLayer);
+                    dot.AddToLayer1(DrawGame.NearLayer);
                     dot.AddToLayer2(DrawGame.MidLayer);
                     dot.setVisibleCamera(playerIndex);
                     moveDots.Add(dot);
@@ -65,7 +66,58 @@ namespace VikingEngine.DSSWars.Map
                         new Vector3(0.02f), Graphics.TextureEffectType.Flat,
                         SpriteName.WhiteArea, color);
                     dot.Opacity = opacity;
-                    dot.AddToLayer1(DrawGame.UnitDetailLayer);
+                    dot.AddToLayer1(DrawGame.NearLayer);
+                    dot.setVisibleCamera(playerIndex);
+                    moveDots.Add(dot);
+                }
+            }
+        }
+
+        public void refresh2(DetailWalkingPath path, /*bool attack,*/ bool hover)
+        {
+
+            Color color = /*attack ? Color.Pink :*/ Color.Purple;
+            float opacity = hover ? 0.5f : 1f;
+
+            DeleteMe();
+            //moveDots.DeleteAll();
+
+            if (path != null)
+            {
+                midLayer = false;
+                for (int i = path.currentNodeIx; i >= 0; --i)
+                {
+                    Graphics.Mesh_MultiLayer dot = new Graphics.Mesh_MultiLayer(LoadedMesh.SelectCircleThick,
+                        WP.SubtileToWorldPosXZgroundY_Centered(path.nodes[i].position),
+                        new Vector3(0.04f), Graphics.TextureEffectType.Flat,
+                        SpriteName.WhiteArea, color);
+                    dot.Opacity = opacity;
+                    dot.AddToLayer1(DrawGame.NearLayer);
+                    dot.setVisibleCamera(playerIndex);
+                    moveDots.Add(dot);
+                }
+            }
+        }
+
+        public void refresh(LayerWalkingPath path, bool hover)
+        {
+
+            Color color = Color.Purple;
+            float opacity = hover ? 0.5f : 1f;
+
+            DeleteMe();
+
+            if (path != null)
+            {
+                midLayer = false;
+                for (int i = path.currentNodeIx; i >= 0; --i)
+                {
+                    Graphics.Mesh_MultiLayer dot = new Graphics.Mesh_MultiLayer(LoadedMesh.SelectCircleThick,
+                        WP.SubtileToWorldPosXZgroundY_Centered(path.nodes[i].position),
+                        new Vector3(0.02f), Graphics.TextureEffectType.Flat,
+                        SpriteName.WhiteArea, color);
+                    dot.Opacity = opacity;
+                    dot.AddToLayer1(DrawGame.NearLayer);
                     dot.setVisibleCamera(playerIndex);
                     moveDots.Add(dot);
                 }

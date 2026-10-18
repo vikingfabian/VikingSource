@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             //{
             //    path = DssRef.state.pathUpdates[pathThreadIndex].layerPathFindingPool.GetLayerResult();
             //}
-            path = DssRef.world.GetLayerResult();
+            path = DssRef.world.GetPath3FromPool();
 
             while (currentNode.Position != startNode.Position)
             {

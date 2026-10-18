@@ -30,14 +30,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
         public void initGameState()
         {
             Ref.rnd.SetSeed(DssRef.world.metaData.worldId.seed);
-            foreach (var tile in DssRef.world.subTileGrid.array)
-            {
-                if (tile.IsLand())
-                {
-                    lib.DoNothing();
-                    break;
-                }
-            }
+            //foreach (var tile in DssRef.world.subTileGrid.array)
+            //{
+            //    if (tile.IsLand())
+            //    {
+            //        lib.DoNothing();
+            //        break;
+            //    }
+            //}
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();

@@ -14,17 +14,17 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 {
     
 
-    class MapLayer_Overview : AbsFarLayer
+    class MapLayer2_Mid : AbsFarLayer
     {
         public Borders borders;
         public UnitMiniModels unitMiniModels;
 
         int state_Processing_Sych_Complete = 2;
-        MapLayer_Factions factionsMap;
+        MapLayer3_Far factionsMap;
         public bool bRefreshTimer = false;
         public bool bRefreshDataRecieved = false;
 
-        public MapLayer_Overview(MapLayer_Factions factionsMap, CrossHeightMap crossHeightMap)
+        public MapLayer2_Mid(MapLayer3_Far factionsMap, CrossHeightMap crossHeightMap)
             :base(DrawGame.MidLayer, crossHeightMap)
         {
             this.factionsMap = factionsMap;

@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         bool generateSuccess =false;
         CancellationTokenSource tokenSource;
         public SaveStateMeta loadMeta;
-        public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
+        public Map2GenerateSettings generateSettings;
 
         public MapBackgroundLoading()
         { }
@@ -70,6 +70,10 @@ namespace VikingEngine.DSSWars.Map.Generate
         public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
             this.loadMeta = loadMeta;
+            if (loadMeta == null)
+            {
+                generateSettings = new Map2GenerateSettings() { mapScale = DssRef.storage.ruleset.mapSize };
+            }
             begin();
         }
 
@@ -165,7 +169,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         {
                             List<Task> tasks = new List<Task>();
                             //success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks).Result;
-                            await dataGenerate.generatePassRange_async(generateSettings, dataGenerate.currentPass +1, Map2Pass.BuildMapData, null);
+                            await dataGenerate.generatePassRange_async(generateSettings, dataGenerate.currentPass +1, Map2Pass.BuildMapData, null, true);
                             //success = true;
                         }
                         else

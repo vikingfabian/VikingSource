@@ -16,7 +16,7 @@ using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
 
 namespace VikingEngine.DSSWars.Map.MapLayer
 {
-    class MapLayer_Detail: AbsMapLayer
+    class MapLayer1_Near: AbsMapLayer
     {
         AutoResetEvent pauseEvent = new AutoResetEvent(false);
         ConcurrentStack<DetailModelTile> tilePool = new ConcurrentStack<DetailModelTile>();
@@ -35,8 +35,8 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         /// </summary>
         public bool oneSecondUpdate = false;
 
-        public MapLayer_Detail(CrossHeightMap crossHeightMap)
-            : base(DrawGame.UnitDetailLayer)
+        public MapLayer1_Near(CrossHeightMap crossHeightMap)
+            : base(DrawGame.NearLayer)
         {
             DssRef.state.detailMap = this;
             tiles = new SpottedArray<DetailModelTile>(1024);

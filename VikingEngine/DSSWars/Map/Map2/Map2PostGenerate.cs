@@ -182,6 +182,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                     world.subTileGrid.Set(x, y, ctile.mapTile);
                 }
             });
+
+            world.InitMoveCostLayers();
         }
         void bindTilesToCities()
         {

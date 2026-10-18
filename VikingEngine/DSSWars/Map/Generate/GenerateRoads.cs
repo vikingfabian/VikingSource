@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                         foreach (var node in largePathResult.nodes)
                         {
-                            IntVector2 centerSubTile = WP.ToSubTilePos_Centered(node.position);
+                            IntVector2 centerSubTile =/* WP.ToSubTilePos_Centered(*/node.position/*)*/;
 
                             while (subTilePos.SideLength(centerSubTile) > 2)
                             {

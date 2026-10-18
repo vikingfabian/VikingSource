@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 #endif
             icon.Opacity = 0.8f;
             icon.Rotation = DssLib.FaceForwardRotation;
-            icon.AddToRender(DrawGame.UnitDetailLayer);
+            icon.AddToRender(DrawGame.NearLayer);
             refreshYpos();
         }
 

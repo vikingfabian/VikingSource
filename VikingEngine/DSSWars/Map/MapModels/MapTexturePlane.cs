@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         public void refreshScale()
         {
-            var vol = MapLayer_Overview.WaterModelVolume();
+            var vol = MapLayer2_Mid.WaterModelVolume();
             position.X = vol.Position.X;
             position.Z = vol.Position.Z;
 

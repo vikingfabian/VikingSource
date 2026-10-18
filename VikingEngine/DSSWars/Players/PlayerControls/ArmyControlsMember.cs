@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Players
                     pathState = PathFindState.None;
                 }
 
-                if (player.mapLayersManager.current.DrawDetailLayer)
+                if (player.mapLayersManager.current.DrawNearLayer)
                 {
                     if (detailBanner == null)
                     {

@@ -32,9 +32,9 @@ namespace VikingEngine.DSSWars.GameState
         public bool isReady = false;
         public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
-        public MapLayer_Factions factionsMap;
-        public MapLayer_Overview overviewMap;
-        public MapLayer_Detail detailMap;
+        public MapLayer3_Far factionsMap;
+        public MapLayer2_Mid overviewMap;
+        public MapLayer1_Near detailMap;
         public Culling culling;
 
         public PathUpdateThread[] pathUpdates;
@@ -131,9 +131,9 @@ namespace VikingEngine.DSSWars.GameState
 
             CrossHeightMap crossHeightMap = new CrossHeightMap();
 
-            factionsMap = new MapLayer_Factions(crossHeightMap);
-            overviewMap = new MapLayer_Overview(factionsMap, crossHeightMap);
-            detailMap = new MapLayer_Detail(crossHeightMap);
+            factionsMap = new MapLayer3_Far(crossHeightMap);
+            overviewMap = new MapLayer2_Mid(factionsMap, crossHeightMap);
+            detailMap = new MapLayer1_Near(crossHeightMap);
 
             crossHeightMap.init();
 

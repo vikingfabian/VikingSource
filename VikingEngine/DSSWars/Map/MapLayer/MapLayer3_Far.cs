@@ -10,14 +10,14 @@ using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars.Map.MapLayer
 {
-    class MapLayer_Factions : AbsFarLayer
+    class MapLayer3_Far : AbsFarLayer
     {
         //IntVector2 mapsz;
         //public FactionPixelTexture factionPixelTex;
 
         //MapTexturePlane mapPlane, unitPlane;
 
-        public MapLayer_Factions(CrossHeightMap crossHeightMap)
+        public MapLayer3_Far(CrossHeightMap crossHeightMap)
             :base(DrawGame.FarLayer, crossHeightMap)
         {
             //mapsz = DssRef.world.Size;

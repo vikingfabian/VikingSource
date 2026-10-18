@@ -192,22 +192,25 @@ namespace VikingEngine.DSSWars.Work
             switch (work)
             {
                 case WorkType.TrossCityTrade:
-                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
+                    var toCity = DssRef.world.tileGrid.Get(WP.MaptileToSumTile( subTileEnd)).pcity.City();
 
-                    ItemResourceType foodType = (ItemResourceType)workSubType;
-                    //if (toCity.GetGroupedResource(EntityComponent.CityResoureIndex.ConservedFood).amount >= ItemPropertyColl.DefaultCarry)
-                    //{
-                    //    foodType = ItemResourceType.ConservedFood;
-                    //}
-                    //else
-                    //{ 
-                    //    foodType= ItemResourceType.Food_G;
-                    //}
+                    if (toCity != null)
+                    {
+                        ItemResourceType foodType = (ItemResourceType)workSubType;
+                        //if (toCity.GetGroupedResource(EntityComponent.CityResoureIndex.ConservedFood).amount >= ItemPropertyColl.DefaultCarry)
+                        //{
+                        //    foodType = ItemResourceType.ConservedFood;
+                        //}
+                        //else
+                        //{ 
+                        //    foodType= ItemResourceType.Food_G;
+                        //}
 
-                    ItemResource recieved = toCity.MakeTrade(foodType, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
-                    carry = recieved;
+                        ItemResource recieved = toCity.MakeTrade(foodType, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
+                        carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE,  WorkPriorityType.NUM_NONE, -1, WP.ToSubTilePos_Centered(army.maptilePos), null);
+                        createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, army.maptilePos, null);
+                    }
                     //createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE, -1, army.maptilePos, null);
                     break;
                 case WorkType.TrossReturnToArmy:

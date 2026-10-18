@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Players.Command
                     soldiersC.sel.selectionFramePlacement(out var pos, out var scale);
                     var model = new Mesh( LoadedMesh.SelectCircleSolid, pos, scale,
                         TextureEffectType.Flat, SpriteName.WhiteArea, Color.Red, false);
-                    model.AddToRender(DrawGame.UnitDetailLayer);
+                    model.AddToRender(DrawGame.NearLayer);
                     model.setVisibleCamera(playerIndex);
                     models.Add(model);
                 }

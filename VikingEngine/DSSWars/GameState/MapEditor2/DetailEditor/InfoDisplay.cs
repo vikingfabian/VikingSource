@@ -23,10 +23,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
             text = new Text2(string.Empty, LoadedFont.Console, pos, Engine.Screen.TextBreadHeight, Color.White,
                  ImageLayers.Background0);
             tileMarker = new Graphics.Mesh( LoadedMesh.cube_repeating, Vector3.Zero, new Vector3(0.1f, 0.3f, 0.1f) * MapTile1_1.ModelScale, TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-            tileMarker.AddToRender(DrawGame.UnitDetailLayer);
+            tileMarker.AddToRender(DrawGame.NearLayer);
 
             var topLeftMarker = new Graphics.Mesh(LoadedMesh.cube_repeating, Vector3.Zero, new Vector3(0.1f, 8, 0.1f) * MapTile1_1.ModelScale, TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-            topLeftMarker.AddToRender(DrawGame.UnitDetailLayer);
+            topLeftMarker.AddToRender(DrawGame.NearLayer);
         }
 
         public void update()

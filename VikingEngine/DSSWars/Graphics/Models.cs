@@ -512,7 +512,7 @@ namespace VikingEngine.DSSWars
                 {                    
                     if (!detailLayer)
                     {
-                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
+                        int lay = detailLayer ? DrawGame.NearLayer : DrawGame.MidLayer;
 
                         if (async)
                         {

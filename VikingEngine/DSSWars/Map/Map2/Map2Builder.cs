@@ -44,8 +44,6 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                     var genTile = generator.iconWorldScaledUp.iconGrid.Get(tileX, tileY);
 
-
-
                     SumTile4_4 sumTile = new SumTile4_4()
                     {
                         biom1 = genTile.biom1,
@@ -71,7 +69,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         public IconWorldData ConvertBackToIcon(WorldData world)
         {
             const int ScaleDown = 16;
-            IconWorldData icon = new IconWorldData(world.subTileGrid.Size/ ScaleDown);
+            IconWorldData icon = new IconWorldData(world.metaData);
             //world = new WorldData(generator.iconWorldScaledUp.metaData, generator.generateSettings);
 
             ForXYLoop mapLoop = new ForXYLoop(world.subTileGrid.Size / ScaleDown);

@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars
 
         ConcurrentQueue<LayerWalkingPath> poolLayerResult = new ConcurrentQueue<LayerWalkingPath>();
 
-        void InitMoveCostLayers()
+        public void InitMoveCostLayers()
         {
             moveLayer0 = new Grid2D_L<MoveCost>(subTileGrid.Size);
             moveLayer2 = new MoveCostLayer(2, MoveCostLayer.Layer2TileWidth, subTileGrid.Size / MoveCostLayer.Layer2TileWidth);
@@ -53,16 +53,10 @@ namespace VikingEngine.DSSWars
 
         }
 
-        public LayerWalkingPath GetLayerResult()
+        public LayerWalkingPath GetPath3FromPool()
         {
             if (poolLayerResult.TryDequeue(out LayerWalkingPath path))
             {
-                //if (path.timeStamp + 2 >= Ref.TotalFrameCount)
-                //{
-                //    poolRes.Enqueue(new LayerWalkingPath());
-                //    poolRes.Enqueue(new LayerWalkingPath());
-                //    System.Threading.Thread.Sleep(32);
-                //}
                 path.recycle();
                 return path;
             }
@@ -71,7 +65,7 @@ namespace VikingEngine.DSSWars
 
         }
 
-        public void Return(LayerPathFinding path)
+        public void ReturnToPool(LayerPathFinding path)
         {
             // Reset the node to a default state
             if (path != null)
@@ -106,12 +100,16 @@ namespace VikingEngine.DSSWars
         //    generateLayer4Tile(thread, new IntVector2(1, 0));
         //}
 
-        void generateLayer4Tile(Path3Thread thread, IntVector2 lay4tile)
+        public void generateLayer4Tile(Path3Thread thread, IntVector2 lay4tile)
         {
             var status = moveLayer4.tileStatus.GetRef(lay4tile);
-            if (status == MoveCostLayer4.TileStatus_NeedUpdate)
+            if (status <= MoveCostLayer4.TileStatus_NeedUpdate)
             {
                 status = MoveCostLayer4.TileStatus_Updateing;
+            }
+            else
+            {
+                return;
             }
 
             //Layer 0

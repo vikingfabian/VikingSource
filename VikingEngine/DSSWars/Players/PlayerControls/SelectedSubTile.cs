@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Players
                 TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
 
             model.setVisibleCamera(player.playerData.localPlayerIndex);
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            model.AddToRender(DrawGame.NearLayer);
             model.Visible = false;
 
             return model;

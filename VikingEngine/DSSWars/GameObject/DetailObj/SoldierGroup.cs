@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Command;
@@ -114,6 +115,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public WalkingPath path = null;
         public DetailWalkingPath detailPath = null;
+        public LayerWalkingPath walkingPath_v3 = null;
         float waitTime = 0;
         public AbsCommand command = null;
         GameTimeStamp enterBattleStateTime = GameTimeStamp.None;
@@ -2024,7 +2026,9 @@ namespace VikingEngine.DSSWars.GameObject
                 //lock (DssRef.state.detailPathFindingPool)
                 //{
                 DssRef.world.detailPathFindingPool.Return(detailPath);
-                    detailPath = null;
+                detailPath = null;
+
+
                 //}
             }
         }
@@ -2383,7 +2387,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (path_sp != null)
                         {
                             IntVector2 aheadPathTile = path_sp.getNodeAhead(3, maptilePos, out isTravelNode);
-                            goalSubTile = WP.ToSubTilePos_Centered(aheadPathTile);
+                            goalSubTile = /*WP.ToSubTilePos_Centered(*/aheadPathTile/*)*/;
                         }
                         else
                         {

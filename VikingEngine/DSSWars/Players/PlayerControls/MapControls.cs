@@ -251,8 +251,6 @@ namespace VikingEngine.DSSWars.Players
             mousePanInput();
             zoomInput();
             rotateCameraInput();
-
-            
         }
 
         public void leftFocusUpdate()
@@ -312,7 +310,7 @@ namespace VikingEngine.DSSWars.Players
 
         void rectangleSelectUpdate()
         {
-            if (player.mapLayersManager.current.DrawFar)
+            if (player.mapLayersManager.current.DrawFarLayer)
             {
                 cancelRectangleSelect();
                 return;
@@ -360,7 +358,7 @@ namespace VikingEngine.DSSWars.Players
 
                     switch (player.mapLayersManager.current.type)
                     {
-                        case MapDetailLayerType.TerrainOverview2:
+                        case MapDetailLayerType.Layer2_Mid:
                             {
 
                                 if (rectangleBound.vectorRect.SideLength() > 1f)
@@ -395,7 +393,7 @@ namespace VikingEngine.DSSWars.Players
                             }
                             break;
 
-                        case MapDetailLayerType.UnitDetail1:
+                        case MapDetailLayerType.Layer1_Near:
                             {
                                 var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearGroups_Rectangle(
                                     WP.ToSumTilePos(topLeft), WP.ToSumTilePos(bottomRight), player.pfaction, rectangleBound);
@@ -612,7 +610,7 @@ namespace VikingEngine.DSSWars.Players
 
         void subTileHoverUpdate()
         {
-            if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.Layer1_Near)
             {
                 hover.subTile.update(mapTilePosition, player);
             }
@@ -652,7 +650,7 @@ namespace VikingEngine.DSSWars.Players
         void mouseHoverUpdate()
         {
 
-            if (player.mapLayersManager.current.type == MapDetailLayerType.TerrainOverview2)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.Layer2_Mid)
             {
                 AbsMapObject intersectObj = null;
 
@@ -694,7 +692,7 @@ namespace VikingEngine.DSSWars.Players
 
                 hover.obj = intersectObj;
             }
-            else if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
+            else if (player.mapLayersManager.current.type == MapDetailLayerType.Layer1_Near)
             {
                 detailHoverUpdate();
             }
@@ -750,7 +748,7 @@ namespace VikingEngine.DSSWars.Players
         
         void controllerHoverUpdate()
         {
-            if (player.mapLayersManager.current.type == MapDetailLayerType.TerrainOverview2)
+            if (player.mapLayersManager.current.type == MapDetailLayerType.Layer2_Mid)
             {
                 const float FriendlyPriorityDistAdd = 0.25f;
                 float maxDistance_enemy;
@@ -796,7 +794,7 @@ namespace VikingEngine.DSSWars.Players
                     hover.obj = closestObj;
                 }
             }
-            else if (player.mapLayersManager.current.type == MapDetailLayerType.UnitDetail1)
+            else if (player.mapLayersManager.current.type == MapDetailLayerType.Layer1_Near)
             {
                 //var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(tilePosition);
 
@@ -838,7 +836,7 @@ namespace VikingEngine.DSSWars.Players
 
         void detailHoverUpdate()
         {
-            var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(sumtilePosition);
+            var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(mapTilePosition);
 
             BoundingSphere bound = new BoundingSphere(Vector3.Zero, 0f);
 
@@ -855,7 +853,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bound.Radius = DssVar.Worker_StandardBoundRadius;
-            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_PlusWorkers(sumtilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
+            var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_PlusWorkers(mapTilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
             foreach (var m in nearMapObjects)
             {
                 switch (m.gameobjectType())

@@ -20,6 +20,7 @@ using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Work;
@@ -97,6 +98,8 @@ namespace VikingEngine.DSSWars
 
         public PathFindingPool pathFindingPool = new PathFindingPool();
         public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
+
+        public Path3Thread path3Thread_test;
 
         public Grid2D_L<MapChunkData8_8> chunkGrid;
         public Grid2D_L<SumTile4_4> tileGrid;
@@ -317,7 +320,7 @@ namespace VikingEngine.DSSWars
 
             rnd = new PcgRandom(metaData.worldId.seed);
 
-            refreshSize(generateSettings.mapScale.Size(false));
+            refreshSize(metaData.mapScale.Size(false));
             //if (generateSettings.bCustomSize)
             //{
             //    metaData.mapSize = CustomMapSizeToSize(generateSettings.customMapSize);
@@ -416,6 +419,9 @@ namespace VikingEngine.DSSWars
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
             chunkBounds = chunkGrid.TileBound();
+
+            path3Thread_test = new Path3Thread();
+
 
         }
 

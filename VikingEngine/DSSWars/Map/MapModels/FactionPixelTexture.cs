@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Net.Security;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -32,6 +34,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
     abstract class AbsMapPixelTexture
     {
         protected const int TilesPerPixelScale = 4;
+        protected const float OneTilePercentage = 1f / (TilesPerPixelScale * TilesPerPixelScale);
         int lastCheckVersion = 0;
         public int version = 0;
         protected int playerIx;
@@ -213,7 +216,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     while (loop.Next())
                     {
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.FactionAndTerrainColor(tile, leanY)/*t.MinimapColor_Faction(loop.Position)*/);
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.FactionAndTerrainColor(tile, leanY));
                     }
 
                     AddCityIcons();
@@ -222,10 +225,14 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 case FactionMapFilter.Terrain:
                     while (loop.Next())
                     {
-                        //t = DssRef.world.tileGrid.Get(loop.Position);
-                        //texture.SetPixel(loop.Position, t.MinimapColor_Terrain(loop.Position));
+                        //midu
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.BorderAndTerrainColor(tile, leanY));
+                        Color color = TileColor.BorderAndTerrainColor(tile, leanY, out var groundColor);
+                        if (groundColor)
+                        {
+                            addTerrainAndBuildingColor(loop.Position, ref color);
+                        }
+                        texture.SetPixel(loop.Position / TilesPerPixelScale, color);
                     }
                     break;
                 case FactionMapFilter.Minimap:
@@ -361,6 +368,63 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 }
 
             }
+        }
+
+        void addTerrainAndBuildingColor(IntVector2 topLeftMapTile, ref Color groundcolor)
+        {
+            int building = 0;
+            int wall = 0;
+            float tree = 0;
+            int road = 0;
+
+            ForXYLoop loop = new ForXYLoop(new Rectangle2(topLeftMapTile, new IntVector2(TilesPerPixelScale)));
+            while (loop.Next())
+            {
+                var tile = DssRef.world.subTileGrid.Get(loop.Position);
+                switch (tile.mainTerrain)
+                {
+                    case MapLib.TerrainMainType.Building:
+                        building++;
+                        break;
+                    case MapLib.TerrainMainType.Wall:
+                        wall++;
+                        break;
+                    case MapLib.TerrainMainType.Road:
+                        road++;
+                        break;
+                    case MapLib.TerrainMainType.Foil:
+                        switch ((TerrainSubFoilType)tile.subTerrain)
+                        {
+                            case TerrainSubFoilType.TreeSoft:
+                            case TerrainSubFoilType.TreeHard:
+                                tree += 1;
+                                break;
+                            case TerrainSubFoilType.Bush:
+                                tree += 0.5f;
+                                break;
+                         }
+                        break;
+                }
+            }
+
+            if (building > 2)
+            {
+                groundcolor = ColorExt.Mix(Color.DarkGray, groundcolor, building * OneTilePercentage);
+            }
+            if (wall > 2)
+            {
+                groundcolor = ColorExt.Mix(Color.LightPink, groundcolor, wall * OneTilePercentage);
+            }
+            if (road > 2)
+            {
+                groundcolor = ColorExt.Mix(Color.Yellow, groundcolor, road * OneTilePercentage);
+            }
+            if (tree > 2)
+            {
+                groundcolor = ColorExt.Mix(Color.DarkGreen, groundcolor, tree * OneTilePercentage * 0.5f);
+            }
+
+
         }
     }
 }
