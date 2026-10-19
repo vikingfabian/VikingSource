@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Data
 
         static readonly string FilePath = DssLib.ContentDir + "Music" + DataStream.FilePath.Dir;
         static readonly string SoundOrgPath = FilePath + "soundimage org" + DataStream.FilePath.Dir;
+        static readonly string CosmeLeitesPath = FilePath + "CosmeLeites" + DataStream.FilePath.Dir;
 
         public static readonly SongData Intro = new SongData(FilePath + "dramatic-opener-nonloop", "Dramatic Opener", null, false, 0.5f);
         public static readonly SongData CardGameIntro = new SongData(FilePath + "CCGmusic_mastered", "CCG music", Artist_MartinGronlund, false, 0.5f);
@@ -52,7 +53,31 @@ namespace VikingEngine.DSSWars.Data
             var result = new List<Sound.SongData>
             {
                 //new Sound.SongData(FilePath + "BBaaB_loop", "BBaaB", true, 0.22f),
-                new Sound.SongData(FilePath + "DSS War Industry -Theme music", "DSS Theme music", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "DSS War Industry -Theme music", "DSS Theme music", Artist_CosmeLeites, true, 0.3f),
+
+
+                new Sound.SongData(CosmeLeitesPath + "1 - Heavy Combat - Battleforge (loop)", "Heavy Combat - Battleforge", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "1-The Frozen Tundra (loop)", "The Frozen Tundra", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "2 - Beneath the Old Castle - Only Music", "Beneath the Old Castle", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "2-Ancient Ruins in the Mountains (loop)", "Ancient Ruins in the Mountains", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "3 - Candlelit Monastery - Only Music", "Candlelit Monastery", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "3-Dawn in the Peaks (loop)", "Dawn in the Peaks", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "4 - Heavy Combat - Shadowstrike (loop)", "Heavy Combat - Shadowstrike", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "4-Deep Forests and Fog (loop)", "Deep Forests and Fog", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "5-Dangerous Mountain Pass (loop)", "Dangerous Mountain Pass", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "06-Dark Ambient-Loop-Dark Elves.", "Dark Elves", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "6 - The Plague Streets - Only Music", "The Plague Streets", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "6-Ancestral Crypt (loop)", "Ancestral Crypt", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "7-March of the Lone Traveler (loop)", "March of the Lone Traveler", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "08-Dark Ambient-Loop-Frozen Wasteland", "Frozen Wasteland", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "8-Sacred Valleys of the Ancients (loop)", "Sacred Valleys of the Ancients", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "9-Night Beneath the Northern Lights (loop)", "Night Beneath the Northern Lights", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "10-Rocky Coast and Northern Sea (loop)", "Rocky Coast and Northern Sea", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "17 - Heavy Combat - Charge Ahead! (loop)", "Heavy Combat - Charge Ahead!", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "Medieval RPG Town Music - Moonlit Streets (Night II) loop", "Moonlit Streets", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(CosmeLeitesPath + "Medieval RPG Town Music - Sleeping Town (Night I) loop", "Sleeping Town", Artist_CosmeLeites, true, 0.3f),
+
+
                 new Sound.SongData(FilePath + "Gargoyle_loop", "Gargoyle", Artist_MartinGronlund, true, 0.3f),
 
                 //new Sound.SongData(FilePath + "RM 10 - Incubation", "Incubation", false, 0.3f),

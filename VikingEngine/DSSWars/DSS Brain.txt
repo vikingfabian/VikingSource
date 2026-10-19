@@ -42,6 +42,7 @@ Vulkan
 * Map loading is now done on multiple CPU cores and runs smoother
 
 #MAP 2.0 UPDATE
+* 20 new songs added, made by Cosme Leites
 
 Worker max count
 * A new way to manage city work (prototype version)
