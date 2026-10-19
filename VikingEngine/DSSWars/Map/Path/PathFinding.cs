@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Map
 {
     //TODO heatmap för vatten
 
+  
     class PathFindingPool
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
@@ -165,14 +166,14 @@ namespace VikingEngine.DSSWars.Map
 
             WalkingPath path;
 
-            if (pathThreadIndex < 0)
+            //if (pathThreadIndex < 0)
             {
                 path = new WalkingPath();
             }
-            else
-            {
-                path = DssRef.world.pathFindingPool.GetRes();
-            }
+            //else
+            //{
+            //    //path = DssRef.world.pathFindingPool.GetRes();
+            //}
 
             // Backtrack path from goal to start.
             while (currentNode.Position != startNode.Position)

@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void refresh(DetailWalkingPath path, /*bool attack,*/ bool hover)
+        public void refresh(DetailWalkingPathResult path, /*bool attack,*/ bool hover)
         {
 
             Color color = /*attack ? Color.Pink :*/ Color.White;
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void refresh2(DetailWalkingPath path, /*bool attack,*/ bool hover)
+        public void refresh2(DetailWalkingPathResult path, /*bool attack,*/ bool hover)
         {
 
             Color color = /*attack ? Color.Pink :*/ Color.Purple;
@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void refresh(LayerWalkingPath path, bool hover)
+        public void refresh(LayerWalkingPathResult path, bool hover)
         {
 
             Color color = Color.Purple;

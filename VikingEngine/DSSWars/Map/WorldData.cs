@@ -95,28 +95,9 @@ namespace VikingEngine.DSSWars
 
         public List<PFaction> quickMatchFactions = null;
 
-
-        public PathFindingPool pathFindingPool = new PathFindingPool();
-        public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
-
-        public Path3Thread path3Thread_test;
-
         public Grid2D_L<MapChunkData8_8> chunkGrid;
         public Grid2D_L<SumTile4_4> tileGrid;
         public Grid2D_L<MapTile1_1> subTileGrid;
-
-        public void ClearPools()
-        {
-            pathFindingPool.Clear();
-            detailPathFindingPool.Clear();
-        }
-
-        public void PreallocatePools(int pfCount = 1, int detailPfCount = 1)
-        {
-            pathFindingPool.Preallocate(pfCount);
-            detailPathFindingPool.Preallocate(detailPfCount);
-        }
-
 
         public WorldData()
         {

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -47,14 +48,14 @@ namespace VikingEngine.DSSWars.GameObject
             return true;
         }
 
-        public void asyncPathUpdate(int pathThreadIndex)
+        public void asyncPathUpdate(Path3Thread thread)
         {
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
                 if (!groupsC.sel.restingGuardMode)
                 {
-                    groupsC.sel.asyncPathUpdate(pathThreadIndex);
+                    groupsC.sel.asyncPathUpdate(thread);
                 }
             }
         }

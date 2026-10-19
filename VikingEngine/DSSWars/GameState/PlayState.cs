@@ -1022,7 +1022,7 @@ namespace VikingEngine.DSSWars
 
         public override int PathThreadCount()
         {
-            return 4;
+            return 2;
         }
         public override PlayState playstate()
         {

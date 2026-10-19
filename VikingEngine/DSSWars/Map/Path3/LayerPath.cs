@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         //conv.ToDir8_INT(startDir)
 
-        public void ApplyParentPath(LayerWalkingPath parentPath)
+        public void ApplyParentPath(LayerWalkingPathResult parentPath)
         {
             if (parentPath != null)
             {
@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Map.Path3
                 }
             }
         }
-        public LayerWalkingPath FindPath(MoveCostLayer layer, IntVector2 center, int startDir, IntVector2 goal, bool startAsShip, bool endAsShip)
+        public LayerWalkingPathResult FindPath(MoveCostLayer layer, IntVector2 center, int startDir, IntVector2 goal, bool startAsShip, bool endAsShip)
         {
             /*
             * Path finding algorithm
@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             if (!layer.InBounds(center) ||
                 !layer.InBounds(goal))
             {
-                return new LayerWalkingPath();
+                return new LayerWalkingPathResult();
             }
 
             LayerPathNode startNode = new LayerPathNode(center, startDir, startAsShip);
@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             }
 
             //List<PathNodeResult> result = new List<PathNodeResult>();
-            LayerWalkingPath path;
+            LayerWalkingPathResult path;
 
             //if (pathThreadIndex < 0)
             //{
@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         }
     }
 
-    class LayerWalkingPath
+    class LayerWalkingPathResult
     {
 #if VISUAL_NODES
         List<Graphics.Mesh> nodeImages;
@@ -337,7 +337,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             return nodes[0].position;
         }
 
-        public IntVector2 getNodeAhead(int distanceAhead, IntVector2 start, out bool isTravelNode)
+        public Vector3 getNodeAhead(int distanceAhead, Vector3 start, out bool isTravelNode)
         {
             int maxLoops = 100;
 
@@ -345,7 +345,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             {
                 if (HasMoreNodes())
                 {
-                    int dist = nodes[currentNodeIx].position.SideLength(start);
+                    float dist = VectorExt.SideLength_XZ(nodes[currentNodeIx].wp, start);
                     if (dist <= 1)
                     {
                         NextNode();
@@ -355,7 +355,7 @@ namespace VikingEngine.DSSWars.Map.Path3
                         //Next is distance one away
                         int aheadNode = Bound.Min(currentNodeIx - (distanceAhead - 1), 0);
                         isTravelNode = aheadNode >= 2;
-                        return nodes[aheadNode].position;
+                        return nodes[aheadNode].wp;
                     }
                 }
                 else

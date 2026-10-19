@@ -59,8 +59,8 @@ namespace VikingEngine.DSSWars.Players
             groupModels_terrian.clear();
         }
 
-        DetailWalkingPath prevpath = null;
-        public void viewGroupPath(DetailWalkingPath path)
+        DetailWalkingPathResult prevpath = null;
+        public void viewGroupPath(DetailWalkingPathResult path)
         {
             if (path != null)
             {
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.Players
                 IntVector2 fromPos = path.nodes.Last().position;
                 IntVector2 toPos = path.nodes.First().position;
 
-                var layerPath = DssRef.world.GetPath3FromPool();
+                //var layerPath = DssRef.world.GetPath3FromPool();
                 var highPath = DssRef.world.path3Thread_test.FindHighPath(WP.MaptileToWorldPosXZ(fromPos), WP.MaptileToWorldPosXZ(toPos), 0, false, false);
                 var layPath = DssRef.world.path3Thread_test.FindDetailPath(highPath, WP.MaptileToWorldPosXZ(fromPos), WP.MaptileToWorldPosXZ(toPos), Rotation1D.D0, false, false, false);
 

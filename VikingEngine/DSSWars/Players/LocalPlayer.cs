@@ -22,6 +22,7 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.DSSWars.Map.MapModels;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
@@ -1853,7 +1854,7 @@ namespace VikingEngine.DSSWars.Players
 
 
 
-        public void asyncPlayerPathUpdate(float time)
+        public void asyncPlayerPathUpdate(float time, Path3Thread thread)
         {
             gameControls.army?.asynchPathUpdate();
 

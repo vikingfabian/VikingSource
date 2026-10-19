@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Map.Path
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
         ConcurrentStack<DetailPathFinding> pfPool = new ConcurrentStack<DetailPathFinding>();
-        ConcurrentQueue<DetailWalkingPath> resultPool = new ConcurrentQueue<DetailWalkingPath>();
+        ConcurrentQueue<DetailWalkingPathResult> resultPool = new ConcurrentQueue<DetailWalkingPathResult>();
         int createdPfCount = 0;
 
         public int PfCount => pfPool.Count;
@@ -49,20 +49,20 @@ namespace VikingEngine.DSSWars.Map.Path
             }
         }
 
-        public DetailWalkingPath GetRes()
+        public DetailWalkingPathResult GetRes()
         {   
-            if (resultPool.TryDequeue(out DetailWalkingPath path))
+            if (resultPool.TryDequeue(out DetailWalkingPathResult path))
             {
                 path.recycle();
                 return path;
             }
             else
             {
-                return new DetailWalkingPath();
+                return new DetailWalkingPathResult();
             }
         }
 
-        public void Return(DetailWalkingPath pathresult)
+        public void Return(DetailWalkingPathResult pathresult)
         {
             if (pathresult != null)
             {
@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars.Map.Path
             nodeGrid = new Grid2D_L<DetailPathNode>(area.size);
         }
 
-        public void ApplyParentPath(LayerWalkingPath parentPath)
+        public void ApplyParentPath(LayerWalkingPathResult parentPath)
         {
             if (parentPath != null)
             {
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.Map.Path
             }
         }
 
-        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
+        public DetailWalkingPathResult FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
         {
             // Short-circuit if already at target, out of bounds, or outside max local search radius.
             if (center == goal ||
@@ -210,14 +210,14 @@ namespace VikingEngine.DSSWars.Map.Path
                 }
             }
 
-            DetailWalkingPath path;
+            DetailWalkingPathResult path;
             if (DssRef.world == null)
             {
                 path = new ();
             }
             else
             {
-                path = DssRef.world.detailPathFindingPool.GetRes();
+                path = DssRef.world.GetDetailResultFromPool();//detailPathFindingPool.GetRes();
             }
 
             bool blocked = false;
@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.Map.Path
         }
     }
 
-    class DetailWalkingPath
+    class DetailWalkingPathResult
     {
 #if VISUAL_NODES
         List<Graphics.Mesh> nodeImages;
@@ -339,7 +339,7 @@ namespace VikingEngine.DSSWars.Map.Path
             return toWp;
         }
 
-        public DetailWalkingPath()
+        public DetailWalkingPathResult()
         {
             
         }
@@ -526,11 +526,14 @@ namespace VikingEngine.DSSWars.Map.Path
                 moveCost -= 1f;
             }
 
-            MapTile1_1 subtile = world.subTileGrid.Get(pos);
-            moveCost *= subtile.TerrainBlockMultipleValue();
+            MoveCost moveCostTile = world.moveLayer0.Get(pos);
+            //MapTile1_1 subtile = world.subTileGrid.Get(pos);
+            //moveCost *= //subtile.TerrainBlockMultipleValue();
 
             //SumTile4_4 tile = world.tileGrid.Get(pos / Map.MapData.MapTile1_1.ModelScale_Inv);
-            waterTile = subtile.IsWater();
+            waterTile = moveCostTile.isWater;
+            ship = this.waterTile;
+            moveCost *= moveCostTile.GetMoveCost(ship);
 
             if (waterTile != parent.waterTile)
             {
@@ -543,9 +546,7 @@ namespace VikingEngine.DSSWars.Map.Path
                     moveCost += MoveCostStraight * 64;
                 }
             }
-            ship = this.waterTile;
-
-            moveCost *= DssRef.world.moveLayer0.Get(pos).GetMoveCost(ship);//DssRef.world.TerrainSpeedMultiplier//tile.TroupWalkingDistance(ship);
+            //DssRef.world.TerrainSpeedMultiplier//tile.TroupWalkingDistance(ship);
 
             moveCost += parent.moveCost;
 

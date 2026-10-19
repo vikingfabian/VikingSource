@@ -32,6 +32,12 @@ namespace VikingEngine.DSSWars
             return tile.Vec * TileScaleV2;
         }
 
+        public static bool EqualPosition(Vector3 wp, IntVector2 maptile)
+        {
+            return Math.Abs(wp.X * MapTile1_1.ModelScale_Inv - maptile.X) < 0.7f &&
+                Math.Abs(wp.Z * MapTile1_1.ModelScale_Inv - maptile.Y) < 0.7f;
+        }
+
         public static Vector3 ChunkToWorldPos(IntVector2 tile, float y = 0)
         {
             return new Vector3(tile.X * MapChunkData8_8.ModelScale, y, tile.Y * MapChunkData8_8.ModelScale);

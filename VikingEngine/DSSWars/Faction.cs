@@ -15,6 +15,7 @@ using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Presentation;
@@ -802,18 +803,18 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void asyncPathUpdate(int pathThreadIndex)
+        public void asyncPathUpdate(Path3Thread thread)
         {
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.asyncPathUpdate(pathThreadIndex);
+                armiesC.sel.asyncPathUpdate(thread);
             }
 
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                city.asyncPathUpdate(pathThreadIndex);
+                city.asyncPathUpdate(thread);
             }
         }
 

@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.GameState
         public MapLayer1_Near detailMap;
         public Culling culling;
 
-        public PathUpdateThread[] pathUpdates;
+        //public PathUpdateThread[] pathUpdates;
         protected ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_detail = new ConcurrentStack<VoxelModelInstance>();
         protected ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_overview = new ConcurrentStack<VoxelModelInstance>();
 
@@ -384,6 +384,10 @@ namespace VikingEngine.DSSWars.GameState
         {
             int count = PathThreadCount();
 
+            DssRef.world.initPaths(count);
+
+            /*
+            //OLD
             pathUpdates = new PathUpdateThread[count + 1];
             int startIx = 0;
             int factionLength = DssRef.world.factions.Count / count;
@@ -402,6 +406,8 @@ namespace VikingEngine.DSSWars.GameState
             pathUpdates[count] = new PathUpdateThread_Player(count);
             //pathUpdates[count].PreallocatePools(1, 1);
             DssRef.world.PreallocatePools(count, count);
+
+            */
         }
 
         public void updateMouseVisible()

@@ -115,7 +115,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public WalkingPath path_old = null;
 
-        public DetailWalkingPath detailPath = null;
+        public LayerWalkingPathResult path = null;
+        public DetailWalkingPathResult detailPath = null;
         
         float waitTime = 0;
         public AbsCommand command = null;
@@ -2011,26 +2012,38 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        void recyclePath(bool large, bool detail, int pathThreadIndex)
+        void recyclePath(bool large, bool detail/*, Path3Thread thread*/)
         {
-            if (large && path_old != null)
+            //if (large && path_old != null)
+            //{
+            //    //lock (DssRef.state.pathFindingPool)
+            //    //{
+            //    DssRef.world.ReturnToPool(path);
+            //        DssRef.world.pathFindingPool.Return(path_old);
+            //        path_old = null;
+            //    //}
+            //}
+
+            //if (detail && detailPath != null)
+            //{
+            //    //lock (DssRef.state.detailPathFindingPool)
+            //    //{
+            //    DssRef.world.detailPathFindingPool.Return(detailPath);
+            //    detailPath = null;
+
+
+            //    //}
+            //}
+
+            if (large)
             {
-                //lock (DssRef.state.pathFindingPool)
-                //{
-                    DssRef.world.pathFindingPool.Return(path_old);
-                    path_old = null;
-                //}
+                DssRef.world.ReturnToPool(path);
+                path = null;
             }
-
-            if (detail && detailPath != null)
+            if (detail)
             {
-                //lock (DssRef.state.detailPathFindingPool)
-                //{
-                DssRef.world.detailPathFindingPool.Return(detailPath);
+                DssRef.world.ReturnToPool(detailPath);
                 detailPath = null;
-
-
-                //}
             }
         }
 
@@ -2197,7 +2210,7 @@ namespace VikingEngine.DSSWars.GameObject
             return value;
         }
 
-        void groupToGroupCollsionUpate_async(int pathThreadIndex)
+        void groupToGroupCollsionUpate_async(Path3Thread thread)
         {
             Vector2 diff = new Vector2(
                 goalWp.X - position.X,
@@ -2214,7 +2227,7 @@ namespace VikingEngine.DSSWars.GameObject
                 collisionModel.Color = Color.HotPink;
                 collisionModel.position = VectorExt.V2toV3XZ(WalkDirBound.center, position.Y);
 #endif
-                List<AbsArmy> ArmiesColl_asyncupdate = DssRef.state.pathUpdates[pathThreadIndex].ArmiesColl_asyncupdate;
+                List<AbsArmy> ArmiesColl_asyncupdate = thread.ArmiesColl_asyncupdate;
                 DssRef.world.unitCollAreaGrid.collectArmies(maptilePos, ArmiesColl_asyncupdate);
                 foreach (var army in ArmiesColl_asyncupdate)
                 {
@@ -2280,7 +2293,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void asyncPathUpdate(int pathThreadIndex)
+        public void asyncPathUpdate(Path3Thread thread)
         {
 #if VISUAL_NODES
             collisionModel.Visible = false; 
@@ -2295,7 +2308,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (command_sp.clearOldPath)
                 {
                     command_sp.clearOldPath = false;
-                    recyclePath(true, true, pathThreadIndex);
+                    recyclePath(true, true);
                 }
 
                 if (command_sp.haltCommand)
@@ -2315,7 +2328,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (InGuardPost())
                 {
-                    recyclePath(true, true, pathThreadIndex);
+                    recyclePath(true, true);
                 }
                 else
                 {
@@ -2330,7 +2343,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         followsGoalId = tArmy.goalId;
 
-                        recyclePath(true, true, pathThreadIndex);
+                        recyclePath(true, true);
 
                         if (state <= GroupState.GoingIdle)
                         {
@@ -2353,11 +2366,11 @@ namespace VikingEngine.DSSWars.GameObject
                     maptilePos = WP.ToMapTilePos(position);
                     setGroundY();
 
-                    IntVector2 goalSubTile = WP.ToMapTilePos(target.position);
+                   // IntVector2 goalSubTile = WP.ToMapTilePos(target.position);
                     var detailPath_sp = detailPath;
-                    if (detailPath_sp == null || detailPath_sp.goal != goalSubTile)
+                    if (detailPath_sp == null || !WP.EqualPosition(target.position, detailPath_sp.goal))
                     {
-                        pathCalulate_detail(goalSubTile, true, pathThreadIndex);
+                        pathCalulate_detail(target.position, true, thread);
                     }
                 }
             }
@@ -2367,61 +2380,64 @@ namespace VikingEngine.DSSWars.GameObject
                 if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z) &&
                     DssRef.world.unitBounds.IntersectPoint(goalWp.X, goalWp.Z))
                 {
-                    maptilePos = WP.ToMapTilePos(position);
+                    //maptilePos = WP.ToMapTilePos(position);
                     setGroundY();
-                    groupToGroupCollsionUpate_async(pathThreadIndex);
+                    groupToGroupCollsionUpate_async(thread);
 
                     const float DetailMaxLength = 3.5f;
                     Vector3 diff = goalWp - position;
                     float l = VectorExt.PlaneXZLength(diff);
-                    IntVector2 goalSubTile;
+                    //Vector3 goalWp;
                     bool isTravelNode = false;
                     if (l > DetailMaxLength)
                     {
-                        if (path_old == null)
+                        if (path == null)
                         {
-                            pathCalulate(pathThreadIndex, goalWp);
+                            pathCalulate_layer(thread, goalWp);
                         }
 
                         //pick three tiles ahead
-                        var path_sp = path_old;
+                        var path_sp = path;
                         if (path_sp != null)
                         {
-                            IntVector2 aheadPathTile = path_sp.getNodeAhead(3, maptilePos, out isTravelNode);
-                            goalSubTile = /*WP.ToSubTilePos_Centered(*/aheadPathTile/*)*/;
+                            goalWp = path_sp.getNodeAhead(3, position, out isTravelNode);
                         }
                         else
                         {
                             return;
                         }
                     }
-                    else
-                    {
-                        goalSubTile = WP.ToMapTilePos(goalWp);
-                    }
+                    //else
+                    //{
+                    //    goalSubTile = WP.ToMapTilePos(goalWp);
+                    //}
 
                     if (l >= Map.MapData.MapTile1_1.ModelScale &&
-                        (detailPath == null || detailPath.goal != goalSubTile))
+                        (detailPath == null || !WP.EqualPosition(goalWp, detailPath.goal)))
                     {
-                        pathCalulate_detail(goalSubTile, isTravelNode, pathThreadIndex);
+                        pathCalulate_detail(goalWp, isTravelNode, thread);
                     }
                 }
             }
         }
 
-        void pathCalulate(int pathThreadIndex, Vector3 goalWp)
+        void pathCalulate_layer(Path3Thread thread, Vector3 goalWp)
         {
-            recyclePath(true, false, pathThreadIndex);
+            recyclePath(true, false);
 
+            /*
             PathFinding pf = DssRef.world.pathFindingPool.GetPf();
             { 
                 path_old = pf.FindPath(pathThreadIndex, maptilePos, conv.ToDir8_INT(rotation), WP.ToSumTilePos( goalWp), isShip);
             }
             DssRef.world.pathFindingPool.Return(pf);
+            */
+
+            path = DssRef.world.path3Thread_test.FindHighPath(WP.MaptileToWorldPosXZ(maptilePos), goalWp, conv.ToDir8_INT(rotation), isShip, false);
         }
 
 
-        void pathCalulate_detail(IntVector2 goal, bool isTravelNode, int pathThreadIndex)
+        void pathCalulate_detail(Vector3 goal, bool isTravelNode, Path3Thread thread)
         {
             //Path towards army end position
             //make a big path towards end pos
@@ -2434,14 +2450,17 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
-            recyclePath(false, true, pathThreadIndex);
+            recyclePath(false, true);
 
+            /*
             DetailPathFinding pf = DssRef.world.detailPathFindingPool.GetPf();
             {
                 detailPath = pf.FindPath(WP.ToMapTilePos(position), rotation, goal,
                     isShip, tArmy.walkGoalAsShip, isTravelNode);
             }
             DssRef.world.detailPathFindingPool.Return(pf);
+            */
+            detailPath = DssRef.world.path3Thread_test.FindDetailPath(path, position, goal, conv.ToDir8_INT(rotation), isShip, false, isTravelNode);
 
             var detailPath_sp = detailPath;
 

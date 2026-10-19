@@ -14,10 +14,7 @@ namespace VikingEngine.DSSWars
         public MoveCostLayer moveLayer2;
         public MoveCostLayer4 moveLayer4;
 
-        ConcurrentStack<LayerPathFinding> poolPathLayer2 = new ConcurrentStack<LayerPathFinding>();
-        ConcurrentStack<LayerPathFinding> poolPathLayer4 = new ConcurrentStack<LayerPathFinding>();
-        ConcurrentQueue<LayerWalkingPath> poolLayerResult = new ConcurrentQueue<LayerWalkingPath>();
-
+        
         public void InitMoveCostLayers()
         {
             moveLayer0 = new Grid2D_L<MoveCost>(subTileGrid.Size);
@@ -52,45 +49,7 @@ namespace VikingEngine.DSSWars
 
         }
 
-        public LayerWalkingPath GetPath3FromPool()
-        {
-            if (poolLayerResult.TryDequeue(out LayerWalkingPath path))
-            {
-                path.recycle();
-                return path;
-            }
-
-            return new LayerWalkingPath();
-
-        }
-
-        public void ReturnToPool(LayerPathFinding path)
-        {
-            // Reset the node to a default state
-            if (path != null)
-            {
-                path.recycle();
-                if (path.layer == 2)
-                {
-                    poolPathLayer2.Push(path);
-                }
-                else
-                {
-                    poolPathLayer4.Push(path);
-                }
-            }
-        }
-
-        public void Return(LayerWalkingPath pathresult)
-        {
-            // Reset the node to a default state
-            if (pathresult != null)
-            {
-                //path.recycle();
-                pathresult.timeStamp = Ref.TotalFrameCount;
-                poolLayerResult.Enqueue(pathresult);
-            }
-        }
+       
 
        
         //public void Test()
