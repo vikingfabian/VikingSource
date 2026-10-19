@@ -12,7 +12,8 @@ namespace VikingEngine.DSSWars.Players
     {
         public GameObject.Army army;
         public PathVisuals pathVisuals;
-        public WalkingPath path = null, newPath = null;
+        public WalkingPath path_old = null, newPath_old = null;
+
         PathFindState pathState = PathFindState.None;
         public bool isAlive = true;
         LocalPlayer player;
@@ -43,15 +44,15 @@ namespace VikingEngine.DSSWars.Players
                     if (pathState == PathFindState.NewPath)
                     {
 
-                        path = newPath;
-                        newPath = null;
+                        path_old = newPath_old;
+                        newPath_old = null;
 
-                        pathVisuals.refresh(path, false, false);
+                        pathVisuals.refresh(path_old, false, false);
                     }
                     else
                     {
 
-                        path = null;
+                        path_old = null;
                         pathVisuals.DeleteMe();
                     }
 
@@ -83,7 +84,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     PathFinding pf = DssRef.world.pathFindingPool.GetPf();
                     {
-                        newPath = pf.FindPath(DssRef.state.PathThreadCount(), army.maptilePos, conv.ToDir8_INT(army.rotation), player.gameControls.map.sumtilePosition,
+                        newPath_old = pf.FindPath(DssRef.state.PathThreadCount(), army.maptilePos, conv.ToDir8_INT(army.rotation), player.gameControls.map.sumtilePosition,
                             false);
                     }
                     DssRef.world.pathFindingPool.Return(pf);

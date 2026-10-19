@@ -113,9 +113,10 @@ namespace VikingEngine.DSSWars.GameObject
         Graphics.Mesh collisionModel;
 #endif
 
-        public WalkingPath path = null;
+        public WalkingPath path_old = null;
+
         public DetailWalkingPath detailPath = null;
-        public LayerWalkingPath walkingPath_v3 = null;
+        
         float waitTime = 0;
         public AbsCommand command = null;
         GameTimeStamp enterBattleStateTime = GameTimeStamp.None;
@@ -2012,12 +2013,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         void recyclePath(bool large, bool detail, int pathThreadIndex)
         {
-            if (large && path != null)
+            if (large && path_old != null)
             {
                 //lock (DssRef.state.pathFindingPool)
                 //{
-                    DssRef.world.pathFindingPool.Return(path);
-                    path = null;
+                    DssRef.world.pathFindingPool.Return(path_old);
+                    path_old = null;
                 //}
             }
 
@@ -2377,13 +2378,13 @@ namespace VikingEngine.DSSWars.GameObject
                     bool isTravelNode = false;
                     if (l > DetailMaxLength)
                     {
-                        if (path == null)
+                        if (path_old == null)
                         {
                             pathCalulate(pathThreadIndex, goalWp);
                         }
 
                         //pick three tiles ahead
-                        var path_sp = path;
+                        var path_sp = path_old;
                         if (path_sp != null)
                         {
                             IntVector2 aheadPathTile = path_sp.getNodeAhead(3, maptilePos, out isTravelNode);
@@ -2414,7 +2415,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             PathFinding pf = DssRef.world.pathFindingPool.GetPf();
             { 
-                path = pf.FindPath(pathThreadIndex, maptilePos, conv.ToDir8_INT(rotation), WP.ToSumTilePos( goalWp), isShip);
+                path_old = pf.FindPath(pathThreadIndex, maptilePos, conv.ToDir8_INT(rotation), WP.ToSumTilePos( goalWp), isShip);
             }
             DssRef.world.pathFindingPool.Return(pf);
         }

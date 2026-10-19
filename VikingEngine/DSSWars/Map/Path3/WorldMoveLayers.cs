@@ -16,7 +16,6 @@ namespace VikingEngine.DSSWars
 
         ConcurrentStack<LayerPathFinding> poolPathLayer2 = new ConcurrentStack<LayerPathFinding>();
         ConcurrentStack<LayerPathFinding> poolPathLayer4 = new ConcurrentStack<LayerPathFinding>();
-
         ConcurrentQueue<LayerWalkingPath> poolLayerResult = new ConcurrentQueue<LayerWalkingPath>();
 
         public void InitMoveCostLayers()

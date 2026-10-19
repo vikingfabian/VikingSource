@@ -589,7 +589,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var center = groups.GetIndex_Safe(mostCenterGroup);
                 if (center != null)
                 {
-                    var path_sp = center.path;
+                    var path_sp = center.path_old;
 
                     if (path_sp == null)
                     {
