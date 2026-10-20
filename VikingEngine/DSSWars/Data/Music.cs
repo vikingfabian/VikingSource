@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Data
             var result = new List<Sound.SongData>
             {
                 //new Sound.SongData(FilePath + "BBaaB_loop", "BBaaB", true, 0.22f),
-                new Sound.SongData(FilePath + "DSS War Industry -Theme music", "DSS Theme music", Artist_CosmeLeites, true, 0.3f),
+                new Sound.SongData(FilePath + "DSS War Industry -Theme music", "DSS Theme music", Artist_CosmeLeites, false, 0.3f),
                 new Sound.SongData(FilePath + "Gargoyle_loop", "Gargoyle", Artist_MartinGronlund, true, 0.3f),
 
                 //new Sound.SongData(FilePath + "RM 10 - Incubation", "Incubation", false, 0.3f),

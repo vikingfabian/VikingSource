@@ -406,6 +406,16 @@ namespace VikingEngine.DSSWars.Map.Path3
         {
             return currentNodeIx;
         }
+
+        public override string ToString()
+        {
+            string result = $"LayerWalkingPathResult ({nodes.Count})";
+            if (nodes.Count > 0)
+            {
+                result += $", from: {nodes.Last().ToString()}, to: {nodes.First().ToString()}";
+            }
+            return result;
+        }
     }
 
     struct LayerPathNode

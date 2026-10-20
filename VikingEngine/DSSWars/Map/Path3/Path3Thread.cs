@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         public DetailWalkingPathResult FindDetailPath(LayerWalkingPathResult parentPath, Vector3 start, Vector3 goal, Rotation1D startDir, bool startAsShip, bool endAsShip, bool isTravelNode)
         {
             DetailPathFinding detailPath = DssRef.world.GetDetailPathFromPool();
-            detailPath.ApplyParentPath(parentPath);
+            detailPath.ApplyParentPath(WP.ToMapTilePos(start), parentPath);
 
             var result = detailPath.FindPath(WP.ToMapTilePos(start), startDir, WP.ToMapTilePos(goal),
                     startAsShip, endAsShip, isTravelNode);

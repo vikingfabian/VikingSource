@@ -105,22 +105,26 @@ namespace VikingEngine.DSSWars.Map.Path
             nodeGrid = new Grid2D_L<DetailPathNode>(area.size);
         }
 
-        public void ApplyParentPath(LayerWalkingPathResult parentPath)
+        public void ApplyParentPath(IntVector2 center, LayerWalkingPathResult parentPath)
         {
             if (parentPath != null)
             {
-                const int ParentTileScale = 4;
+                area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
+
+                const int ParentTileScale = MoveCostLayer.Layer2TileWidth;
 
                 foreach (var node in parentPath.nodes)
                 {
-                    IntVector2 pos = node.position * ParentTileScale;
+                    IntVector2 pos = node.position * ParentTileScale - area.pos;
                     IntVector2 end = pos + ParentTileScale;
+
+                    IntVector2 testPos = WP.ToMapTilePos(node.wp);
 
                     for (int y = pos.Y; y < end.Y; y++)
                     {
                         for (int x = pos.X; x < end.X; x++)
                         {
-                            nodeGrid.Set(pos, DetailPathNode.Thunnel);
+                            nodeGrid.TrySet(pos, DetailPathNode.Thunnel);
                         }
                     }
                 }
