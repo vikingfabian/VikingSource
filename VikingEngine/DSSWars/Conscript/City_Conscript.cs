@@ -419,7 +419,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (settleArea != null)
                 {
-                    army.Ai_Order_MoveTo(settleArea.maptilePos);
+                    army.Order_MoveTo(settleArea.maptilePos);
                 }
             }
 

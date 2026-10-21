@@ -24,6 +24,7 @@ using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.Graphics;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
@@ -37,11 +38,6 @@ namespace VikingEngine.DSSWars
     partial class WorldData
     {  
         public static WorldData LoadingWorld = null;
-
-        
-
-       
-
 
         //public const int TileSubDivitions = 8;
         //public const int HalfTileSubDivitions = TileSubDivitions / 2;
@@ -81,10 +77,8 @@ namespace VikingEngine.DSSWars
         public SpottedArray<Faction> factions;
 
         public bool BordersUpdated = true;
-        
        
         public PcgRandom rnd;
-        
        
         public int areaTileCount;
         public bool abortLoad = false;
@@ -102,6 +96,7 @@ namespace VikingEngine.DSSWars
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
+            initFlagTexture();
         }
 
         public void DestroyCity(IntVector2 mapPos, bool buildings)

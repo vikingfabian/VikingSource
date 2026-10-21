@@ -326,13 +326,18 @@ namespace VikingEngine
         WhiteArea,
         TestTexture,
         particle3,
-        ccg_piece_particle,
+        //ccg_piece_particle,
         realistic_particle,
         waterEdge,
 
         BirdJoustBG,
-        cmdTiles,
-        ccgTiles,
+
+        /// <summary>
+        /// DSS Faction flag texture
+        /// </summary>
+        FlagTexture,
+        //cmdTiles,
+        //ccgTiles,
         NUM
     };
 

@@ -77,9 +77,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (profile.flag != null)
                 {
-                    var flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
-                    content.Add(new RbTexture(flagTexture, 1f, 0, 0.2f));
-                    //content.space();
+                    //var flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+                    //content.Add(new RbTexture(flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbSprite(profile.flag.GetOrCreateSprite(faction.myIndex), 1f, 0, 0.2f));
                 }
             }
             else if (faction.player != null)

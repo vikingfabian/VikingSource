@@ -18,6 +18,7 @@ using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
+using VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map.MapLayer;
@@ -60,8 +61,8 @@ namespace VikingEngine.DSSWars.Players
         public int warCount = 0;
         public int diplomaticPoints_softMax;
 
-       
-           
+        protected InfoDisplay infoDisplay;
+
 
         public Data.Statistics statistics = new Data.Statistics();
 
@@ -238,6 +239,8 @@ namespace VikingEngine.DSSWars.Players
 
             faction.technology = new XP.TechnologyTemplate();
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
+
+           
         }
         public override void AssignFaction(Faction faction)
         {
@@ -362,6 +365,11 @@ namespace VikingEngine.DSSWars.Players
 
             cannonConscriptCopy = new BarracksStatus(BuildAndExpandType.CannonBarracks);
 
+
+            if (infoDisplay == null)
+            {
+                infoDisplay = new InfoDisplay(new Vector2(Engine.Screen.SafeArea.X + HudLib.HeadDisplayWidth, hud.head.Bottom));
+            }
         }
 
         public void NetUpdate(bool bSlowUpdate)
@@ -946,6 +954,8 @@ namespace VikingEngine.DSSWars.Players
             }
 
             updatePlayer();
+
+            infoDisplay?.update();
         }
 
         public void uiUpdateOnly()
@@ -1856,7 +1866,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void asyncPlayerPathUpdate(float time, Path3Thread thread)
         {
-            gameControls.army?.asynchPathUpdate();
+            gameControls.army?.asynchPathUpdate(thread);
 
             //return false;
         }

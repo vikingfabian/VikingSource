@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void asynchUpdate(LocalPlayer player)
+        public void asynchUpdate(LocalPlayer player, Path3Thread thread)
         {
             if (pathState == PathFindState.None && isAlive)
             {
@@ -91,7 +91,10 @@ namespace VikingEngine.DSSWars.Players
                     }
                     DssRef.world.pathFindingPool.Return(pf);
                     */
-                    newPath = DssRef.world.path3Thread_test.FindHighPath(army.position, player.gameControls.map.playerPointerPos, conv.ToDir8_INT(army.rotation), army.isShip, false);
+                    //test
+                    IntVector2 lay4 = MoveCostLayer.WpToLay4(army.position);
+
+                    newPath = thread.FindHighPath(army.position, player.gameControls.map.pointerPosWP, conv.ToDir8_INT(army.rotation), army.isShip, false);
 
                     pathState = PathFindState.NewPath;
                 }

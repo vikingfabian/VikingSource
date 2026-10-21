@@ -25,6 +25,7 @@ namespace VikingEngine.Graphics
 
     class PixelTexture : Texture2D
     {
+        public bool updateFlag = false;
         Color[] pixels;
 
         public PixelTexture(IntVector2 texureSize)

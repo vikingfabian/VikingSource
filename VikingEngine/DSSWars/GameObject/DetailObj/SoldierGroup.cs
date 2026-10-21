@@ -2384,9 +2384,9 @@ namespace VikingEngine.DSSWars.GameObject
                     setGroundY();
                     groupToGroupCollsionUpate_async(thread);
 
-                    const float DetailMaxLength = 3.5f;
+                    const float DetailMaxLength = 3.5f * MapTile1_1.ModelScale;
                     Vector3 diff = goalWp - position;
-                    float l = VectorExt.PlaneXZLength(diff);
+                    float l = VectorExt.PlaneXZLength(diff) ;
                     //Vector3 goalWp;
                     bool isTravelNode = false;
                     if (l > DetailMaxLength)
@@ -2433,7 +2433,12 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.world.pathFindingPool.Return(pf);
             */
 
-            path = DssRef.world.path3Thread_test.FindHighPath(WP.MaptileToWorldPosXZ(maptilePos), goalWp, conv.ToDir8_INT(rotation), isShip, false);
+            bool endOnWater = true;
+            if (DssRef.world.subTileGrid.TryGet(WP.ToMapTilePos(goalWp), out var endTile))
+            {
+                endOnWater = endTile.IsWater();
+            }
+            path = DssRef.world.path3Thread_test.FindHighPath(WP.MaptileToWorldPosXZ(maptilePos), goalWp, conv.ToDir8_INT(rotation), isShip, endOnWater);
         }
 
 
@@ -2460,7 +2465,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
             DssRef.world.detailPathFindingPool.Return(pf);
             */
-            detailPath = DssRef.world.path3Thread_test.FindDetailPath(path, position, goal, conv.ToDir8_INT(rotation), isShip, false, isTravelNode);
+            bool endOnWater = true;
+            if (DssRef.world.subTileGrid.TryGet(WP.ToMapTilePos(goal), out var endTile))
+            {
+                endOnWater = endTile.IsWater();
+            }
+            detailPath = DssRef.world.path3Thread_test.FindDetailPath(path, position, goal, conv.ToDir8_INT(rotation), isShip, endOnWater, isTravelNode);
 
             var detailPath_sp = detailPath;
 

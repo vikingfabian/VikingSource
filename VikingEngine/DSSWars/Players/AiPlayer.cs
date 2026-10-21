@@ -1881,7 +1881,7 @@ namespace VikingEngine.DSSWars.Players
                             nextDecisionTimer.MilliSeconds += 4000;
                             if (city.distanceTo(mainArmy) > 2)
                             {
-                                mainArmy.Ai_Order_MoveTo(city.maptilePos);
+                                mainArmy.Order_MoveTo(city.maptilePos);
                             }
                         }
                         else
@@ -1952,7 +1952,7 @@ namespace VikingEngine.DSSWars.Players
                                 }
                                 else
                                 {
-                                    mainArmy.Ai_Order_MoveTo(city.maptilePos);
+                                    mainArmy.Order_MoveTo(city.maptilePos);
                                 }
                             }
                         }
@@ -2055,7 +2055,7 @@ namespace VikingEngine.DSSWars.Players
                 double chance = army.objective == ArmyObjective.None ? 0.8 : 0.1;
                 if (a != mainArmy && Ref.rnd.Chance(chance))
                 {
-                    army.Ai_Order_MoveTo(toPos);
+                    army.Order_MoveTo(toPos);
                 }
             }
         }

@@ -56,8 +56,9 @@ namespace VikingEngine.DSSWars.Map.Path3
         {
             float tileLength = VectorExt.SideLength_XZ(start, goal);
 
-            DssRef.world.generateLayer4Tile(this, MoveCostLayer.WpToLay4(start));
-            DssRef.world.generateLayer4Tile(this, MoveCostLayer.WpToLay4(goal));
+            //DssRef.world.generateLayer4Tile(this, MoveCostLayer.WpToLay4(start));
+            //DssRef.world.generateLayer4Tile(this, MoveCostLayer.WpToLay4(goal));
+            DssRef.world.checkNeedUpdate(this, MoveCostLayer.WpToLay4(start), MoveCostLayer.WpToLay4(goal));
 
 
             LayerWalkingPathResult lay4Path = null;

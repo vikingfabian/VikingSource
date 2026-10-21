@@ -7,6 +7,7 @@ x adjust "all facts"
 
 
 #MAP 2.0 UPDATE
+* 20 new songs added, made by Cosme Leites
 
 Worker max count
 * A new way to manage city work (prototype version)
@@ -37,6 +38,8 @@ Map editor 2.0
 
 Performance
 * More work has been put into keeping down the creeping memory usage (RAM)
+* Flags are changed to linears arrays
+* Flag textures are only created once and share one big texture
 
 Black Bolt Industries
 Made an evil factory puzzle game in a one week game jam. Available as extra content.

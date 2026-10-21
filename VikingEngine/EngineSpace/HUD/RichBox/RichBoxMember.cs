@@ -446,6 +446,42 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Size => pointer.size;
     }
 
+    class RbSprite : AbsRichBoxImage
+    {
+        protected Sprite sprite;
+        public ImageAdvanced pointer;
+
+        public RbSprite(Sprite sprite, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
+            : base(scale, addLeftSpace, addRightSpace)
+        {
+            this.sprite = sprite;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            if (!sprite.IsEmpty())
+            {
+                base.Create(group);
+            }
+        }
+
+        override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
+        {
+            pointer = new ImageAdvanced(SpriteName.NO_IMAGE, center, sz, group.layer, true, group.addToRender);
+            pointer.SetSprite(sprite);
+            return pointer;
+        }
+
+        protected override Rectangle SourceRect()
+        {
+            return new Rectangle(0, 0, sprite.Source.Width, sprite.Source.Height);
+        }
+
+        public override float Layer => pointer.PaintLayer;
+        public override Vector2 Center => pointer.position;
+        public override Vector2 Size => pointer.size;
+    }
+
     class RbGamerIcon : RbTexture
     {
         public RbGamerIcon(Network.AbsNetworkPeer gamer, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)

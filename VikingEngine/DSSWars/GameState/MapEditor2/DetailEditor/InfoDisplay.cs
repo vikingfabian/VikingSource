@@ -15,9 +15,9 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
     {
         Text2 text;
         Graphics.Mesh tileMarker;
-        public InfoDisplay() 
+        public InfoDisplay(Vector2 topLeft) 
         {
-            var pos = Engine.Screen.SafeArea.Position;
+            var pos = topLeft;
             pos.X += HudLib.HeadDisplayWidth * 1.1f;
 
             text = new Text2(string.Empty, LoadedFont.Console, pos, Engine.Screen.TextBreadHeight, Color.White,
@@ -31,7 +31,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
 
         public void update()
         {
-            text.TextString = $"Map tile - {DssRef.lang.Hud_Vector_X}: {DssRef.state.LocalHost().gameControls.map.mapTilePosition.X},  {DssRef.lang.Hud_Vector_Y}: {DssRef.state.LocalHost().gameControls.map.mapTilePosition.Y} {Environment.NewLine}Sum tile - {DssRef.lang.Hud_Vector_X}: {DssRef.state.LocalHost().gameControls.map.sumtilePosition.X},  {DssRef.lang.Hud_Vector_Y}: {DssRef.state.LocalHost().gameControls.map.sumtilePosition.Y}";
+            MapTile1_1 mapTile;
+            if (!DssRef.world.subTileGrid.TryGet(DssRef.state.LocalHost().gameControls.map.mapTilePosition, out mapTile))
+            {
+                mapTile = MapTile1_1.Empty;
+            }
+            text.TextString = $"Map tile - {DssRef.lang.Hud_Vector_X}: {DssRef.state.LocalHost().gameControls.map.mapTilePosition.X},  {DssRef.lang.Hud_Vector_Y}: {DssRef.state.LocalHost().gameControls.map.mapTilePosition.Y} {Environment.NewLine}Height: {mapTile.heightValue}, Ground type: {mapTile.groundType}, Terrain main: {mapTile.mainTerrain}, Terrain sub: {mapTile.subTerrain} {Environment.NewLine}World position - {DssRef.state.LocalHost().gameControls.map.pointerPosWP} {Environment.NewLine}Sum tile - {DssRef.lang.Hud_Vector_X}: {DssRef.state.LocalHost().gameControls.map.sumtilePosition.X},  {DssRef.lang.Hud_Vector_Y}: {DssRef.state.LocalHost().gameControls.map.sumtilePosition.Y}";
             tileMarker.position = WP.MaptileToWorldPosXYZ(DssRef.state.LocalHost().gameControls.map.mapTilePosition);
         }
 

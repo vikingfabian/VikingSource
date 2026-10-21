@@ -49,18 +49,26 @@ namespace VikingEngine.DSSWars
 
         }
 
-       
-
-       
-        //public void Test()
-        //{
-        //    Path3Thread thread = new Path3Thread();
-        //    generateLayer4Tile(thread, new IntVector2(1, 0));
-        //}
-
-        public void generateLayer4Tile(Path3Thread thread, IntVector2 lay4tile)
+        public void checkNeedUpdate(Path3Thread thread, IntVector2 lay4tile_start, IntVector2 lay4tile_end)
         {
-            var status = moveLayer4.tileStatus.GetRef(lay4tile);
+            if (moveLayer4.tileStatus.Get(lay4tile_start) <= MoveCostLayer4.TileStatus_NeedUpdate ||
+                moveLayer4.tileStatus.Get(lay4tile_end) <= MoveCostLayer4.TileStatus_NeedUpdate)
+            {
+                Rectangle2 refreshArea = Rectangle2.FromCenterTileAndRadius(lay4tile_start, 2);
+                refreshArea.includeTileAndRadius(lay4tile_end, 1);
+                refreshArea.SetTileBounds(moveLayer4.tileStatus.Area);
+
+                ForXYLoop loop = new ForXYLoop(refreshArea);
+                while (loop.Next())
+                {
+                    generateLayer4Tile(thread, loop.Position);
+                }
+            }
+        }
+
+        void generateLayer4Tile(Path3Thread thread, IntVector2 lay4tile)
+        {
+            ref var status = ref moveLayer4.tileStatus.GetRef(lay4tile);
             if (status <= MoveCostLayer4.TileStatus_NeedUpdate)
             {
                 status = MoveCostLayer4.TileStatus_Updateing;
@@ -142,7 +150,25 @@ namespace VikingEngine.DSSWars
                     int bottomRightPos = thread.layer1_temp.GetPositionStart(lay1pos.ReturnSum(1, 1));
 
 
+                    //Horizontal
+                    path1 = MoveCost.Sum(thread.layer1_temp.Get(topLeftPos, MoveCostLayer.Dir_WestToEast), thread.layer1_temp.Get(topRightPos, MoveCostLayer.Dir_WestToEast));
+                    path2 = MoveCost.Sum(thread.layer1_temp.Get(bottomLeftPos, MoveCostLayer.Dir_WestToEast), thread.layer1_temp.Get(bottomRightPos, MoveCostLayer.Dir_WestToEast));
+                    moveLayer2.Set(lay2PosIx, MoveCostLayer.Dir_WestToEast, MoveCost.Total(ref path1, ref path2, cheapPathAdd, expensivePathAdd));
 
+                    //Vertical
+                    path1 = MoveCost.Sum(thread.layer1_temp.Get(topLeftPos, MoveCostLayer.Dir_NorthToSouth), thread.layer1_temp.Get(bottomLeftPos, MoveCostLayer.Dir_NorthToSouth));
+                    path2 = MoveCost.Sum(thread.layer1_temp.Get(topRightPos, MoveCostLayer.Dir_NorthToSouth), thread.layer1_temp.Get(bottomRightPos, MoveCostLayer.Dir_NorthToSouth));
+                    moveLayer2.Set(lay2PosIx, MoveCostLayer.Dir_NorthToSouth, MoveCost.Total(ref path1, ref path2, cheapPathAdd, expensivePathAdd));
+
+                    //Diagonal NE
+                    path1 = MoveCost.Sum(thread.layer1_temp.Get(bottomLeftPos, MoveCostLayer.Dir_DiagonalNorthEast), thread.layer1_temp.Get(topLeftPos, MoveCostLayer.Dir_DiagonalNorthEast), thread.layer1_temp.Get(topRightPos, MoveCostLayer.Dir_DiagonalNorthEast));
+                    path2 = MoveCost.Sum(thread.layer1_temp.Get(bottomLeftPos, MoveCostLayer.Dir_DiagonalNorthEast), thread.layer1_temp.Get(bottomRightPos, MoveCostLayer.Dir_DiagonalNorthEast), thread.layer1_temp.Get(topRightPos, MoveCostLayer.Dir_DiagonalNorthEast));
+                    moveLayer2.Set(lay2PosIx, MoveCostLayer.Dir_DiagonalNorthEast, MoveCost.Total(ref path1, ref path2, cheapPathAdd, expensivePathAdd));
+
+                    //Diagonal SE
+                    path1 = MoveCost.Sum(thread.layer1_temp.Get(topLeftPos, MoveCostLayer.Dir_DiagonalSouthEast), thread.layer1_temp.Get(bottomLeftPos, MoveCostLayer.Dir_DiagonalSouthEast), thread.layer1_temp.Get(bottomRightPos, MoveCostLayer.Dir_DiagonalSouthEast));
+                    path2 = MoveCost.Sum(thread.layer1_temp.Get(topLeftPos, MoveCostLayer.Dir_DiagonalSouthEast), thread.layer1_temp.Get(topRightPos, MoveCostLayer.Dir_DiagonalSouthEast), thread.layer1_temp.Get(bottomRightPos, MoveCostLayer.Dir_DiagonalSouthEast));
+                    moveLayer2.Set(lay2PosIx, MoveCostLayer.Dir_DiagonalSouthEast, MoveCost.Total(ref path1, ref path2, cheapPathAdd, expensivePathAdd));
 
 
                     lay1pos.X += 2;

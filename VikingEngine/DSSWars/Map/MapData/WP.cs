@@ -6,6 +6,7 @@ using System.Text;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars
 {
@@ -176,6 +177,21 @@ namespace VikingEngine.DSSWars
             return DssRef.world.subTileGrid.Get(
                 Convert.ToInt32(wp.X * MapTile1_1.ModelScale_Inv + 3.5f),
                 Convert.ToInt32(wp.Z * MapTile1_1.ModelScale_Inv + 3.5f)).groundY;
+        }
+
+        public static Vector3 SetGroundY(Vector3 wp)
+        {
+            if (DssRef.world.subTileGrid.TryGet(
+                Convert.ToInt32(wp.X * MapTile1_1.ModelScale_Inv),
+                Convert.ToInt32(wp.Z * MapTile1_1.ModelScale_Inv), out var tile))
+            {
+                wp.Y =  tile.groundY;
+                if (wp.Y < MapHeight2.WaterSurfaceY)
+                {
+                    wp.Y = MapHeight2.WaterSurfaceY;
+                }
+            }
+            return wp;
         }
 
         public static float GroundY_SumTile(IntVector2 sumTilePos)

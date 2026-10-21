@@ -128,5 +128,10 @@ namespace VikingEngine.Graphics
                 return new Sprite();
             }
         }
+
+        public bool IsEmpty()
+        {
+            return Source.Width == 0;
+        }
     }
 }

@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Map.Path3
                 for (int dir = 0; dir < 8; dir++)
                 {
                     IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                    if (DssRef.world.maptileBounds.IntersectTilePoint(pos) && !nodeGrid.Get(pos).HasValue)
+                    if (nodeGrid.TryGet(pos, out var tile) && !tile.HasValue)
                     {
                         //add a node to open list
                         LayerPathNode node = new LayerPathNode(pos, dir, layer, currentNode, goal, endAsShip);
@@ -204,7 +204,7 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         public override string ToString()
         {
-            return position.ToString() + " water {" + ship.ToString() + "}";
+            return $"tile:{position}, wp: {wp}, water {ship}";
         }
     }
 
@@ -420,8 +420,8 @@ namespace VikingEngine.DSSWars.Map.Path3
 
     struct LayerPathNode
     {
-        const float MoveCostStraight = 10f;
-        const float MoveCostDiagonal = 14f;
+        const float MoveCostStraight = 1.0f;
+        const float MoveCostDiagonal = 1.4f;
 
         public static readonly LayerPathNode Empty = new LayerPathNode();
         public static readonly LayerPathNode Thunnel = new LayerPathNode() { thunnelValue = -10 };
@@ -468,10 +468,10 @@ namespace VikingEngine.DSSWars.Map.Path3
             moveCost = layer.Get_dir8(pos, dir8);
 
             float multiply = lib.IsEven(dir8) ? MoveCostStraight : MoveCostDiagonal;
-            if (dir8 == parent.dir8)
-            { //Bonus for keeping direction
-                multiply -= 1f;
-            }
+            //if (dir8 == parent.dir8)
+            //{ //Bonus for keeping direction
+            //    multiply -= 1f;
+            //}
             moveCost.land *= multiply;
             moveCost.water *= multiply;
 
@@ -488,11 +488,11 @@ namespace VikingEngine.DSSWars.Map.Path3
                 Value = ship ? moveCost.water : moveCost.land;
                 if (waterTile == endAsShip)
                 {//wanted convert
-                    Value -= 2;
+                    Value -= 2 * layer.defaultMoveCost;
                 }
                 else
                 {
-                    Value += MoveCostStraight * 4;
+                    Value += MoveCostStraight * 16 * layer.defaultMoveCost;
                 }
             }
 
@@ -503,7 +503,7 @@ namespace VikingEngine.DSSWars.Map.Path3
             Heuristic = (pos - goalPos).Length();
 
             const float DistanceToGoalWeight = 1.5f;
-            Heuristic *= DistanceToGoalWeight;
+            Heuristic *= DistanceToGoalWeight * layer.defaultMoveCost;
             //this.Value = moveCost + Heuristic;
             Value += Heuristic + thunnelValue;
 

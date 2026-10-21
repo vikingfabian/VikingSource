@@ -296,6 +296,7 @@ namespace VikingEngine.DSSWars.Map.Path
 
         public int currentNodeIx;
         public IntVector2 goal;
+        public Vector3 goalWp;
         public List<DetailPathNodeResult> nodes = new List<DetailPathNodeResult>(64);
         public bool blockedPath;
         public void recycle()
@@ -348,9 +349,10 @@ namespace VikingEngine.DSSWars.Map.Path
             
         }
 
-        public void init(IntVector2 goal,/* List<DetailPathNodeResult> nodes,*/ bool blockedPath)
+        public void init(IntVector2 goal, bool blockedPath)
         {
             this.goal = goal;
+            this.goalWp = WP.MaptileToWorldPosXZ(goal);
             //this.nodes = nodes;
             this.blockedPath = blockedPath;
             currentNodeIx = nodes.Count - 1;

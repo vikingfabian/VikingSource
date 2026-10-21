@@ -12,13 +12,16 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
     {
         public static List<MenuTab> EditorCityTabs = new List<MenuTab> { MenuTab.Info, MenuTab.Build };
         public DetailEditorDisplay display;
-        InfoDisplay infoDisplay;
+        
         public MapEditorPlayer(Faction faction)
             : base(faction, true)
         {
             display = new DetailEditorDisplay();
-            infoDisplay = new InfoDisplay();
-            
+
+            if (infoDisplay == null)
+            {
+                infoDisplay = new InfoDisplay(Engine.Screen.SafeArea.Position);
+            }
         }
 
         public void onEditorStart()
@@ -57,7 +60,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
         public override void userUpdate(bool cityUpdate)
         {
             base.userUpdate(cityUpdate);
-            infoDisplay.update();
+            
         }
         
 

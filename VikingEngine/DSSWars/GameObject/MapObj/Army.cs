@@ -879,7 +879,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (overviewBanner != null)
             {
                 var tile = DssRef.world.subTileGrid.Get(maptilePos);
-                overviewBanner.position = VectorExt.AddY(position, tile.GroundY_aboveWater());
+                overviewBanner.position = VectorExt.SetY(position, tile.GroundY_aboveWater());
                 bound.Center = overviewBanner.position;
             }
         }

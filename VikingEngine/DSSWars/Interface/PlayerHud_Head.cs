@@ -87,8 +87,9 @@ namespace VikingEngine.DSSWars.Interface
 
         public void RefreshFlag(LocalPlayer player)
         {
-            flag.Texture = player.flagTexture;
-            flag.SetFullTextureSource();
+            flag.SetSprite(player.profile.flag.GetOrCreateSprite(player.pfaction.factionIndex));
+            //flag.Texture = player.flagTexture;
+            //flag.SetFullTextureSource();
         }
 
         public void refreshFaction(Players.LocalPlayer player, bool prepareLayout)

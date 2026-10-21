@@ -332,6 +332,8 @@ namespace VikingEngine.DSSWars.Interface
                 inputHelp.refreshUpdate(player);
 
                 needRefresh = false;
+
+                DssRef.world.RefreshFlagsUpdate();
             }
         }
 

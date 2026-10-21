@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
     class MapLayer2_Mid : AbsFarLayer
     {
         public Borders borders;
-        public UnitMiniModels unitMiniModels;
+        public UnitsOnMap_MidLayer unitMiniModels;
 
         int state_Processing_Sych_Complete = 2;
         MapLayer3_Far factionsMap;
@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             //}
             Ref.draw.CurrentRenderLayer = 0;
 
-            unitMiniModels = new UnitMiniModels();
+            unitMiniModels = new UnitsOnMap_MidLayer();
         }
         public void update()
         {

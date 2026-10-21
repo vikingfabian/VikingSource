@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public void Ai_Order_MoveTo(IntVector2 goalTilePos)
+        public void Ai_Order_MoveTo(Vector3 goalPos)
         {
             //if (orderOutsidePlayerAttension(goalTilePos))
             //{
@@ -360,7 +360,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             //else
             //{ 
-                Order_MoveTo(goalTilePos);
+                Order_MoveTo(WP.ToMapTilePos(goalPos));
             //}
         }
 
