@@ -54,6 +54,11 @@ namespace VikingEngine.DSSWars.Map.MapLib
     {
         public static GroundTypeProperties[] GroundProperties;
 
+        public static GroundTypeProperties Get(GroundType type)
+        {
+            return GroundProperties[(int)type];
+        }
+
         public static void Init()
         {
             GroundProperties = new GroundTypeProperties[(int)GroundType.NUM];
@@ -130,6 +135,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canBuildHeavy = GroundCanBuildType.No,
                 canTerraform = true,
                 moveCost = 2f,
+                badMountTerrain = true,
 
                 texture = new SpriteVariantCount(SpriteName.DssMapTextureRubble),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
@@ -156,6 +162,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canBuildHeavy = GroundCanBuildType.No,
                 canTerraform = false, //TODO explosives
                 moveCost = 3f,
+                badMountTerrain = true,
 
                 texture = new SpriteVariantCount(SpriteName.DssMapTextureSwamp),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
@@ -169,6 +176,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canBuildHeavy = GroundCanBuildType.No,
                 canTerraform = false,
                 moveCost = 1.5f,
+                badMountTerrain = true,
 
                 texture = new SpriteVariantCount(SpriteName.DssMapTextureMud),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
@@ -239,6 +247,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
 
 
         public float moveCost;
+        public bool badMountTerrain;
 
         public SpriteVariantCount texture;
         public SpriteVariantCount sidetexture;

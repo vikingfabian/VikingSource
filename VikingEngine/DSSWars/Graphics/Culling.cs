@@ -10,6 +10,7 @@ using VikingEngine.LootFest.Data;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.PJ.Moba.GO;
 using VikingEngine.DSSWars.Map.MapLayer;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars
 {
@@ -116,9 +117,9 @@ namespace VikingEngine.DSSWars
             cullingStateA = !cullingStateA;
         }
 
-        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 pos)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 mapTilePos)
         {
-            if (DssRef.world.chunkGrid.TryGet(pos, out Map.MapData.MapChunkData8_8 tile))
+            if (DssRef.world.chunkGrid.TryGet(mapTilePos, out Map.MapData.MapChunkData8_8 tile))
             {
                 if (cullingStateA)
                 { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
@@ -128,18 +129,11 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, IntVector2 pos, int cameraIx)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, IntVector2 mapTilePos, int cameraIx)
         {
-            //if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
-            //{
-            //    if (cullingStateA)
-            //    { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
-            //    else
-            //    { GetRenderState_enter(ref tile.bits_renderStateB, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
-
-            //}
+          
             var state = bStateA ? players[cameraIx].stateA : players[cameraIx].stateB;
-            if (state.enterArea.IntersectPoint(pos))
+            if (state.enterArea.IntersectPoint(mapTilePos))
             {
                 enterRender_overviewLayer = state.midLayer;
                 enterRender_detailLayer = state.detailLayer;
@@ -151,10 +145,10 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public bool InRender_Asynch(int playerIx, bool bStateA, ref IntVector2 pos)
+        public bool InRender_Asynch(int playerIx, bool bStateA, ref IntVector2 mapTilePos)
         {           
             var state = bStateA ? players[playerIx].stateA : players[playerIx].stateB;
-            return state.enterArea.IntersectPoint(pos);
+            return state.enterArea.IntersectPoint(mapTilePos);
         }
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref IntVector2 minpos, ref IntVector2 maxpos)
@@ -177,7 +171,7 @@ namespace VikingEngine.DSSWars
             enterRender_detailLayer = detailLayer;
         }
 
-        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minWp, ref Vector2 maxWp)
         {
             bool enterOverview = false;
             bool enterDetail = false;
@@ -185,7 +179,7 @@ namespace VikingEngine.DSSWars
             for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
             {
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
-                if (state.enterArea.IntersectRect(minpos, maxpos))
+                if (state.enterArea.IntersectRect(minWp * MapTile1_1.ModelScale_Inv, maxWp * MapTile1_1.ModelScale_Inv))
                 {
                     enterOverview |= state.midLayer;
                     enterDetail |= state.detailLayer;                    
@@ -304,7 +298,8 @@ namespace VikingEngine.DSSWars
                 float top = lib.SmallestValue(topleft.Z, topright.Z);
                 float bottom = lib.LargestValue(bottomleft.Z, bottomright.Z);
 
-                Rectangle2 screenArea = Rectangle2.FromTwoTilePoints(new IntVector2(left, top), new IntVector2(right, bottom));
+                Rectangle2 screenArea = Rectangle2.FromTwoTilePoints(new IntVector2(left * MapTile1_1.ModelScale_Inv, top * MapTile1_1.ModelScale_Inv), 
+                    new IntVector2(right * MapTile1_1.ModelScale_Inv, bottom * MapTile1_1.ModelScale_Inv));
                 Rectangle2 screenAreaRaw = screenArea;
                 DssRef.state.localPlayers[index].cullingTileArea = screenArea;
 
@@ -379,27 +374,28 @@ namespace VikingEngine.DSSWars
         {
             this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;
+            enterArea.size.Y += Map.MapData.MapChunkData8_8.TileWidth;
 
-            if (enterArea.Width <= 4)
+            if (enterArea.Width / Map.MapData.MapChunkData8_8.TileWidth <= 4)
             {
-                enterArea.AddRadius(2);
+                enterArea.AddRadius(2 * Map.MapData.MapChunkData8_8.TileWidth);
             }
-            else if (enterArea.Width <= 8)
+            else if (enterArea.Width / Map.MapData.MapChunkData8_8.TileWidth <= 8)
             {
-                enterArea.AddWidthRadius(1);
+                enterArea.AddWidthRadius(1 * Map.MapData.MapChunkData8_8.TileWidth);
             }
-            else if (enterArea.Width > 14)
+            else if (enterArea.Width / Map.MapData.MapChunkData8_8.TileWidth > 14)
             {
-                enterArea.AddWidthRadius(-1);
+                enterArea.AddWidthRadius(-1 * Map.MapData.MapChunkData8_8.TileWidth);
             }
 
             enterArea.SetTileBounds(DssRef.world.maptileBounds);
             exitArea = enterArea;
-            exitArea.AddRadius(1);
+            exitArea.AddRadius(1 * Map.MapData.MapChunkData8_8.TileWidth);
             attensionArea = enterArea;
-            attensionArea.AddRadius(20);
+            attensionArea.AddRadius(20 * Map.MapData.MapChunkData8_8.TileWidth);
 
-            attensionArea_subTile = new Rectangle2(attensionArea.pos, (attensionArea.size + 1) * Map.MapData.MapChunkData8_8.TileWidth);
+            //attensionArea_subTile = new Rectangle2(attensionArea.pos, attensionArea.size + 1 * Map.MapData.MapChunkData8_8.TileWidth);
 
             //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
 

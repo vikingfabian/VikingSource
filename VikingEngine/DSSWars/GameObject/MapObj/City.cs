@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
@@ -35,6 +36,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 
@@ -100,6 +102,9 @@ namespace VikingEngine.DSSWars.GameObject
         public float capturePoints = 0;
 
         public int distanceFromPlayer = -1;
+
+        public bool primaryCity = false;
+        public FlatArray_Three<int> naturalExpansion = new FlatArray_Three<int>();
 
         public bool CanBuildLogistics(int toLevel)
         {
@@ -317,7 +322,27 @@ namespace VikingEngine.DSSWars.GameObject
             position = WP.SubtileToWorldPosXZgroundY_Centered(maptilePos);
         }
 
-        
+        public void NewCitySetup(WorldData world, CityCultureCollection cityCultureCollection)
+        {
+            if (world.CurrentCityComponentCount() <= world.cities.Count)
+            {
+                world.ExpandCityComponents(world.cities.Count * 2);
+            }
+            world.unitCollAreaGrid.add(this);
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    CityMapClaim2.CityClaim(this);
+                }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+            });
+
+            generateCultureAndEconomy(world, world.storyPlacementScale, cityCultureCollection);
+        }
 
         public void generateCultureAndEconomy(WorldData world, float storyPlacementScale, CityCultureCollection cityCultureCollection)
         {
@@ -349,40 +374,43 @@ namespace VikingEngine.DSSWars.GameObject
                 cityBiome = CityBiome.Mountain;
             }
 
-            if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
+            if (cityCultureCollection != null)
             {
-                cityCultureCollection.LargeGreen.Add(this);
-            }
-            else if (areaCulture.percDry >= 0.7 && areaCulture.worldPerc.X >= 0.75)
-            {
-                cityCultureCollection.DryEast.Add(this);
-            }
-            else if (areaCulture.percWater >= 0.25 && areaCulture.worldPerc.Y <= 0.25)
-            {
-                cityCultureCollection.NorthSea.Add(this);
+                if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
+                {
+                    cityCultureCollection.LargeGreen.Add(this);
+                }
+                else if (areaCulture.percDry >= 0.7 && areaCulture.worldPerc.X >= 0.75)
+                {
+                    cityCultureCollection.DryEast.Add(this);
+                }
+                else if (areaCulture.percWater >= 0.25 && areaCulture.worldPerc.Y <= 0.25)
+                {
+                    cityCultureCollection.NorthSea.Add(this);
+                }
+
+                Vector2 percCentered = areaCulture.worldPerc - VectorExt.V2Half;
+                percCentered /= storyPlacementScale;
+                if (percCentered.Y > 0.5f &&
+                    percCentered.Y < 0.9f)
+                {
+                    if (percCentered.X < 0.3f)
+                    {
+                        if (percCentered.X > 0.1f)
+                        {
+                            cityCultureCollection.WestKingdom.Add(this);
+                        }
+                    }
+                    else
+                    {
+                        if (percCentered.X < 0.7f)
+                        {
+                            cityCultureCollection.DarkLands.Add(this);
+                        }
+                    }
+                }
             }
 
-            Vector2 percCentered = areaCulture.worldPerc - VectorExt.V2Half;
-            percCentered /= storyPlacementScale;
-            if (percCentered.Y > 0.5f &&
-                percCentered.Y < 0.9f)
-            {
-                if (percCentered.X < 0.3f)
-                {
-                    if (percCentered.X > 0.1f)
-                    {
-                        cityCultureCollection.WestKingdom.Add(this);
-                    }
-                }
-                else
-                {
-                    if (percCentered.X < 0.7f)
-                    {
-                        cityCultureCollection.DarkLands.Add(this);
-                    }
-                }
-            }
-            
             if (world.rnd.Chance(0.3))
             {
                 //Area specific culture
@@ -1274,7 +1302,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     try
                     {
-                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, 1));
+                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(WP.MaptileToSumTile(maptilePos), 1));
                         edgeLoop.RandomPosition(true);
 
                         int maxLoops = 10000;
@@ -1288,16 +1316,13 @@ namespace VikingEngine.DSSWars.GameObject
                                         /*t.MayBuild() &&*/ t.pcity.cityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
-                                    IntVector2 topLeft = edgeLoop.Position;
+                                    IntVector2 topLeft = WP.SumTileToMaptile(edgeLoop.Position);
 
                                     for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
                                     {
                                         IntVector2 subPos = topLeft;
-                                        subPos.X += Ref.peRnd.Int(1, Map.MapData.MapTile1_1.ModelScale_Inv - 1);
-                                        subPos.Y += Ref.peRnd.Int(1, Map.MapData.MapTile1_1.ModelScale_Inv - 1);
-
-
-                                        //var faction = GetFaction();
+                                        subPos.X += Ref.peRnd.Int(Map.MapData.MapTile1_1.ModelScale_Inv);
+                                        subPos.Y += Ref.peRnd.Int(Map.MapData.MapTile1_1.ModelScale_Inv);
 
                                         if (Build.BuildLib.TryAutoBuild(pfaction, subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
                                         {
@@ -1318,47 +1343,11 @@ namespace VikingEngine.DSSWars.GameObject
                                                     TerrainMainType terrain;
                                                     int sub;
                                                     int maxAmount;
-                                                    //if (Ref.peRnd.Chance(0.75))
-                                                    //{
-                                                    //    terrain = TerrainMainType.Foil;
-                                                    //    sub = (int)TerrainSubFoilType.WheatFarm;
-                                                    //    maxAmount = TerrainContent.FarmCulture_MaxSize;
-                                                    //}
-                                                    //else
-                                                    //{
-                                                    //    terrain = TerrainMainType.Building;
-                                                    //    //if (Ref.peRnd.Chance(0.4))
-                                                    //    //{
-                                                    //    //    sub = (int)TerrainBuildingType.PigPen;
-                                                    //    //    maxAmount = TerrainContent.PigMaxSize;
-                                                    //    //}
-                                                    //    //else
-                                                    //    //{
-                                                    //        sub = (int)TerrainBuildingType.HenPen;
-                                                    //        maxAmount = TerrainContent.HenGrowth.maxSize;
-                                                    //    //}
-                                                    //}
-                                                    terrain = TerrainMainType.Foil;
-                                                    sub = (int)TerrainSubFoilType.TreeApple;
+                                                    
+                                                    terrain = TerrainMainType.Farm;
+                                                    sub = (int)TerrainSubFarmType.TreeApple;
                                                     maxAmount = TerrainContent.OrchardReady;
-                                                        //sub = (int)TerrainSubFoilType.WheatFarm;
-                                                        //maxAmount = TerrainContent.FarmCulture_MaxSize;
-                                                    //}
-                                                    //else
-                                                    //{
-                                                    //    terrain = TerrainMainType.Building;
-                                                    //    if (Ref.peRnd.Chance(0.4))
-                                                    //    {
-                                                    //        sub = (int)TerrainBuildingType.PigPen;
-                                                    //        maxAmount = TerrainContent.PigMaxSize;
-                                                    //    }
-                                                    //    else
-                                                    //    {
-                                                    //        sub = (int)TerrainBuildingType.HenPen;
-                                                    //        maxAmount = TerrainContent.HenMaxSize;
-                                                    //    }
-                                                    //}
-
+                                                    
                                                     if (Build.BuildLib.TryAutoBuild(pfaction, farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
                                                     {
                                                         ++cultureCount;
@@ -1527,8 +1516,6 @@ namespace VikingEngine.DSSWars.GameObject
                 name.name = Data.NameGenerator.CityName(maptilePos);
             }
             setTimeOnAllWorkers();
-
-            //setTimeOnAllWorkers();
         }
 
         

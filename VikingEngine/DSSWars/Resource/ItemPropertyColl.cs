@@ -58,10 +58,10 @@ namespace VikingEngine.DSSWars.Resource
             //new ItemProperties(ItemResourceType.Wood_Group, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.wood, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
             //new ItemProperties(ItemResourceType.Clay, CityResourceIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.ClayPit));
             new ItemProperties(ItemResourceType.Wood_Group, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.TreeSoft));
-            new ItemProperties(ItemResourceType.Clay, CityResourceIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.ClayPit));
+            new ItemProperties(ItemResourceType.Clay, CityResourceIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.ClayPit));
 
             // basic resources
-            new ItemProperties(ItemResourceType.Stone_G, CityResourceIndex.stone, 1f / CarryStones, WorkPriorityType.stone, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.Stones));
+            new ItemProperties(ItemResourceType.Stone_G, CityResourceIndex.stone, 1f / CarryStones, WorkPriorityType.stone, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.SmallStones));
             new ItemProperties(ItemResourceType.Brick, CityResourceIndex.Brick, 1f / CarryBricks, WorkPriorityType.craftBrick, CraftResourceLib.Brick, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.StoneBlock));
             new ItemProperties(ItemResourceType.Egg, CityResourceIndex.rawFood, 1f / 60, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Wheat, CityResourceIndex.rawFood, 1f / 10, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);

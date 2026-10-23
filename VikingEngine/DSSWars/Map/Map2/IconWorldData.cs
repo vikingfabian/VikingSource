@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map.Map2
     {
         public int myIndex;
         public IntVector2 pos;
-
+        public FlatArray_Three<IntVector2> secondary;
     }
 
     class IconWorldData
@@ -56,9 +56,6 @@ namespace VikingEngine.DSSWars.Map.Map2
             :this(new WorldMetaData(Ref.rnd.Ushort(), scale, -1))
         {
             
-
-            //IntVector2 tileSz = iconGrid.Size * 16;
-
         }
         public void writeIcon(System.IO.BinaryWriter w)
         {

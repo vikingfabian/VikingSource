@@ -51,8 +51,8 @@ namespace VikingEngine.DSSWars
 
         public void checkNeedUpdate(Path3Thread thread, IntVector2 lay4tile_start, IntVector2 lay4tile_end)
         {
-            if (moveLayer4.tileStatus.Get(lay4tile_start) <= MoveCostLayer4.TileStatus_NeedUpdate ||
-                moveLayer4.tileStatus.Get(lay4tile_end) <= MoveCostLayer4.TileStatus_NeedUpdate)
+            if ((moveLayer4.tileStatus.TryGet(lay4tile_start, out var startStatus) && startStatus <= MoveCostLayer4.TileStatus_NeedUpdate) ||
+                (moveLayer4.tileStatus.TryGet(lay4tile_end, out var endStatus) && endStatus <= MoveCostLayer4.TileStatus_NeedUpdate))
             {
                 Rectangle2 refreshArea = Rectangle2.FromCenterTileAndRadius(lay4tile_start, 2);
                 refreshArea.includeTileAndRadius(lay4tile_end, 1);

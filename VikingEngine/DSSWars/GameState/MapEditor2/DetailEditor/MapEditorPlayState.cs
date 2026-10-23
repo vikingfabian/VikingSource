@@ -192,22 +192,22 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
 
             if (DssRef.time.halfSecond)
             {
-                overviewMap.HalfSecondUpdate();
+                mapLayerMid.HalfSecondUpdate();
             }
             switch (processTime.update())
             {
-                case ProcessEvent.OverviewMap:
-                    overviewMap.HalfSecondUpdate();
+                case ProcessEvent.MidLayerMap:
+                    mapLayerMid.HalfSecondUpdate();
                     break;
                 case ProcessEvent.SubTileReload:
-                    detailMap.oneSecondUpdate = true;
-                    overviewMap.bRefreshTimer = true;
+                    mapLayerNear.oneSecondUpdate = true;
+                    mapLayerMid.bRefreshTimer = true;
                     break;
             }
 
             //detailMap.update();
 
-            overviewMap.update();
+            mapLayerMid.update();
 
             if (localPlayers != null)
             {

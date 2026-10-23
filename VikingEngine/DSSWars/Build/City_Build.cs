@@ -287,37 +287,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 break;
 
-                            case TerrainBuildingType.HenPen:
-                            case TerrainBuildingType.PigPen:
-                            case TerrainBuildingType.OxenPen:
-                            case TerrainBuildingType.KineOxenPen:
-
-                            case TerrainBuildingType.DogCage:
-                            case TerrainBuildingType.HoundCage:
-
-                            case TerrainBuildingType.PonyPen:
-                            case TerrainBuildingType.HorsePen:
-                            case TerrainBuildingType.WarHorsePen:
-                            case TerrainBuildingType.DraftHorsePen:
-                            case TerrainBuildingType.WildPigPen:
-                            case TerrainBuildingType.WildHogPen:
-                            case TerrainBuildingType.WarHogPen:
-                            case TerrainBuildingType.StagHogPen:
-                            case TerrainBuildingType.WolfCage:
-                            case TerrainBuildingType.WargCage:
-                            case TerrainBuildingType.AlphaWargCage:
-                            case TerrainBuildingType.WildCatCage:
-                            case TerrainBuildingType.LionCage:
-                            case TerrainBuildingType.WarLionCage:
-                            case TerrainBuildingType.ElephantCage:
-                            case TerrainBuildingType.WarElephantCage:
-                            case TerrainBuildingType.OliphantCage:
-                                var upkeep = Build.BuildLib.Get(mainType, subType).upkeep;
-                                if (upkeep.type == ItemResourceType.RawFood_Group)
-                                {
-                                    PenFoodUpkeep_minute += lib.BoolToLeftRight(build) * upkeep.amount;
-                                }
-                                break;
+                            
 
                             case TerrainBuildingType.Cesspit:
                                 if (build)
@@ -331,6 +301,43 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
 
                         }
+                    }
+                    break;
+
+                case TerrainMainType.AnimalPen:
+                    switch ((TerrainSubAnimalPenType)subType)
+                    {
+                        case TerrainSubAnimalPenType.HenPen:
+                        case TerrainSubAnimalPenType.PigPen:
+                        case TerrainSubAnimalPenType.OxenPen:
+                        case TerrainSubAnimalPenType.KineOxenPen:
+
+                        case TerrainSubAnimalPenType.DogCage:
+                        case TerrainSubAnimalPenType.HoundCage:
+
+                        case TerrainSubAnimalPenType.PonyPen:
+                        case TerrainSubAnimalPenType.HorsePen:
+                        case TerrainSubAnimalPenType.WarHorsePen:
+                        case TerrainSubAnimalPenType.DraftHorsePen:
+                        case TerrainSubAnimalPenType.WildPigPen:
+                        case TerrainSubAnimalPenType.WildHogPen:
+                        case TerrainSubAnimalPenType.WarHogPen:
+                        case TerrainSubAnimalPenType.StagHogPen:
+                        case TerrainSubAnimalPenType.WolfCage:
+                        case TerrainSubAnimalPenType.WargCage:
+                        case TerrainSubAnimalPenType.AlphaWargCage:
+                        case TerrainSubAnimalPenType.WildCatCage:
+                        case TerrainSubAnimalPenType.LionCage:
+                        case TerrainSubAnimalPenType.WarLionCage:
+                        case TerrainSubAnimalPenType.ElephantCage:
+                        case TerrainSubAnimalPenType.WarElephantCage:
+                        case TerrainSubAnimalPenType.OliphantCage:
+                            var upkeep = Build.BuildLib.Get(mainType, subType).upkeep;
+                            if (upkeep.type == ItemResourceType.RawFood_Group)
+                            {
+                                PenFoodUpkeep_minute += lib.BoolToLeftRight(build) * upkeep.amount;
+                            }
+                            break;
                     }
                     break;
 

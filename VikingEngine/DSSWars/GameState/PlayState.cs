@@ -688,23 +688,26 @@ namespace VikingEngine.DSSWars
 
             switch (processTime.update())
             {
-                case ProcessEvent.OverviewMap:
-                    overviewMap.HalfSecondUpdate();
+                case ProcessEvent.MidLayerMap:
+                    mapLayerMid.HalfSecondUpdate();
+                    break;
+                case ProcessEvent.FarLayerMap:
+                    mapLayerFar.HalfSecondUpdate();
                     break;
                 case ProcessEvent.SubTileReload:
-                    if (detailMap != null)
+                    if (mapLayerNear != null)
                     {
-                        detailMap.oneSecondUpdate = true;
+                        mapLayerNear.oneSecondUpdate = true;
                     }
 
-                    if (overviewMap != null)
+                    if (mapLayerMid != null)
                     {
-                        overviewMap.bRefreshTimer = true;
+                        mapLayerMid.bRefreshTimer = true;
                     }
                     break;
             }
             
-            overviewMap.update();
+            mapLayerMid.update();
 
             //if (bUserUpdate)
             //{
@@ -920,28 +923,27 @@ namespace VikingEngine.DSSWars
 
                 int cityCount = 0;
                 var citiesC = DssRef.world.cities.counter();
-                while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
+                while (citiesC.Next())
                 {
                     //if (m.cityType > CityType.UnClaimed)
-                    {
+                    //{
                         citiesC.sel.asynchGameObjectsUpdate(minute);
                         cityCount++;
-                    }
+                    //}
                 }
                 DssRef.world.claimedCityCount = cityCount;
 
+                strongestArmy_processing = 0;
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    //if (factions.sel.IsNetHosted())
-                    //{
+                   
                     if (factions.sel.player != null)
                     {
                         factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
                     }
-                    //}
                 }
-
+                strongestArmy = strongestArmy_processing;
             }
             return exitThreads;
         }

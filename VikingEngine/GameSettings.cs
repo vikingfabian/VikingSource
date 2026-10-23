@@ -1127,7 +1127,7 @@ namespace VikingEngine
                             settingsHasChanged = true;
                             menu.CloseDropDown();
 
-                            DssRef.state?.detailMap?.refreshLoadSpeed();
+                            DssRef.state?.mapLayerNear?.refreshLoadSpeed();
                         }, opt), null);
 
                     switch (opt)

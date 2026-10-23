@@ -166,6 +166,19 @@ namespace VikingEngine
             if (count > 2 && value3.Equals(value)) { RemoveAt(2); return; }
         }
 
+        public T PullRandom()
+        {
+            if (count > 0)
+            {
+                int ix = Ref.rnd.Int(count);
+                T result = this[ix];
+                RemoveAt(ix);
+                return result;
+            }
+
+            return default(T);
+        }
+
         /// <summary>
         /// Removes and returns the last element in the array.
         /// </summary>
@@ -222,6 +235,11 @@ namespace VikingEngine
             }
 
             return true;
+        }
+
+        public bool IsFull()
+        {
+            return count >= Capacity;
         }
     }
 }

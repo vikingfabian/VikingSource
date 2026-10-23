@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         public bool urbanTerrain;
         public bool natureTerrain;
         public bool deadlyTerrain;
+        public bool badMountTerrain;
 
         public float land;
         public float water;

@@ -84,11 +84,11 @@ namespace VikingEngine.DSSWars.Build
 
 
         static readonly MapTile1_1 TerrainType_wood = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
-        static readonly MapTile1_1 TerrainType_stone = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
+        static readonly MapTile1_1 TerrainType_stone = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.SmallStones);
         static readonly MapTile1_1 TerrainType_stoneblock = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.StoneBlock); //New
 
-        static readonly MapTile1_1 TerrainType_clay = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.ClayPit); //New
-        static readonly MapTile1_1 TerrainType_bogiron = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron);
+        static readonly MapTile1_1 TerrainType_clay = new MapTile1_1(TerrainMainType.Foil, (int)TerrainMineType.ClayPit); //New
+        static readonly MapTile1_1 TerrainType_bogiron = new MapTile1_1(TerrainMainType.Foil, (int)TerrainMineType.BogIron);
         static readonly MapTile1_1 TerrainType_iron = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.IronOre);
         static readonly MapTile1_1 TerrainType_tin = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.TinOre);
         static readonly MapTile1_1 TerrainType_copper = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.CopperOre);
@@ -101,14 +101,14 @@ namespace VikingEngine.DSSWars.Build
         static readonly MapTile1_1 TerrainType_sulfur = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
         static readonly MapTile1_1 TerrainType_coal = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.Coal);
 
-        static readonly MapTile1_1 TerrainType_fowlHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.FowlHabitat);
-        static readonly MapTile1_1 TerrainType_boarHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.BoarHabitat);
-        static readonly MapTile1_1 TerrainType_dogHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.DogHabitat);
-        static readonly MapTile1_1 TerrainType_oxHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.OxHabitat);
-        static readonly MapTile1_1 TerrainType_ponyHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.PonyHabitat);
-        static readonly MapTile1_1 TerrainType_wolfHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.WolfHabitat);
-        static readonly MapTile1_1 TerrainType_catHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.CatHabitat);
-        static readonly MapTile1_1 TerrainType_elephantHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.ElephantHabitat);
+        static readonly MapTile1_1 TerrainType_fowlHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.FowlHabitat);
+        static readonly MapTile1_1 TerrainType_boarHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.BoarHabitat);
+        static readonly MapTile1_1 TerrainType_dogHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.DogHabitat);
+        static readonly MapTile1_1 TerrainType_oxHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.OxHabitat);
+        static readonly MapTile1_1 TerrainType_ponyHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.PonyHabitat);
+        static readonly MapTile1_1 TerrainType_wolfHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.WolfHabitat);
+        static readonly MapTile1_1 TerrainType_catHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.CatHabitat);
+        static readonly MapTile1_1 TerrainType_elephantHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.ElephantHabitat);
 
 
         public bool HasIndependantResources()

@@ -93,6 +93,7 @@ namespace VikingEngine.DSSWars.Map.Generate
     class CityTemplate_Default
     {
         IntVector2 startSubTilePos = IntVector2.Zero;
+        public IntVector2 cityHallPos;
         protected bool requireDryLand;
         protected bool requireWater;
 
@@ -101,6 +102,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public Grid2D<CityTemplateCellType> Get(int templateRotation, out IntVector2 startSubTilePos)
         { 
             startSubTilePos = this.startSubTilePos;
+           
+            startSubTilePos -= gridRotations[0].RotateGridPosition(cityHallPos, templateRotation);
             return gridRotations[templateRotation];
         }
         public void Init(IntVector2 startSubTilePos, string[] template, bool requireDryLand)
@@ -152,6 +155,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         case 'H':
                             type = CityTemplateCellType.CityHall;
                             hallCount++;
+                            cityHallPos = templatePos;
                             break;
                         case 'X':
                             type = CityTemplateCellType.CityCenterSquare;

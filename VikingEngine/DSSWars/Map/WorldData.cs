@@ -93,6 +93,8 @@ namespace VikingEngine.DSSWars
         public Grid2D_L<SumTile4_4> tileGrid;
         public Grid2D_L<MapTile1_1> subTileGrid;
 
+         public float storyPlacementScale = 1f;
+
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
@@ -169,12 +171,13 @@ namespace VikingEngine.DSSWars
             City city = new City(cities.Count, mapPos, cityType, this);
             cities.Add(city);
 
-            if (CurrentCityComponentCount() <= cities.Count)
-            {
-                ExpandCityComponents(cities.Count * 2);
-            }
+            city.NewCitySetup(this, null);
+            //if (CurrentCityComponentCount() <= cities.Count)
+            //{
+            //    ExpandCityComponents(cities.Count * 2);
+            //}
 
-            unitCollAreaGrid.add(city);
+            //unitCollAreaGrid.add(city);
 
             if (runTime)
             {
@@ -398,7 +401,10 @@ namespace VikingEngine.DSSWars
 
             path3Thread_test = new Path3Thread();
 
-
+            if (Size.Area() > MapScale.SizeDimentions(MapSizeCategory.Medium).Area())
+            {
+                storyPlacementScale = (float)MapScale.SizeDimentions(MapSizeCategory.Medium).Area() / Size.Area();
+            }
         }
 
         bool subTileHasRepeatValue(ref MapTile1_1 subtile)

@@ -53,16 +53,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -139,16 +139,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -224,16 +224,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -308,16 +308,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -404,16 +404,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -463,16 +463,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -538,16 +538,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -614,16 +614,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -694,16 +694,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rubble,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise
@@ -772,16 +772,16 @@ namespace VikingEngine.DSSWars.Map.MapLib
                         groundType = GroundType.Frost,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                         setTerrain2 = new SetTerrainChance(0.008,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.StoneBlock),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.LargeStones),
                     },
                     new BiomGroundType() {
                         noiseValue = new IntervalF(0, 0.22f),
                         groundType = GroundType.Rock,
 
                         setTerrain1 = new SetTerrainChance(0.003,
-                           TerrainMainType.Foil, (int) TerrainSubFoilType.Stones),
+                           TerrainMainType.Foil, (int) TerrainSubFoilType.SmallStones),
                     },
                 },
                 new BiomGroundType[] //Herb noise

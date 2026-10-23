@@ -1084,6 +1084,10 @@ namespace VikingEngine.DSSWars.GameObject
                 transportSpeedSea = Convert.ToSingle(DssConst.Men_StandardShipSpeed * speedbonus);
 
                 strengthValue = totalStrength; // AllUnits.AverageGroupStrength;
+                if (strengthValue > DssRef.state.strongestArmy_processing)
+                {
+                    DssRef.state.strongestArmy_processing = strengthValue;
+                }
 
                 if (totalStrength > ArmyStrengthLeaderBoard.SizeUploaded && pfaction.TryGetLocalPlayer(out _))
                 {

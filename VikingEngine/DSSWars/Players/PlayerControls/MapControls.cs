@@ -1403,9 +1403,9 @@ namespace VikingEngine.DSSWars.Players
             onPan();
         }
 
-        public void setCameraPos(IntVector2 tile)
+        public void setCameraPos(IntVector2 maptile)
         {
-            playerPointerPos = WP.ChunkToWorldPos(tile);
+            playerPointerPos = WP.MaptileToWorldPosXZ(maptile);
             camera.LookTarget = playerPointerPos;
             camera.clearGoalTarget();
             cameraFocus = null;

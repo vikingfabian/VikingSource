@@ -829,17 +829,37 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                 foreach (var c in icon.cities)
                 {
-                    var tile = dataGrid.Get(c.pos);
-                    tile.color = Color.Red;
-                    dataGrid.Set(c.pos, tile);
-
-                    foreach (var dir in IntVector2.Dir8Array)
                     {
-                        var npos = dir + c.pos;
-                        if (dataGrid.TryGet(npos, out var ntile))
+                        var tile = dataGrid.Get(c.pos);
+                        tile.color = Color.Red;
+                        dataGrid.Set(c.pos, tile);
+
+                        foreach (var dir in IntVector2.Dir8Array)
                         {
-                            ntile.color = Color.Pink;
-                            dataGrid.Set(npos, ntile);
+                            var npos = dir + c.pos;
+                            if (dataGrid.TryGet(npos, out var ntile))
+                            {
+                                ntile.color = Color.Pink;
+                                dataGrid.Set(npos, ntile);
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < c.secondary.count; i++)
+                    {
+                        IntVector2 secPos = c.secondary[i];
+                        var tile = dataGrid.Get(secPos);
+                        tile.color = Color.Orange;
+                        dataGrid.Set(secPos, tile);
+
+                        foreach (var dir in IntVector2.Dir4Array)
+                        {
+                            var npos = dir + secPos;
+                            if (dataGrid.TryGet(npos, out var ntile))
+                            {
+                                ntile.color = Color.Yellow;
+                                dataGrid.Set(npos, ntile);
+                            }
                         }
                     }
                 }

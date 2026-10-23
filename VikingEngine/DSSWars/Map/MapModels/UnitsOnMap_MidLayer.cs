@@ -19,11 +19,13 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         Graphics.IVerticeData verticeData;
         protected Graphics.VoxelModel model;
+        LoadedTexture textureType;
 
         Timer.Basic updateTimer = new Timer.Basic(500, false);
 
-        public AbsUnitsOnMap(int layer)
+        public AbsUnitsOnMap(int layer, LoadedTexture textureType)
         {
+            this.textureType = textureType;
             factions = DssRef.world.factions.counter();
             model = new Graphics.VoxelModel(false);
             
@@ -37,9 +39,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
             {
                 if (verticeData != null)
                 {
-
                     model.BuildFromVerticeData(verticeData,
-                        new List<int> { verticeData.DrawData.numTriangles / 2 }, LoadedTexture.SpriteSheet);
+                        new List<int> { verticeData.DrawData.numTriangles / 2 }, textureType);
                     model.Visible = true;
 
                     verticeData = null;
@@ -47,12 +48,16 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
                 processFactionCount = Bound.Min(DssRef.world.factions.Count / 10, 1);
                 factions = DssRef.world.factions.counter();
+                begin();
 
                 processing = true;
             }
 
 
         }
+
+        virtual protected void begin()
+        { }
 
         public void asynchUpdate()
         {
@@ -97,15 +102,12 @@ namespace VikingEngine.DSSWars.Map.MapModels
         
 
         public UnitsOnMap_MidLayer()
-            :base(DrawGame.MidLayer)
+            :base(DrawGame.MidLayer, LoadedTexture.SpriteSheet)
         {
             Graphics.CustomEffect ModelEffect = new Graphics.CustomEffect("FlatVerticeColor", false);
 
-            //factions = DssRef.world.factions.counter();
-            //model = new Graphics.VoxelModel(false);
             model.Effect = ModelEffect;
-            //model.AddToRender(DrawGame.MidLayer);
-            //model.Visible = false;
+
         }
 
         override protected void addFaction(Faction faction_sp)
@@ -140,8 +142,6 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     typeSymbol.setSprite(SpriteName.WarsTextureGroupSquareMelee, Dir4.N);
                     typeSymbol.SetColor(second);
 
-                    //polygons.Add(typeSymbol);
-
 
                 }
             }
@@ -150,70 +150,44 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
     class UnitsOnMap_FarLayer : AbsUnitsOnMap
     {
-
-
+        static readonly IntervalF StrengthPercToScale = new IntervalF(1f, 2f);
+        IntervalF armyStrengthRange;
         public UnitsOnMap_FarLayer()
-            : base(DrawGame.FarLayer)
+            : base(DrawGame.FarLayer, LoadedTexture.FlagTexture)
         {
-            //Graphics.CustomEffect ModelEffect = new Graphics.CustomEffect("FlatVerticeColor", false);
-
-            //factions = DssRef.world.factions.counter();
-            //model = new Graphics.VoxelModel(false);
             model.Effect = Engine.Draw.TextureEffects[(int)TextureEffectType.Flat];
-            //model.AddToRender(DrawGame.MidLayer);
-            //model.Visible = false;
+        }
+        protected override void begin()
+        {
+            base.begin();
+            armyStrengthRange = new IntervalF(1f, Bound.Min(DssRef.state.strongestArmy, 200f));
         }
 
         override protected void addFaction(Faction faction)
         {
-            var armies = faction.armies.counter();
-            while (armies.Next())
+            if (faction.armies.Count > 0)
             {
-                //faction.player.profile.flag.Button
-                //if (armies.sel.strengthValue > 0)
-                //{ 
-                //    PolygonColor.QuadXZ(armies.sel.position, new Vector2(1f), 0, 
-                //}
-            }
-                
+                Sprite sprite = faction.player.profile.flag.GetOrCreateSprite(faction.myIndex);
+                PolygonColor topPoly = new PolygonColor();
+                topPoly.setSprite(sprite.SourceF, Dir4.E);
+                PolygonColor outlinePoly = new PolygonColor();
+                outlinePoly.setSprite(DssRef.world.blackFlagSprite.SourceF, Dir4.E);
 
-            /*
-            faction_sp.Colors(out Color main, out Color second);
-            PolygonColor topPoly = new PolygonColor();
-            topPoly.setSprite(SpriteName.WarsTextureGroupSquare, Dir4.N);
-            topPoly.SetColor(main);
-
-            var armies = faction_sp.armies.counter();
-            while (armies.Next())
-            {
-                var groups = armies.sel.groups.counter();
-                while (groups.Next())
-                {
-                    Vector3 pos = groups.sel.position;
-                    pos.Y += 0.07f;
-
-                    if (pos.Y < MapHeight2.UnitQuadMinY)
+                var armies = faction.armies.counter();
+                while (armies.Next())
+                {                   
+                    if (armies.sel.strengthValue > 0)
                     {
-                        pos.Y = MapHeight2.UnitQuadMinY;
+                        float scale = armyStrengthRange.GetValuePercentPosClamped(armies.sel.strengthValue);
+                        scale = StrengthPercToScale.GetFromPercent(scale);
+                        topPoly.quadXZPlacement(VectorExt.AddY( armies.sel.position, 0.1f), new Vector2(scale), 0);
+                        polygons.Add(topPoly);
+                        outlinePoly.quadXZPlacement(VectorExt.AddY(armies.sel.position, 0.05f), new Vector2(scale * 1.2f), 0);
+                        polygons.Add(outlinePoly);
                     }
-
-                    topPoly.quadXZPlacement(pos,
-                        new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians - MathExt.TauOver4);
-                    polygons.Add(topPoly);
-
-                    topPoly.quadXZSides(0.08f, SpriteName.WhiteArea_LFtiles, Dir4.N, second, polygons);
-
-                    PolygonColor typeSymbol = topPoly;
-                    typeSymbol.Move(new Vector3(0, 0.01f, 0));
-                    typeSymbol.setSprite(SpriteName.WarsTextureGroupSquareMelee, Dir4.N);
-                    typeSymbol.SetColor(second);
-
-                    //polygons.Add(typeSymbol);
-
-
                 }
-            }
-            */
+            }   
+
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.GameState.MapEditor;
+using VikingEngine.Core.DSSWars.GameState.MapEditor2.IconEditor;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Map2;
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
         bool loadingState = false;
         public Map2Generator generator = new Map2Generator();
         
-        public GeneratorMap map;
+        public MapTextureDisplay map;
         //public bool iconState = true;
         public MapEditHistory editHistory = new MapEditHistory();
         public IconMapStorage storage = new IconMapStorage();
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 
             display = new MapEditor2Display(this);
             tool = new MapEditor3_Tool(this);
-            map = new GeneratorMap(display.topRight);
+            map = new MapTextureDisplay(display.topRight);
             new Interface.EditorBackground();
 
             if (revertWorld != null)

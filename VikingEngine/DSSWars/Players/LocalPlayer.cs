@@ -310,10 +310,6 @@ namespace VikingEngine.DSSWars.Players
                 input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
 
-            //inputConnected = input.Connected;
-
-            //faction.displayInFullOverview = true;
-
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
@@ -339,11 +335,7 @@ namespace VikingEngine.DSSWars.Players
             InitTutorial(newGame);
 
             refreshNeihgborAggression();
-            //if (numPlayers > 1)
-            //{
-            //    toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
-            //}
-
+            
             menDeliveryCopy = new DeliveryStatus();
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
 
@@ -359,14 +351,12 @@ namespace VikingEngine.DSSWars.Players
 
             warmachineConscriptCopy = new BarracksStatus(BuildAndExpandType.WarmachineBarracks);
 
-            //knightConscriptCopy = new BarracksStatus(BuildAndExpandType.KnightsBarracks);
-
             gunConscriptCopy = new BarracksStatus(BuildAndExpandType.GunBarracks);
 
             cannonConscriptCopy = new BarracksStatus(BuildAndExpandType.CannonBarracks);
 
 
-            if (infoDisplay == null)
+            if (StartupSettings.ViewCoords && infoDisplay == null)
             {
                 infoDisplay = new InfoDisplay(new Vector2(Engine.Screen.SafeArea.X + HudLib.HeadDisplayWidth, hud.head.Bottom));
             }

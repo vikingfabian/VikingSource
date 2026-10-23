@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         public MapLayer1_Near(CrossHeightMap crossHeightMap)
             : base(DrawGame.NearLayer)
         {
-            DssRef.state.detailMap = this;
+            DssRef.state.mapLayerNear = this;
             tiles = new SpottedArray<DetailModelTile>(1024);
 
             //WaterModel(DrawGame.UnitDetailLayer);
@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                         var p = DssRef.state.culling.players[pIx];
 
                         var state = DssRef.state.culling.cullingStateA ? p.stateA : p.stateB;
-                        var loopArea = state.enterArea;
+                        Rectangle2 loopArea = state.enterArea / Map.MapData.MapChunkData8_8.TileWidth;
                         loopArea.size += 1;
 
                         loopArea.SetTileBounds(world_sp.chunkBounds);

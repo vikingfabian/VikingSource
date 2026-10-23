@@ -23,6 +23,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         CityCultureCollection cityCultureCollection = new CityCultureCollection();
         WorldData world;
         VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap;
+
+        
         public Map2PostGenerate(WorldData world) 
         { 
             this.world = world;
@@ -31,7 +33,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public async void citiesAndFactionsSetup(Map2GenerateSettings generateSettings)
         {
-            cityAreaClaim();
+            //cityAreaClaim();
 
             world.init_FactionComponents(0);
             world.Init_CityComponents(world.cities.Count);
@@ -42,16 +44,19 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             placeCityBuildings();
 
-            Task.Factory.StartNew(() =>
-            {
+
+            //Task.Factory.StartNew(() =>
+            //{
                 var citiesC = DssRef.world.cities.counter();
                 while (citiesC.Next()) //foreach (var c in world.cities)
                 {
-                    world.unitCollAreaGrid.add(citiesC.sel);
+                    citiesC.sel.NewCitySetup(world, cityCultureCollection);//world.unitCollAreaGrid.add(citiesC.sel);
                 }
-            });
+            //});
         }
 
+        
+        /*
         public async void cityAreaClaim()
         {
             List<Task> tasks = new List<Task>();
@@ -78,7 +83,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             // Wait for all tasks to complete
             await Task.WhenAll(tasks);
         }
-
+        */
         public async void placeCityBuildings()
         {
             CityTemplateCollection templateCollection = new CityTemplateCollection();

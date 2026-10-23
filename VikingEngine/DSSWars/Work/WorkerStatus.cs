@@ -690,7 +690,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.GatherFoil:
                     {
-                        //Resource.ItemResourceType resourceType;
+                        
                         TerrainSubFoilType foilType = subTile.GetFoilType();
                         switch (foilType)
                         {
@@ -708,79 +708,8 @@ namespace VikingEngine.DSSWars.Work
                                 gatherWood(Resource.ItemResourceType.DryWood, ref subTile, city);
                                 gainXp = WorkExperienceType.WoodWork;
                                 break;
-
-                            case TerrainSubFoilType.TreeApple:
-                            case TerrainSubFoilType.TreeBanana:
-                                carry = new Resource.ItemResource(
-                                        ItemResourceType.Food_G,
-                                        //subTile.terrainQuality,
-                                        //Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.OrchidFoodAmount, city/*, false*/));
-
-                                subTile.terrainAmount = TerrainContent.OrchardPlucked;
-
-                                gainXp = WorkExperienceType.Farm;
-                                break;
-
-                            case TerrainSubFoilType.WheatFarm:
-                            case TerrainSubFoilType.WheatFarmUpgraded:
-                                carry = new Resource.ItemResource(
-                                        ItemResourceType.Wheat,
-                                        //subTile.terrainQuality,
-                                        //Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.WheatFoodAmount, city/*, foilType == TerrainSubFoilType.WheatFarmUpgraded*/));
-
-                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-
-                                gainXp = WorkExperienceType.Farm;
-                                break;
-
-                            case TerrainSubFoilType.LinenFarm:
-                            case TerrainSubFoilType.LinenFarmUpgraded:
-
-                                carry = new Resource.ItemResource(
-                                        ItemResourceType.Linen,
-                                        //subTile.terrainQuality,
-                                        //Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.LinenHarvestAmount, city/*, foilType == TerrainSubFoilType.LinenFarmUpgraded*/));
-
-                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-
-                                gainXp = WorkExperienceType.Farm;
-                                break;
-
-                            case TerrainSubFoilType.RapeSeedFarm:
-                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                                carry = new Resource.ItemResource(
-                                        ItemResourceType.Rapeseed,
-                                        //subTile.terrainQuality,
-                                        //Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city/*, foilType == TerrainSubFoilType.RapeSeedFarmUpgraded*/));
-
-                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-
-
-                                gainXp = WorkExperienceType.Farm;
-                                break;
-
-                            case TerrainSubFoilType.HempFarm:
-                            case TerrainSubFoilType.HempFarmUpgraded:
-                                carry = new Resource.ItemResource(
-                                        ItemResourceType.Hemp,
-                                        //subTile.terrainQuality,
-                                        //Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city/*, foilType == TerrainSubFoilType.HempFarmUpgraded*/));
-
-                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-
-                                gainXp = WorkExperienceType.Farm;
-                                break;
-
-                            case TerrainSubFoilType.StoneBlock:
-                            case TerrainSubFoilType.Stones:
+                            case TerrainSubFoilType.LargeStones:
+                            case TerrainSubFoilType.SmallStones:
                                 int amount = ItemPropertyColl.CarryStones;
                                 if (workBonus > 0)
                                 {
@@ -797,16 +726,7 @@ namespace VikingEngine.DSSWars.Work
                                 gainXp = WorkExperienceType.StoneCutter;
                                 break;
 
-                            case TerrainSubFoilType.BogIron:
-                                carry = new ItemResource(ItemResourceType.IronOre_G, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
-
-                                gainXp = WorkExperienceType.Mining;
-                                break;
-                            case TerrainSubFoilType.ClayPit:
-                                carry = new ItemResource(ItemResourceType.Clay, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
-
-                                gainXp = WorkExperienceType.StoneCutter;
-                                break;
+                           
 
                         }
 
@@ -814,13 +734,91 @@ namespace VikingEngine.DSSWars.Work
                     }
                     break;
 
+                case WorkType.GatherFarm:
+
+                    TerrainSubFarmType farmType = subTile.GetFarmType();
+                    switch (farmType)
+                    {
+                        
+                        case TerrainSubFarmType.TreeApple:
+                        case TerrainSubFarmType.TreeBanana:
+                            carry = new Resource.ItemResource(
+                                    ItemResourceType.Food_G,
+                                    //subTile.terrainQuality,
+                                    //Convert.ToInt32(processTimeLengthSec),
+                                    farmGrowthMultiplier(DssConst.OrchidFoodAmount, city/*, false*/));
+
+                            subTile.terrainAmount = TerrainContent.OrchardPlucked;
+
+                            gainXp = WorkExperienceType.Farm;
+                            break;
+
+                        case TerrainSubFarmType.WheatFarm:
+                        case TerrainSubFarmType.WheatFarmUpgraded:
+                            carry = new Resource.ItemResource(
+                                    ItemResourceType.Wheat,
+                                    //subTile.terrainQuality,
+                                    //Convert.ToInt32(processTimeLengthSec),
+                                    farmGrowthMultiplier(DssConst.WheatFoodAmount, city/*, foilType == TerrainSubFarmType.WheatFarmUpgraded*/));
+
+                            subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+
+                            gainXp = WorkExperienceType.Farm;
+                            break;
+
+                        case TerrainSubFarmType.LinenFarm:
+                        case TerrainSubFarmType.LinenFarmUpgraded:
+
+                            carry = new Resource.ItemResource(
+                                    ItemResourceType.Linen,
+                                    //subTile.terrainQuality,
+                                    //Convert.ToInt32(processTimeLengthSec),
+                                    farmGrowthMultiplier(DssConst.LinenHarvestAmount, city/*, foilType == TerrainSubFarmType.LinenFarmUpgraded*/));
+
+                            subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+
+                            gainXp = WorkExperienceType.Farm;
+                            break;
+
+                        case TerrainSubFarmType.RapeSeedFarm:
+                        case TerrainSubFarmType.RapeSeedFarmUpgraded:
+                            carry = new Resource.ItemResource(
+                                    ItemResourceType.Rapeseed,
+                                    //subTile.terrainQuality,
+                                    //Convert.ToInt32(processTimeLengthSec),
+                                    farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city/*, foilType == TerrainSubFarmType.RapeSeedFarmUpgraded*/));
+
+                            subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+
+
+                            gainXp = WorkExperienceType.Farm;
+                            break;
+
+                        case TerrainSubFarmType.HempFarm:
+                        case TerrainSubFarmType.HempFarmUpgraded:
+                            carry = new Resource.ItemResource(
+                                    ItemResourceType.Hemp,
+                                    //subTile.terrainQuality,
+                                    //Convert.ToInt32(processTimeLengthSec),
+                                    farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city/*, foilType == TerrainSubFarmType.HempFarmUpgraded*/));
+
+                            subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+
+                            gainXp = WorkExperienceType.Farm;
+                            break;
+                    }
+                    break;
+
                 case WorkType.Plant:
                     bool available;
                     int waterCost;
-                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                    switch ((TerrainSubFarmType)subTile.subTerrain)
                     {                       
-                        case TerrainSubFoilType.TreeApple:
-                        case TerrainSubFoilType.TreeBanana:
+                        case TerrainSubFarmType.TreeApple:
+                        case TerrainSubFarmType.TreeBanana:
                             available = subTile.terrainAmount == TerrainContent.OrchardPlucked;
                             waterCost = DssConst.OrchardWaterCost;
                             break;
@@ -871,57 +869,55 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.PickUpProduce:
                     {
-                        var building = (TerrainBuildingType)subTile.subTerrain;
-
                         AnimalPenGrowth size;
                         Resource.ItemResourceType resourceType;
                         breedingRndResult(city, out bool upgrade, out bool downgrade);
 
-                        switch (building)
+                        switch ((TerrainSubAnimalPenType)subTile.subTerrain)
                         {
                             default:
-                            case TerrainBuildingType.FowlHabitat:
+                            case TerrainSubAnimalPenType.FowlHabitat:
                                 resourceType = Resource.ItemResourceType.Fowl;                                
                                 size = TerrainContent.FowlGrowth;
                                 break;
 
-                            case TerrainBuildingType.BoarHabitat:
+                            case TerrainSubAnimalPenType.BoarHabitat:
                                 resourceType = Resource.ItemResourceType.Boar;
                                 size = TerrainContent.BoarGrowth;
                                 break;
 
-                            case TerrainBuildingType.OxHabitat:
+                            case TerrainSubAnimalPenType.OxHabitat:
                                 resourceType = Resource.ItemResourceType.Oxen;
                                 size = TerrainContent.OxenGrowth;
                                 break;
 
-                            case TerrainBuildingType.DogHabitat:
+                            case TerrainSubAnimalPenType.DogHabitat:
                                 resourceType = Resource.ItemResourceType.Dog;
                                 size = TerrainContent.DogGrowth;
                                 break;
 
-                            case TerrainBuildingType.PonyHabitat:
+                            case TerrainSubAnimalPenType.PonyHabitat:
                                 resourceType = Resource.ItemResourceType.Pony;
                                 size = TerrainContent.PonyGrowth;
                                 break;
 
-                            case TerrainBuildingType.WolfHabitat:
+                            case TerrainSubAnimalPenType.WolfHabitat:
                                 resourceType = Resource.ItemResourceType.Wolf;
                                 size = TerrainContent.WolfGrowth;
                                 break;
 
-                            case TerrainBuildingType.CatHabitat:
+                            case TerrainSubAnimalPenType.CatHabitat:
                                 resourceType = Resource.ItemResourceType.WildCat;
                                 size = TerrainContent.WildCatGrowth;
                                 break;
 
-                            case TerrainBuildingType.ElephantHabitat:
+                            case TerrainSubAnimalPenType.ElephantHabitat:
                                 resourceType = Resource.ItemResourceType.Elephant;
                                 size = TerrainContent.ElephantGrowth;
                                 break;
 
 
-                            case TerrainBuildingType.FowlPen:
+                            case TerrainSubAnimalPenType.FowlPen:
                                 if (upgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Hen;
@@ -933,7 +929,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.FowlGrowth;
                                 break;
 
-                            case TerrainBuildingType.HenPen:
+                            case TerrainSubAnimalPenType.HenPen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Fowl;
@@ -946,7 +942,7 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
                             
-                            case TerrainBuildingType.BoarPen:
+                            case TerrainSubAnimalPenType.BoarPen:
                                 if (upgrade)
                                 {
                                     if (city.cityBiome == CityBiome.Mountain)
@@ -965,7 +961,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.BoarGrowth;
                                 break;
 
-                            case TerrainBuildingType.PigPen:
+                            case TerrainSubAnimalPenType.PigPen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Boar;
@@ -977,7 +973,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.PigGrowth;
                                 break;
 
-                            case TerrainBuildingType.OxenPen:
+                            case TerrainSubAnimalPenType.OxenPen:
                                 if (upgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.KineOxen;
@@ -989,7 +985,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.OxenGrowth;
                                 break;
 
-                            case TerrainBuildingType.KineOxenPen:
+                            case TerrainSubAnimalPenType.KineOxenPen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Oxen;
@@ -1001,7 +997,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.KineOxenGrowth;
                                 break;
 
-                            case TerrainBuildingType.DogCage:
+                            case TerrainSubAnimalPenType.DogCage:
                                 if (upgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Hound;
@@ -1013,7 +1009,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.DogGrowth;
                                 break;
 
-                            case TerrainBuildingType.HoundCage:
+                            case TerrainSubAnimalPenType.HoundCage:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Dog;
@@ -1025,7 +1021,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.HoundGrowth;
                                 break;
 
-                            case TerrainBuildingType.PonyPen:
+                            case TerrainSubAnimalPenType.PonyPen:
                                 if (upgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Horse;
@@ -1036,7 +1032,7 @@ namespace VikingEngine.DSSWars.Work
                                 }
                                 size = TerrainContent.PonyGrowth;
                                 break;
-                            case TerrainBuildingType.HorsePen:
+                            case TerrainSubAnimalPenType.HorsePen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Pony;
@@ -1059,7 +1055,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.HorseGrowth;
                                 break;
 
-                            case TerrainBuildingType.WarHorsePen:
+                            case TerrainSubAnimalPenType.WarHorsePen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Horse;
@@ -1071,7 +1067,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.WarHorseGrowth;
                                 break;
 
-                            case TerrainBuildingType.DraftHorsePen:
+                            case TerrainSubAnimalPenType.DraftHorsePen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Horse;
@@ -1083,7 +1079,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.DraftHorseGrowth;
                                 break;
 
-                            case TerrainBuildingType.WildPigPen:
+                            case TerrainSubAnimalPenType.WildPigPen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Boar;
@@ -1099,7 +1095,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.WildPigGrowth;
                                 break;
 
-                            case TerrainBuildingType.WildHogPen:
+                            case TerrainSubAnimalPenType.WildHogPen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.WildPig;
@@ -1122,7 +1118,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.WildHogGrowth;
                                 break;
 
-                            case TerrainBuildingType.WarHogPen:
+                            case TerrainSubAnimalPenType.WarHogPen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.WildHog;
@@ -1134,7 +1130,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.WarHogGrowth;
                                 break;
 
-                            case TerrainBuildingType.StagHogPen:
+                            case TerrainSubAnimalPenType.StagHogPen:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.WildHog;
@@ -1146,7 +1142,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.StagHogGrowth;
                                 break;
 
-                            case TerrainBuildingType.WolfCage:
+                            case TerrainSubAnimalPenType.WolfCage:
                                 if (upgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Warg;
@@ -1158,7 +1154,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.WolfGrowth;
                                 break;
 
-                            case TerrainBuildingType.WargCage:
+                            case TerrainSubAnimalPenType.WargCage:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Wolf;
@@ -1174,7 +1170,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.WargGrowth;
                                 break;
 
-                            case TerrainBuildingType.AlphaWargCage:
+                            case TerrainSubAnimalPenType.AlphaWargCage:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Warg;
@@ -1186,7 +1182,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.AlphaWargGrowth;
                                 break;
 
-                            case TerrainBuildingType.WildCatCage:
+                            case TerrainSubAnimalPenType.WildCatCage:
                                 if (upgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Lion;
@@ -1197,7 +1193,7 @@ namespace VikingEngine.DSSWars.Work
                                 }
                                 size = TerrainContent.WildCatGrowth;
                                 break;
-                            case TerrainBuildingType.LionCage:
+                            case TerrainSubAnimalPenType.LionCage:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.WildCat;
@@ -1212,7 +1208,7 @@ namespace VikingEngine.DSSWars.Work
                                 }
                                 size = TerrainContent.LionGrowth;
                                 break;
-                            case TerrainBuildingType.WarLionCage:
+                            case TerrainSubAnimalPenType.WarLionCage:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Lion;
@@ -1224,7 +1220,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.WarLionGrowth;
                                 break;
 
-                            case TerrainBuildingType.ElephantCage:
+                            case TerrainSubAnimalPenType.ElephantCage:
                                 if (upgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.WarElephant;
@@ -1236,7 +1232,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.ElephantGrowth;
                                 break;
 
-                            case TerrainBuildingType.WarElephantCage:
+                            case TerrainSubAnimalPenType.WarElephantCage:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.Elephant;
@@ -1252,7 +1248,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.WarElephantGrowth;
                                 break;
 
-                            case TerrainBuildingType.OliphantCage:
+                            case TerrainSubAnimalPenType.OliphantCage:
                                 if (downgrade)
                                 {
                                     resourceType = Resource.ItemResourceType.WarElephant;
@@ -1338,6 +1334,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         Resource.ItemResourceType resourceType = ItemResourceType.NONE;
                         int amount = TerrainContent.DefaultMineAmount;
+                        gainXp = WorkExperienceType.Mining;
 
                         if (subTile.mainTerrain == TerrainMainType.Mine)
                         {
@@ -1346,6 +1343,16 @@ namespace VikingEngine.DSSWars.Work
 
                             switch (mineType)
                             {
+                                case TerrainMineType.BogIron:
+                                    carry = new ItemResource(ItemResourceType.IronOre_G, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
+
+                                    break;
+                                case TerrainMineType.ClayPit:
+                                    carry = new ItemResource(ItemResourceType.Clay, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
+
+                                    gainXp = WorkExperienceType.StoneCutter;
+                                    break;
+
                                 case TerrainMineType.IronOre:
                                     resourceType = ItemResourceType.IronOre_G;
                                     break;
@@ -1354,6 +1361,7 @@ namespace VikingEngine.DSSWars.Work
                                     break;
                                 case TerrainMineType.StoneBlock:
                                     resourceType = ItemResourceType.Brick;
+                                    gainXp = WorkExperienceType.StoneCutter;
                                     break;
                                 case TerrainMineType.TinOre:
                                     resourceType = ItemResourceType.TinOre;
@@ -1398,11 +1406,9 @@ namespace VikingEngine.DSSWars.Work
 
                         carry = new ItemResource(
                             resourceType,
-                            //subTile.terrainQuality,
-                            //Convert.ToInt32(processTimeLengthSec),
                             amount);
 
-                        gainXp = WorkExperienceType.Mining;
+                        
                     }
                     break;
                 
@@ -2025,55 +2031,69 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.LocalTrade:
                     timeSec = DssConst.WorkTime_LocalTrade;
                     break;
-                case WorkType.GatherFoil:
-                    if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
+                case WorkType.GatherFarm:
                     {
-                        switch ((TerrainSubFoilType)subTile.subTerrain)
+                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
                         {
-                            case TerrainSubFoilType.TreeSoft:
-                                timeSec = DssConst.WorkTime_GatherFoil_TreeSoft;
-                                break;
-                            case TerrainSubFoilType.TreeHard:
-                                timeSec = DssConst.WorkTime_GatherFoil_TreeHard;
-                                break;
-                            case TerrainSubFoilType.DryWood:
-                                timeSec = DssConst.WorkTime_GatherFoil_DryWood;
-                                break;
+                            switch ((TerrainSubFarmType)subTile.subTerrain)
+                            {
 
-                            case TerrainSubFoilType.TreeApple:
-                            case TerrainSubFoilType.TreeBanana:
-                                timeSec = DssConst.WorkTime_PluckOrchards;
-                                break;
+                                case TerrainSubFarmType.TreeApple:
+                                case TerrainSubFarmType.TreeBanana:
+                                    timeSec = DssConst.WorkTime_PluckOrchards;
+                                    break;
 
-                            case TerrainSubFoilType.WheatFarm:
-                            case TerrainSubFoilType.WheatFarmUpgraded:
-                            case TerrainSubFoilType.LinenFarm:
-                            case TerrainSubFoilType.LinenFarmUpgraded:
-                            case TerrainSubFoilType.RapeSeedFarm:
-                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                            case TerrainSubFoilType.HempFarm:
-                            case TerrainSubFoilType.HempFarmUpgraded:
-                                timeSec = DssConst.WorkTime_GatherFoil_FarmCulture;
-                                break;
-                            case TerrainSubFoilType.Stones:
-                            case TerrainSubFoilType.StoneBlock:
-                                timeSec = DssConst.WorkTime_GatherFoil_Stones;
-                                break;
+                                case TerrainSubFarmType.WheatFarm:
+                                case TerrainSubFarmType.WheatFarmUpgraded:
+                                case TerrainSubFarmType.LinenFarm:
+                                case TerrainSubFarmType.LinenFarmUpgraded:
+                                case TerrainSubFarmType.RapeSeedFarm:
+                                case TerrainSubFarmType.RapeSeedFarmUpgraded:
+                                case TerrainSubFarmType.HempFarm:
+                                case TerrainSubFarmType.HempFarmUpgraded:
+                                    timeSec = DssConst.WorkTime_GatherFoil_FarmCulture;
+                                    break;
+                                default:
+                                    return -1;//throw new NotImplementedException();
 
-                            case TerrainSubFoilType.BogIron:
-                                timeSec = DssConst.WorkTime_BogIron;
-                                break;
-                            case TerrainSubFoilType.ClayPit:
-                                timeSec = DssConst.WorkTime_ClayPit;
-                                break;
-                            default:
-                                return -1;//throw new NotImplementedException();
-
+                            }
+                        }
+                        else
+                        {
+                            return 15;
                         }
                     }
-                    else
+                    break;
+
+                case WorkType.GatherFoil:
                     {
-                        return 15;
+                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
+                        {
+                            switch ((TerrainSubFoilType)subTile.subTerrain)
+                            {
+                                case TerrainSubFoilType.TreeSoft:
+                                    timeSec = DssConst.WorkTime_GatherFoil_TreeSoft;
+                                    break;
+                                case TerrainSubFoilType.TreeHard:
+                                    timeSec = DssConst.WorkTime_GatherFoil_TreeHard;
+                                    break;
+                                case TerrainSubFoilType.DryWood:
+                                    timeSec = DssConst.WorkTime_GatherFoil_DryWood;
+                                    break;                                                                   
+                                case TerrainSubFoilType.SmallStones:
+                                case TerrainSubFoilType.LargeStones:
+                                    timeSec = DssConst.WorkTime_GatherFoil_Stones;
+                                    break;
+
+                                default:
+                                    return -1;//throw new NotImplementedException();
+
+                            }
+                        }
+                        else
+                        {
+                            return 15;
+                        }
                     }
                     break;
                 //case WorkType.Till:

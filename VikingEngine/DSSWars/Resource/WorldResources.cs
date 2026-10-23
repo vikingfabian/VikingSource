@@ -102,14 +102,15 @@ namespace VikingEngine.DSSWars.Resource
 
                 ref var subtile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
 
-                if (subtile.mainTerrain == TerrainMainType.Foil)
-                {
-                    terrainContent.asyncFoilGroth(loop.Position, ref subtile);
-                }
-                else if (subtile.mainTerrain == TerrainMainType.Building)
-                {
-                    terrainContent.asyncCityProduce(loop.Position, ref subtile);
-                }
+
+                //if (subtile.mainTerrain == TerrainMainType.Foil)
+                //{
+                    terrainContent.asyncTerrainGrowthAndProduce(loop.Position, ref subtile);
+                //}
+                //else if (subtile.mainTerrain == TerrainMainType.Building)
+                //{
+                //    terrainContent.asyncCityProduce(loop.Position, ref subtile);
+                //}
             }
         }
 

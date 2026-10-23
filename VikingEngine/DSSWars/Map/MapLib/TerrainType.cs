@@ -13,12 +13,15 @@ namespace VikingEngine.DSSWars.Map.MapLib
         Destroyed,
 
         Foil,
-        Mine,
-        Resourses,
+        Farm,
+        AnimalPen,
+        Mine,        
         Building,
         Decor,
         Wall,
         Road,
+
+        Resourses,
         NUM
     }
 
@@ -32,9 +35,20 @@ namespace VikingEngine.DSSWars.Map.MapLib
         Bush,
         Herbs,
         TallGrass,
-        Stones,
-        StoneBlock,
+        SmallStones,
+        LargeStones,
 
+        
+        //TreeAppleSprout,
+        //TreeBananaSprout,
+
+        
+       
+        NUM_NONE
+    }
+
+    enum TerrainSubFarmType : byte
+    {
         WheatFarm,
         WheatFarmUpgraded,
         LinenFarm,
@@ -43,17 +57,9 @@ namespace VikingEngine.DSSWars.Map.MapLib
         HempFarmUpgraded,
         RapeSeedFarm,
         RapeSeedFarmUpgraded,
-
-        
         TreeApple,
         TreeBanana,
-        //TreeAppleSprout,
-        //TreeBananaSprout,
 
-        BogIron,
-        ClayPit,
-        SaltPit,
-       
         NUM_NONE
     }
 
@@ -67,7 +73,49 @@ namespace VikingEngine.DSSWars.Map.MapLib
         Storage,
         NUM_NONE
     }
+    enum TerrainSubAnimalPenType : byte
+    {
+        FowlPen,
+        HenPen,
+        BoarPen,
+        PigPen,
+        
+        OxenPen,
+        KineOxenPen,
 
+        DogCage,
+        HoundCage,
+
+        PonyPen,
+        HorsePen,
+        WarHorsePen,
+        DraftHorsePen,
+        WildPigPen,
+        WildHogPen,
+        WarHogPen,
+        StagHogPen,
+        WolfCage,
+        WargCage,
+        AlphaWargCage,
+        WildCatCage,
+        LionCage,
+        WarLionCage,
+        ElephantCage,
+        WarElephantCage,
+        OliphantCage,
+                
+
+        FowlHabitat,
+        BoarHabitat,
+        DogHabitat,
+        OxHabitat,
+        PonyHabitat,
+        WolfHabitat,
+        CatHabitat,
+        ElephantHabitat,
+
+        NUM_NONE
+    }
     enum TerrainBuildingType : byte
     {   
         CityHall_Village,
@@ -88,8 +136,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
         Work_Bench,
         Work_CoalPit,
         Work_Smith,
-        PigPen,
-        HenPen,
+        
         Tavern,
         
         Postal,
@@ -150,43 +197,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
         MaterialStorage, FoodStorage, WeaponStorage, ArmorStorage, AnimalStorage,
         Cesspit,
 
-        OxenPen,
-        KineOxenPen,
-
-        DogCage,
-        HoundCage,
-
-        PonyPen,
-        HorsePen,
-        WarHorsePen,
-        DraftHorsePen,
-        WildPigPen,
-        WildHogPen,
-        WarHogPen,
-        StagHogPen,
-        WolfCage,
-        WargCage,
-        AlphaWargCage,
-        WildCatCage,
-        LionCage,
-        WarLionCage,
-        ElephantCage,
-        WarElephantCage,
-        OliphantCage,
-
         TrappersHut,
-
-        FowlPen,
-        BoarPen,
-
-        FowlHabitat,
-        BoarHabitat,
-        DogHabitat,
-        OxHabitat,
-        PonyHabitat,
-        WolfHabitat,
-        CatHabitat,
-        ElephantHabitat,
 
         NUM_NONE
     }
@@ -256,7 +267,11 @@ namespace VikingEngine.DSSWars.Map.MapLib
 
     enum TerrainMineType : byte
     {
+        BogIron,
+        ClayPit,
+        SaltPit,
         Salt,
+        Sulfur,
         Coal,
         StoneBlock,
         IronOre,
@@ -266,7 +281,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
         GoldOre,
         LeadOre,
         Mithril,
-        Sulfur,
+        NUM_NONE
     }
 
     //enum TerrainSeaType : byte

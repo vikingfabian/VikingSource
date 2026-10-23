@@ -32,9 +32,9 @@ namespace VikingEngine.DSSWars.GameState
         public bool isReady = false;
         public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
-        public MapLayer3_Far factionsMap;
-        public MapLayer2_Mid overviewMap;
-        public MapLayer1_Near detailMap;
+        public MapLayer3_Far mapLayerFar;
+        public MapLayer2_Mid mapLayerMid;
+        public MapLayer1_Near mapLayerNear;
         public Culling culling;
 
         //public PathUpdateThread[] pathUpdates;
@@ -66,6 +66,8 @@ namespace VikingEngine.DSSWars.GameState
 
         protected bool bResourceMinuteUpdate = true;
         TimeStamp gameStartTime = TimeStamp.Now();
+
+        public float strongestArmy = 1f, strongestArmy_processing = 0;
 
         public AbsPlayState() 
             :base() 
@@ -131,9 +133,9 @@ namespace VikingEngine.DSSWars.GameState
 
             CrossHeightMap crossHeightMap = new CrossHeightMap();
 
-            factionsMap = new MapLayer3_Far(crossHeightMap);
-            overviewMap = new MapLayer2_Mid(factionsMap, crossHeightMap);
-            detailMap = new MapLayer1_Near(crossHeightMap);
+            mapLayerFar = new MapLayer3_Far(crossHeightMap);
+            mapLayerMid = new MapLayer2_Mid(mapLayerFar, crossHeightMap);
+            mapLayerNear = new MapLayer1_Near(crossHeightMap);
 
             crossHeightMap.init();
 
@@ -282,15 +284,15 @@ namespace VikingEngine.DSSWars.GameState
             {
                 if (!host)
                 {
-                    overviewMap.refresh_async();
+                    mapLayerMid.refresh_async();
                 }
 
                 culling.asynch_update(time);
 
                
-                DssRef.state.detailMap.asynchUpdate();
-                overviewMap.unitMiniModels.asynchUpdate();
-
+                mapLayerNear.asynchUpdate();
+                mapLayerMid.unitsOnMap.asynchUpdate();
+                mapLayerFar.unitsOnMap.asynchUpdate();
 
             }
             return exitThreads;
@@ -300,7 +302,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             if (UpdateReady())
             {
-                overviewMap.runAsyncTask();
+                mapLayerMid.runAsyncTask();
             }
             return exitThreads;
         }

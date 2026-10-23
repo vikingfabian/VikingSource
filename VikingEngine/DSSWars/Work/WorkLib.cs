@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -61,7 +62,7 @@ namespace VikingEngine.DSSWars.Work
             switch (work)
             {
                 case WorkType.GatherFoil:
-                    
+                    {
                         if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
                         {
 
@@ -73,32 +74,25 @@ namespace VikingEngine.DSSWars.Work
                                     gainXpType = WorkExperienceType.WoodWork;
                                     break;
 
-                                case TerrainSubFoilType.TreeApple:
-                                case TerrainSubFoilType.TreeBanana:
-                                case TerrainSubFoilType.WheatFarm:
-                                case TerrainSubFoilType.LinenFarm:
-                                case TerrainSubFoilType.RapeSeedFarm:
-                                case TerrainSubFoilType.HempFarm:
-                                    gainXpType = WorkExperienceType.Farm;
-                                    break;
-
-
-                                case TerrainSubFoilType.StoneBlock:
-                                case TerrainSubFoilType.Stones:
-                                case TerrainSubFoilType.ClayPit:
+                                case TerrainSubFoilType.LargeStones:
+                                case TerrainSubFoilType.SmallStones:
+                                    //case TerrainSubFoilType.ClayPit:
                                     gainXpType = WorkExperienceType.StoneCutter;
                                     break;
 
-                                case TerrainSubFoilType.BogIron:
-                                    gainXpType = WorkExperienceType.Mining;
-                                    break;
+                                    //case TerrainSubFoilType.BogIron:
+                                    //    gainXpType = WorkExperienceType.Mining;
+                                    //    break;
 
 
                             }
-                        }                    
-                    
+                        }
+                    }
                     break;
 
+                case WorkType.GatherFarm:
+                    gainXpType = WorkExperienceType.Farm;
+                    break;
                 //case WorkType.Till:
                 //    gainXp = WorkExperienceType.Farm;
                 //    break;
@@ -117,7 +111,22 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case WorkType.Mine:
-                    gainXpType = WorkExperienceType.Mining;
+                    {
+                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
+                        {
+                            switch ((TerrainMineType)subTile.subTerrain)
+                            {
+                                case TerrainMineType.ClayPit:
+                                case TerrainMineType.StoneBlock:
+                                    gainXpType = WorkExperienceType.StoneCutter;
+                                    break;
+                                default:
+                                    gainXpType = WorkExperienceType.Mining;
+                                    break;
+                            }
+                        }
+                    }
+                    
                     break;
 
                 case WorkType.Craft:
@@ -169,6 +178,7 @@ namespace VikingEngine.DSSWars.Work
         Eat,
         Plant,
         GatherFoil,
+        GatherFarm,
         Mine,
         PickUpResource,
         PickUpProduce,

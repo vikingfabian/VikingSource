@@ -59,10 +59,39 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             });
 
+            CityType defaultSize;
+            switch (DssRef.storage.ruleset_instance.factionStartSize)
+            {
+                default:
+                case FactionStartSize.Settler:
+                    defaultSize = CityType.Campsite;
+                    break;
+                case FactionStartSize.OneCity:
+                    defaultSize = CityType.Village;
+                    break;
+                case FactionStartSize.Full:
+                    defaultSize = CityType.Town;
+                    break;
+
+            }
+
             foreach (var cityPos in generator.iconWorldScaledUp.cities)
             {
-                City c = new City(world.cities.Count, cityPos.pos, CityType.Village, world);                
+                City c = new City(world.cities.Count, cityPos.pos, defaultSize, world) { primaryCity = true };                
                 world.cities.Add(c);
+
+                if (DssRef.storage.ruleset_instance.factionStartSize == FactionStartSize.Full)
+                {
+                    int pullCount = Math.Min(cityPos.secondary.count, 2);
+                    for (int i = 0; i < pullCount; ++i)
+                    {
+                        var secondPos = cityPos.secondary.PullRandom();
+
+                        City c2 = new City(world.cities.Count, secondPos, CityType.Village, world);
+                        world.cities.Add(c2);
+                        c.naturalExpansion.Add(c2.myIndex);
+                    } 
+                }
             }
         }
 

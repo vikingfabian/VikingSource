@@ -503,60 +503,60 @@ namespace VikingEngine.DSSWars.GameObject
                         //int prio = 0;
                         WorkPriorityType prioType = WorkPriorityType.NUM_NONE, prioType2 = WorkPriorityType.NUM_NONE;
                         byte bonus = 0;
-                        switch (subTile.GetFoilType())
+                        switch (subTile.GetFarmType())
                         {
-                            case TerrainSubFoilType.TreeApple:
-                            case TerrainSubFoilType.TreeBanana:
+                            case TerrainSubFarmType.TreeApple:
+                            case TerrainSubFarmType.TreeBanana:
                                 //safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.food);
                                 prioType = WorkPriorityType.farmFood;
                                 //prio = workTemplate.Get(WorkPriorityType.farmFood).value;
                                 break;
 
-                            case TerrainSubFoilType.LinenFarm:
+                            case TerrainSubFarmType.LinenFarm:
                                 bNeedMore = needMore(CityResourceIndex.skinLinnen);//res_skinLinnen.needMore();
                                 prioType = WorkPriorityType.farmlinen;
                                 //prio = workTemplate.Get(WorkPriorityType.farmlinen).value;
                                 break;
-                            case TerrainSubFoilType.LinenFarmUpgraded:
+                            case TerrainSubFarmType.LinenFarmUpgraded:
                                 bNeedMore = needMore(CityResourceIndex.skinLinnen);//res_skinLinnen.needMore();
                                 prioType = WorkPriorityType.farmlinen;
                                 //prio = workTemplate.Get(WorkPriorityType.farmlinen).value;
                                 bonus = 1;
                                 break;
-                            case TerrainSubFoilType.WheatFarm:
+                            case TerrainSubFarmType.WheatFarm:
                                 //safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.rawFood);
                                 prioType = WorkPriorityType.farmRawFood;
                                 //prio = workTemplate.Get(WorkPriorityType.farmRawFood).value;
                                 break;
-                            case TerrainSubFoilType.WheatFarmUpgraded:
+                            case TerrainSubFarmType.WheatFarmUpgraded:
                                 //safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.rawFood);//res_rawFood.needMore();
                                 prioType = WorkPriorityType.farmRawFood;
                                 //prio = workTemplate.Get(WorkPriorityType.farmRawFood).value;
                                 bonus = 1;
                                 break;
-                            case TerrainSubFoilType.RapeSeedFarm:
+                            case TerrainSubFarmType.RapeSeedFarm:
                                 //safeGuard = fuelSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.fuel);//res_fuel.needMore();
                                 prioType = WorkPriorityType.farmfuel;
                                 //prio = workTemplate.Get(WorkPriorityType.farmfuel).value;
                                 break;
-                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                            case TerrainSubFarmType.RapeSeedFarmUpgraded:
                                 //safeGuard = fuelSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.fuel);////res_fuel.needMore();
                                 prioType = WorkPriorityType.farmfuel;
                                 //prio = workTemplate.Get(WorkPriorityType.farmfuel).value;
                                 break;
-                            case TerrainSubFoilType.HempFarm:
+                            case TerrainSubFarmType.HempFarm:
                                 //safeGuard = fuelSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.fuel);////res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
                                 prioType = WorkPriorityType.farmlinen;
                                 prioType2 = WorkPriorityType.farmfuel;
                                 //prio = Math.Max(workTemplate.Get(WorkPriorityType.farmlinen).value, workTemplate.Get(WorkPriorityType.farmfuel).value);
                                 break;
-                            case TerrainSubFoilType.HempFarmUpgraded:
+                            case TerrainSubFarmType.HempFarmUpgraded:
                                 //safeGuard = fuelSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.fuel) || needMore(CityResourceIndex.skinLinnen)/*res_fuel.needMore() || res_skinLinnen.needMore()*/ ;
                                 prioType = WorkPriorityType.farmlinen;
@@ -696,103 +696,103 @@ namespace VikingEngine.DSSWars.GameObject
                             bool bNeedMore = true;
 
                             var subTile = DssRef.world.subTileGrid.Get(pos);
-                            switch (subTile.GetBuildingType())
+                            switch ((TerrainSubAnimalPenType)subTile.subTerrain)
                             {
-                                case TerrainBuildingType.FowlHabitat:
-                                case TerrainBuildingType.FowlPen:
+                                case TerrainSubAnimalPenType.FowlHabitat:
+                                case TerrainSubAnimalPenType.FowlPen:
                                     bNeedMore = needMore(CityResourceIndex.Fowl);
                                     break;
-                                case TerrainBuildingType.HenPen:
+                                case TerrainSubAnimalPenType.HenPen:
                                     bNeedMore = needMore(CityResourceIndex.Hen);
                                     break;
-                                case TerrainBuildingType.PigPen:
+                                case TerrainSubAnimalPenType.PigPen:
                                     bNeedMore = needMore(CityResourceIndex.Pig);
                                     break;
 
                                 // Oxen
-                                case TerrainBuildingType.OxHabitat:
-                                case TerrainBuildingType.OxenPen:
+                                case TerrainSubAnimalPenType.OxHabitat:
+                                case TerrainSubAnimalPenType.OxenPen:
                                     bNeedMore = needMore(CityResourceIndex.Oxen);
                                     break;
-                                case TerrainBuildingType.KineOxenPen:
+                                case TerrainSubAnimalPenType.KineOxenPen:
                                     bNeedMore = needMore(CityResourceIndex.KineOxen);
                                     break;
 
                                 // Dogs
-                                case TerrainBuildingType.DogHabitat:
-                                case TerrainBuildingType.DogCage:
+                                case TerrainSubAnimalPenType.DogHabitat:
+                                case TerrainSubAnimalPenType.DogCage:
                                     bNeedMore = needMore(CityResourceIndex.Dog);
                                     break;
-                                case TerrainBuildingType.HoundCage:
+                                case TerrainSubAnimalPenType.HoundCage:
                                     bNeedMore = needMore(CityResourceIndex.Hound);
                                     break;
 
                                 // Horses
-                                case TerrainBuildingType.PonyHabitat:
-                                case TerrainBuildingType.PonyPen:
+                                case TerrainSubAnimalPenType.PonyHabitat:
+                                case TerrainSubAnimalPenType.PonyPen:
                                     bNeedMore = needMore(CityResourceIndex.Pony);
                                     break;
-                                case TerrainBuildingType.HorsePen:
+                                case TerrainSubAnimalPenType.HorsePen:
                                     bNeedMore = needMore(CityResourceIndex.Horse);
                                     break;
-                                case TerrainBuildingType.WarHorsePen:
+                                case TerrainSubAnimalPenType.WarHorsePen:
                                     bNeedMore = needMore(CityResourceIndex.WarHorse);
                                     break;
-                                case TerrainBuildingType.DraftHorsePen:
+                                case TerrainSubAnimalPenType.DraftHorsePen:
                                     bNeedMore = needMore(CityResourceIndex.DraftHorse);
                                     break;
 
                                 // Wild Pigs/Hogs
-                                case TerrainBuildingType.BoarHabitat:
-                                case TerrainBuildingType.BoarPen:
+                                case TerrainSubAnimalPenType.BoarHabitat:
+                                case TerrainSubAnimalPenType.BoarPen:
                                     bNeedMore = needMore(CityResourceIndex.Boar);
                                     break;
-                                case TerrainBuildingType.WildPigPen:
+                                case TerrainSubAnimalPenType.WildPigPen:
                                     bNeedMore = needMore(CityResourceIndex.WildPig);
                                     break;
-                                case TerrainBuildingType.WildHogPen:
+                                case TerrainSubAnimalPenType.WildHogPen:
                                     bNeedMore = needMore(CityResourceIndex.WildHog);
                                     break;
-                                case TerrainBuildingType.WarHogPen:
+                                case TerrainSubAnimalPenType.WarHogPen:
                                     bNeedMore = needMore(CityResourceIndex.WarHog);
                                     break;
-                                case TerrainBuildingType.StagHogPen:
+                                case TerrainSubAnimalPenType.StagHogPen:
                                     bNeedMore = needMore(CityResourceIndex.StagHog);
                                     break;
 
                                 // Wolves
-                                case TerrainBuildingType.WolfHabitat:
-                                case TerrainBuildingType.WolfCage:
+                                case TerrainSubAnimalPenType.WolfHabitat:
+                                case TerrainSubAnimalPenType.WolfCage:
                                     bNeedMore = needMore(CityResourceIndex.Wolf);
                                     break;
-                                case TerrainBuildingType.WargCage:
+                                case TerrainSubAnimalPenType.WargCage:
                                     bNeedMore = needMore(CityResourceIndex.Warg);
                                     break;
-                                case TerrainBuildingType.AlphaWargCage:
+                                case TerrainSubAnimalPenType.AlphaWargCage:
                                     bNeedMore = needMore(CityResourceIndex.AlphaWarg);
                                     break;
 
                                 // Cats
-                                case TerrainBuildingType.CatHabitat:
-                                case TerrainBuildingType.WildCatCage:
+                                case TerrainSubAnimalPenType.CatHabitat:
+                                case TerrainSubAnimalPenType.WildCatCage:
                                     bNeedMore = needMore(CityResourceIndex.WildCat);
                                     break;
-                                case TerrainBuildingType.LionCage:
+                                case TerrainSubAnimalPenType.LionCage:
                                     bNeedMore = needMore(CityResourceIndex.Lion);
                                     break;
-                                case TerrainBuildingType.WarLionCage:
+                                case TerrainSubAnimalPenType.WarLionCage:
                                     bNeedMore = needMore(CityResourceIndex.WarLion);
                                     break;
 
                                 // Elephants
-                                case TerrainBuildingType.ElephantHabitat:
-                                case TerrainBuildingType.ElephantCage:
+                                case TerrainSubAnimalPenType.ElephantHabitat:
+                                case TerrainSubAnimalPenType.ElephantCage:
                                     bNeedMore = needMore(CityResourceIndex.Elephant);
                                     break;
-                                case TerrainBuildingType.WarElephantCage:
+                                case TerrainSubAnimalPenType.WarElephantCage:
                                     bNeedMore = needMore(CityResourceIndex.WarElephant);
                                     break;
-                                case TerrainBuildingType.OliphantCage:
+                                case TerrainSubAnimalPenType.OliphantCage:
                                     bNeedMore = needMore(CityResourceIndex.Oliphant);
                                     break;
                             }
@@ -1229,7 +1229,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void checkPlayerFuelAccess_OnGamestart_async()
         {
             const int FuelFarmCount = 10;
-            int fuelType = (int)TerrainSubFoilType.RapeSeedFarm;
+            int fuelType = (int)TerrainSubFarmType.RapeSeedFarm;
 
             CityStructure structure = new CityStructure();
             structure.update(DssRef.world, this, 32, FuelFarmCount);

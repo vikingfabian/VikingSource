@@ -1278,10 +1278,7 @@ namespace VikingEngine.DSSWars
                             icon = SpriteName.WarsBuild_Cook;
                             name = DssRef.lang.BuildingType_Cook;
                             break;
-                        case TerrainBuildingType.HenPen:
-                            icon = SpriteName.WarsBuild_HenPen;
-                            name = DssRef.lang.BuildingType_HenPen;
-                            break;
+                        
                         case TerrainBuildingType.Nobelhouse:
                             icon = SpriteName.WarsBuild_Nobelhouse;
                             name = DssRef.lang.Building_NobleHouse;
@@ -1290,10 +1287,7 @@ namespace VikingEngine.DSSWars
                             icon = SpriteName.WarsBuild_Tent;
                             name = DssRef.lang.BuildingType_ImmigrationTent;
                             break;
-                        case TerrainBuildingType.PigPen:
-                            icon = SpriteName.WarsBuild_PigPen;
-                            name = DssRef.lang.BuildingType_PigPen;
-                            break;
+                      
 
                         case TerrainBuildingType.Postal:
                             icon = SpriteName.WarsBuild_Postal;
@@ -1510,135 +1504,7 @@ namespace VikingEngine.DSSWars
                             name = DssRef.lang.BuildingType_TrapperHut;
                             break;
 
-                        case TerrainBuildingType.FowlHabitat:
-                            icon = SpriteName.WarsResource_Fowl;
-                            name = TextLib.LargeFirstLetter( string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Fowl));
-                            break;
-                        case TerrainBuildingType.BoarHabitat:
-                            icon = SpriteName.WarsResource_Boar;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Boar));
-                            break;
-                        case TerrainBuildingType.OxHabitat:
-                            icon = SpriteName.WarsResource_Oxen;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Oxen));
-                            break;
-                        case TerrainBuildingType.PonyHabitat:
-                            icon = SpriteName.WarsResource_Pony;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Pony));
-                            break;
-                        case TerrainBuildingType.CatHabitat:
-                            icon = SpriteName.WarsResource_WildCat;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_WildCat));
-                            break;
-                        case TerrainBuildingType.DogHabitat:
-                            icon = SpriteName.WarsResource_Dog;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Dog));
-                            break;
-                        case TerrainBuildingType.WolfHabitat:
-                            icon = SpriteName.WarsResource_Wolf;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Wolf));
-                            break;
-                        case TerrainBuildingType.ElephantHabitat:
-                            icon = SpriteName.WarsResource_Elephant;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Elephant));
-                            break;
-
-                        case TerrainBuildingType.FowlPen:
-                            icon = SpriteName.WarsBuild_FowlPen;
-                            name = DssRef.lang.BuildingType_FowlPen;
-                            break;
-                        case TerrainBuildingType.BoarPen:
-                            icon = SpriteName.WarsBuild_BoarPen;
-                            name = DssRef.lang.BuildingType_BoarPen;
-                            break;
-
-                           
-                        case TerrainBuildingType.OxenPen:
-                            icon = SpriteName.WarsBuild_OxenPen;
-                            name = DssRef.lang.BuildingType_OxenPen;
-                            break;
-                        case TerrainBuildingType.KineOxenPen:
-                            icon = SpriteName.WarsBuild_KineOxenPen;
-                            name = DssRef.lang.BuildingType_KineOxenPen;
-                            break;
-
-                        case TerrainBuildingType.DogCage:
-                            icon = SpriteName.WarsBuild_DogCage;
-                            name = DssRef.lang.BuildingType_DogCage;
-                            break;
-                        case TerrainBuildingType.HoundCage:
-                            icon = SpriteName.WarsBuild_HoundCage;
-                            name = DssRef.lang.BuildingType_HoundCage;
-                            break;
-
-                        case TerrainBuildingType.PonyPen:
-                            icon = SpriteName.WarsBuild_PonyPen;
-                            name = DssRef.lang.BuildingType_PonyPen;
-                            break;
-                        case TerrainBuildingType.HorsePen:
-                            icon = SpriteName.WarsBuild_HorsePen;
-                            name = DssRef.lang.BuildingType_HorsePen;
-                            break;
-                        case TerrainBuildingType.WarHorsePen:
-                            icon = SpriteName.WarsBuild_WarHorsePen;
-                            name = DssRef.lang.BuildingType_WarHorsePen;
-                            break;
-                        case TerrainBuildingType.DraftHorsePen:
-                            icon = SpriteName.WarsBuild_DraftHorsePen;
-                            name = DssRef.lang.BuildingType_DraftHorsePen;
-                            break;
-                        case TerrainBuildingType.WildPigPen:
-                            icon = SpriteName.WarsBuild_WildPigPen;
-                            name = DssRef.lang.BuildingType_WildPigPen;
-                            break;
-                        case TerrainBuildingType.WildHogPen:
-                            icon = SpriteName.WarsBuild_WildHogPen;
-                            name = DssRef.lang.BuildingType_WildHogPen;
-                            break;
-                        case TerrainBuildingType.WarHogPen:
-                            icon = SpriteName.WarsBuild_WarHogPen;
-                            name = DssRef.lang.BuildingType_WarHogPen;
-                            break;
-                        case TerrainBuildingType.StagHogPen:
-                            icon = SpriteName.WarsBuild_StagHogPen;
-                            name = DssRef.lang.BuildingType_StagHogPen;
-                            break;
-                        case TerrainBuildingType.WolfCage:
-                            icon = SpriteName.WarsBuild_WolfPen;
-                            name = DssRef.lang.BuildingType_WolfCage;
-                            break;
-                        case TerrainBuildingType.WargCage:
-                            icon = SpriteName.WarsBuild_AlphaWargPen;
-                            name = DssRef.lang.BuildingType_WargCage;
-                            break;
-                        case TerrainBuildingType.AlphaWargCage:
-                            icon = SpriteName.WarsBuild_AlphaWargPen;
-                            name = DssRef.lang.BuildingType_AlphaWargCage;
-                            break;
-                        case TerrainBuildingType.WildCatCage:
-                            icon = SpriteName.WarsBuild_WildCatPen;
-                            name = DssRef.lang.BuildingType_WildCatCage;
-                            break;
-                        case TerrainBuildingType.LionCage:
-                            icon = SpriteName.WarsBuild_LionPen;
-                            name = DssRef.lang.BuildingType_LionCage;
-                            break;
-                        case TerrainBuildingType.WarLionCage:
-                            icon = SpriteName.WarsBuild_WarLionPen;
-                            name = DssRef.lang.BuildingType_WarLionCage;
-                            break;
-                        case TerrainBuildingType.ElephantCage:
-                            icon = SpriteName.WarsBuild_ElephantPen;
-                            name = DssRef.lang.BuildingType_ElephantCage;
-                            break;
-                        case TerrainBuildingType.WarElephantCage:
-                            icon = SpriteName.WarsBuild_WarElephantPen;
-                            name = DssRef.lang.BuildingType_WarElephantCage;
-                            break;
-                        case TerrainBuildingType.OliphantCage:
-                            icon = SpriteName.WarsBuild_OliphantPen;
-                            name = DssRef.lang.BuildingType_OliphantCage;
-                            break;
+                       
 
                         default:
                             name = DssRef.lang.BuildingType_DefaultName;
@@ -1667,68 +1533,221 @@ namespace VikingEngine.DSSWars
                             name = DssRef.lang.Building_TreeSprout_Hard;
                             break;
 
-                        case TerrainSubFoilType.StoneBlock:
-                        case TerrainSubFoilType.Stones:
+                        case TerrainSubFoilType.LargeStones:
+                        case TerrainSubFoilType.SmallStones:
                             icon = SpriteName.WarsResource_Stone;
                             name = DssRef.lang.Resource_TypeName_Stone;
                             break;
 
-                        case TerrainSubFoilType.LinenFarm:
+                       
+
+                       
+                    }
+                    break;
+                case TerrainMainType.Farm:
+                    switch ((TerrainSubFarmType)subType)
+                    {
+
+                        case TerrainSubFarmType.LinenFarm:
                             name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen);
                             break;
-                        case TerrainSubFoilType.LinenFarmUpgraded:
+                        case TerrainSubFarmType.LinenFarmUpgraded:
                             name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
                                 string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
                             break;
 
-                        case TerrainSubFoilType.TreeApple:
+                        case TerrainSubFarmType.TreeApple:
                             icon = SpriteName.WarsBuild_TreeApple;
                             name = DssRef.lang.BuildingType_Orchard;
                             break;
-                        case TerrainSubFoilType.TreeBanana:
+                        case TerrainSubFarmType.TreeBanana:
                             icon = SpriteName.WarsBuild_TreeBanana;
                             name = DssRef.lang.BuildingType_Orchard;
                             break;
 
-                        case TerrainSubFoilType.WheatFarm:
+                        case TerrainSubFarmType.WheatFarm:
                             name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
                             break;
-                        case TerrainSubFoilType.WheatFarmUpgraded:
+                        case TerrainSubFarmType.WheatFarmUpgraded:
                             name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
                                 string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
                             break;
 
-                        case TerrainSubFoilType.RapeSeedFarm:
+                        case TerrainSubFarmType.RapeSeedFarm:
                             name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);
                             break;
-                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                        case TerrainSubFarmType.RapeSeedFarmUpgraded:
                             name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
                                 string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed));
                             break;
 
-                        case TerrainSubFoilType.HempFarm:
+                        case TerrainSubFarmType.HempFarm:
                             name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp);
                             break;
-                        case TerrainSubFoilType.HempFarmUpgraded:
+                        case TerrainSubFarmType.HempFarmUpgraded:
                             name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
                                 string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp));
                             break;
+                    }
+                    break;
 
-                        case TerrainSubFoilType.BogIron:
-                            name = DssRef.lang.Resource_TypeName_BogIron;
+                case TerrainMainType.AnimalPen:
+                    switch ((TerrainSubAnimalPenType)subType)
+                    {
+                        case TerrainSubAnimalPenType.HenPen:
+                            icon = SpriteName.WarsBuild_HenPen;
+                            name = DssRef.lang.BuildingType_HenPen;
+                            break;
+                        case TerrainSubAnimalPenType.PigPen:
+                            icon = SpriteName.WarsBuild_PigPen;
+                            name = DssRef.lang.BuildingType_PigPen;
+                            break;
+                        case TerrainSubAnimalPenType.FowlHabitat:
+                            icon = SpriteName.WarsResource_Fowl;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Fowl));
+                            break;
+                        case TerrainSubAnimalPenType.BoarHabitat:
+                            icon = SpriteName.WarsResource_Boar;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Boar));
+                            break;
+                        case TerrainSubAnimalPenType.OxHabitat:
+                            icon = SpriteName.WarsResource_Oxen;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Oxen));
+                            break;
+                        case TerrainSubAnimalPenType.PonyHabitat:
+                            icon = SpriteName.WarsResource_Pony;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Pony));
+                            break;
+                        case TerrainSubAnimalPenType.CatHabitat:
+                            icon = SpriteName.WarsResource_WildCat;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_WildCat));
+                            break;
+                        case TerrainSubAnimalPenType.DogHabitat:
+                            icon = SpriteName.WarsResource_Dog;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Dog));
+                            break;
+                        case TerrainSubAnimalPenType.WolfHabitat:
+                            icon = SpriteName.WarsResource_Wolf;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Wolf));
+                            break;
+                        case TerrainSubAnimalPenType.ElephantHabitat:
+                            icon = SpriteName.WarsResource_Elephant;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Elephant));
                             break;
 
-                        case TerrainSubFoilType.ClayPit:
-                            icon = SpriteName.WarsClayPit;
-                            name = DssRef.lang.BuildingType_ClayPit;
+                        case TerrainSubAnimalPenType.FowlPen:
+                            icon = SpriteName.WarsBuild_FowlPen;
+                            name = DssRef.lang.BuildingType_FowlPen;
+                            break;
+                        case TerrainSubAnimalPenType.BoarPen:
+                            icon = SpriteName.WarsBuild_BoarPen;
+                            name = DssRef.lang.BuildingType_BoarPen;
+                            break;
+
+
+                        case TerrainSubAnimalPenType.OxenPen:
+                            icon = SpriteName.WarsBuild_OxenPen;
+                            name = DssRef.lang.BuildingType_OxenPen;
+                            break;
+                        case TerrainSubAnimalPenType.KineOxenPen:
+                            icon = SpriteName.WarsBuild_KineOxenPen;
+                            name = DssRef.lang.BuildingType_KineOxenPen;
+                            break;
+
+                        case TerrainSubAnimalPenType.DogCage:
+                            icon = SpriteName.WarsBuild_DogCage;
+                            name = DssRef.lang.BuildingType_DogCage;
+                            break;
+                        case TerrainSubAnimalPenType.HoundCage:
+                            icon = SpriteName.WarsBuild_HoundCage;
+                            name = DssRef.lang.BuildingType_HoundCage;
+                            break;
+
+                        case TerrainSubAnimalPenType.PonyPen:
+                            icon = SpriteName.WarsBuild_PonyPen;
+                            name = DssRef.lang.BuildingType_PonyPen;
+                            break;
+                        case TerrainSubAnimalPenType.HorsePen:
+                            icon = SpriteName.WarsBuild_HorsePen;
+                            name = DssRef.lang.BuildingType_HorsePen;
+                            break;
+                        case TerrainSubAnimalPenType.WarHorsePen:
+                            icon = SpriteName.WarsBuild_WarHorsePen;
+                            name = DssRef.lang.BuildingType_WarHorsePen;
+                            break;
+                        case TerrainSubAnimalPenType.DraftHorsePen:
+                            icon = SpriteName.WarsBuild_DraftHorsePen;
+                            name = DssRef.lang.BuildingType_DraftHorsePen;
+                            break;
+                        case TerrainSubAnimalPenType.WildPigPen:
+                            icon = SpriteName.WarsBuild_WildPigPen;
+                            name = DssRef.lang.BuildingType_WildPigPen;
+                            break;
+                        case TerrainSubAnimalPenType.WildHogPen:
+                            icon = SpriteName.WarsBuild_WildHogPen;
+                            name = DssRef.lang.BuildingType_WildHogPen;
+                            break;
+                        case TerrainSubAnimalPenType.WarHogPen:
+                            icon = SpriteName.WarsBuild_WarHogPen;
+                            name = DssRef.lang.BuildingType_WarHogPen;
+                            break;
+                        case TerrainSubAnimalPenType.StagHogPen:
+                            icon = SpriteName.WarsBuild_StagHogPen;
+                            name = DssRef.lang.BuildingType_StagHogPen;
+                            break;
+                        case TerrainSubAnimalPenType.WolfCage:
+                            icon = SpriteName.WarsBuild_WolfPen;
+                            name = DssRef.lang.BuildingType_WolfCage;
+                            break;
+                        case TerrainSubAnimalPenType.WargCage:
+                            icon = SpriteName.WarsBuild_AlphaWargPen;
+                            name = DssRef.lang.BuildingType_WargCage;
+                            break;
+                        case TerrainSubAnimalPenType.AlphaWargCage:
+                            icon = SpriteName.WarsBuild_AlphaWargPen;
+                            name = DssRef.lang.BuildingType_AlphaWargCage;
+                            break;
+                        case TerrainSubAnimalPenType.WildCatCage:
+                            icon = SpriteName.WarsBuild_WildCatPen;
+                            name = DssRef.lang.BuildingType_WildCatCage;
+                            break;
+                        case TerrainSubAnimalPenType.LionCage:
+                            icon = SpriteName.WarsBuild_LionPen;
+                            name = DssRef.lang.BuildingType_LionCage;
+                            break;
+                        case TerrainSubAnimalPenType.WarLionCage:
+                            icon = SpriteName.WarsBuild_WarLionPen;
+                            name = DssRef.lang.BuildingType_WarLionCage;
+                            break;
+                        case TerrainSubAnimalPenType.ElephantCage:
+                            icon = SpriteName.WarsBuild_ElephantPen;
+                            name = DssRef.lang.BuildingType_ElephantCage;
+                            break;
+                        case TerrainSubAnimalPenType.WarElephantCage:
+                            icon = SpriteName.WarsBuild_WarElephantPen;
+                            name = DssRef.lang.BuildingType_WarElephantCage;
+                            break;
+                        case TerrainSubAnimalPenType.OliphantCage:
+                            icon = SpriteName.WarsBuild_OliphantPen;
+                            name = DssRef.lang.BuildingType_OliphantCage;
                             break;
                     }
                     break;
+
 
                 case TerrainMainType.Mine:
                     icon = SpriteName.WarsWorkMine;
                     switch ((TerrainMineType)subType)
                     {
+                        case TerrainMineType.BogIron:
+                            name = DssRef.lang.Resource_TypeName_BogIron;
+                            break;
+
+                        case TerrainMineType.ClayPit:
+                            icon = SpriteName.WarsClayPit;
+                            name = DssRef.lang.BuildingType_ClayPit;
+                            break;
+
                         case TerrainMineType.StoneBlock:
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Stone);
                             break;
