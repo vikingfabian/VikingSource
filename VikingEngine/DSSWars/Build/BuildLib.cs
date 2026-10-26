@@ -24,17 +24,25 @@ namespace VikingEngine.DSSWars.Build
 {
     enum BuildAndExpandType
     {
+        ExpansionHall_Lvl1,
+        ExpansionHall_Lvl2,
+        ExpansionHall_Lvl3,
+        Logistics,
+        ManorLord,
+        GreatHall,
+
         WorkerHut,
         WorkerHutLarge,
 
         ServiceHouse_Small,
         ServiceHouse_Large,
 
+        
+        SoldiersQuarter_Small,
+        SoldiersQuarter_Large,
         GuardHouse_Small,
         GuardHouse_Large,
 
-       
-        
         
         Noblehouse,
         Tavern,
@@ -45,17 +53,25 @@ namespace VikingEngine.DSSWars.Build
         WorkBench,
         Smith,
         Carpenter,
-        WheatFarm,
-        LinenFarm,
-        HempFarm,
-        RapeSeedFarm,
-        PigPen,
-        HenPen,
-        Statue_ThePlayer,
-        Pavement,
-        PavementFlower,
 
-        Logistics,
+        OrchardApple,
+        OrchidBanana,
+        WheatFarm,
+        WheatFarmUpgraded,
+        LinenFarm,
+        LinenFarmUpgraded,
+        HempFarm,
+        HempFarmUpgraded,
+        RapeSeedFarm,
+        RapeSeedFarmUpgraded,
+        
+        Statue_ThePlayer,
+        PavementStreet,
+        PavementFlower,
+        PavementLamp,
+        PavementFountain,
+        PavementRectFlower,
+
         Bank,
         CoinMinter,
 
@@ -79,10 +95,7 @@ namespace VikingEngine.DSSWars.Build
         Gunmaker,
         School,
 
-        WheatFarmUpgraded,
-        LinenFarmUpgraded,
-        HempFarmUpgraded,
-        RapeSeedFarmUpgraded,
+        
         Postal,
         PostalLevel2,
         PostalLevel3,
@@ -95,6 +108,9 @@ namespace VikingEngine.DSSWars.Build
         GoldDeliveryLvl3,
 
         DirtRoad,
+        GravelRoad,
+        CobblestoneRoad,
+        PavedRoad,
 
         DirtWall,
         DirtTower,
@@ -107,16 +123,14 @@ namespace VikingEngine.DSSWars.Build
         StoneWallWoodHouse,
         StoneGate,
         StoneHouse,
-        PavementLamp,
-        PavemenFountain,
-        PavementRectFlower,
+        
         GardenGrass,
         GardenFourBushes,
         GardenLongTree,
         GardenWalledBush,
         
         CitySquare,
-        CobbleStones,
+        //CobbleStones,
         GardenBird,
         GardenMemoryStone,
         Statue_Leader,
@@ -160,11 +174,7 @@ namespace VikingEngine.DSSWars.Build
         SulfurMine,
         WorkerTent,
 
-        ManorLord,
-        GreatHall,
-
-        OrchardApple,
-        OrchidBanana,
+        
 
         //New
         SaltMine,
@@ -180,6 +190,10 @@ namespace VikingEngine.DSSWars.Build
 
         ShieldMaker,
 
+        BoarPen,
+        FowlPen,
+        PigPen,
+        HenPen,
         OxenPen,
         KineOxenPen,
 
@@ -204,8 +218,7 @@ namespace VikingEngine.DSSWars.Build
         WarElephantCage,
         OliphantCage,
 
-        BoarPen,
-        FowlPen,
+       
         TrapperHut,
         DiplomaticStatue_ThumbsUpWest,
         DiplomaticStatue_ThumbsUpEast,
@@ -221,6 +234,13 @@ namespace VikingEngine.DSSWars.Build
         LogisticsLevel1,
         LogisticsLevel2,
 
+    }
+
+    enum BuildInAreaOptions
+    { 
+        WithInBorders,
+        OutsideBorders,
+        Both,
     }
     static class BuildLib
     {
@@ -243,7 +263,7 @@ namespace VikingEngine.DSSWars.Build
         public static List<BuildAndExpandType> LogisticsUnlockBuildings_Level2 = new List<BuildAndExpandType>
         {
             BuildAndExpandType.GardenGrass,
-            BuildAndExpandType.PavemenFountain,
+            BuildAndExpandType.PavementFountain,
             BuildAndExpandType.Statue_Leader,
         };
 
@@ -280,7 +300,7 @@ namespace VikingEngine.DSSWars.Build
 
             if (logistics1)
             {
-                if (!manor)
+                if (!manor && DssRef.storage.ruleset_instance.module_foodAndWater)
                 {
                     list.Add(BuildAndExpandType.ManorLord);
                 }
@@ -288,6 +308,9 @@ namespace VikingEngine.DSSWars.Build
                 {
                     list.Add(BuildAndExpandType.GreatHall);
                 }
+                list.Add(BuildAndExpandType.ExpansionHall_Lvl1);
+                list.Add(BuildAndExpandType.ExpansionHall_Lvl2);
+                list.Add(BuildAndExpandType.ExpansionHall_Lvl3);
                 list.Add(BuildAndExpandType.School);
 
                 list.Add(BuildAndExpandType.ResearchCenter);
@@ -317,17 +340,24 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.ServiceHouse_Large);
             }
 
+            list.Add(BuildAndExpandType.SoldiersQuarter_Small);
+            if (logistics1)
+            {
+                list.Add(BuildAndExpandType.SoldiersQuarter_Large);
+            }
+
             list.Add(BuildAndExpandType.GuardHouse_Small);
             if (logistics1)
             {
                 list.Add(BuildAndExpandType.GuardHouse_Large);
-
                 list.Add(BuildAndExpandType.ImmigrationTent);
 
             }
 
-            list.Add(BuildAndExpandType.OrchardApple);
-
+            if (DssRef.storage.ruleset_instance.module_foodAndWater)
+            {
+                list.Add(BuildAndExpandType.OrchardApple);
+            }
             if (manor)
             {
                 list.Add(BuildAndExpandType.WheatFarm);
@@ -439,7 +469,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.RecruitmentLevel2);
                 list.Add(BuildAndExpandType.RecruitmentLevel3);
 
-                if (!DssRef.storage.ruleset_instance.centralGold)
+                if (!DssRef.storage.ruleset_instance.module_centralGold)
                 {
                     list.Add(BuildAndExpandType.GoldDeliveryLvl1);
                     list.Add(BuildAndExpandType.GoldDeliveryLvl2);
@@ -469,7 +499,7 @@ namespace VikingEngine.DSSWars.Build
             //}
 
             list.Add(BuildAndExpandType.WorkBench);
-            if (manor)
+            if (manor && DssRef.storage.ruleset_instance.module_foodAndWater)
             {
                 list.Add(BuildAndExpandType.Cook);
             }
@@ -477,12 +507,15 @@ namespace VikingEngine.DSSWars.Build
             if (logistics1)
             {
                 list.Add(BuildAndExpandType.Butcher);
-                list.Add(BuildAndExpandType.Smoker);
-
-                if (biomRequirement(CityBiome.Desert))
+                if (DssRef.storage.ruleset_instance.module_foodAndWater)
                 {
-                    list.Add(BuildAndExpandType.Dryer);
-                    list.Add(BuildAndExpandType.DryingPan);
+                    list.Add(BuildAndExpandType.Smoker);
+
+                    if (biomRequirement(CityBiome.Desert))
+                    {
+                        list.Add(BuildAndExpandType.Dryer);
+                        list.Add(BuildAndExpandType.DryingPan);
+                    }
                 }
             }
             //list.Add(BuildAndExpandType.Cook);
@@ -552,14 +585,17 @@ namespace VikingEngine.DSSWars.Build
             }
 
             list.Add(BuildAndExpandType.DirtRoad);
+            list.Add(BuildAndExpandType.GravelRoad);
+            list.Add(BuildAndExpandType.CobblestoneRoad);
+            list.Add(BuildAndExpandType.PavedRoad);
 
             if (logistics2)
             {
-                list.Add(BuildAndExpandType.Pavement);
+                list.Add(BuildAndExpandType.PavementStreet);
                 list.Add(BuildAndExpandType.PavementFlower);
                 list.Add(BuildAndExpandType.PavementRectFlower);
                 list.Add(BuildAndExpandType.PavementLamp);
-                list.Add(BuildAndExpandType.PavemenFountain);
+                list.Add(BuildAndExpandType.PavementFountain);
 
                 list.Add(BuildAndExpandType.GardenGrass);
                 list.Add(BuildAndExpandType.GardenBird);
@@ -601,7 +637,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.CitySquare);
             }
            
-            list.Add(BuildAndExpandType.CobbleStones);
+            //list.Add(BuildAndExpandType.CobbleStones);
             list.Add(BuildAndExpandType.GardenMemoryStone);
 
             if (logistics1)
@@ -696,13 +732,21 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.ServiceHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_small, SpriteName.WarsBuild_SmallServiceHouse, CraftBuildingLib.ServiceHouse_Small, true, 
+            new BuildOption(BuildAndExpandType.ServiceHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Small, SpriteName.WarsBuild_SmallServiceHouse, CraftBuildingLib.ServiceHouse_Small, true, 
                 BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.ServiceHouse_Large, TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Large, SpriteName.WarsBuild_BigServiceHouse, CraftBuildingLib.ServiceHouse_Large, false, 
                 BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
+
+
+            new BuildOption(BuildAndExpandType.SoldiersQuarter_Small, TerrainMainType.Building, (int)TerrainBuildingType.SoldiersQuarter_Small, SpriteName.MissingImage, CraftBuildingLib.SoldiersQuarter_Small, true,
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            
+            new BuildOption(BuildAndExpandType.SoldiersQuarter_Large, TerrainMainType.Building, (int)TerrainBuildingType.SoldiersQuarter_Large, SpriteName.MissingImage, CraftBuildingLib.SoldiersQuarter_Large, false,
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
 
             new BuildOption(BuildAndExpandType.GuardHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Small, SpriteName.WarsBuild_GuardOffice, CraftBuildingLib.GuardHouse_Small, true, 
                 BuildCategoryTab.Military, BuildFilterTag.Guards, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
@@ -856,27 +900,36 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
             { altBlueprint = CraftBuildingLib.Orchard_Gold };
 
-            new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false, 
+            new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+            new BuildOption(BuildAndExpandType.GravelRoad, TerrainMainType.Road, (int)TerrainRoadType.GravelRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+            new BuildOption(BuildAndExpandType.CobblestoneRoad, TerrainMainType.Road, (int)TerrainRoadType.CobblestoneRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false,
+                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+            new BuildOption(BuildAndExpandType.PavedRoad, TerrainMainType.Road, (int)TerrainRoadType.PavedRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
 
-            new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement, false, 
+            new BuildOption(BuildAndExpandType.PavementStreet, TerrainMainType.Road, (int)TerrainRoadType.PavementStreet, SpriteName.WarsBuild_Pavement, CraftBuildingLib.PavementStreet, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
 
-            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower, false, //B
+            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Road, (int)TerrainRoadType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower, false, //B
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.PavementRectFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.WarsBuild_PavementRectFlower, CraftBuildingLib.PavementRectFlower, false,
+            new BuildOption(BuildAndExpandType.PavementRectFlower, TerrainMainType.Road, (int)TerrainRoadType.PavementRectFlower, SpriteName.WarsBuild_PavementRectFlower, CraftBuildingLib.PavementRectFlower, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
                  MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
             
-            new BuildOption(BuildAndExpandType.PavementLamp, TerrainMainType.Decor, (int)TerrainDecorType.PavementLamp, SpriteName.WarsBuild_PavementLamp, CraftBuildingLib.PavementLamp, false,
+            new BuildOption(BuildAndExpandType.PavementLamp, TerrainMainType.Road, (int)TerrainRoadType.PavementLamp, SpriteName.WarsBuild_PavementLamp, CraftBuildingLib.PavementLamp, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.PavemenFountain, TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.WarsBuild_PavemenFountain, CraftBuildingLib.PavemenFountain, false,
+            new BuildOption(BuildAndExpandType.PavementFountain, TerrainMainType.Road, (int)TerrainRoadType.PavemenFountain, SpriteName.WarsBuild_PavemenFountain, CraftBuildingLib.PavemenFountain, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,
                  MapPaintToolCategory.Road, DssConst.WorkTime_Building_Large);
 
@@ -1035,13 +1088,13 @@ namespace VikingEngine.DSSWars.Build
             //new BuildOption(BuildAndExpandType.ServiceHouse_Small,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_small, SpriteName.MissingImage, CraftBuildingLib.SmallCityHouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
             //new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.ServiceMenHouse_Large, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse, false, BuildCategoryTab.ExpandAndCraft, MapPaintToolCategory.Default);
             
-            new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Decor, (int)TerrainDecorType.Square, SpriteName.WarsBuild_CitySquare, CraftBuildingLib.CitySquare, false, 
+            new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Road, (int)TerrainRoadType.Square, SpriteName.WarsBuild_CitySquare, CraftBuildingLib.CitySquare, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                  MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Decor, (int)TerrainDecorType.CobbleStones, SpriteName.WarsBuild_CobbleStones, CraftBuildingLib.CobbleStones, false, 
-                BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
+            //new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Decor, (int)TerrainDecorType.CobbleStones, SpriteName.WarsBuild_CobbleStones, CraftBuildingLib.CobbleStones, false, 
+            //    BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+            //    MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
 
             new BuildOption(BuildAndExpandType.GardenMemoryStone, TerrainMainType.Decor, (int)TerrainDecorType.GardenMemoryStone, SpriteName.WarsBuild_GardenMemoryStone, CraftBuildingLib.GardenMemoryStone, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Garden, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE,

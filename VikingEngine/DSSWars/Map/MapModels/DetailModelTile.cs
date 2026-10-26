@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Map.MapData;
@@ -227,7 +228,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                     case TerrainMainType.Road:
                                         bSurfacePolygonTexture = false;
                                         surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.3f);
-                                        createRoad((TerrainRoadType)comTile.mapTile.subTerrain, ref surfaceSprite, ref surfaceColor);
+                                        createRoad((TerrainRoadType)comTile.mapTile.subTerrain, topCenter(ref comTile.mapTile, ref subTopLeft), ref surfaceSprite, ref surfaceColor);
                                         break;
                                     case TerrainMainType.Decor:
                                         surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.2f);
@@ -556,11 +557,45 @@ namespace VikingEngine.DSSWars.Map.MapModels
         //    return result;
         //}
 
-        void createRoad(TerrainRoadType type, ref SpriteName surfaceSprite, ref Color surfaceColor)
+        void createRoad(TerrainRoadType type, Vector3 wp, ref SpriteName surfaceSprite, ref Color surfaceColor)
         {
             //surfaceColor.Deconstruct(out byte r, out byte g, out byte b);
             //surfaceColor = new Color(r + 30, g + 30, b + 20);
             surfaceSprite = SpriteName.warsFoliageDirtRoad;
+            switch (type)
+            {
+                case TerrainRoadType.CobblestoneRoad:
+                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, -8);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_cobblestone, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
+                    break;
+                case TerrainRoadType.Square:
+                    surfaceColor = SquareGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_square, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
+                    break;
+
+
+                case TerrainRoadType.PavementStreet:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
+                    break;
+                case TerrainRoadType.PavementFlower:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 4, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
+                    break;
+                case TerrainRoadType.PavementRectFlower:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 3, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
+                    break;
+                case TerrainRoadType.PavementLamp:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
+                    break;
+                case TerrainRoadType.PavemenFountain:
+                    surfaceColor = PavementGroundCol;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 2, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
+                    break;
+
+            }
         }
 
         void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp, ref SpriteName surfaceSprite, Biom biom, out bool manMade)
@@ -1064,7 +1099,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         }
                     }
                     break;
-                case TerrainBuildingType.ServiceMenHouse_small:
+                case TerrainBuildingType.ServiceMenHouse_Small:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_smallhouse, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
                     break;
                 case TerrainBuildingType.ServiceMenHouse_Large:
@@ -1217,38 +1252,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
             wp.X += MapTile1_1.SubTileHalfWidth;
             wp.Z += MapTile1_1.SubTileHalfWidth;
 
-            switch (decorType) {
-                case TerrainDecorType.CobbleStones:
-                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, -8);
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_cobblestone, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
-                    break;
-                case TerrainDecorType.Square:
-                    surfaceColor = SquareGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_square, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
-                    break;
-
-
-                case TerrainDecorType.Pavement:
-                    surfaceColor = PavementGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
-                    break;
-                case TerrainDecorType.PavementFlower:
-                    surfaceColor = PavementGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 4, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
-                    break;
-                case TerrainDecorType.PavementRectFlower:
-                    surfaceColor = PavementGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 3, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
-                    break;
-                case TerrainDecorType.PavementLamp:
-                    surfaceColor = PavementGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
-                    break;
-                case TerrainDecorType.PavemenFountain:
-                    surfaceColor = PavementGroundCol;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 2, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
-                    break;
-                
+            switch (decorType) 
+            {
+               
 
 
                 case TerrainDecorType.Statue_ThePlayer:

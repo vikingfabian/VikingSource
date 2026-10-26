@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Data
                 result += 50;
 
             }
-            if (!DssRef.storage.ruleset.centralGold)
+            if (!DssRef.storage.ruleset.module_centralGold)
             {
                 result += 25;
             }

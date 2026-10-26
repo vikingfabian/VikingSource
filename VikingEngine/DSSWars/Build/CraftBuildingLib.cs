@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[] { },
             XP.WorkExperienceType.Farm
-);
+        );
 
         public static readonly CraftBlueprint TreeHard = new CraftBlueprint(
             CraftResultType.Building,
@@ -128,6 +128,42 @@ namespace VikingEngine.DSSWars.Build
 
         //public static readonly ItemResourceType[] CoinMinterCraftTypes = {
         //     ItemResourceType.CoolingFluid, ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
+
+        public static readonly CraftBlueprint ExpansionHall_Lvl1 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.ExpansionHall_Lvl1,
+            1,
+            new UseResource[]
+                {
+                    new UseResource(ItemResourceType.Wood_Group, 1),
+                    new UseResource(ItemResourceType.Stone_G, 1)
+                },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
+
+        public static readonly CraftBlueprint ExpansionHall_Lvl2 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.ExpansionHall_Lvl2,
+            1,
+            new UseResource[]
+                {
+            new UseResource(ItemResourceType.Wood_Group, 1),
+            new UseResource(ItemResourceType.Stone_G, 1)
+                },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
+
+        public static readonly CraftBlueprint ExpansionHall_Lvl3 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.ExpansionHall_Lvl3,
+            1,
+            new UseResource[]
+                {
+            new UseResource(ItemResourceType.Wood_Group, 1),
+            new UseResource(ItemResourceType.Stone_G, 1)
+                },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
 
         public static readonly CraftBlueprint CraftLogistics = new CraftBlueprint(
             CraftResultType.Building,
@@ -1300,14 +1336,47 @@ namespace VikingEngine.DSSWars.Build
            },
            XP.WorkExperienceType.StoneCutter
        );
+        public static readonly CraftBlueprint GravelRoad = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.GravelRoad,
+                   1,
+                   new UseResource[]
+                   {
+               new UseResource(ItemResourceType.Stone_G, 5),
+                   },
+                   XP.WorkExperienceType.StoneCutter
+               );
+        public static readonly CraftBlueprint CobblestoneRoad = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.CobblestoneRoad,
+                   1,
+                   new UseResource[]
+                   {
+                        new UseResource(ItemResourceType.Stone_G, 10),
+                       new UseResource(ItemResourceType.Brick, 5),
+                   },
+                   XP.WorkExperienceType.StoneCutter
+               );
+        public static readonly CraftBlueprint PavedRoad = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.PavedRoad,
+                   1,
+                   new UseResource[]
+                   {
+                       new UseResource(ItemResourceType.Stone_G, 30),
+                       new UseResource(ItemResourceType.Brick, 10),
+                   },
+                   XP.WorkExperienceType.StoneCutter
+               );
 
-        public static readonly CraftBlueprint Pavement = new CraftBlueprint(
+        public static readonly CraftBlueprint PavementStreet = new CraftBlueprint(
             CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Pavement,
+            (int)Build.BuildAndExpandType.PavementStreet,
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Brick, 10),
+                new UseResource(ItemResourceType.Stone_G, 20),
+                new UseResource(ItemResourceType.Brick, 20),
            },
             XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Practitioner_2
        );
@@ -1318,7 +1387,8 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
            {
                 new UseResource(ItemResourceType.RawFood_Group, 5),
-               new UseResource(ItemResourceType.Brick, 10),
+               new UseResource(ItemResourceType.Stone_G, 20),
+                new UseResource(ItemResourceType.Brick, 20),
            },
             XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Practitioner_2
        );
@@ -1556,7 +1626,7 @@ namespace VikingEngine.DSSWars.Build
         );
         public static readonly CraftBlueprint PavemenFountain = new CraftBlueprint(
            CraftResultType.Building,
-           (int)Build.BuildAndExpandType.PavemenFountain,
+           (int)Build.BuildAndExpandType.PavementFountain,
           1,
           new UseResource[]
           {
@@ -1575,6 +1645,16 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Stone_G, 20),
           },
            XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Expert_3
+        );
+        public static readonly CraftBlueprint CitySquare = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.CitySquare,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Brick, 10),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Practitioner_2
         );
         public static readonly CraftBlueprint GardenFourBushes = new CraftBlueprint(
            CraftResultType.Building,
@@ -1612,6 +1692,7 @@ namespace VikingEngine.DSSWars.Build
           },
            XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Practitioner_2
         );
+
         //public static readonly CraftBlueprint SmallCityHouse = new CraftBlueprint(
         //   CraftResultType.Building,
         //   (int)Build.BuildAndExpandType.ServiceHouse_Small,
@@ -1632,26 +1713,17 @@ namespace VikingEngine.DSSWars.Build
         //  },
         //   XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
         //);
-        public static readonly CraftBlueprint CitySquare = new CraftBlueprint(
-           CraftResultType.Building,
-           (int)Build.BuildAndExpandType.CitySquare,
-          1,
-          new UseResource[]
-          {
-               new UseResource(ItemResourceType.Brick, 10),
-          },
-           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Practitioner_2
-        );
-        public static readonly CraftBlueprint CobbleStones = new CraftBlueprint(
-           CraftResultType.Building,
-           (int)Build.BuildAndExpandType.CobbleStones,
-          1,
-          new UseResource[]
-          {
-               new UseResource(ItemResourceType.Stone_G, 5),
-          },
-           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
-        );
+        
+        //public static readonly CraftBlueprint CobbleStones = new CraftBlueprint(
+        //   CraftResultType.Building,
+        //   (int)Build.BuildAndExpandType.CobbleStones,
+        //  1,
+        //  new UseResource[]
+        //  {
+        //       new UseResource(ItemResourceType.Stone_G, 5),
+        //  },
+        //   XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        //);
 
         public static readonly CraftBlueprint GardenGrass = new CraftBlueprint(
           CraftResultType.Building,
@@ -1943,6 +2015,30 @@ namespace VikingEngine.DSSWars.Build
                 },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
             );
+
+        public static readonly CraftBlueprint SoldiersQuarter_Small = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.SoldiersQuarter_Small,
+            1,
+            new UseResource[]
+                {
+                    new UseResource(ItemResourceType.Wood_Group, 1),
+                    new UseResource(ItemResourceType.Stone_G, 1)
+                },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
+        public static readonly CraftBlueprint SoldiersQuarter_Large = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.SoldiersQuarter_Large,
+                    1,
+                    new UseResource[]
+                        {
+                    new UseResource(ItemResourceType.Wood_Group, 1),
+                    new UseResource(ItemResourceType.Stone_G, 1)
+                        },
+                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+                    );
+
 
         public static readonly CraftBlueprint GuardHouse_Small = new CraftBlueprint(
             CraftResultType.Building,

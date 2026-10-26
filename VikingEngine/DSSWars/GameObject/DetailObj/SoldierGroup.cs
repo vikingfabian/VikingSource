@@ -1268,7 +1268,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 //Capture city here
                                 if (tArmy.IsArmy())
                                 {
-                                    if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile))
+                                    if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile) && tile.pcity.HasValue())
                                     {
                                         var city = tile.pcity.City();
                                         if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())

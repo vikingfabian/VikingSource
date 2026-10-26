@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             mapObj = city;
             secondMenuContent = null;
 
-            if (!DssRef.storage.ruleset_instance.centralGold)
+            if (!DssRef.storage.ruleset_instance.module_centralGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));

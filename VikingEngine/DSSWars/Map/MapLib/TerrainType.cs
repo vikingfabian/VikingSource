@@ -122,11 +122,23 @@ namespace VikingEngine.DSSWars.Map.MapLib
         CityHall_Town,
         CityHall_Capital,
 
+        /// <summary>
+        /// Lords seat
+        /// </summary>
+        ExpansionHall_Lvl1,
+        ExpansionHall_Lvl2,
+        ExpansionHall_Lvl3,
+
+
         WorkerHut,
         WorkerHutLarge,
 
-        ServiceMenHouse_small,
+        ServiceMenHouse_Small,
         ServiceMenHouse_Large,
+
+        SoldiersQuarter_Small,
+        SoldiersQuarter_Large,
+
 
         GuardHouse_Small,
         GuardHouse_Large,
@@ -221,15 +233,12 @@ namespace VikingEngine.DSSWars.Map.MapLib
 
     enum TerrainDecorType : byte
     {
-        Square,
-        CobbleStones,
+        
+       // CobbleStones,
 
-        Pavement,
-        PavementFlower,
+       
         Statue_ThePlayer,
-        PavementLamp,
-        PavemenFountain,
-        PavementRectFlower,
+       
         GardenFourBushes,
         GardenLongTree,
         GardenWalledBush,
@@ -262,6 +271,17 @@ namespace VikingEngine.DSSWars.Map.MapLib
     enum TerrainRoadType : byte
     {
         DirtRoad,
+        GravelRoad,
+        CobblestoneRoad,
+        PavedRoad,
+
+        PavementStreet,
+        PavementFlower,
+        PavementLamp,
+        PavemenFountain,
+        PavementRectFlower,
+
+        Square,
         NUM_NONE
     }
 

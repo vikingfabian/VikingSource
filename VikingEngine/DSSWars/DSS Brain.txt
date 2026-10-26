@@ -8,6 +8,7 @@ x adjust "all facts"
 
 #MAP 2.0 UPDATE
 * 20 new songs added, made by Cosme Leites
+* 9 new build types
 
 Worker max count
 * A new way to manage city work (prototype version)
@@ -15,20 +16,22 @@ Worker max count
 World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
 * Worlds are now twice the size.
+* All terrain is textured
 
 Ground properties
 * Tiles have a ground type, these limit what you can build and soldier movement
 * Some tiles can be terraformed into others
 
 Dynamic world
-Factions and cities are now dynamic and can be added/removed during runtime.
-The unclamied city areas are replaced with a "place anywhere" city founding.
-Cities can grow and claim more land.
+* Factions and cities are now dynamic and can be added/removed during runtime.
+* The unclamied city areas are replaced with a "place anywhere" city founding.
+* Cities can grow and claim more land.
 
 Path 3.0
 A new high performance path finding algorithm with four hierarchy levels.
 * Is better adapted to handle terrain and walls.
 * Can handle a more detailed map.
+* Will use roads
 
 Map editor 2.0
 * New map generator built for much more control over both map generation and map editing.

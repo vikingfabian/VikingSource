@@ -41,9 +41,9 @@ namespace VikingEngine.DSSWars.GameObject
                     tower = (int)TerrainWallType.DirtTower;
                     wall = (int)TerrainWallType.DirtWall;
                     lowWall = (int)TerrainWallType.DirtWall;
-                    servicehouse = (int)TerrainBuildingType.ServiceMenHouse_small;
+                    servicehouse = (int)TerrainBuildingType.ServiceMenHouse_Small;
                     largeServiceHouse = false;
-                    road = (int)TerrainDecorType.CobbleStones;
+                    road = (int)TerrainRoadType.CobblestoneRoad;
                     centerHall = (int)TerrainBuildingType.CityHall_Village;
                     percBuilding = 0.15;
                     percWallGuard = 0;
@@ -53,9 +53,9 @@ namespace VikingEngine.DSSWars.GameObject
                     tower = (int)TerrainWallType.WoodTower;
                     wall = (int)TerrainWallType.WoodWall;
                     lowWall = (int)TerrainWallType.DirtWall;
-                    servicehouse = (int)TerrainBuildingType.ServiceMenHouse_small;
+                    servicehouse = (int)TerrainBuildingType.ServiceMenHouse_Small;
                     largeServiceHouse = false;
-                    road = (int)TerrainDecorType.Square;
+                    road = (int)TerrainRoadType.Square;
                     centerHall = (int)TerrainBuildingType.CityHall_Town;
                     percBuilding = 0.15;
                     percWallGuard = 0.1;
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
                     lowWall = (int)TerrainWallType.WoodWall;
                     servicehouse = (int)TerrainBuildingType.ServiceMenHouse_Large;
                     largeServiceHouse = true;
-                    road = (int)TerrainDecorType.Square;
+                    road = (int)TerrainRoadType.Square;
                     centerHall = (int)TerrainBuildingType.CityHall_Capital;
                     percBuilding = 0.15;
                     percWallGuard = 0.25;
@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 citySquareSubtilePos = VectorExt.AddY(maptilePos, 1);
                 EditSubTile squareTile = new EditSubTile(IsNetHosted, false, citySquareSubtilePos,
-                    new MapTile1_1(TerrainMainType.Decor, (int)TerrainDecorType.Square), true, false, false);
+                    new MapTile1_1(TerrainMainType.Road, (int)TerrainRoadType.Square), true, false, false);
                 squareTile.SubmitOrExecute();
             }
         }
@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 else
                                 {
-                                    main = TerrainMainType.Decor;
+                                    main = TerrainMainType.Road;
                                     sub = setup.road;
                                     emptyGeneral.Add(pos);
                                 }
@@ -236,12 +236,12 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case CityTemplateCellType.Gate:
                                 {
-                                    main = TerrainMainType.Decor;
+                                    main = TerrainMainType.Road;
                                     sub = setup.road;
                                 }
                                 break;
                             case CityTemplateCellType.Road:
-                                main = TerrainMainType.Decor;
+                                main = TerrainMainType.Road;
                                 sub = setup.road;
                                 break;
 
@@ -272,8 +272,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 maptilePos = pos;
                                 break;
                             case CityTemplateCellType.CityCenterSquare:
-                                main = TerrainMainType.Decor;
-                                sub = (int)TerrainDecorType.Square;
+                                main = TerrainMainType.Road;
+                                sub = (int)TerrainRoadType.Square;
                                 citySquareSubtilePos = pos;
                                 break;
                         }

@@ -351,6 +351,9 @@ namespace VikingEngine.DSSWars.Build
         public bool manorLord;
         public bool greatHall;
         public int buildingLevel_logistics;
+
+        public int ExpansionHall_LowestLevel = 3;
+        public int ExpansionHall_count;
         public int TentHuts_count;
         public int WorkerHuts_count;
         public int WorkerHuts_Large_count;
@@ -358,6 +361,8 @@ namespace VikingEngine.DSSWars.Build
         public int ServiceMenHouse_Large_count;
         public int GuardOffice_count;
         public int GuardOffice_Large_count;
+        public int SoldiersQuarter_Small_count;
+        public int SoldiersQuarter_Large_count;
         public int ImmigrationTent_count;
 
 
@@ -385,7 +390,7 @@ namespace VikingEngine.DSSWars.Build
         public int HenPen_count;
         public int Statue_ThePlayer_count;
         public int Pavement_count;
-        public int PavementFlower_count;
+        //public int PavementFlower_count;
         public int Bank_count;
         public int CoinMinter_count;
         public int GoldDelivery_count;
@@ -455,6 +460,9 @@ namespace VikingEngine.DSSWars.Build
         public int wallCount;
 
         public IntVector2 SuggestedTrapperPos;
+
+        public BuildingStructure()
+        { }
         public int getCount(BuildAndExpandType type)
         {
             switch (type)
@@ -498,8 +506,6 @@ namespace VikingEngine.DSSWars.Build
 
                 
                 case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_count;
-                case BuildAndExpandType.Pavement: return Pavement_count;
-                case BuildAndExpandType.PavementFlower: return PavementFlower_count;
                 case BuildAndExpandType.Bank: return Bank_count;
                 case BuildAndExpandType.CoinMinter: return CoinMinter_count;
 
@@ -576,42 +582,52 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WarElephantCage: return WarElephantCage_count;
                 case BuildAndExpandType.OliphantCage: return OliphantCage_count;
 
-                case BuildAndExpandType.TreeHard:
-                case BuildAndExpandType.TreeSoft:
-                case BuildAndExpandType.TreeSeedlingSoft:
-                case BuildAndExpandType.TreeSeedlingHard:
-                case BuildAndExpandType.DirtRoad:
                 case BuildAndExpandType.PavementLamp:
-                case BuildAndExpandType.PavemenFountain:
+                case BuildAndExpandType.PavementStreet:
+                case BuildAndExpandType.PavementFlower:
+                case BuildAndExpandType.PavementFountain:
                 case BuildAndExpandType.PavementRectFlower:
-                case BuildAndExpandType.GardenGrass:
-                case BuildAndExpandType.GardenFourBushes:
-                case BuildAndExpandType.GardenLongTree:
-                case BuildAndExpandType.GardenWalledBush:
-                case BuildAndExpandType.CitySquare:
-                case BuildAndExpandType.CobbleStones:
-                case BuildAndExpandType.GardenBird:
-                case BuildAndExpandType.GardenMemoryStone:
-                case BuildAndExpandType.Statue_Leader:
-                case BuildAndExpandType.Statue_Lion:
-                case BuildAndExpandType.Statue_Horse:
-                case BuildAndExpandType.Statue_Pillar:
-                case BuildAndExpandType.DiplomaticStatue_ThumbsUpWest:
-                case BuildAndExpandType.DiplomaticStatue_ThumbsUpEast:
-                case BuildAndExpandType.DiplomaticStatue_InsultWest:
-                case BuildAndExpandType.DiplomaticStatue_InsultEast:
-                case BuildAndExpandType.DiplomaticStatue_GoldenPoop:
+                    return Pavement_count;
+                //case BuildAndExpandType.TreeHard:
+                //case BuildAndExpandType.TreeSoft:
+                //case BuildAndExpandType.TreeSeedlingSoft:
+                //case BuildAndExpandType.TreeSeedlingHard:
+                //case BuildAndExpandType.DirtRoad:
+                //case BuildAndExpandType.GravelRoad:
+                //case BuildAndExpandType.CobblestoneRoad:
+                //case BuildAndExpandType.PavedRoad:
 
-                case BuildAndExpandType.FlagPole_LongBanner:
-                case BuildAndExpandType.FlagPole_Banner:
-                case BuildAndExpandType.FlagPole_SlimBanner:
 
-                case BuildAndExpandType.FlagPole_Flag:
-                case BuildAndExpandType.FlagPole_FlagRound:
-                case BuildAndExpandType.FlagPole_FlagLarge:
-                case BuildAndExpandType.FlagPole_Streamer:
-                case BuildAndExpandType.FlagPole_Triangle:
-                    return 0;
+
+                
+                //case BuildAndExpandType.GardenGrass:
+                //case BuildAndExpandType.GardenFourBushes:
+                //case BuildAndExpandType.GardenLongTree:
+                //case BuildAndExpandType.GardenWalledBush:
+                //case BuildAndExpandType.CitySquare:
+                ////case BuildAndExpandType.CobbleStones:
+                //case BuildAndExpandType.GardenBird:
+                //case BuildAndExpandType.GardenMemoryStone:
+                //case BuildAndExpandType.Statue_Leader:
+                //case BuildAndExpandType.Statue_Lion:
+                //case BuildAndExpandType.Statue_Horse:
+                //case BuildAndExpandType.Statue_Pillar:
+                //case BuildAndExpandType.DiplomaticStatue_ThumbsUpWest:
+                //case BuildAndExpandType.DiplomaticStatue_ThumbsUpEast:
+                //case BuildAndExpandType.DiplomaticStatue_InsultWest:
+                //case BuildAndExpandType.DiplomaticStatue_InsultEast:
+                //case BuildAndExpandType.DiplomaticStatue_GoldenPoop:
+
+                //case BuildAndExpandType.FlagPole_LongBanner:
+                //case BuildAndExpandType.FlagPole_Banner:
+                //case BuildAndExpandType.FlagPole_SlimBanner:
+
+                //case BuildAndExpandType.FlagPole_Flag:
+                //case BuildAndExpandType.FlagPole_FlagRound:
+                //case BuildAndExpandType.FlagPole_FlagLarge:
+                //case BuildAndExpandType.FlagPole_Streamer:
+                //case BuildAndExpandType.FlagPole_Triangle:
+                //    return 0;
 
                 case BuildAndExpandType.TrapperHut:
                     return TrapperHut_count;
@@ -619,6 +635,10 @@ namespace VikingEngine.DSSWars.Build
                     return GuardOffice_count;
                 case BuildAndExpandType.GuardHouse_Large:
                     return GuardOffice_Large_count;
+                case BuildAndExpandType.SoldiersQuarter_Small:
+                    return SoldiersQuarter_Small_count;
+                case BuildAndExpandType.SoldiersQuarter_Large:
+                    return SoldiersQuarter_Large_count;
 
                 case BuildAndExpandType.ResearchCenter:
                     return ResearchCenter_count;
@@ -712,8 +732,14 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.PigPen: PigPen_count += add; break;
                 case BuildAndExpandType.HenPen: HenPen_count += add; break;
                 case BuildAndExpandType.Statue_ThePlayer: Statue_ThePlayer_count += add; break;
-                case BuildAndExpandType.Pavement: Pavement_count += add; break;
-                case BuildAndExpandType.PavementFlower: PavementFlower_count += add; break;
+
+                case BuildAndExpandType.PavementStreet:
+                case BuildAndExpandType.PavementFlower:
+                case BuildAndExpandType.PavementLamp:
+                case BuildAndExpandType.PavementFountain:
+                case BuildAndExpandType.PavementRectFlower:
+                    Pavement_count += add; break;
+                //case BuildAndExpandType.PavementFlower: PavementFlower_count += add; break;
                 case BuildAndExpandType.Bank: Bank_count += add; break;
                 case BuildAndExpandType.CoinMinter: CoinMinter_count += add; break;
 

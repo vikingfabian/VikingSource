@@ -19,7 +19,11 @@ namespace VikingEngine.DSSWars.Data
         public static readonly TwoInts[] QuickBossOptions_Time_Difficulty = [new TwoInts(3, 100), new TwoInts(5, 50), new TwoInts(8, 25)];
 
         public MapScale mapSize = new MapScale(MapSizeCategory.Medium);
-        public bool centralGold = true;
+        
+        public bool module_foodAndWater = false;
+        public bool module_deptAndDeserters = false;
+        public bool module_centralGold = true;
+
         public FactionStartSize factionStartSize = FactionStartSize.OneCity;
         public int QuickBossTimeOption = 1;
 
@@ -55,16 +59,17 @@ namespace VikingEngine.DSSWars.Data
         }
             
         
-        const int Version = 4;
+        const int Version = 5;
         public void write(System.IO.BinaryWriter w, bool storage)
         {
             if (storage)
             {
                 w.Write(Version);
-                //w.Write((int)mapSize);
                 mapSize.write(w);
             }
-            w.Write(centralGold);
+            w.Write(module_foodAndWater);
+            w.Write(module_deptAndDeserters);
+            w.Write(module_centralGold);
 
             if (storage)
             {
@@ -85,51 +90,48 @@ namespace VikingEngine.DSSWars.Data
             if (storage)
             {
                 version = r.ReadInt32();
-                if (version < 4)
-                {
-                    mapSize = new MapScale((MapSizeCategory)r.ReadInt32());
-                }
-                else
-                {
-                    mapSize.read(r);
-                }
+                
+                mapSize.read(r);
+                
             }
-            centralGold = r.ReadBoolean();
+
+            if (version < 5)
+            {
+                return;
+            }
+            module_foodAndWater = r.ReadBoolean();
+            module_deptAndDeserters = r.ReadBoolean();
+            module_centralGold = r.ReadBoolean();
+
             if (storage)
             {
-                if (version >= 1)
-                {
-                    factionStartSize = (FactionStartSize)r.ReadByte();
-                }
-                if (version >= 2)
-                {
-                    QuickBossTimeOption = r.ReadByte();
-                }
-            }
-            if (version >= 3)
-            {
-                setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, FoodMultiBound);
-                setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, WaterMultiBound);
+                factionStartSize = (FactionStartSize)r.ReadByte();
                 
-                setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, ChildMultiBound);
-                setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, CraftMultiBound);
-               
-                setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, TechMultiBound);
-                setting_techMulti_QuickMatch = r.ReadInt32();                   
+                QuickBossTimeOption = r.ReadByte();                
             }
+            
+            setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, FoodMultiBound);
+            setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, WaterMultiBound);
+                
+            setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, ChildMultiBound);
+            setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, CraftMultiBound);
+               
+            setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, TechMultiBound);
+            setting_techMulti_QuickMatch = r.ReadInt32();                   
+            
 
             refreshSettings();
         }
         public void defaultGameSettings()
         {
             mapSize = new MapScale( MapSizeCategory.Medium);
-            centralGold = true;
+            module_centralGold = true;
             factionStartSize = FactionStartSize.Full;
         }
         public void demoSetup()
         {
             mapSize = new MapScale(MapSizeCategory.Medium);
-            centralGold = true;
+            module_centralGold = true;
             factionStartSize = FactionStartSize.Full;
         }
 

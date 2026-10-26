@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.GameObject
                         lp.hud.messages.armyLowFoodMessage(this);
                     }));
                 }
-                else if (!DssRef.storage.ruleset_instance.centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
+                else if (!DssRef.storage.ruleset_instance.module_centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
                 {
                     allowDept = true;
                 }

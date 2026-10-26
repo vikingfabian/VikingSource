@@ -502,6 +502,7 @@ namespace VikingEngine
             add(SpriteName.DeckTouchR, 2, 2);
             add(SpriteName.ButtonRZ, 2, 2);
             add(SpriteName.ButtonLZ, 2, 2);
+
             currentIndex = numTilesWidth * 19;
             {
                 add(SpriteName.EditorToolOptionAdd);

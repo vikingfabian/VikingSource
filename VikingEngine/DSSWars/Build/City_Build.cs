@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 onWorkHutBuild(build, DssConst.HousingCount_WorkerHutLarge);
                                 break;
 
-                            case TerrainBuildingType.ServiceMenHouse_small:
+                            case TerrainBuildingType.ServiceMenHouse_Small:
                                 onServiceHouseBuild(build, false);
                                 break;
                             case TerrainBuildingType.ServiceMenHouse_Large:

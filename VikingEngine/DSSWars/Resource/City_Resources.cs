@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case ItemResourceType.Gold:
                         int amount;
-                        if (DssRef.storage.ruleset_instance.centralGold)
+                        if (DssRef.storage.ruleset_instance.module_centralGold)
                         {
                             var faction = pfaction.GetFaction();
                             if (faction != null)

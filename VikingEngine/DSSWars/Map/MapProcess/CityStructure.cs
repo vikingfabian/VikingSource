@@ -278,6 +278,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
             int serviceMenHousing = 0;
             int housingCount_Workers = 0;
+            int armySupply = 0;
 
             Rectangle2 emptyArea = Rectangle2.Zero;
             buildingPosition = new BuildingPosition();
@@ -473,10 +474,24 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                                 switch (building)
                                 {
+                                    case TerrainBuildingType.ExpansionHall_Lvl1:
+                                        ++buildingStructure.ExpansionHall_count;
+                                        buildingStructure.ExpansionHall_LowestLevel = Math.Min(buildingStructure.ExpansionHall_LowestLevel, 1);
+                                        
+                                        break;
+                                    case TerrainBuildingType.ExpansionHall_Lvl2:
+                                        ++buildingStructure.ExpansionHall_count;
+                                        buildingStructure.ExpansionHall_LowestLevel = Math.Min(buildingStructure.ExpansionHall_LowestLevel, 2);
+
+                                        break;
+                                    case TerrainBuildingType.ExpansionHall_Lvl3:
+                                        ++buildingStructure.ExpansionHall_count;
+                                        buildingStructure.ExpansionHall_LowestLevel = Math.Min(buildingStructure.ExpansionHall_LowestLevel, 3);
+
+                                        break;
                                     case TerrainBuildingType.WorkerTent:
                                         ++buildingStructure.TentHuts_count;
                                         BuildingPosition.Set(ref buildingPosition.WorkerHuts_pos, ref subTileLoop.Position); //New
-                                        //buildingPosition.WorkerHuts_pos = subTileLoop.Position; //Old
                                         housingCount_Workers += DssConst.HousingCount_WorkerTent;
                                         break;
                                     case TerrainBuildingType.WorkerHut:
@@ -492,7 +507,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                         housingCount_Workers += DssConst.HousingCount_WorkerHutLarge;
                                         break;
 
-                                    case TerrainBuildingType.ServiceMenHouse_small:
+                                    case TerrainBuildingType.ServiceMenHouse_Small:
                                         ++buildingStructure.ServiceMenHouse_count;
                                         serviceMenHousing += DssConst.HousingCount_ServiceHouse_Small;
                                         BuildingPosition.Set(ref buildingPosition.ServiceHouse_pos, ref subTileLoop.Position); //New
@@ -509,15 +524,24 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                     case TerrainBuildingType.GuardHouse_Small:
                                         ++buildingStructure.GuardOffice_count;
                                         BuildingPosition.Set(ref buildingPosition.GuardHouse_pos, ref subTileLoop.Position); //New
-                                        //buildingPosition.GuardHouse_pos = subTileLoop.Position; //Old
+                                        
                                         break;
                                     case TerrainBuildingType.GuardHouse_Large:
                                         ++buildingStructure.GuardOffice_Large_count;
                                         BuildingPosition.Set(ref buildingPosition.GuardHouse_pos, ref subTileLoop.Position); //New
-                                        //buildingPosition.GuardHouse_pos = subTileLoop.Position; //Old
                                         break;
 
-                                   
+                                    case TerrainBuildingType.SoldiersQuarter_Small:
+                                        ++buildingStructure.SoldiersQuarter_Small_count;
+                                        BuildingPosition.Set(ref buildingPosition.SoldiersQuarter_pos, ref subTileLoop.Position); //New
+                                        armySupply += DssConst.SoldiersQuarter_Small_Supply;
+                                        break;
+
+                                    case TerrainBuildingType.SoldiersQuarter_Large:
+                                        ++buildingStructure.SoldiersQuarter_Large_count;
+                                        BuildingPosition.Set(ref buildingPosition.SoldiersQuarter_pos, ref subTileLoop.Position); //New
+                                        armySupply += DssConst.SoldiersQuarter_Large_Supply;
+                                        break;
 
                                     case TerrainBuildingType.Postal:
                                     case TerrainBuildingType.PostalLevel2:

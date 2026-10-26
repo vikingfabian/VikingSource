@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars.Data
 
             if (!tooltip)
             {
-                content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.centralGold), DssRef.lang.Settings_CentralGold);
+                content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_centralGold), DssRef.lang.Settings_CentralGold);
                 content.icontext(HudLib.CheckImage(difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
 
                 content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(ruleset.setting_foodMulti)));

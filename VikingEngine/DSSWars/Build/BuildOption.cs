@@ -36,6 +36,8 @@ namespace VikingEngine.DSSWars.Build
 
         public ItemResource upkeep = ItemResource.Empty;
 
+        public BuildInAreaOptions buildInArea = BuildInAreaOptions.WithInBorders;
+
         public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, 
             bool canAutoBuild, BuildCategoryTab buildCategory,
             BuildFilterTag filterTag1,

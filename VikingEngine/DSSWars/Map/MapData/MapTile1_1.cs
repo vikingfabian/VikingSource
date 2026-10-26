@@ -512,11 +512,21 @@ namespace VikingEngine.DSSWars.Map.MapData
                     }
 
                 case TerrainMainType.Road:
-                    //switch ((TerrainRoadType)subTerrain)
-                    //{
-                    //    case TerrainRoadType.
-                    //}
-                    return new MoveCost(0.75f, 75f);
+                    switch ((TerrainRoadType)subTerrain)
+                    {
+                        case TerrainRoadType.DirtRoad:
+                            return new MoveCost(0.85f, 85f);
+                        case TerrainRoadType.GravelRoad:
+                            return new MoveCost(0.80f, 80f);
+                        case TerrainRoadType.CobblestoneRoad:
+                            return new MoveCost(0.73f, 73f);
+                        case TerrainRoadType.PavedRoad:
+                            return new MoveCost(0.65f, 65f);
+
+                        default: //Decorative streets
+                            return new MoveCost(0.75f, 75f);
+                    }
+
             }
         }
         const float ModelGroundYAdj = 0.06f;

@@ -32,6 +32,16 @@ namespace VikingEngine.DSSWars.Presentation
         public string Minigame_BlackBolt_Name => "Black Bolt Industries";
         public string Minigame_BlackBolt_Description => "Factory puzzle minigame. English only.";
 
+        public string BuildingType_GravelRoad => "Gravel road";
+        public string BuildingType_CobblestoneRoad => "Cobbled road";
+        public string BuildingType_PavedRoad => "Paved road";
 
+        public string BuildingType_ExpansionHall => "Lords seat";
+        public string ExpandTerritory_Description => "Will expand you city territory";
+        public string BuildingType_SoldiersQuarter => "Soldiers quarter";
+        public string BuildingType_ => "";
+
+        public string ArmySupplyCount => "Army supply count";
+        public string ArmySupplyCount_ExpandByX => "Will expand army supply count by {0}";
     }
 }

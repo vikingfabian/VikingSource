@@ -1125,7 +1125,7 @@ namespace VikingEngine.DSSWars.GameObject
                     foodCosts_blackmarket.minuteUpdate();
                 }
 
-                if (!DssRef.storage.ruleset_instance.centralGold && time > 0)
+                if (!DssRef.storage.ruleset_instance.module_centralGold && time > 0)
                 {
                     var onCity = DssRef.world.tileGrid.Get(maptilePos).pcity.City();
 

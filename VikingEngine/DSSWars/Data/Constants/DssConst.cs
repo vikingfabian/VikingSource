@@ -226,6 +226,10 @@ namespace VikingEngine.DSSWars
         public const int ImmigrantionTent_TransfereSpeedBonus = 2;
         public const int ImmigrantionTent_Capacity = 60;
 
+        public const int SoldiersQuarter_Small_Supply = 4;
+        public const int SoldiersQuarter_Large_Supply = 8;
+
+
         //ARMY UPKEEP
         public static float TrainingLevelMinimal_CopperUpkeep = 0;
         public static float TrainingLevelBasic_CopperUpkeep = TaxPerWorker_copp * 0.2f;

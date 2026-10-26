@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.RapeSeedFarm,
         
         BuildAndExpandType.Statue_ThePlayer,
-        BuildAndExpandType.Pavement,
+        BuildAndExpandType.PavementStreet,
         BuildAndExpandType.PavementFlower,
 
         BuildAndExpandType.Logistics,
@@ -283,6 +283,9 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.GoldDeliveryLvl1,
         
         BuildAndExpandType.DirtRoad,
+        BuildAndExpandType.GravelRoad,
+        BuildAndExpandType.CobblestoneRoad,
+        BuildAndExpandType.PavedRoad,
 
         BuildAndExpandType.DirtWall,
         BuildAndExpandType.DirtTower,

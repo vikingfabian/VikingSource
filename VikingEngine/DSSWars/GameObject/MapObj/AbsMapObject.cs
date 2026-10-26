@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public bool lowFood() { throw new NotImplementedException(); }
         public bool payGold(int cost)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_centralGold)
             {
                 var faction = pfaction.GetFaction();
                 if (faction == null)
@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool payGold(int cost, bool allowDept)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_centralGold)
             {
                 var faction = pfaction.GetFaction();
                 if (faction == null)

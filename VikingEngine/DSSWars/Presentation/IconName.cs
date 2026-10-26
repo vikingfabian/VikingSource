@@ -1238,6 +1238,22 @@ namespace VikingEngine.DSSWars
                 case TerrainMainType.Building:
                     switch ((TerrainBuildingType)subType)
                     {
+                        case TerrainBuildingType.ExpansionHall_Lvl1:
+                        case TerrainBuildingType.ExpansionHall_Lvl2:
+                        case TerrainBuildingType.ExpansionHall_Lvl3:
+                            icon = SpriteName.MissingImage;
+                            name = DssRef.todoLang.BuildingType_ExpansionHall;
+                            break;
+
+                        case TerrainBuildingType.SoldiersQuarter_Small:
+                            icon = SpriteName.MissingImage;
+                            name = DssRef.todoLang.BuildingType_SoldiersQuarter;
+                            break;
+                        case TerrainBuildingType.SoldiersQuarter_Large:
+                            icon = SpriteName.MissingImage;
+                            name = DssRef.todoLang.BuildingType_SoldiersQuarter;
+                            break;
+
                         case TerrainBuildingType.Logistics:
                             icon = SpriteName.WarsBuild_Logistics;
                             name = DssRef.lang.BuildingType_Logistics;
@@ -1437,7 +1453,7 @@ namespace VikingEngine.DSSWars
                             name = DssRef.lang.BuildingType_Bookpress;
                             break;
 
-                        case TerrainBuildingType.ServiceMenHouse_small:
+                        case TerrainBuildingType.ServiceMenHouse_Small:
                             icon = SpriteName.WarsBuild_SmallServiceHouse;
                             name = DssRef.lang.BuildingType_ServiceHouse;
                             break;
@@ -1791,27 +1807,44 @@ namespace VikingEngine.DSSWars
                         case TerrainRoadType.DirtRoad:
                             name = DssRef.lang.BuildingType_DirtRoad;
                             break;
+                        case TerrainRoadType.GravelRoad:
+                            name = DssRef.todoLang.BuildingType_GravelRoad;
+                            break;
+                        case TerrainRoadType.CobblestoneRoad:
+                            name = DssRef.todoLang.BuildingType_CobblestoneRoad;
+                            break;
+                        case TerrainRoadType.PavedRoad:
+                            name = DssRef.todoLang.BuildingType_PavedRoad;
+                            break;
+
+                        case TerrainRoadType.PavementStreet:
+                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement);
+                            break;
+                        case TerrainRoadType.PavementFlower:
+                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Pavement);
+                            break;
+                        case TerrainRoadType.PavementRectFlower:
+                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
+                            break;
+                        case TerrainRoadType.PavementLamp:
+                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement);
+                            break;
+                        case TerrainRoadType.PavemenFountain:
+                            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement);
+                            break;
+                        //case TerrainDecorType.CobbleStones:
+                        //    name = DssRef.lang.DecorType_CobbleStones;
+                        //    break;
+                        case TerrainRoadType.Square:
+                            name = DssRef.lang.DecorType_Square;
+                            break;
                     }
                     break;
 
                 case TerrainMainType.Decor:
                     switch ((TerrainDecorType)subType)
                     {
-                        case TerrainDecorType.Pavement:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement);
-                            break;
-                        case TerrainDecorType.PavementFlower:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Pavement);
-                            break;
-                        case TerrainDecorType.PavementRectFlower:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
-                            break;
-                        case TerrainDecorType.PavementLamp:
-                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement);
-                            break;
-                        case TerrainDecorType.PavemenFountain:
-                            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement);
-                            break;
+                        
 
                         case TerrainDecorType.Statue_ThePlayer:
                             name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Statue);
@@ -1892,12 +1925,7 @@ namespace VikingEngine.DSSWars
                             name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Flag);
                             break;
 
-                        case TerrainDecorType.CobbleStones:
-                            name = DssRef.lang.DecorType_CobbleStones;
-                            break;
-                        case TerrainDecorType.Square:
-                            name = DssRef.lang.DecorType_Square;
-                            break;
+                        
                     }
                     break;
 

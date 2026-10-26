@@ -139,10 +139,10 @@ namespace VikingEngine.Engine
             DataLib.SpriteCollection.Set(name, file);
         }
 
-        void addTexture(SpriteName name, Sprite file)
-        {
-            DataLib.SpriteCollection.Set(name, file);
-        }
+        //void addTexture(SpriteName name, Sprite file)
+        //{
+        //    DataLib.SpriteCollection.Set(name, file);
+        //}
 
         protected int tileIxYpos(ref int tileIndex)
         {

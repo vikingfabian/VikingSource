@@ -264,12 +264,20 @@ namespace VikingEngine.HUD.RichBox
         public RbImage(SpriteName sprite, float scale = 1f, Color? color = null, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
+            //if (sprite == SpriteName.EditorToolOptionAdd)
+            //{
+            //    lib.DoNothing();
+            //}
             this.sprite = sprite;
             this.color = color;
         }
 
         override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
         {
+            //if (sprite == SpriteName.EditorToolOptionAdd)
+            //{
+            //    lib.DoNothing();
+            //}
             pointer = new Image(sprite, center, sz, group.layer, true, group.addToRender);
             if (color.HasValue)
             {
@@ -281,7 +289,7 @@ namespace VikingEngine.HUD.RichBox
         protected override Rectangle SourceRect()
         {
             var result = DataLib.SpriteCollection.Get(sprite).Source;
-            if (result.X == 0)
+            if (result.Width == 0)
             {
                 sprite = SpriteName.MissingImage;
                 result = DataLib.SpriteCollection.Get(sprite).Source;
