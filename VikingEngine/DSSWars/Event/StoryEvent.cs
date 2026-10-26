@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
@@ -433,7 +434,7 @@ namespace VikingEngine.DSSWars.Event
 
         protected override void calcAndRunEvent_async()
         {
-            var attackCities = new List<int>(8);
+            var attackCities = new List<PCity>(8);
 
             List<City> completedCities = new List<City>();
 
@@ -447,20 +448,26 @@ namespace VikingEngine.DSSWars.Event
                     var check = arraylib.RandomListMemberPop(searchcities);
                     if (check != null)
                     {
-                        EcsStaticArrayCounter neighbors = check.CityNeighbors();
-                        while (neighbors.Next(out int nCityIx))//foreach (var ncityIx in check.neighborCities)
+                        CityCollection ncoll = check.Neighbors();
                         {
-                            //int nCityIx = DssRef.world.neighborCities.array[ncaIx];
-                            if (!attackCities.Contains(nCityIx))
+                            //EcsStaticArrayCounter neighbors = check.CityNeighbors();
+                            //while (neighbors.Next(out int nCityIx))//foreach (var ncityIx in check.neighborCities)
+                            //{
+                            foreach (var pnCity in ncoll.list)
                             {
-                                var ncity_p = DssRef.world.cities[nCityIx];
-                                if (!completedCities.Contains(ncity_p) &&
-                                    !searchcities.Contains(ncity_p))
+                                //int nCityIx = DssRef.world.neighborCities.array[ncaIx];
+                                if (!attackCities.Contains(pnCity))
                                 {
-                                    searchcities.Add(ncity_p);
+                                    var ncity_p = pnCity.City();//DssRef.world.cities[nCityIx];
+                                    if (!completedCities.Contains(ncity_p) &&
+                                        !searchcities.Contains(ncity_p))
+                                    {
+                                        searchcities.Add(ncity_p);
+                                    }
                                 }
                             }
                         }
+                        City.ReturnToPool(ncoll);
 
                         var player = check.pfaction.GetPlayer();
                         if (player != null &&
@@ -469,7 +476,7 @@ namespace VikingEngine.DSSWars.Event
                             check.cityType < CityType.Capital &&
                             DssRef.world.diplomacy.GetRelation(check.pfaction, p.pfaction).Relation >= RelationType.RelationType0_Neutral)
                         {
-                            attackCities.Add(check.myIndex);
+                            attackCities.Add(check.Pointer());
                             found++;
                         }
                     }
@@ -489,7 +496,7 @@ namespace VikingEngine.DSSWars.Event
 
                     foreach (var cityIx in attackCities)
                     {
-                        spawnBarbarians(DssRef.world.cities[cityIx], false);
+                        spawnBarbarians(cityIx.City(), false);
                     }
                 }
                 attackCities = null;
@@ -1168,16 +1175,22 @@ namespace VikingEngine.DSSWars.Event
                 foreach (var city in cityList)
                 {
                     int distance = city.distanceFromPlayer + 1;
-                    
-                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
+                    CityCollection ncoll = city.Neighbors();
                     {
-                        if (nCity.distanceFromPlayer < 0)
+                        //EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
+                        //{
+                        foreach (var pnCity in ncoll.list)
                         {
-                            nCity.distanceFromPlayer = distance;
-                            nextList.Add(nCity);
+                            City nCity = pnCity.City();
+                            if (nCity.distanceFromPlayer < 0)
+                            {
+                                nCity.distanceFromPlayer = distance;
+                                nextList.Add(nCity);
+                            }
                         }
                     }
+                    City.ReturnToPool(ncoll);
                 }
 
                 cityList.Clear();

@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         All,
     }
 
-    class Map2Generator
+    class IconMapGenerator
     {
         public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
 
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         NoiseOptions landNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
         List<Task> tasks;
 
-        public Map2Builder mapBuilder;
+        public IconMapConverter mapBuilder;
         public void generate(Map2GenerateSettings generateSettings)
         {
             if (loadingState == LoadingState.None)
@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     break;
 
                 case Map2Pass.BuildMapData:
-                    mapBuilder = new Map2Builder();
+                    mapBuilder = new IconMapConverter();
                     mapBuilder.ConvertIcon(this);
                     break;
             }
@@ -807,15 +807,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
                     var tile = dataGrid.Get(x, y);
-                    //int leanY = 0;
-                    //int nextY = y + 1;
-                    //if (nextY < dataGrid.Size.Y)
-                    //{
-                    //    leanY = tile.heightValue - dataGrid.Get(x, nextY).heightValue;
-                    //}
-
+                   
                     tile.color = Map.MapModels.TileColor.IconmapColor(new CombinedTile(tile));
-                    //tileColor(ref tile);
                     dataGrid.Set(x, y, tile);
                 }
             });
@@ -1765,22 +1758,16 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
 
 
-        void placeTile(IntVector2 pos, float height, /*BiomType biom,*/ bool increase)
+        void placeTile(IntVector2 pos, float height, bool increase)
         {
             var dataGrid = DataGrid();
             ref var tile = ref dataGrid.GetRef(pos);
 
-            //if (tile.groundY == Height_WaterBottom)
-            //{
-            //    tile.biom1 = biom;
-            //}
             if (increase)
             {
                 if (height > tile.groundY)
                 {
-                    tile.groundY = height;
-                    
-                    //tile.color = biom.Tile2Color(height);
+                    tile.groundY = height;                    
                 }
             }
             else
@@ -1788,7 +1775,6 @@ namespace VikingEngine.DSSWars.Map.Map2
                 if (height < tile.groundY)
                 {
                     tile.groundY = height;
-                    //tile.color = biom.Tile2Color(height);
                 }
             }
         }

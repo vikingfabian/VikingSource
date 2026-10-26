@@ -766,18 +766,18 @@ namespace VikingEngine
 
         }
 
-        public void SetTileBounds(Rectangle2 minMaxTiles)
-        {
-            if (pos.X < minMaxTiles.X)
-                AddToLeftSide(pos.X - minMaxTiles.X);
-            if (pos.Y < minMaxTiles.Y)
-                AddToTopSide(pos.Y - minMaxTiles.Y);
+        //public void SetBounds(Rectangle2 minMaxTiles)
+        //{
+        //    if (pos.X < minMaxTiles.X)
+        //        AddToLeftSide(pos.X - minMaxTiles.X);
+        //    if (pos.Y < minMaxTiles.Y)
+        //        AddToTopSide(pos.Y - minMaxTiles.Y);
 
-            if (minMaxTiles.Right < RightTile)
-                size.X += minMaxTiles.Right - RightTile;
-            if (minMaxTiles.Bottom < BottomTile)
-                size.Y += minMaxTiles.Bottom - BottomTile;
-        }
+        //    if (minMaxTiles.Right < RightTile)
+        //        size.X += minMaxTiles.Right - RightTile;
+        //    if (minMaxTiles.Bottom < BottomTile)
+        //        size.Y += minMaxTiles.Bottom - BottomTile;
+        //}
 
         public void includeArea(Rectangle2 area)
         {

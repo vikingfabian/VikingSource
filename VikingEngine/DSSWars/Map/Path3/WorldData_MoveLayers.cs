@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars
             {
                 Rectangle2 refreshArea = Rectangle2.FromCenterTileAndRadius(lay4tile_start, 2);
                 refreshArea.includeTileAndRadius(lay4tile_end, 1);
-                refreshArea.SetTileBounds(moveLayer4.tileStatus.Area);
+                refreshArea.SetBounds(moveLayer4.tileStatus.Area);
 
                 ForXYLoop loop = new ForXYLoop(refreshArea);
                 while (loop.Next())

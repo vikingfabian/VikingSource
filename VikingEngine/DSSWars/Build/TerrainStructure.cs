@@ -87,8 +87,8 @@ namespace VikingEngine.DSSWars.Build
         static readonly MapTile1_1 TerrainType_stone = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.SmallStones);
         static readonly MapTile1_1 TerrainType_stoneblock = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.StoneBlock); //New
 
-        static readonly MapTile1_1 TerrainType_clay = new MapTile1_1(TerrainMainType.Foil, (int)TerrainMineType.ClayPit); //New
-        static readonly MapTile1_1 TerrainType_bogiron = new MapTile1_1(TerrainMainType.Foil, (int)TerrainMineType.BogIron);
+        static readonly MapTile1_1 TerrainType_clay = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.ClayPit); //New
+        static readonly MapTile1_1 TerrainType_bogiron = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.BogIron);
         static readonly MapTile1_1 TerrainType_iron = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.IronOre);
         static readonly MapTile1_1 TerrainType_tin = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.TinOre);
         static readonly MapTile1_1 TerrainType_copper = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.CopperOre);

@@ -719,6 +719,7 @@ namespace VikingEngine.DSSWars
             //}
 
             // --- User Input Update (runs unconditionally) ---
+            /*
             float userInputMs = 0f;
             long userInputStart = 0;
             if (profiling)
@@ -743,6 +744,7 @@ namespace VikingEngine.DSSWars
                     citiesMs, factionsMs, factionOneSecMs,
                     mapMs, userInputMs, particlesMs);
             }
+            */
         }
 
         //float AutoSaveTimeSec = DssRef.storage.autoSaveInterval_Minutes * TimeExt.MinuteInSeconds;

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
@@ -1164,27 +1165,33 @@ namespace VikingEngine.DSSWars
         }
 
         public List<Faction> adjacentFactions(bool botsOnly)
-        {
-            //List<Faction> factions = new List<Faction>();
+        {   
             HashSet<Faction> factions = new HashSet<Faction>();
 
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
-                while (neighbors.Next(DssRef.world.cities, out City nCity))
+                CityCollection ncoll = citySel.Neighbors();
                 {
-                    var nCityFaction = nCity.pfaction.GetFaction();
+                    //EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                    //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    //{
+                    foreach (var pnCity in ncoll.list)
+                    {
+                        City nCity = pnCity.City();
+                        var nCityFaction = nCity.pfaction.GetFaction();
 
-                    if (nCityFaction != null &&
-                        nCityFaction != this &&
-                        (!botsOnly || nCityFaction.player.IsBot()))
+                        if (nCityFaction != null &&
+                            nCityFaction != this &&
+                            (!botsOnly || nCityFaction.player.IsBot()))
                         //&&
                         //!factions.Contains(nCityFaction))
-                    {
-                        factions.Add(nCityFaction);
+                        {
+                            factions.Add(nCityFaction);
+                        }
                     }
                 }
+                City.ReturnToPool(ncoll);
             }
 
             return factions.ToList();

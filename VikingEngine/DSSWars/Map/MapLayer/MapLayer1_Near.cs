@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                         Rectangle2 loopArea = state.enterArea / Map.MapData.MapChunkData8_8.TileWidth;
                         loopArea.size += 1;
 
-                        loopArea.SetTileBounds(world_sp.chunkBounds);
+                        loopArea.SetBounds(world_sp.chunkBounds);
 
                         if (loopArea.Width > 0 && loopArea.Height > 0)
                         {

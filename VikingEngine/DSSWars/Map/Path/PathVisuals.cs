@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Map
         public void refresh(LayerWalkingPathResult path, bool hover)
         {
 
-            Color color = Color.Purple;
+            Color color = Color.White;
             float opacity = hover ? 0.5f : 1f;
 
             DeleteMe();

@@ -18,12 +18,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
     }
 
-    struct CityPlacementData
-    {
-        public int myIndex;
-        public IntVector2 pos;
-        public FlatArray_Three<IntVector2> secondary;
-    }
+    
 
     class IconWorldData
     {

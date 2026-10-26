@@ -32,8 +32,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
        
 
-        // 4-byte members (naturally 4-byte aligned)
-        
+        // 4-byte members (naturally 4-byte aligned)       
         
         public int seaDistanceHeatMap = int.MinValue;
 
@@ -42,14 +41,14 @@ namespace VikingEngine.DSSWars.Map.MapData
         // 2-byte members (naturally 2-byte aligned at offset 16)
         public PCity pcity;
 
-        //New
-        public bool IsBorderTile;
+       
+       
 
         //OLD
-        public ushort BorderRegion_North;
-        public ushort BorderRegion_East;
-        public ushort BorderRegion_South;
-        public ushort BorderRegion_West;
+        //public ushort BorderRegion_North;
+        //public ushort BorderRegion_East;
+        //public ushort BorderRegion_South;
+        //public ushort BorderRegion_West;
 
         // 1-byte members (always aligned)
         //public BiomType biom = BiomType.Green;
@@ -57,11 +56,12 @@ namespace VikingEngine.DSSWars.Map.MapData
         public BiomType biom1= BiomType.Green; 
         public BiomType biom2 = BiomType.Green;
         public byte secondBiomWeight;
-
         public byte biomColorHeight;
+        public bool IsBorderTile;
+        public bool IsFullTile;
 
         //public TileContent tileContent = TileContent.NONE;
-        public byte BorderCount;
+        //public byte BorderCount;
 
         //public byte secondaryBiomStrength = 0;
         //public bool inRender = false;
@@ -91,8 +91,8 @@ namespace VikingEngine.DSSWars.Map.MapData
         public SumTile4_4()
         {
             //heightLevel = Height.DeepWaterHeight;
-
-            clearCityData();
+            pcity = PCity.Empty;
+            //clearCityData();
         }
 
         public void GetBiom(out BiomHeightColor biomHeight, out Biom biom)
@@ -101,17 +101,17 @@ namespace VikingEngine.DSSWars.Map.MapData
             biomHeight = DssRef.map.heigts[biomColorHeight];
         }
 
-        public void clearCityData()
-        { 
-             pcity = PCity.Empty;
-            //tileContent = TileContent.NONE;
-            BorderCount = 0;
-            BorderRegion_North = NoBorderRegion; 
-            BorderRegion_East = NoBorderRegion; 
-            BorderRegion_South = NoBorderRegion; 
-            BorderRegion_West = NoBorderRegion;
-            seaDistanceHeatMap = int.MinValue;
-        }
+        //public void clearCityData()
+        //{ 
+        //     pcity = PCity.Empty;
+        //    //tileContent = TileContent.NONE;
+        //    BorderCount = 0;
+        //    BorderRegion_North = NoBorderRegion; 
+        //    BorderRegion_East = NoBorderRegion; 
+        //    BorderRegion_South = NoBorderRegion; 
+        //    BorderRegion_West = NoBorderRegion;
+        //    seaDistanceHeatMap = int.MinValue;
+        //}
 
         public SumTile4_4(System.IO.BinaryReader r, SumTile4_4 previous, int version)
             :this()
@@ -324,26 +324,26 @@ namespace VikingEngine.DSSWars.Map.MapData
             */
         }
 
-        public void AddBorder(int dir, ushort toregion)
-        {
-            ++BorderCount;
+        //public void AddBorder(int dir, ushort toregion)
+        //{
+        //    ++BorderCount;
             
-            switch (dir)
-            {
-                case 0:
-                    BorderRegion_North = toregion;
-                    break;
-                case 1:
-                    BorderRegion_East = toregion;
-                    break;
-                case 2:
-                    BorderRegion_South = toregion;
-                    break;
-                case 3:
-                    BorderRegion_West = toregion;
-                    break;
-            }
-        }
+        //    switch (dir)
+        //    {
+        //        case 0:
+        //            BorderRegion_North = toregion;
+        //            break;
+        //        case 1:
+        //            BorderRegion_East = toregion;
+        //            break;
+        //        case 2:
+        //            BorderRegion_South = toregion;
+        //            break;
+        //        case 3:
+        //            BorderRegion_West = toregion;
+        //            break;
+        //    }
+        //}
 
         public bool hasBorder(out bool sameFaction)
         {
@@ -381,20 +381,20 @@ namespace VikingEngine.DSSWars.Map.MapData
             return false;
         }
 
-        public int GetBorder(int dir)
-        {
-            switch (dir)
-            {
-                default:
-                    return BorderRegion_North;
-                case 1:
-                    return BorderRegion_East;
-                case 2:
-                    return BorderRegion_South;
-                case 3:
-                    return BorderRegion_West;
-            }
-        }
+        //public int GetBorder(int dir)
+        //{
+        //    switch (dir)
+        //    {
+        //        default:
+        //            return BorderRegion_North;
+        //        case 1:
+        //            return BorderRegion_East;
+        //        case 2:
+        //            return BorderRegion_South;
+        //        case 3:
+        //            return BorderRegion_West;
+        //    }
+        //}
 
         public static void FindOwnerInit(out StaticList<KeyValuePair<float, City>> closeCities)
         {
@@ -435,7 +435,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
        
 
-        public bool HasBorderImage() { return BorderCount > 0; }
+        //public bool HasBorderImage() { return BorderCount > 0; }
 
        
        
@@ -717,7 +717,7 @@ namespace VikingEngine.DSSWars.Map.MapData
             return $"SumTile4_4:\n" +
                    $"  CityIndex: {pcity}\n" +
                    $"  SeaDistanceHeatMap: {seaDistanceHeatMap}\n" +
-                   $"  Borders (N/E/S/W): {BorderRegion_North} / {BorderRegion_East} / {BorderRegion_South} / {BorderRegion_West} (Count: {BorderCount})\n" +
+                   //$"  Borders (N/E/S/W): {BorderRegion_North} / {BorderRegion_East} / {BorderRegion_South} / {BorderRegion_West} (Count: {BorderCount})\n" +
                    $"  Biom1: {biom1}\n" +
                    $"  Biom2: {biom2} (Weight: {secondBiomWeight})\n" +
                    $"  BiomColorHeight: {biomColorHeight}";

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.LootFest.Map;
@@ -10,7 +11,13 @@ using VikingEngine.LootFest.Map;
 namespace VikingEngine.DSSWars.Map.Map2
 {
 
-    
+    struct CityPlacementData
+    {
+        public int myIndex;
+        public IntVector2 pos;
+       
+        public FlatArray_Three<IntVector2> secondary;
+    }
 
     struct PlacementValue
     {
@@ -23,12 +30,13 @@ namespace VikingEngine.DSSWars.Map.Map2
     class GenerateCities
     {
         public Grid2D_L<FlatArray_Three<CityPlacementData>> citiesOnNodes;
-        
-
         PcgRandom rnd = new PcgRandom();
 
         public void generateCities(Map2GenerateSettings generateSettings, NodeMap nodeMap, IconWorldData icon)
         {
+            List<Task> secondaryCitiesProcess = new List<Task>(128);
+
+
             try
             {
                 
@@ -128,7 +136,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                         icon.cities.Add(city);
                         citiesOnNodes.GetRef(rndNodePos).Add(city);
 
-                        Task.Factory.StartNew(() =>
+                        secondaryCitiesProcess.Add(Task.Factory.StartNew(() =>
                         {
                             try
                             {
@@ -159,7 +167,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                             {
                                 lib.DoNothing();
                             }
-                        });
+                        }));
                     }
                 }
              }
@@ -169,10 +177,107 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
             lib.DoNothing();
 
+
+            //Check for overlapping secondary cities
+           
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await Task.WhenAll(secondaryCitiesProcess);
+
+                    for (int i = 0; i < icon.cities.Count; ++i)
+                    {
+                        var primary = icon.cities[i];
+
+                        //Check collisions with both main and secondary cities
+                        for (int secIx = primary.secondary.count - 1; secIx >= 0; secIx--)
+                        {
+                            if (tooClose(primary.secondary[secIx], i - 1))
+                            {
+                                primary.secondary.RemoveAt(secIx);
+                            }
+                        }
+
+                        icon.cities[i] = primary;
+
+                        bool tooClose(IntVector2 pos, int maxSecondayIndex)
+                        {
+                            const int MinDistance = 16;
+
+                            Rectangle2 nodearea = Rectangle2.FromCenterTileAndRadius(pos, 3);
+                            ForXYLoop nodeLoop = new ForXYLoop(nodearea);
+                            while (nodeLoop.Next())
+                            {
+                                if (citiesOnNodes.TryGet(nodeLoop.Position, out var cities))
+                                {
+                                    for (int cityIndex = 0; cityIndex < cities.count; cityIndex++)
+                                    {
+                                        var city = cities[cityIndex];
+                                        float distance = (city.pos - pos).Length();
+                                        if (distance < MinDistance)
+                                        {
+                                            return true;
+                                        }
+
+                                        if (city.myIndex > maxSecondayIndex && city.secondary.count > 0)
+                                        {
+                                            for (int citySecIndex = 0; citySecIndex < city.secondary.count; citySecIndex++)
+                                            {
+                                                distance = (city.secondary[citySecIndex] - pos).Length();
+                                                if (distance < MinDistance)
+                                                {
+                                                    return true;
+                                                }
+                                            }
+                                        }
+
+                                        
+                                    }
+                                }
+                            }
+                            return false;
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    lib.DoNothing();
+                }
+
+        });
+            
+
             bool allowedCityPlacement(IntVector2 pos)
             {
-                return icon.iconGrid.TryGet(pos, out var tile) &&
-                    tile.groundY >= MapHeight2.LowGroundY && tile.groundY <= MapHeight2.MountainStartY;
+                if (icon.iconGrid.TryGet(pos, out var tile) &&
+                    tile.WithinMayBuildHeight())
+                {
+                    foreach (var dir in IntVector2.Dir8Array)
+                    {
+                        if (!(icon.iconGrid.TryGet(pos + dir, out var ntile) &&
+                            ntile.WithinMayBuildHeight()))
+                        {
+                            return false;
+                        }
+                    }
+
+                    int ringCount = 0;
+                    ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(pos, 2));
+                    while (loop.Next())
+                    {
+                        if (icon.iconGrid.TryGet(loop.Position, out var ntile) &&
+                            ntile.WithinMayBuildHeight())
+                        {
+                            ringCount++;
+                        }
+                    }
+
+                    return ringCount > 9;
+                }
+
+                return false;
             }
         }
 

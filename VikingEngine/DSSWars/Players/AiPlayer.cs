@@ -2069,23 +2069,29 @@ namespace VikingEngine.DSSWars.Players
 
             City city = null;
 
-            EcsStaticArrayCounter neighbors = inDanger.CityNeighbors();
-            while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (int m in inDanger.neighborCities)
+            CityCollection ncoll = inDanger.Neighbors();
             {
+                //EcsStaticArrayCounter neighbors = inDanger.CityNeighbors();
+                //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (int m in inDanger.neighborCities)
+                //{
                 //City c = DssRef.world.cities[m];
-                if (nCity.pfaction == pfaction)
+                foreach (var pnCity in ncoll.list)
                 {
-                    if (city == null)
+                    City nCity = pnCity.City();
+                    if (nCity.pfaction == pfaction)
                     {
-                        city = nCity;
-                    }
-                    else if (nCity.workForce.amount > city.workForce.amount)
-                    {
-                        city = nCity;
+                        if (city == null)
+                        {
+                            city = nCity;
+                        }
+                        else if (nCity.workForce.amount > city.workForce.amount)
+                        {
+                            city = nCity;
+                        }
                     }
                 }
             }
-
+            City.ReturnToPool(ncoll);
             return city;
         }
 
@@ -2158,35 +2164,42 @@ namespace VikingEngine.DSSWars.Players
 
         public bool IsWarBorderCity(City city, bool inWarOnly)
         {
-            EcsStaticArrayCounter neighbors = city.CityNeighbors();
-            while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var nIx in city.neighborCities)
+            CityCollection ncoll = city.Neighbors();
             {
+                //EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var nIx in city.neighborCities)
+                //{
                 //var nCity = DssRef.world.cities[nIx];
-                if (nCity.pfaction != pfaction
-                    && nCity.pfaction.TryGetFaction(out _))
+                foreach (var pnCity in ncoll.list)
                 {
-                    //if (nCity.pfaction != faction.myIndex)
-                    //{
+                    City nCity = pnCity.City();
+                    if (nCity.pfaction != pfaction
+                        && nCity.pfaction.TryGetFaction(out _))
+                    {
+                        //if (nCity.pfaction != faction.myIndex)
+                        //{
                         var relation = DssRef.world.diplomacy.GetRelation(nCity.pfaction, pfaction);
-                    if (relation.Relation <= RelationType.RelationTypeN1_Enemies)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-
-                        if (!inWarOnly &&
-                            relation.Relation <= RelationType.RelationType0_Neutral &&
-                            nCity.pfaction.TryGetFaction(out var nf) && 
-                            pfaction.TryGetFaction(out var f) &&
-                            nf.militaryStrength > f.militaryStrength * 2)
+                        if (relation.Relation <= RelationType.RelationTypeN1_Enemies)
                         {
                             return true;
                         }
+                        else
+                        {
+
+                            if (!inWarOnly &&
+                                relation.Relation <= RelationType.RelationType0_Neutral &&
+                                nCity.pfaction.TryGetFaction(out var nf) &&
+                                pfaction.TryGetFaction(out var f) &&
+                                nf.militaryStrength > f.militaryStrength * 2)
+                            {
+                                return true;
+                            }
+                        }
+                        //}
                     }
-                    //}
                 }
             }
+            City.ReturnToPool(ncoll);
 
             return false;
         }
@@ -2248,31 +2261,37 @@ namespace VikingEngine.DSSWars.Players
                 {
                     return null;
                 }
-
-                EcsStaticArrayCounter neighbors = myCity.CityNeighbors();
-                while (neighbors.Next(DssRef.world.cities, out City nCity))
+                CityCollection ncoll = myCity.Neighbors();
                 {
-                    var cityFaction = nCity.pfaction.GetFaction();
-                    if (cityFaction != null && cityFaction != faction && cityFaction != weakestOpponent)
+                    //    EcsStaticArrayCounter neighbors = myCity.CityNeighbors();
+                    //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    //{
+                    foreach (var pnCity in ncoll.list)
                     {
-                        if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium &&
-                            cityFaction.player.IsLocalPlayer())
+                        City nCity = pnCity.City();
+                        var cityFaction = nCity.pfaction.GetFaction();
+                        if (cityFaction != null && cityFaction != faction && cityFaction != weakestOpponent)
                         {
-                            return myCity;
-                        }
+                            if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium &&
+                                cityFaction.player.IsLocalPlayer())
+                            {
+                                return myCity;
+                            }
 
-                        if (weakestOpponent == null)
-                        {
-                            city = myCity;
-                            weakestOpponent = cityFaction;
-                        }
-                        else if (cityFaction.militaryStrength < weakestOpponent.militaryStrength)
-                        {
-                            city = myCity;
-                            weakestOpponent = cityFaction;
+                            if (weakestOpponent == null)
+                            {
+                                city = myCity;
+                                weakestOpponent = cityFaction;
+                            }
+                            else if (cityFaction.militaryStrength < weakestOpponent.militaryStrength)
+                            {
+                                city = myCity;
+                                weakestOpponent = cityFaction;
+                            }
                         }
                     }
                 }
+                City.ReturnToPool(ncoll);
             }
 
             return city;

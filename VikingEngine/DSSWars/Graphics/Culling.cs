@@ -389,7 +389,7 @@ namespace VikingEngine.DSSWars
                 enterArea.AddWidthRadius(-1 * Map.MapData.MapChunkData8_8.TileWidth);
             }
 
-            enterArea.SetTileBounds(DssRef.world.maptileBounds);
+            enterArea.SetBounds(DssRef.world.maptileBounds);
             exitArea = enterArea;
             exitArea.AddRadius(1 * Map.MapData.MapChunkData8_8.TileWidth);
             attensionArea = enterArea;
@@ -402,7 +402,7 @@ namespace VikingEngine.DSSWars
             var loopArea = exitArea;
             loopArea.size += 1;
 
-            loopArea.SetTileBounds(DssRef.world.chunkBounds);
+            loopArea.SetBounds(DssRef.world.chunkBounds);
 
             if (loopArea.size.X > 0 && loopArea.size.Y > 0)
             {
@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars
             var loopArea = exitArea;
             loopArea.size += 1;
 
-            loopArea.SetTileBounds(DssRef.world.chunkBounds);
+            loopArea.SetBounds(DssRef.world.chunkBounds);
 
             ForXYLoop loop = new ForXYLoop(loopArea);
             if (loopArea.Width > 0 && loopArea.Height > 0)

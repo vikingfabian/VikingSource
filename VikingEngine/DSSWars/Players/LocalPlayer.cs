@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
@@ -792,11 +793,18 @@ namespace VikingEngine.DSSWars.Players
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                 {
-                    EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
+                    CityCollection ncoll = citySel.Neighbors();
                     {
-                        nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                        //EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                        //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
+                        //{
+                        foreach (var pnCity in ncoll.list)
+                        {
+                            City nCity = pnCity.City();
+                            nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                        }
                     }
+                    City.ReturnToPool(ncoll);
                 }
             }
         }
@@ -805,11 +813,18 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                while (neighbors.Next(DssRef.world.cities, out City nCity))
+                CityCollection ncoll = city.Neighbors();
                 {
-                    nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                    //    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    //{
+                    foreach (var pnCity in ncoll.list)
+                    {
+                        City nCity = pnCity.City();
+                        nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                    }
                 }
+                City.ReturnToPool(ncoll);
             }
 
             var f = pfaction.GetFaction();

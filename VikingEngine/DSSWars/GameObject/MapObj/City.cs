@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Steamworks;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -39,6 +40,7 @@ using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -48,7 +50,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int areaSize = 0;
         public CityType cityType;
-        public int neighborCitiesCount = 0;
+        //public int neighborCitiesCount = 0;
 
         Graphics.AbsVoxelObj overviewModel;
         BoundingBox bound;
@@ -57,7 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int childrenAge1 = 0;
 
         //public IntVector2 cityHallSubtilePos;
-        IntVector2 armySpawnTilePos = IntVector2.Zero;
+        IntVector2 armySpawnMapTilePos = IntVector2.Zero;
         public GroupedResource workForce = new GroupedResource();
         bool needServiceMenRefresh = true;
         public GroupedResource freeServiceMen = new GroupedResource();
@@ -127,26 +129,27 @@ namespace VikingEngine.DSSWars.GameObject
 
         public IntVector2 ArmySpawnTilePos()
         {
-            /*
-            if (armySpawnTilePos.HasValue())
+            
+            if (armySpawnMapTilePos.HasValue())
             {
-                return armySpawnTilePos;
+                return armySpawnMapTilePos;
             }
 
-            for (int radius = 2; radius >= 1; --radius)
+            IntVector2 citySumPos = WP.MaptileToSumTile(maptilePos);
+            for (int radius = 2; radius < 4; ++radius)
             {
-                ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
+                ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(citySumPos, radius));
                 while (loop.Next())
                 {
                     SumTile4_4 t = DssRef.world.tileGrid.Get(loop.Position);
-                    if (t.IsLand())
+                    if (t.IsFullTile)
                     {
-                        armySpawnTilePos = loop.Position;
-                        return loop.Position;
+                        armySpawnMapTilePos = WP.SumTileToMaptile(loop.Position);
+                        return armySpawnMapTilePos;
                     }
                 }
             }
-            */
+            
             //Debug.LogError("GetFreeTile" + maptilePos.ToString());
             return maptilePos;
         }
@@ -548,12 +551,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write(Debug.Byte_OrCrash(workHutStyle));
 
-            w.Write(Debug.Byte_OrCrash(neighborCitiesCount));
-            EcsStaticArrayCounter neighbors = CityNeighbors();
-            while (neighbors.Next(out int nCityIx))
-            {
-                w.Write(Debug.Ushort_OrCrash(nCityIx));
-            }
+            //w.Write(Debug.Byte_OrCrash(neighborCitiesCount));
+            //EcsStaticArrayCounter neighbors = CityNeighbors();
+            //while (neighbors.Next(out int nCityIx))
+            //{
+            //    w.Write(Debug.Ushort_OrCrash(nCityIx));
+            //}
 
             w.Write(Debug.Byte_OrCrash((int)cityCulture));
             w.Write(Debug.Byte_OrCrash((int)cityBiome));
@@ -579,13 +582,13 @@ namespace VikingEngine.DSSWars.GameObject
 
             workHutStyle = r.ReadByte();
 
-            neighborCitiesCount = 0;
-            int readNeighborCities = r.ReadByte();
-            for (int i = 0; i < readNeighborCities; i++)
-            {
-                int cityIx = r.ReadUInt16();
-                world.neighborCities.Add(myIndex, ref neighborCitiesCount, cityIx);
-            }
+            //neighborCitiesCount = 0;
+            //int readNeighborCities = r.ReadByte();
+            //for (int i = 0; i < readNeighborCities; i++)
+            //{
+            //    int cityIx = r.ReadUInt16();
+            //    world.neighborCities.Add(myIndex, ref neighborCitiesCount, cityIx);
+            //}
             
 
             cityCulture = (CityCulture)r.ReadByte();
@@ -4024,53 +4027,92 @@ namespace VikingEngine.DSSWars.GameObject
             Data.Culture.CultureToolTip(content, cityCulture);
         }
 
-        public void AddNeighborCity(WorldData world, int nCityIndex)
-        {
-            if (nCityIndex >= 0)
-            {
-                world.neighborCities.Add(myIndex, ref neighborCitiesCount, nCityIndex, true); 
-            }
-        }
+        //public void AddNeighborCity(WorldData world, int nCityIndex)
+        //{
+        //    if (nCityIndex >= 0)
+        //    {
+        //        world.neighborCities.Add(myIndex, ref neighborCitiesCount, nCityIndex, true); 
+        //    }
+        //}
        
         public static City Get(int index)
         {
             return DssRef.world.cities[index];
         }
 
+        static ConcurrentStack<CityCollection> CityCollection_Pool = new ConcurrentStack<CityCollection>();
+
+        /// <remarks>
+        /// Remember return to pool!
+        /// </remarks>
+        public CityCollection Neighbors()
+        {
+            CityCollection result;
+            if (!CityCollection_Pool.TryPop(out result))
+            {
+                result = new CityCollection();
+            }
+            DssRef.world.unitCollAreaGrid.CollectNeighborCities(this, result);
+            return result;
+        }
+
+        public static void ReturnToPool(CityCollection cityCollection)
+        {
+            if (CityCollection_Pool.Count < 4)
+            {
+                CityCollection_Pool.Push(cityCollection);
+            }
+        }
+
+
         public void SetNeighborToPlayer()
         {
             //Faction faction = pfaction.GetFaction();
 
-            EcsStaticArrayCounter neighbors = CityNeighbors();
-            while (neighbors.Next(DssRef.world.cities, out City nCity))//
+            //EcsStaticArrayCounter neighbors = CityNeighbors();
+            //while (neighbors.Next(DssRef.world.cities, out City nCity))//
+            //{
+            CityCollection ncoll = Neighbors();
             {
-                //var cFaction = nCity.GetFaction();
-                if (pfaction != nCity.pfaction && nCity.pfaction.TryGetAiPlayer(out var ncPlayer))// cFaction.player is Players.AiPlayer)
+                foreach (var pnCity in ncoll.list)
                 {
-                    ncPlayer.IsPlayerNeighbor = true;
+                    City nCity = pnCity.City();
+                    //var cFaction = nCity.GetFaction();
+                    if (pfaction != nCity.pfaction && nCity.pfaction.TryGetAiPlayer(out var ncPlayer))// cFaction.player is Players.AiPlayer)
+                    {
+                        ncPlayer.IsPlayerNeighbor = true;
+                    }
                 }
             }
+            ReturnToPool(ncoll);
         }
 
-        public EcsStaticArrayCounter CityNeighbors()
-        { 
-            return new EcsStaticArrayCounter(DssRef.world.neighborCities, myIndex, neighborCitiesCount);
-        }
+        //public EcsStaticArrayCounter CityNeighbors()
+        //{ 
+        //    return new EcsStaticArrayCounter(DssRef.world.neighborCities, myIndex, neighborCitiesCount);
+        //}
 
         public bool HasPlayerNeighbor()
         {
-            Faction faction = pfaction.GetFaction();
+            //Faction faction = pfaction.GetFaction();
 
-            EcsStaticArrayCounter neighbors = CityNeighbors();
+            //EcsStaticArrayCounter neighbors = CityNeighbors();
 
-            while(neighbors.Next(DssRef.world.cities, out City nCity))
+            //while(neighbors.Next(DssRef.world.cities, out City nCity))
+            CityCollection ncoll = Neighbors();
+
+            foreach (var pnCity in ncoll.list)
             {
-                var cFaction = nCity.pfaction.GetFaction();
-                if (cFaction != null && cFaction != faction && cFaction.player.IsPlayerNeighbor)
+                City nCity = pnCity.City();
+                //var cFaction = nCity.pfaction.GetFaction();
+                if (nCity.pfaction != pfaction && nCity.pfaction.TryGetHumanPlayer(out _))
                 {
+                    ReturnToPool(ncoll);
                     return true;
                 }
             }
+
+            ReturnToPool(ncoll);
             return false;
         }
 

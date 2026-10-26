@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
         MessageGroup_Editor messages;
         public MapEditor3_Tool tool;
         bool loadingState = false;
-        public Map2Generator generator = new Map2Generator();
+        public IconMapGenerator generator = new IconMapGenerator();
         
         public MapTextureDisplay map;
         //public bool iconState = true;
@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 
             if (revertWorld != null)
             {
-                var mapBuilder = new Map2Builder();
+                var mapBuilder = new IconMapConverter();
                 generator.iconWorld = mapBuilder.ConvertBackToIcon(revertWorld);
                 generator.currentPass = Map2Pass.IconCities;
 

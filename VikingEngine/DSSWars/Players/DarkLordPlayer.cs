@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
@@ -174,29 +175,37 @@ namespace VikingEngine.DSSWars.Players
                 var city = pfaction.GetFaction().cities.GetRandom(Ref.rnd, DssRef.world.cities);
                 if (city != null)
                 {
-                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    CityCollection ncoll = city.Neighbors();
                     {
-                        var nFaction = nCity.pfaction.GetFaction();
-                        if (nFaction != null &&
-                            nFaction != pfaction.GetFaction() &&
-                            nFaction.diplomaticSide != DiplomaticSide.Light &&
-                            !DssRef.world.diplomacy.PositiveRelationWithPlayer(nFaction))
+                        //    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                        //{
+                        foreach (var pnCity in ncoll.list)
                         {
-                            if (servantFactions == null)
+                            City nCity = pnCity.City();
+                            var nFaction = nCity.pfaction.GetFaction();
+                            if (nFaction != null &&
+                                nFaction != pfaction.GetFaction() &&
+                                nFaction.diplomaticSide != DiplomaticSide.Light &&
+                                !DssRef.world.diplomacy.PositiveRelationWithPlayer(nFaction))
                             {
-                                servantFactions = new List<PFaction>(8);
-                            }
-
-                            lock (servantFactions)
-                            {
-                                if (!servantFactions.Contains(nFaction.pfaction))
+                                if (servantFactions == null)
                                 {
-                                    servantFactions.Add(nFaction.pfaction);
+                                    servantFactions = new List<PFaction>(8);
+                                }
+
+                                lock (servantFactions)
+                                {
+                                    if (!servantFactions.Contains(nFaction.pfaction))
+                                    {
+                                        servantFactions.Add(nFaction.pfaction);
+                                    }
                                 }
                             }
                         }
+
                     }
+                    City.ReturnToPool(ncoll);
                 }
             }
         }

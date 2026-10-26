@@ -363,7 +363,7 @@ namespace VikingEngine.DSSWars.Players
 
                                 if (rectangleBound.vectorRect.SideLength() > 1f)
                                 {
-                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToSumTilePos(topLeft), WP.ToSumTilePos(bottomRight), player.pfaction);
+                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToMapTilePos(topLeft), WP.ToMapTilePos(bottomRight), player.pfaction);
 
                                     if (Input.Keyboard.Ctrl)
                                     {
@@ -396,7 +396,7 @@ namespace VikingEngine.DSSWars.Players
                         case MapDetailLayerType.Layer1_Near:
                             {
                                 var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearGroups_Rectangle(
-                                    WP.ToSumTilePos(topLeft), WP.ToSumTilePos(bottomRight), player.pfaction, rectangleBound);
+                                    WP.ToMapTilePos(topLeft), WP.ToMapTilePos(bottomRight), player.pfaction, rectangleBound);
 
                                 if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.DetailCollection)
                                 {

@@ -750,6 +750,34 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
             grid.Get(areaPos).cities.Add(city.Pointer());
         }
 
+        public void CollectNeighborCities(City toCity, CityCollection cities)
+        {
+            cities.hash.Clear();
+            cities.list.Clear();
+
+            cities.hash.Add(toCity.myIndex);
+
+            IntVector2 areaPos = toCity.maptilePos / UnitGridSquareWidth;
+            Rectangle2 cityarea = Rectangle2.FromCenterTileAndRadius(areaPos, 4);
+            cityarea.SetBounds(grid.Area);
+
+            ForXYLoop loop = new ForXYLoop(cityarea);
+            while (loop.Next())
+            {
+                var area = grid.Get(loop.Position);
+                lock (area.cities)
+                {
+                    foreach (var c in area.cities)
+                    {
+                        if (!cities.hash.Contains(c.cityIndex))
+                        {
+                            cities.hash.Add(c.cityIndex);
+                            cities.list.Add(c);
+                        }
+                    }
+                }
+            }
+        }
 
         public City closestCity(IntVector2 tilePos)
         {
@@ -970,5 +998,10 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         }
     }
 
+    class CityCollection
+    {
+        public HashSet<int> hash = new HashSet<int>(16);
+        public List<PCity> list = new List<PCity>(16);
+    }
 
 }

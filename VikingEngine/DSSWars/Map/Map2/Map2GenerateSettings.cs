@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public int minCitySpacing = 32;
 
-        public int secondaryCitySpacing = 8;
+        public int secondaryCitySpacing = 10;
 
         public bool CustomSizeProperty(object tag, bool set, bool value)
         {

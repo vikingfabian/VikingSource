@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -10,6 +11,7 @@ using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.LootFest.Map;
 using VikingEngine.PJ.Moba.GO;
 using VikingEngine.ToGG.Commander.UnitsData;
 
@@ -163,9 +165,7 @@ namespace VikingEngine.DSSWars.GameObject
                 PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * myIndex);
 
                 List<IntVector2> emptyGeneral = new List<IntVector2>();
-                Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, out IntVector2 startSubTilePos);
-
-                IntVector2 topleft = maptilePos + startSubTilePos;
+                Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, maptilePos, out IntVector2 topleft);
 
                 CityTypeSetup setup = new CityTypeSetup(this.cityType);
               
@@ -302,5 +302,23 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+
+        public void cleanOutCityTerrain()
+        {
+            const int Radius = 20;
+            const int CleanRadius = Radius - 8;
+
+            ForXYLoop loop = new ForXYLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, Radius));
+            while (loop.Next())
+            {
+                float r = (maptilePos - loop.Position).Length();
+                if (r < CleanRadius || (r < Radius && Ref.rnd.Chance(0.6)))
+                {
+                    ref var tile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
+                    tile.SetType(TerrainMainType.Destroyed, 0, 1);
+                }
+
+            }
+        }
     }
 }

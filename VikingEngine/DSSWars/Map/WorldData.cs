@@ -205,7 +205,8 @@ namespace VikingEngine.DSSWars
                 {
                     try
                     {
-                        CityMapClaim2.CityClaim(city);
+                        //city.NewCitySetup(this, null);
+                        //CityMapClaim2.CityClaim(city);
                     }
                     catch (Exception ex)
                     {
@@ -603,7 +604,7 @@ namespace VikingEngine.DSSWars
             tilePos.writeUshort(w);
 
             var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
-            area.SetTileBounds(DssRef.world.maptileBounds);
+            area.SetBounds(DssRef.world.maptileBounds);
             ForXYLoop loop = new ForXYLoop(area);
 
             SumTile4_4 previous = new SumTile4_4();
@@ -633,7 +634,7 @@ namespace VikingEngine.DSSWars
             IntVector2 tilePos = IntVector2.FromReadUshort(r);
 
             var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
-            area.SetTileBounds(DssRef.world.maptileBounds);
+            area.SetBounds(DssRef.world.maptileBounds);
             ForXYLoop loop = new ForXYLoop(area);
             SumTile4_4 previous = new SumTile4_4();
             while (loop.Next())

@@ -11,7 +11,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
 {
     static class CityMapClaim2
     {
-        const int ClaimRadius_Campsite = 8;
+        const int ClaimRadius_Campsite = 10;
         const int ClaimRadius_Village = ClaimRadius_Campsite +2;
         const int ClaimRadius_Town = ClaimRadius_Village +2;
         const int ClaimRadius_Capital = ClaimRadius_Town + 2;

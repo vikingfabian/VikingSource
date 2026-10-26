@@ -443,6 +443,11 @@ namespace VikingEngine.DSSWars.Map.MapData
                 result.land *= ground.moveCost;
                 result.badMountTerrain |= ground.badMountTerrain;
                 result.natureTerrain |= groundType == GroundType.Rootmat;
+
+                if (heightValue >= MapHeight2.MountainStarHeight)
+                {
+                    result.land += (1 + heightValue - MapHeight2.MountainStarHeight) * 0.5f;
+                }
             }
             return result;
         }

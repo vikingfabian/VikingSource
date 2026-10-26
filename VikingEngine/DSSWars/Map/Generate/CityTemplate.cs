@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             fallbackTemplate = new CityTemplate_Fallback();
         }
 
-        public Grid2D<CityTemplateCellType> getTemplate(City city, WorldData world, out IntVector2 startSubTilePos)
+        public Grid2D<CityTemplateCellType> getTemplate(City city, WorldData world, IntVector2 startSubTilePos, out IntVector2 posAdjusted)
         {
             List<CityTemplate_Default> templates = new List<CityTemplate_Default>(cityTemplates.Count);
             templates.AddRange(cityTemplates);
@@ -82,38 +82,38 @@ namespace VikingEngine.DSSWars.Map.Generate
                 CityTemplate_Default t = arraylib.RandomListMemberPop( templates, world.rnd );
                 if (t.followsRequirements(city.maptilePos, out int rotation, world))
                 { 
-                    return t.Get(rotation, out startSubTilePos);
+                    return t.Get(rotation, startSubTilePos, out posAdjusted);
                 }                
             }
 
-            return fallbackTemplate.Get(0, out startSubTilePos);
+            return fallbackTemplate.Get(0, startSubTilePos, out posAdjusted);
         }
     }
 
     class CityTemplate_Default
     {
-        IntVector2 startSubTilePos = IntVector2.Zero;
+        //IntVector2 startSubTilePos = IntVector2.Zero;
         public IntVector2 cityHallPos;
         protected bool requireDryLand;
         protected bool requireWater;
 
         Grid2D<CityTemplateCellType>[] gridRotations = new Grid2D<CityTemplateCellType>[4];
 
-        public Grid2D<CityTemplateCellType> Get(int templateRotation, out IntVector2 startSubTilePos)
+        public Grid2D<CityTemplateCellType> Get(int templateRotation,  IntVector2 startSubTilePos, out IntVector2 posAdjusted)
         { 
-            startSubTilePos = this.startSubTilePos;
+            //startSubTilePos = this.startSubTilePos;
            
-            startSubTilePos -= gridRotations[0].RotateGridPosition(cityHallPos, templateRotation);
+            posAdjusted = startSubTilePos - gridRotations[0].RotateGridPosition(cityHallPos, templateRotation);
             return gridRotations[templateRotation];
         }
         public void Init(IntVector2 startSubTilePos, string[] template, bool requireDryLand)
         {
-            this.startSubTilePos = startSubTilePos;
+            //this.startSubTilePos = startSubTilePos;
             this.requireDryLand = requireDryLand;
             requireWater = false;
             int hallCount = 0, centerSquareCount = 0, craftCount = 0;
 
-            this.startSubTilePos = startSubTilePos;
+            //this.startSubTilePos = startSubTilePos;
             int width = template[0].Length;
 
             Grid2D<CityTemplateCellType> grid = new Grid2D<CityTemplateCellType>(new IntVector2(width, template.Length));

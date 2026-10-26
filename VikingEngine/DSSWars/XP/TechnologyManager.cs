@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -53,37 +55,43 @@ namespace VikingEngine.DSSWars.XP
                 {
                     if (citiesC.sel.IsNetHosted)
                     {
-                        if (citiesC.sel.debugTagged || citiesC.sel.myIndex == 192)
+                        //if (citiesC.sel.debugTagged || citiesC.sel.myIndex == 192)
+                        //{
+                        //    lib.DoNothing();
+                        //}
+                        CityCollection ncoll = citiesC.sel.Neighbors();
                         {
-                            lib.DoNothing();
-                        }
-                        EcsStaticArrayCounter neighbors = citiesC.sel.CityNeighbors();
-                        while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var ni in city.neighborCities)
-                        {
-                            
-                            //var nCity = DssRef.world.cities[ni];
-                            if (citiesC.sel.pfaction == nCity.pfaction)
+                            //    EcsStaticArrayCounter neighbors = citiesC.sel.CityNeighbors();
+                            //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var ni in city.neighborCities)
+                            //{
+                            foreach (var pnCity in ncoll.list)
                             {
-                                TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
-                                //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
-                            }
-                            else
-                            {
-                                switch (DssRef.world.diplomacy.GetRelation(citiesC.sel.pfaction, nCity.pfaction).Relation)
+                                City nCity = pnCity.City();
+                                //var nCity = DssRef.world.cities[ni];
+                                if (citiesC.sel.pfaction == nCity.pfaction)
                                 {
-                                    case RelationType.RelationType2_Good:
-                                        TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
+                                    TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
+                                    //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
+                                }
+                                else
+                                {
+                                    switch (DssRef.world.diplomacy.GetRelation(citiesC.sel.pfaction, nCity.pfaction).Relation)
+                                    {
+                                        case RelationType.RelationType2_Good:
+                                            TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
 
-                                        //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
-                                        break;
-                                    case RelationType.RelationType3_Ally:
-                                        TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
+                                            //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
+                                            break;
+                                        case RelationType.RelationType3_Ally:
+                                            TechnologyTemplate.GainTechSpread(citiesC.sel, nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin, TechnologyGainReason.FactionToFactionSpread);
 
-                                        //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
-                                        break;
+                                            //city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
+                                            break;
+                                    }
                                 }
                             }
                         }
+                        City.ReturnToPool(ncoll);
                     }
                 }
             }

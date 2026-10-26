@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         TimeStamp abortCompleteTime;
 
 
-        public Map2.Map2Generator dataGenerate = null;
+        public Map2.IconMapGenerator dataGenerate = null;
         Map2PostGenerate postGenerate = null;
         //GenerateMap postGenerate;
         int failCount = 0;
@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public MapBackgroundLoading()
         { }
 
-        public MapBackgroundLoading(Map2.Map2Generator generator)
+        public MapBackgroundLoading(Map2.IconMapGenerator generator)
         {
             this.generateSettings = generator.generateSettings;
             dataGenerate = generator;
@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             //generatePass == GenerateMapPass.Clear ||
                             //generatePass == GenerateMapPass.AllTerrain)
                         {
-                            dataGenerate = new Map2.Map2Generator();
+                            dataGenerate = new Map2.IconMapGenerator();
                         }
 
                         WorldMetaData worldmeta;

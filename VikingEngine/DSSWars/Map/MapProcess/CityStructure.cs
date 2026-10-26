@@ -305,8 +305,8 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     sumTile.pcity.cityIndex == city.myIndex &&
                     mapTile.IsLand())
                 {
-                    topleft = WP.ToSubTilePos_TopLeft(loop.Position);
-                    subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
+                    topleft = WP.SumTileToMaptile(loop.Position);
+                    subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.SumTile4_4.TileWidth);
 
                     while (subTileLoop.Next())
                     {
