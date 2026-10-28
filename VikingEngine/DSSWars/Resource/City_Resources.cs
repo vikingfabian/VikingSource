@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case ItemResourceType.Gold:
                         int amount;
-                        if (DssRef.storage.ruleset_instance.module_centralGold)
+                        if (DssRef.storage.ruleset_instance.module_physicalGold)
                         {
                             var faction = pfaction.GetFaction();
                             if (faction != null)
@@ -380,16 +380,16 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (type)
             {
-                case ItemResourceType.RawFood_Group:
+                case ItemResourceType.RawFood_G:
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
                     return needMore(CityResourceIndex.rawFood);
 
-                case ItemResourceType.Wood_Group:
+                case ItemResourceType.Wood_G:
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
-                    return needMore(CityResourceIndex.wood);
+                    return needMore(CityResourceIndex.wood) || needMore(CityResourceIndex.FineWood);
 
                 case ItemResourceType.NONE:
                     return false;
@@ -411,7 +411,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             AddGroupedResource(itemResourceType, -carry);
             
-            return new ItemResource(itemResourceType,/* 1, payment,*/ carry);
+            return new ItemResource(itemResourceType, carry);
         }
 
         public void dropOffItem(ItemResource item, out ItemResource convert1, out ItemResource convert2)
@@ -422,9 +422,37 @@ namespace VikingEngine.DSSWars.GameObject
             switch (item.type)
             {
                 case ItemResourceType.DryWood:
+                    {
+                        //count around 30
+                        const double FineWoodPerc = 0.5;
+
+                        convert1.type = ItemResourceType.Wood_G;
+                        convert2.type = ItemResourceType.FineWood_G;
+                        convert2.amount = (ushort)(convert1.amount * FineWoodPerc);
+                        convert1.amount -= convert2.amount;
+                    }
+                    break;
                 case ItemResourceType.SoftWood:
+                    {
+                        //count around 30
+                        const double FineWoodPerc = 0.2;
+
+                        convert1.type = ItemResourceType.Wood_G;
+                        convert2.type = ItemResourceType.FineWood_G;
+                        convert2.amount = (ushort)(convert1.amount * FineWoodPerc);
+                        convert1.amount -= convert2.amount;
+                    }
+                    break;
                 case  ItemResourceType.HardWood:
-                    convert1.type = ItemResourceType.Wood_Group;
+                    {
+                        //count around 30
+                        const double FineWoodPerc = 0.8;
+
+                        convert1.type = ItemResourceType.Wood_G;
+                        convert2.type = ItemResourceType.FineWood_G;
+                        convert2.amount = (ushort)(convert1.amount * FineWoodPerc);
+                        convert1.amount -= convert2.amount;
+                    }
                     break;
                 
                 case ItemResourceType.Coal:
@@ -432,41 +460,27 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 case ItemResourceType.Wheat:
-                    convert1.type = ItemResourceType.RawFood_Group;
-                    //convert1.amount = DssConst.WheatFoodAmount;
+                    convert1.type = ItemResourceType.RawFood_G;
                     break;
 
-                case ItemResourceType.Egg:                                   
-                //case ItemResourceType.Hen:
-                    convert1.type = ItemResourceType.RawFood_Group;
+                case ItemResourceType.Egg:
+                    convert1.type = ItemResourceType.RawFood_G;
                     convert1.amount = (ushort)DssConst.HenRawFoodAmout;
-                    //animalResourceBonus(ref item);
                     break;
-
-                //case ItemResourceType.Pig:
-                //    convert1.type = ItemResourceType.RawFood_Group;
-                //    convert1.amount = DssConst.PigRawFoodAmout;
-                //    //animalResourceBonus(ref item);
-
-                //    convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, DssConst.PigSkinAmount);
-                //    break;
 
                 case ItemResourceType.Linen:
-                    convert1.type = ItemResourceType.SkinLinen_Group;
-                    //convert1.amount = DssConst.LinenHarvestAmount;
+                    convert1.type = ItemResourceType.SkinLinen_G;
                     break;
 
                 case ItemResourceType.Rapeseed:
                     convert1.type = ItemResourceType.Fuel_G;
-                    //convert1.amount = DssConst.RapeSeedFuelAmount;
                     break;
 
                 case ItemResourceType.Hemp:
-                    convert1.type = ItemResourceType.SkinLinen_Group;
-                    //convert1.amount = DssConst.HempLinenAndFuelAmount;
+                    convert1.type = ItemResourceType.SkinLinen_G;
 
                     convert2.type = ItemResourceType.Fuel_G;
-                    convert2.amount = convert1.amount;//DssConst.HempLinenAndFuelAmount;
+                    convert2.amount = convert1.amount;
                     break;
 
                

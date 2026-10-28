@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             mapObj = city;
             secondMenuContent = null;
 
-            if (!DssRef.storage.ruleset_instance.module_centralGold)
+            if (!DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));
@@ -987,8 +987,9 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                     //bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 
-                    city.GetGroupedResource(CityResourceIndex.wood).toMenu(content, ItemResourceType.Wood_Group, ref reachedBuffer, player, city);//New solution
-                    
+                    city.GetGroupedResource(CityResourceIndex.wood).toMenu(content, ItemResourceType.Wood_G, ref reachedBuffer, player, city);//New solution
+                    city.GetGroupedResource(CityResourceIndex.FineWood).toMenu(content, ItemResourceType.FineWood_G, ref reachedBuffer, player, city);//New solution
+
                     city.GetGroupedResource(CityResourceIndex.fuel).toMenu(content, ItemResourceType.Fuel_G, ref reachedBuffer, player, city);
                     int totalmines = 0;
                     city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.MapData.MapTile1_1.Empty, ref totalmines);
@@ -1001,40 +1002,29 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     city.GetGroupedResource(CityResourceIndex.Brick).toMenu(content, ItemResourceType.Brick, ref reachedBuffer, player, city);// Replace "res_stone", and continue with the rest
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ClayBrick);
 
-                    city.GetGroupedResource(CityResourceIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_Group, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResourceIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_G, ref reachedBuffer, player, city);
 
                     content.newParagraph();
 
-                    city.GetGroupedResource(CityResourceIndex.rawFood).toMenu(content, ItemResourceType.RawFood_Group, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResourceIndex.Meat).toMenu(content, ItemResourceType.Meat, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResourceIndex.rawFood).toMenu(content, ItemResourceType.RawFood_G, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResourceIndex.Salt).toMenu(content, ItemResourceType.Salt, ref reachedBuffer, player, city);
-                    
 
-                    city.GetGroupedResource(CityResourceIndex.food).toMenu(content, ItemResourceType.Food_G, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
-                    content.space();
+                    if (DssRef.storage.ruleset_instance.module_foodAndWater)
+                    {
+                        city.GetGroupedResource(CityResourceIndex.food).toMenu(content, ItemResourceType.Food_G, ref reachedBuffer, player, city);
+                        HudLib.blueprintButton(city, player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
+                        content.space();
 
-                    //content.Add(new ArtToggle(city.res_food_safeguard, new List<AbsRichBoxMember> {
-                    //        new RbImage(city.res_food_safeguard? SpriteName.WarsProtectedStockpileOn : SpriteName.WarsProtectedStockpileOff, 0.7f),
-                    //    },
-                    //new RbAction(() =>
-                    //{
-                    //    city.res_food_safeguard = !city.res_food_safeguard;
-                    //}),
-                    //new RbTooltip((RichBoxContent content, object tag) =>
-                    //{
-                    //    content.text(string.Format(DssRef.lang.Resource_FoodSafeGuard_Description, DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
-                    //    content.text(city.res_food_safeguard ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off);
-                    //})));
+                        city.GetGroupedResource(CityResourceIndex.ConservedFood).toMenu(content, ItemResourceType.ConservedFood, ref reachedBuffer, player, city);
+                        HudLib.blueprintButton(city, player, content, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked);
 
-                    city.GetGroupedResource(CityResourceIndex.ConservedFood).toMenu(content, ItemResourceType.ConservedFood, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked);
+                        city.GetGroupedResource(CityResourceIndex.beer).toMenu(content, ItemResourceType.Beer, ref reachedBuffer, player, city);
+                        HudLib.blueprintButton(city, player, content, CraftResourceLib.Beer);
 
-                    city.GetGroupedResource(CityResourceIndex.beer).toMenu(content, ItemResourceType.Beer, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Beer);
-
-                    city.GetGroupedResource(CityResourceIndex.coolingfluid).toMenu(content, ItemResourceType.CoolingFluid, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.CoolingFluid);
-                    
+                        city.GetGroupedResource(CityResourceIndex.coolingfluid).toMenu(content, ItemResourceType.CoolingFluid, ref reachedBuffer, player, city);
+                        HudLib.blueprintButton(city, player, content, CraftResourceLib.CoolingFluid);
+                    }
 
                     
 

@@ -417,7 +417,7 @@ namespace VikingEngine.DSSWars.Data
             MapObjectTag.Tag_Faction = (ushort)iconRegister[SpriteName.WarsGovernmentIcon];
 
             MapObjectTag.Tag_ItemResourceTypeFood = (ushort)itemRegister[ItemResourceType.Food_G];
-            MapObjectTag.Tag_ItemResourceTypeRawFood = (ushort)itemRegister[ItemResourceType.RawFood_Group];
+            MapObjectTag.Tag_ItemResourceTypeRawFood = (ushort)itemRegister[ItemResourceType.RawFood_G];
             MapObjectTag.Tag_ItemResourceTypeBow = (ushort)itemRegister[ItemResourceType.Bow];
             MapObjectTag.Tag_ItemResourceTypeLongBow = (ushort)itemRegister[ItemResourceType.LongBow];
             MapObjectTag.Tag_ItemResourceTypeMithrilBow = (ushort)itemRegister[ItemResourceType.MithrilBow];

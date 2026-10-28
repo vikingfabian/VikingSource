@@ -1190,20 +1190,20 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.WheatFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                    farmHud(false, new ItemResource(ItemResourceType.RawFood_G, DssConst.WheatFoodAmount), ItemResource.Empty);
                     break;
                 case BuildAndExpandType.WheatFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                    farmHud(true, new ItemResource(ItemResourceType.RawFood_G, DssConst.WheatFoodAmount), ItemResource.Empty);
 
                     break;
 
                 case BuildAndExpandType.LinenFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+                    farmHud(false, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.LinenHarvestAmount), ItemResource.Empty);
 
                     break;
 
                 case BuildAndExpandType.LinenFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.LinenHarvestAmount), ItemResource.Empty);
                     break;
 
                 case BuildAndExpandType.RapeSeedFarm:
@@ -1215,11 +1215,11 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.HempFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount));
+                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_G, DssConst.HempLinenAndFuelAmount));
                     break;
 
                 case BuildAndExpandType.HempFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
+                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
                     break;
 
                 case BuildAndExpandType.TrapperHut:

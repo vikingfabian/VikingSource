@@ -39,9 +39,6 @@ namespace VikingEngine.DSSWars.EntityComponent
         /// </summary>
         public ushort stockPileLimit;
 
-
-
-
         public ushort deliverCount;
 
 
@@ -60,6 +57,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         {
             stockPileLimit = DssConst.StorageStartSize;
             useStockLimit = false;
+            requestDelivery = true;
         }
 
         public void reserve(int count)

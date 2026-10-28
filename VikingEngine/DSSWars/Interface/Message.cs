@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Interface
 
         bool highEconomyWarningBlock()
         { 
-            return DssRef.storage.ruleset_instance.module_centralGold && player.pfaction.GetFaction().money.GetGold() > DssConst.Gold_RichStatus;
+            return DssRef.storage.ruleset_instance.module_physicalGold && player.pfaction.GetFaction().money.GetGold() > DssConst.Gold_RichStatus;
         }
 
         public void blockFoodWarning(bool block)

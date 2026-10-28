@@ -59,6 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float food = 0;
         public float conservedFood = 0;
         public SoldierUpkeep totalUpkeep = new SoldierUpkeep();
+        public int armySupplyUse = 0;
         public int missingUpkeepSeconds = 0;
         public float foodBuffer_minutes = 2f;
 
@@ -930,29 +931,6 @@ namespace VikingEngine.DSSWars.GameObject
             return half;
         }
 
-
-        //public void refreshPositionsFor(ArmyPlacement armyPlacement, ref IntVector2 nextGroupPlacementIndex, int groupsWidth, bool onPurchase)
-        //{
-        //    var groupsC = groups.counter();
-
-        //    while (groupsC.Next())
-        //    {
-        //        var soldier = groupsC.sel.FirstSoldier();
-        //        if (soldier != null)
-        //        {
-        //            if (soldier.soldierData.ArmyFrontToBackPlacement == armyPlacement)
-        //            {
-        //                IntVector2 result = nextGroupPlacementIndex;
-        //                result.X = TogglePlacementX(nextGroupPlacementIndex.X);// PlacementX[result.X];
-
-        //                nextGroupPlacementIndex.Grindex_Next(groupsWidth);
-        //                groupsC.sel.SetArmyPlacement(result, onPurchase); //behöver en wake up alert
-                                                                          
-        //            }
-        //        }
-        //    }
-        //}
-
         public override void setInRenderState()
         {              
             if (inRender_overviewLayer)
@@ -994,18 +972,14 @@ namespace VikingEngine.DSSWars.GameObject
                 double speedbonus = 0;
                 float totalStrength = 0;
                 float totalMobility = 0;
+                int totalSupply = 0;
                 FindMinValue lowestMobility = new FindMinValue(false);
 
-                //int dps;
                 bool allGropsAreIdle = true;
 
                 Vector2 minpos = VectorExt.V2Max;
                 Vector2 maxpos = VectorExt.V2Min;
 
-                //if (DssRef.world.subTileGrid.TryGet(maptilePos, out Map.MapData.MapTile1_1 tile))
-                //{
-                //    terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
-                //}
                 terrainSpeedMultiplier = DssRef.world.TerrainSpeedMultiplier(maptilePos, isShip);
 
                 var groupsC = groups.counter();
@@ -1013,30 +987,21 @@ namespace VikingEngine.DSSWars.GameObject
                 while (groupsC.Next())
                 {
                     count += groupsC.sel.soldierCount;
-                    //groupsC.sel.setBattleWalkingSpeed();
 
                     allGropsAreIdle &= groupsC.sel.HasIdleState();
-                    //int health;
+                    
 
                     if (groupsC.sel.isShip)
                     {
                         ++shipCount;
-                        //dps = groupsC.sel.soldierData.DPS_sea();
-
                         
                         speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);
                         groupsC.sel.walkSpeed_peace = transportSpeedSea;
-                        
-                        //TODO ship health
-                        //health = groupsC.sel.soldierData.basehealth;
                     }
                     else
                     {
-                        //dps = groupsC.sel.soldierData.DPS_land();
                         speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);
                         groupsC.sel.walkSpeed_peace = transportSpeedLand;
-
-                        //health = groupsC.sel.soldierData.basehealth;
                     }
 
                     if (groupsC.sel.position.X < minpos.X)
@@ -1061,19 +1026,14 @@ namespace VikingEngine.DSSWars.GameObject
                     float mobility = groupsC.sel.mobilityValue();
                     totalMobility += mobility;
                     lowestMobility.Next(mobility);
+                    totalSupply += AllUnits.GroupSupply(groupsC.sel.soldierCount, ref groupsC.sel.soldierData);
                 }
 
                 army_isIdle = allGropsAreIdle && IdleObjetive();
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 soldiersCount = count;
-                //if (soldiersCount <= 0)
-                //{
-                //    lib.DoNothing();
-                //}
-
-                //Endbart ändra när arme är i rörelse, måste följa center person
-                //tilePos = WP.ToTilePos(position);
+               
                 speedbonus /= groups.Count;
                 if (speedbonus < 0)
                 {
@@ -1083,7 +1043,8 @@ namespace VikingEngine.DSSWars.GameObject
                 transportSpeedLand = Convert.ToSingle(DssConst.Men_StandardWalkingSpeed * speedbonus);
                 transportSpeedSea = Convert.ToSingle(DssConst.Men_StandardShipSpeed * speedbonus);
 
-                strengthValue = totalStrength; // AllUnits.AverageGroupStrength;
+                strengthValue = totalStrength; 
+                armySupplyUse = totalSupply;
                 if (strengthValue > DssRef.state.strongestArmy_processing)
                 {
                     DssRef.state.strongestArmy_processing = strengthValue;
@@ -1125,11 +1086,11 @@ namespace VikingEngine.DSSWars.GameObject
                     foodCosts_blackmarket.minuteUpdate();
                 }
 
-                if (!DssRef.storage.ruleset_instance.module_centralGold && time > 0)
+                if (!DssRef.storage.ruleset_instance.module_physicalGold && time > 0)
                 {
-                    var onCity = DssRef.world.tileGrid.Get(maptilePos).pcity.City();
+                    var onCity = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(maptilePos)).pcity.City();
 
-                    if (onCity.pfaction == pfaction)
+                    if (onCity != null && onCity.pfaction == pfaction)
                     {
                         if (pfaction.TryGetFaction(out var faction))
                         {
@@ -1150,10 +1111,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            //if (this.debugTagged)
-            //{
-            //    lib.DoNothing();
-            //}
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
 
             if (DssRef.state.LocalHost().unitsPixelTexture != null)

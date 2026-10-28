@@ -2717,7 +2717,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Copper);
                     add(SpriteName.WarsResource_Gold);
                     add(SpriteName.WarsResource_Mithril);
-                    currentIndex += 5;
+                    add(SpriteName.WarsResource_WoodStock);
+                    currentIndex += 4;
                     add(SpriteName.WarsResource_SkinAndLinen);
                     currentIndex += 5;
                     add(SpriteName.WarsResource_Stone);

@@ -57,7 +57,8 @@ namespace VikingEngine.DSSWars.Resource
 
             //new ItemProperties(ItemResourceType.Wood_Group, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.wood, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
             //new ItemProperties(ItemResourceType.Clay, CityResourceIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.ClayPit));
-            new ItemProperties(ItemResourceType.Wood_Group, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.TreeSoft));
+            new ItemProperties(ItemResourceType.Wood_G, CityResourceIndex.wood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.TreeSoft));
+            new ItemProperties(ItemResourceType.FineWood_G, CityResourceIndex.FineWood, DefaultWeight * 1.2f, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainSubFoilType.TreeHard));
             new ItemProperties(ItemResourceType.Clay, CityResourceIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.ClayPit));
 
             // basic resources
@@ -65,13 +66,13 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Brick, CityResourceIndex.Brick, 1f / CarryBricks, WorkPriorityType.craftBrick, CraftResourceLib.Brick, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(TerrainMineType.StoneBlock));
             new ItemProperties(ItemResourceType.Egg, CityResourceIndex.rawFood, 1f / 60, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Wheat, CityResourceIndex.rawFood, 1f / 10, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
-            new ItemProperties(ItemResourceType.Meat, CityResourceIndex.Meat, DefaultWeight, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.Meat, CityResourceIndex.Meat, DefaultWeight, WorkPriorityType.craftFood, null, null, StorageType.FoodStorage).AddItemSource(new ItemSource(Build.BuildAndExpandType.Butcher));
 
-            new ItemProperties(ItemResourceType.RawFood_Group, CityResourceIndex.rawFood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.FoodStorage).AddItemSource(
+            new ItemProperties(ItemResourceType.RawFood_G, CityResourceIndex.rawFood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.FoodStorage).AddItemSource(
             new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WheatFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
 
             new ItemProperties(ItemResourceType.Linen, CityResourceIndex.skinLinnen, 1f / 10, WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.SkinLinen_Group, CityResourceIndex.skinLinnen, 1f / 10, WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage).AddItemSource(
+            new ItemProperties(ItemResourceType.SkinLinen_G, CityResourceIndex.skinLinnen, 1f / 10, WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage).AddItemSource(
             new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LinenFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
             new ItemProperties(ItemResourceType.WoodContainer, CityResourceIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.PotContainer, CityResourceIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_clay, null, StorageType.NUM_NONE);

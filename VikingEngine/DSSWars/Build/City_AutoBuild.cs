@@ -796,7 +796,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 bool hasCopperRequirement(int copperRequirement)
                 {
-                    if (!DssRef.storage.ruleset_instance.module_centralGold)
+                    if (!DssRef.storage.ruleset_instance.module_physicalGold)
                     {
                         copperRequirement /= 4;
                     }

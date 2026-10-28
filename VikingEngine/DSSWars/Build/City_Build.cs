@@ -333,7 +333,7 @@ namespace VikingEngine.DSSWars.GameObject
                         case TerrainSubAnimalPenType.WarElephantCage:
                         case TerrainSubAnimalPenType.OliphantCage:
                             var upkeep = Build.BuildLib.Get(mainType, subType).upkeep;
-                            if (upkeep.type == ItemResourceType.RawFood_Group)
+                            if (upkeep.type == ItemResourceType.RawFood_G)
                             {
                                 PenFoodUpkeep_minute += lib.BoolToLeftRight(build) * upkeep.amount;
                             }

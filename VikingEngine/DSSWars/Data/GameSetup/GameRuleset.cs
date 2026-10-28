@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Data
 {
@@ -19,10 +23,12 @@ namespace VikingEngine.DSSWars.Data
         public static readonly TwoInts[] QuickBossOptions_Time_Difficulty = [new TwoInts(3, 100), new TwoInts(5, 50), new TwoInts(8, 25)];
 
         public MapScale mapSize = new MapScale(MapSizeCategory.Medium);
-        
+
+        public bool module_fogOfWar = false;
         public bool module_foodAndWater = false;
         public bool module_deptAndDeserters = false;
-        public bool module_centralGold = true;
+        public bool module_physicalGold = false;
+        public bool module_noPauseCommand = false;
 
         public FactionStartSize factionStartSize = FactionStartSize.OneCity;
         public int QuickBossTimeOption = 1;
@@ -39,8 +45,10 @@ namespace VikingEngine.DSSWars.Data
         public float manFoodUpkeep;
         public float mountFoodUpkeep;
 
+        public CityHallSetup[] CitySizeSetup = new CityHallSetup[(int)CityType.NUM];
 
-        public GameRuleset() 
+
+        public GameRuleset()
         { }
 
         public void refreshSettings()
@@ -56,9 +64,14 @@ namespace VikingEngine.DSSWars.Data
                 setting_childMulti = 1;
                 setting_craftMulti = 1;
             }
+
+            for (CityType sz = 0; sz < CityType.NUM; sz++)
+            {
+                CitySizeSetup[(int)sz] = new CityHallSetup(sz, module_foodAndWater);
+            }
         }
-            
-        
+
+
         const int Version = 5;
         public void write(System.IO.BinaryWriter w, bool storage)
         {
@@ -67,9 +80,10 @@ namespace VikingEngine.DSSWars.Data
                 w.Write(Version);
                 mapSize.write(w);
             }
+            w.Write(module_fogOfWar);
             w.Write(module_foodAndWater);
             w.Write(module_deptAndDeserters);
-            w.Write(module_centralGold);
+            w.Write(module_physicalGold);
 
             if (storage)
             {
@@ -90,48 +104,49 @@ namespace VikingEngine.DSSWars.Data
             if (storage)
             {
                 version = r.ReadInt32();
-                
+
                 mapSize.read(r);
-                
+
             }
 
             if (version < 5)
             {
                 return;
             }
+            module_fogOfWar = r.ReadBoolean();
             module_foodAndWater = r.ReadBoolean();
             module_deptAndDeserters = r.ReadBoolean();
-            module_centralGold = r.ReadBoolean();
+            module_physicalGold = r.ReadBoolean();
 
             if (storage)
             {
                 factionStartSize = (FactionStartSize)r.ReadByte();
-                
-                QuickBossTimeOption = r.ReadByte();                
+
+                QuickBossTimeOption = r.ReadByte();
             }
-            
+
             setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, FoodMultiBound);
             setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, WaterMultiBound);
-                
+
             setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, ChildMultiBound);
             setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, CraftMultiBound);
-               
+
             setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, TechMultiBound);
-            setting_techMulti_QuickMatch = r.ReadInt32();                   
-            
+            setting_techMulti_QuickMatch = r.ReadInt32();
+
 
             refreshSettings();
         }
         public void defaultGameSettings()
         {
-            mapSize = new MapScale( MapSizeCategory.Medium);
-            module_centralGold = true;
+            mapSize = new MapScale(MapSizeCategory.Medium);
+            module_physicalGold = true;
             factionStartSize = FactionStartSize.Full;
         }
         public void demoSetup()
         {
             mapSize = new MapScale(MapSizeCategory.Medium);
-            module_centralGold = true;
+            module_physicalGold = true;
             factionStartSize = FactionStartSize.Full;
         }
 
@@ -151,6 +166,23 @@ namespace VikingEngine.DSSWars.Data
             }
             return DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch ? setting_techMulti_QuickMatch : setting_techMulti;
         }
+
+        public void gameSetupToHud(RichBoxContent content)
+        {
+            content.icontext(HudLib.CheckImage(module_fogOfWar), DssRef.todoLang.Module_FogOfWar);
+            content.icontext(HudLib.CheckImage(module_foodAndWater), DssRef.todoLang.Module_FoodUpkeep);
+            content.icontext(HudLib.CheckImage(module_deptAndDeserters), DssRef.todoLang.Module_LossOfUnits);
+            content.icontext(HudLib.CheckImage(module_physicalGold), DssRef.todoLang.Module_LocalGold);
+            content.icontext(HudLib.CheckImage(module_noPauseCommand), DssRef.todoLang.Module_NoPause);
+
+            content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(setting_foodMulti)));
+            content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(setting_waterMulti)));
+            content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(setting_childMulti)));
+            content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(setting_craftMulti)));
+            content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_TechMultiplier, TechMultiProperty(null, false, 0)));
+
+        }
+
 
     }
 }

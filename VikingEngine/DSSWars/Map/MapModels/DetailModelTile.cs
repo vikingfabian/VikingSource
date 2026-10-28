@@ -228,7 +228,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                     case TerrainMainType.Road:
                                         bSurfacePolygonTexture = false;
                                         surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.3f);
-                                        createRoad((TerrainRoadType)comTile.mapTile.subTerrain, topCenter(ref comTile.mapTile, ref subTopLeft), ref surfaceSprite, ref surfaceColor);
+                                        createRoad((TerrainRoadType)comTile.mapTile.subTerrain, 
+                                            topCenter(ref comTile.mapTile, ref subTopLeft), ref surfaceSprite, ref surfaceColor);
                                         break;
                                     case TerrainMainType.Decor:
                                         surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.2f);
@@ -561,6 +562,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
         {
             //surfaceColor.Deconstruct(out byte r, out byte g, out byte b);
             //surfaceColor = new Color(r + 30, g + 30, b + 20);
+
+            wp.X += MapTile1_1.SubTileHalfWidth;
+            wp.Z += MapTile1_1.SubTileHalfWidth;
+
             surfaceSprite = SpriteName.warsFoliageDirtRoad;
             switch (type)
             {
@@ -572,8 +577,6 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     surfaceColor = SquareGroundCol;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_square, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
                     break;
-
-
                 case TerrainRoadType.PavementStreet:
                     surfaceColor = PavementGroundCol;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pavement, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1.3f));
@@ -963,6 +966,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
             switch (buildingType)
             {
+                
 
                 case TerrainBuildingType.WorkerTent:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tenthut, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 0.9f));
@@ -999,6 +1003,14 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         }
                     }
                     break;
+
+                case TerrainBuildingType.SoldiersQuarter_Small:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.2f));
+                    break;
+                case TerrainBuildingType.SoldiersQuarter_Large:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.5f));
+                    break;
+
                 case TerrainBuildingType.Tavern:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tavern, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 0.9f));
                     break;
@@ -1056,6 +1068,21 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         {
                             var flag = new FoliageModel(
                             faction, 8, wp + new Vector3(0.013f, -0.008f, 0.07f), Map.MapData.MapTile1_1.ModelScale * 1.1f);
+                            foliageModels.Add(flag);
+                        }
+                    }
+                    break;
+                case TerrainBuildingType.ExpansionHall_Lvl1:
+                case TerrainBuildingType.ExpansionHall_Lvl2:
+                case TerrainBuildingType.ExpansionHall_Lvl3:
+                    {
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 2, wp, Map.MapData.MapTile1_1.ModelScale * 0.5f));
+
+                        var faction = sumTile.pcity.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FoliageModel(
+                            faction, 8, wp + new Vector3(0.013f, -0.020f, 0.07f), Map.MapData.MapTile1_1.ModelScale * 1.1f);
                             foliageModels.Add(flag);
                         }
                     }

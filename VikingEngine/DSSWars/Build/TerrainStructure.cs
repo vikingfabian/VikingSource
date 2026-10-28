@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Build
     struct TerrainStructure
     {
         public static readonly ItemResourceType[] AllTerrainResources = {
-        ItemResourceType.Wood_Group,
+        ItemResourceType.Wood_G,
         ItemResourceType.Stone_G,
         ItemResourceType.Clay,
         ItemResourceType.Brick,
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.Build
 
             int totalCount = 0;
 
-            naturalResource(player, content, resourceCount_wood, ItemResourceType.Wood_Group, TerrainType_wood, ref totalCount);
+            naturalResource(player, content, resourceCount_wood, ItemResourceType.Wood_G, TerrainType_wood, ref totalCount);
             naturalResource(player, content, resourceCount_stone, ItemResourceType.Stone_G, TerrainType_stone, ref totalCount);
             
             naturalResource(player, content, resourceCount_clay, ItemResourceType.Clay, TerrainType_clay, ref totalCount);
@@ -250,7 +250,7 @@ namespace VikingEngine.DSSWars.Build
                     return mineCount_coal;
                 case ItemResourceType.Stone_G:
                     return resourceCount_stone;
-                case ItemResourceType.Wood_Group:
+                case ItemResourceType.Wood_G:
                     return resourceCount_wood;
 
                 case ItemResourceType.Salt:

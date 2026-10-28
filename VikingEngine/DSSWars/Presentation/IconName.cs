@@ -244,10 +244,16 @@ namespace VikingEngine.DSSWars
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
-                case ItemResourceType.Wood_Group:
+                case ItemResourceType.Wood_G:
                     itemIcon = SpriteName.WarsResource_Wood;
                     itemName = DssRef.lang.Resource_TypeName_Wood;
                     break;
+
+                case ItemResourceType.FineWood_G:
+                    itemIcon = SpriteName.WarsResource_WoodStock;
+                    itemName = DssRef.todoLang.Resource_TypeName_FineWood;
+                    break;
+
                 case ItemResourceType.Coal:
                 case ItemResourceType.Fuel_G:
                     itemIcon = SpriteName.WarsResource_Fuel;
@@ -284,9 +290,14 @@ namespace VikingEngine.DSSWars
 
                 case ItemResourceType.Egg:
                 case ItemResourceType.Wheat:
-                case ItemResourceType.RawFood_Group:
+                case ItemResourceType.RawFood_G:
                     itemIcon = SpriteName.WarsResource_RawFood;
                     itemName = DssRef.lang.Resource_TypeName_RawFood;
+                    break;
+
+                case ItemResourceType.Meat:
+                    itemIcon = SpriteName.WarsResource_RawMeat;
+                    itemName = DssRef.lang.Resource_TypeName_Meat;
                     break;
 
                 case ItemResourceType.Rapeseed:
@@ -298,7 +309,7 @@ namespace VikingEngine.DSSWars
                     itemName = DssRef.lang.Resource_TypeName_Hemp;
                     break;
                 case ItemResourceType.Linen:
-                case ItemResourceType.SkinLinen_Group:
+                case ItemResourceType.SkinLinen_G:
                     itemIcon = SpriteName.WarsResource_LinenCloth;
                     itemName = DssRef.lang.Resource_TypeName_Linen;
                     break;

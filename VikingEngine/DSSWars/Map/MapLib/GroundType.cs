@@ -50,6 +50,19 @@ namespace VikingEngine.DSSWars.Map.MapLib
         NUM
     }
 
+    enum BuildingGroundRequirement
+    { 
+        None,
+        Plant,
+        BuildLight,
+        BuildMedium,
+
+        /// <summary>
+        /// Exclusive to extra massive walls, cant be found in some areas
+        /// </summary>
+        BuildHeavy,
+    }
+
     static class GroundPropertiesLib
     {
         public static GroundTypeProperties[] GroundProperties;
@@ -106,7 +119,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canPlant = GroundCanBuildType.No,
                 canBuildLight = GroundCanBuildType.Yes,
                 canBuild = GroundCanBuildType.Yes,
-                canBuildHeavy = GroundCanBuildType.Yes,
+                canBuildHeavy = GroundCanBuildType.No,
                 canTerraform = true, //TODO explosives
                 moveCost = 0.7f,
 

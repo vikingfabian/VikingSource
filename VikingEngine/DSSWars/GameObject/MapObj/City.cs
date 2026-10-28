@@ -9,8 +9,10 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
+using VikingEngine.Core.EngineSpace.Engine.Extensions.Struct;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
@@ -66,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int workingAndFreeServiceMen = 0;
 
         public int HousingCount_Workers = 0;
-        public int WorkersMaxLimit;
+        public EndlessInt WorkersMaxLimit;
         public int HousingCount_Guard = 0;
 
         public GroupedResource freeNobelMen = new GroupedResource();
@@ -436,7 +438,7 @@ namespace VikingEngine.DSSWars.GameObject
                 else if (areaCulture.dryBiom <= 1)
                 {
                     cityCulture = CityCulture.DeepWell;
-                    waterAddPerSec += DssConst.WaterAdd_HeadCity;
+                    waterAddPerSec += CityHallSetup.WaterAdd_HeadCity;
                 }
                 else if (areaCulture.percForest >= 0.1)
                 {
@@ -1298,14 +1300,14 @@ namespace VikingEngine.DSSWars.GameObject
         public void refreshWorkerSubtiles()
         {
            
-            int goalDisplayCount = WorkersToModelsCount(HousingCount_Workers);
+            int goalDisplayCount = WorkersToModelsCount(HallSetup().startWorkForceHousing);
             if (goalDisplayCount > totalWorkerHutAndLevelCount)
             {
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(WP.MaptileToSumTile(maptilePos), 1));
+                        ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(WP.MaptileToSumTile(maptilePos), 2));
                         edgeLoop.RandomPosition(true);
 
                         int maxLoops = 10000;
@@ -1495,7 +1497,7 @@ namespace VikingEngine.DSSWars.GameObject
                         
             //if (newGame && cityType > CityType.UnClaimed)
             {
-                refreshWorkerSubtiles();
+               
                 int maxGuards = Bound.Max(HousingCount_Guard, 6);
                 
                 for (int i = 0;i <defenceBuildings.Count;i++) 
@@ -1531,31 +1533,35 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 money.AddCopper(500);
 
-                switch (cityType)
-                {
-                    case CityType.Campsite:
-                        HousingCount_Workers = DssConst.CampsiteCityStartMaxWorkForce;
-                        waterAddPerSec = Ref.rnd.Float(DssConst.WaterAdd_SmallCity, DssConst.WaterAdd_HeadCity);
-                        HousingCount_Guard += DssConst.CampHall_GuardHousing;
-                        break;
-                    case CityType.Village:
-                        HousingCount_Workers = DssConst.SmallCityStartMaxWorkForce;
-                        waterAddPerSec = DssConst.WaterAdd_SmallCity;
-                        HousingCount_Guard += DssConst.VillageHall_GuardHousing;
-                        break;
-                    case CityType.Town:
-                        HousingCount_Workers = DssConst.LargeCityStartMaxWorkForce;
-                        waterAddPerSec = DssConst.WaterAdd_LargeCity;
-                        HousingCount_Guard += DssConst.TownHall_GuardHousing;
-                        break;
-                    default:
-                        HousingCount_Workers = DssConst.HeadCityStartMaxWorkForce;
-                        waterAddPerSec = DssConst.WaterAdd_HeadCity;
-                        HousingCount_Guard += DssConst.CapitalHall_GuardHousing;
-                        break;
-                }
+                //switch (cityType)
+                //{
+                //    case CityType.Campsite:
+                //        HousingCount_Workers = DssConst.CampsiteCityStartMaxWorkForce;
+                //        waterAddPerSec = Ref.rnd.Float(DssConst.WaterAdd_SmallCity, DssConst.WaterAdd_HeadCity);
+                //        HousingCount_Guard += DssConst.CampHall_GuardHousing;
+                //        break;
+                //    case CityType.Village:
+                //        HousingCount_Workers = DssConst.SmallCityStartMaxWorkForce;
+                //        waterAddPerSec = DssConst.WaterAdd_SmallCity;
+                //        HousingCount_Guard += DssConst.VillageHall_GuardHousing;
+                //        break;
+                //    case CityType.Town:
+                //        HousingCount_Workers = DssConst.LargeCityStartMaxWorkForce;
+                //        waterAddPerSec = DssConst.WaterAdd_LargeCity;
+                //        HousingCount_Guard += DssConst.TownHall_GuardHousing;
+                //        break;
+                //    default:
+                //        HousingCount_Workers = DssConst.HeadCityStartMaxWorkForce;
+                //        waterAddPerSec = DssConst.WaterAdd_HeadCity;
+                //        HousingCount_Guard += DssConst.CapitalHall_GuardHousing;
+                //        break;
+                //}
+                var setup = HallSetup();
+                HousingCount_Workers = setup.startWorkForceHousing;
                 workForce.amount = (int)(HousingCount_Workers * 0.75);
-                waterAddPerSec += Ref.rnd.Float(DssConst.WaterAdd_RandomAdd);
+                //waterAddPerSec += Ref.rnd.Float(DssConst.WaterAdd_RandomAdd);
+                waterAddPerSec = setup.waterAdd.GetRandom();
+                HousingCount_Guard += setup.defaultGuardHousing;
 
                 waterAddPerSec *= DssRef.storage.ruleset_instance.setting_waterMulti;
                 maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.storage.ruleset_instance.setting_waterMulti);
@@ -1676,21 +1682,22 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshCitySize()
         {
-            switch (cityType)
-            {
-                case CityType.Campsite:
-                    WorkersMaxLimit = DssConst.CampHall_MaxWorkForce;
-                    break;
-                case CityType.Village:
-                    WorkersMaxLimit = DssConst.VillageHall_MaxWorkForce;
-                    break;
-                case CityType.Town:
-                    WorkersMaxLimit = DssConst.TownHall_MaxWorkForce;
-                    break;
-                default:
-                    WorkersMaxLimit = int.MaxValue;
-                    break;
-            }
+            //switch (cityType)
+            //{
+            //    case CityType.Campsite:
+            //        WorkersMaxLimit = DssConst.CampHall_MaxWorkForce;
+            //        break;
+            //    case CityType.Village:
+            //        WorkersMaxLimit = DssConst.VillageHall_MaxWorkForce;
+            //        break;
+            //    case CityType.Town:
+            //        WorkersMaxLimit = DssConst.TownHall_MaxWorkForce;
+            //        break;
+            //    default:
+            //        WorkersMaxLimit = int.MaxValue;
+            //        break;
+            //}
+            WorkersMaxLimit = HallSetup().maxWorkForce;
 
             float iconScale = IconScale();
 
@@ -1867,7 +1874,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int workersMax()
         {
-            return Bound.Max( HousingCount_Workers, WorkersMaxLimit);
+            return Bound.Max( HousingCount_Workers, WorkersMaxLimit.Value);
         }
 
         public int homeUsers()
@@ -2474,7 +2481,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     if (resourceAmount(CityResourceIndex.rawFood)/*res_rawFood.amount*/ <= LowAmount)
                     {
-                        HudLib.CityResource(args.content, this, ItemResourceType.RawFood_Group);
+                        HudLib.CityResource(args.content, this, ItemResourceType.RawFood_G);
                     }
                     if (resourceAmount(CityResourceIndex.fuel)/*res_fuel.amount*/ <= LowAmount)
                     {
@@ -2663,12 +2670,15 @@ namespace VikingEngine.DSSWars.GameObject
 
                     content.Add(new RbLockLine(true));
                     {
-                        lowResource(ItemResourceType.Water_G, 1);
-                        lowResource(ItemResourceType.Food_G);
-
-                        lowResource(ItemResourceType.Wood_Group);
+                        if (DssRef.storage.ruleset_instance.module_foodAndWater)
+                        {
+                            lowResource(ItemResourceType.Water_G, 1);
+                            lowResource(ItemResourceType.Food_G);
+                        }
+                        lowResource(ItemResourceType.Wood_G);
+                        lowResource(ItemResourceType.FineWood_G);
                         lowResource(ItemResourceType.Stone_G);
-                        lowResource(ItemResourceType.SkinLinen_Group);
+                        lowResource(ItemResourceType.SkinLinen_G);
                         lowResource(ItemResourceType.Fuel_G);
                         lowResource(ItemResourceType.Iron_G);
                         lowResource(ItemResourceType.ServiceMen, 5);
@@ -3090,7 +3100,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 content.text(DssRef.lang.Animals_ProductionStop);
 
                                 content.Add(new RbSeperationLine() { thick = true });
-                                ResourceLib.FullResourceInfo(pfaction.GetFaction(), this, ItemResourceType.RawFood_Group, content);
+                                ResourceLib.FullResourceInfo(pfaction.GetFaction(), this, ItemResourceType.RawFood_G, content);
                             })));
                     }
                 }
@@ -4274,23 +4284,29 @@ namespace VikingEngine.DSSWars.GameObject
             string supportedWorkersString;
             int addGuardHousing;
             CityType toSize = cityType + 1;
-            switch (toSize)
-            {
-                case CityType.Village:
-                    supportedWorkersString = DssConst.VillageHall_MaxWorkForce.ToString();
-                    addGuardHousing = DssConst.VillageHall_GuardHousing - DssConst.CampHall_GuardHousing;
-                    break;
-                case CityType.Town:
-                    supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
-                    addGuardHousing = DssConst.TownHall_GuardHousing - DssConst.VillageHall_GuardHousing;
-                    break;
-                default:
-                case CityType.Capital:
-                    supportedWorkersString = DssRef.lang.Hud_NoLimit;
-                    addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
-                    break;
 
-            }
+            CityHallSetup currentSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)cityType];
+            CityHallSetup nextSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)toSize];
+
+            supportedWorkersString = nextSetup.maxWorkForce.ValueString(false, DssRef.lang.Hud_NoLimit, null);
+            addGuardHousing = nextSetup.defaultGuardHousing - currentSetup.defaultGuardHousing;
+            //switch (toSize)
+            //{
+            //    case CityType.Village:
+            //        supportedWorkersString = DssConst.VillageHall_MaxWorkForce.ToString();
+            //        addGuardHousing = DssConst.VillageHall_GuardHousing - DssConst.CampHall_GuardHousing;
+            //        break;
+            //    case CityType.Town:
+            //        supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
+            //        addGuardHousing = DssConst.TownHall_GuardHousing - DssConst.VillageHall_GuardHousing;
+            //        break;
+            //    default:
+            //    case CityType.Capital:
+            //        supportedWorkersString = DssRef.lang.Hud_NoLimit;
+            //        addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
+            //        break;
+
+            //}
             //if (toSize == CityType.Town)
             //{
             //    supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
@@ -4319,41 +4335,53 @@ namespace VikingEngine.DSSWars.GameObject
             return canUpgradeCityHall(out _, out _, out _, out _);
         }
 
+        public CityHallSetup HallSetup()
+        {
+            return DssRef.storage.ruleset_instance.CitySizeSetup[(int)cityType];
+        }
+
         bool canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available)
         {
             CityType toSize = cityType + 1;
+
+            CityHallSetup currentSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)cityType];
+            CityHallSetup nextSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)toSize];
+
+            currentStaff = currentSetup.requiredStaff;
+            serviceHouses_available = freeServiceMen.amount + currentSetup.requiredStaff;
+            serviceHouses_required = nextSetup.requiredStaff - currentSetup.requiredStaff;
 
             switch (toSize)
             {
                 case CityType.Campsite:
                     blueprint = null;
-                    currentStaff = -1;
-                    serviceHouses_required = -1;
-                    serviceHouses_available = -1;
+                    //currentStaff = -1;
+                    //serviceHouses_required = -1;
+                    //serviceHouses_available = -1;
                     return false;
 
                 case CityType.Village:
                     blueprint = CraftBuildingLib.CityHall_Village;
-                    serviceHouses_required = DssConst.VillageHall_RequiredStaff;
-                    currentStaff = 0;
+                    //serviceHouses_required = DssConst.VillageHall_RequiredStaff;
+                    //currentStaff = 0;
                     break;
                 
                 case CityType.Town:
                     blueprint = CraftBuildingLib.CityHall_Town;
-                    serviceHouses_required = DssConst.TownHall_RequiredStaff - DssConst.VillageHall_RequiredStaff;
-                    currentStaff = DssConst.VillageHall_RequiredStaff;
+                    //serviceHouses_required = DssConst.TownHall_RequiredStaff - DssConst.VillageHall_RequiredStaff;
+                    //currentStaff = DssConst.VillageHall_RequiredStaff;
                     break;
                 
                 case CityType.Capital:
                     blueprint = CraftBuildingLib.CityHall_Capital;
-                    serviceHouses_required = DssConst.CapitalHall_RequiredStaff - DssConst.TownHall_RequiredStaff;
-                    currentStaff = DssConst.TownHall_RequiredStaff;
+                    //serviceHouses_required = DssConst.CapitalHall_RequiredStaff - DssConst.TownHall_RequiredStaff;
+                    //currentStaff = DssConst.TownHall_RequiredStaff;
                     break;
 
                 default:
                     throw new ArgumentOutOfRangeException("canUpgradeCityHall " + toSize);
             }
-            serviceHouses_available = freeServiceMen.amount + currentStaff;
+            
 
             return serviceHouses_available >= serviceHouses_required &&
                 blueprint.available(this);

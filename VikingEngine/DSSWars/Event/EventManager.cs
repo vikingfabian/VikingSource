@@ -1155,7 +1155,7 @@ namespace VikingEngine.DSSWars.Event
                 }
 
                 if (endReason != GameEndReason.TimesUp &&
-                    DssRef.difficulty.TotalDifficulty() >= SurviveLeaderBoard.Difficulty300)
+                    DssRef.difficulty.TotalDifficulty() >= SurviveLeaderBoard.Difficulty400)
                 {
                     new SurviveLeaderBoard(DssRef.time.TotalIngameTime());
                 }

@@ -92,9 +92,7 @@ namespace VikingEngine.DSSWars.Resource
         Clay,
         Brick,
 
-        SoftWood,
-        HardWood,
-        DryWood,
+        
         WoodContainer,
         PotContainer,
         Container,
@@ -106,9 +104,13 @@ namespace VikingEngine.DSSWars.Resource
         Toolkit,
         CoolingFluid,
 
-        Wood_Group,
-        RawFood_Group,
-        SkinLinen_Group,
+        SoftWood,
+        HardWood,
+        DryWood,
+        FineWood_G,
+        Wood_G,
+        RawFood_G,
+        SkinLinen_G,
         
         Rapeseed,
         Hemp,

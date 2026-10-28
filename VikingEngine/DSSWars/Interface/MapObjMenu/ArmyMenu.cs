@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             this.army = army;
             mapObj = army;
 
-            if (!DssRef.storage.ruleset_instance.module_centralGold)
+            if (!DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));

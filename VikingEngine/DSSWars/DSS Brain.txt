@@ -9,9 +9,11 @@ x adjust "all facts"
 #MAP 2.0 UPDATE
 * 20 new songs added, made by Cosme Leites
 * 9 new build types
-
-Worker max count
-* A new way to manage city work (prototype version)
+* The color range of voxel models have been adjusted
+* Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
+* Truce timer is pinned to hud
+* Made the dark horde slow and idle
+* All animal pens have double upkeep
 
 World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
@@ -39,18 +41,50 @@ Map editor 2.0
 * Icon editor: Allows fast editing in 1/16 scale
 * Height map: Load images and use them to generate the world
 
+Onboarding and Game modules
+x Three new challenge modules added
+x A couple of high friction mechanics, like starvation and deserters, have been split off to optional modules
+
+X Discover resource pools
+
+Resources
+x Item conversion menu
+* 2 new resources: fine wood and meat
+
+New work management tools
+* Worker count limit, made to better control the flow of work (! Prototype: ui will be improved if it works
+* Delivery request. Affects any auto delivery (auto city or auto item) (! Prototype: ui will be improved if it works
+
+Soldier abilities
+* Added a parry system. Weapons with high parry will block melee attacks from those with low.
+* Armor and shields will add parry.
+* Added and reworked abilities: AntiSpear, AntiCavalry, AntiPlateArmor, ArrowWeakness and DefenceBreak
+* Removed the locked specialization on long hand weapons and warmachines
+* Warhammer is now only strong against plate armor 
+
 Performance
-* More work has been put into keeping down the creeping memory usage (RAM)
+* Work has been put into keeping down the creeping memory (RAM) usage (contribution made by Uygar "Agent" Yilmaz)
+* Memory: Object lists will trim down in size (Uygar "Agent" Yilmaz)
+* Path finding have been optimized (Uygar "Agent" Yilmaz)
+* Fixed memory leaks in path finding (Uygar "Agent" Yilmaz)
+* Model instance rendering (Uygar "Agent" Yilmaz)
+* The terrain shadow renderer now supports textures (Uygar "Agent" Yilmaz)
+* Fixed stuck game process on exit (Uygar "Agent" Yilmaz)
+* Reduced menu render calls (Uygar "Agent" Yilmaz)
 * Flags are changed to linears arrays
 * Flag textures are only created once and share one big texture
+
+Vulkan
+* DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
+* Map loading is now done on multiple CPU cores and runs smoother
+
 
 Black Bolt Industries
 Made an evil factory puzzle game in a one week game jam. Available as extra content.
 
 
 ##ICONS TODO
-* all cities icon
-* gray rounded button
+* reset to default
 
 #MOUNTED TODO
 * 

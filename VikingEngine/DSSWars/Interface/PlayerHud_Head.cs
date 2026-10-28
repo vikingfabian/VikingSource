@@ -220,18 +220,25 @@ namespace VikingEngine.DSSWars.Interface
 
             //content.hspace();
             //content.Add(new RbTab(0.6f));
+
+            {
+                RichBoxContent buttonContent = new RichBoxContent();
+                buttonContent.Add(new RbImage(SpriteName.warsArmyTag_Shield));
+                buttonContent.space(0.5f);
+                buttonContent.Add(new RbText($"{faction.UsedArmySupply}/{faction.ArmySupply}", faction.UsedArmySupply >= faction.ArmySupply? HudLib.NotAvailableColor : null));
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,
+                    new RbTooltip_Text(DssRef.todoLang.ArmySupplyCount)));
+            }
+
             {
                 RichBoxContent buttonContent = new RichBoxContent();
                 buttonContent.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
                 buttonContent.space(0.5f);
-                buttonContent.Add(new RbText($"{diplomancyPoints}/{diplomacySoftMax}({diplomacyMax})"));
+                buttonContent.Add(new RbText($"{TextLib.LargeNumber(diplomancyPoints)}/{TextLib.LargeNumber(diplomacySoftMax)}({diplomacyMax})"));
                 content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null, 
                     new RbTooltip(diplomacyTip)));
             }
 
-            
-            
-            
 
             content.newLine();
 

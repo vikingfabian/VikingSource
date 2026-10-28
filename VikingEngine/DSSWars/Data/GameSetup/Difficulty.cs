@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Map.MapLib;
@@ -18,7 +18,12 @@ namespace VikingEngine.DSSWars.Data
 {
     class Difficulty
     {
-       
+        public const int ModulePerc_FogOfWar = 50;
+        public const int ModulePerc_FoodUpkeep = 100;
+        public const int ModulePerc_LossOfUnits = 50;
+        public const int ModulePerc_LocalGold = 50;
+        public const int ModulePerc_NoPause = 50;
+
         public const int DefaultOption = 2;
 
         int difficulty = DefaultOption;
@@ -41,7 +46,7 @@ namespace VikingEngine.DSSWars.Data
         public bool honorGuard = true;
         public bool resourcesStartHelp = false;
 
-        public bool setting_allowPauseCommand = true;
+        
         
 
         public int setting_QuickMatch_PlayerCount = 4;
@@ -191,15 +196,37 @@ namespace VikingEngine.DSSWars.Data
         public int TotalDifficulty()
         {
             double result = PercDifficulty;
-            if (!setting_allowPauseCommand)
-            {
-                result += 50;
+        //    public const int ModulePerc_FogOfWar = 50;
+        //public const int ModulePerc_FoodUpkeep = 100;
+        //public const int ModulePerc_LossOfUnits = 50;
+        //public const int ModulePerc_LocalGold = 50;
+        //public const int ModulePerc_NoPause = 50;
+            //if (!setting_allowPauseCommand)
+            //{
+            //    result += 50;
 
-            }
-            if (!DssRef.storage.ruleset.module_centralGold)
+            //}
+            if (DssRef.storage.ruleset.module_fogOfWar)
             {
-                result += 25;
+                result += ModulePerc_FogOfWar;
             }
+            if (DssRef.storage.ruleset.module_foodAndWater)
+            {
+                result += ModulePerc_FoodUpkeep;
+            }
+            if (DssRef.storage.ruleset.module_deptAndDeserters)
+            {
+                result += ModulePerc_LossOfUnits;
+            }
+            if (DssRef.storage.ruleset.module_physicalGold)
+            {
+                result += ModulePerc_LocalGold;
+            }
+            if (DssRef.storage.ruleset.module_noPauseCommand)
+            {
+                result += ModulePerc_NoPause;
+            }
+
             switch (setting_gameMode)
             {
                 case GameModeMainType.QuickBoss:
@@ -430,7 +457,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(setting_allowPauseCommand);
+            //w.Write(setting_allowPauseCommand);
             //w.Write(boss);
             w.Write((byte)setting_gameMode);
             //w.Write(setting_foodMulti);
@@ -448,7 +475,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void read(System.IO.BinaryReader r, int storageversion)
         {
-            setting_allowPauseCommand = r.ReadBoolean();
+            //setting_allowPauseCommand = r.ReadBoolean();
             if (storageversion < 20)
             {
                 runStory = r.ReadBoolean();
@@ -513,7 +540,7 @@ namespace VikingEngine.DSSWars.Data
 
         public int QuickMatchPlayerStartSize()
         {
-            int goalWorkForce = MathExt.MultiplyInt( DssConst.HeadCityStartMaxWorkForce, 2.5);
+            int goalWorkForce = MathExt.MultiplyInt(CityHallSetup.HeadCityStartMaxWorkForce, 2.5);
             return goalWorkForce;
         }
 

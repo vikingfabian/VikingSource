@@ -156,20 +156,10 @@ namespace VikingEngine.DSSWars
         public static int TaxPerWorker_copp = 2;
         public static int UpkeepPerServiceMan_copp = 4;
         public static int UpkeepPerGuard_copp = 4;
-        public static int CampsiteCityStartMaxWorkForce = HousingCount_WorkerTent;
-        public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
-        public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
-        public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
-
-        public static float WaterAdd_Average = 2.8f;
-        public static float WaterAdd_SmallCity = 0.8f * WaterAdd_Average;
-        public static float WaterAdd_LargeCity = 0.9f * WaterAdd_Average;
-        public static float WaterAdd_HeadCity = 1f * WaterAdd_Average;
-        public static float WaterAdd_RandomAdd = 0.2f * WaterAdd_Average; 
-
+       
         public static int Maxwater = 60;
         public static int WaterResovoirWaterAdd = 20;
-        public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
+        //public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
         //public static int ExpandGuardSize = SoldierGroup_DefaultCount;
 
         public static int CopperSellValue = 5;
@@ -207,27 +197,15 @@ namespace VikingEngine.DSSWars
         public const int HousingCount_ServiceHouse_Large = 10;
         public const int HousingCount_ServiceHouse_Small = 5;
 
-        public static int CampHall_MaxWorkForce = 120;
-        public static int VillageHall_MaxWorkForce = 250;
-        public static int TownHall_MaxWorkForce = 500;
-
-
-        public static int CampHall_GuardHousing = 5;
-        public static int VillageHall_GuardHousing = 10;
-        public static int TownHall_GuardHousing = 20;
-        public static int CapitalHall_GuardHousing = 40;
-
-        public static int VillageHall_RequiredStaff = 5;
-        public static int TownHall_RequiredStaff = 20;
-        public static int CapitalHall_RequiredStaff = 80;
+      
 
         public const double ImmigrantsRemovePerSec = 0.1;
         public const int ImmigrantsTransfereSpeed = 5;
         public const int ImmigrantionTent_TransfereSpeedBonus = 2;
         public const int ImmigrantionTent_Capacity = 60;
 
-        public const int SoldiersQuarter_Small_Supply = 4;
-        public const int SoldiersQuarter_Large_Supply = 8;
+        public static int SoldiersQuarter_Small_Supply = 4 * SoldierGroup_DefaultCount;
+        public static int SoldiersQuarter_Large_Supply = 6 * SoldierGroup_DefaultCount;
 
 
         //ARMY UPKEEP

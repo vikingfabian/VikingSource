@@ -481,7 +481,7 @@ namespace VikingEngine.DSSWars.Work
 
                                         void increaseMeat(ref ItemResourceType item, ref int amount)
                                         {
-                                            if (item == ItemResourceType.RawFood_Group)
+                                            if (item == ItemResourceType.RawFood_G)
                                             {
                                                 amount *= 2;
                                             }
@@ -494,7 +494,7 @@ namespace VikingEngine.DSSWars.Work
 
                                         void increaseSkin(ref ItemResourceType item, ref int amount)
                                         {
-                                            if (item == ItemResourceType.SkinLinen_Group)
+                                            if (item == ItemResourceType.SkinLinen_G)
                                             {
                                                 amount *= 2;
                                             }
@@ -508,7 +508,7 @@ namespace VikingEngine.DSSWars.Work
 
                                         void increaseSkin(ref ItemResourceType item, ref int amount)
                                         {
-                                            if (item == ItemResourceType.SkinLinen_Group)
+                                            if (item == ItemResourceType.SkinLinen_G)
                                             {
                                                 amount = MathExt.MultiplyInt(amount, 1.5);
                                             }

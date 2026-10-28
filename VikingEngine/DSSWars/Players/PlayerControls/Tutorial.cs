@@ -1228,7 +1228,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (player.gameControls.map.selection.obj is City)
                         {
-                            if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Wood_Group).amount >= CollectWoodStoneAmount)
+                            if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Wood_G).amount >= CollectWoodStoneAmount)
                             {
                                 //player.faction.workTemplate.move.value = 2;
                                 //player.faction.workTemplate.wood.value = 2;
@@ -1294,7 +1294,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (player.gameControls.map.selection.obj is City)
                         {
-                            if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.SkinLinen_Group).amount >= CollectLinenAmount)
+                            if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.SkinLinen_G).amount >= CollectLinenAmount)
                             {
                                 linen_collect = true;
                                 onPartSuccess();

@@ -1174,8 +1174,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (army != null)
             {
-                army.mapExecute();
-                
+                army.mapExecute();                
 
                 if (input.inputSource.ControllerMode)
                 {
@@ -1192,7 +1191,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (DssRef.state.IsSinglePlayer_LocalAndOnline() && (input.inputSource.HasKeyBoard || tabFocus() == ControllerTabFocus.Pause_GamePlay))
             {
-                if ((DssRef.difficulty.setting_allowPauseCommand || StartupSettings.PauseCheat) &&
+                if ((!DssRef.storage.ruleset_instance.module_noPauseCommand || StartupSettings.PauseCheat) &&
                     input.PauseGame.DownEvent)
                 {
                     Ref.TogglePause();

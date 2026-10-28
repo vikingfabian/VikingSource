@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Map.Generate;
@@ -47,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
                     centerHall = (int)TerrainBuildingType.CityHall_Village;
                     percBuilding = 0.15;
                     percWallGuard = 0;
-                    cityServiceCount = DssConst.VillageHall_RequiredStaff;
+                    cityServiceCount = CityHallSetup.VillageHall_RequiredStaff;
                     break;
                 case CityType.Town:
                     tower = (int)TerrainWallType.WoodTower;
@@ -59,7 +60,7 @@ namespace VikingEngine.DSSWars.GameObject
                     centerHall = (int)TerrainBuildingType.CityHall_Town;
                     percBuilding = 0.15;
                     percWallGuard = 0.1;
-                    cityServiceCount = DssConst.TownHall_RequiredStaff;
+                    cityServiceCount = CityHallSetup.TownHall_RequiredStaff;
                     break;
                 default:
                     large = true;
@@ -72,7 +73,7 @@ namespace VikingEngine.DSSWars.GameObject
                     centerHall = (int)TerrainBuildingType.CityHall_Capital;
                     percBuilding = 0.15;
                     percWallGuard = 0.25;
-                    cityServiceCount = DssConst.CapitalHall_RequiredStaff;
+                    cityServiceCount = CityHallSetup.CapitalHall_RequiredStaff;
                     break;
 
             }
@@ -172,6 +173,7 @@ namespace VikingEngine.DSSWars.GameObject
             List<TerrainBuildingType> craftStations = new List<TerrainBuildingType>
             {
                 (setup.large? TerrainBuildingType.GuardHouse_Large: TerrainBuildingType.GuardHouse_Small),
+                (setup.large? TerrainBuildingType.SoldiersQuarter_Large: TerrainBuildingType.SoldiersQuarter_Small),
                 TerrainBuildingType.Work_Bench,
                 //TerrainBuildingType.Work_Cook,
             };
@@ -262,7 +264,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 else
                                 {
-                                    main = TerrainMainType.Decor;
+                                    main = TerrainMainType.Road;
                                     sub = setup.road;
                                     barracksReservedSpot = pos;
                                 }
@@ -307,15 +309,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             const int Radius = 20;
             const int CleanRadius = Radius - 8;
-
-            ForXYLoop loop = new ForXYLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, Radius));
+            var area = Rectangle2.FromCenterTileAndRadius(maptilePos, Radius);
+            area.SetBounds(DssRef.world.maptileBounds);
+            ForXYLoop loop = new ForXYLoop(area);
             while (loop.Next())
             {
                 float r = (maptilePos - loop.Position).Length();
                 if (r < CleanRadius || (r < Radius && Ref.rnd.Chance(0.6)))
                 {
                     ref var tile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
-                    tile.SetType(TerrainMainType.Destroyed, 0, 1);
+                    if (tile.mainTerrain == TerrainMainType.Foil)
+                    {
+                        tile.SetType(TerrainMainType.Destroyed, 0, 1);
+                    }
                 }
 
             }

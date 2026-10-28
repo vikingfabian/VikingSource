@@ -237,15 +237,23 @@ namespace VikingEngine.DSSWars.Data
 
             if (!tooltip)
             {
-                content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_centralGold), DssRef.lang.Settings_CentralGold);
-                content.icontext(HudLib.CheckImage(difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
+                //xx
+                //content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_physicalGold), DssRef.lang.Settings_CentralGold);
+                //content.icontext(HudLib.CheckImage(difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
+                /*
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_fogOfWar), DssRef.todoLang.Module_FogOfWar);
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_foodAndWater), DssRef.todoLang.Module_FoodUpkeep);
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_deptAndDeserters), DssRef.todoLang.Module_LossOfUnits);
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_physicalGold), DssRef.todoLang.Module_LocalGold);
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_noPauseCommand), DssRef.todoLang.Module_NoPause);
 
-                content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(ruleset.setting_foodMulti)));
-                content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(ruleset.setting_waterMulti)));
-                content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(ruleset.setting_childMulti)));
-                content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(ruleset.setting_craftMulti)));
-                content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_TechMultiplier, ruleset.TechMultiProperty(null, false, 0)));
-
+                 content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(ruleset.setting_foodMulti)));
+                 content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(ruleset.setting_waterMulti)));
+                 content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(ruleset.setting_childMulti)));
+                 content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(ruleset.setting_craftMulti)));
+                 content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_TechMultiplier, ruleset.TechMultiProperty(null, false, 0)));
+                */
+                ruleset.gameSetupToHud(content);
                 var time = HudLib.TimeSpan_LongText(gameTime);
                 content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
@@ -708,7 +709,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.growthMultiplier = 1.5f;
                         faction.viewOnLargeMap = true;
                         faction.storyProtectedFaction = true;
-                        faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
+                        faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 10);
                         techSetup();
                         faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
                     }
@@ -854,7 +855,7 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_SouthHara;
                     faction.viewOnLargeMap = true;
                     faction.storyProtectedFaction = true;
-                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
+                    faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();
                     faction.technology.catapult.points = TechnologyTemplate.FactionUnlock;
@@ -873,7 +874,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.growthMultiplier = 4f;
                         faction.hasDeserters = false;
                         
-                        faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                        faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 1000);
 
                         techSetup();
                     }
@@ -887,7 +888,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Hatu;
-                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                    faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -903,7 +904,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.growthMultiplier = 4f;
                         faction.hasDeserters = false;
                         
-                        faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                        faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 1000);
                         techSetup();
                     }
                     break;
@@ -941,7 +942,7 @@ namespace VikingEngine.DSSWars.Players
                     defaultSetup();
                     techSetup();
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
+                    faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 10);
                     return true;
                 }
 

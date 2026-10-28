@@ -41,7 +41,17 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_SoldiersQuarter => "Soldiers quarter";
         public string BuildingType_ => "";
 
+        public string Resource_TypeName_FineWood => "Fine wood";
+
         public string ArmySupplyCount => "Army supply count";
         public string ArmySupplyCount_ExpandByX => "Will expand army supply count by {0}";
+
+        public string Modules_Label => "Modules";
+        public string Module_FogOfWar => "Fog of war";
+        public string Module_FoodUpkeep => "Thirst and Stravation";
+        public string Module_LossOfUnits => "Debt and Deserters";
+        public string Module_LocalGold => "Physical gold";
+        public string Module_NoPause => "No pause and command";
+        public string Language_AddXDifficultyPercentage => "+{0}%";
     }
 }

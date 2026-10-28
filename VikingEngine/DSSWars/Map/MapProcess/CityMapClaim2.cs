@@ -11,12 +11,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
 {
     static class CityMapClaim2
     {
-        const int ClaimRadius_Campsite = 10;
-        const int ClaimRadius_Village = ClaimRadius_Campsite +2;
-        const int ClaimRadius_Town = ClaimRadius_Village +2;
-        const int ClaimRadius_Capital = ClaimRadius_Town + 2;
-
-
+        
         const float HeightDifferenceMaxEffect = MapHeight2.HeightY * 40;
 
         public static void CityClaim(City city)
@@ -25,7 +20,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
 
             IntVector2 center = WP.MaptileToSumTile(city.maptilePos);
             float cityHeight = DssRef.world.subTileGrid.Get(city.maptilePos).groundY;
-            int radius = ClaimRadius(city.cityType);
+            int radius = DssRef.storage.ruleset_instance.CitySizeSetup[(int)city.cityType].claimRadius;
             int maxRadius = radius + 4;
             Rectangle2 maxArea = Rectangle2.FromCenterTileAndRadius(center, maxRadius);
             Grid2D_L<float> inflenceMap = new Grid2D_L<float>(maxArea);
@@ -138,20 +133,20 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
             //}
         }
 
-        static int ClaimRadius(CityType cityType)
-        {
-            switch (cityType)
-            {
-                default:
-                    return ClaimRadius_Campsite;
-                case CityType.Village:
-                    return ClaimRadius_Village;
-                case CityType.Town:
-                    return ClaimRadius_Town;
-                case CityType.Capital:
-                    return ClaimRadius_Capital;
+        //static int ClaimRadius(CityType cityType)
+        //{
+        //    switch (cityType)
+        //    {
+        //        default:
+        //            return ClaimRadius_Campsite;
+        //        case CityType.Village:
+        //            return ClaimRadius_Village;
+        //        case CityType.Town:
+        //            return ClaimRadius_Town;
+        //        case CityType.Capital:
+        //            return ClaimRadius_Capital;
 
-            }
-        }
+        //    }
+        //}
     }
 }

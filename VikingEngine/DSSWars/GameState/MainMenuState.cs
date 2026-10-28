@@ -1816,7 +1816,50 @@ namespace VikingEngine.DSSWars
             }
 
             content.newParagraph();
-            content.h2("Modules", HudLib.TitleColor_Head2);
+            //content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head2);
+
+            if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
+            }
+
+            content.newParagraph();
+            content.h2(DssRef.todoLang.Modules_Label, HudLib.TitleColor_Head2);
+
+            ModuleButton(SpriteName.birdCannonBallSmoke1, DssRef.todoLang.Module_FogOfWar, SpriteName.birdCannonBallSmoke2,
+                fogOfWarProperty, Difficulty.ModulePerc_FogOfWar);
+            
+            ModuleButton(SpriteName.WarsResource_Water, DssRef.todoLang.Module_FoodUpkeep, SpriteName.WarsResource_FoodEmpty,
+              foodAndWaterProperty, Difficulty.ModulePerc_FoodUpkeep);
+            
+            ModuleButton(SpriteName.rtsUpkeep, DssRef.todoLang.Module_LossOfUnits, SpriteName.unitEmoteAngry,
+               deptAndDesertersProperty, Difficulty.ModulePerc_LossOfUnits);
+            
+            ModuleButton(SpriteName.WarsBuild_Bank, DssRef.todoLang.Module_LocalGold, SpriteName.WarsBuild_GoldDeliver,
+               physicalGoldProperty, Difficulty.ModulePerc_LocalGold);
+            
+            ModuleButton(SpriteName.cmdIconTimeOut, DssRef.todoLang.Module_NoPause, SpriteName.cmdIconTimeOut,
+               noPauseProperty, Difficulty.ModulePerc_NoPause);
+            /*
+             * 
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.birdCannonBallSmoke1),
+                 new RbSpace(0.5f),
+                new RbText(DssRef.todoLang.Module_FogOfWar, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.birdCannonBallSmoke2),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_FogOfWar), HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
@@ -1825,7 +1868,7 @@ namespace VikingEngine.DSSWars
                 new RbSpace(),
                  new RbImage(SpriteName.WarsResource_Water),
                  new RbSpace(0.5f),
-                new RbText(".Thirst and Stravation", HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbText(DssRef.todoLang.Module_FoodUpkeep, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
                 new RbSpace(0.5f),
                 new RbImage(SpriteName.WarsResource_FoodEmpty),
                 new RbNewLine(),
@@ -1833,7 +1876,7 @@ namespace VikingEngine.DSSWars
                 new RbSpace(5),
                 new RbImage(SpriteName.DoomSkull),
                 new RbSpace(0.5f),
-                 new RbText("+100%", HudLib.NotAvailableColor_Dark_Grayed),
+                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_FoodUpkeep), HudLib.NotAvailableColor_Dark_Grayed),
             }, null));
 
             content.newLine();
@@ -1843,7 +1886,7 @@ namespace VikingEngine.DSSWars
                 new RbSpace(),
                  new RbImage(SpriteName.rtsUpkeep),
                  new RbSpace(0.5f),
-                new RbText(".Debt and Deserters", HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbText(DssRef.todoLang.Module_LossOfUnits, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
                 new RbSpace(0.5f),
                 new RbImage(SpriteName.unitEmoteAngry),
                 new RbNewLine(),
@@ -1851,7 +1894,7 @@ namespace VikingEngine.DSSWars
                 new RbSpace(5),
                 new RbImage(SpriteName.DoomSkull),
                 new RbSpace(0.5f),
-                 new RbText("+50%", HudLib.NotAvailableColor_Dark_Grayed),
+                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_LossOfUnits), HudLib.NotAvailableColor_Dark_Grayed),
             }, null));
 
             content.newLine();
@@ -1861,7 +1904,7 @@ namespace VikingEngine.DSSWars
                 new RbSpace(),
                  new RbImage(SpriteName.WarsBuild_Bank),
                  new RbSpace(0.5f),
-                new RbText(".Physical gold", HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbText(DssRef.todoLang.Module_LocalGold, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
                 new RbSpace(0.5f),
                 new RbImage(SpriteName.WarsBuild_GoldDeliver),
                 new RbNewLine(),
@@ -1880,7 +1923,7 @@ namespace VikingEngine.DSSWars
                 new RbSpace(),
                  new RbImage(SpriteName.cmdIconTimeOut),
                  new RbSpace(0.5f),
-                new RbText(".No pause and command", HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbText(DssRef.todoLang.Module_NoPause, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
                 new RbSpace(0.5f),
                 new RbImage(SpriteName.cmdIconTimeOut),
                 new RbNewLine(),
@@ -1888,40 +1931,56 @@ namespace VikingEngine.DSSWars
                 new RbSpace(5),
                 new RbImage(SpriteName.DoomSkull),
                 new RbSpace(0.5f),
-                 new RbText("+50%", HudLib.NotAvailableColor_Dark_Grayed),
+                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_NoPause), HudLib.NotAvailableColor_Dark_Grayed),
             }, null));
-
-            content.newParagraph();
-            content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head2);
-
-            if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+            */
+            void ModuleButton(SpriteName icon1, string title, SpriteName icon2, BoolGetSet_Tag property, int difficulty)
             {
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
-            }
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
 
-            if (!continueCustomMap)
-            {
-                //content.newLine();
-                //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapType_GenerateNewMap) }, generateNewMapsProperty, null));
+                    new RbImage(property(null, false, false)?  HudLib.RbSettings.checkOn : HudLib.RbSettings.checkOff),
+                    new RbSpace(),
+                     new RbImage(icon1),
+                     new RbSpace(0.5f),
+                    new RbText(title, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                    new RbSpace(0.5f),
+                    new RbImage(icon2),
+                    new RbNewLine(),
 
-                if (DssRef.storage.generateNewMaps)
+                    new RbSpace(5),
+                    new RbImage(SpriteName.DoomSkull),
+                    new RbSpace(0.5f),
+                     new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, difficulty), HudLib.NotAvailableColor_Dark_Grayed),
+                }, 
+                new RbAction1Arg<BoolGetSet_Tag>((BoolGetSet_Tag property) =>
                 {
-                    content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Map_CustomSeed) }, bCustomSeedProperty, null));
-                    if (DssRef.storage.mapSettings.customSeed)
-                    {
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(ushort.MinValue, ushort.MaxValue, 1),
-                            SeedProperty, false);
-                    }
-                }
+                    bool value = !property.Invoke(null, false, false);
+                    property.Invoke(null, true, value);
+                }, property)));
             }
+
             
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_AllowPause) }, allowPauseProperty));
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_CentralGold) }, centralGoldProperty,
-                new RbTooltip_Text(DssRef.lang.Settings_CentralGold_Description)));
+
+            //if (!continueCustomMap)
+            //{
+            //    if (DssRef.storage.generateNewMaps)
+            //    {
+            //        content.newLine();
+            //        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Map_CustomSeed) }, bCustomSeedProperty, null));
+            //        if (DssRef.storage.mapSettings.customSeed)
+            //        {
+            //            RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(ushort.MinValue, ushort.MaxValue, 1),
+            //                SeedProperty, false);
+            //        }
+            //    }
+            //}
+            
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_AllowPause) }, allowPauseProperty));
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_CentralGold) }, physicalGoldProperty,
+            //    new RbTooltip_Text(DssRef.lang.Settings_CentralGold_Description)));
 
 
             if (DssRef.storage.metaProgression.unlockedDangerousSettings || DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
@@ -2518,28 +2577,52 @@ namespace VikingEngine.DSSWars
         }
 
 
-        public bool allowPauseProperty(object tag, bool set, bool value)
+        public bool noPauseProperty(object tag, bool set, bool value)
         {
             if (set)
             {
-                DssRef.difficulty.setting_allowPauseCommand = value;
+                DssRef.storage.ruleset.module_noPauseCommand = value;
                 DssRef.storage.Save(null);
-                //refreshDifficultyLevel();
             }
-            return DssRef.difficulty.setting_allowPauseCommand;
+            return DssRef.storage.ruleset.module_noPauseCommand;
         }
-
-        public bool centralGoldProperty(object tag, bool set, bool value)
+       
+        public bool fogOfWarProperty(object tag, bool set, bool value)
         {
             if (set)
             {
-                DssRef.storage.ruleset.module_centralGold = value;
+                DssRef.storage.ruleset.module_fogOfWar = value;
                 DssRef.storage.Save(null);
-                //refreshDifficultyLevel();
             }
-            return DssRef.storage.ruleset.module_centralGold;
+            return DssRef.storage.ruleset.module_fogOfWar;
         }
-
+        public bool foodAndWaterProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.ruleset.module_foodAndWater = value;
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.ruleset.module_foodAndWater;
+        }
+        public bool deptAndDesertersProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.ruleset.module_deptAndDeserters = value;
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.ruleset.module_deptAndDeserters;
+        }
+        public bool physicalGoldProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.ruleset.module_physicalGold = value;
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.ruleset.module_physicalGold;
+        }
         public bool bossProperty(object tag, bool set, bool value)
         {
             if (set)

@@ -3122,6 +3122,7 @@ namespace VikingEngine
         WarsIcon_WorkQueueIdle,
         WarsIcon_WorkQueueActive,
         WarsResource_Wood,
+        WarsResource_WoodStock,
         WarsResource_Fuel,
         WarsResource_Wheat,
         WarsResource_Linen,

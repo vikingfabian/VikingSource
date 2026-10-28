@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Communication;
@@ -49,6 +50,9 @@ namespace VikingEngine.DSSWars
         public bool textureLoaded = false;
 
         public ModelTextureSettings FlagTexture = ModelTextureSettings.Default;
+
+        public int ArmySupply = 0;
+        public int UsedArmySupply = 0;
 
         public SpottedArray<Army> armies;
 
@@ -733,7 +737,7 @@ namespace VikingEngine.DSSWars
                 }
 
 
-                if (DssRef.storage.ruleset_instance.module_centralGold)
+                if (DssRef.storage.ruleset_instance.module_physicalGold)
                 {
                     money.copper += Convert.ToInt32(income);
                 }
@@ -781,6 +785,7 @@ namespace VikingEngine.DSSWars
             bool netHosted = IsNetHosted();
 
             float armiesStrength = 0;
+            int supply = 0;
 
             var armiesC = armies.counter();
             while (armiesC.Next())
@@ -788,11 +793,13 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.IsNetHosted = netHosted;
                 armiesC.sel.asynchGameObjectsUpdate(time, oneMinute);
                 armiesStrength += armiesC.sel.strengthValue;
+                supply += armiesC.sel.armySupplyUse;
             }
             
             resources_updateAsynch(oneSecondUpdate, out float citiesStrength);
 
             militaryStrength = armiesStrength + citiesStrength;
+            UsedArmySupply = supply;
         }
 
         public void asynchSleepObjectsUpdate(float time)
@@ -1293,15 +1300,15 @@ namespace VikingEngine.DSSWars
 
         public FactionSize Size()
         {
-            if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 2)
+            if (citiesEconomy.workerCount <= CityHallSetup.LargeCityStartMaxWorkForce * 2)
             {
                 return FactionSize.Tiny;
             }
-            else if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 6)
+            else if (citiesEconomy.workerCount <= CityHallSetup.LargeCityStartMaxWorkForce * 6)
             {
                 return FactionSize.Normal;
             }
-            else if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 30)
+            else if (citiesEconomy.workerCount <= CityHallSetup.LargeCityStartMaxWorkForce * 30)
             {
                 return FactionSize.Big;
             }

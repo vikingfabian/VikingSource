@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
@@ -365,7 +366,7 @@ namespace VikingEngine.DSSWars.Event
 
             init(
                 triggerTimeSpan_Minutes,
-                nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 1f, DssConst.HeadCityStartMaxWorkForce * 2f));
+                nextExpectedPlayerSize: new IntervalF(CityHallSetup.HeadCityStartMaxWorkForce * 1f, CityHallSetup.HeadCityStartMaxWorkForce * 2f));
         }
 
         protected override void calcAndRunEvent_async()
@@ -429,7 +430,7 @@ namespace VikingEngine.DSSWars.Event
 
             init(
                 triggerTimeSpan_Minutes: new IntervalF(1.2f, 2.4f) * TimeExt.HourInMinutes,
-                nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 1f, DssConst.HeadCityStartMaxWorkForce * 2f));
+                nextExpectedPlayerSize: new IntervalF(CityHallSetup.HeadCityStartMaxWorkForce * 1f, CityHallSetup.HeadCityStartMaxWorkForce * 2f));
         }
 
         protected override void calcAndRunEvent_async()
@@ -651,7 +652,7 @@ namespace VikingEngine.DSSWars.Event
         {
            init(
             triggerTimeSpan_Minutes: new IntervalF(3.6f, 4.5f) * TimeExt.HourInMinutes,
-            nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 2f, DssConst.HeadCityStartMaxWorkForce * 4f));
+            nextExpectedPlayerSize: new IntervalF(CityHallSetup.HeadCityStartMaxWorkForce * 2f, CityHallSetup.HeadCityStartMaxWorkForce * 4f));
         }
 
         protected override void asyncPrepare(ref float time)
@@ -1106,7 +1107,7 @@ namespace VikingEngine.DSSWars.Event
 
             init(
              triggerTimeSpan_Minutes: hours * TimeExt.HourInMinutes,
-             nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 16f));
+             nextExpectedPlayerSize: new IntervalF(CityHallSetup.HeadCityStartMaxWorkForce * 4f, CityHallSetup.HeadCityStartMaxWorkForce * 16f));
         }
 
         protected override void calcAndRunEvent_async()

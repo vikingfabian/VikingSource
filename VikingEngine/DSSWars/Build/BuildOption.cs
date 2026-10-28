@@ -38,13 +38,16 @@ namespace VikingEngine.DSSWars.Build
 
         public BuildInAreaOptions buildInArea = BuildInAreaOptions.WithInBorders;
 
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, 
+        public BuildingGroundRequirement groundRequirement;
+
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, BuildingGroundRequirement groundRequirement, SpriteName sprite, CraftBlueprint blueprint, 
             bool canAutoBuild, BuildCategoryTab buildCategory,
             BuildFilterTag filterTag1,
             BuildFilterTag filterTag2,
             BuildFilterTag filterTag3,
             MapPaintToolCategory paintToolCategory, float buildTimeSec)
         {
+            this.groundRequirement = groundRequirement;
             this.canAutoBuild = canAutoBuild;
             this.sprite = sprite;
             this.buildType = buildType;

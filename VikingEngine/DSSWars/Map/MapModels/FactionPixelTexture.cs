@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         float max = 1;
         public FactionMapFilter filter;
-        public ItemResourceType resourceFilter = ItemResourceType.Wood_Group;
+        public ItemResourceType resourceFilter = ItemResourceType.Wood_G;
 
         public bool overview = false;
         public FactionPixelTexture(int playerIx, bool init, FactionMapFilter filter)
@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     SpriteName collectIcon;
                     switch (res)
                     { 
-                        case ItemResourceType.Wood_Group:
+                        case ItemResourceType.Wood_G:
                         case ItemResourceType.Stone_G:
                         case ItemResourceType.BogIron:
                         case ItemResourceType.Clay:
@@ -391,6 +391,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         break;
                     case MapLib.TerrainMainType.Road:
                         road++;
+                        break;
+                    case TerrainMainType.AnimalPen:
+                    case TerrainMainType.Farm:
+                        tree += 0.5f;
                         break;
                     case MapLib.TerrainMainType.Foil:
                         switch ((TerrainSubFoilType)tile.subTerrain)

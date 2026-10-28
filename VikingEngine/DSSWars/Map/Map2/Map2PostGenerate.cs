@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
@@ -105,7 +106,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                     try
                     {
                         city.cleanOutCityTerrain();
+                         
                         city.createBuildingSubtiles(world, templateCollection);
+
+                        city.refreshWorkerSubtiles();
                     }
                     catch (Exception ex)
                     {
@@ -121,15 +125,15 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void factionStartAreas(MapSizeCategory mapSize, bool oneCity, Map2GenerateSettings generateSettings)
         {
-            int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
+            int goalWorkForce = CityHallSetup.HeadCityStartMaxWorkForce + CityHallSetup.LargeCityStartMaxWorkForce + CityHallSetup.SmallCityStartMaxWorkForce;
 
             if (mapSize >= MapSizeCategory.Epic)
             {
-                goalWorkForce += DssConst.HeadCityStartMaxWorkForce;
+                goalWorkForce += CityHallSetup.HeadCityStartMaxWorkForce;
             }
             else if (mapSize >= MapSizeCategory.Huge)
             {
-                goalWorkForce += DssConst.LargeCityStartMaxWorkForce;
+                goalWorkForce += CityHallSetup.LargeCityStartMaxWorkForce;
             }
 
             bool useRandomEmpires = mapSize >= MapSizeCategory.Medium;
