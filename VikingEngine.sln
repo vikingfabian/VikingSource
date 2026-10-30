@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steamworks.NET.Standard", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VikingBuilder", "VikingBuilder\VikingBuilder.csproj", "{8156C0AD-D53E-7EAE-6F17-94DC10A18B55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android", "Android\Android.csproj", "{23160156-689C-BA1F-8942-2A74C7ECBE95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VikingEngine.Android", "VikingEngine.Android\VikingEngine.Android.csproj", "{23160156-689C-BA1F-8942-2A74C7ECBE95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VikingEngine.Tests", "VikingEngine.Tests\VikingEngine.Tests.csproj", "{6E7BDDF0-A217-44B1-A824-50F6C525F8D1}"
 EndProject
