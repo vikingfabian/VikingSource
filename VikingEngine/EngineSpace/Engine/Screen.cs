@@ -124,7 +124,8 @@ namespace VikingEngine.Engine
                 WindowScalePerc = 100;
             }
 
-            bool goToWindowed = Engine.Draw.graphicsDeviceManager.IsFullScreen && PcDisplayMode == WindowDisplayMode.Windowed;
+            bool goToWindowed = (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
+                                && Engine.Draw.graphicsDeviceManager.IsFullScreen && PcDisplayMode == WindowDisplayMode.Windowed;
 
             Vector2 SafeBorderPerc;            
 
@@ -140,7 +141,21 @@ namespace VikingEngine.Engine
 #if PCGAME
             monitorResolution = new IntVector2(Monitor.CurrentDisplayMode.Width, Monitor.CurrentDisplayMode.Height);
             
-            if (UseRecordingPreset == RecordingPresets.NumNon)
+            if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+            {
+                if (monitorResolution.X <= 0 || monitorResolution.Y <= 0)
+                {
+                    var clientBounds = Ref.main.Window.ClientBounds;
+                    monitorResolution = new IntVector2(
+                        clientBounds.Width > 0 ? clientBounds.Width : 1280,
+                        clientBounds.Height > 0 ? clientBounds.Height : 720);
+                }
+                MonitorTargetResolution = monitorResolution;
+                RenderingResolution = MonitorTargetResolution;
+                WindowScaleF = 1f;
+                Engine.Draw.graphicsDeviceManager.IsFullScreen = true;
+            }
+            else if (UseRecordingPreset == RecordingPresets.NumNon)
             {
 
                 double renderScaleW = WindowScalePerc / 100.0;
@@ -194,7 +209,8 @@ namespace VikingEngine.Engine
                 applyFullScreen(fullScreen, true);
             }
 
-            if (PcDisplayMode != WindowDisplayMode.HardwareFullscreen)//!PcTargetFullScreen)
+            if ((!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
+                && PcDisplayMode != WindowDisplayMode.HardwareFullscreen)//!PcTargetFullScreen)
             {
                 if (oversizeWidthPerc != 0)
                 {
@@ -307,6 +323,13 @@ namespace VikingEngine.Engine
 
         static void applyFullScreen(bool fullScreen, bool borderLess)
         {
+            if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+            {
+                Engine.Draw.graphicsDeviceManager.IsFullScreen = true;
+
+                return;
+            }
+
             Engine.Draw.graphicsDeviceManager.IsFullScreen = fullScreen;
             Ref.main.Window.IsBorderless = fullScreen && borderLess;
             Engine.Draw.graphicsDeviceManager.HardwareModeSwitch = fullScreen && !borderLess;

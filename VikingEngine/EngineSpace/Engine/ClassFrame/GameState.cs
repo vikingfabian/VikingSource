@@ -45,12 +45,18 @@ namespace VikingEngine.Engine
                 Ref.lobby.onNewGameState(this);
             }
 
-            refreshGcLatency();
+            RefreshGcLatency();
         }
 
-        public void refreshGcLatency()
-        { 
-            GCSettings.LatencyMode = MayUseLowLatencyGC() && Ref.gamesett.lowGCProperty(0, false, false)? GCLatencyMode.SustainedLowLatency : GCLatencyMode.Interactive;
+        public void RefreshGcLatency()
+        {
+            if (!OperatingSystem.IsAndroid()
+                && !OperatingSystem.IsIOS())
+            {
+                GCSettings.LatencyMode = MayUseLowLatencyGC() && Ref.gamesett.lowGCProperty(0, false, false)
+                    ? GCLatencyMode.SustainedLowLatency
+                    : GCLatencyMode.Interactive;
+            }
         }
 
         virtual public void LostFocus()

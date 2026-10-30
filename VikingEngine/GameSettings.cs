@@ -1496,7 +1496,7 @@ namespace VikingEngine
                 lowLatencyGarbageCollecting = value;
                 settingsHasChanged = true;
 
-                Ref.gamestate.refreshGcLatency();
+                Ref.gamestate.RefreshGcLatency();
             }
             return lowLatencyGarbageCollecting;
         }

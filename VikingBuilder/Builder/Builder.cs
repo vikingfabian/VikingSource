@@ -131,6 +131,7 @@ public class Builder : ContentBuilder
         contentCollection.IncludeCopy<WildcardRule>("*.txt", null);
         contentCollection.IncludeCopy<WildcardRule>("*.vdf", null);
         contentCollection.IncludeCopy<WildcardRule>("*.bbs", null);
+        contentCollection.IncludeCopy<WildcardRule>("*.ogg", null);
 
         return contentCollection;
     }
