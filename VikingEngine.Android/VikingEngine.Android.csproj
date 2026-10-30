@@ -8,6 +8,7 @@
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <MonoGamePlatform>Android</MonoGamePlatform>
     <CompressContent>true</CompressContent>
+    <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />

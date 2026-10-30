@@ -1,3 +1,4 @@
+using System;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -22,13 +23,21 @@ namespace Android
 
         protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
+            try
+            {
+                base.OnCreate(bundle);
 
-            _game = new VikingEngine.MainGame();
-            _view = _game.Services.GetService(typeof(View)) as View;
+                _game = new VikingEngine.MainGame();
+                _view = _game.Services.GetService(typeof(View)) as View;
 
-            SetContentView(_view);
-            _game.Run();
+                SetContentView(_view);
+                _game.Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
         }
     }
 }
