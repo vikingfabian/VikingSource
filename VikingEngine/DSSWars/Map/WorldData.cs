@@ -20,9 +20,11 @@ using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.Graphics;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
@@ -36,11 +38,6 @@ namespace VikingEngine.DSSWars
     partial class WorldData
     {  
         public static WorldData LoadingWorld = null;
-
-        
-
-       
-
 
         //public const int TileSubDivitions = 8;
         //public const int HalfTileSubDivitions = TileSubDivitions / 2;
@@ -80,10 +77,8 @@ namespace VikingEngine.DSSWars
         public SpottedArray<Faction> factions;
 
         public bool BordersUpdated = true;
-        
        
         public PcgRandom rnd;
-        
        
         public int areaTileCount;
         public bool abortLoad = false;
@@ -94,30 +89,16 @@ namespace VikingEngine.DSSWars
 
         public List<PFaction> quickMatchFactions = null;
 
-
-        public PathFindingPool pathFindingPool = new PathFindingPool();
-        public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
-
         public Grid2D_L<MapChunkData8_8> chunkGrid;
         public Grid2D_L<SumTile4_4> tileGrid;
         public Grid2D_L<MapTile1_1> subTileGrid;
 
-        public void ClearPools()
-        {
-            pathFindingPool.Clear();
-            detailPathFindingPool.Clear();
-        }
-
-        public void PreallocatePools(int pfCount = 1, int detailPfCount = 1)
-        {
-            pathFindingPool.Preallocate(pfCount);
-            detailPathFindingPool.Preallocate(detailPfCount);
-        }
-
+         public float storyPlacementScale = 1f;
 
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
+            initFlagTexture();
         }
 
         public void DestroyCity(IntVector2 mapPos, bool buildings)
@@ -190,12 +171,13 @@ namespace VikingEngine.DSSWars
             City city = new City(cities.Count, mapPos, cityType, this);
             cities.Add(city);
 
-            if (CurrentCityComponentCount() <= cities.Count)
-            {
-                ExpandCityComponents(cities.Count * 2);
-            }
+            city.NewCitySetup(this, null);
+            //if (CurrentCityComponentCount() <= cities.Count)
+            //{
+            //    ExpandCityComponents(cities.Count * 2);
+            //}
 
-            unitCollAreaGrid.add(city);
+            //unitCollAreaGrid.add(city);
 
             if (runTime)
             {
@@ -223,7 +205,8 @@ namespace VikingEngine.DSSWars
                 {
                     try
                     {
-                        CityMapClaim2.CityClaim(city);
+                        //city.NewCitySetup(this, null);
+                        //CityMapClaim2.CityClaim(city);
                     }
                     catch (Exception ex)
                     {
@@ -317,7 +300,7 @@ namespace VikingEngine.DSSWars
 
             rnd = new PcgRandom(metaData.worldId.seed);
 
-            refreshSize(generateSettings.mapScale.Size(false));
+            refreshSize(metaData.mapScale.Size(false));
             //if (generateSettings.bCustomSize)
             //{
             //    metaData.mapSize = CustomMapSizeToSize(generateSettings.customMapSize);
@@ -417,6 +400,12 @@ namespace VikingEngine.DSSWars
 
             chunkBounds = chunkGrid.TileBound();
 
+            path3Thread_test = new Path3Thread();
+
+            if (Size.Area() > MapScale.SizeDimentions(MapSizeCategory.Medium).Area())
+            {
+                storyPlacementScale = (float)MapScale.SizeDimentions(MapSizeCategory.Medium).Area() / Size.Area();
+            }
         }
 
         bool subTileHasRepeatValue(ref MapTile1_1 subtile)
@@ -615,7 +604,7 @@ namespace VikingEngine.DSSWars
             tilePos.writeUshort(w);
 
             var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
-            area.SetTileBounds(DssRef.world.maptileBounds);
+            area.SetBounds(DssRef.world.maptileBounds);
             ForXYLoop loop = new ForXYLoop(area);
 
             SumTile4_4 previous = new SumTile4_4();
@@ -645,7 +634,7 @@ namespace VikingEngine.DSSWars
             IntVector2 tilePos = IntVector2.FromReadUshort(r);
 
             var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
-            area.SetTileBounds(DssRef.world.maptileBounds);
+            area.SetBounds(DssRef.world.maptileBounds);
             ForXYLoop loop = new ForXYLoop(area);
             SumTile4_4 previous = new SumTile4_4();
             while (loop.Next())

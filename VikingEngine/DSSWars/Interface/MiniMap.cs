@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
@@ -193,7 +194,7 @@ namespace VikingEngine.DSSWars.Interface
         {   
             var p = DssRef.state.culling.players[player.playerData.localPlayerIndex];
             var state = DssRef.state.culling.cullingStateA ? p.stateA : p.stateB;
-            cameraOutline.rectangle.Size = state.enterArea.size.Vec * DssRef.world.unitSizeInv * textureSize * scale; //area is in unit size
+            cameraOutline.rectangle.Size = scale * MapTile1_1.ModelScale * state.enterArea.size.Vec * DssRef.world.unitSizeInv * textureSize; //area is in unit size
 
             cameraOutline.rectangle.Center = (lookCenter(player) * scale) + mapTexture.position;
             cameraOutline.Refresh();

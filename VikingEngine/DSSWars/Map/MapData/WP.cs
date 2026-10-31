@@ -6,8 +6,9 @@ using System.Text;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 
-namespace VikingEngine.Core.DSSWars.Map.MapData
+namespace VikingEngine.DSSWars
 {
     /// <summary>
     /// Position helper
@@ -32,6 +33,12 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
             return tile.Vec * TileScaleV2;
         }
 
+        public static bool EqualPosition(Vector3 wp, IntVector2 maptile)
+        {
+            return Math.Abs(wp.X * MapTile1_1.ModelScale_Inv - maptile.X) < 0.7f &&
+                Math.Abs(wp.Z * MapTile1_1.ModelScale_Inv - maptile.Y) < 0.7f;
+        }
+
         public static Vector3 ChunkToWorldPos(IntVector2 tile, float y = 0)
         {
             return new Vector3(tile.X * MapChunkData8_8.ModelScale, y, tile.Y * MapChunkData8_8.ModelScale);
@@ -39,7 +46,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
 
         public static IntVector2 ToSumTilePos(Vector3 pos)
         {
-            return new IntVector2(pos.X * SumTile4_4.ModelScale_Inv, pos.Z * SumTile4_4.ModelScale_Inv);
+            return new IntVector2(pos.X * SumTile4_4.ModelScale, pos.Z * SumTile4_4.ModelScale);
         }
 
         //public static IntVector2 ToTilePos(Vector2 pos)
@@ -51,10 +58,10 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         {
             return new IntVector2(pos.X * MapTile1_1.ModelScale_Inv, pos.Z  * MapTile1_1.ModelScale_Inv);
         }
-        public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
-        {
-            return new IntVector2(tilePos.X * MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half, tilePos.Y * MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half);
-        }
+        //public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
+        //{
+        //    return new IntVector2(tilePos.X * MapTile1_1.ModelScale + MapTile1_1.ModelScale_Inv_Half, tilePos.Y * MapTile1_1.ModelScale_Inv + MapTile1_1.ModelScale_Inv_Half);
+        //}
 
         public static IntVector2 ToSubTilePos_TopLeft(IntVector2 pos)
         {
@@ -73,6 +80,10 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         public static Vector3 MaptileToWorldPosXZ(IntVector2 maptilePos)
         {
             return new Vector3(maptilePos.X * MapTile1_1.ModelScale /*- WorldData.TileHalfWidth*/, 0, maptilePos.Y * MapTile1_1.ModelScale/* - WorldData.TileHalfWidth*/);
+        }
+        public static Vector2 MaptileToWorldPos_V2(IntVector2 maptilePos)
+        {
+            return new Vector2(maptilePos.X * MapTile1_1.ModelScale, maptilePos.Y * MapTile1_1.ModelScale);
         }
         public static Vector3 MaptileToWorldPosXYZ(IntVector2 maptilePos)
         {
@@ -119,9 +130,9 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         public static Vector3 SubtileToWorldPosXZgroundY_Centered(IntVector2 subtilePos)
         {
             var result = new Vector3(
-               (subtilePos.X + 0.5f) * MapTile1_1.ModelScale,
+               subtilePos.X * MapTile1_1.ModelScale,
                0,
-               (subtilePos.Y + 0.5f) * MapTile1_1.ModelScale);
+               subtilePos.Y * MapTile1_1.ModelScale);
             //var result = new Vector3(
             //    subtilePos.X * MapTile1_1.ModelScale + MapTile1_1.SubTileHalfWidth,
             //    0,
@@ -166,6 +177,21 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
             return DssRef.world.subTileGrid.Get(
                 Convert.ToInt32(wp.X * MapTile1_1.ModelScale_Inv + 3.5f),
                 Convert.ToInt32(wp.Z * MapTile1_1.ModelScale_Inv + 3.5f)).groundY;
+        }
+
+        public static Vector3 SetGroundY(Vector3 wp)
+        {
+            if (DssRef.world.subTileGrid.TryGet(
+                Convert.ToInt32(wp.X * MapTile1_1.ModelScale_Inv),
+                Convert.ToInt32(wp.Z * MapTile1_1.ModelScale_Inv), out var tile))
+            {
+                wp.Y =  tile.groundY;
+                if (wp.Y < MapHeight2.WaterSurfaceY)
+                {
+                    wp.Y = MapHeight2.WaterSurfaceY;
+                }
+            }
+            return wp;
         }
 
         public static float GroundY_SumTile(IntVector2 sumTilePos)
@@ -272,6 +298,11 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         public static IntVector2 MaptileToSumTile(IntVector2 mapTilePos)
         {
             return mapTilePos / SumTile4_4.TileWidth;
+        }
+
+        public static IntVector2 SumTileToMaptile(IntVector2 sumTilePos)
+        {
+            return sumTilePos * SumTile4_4.TileWidth;
         }
         public static IntVector2 MaptileToSumTile_centered(IntVector2 mapTilePos)
         {

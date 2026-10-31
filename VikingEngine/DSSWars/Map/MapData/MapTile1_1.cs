@@ -16,29 +16,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map.MapData
 {
-    //struct LandTileData
-    //{ 
-    //    public byte subTerrain = byte.MaxValue;
-    //    /// <summary>
-    //    /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
-    //    /// </summary>
-    //    public byte terrainAmount = 0;
-
-    //    public byte health = 100;
-
-    //    public byte orientation = 0;
-
-    //    //public byte terrainQuality = 0;
-
-    //    /// <summary>
-    //    /// Pointer to array with all resources found lying on ground
-    //    /// </summary>
-    //    public int collectionPointer = -1;
-
-    //    public LandTileData() 
-    //    { }
-    //}
-
+    
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct MapTile1_1
     {
@@ -327,33 +305,26 @@ namespace VikingEngine.DSSWars.Map.MapData
                 case TerrainMainType.DefaultSea:
                     return false;
 
-                case TerrainMainType.Foil:
-                    switch ((TerrainSubFoilType)subTerrain)
+                case TerrainMainType.Farm:
+                    switch ((TerrainSubFarmType)subTerrain)
                     {
-                        case TerrainSubFoilType.WheatFarm:
+                        case TerrainSubFarmType.WheatFarm:
                             upgrade = true;
                             return build == BuildAndExpandType.WheatFarmUpgraded;
 
-                        case TerrainSubFoilType.LinenFarm:
+                        case TerrainSubFarmType.LinenFarm:
                             upgrade = true;
                             return build == BuildAndExpandType.LinenFarmUpgraded;
 
-                        case TerrainSubFoilType.RapeSeedFarm:
+                        case TerrainSubFarmType.RapeSeedFarm:
                             upgrade = true;
                             return build == BuildAndExpandType.RapeSeedFarmUpgraded;
 
-                        case TerrainSubFoilType.HempFarm:
+                        case TerrainSubFarmType.HempFarm:
                             upgrade = true;
                             return build == BuildAndExpandType.HempFarmUpgraded;
 
-                        //case TerrainSubFoilType.WheatFarmUpgraded:
-                        //case TerrainSubFoilType.LinenFarmUpgraded:
-                        //case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                        //case TerrainSubFoilType.HempFarmUpgraded:
-                        case TerrainSubFoilType.BogIron:
-                        case TerrainSubFoilType.ClayPit:
-                        case TerrainSubFoilType.SaltPit:
-                            return false;
+                       
                         
                     }
                     break;
@@ -371,6 +342,17 @@ namespace VikingEngine.DSSWars.Map.MapData
             }
 
             return TerrainSubFoilType.NUM_NONE;
+        }
+
+        public TerrainSubFarmType GetFarmType()
+        {
+            if (mainTerrain == TerrainMainType.Farm &&
+                subTerrain >= 0)
+            {
+                return (TerrainSubFarmType)subTerrain;
+            }
+
+            return TerrainSubFarmType.NUM_NONE;
         }
 
         public TerrainBuildingType GetBuildingType()
@@ -417,42 +399,59 @@ namespace VikingEngine.DSSWars.Map.MapData
                     return 0;
 
                 case TerrainMainType.Building:
-                    return Map.MapData.MapTile1_1.ModelScale * 0.4f;
+                    return ModelScale * 0.4f;
                 case TerrainMainType.Wall:
                     switch ((TerrainWallType)subTerrain)
                     {
                         default:
-                           return Map.MapData.MapTile1_1.ModelScale * 0.5f;
+                           return ModelScale * 0.5f;
 
                         case TerrainWallType.Palisade:
                             return 0;
 
                         case TerrainWallType.DirtWall:
-                            return Map.MapData.MapTile1_1.ModelScale * 0.3f;
+                            return ModelScale * 0.3f;
                         case TerrainWallType.DirtTower:
-                            return Map.MapData.MapTile1_1.ModelScale * 0.4f;
+                            return ModelScale * 0.4f;
 
 
                         case TerrainWallType.WoodWall:
-                            return Map.MapData.MapTile1_1.ModelScale * 0.4f;
+                            return ModelScale * 0.4f;
                         case TerrainWallType.WoodTower:
-                            return Map.MapData.MapTile1_1.ModelScale * 0.4f;
+                            return ModelScale * 0.4f;
 
                         case TerrainWallType.StoneWall:
                         case TerrainWallType.StoneWallBlueRoof:
                         case TerrainWallType.StoneWallGreen:
                         case TerrainWallType.StoneWallWoodHouse:
                         case TerrainWallType.StoneGate:
-                            return Map.MapData.MapTile1_1.ModelScale * 0.6f;
+                            return ModelScale * 0.6f;
 
                         case TerrainWallType.StoneTower:
-                            return Map.MapData.MapTile1_1.ModelScale * 1.3f;
+                            return ModelScale * 1.3f;
 
                     }
             }
         }
 
         public MoveCost GetMoveCost()
+        {
+            MoveCost result = TerrainCost();
+            if (IsLand())
+            {
+                var ground = GroundPropertiesLib.Get(groundType);
+                result.land *= ground.moveCost;
+                result.badMountTerrain |= ground.badMountTerrain;
+                result.natureTerrain |= groundType == GroundType.Rootmat;
+
+                if (heightValue >= MapHeight2.MountainStarHeight)
+                {
+                    result.land += (1 + heightValue - MapHeight2.MountainStarHeight) * 0.5f;
+                }
+            }
+            return result;
+        }
+        MoveCost TerrainCost()
         {
             switch (mainTerrain)
             {
@@ -484,6 +483,7 @@ namespace VikingEngine.DSSWars.Map.MapData
                 case TerrainMainType.Resourses:
                 case TerrainMainType.Mine:
                     return new MoveCost(2f, 200);
+
                 case TerrainMainType.Decor:
                 case TerrainMainType.Building:
                     return new MoveCost(2f, 200) { urbanTerrain = true };
@@ -497,29 +497,38 @@ namespace VikingEngine.DSSWars.Map.MapData
                     switch ((TerrainWallType)subTerrain)
                     {
                         case TerrainWallType.Palisade:
-                            return new MoveCost(3f) { urbanTerrain = true };
+                            return new MoveCost(3f) { urbanTerrain = true, badMountTerrain = true };
 
                         case TerrainWallType.DirtWall:
                         case TerrainWallType.DirtTower:
-                            return new MoveCost(4f) { urbanTerrain = true };
+                            return new MoveCost(4f) { urbanTerrain = true, badMountTerrain = true };
 
                         case TerrainWallType.WoodWall:
                         case TerrainWallType.WoodTower:
-                            return new MoveCost(5f) { urbanTerrain = true };
+                            return new MoveCost(5f) { urbanTerrain = true, badMountTerrain = true };
 
                         default:
-                            return new MoveCost(8f) { urbanTerrain = true };
+                            return new MoveCost(8f) { urbanTerrain = true, badMountTerrain = true };
                     }
 
                 case TerrainMainType.Road:
-                    //switch ((TerrainRoadType)subTerrain)
-                    //{
-                    //    case TerrainRoadType.
-                    //}
-                    return new MoveCost(0.75f, 75f);
+                    switch ((TerrainRoadType)subTerrain)
+                    {
+                        case TerrainRoadType.DirtRoad:
+                            return new MoveCost(0.85f, 85f);
+                        case TerrainRoadType.GravelRoad:
+                            return new MoveCost(0.80f, 80f);
+                        case TerrainRoadType.CobblestoneRoad:
+                            return new MoveCost(0.73f, 73f);
+                        case TerrainRoadType.PavedRoad:
+                            return new MoveCost(0.65f, 65f);
+
+                        default: //Decorative streets
+                            return new MoveCost(0.75f, 75f);
+                    }
+
             }
         }
-
         const float ModelGroundYAdj = 0.06f;
         public float UnitGroundY()
         {

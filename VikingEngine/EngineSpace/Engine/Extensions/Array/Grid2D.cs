@@ -392,6 +392,34 @@ namespace VikingEngine
 
             return result;
         }
+        public IntVector2 RotateGridPosition(IntVector2 position, int clockWiseSteps)
+        {
+            IntVector2 max = size - 1;
+
+            switch (clockWiseSteps)
+            {
+                case 0:
+                    return position;
+
+                case 1:
+                    { // 90 degrees
+                        return new IntVector2(max.Y - position.Y, position.X);
+                    }
+
+                case 2:
+                    { // 180 degrees
+                        return new IntVector2(max.X - position.X, max.Y - position.Y);
+                    }
+
+                case 3:
+                    { // 270 degrees
+                        return new IntVector2(position.Y, max.X - position.X);
+                    }
+
+                default:
+                    throw new ArgumentOutOfRangeException("Grid2D Rotate " + clockWiseSteps.ToString());
+            }
+        }
 
         public Grid2D<T> Flip(bool xAxis)
         {

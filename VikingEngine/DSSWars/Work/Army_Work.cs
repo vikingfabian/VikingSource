@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 //Order new food
-                City city = DssRef.world.tileGrid.Get(maptilePos).pcity.City();
+                City city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile( maptilePos)).pcity.City();
                 if (city != null && city.pfaction.TryGetFaction(out _))
                 {
                     float bufferGoal_percentage = -1;
@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 int statusIx = getOrCreateFreeWorker();
                                 var status = workerStatuses[statusIx];
                                 //status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, -1, city.maptilePos, null);
-                                status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.maptilePos), null);
+                                status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, city.maptilePos, null);
                                 if (goldValue > 0)
                                 {
                                     foodCosts_import.add(status.carry.amount);
@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.GameObject
                         lp.hud.messages.armyLowFoodMessage(this);
                     }));
                 }
-                else if (!DssRef.storage.ruleset_instance.centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
+                else if (!DssRef.storage.ruleset_instance.module_physicalGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
                 {
                     allowDept = true;
                 }

@@ -36,13 +36,18 @@ namespace VikingEngine.DSSWars.Build
 
         public ItemResource upkeep = ItemResource.Empty;
 
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, 
+        public BuildInAreaOptions buildInArea = BuildInAreaOptions.WithInBorders;
+        public SpecialBuildRequirement specialBuildRequirement = SpecialBuildRequirement.None;
+        public BuildingGroundRequirement groundRequirement;
+
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, BuildingGroundRequirement groundRequirement, SpriteName sprite, CraftBlueprint blueprint, 
             bool canAutoBuild, BuildCategoryTab buildCategory,
             BuildFilterTag filterTag1,
             BuildFilterTag filterTag2,
             BuildFilterTag filterTag3,
             MapPaintToolCategory paintToolCategory, float buildTimeSec)
         {
+            this.groundRequirement = groundRequirement;
             this.canAutoBuild = canAutoBuild;
             this.sprite = sprite;
             this.buildType = buildType;
@@ -147,5 +152,13 @@ namespace VikingEngine.DSSWars.Build
         {
             return blueprint.hasResources_ignorewater(city) || (altBlueprint != null && altBlueprint.hasResources_ignorewater(city));
         }
+    }
+
+    enum SpecialBuildRequirement
+    { 
+        None,
+        FoodStorage,
+        MaxSoldierQuarters, 
+        MaxExpansions,
     }
 }

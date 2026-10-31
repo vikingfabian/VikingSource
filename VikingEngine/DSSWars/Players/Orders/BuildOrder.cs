@@ -59,8 +59,8 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             if (model != null)
             {
-                IntVector2 tilepos = WP.MaptileToSumTile(subTile);
-                model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref tilepos);
+                //IntVector2 tilepos = WP.MaptileToSumTile(subTile);
+                model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref subTile);
             }
         }
     }
@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 #endif
             icon.Opacity = 0.8f;
             icon.Rotation = DssLib.FaceForwardRotation;
-            icon.AddToRender(DrawGame.UnitDetailLayer);
+            icon.AddToRender(DrawGame.NearLayer);
             refreshYpos();
         }
 

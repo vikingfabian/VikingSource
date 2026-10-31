@@ -43,20 +43,25 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Resources:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     groupType = ResourceGroupType.Resources;
-                    stockpile(player, ItemResourceType.Wood_Group);
+                    stockpile(player, ItemResourceType.Wood_G);
+                    stockpile(player, ItemResourceType.FineWood_G);
+                    stockpile(player, ItemResourceType.Fuel_G);
                     stockpile(player, ItemResourceType.Stone_G);
                     stockpile(player, ItemResourceType.Clay);
                     stockpile(player, ItemResourceType.Brick);
-                    stockpile(player, ItemResourceType.RawFood_Group);
+                    stockpile(player, ItemResourceType.SkinLinen_G);
+                    stockpile(player, ItemResourceType.Meat);
+                    stockpile(player, ItemResourceType.RawFood_G);
                     stockpile(player, ItemResourceType.Salt);
-                    stockpile(player, ItemResourceType.SkinLinen_Group);
+                    
                     content.newParagraph();
-
-                    stockpile(player, ItemResourceType.Food_G);
-                    stockpile(player, ItemResourceType.ConservedFood);
-                    stockpile(player, ItemResourceType.Fuel_G);
-                    stockpile(player, ItemResourceType.Beer);
-                    stockpile(player, ItemResourceType.CoolingFluid);
+                    if (DssRef.storage.ruleset_instance.module_foodAndWater)
+                    {
+                        stockpile(player, ItemResourceType.Food_G);
+                        stockpile(player, ItemResourceType.ConservedFood);
+                        stockpile(player, ItemResourceType.Beer);
+                        stockpile(player, ItemResourceType.CoolingFluid);
+                    }
                     content.newParagraph();
 
                     stockpile(player, ItemResourceType.Container);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace VikingEngine
 {
@@ -776,6 +777,35 @@ namespace VikingEngine
                 ++Y;
             }
 
+        }
+
+        public static IntVector2 RotateGridTilePosition(IntVector2 position, IntVector2 gridSize, int clockWiseSteps)
+        {
+            IntVector2 max = gridSize - 1;
+
+            switch (clockWiseSteps)
+            {
+                case 0:
+                    return position;
+
+                case 1:
+                    { // 90 degrees
+                        return new IntVector2(max.Y - position.Y, position.X);
+                    }
+
+                case 2:
+                    { // 180 degrees
+                        return new IntVector2(max.X - position.X, max.Y - position.Y);
+                    }
+
+                case 3:
+                    { // 270 degrees
+                        return new IntVector2(position.Y, max.X - position.X);
+                    }
+
+                default:
+                    throw new ArgumentOutOfRangeException("RotateGridTilePosition Rotate " + clockWiseSteps.ToString());
+            }
         }
     }
 

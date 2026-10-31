@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
@@ -116,8 +118,61 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
         void create_async(LocalPlayer player, CancellationToken token)
         {
-            /*
 
+            ForXYLoop loop = new ForXYLoop(current.citySumTileArea);
+            while (loop.Next())
+            {
+                if (token.IsCancellationRequested)
+                    return;
+
+                var sumtile = DssRef.world.tileGrid.Get(loop.Position);
+                if (sumtile.pcity.cityIndex == current.myIndex &&
+                    sumtile.IsBorderTile)
+                {
+                    for (Dir4 dir = 0; dir < Dir4.NUM_NON; dir++)
+                    {
+                        var npos = loop.Position + IntVector2.Dir4Array[(int)dir];
+                        if (DssRef.world.tileGrid.TryGet(npos, out var nSumTile) &&
+                            nSumTile.pcity.cityIndex != current.myIndex)
+                        {
+                            // Neighbor belongs to a different region/city
+                            int frame = regionToFrame(nSumTile.pcity);
+                            IntVector2 maptopLeft = WP.SumTileToMaptile(loop.Position);
+                            //IntVector2 pos2 = VectorExt.AddX(maptopLeft, 2);
+                            //if (dir == Dir4.E)
+                            //{
+                            //    lib.DoNothing();
+                            //}
+                            IntVector2 pos1 = maptopLeft + IntVector2.RotateGridTilePosition(IntVector2.Zero, new IntVector2(SumTile4_4.TileWidth), (int)dir);
+                            IntVector2 pos2 = maptopLeft + IntVector2.RotateGridTilePosition(new IntVector2(2, 0), new IntVector2(SumTile4_4.TileWidth), (int)dir);
+
+                            addStick(WP.MaptileToWorldPosXYZ(pos1), frame);
+                            addStick(WP.MaptileToWorldPosXYZ(pos2), frame);
+                        }
+                    }
+                }
+            }
+
+            int regionToFrame(PCity city)
+            {
+                if (city.HasValue() && city.City().pfaction == player.pfaction)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+
+            void addStick(Vector3 pos, int frame)
+            {
+                add.Push(new AddBorderStick(pos, frame));
+            }
+
+
+            /*
+            //OLD code center oriented
             const float ModelGroundYAdj = 0.01f;
             const float TileThird = 1f / 3f;
 

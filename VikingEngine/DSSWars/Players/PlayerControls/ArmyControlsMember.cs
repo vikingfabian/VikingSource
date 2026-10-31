@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players
@@ -12,7 +13,8 @@ namespace VikingEngine.DSSWars.Players
     {
         public GameObject.Army army;
         public PathVisuals pathVisuals;
-        public WalkingPath path = null, newPath = null;
+        //public WalkingPath path_old = null, newPath_old = null;
+        public LayerWalkingPathResult path = null, newPath = null;
         PathFindState pathState = PathFindState.None;
         public bool isAlive = true;
         LocalPlayer player;
@@ -46,7 +48,7 @@ namespace VikingEngine.DSSWars.Players
                         path = newPath;
                         newPath = null;
 
-                        pathVisuals.refresh(path, false, false);
+                        pathVisuals.refresh(path, false);
                     }
                     else
                     {
@@ -58,7 +60,7 @@ namespace VikingEngine.DSSWars.Players
                     pathState = PathFindState.None;
                 }
 
-                if (player.mapLayersManager.current.DrawDetailLayer)
+                if (player.mapLayersManager.current.DrawNearLayer)
                 {
                     if (detailBanner == null)
                     {
@@ -74,19 +76,25 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void asynchUpdate(LocalPlayer player)
+        public void asynchUpdate(LocalPlayer player, Path3Thread thread)
         {
             if (pathState == PathFindState.None && isAlive)
             {
                 if (army.maptilePos != player.gameControls.map.sumtilePosition &&
                     DssRef.world.tileGrid.InBounds(player.gameControls.map.sumtilePosition))
                 {
+                    /*
                     PathFinding pf = DssRef.world.pathFindingPool.GetPf();
                     {
-                        newPath = pf.FindPath(DssRef.state.PathThreadCount(), army.maptilePos, conv.ToDir8_INT(army.rotation), player.gameControls.map.sumtilePosition,
+                        newPath_old = pf.FindPath(DssRef.state.PathThreadCount(), army.maptilePos, conv.ToDir8_INT(army.rotation), player.gameControls.map.sumtilePosition,
                             false);
                     }
                     DssRef.world.pathFindingPool.Return(pf);
+                    */
+                    //test
+                    IntVector2 lay4 = MoveCostLayer.WpToLay4(army.position);
+
+                    newPath = thread.FindHighPath(army.position, player.gameControls.map.pointerPosWP, conv.ToDir8_INT(army.rotation), army.isShip, false);
 
                     pathState = PathFindState.NewPath;
                 }

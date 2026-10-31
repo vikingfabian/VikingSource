@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars
             {
                 case UnderMenu_NewGame:
                     loadGame = null;
-                    newGameSettings2();
+                    newGameSettings();
                     break;
 
                 case UnderMenu_Options:
@@ -454,8 +454,8 @@ namespace VikingEngine.DSSWars
                                 {
                                     title.text = PlatformSettings.STEAM_DEMO ? DssRef.lang.LobbyDemoMode_Demo : DssRef.lang.Settings_NewGame;
 
-                                    var start = new ArtButton(RbButtonStyle.Primary,
-                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
+                                    var start = new ArtButton(RbButtonStyle.SuperPrimary,
+                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start, HudLib.Color_SuperPrimary) },
                                       new RbAction(startGame), null, startAvailable);
                                     content.Add(start);
 
@@ -473,8 +473,8 @@ namespace VikingEngine.DSSWars
                                 {
                                     title.text = DssRef.lang.Lobby_Tutorial;
 
-                                    var startlong = new ArtButton(RbButtonStyle.Primary,
-                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Tutorial) },
+                                    var startlong = new ArtButton(RbButtonStyle.SuperPrimary,
+                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Tutorial, HudLib.Color_SuperPrimary) },
                                       new RbAction(startTutorial), null, startAvailable);
                                     content.Add(startlong);
                                     
@@ -951,15 +951,15 @@ namespace VikingEngine.DSSWars
 
         void createUpdateBackground(VectorRect bgArea)
         { 
-            Graphics.Image updateIcon = new Image( SpriteName.warsArmyTag_GoldShield, bgArea.PercentToPosition(new Vector2(0.03f)),
-                Screen.IconSizeV2 * 1.0f, ImageLayers.Background4 );
-            updateIcon.Rotation = 0.05f;
-            updateIcon.Color = Color.LightGray;
+            Graphics.Image updateIcon = new Image( SpriteName.warsWorkerPromoMap2, bgArea.PercentToPosition(new Vector2(0.03f)),
+                Screen.IconSizeV2 * new Vector2(2, 1), ImageLayers.Background4 );
+            //updateIcon.Rotation = 0.05f;
+            //updateIcon.Color = Color.LightGray;
             updateIcon.Opacity = 0.7f;
 
-            Graphics.Image updateIcon2 = (Graphics.Image)updateIcon.CloneMe();
-            updateIcon2.position += updateIcon2.size * 0.3f;
-            updateIcon2.LayerBelow(updateIcon);
+            //Graphics.Image updateIcon2 = (Graphics.Image)updateIcon.CloneMe();
+            //updateIcon2.position += updateIcon2.size * 0.3f;
+            //updateIcon2.LayerBelow(updateIcon);
         }
 
         void createBanners(VectorRect bgArea)
@@ -1149,11 +1149,11 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                var btn = new ArtButton(RbButtonStyle.SuperPrimary, new List<AbsRichBoxMember> {
                     new RbBeginTitle(),
                     new RbImage(SpriteName.WarsHudIconOpen),
                     new RbTab(ButtonTextTabbing),
-                    new RbText(DssRef.lang.GameMenu_ContinueFromSave/*, new Color(165, 144, 82)*/),
+                    new RbText(DssRef.lang.GameMenu_ContinueFromSave, HudLib.Color_SuperPrimary/*, new Color(165, 144, 82)*/),
                     //new RbTab(MoreArrowTabbing),
                 },
                 new RbAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), new RbTooltip_Text(saves[0].InfoString()));
@@ -1166,13 +1166,13 @@ namespace VikingEngine.DSSWars
                 //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
                 //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(arraylib.HasMembers(saves)  ? RbButtonStyle.Secondary: RbButtonStyle.Primary,
+                var btn = new ArtButton(arraylib.HasMembers(saves)  ? RbButtonStyle.Secondary: RbButtonStyle.SuperPrimary,
                     HudLib.AddMoreArrowToButton(
                     new List<AbsRichBoxMember> { 
                     new RbBeginTitle(), 
                     new RbImage(SpriteName.WarsHudIconAdd), 
                     new RbTab(ButtonTextTabbing), 
-                    new RbText(DssRef.lang.Settings_NewGame),
+                    new RbText(DssRef.lang.Settings_NewGame, arraylib.HasMembers(saves) ? null : HudLib.Color_SuperPrimary),
                     //new RbTab(MoreArrowTabbing),
                     //moreArrow,
                 }),
@@ -1668,7 +1668,7 @@ namespace VikingEngine.DSSWars
             //newGameSettings();
         }
 
-        void newGameSettings2()
+        void newGameSettings()
         {
 
             RichBoxContent content = new RichBoxContent();
@@ -1678,11 +1678,12 @@ namespace VikingEngine.DSSWars
                 //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
                 //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
+                var btn = new ArtButton(RbButtonStyle.SuperPrimary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                                     new RbBeginTitle(),
                                     new RbImage(SpriteName.WarsHudIconAdd),
                                     new RbSpace(),
-                                    new RbText(DssRef.lang.Hud_Next),
+                                    new RbText(string.Format(DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Settings_NewGame, DssRef.lang.Hud_Next), 
+                                        HudLib.Color_SuperPrimary),
                                     //new RbTab(MoreArrowTabbing),
                                     //moreArrow,
                                 }),
@@ -1698,7 +1699,7 @@ namespace VikingEngine.DSSWars
             GameStorage defaultOptions = new GameStorage();
 
             //var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
-            WorldData customWorld = mapBackgroundLoading.WorldData();//mapBackgroundLoading?.dataGenerate?.world;
+            WorldData customWorld = mapBackgroundLoading?.WorldData();//mapBackgroundLoading?.dataGenerate?.world;
 
             bool continueCustomMap = customWorld !=null && customWorld.metaData.customEditorMap;
             if (continueCustomMap)
@@ -1816,7 +1817,7 @@ namespace VikingEngine.DSSWars
             }
 
             content.newParagraph();
-            content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
+            //content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head2);
 
             if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode, DssRef.storage.ruleset.factionStartSize))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
@@ -1824,28 +1825,163 @@ namespace VikingEngine.DSSWars
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
             }
 
-            if (!continueCustomMap)
-            {
-                //content.newLine();
-                //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapType_GenerateNewMap) }, generateNewMapsProperty, null));
+            content.newParagraph();
+            content.h2(DssRef.todoLang.Modules_Label, HudLib.TitleColor_Head2);
 
-                if (DssRef.storage.generateNewMaps)
-                {
-                    content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Map_CustomSeed) }, bCustomSeedProperty, null));
-                    if (DssRef.storage.mapSettings.customSeed)
-                    {
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(ushort.MinValue, ushort.MaxValue, 1),
-                            SeedProperty, false);
-                    }
-                }
-            }
+            ModuleButton(SpriteName.birdCannonBallSmoke1, DssRef.todoLang.Module_FogOfWar, SpriteName.birdCannonBallSmoke1,
+                fogOfWarProperty, Difficulty.ModulePerc_FogOfWar);
             
+            ModuleButton(SpriteName.WarsResource_Water, DssRef.todoLang.Module_FoodUpkeep, SpriteName.WarsResource_FoodEmpty,
+              foodAndWaterProperty, Difficulty.ModulePerc_FoodUpkeep);
+            
+            ModuleButton(SpriteName.rtsUpkeep, DssRef.todoLang.Module_LossOfUnits, SpriteName.unitEmoteAngry,
+               deptAndDesertersProperty, Difficulty.ModulePerc_LossOfUnits);
+            
+            ModuleButton(SpriteName.WarsBuild_Bank, DssRef.todoLang.Module_LocalGold, SpriteName.WarsBuild_GoldDeliver,
+               physicalGoldProperty, Difficulty.ModulePerc_LocalGold);
+            
+            ModuleButton(SpriteName.cmdIconTimeOut, DssRef.todoLang.Module_NoPause, SpriteName.cmdIconTimeOut,
+               noPauseProperty, Difficulty.ModulePerc_NoPause);
+            /*
+             * 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_AllowPause) }, allowPauseProperty));
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.birdCannonBallSmoke1),
+                 new RbSpace(0.5f),
+                new RbText(DssRef.todoLang.Module_FogOfWar, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.birdCannonBallSmoke2),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_FogOfWar), HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_CentralGold) }, centralGoldProperty,
-                new RbTooltip_Text(DssRef.lang.Settings_CentralGold_Description)));
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.WarsResource_Water),
+                 new RbSpace(0.5f),
+                new RbText(DssRef.todoLang.Module_FoodUpkeep, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.WarsResource_FoodEmpty),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_FoodUpkeep), HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.rtsUpkeep),
+                 new RbSpace(0.5f),
+                new RbText(DssRef.todoLang.Module_LossOfUnits, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.unitEmoteAngry),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_LossOfUnits), HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.WarsBuild_Bank),
+                 new RbSpace(0.5f),
+                new RbText(DssRef.todoLang.Module_LocalGold, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.WarsBuild_GoldDeliver),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText("+50%", HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+
+                new RbImage(HudLib.RbSettings.checkOff),
+                new RbSpace(),
+                 new RbImage(SpriteName.cmdIconTimeOut),
+                 new RbSpace(0.5f),
+                new RbText(DssRef.todoLang.Module_NoPause, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.cmdIconTimeOut),
+                new RbNewLine(),
+
+                new RbSpace(5),
+                new RbImage(SpriteName.DoomSkull),
+                new RbSpace(0.5f),
+                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_NoPause), HudLib.NotAvailableColor_Dark_Grayed),
+            }, null));
+            */
+            void ModuleButton(SpriteName icon1, string title, SpriteName icon2, BoolGetSet_Tag property, int difficulty)
+            {
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Module, new List<AbsRichBoxMember> {
+
+                    new RbImage(property(null, false, false)?  HudLib.RbSettings.checkOn : HudLib.RbSettings.checkOff),
+                    new RbSpace(),
+                     new RbImage(icon1),
+                     new RbSpace(0.5f),
+                    new RbText(title, ColorExt.MultiplyRGB( Color.BlueViolet, 0.3f), LoadedFont.Bold),
+                    new RbSpace(0.5f),
+                    new RbImage(icon2),
+                    new RbNewLine(),
+
+                    new RbSpace(5),
+                    new RbImage(SpriteName.DoomSkull),
+                    new RbSpace(0.5f),
+                     new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, difficulty), HudLib.NotAvailableColor_Dark_Grayed),
+                }, 
+                new RbAction1Arg<BoolGetSet_Tag>((BoolGetSet_Tag property) =>
+                {
+                    bool value = !property.Invoke(null, false, false);
+                    property.Invoke(null, true, value);
+                }, property)));
+            }
+
+            
+
+            //if (!continueCustomMap)
+            //{
+            //    if (DssRef.storage.generateNewMaps)
+            //    {
+            //        content.newLine();
+            //        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Map_CustomSeed) }, bCustomSeedProperty, null));
+            //        if (DssRef.storage.mapSettings.customSeed)
+            //        {
+            //            RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(ushort.MinValue, ushort.MaxValue, 1),
+            //                SeedProperty, false);
+            //        }
+            //    }
+            //}
+            
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_AllowPause) }, allowPauseProperty));
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_CentralGold) }, physicalGoldProperty,
+            //    new RbTooltip_Text(DssRef.lang.Settings_CentralGold_Description)));
 
 
             if (DssRef.storage.metaProgression.unlockedDangerousSettings || DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
@@ -1892,7 +2028,10 @@ namespace VikingEngine.DSSWars
             }
 
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                new RbImage(SpriteName.WarsHudIconReset),
+                new RbSpace(0.5f),
+                new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
 
             underMenu.Refresh(content);
 
@@ -2442,28 +2581,52 @@ namespace VikingEngine.DSSWars
         }
 
 
-        public bool allowPauseProperty(object tag, bool set, bool value)
+        public bool noPauseProperty(object tag, bool set, bool value)
         {
             if (set)
             {
-                DssRef.difficulty.setting_allowPauseCommand = value;
+                DssRef.storage.ruleset.module_noPauseCommand = value;
                 DssRef.storage.Save(null);
-                //refreshDifficultyLevel();
             }
-            return DssRef.difficulty.setting_allowPauseCommand;
+            return DssRef.storage.ruleset.module_noPauseCommand;
         }
-
-        public bool centralGoldProperty(object tag, bool set, bool value)
+       
+        public bool fogOfWarProperty(object tag, bool set, bool value)
         {
             if (set)
             {
-                DssRef.storage.ruleset.centralGold = value;
+                DssRef.storage.ruleset.module_fogOfWar = value;
                 DssRef.storage.Save(null);
-                //refreshDifficultyLevel();
             }
-            return DssRef.storage.ruleset.centralGold;
+            return DssRef.storage.ruleset.module_fogOfWar;
         }
-
+        public bool foodAndWaterProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.ruleset.module_foodAndWater = value;
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.ruleset.module_foodAndWater;
+        }
+        public bool deptAndDesertersProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.ruleset.module_deptAndDeserters = value;
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.ruleset.module_deptAndDeserters;
+        }
+        public bool physicalGoldProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.ruleset.module_physicalGold = value;
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.ruleset.module_physicalGold;
+        }
         public bool bossProperty(object tag, bool set, bool value)
         {
             if (set)

@@ -26,8 +26,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
         public const int EpicMapHeigth = 1024 * ScaleUpMap2;
         public const double TileWidthInKm = 0.008;
 
-        public const int CustomMapSize_Min = 160;
-        public const int CustomMapSize_Max = 4096;
+        public const int CustomMapSize_Min = 160 * ScaleUpMap2;
+        public const int CustomMapSize_Max = 2048 * ScaleUpMap2;
 
         public const int IconToWorldScale = 16;
         public bool bCustomSize = false;

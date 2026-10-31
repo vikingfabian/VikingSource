@@ -502,6 +502,7 @@ namespace VikingEngine
             add(SpriteName.DeckTouchR, 2, 2);
             add(SpriteName.ButtonRZ, 2, 2);
             add(SpriteName.ButtonLZ, 2, 2);
+
             currentIndex = numTilesWidth * 19;
             {
                 add(SpriteName.EditorToolOptionAdd);
@@ -2248,13 +2249,20 @@ namespace VikingEngine
                 add(SpriteName.DssMapTextureGrassFoil2);
                 add(SpriteName.DssMapTextureGrassFoil3);
 
-                add(SpriteName.DssMapTextureRubble);
-                add(SpriteName.DssMapTextureRootmat);
+                add(SpriteName.DssMapTextureRubble1);
+                add(SpriteName.DssMapTextureRootmat1);
 
                 add(SpriteName.DssMapTextureMadeSolid);
                 add(SpriteName.DssMapTextureMud);
                 add(SpriteName.DssMapTextureSwamp);
                 add(SpriteName.DssMapTextureFrozen);
+
+                add(SpriteName.WarsResource_FineWood);
+                add(SpriteName.WarsIconArmySupply);
+                add(SpriteName.WarsHudSuperPrimaryButton);
+                add(SpriteName.WarsHudIconReset);
+                add(SpriteName.WarsHudIconWarning);
+                add(SpriteName.WarsHudModuleButton);
             }
 
 
@@ -2716,7 +2724,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Copper);
                     add(SpriteName.WarsResource_Gold);
                     add(SpriteName.WarsResource_Mithril);
-                    currentIndex += 5;
+                    add(SpriteName.WarsResource_WoodStock);
+                    currentIndex += 4;
                     add(SpriteName.WarsResource_SkinAndLinen);
                     currentIndex += 5;
                     add(SpriteName.WarsResource_Stone);
@@ -3048,9 +3057,28 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Polish, 8, 2);
                     add(SpriteName.LangButton_Thai, 8, 2);
                     add(SpriteName.WarsClayPit, 2, 2);
+                    add(SpriteName.warsWorkerPromoMap2, 4, 2);
+
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 
+                currentIndex = numTilesWidth * 103;
+                {
+                    add(SpriteName.DssMapTextureGravelRoad1);
+                    add(SpriteName.DssMapTextureGravelRoad2);
+                    add(SpriteName.DssMapTextureRootmat2);
+                    add(SpriteName.DssMapTextureRubble2);
+                    add(SpriteName.DssMapTextureGeneral1);
+                    add(SpriteName.DssMapTextureGeneral2);
+                    add(SpriteName.DssMapTextureGeneralWithStones1);
+                    add(SpriteName.DssMapTextureGeneralWithStones2);
+                    add(SpriteName.DssMapTextureGeneralWithStones3);
+                    add(SpriteName.DssMapTextureStructureGroundCirkular);
+                    add(SpriteName.DssMapTextureStructureGround);
+                    add(SpriteName.DssMapTextureCobbleRoad1);
+                    add(SpriteName.DssMapTexturePavedRoad1);
+
+                }
                 currentIndex = numTilesWidth * 106;
                 {
                     //currentIndex += 2;

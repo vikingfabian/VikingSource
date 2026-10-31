@@ -48,6 +48,9 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Name_Dark = Color.Brown;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
         public static readonly Color TitleColor_TypeName_Dark = new Color(50, 50, 50);
+
+        public static readonly Color Color_SuperPrimary = new Color(209, 178, 85);
+
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
         public static readonly Color TitleColor_Label2 = new Color(60, 108, 133);
         public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
@@ -161,7 +164,7 @@ namespace VikingEngine.DSSWars
             {
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
-            RbSettings.artSuperPrimaryButtonTex = new HUD.NineSplitSettings(SpriteName.cmdHudBorderButton, 1, 8, nineTextureEdge, true, true)
+            RbSettings.artSuperPrimaryButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudSuperPrimaryButton, 1, 8, nineTextureEdge, true, true)
             {
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
@@ -218,6 +221,7 @@ namespace VikingEngine.DSSWars
 
             RbSettings.TechSelect = new NineSplitSettings(SpriteName.WarsTechButtonEnabled, 1, 8, nineTextureEdge, true, true);
             RbSettings.TechHover = new NineSplitSettings(SpriteName.WarsTechButtonDisabled, 1, 8, nineTextureEdge, true, true);
+            RbSettings.Module = new NineSplitSettings(SpriteName.WarsHudModuleButton, 1, 8, nineTextureEdge, true, true);
 
 
             PopMenuButtonTexture = new HUD.NineSplitSettings(SpriteName.WarsHudPopUpButton, 1, 8, nineTextureEdge, true, true);

@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 case ResourceGroupType.Resources:
                     Get(WorkPriorityType.move).toHud(player, content, DssRef.lang.Work_Move, SpriteName.WarsWorkMove, SpriteName.WarsBuild_Storehouse, WorkPriorityType.move, faction, city, ItemResourceType.NONE);
-                    Get(WorkPriorityType.wood).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Wood, WorkPriorityType.wood, faction, city, ItemResourceType.Wood_Group);
+                    Get(WorkPriorityType.wood).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Wood, WorkPriorityType.wood, faction, city, ItemResourceType.Wood_G);
                     Get(WorkPriorityType.stone).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Stone, WorkPriorityType.stone, faction, city, ItemResourceType.Stone_G);
                     Get(WorkPriorityType.collectClay).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Clay), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Clay, WorkPriorityType.collectClay, faction, city, ItemResourceType.Clay);
                     Get(WorkPriorityType.miningBrick).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Brick), SpriteName.WarsWorkMine, SpriteName.WarsResource_Brick, WorkPriorityType.miningBrick, faction, city, ItemResourceType.Brick,
@@ -325,12 +325,12 @@ namespace VikingEngine.DSSWars.Work
                     Get(WorkPriorityType.craftBrick).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Brick), SpriteName.WarsHammer, SpriteName.WarsResource_Brick, WorkPriorityType.craftBrick, faction, city, ItemResourceType.Brick);
 
                     Get(WorkPriorityType.farmFood).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.BuildingType_Orchard, SpriteName.WarsWorkFarm, SpriteName.WarsResource_Food, WorkPriorityType.farmFood, faction, city, ItemResourceType.Food_G);
-                    Get(WorkPriorityType.farmRawFood).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmRawFood, faction, city, ItemResourceType.RawFood_Group);
+                    Get(WorkPriorityType.farmRawFood).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmRawFood, faction, city, ItemResourceType.RawFood_G);
                     Get(WorkPriorityType.miningSalt).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Salt.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Salt, WorkPriorityType.miningSalt, faction, city, ItemResourceType.Salt,
                         WorkViewMode.Default, ItemResourceType.NONE, city == null ? 0 : city.terrainStructure.mineCount_salt + city.buildingStructure.DryingPan_count);
 
                     Get(WorkPriorityType.farmfuel).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Fuel.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_Fuel, WorkPriorityType.farmfuel, faction, city, ItemResourceType.Fuel_G);
-                    Get(WorkPriorityType.farmlinen).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_LinenCloth, WorkPriorityType.farmlinen, faction, city, ItemResourceType.SkinLinen_Group);
+                    Get(WorkPriorityType.farmlinen).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_LinenCloth, WorkPriorityType.farmlinen, faction, city, ItemResourceType.SkinLinen_G);
 
                     Get(WorkPriorityType.craftFood).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Food, WorkPriorityType.craftFood, faction, city, ItemResourceType.Food_G);
                     Get(WorkPriorityType.craftConservedFood).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ConservedFood.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ConservedFood, WorkPriorityType.craftConservedFood, faction, city, ItemResourceType.ConservedFood);
@@ -664,6 +664,8 @@ namespace VikingEngine.DSSWars.Work
             followFaction = true;
             unlocked = true;
             value = defaultVal;
+            useWorkerCountLimit = true;
+            workerCountLimit = 4;
         }
         
         public void set(int value)

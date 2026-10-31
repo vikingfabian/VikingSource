@@ -6,6 +6,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
@@ -244,7 +245,7 @@ namespace VikingEngine.DSSWars
 
 
 
-        public static readonly int NobelHouseWorkForceReqiurement = DssConst.HeadCityStartMaxWorkForce;
+        public static readonly int NobelHouseWorkForceReqiurement = CityHallSetup.HeadCityStartMaxWorkForce;
 
 
         public const float BattleMaxQueTimeMs = 2000;

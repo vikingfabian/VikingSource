@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
@@ -67,6 +68,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public CharacterProfile character = new CharacterProfile();
 
+        public Sprite sprite;
 
         public void autoAltColor()
         {
@@ -352,14 +354,22 @@ namespace VikingEngine.DSSWars.Players.Profile
             };
         }
 
-
+        public Sprite GetOrCreateSprite(int faction)
+        {
+            if (sprite.IsEmpty())
+            {
+                DssRef.world.CreateFlagSprite(faction, this);
+            }
+            return sprite;
+        }
         public void Button(GuiLayout layout, IGuiAction action, bool moreArrow)
         {
             var button = new GuiIconTextButton(SpriteName.MissingImage, string.Format( DssRef.lang.Lobby_FlagNumbered ,StorageIndex+1),
                 null, action, moreArrow, layout);
 
-            button.icon.Texture = flagDesign.CreateTexture(this);
+            button.icon.Texture=flagDesign.CreateTexture(this);
             button.icon.SetFullTextureSource();
+            //button.icon.SetSprite(flagDesign.sp
         }
 
         public DropDownOption RbButton()

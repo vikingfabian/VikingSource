@@ -305,8 +305,6 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.drafthorse_red, false);
             loadVoxelModel(VoxelModelName.warhorse_brown, false);
             
-
-
             loadVoxelModel(VoxelModelName.wagon_light, false);
             loadVoxelModel(VoxelModelName.wagon_light4, false);
             loadVoxelModel(VoxelModelName.wagon_coach, false);
@@ -512,7 +510,7 @@ namespace VikingEngine.DSSWars
                 {                    
                     if (!detailLayer)
                     {
-                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
+                        int lay = detailLayer ? DrawGame.NearLayer : DrawGame.MidLayer;
 
                         if (async)
                         {

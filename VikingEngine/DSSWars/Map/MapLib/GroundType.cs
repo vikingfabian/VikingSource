@@ -50,9 +50,27 @@ namespace VikingEngine.DSSWars.Map.MapLib
         NUM
     }
 
+    enum BuildingGroundRequirement
+    { 
+        None,
+        Plant,
+        BuildLight,
+        BuildMedium,
+
+        /// <summary>
+        /// Exclusive to extra massive walls, cant be found in some areas
+        /// </summary>
+        BuildHeavy,
+    }
+
     static class GroundPropertiesLib
     {
         public static GroundTypeProperties[] GroundProperties;
+
+        public static GroundTypeProperties Get(GroundType type)
+        {
+            return GroundProperties[(int)type];
+        }
 
         public static void Init()
         {
@@ -101,7 +119,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canPlant = GroundCanBuildType.No,
                 canBuildLight = GroundCanBuildType.Yes,
                 canBuild = GroundCanBuildType.Yes,
-                canBuildHeavy = GroundCanBuildType.Yes,
+                canBuildHeavy = GroundCanBuildType.No,
                 canTerraform = true, //TODO explosives
                 moveCost = 0.7f,
 
@@ -130,8 +148,9 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canBuildHeavy = GroundCanBuildType.No,
                 canTerraform = true,
                 moveCost = 2f,
+                badMountTerrain = true,
 
-                texture = new SpriteVariantCount(SpriteName.DssMapTextureRubble),
+                texture = new SpriteVariantCount(SpriteName.DssMapTextureRubble1, 2),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
             };
 
@@ -144,7 +163,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canTerraform = true,
                 moveCost = 1.5f,
 
-                texture = new SpriteVariantCount(SpriteName.DssMapTextureRootmat),
+                texture = new SpriteVariantCount(SpriteName.DssMapTextureRootmat1, 2),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
             };
             
@@ -156,6 +175,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canBuildHeavy = GroundCanBuildType.No,
                 canTerraform = false, //TODO explosives
                 moveCost = 3f,
+                badMountTerrain = true,
 
                 texture = new SpriteVariantCount(SpriteName.DssMapTextureSwamp),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
@@ -169,6 +189,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canBuildHeavy = GroundCanBuildType.No,
                 canTerraform = false,
                 moveCost = 1.5f,
+                badMountTerrain = true,
 
                 texture = new SpriteVariantCount(SpriteName.DssMapTextureMud),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
@@ -239,6 +260,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
 
 
         public float moveCost;
+        public bool badMountTerrain;
 
         public SpriteVariantCount texture;
         public SpriteVariantCount sidetexture;

@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.ToGG.MoonFall;
 
-namespace VikingEngine.DSSWars.Map.MapProcess
+namespace VikingEngine.Core.DSSWars.Map.MapData
 {
     class UnitCollAreaGrid
     {
@@ -15,16 +16,16 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
         public Grid2D_L<UnitCollArea> grid;
 
-        public List<GameObject.SoldierGroup> groups_nearUpdate = new List<GameObject.SoldierGroup>(32);
+        public List<SoldierGroup> groups_nearUpdate = new List<SoldierGroup>(32);
         public List<City> cities_nearUpdate = new List<City>(4);
-        public List<GameObject.AbsGroup> groupsAndCities_nearUpdate = new List<GameObject.AbsGroup>(32);
+        public List<AbsGroup> groupsAndCities_nearUpdate = new List<AbsGroup>(32);
         public List<AbsArmy> armies_nearUpdate = new List<AbsArmy>(8);
-        public List<GameObject.AbsGroup> friendlyGroupsAndCities_nearUpdate = new List<GameObject.AbsGroup>(8);
+        public List<AbsGroup> friendlyGroupsAndCities_nearUpdate = new List<AbsGroup>(8);
 
-        public List<GameObject.City> cities_aiUpdate = new List<GameObject.City>(8);
-        public List<GameObject.AbsArmy> armies_aiUpdate = new List<GameObject.AbsArmy>(8);
+        public List<City> cities_aiUpdate = new List<City>(8);
+        public List<AbsArmy> armies_aiUpdate = new List<AbsArmy>(8);
 
-        public List<GameObject.AbsMapObject> mapObjects_aiUpdate = new List<GameObject.AbsMapObject>(8);
+        public List<AbsMapObject> mapObjects_aiUpdate = new List<AbsMapObject>(8);
 
         List<AbsMapObject> playerNearMapObjects = new List<AbsMapObject>();
         List<AbsSoldierUnit> playerNearDetailUnits = new List<AbsSoldierUnit>();
@@ -256,11 +257,11 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             return false;
         }
 
-        public List<AbsMapObject> MapControlsNearMapObjects(IntVector2 tilePos, bool controller)
+        public List<AbsMapObject> MapControlsNearMapObjects(IntVector2 maptilePos, bool controller)
         {
             playerNearMapObjects.Clear();
 
-            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            IntVector2 areaPos = maptilePos / UnitGridSquareWidth;
             UnitCollArea area;
 
             if (grid.TryGet(areaPos.X, areaPos.Y, out area))
@@ -455,7 +456,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             return strongest;
         }
 
-        public void collectOpponentGroups(PFaction faction, IntVector2 tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities)
+        public void collectOpponentGroups(PFaction faction, IntVector2 tilePos, out List<SoldierGroup> groups, out List<City> cities)
         {
             //lock (groups_nearUpdate)
             //{
@@ -505,7 +506,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         }
 
         public void collectGroups(IntVector2 tilePos,
-           ref List<GameObject.AbsGroup> groups, bool cities)
+           ref List<AbsGroup> groups, bool cities)
         {
             groups.Clear();
 
@@ -707,7 +708,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             }
         }
 
-        public GameObject.Army AdjacenToArmy(PFaction factionFilter, PArmy ignore, IntVector2 tilePos, float maxTileDistance)
+        public Army AdjacenToArmy(PFaction factionFilter, PArmy ignore, IntVector2 tilePos, float maxTileDistance)
         {
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
@@ -742,19 +743,47 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             return null;
         }
 
-        public void add(GameObject.City city)
+        public void add(City city)
         {
             IntVector2 areaPos = city.maptilePos / UnitGridSquareWidth;
 
             grid.Get(areaPos).cities.Add(city.Pointer());
         }
 
+        public void CollectNeighborCities(City toCity, CityCollection cities)
+        {
+            cities.hash.Clear();
+            cities.list.Clear();
 
-        public GameObject.City closestCity(IntVector2 tilePos)
+            cities.hash.Add(toCity.myIndex);
+
+            IntVector2 areaPos = toCity.maptilePos / UnitGridSquareWidth;
+            Rectangle2 cityarea = Rectangle2.FromCenterTileAndRadius(areaPos, 4);
+            cityarea.SetBounds(grid.Area);
+
+            ForXYLoop loop = new ForXYLoop(cityarea);
+            while (loop.Next())
+            {
+                var area = grid.Get(loop.Position);
+                lock (area.cities)
+                {
+                    foreach (var c in area.cities)
+                    {
+                        if (!cities.hash.Contains(c.cityIndex))
+                        {
+                            cities.hash.Add(c.cityIndex);
+                            cities.list.Add(c);
+                        }
+                    }
+                }
+            }
+        }
+
+        public City closestCity(IntVector2 tilePos)
         {
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
 
-            FindMinValuePointer<GameObject.City> closest = new FindMinValuePointer<GameObject.City>();
+            FindMinValuePointer<City> closest = new FindMinValuePointer<City>();
             
             checkArea(areaPos); //adding center tile
 
@@ -788,7 +817,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         }
 
         public void collectCities_fromArea(IntVector2 areaPos, int minCount,
-            List<GameObject.City> nearCities, 
+            List<City> nearCities, 
             PFaction myFaction, PFaction factionFilter)
         {
             if ( factionFilter.TryGetFaction(out var pFilter))
@@ -842,7 +871,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         }
 
         public void collectCitiesAndArmies(IntVector2 areaPos, int goalCount, float maxStrengthValue,
-            List<GameObject.AbsMapObject> nearMapObjects,
+            List<AbsMapObject> nearMapObjects,
             PFaction myFaction, PFaction factionFilter)
         {
 
@@ -928,12 +957,12 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
         public List<PCity> cities = new List<PCity>(2);
 
-        public void processAdd(GameObject.SoldierGroup group)
+        public void processAdd(SoldierGroup group)
         {
             processingGroups.Add(group.pointer());
         }
 
-        public void processAdd(GameObject.Army army)
+        public void processAdd(Army army)
         {
             if (processingArmies == null)
             {
@@ -969,5 +998,10 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         }
     }
 
+    class CityCollection
+    {
+        public HashSet<int> hash = new HashSet<int>(16);
+        public List<PCity> list = new List<PCity>(16);
+    }
 
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.Core.DSSWars;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
@@ -25,6 +26,7 @@ namespace VikingEngine.DSSWars.Players
         bool currentUnitDetailLayer = false;
         Line targetLine;
         PathVisuals groupPath;
+        PathVisuals testPath3Visuals;
         /// <summary>
         /// Only for controller input
         /// </summary>
@@ -40,6 +42,7 @@ namespace VikingEngine.DSSWars.Players
             
             subTile = new SelectedSubTile(player, isHover);
             groupPath = new PathVisuals(player.playerData.localPlayerIndex);
+            testPath3Visuals  = new PathVisuals(player.playerData.localPlayerIndex);
             groupModels_terrian = new SelectionGroupModels(playerCam, false);
             groupModels_detail = new SelectionGroupModels(playerCam, true);
         }
@@ -50,12 +53,14 @@ namespace VikingEngine.DSSWars.Players
             targetLine = null;
             guiModels.DeleteAll();
             groupPath.DeleteMe();
+            testPath3Visuals.DeleteMe();
 
             groupModels_detail.clear();
             groupModels_terrian.clear();
         }
 
-        public void viewGroupPath(DetailWalkingPath path)
+        DetailWalkingPathResult prevpath = null;
+        public void viewGroupPath(DetailWalkingPathResult path)
         {
             if (path != null)
             {
@@ -63,7 +68,22 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
+                prevpath = null;
                 groupPath.DeleteMe();
+            }
+
+            //Test the same path
+            if (path != null && path != prevpath && path.nodes.Count >= 3)
+            {
+                prevpath = path;
+                IntVector2 fromPos = path.nodes.Last().position;
+                IntVector2 toPos = path.nodes.First().position;
+
+                //var layerPath = DssRef.world.GetPath3FromPool();
+                var highPath = DssRef.world.path3Thread_test.FindHighPath(WP.MaptileToWorldPosXZ(fromPos), WP.MaptileToWorldPosXZ(toPos), 0, false, false);
+                var layPath = DssRef.world.path3Thread_test.FindDetailPath(highPath, WP.MaptileToWorldPosXZ(fromPos), WP.MaptileToWorldPosXZ(toPos), Rotation1D.D0, false, false, false);
+
+                testPath3Visuals.refresh2(layPath, isHover);
             }
         }
 

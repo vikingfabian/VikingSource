@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
@@ -16,6 +17,7 @@ using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Command;
@@ -112,8 +114,11 @@ namespace VikingEngine.DSSWars.GameObject
         Graphics.Mesh collisionModel;
 #endif
 
-        public WalkingPath path = null;
-        public DetailWalkingPath detailPath = null;
+        public WalkingPath path_old = null;
+
+        public LayerWalkingPathResult path = null;
+        public DetailWalkingPathResult detailPath = null;
+        
         float waitTime = 0;
         public AbsCommand command = null;
         GameTimeStamp enterBattleStateTime = GameTimeStamp.None;
@@ -1264,7 +1269,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 //Capture city here
                                 if (tArmy.IsArmy())
                                 {
-                                    if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile))
+                                    if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile) && tile.pcity.HasValue())
                                     {
                                         var city = tile.pcity.City();
                                         if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
@@ -1296,7 +1301,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(maptilePos), out var tile))
                                 {
                                     var city = tile.pcity.City();
-                                    if (DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
+                                    if (city != null && DssRef.world.diplomacy.GetRelation(tArmy.pfaction, city.pfaction).InWar())
                                     {
                                         goalWp = WP.MaptileToWorldPosXZ(city.maptilePos);
 
@@ -1519,7 +1524,19 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.hspace();
             args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
 
-           
+            args.content.space(2);
+            args.content.Add(new RbImage(SpriteName.WarsIconArmySupply));
+            args.content.hspace();
+            args.content.Add(new RbText(AllUnits.GroupSupply(soldierCount, ref soldierData).ToString()));
+
+
+            //buttonContent.Add(new RbImage(SpriteName.WarsIconArmySupply));
+            //buttonContent.space(0.5f);
+            //buttonContent.Add(new RbText($"{faction.UsedArmySupply}/{faction.ArmySupply}", faction.UsedArmySupply >= faction.ArmySupply ? HudLib.NotAvailableColor : null));
+            //content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,
+            //    new RbTooltip_Text(DssRef.todoLang.ArmySupplyCount)));
+
+
         }
 
         public override void toTooltip(ObjectHudArgs args)
@@ -2008,24 +2025,38 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        void recyclePath(bool large, bool detail, int pathThreadIndex)
+        void recyclePath(bool large, bool detail/*, Path3Thread thread*/)
         {
-            if (large && path != null)
-            {
-                //lock (DssRef.state.pathFindingPool)
-                //{
-                    DssRef.world.pathFindingPool.Return(path);
-                    path = null;
-                //}
-            }
+            //if (large && path_old != null)
+            //{
+            //    //lock (DssRef.state.pathFindingPool)
+            //    //{
+            //    DssRef.world.ReturnToPool(path);
+            //        DssRef.world.pathFindingPool.Return(path_old);
+            //        path_old = null;
+            //    //}
+            //}
 
-            if (detail && detailPath != null)
+            //if (detail && detailPath != null)
+            //{
+            //    //lock (DssRef.state.detailPathFindingPool)
+            //    //{
+            //    DssRef.world.detailPathFindingPool.Return(detailPath);
+            //    detailPath = null;
+
+
+            //    //}
+            //}
+
+            if (large)
             {
-                //lock (DssRef.state.detailPathFindingPool)
-                //{
-                DssRef.world.detailPathFindingPool.Return(detailPath);
-                    detailPath = null;
-                //}
+                DssRef.world.ReturnToPool(path);
+                path = null;
+            }
+            if (detail)
+            {
+                DssRef.world.ReturnToPool(detailPath);
+                detailPath = null;
             }
         }
 
@@ -2192,7 +2223,7 @@ namespace VikingEngine.DSSWars.GameObject
             return value;
         }
 
-        void groupToGroupCollsionUpate_async(int pathThreadIndex)
+        void groupToGroupCollsionUpate_async(Path3Thread thread)
         {
             Vector2 diff = new Vector2(
                 goalWp.X - position.X,
@@ -2209,7 +2240,7 @@ namespace VikingEngine.DSSWars.GameObject
                 collisionModel.Color = Color.HotPink;
                 collisionModel.position = VectorExt.V2toV3XZ(WalkDirBound.center, position.Y);
 #endif
-                List<AbsArmy> ArmiesColl_asyncupdate = DssRef.state.pathUpdates[pathThreadIndex].ArmiesColl_asyncupdate;
+                List<AbsArmy> ArmiesColl_asyncupdate = thread.ArmiesColl_asyncupdate;
                 DssRef.world.unitCollAreaGrid.collectArmies(maptilePos, ArmiesColl_asyncupdate);
                 foreach (var army in ArmiesColl_asyncupdate)
                 {
@@ -2275,7 +2306,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void asyncPathUpdate(int pathThreadIndex)
+        public void asyncPathUpdate(Path3Thread thread)
         {
 #if VISUAL_NODES
             collisionModel.Visible = false; 
@@ -2290,7 +2321,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (command_sp.clearOldPath)
                 {
                     command_sp.clearOldPath = false;
-                    recyclePath(true, true, pathThreadIndex);
+                    recyclePath(true, true);
                 }
 
                 if (command_sp.haltCommand)
@@ -2310,7 +2341,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (InGuardPost())
                 {
-                    recyclePath(true, true, pathThreadIndex);
+                    recyclePath(true, true);
                 }
                 else
                 {
@@ -2325,7 +2356,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         followsGoalId = tArmy.goalId;
 
-                        recyclePath(true, true, pathThreadIndex);
+                        recyclePath(true, true);
 
                         if (state <= GroupState.GoingIdle)
                         {
@@ -2348,11 +2379,11 @@ namespace VikingEngine.DSSWars.GameObject
                     maptilePos = WP.ToMapTilePos(position);
                     setGroundY();
 
-                    IntVector2 goalSubTile = WP.ToMapTilePos(target.position);
+                   // IntVector2 goalSubTile = WP.ToMapTilePos(target.position);
                     var detailPath_sp = detailPath;
-                    if (detailPath_sp == null || detailPath_sp.goal != goalSubTile)
+                    if (detailPath_sp == null || !WP.EqualPosition(target.position, detailPath_sp.goal))
                     {
-                        pathCalulate_detail(goalSubTile, true, pathThreadIndex);
+                        pathCalulate_detail(target.position, true, thread);
                     }
                 }
             }
@@ -2362,61 +2393,69 @@ namespace VikingEngine.DSSWars.GameObject
                 if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z) &&
                     DssRef.world.unitBounds.IntersectPoint(goalWp.X, goalWp.Z))
                 {
-                    maptilePos = WP.ToMapTilePos(position);
+                    //maptilePos = WP.ToMapTilePos(position);
                     setGroundY();
-                    groupToGroupCollsionUpate_async(pathThreadIndex);
+                    groupToGroupCollsionUpate_async(thread);
 
-                    const float DetailMaxLength = 3.5f;
+                    const float DetailMaxLength = 3.5f * MapTile1_1.ModelScale;
                     Vector3 diff = goalWp - position;
-                    float l = VectorExt.PlaneXZLength(diff);
-                    IntVector2 goalSubTile;
+                    float l = VectorExt.PlaneXZLength(diff) ;
+                    //Vector3 goalWp;
                     bool isTravelNode = false;
                     if (l > DetailMaxLength)
                     {
                         if (path == null)
                         {
-                            pathCalulate(pathThreadIndex, goalWp);
+                            pathCalulate_layer(thread, goalWp);
                         }
 
                         //pick three tiles ahead
                         var path_sp = path;
                         if (path_sp != null)
                         {
-                            IntVector2 aheadPathTile = path_sp.getNodeAhead(3, maptilePos, out isTravelNode);
-                            goalSubTile = WP.ToSubTilePos_Centered(aheadPathTile);
+                            goalWp = path_sp.getNodeAhead(3, position, out isTravelNode);
                         }
                         else
                         {
                             return;
                         }
                     }
-                    else
-                    {
-                        goalSubTile = WP.ToMapTilePos(goalWp);
-                    }
+                    //else
+                    //{
+                    //    goalSubTile = WP.ToMapTilePos(goalWp);
+                    //}
 
                     if (l >= Map.MapData.MapTile1_1.ModelScale &&
-                        (detailPath == null || detailPath.goal != goalSubTile))
+                        (detailPath == null || !WP.EqualPosition(goalWp, detailPath.goal)))
                     {
-                        pathCalulate_detail(goalSubTile, isTravelNode, pathThreadIndex);
+                        pathCalulate_detail(goalWp, isTravelNode, thread);
                     }
                 }
             }
         }
 
-        void pathCalulate(int pathThreadIndex, Vector3 goalWp)
+        void pathCalulate_layer(Path3Thread thread, Vector3 goalWp)
         {
-            recyclePath(true, false, pathThreadIndex);
+            recyclePath(true, false);
 
+            /*
             PathFinding pf = DssRef.world.pathFindingPool.GetPf();
             { 
-                path = pf.FindPath(pathThreadIndex, maptilePos, conv.ToDir8_INT(rotation), WP.ToSumTilePos( goalWp), isShip);
+                path_old = pf.FindPath(pathThreadIndex, maptilePos, conv.ToDir8_INT(rotation), WP.ToSumTilePos( goalWp), isShip);
             }
             DssRef.world.pathFindingPool.Return(pf);
+            */
+
+            bool endOnWater = true;
+            if (DssRef.world.subTileGrid.TryGet(WP.ToMapTilePos(goalWp), out var endTile))
+            {
+                endOnWater = endTile.IsWater();
+            }
+            path = DssRef.world.path3Thread_test.FindHighPath(WP.MaptileToWorldPosXZ(maptilePos), goalWp, conv.ToDir8_INT(rotation), isShip, endOnWater);
         }
 
 
-        void pathCalulate_detail(IntVector2 goal, bool isTravelNode, int pathThreadIndex)
+        void pathCalulate_detail(Vector3 goal, bool isTravelNode, Path3Thread thread)
         {
             //Path towards army end position
             //make a big path towards end pos
@@ -2429,14 +2468,22 @@ namespace VikingEngine.DSSWars.GameObject
                 return;
             }
 
-            recyclePath(false, true, pathThreadIndex);
+            recyclePath(false, true);
 
+            /*
             DetailPathFinding pf = DssRef.world.detailPathFindingPool.GetPf();
             {
                 detailPath = pf.FindPath(WP.ToMapTilePos(position), rotation, goal,
                     isShip, tArmy.walkGoalAsShip, isTravelNode);
             }
             DssRef.world.detailPathFindingPool.Return(pf);
+            */
+            bool endOnWater = true;
+            if (DssRef.world.subTileGrid.TryGet(WP.ToMapTilePos(goal), out var endTile))
+            {
+                endOnWater = endTile.IsWater();
+            }
+            detailPath = DssRef.world.path3Thread_test.FindDetailPath(path, position, goal, conv.ToDir8_INT(rotation), isShip, endOnWater, isTravelNode);
 
             var detailPath_sp = detailPath;
 

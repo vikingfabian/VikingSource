@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
@@ -43,7 +44,7 @@ namespace VikingEngine.DSSWars
         //SoldierUpkeep totalArmiesUpkeep = new SoldierUpkeep();
         public int WorkForceInCityCount()
         { 
-            return totalWorkForce / DssConst.HeadCityStartMaxWorkForce;
+            return totalWorkForce / CityHallSetup.HeadCityStartMaxWorkForce;
         }
         public bool craftOnFullStockProperty(object tag, bool set, bool value)
         {
@@ -420,7 +421,7 @@ namespace VikingEngine.DSSWars
 
         public long GetGold(City city)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 return money.GetGold();
             }
@@ -437,7 +438,7 @@ namespace VikingEngine.DSSWars
                 return true;
             }
 
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 return money.GetGold() >= cost;
             }
@@ -449,7 +450,7 @@ namespace VikingEngine.DSSWars
 
         public bool hasMoney(Money cost, AbsMapObject mapObj)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 return money >= cost;
             }
@@ -461,7 +462,7 @@ namespace VikingEngine.DSSWars
 
         public ref Money GetRefMoney(AbsMapObject mapObj)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 return ref money;
             }
@@ -481,7 +482,7 @@ namespace VikingEngine.DSSWars
             }
 #endif
 
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             { 
                 return money.PayGold(cost, allowDept);                
             }
@@ -492,7 +493,7 @@ namespace VikingEngine.DSSWars
         }
         public int payGold_MuchAsPossible(int cost, City city)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 return (int)money.payGold_MuchAsPossible(cost);//pay(ref gold);
             }
@@ -516,7 +517,7 @@ namespace VikingEngine.DSSWars
 
         public void addGold(long value, City city)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 money.AddGold(value);
             }
@@ -549,10 +550,9 @@ namespace VikingEngine.DSSWars
             int workForceCount = 0;
             
             CityEconomyData newCitiesEconomy = new CityEconomyData();
-            //float citiesFoodProduce = 0;
-            //float citiesFoodSpend = 0;
             float soldResources = 0;
             citiesMilitaryStrenght = 0;
+            int soldierSupplyBuildings = 0;
 
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
@@ -560,25 +560,16 @@ namespace VikingEngine.DSSWars
                 CityEconomyData data = new CityEconomyData(citySel);
                 newCitiesEconomy.Add(data);
                 workForceCount += citySel.workForce.amount;
-                //citiesFoodProduce += citySel.foodProduction.displayValue_gold_sec;
-                //citiesFoodSpend += citySel.foodSpending.displayValue_gold_sec;
+                
                 soldResources += citySel.soldResources.displayValue_gold_sec;
                 citiesMilitaryStrenght += citySel.strengthValue;
-              
+                soldierSupplyBuildings += citySel.buildingStructure.SoldiersQuarter_Small_count * DssConst.SoldiersQuarter_Small_Supply + 
+                    citySel.buildingStructure.SoldiersQuarter_Large_count * DssConst.SoldiersQuarter_Large_Supply;
             }
-
+            ArmySupply = soldierSupplyBuildings;
             totalWorkForce = workForceCount;
             citiesEconomy = newCitiesEconomy;
 
-//#if DEBUG
-//            if (Debug.CorruptValue(citiesFoodSpend))
-//            {
-//                lib.DoNothing();
-//            }
-//#endif
-
-//            CityFoodProduction = Convert.ToInt32(citiesFoodProduce);
-//            CityFoodSpending = Convert.ToInt32(citiesFoodSpend);
             CitySoldResources = Convert.ToInt32(soldResources);
 
             float foodImport = 0;

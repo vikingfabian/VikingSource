@@ -7,6 +7,7 @@ using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
@@ -150,7 +151,7 @@ namespace VikingEngine.DSSWars.GameObject
             return objective == ArmyObjective.Attack && path.NodeCountLeft() == 3;
         }
 
-        public void asyncPathUpdate(int pathThreadIndex)
+        public void asyncPathUpdate(Path3Thread thread)
         {
             //if (IdleObjetive())
             //{
@@ -187,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
-                groupsC.sel.asyncPathUpdate(pathThreadIndex);
+                groupsC.sel.asyncPathUpdate(thread);
             }
         }
 
@@ -347,7 +348,7 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public void Ai_Order_MoveTo(IntVector2 goalTilePos)
+        public void Ai_Order_MoveTo(Vector3 goalPos)
         {
             //if (orderOutsidePlayerAttension(goalTilePos))
             //{
@@ -359,7 +360,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             //else
             //{ 
-                Order_MoveTo(goalTilePos);
+                Order_MoveTo(WP.ToMapTilePos(goalPos));
             //}
         }
 
@@ -589,7 +590,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var center = groups.GetIndex_Safe(mostCenterGroup);
                 if (center != null)
                 {
-                    var path_sp = center.path;
+                    var path_sp = center.path_old;
 
                     if (path_sp == null)
                     {

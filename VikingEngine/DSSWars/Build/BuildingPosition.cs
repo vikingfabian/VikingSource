@@ -11,7 +11,9 @@ namespace VikingEngine.DSSWars.Build
         // --- Existing Fields ---
         public IntVector2 WorkerHuts_pos;
         public IntVector2 ServiceHouse_pos;
+        public IntVector2 GovernentBuildings_pos;
         public IntVector2 GuardHouse_pos;
+        public IntVector2 SoldiersQuarter_pos;
         public IntVector2 Postal_pos;
         public IntVector2 Recruitment_pos;
         public IntVector2 SoldierBarracks_pos;
@@ -43,8 +45,8 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 GoldDelivery_pos;
         public IntVector2 WoodCutter_pos;
         public IntVector2 StoneCutter_pos;
-        public IntVector2 Embassy_pos;
-        public IntVector2 WaterResovoir_pos;
+        //public IntVector2 Embassy_pos;
+        public IntVector2 Water_pos;
         public IntVector2 ArcherBarracks_pos;
         public IntVector2 WarmachineBarracks_pos;
         public IntVector2 GunBarracks_pos;
@@ -128,6 +130,9 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.GuardHouse_Small:
                 case BuildAndExpandType.GuardHouse_Large:
                     return GuardHouse_pos;
+                case BuildAndExpandType.SoldiersQuarter_Small:
+                case BuildAndExpandType.SoldiersQuarter_Large:
+                    return SoldiersQuarter_pos;
 
                 case BuildAndExpandType.Postal:
                 case BuildAndExpandType.PostalLevel2:
@@ -175,7 +180,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.PigPen: return PigPen_pos;
                 case BuildAndExpandType.HenPen: return HenPen_pos;
                 case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_pos;
-                case BuildAndExpandType.Pavement: return Pavement_pos;
+                case BuildAndExpandType.PavementStreet: return Pavement_pos;
                 case BuildAndExpandType.PavementFlower: return PavementFlower_pos;
                 case BuildAndExpandType.Bank: return Bank_pos;
                 case BuildAndExpandType.CoinMinter: return CoinMinter_pos;
@@ -187,8 +192,9 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.WoodCutter: return WoodCutter_pos;
                 case BuildAndExpandType.StoneCutter: return StoneCutter_pos;
-                case BuildAndExpandType.Embassy: return Embassy_pos;
-                case BuildAndExpandType.WaterResovoir: return WaterResovoir_pos;
+               
+                case BuildAndExpandType.WaterWell: return Water_pos;
+                case BuildAndExpandType.WaterResovoir: return Water_pos;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_pos;
                 case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_pos;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_pos;
@@ -247,7 +253,13 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.OliphantCage: return OliphantCage_pos;
 
                 case BuildAndExpandType.Logistics:
-                    return IntVector2.NegativeOne;
+                case BuildAndExpandType.Economics:
+                case BuildAndExpandType.GreatHall:
+                case BuildAndExpandType.ManorLord:
+                case BuildAndExpandType.TingsHouse:
+                case BuildAndExpandType.Embassy:
+                    
+                    return GovernentBuildings_pos;
 
 
                 default:

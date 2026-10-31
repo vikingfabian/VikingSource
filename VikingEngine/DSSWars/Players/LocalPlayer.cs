@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
@@ -18,10 +19,12 @@ using VikingEngine.DSSWars.GameObject.ObjectPointer;
 
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
+using VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.DSSWars.Map.MapModels;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
@@ -59,8 +62,8 @@ namespace VikingEngine.DSSWars.Players
         public int warCount = 0;
         public int diplomaticPoints_softMax;
 
-       
-           
+        protected InfoDisplay infoDisplay;
+
 
         public Data.Statistics statistics = new Data.Statistics();
 
@@ -237,6 +240,8 @@ namespace VikingEngine.DSSWars.Players
 
             faction.technology = new XP.TechnologyTemplate();
             faction.technology.iron.points = XP.TechnologyTemplate.FactionUnlock;
+
+           
         }
         public override void AssignFaction(Faction faction)
         {
@@ -306,10 +311,6 @@ namespace VikingEngine.DSSWars.Players
                 input.copyDataFrom(Ref.gamesett.keyboardMap);
             }
 
-            //inputConnected = input.Connected;
-
-            //faction.displayInFullOverview = true;
-
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
@@ -335,11 +336,7 @@ namespace VikingEngine.DSSWars.Players
             InitTutorial(newGame);
 
             refreshNeihgborAggression();
-            //if (numPlayers > 1)
-            //{
-            //    toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
-            //}
-
+            
             menDeliveryCopy = new DeliveryStatus();
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
 
@@ -355,12 +352,15 @@ namespace VikingEngine.DSSWars.Players
 
             warmachineConscriptCopy = new BarracksStatus(BuildAndExpandType.WarmachineBarracks);
 
-            //knightConscriptCopy = new BarracksStatus(BuildAndExpandType.KnightsBarracks);
-
             gunConscriptCopy = new BarracksStatus(BuildAndExpandType.GunBarracks);
 
             cannonConscriptCopy = new BarracksStatus(BuildAndExpandType.CannonBarracks);
 
+
+            if (StartupSettings.ViewCoords && infoDisplay == null)
+            {
+                infoDisplay = new InfoDisplay(new Vector2(Engine.Screen.SafeArea.X + HudLib.HeadDisplayWidth, hud.head.Bottom));
+            }
         }
 
         public void NetUpdate(bool bSlowUpdate)
@@ -793,11 +793,18 @@ namespace VikingEngine.DSSWars.Players
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                 {
-                    EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
+                    CityCollection ncoll = citySel.Neighbors();
                     {
-                        nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                        //EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                        //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
+                        //{
+                        foreach (var pnCity in ncoll.list)
+                        {
+                            City nCity = pnCity.City();
+                            nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                        }
                     }
+                    City.ReturnToPool(ncoll);
                 }
             }
         }
@@ -806,11 +813,18 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                while (neighbors.Next(DssRef.world.cities, out City nCity))
+                CityCollection ncoll = city.Neighbors();
                 {
-                    nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                    //    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    //{
+                    foreach (var pnCity in ncoll.list)
+                    {
+                        City nCity = pnCity.City();
+                        nCity.pfaction.GetPlayer()?.onPlayerNeighborCapture(this);
+                    }
                 }
+                City.ReturnToPool(ncoll);
             }
 
             var f = pfaction.GetFaction();
@@ -945,6 +959,8 @@ namespace VikingEngine.DSSWars.Players
             }
 
             updatePlayer();
+
+            infoDisplay?.update();
         }
 
         public void uiUpdateOnly()
@@ -1237,7 +1253,7 @@ namespace VikingEngine.DSSWars.Players
 
         void updateMapOverlays()
         {
-            if (mapLayersManager.current.DrawFar)
+            if (mapLayersManager.current.DrawFarLayer)
             {
                 gameControls.map.hover.subTile.clear();
                 //gameControls.map.selection.subTile.clear();
@@ -1257,7 +1273,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            if (mapLayersManager.current.DrawMid)
+            if (mapLayersManager.current.DrawMidLayer)
             {
                 gameControls.map.hover.subTile.clear();
                 //gameControls.map.selection.subTile.clear();
@@ -1853,9 +1869,9 @@ namespace VikingEngine.DSSWars.Players
 
 
 
-        public void asyncPlayerPathUpdate(float time)
+        public void asyncPlayerPathUpdate(float time, Path3Thread thread)
         {
-            gameControls.army?.asynchPathUpdate();
+            gameControls.army?.asynchPathUpdate(thread);
 
             //return false;
         }
@@ -1949,7 +1965,7 @@ namespace VikingEngine.DSSWars.Players
             if (MapLayerManager.CameraIndexToView == null ||
                 MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex] == null)
             {
-                return MapDetailLayerType.TerrainOverview2;
+                return MapDetailLayerType.Layer2_Mid;
             }
 
             return MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex].current.type;

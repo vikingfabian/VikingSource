@@ -990,9 +990,14 @@ namespace VikingEngine.DSSWars.Build
             }
             content.Add(new RbSeperationLine(HudLib.TitleColor_Head, 0.2f));
             //content.newLine();
-            content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
-            content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec)));
+            //content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
+            //content.space();
+            //content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec)));
+            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec));
+
+            IconName.GroundRequirement(build.groundRequirement, out var groundReqIcon, out var groundReqText);
+            HudLib.LabelAndText(content, groundReqIcon, DssRef.todoLang.GroundRequired, groundReqText);
+
 
             content.Add(new RbSeperationLine());
             HudLib.Description(content, build.Description());
@@ -1190,20 +1195,20 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.WheatFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                    farmHud(false, new ItemResource(ItemResourceType.RawFood_G, DssConst.WheatFoodAmount), ItemResource.Empty);
                     break;
                 case BuildAndExpandType.WheatFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                    farmHud(true, new ItemResource(ItemResourceType.RawFood_G, DssConst.WheatFoodAmount), ItemResource.Empty);
 
                     break;
 
                 case BuildAndExpandType.LinenFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+                    farmHud(false, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.LinenHarvestAmount), ItemResource.Empty);
 
                     break;
 
                 case BuildAndExpandType.LinenFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.LinenHarvestAmount), ItemResource.Empty);
                     break;
 
                 case BuildAndExpandType.RapeSeedFarm:
@@ -1215,11 +1220,11 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.HempFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount));
+                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_G, DssConst.HempLinenAndFuelAmount));
                     break;
 
                 case BuildAndExpandType.HempFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
+                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
                     break;
 
                 case BuildAndExpandType.TrapperHut:

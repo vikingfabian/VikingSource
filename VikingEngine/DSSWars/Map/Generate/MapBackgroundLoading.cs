@@ -43,19 +43,19 @@ namespace VikingEngine.DSSWars.Map.Generate
         TimeStamp abortCompleteTime;
 
 
-        public Map2.Map2Generator dataGenerate = null;
+        public Map2.IconMapGenerator dataGenerate = null;
         Map2PostGenerate postGenerate = null;
         //GenerateMap postGenerate;
         int failCount = 0;
         bool generateSuccess =false;
         CancellationTokenSource tokenSource;
         public SaveStateMeta loadMeta;
-        public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
+        public Map2GenerateSettings generateSettings;
 
         public MapBackgroundLoading()
         { }
 
-        public MapBackgroundLoading(Map2.Map2Generator generator)
+        public MapBackgroundLoading(Map2.IconMapGenerator generator)
         {
             this.generateSettings = generator.generateSettings;
             dataGenerate = generator;
@@ -70,6 +70,10 @@ namespace VikingEngine.DSSWars.Map.Generate
         public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
             this.loadMeta = loadMeta;
+            if (loadMeta == null)
+            {
+                generateSettings = new Map2GenerateSettings() { mapScale = DssRef.storage.ruleset.mapSize };
+            }
             begin();
         }
 
@@ -144,7 +148,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             //generatePass == GenerateMapPass.Clear ||
                             //generatePass == GenerateMapPass.AllTerrain)
                         {
-                            dataGenerate = new Map2.Map2Generator();
+                            dataGenerate = new Map2.IconMapGenerator();
                         }
 
                         WorldMetaData worldmeta;
@@ -165,7 +169,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         {
                             List<Task> tasks = new List<Task>();
                             //success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks).Result;
-                            await dataGenerate.generatePassRange_async(generateSettings, dataGenerate.currentPass +1, Map2Pass.BuildMapData, null);
+                            await dataGenerate.generatePassRange_async(generateSettings, dataGenerate.currentPass +1, Map2Pass.BuildMapData, null, true);
                             //success = true;
                         }
                         else

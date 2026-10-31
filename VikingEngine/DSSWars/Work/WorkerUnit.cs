@@ -178,33 +178,51 @@ namespace VikingEngine.DSSWars.Work
                                         case TerrainSubFoilType.TreeHard:
                                             SoundLib.woodcut.Play(model.position);
                                             break;
-                                        case TerrainSubFoilType.TreeApple:
-                                        case TerrainSubFoilType.TreeBanana:
-                                        case TerrainSubFoilType.WheatFarm:
-                                        case TerrainSubFoilType.WheatFarmUpgraded:
-                                        case TerrainSubFoilType.LinenFarm:
-                                        case TerrainSubFoilType.LinenFarmUpgraded:
-                                        case TerrainSubFoilType.RapeSeedFarm:
-                                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                                        case TerrainSubFoilType.HempFarm:
-                                        case TerrainSubFoilType.HempFarmUpgraded:
-                                            if (SoundStackManager.RareAvailable())
-                                            {
-                                                SoundLib.scythe.Play(model.position);
-                                            }
-                                            break;
-                                        case TerrainSubFoilType.StoneBlock:
+                                       
+                                        case TerrainSubFoilType.LargeStones:
                                             SoundLib.pickaxe.Play(model.position);
                                             break;
-                                        case TerrainSubFoilType.ClayPit:
-                                        case TerrainSubFoilType.BogIron:
-                                        case TerrainSubFoilType.Stones:
+                                        //case TerrainSubFoilType.ClayPit:
+                                        //case TerrainSubFoilType.BogIron:
+                                        default:
+                                        case TerrainSubFoilType.SmallStones:
                                             if (SoundStackManager.RareAvailable())
                                             {
                                                 SoundLib.dig.Play(model.position);
                                             }
                                             break;
                                     }
+                                }
+                            }
+                            break;
+                        case WorkType.GatherFarm:
+                            if (workAnimation_soundframe())
+                            {
+                                workEffect?.onSoundAnimation();
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
+                                {
+                                    if (SoundStackManager.RareAvailable())
+                                    {
+                                        SoundLib.scythe.Play(model.position);
+                                    }
+                                    //switch ((TerrainSubFarmType)subTile.subTerrain)
+                                    //{
+                                    //    case TerrainSubFarmType.TreeApple:
+                                    //    case TerrainSubFarmType.TreeBanana:
+                                    //    case TerrainSubFarmType.WheatFarm:
+                                    //    case TerrainSubFarmType.WheatFarmUpgraded:
+                                    //    case TerrainSubFarmType.LinenFarm:
+                                    //    case TerrainSubFarmType.LinenFarmUpgraded:
+                                    //    case TerrainSubFarmType.RapeSeedFarm:
+                                    //    case TerrainSubFarmType.RapeSeedFarmUpgraded:
+                                    //    case TerrainSubFarmType.HempFarm:
+                                    //    case TerrainSubFarmType.HempFarmUpgraded:
+                                    //        if (SoundStackManager.RareAvailable())
+                                    //        {
+                                    //            SoundLib.scythe.Play(model.position);
+                                    //        }
+                                    //        break;
+                                    //}
                                 }
                             }
                             break;
@@ -287,7 +305,7 @@ namespace VikingEngine.DSSWars.Work
                                             SoundLib.tree_falling.Play(model.position);
                                             break;
 
-                                        case TerrainSubFoilType.Stones:
+                                        case TerrainSubFoilType.SmallStones:
                                             if (SoundStackManager.RareAvailable())
                                             {
                                                 SoundLib.pickup.Play(model.position);
@@ -299,10 +317,10 @@ namespace VikingEngine.DSSWars.Work
                                 break;
                             case WorkType.Plant:
                                 int waterCost;
-                                switch ((TerrainSubFoilType)DssRef.world.subTileGrid.Get(status.subTileEnd).subTerrain)
+                                switch ((TerrainSubFarmType)DssRef.world.subTileGrid.Get(status.subTileEnd).subTerrain)
                                 {
-                                    case TerrainSubFoilType.TreeApple:
-                                    case TerrainSubFoilType.TreeBanana:
+                                    case TerrainSubFarmType.TreeApple:
+                                    case TerrainSubFarmType.TreeBanana:
                                         waterCost = DssConst.OrchardWaterCost;
                                         break;
                                     default:
@@ -561,7 +579,7 @@ namespace VikingEngine.DSSWars.Work
 #if DEBUG
                     resourceModel.DebugName = "resourceModel";
 #endif
-                    resourceModel.AddToRender(DrawGame.UnitDetailLayer);
+                    resourceModel.AddToRender(DrawGame.NearLayer);
                     resourceModel.Rotation = DssLib.FaceCameraRotation;
                 }
                 updateResourceModel();

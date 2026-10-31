@@ -34,6 +34,7 @@ namespace VikingEngine.DSSWars.Resource
         static int Cost_RawFood = DssConst.FoodGoldValue_BlackMarket - 5;
         static int Cost_Food = DssConst.FoodGoldValue_BlackMarket;
         static int Cost_Wood = 50;
+        static int Cost_FineWood = 100;
         static int Cost_Stone = 60;
         static int Cost_Brick = 100;
         static int Cost_SkinAndLinnen = 50;
@@ -41,12 +42,13 @@ namespace VikingEngine.DSSWars.Resource
 
         static readonly MarketResource[] Resources =
         {
-            new MarketResource(ItemResourceType.Wood_Group, Cost_Wood),
+            new MarketResource(ItemResourceType.Wood_G, Cost_Wood),
+            new MarketResource(ItemResourceType.FineWood_G, Cost_FineWood ),
             new MarketResource(ItemResourceType.Stone_G, Cost_Stone),
             new MarketResource(ItemResourceType.Brick, Cost_Brick),
             new MarketResource(ItemResourceType.Iron_G, Cost_Iron),
-            new MarketResource(ItemResourceType.RawFood_Group, Cost_RawFood),
-            new MarketResource(ItemResourceType.SkinLinen_Group, Cost_SkinAndLinnen),
+            new MarketResource(ItemResourceType.RawFood_G, Cost_RawFood),
+            new MarketResource(ItemResourceType.SkinLinen_G, Cost_SkinAndLinnen),
         };
 
         static readonly int[] PurchaseCount = { 20, 100, 500 };
@@ -123,17 +125,19 @@ namespace VikingEngine.DSSWars.Resource
             content.newLine();
             HudLib.LabelAndText(content, SpriteName.WarsStockpileLimit, DssRef.lang.Hud_Available, player.BlackMarketCount.ToString());
 
-            content.newParagraph();
-            content.Add(new RbSeperationLine());
-            content.Add(new RbImage(SpriteName.rtsUpkeep));
-            content.Add(new RbText(Cost_Food.ToString()));
-            content.Add(new RbTab(0.3f));
-            content.Add(new RbImage(SpriteName.WarsResource_Food));
-            content.space();
-            content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-            content.space();
-            HudLib.InfoButton(content, new RbTooltip(tooltip));
-
+            if (DssRef.storage.ruleset_instance.module_foodAndWater)
+            {
+                content.newParagraph();
+                content.Add(new RbSeperationLine());
+                content.Add(new RbImage(SpriteName.rtsUpkeep));
+                content.Add(new RbText(Cost_Food.ToString()));
+                content.Add(new RbTab(0.3f));
+                content.Add(new RbImage(SpriteName.WarsResource_Food));
+                content.space();
+                content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                content.space();
+                HudLib.InfoButton(content, new RbTooltip(tooltip));
+            }
         }
 
         static void tooltip(RichBoxContent content, object tag)

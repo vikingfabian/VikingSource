@@ -24,6 +24,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public void fromCity(WorldData world, City city)
         {
+            /*
             DssRef.world = world;
             PcgRandom rnd = new PcgRandom(world.metaData.worldId.seed * city.myIndex);
 
@@ -68,7 +69,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                         foreach (var node in largePathResult.nodes)
                         {
-                            IntVector2 centerSubTile = WP.ToSubTilePos_Centered(node.position);
+                            IntVector2 centerSubTile =node.position;
 
                             while (subTilePos.SideLength(centerSubTile) > 2)
                             {
@@ -124,7 +125,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     }
                 }
             }
-            //}
+            */
         }
     }
 }

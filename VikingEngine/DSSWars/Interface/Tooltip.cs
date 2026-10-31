@@ -401,61 +401,69 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(DssRef.lang.Building_BuildAction));
             }
 
-            if (subTile.subTile.mainTerrain == TerrainMainType.Building)
+            switch (subTile.subTile.mainTerrain)
             {
-                switch ((TerrainBuildingType)subTile.subTile.subTerrain)
-                {
-                    case TerrainBuildingType.BoarHabitat:
-                    case TerrainBuildingType.FowlHabitat:
-                    case TerrainBuildingType.OxHabitat:
-                    case TerrainBuildingType.PonyHabitat:
-                    case TerrainBuildingType.WolfHabitat:
-                    case TerrainBuildingType.CatHabitat:
-                    case TerrainBuildingType.ElephantHabitat:
-                        content.Add(new RbSeperationLine());
-                        content.h2(DssRef.lang.Tutorial_ToCapture, HudLib.TitleColor_Head2);
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.lang.BuildingType_TrapperHut)));
+                case TerrainMainType.Building:
+                    switch ((TerrainBuildingType)subTile.subTile.subTerrain)
+                    {
+                        case TerrainBuildingType.Smoker:
+                            content.newParagraph();
+                            content.Add(new RbSeperationLine());
+                            Resource.CraftResourceLib.ConservedFood_Smoked.toMenu(content, subTile.city);
+                            break;
 
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+                        case TerrainBuildingType.Dryer:
+                            content.newParagraph();
+                            content.Add(new RbSeperationLine());
+                            Resource.CraftResourceLib.ConservedFood_Dried.toMenu(content, subTile.city);
+                            break;
 
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(TextLib.LabelColon( DssRef.lang.Work_OrderPrioTitle)));
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsWorkMove));
-                        content.hspace();
-                        content.Add(new RbText(DssRef.lang.Work_Move));
-                        break;
+                        case TerrainBuildingType.Work_CoalPit:
+                            content.newParagraph();
+                            content.Add(new RbSeperationLine());
+                            Resource.CraftResourceLib.Charcoal.toMenu(content, subTile.city);
+                            break;
 
-                    case TerrainBuildingType.Smoker:
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        Resource.CraftResourceLib.ConservedFood_Smoked.toMenu(content, subTile.city);
-                        break;
+                        case TerrainBuildingType.Brewery:
+                            content.newParagraph();
+                            content.Add(new RbSeperationLine());
+                            Resource.CraftResourceLib.Beer.toMenu(content, subTile.city);
+                            break;
 
-                    case TerrainBuildingType.Dryer:
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        Resource.CraftResourceLib.ConservedFood_Dried.toMenu(content, subTile.city);
-                        break;
+                    }
+                    break;
 
-                    case TerrainBuildingType.Work_CoalPit:
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        Resource.CraftResourceLib.Charcoal.toMenu(content, subTile.city);
-                        break;
+                case TerrainMainType.AnimalPen:
+                    switch ((TerrainSubAnimalPenType)subTile.subTile.subTerrain)
+                    {
+                        case TerrainSubAnimalPenType.BoarHabitat:
+                        case TerrainSubAnimalPenType.FowlHabitat:
+                        case TerrainSubAnimalPenType.OxHabitat:
+                        case TerrainSubAnimalPenType.PonyHabitat:
+                        case TerrainSubAnimalPenType.WolfHabitat:
+                        case TerrainSubAnimalPenType.CatHabitat:
+                        case TerrainSubAnimalPenType.ElephantHabitat:
+                            content.Add(new RbSeperationLine());
+                            content.h2(DssRef.lang.Tutorial_ToCapture, HudLib.TitleColor_Head2);
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.lang.BuildingType_TrapperHut)));
 
-                    case TerrainBuildingType.Brewery:
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        Resource.CraftResourceLib.Beer.toMenu(content, subTile.city);
-                        break;
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
 
-                }
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Work_OrderPrioTitle)));
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsWorkMove));
+                            content.hspace();
+                            content.Add(new RbText(DssRef.lang.Work_Move));
+                            break;
+
+                    }
+                    break;
             }
 
             //content.text(subTile.subTile.TypeToString());

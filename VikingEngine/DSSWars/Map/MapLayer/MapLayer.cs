@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 switch (Ref.gamesett.farViewDistance)
                 {
                     default:
-                        maxZoom = 38;
+                        maxZoom = 46;
                         break;
                     case ThreeOptions.Medium:
                         maxZoom = 26;
@@ -80,24 +80,24 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
                 }
 
-                layers.Add(new MapLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
+                layers.Add(new MapLayer(MapDetailLayerType.Layer1_Near, minZoom, maxZoom, zoomBuffer));
 
                 minZoom = maxZoom;
                 maxZoom = TerrainMaxZoom;//FullZoomRange.GetFromPercent(0.5f);
 
-                layers.Add(new MapLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
+                layers.Add(new MapLayer(MapDetailLayerType.Layer2_Mid, minZoom, maxZoom, zoomBuffer));
 
                 MidToDetailZoomRange = new IntervalF(FullZoomRange.Min, maxZoom - zoomBuffer);
 
                 minZoom = maxZoom;
                 maxZoom = 450;//FullZoomRange.GetFromPercent(0.75f);
 
-                layers.Add(new MapLayer(MapDetailLayerType.FactionColors3, minZoom, maxZoom, zoomBuffer), true);
+                layers.Add(new MapLayer(MapDetailLayerType.Layer3_Far, minZoom, maxZoom, zoomBuffer), true);
 
                 minZoom = maxZoom;
                 maxZoom = FullZoomRange.Max;
 
-                layers.Add(new MapLayer(MapDetailLayerType.FullOverview4, minZoom, maxZoom, zoomBuffer));
+                layers.Add(new MapLayer(MapDetailLayerType.Layer4_VeryFar, minZoom, maxZoom, zoomBuffer));
             }
 
             setNewLayer();
@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             //{
             //    lib.DoNothing();
             //}
-            return current.DrawDetailLayer;
+            return current.DrawNearLayer;
         }
 
         public bool LockDetailLevel = false;
@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             if (prevLayer != null)
             {
                 prevLayer.opacity = 1f;
-                if (current.DrawDetailLayer)
+                if (current.DrawNearLayer)
                 {
                     prevLayer.opacity = 1.75f;
                 }
@@ -160,8 +160,8 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
             if (player.factionPixelTexture != null)
             {
-                player.factionPixelTexture.overview = current.DrawMid;
-                if (!current.DrawDetailLayer)
+                player.factionPixelTexture.overview = current.DrawMidLayer;
+                if (!current.DrawNearLayer)
                 {
                     DssRef.world.BordersUpdated = true;
                 }
@@ -179,8 +179,8 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 if (prevLayer.fadeDelay <= 0)
                 {
                     if (Ref.gamesett.fadeMapLayers &&
-                        prevLayer.type != MapDetailLayerType.FullOverview4 &&
-                        current.type != MapDetailLayerType.FullOverview4
+                        prevLayer.type != MapDetailLayerType.Layer4_VeryFar &&
+                        current.type != MapDetailLayerType.Layer4_VeryFar
                         )
                     {
                         prevLayer.opacity -= 3f * Ref.DeltaTimeSec;
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             }
 
             float goalTiltY = current.goalCamAngle;
-            if (current.DrawDetailLayer)
+            if (current.DrawNearLayer)
             { 
                 goalTiltY += TiltYAdd;
             }
@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         const float FarCamAngle = 0.35f;
         const float VeryFarCamAngle = 0.2f;
 
-        public bool DrawDetailLayer, DrawNormalAndClose, DrawMid, DrawFar, DrawFullOverview;
+        public bool DrawNearLayer, DrawNearAndMidLayer, DrawMidLayer, DrawFarLayer, DrawVeryFarLayer;
         //public float CloseUpTransparentsy, NormalAndCloseTransparentsy, NormalTransparentsy, OverviewTransparentsy, OverviewAndFactionsTransparentsy, FactionsTransparentsy;
 
         public float goalCamAngle;
@@ -278,28 +278,28 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
             switch (type)
             {
-                case MapDetailLayerType.UnitDetail1:
+                case MapDetailLayerType.Layer1_Near:
                     //CloseUp
                     goalCamAngle = CloseUpCamAngle;
-                    DrawDetailLayer = true;                   
+                    DrawNearLayer = true;                   
                     break;
 
                 default://case DrawUnitsLevel.Normal:
                     goalCamAngle = NormalCamAngle;
-                    DrawMid = true;
+                    DrawMidLayer = true;
                     break;
 
-                case MapDetailLayerType.FactionColors3:
+                case MapDetailLayerType.Layer3_Far:
                     goalCamAngle = FarCamAngle;
-                    DrawFar = true;
-                    DrawFullOverview = false;
-                    DrawDetailLayer = false;                  
+                    DrawFarLayer = true;
+                    DrawVeryFarLayer = false;
+                    DrawNearLayer = false;                  
                     break;
 
-                case MapDetailLayerType.FullOverview4:
+                case MapDetailLayerType.Layer4_VeryFar:
                     goalCamAngle = VeryFarCamAngle;
-                    DrawFullOverview = true;
-                    DrawFar = true;                   
+                    DrawVeryFarLayer = true;
+                    DrawFarLayer = true;                   
                     break;
             }
         }
@@ -312,10 +312,10 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
     enum MapDetailLayerType
     {
-        UnitDetail1,
-        TerrainOverview2,
-        FactionColors3,
-        FullOverview4,
+        Layer1_Near,
+        Layer2_Mid,
+        Layer3_Far,
+        Layer4_VeryFar,
         NUM
     }
 }

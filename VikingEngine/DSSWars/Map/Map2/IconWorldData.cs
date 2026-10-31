@@ -18,17 +18,10 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
     }
 
-    struct CityPlacementData
-    {
-        public int myIndex;
-        public IntVector2 pos;
-
-    }
+    
 
     class IconWorldData
     {
-        
-
         public WorldMetaData metaData;
         public Grid2D_L<GenTile> iconGrid;
         public List<CityPlacementData> cities = null;
@@ -46,16 +39,18 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         }
 
-        public IconWorldData(IntVector2 iconSize)
+        public IconWorldData(WorldMetaData metaData)
         {
-            metaData = new WorldMetaData(Ref.rnd.Ushort(), new MapLib.MapScale(MapSizeCategory.Medium), -1);
-
+            this.metaData = metaData;
             rnd = new PcgRandom(metaData.worldId.seed);
 
-            iconGrid = new Grid2D_L<GenTile>(iconSize);
+            iconGrid = new Grid2D_L<GenTile>(metaData.mapScale.Size(true));
+        }
 
-            //IntVector2 tileSz = iconGrid.Size * 16;
-
+        public IconWorldData(MapLib.MapScale scale)
+            :this(new WorldMetaData(Ref.rnd.Ushort(), scale, -1))
+        {
+            
         }
         public void writeIcon(System.IO.BinaryWriter w)
         {
@@ -84,7 +79,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public IconWorldData CloneMe()
         {
-            IconWorldData clone = new IconWorldData(this.iconGrid.Size);
+            IconWorldData clone = new IconWorldData(metaData);
 
             clone.metaData = this.metaData;
 

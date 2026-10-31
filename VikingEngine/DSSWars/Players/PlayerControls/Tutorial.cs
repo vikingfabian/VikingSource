@@ -1186,7 +1186,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                     }
 
-                    if (player.mapLayersManager.current.DrawDetailLayer)
+                    if (player.mapLayersManager.current.DrawNearLayer)
                     {
                         if (!collectResources_zoomIn)
                         {
@@ -1228,7 +1228,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (player.gameControls.map.selection.obj is City)
                         {
-                            if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Wood_Group).amount >= CollectWoodStoneAmount)
+                            if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Wood_G).amount >= CollectWoodStoneAmount)
                             {
                                 //player.faction.workTemplate.move.value = 2;
                                 //player.faction.workTemplate.wood.value = 2;
@@ -1294,7 +1294,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (player.gameControls.map.selection.obj is City)
                         {
-                            if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.SkinLinen_Group).amount >= CollectLinenAmount)
+                            if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.SkinLinen_G).amount >= CollectLinenAmount)
                             {
                                 linen_collect = true;
                                 onPartSuccess();
@@ -1436,7 +1436,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
               
                 case TutorialMission.MoveArmy:
 
-                    if (player.mapLayersManager.current.DrawMid)
+                    if (player.mapLayersManager.current.DrawMidLayer)
                     {
                         if (!moveArmy_ZoomOut)
                         {
@@ -1486,7 +1486,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.Diplomatics:
 
-                    if (player.mapLayersManager.current.DrawFar)
+                    if (player.mapLayersManager.current.DrawFarLayer)
                     {
                         if (!diplomatics_ZoomOut)
                         {
@@ -1713,21 +1713,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         {
                             check(ref educateBurner_buildLogistics, city.buildingStructure.buildingLevel_logistics > 0 || hasBuildOrder(BuildAndExpandType.Logistics));
 
-                            ////EducateBurner,
-                            //TwoBools educateBurner_buildSchool = TwoBools.False;
                             if (!educateBurner_buildSchool.Value1 && hasBuildOrder(BuildAndExpandType.School))
                             {
                                 educateBurner_level2Count = city.cityExperienceLevels.levels_CraftFuel.Practitioner_2_count;
                                 educateBurner_buildSchool.Value1 = true;
                                 onPartSuccess();
                             }
-                            //TwoBools educateBurner_buildCoalPit = TwoBools.False;
+
                             if (!educateBurner_buildCoalPit.Value1 && hasBuildOrder(BuildAndExpandType.CoalPit))
                             {
                                 educateBurner_buildCoalPit.Value1 = true;
                                 onPartSuccess();
                             }
-                            //TwoBools educateBurner_schoolTab = TwoBools.False;
+                            
                             if (player.cityTab == MenuTab.Progress && player.progressSubTab == ProgressSubTab.Schools)
                             {
                                 if (!educateBurner_schoolTab.Value1)
@@ -1749,14 +1747,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             check(ref educateBurner_educateFuel,
                                 city.cityExperienceLevels.levels_CraftFuel.Max() >= XP.ExperienceLevel.Practitioner_2 &&
                                 city.cityExperienceLevels.levels_CraftFuel.Practitioner_2_count > educateBurner_level2Count);
-                            //TwoBools educateBurner_educateFuel = TwoBools.False;
-                            //if (!educateBurner_educateFuel.Value1 &&
-                            //    //city.cityExperienceLevels.levels_CraftFuel.Max() >= XP.ExperienceLevel.Practitioner_2 &&
-                            //    city.cityExperienceLevels.levels_CraftFuel.Practitioner_2_count > educateBurner_level2Count)
-                            //{
-                            //    educateBurner_educateFuel.Value1 = true;
-                            //    onPartSuccess();
-                            //}
+                           
                         }
                     }
                     break;

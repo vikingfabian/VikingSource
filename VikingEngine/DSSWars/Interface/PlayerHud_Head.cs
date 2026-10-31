@@ -87,8 +87,9 @@ namespace VikingEngine.DSSWars.Interface
 
         public void RefreshFlag(LocalPlayer player)
         {
-            flag.Texture = player.flagTexture;
-            flag.SetFullTextureSource();
+            flag.SetSprite(player.profile.flag.GetOrCreateSprite(player.pfaction.factionIndex));
+            //flag.Texture = player.flagTexture;
+            //flag.SetFullTextureSource();
         }
 
         public void refreshFaction(Players.LocalPlayer player, bool prepareLayout)
@@ -219,18 +220,25 @@ namespace VikingEngine.DSSWars.Interface
 
             //content.hspace();
             //content.Add(new RbTab(0.6f));
+
+            {
+                RichBoxContent buttonContent = new RichBoxContent();
+                buttonContent.Add(new RbImage(SpriteName.WarsIconArmySupply));
+                buttonContent.space(0.5f);
+                buttonContent.Add(new RbText($"{faction.UsedArmySupply}/{faction.ArmySupply}", faction.UsedArmySupply >= faction.ArmySupply? HudLib.NotAvailableColor : null));
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,
+                    new RbTooltip_Text(DssRef.todoLang.ArmySupplyCount)));
+            }
+
             {
                 RichBoxContent buttonContent = new RichBoxContent();
                 buttonContent.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
                 buttonContent.space(0.5f);
-                buttonContent.Add(new RbText($"{diplomancyPoints}/{diplomacySoftMax}({diplomacyMax})"));
+                buttonContent.Add(new RbText($"{TextLib.LargeNumber(diplomancyPoints)}/{TextLib.LargeNumber(diplomacySoftMax)}({diplomacyMax})"));
                 content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null, 
                     new RbTooltip(diplomacyTip)));
             }
 
-            
-            
-            
 
             content.newLine();
 
@@ -247,7 +255,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space(0.5f);
             }
 
-            if (player.mapLayer() >= MapDetailLayerType.FactionColors3 && !prepareLayout)
+            if (player.mapLayer() >= MapDetailLayerType.Layer3_Far && !prepareLayout)
             {
                 mapFilterTabs(content);
             }

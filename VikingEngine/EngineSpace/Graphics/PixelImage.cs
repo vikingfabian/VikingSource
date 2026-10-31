@@ -25,6 +25,7 @@ namespace VikingEngine.Graphics
 
     class PixelTexture : Texture2D
     {
+        public bool updateFlag = false;
         Color[] pixels;
 
         private PixelTexture(GpuResourceSync.Scope scope, GraphicsDevice gd, int width, int height)

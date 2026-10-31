@@ -9,9 +9,9 @@ namespace VikingEngine.DSSWars
     static class StartupSettings 
     {
         public const bool AlwaysRefreshMap = true;
-        public static string LeaderboardVersion = "aug2026";
+        public static string LeaderboardVersion = "may2027";
         public static bool LeaderboardInBeta = PlatformSettings.DevBuild ? true :
-           false; //RETAIL
+           true; //RETAIL
 
         //public static bool AutoStartLevel = false;
 
@@ -27,8 +27,10 @@ namespace VikingEngine.DSSWars
 
 
         //## DEFAULT FALSE ##
-        public static bool EndlessResources = PlatformSettings.DevBuild ? false : 
+        public static bool ViewCoords = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE    
+        public static bool EndlessResources = PlatformSettings.DevBuild ? false :
+                    false;//DO NOT CHANGE    
 
         public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE

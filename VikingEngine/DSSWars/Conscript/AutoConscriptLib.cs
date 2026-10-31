@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (armyTypeFilter == ArmyType.CityGuard)
             {
-                if (DssRef.storage.ruleset_instance.centralGold)
+                if (DssRef.storage.ruleset_instance.module_physicalGold)
                 {
                     return faction.money.copper > 0 && (aggresive || faction.GoldSecDiff() > -(DssConst.UpkeepPerGuard_copp * Money.CopperToGold * 50));
                 }

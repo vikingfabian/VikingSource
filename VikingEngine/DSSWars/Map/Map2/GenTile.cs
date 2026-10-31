@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         public BiomType biom1, biom2;
         public float secondBiomWeight;
 
-        
+        public bool IsFullTile;
 
         public void writeIcon(System.IO.BinaryWriter w)
         {
@@ -35,6 +35,13 @@ namespace VikingEngine.DSSWars.Map.Map2
             biom1 = (BiomType)r.ReadByte();
 
             groundY = MapHeight2.HeightY_Interval.GetFromBytePercent(heightValue);
+        }
+
+        public bool WithinMayBuildHeight()
+        {
+            heightValue = MapHeight2.HeightY_Interval.GetValueBytePercentPos_WithBound(groundY);
+            return heightValue > MapHeight2.WaterPlaneHeight && heightValue < MapHeight2.MountainStarHeight;
+
         }
     }
 

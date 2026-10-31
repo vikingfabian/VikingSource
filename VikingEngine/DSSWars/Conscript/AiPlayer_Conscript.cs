@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
@@ -336,7 +337,7 @@ namespace VikingEngine.DSSWars.Players
                     var armiesC = pfaction.GetFaction().armies.counter();
                     while (armiesC.Next())
                     {
-                        if (DssRef.world.tileGrid.Get(armiesC.sel.maptilePos).pcity.cityIndex == city.myIndex)
+                        if (DssRef.world.tileGrid.Get(WP.MaptileToSumTile( armiesC.sel.maptilePos)).pcity.cityIndex == city.myIndex)
                         {
                             maxCount -= armiesC.sel.soldiersCount;
                             if (maxCount < 0)

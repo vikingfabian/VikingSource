@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
@@ -15,6 +17,7 @@ using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Presentation;
@@ -47,6 +50,9 @@ namespace VikingEngine.DSSWars
         public bool textureLoaded = false;
 
         public ModelTextureSettings FlagTexture = ModelTextureSettings.Default;
+
+        public int ArmySupply = 0;
+        public int UsedArmySupply = 0;
 
         public SpottedArray<Army> armies;
 
@@ -731,7 +737,7 @@ namespace VikingEngine.DSSWars
                 }
 
 
-                if (DssRef.storage.ruleset_instance.centralGold)
+                if (DssRef.storage.ruleset_instance.module_physicalGold)
                 {
                     money.copper += Convert.ToInt32(income);
                 }
@@ -779,6 +785,7 @@ namespace VikingEngine.DSSWars
             bool netHosted = IsNetHosted();
 
             float armiesStrength = 0;
+            int supply = 0;
 
             var armiesC = armies.counter();
             while (armiesC.Next())
@@ -786,11 +793,13 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.IsNetHosted = netHosted;
                 armiesC.sel.asynchGameObjectsUpdate(time, oneMinute);
                 armiesStrength += armiesC.sel.strengthValue;
+                supply += armiesC.sel.armySupplyUse;
             }
             
             resources_updateAsynch(oneSecondUpdate, out float citiesStrength);
 
             militaryStrength = armiesStrength + citiesStrength;
+            UsedArmySupply = supply;
         }
 
         public void asynchSleepObjectsUpdate(float time)
@@ -802,18 +811,18 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void asyncPathUpdate(int pathThreadIndex)
+        public void asyncPathUpdate(Path3Thread thread)
         {
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.asyncPathUpdate(pathThreadIndex);
+                armiesC.sel.asyncPathUpdate(thread);
             }
 
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                city.asyncPathUpdate(pathThreadIndex);
+                city.asyncPathUpdate(thread);
             }
         }
 
@@ -1163,27 +1172,33 @@ namespace VikingEngine.DSSWars
         }
 
         public List<Faction> adjacentFactions(bool botsOnly)
-        {
-            //List<Faction> factions = new List<Faction>();
+        {   
             HashSet<Faction> factions = new HashSet<Faction>();
 
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
-                while (neighbors.Next(DssRef.world.cities, out City nCity))
+                CityCollection ncoll = citySel.Neighbors();
                 {
-                    var nCityFaction = nCity.pfaction.GetFaction();
+                    //EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                    //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    //{
+                    foreach (var pnCity in ncoll.list)
+                    {
+                        City nCity = pnCity.City();
+                        var nCityFaction = nCity.pfaction.GetFaction();
 
-                    if (nCityFaction != null &&
-                        nCityFaction != this &&
-                        (!botsOnly || nCityFaction.player.IsBot()))
+                        if (nCityFaction != null &&
+                            nCityFaction != this &&
+                            (!botsOnly || nCityFaction.player.IsBot()))
                         //&&
                         //!factions.Contains(nCityFaction))
-                    {
-                        factions.Add(nCityFaction);
+                        {
+                            factions.Add(nCityFaction);
+                        }
                     }
                 }
+                City.ReturnToPool(ncoll);
             }
 
             return factions.ToList();
@@ -1285,15 +1300,15 @@ namespace VikingEngine.DSSWars
 
         public FactionSize Size()
         {
-            if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 2)
+            if (citiesEconomy.workerCount <= CityHallSetup.LargeCityStartMaxWorkForce * 2)
             {
                 return FactionSize.Tiny;
             }
-            else if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 6)
+            else if (citiesEconomy.workerCount <= CityHallSetup.LargeCityStartMaxWorkForce * 6)
             {
                 return FactionSize.Normal;
             }
-            else if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 30)
+            else if (citiesEconomy.workerCount <= CityHallSetup.LargeCityStartMaxWorkForce * 30)
             {
                 return FactionSize.Big;
             }

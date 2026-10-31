@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars
 {  
     partial class WorldData
     {
-        public EcsStaticIndexArray neighborCities;
+        //public EcsStaticIndexArray neighborCities;
         public GroupedResource[] cityResouces;
         public WorkPriority[] cityWork;
         public StorageSize[] cityStorage;
@@ -244,7 +244,7 @@ namespace VikingEngine.DSSWars
             initWorkerXp(cityCount); //Is dynamic
 
             cityResouces = Array.Empty<GroupedResource>();
-            neighborCities = new EcsStaticIndexArray(0, 0);
+            //neighborCities = new EcsStaticIndexArray(0, 0);
             cityWork = Array.Empty<WorkPriority>();
             cityStorage = Array.Empty<StorageSize>();
             city_techNodes = new TechTreeNodeProgress_City[TechTreeNodeProgress_City.NodeCount * cityCount];
@@ -315,7 +315,7 @@ namespace VikingEngine.DSSWars
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
             */
             Array.Resize(ref cityResouces, CityResourceIndex.COUNT * cityCount);
-            neighborCities.Resize(18, cityCount);
+            //neighborCities.Resize(18, cityCount);
             Array.Resize(ref cityWork, WorkTemplate.COUNT * cityCount);
             Array.Resize(ref cityStorage, StorageSize.COUNT * cityCount);
 

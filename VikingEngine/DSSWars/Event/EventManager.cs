@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Communication;
@@ -911,15 +912,21 @@ namespace VikingEngine.DSSWars.Event
 
                 if (city != null)
                 {
-                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var cindex in city.neighborCities)
+                    CityCollection ncoll = city.Neighbors();
                     {
-                        var otherfaction = nCity.pfaction.GetFaction();
-                        if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender, 0))
+                        //EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var cindex in city.neighborCities)
+                        foreach(var pnCity in ncoll.list)
                         {
-                            return otherfaction;
+                            City nCity = pnCity.City();
+                            var otherfaction = nCity.pfaction.GetFaction();
+                            if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender, 0))
+                            {
+                                return otherfaction;
+                            }
                         }
-                    }
+                    } City.ReturnToPool(ncoll);
+                        
                 }
             }
             return null;
@@ -938,16 +945,23 @@ namespace VikingEngine.DSSWars.Event
                     if (city != null)
                     {
                         //foreach (var cindex in city.neighborCities)
-                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                        while (neighbors.Next(DssRef.world.cities, out City nCity))//
+                        CityCollection ncoll = city.Neighbors();
                         {
-                            var otherfaction = nCity.pfaction.GetFaction();
-                            if (otherfaction != attacker && otherfaction != defender &&
-                                DssRef.world.diplomacy.GetRelation(nCity.pfaction, defender.pfaction).Relation >= RelationType.RelationType2_Good)
+                            //    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                            //while (neighbors.Next(DssRef.world.cities, out City nCity))//
+                            //{
+                            foreach (var pnCity in ncoll.list)
                             {
-                                return otherfaction;
+                                City nCity = pnCity.City();
+                                var otherfaction = nCity.pfaction.GetFaction();
+                                if (otherfaction != attacker && otherfaction != defender &&
+                                    DssRef.world.diplomacy.GetRelation(nCity.pfaction, defender.pfaction).Relation >= RelationType.RelationType2_Good)
+                                {
+                                    return otherfaction;
+                                }
                             }
                         }
+                        City.ReturnToPool(ncoll);
                     }
                 }
             }
@@ -975,27 +989,32 @@ namespace VikingEngine.DSSWars.Event
 
                     if (city != null)
                     {
-                        //foreach (var cindex in city.neighborCities)
-                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                        while (neighbors.Next(DssRef.world.cities, out City nCity))//
+                        CityCollection ncoll = city.Neighbors();
                         {
-                            //var otherfactionIx = nCity.pfaction;
-                            if (nCity.pfaction != city.pfaction &&
+                            //    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                            //while (neighbors.Next(DssRef.world.cities, out City nCity))//
+                            //{
+                            foreach (var pnCity in ncoll.list)
+                            {
+                                City nCity = pnCity.City();
+                                if (nCity.pfaction != city.pfaction &&
                                 nCity.pfaction.HasValue() &&
                                 !factionsChecked[nCity.pfaction.factionIndex])
-                            {
-                                var otherfaction = nCity.pfaction.GetFaction();
-                                if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender, 0))
                                 {
-                                    return otherfaction;
-                                }
-                                else
-                                {
-                                    factionsToCheck.Add(otherfaction);
-                                    factionsChecked[nCity.pfaction.factionIndex] = true;
+                                    var otherfaction = nCity.pfaction.GetFaction();
+                                    if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender, 0))
+                                    {
+                                        return otherfaction;
+                                    }
+                                    else
+                                    {
+                                        factionsToCheck.Add(otherfaction);
+                                        factionsChecked[nCity.pfaction.factionIndex] = true;
+                                    }
                                 }
                             }
                         }
+                        City.ReturnToPool(ncoll);
                     }
                 }
             }
@@ -1136,7 +1155,7 @@ namespace VikingEngine.DSSWars.Event
                 }
 
                 if (endReason != GameEndReason.TimesUp &&
-                    DssRef.difficulty.TotalDifficulty() >= SurviveLeaderBoard.Difficulty300)
+                    DssRef.difficulty.TotalDifficulty() >= SurviveLeaderBoard.Difficulty400)
                 {
                     new SurviveLeaderBoard(DssRef.time.TotalIngameTime());
                 }

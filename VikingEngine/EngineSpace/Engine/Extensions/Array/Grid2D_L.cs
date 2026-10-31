@@ -13,7 +13,7 @@ namespace VikingEngine
     /// </summary>
     class Grid2D_L<T>
     {
-        IntVector2 size;
+        protected IntVector2 size;
 
         public T[] array;
         public T sel;

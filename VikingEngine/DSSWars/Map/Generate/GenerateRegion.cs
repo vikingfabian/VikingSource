@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.Map.Generate
@@ -8,7 +9,7 @@ namespace VikingEngine.DSSWars.Map.Generate
     class GenerateRegion
     {
         public List<City> cities = new List<City>(16);
-        
+        CityCollection cityCollection = new CityCollection();
         public int GetStartFactionRegion(int goalWorkForce, bool oneCity, City startCity, WorldData world, Faction faction)
         {
             cities.Clear();
@@ -32,11 +33,31 @@ namespace VikingEngine.DSSWars.Map.Generate
                 for (int cityIx = checkStartIx; cityIx <= checkEndIx; cityIx++)
                 {
                     var city = cities[cityIx];
+
+                    world.unitCollAreaGrid.CollectNeighborCities(city, cityCollection);
+
+                    City nCity = null;
+                    do
+                    {
+                        City c = arraylib.RandomListMemberPop(cityCollection.list).City();
+                        if (c != null && c.pfaction.IsEmpty())
+                        {
+                            nCity = c;
+                            addCity(nCity);
+                            if (currentWorkforce >= goalWorkForce)
+                            {
+                                return currentWorkforce;
+                            }
+                        }
+                    } while (nCity == null && cityCollection.list.Count > 0);
+
+
+                    /*
                     EcsStaticArrayCounter neighbors = new EcsStaticArrayCounter(world.neighborCities, city.myIndex, city.neighborCitiesCount);//cities[cityIx].CityNeighbors();                    
                     while (neighbors.Next(world.cities, out City nCity))//foreach (int n in cities[cityIx].neighborCities)
                     {
                         //City c = world.cities[n];
-                        if (nCity.pfaction.IsEmpty() /*&& nCity.cityType > CityType.UnClaimed*/)
+                        if (nCity.pfaction.IsEmpty())
                         {
                             addCity(nCity);
 
@@ -46,8 +67,9 @@ namespace VikingEngine.DSSWars.Map.Generate
                             }
                         }
                     }
-
+            
                     checkStartIx = checkEndIx +1;
+                    */
                 }
             }
 

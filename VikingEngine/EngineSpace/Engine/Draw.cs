@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
@@ -532,6 +533,7 @@ namespace VikingEngine.Engine
                 drawInContainersEvent();
 
                 graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
+                Engine.Draw.TextureEffects?[(int)Graphics.TextureEffectType.Flat]?.flushBuffer();
                 drawEvent();
 
                 var frameRenderTimeInMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;

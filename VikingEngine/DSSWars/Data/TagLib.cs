@@ -225,9 +225,10 @@ namespace VikingEngine.DSSWars.Data
             BuildAndExpandType[] buildings = {
         BuildAndExpandType.         ImmigrationTent,
         BuildAndExpandType.        WorkerHut,
-       
-        BuildAndExpandType.ServiceHouse_Small,
-        
+
+        BuildAndExpandType.SoldiersQuarter_Small,
+        BuildAndExpandType.SoldiersQuarter_Large,
+        BuildAndExpandType.ServiceHouse_Small,        
         BuildAndExpandType.GuardHouse_Small,
         
         BuildAndExpandType.Postal,
@@ -254,7 +255,7 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.RapeSeedFarm,
         
         BuildAndExpandType.Statue_ThePlayer,
-        BuildAndExpandType.Pavement,
+        BuildAndExpandType.PavementStreet,
         BuildAndExpandType.PavementFlower,
 
         BuildAndExpandType.Logistics,
@@ -264,6 +265,7 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.WoodCutter,
         BuildAndExpandType.StoneCutter,
         BuildAndExpandType.Embassy,
+        BuildAndExpandType.WaterWell,
         BuildAndExpandType.WaterResovoir,
         BuildAndExpandType.SoldierBarracks,
         BuildAndExpandType.ArcherBarracks,
@@ -283,6 +285,9 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.GoldDeliveryLvl1,
         
         BuildAndExpandType.DirtRoad,
+        BuildAndExpandType.GravelRoad,
+        BuildAndExpandType.CobblestoneRoad,
+        BuildAndExpandType.PavedRoad,
 
         BuildAndExpandType.DirtWall,
         BuildAndExpandType.DirtTower,
@@ -414,7 +419,7 @@ namespace VikingEngine.DSSWars.Data
             MapObjectTag.Tag_Faction = (ushort)iconRegister[SpriteName.WarsGovernmentIcon];
 
             MapObjectTag.Tag_ItemResourceTypeFood = (ushort)itemRegister[ItemResourceType.Food_G];
-            MapObjectTag.Tag_ItemResourceTypeRawFood = (ushort)itemRegister[ItemResourceType.RawFood_Group];
+            MapObjectTag.Tag_ItemResourceTypeRawFood = (ushort)itemRegister[ItemResourceType.RawFood_G];
             MapObjectTag.Tag_ItemResourceTypeBow = (ushort)itemRegister[ItemResourceType.Bow];
             MapObjectTag.Tag_ItemResourceTypeLongBow = (ushort)itemRegister[ItemResourceType.LongBow];
             MapObjectTag.Tag_ItemResourceTypeMithrilBow = (ushort)itemRegister[ItemResourceType.MithrilBow];

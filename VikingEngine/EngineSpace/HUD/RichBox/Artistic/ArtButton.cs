@@ -32,7 +32,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
         Filter,
         FilterSelected,
-
+        Module,
         TechHover,
         TechSelect,
     }
@@ -122,6 +122,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.Filter:
                     textureSett = group.settings.artFilterButtonTex.Selected(false);
+                    break;
+                case RbButtonStyle.Module:
+                    textureSett = group.settings.Module;
                     break;
                 case RbButtonStyle.TechSelect:
                     textureSett = group.settings.TechSelect;

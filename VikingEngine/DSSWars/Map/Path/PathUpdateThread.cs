@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Map.Path
 
             for (int i = startFaction; i <= endFaction; ++i)
             {
-                DssRef.world.factions.Array[i]?.asyncPathUpdate(index);
+               // DssRef.world.factions.Array[i]?.asyncPathUpdate(index);
             }
 
             return DssRef.state.exitThreads;
@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.Map.Path
         {
             foreach (var p in DssRef.state.localPlayers)
             { 
-                p.asyncPlayerPathUpdate(time);
+                //p.asyncPlayerPathUpdate(time);
             }
 
             return DssRef.state.exitThreads;

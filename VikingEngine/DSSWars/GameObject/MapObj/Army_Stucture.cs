@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars.GameObject
             int columnWidth = /*columnStructure ? 1 :*/ army.armyColumnWidth;
 
             Vector2 relPos = new Vector2();
-            Vector2 centerWp = walkToPos.Vec;
+            Vector2 centerWp = WP.MaptileToWorldPos_V2( walkToPos);
             army.armyGoalCenterWp = VectorExt.V2toV3XZ(centerWp);
             //float endRotation;
             Vector2 diff = centerWp - VectorExt.V3XZtoV2(army.position);

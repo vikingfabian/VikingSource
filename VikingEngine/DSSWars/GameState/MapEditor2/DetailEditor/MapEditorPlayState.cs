@@ -30,14 +30,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
         public void initGameState()
         {
             Ref.rnd.SetSeed(DssRef.world.metaData.worldId.seed);
-            foreach (var tile in DssRef.world.subTileGrid.array)
-            {
-                if (tile.IsLand())
-                {
-                    lib.DoNothing();
-                    break;
-                }
-            }
+            //foreach (var tile in DssRef.world.subTileGrid.array)
+            //{
+            //    if (tile.IsLand())
+            //    {
+            //        lib.DoNothing();
+            //        break;
+            //    }
+            //}
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
@@ -192,22 +192,22 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
 
             if (DssRef.time.halfSecond)
             {
-                overviewMap.HalfSecondUpdate();
+                mapLayerMid.HalfSecondUpdate();
             }
             switch (processTime.update())
             {
-                case ProcessEvent.OverviewMap:
-                    overviewMap.HalfSecondUpdate();
+                case ProcessEvent.MidLayerMap:
+                    mapLayerMid.HalfSecondUpdate();
                     break;
                 case ProcessEvent.SubTileReload:
-                    detailMap.oneSecondUpdate = true;
-                    overviewMap.bRefreshTimer = true;
+                    mapLayerNear.oneSecondUpdate = true;
+                    mapLayerMid.bRefreshTimer = true;
                     break;
             }
 
             //detailMap.update();
 
-            overviewMap.update();
+            mapLayerMid.update();
 
             if (localPlayers != null)
             {

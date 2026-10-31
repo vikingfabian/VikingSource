@@ -24,10 +24,7 @@ namespace VikingEngine.DSSWars.Data
     {
         public const int MaxLocalPlayerCount = 4;
         public int playerCount = 1;
-        //public bool verticalScreenSplit = true;
-
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
-
         
         public bool autoSave = true;
         public int autoSaveInterval_Minutes = 45;
@@ -106,19 +103,7 @@ namespace VikingEngine.DSSWars.Data
                 }, item), null);
             }
             dropDown.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Input_GameSpeed, menu);
-            //new GuiOptionsList<float>(SpriteName.NO_IMAGE, DssRef.lang.Input_GameSpeed, options, multiplayerGameSpeedProperty, layout);
         }
-
-        //float multiplayerGameSpeedProperty(bool set, float value)
-        //{
-        //    if (set)
-        //    {
-        //        DssRef.storage.multiplayerGameSpeed = value;
-        //        Ref.SetGameSpeed(value);
-        //        DssRef.storage.Save(null);
-        //    }
-        //    return DssRef.storage.multiplayerGameSpeed;
-        //}
 
         public void Load()
         {
@@ -130,14 +115,6 @@ namespace VikingEngine.DSSWars.Data
             flagStorage.Load();
             characterStorage.Load();
             profileStorage.Load();
-
-            //if (!metaProgression.unlockedDangerousSettings)
-            //{
-            //    DssRef.difficulty.setting_foodMulti = 1;
-            //    DssRef.difficulty.setting_waterMulti = 1;
-            //    DssRef.difficulty.setting_childMulti = 1;
-            //    DssRef.difficulty.setting_craftMulti = 1;
-            //}
         }
 
        
@@ -155,7 +132,7 @@ namespace VikingEngine.DSSWars.Data
             }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
-        public const int Version = 39;
+        public const int Version = 40;
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -178,7 +155,6 @@ namespace VikingEngine.DSSWars.Data
             metaProgression.write(w);
             writeGameSetup(w);
 
-            //w.Write(verticalScreenSplit);
             for (int i = 0; i < MaxLocalPlayerCount; ++i)
             {
                 localPlayers[i].write(w);
@@ -187,15 +163,11 @@ namespace VikingEngine.DSSWars.Data
             w.Write(generateNewMaps);
             w.Write(autoSave);
             w.Write(multiplayerGameSpeed);
-            //DssRef.difficulty.write(w);
-
-            //w.Write((byte)runTutorial_1short_2normal);
+            
             w.Write(runTutorial);
 
             w.Write(speed5x);
 
-            //ruleset.write(w, true);
-            
             mapSettings.write(w);
 
             w.Write(mutedSongs.Count);
@@ -221,19 +193,13 @@ namespace VikingEngine.DSSWars.Data
             {
                 int version = r.ReadInt32();
 
-                if (version > Version || version == 32)
+                if (version > Version || version < 40)
                 {
                     return;
                 }
 
 
                 fileCheck.start(version, Version);
-
-                //if (version <= 27)
-                //{
-                //    readOld(r, version, gamestate);
-                //    return;
-                //}
 
                 metaProgression.read(r);
 
@@ -246,11 +212,7 @@ namespace VikingEngine.DSSWars.Data
 
                 if (!gamestate)
                 {
-                    if (version < 31)
-                    {
-                        bool verticalScreenSplit = r.ReadBoolean();
-                    }
-
+                   
                     for (int i = 0; i < MaxLocalPlayerCount; ++i)
                     {
                         localPlayers[i].read(r, version);
@@ -265,48 +227,27 @@ namespace VikingEngine.DSSWars.Data
                 
                 
 
-                if (version < 33)
-                {
-                    DssRef.difficulty.read(r, version);
-                    runTutorial = r.ReadByte() > 0;
-                }
-                else
-                {
+               
                     runTutorial = r.ReadBoolean();
-                }
+               
 
                 speed5x = r.ReadBoolean();
 
-                if (version < 38)
-                {
-                    ruleset.read(r, true);
-                    ruleset_instance = ruleset;
-                }
                 mapSettings.read(r, version);
 
                 generateNewMaps = true;
 
-                if (version >= 29)
-                {
                     mutedSongs.Clear();
                     int mutedSongsCount = r.ReadInt32();
                     for (int i = 0; i < mutedSongsCount; ++i)
                     { 
                         mutedSongs.Add(r.ReadInt32());
                     }
-                }
-
-                if (version >= 30)
-                {
                     blockImportAchievements = r.ReadBoolean();
-                }
 
                 Debug.ReadCheck(r);
 
-                if (version >= 36)
-                { 
                     Ref.netsett.read(r, version);
-                }
 
                 fileCheck.end();
 
@@ -327,81 +268,6 @@ namespace VikingEngine.DSSWars.Data
         }
 
         
-
-//        public void readOld(System.IO.BinaryReader r, int version, bool gamestate)
-//        {
-//            FileCheck fileCheck = new FileCheck();
-//            try
-//            {
-//                //int version = r.ReadInt32();
-//                fileCheck.start(version, Version);
-                
-//                if (version > Version || version <= 4)
-//                {
-//                    return;
-//                }
-
-//                ruleset.mapSize = (MapSizeCategory)r.ReadInt32();
-
-//                if (!gamestate || version < 16)
-//                {
-//                    bool verticalScreenSplit = r.ReadBoolean();
-
-//                    for (int i = 0; i < MaxLocalPlayerCount; ++i)
-//                    {
-//                        localPlayers[i].read(r, version);
-//                    }
-//                }
-
-//                generateNewMaps = r.ReadBoolean();
-//                autoSave = r.ReadBoolean();
-
-//                multiplayerGameSpeed = r.ReadSingle();
-
-//                DssRef.difficulty.read(r, version);
-
-//                if (version >= 15)
-//                {
-//                    runTutorial = r.ReadByte() > 0;
-//                }
-
-//                if (version >= 18)
-//                {
-//                    speed5x = r.ReadBoolean();
-//                }
-//                if (version >= 19)
-//                {
-//                    var longerBuildQueue = r.ReadBoolean();
-//                }
-//                if (version >= 21)
-//                {
-//                    ruleset.centralGold = r.ReadBoolean();
-//                }
-//                mapSettings.read(r, version);
-
-//                generateNewMaps = true;//temp
-
-
-//                if (version == 26)
-//                {
-//                    metaProgression.totalGameTimeMinutes = r.ReadInt64();
-//                    metaProgression.unlockedDangerousSettings = r.ReadBoolean();
-//                }
-
-//                fileCheck.end();
-
-//#if DEMO
-//                demoSetup();
-//#endif
-//            }
-//            catch (Exception e)
-//            {
-//                fileCheck.exception = e;
-//            }
-
-//            IOLib.fileCheck_gamestorage = fileCheck;
-//        }
-
         public void checkPlayerDoublettes()
         {
             for (int i = 0; i < MaxLocalPlayerCount - 1; ++i)

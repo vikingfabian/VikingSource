@@ -264,12 +264,20 @@ namespace VikingEngine.HUD.RichBox
         public RbImage(SpriteName sprite, float scale = 1f, Color? color = null, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
+            //if (sprite == SpriteName.EditorToolOptionAdd)
+            //{
+            //    lib.DoNothing();
+            //}
             this.sprite = sprite;
             this.color = color;
         }
 
         override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
         {
+            //if (sprite == SpriteName.EditorToolOptionAdd)
+            //{
+            //    lib.DoNothing();
+            //}
             pointer = new Image(sprite, center, sz, group.layer, true, group.addToRender);
             if (color.HasValue)
             {
@@ -281,7 +289,7 @@ namespace VikingEngine.HUD.RichBox
         protected override Rectangle SourceRect()
         {
             var result = DataLib.SpriteCollection.Get(sprite).Source;
-            if (result.X == 0)
+            if (result.Width == 0)
             {
                 sprite = SpriteName.MissingImage;
                 result = DataLib.SpriteCollection.Get(sprite).Source;
@@ -442,6 +450,42 @@ namespace VikingEngine.HUD.RichBox
         }
 
         public override float Layer =>  pointer.PaintLayer;
+        public override Vector2 Center => pointer.position;
+        public override Vector2 Size => pointer.size;
+    }
+
+    class RbSprite : AbsRichBoxImage
+    {
+        protected Sprite sprite;
+        public ImageAdvanced pointer;
+
+        public RbSprite(Sprite sprite, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
+            : base(scale, addLeftSpace, addRightSpace)
+        {
+            this.sprite = sprite;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            if (!sprite.IsEmpty())
+            {
+                base.Create(group);
+            }
+        }
+
+        override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
+        {
+            pointer = new ImageAdvanced(SpriteName.NO_IMAGE, center, sz, group.layer, true, group.addToRender);
+            pointer.SetSprite(sprite);
+            return pointer;
+        }
+
+        protected override Rectangle SourceRect()
+        {
+            return new Rectangle(0, 0, sprite.Source.Width, sprite.Source.Height);
+        }
+
+        public override float Layer => pointer.PaintLayer;
         public override Vector2 Center => pointer.position;
         public override Vector2 Size => pointer.size;
     }

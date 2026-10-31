@@ -1,12 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Graphics;
 using VikingEngine.ToGG.HeroQuest.Data;
 
 namespace VikingEngine.DSSWars.Players.Profile
 {
-    class FlagDesign : Grid2D<byte>
+    class FlagDesign : Grid2D_L<byte>
     {
         public static FlagDesign[] AiBanner;
         public static FlagDesign PlayerGriffin;
@@ -386,7 +387,7 @@ namespace VikingEngine.DSSWars.Players.Profile
         public FlagDesign(System.IO.BinaryReader r)
             :base()
         {
-            basicInit();
+            size = new IntVector2(DssLib.UserHeraldicWidth);
             read(r);
         }
 
@@ -394,14 +395,14 @@ namespace VikingEngine.DSSWars.Players.Profile
             : base()
         {
             basicInit();
-            FromArray(bytearray);
+            array = bytearray;
         }
 
         public FlagDesign()
         {
             basicInit();
 
-            byte[] swordBanner = new byte[]
+            array = new byte[]
             {
                 1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
                 1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
@@ -421,29 +422,29 @@ namespace VikingEngine.DSSWars.Players.Profile
                 1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
             };
 
-            FromArray(swordBanner);
+            //FromArray(swordBanner);
         }
 
         void basicInit()
         {
-            initGrid(new IntVector2( DssLib.UserHeraldicWidth));
+            size = new IntVector2(DssLib.UserHeraldicWidth);
+            //initGrid(new IntVector2( DssLib.UserHeraldicWidth));
         }
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(ToArray());
+            w.Write(array);
         }
 
         public void read(System.IO.BinaryReader r)
         {
-            byte[] array = new byte[Size.Area()];
+            array = new byte[size.Area()];
             r.Read(array, 0, array.Length);
-            FromArray(array);
         }
 
         public Color[] toColorArray(FlagAndColor factionVisual)
         {
-            byte[] dataArray = ToArray();
+            byte[] dataArray = array;
             Color[] result = new Color[dataArray.Length];
             for (int i = 0; i < dataArray.Length; ++i)
             {
@@ -455,6 +456,11 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         public Texture2D CreateTexture(FlagAndColor factionVisual)
         {
+            //var texture = new Texture2D(Engine.Draw.graphicsDeviceManager.GraphicsDevice,
+            //    DssLib.UserHeraldicWidth, DssLib.UserHeraldicWidth);
+            //texture.SetData(toColorArray(factionVisual));
+            //return texture;
+//xxx
             Color[] colors = toColorArray(factionVisual);
             using (Graphics.GpuResourceSync.Acquire())
             {
@@ -464,12 +470,26 @@ namespace VikingEngine.DSSWars.Players.Profile
                 return Graphics.GpuResourceSync.Track(texture);
             }
         }
+
+        public void AddToTexture(FlagAndColor factionVisual, PixelTexture texture, IntVector2 topLeft)
+        {
+            IntVector2 toPos = IntVector2.Zero;
+            for (int y = 0; y < size.Y; y++)
+            {
+                toPos.Y = topLeft.Y + y;
+                for (int x = 0; x < size.X; x++)
+                {
+                    toPos.X = topLeft.X + x;
+                    texture.SetPixel(toPos, factionVisual.getColor((ProfileColorType)Get(x, y)));
+                }
+            }
+        }
         
         public FlagDesign CloneFlag()
         {
             FlagDesign result = new FlagDesign();
 
-            result.array = (byte[,])array.Clone();
+            result.array = (byte[])array.Clone();
 
             return result;
         }

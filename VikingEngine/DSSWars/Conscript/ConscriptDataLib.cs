@@ -235,8 +235,8 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 new UseResource(ItemResourceType.Men, 60),
                 new UseResource(ItemResourceType.Food_G, CraftSettlerFood),
-                new UseResource(ItemResourceType.Wood_Group, CraftSettlerWood),
-                new UseResource(ItemResourceType.SkinLinen_Group, CraftSettlerSkinLinen)
+                new UseResource(ItemResourceType.Wood_G, CraftSettlerWood),
+                new UseResource(ItemResourceType.SkinLinen_G, CraftSettlerSkinLinen)
             },
             XP.WorkExperienceType.NUM_NONE,
             XP.ExperienceLevel.Beginner_1,
@@ -251,8 +251,8 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 new UseResource(ItemResourceType.Men, 60),
                 new UseResource(ItemResourceType.Food_G, CraftSettlerFood /2),
-                new UseResource(ItemResourceType.Wood_Group, CraftSettlerWood /2),
-                new UseResource(ItemResourceType.SkinLinen_Group, CraftSettlerSkinLinen /2)
+                new UseResource(ItemResourceType.Wood_G, CraftSettlerWood /2),
+                new UseResource(ItemResourceType.SkinLinen_G, CraftSettlerSkinLinen /2)
             },
             XP.WorkExperienceType.NUM_NONE,
             XP.ExperienceLevel.Beginner_1,

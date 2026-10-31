@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
@@ -23,6 +24,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         CityCultureCollection cityCultureCollection = new CityCultureCollection();
         WorldData world;
         VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap;
+
+        
         public Map2PostGenerate(WorldData world) 
         { 
             this.world = world;
@@ -31,10 +34,16 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public async void citiesAndFactionsSetup(Map2GenerateSettings generateSettings)
         {
-            cityAreaClaim();
+            //cityAreaClaim();
 
             world.init_FactionComponents(0);
             world.Init_CityComponents(world.cities.Count);
+
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (var c in world.cities)
+            {
+                citiesC.sel.NewCitySetup(world, cityCultureCollection);//world.unitCollAreaGrid.add(citiesC.sel);
+            }
 
             factionStartAreas(world.metaData.mapScale.GetSizeCategory(),
                 DssRef.storage.ruleset.factionStartSize != FactionStartSize.Full,
@@ -42,16 +51,15 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             placeCityBuildings();
 
-            Task.Factory.StartNew(() =>
-            {
-                var citiesC = DssRef.world.cities.counter();
-                while (citiesC.Next()) //foreach (var c in world.cities)
-                {
-                    world.unitCollAreaGrid.add(citiesC.sel);
-                }
-            });
+
+            //Task.Factory.StartNew(() =>
+            //{
+               
+            //});
         }
 
+        
+        /*
         public async void cityAreaClaim()
         {
             List<Task> tasks = new List<Task>();
@@ -78,7 +86,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             // Wait for all tasks to complete
             await Task.WhenAll(tasks);
         }
-
+        */
         public async void placeCityBuildings()
         {
             CityTemplateCollection templateCollection = new CityTemplateCollection();
@@ -97,7 +105,11 @@ namespace VikingEngine.DSSWars.Map.Map2
                 {
                     try
                     {
+                        city.cleanOutCityTerrain();
+                         
                         city.createBuildingSubtiles(world, templateCollection);
+
+                        city.refreshWorkerSubtiles();
                     }
                     catch (Exception ex)
                     {
@@ -113,15 +125,15 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void factionStartAreas(MapSizeCategory mapSize, bool oneCity, Map2GenerateSettings generateSettings)
         {
-            int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
+            int goalWorkForce = CityHallSetup.HeadCityStartMaxWorkForce + CityHallSetup.LargeCityStartMaxWorkForce + CityHallSetup.SmallCityStartMaxWorkForce;
 
             if (mapSize >= MapSizeCategory.Epic)
             {
-                goalWorkForce += DssConst.HeadCityStartMaxWorkForce;
+                goalWorkForce += CityHallSetup.HeadCityStartMaxWorkForce;
             }
             else if (mapSize >= MapSizeCategory.Huge)
             {
-                goalWorkForce += DssConst.LargeCityStartMaxWorkForce;
+                goalWorkForce += CityHallSetup.LargeCityStartMaxWorkForce;
             }
 
             bool useRandomEmpires = mapSize >= MapSizeCategory.Medium;
@@ -137,9 +149,9 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
             //var last = world.cities.Last();
             var citiesC = DssRef.world.cities.counter();
-            while (citiesC.Next()) //foreach (City c in world.cities)
+            while (citiesC.Next())
             {
-                if (citiesC.sel.pfaction.IsEmpty() /*&& c.cityType > CityType.UnClaimed*/)
+                if (citiesC.sel.pfaction.IsEmpty())
                 {
                     int size = goalWorkForce;
                     bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
@@ -182,61 +194,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                     world.subTileGrid.Set(x, y, ctile.mapTile);
                 }
             });
+
+            world.InitMoveCostLayers();
         }
-        void bindTilesToCities()
-        {
-
-            // figure out which tile is closest to which city, version 2
-            //new CityMapInfluence().generate(world);
-            /*
-
-            //calc what tiles are in border to eachother
-            Rectangle2 area = world.tileGrid.Area;
-            area.AddRadius(-1);
-
-            ForXYLoop loop = new ForXYLoop(area);
-
-            while (loop.Next())
-            {
-                SumTile4_4 t = world.tileGrid.Get(loop.Position);
-                if (t.IsLand())
-                {
-                    //if (!arraylib.InBound(world.cities, t.CityIndex)) 
-                    //{
-                    //    lib.DoNothing();
-                    //}
-
-                    City owner = world.cities[t.CityIndex];
-                    int borderCity = -1;
-
-                    for (int dirIx = 0; dirIx < IntVector2.Dir4Array.Length; ++dirIx)
-                    {
-                        IntVector2 dir = IntVector2.Dir4Array[dirIx];
-                        SumTile4_4 neighbor = world.tileGrid.Get(dir.X + loop.Position.X, dir.Y + loop.Position.Y);
-                        bool land = neighbor.IsLand();
-                        if (neighbor.CityIndex != owner.myIndex)
-                        {
-                            t.AddBorder(dirIx, land ? neighbor.CityIndex : SumTile4_4.SeaBorder);
-                            borderCity = neighbor.CityIndex;
-                        }
-                    }
-
-                    if (t.BorderCount > 0)
-                    {
-                        if (!arraylib.InBound(world.cities, borderCity))
-                        {
-                            lib.DoNothing();
-                        }
-                        owner.AddNeighborCity(world, borderCity);
-                    }
-
-                    world.tileGrid.Set(loop.Position, t);
-                }
-            }
-
-            */
-        }
-
+      
         public void generateCityBuildings()
         {
             //this.world = world;

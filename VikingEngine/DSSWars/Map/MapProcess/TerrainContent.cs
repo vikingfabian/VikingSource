@@ -157,225 +157,222 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         public const int DryingSaltAmount = 8;
         public const int MineAmount_Coal = 20;
 
-        public void asyncFoilGroth(IntVector2 pos, ref MapTile1_1 subtile)
+        public void asyncTerrainGrowthAndProduce(IntVector2 pos, ref MapTile1_1 subtile)
         {
-            TerrainSubFoilType foilType = (TerrainSubFoilType)subtile.subTerrain;
-            switch (foilType)
+            switch (subtile.mainTerrain)
             {
-                case TerrainSubFoilType.TreeSoft:
-                case TerrainSubFoilType.TreeHard:
+                case TerrainMainType.Farm:
+                    switch ((TerrainSubFarmType)subtile.subTerrain)
                     {
-                        if (subtile.terrainAmount < TreeMaxSize)
-                        {
-                            subtile.terrainAmount++;
-                            DssRef.world.subTileGrid.Set(pos, subtile);
-                        }
-
-                        if (Ref.rnd.Chance(0.2) && subtile.terrainAmount > 20 && subtile.terrainAmount < 90)
-                        {
-                            IntVector2 rndDir = arraylib.RandomListMember(IntVector2.Dir8Array);
-                            if (Ref.rnd.Chance(0.2))
+                        case TerrainSubFarmType.TreeApple:
+                        case TerrainSubFarmType.TreeBanana:
+                            if (subtile.terrainAmount < OrchardMax &&
+                                subtile.terrainAmount != OrchardPlucked)
                             {
-                                rndDir *= 2;
+                                subtile.terrainAmount++;
                             }
-
-                            var npos = pos + rndDir;
-                            if (DssRef.world.subTileGrid.InBounds(npos))
+                            break;
+                        default:
+                            if (subtile.terrainAmount > FarmCulture_Empty &&
+                                subtile.terrainAmount < FarmCulture_MaxSize)
                             {
-                                ref var ntile = ref DssRef.world.subTileGrid.GetRef(npos);
-                                if (ntile.mainTerrain == TerrainMainType.DefaultLand)
+                                subtile.terrainAmount++;
+                            }
+                            break;
+                    }
+                    break;
+                case TerrainMainType.Foil:
+                    switch ((TerrainSubFoilType)subtile.subTerrain)
+                    {
+                        case TerrainSubFoilType.TreeSoft:
+                        case TerrainSubFoilType.TreeHard:
+                            {
+                                if (subtile.terrainAmount < TreeMaxSize)
                                 {
-                                    TerrainSubFoilType sprout = foilType == TerrainSubFoilType.TreeSoft ? TerrainSubFoilType.TreeSoftSprout : TerrainSubFoilType.TreeHardSprout;
-                                    ntile.SetType(TerrainMainType.Foil, (int)sprout, 1);
+                                    subtile.terrainAmount++;
+                                    DssRef.world.subTileGrid.Set(pos, subtile);
+                                }
+
+                                if (Ref.rnd.Chance(0.2) && subtile.terrainAmount > 20 && subtile.terrainAmount < 90)
+                                {
+                                    IntVector2 rndDir = arraylib.RandomListMember(IntVector2.Dir8Array);
+                                    if (Ref.rnd.Chance(0.2))
+                                    {
+                                        rndDir *= 2;
+                                    }
+
+                                    var npos = pos + rndDir;
+                                    if (DssRef.world.subTileGrid.InBounds(npos))
+                                    {
+                                        ref var ntile = ref DssRef.world.subTileGrid.GetRef(npos);
+                                        if (ntile.mainTerrain == TerrainMainType.DefaultLand)
+                                        {
+                                            TerrainSubFoilType sprout = (TerrainSubFoilType)subtile.subTerrain == TerrainSubFoilType.TreeSoft ? TerrainSubFoilType.TreeSoftSprout : TerrainSubFoilType.TreeHardSprout;
+                                            ntile.SetType(TerrainMainType.Foil, (int)sprout, 1);
+                                        }
+                                    }
+
                                 }
                             }
+                            break;
+                        
+                        case TerrainSubFoilType.TreeHardSprout:
+                            {
+                                if (++subtile.terrainAmount > SproutMaxSize)
+                                {
+                                    subtile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHard, 1);
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case TerrainMainType.AnimalPen:
 
-                        }
-                    }
-                    break;
-                case TerrainSubFoilType.TreeApple:
-                case TerrainSubFoilType.TreeBanana:
-                    if (subtile.terrainAmount < OrchardMax &&
-                        subtile.terrainAmount != OrchardPlucked)
+                    switch ((TerrainSubAnimalPenType)subtile.subTerrain)
                     {
-                        subtile.terrainAmount++;
+                        case TerrainSubAnimalPenType.BoarHabitat:
+                        case TerrainSubAnimalPenType.BoarPen:
+                            BoarGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.FowlHabitat:
+                            FowlGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.FowlPen:
+                            const int FowlEggGroupCount = 4;
+                            spawnEggs(FowlEggGroupCount, ref subtile);
+                            FowlGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.PigPen:
+                            PigGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.HenPen:
+                            const int EggGroupCount = 5;
+
+                            spawnEggs(EggGroupCount, ref subtile);
+                           
+                            HenGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.OxHabitat:
+                        case TerrainSubAnimalPenType.OxenPen:
+                            OxenGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.KineOxenPen:
+                            KineOxenGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.DogHabitat:
+                        case TerrainSubAnimalPenType.DogCage:
+                            DogGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.HoundCage:
+                            HoundGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.PonyHabitat:
+                        case TerrainSubAnimalPenType.PonyPen:
+                            PonyGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.HorsePen:
+                            HorseGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.WarHorsePen:
+                            WarHorseGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.DraftHorsePen:
+                            DraftHorseGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.WildPigPen:
+                            WildPigGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.WildHogPen:
+                            WildHogGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.WarHogPen:
+                            WarHogGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.StagHogPen:
+                            StagHogGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.WolfHabitat:
+                        case TerrainSubAnimalPenType.WolfCage:
+                            WolfGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.WargCage:
+                            WargGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.AlphaWargCage:
+                            AlphaWargGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.CatHabitat:
+                        case TerrainSubAnimalPenType.WildCatCage:
+                            WildCatGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.LionCage:
+                            LionGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.WarLionCage:
+                            WarLionGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                        case TerrainSubAnimalPenType.ElephantHabitat:
+                        case TerrainSubAnimalPenType.ElephantCage:
+                            ElephantGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.WarElephantCage:
+                            WarElephantGrowth.asyncCityProduce(ref subtile);
+                            break;
+                        case TerrainSubAnimalPenType.OliphantCage:
+                            OliphantGrowth.asyncCityProduce(ref subtile);
+                            break;
+
+                       
                     }
-                    break;
-                case TerrainSubFoilType.TreeHardSprout:
+
+                    void spawnEggs(int eggGroupCount, ref MapTile1_1 subtile)
                     {
-                        if (++subtile.terrainAmount > SproutMaxSize)
+                        //const int EggGroupCount = 5;
+
+                        if (subtile.terrainAmount > 0)
                         {
-                            subtile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHard, 1);
+                            if (Ref.rnd.Chance(1.0 / eggGroupCount))
+                            {
+                                DssRef.state.resources.addItem(
+                                    new ItemResource(
+                                        ItemResourceType.Egg,
+                                        //1,
+                                        //subtile.terrainAmount * 4,
+                                        (ushort)(subtile.terrainAmount * eggGroupCount)),
+                                    ref subtile.collectionPointer);
+                            }
                         }
                     }
                     break;
-
-                case TerrainSubFoilType.WheatFarm:
-                case TerrainSubFoilType.LinenFarm:
-                case TerrainSubFoilType.RapeSeedFarm:
-                case TerrainSubFoilType.HempFarm:
-                case TerrainSubFoilType.WheatFarmUpgraded:
-                case TerrainSubFoilType.LinenFarmUpgraded:
-                case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                case TerrainSubFoilType.HempFarmUpgraded:
-                    if (subtile.terrainAmount > FarmCulture_Empty && 
-                        subtile.terrainAmount < FarmCulture_MaxSize)
+                case TerrainMainType.Building:
+                    switch ((TerrainBuildingType)subtile.subTerrain)
                     {
-                        subtile.terrainAmount++;
+                        case TerrainBuildingType.DryingPan:
+                            if (subtile.terrainAmount < DryingSaltPanMax)
+                            {
+                                subtile.terrainAmount++;
+                            }
+                            break;
                     }
                     break;
-
-               
             }
         }
 
-        public void asyncCityProduce(IntVector2 pos, ref MapTile1_1 subtile)
-        {
-            TerrainBuildingType buildingType = (TerrainBuildingType)subtile.subTerrain;
-            switch (buildingType)
-            {
-                case TerrainBuildingType.BoarHabitat:
-                case TerrainBuildingType.BoarPen:
-                    BoarGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.FowlHabitat:
-                    FowlGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.FowlPen:
-                    const int FowlEggGroupCount = 4;
-                    spawnEggs(FowlEggGroupCount, ref subtile);
-                    FowlGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.PigPen:
-                    PigGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.HenPen:
-                    const int EggGroupCount = 5;
-
-                    spawnEggs(EggGroupCount, ref subtile);
-                    //if (subtile.terrainAmount > 0)
-                    //{
-                    //    if (Ref.rnd.Chance(1.0 / EggGroupCount))
-                    //    {
-                    //        DssRef.state.resources.addItem(
-                    //            new ItemResource(
-                    //                ItemResourceType.Egg,
-                    //                1,
-                    //                subtile.terrainAmount * 4,
-                    //                subtile.terrainAmount * EggGroupCount),
-                    //            ref subtile.collectionPointer);
-                    //    }
-                    //}
-                    HenGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                    case TerrainBuildingType.OxHabitat:
-                case TerrainBuildingType.OxenPen:
-                    OxenGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.KineOxenPen:
-                    KineOxenGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.DogHabitat:
-                case TerrainBuildingType.DogCage:
-                    DogGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.HoundCage:
-                    HoundGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.PonyHabitat:
-                case TerrainBuildingType.PonyPen:
-                    PonyGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.HorsePen:
-                    HorseGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.WarHorsePen:
-                    WarHorseGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.DraftHorsePen:
-                    DraftHorseGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.WildPigPen:
-                    WildPigGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.WildHogPen:
-                    WildHogGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.WarHogPen:
-                    WarHogGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.StagHogPen:
-                    StagHogGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.WolfHabitat:
-                case TerrainBuildingType.WolfCage:
-                    WolfGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.WargCage:
-                    WargGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.AlphaWargCage:
-                    AlphaWargGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.CatHabitat:
-                case TerrainBuildingType.WildCatCage:
-                    WildCatGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.LionCage:
-                    LionGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.WarLionCage:
-                    WarLionGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.ElephantHabitat:
-                case TerrainBuildingType.ElephantCage:
-                    ElephantGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.WarElephantCage:
-                    WarElephantGrowth.asyncCityProduce(ref subtile);
-                    break;
-                case TerrainBuildingType.OliphantCage:
-                    OliphantGrowth.asyncCityProduce(ref subtile);
-                    break;
-
-                case TerrainBuildingType.DryingPan:
-                    if (subtile.terrainAmount < DryingSaltPanMax)
-                    {
-                        subtile.terrainAmount++;
-                    }
-                    break;
-            }
-
-            void spawnEggs(int eggGroupCount, ref MapTile1_1 subtile)
-            {
-                //const int EggGroupCount = 5;
-
-                if (subtile.terrainAmount > 0)
-                {
-                    if (Ref.rnd.Chance(1.0 / eggGroupCount))
-                    {
-                        DssRef.state.resources.addItem(
-                            new ItemResource(
-                                ItemResourceType.Egg,
-                                //1,
-                                //subtile.terrainAmount * 4,
-                                (ushort)(subtile.terrainAmount * eggGroupCount)),
-                            ref subtile.collectionPointer);
-                    }
-                }
-            }
-        }
+        //public void asyncCityProduce(IntVector2 pos, ref MapTile1_1 subtile)
+        //{
+            
+        //}
 
         const int TerrainCutOff = MapHeight2.MountainStarHeight;
         const int BeachCutOff = MapHeight2.WaterPlaneHeight + 6;

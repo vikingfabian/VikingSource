@@ -1331,7 +1331,7 @@ namespace VikingEngine.DSSWars.Presentation
 
                 case TerrainBuildingType.TrappersHut:
                     return DssRef.lang.BuildingType_TrapperHut_Description;
-
+                    /*
                 case TerrainBuildingType.BoarPen:
                 case TerrainBuildingType.PigPen:
                     return DssRef.lang.BuildingType_PigPen_Description;
@@ -1366,7 +1366,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.OliphantCage:
                     return DssRef.lang.BuildingDescription_Animals;
 
-
+                    */
                 case TerrainBuildingType.WorkerTent:
                     return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerTent);
                 case TerrainBuildingType.WorkerHut:
@@ -1374,7 +1374,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.WorkerHutLarge:
                     return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerHutLarge);
 
-                case TerrainBuildingType.ServiceMenHouse_small:
+                case TerrainBuildingType.ServiceMenHouse_Small:
                     return string.Format(DssRef.lang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Small);
                 case TerrainBuildingType.ServiceMenHouse_Large:
                     return string.Format(DssRef.lang.BuildingType_ServiceHouse_DescriptionAddX, DssConst.HousingCount_ServiceHouse_Large);

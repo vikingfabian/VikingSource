@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Players
         const float ColorEdgeSz = 2;
 
         PlayerNetState playerNetState = PlayerNetState.InMenu;
-        MapDetailLayerType mapLayer = MapDetailLayerType.TerrainOverview2;
+        MapDetailLayerType mapLayer = MapDetailLayerType.Layer2_Mid;
         Vector3 pointerGoalWp;
         Vector3 pointerWp;
         Vector3 pointerSpeed = Vector3.Zero;
@@ -68,9 +68,9 @@ namespace VikingEngine.DSSWars.Players
             if (playerNetState != PlayerNetState.InMenu)
             {
                 MapDetailLayerType viewLayer = playerView.mapLayer();
-                if (viewLayer >= MapDetailLayerType.FullOverview4)
+                if (viewLayer >= MapDetailLayerType.Layer4_VeryFar)
                 {
-                    viewLayer = MapDetailLayerType.FactionColors3;
+                    viewLayer = MapDetailLayerType.Layer3_Far;
                 }
 
                 if (!mouseOverHud)
@@ -209,9 +209,9 @@ namespace VikingEngine.DSSWars.Players
 
                 mapLayer = (MapDetailLayerType)r.ReadByte();
                 mouseOverHud = r.ReadBoolean();
-                if (mapLayer >= MapDetailLayerType.FullOverview4)
+                if (mapLayer >= MapDetailLayerType.Layer4_VeryFar)
                 {
-                    mapLayer = MapDetailLayerType.FactionColors3;
+                    mapLayer = MapDetailLayerType.Layer3_Far;
                 }
 
                 Vector2 pos = StreamLib.ReadVector2(r);

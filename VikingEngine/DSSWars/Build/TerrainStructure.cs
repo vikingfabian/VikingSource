@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Build
     struct TerrainStructure
     {
         public static readonly ItemResourceType[] AllTerrainResources = {
-        ItemResourceType.Wood_Group,
+        ItemResourceType.Wood_G,
         ItemResourceType.Stone_G,
         ItemResourceType.Clay,
         ItemResourceType.Brick,
@@ -84,11 +84,11 @@ namespace VikingEngine.DSSWars.Build
 
 
         static readonly MapTile1_1 TerrainType_wood = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
-        static readonly MapTile1_1 TerrainType_stone = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
+        static readonly MapTile1_1 TerrainType_stone = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.SmallStones);
         static readonly MapTile1_1 TerrainType_stoneblock = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.StoneBlock); //New
 
-        static readonly MapTile1_1 TerrainType_clay = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.ClayPit); //New
-        static readonly MapTile1_1 TerrainType_bogiron = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron);
+        static readonly MapTile1_1 TerrainType_clay = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.ClayPit); //New
+        static readonly MapTile1_1 TerrainType_bogiron = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.BogIron);
         static readonly MapTile1_1 TerrainType_iron = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.IronOre);
         static readonly MapTile1_1 TerrainType_tin = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.TinOre);
         static readonly MapTile1_1 TerrainType_copper = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.CopperOre);
@@ -101,14 +101,14 @@ namespace VikingEngine.DSSWars.Build
         static readonly MapTile1_1 TerrainType_sulfur = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
         static readonly MapTile1_1 TerrainType_coal = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.Coal);
 
-        static readonly MapTile1_1 TerrainType_fowlHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.FowlHabitat);
-        static readonly MapTile1_1 TerrainType_boarHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.BoarHabitat);
-        static readonly MapTile1_1 TerrainType_dogHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.DogHabitat);
-        static readonly MapTile1_1 TerrainType_oxHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.OxHabitat);
-        static readonly MapTile1_1 TerrainType_ponyHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.PonyHabitat);
-        static readonly MapTile1_1 TerrainType_wolfHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.WolfHabitat);
-        static readonly MapTile1_1 TerrainType_catHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.CatHabitat);
-        static readonly MapTile1_1 TerrainType_elephantHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.ElephantHabitat);
+        static readonly MapTile1_1 TerrainType_fowlHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.FowlHabitat);
+        static readonly MapTile1_1 TerrainType_boarHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.BoarHabitat);
+        static readonly MapTile1_1 TerrainType_dogHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.DogHabitat);
+        static readonly MapTile1_1 TerrainType_oxHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.OxHabitat);
+        static readonly MapTile1_1 TerrainType_ponyHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.PonyHabitat);
+        static readonly MapTile1_1 TerrainType_wolfHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.WolfHabitat);
+        static readonly MapTile1_1 TerrainType_catHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.CatHabitat);
+        static readonly MapTile1_1 TerrainType_elephantHabitat = new MapTile1_1(TerrainMainType.Building, (int)TerrainSubAnimalPenType.ElephantHabitat);
 
 
         public bool HasIndependantResources()
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.Build
 
             int totalCount = 0;
 
-            naturalResource(player, content, resourceCount_wood, ItemResourceType.Wood_Group, TerrainType_wood, ref totalCount);
+            naturalResource(player, content, resourceCount_wood, ItemResourceType.Wood_G, TerrainType_wood, ref totalCount);
             naturalResource(player, content, resourceCount_stone, ItemResourceType.Stone_G, TerrainType_stone, ref totalCount);
             
             naturalResource(player, content, resourceCount_clay, ItemResourceType.Clay, TerrainType_clay, ref totalCount);
@@ -250,7 +250,7 @@ namespace VikingEngine.DSSWars.Build
                     return mineCount_coal;
                 case ItemResourceType.Stone_G:
                     return resourceCount_stone;
-                case ItemResourceType.Wood_Group:
+                case ItemResourceType.Wood_G:
                     return resourceCount_wood;
 
                 case ItemResourceType.Salt:
@@ -262,13 +262,13 @@ namespace VikingEngine.DSSWars.Build
 
 
                 case ItemResourceType.Fowl: return wildAnimalCount_Fowl;
-        case ItemResourceType.Boar: return wildAnimalCount_Boar;
-        case ItemResourceType.Dog: return wildAnimalCount_Dog;
-        case ItemResourceType.Oxen: return wildAnimalCount_Ox;
-        case ItemResourceType.Pony: return wildAnimalCount_Pony;
-        case ItemResourceType.Wolf: return wildAnimalCount_Wolf;
-        case ItemResourceType.WildCat: return wildAnimalCount_Cat;
-        case ItemResourceType.Elephant: return wildAnimalCount_Elephant;
+                case ItemResourceType.Boar: return wildAnimalCount_Boar;
+                case ItemResourceType.Dog: return wildAnimalCount_Dog;
+                case ItemResourceType.Oxen: return wildAnimalCount_Ox;
+                case ItemResourceType.Pony: return wildAnimalCount_Pony;
+                case ItemResourceType.Wolf: return wildAnimalCount_Wolf;
+                case ItemResourceType.WildCat: return wildAnimalCount_Cat;
+                case ItemResourceType.Elephant: return wildAnimalCount_Elephant;
 
                 default:
                     return 0;
@@ -351,6 +351,11 @@ namespace VikingEngine.DSSWars.Build
         public bool manorLord;
         public bool greatHall;
         public int buildingLevel_logistics;
+        public bool economics;
+        public bool tingshouse;
+
+        public int ExpansionHall_LowestLevel = 3;
+        public int ExpansionHall_count;
         public int TentHuts_count;
         public int WorkerHuts_count;
         public int WorkerHuts_Large_count;
@@ -358,6 +363,8 @@ namespace VikingEngine.DSSWars.Build
         public int ServiceMenHouse_Large_count;
         public int GuardOffice_count;
         public int GuardOffice_Large_count;
+        public int SoldiersQuarter_Small_count;
+        public int SoldiersQuarter_Large_count;
         public int ImmigrationTent_count;
 
 
@@ -385,13 +392,14 @@ namespace VikingEngine.DSSWars.Build
         public int HenPen_count;
         public int Statue_ThePlayer_count;
         public int Pavement_count;
-        public int PavementFlower_count;
+        //public int PavementFlower_count;
         public int Bank_count;
         public int CoinMinter_count;
         public int GoldDelivery_count;
         public int WoodCutter_count;
         public int StoneCutter_count;
         public int Embassy_count;
+        public int WaterWell_count;
         public int WaterResovoir_count;
         public int ArcherBarracks_count;
         public int WarmachineBarracks_count;
@@ -455,6 +463,9 @@ namespace VikingEngine.DSSWars.Build
         public int wallCount;
 
         public IntVector2 SuggestedTrapperPos;
+
+        public BuildingStructure()
+        { }
         public int getCount(BuildAndExpandType type)
         {
             switch (type)
@@ -498,8 +509,6 @@ namespace VikingEngine.DSSWars.Build
 
                 
                 case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_count;
-                case BuildAndExpandType.Pavement: return Pavement_count;
-                case BuildAndExpandType.PavementFlower: return PavementFlower_count;
                 case BuildAndExpandType.Bank: return Bank_count;
                 case BuildAndExpandType.CoinMinter: return CoinMinter_count;
 
@@ -510,6 +519,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WoodCutter: return WoodCutter_count;
                 case BuildAndExpandType.StoneCutter: return StoneCutter_count;
                 case BuildAndExpandType.Embassy: return Embassy_count;
+                case BuildAndExpandType.WaterWell: return WaterWell_count;
                 case BuildAndExpandType.WaterResovoir: return WaterResovoir_count;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
                 case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_count;
@@ -576,42 +586,52 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WarElephantCage: return WarElephantCage_count;
                 case BuildAndExpandType.OliphantCage: return OliphantCage_count;
 
-                case BuildAndExpandType.TreeHard:
-                case BuildAndExpandType.TreeSoft:
-                case BuildAndExpandType.TreeSeedlingSoft:
-                case BuildAndExpandType.TreeSeedlingHard:
-                case BuildAndExpandType.DirtRoad:
                 case BuildAndExpandType.PavementLamp:
-                case BuildAndExpandType.PavemenFountain:
+                case BuildAndExpandType.PavementStreet:
+                case BuildAndExpandType.PavementFlower:
+                case BuildAndExpandType.PavementFountain:
                 case BuildAndExpandType.PavementRectFlower:
-                case BuildAndExpandType.GardenGrass:
-                case BuildAndExpandType.GardenFourBushes:
-                case BuildAndExpandType.GardenLongTree:
-                case BuildAndExpandType.GardenWalledBush:
-                case BuildAndExpandType.CitySquare:
-                case BuildAndExpandType.CobbleStones:
-                case BuildAndExpandType.GardenBird:
-                case BuildAndExpandType.GardenMemoryStone:
-                case BuildAndExpandType.Statue_Leader:
-                case BuildAndExpandType.Statue_Lion:
-                case BuildAndExpandType.Statue_Horse:
-                case BuildAndExpandType.Statue_Pillar:
-                case BuildAndExpandType.DiplomaticStatue_ThumbsUpWest:
-                case BuildAndExpandType.DiplomaticStatue_ThumbsUpEast:
-                case BuildAndExpandType.DiplomaticStatue_InsultWest:
-                case BuildAndExpandType.DiplomaticStatue_InsultEast:
-                case BuildAndExpandType.DiplomaticStatue_GoldenPoop:
+                    return Pavement_count;
+                //case BuildAndExpandType.TreeHard:
+                //case BuildAndExpandType.TreeSoft:
+                //case BuildAndExpandType.TreeSeedlingSoft:
+                //case BuildAndExpandType.TreeSeedlingHard:
+                //case BuildAndExpandType.DirtRoad:
+                //case BuildAndExpandType.GravelRoad:
+                //case BuildAndExpandType.CobblestoneRoad:
+                //case BuildAndExpandType.PavedRoad:
 
-                case BuildAndExpandType.FlagPole_LongBanner:
-                case BuildAndExpandType.FlagPole_Banner:
-                case BuildAndExpandType.FlagPole_SlimBanner:
 
-                case BuildAndExpandType.FlagPole_Flag:
-                case BuildAndExpandType.FlagPole_FlagRound:
-                case BuildAndExpandType.FlagPole_FlagLarge:
-                case BuildAndExpandType.FlagPole_Streamer:
-                case BuildAndExpandType.FlagPole_Triangle:
-                    return 0;
+
+                
+                //case BuildAndExpandType.GardenGrass:
+                //case BuildAndExpandType.GardenFourBushes:
+                //case BuildAndExpandType.GardenLongTree:
+                //case BuildAndExpandType.GardenWalledBush:
+                //case BuildAndExpandType.CitySquare:
+                ////case BuildAndExpandType.CobbleStones:
+                //case BuildAndExpandType.GardenBird:
+                //case BuildAndExpandType.GardenMemoryStone:
+                //case BuildAndExpandType.Statue_Leader:
+                //case BuildAndExpandType.Statue_Lion:
+                //case BuildAndExpandType.Statue_Horse:
+                //case BuildAndExpandType.Statue_Pillar:
+                //case BuildAndExpandType.DiplomaticStatue_ThumbsUpWest:
+                //case BuildAndExpandType.DiplomaticStatue_ThumbsUpEast:
+                //case BuildAndExpandType.DiplomaticStatue_InsultWest:
+                //case BuildAndExpandType.DiplomaticStatue_InsultEast:
+                //case BuildAndExpandType.DiplomaticStatue_GoldenPoop:
+
+                //case BuildAndExpandType.FlagPole_LongBanner:
+                //case BuildAndExpandType.FlagPole_Banner:
+                //case BuildAndExpandType.FlagPole_SlimBanner:
+
+                //case BuildAndExpandType.FlagPole_Flag:
+                //case BuildAndExpandType.FlagPole_FlagRound:
+                //case BuildAndExpandType.FlagPole_FlagLarge:
+                //case BuildAndExpandType.FlagPole_Streamer:
+                //case BuildAndExpandType.FlagPole_Triangle:
+                //    return 0;
 
                 case BuildAndExpandType.TrapperHut:
                     return TrapperHut_count;
@@ -619,6 +639,10 @@ namespace VikingEngine.DSSWars.Build
                     return GuardOffice_count;
                 case BuildAndExpandType.GuardHouse_Large:
                     return GuardOffice_Large_count;
+                case BuildAndExpandType.SoldiersQuarter_Small:
+                    return SoldiersQuarter_Small_count;
+                case BuildAndExpandType.SoldiersQuarter_Large:
+                    return SoldiersQuarter_Large_count;
 
                 case BuildAndExpandType.ResearchCenter:
                     return ResearchCenter_count;
@@ -645,6 +669,10 @@ namespace VikingEngine.DSSWars.Build
                     return lib.BoolToInt01(manorLord);
 
                 case BuildAndExpandType.GreatHall:
+                    return lib.BoolToInt01(greatHall);
+                case BuildAndExpandType.Economics:
+                    return lib.BoolToInt01(greatHall);
+                case BuildAndExpandType.TingsHouse:
                     return lib.BoolToInt01(greatHall);
 
                 case BuildAndExpandType.Logistics:
@@ -712,8 +740,14 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.PigPen: PigPen_count += add; break;
                 case BuildAndExpandType.HenPen: HenPen_count += add; break;
                 case BuildAndExpandType.Statue_ThePlayer: Statue_ThePlayer_count += add; break;
-                case BuildAndExpandType.Pavement: Pavement_count += add; break;
-                case BuildAndExpandType.PavementFlower: PavementFlower_count += add; break;
+
+                case BuildAndExpandType.PavementStreet:
+                case BuildAndExpandType.PavementFlower:
+                case BuildAndExpandType.PavementLamp:
+                case BuildAndExpandType.PavementFountain:
+                case BuildAndExpandType.PavementRectFlower:
+                    Pavement_count += add; break;
+                //case BuildAndExpandType.PavementFlower: PavementFlower_count += add; break;
                 case BuildAndExpandType.Bank: Bank_count += add; break;
                 case BuildAndExpandType.CoinMinter: CoinMinter_count += add; break;
 

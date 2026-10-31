@@ -66,17 +66,18 @@ namespace VikingEngine.DSSWars.Map.MapModels
             return color;
         }
 
-        public static Color BorderAndTerrainColor(CombinedTile tile, int leanY)
+        public static Color BorderAndTerrainColor(CombinedTile tile, int leanY, out bool groundColor)
         {
 
             Color color = TerrainColor(tile, leanY);
-
+            groundColor = true;
             if (tile.sumTile.IsBorderTile && tile.mapTile.IsLandOrWaterPlane() && tile.sumTile.pcity.HasValue())
             {
                 //Color factionCol = 
                 var pf = tile.sumTile.pcity.City().pfaction;
                 if (pf.TryGetPlayer(out var player))
                 {
+                    groundColor = false;
                     color = player.profile.flag.col0_Main;                    
                 }
             }

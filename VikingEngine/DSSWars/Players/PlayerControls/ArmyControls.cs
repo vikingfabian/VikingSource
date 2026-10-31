@@ -5,6 +5,7 @@ using System.Text;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG;
@@ -70,7 +71,7 @@ namespace VikingEngine.DSSWars.Players
             
         }
 
-        public void asynchPathUpdate()
+        public void asynchPathUpdate(Path3Thread thread)
         {
             if (newSquare)
             {
@@ -80,7 +81,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     foreach (var m in collection.objects)
                     {
-                        m.asynchUpdate(player);
+                        m.asynchUpdate(player, thread);
                     }
                 }
             }
@@ -141,7 +142,8 @@ namespace VikingEngine.DSSWars.Players
             {
                 SoundLib.ordermove.Play();
                 //int radius = 0;
-                ForXYEdgeLoop nextPlacementLoop = new ForXYEdgeLoop(player.gameControls.map.sumtilePosition, player.gameControls.map.sumtilePosition);
+                const float GroupSpacing = 1f;
+                ForXYEdgeLoop nextPlacementLoop = new ForXYEdgeLoop(IntVector2.Zero);
 
                 foreach (var m in collection.objects)
                 {
@@ -152,7 +154,7 @@ namespace VikingEngine.DSSWars.Players
                         {
                             nextPlacementLoop.ExpandRadius();
                         }
-                        m.army.Ai_Order_MoveTo(nextPlacementLoop.Position);
+                        m.army.Ai_Order_MoveTo(VectorExt.AddXZ( player.gameControls.map.pointerPosWP, nextPlacementLoop.Position.Vec * GroupSpacing));
                         
                     }
                 }

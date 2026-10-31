@@ -20,7 +20,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data.UnitAction
         ForXYLoop areaLoop(Unit unit)
         {
             Rectangle2 area = Rectangle2.FromCenterTileAndRadius(unit.squarePos, lootRange);
-            area.SetTileBounds(toggRef.board.tileGrid.Area);
+            area.SetBounds(toggRef.board.tileGrid.Area);
             return new ForXYLoop(area);
         }
 

@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Interface
 
             }
 
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 content.Add(new RbSeperationLine());
                 content.newParagraph();

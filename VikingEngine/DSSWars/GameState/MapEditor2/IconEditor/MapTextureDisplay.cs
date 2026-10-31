@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.WeaponAttack;
 
-namespace VikingEngine.DSSWars.GameState.MapEditor
+namespace VikingEngine.Core.DSSWars.GameState.MapEditor2.IconEditor
 {
-    class GeneratorMap
+    class MapTextureDisplay
     {
 
         /// <summary>
@@ -28,7 +30,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         public float Scale = 1;
         public FactionPixelTexture _texture;
 
-        public GeneratorMap(Vector2 pos)
+        public MapTextureDisplay(Vector2 pos)
         {
             _topLeft = pos;
             _texture = new FactionPixelTexture(-1, false, FactionMapFilter.Terrain);
@@ -50,9 +52,25 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                 }
                 _image.position -= input.move.directionAndTime * 4f;
 
+                //zoom = Bound.Set(zoom + input.ZoomValue() * -0.014f * zoom, 0.25f, 4f);
+                //Todo: adjust the position when zooming
+                // 1. Store the zoom before modifying it
+                float oldZoom =_zoom;
+
                 _zoom = Bound.Set(_zoom + input.ZoomValue() * -0.014f * _zoom, 0.25f, 4f);
 
+                // 2. Adjust the position when zooming
+                if (_zoom != oldZoom)
+                {
+                    float zoomRatio = _zoom / oldZoom;
 
+                    // Use your framework's actual mouse position property here.
+                    // (Based on your Input.Mouse.MoveDistance, it's likely Input.Mouse.Position)
+                    var mousePos = Input.Mouse.Position;
+
+                    // Offset the image position so that the point under the mouse stays fixed
+                    _image.position = mousePos - (mousePos - _image.position) * zoomRatio;
+                }
 
             }
             _image.size = _textureSize * _zoom * Scale;
@@ -95,7 +113,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         }
 
 
-        public void GenerateNodes(Map.Map2.NodeMap map)
+        public void GenerateNodes(NodeMap map)
         {
             if (_isTextureOwned && _texture.texture != map.texture)
             {
@@ -111,7 +129,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             _image.Visible = true;
         }
 
-        public void GenerateIcon(Map.Map2.IconWorldData world)
+        public void GenerateIcon(IconWorldData world)
         {
             IntVector2 gridSize = world.iconGrid.Size;
             int maxSide = Math.Max(gridSize.X, gridSize.Y);
@@ -136,7 +154,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             _image.Visible = true;
         }
 
-        public void RefreshTexture(Map.Map2.IconWorldData world)
+        public void RefreshTexture(IconWorldData world)
         {
             var texture = _texture.texture;
             var grid = world.iconGrid;

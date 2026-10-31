@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Settings;
@@ -30,7 +31,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         All,
     }
 
-    class Map2Generator
+    class IconMapGenerator
     {
         public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
 
@@ -62,12 +63,13 @@ namespace VikingEngine.DSSWars.Map.Map2
                 return iconWorld.iconGrid;
             }
         }
-        List<Task> tasks = new List<Task>(64);
+        
         //List<Vector2> connectPoints = null;
         EngineSpace.Maths.SimplexNoise2D noiseMap;
         NoiseOptions landNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
+        List<Task> tasks;
 
-        public Map2Builder mapBuilder;
+        public IconMapConverter mapBuilder;
         public void generate(Map2GenerateSettings generateSettings)
         {
             if (loadingState == LoadingState.None)
@@ -139,11 +141,11 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             Task.Run(async () =>
             {
-                generatePassRange_async(generateSettings, start, end, onComplete);
+                generatePassRange_async(generateSettings, start, end, onComplete, false);
             });
         }
 
-        public async Task generatePassRange_async(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end, Action onComplete)
+        public async Task generatePassRange_async(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end, Action onComplete, bool backgroundLoading)
         {
             if (start == Map2Pass.Icon)
             {
@@ -161,15 +163,17 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             currentPass = end;
 
-            if (end < Map2Pass.Icon)
+            if (!backgroundLoading)
             {
-                nodeMap.GenerateTexture();
+                if (end < Map2Pass.Icon)
+                {
+                    nodeMap.GenerateTexture();
+                }
+                else
+                {
+                    processTexturePixels();
+                }
             }
-            else
-            {
-                processTexturePixels();
-            }
-
             loadingState = LoadingState.Complete;
 
             if (onComplete != null)
@@ -201,7 +205,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     break;
 
                 case Map2Pass.Bioms:
-                    biomsLayout = new BiomsLayout(iconWorld.rnd);
+                    biomsLayout = new BiomsLayout(iconWorld.rnd, generateSettings.mapScale.GetSizeCategory());
                     biomsLayout.GenerateNodes(iconWorld);
                     break;
 
@@ -222,7 +226,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                     break;
 
                 case Map2Pass.BuildMapData:
-                    mapBuilder = new Map2Builder();
+                    mapBuilder = new IconMapConverter();
                     mapBuilder.ConvertIcon(this);
                     break;
             }
@@ -250,8 +254,11 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         private async Task nodeTerrainPass(Map2GenerateSettings generateSettings)
         {
-            //DEBUG : Visualize the node grid for testing
+            tasks = new List<Task>(64);
+            //await Task.WhenAll(tasks);
 
+            //DEBUG : Visualize the node grid for testing
+            Debug.Log("##begin nodeTerrainPass");
             
 
             List<Vector2> mountains = new List<Vector2>(128);
@@ -313,6 +320,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 tasks.Clear();
             }
 
+            Debug.Log("generateDigChains");
             for (int i = 0; i < 100; i++)
             {
                 generateDigChains(false);
@@ -320,7 +328,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             await Task.WhenAll(tasks);
             tasks.Clear();
 
-
+            Debug.Log("generateHills");
             for (int i = 0; i < 20; i++)
             {
                 generateHills(10, iconWorld.rnd.Int(8));
@@ -332,20 +340,24 @@ namespace VikingEngine.DSSWars.Map.Map2
             await Task.WhenAll(tasks);
             tasks.Clear();
 
+            Debug.Log("generateMountainChains");
             foreach (var mPos in mountains)
             {
                 generateMountainChains(mPos, false);
             }
             await Task.WhenAll(tasks);
             tasks.Clear();
-            
-            await Task.WhenAll(tasks);
-            tasks.Clear();
+
+            Debug.Log("DONE");
+            //await Task.WhenAll(tasks);
+            //tasks.Clear();
         }
                 
 
         private async Task defaultWorldPass()
         {
+            tasks = new List<Task>(64);
+
             for (int i = 0; i < 2; i++)
             {
                 generateLargeIsland(70);
@@ -410,7 +422,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         private void newWorldPass(Map2GenerateSettings generateSettings)
         {
-            iconWorld = new IconWorldData(generateSettings.mapScale.Size(true));
+            iconWorld = new IconWorldData(generateSettings.mapScale);
 
             noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData.worldId.seed);
             noiseMap.setSeed(iconWorld.rnd.Int());
@@ -732,107 +744,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             return BlendTiles(tileBuffer, count, biomeBuffer);
         }
-        //void scaleUp4()
-        //{
-        //    Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
-
-        //    // Parallel.For handles the splitting automatically.
-        //    // We iterate over the X-axis in parallel, and let each thread handle a full column (Y-loop).
-        //    Parallel.For(0, dataGrid.Size.X, x =>
-        //    {
-        //        for (int y = 0; y < dataGrid.Size.Y; y++)
-        //        {
-        //            // --- Standard Interpolation Logic ---
-
-        //            int lgX = x * 2;
-        //            int lgY = y * 2;
-
-        //            int nextX = (x + 1 < dataGrid.Size.X) ? x + 1 : x;
-        //            int nextY = (y + 1 < dataGrid.Size.Y) ? y + 1 : y;
-
-        //            float hTL = dataGrid.Get(x, y).groundY;
-        //            float hTR = dataGrid.Get(nextX, y).groundY;
-        //            float hBL = dataGrid.Get(x, nextY).groundY;
-        //            float hBR = dataGrid.Get(nextX, nextY).groundY;
-
-        //            float avgTop = (hTL + hTR) * 0.5f;
-        //            float avgLeft = (hTL + hBL) * 0.5f;
-        //            float avgCenter = (hTL + hTR + hBL + hBR) * 0.25f;
-
-        //            largeGrid.Set(lgX, lgY, new GenTile { groundY = hTL });
-        //            largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
-        //            largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
-        //            largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
-        //        }
-        //    });
-
-        //    dataGrid = largeGrid;
-        //    iconWorld.iconGrid = largeGrid;
-        //}
-        //void scaleUp8()
-        //{
-        //    Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
-
-        //    Parallel.For(0, dataGrid.Size.X, x =>
-        //    {
-        //        for (int y = 0; y < dataGrid.Size.Y; y++)
-        //        {
-        //            int lgX = x * 2;
-        //            int lgY = y * 2;
-
-        //            // 1. Get smoothed values for the 4 corners of the current "quad"
-        //            // We calculate the 8-neighbor average for each corner involved
-        //            float sTL = GetSmoothedHeight(x, y);
-        //            float sTR = GetSmoothedHeight(x + 1, y);
-        //            float sBL = GetSmoothedHeight(x, y + 1);
-        //            float sBR = GetSmoothedHeight(x + 1, y + 1);
-
-        //            // 2. Interpolate the gaps using these smoothed values
-        //            float avgTop = (sTL + sTR) * 0.5f;
-        //            float avgLeft = (sTL + sBL) * 0.5f;
-        //            float avgCenter = (sTL + sTR + sBL + sBR) * 0.25f;
-
-        //            // 3. Assign to Large Grid
-        //            largeGrid.Set(lgX, lgY, new GenTile { groundY = sTL });
-        //            largeGrid.Set(lgX + 1, lgY, new GenTile { groundY = avgTop });
-        //            largeGrid.Set(lgX, lgY + 1, new GenTile { groundY = avgLeft });
-        //            largeGrid.Set(lgX + 1, lgY + 1, new GenTile { groundY = avgCenter });
-        //        }
-        //    });
-
-        //    dataGrid = largeGrid;
-        //    iconWorld.iconGrid = largeGrid;
-        //    //dataGrid = largeGrid;
-        //    //world.tileGrid = largeGrid;
-        //}
-
-        //// Helper to get average of a tile and its 8 neighbors
-        //float GetSmoothedHeight(int cx, int cy)
-        //{
-        //    // Clamp center to grid bounds to prevent errors at the far edges
-        //    cx = (cx >= dataGrid.Size.X) ? dataGrid.Size.X - 1 : cx;
-        //    cy = (cy >= dataGrid.Size.Y) ? dataGrid.Size.Y - 1 : cy;
-
-        //    float totalHeight = 0;
-        //    int count = 0;
-
-        //    // Loop through 3x3 block centered on (cx, cy)
-        //    for (int nx = cx - 1; nx <= cx + 1; nx++)
-        //    {
-        //        for (int ny = cy - 1; ny <= cy + 1; ny++)
-        //        {
-        //            // Check bounds for neighbors
-        //            if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
-        //            {
-        //                totalHeight += dataGrid.Get(nx, ny).groundY;
-        //                count++;
-        //            }
-        //        }
-        //    }
-
-        //    return totalHeight / count;
-        //}
-
+       
         void addNoiseTexture()
         {
             var dataGrid = DataGrid();
@@ -900,15 +812,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
                     var tile = dataGrid.Get(x, y);
-                    //int leanY = 0;
-                    //int nextY = y + 1;
-                    //if (nextY < dataGrid.Size.Y)
-                    //{
-                    //    leanY = tile.heightValue - dataGrid.Get(x, nextY).heightValue;
-                    //}
-
+                   
                     tile.color = Map.MapModels.TileColor.IconmapColor(new CombinedTile(tile));
-                    //tileColor(ref tile);
                     dataGrid.Set(x, y, tile);
                 }
             });
@@ -922,17 +827,37 @@ namespace VikingEngine.DSSWars.Map.Map2
 
                 foreach (var c in icon.cities)
                 {
-                    var tile = dataGrid.Get(c.pos);
-                    tile.color = Color.Red;
-                    dataGrid.Set(c.pos, tile);
-
-                    foreach (var dir in IntVector2.Dir8Array)
                     {
-                        var npos = dir + c.pos;
-                        if (dataGrid.TryGet(npos, out var ntile))
+                        var tile = dataGrid.Get(c.pos);
+                        tile.color = Color.Red;
+                        dataGrid.Set(c.pos, tile);
+
+                        foreach (var dir in IntVector2.Dir8Array)
                         {
-                            ntile.color = Color.Pink;
-                            dataGrid.Set(npos, ntile);
+                            var npos = dir + c.pos;
+                            if (dataGrid.TryGet(npos, out var ntile))
+                            {
+                                ntile.color = Color.Pink;
+                                dataGrid.Set(npos, ntile);
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < c.secondary.count; i++)
+                    {
+                        IntVector2 secPos = c.secondary[i];
+                        var tile = dataGrid.Get(secPos);
+                        tile.color = Color.Orange;
+                        dataGrid.Set(secPos, tile);
+
+                        foreach (var dir in IntVector2.Dir4Array)
+                        {
+                            var npos = dir + secPos;
+                            if (dataGrid.TryGet(npos, out var ntile))
+                            {
+                                ntile.color = Color.Yellow;
+                                dataGrid.Set(npos, ntile);
+                            }
                         }
                     }
                 }
@@ -950,113 +875,134 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void generateMountainChains(Vector2 center, bool bSideLinks)
         {
-            var dataGrid = DataGrid();
+            
+                var dataGrid = DataGrid();
 
-            Range chainLengthRange2 = new Range(4, 10);
-            //Vector2 center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
+                Range chainLengthRange2 = new Range(4, 10);
+                //Vector2 center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
 
-            Rotation1D growDir = Rotation1D.Random(iconWorld.rnd);
-            Rotation1D leftDir = Rotation1D.D0;
-            Rotation1D rightDir = Rotation1D.D0;
-            refreshDirs();
+                Rotation1D growDir = Rotation1D.Random(iconWorld.rnd);
+                Rotation1D leftDir = Rotation1D.D0;
+                Rotation1D rightDir = Rotation1D.D0;
+                refreshDirs();
 
-            const float MaxRadius = 8;
-            const float MinRadius = 4;
+                const float MaxRadius = 8;
+                const float MinRadius = 4;
 
-            DrawMapOptions drawMountain = new DrawMapOptions()
-            {
-                add = false,
-                radius = iconWorld.rnd.Float(MinRadius, MaxRadius),
-                flatness = 0.02f,
-                addHeight = MapLib.MapHeight2.MountainPeekY,
-
-                //biom = biomsLayout.get(iconWorld, center),
-            };
-            drawMountain.refreshRadius();
-
-            DrawMapOptions drawCenterGround = new DrawMapOptions()
-            {
-                add = false,
-                radius = iconWorld.rnd.Float(2, 3) * drawMountain.radius,
-                flatness = 0.4f,
-                addHeight = MapLib.MapHeight2.DefaultGroundY,
-                //biom = drawMountain.biom,
-            };
-            drawCenterGround.refreshRadius();
-            drawCenterGround = drawAddCalc(center, drawCenterGround);
-
-            int leftSide = iconWorld.rnd.Int(0, 4);
-            int rightSide = iconWorld.rnd.Int(1, 20);
-
-            int connectedChains = iconWorld.rnd.Int(1, 4);
-
-            int nextCenterGrounds = iconWorld.rnd.Int(0, 7);
-
-            for (int connectedIx = 0; connectedIx < connectedChains; ++connectedIx)
-            {
-                int chainLength = chainLengthRange2.GetRandom(iconWorld.rnd);
-
-                //connectPoints.Add(center);
-                for (int link = 0; link < chainLength; ++link)
+                DrawMapOptions drawMountain = new DrawMapOptions()
                 {
-                    if (nextCenterGrounds <= 0)
-                    {
-                        nextCenterGrounds = iconWorld.rnd.Int(2, 8);
-                        startTask_placeDotWithOptions(center, drawCenterGround, true, 2);
-                    }
-                    else
-                    {
-                        nextCenterGrounds--;
-                    }
+                    add = false,
+                    radius = iconWorld.rnd.Float(MinRadius, MaxRadius),
+                    flatness = 0.02f,
+                    addHeight = MapLib.MapHeight2.MountainPeekY,
 
-                    if (bSideLinks)
-                    {
-                        bool growSides = link < chainLength / 2;
-                        sideLinks(ref leftSide, leftDir, growSides);
-                        sideLinks(ref rightSide, rightDir, growSides);
-                    }
-                    drawMountain.centerHeight = drawMountain.addHeight;
-                    placeMountainSquare(iconWorld.rnd, new IntVector2(center + iconWorld.rnd.vector2(new Vector2(drawMountain.radius * 0.4f))), drawMountain/*, generateNoise(world.rnd, true)*/);
+                    //biom = biomsLayout.get(iconWorld, center),
+                };
+                drawMountain.refreshRadius();
 
-                    int sideMountains = iconWorld.rnd.Int(0, 5);
-                    for (int i = 0; i < sideMountains; i++)
-                    {
-                        DrawMapOptions draw = drawMountain;
-                        float scale = iconWorld.rnd.Float(0.5f, 0.9f);
-                        draw.centerHeight *= scale;
-                        draw.radius *= scale;
-                        placeMountainSquare(iconWorld.rnd, new IntVector2(center + iconWorld.rnd.vector2(new Vector2(drawMountain.radius * 1.7f))), draw/*, generateNoise(world.rnd, true)*/);
-                    }
+                DrawMapOptions drawCenterGround = new DrawMapOptions()
+                {
+                    add = false,
+                    radius = iconWorld.rnd.Float(1, 2) * drawMountain.radius,
+                    flatness = 0.4f,
+                    addHeight = MapLib.MapHeight2.DefaultGroundY,
+                    //biom = drawMountain.biom,
+                };
+                drawCenterGround.refreshRadius();
+                drawCenterGround = drawAddCalc(center, drawCenterGround);
+            try
+            {
+                int leftSide = iconWorld.rnd.Int(0, 4);
+                int rightSide = iconWorld.rnd.Int(1, 20);
 
-                    if (iconWorld.rnd.Chance(0.2))
-                    {
-                        growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
-                        refreshDirs();
-                    }
-                    drawMountain.radius = Bound.Set(drawMountain.radius + iconWorld.rnd.Plus_MinusF(2f), MinRadius, MaxRadius);
+                int connectedChains = iconWorld.rnd.Int(1, 4);
 
-                    center += growDir.Direction(drawMountain.radius * iconWorld.rnd.Float(0.5f, 1.4f));
+                int nextCenterGrounds = iconWorld.rnd.Int(0, 7);
 
-                    //Forward check, no crossing
-                    Vector2 forwardCheckPos = center + growDir.Direction(drawMountain.radius);
-                    if (dataGrid.TryGet(new IntVector2(forwardCheckPos), out var forwardTile))
+                for (int connectedIx = 0; connectedIx < connectedChains; ++connectedIx)
+                {
+                    int chainLength = chainLengthRange2.GetRandom(iconWorld.rnd);
+
+                    //connectPoints.Add(center);
+                    for (int link = 0; link < chainLength; ++link)
                     {
-                        if (forwardTile.groundY > 3)
+                        if (nextCenterGrounds <= 0)
+                        {
+                            nextCenterGrounds = iconWorld.rnd.Int(2, 8);
+                            startTask_placeDotWithOptions(center, drawCenterGround, true, 2);
+                        }
+                        else
+                        {
+                            nextCenterGrounds--;
+                        }
+
+                        if (dataGrid.TryGet(new IntVector2(center), out var tile))
+                        {
+                            if (tile.groundY < MapLib.MapHeight2.LowGroundY && iconWorld.rnd.Chance(0.8))
+                            {
+                                return;
+                            }
+                        }
+                        else
                         {
                             return;
                         }
+                
+
+
+                        if (bSideLinks)
+                        {
+                            bool growSides = link < chainLength / 2;
+                            sideLinks(ref leftSide, leftDir, growSides);
+                            sideLinks(ref rightSide, rightDir, growSides);
+                        }
+                        drawMountain.centerHeight = drawMountain.addHeight;
+                        placeMountainSquare(iconWorld.rnd, new IntVector2(center + iconWorld.rnd.vector2(new Vector2(drawMountain.radius * 0.4f))), drawMountain/*, generateNoise(world.rnd, true)*/);
+
+                        int sideMountains = iconWorld.rnd.Int(0, 5);
+                        for (int i = 0; i < sideMountains; i++)
+                        {
+                            DrawMapOptions draw = drawMountain;
+                            float scale = iconWorld.rnd.Float(0.5f, 0.9f);
+                            draw.centerHeight *= scale;
+                            draw.radius *= scale;
+                            placeMountainSquare(iconWorld.rnd, new IntVector2(center + iconWorld.rnd.vector2(new Vector2(drawMountain.radius * 1.7f))), draw/*, generateNoise(world.rnd, true)*/);
+                        }
+
+                        if (iconWorld.rnd.Chance(0.2))
+                        {
+                            growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
+                            refreshDirs();
+                        }
+                        drawMountain.radius = Bound.Set(drawMountain.radius + iconWorld.rnd.Plus_MinusF(2f), MinRadius, MaxRadius);
+
+                        center += growDir.Direction(drawMountain.radius * iconWorld.rnd.Float(0.5f, 1.4f));
+
+                        //Forward check, no crossing
+                        Vector2 forwardCheckPos = center + growDir.Direction(drawMountain.radius);
+                        if (dataGrid.TryGet(new IntVector2(forwardCheckPos), out var forwardTile))
+                        {
+                            if (forwardTile.groundY > 3)
+                            {
+                                return;
+                            }
+                        }
+                    }
+
+                    //connectPoints.Add(center);
+
+                    growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
+                    center += growDir.Direction(iconWorld.rnd.Float(100f, 200f) + drawMountain.radius);
+
+                    if (!dataGrid.InBounds(new IntVector2(center)))
+                    {
+                        break;
                     }
                 }
-
-                //connectPoints.Add(center);
-
-                growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
-                center += growDir.Direction(iconWorld.rnd.Float(100f, 200f) + drawMountain.radius);
-
-                if (!dataGrid.InBounds(new IntVector2(center)))
-                {
-                    break;
-                }
+            }
+            catch (Exception e)
+            {
+                BlueScreen.ThreadException = e;
             }
 
             void refreshDirs()
@@ -1668,8 +1614,15 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             tasks.Add(Task.Run(() =>
             {
-                PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
-                placeDotWithOptions(rnd, center, draw, placeIslands, fractalDots/*, noiseOptions*/);
+                try
+                {
+                    PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
+                    placeDotWithOptions(rnd, center, draw, placeIslands, fractalDots/*, noiseOptions*/);
+                }
+                catch(Exception e)
+                {
+                    BlueScreen.ThreadException = e;
+                }
             }));
         }
 
@@ -1810,22 +1763,16 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
 
 
-        void placeTile(IntVector2 pos, float height, /*BiomType biom,*/ bool increase)
+        void placeTile(IntVector2 pos, float height, bool increase)
         {
             var dataGrid = DataGrid();
             ref var tile = ref dataGrid.GetRef(pos);
 
-            //if (tile.groundY == Height_WaterBottom)
-            //{
-            //    tile.biom1 = biom;
-            //}
             if (increase)
             {
                 if (height > tile.groundY)
                 {
-                    tile.groundY = height;
-                    
-                    //tile.color = biom.Tile2Color(height);
+                    tile.groundY = height;                    
                 }
             }
             else
@@ -1833,7 +1780,6 @@ namespace VikingEngine.DSSWars.Map.Map2
                 if (height < tile.groundY)
                 {
                     tile.groundY = height;
-                    //tile.color = biom.Tile2Color(height);
                 }
             }
         }

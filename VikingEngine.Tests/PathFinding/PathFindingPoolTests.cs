@@ -56,7 +56,7 @@ namespace VikingEngine.Tests.Pathfinding
         [Fact]
         public void DetailWalkingPath_Recycle_TrimsExcessCapacityWhenOversized()
         {
-            var path = new DetailWalkingPath();
+            var path = new DetailWalkingPathResult();
             for (int i = 0; i < 600; i++)
             {
                 path.nodes.Add(new DetailPathNodeResult(new IntVector2(i, i), false));
@@ -175,7 +175,7 @@ namespace VikingEngine.Tests.Pathfinding
             Assert.Equal(0, pool.PfCount);
 
             pool.Preallocate(2);
-            pool.Return(new DetailWalkingPath());
+            pool.Return(new DetailWalkingPathResult());
 
             Assert.Equal(2, pool.PfCount);
             Assert.Equal(1, pool.ResCount);

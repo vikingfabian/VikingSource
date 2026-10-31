@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary,
                        new List<AbsRichBoxMember> { new RbText("Generate all") }, 
-                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.NUM)));
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.IconCities)));
            
 
             content.newParagraph();
@@ -170,8 +170,27 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
                     break;
 
                 case Map2GeneratorTab.CityPlacements:
-                    content.Add(new ArtButton(RbButtonStyle.Primary,
-                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+
+
+                    HudLib.Label(content, "Space between");
+                    content.space();
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 4 }, new DragButtonSettings(4, 16, 1), state.generator.generateSettings.SpaceBetweenCitiesProperty, false);
+
+                    content.newLine();
+                    HudLib.Label(content, "Percentage fill");
+                    content.space();
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 20 }, new DragButtonSettings(5, 100, 5), state.generator.generateSettings.CityPlacementPercProperty, false);
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsHudIconReset),
+                        new RbSpace(0.5f),
+                        new RbText(DssRef.lang.Settings_ResetToDefault)
+                        }, new RbAction1Arg<Map2GeneratorTab>(state.generator.generateSettings.ResetToDefault, tab)));
+
+
+                    content.newParagraph();
+                    content.Add(new ArtButton(RbButtonStyle.SuperPrimary,
+                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction, HudLib.HeadBarTextColor_Beige) },
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.IconCities, Map2Pass.IconCities), null, state.generator.currentPass < Map2Pass.ScaleUp));
                     break;
 
@@ -196,9 +215,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
                               new StartDetailEditor(new MapBackgroundLoading(state.generator));
                           }), null, state.generator.currentPass >= Map2Pass.Icon));
 
-                   content.newParagraph();
-                    content.Add(new ArtButton(RbButtonStyle.Primary,
-                        new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));
+                   
                     break;
             }
 
@@ -328,6 +345,11 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
                 new RbText("Browse") }, new RbAction1Arg<string>(Ref.steam.OpenWorkshopFilteredByTag, DssWorkshop.IconMap_Tag),
                     new RbTooltip_Text(DssRef.lang.Steam_OpenSteamOverlay), true));
             }
+
+            content.newParagraph();
+            content.Add(new RbSeperationLine());
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+                new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));
         }
         public void beginEditName()
         {
@@ -377,8 +399,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             {
                 case Map2GeneratorSubTab.Generate:
                     content.Add(new ArtButton(RbButtonStyle.Primary,
-                       new List<AbsRichBoxMember> { new RbText(DssRef.lang.MapGenerator_GenerateAction) },
+                       new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.MapGenerator_GenerateAction, "Keep layout")) },
                        new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, Map2Pass.Icon, Map2Pass.IconNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                       new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.MapGenerator_GenerateAction, "New layout")) },
+                       new RbAction2Arg<Map2Pass, Map2Pass>(state.generatePass, 0, Map2Pass.IconNoise), null, state.generator.currentPass < Map2Pass.ScaleUp));
                     break;
 
                 case Map2GeneratorSubTab.Paint:
@@ -529,6 +555,13 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
             HudLib.Label(content, "Connect");
             content.Add(new RbTab(0.25f));
             RbDragButton.RbDragButtonGroup(content, new List<float> { 10 }, new DragButtonSettings(10, 90, 1), state.generator.generateSettings.nodeConnectPercProperty, false);
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconReset),
+                new RbSpace(0.5f),
+                new RbText(DssRef.lang.Settings_ResetToDefault)
+                }, new RbAction1Arg<Map2GeneratorTab>(state.generator.generateSettings.ResetToDefault, tab)));
 
             content.newParagraph();
 

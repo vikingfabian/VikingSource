@@ -21,9 +21,6 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         {
             crossHeightMap.Draw(cameraIndex, player, 0);
         }
-        protected override Texture2D[] WaterTex()
-        {
-            return DssRef.models.seaTextures;
-        }
+        
     }
 }
