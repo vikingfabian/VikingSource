@@ -28,6 +28,10 @@ namespace VikingEngine.DSSWars.GameObject
         
         public MinuteStats soldResources = new MinuteStats();
 
+        /// <summary>
+        /// Starts at 1, increases for each collecting
+        /// </summary>
+        public FloatingInt waterDepthLevel = new FloatingInt();
         public int maxWaterBase = DssConst.Maxwater;
         public int maxWaterTotal = DssConst.Maxwater;
         FloatingInt nextWater = new FloatingInt();

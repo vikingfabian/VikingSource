@@ -32,6 +32,15 @@ namespace VikingEngine.DSSWars.Presentation
         public string Minigame_BlackBolt_Name => "Black Bolt Industries";
         public string Minigame_BlackBolt_Description => "Factory puzzle minigame. English only.";
 
+        public string Work_LandSurvey => "Land survey";
+        public string Work_LandSurvey_Description => "Explore points of interest to find natural resources";
+
+        public string Point_PrimitiveExloration => "Primitive exporation complete";
+        public string Point_FullExloration => "Exporation complete";
+
+
+        public string TerrainType_PointOfInterest => "Point of interest";
+        public string TerrainType_NaturalSpring => "Natural spring";
         public string BuildingType_GravelRoad => "Gravel road";
         public string BuildingType_CobblestoneRoad => "Cobbled road";
         public string BuildingType_PavedRoad => "Paved road";
@@ -65,6 +74,10 @@ namespace VikingEngine.DSSWars.Presentation
         public string Ground_SaltDesert => "Salt desert";
         public string Ground_Terraform => "Ground terraform";
         public string Ground_NoTerraformToX => "Ground can't be terraformed to {0}";
+
+        public string WaterDepth_Refill => "Ground water refill";
+        public string WaterDepth => "Ground water depth";
+        public string WaterDepth_Description => "Water collecting time is increased by {0} per depth level";
 
     }
 }

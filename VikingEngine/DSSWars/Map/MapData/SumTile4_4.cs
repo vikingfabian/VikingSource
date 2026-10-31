@@ -14,6 +14,13 @@ using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map.MapData
 {
+    enum FogOfWar_ExlporeLevel : byte
+    { 
+        None,
+        TerrainOnly,
+        Full,
+    }
+
 
     /// <summary>
     /// Group of 4 by 4 tiles
@@ -59,6 +66,8 @@ namespace VikingEngine.DSSWars.Map.MapData
         public byte biomColorHeight;
         public bool IsBorderTile;
         public bool IsFullTile;
+
+        public FogOfWar_ExlporeLevel exlporeLevel = FogOfWar_ExlporeLevel.None;
 
         //public TileContent tileContent = TileContent.NONE;
         //public byte BorderCount;

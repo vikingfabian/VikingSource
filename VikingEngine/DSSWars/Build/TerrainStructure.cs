@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.Build
         ItemResourceType.Elephant,
     };
 
+        public int mineCount_waterSpring;
         public int mineCount_bogIron;
 
         public int mineCount_iron;
@@ -87,6 +88,7 @@ namespace VikingEngine.DSSWars.Build
         static readonly MapTile1_1 TerrainType_stone = new MapTile1_1(TerrainMainType.Foil, (int)TerrainSubFoilType.SmallStones);
         static readonly MapTile1_1 TerrainType_stoneblock = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.StoneBlock); //New
 
+        static readonly MapTile1_1 TerrainType_waterspring = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.WaterNaturalSpring); //New
         static readonly MapTile1_1 TerrainType_clay = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.ClayPit); //New
         static readonly MapTile1_1 TerrainType_bogiron = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.BogIron);
         static readonly MapTile1_1 TerrainType_iron = new MapTile1_1(TerrainMainType.Mine, (int)TerrainMineType.IronOre);

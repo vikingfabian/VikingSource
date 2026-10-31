@@ -292,6 +292,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
 
     enum TerrainMineType : byte
     {
+        PointOfInterest,
+        WaterNaturalSpring,
         BogIron,
         ClayPit,
         SaltPit,

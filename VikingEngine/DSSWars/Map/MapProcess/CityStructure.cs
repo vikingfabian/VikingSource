@@ -27,6 +27,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         public List<SubTileWork> Farms = new List<SubTileWork>(20);
         //public List<IntVector2> FarmGather = new List<IntVector2>(20);
         public List<IntVector2> AnimalPens = new List<IntVector2>(20);
+        public List<IntVector2> WaterCollect = new List<IntVector2>(8);
         public List<IntVector2> BogIron = new List<IntVector2>(20);
         public List<IntVector2> ClayPit = new List<IntVector2>(20);
         public List<IntVector2> Mines = new List<IntVector2>(20);
@@ -258,6 +259,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             Farms.Clear();
             //FarmGather.Clear();
             AnimalPens.Clear();
+            WaterCollect.Clear();
             BogIron.Clear();
             ClayPit.Clear();
             Mines.Clear();
@@ -417,20 +419,18 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                 var mineType = (TerrainMineType)subTile.subTerrain;
                                 switch (mineType)
                                 {
+                                    case TerrainMineType.WaterNaturalSpring:
+                                        ++terrainStructure.mineCount_waterSpring;
+                                        WaterCollect.Add(subTileLoop.Position);
+                                        break;
                                     case TerrainMineType.BogIron:
                                         ++terrainStructure.mineCount_bogIron;
-                                        //if (BogIron.Count < workerCount)
-                                        //{
                                         BogIron.Add(subTileLoop.Position);
-                                        //}
                                         break;
 
                                     case TerrainMineType.ClayPit:
                                         ++terrainStructure.resourceCount_clay;
-                                        //if (ClayPit.Count < workerCount)
-                                        //{
-                                        ClayPit.Add(subTileLoop.Position);
-                                        //}
+                                        ClayPit.Add(subTileLoop.Position);                                        
                                         break;
                                     case TerrainMineType.SaltPit:
                                         break;
@@ -713,7 +713,11 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                         ++buildingStructure.BookPress_count;
                                         BuildingPosition.Set(ref buildingPosition.BookPress_pos, ref subTileLoop.Position); 
                                        break;
-                                    
+                                    case TerrainBuildingType.WaterWell:
+                                        ++buildingStructure.WaterWell_count;
+                                        BuildingPosition.Set(ref buildingPosition.Water_pos, ref subTileLoop.Position); 
+                                        WaterCollect.Add(subTileLoop.Position); 
+                                        break;
                                     case TerrainBuildingType.WaterResovoir:
                                         ++buildingStructure.WaterResovoir_count;
                                         BuildingPosition.Set(ref buildingPosition.Water_pos, ref subTileLoop.Position); 
