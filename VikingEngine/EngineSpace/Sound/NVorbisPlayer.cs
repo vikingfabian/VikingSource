@@ -1,9 +1,10 @@
-﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Audio;
 using NVorbis;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using Microsoft.Xna.Framework;
 
 namespace VikingEngine.EngineSpace.Sound
 {
@@ -86,7 +87,33 @@ namespace VikingEngine.EngineSpace.Sound
         /// </summary>
         public TimeSpan Play(string oggPath, double? loopStartSec = null, double? loopEndSec = null, bool isRepeating = true, bool startPaused = false)
         {
-            if (string.IsNullOrWhiteSpace(oggPath)) throw new ArgumentNullException(nameof(oggPath));
+            if (string.IsNullOrWhiteSpace(oggPath))
+            {
+                throw new ArgumentNullException(nameof(oggPath));
+            }
+
+            if ((OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+                && !File.Exists(oggPath))
+            {
+                var memoryStream = new MemoryStream();
+                try
+                {
+                    var normalizedPath = VikingEngine.DataStream.FileToDiskManager.NormalizeAndroidAssetPath(oggPath);
+                    using (Stream assetStream = TitleContainer.OpenStream(normalizedPath))
+                    {
+                        assetStream.CopyTo(memoryStream);
+                    }
+                    memoryStream.Position = 0;
+
+                    return Play(memoryStream, ownsStream: true, loopStartSec, loopEndSec, isRepeating, startPaused);
+                }
+                catch
+                {
+                    memoryStream.Dispose();
+                    throw;
+                }
+            }
+
             return Play(File.OpenRead(oggPath), ownsStream: true, loopStartSec, loopEndSec, isRepeating, startPaused);
         }
 
@@ -436,6 +463,14 @@ namespace VikingEngine.EngineSpace.Sound
 
                 if (_ownsStream) { try { _stream?.Dispose(); } catch { } }
                 _stream = null; _ownsStream = false;
+                if (_pendingStart != null)
+                {
+                    if (_pendingStart.OwnsStream)
+                    {
+                        try { _pendingStart.Stream?.Dispose(); } catch { }
+                    }
+                    _pendingStart = null;
+                }
 
                 //_buffersQueued = 0;
 

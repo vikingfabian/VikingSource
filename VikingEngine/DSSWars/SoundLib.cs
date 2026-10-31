@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars
             menuStop = new RbSoundProfile(stop);
             menuPing = new RbSoundProfile(ping);
 
-            string MenuEnvDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "menu_environment" + DataStream.FilePath.Dir;
+            string MenuEnvDir = SoundLib.SoundDir + "menu_environment" + DataStream.FilePath.Dir;
 
             tab_blackmarket = new SoundContainerSingle(MenuEnvDir + "tab_blackmarket");
             tab_build = new SoundContainerSingle(MenuEnvDir + "tab_build", 0.4f);
@@ -265,7 +265,7 @@ namespace VikingEngine.DSSWars
 
             Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, SoundDir + "out_of_ammo");
 
-            string StingerDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "stinger" + DataStream.FilePath.Dir;
+            string StingerDir = SoundLib.SoundDir + "stinger" + DataStream.FilePath.Dir;
             eventRepeatSound = new SoundContainerSingle(StingerDir + "stringer_repeat", 0.4f);
             eventRelationWar = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship War", 0.4f));
             eventRelationEnemy = new MessageTimer(new SoundContainerSingle(StingerDir + "New relationship Enemy  ", 0.4f));

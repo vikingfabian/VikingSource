@@ -14,6 +14,7 @@ namespace VikingEngine.Engine
 
         public override T Load<T>(string assetName)
         {
+            assetName = VikingEngine.DataStream.FileToDiskManager.NormalizeAndroidAssetPath(assetName);
             if (typeof(T) == typeof(SoundEffect))
             {
                 return base.Load<T>(assetName);

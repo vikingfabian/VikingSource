@@ -117,6 +117,8 @@ namespace VikingEngine
 #endif
 
         public static readonly bool LinuxBuild = OperatingSystem.IsLinux();//Does not work with publish
+        public static readonly bool AndroidBuild = OperatingSystem.IsAndroid();
+        public static readonly bool IosBuild = OperatingSystem.IsIOS();
 //#if LINUX
 //    true;
 //#else
@@ -155,7 +157,8 @@ namespace VikingEngine
         public static readonly bool ReleaseBuild = DebugLevel > BuildDebugLevel.DebugDemo;
 
         public static readonly bool SteamAPI =//= false;
-            DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_SteamAPI;
+            (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
+            && (DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_SteamAPI);
 
 
         public static bool PlayMusic =

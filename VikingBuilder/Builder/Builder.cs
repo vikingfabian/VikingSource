@@ -29,11 +29,11 @@ var contentCollectionArgs = new ContentBuilderParams()
     Mode = ContentBuilderMode.Builder,
     WorkingDirectory = $"{AppContext.BaseDirectory}../../", // path to where your content folder can be located
     SourceDirectory = "Assets", // Not actually needed as this is the default, but added for reference
-    Platform = TargetPlatform.DesktopGL,
+    Platform = TargetPlatform.DesktopVK,
 };
 var builder = new Builder();
 
-if (args is not null && args.Length > 0)
+if (args.Length > 0)
 {
     builder.Run(args);
 }
@@ -131,6 +131,7 @@ public class Builder : ContentBuilder
         contentCollection.IncludeCopy<WildcardRule>("*.txt", null);
         contentCollection.IncludeCopy<WildcardRule>("*.vdf", null);
         contentCollection.IncludeCopy<WildcardRule>("*.bbs", null);
+        contentCollection.IncludeCopy<WildcardRule>("*.ogg", null);
 
         return contentCollection;
     }

@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars
     {
         //const bool BlockAmbience = true;
 
-        public static readonly string AmbienceDir = SoundLib.SoundDir + DataStream.FilePath.Dir + "ambience" + DataStream.FilePath.Dir;
+        public static readonly string AmbienceDir = SoundLib.SoundDir + "ambience" + DataStream.FilePath.Dir;
 
         static readonly string BattleDir = AmbienceDir + "battle" + DataStream.FilePath.Dir;
 

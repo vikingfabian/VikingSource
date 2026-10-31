@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,6 +26,11 @@ namespace VikingEngine
 
             // Config file path (next to the .exe)
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+            if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+            {
+                defaultBasePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                exeDir = defaultBasePath;
+            }
             string configPath = Path.Combine(exeDir, "config.txt");
 
             // Load config if it exists
