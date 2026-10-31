@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
@@ -22,6 +23,8 @@ namespace VikingEngine.DSSWars
         public StorageSize[] cityStorage;
 
         public TechTreeNodeProgress_City[] city_techNodes;
+
+        public CityBuildingStructureData[] buildingStructure;
 
         const int WorkerXpCOUNT = (int)WorkExperienceType.NUM_NONE;
         int nextXpIndex = 0;
@@ -248,6 +251,7 @@ namespace VikingEngine.DSSWars
             cityWork = Array.Empty<WorkPriority>();
             cityStorage = Array.Empty<StorageSize>();
             city_techNodes = new TechTreeNodeProgress_City[TechTreeNodeProgress_City.NodeCount * cityCount];
+            buildingStructure = Array.Empty<CityBuildingStructureData>();
 
             ExpandCityComponents(cityCount);
             /*
@@ -318,6 +322,7 @@ namespace VikingEngine.DSSWars
             //neighborCities.Resize(18, cityCount);
             Array.Resize(ref cityWork, WorkTemplate.COUNT * cityCount);
             Array.Resize(ref cityStorage, StorageSize.COUNT * cityCount);
+            Array.Resize(ref buildingStructure, CityBuildingStructureData.COUNT * cityCount);
 
             //int resourceStart = 0;
             //int workStart = 0;

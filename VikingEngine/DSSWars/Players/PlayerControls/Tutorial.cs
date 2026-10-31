@@ -405,7 +405,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 citySel.resourceAmountSet(EntityComponent.CityResourceIndex.sharpstick, CollectWeaponArmorAmount - 6);
                 citySel.resourceAmountSet(EntityComponent.CityResourceIndex.paddedArmor, CollectWeaponArmorAmount - 6);
 
-                CityStructure.WorkInstance.setupTutorialMap(citySel);
+                CityStructureBuilder.WorkInstance.setupTutorialMap(citySel);
 
                 if (cityarea.X == 0)
                 {

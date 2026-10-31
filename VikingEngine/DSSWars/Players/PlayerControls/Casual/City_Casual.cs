@@ -169,14 +169,14 @@ namespace VikingEngine.DSSWars.GameObject
                 var buildData = BuildLib.BuildOptions[(int)build];
                 IntVector2 buildPos = IntVector2.NegativeOne;
 
-                if (CityStructure.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
+                if (CityStructureBuilder.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
                 {
                     findAdjacentFreeSpot(Casual_EdgeRandomizer, sameBuilding, ref buildPos);
                 }
 
                 if (buildPos.X < 0)
                 {
-                    if (!CityStructure.FindEmpty(this, out buildPos))
+                    if (!CityStructureBuilder.FindEmpty(this, out buildPos))
                     {
                         return;
                     }

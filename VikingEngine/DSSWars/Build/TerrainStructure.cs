@@ -347,7 +347,11 @@ namespace VikingEngine.DSSWars.Build
 
     struct BuildingStructure
     {
+
         public bool gotUpdate;
+
+
+        /*
         public bool manorLord;
         public bool greatHall;
         public int buildingLevel_logistics;
@@ -461,7 +465,7 @@ namespace VikingEngine.DSSWars.Build
         public int OliphantCage_count;
 
         public int wallCount;
-
+        */
         public IntVector2 SuggestedTrapperPos;
 
         public BuildingStructure()

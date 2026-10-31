@@ -111,9 +111,9 @@ namespace VikingEngine.DSSWars.GameObject
                     safeGuardBuild = BuildAndExpandType.ArcherBarracks;
                 }
             }
-            else if (CityStructure.WorkInstance.fuelSpots < 2)
+            else if (CityStructureBuilder.WorkInstance.fuelSpots < 2)
             {
-                ++CityStructure.WorkInstance.fuelSpots;
+                ++CityStructureBuilder.WorkInstance.fuelSpots;
                 safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
                 safeGuardBuildCount = 2;
             }
@@ -235,14 +235,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (this.buildingStructure.getCount(buildType) > 0)
                 {
-                    var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
+                    var prevPos = CityStructureBuilder.WorkInstance.buildingPosition.getPos(buildType);
                     if (prevPos.X > 0)
                     {
                         foundPos = findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
                     }
                 }
 
-                if (!foundPos && CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))
+                if (!foundPos && CityStructureBuilder.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))
                 {
                     foundPos = true;
                 }

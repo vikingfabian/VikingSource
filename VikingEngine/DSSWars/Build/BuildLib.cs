@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars.Build
         GreatHall,
         TingsHouse,
 
+        WorkerTent,
         WorkerHut,
         WorkerHutLarge,
 
@@ -176,7 +177,7 @@ namespace VikingEngine.DSSWars.Build
         LeadOreMine,
         MithrilMine,
         SulfurMine,
-        WorkerTent,
+       
 
         
 

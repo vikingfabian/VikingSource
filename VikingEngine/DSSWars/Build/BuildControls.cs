@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars.Build
                 try
                 {
                     List<IntVector2> positions = new List<IntVector2>(count);
-                    CityStructure structure = new CityStructure();
+                    CityStructureBuilder structure = new CityStructureBuilder();
                     structure.update( DssRef.world, city, 1);
 
                     findBuildPositons_AutoBuilder(positions);

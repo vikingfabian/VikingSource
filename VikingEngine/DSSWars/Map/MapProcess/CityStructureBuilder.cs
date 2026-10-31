@@ -14,10 +14,10 @@ using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.Map.MapProcess
 {
-    class CityStructure
+    class CityStructureBuilder
     {
-        public static readonly CityStructure WorkInstance = new CityStructure();
-        public static readonly CityStructure AutomationInstance = new CityStructure();
+        public static readonly CityStructureBuilder WorkInstance = new CityStructureBuilder();
+        public static readonly CityStructureBuilder AutomationInstance = new CityStructureBuilder();
         ForXYEdgeLoopRandomPicker edgeRandomizer = new ForXYEdgeLoopRandomPicker();
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
