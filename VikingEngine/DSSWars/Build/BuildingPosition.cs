@@ -11,6 +11,7 @@ namespace VikingEngine.DSSWars.Build
         // --- Existing Fields ---
         public IntVector2 WorkerHuts_pos;
         public IntVector2 ServiceHouse_pos;
+        public IntVector2 GovernentBuildings_pos;
         public IntVector2 GuardHouse_pos;
         public IntVector2 SoldiersQuarter_pos;
         public IntVector2 Postal_pos;
@@ -44,8 +45,8 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 GoldDelivery_pos;
         public IntVector2 WoodCutter_pos;
         public IntVector2 StoneCutter_pos;
-        public IntVector2 Embassy_pos;
-        public IntVector2 WaterResovoir_pos;
+        //public IntVector2 Embassy_pos;
+        public IntVector2 Water_pos;
         public IntVector2 ArcherBarracks_pos;
         public IntVector2 WarmachineBarracks_pos;
         public IntVector2 GunBarracks_pos;
@@ -191,8 +192,9 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.WoodCutter: return WoodCutter_pos;
                 case BuildAndExpandType.StoneCutter: return StoneCutter_pos;
-                case BuildAndExpandType.Embassy: return Embassy_pos;
-                case BuildAndExpandType.WaterResovoir: return WaterResovoir_pos;
+               
+                case BuildAndExpandType.WaterWell: return Water_pos;
+                case BuildAndExpandType.WaterResovoir: return Water_pos;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_pos;
                 case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_pos;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_pos;
@@ -251,7 +253,13 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.OliphantCage: return OliphantCage_pos;
 
                 case BuildAndExpandType.Logistics:
-                    return IntVector2.NegativeOne;
+                case BuildAndExpandType.Economics:
+                case BuildAndExpandType.GreatHall:
+                case BuildAndExpandType.ManorLord:
+                case BuildAndExpandType.TingsHouse:
+                case BuildAndExpandType.Embassy:
+                    
+                    return GovernentBuildings_pos;
 
 
                 default:

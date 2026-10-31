@@ -225,9 +225,10 @@ namespace VikingEngine.DSSWars.Data
             BuildAndExpandType[] buildings = {
         BuildAndExpandType.         ImmigrationTent,
         BuildAndExpandType.        WorkerHut,
-       
-        BuildAndExpandType.ServiceHouse_Small,
-        
+
+        BuildAndExpandType.SoldiersQuarter_Small,
+        BuildAndExpandType.SoldiersQuarter_Large,
+        BuildAndExpandType.ServiceHouse_Small,        
         BuildAndExpandType.GuardHouse_Small,
         
         BuildAndExpandType.Postal,
@@ -264,6 +265,7 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.WoodCutter,
         BuildAndExpandType.StoneCutter,
         BuildAndExpandType.Embassy,
+        BuildAndExpandType.WaterWell,
         BuildAndExpandType.WaterResovoir,
         BuildAndExpandType.SoldierBarracks,
         BuildAndExpandType.ArcherBarracks,

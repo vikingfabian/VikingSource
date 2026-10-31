@@ -112,6 +112,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool CanBuildLogistics(int toLevel)
         {
+            if (buildingStructure.tingshouse)
+            {
+                return false;
+            }
+
             if (toLevel == 1)
             {
                 return resourceAmount(CityResourceIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;

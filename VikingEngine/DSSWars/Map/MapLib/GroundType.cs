@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 moveCost = 2f,
                 badMountTerrain = true,
 
-                texture = new SpriteVariantCount(SpriteName.DssMapTextureRubble),
+                texture = new SpriteVariantCount(SpriteName.DssMapTextureRubble1, 2),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
             };
 
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 canTerraform = true,
                 moveCost = 1.5f,
 
-                texture = new SpriteVariantCount(SpriteName.DssMapTextureRootmat),
+                texture = new SpriteVariantCount(SpriteName.DssMapTextureRootmat1, 2),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles)
             };
             

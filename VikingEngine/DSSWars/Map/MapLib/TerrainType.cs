@@ -177,12 +177,17 @@ namespace VikingEngine.DSSWars.Map.MapLib
         CoinMinter,
 
         Logistics,
+
+        Economics,
+
+        TingsHouse,
         Smelter,
         WoodCutter,
         StoneCutter,
         Embassy,
+        WaterWell,
         WaterResovoir,
-        
+
         Foundry,
         Armory,
         Chemist,

@@ -28,9 +28,36 @@ namespace VikingEngine.DSSWars
     {
         //public static void TechNode(TechNodeType nodeType, out SpriteName icon, out string name)
         //{ 
-            
-        //}
 
+        //}
+        public static void GroundRequirement(BuildingGroundRequirement requirement, out SpriteName icon, out string name)
+        {
+            switch (requirement)
+            {
+                default:
+                case BuildingGroundRequirement.None:
+                    icon = SpriteName.cmdSelectionDotted;
+                    name = DssRef.lang.Hud_None;
+                    break;
+                case BuildingGroundRequirement.Plant:
+                    icon = SpriteName.DssMapTextureGrass1;
+                    name = DssRef.todoLang.GroundRequired_Plant;
+                    break;
+                case BuildingGroundRequirement.BuildLight:
+                    icon = SpriteName.DssMapTextureGrass1;
+                    name = DssRef.todoLang.GroundRequired_Light;
+                    break;
+                case BuildingGroundRequirement.BuildMedium:
+                    icon = SpriteName.DssMapTextureMadeSolid;
+                    name = DssRef.todoLang.GroundRequired_Medium;
+                    break;
+                case BuildingGroundRequirement.BuildHeavy:
+                    icon = SpriteName.DssMapTextureRock1;
+                    name = DssRef.todoLang.GroundRequired_Heavy;
+                    break;
+
+            }
+        }
         public static void Relation(RelationType relation, out SpriteName icon, out string name)
         {
             switch (relation)
@@ -241,6 +268,7 @@ namespace VikingEngine.DSSWars
                     itemIcon = SpriteName.WarsResource_Stone;
                     itemName = DssRef.lang.Resource_TypeName_Stone;
                     break;
+
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
@@ -250,7 +278,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case ItemResourceType.FineWood_G:
-                    itemIcon = SpriteName.WarsResource_WoodStock;
+                    itemIcon = SpriteName.WarsResource_FineWood;
                     itemName = DssRef.todoLang.Resource_TypeName_FineWood;
                     break;
 
@@ -1268,6 +1296,14 @@ namespace VikingEngine.DSSWars
                         case TerrainBuildingType.Logistics:
                             icon = SpriteName.WarsBuild_Logistics;
                             name = DssRef.lang.BuildingType_Logistics;
+                            break;
+                        case TerrainBuildingType.Economics:
+                            icon = SpriteName.MissingImage;
+                            name = DssRef.todoLang.BuildingType_Economics;
+                            break;
+                        case TerrainBuildingType.TingsHouse:
+                            icon = SpriteName.MissingImage;
+                            name = DssRef.todoLang.BuildingType_TingsHouse;
                             break;
                         case TerrainBuildingType.ManorLord:
                             icon = SpriteName.WarsBuild_ManorLord;

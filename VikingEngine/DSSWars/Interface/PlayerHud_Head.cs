@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.Interface
 
             {
                 RichBoxContent buttonContent = new RichBoxContent();
-                buttonContent.Add(new RbImage(SpriteName.warsArmyTag_Shield));
+                buttonContent.Add(new RbImage(SpriteName.WarsIconArmySupply));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText($"{faction.UsedArmySupply}/{faction.ArmySupply}", faction.UsedArmySupply >= faction.ArmySupply? HudLib.NotAvailableColor : null));
                 content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,

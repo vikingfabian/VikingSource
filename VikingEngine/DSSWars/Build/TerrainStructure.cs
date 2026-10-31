@@ -262,13 +262,13 @@ namespace VikingEngine.DSSWars.Build
 
 
                 case ItemResourceType.Fowl: return wildAnimalCount_Fowl;
-        case ItemResourceType.Boar: return wildAnimalCount_Boar;
-        case ItemResourceType.Dog: return wildAnimalCount_Dog;
-        case ItemResourceType.Oxen: return wildAnimalCount_Ox;
-        case ItemResourceType.Pony: return wildAnimalCount_Pony;
-        case ItemResourceType.Wolf: return wildAnimalCount_Wolf;
-        case ItemResourceType.WildCat: return wildAnimalCount_Cat;
-        case ItemResourceType.Elephant: return wildAnimalCount_Elephant;
+                case ItemResourceType.Boar: return wildAnimalCount_Boar;
+                case ItemResourceType.Dog: return wildAnimalCount_Dog;
+                case ItemResourceType.Oxen: return wildAnimalCount_Ox;
+                case ItemResourceType.Pony: return wildAnimalCount_Pony;
+                case ItemResourceType.Wolf: return wildAnimalCount_Wolf;
+                case ItemResourceType.WildCat: return wildAnimalCount_Cat;
+                case ItemResourceType.Elephant: return wildAnimalCount_Elephant;
 
                 default:
                     return 0;
@@ -351,6 +351,8 @@ namespace VikingEngine.DSSWars.Build
         public bool manorLord;
         public bool greatHall;
         public int buildingLevel_logistics;
+        public bool economics;
+        public bool tingshouse;
 
         public int ExpansionHall_LowestLevel = 3;
         public int ExpansionHall_count;
@@ -397,6 +399,7 @@ namespace VikingEngine.DSSWars.Build
         public int WoodCutter_count;
         public int StoneCutter_count;
         public int Embassy_count;
+        public int WaterWell_count;
         public int WaterResovoir_count;
         public int ArcherBarracks_count;
         public int WarmachineBarracks_count;
@@ -516,6 +519,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WoodCutter: return WoodCutter_count;
                 case BuildAndExpandType.StoneCutter: return StoneCutter_count;
                 case BuildAndExpandType.Embassy: return Embassy_count;
+                case BuildAndExpandType.WaterWell: return WaterWell_count;
                 case BuildAndExpandType.WaterResovoir: return WaterResovoir_count;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
                 case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_count;
@@ -665,6 +669,10 @@ namespace VikingEngine.DSSWars.Build
                     return lib.BoolToInt01(manorLord);
 
                 case BuildAndExpandType.GreatHall:
+                    return lib.BoolToInt01(greatHall);
+                case BuildAndExpandType.Economics:
+                    return lib.BoolToInt01(greatHall);
+                case BuildAndExpandType.TingsHouse:
                     return lib.BoolToInt01(greatHall);
 
                 case BuildAndExpandType.Logistics:

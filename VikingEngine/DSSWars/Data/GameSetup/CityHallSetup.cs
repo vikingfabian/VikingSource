@@ -48,6 +48,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
 
 
         public EndlessInt maxSoldierQuarters;
+        public int maxExpansions;
         public EndlessInt maxWorkForce;
         public IntervalF waterAdd;
         public int startWorkForceHousing;
@@ -69,6 +70,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                     claimRadius = ClaimRadius_Campsite;
                     waterAdd = new IntervalF(WaterAdd_SmallCity, WaterAdd_HeadCity + WaterAdd_RandomAdd);
                     startWorkForceHousing = CampsiteCityStartMaxWorkForce;
+                    maxExpansions = 0;
                     break;
 
                 case CityType.Village:
@@ -79,6 +81,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                     claimRadius = ClaimRadius_Village;
                     waterAdd = new IntervalF(WaterAdd_SmallCity, WaterAdd_SmallCity + WaterAdd_RandomAdd);
                     startWorkForceHousing = SmallCityStartMaxWorkForce;
+                    maxExpansions = 2;
                     break;
 
                 case CityType.Town:
@@ -89,6 +92,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                     claimRadius = ClaimRadius_Town;
                     waterAdd = new IntervalF(WaterAdd_SmallCity, WaterAdd_LargeCity + WaterAdd_RandomAdd);
                     startWorkForceHousing = LargeCityStartMaxWorkForce;
+                    maxExpansions = 4;
                     break;
 
                 case CityType.Capital:                   
@@ -108,6 +112,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                     }
                     waterAdd = new IntervalF(WaterAdd_SmallCity, WaterAdd_HeadCity + WaterAdd_RandomAdd);
                     startWorkForceHousing = HeadCityStartMaxWorkForce;
+                    maxExpansions = 6;
                     break;
 
 

@@ -751,16 +751,19 @@ namespace VikingEngine.DSSWars.GameObject
                         maxCount = 1;
                         break;
 
+                    //case BuildAndExpandType.WaterWell:
+                    //    chance = 10;
+                    //    break;
                     case BuildAndExpandType.WaterResovoir:
                         chance = 10;
                         break;
 
 
-                    //case BuildAndExpandType.HenPen:
-                    //case BuildAndExpandType.PigPen:
-                        
-                    //    break;
-                       
+                        //case BuildAndExpandType.HenPen:
+                        //case BuildAndExpandType.PigPen:
+
+                        //    break;
+
 
                 }
 

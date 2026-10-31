@@ -166,6 +166,33 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
             );
 
+        public static readonly CraftBlueprint CraftEconomics = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.Economics,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.ServiceMen, 2),
+                new UseResource(ItemResourceType.Gold, 50),
+                new UseResource(ItemResourceType.Stone_G, 30)
+           },
+           XP.WorkExperienceType.HouseBuilding,
+            XP.ExperienceLevel.Beginner_1
+       );
+        public static readonly CraftBlueprint CraftTingsHouse = new CraftBlueprint(
+                  CraftResultType.Building,
+                  (int)Build.BuildAndExpandType.TingsHouse,
+                  1,
+                  new UseResource[]
+                  {
+                new UseResource(ItemResourceType.ServiceMen, 6),
+                new UseResource(ItemResourceType.Brick, 50),
+                new UseResource(ItemResourceType.Wood_G, 50)
+                  },
+                  XP.WorkExperienceType.HouseBuilding,
+                   XP.ExperienceLevel.Beginner_1
+              );
+
         public static readonly CraftBlueprint CraftLogistics = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Logistics,
@@ -1249,6 +1276,18 @@ namespace VikingEngine.DSSWars.Build
                    },
                     XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
                 );
+
+        public static readonly CraftBlueprint WaterWell = new CraftBlueprint(
+                  CraftResultType.Building,
+                  (int)Build.BuildAndExpandType.WaterWell,
+                  1,
+                  new UseResource[]
+                  {
+                    new UseResource(ItemResourceType.Brick, 20),
+                  },
+                  XP.WorkExperienceType.Mining
+               );
+
         public static readonly CraftBlueprint WaterResovoir = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.WaterResovoir,

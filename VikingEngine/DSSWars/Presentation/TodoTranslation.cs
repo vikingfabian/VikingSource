@@ -39,7 +39,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_ExpansionHall => "Lords seat";
         public string ExpandTerritory_Description => "Will expand you city territory";
         public string BuildingType_SoldiersQuarter => "Soldiers quarter";
-        public string BuildingType_ => "";
+        public string BuildingType_Economics => "Economics";
+        public string BuildingType_TingsHouse => "Tings house";
 
         public string Resource_TypeName_FineWood => "Fine wood";
 
@@ -53,5 +54,17 @@ namespace VikingEngine.DSSWars.Presentation
         public string Module_LocalGold => "Physical gold";
         public string Module_NoPause => "No pause and command";
         public string Language_AddXDifficultyPercentage => "+{0}%";
+
+        public string GroundRequired => "Ground requirement";
+        public string GroundRequired_Plant => "Soil";
+        public string GroundRequired_Light => "Light";
+        public string GroundRequired_Medium => "Solid";
+        public string GroundRequired_Heavy => "Rock";
+
+        public string Ground_Fertile => "Fertile ground";
+        public string Ground_SaltDesert => "Salt desert";
+        public string Ground_Terraform => "Ground terraform";
+        public string Ground_NoTerraformToX => "Ground can't be terraformed to {0}";
+
     }
 }

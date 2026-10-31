@@ -990,9 +990,14 @@ namespace VikingEngine.DSSWars.Build
             }
             content.Add(new RbSeperationLine(HudLib.TitleColor_Head, 0.2f));
             //content.newLine();
-            content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
-            content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec)));
+            //content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
+            //content.space();
+            //content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec)));
+            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec));
+
+            IconName.GroundRequirement(build.groundRequirement, out var groundReqIcon, out var groundReqText);
+            HudLib.LabelAndText(content, groundReqIcon, DssRef.todoLang.GroundRequired, groundReqText);
+
 
             content.Add(new RbSeperationLine());
             HudLib.Description(content, build.Description());

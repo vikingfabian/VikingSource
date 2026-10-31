@@ -25,7 +25,8 @@ namespace VikingEngine.DSSWars.GameObject
                             case TerrainBuildingType.Logistics:
                                 if (build)
                                 {
-                                    if (buildingStructure.buildingLevel_logistics > 0)
+                                    if (buildingStructure.buildingLevel_logistics > 0 ||
+                                        buildingStructure.tingshouse)
                                     {
                                         //Already built
                                         return false;

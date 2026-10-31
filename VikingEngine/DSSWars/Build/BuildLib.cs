@@ -28,8 +28,10 @@ namespace VikingEngine.DSSWars.Build
         ExpansionHall_Lvl2,
         ExpansionHall_Lvl3,
         Logistics,
+        Economics,
         ManorLord,
         GreatHall,
+        TingsHouse,
 
         WorkerHut,
         WorkerHutLarge,
@@ -78,6 +80,8 @@ namespace VikingEngine.DSSWars.Build
         WoodCutter,
         StoneCutter,
         Embassy,
+
+        WaterWell,
         WaterResovoir,
 
         SoldierBarracks,
@@ -234,6 +238,8 @@ namespace VikingEngine.DSSWars.Build
         LogisticsLevel1,
         LogisticsLevel2,
 
+        GovernentBuildings,
+
     }
 
     enum BuildInAreaOptions
@@ -287,17 +293,33 @@ namespace VikingEngine.DSSWars.Build
             var unlocks = city.technology.GetUnlocks(false);
 
             bool logistics1 = city.buildingStructure.buildingLevel_logistics >= 1 ||
-                godPowers;
-            bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
+                 city.buildingStructure.tingshouse ||
                 godPowers;
 
-            bool manor = city.buildingStructure.manorLord || godPowers;
+            bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
+                 city.buildingStructure.tingshouse ||
+                godPowers;
+
+            bool economics = city.buildingStructure.economics ||
+                 city.buildingStructure.tingshouse || godPowers;
+
+            bool manor = city.buildingStructure.manorLord ||
+                 city.buildingStructure.tingshouse || godPowers;
 
             bool campSite = city.cityType == CityType.Campsite;
 
-            if (!campSite && city.buildingStructure.buildingLevel_logistics == 0)
+            if (!campSite && !logistics1)
             {
                 list.Add(BuildAndExpandType.Logistics);
+            }
+
+            if (!campSite && !economics)
+            {
+                list.Add(BuildAndExpandType.Economics);
+            }
+            if (!campSite && !city.buildingStructure.tingshouse)
+            {
+                list.Add(BuildAndExpandType.TingsHouse);
             }
 
             if (logistics1)
@@ -310,11 +332,11 @@ namespace VikingEngine.DSSWars.Build
                 {
                     list.Add(BuildAndExpandType.GreatHall);
                 }
+                
                 list.Add(BuildAndExpandType.ExpansionHall_Lvl1);
                 list.Add(BuildAndExpandType.ExpansionHall_Lvl2);
                 list.Add(BuildAndExpandType.ExpansionHall_Lvl3);
                 list.Add(BuildAndExpandType.School);
-
                 list.Add(BuildAndExpandType.ResearchCenter);
                 list.Add(BuildAndExpandType.BookPress);
             }
@@ -459,12 +481,10 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.TreeSeedlingHard);
             }
 
-            
 
-            list.Add(BuildAndExpandType.Postal);
-
-            if (logistics1)
+            if (economics)
             {
+                list.Add(BuildAndExpandType.Postal);
                 list.Add(BuildAndExpandType.PostalLevel2);
                 list.Add(BuildAndExpandType.PostalLevel3);
                 list.Add(BuildAndExpandType.Recruitment);
@@ -477,7 +497,10 @@ namespace VikingEngine.DSSWars.Build
                     list.Add(BuildAndExpandType.GoldDeliveryLvl2);
                     list.Add(BuildAndExpandType.GoldDeliveryLvl3);
                 }
+            }
 
+            if (logistics1)
+            {
                 list.Add(BuildAndExpandType.MaterialStorage);
                 list.Add(BuildAndExpandType.FoodStorage);
                 list.Add(BuildAndExpandType.WeaponStorage);
@@ -495,6 +518,8 @@ namespace VikingEngine.DSSWars.Build
 
                 list.Add(BuildAndExpandType.CoalPit);
             }
+
+            list.Add(BuildAndExpandType.WaterWell);
             //else
             //{
             //    list.Add(BuildAndExpandType.FoodStorage);
@@ -701,8 +726,14 @@ namespace VikingEngine.DSSWars.Build
 
         public static void Init()
         {
-            new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, BuildingGroundRequirement.BuildMedium, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true, 
-                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+            new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, BuildingGroundRequirement.BuildMedium, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.Craft, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
+            {
+                uniqueBuilding = true, specialBuildRequirement = SpecialBuildRequirement.FoodStorage,
+            };
+            new BuildOption(BuildAndExpandType.Economics, TerrainMainType.Building, (int)TerrainBuildingType.Economics, BuildingGroundRequirement.BuildMedium, SpriteName.MissingImage, CraftBuildingLib.CraftEconomics, true,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.Transport, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
             {
                 uniqueBuilding = true
@@ -722,19 +753,28 @@ namespace VikingEngine.DSSWars.Build
                 uniqueBuilding = true
             };
 
+            new BuildOption(BuildAndExpandType.TingsHouse, TerrainMainType.Building, (int)TerrainBuildingType.TingsHouse, BuildingGroundRequirement.BuildMedium, SpriteName.MissingImage, CraftBuildingLib.CraftTingsHouse, true,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.Transport, BuildFilterTag.Military,
+                MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Large)
+            {
+                uniqueBuilding = true
+            };
+
+
             new BuildOption(BuildAndExpandType.ExpansionHall_Lvl1, TerrainMainType.Building, (int)TerrainBuildingType.ExpansionHall_Lvl1, BuildingGroundRequirement.BuildMedium, SpriteName.WarsCityHall, CraftBuildingLib.ExpansionHall_Lvl1, false,
                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-                { buildInArea = BuildInAreaOptions.OutsideBorders };
+                { buildInArea = BuildInAreaOptions.OutsideBorders, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
+            
             new BuildOption(BuildAndExpandType.ExpansionHall_Lvl2, TerrainMainType.Building, (int)TerrainBuildingType.ExpansionHall_Lvl2, BuildingGroundRequirement.BuildMedium, SpriteName.WarsCityHall, CraftBuildingLib.ExpansionHall_Lvl2, false,
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-                { buildInArea = BuildInAreaOptions.OutsideBorders };
+                { buildInArea = BuildInAreaOptions.OutsideBorders, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
+            
             new BuildOption(BuildAndExpandType.ExpansionHall_Lvl3, TerrainMainType.Building, (int)TerrainBuildingType.ExpansionHall_Lvl3, BuildingGroundRequirement.BuildMedium, SpriteName.WarsCityHall, CraftBuildingLib.ExpansionHall_Lvl3, false,
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large)
-                { buildInArea = BuildInAreaOptions.OutsideBorders };
-
+                { buildInArea = BuildInAreaOptions.OutsideBorders, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
 
             new BuildOption(BuildAndExpandType.WorkerTent, TerrainMainType.Building, (int)TerrainBuildingType.WorkerTent, BuildingGroundRequirement.BuildLight, SpriteName.WarsBuild_TentHut, CraftBuildingLib.WorkerTent, true,
                 BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
@@ -758,11 +798,12 @@ namespace VikingEngine.DSSWars.Build
 
 
             new BuildOption(BuildAndExpandType.SoldiersQuarter_Small, TerrainMainType.Building, (int)TerrainBuildingType.SoldiersQuarter_Small, BuildingGroundRequirement.BuildLight, SpriteName.MissingImage, CraftBuildingLib.SoldiersQuarter_Small, true,
-                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            {  specialBuildRequirement = SpecialBuildRequirement.MaxSoldierQuarters };
             
             new BuildOption(BuildAndExpandType.SoldiersQuarter_Large, TerrainMainType.Building, (int)TerrainBuildingType.SoldiersQuarter_Large, BuildingGroundRequirement.BuildMedium, SpriteName.MissingImage, CraftBuildingLib.SoldiersQuarter_Large, false,
-                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-
+                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.Upgrade, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { specialBuildRequirement = SpecialBuildRequirement.MaxSoldierQuarters };
 
             new BuildOption(BuildAndExpandType.GuardHouse_Small, TerrainMainType.Building, (int)TerrainBuildingType.GuardHouse_Small, BuildingGroundRequirement.BuildLight, SpriteName.WarsBuild_GuardOffice, CraftBuildingLib.GuardHouse_Small, true, 
                 BuildCategoryTab.Military, BuildFilterTag.Guards, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
@@ -1001,11 +1042,15 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Advanced, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.WaterResovoir, TerrainMainType.Building, (int)TerrainBuildingType.WaterResovoir, BuildingGroundRequirement.BuildLight, SpriteName.WarsBuild_WaterReservoir, CraftBuildingLib.WaterResovoir, true, 
-                BuildCategoryTab.Advanced, BuildFilterTag.Optimize, BuildFilterTag.Water, BuildFilterTag.NUM_NONE, 
+            new BuildOption(BuildAndExpandType.WaterWell, TerrainMainType.Building, (int)TerrainBuildingType.WaterWell, BuildingGroundRequirement.BuildMedium, SpriteName.MissingImage, CraftBuildingLib.WaterWell, true,
+                BuildCategoryTab.Advanced, BuildFilterTag.Optimize, BuildFilterTag.Water, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Large);
+            
+            new BuildOption(BuildAndExpandType.WaterResovoir, TerrainMainType.Building, (int)TerrainBuildingType.WaterResovoir, BuildingGroundRequirement.BuildLight, SpriteName.WarsBuild_WaterReservoir, CraftBuildingLib.WaterResovoir, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Optimize, BuildFilterTag.Water, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-           
+
             //new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks, true, 
             //    BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
             //    MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);

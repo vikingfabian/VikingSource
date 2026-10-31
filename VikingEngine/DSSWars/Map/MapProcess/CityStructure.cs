@@ -474,6 +474,32 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
                                 switch (building)
                                 {
+                                    case TerrainBuildingType.Logistics:
+                                        buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
+                                        BuildingPosition.Set(ref buildingPosition.GovernentBuildings_pos, ref subTileLoop.Position);
+                                        break;
+
+                                    case TerrainBuildingType.ManorLord:
+                                        buildingStructure.manorLord = true;
+                                        DssRef.state.hasManorLords = true;
+                                        BuildingPosition.Set(ref buildingPosition.GovernentBuildings_pos, ref subTileLoop.Position);
+                                        break;
+
+                                    case TerrainBuildingType.GreatHall:
+                                        buildingStructure.greatHall = true;
+                                        BuildingPosition.Set(ref buildingPosition.GovernentBuildings_pos, ref subTileLoop.Position);
+                                        break;
+
+                                    case TerrainBuildingType.Economics:
+                                        buildingStructure.economics = true;
+                                        BuildingPosition.Set(ref buildingPosition.GovernentBuildings_pos, ref subTileLoop.Position);
+                                        break;
+
+                                    case TerrainBuildingType.TingsHouse:
+                                        buildingStructure.tingshouse = true;
+                                        BuildingPosition.Set(ref buildingPosition.GovernentBuildings_pos, ref subTileLoop.Position);
+                                        break;
+
                                     case TerrainBuildingType.ExpansionHall_Lvl1:
                                         ++buildingStructure.ExpansionHall_count;
                                         buildingStructure.ExpansionHall_LowestLevel = Math.Min(buildingStructure.ExpansionHall_LowestLevel, 1);
@@ -494,16 +520,16 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                         BuildingPosition.Set(ref buildingPosition.WorkerHuts_pos, ref subTileLoop.Position); 
                                         housingCount_Workers += DssConst.HousingCount_WorkerTent;
                                         break;
+
                                     case TerrainBuildingType.WorkerHut:
                                         ++buildingStructure.WorkerHuts_count;
                                         BuildingPosition.Set(ref buildingPosition.WorkerHuts_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.WorkerHuts_pos = subTileLoop.Position; //Old
                                         housingCount_Workers += DssConst.HousingCount_WorkerHut;
                                         break;
+
                                     case TerrainBuildingType.WorkerHutLarge:
                                         ++buildingStructure.WorkerHuts_Large_count;
                                         BuildingPosition.Set(ref buildingPosition.WorkerHuts_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.WorkerHuts_pos = subTileLoop.Position; //Old
                                         housingCount_Workers += DssConst.HousingCount_WorkerHutLarge;
                                         break;
 
@@ -511,14 +537,12 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                         ++buildingStructure.ServiceMenHouse_count;
                                         serviceMenHousing += DssConst.HousingCount_ServiceHouse_Small;
                                         BuildingPosition.Set(ref buildingPosition.ServiceHouse_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.ServiceHouse_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.ServiceMenHouse_Large:
                                         ++buildingStructure.ServiceMenHouse_Large_count;
                                         serviceMenHousing += DssConst.HousingCount_ServiceHouse_Large;
                                         BuildingPosition.Set(ref buildingPosition.ServiceHouse_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.ServiceHouse_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.GuardHouse_Small:
@@ -557,140 +581,107 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                     case TerrainBuildingType.RecruitmentLevel3:
                                         ++buildingStructure.Recruitment_count;
                                         BuildingPosition.Set(ref buildingPosition.Recruitment_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Recruitment_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.ImmigrationTent:
                                         ++buildingStructure.ImmigrationTent_count;
                                         BuildingPosition.Set(ref buildingPosition.ImmigrationTent_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.ImmigrationTent_pos = subTileLoop.Position; //Old
                                         break;
                                     
-
-                                    //case TerrainBuildingType.Postal:
-                                    //case TerrainBuildingType.PostalLevel2:
-                                    //case TerrainBuildingType.PostalLevel3:
-                                    //    ++buildingStructure.Postal_count;
-                                    //    BuildingPosition.Set(ref buildingPosition.Postal_pos, ref subTileLoop.Position); 
-                                    //    //buildingPosition.Postal_pos = subTileLoop.Position; //Old
-                                    //    break;
 
                                     case TerrainBuildingType.SoldierBarracks:
                                         ++buildingStructure.SoldierBarracks_count;
                                         BuildingPosition.Set(ref buildingPosition.SoldierBarracks_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.SoldierBarracks_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.ArcherBarracks:
                                         ++buildingStructure.ArcherBarracks_count;
                                         BuildingPosition.Set(ref buildingPosition.ArcherBarracks_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.ArcherBarracks_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.WarmachineBarracks:
                                         ++buildingStructure.WarmachineBarracks_count;
                                         BuildingPosition.Set(ref buildingPosition.WarmachineBarracks_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.WarmachineBarracks_pos = subTileLoop.Position; //Old
                                         break;
-                                    //case TerrainBuildingType.KnightsBarracks:
-                                    //    ++buildingStructure.KnightsBarracks_count;
-                                    //    BuildingPosition.Set(ref buildingPosition.KnightsBarracks_pos, ref subTileLoop.Position); 
-                                    //    //buildingPosition.KnightsBarracks_pos = subTileLoop.Position; //Old
-                                    //    break;
                                     case TerrainBuildingType.GunBarracks:
                                         ++buildingStructure.GunBarracks_count;
                                         BuildingPosition.Set(ref buildingPosition.GunBarracks_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.GunBarracks_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.CannonBarracks:
                                         ++buildingStructure.CannonBarracks_count;
                                         BuildingPosition.Set(ref buildingPosition.CannonBarracks_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.CannonBarracks_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Tavern:
                                         ++buildingStructure.Tavern_count;
                                         FoodSpots_workupdate.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Tavern_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Tavern_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.Storehouse:
                                         ++buildingStructure.Storehouse_count;
                                         StoragePoints_workupdate.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Storehouse_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Storehouse_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.Carpenter:
                                         ++buildingStructure.Carpenter_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Carpenter_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Carpenter_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.Brewery:
                                         ++buildingStructure.Brewery_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Brewery_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Brewery_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Work_CoalPit:
                                         ++buildingStructure.CoalPit_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.CoalPit_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.CoalPit_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Work_Cook:
                                         ++buildingStructure.Cook_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Cook_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Cook_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Work_Bench:
                                         ++buildingStructure.WorkBench_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.WorkBench_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.WorkBench_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.Work_Smith:
                                         ++buildingStructure.Smith_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Smith_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Smith_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Smelter:
                                         ++buildingStructure.Smelter_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Smelter_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Smelter_pos = subTileLoop.Position; //Old
-                                        break;
+                                         break;
 
                                     case TerrainBuildingType.Foundry:
                                         ++buildingStructure.Foundry_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Foundry_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Foundry_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Armory:
                                         ++buildingStructure.Armory_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Armory_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Armory_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Chemist:
                                         ++buildingStructure.Chemist_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Chemist_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Chemist_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Gunmaker:
                                         ++buildingStructure.Gunmaker_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Gunmaker_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Gunmaker_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.WoodCutter:
@@ -705,103 +696,78 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                     case TerrainBuildingType.Nobelhouse:
                                         ++buildingStructure.Noblehouse_count;
                                         BuildingPosition.Set(ref buildingPosition.Noblehouse_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Noblehouse_pos = subTileLoop.Position; //Old
-
                                         break;
                                     case TerrainBuildingType.Embassy:
                                         ++buildingStructure.Embassy_count;
                                         BuildingPosition.Set(ref buildingPosition.Embassy_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Embassy_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.School:
                                         ++buildingStructure.School_count;
                                         BuildingPosition.Set(ref buildingPosition.School_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.School_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.ResearchCenter:
                                         ++buildingStructure.ResearchCenter_count;
                                         BuildingPosition.Set(ref buildingPosition.ResearchCenter_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.ResearchCenter_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.BookPress:
                                         ++buildingStructure.BookPress_count;
                                         BuildingPosition.Set(ref buildingPosition.BookPress_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.BookPress_pos = subTileLoop.Position; //Old
-                                        break;
-                                    case TerrainBuildingType.Logistics:
-                                        buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
-                                        break;
-                                    case TerrainBuildingType.ManorLord:
-                                        buildingStructure.manorLord = true;
-                                        DssRef.state.hasManorLords = true;
-                                        break;
-                                    case TerrainBuildingType.GreatHall:
-                                        buildingStructure.greatHall = true;
-                                        break;
+                                       break;
+                                    
                                     case TerrainBuildingType.WaterResovoir:
                                         ++buildingStructure.WaterResovoir_count;
-                                        BuildingPosition.Set(ref buildingPosition.WaterResovoir_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.WaterResovoir_pos = subTileLoop.Position; //Old
+                                        BuildingPosition.Set(ref buildingPosition.Water_pos, ref subTileLoop.Position); 
                                         break;
                                     case TerrainBuildingType.GoldDeliveryLevel1:
                                     case TerrainBuildingType.GoldDeliveryLevel2:
                                     case TerrainBuildingType.GoldDeliveryLevel3:
                                         ++buildingStructure.GoldDelivery_count;
                                         BuildingPosition.Set(ref buildingPosition.GoldDelivery_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.GoldDelivery_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.Bank:
                                         ++buildingStructure.Bank_count;
                                         BuildingPosition.Set(ref buildingPosition.Bank_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Bank_pos = subTileLoop.Position; //Old
                                         break;
                                     case TerrainBuildingType.CoinMinter:
                                         ++buildingStructure.CoinMinter_count;
                                         CoinMinting.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.CoinMinter_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.CoinMinter_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Pottery:
                                         ++buildingStructure.Pottery_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Pottery_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Pottery_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.DryingPan:
                                         ++buildingStructure.DryingPan_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.DryingPan_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.DryingPan_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Butcher:
                                         ++buildingStructure.Butcher_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Butcher_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Butcher_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Smoker:
                                         ++buildingStructure.Smoker_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Smoker_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Smoker_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Dryer:
                                         ++buildingStructure.Dryer_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.Dryer_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.Dryer_pos = subTileLoop.Position; //Old
-                                        break;
+                                       break;
 
                                     case TerrainBuildingType.ShieldMaker:
                                         ++buildingStructure.ShieldMaker_count;
                                         CraftStation.Add(subTileLoop.Position);
                                         BuildingPosition.Set(ref buildingPosition.ShieldMaker_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.ShieldMaker_pos = subTileLoop.Position; //Old
                                         break;
 
                                     // --- Storage ---
@@ -809,43 +775,35 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                     case TerrainBuildingType.MaterialStorage:
                                         ++buildingStructure.MaterialStorage_count;
                                         BuildingPosition.Set(ref buildingPosition.MaterialStorage_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.MaterialStorage_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.FoodStorage:
                                         ++buildingStructure.FoodStorage_count;
                                         BuildingPosition.Set(ref buildingPosition.FoodStorage_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.FoodStorage_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.WeaponStorage:
                                         ++buildingStructure.WeaponStorage_count;
                                         BuildingPosition.Set(ref buildingPosition.WeaponStorage_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.WeaponStorage_pos = subTileLoop.Position; //Old
-                                        break;
+                                       break;
 
                                     case TerrainBuildingType.ArmorStorage:
                                         ++buildingStructure.ArmorStorage_count;
                                         BuildingPosition.Set(ref buildingPosition.ArmorStorage_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.ArmorStorage_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.AnimalStorage:
                                         ++buildingStructure.AnimalStorage_count;
                                         BuildingPosition.Set(ref buildingPosition.AnimalStorage_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.AnimalStorage_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.Cesspit:
                                         ++buildingStructure.CessPit_count;
-                                        //BuildingPosition.Set(ref buildingPosition.AnimalStorage_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.AnimalStorage_pos = subTileLoop.Position; //Old
                                         break;
 
                                     case TerrainBuildingType.TrappersHut:
                                         ++buildingStructure.TrapperHut_count;
                                         BuildingPosition.Set(ref buildingPosition.TrapperHut_pos, ref subTileLoop.Position); 
-                                        //buildingPosition.TrapperHut_pos = subTileLoop.Position; //Old
                                         TrapperHuts.Add(subTileLoop.Position);
                                         break;
 

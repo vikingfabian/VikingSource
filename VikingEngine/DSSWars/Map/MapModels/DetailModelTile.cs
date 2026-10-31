@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                         surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.3f);
                                         bSurfacePolygonTexture = false;
                                         createBuilding(chunk, comTile.sumTile, ref comTile.mapTile, (TerrainBuildingType)comTile.mapTile.subTerrain,
-                                            topCenter(ref comTile.mapTile, ref subTopLeft), ref surfaceColor);
+                                            topCenter(ref comTile.mapTile, ref subTopLeft), ref surfaceSprite, ref surfaceColor);
                                         break;
                                     case TerrainMainType.AnimalPen:
                                         surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.3f);
@@ -566,13 +566,25 @@ namespace VikingEngine.DSSWars.Map.MapModels
             wp.X += MapTile1_1.SubTileHalfWidth;
             wp.Z += MapTile1_1.SubTileHalfWidth;
 
-            surfaceSprite = SpriteName.warsFoliageDirtRoad;
+            
             switch (type)
             {
-                case TerrainRoadType.CobblestoneRoad:
-                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, -8);
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_cobblestone, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
+                case TerrainRoadType.DirtRoad:
+                    surfaceSprite = SpriteName.warsFoliageDirtRoad;
                     break;
+                case TerrainRoadType.GravelRoad:
+                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, 20);
+                    surfaceSprite = SpriteName.DssMapTextureGravelRoad1;
+                    break;
+                case TerrainRoadType.CobblestoneRoad:
+                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, 20);
+                    surfaceSprite = SpriteName.DssMapTextureCobbleRoad1;
+                    break;
+                case TerrainRoadType.PavedRoad:
+                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, 20);
+                    surfaceSprite = SpriteName.DssMapTexturePavedRoad1;
+                    break;
+
                 case TerrainRoadType.Square:
                     surfaceColor = SquareGroundCol;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_square, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
@@ -630,18 +642,18 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     break;
                 case TerrainSubFoilType.TreeHard:
                     manMade = false;
-                    surfaceSprite = SpriteName.warsFoliageRoundShadow;
+                    //surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(biom.treeHard, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
                 case TerrainSubFoilType.TreeSoft:
                     manMade = false;
-                    surfaceSprite = SpriteName.warsFoliageRoundShadow;
+                    //surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(biom.treeHard, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
 
                 case TerrainSubFoilType.DryWood:
                     manMade = false;
-                    surfaceSprite = SpriteName.warsFoliageRoundShadow;
+                    //surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f));
                     break;
 
@@ -959,7 +971,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
         }
         
         static readonly Color SquareGroundCol = new Color(102,102,115);
-        void createBuilding(MapChunkData8_8 tile, SumTile4_4 sumTile, ref MapTile1_1 subTile, TerrainBuildingType buildingType, Vector3 wp, ref Color surfaceColor)
+        void createBuilding(MapChunkData8_8 tile, SumTile4_4 sumTile, ref MapTile1_1 subTile, TerrainBuildingType buildingType, Vector3 wp, ref SpriteName surfaceSprite, ref Color surfaceColor)
         {
             wp.X += MapTile1_1.SubTileHalfWidth;
             wp.Z += MapTile1_1.SubTileHalfWidth;
@@ -972,6 +984,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tenthut, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 0.9f));
                     break;
                 case TerrainBuildingType.WorkerHut:
+                    surfaceSprite = SpriteName.DssMapTextureStructureGroundCirkular;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1.0f));
                     break;
                 case TerrainBuildingType.WorkerHutLarge:
@@ -980,6 +993,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
                
                 case TerrainBuildingType.GuardHouse_Small:
                     {
+
+                        surfaceSprite = SpriteName.DssMapTextureStructureGroundCirkular;
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1.0f));
 
                         var faction = sumTile.pcity.Faction();
@@ -1005,6 +1020,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     break;
 
                 case TerrainBuildingType.SoldiersQuarter_Small:
+
+                    surfaceSprite = SpriteName.DssMapTextureStructureGroundCirkular;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.2f));
                     break;
                 case TerrainBuildingType.SoldiersQuarter_Large:
@@ -1127,6 +1144,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     }
                     break;
                 case TerrainBuildingType.ServiceMenHouse_Small:
+                    surfaceSprite = SpriteName.DssMapTextureStructureGroundCirkular;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_smallhouse, rnd, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
                     break;
                 case TerrainBuildingType.ServiceMenHouse_Large:
@@ -1137,6 +1155,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
                     break;
                 case TerrainBuildingType.Work_Bench:
+
+                    surfaceSprite = SpriteName.DssMapTextureGeneralWithStones1;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 3, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
                     break;
 
@@ -1191,6 +1211,12 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     break;
                 case TerrainBuildingType.Logistics:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount - 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.0f));
+                    break;
+                case TerrainBuildingType.Economics:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_bank, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1.4f));
+                    break;
+                case TerrainBuildingType.TingsHouse:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, 2, wp, Map.MapData.MapTile1_1.ModelScale * 1.5f));
                     break;
                 case TerrainBuildingType.ManorLord:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, 3, wp, Map.MapData.MapTile1_1.ModelScale * 1f));

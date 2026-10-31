@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 20 }, new DragButtonSettings(5, 100, 5), state.generator.generateSettings.CityPlacementPercProperty, false);
                     content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                        new RbImage(SpriteName.Undo),
+                        new RbImage(SpriteName.WarsHudIconReset),
                         new RbSpace(0.5f),
                         new RbText(DssRef.lang.Settings_ResetToDefault)
                         }, new RbAction1Arg<Map2GeneratorTab>(state.generator.generateSettings.ResetToDefault, tab)));
@@ -558,7 +558,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.Undo),
+                new RbImage(SpriteName.WarsHudIconReset),
                 new RbSpace(0.5f),
                 new RbText(DssRef.lang.Settings_ResetToDefault)
                 }, new RbAction1Arg<Map2GeneratorTab>(state.generator.generateSettings.ResetToDefault, tab)));

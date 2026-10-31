@@ -84,7 +84,7 @@ Made an evil factory puzzle game in a one week game jam. Available as extra cont
 
 
 ##ICONS TODO
-* reset to default
+* ground type
 
 #MOUNTED TODO
 * 

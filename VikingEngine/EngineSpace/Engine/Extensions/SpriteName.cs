@@ -2484,13 +2484,25 @@ namespace VikingEngine
         #endregion
 
         #region DSS WARS
-        
-        
+
+        DssMapTextureGeneral1,
+        DssMapTextureGeneral2,
+        DssMapTextureGeneralWithStones1,
+        DssMapTextureGeneralWithStones2,
+        DssMapTextureGeneralWithStones3,
+        DssMapTextureStructureGroundCirkular,
+        DssMapTextureStructureGround,
+        DssMapTextureGravelRoad1,
+        DssMapTextureGravelRoad2,
+        DssMapTextureCobbleRoad1,
+        DssMapTexturePavedRoad1,
         DssMapTextureSand,
         DssMapTextureHardPan,
         DssMapTextureFertile,
-        DssMapTextureRubble,
-        DssMapTextureRootmat,
+        DssMapTextureRubble1,
+        DssMapTextureRubble2,
+        DssMapTextureRootmat1,
+        DssMapTextureRootmat2,
 
         DssMapTextureMadeSolid,
         DssMapTextureMud,
@@ -2522,6 +2534,7 @@ namespace VikingEngine
         WarsHudTabNotSelected,
         WarsHudSubTabSelected,
         WarsHudSubTabNotSelected,
+        WarsHudSuperPrimaryButton,
         WarsHudPrimaryButton,
         WarsHudPrimaryButtonDisabled,
         WarsHudSecondaryButton,
@@ -2535,6 +2548,7 @@ namespace VikingEngine
         
         WarsHudToggleNotSelected,
         WarsHudRoundButton,
+        WarsHudModuleButton,
 
         WarsTechButtonEnabled, WarsTechButtonDisabled,
         WarsTechOptionYes,
@@ -2595,6 +2609,8 @@ namespace VikingEngine
         WarsHudFilterButtonSelected,
         WarsHudFilterButton,
 
+        WarsHudIconReset,
+        WarsHudIconWarning,
         WarsHudIconExit,
         WarsHudIconSettings,
         WarsHudIconNetwork,
@@ -2652,6 +2668,7 @@ namespace VikingEngine
         warsFoliageSquareShadow,
         warsFoliageRoundShadow,
         warsFoliageDirtRoad,
+        warsWorkerPromoMap2,
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
         warsWorkerPromoCannon,
@@ -2849,7 +2866,7 @@ namespace VikingEngine
         WarsSoldierMan,
         WarsSoldierGroup,
         WarsNobelman,
-
+        WarsIconArmySupply,
         WarsGuardPostIcon,
         WarsHammer,
         WarsHammerAdd,
@@ -3087,7 +3104,7 @@ namespace VikingEngine
         WarsResource_MountFullPlateArmor,
         WarsResource_MountMithrilArmor,
 
-
+        WarsResource_FineWood,
         WarsResource_BucklerShield, WarsResource_RoundShield, WarsResource_HeaterShield, WarsResource_TowerShield,
 
         WarsResource_Sharpstick,

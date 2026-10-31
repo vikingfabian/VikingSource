@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
@@ -1523,7 +1524,19 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.hspace();
             args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
 
-           
+            args.content.space(2);
+            args.content.Add(new RbImage(SpriteName.WarsIconArmySupply));
+            args.content.hspace();
+            args.content.Add(new RbText(AllUnits.GroupSupply(soldierCount, ref soldierData).ToString()));
+
+
+            //buttonContent.Add(new RbImage(SpriteName.WarsIconArmySupply));
+            //buttonContent.space(0.5f);
+            //buttonContent.Add(new RbText($"{faction.UsedArmySupply}/{faction.ArmySupply}", faction.UsedArmySupply >= faction.ArmySupply ? HudLib.NotAvailableColor : null));
+            //content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,
+            //    new RbTooltip_Text(DssRef.todoLang.ArmySupplyCount)));
+
+
         }
 
         public override void toTooltip(ObjectHudArgs args)

@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars
             {
                 case UnderMenu_NewGame:
                     loadGame = null;
-                    newGameSettings2();
+                    newGameSettings();
                     break;
 
                 case UnderMenu_Options:
@@ -454,8 +454,8 @@ namespace VikingEngine.DSSWars
                                 {
                                     title.text = PlatformSettings.STEAM_DEMO ? DssRef.lang.LobbyDemoMode_Demo : DssRef.lang.Settings_NewGame;
 
-                                    var start = new ArtButton(RbButtonStyle.Primary,
-                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start) },
+                                    var start = new ArtButton(RbButtonStyle.SuperPrimary,
+                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Start, HudLib.Color_SuperPrimary) },
                                       new RbAction(startGame), null, startAvailable);
                                     content.Add(start);
 
@@ -473,8 +473,8 @@ namespace VikingEngine.DSSWars
                                 {
                                     title.text = DssRef.lang.Lobby_Tutorial;
 
-                                    var startlong = new ArtButton(RbButtonStyle.Primary,
-                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Tutorial) },
+                                    var startlong = new ArtButton(RbButtonStyle.SuperPrimary,
+                                      new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Tutorial, HudLib.Color_SuperPrimary) },
                                       new RbAction(startTutorial), null, startAvailable);
                                     content.Add(startlong);
                                     
@@ -951,10 +951,10 @@ namespace VikingEngine.DSSWars
 
         void createUpdateBackground(VectorRect bgArea)
         { 
-            Graphics.Image updateIcon = new Image( SpriteName.WarsMapIcon, bgArea.PercentToPosition(new Vector2(0.03f)),
-                Screen.IconSizeV2 * 1.0f, ImageLayers.Background4 );
-            updateIcon.Rotation = 0.05f;
-            updateIcon.Color = Color.LightGray;
+            Graphics.Image updateIcon = new Image( SpriteName.warsWorkerPromoMap2, bgArea.PercentToPosition(new Vector2(0.03f)),
+                Screen.IconSizeV2 * new Vector2(2, 1), ImageLayers.Background4 );
+            //updateIcon.Rotation = 0.05f;
+            //updateIcon.Color = Color.LightGray;
             updateIcon.Opacity = 0.7f;
 
             //Graphics.Image updateIcon2 = (Graphics.Image)updateIcon.CloneMe();
@@ -1149,11 +1149,11 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                var btn = new ArtButton(RbButtonStyle.SuperPrimary, new List<AbsRichBoxMember> {
                     new RbBeginTitle(),
                     new RbImage(SpriteName.WarsHudIconOpen),
                     new RbTab(ButtonTextTabbing),
-                    new RbText(DssRef.lang.GameMenu_ContinueFromSave/*, new Color(165, 144, 82)*/),
+                    new RbText(DssRef.lang.GameMenu_ContinueFromSave, HudLib.Color_SuperPrimary/*, new Color(165, 144, 82)*/),
                     //new RbTab(MoreArrowTabbing),
                 },
                 new RbAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), new RbTooltip_Text(saves[0].InfoString()));
@@ -1166,13 +1166,13 @@ namespace VikingEngine.DSSWars
                 //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
                 //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(arraylib.HasMembers(saves)  ? RbButtonStyle.Secondary: RbButtonStyle.Primary,
+                var btn = new ArtButton(arraylib.HasMembers(saves)  ? RbButtonStyle.Secondary: RbButtonStyle.SuperPrimary,
                     HudLib.AddMoreArrowToButton(
                     new List<AbsRichBoxMember> { 
                     new RbBeginTitle(), 
                     new RbImage(SpriteName.WarsHudIconAdd), 
                     new RbTab(ButtonTextTabbing), 
-                    new RbText(DssRef.lang.Settings_NewGame),
+                    new RbText(DssRef.lang.Settings_NewGame, arraylib.HasMembers(saves) ? null : HudLib.Color_SuperPrimary),
                     //new RbTab(MoreArrowTabbing),
                     //moreArrow,
                 }),
@@ -1668,7 +1668,7 @@ namespace VikingEngine.DSSWars
             //newGameSettings();
         }
 
-        void newGameSettings2()
+        void newGameSettings()
         {
 
             RichBoxContent content = new RichBoxContent();
@@ -1678,11 +1678,12 @@ namespace VikingEngine.DSSWars
                 //var moreArrow = new RbImage(moreOptArrow, MoreArrowScale);
                 //moreArrow.color = HudLib.MenuMoreOptionsArrowCol;
 
-                var btn = new ArtButton(RbButtonStyle.Primary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
+                var btn = new ArtButton(RbButtonStyle.SuperPrimary, HudLib.AddMoreArrowToButton(new List<AbsRichBoxMember> {
                                     new RbBeginTitle(),
                                     new RbImage(SpriteName.WarsHudIconAdd),
                                     new RbSpace(),
-                                    new RbText(DssRef.lang.Hud_Next),
+                                    new RbText(string.Format(DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.Settings_NewGame, DssRef.lang.Hud_Next), 
+                                        HudLib.Color_SuperPrimary),
                                     //new RbTab(MoreArrowTabbing),
                                     //moreArrow,
                                 }),
@@ -1827,7 +1828,7 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             content.h2(DssRef.todoLang.Modules_Label, HudLib.TitleColor_Head2);
 
-            ModuleButton(SpriteName.birdCannonBallSmoke1, DssRef.todoLang.Module_FogOfWar, SpriteName.birdCannonBallSmoke2,
+            ModuleButton(SpriteName.birdCannonBallSmoke1, DssRef.todoLang.Module_FogOfWar, SpriteName.birdCannonBallSmoke1,
                 fogOfWarProperty, Difficulty.ModulePerc_FogOfWar);
             
             ModuleButton(SpriteName.WarsResource_Water, DssRef.todoLang.Module_FoodUpkeep, SpriteName.WarsResource_FoodEmpty,
@@ -1937,13 +1938,13 @@ namespace VikingEngine.DSSWars
             void ModuleButton(SpriteName icon1, string title, SpriteName icon2, BoolGetSet_Tag property, int difficulty)
             {
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                content.Add(new ArtButton(RbButtonStyle.Module, new List<AbsRichBoxMember> {
 
                     new RbImage(property(null, false, false)?  HudLib.RbSettings.checkOn : HudLib.RbSettings.checkOff),
                     new RbSpace(),
                      new RbImage(icon1),
                      new RbSpace(0.5f),
-                    new RbText(title, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
+                    new RbText(title, ColorExt.MultiplyRGB( Color.BlueViolet, 0.3f), LoadedFont.Bold),
                     new RbSpace(0.5f),
                     new RbImage(icon2),
                     new RbNewLine(),
@@ -2027,7 +2028,10 @@ namespace VikingEngine.DSSWars
             }
 
             content.newParagraph();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                new RbImage(SpriteName.WarsHudIconReset),
+                new RbSpace(0.5f),
+                new RbText(DssRef.lang.Settings_ResetToDefault) }, new RbAction(resetToDefault)));
 
             underMenu.Refresh(content);
 
