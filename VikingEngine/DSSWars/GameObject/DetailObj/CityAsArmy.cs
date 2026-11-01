@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override bool IdleObjetive()
+        public override bool IdleObjective()
         {
             return true;
         }

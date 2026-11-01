@@ -14,12 +14,12 @@ using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map.MapData
 {
-    enum FogOfWar_ExlporeLevel : byte
-    { 
-        None,
-        TerrainOnly,
-        Full,
-    }
+    //enum FogOfWar_ExlporeLevel : byte
+    //{ 
+    //    None,
+    //    TerrainOnly,
+    //    Full,
+    //}
 
 
     /// <summary>
@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars.Map.MapData
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct SumTile4_4
     {
+        
+
         public static readonly SumTile4_4 Empty = new SumTile4_4();
         public const int TileWidth = 4;
 
@@ -67,7 +69,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         public bool IsBorderTile;
         public bool IsFullTile;
 
-        public FogOfWar_ExlporeLevel fogExploreLevel = FogOfWar_ExlporeLevel.None;
+        public byte fogExploreLevel = WorldData.FogOfWarView_None;
 
         //public TileContent tileContent = TileContent.NONE;
         //public byte BorderCount;

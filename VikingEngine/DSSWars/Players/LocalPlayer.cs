@@ -260,7 +260,7 @@ namespace VikingEngine.DSSWars.Players
         {
             for (int i = battleMessages.Count - 1; i >= 0; --i)
             {
-                if (battleMessages[i].time.secPassed(20))
+                if (battleMessages[i].time.hasSecPassed(20))
                 {
                     battleMessages.RemoveAt(i);
                 }

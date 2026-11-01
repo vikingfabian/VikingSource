@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     mapTile.IsLand())
                 {
                     
-                    subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.SumTile4_4.TileWidth);
+                    subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.SumTile4_4.TileWidth -1);
 
                     while (subTileLoop.Next())
                     {

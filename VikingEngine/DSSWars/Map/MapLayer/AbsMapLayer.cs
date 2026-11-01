@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         //int waterEdgeFrame = 0;
         double waterMoveCurve = 0;
 
-        protected Graphics.Mesh waterSurface/*, waterBottom*/;
+        protected Graphics.Mesh waterSurface, fogPlane;
 
         public AbsMapLayer(int layer)
         {
@@ -23,32 +23,31 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         }
 
         protected void WaterModel(int layer)
-        {
-            
+        {            
             var vol = WaterModelVolume();
-
-            //waterBottom = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
-            //    TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.DarkBlue, false);
-            //waterBottom.Y -= 0.6f;
-            //waterBottom.Scale = vol.Scale;
 
             waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
                 TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,
-                false);
-
-           
+                false);           
             waterSurface.texture = WaterTex()[0];
             int repeatCount = layer == DrawGame.NearLayer ? 2 : 1;
             waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.chunkGrid.Size * repeatCount);
            
             waterSurface.Scale = vol.Scale;
             const float SurfaceTrans = 0.8f;
+            
+            waterSurface.AddToRender(layer);
+            if (DssRef.storage.ruleset_instance.module_fogOfWar)
+            {
+                fogPlane = (Mesh)waterSurface.CloneMe();
+                fogPlane.Y += 0.01f;
+
+                //fogPlane.texture = DssRef.world.fogTexture.texture;
+                fogPlane.setFullTextureSource(DssRef.world.fogTexture.texture);
+                fogPlane.AddToRender(layer);
+            }
             waterSurface.Opacity = SurfaceTrans;
 
-            waterSurface.AddToRender(layer);
-            
-            //waterBottom.AddToRender(layer);
-            
         }
 
         virtual protected Texture2D[] WaterTex()

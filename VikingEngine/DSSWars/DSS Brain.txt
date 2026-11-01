@@ -41,6 +41,11 @@ Map editor 2.0
 * Icon editor: Allows fast editing in 1/16 scale
 * Height map: Load images and use them to generate the world
 
+Fog of war
+* The fog dont represent eye sight like most games, instead its the area you recieve information from
+* Idle armies will scout the sourronding area
+x Share information with diplomatic relations
+
 Onboarding and Game modules
 x Three new challenge modules added
 x A couple of high friction mechanics, like starvation and deserters, have been split off to optional modules

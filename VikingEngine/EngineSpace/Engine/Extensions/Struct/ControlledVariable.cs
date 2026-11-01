@@ -135,6 +135,11 @@ namespace VikingEngine
             this.totalTimeStampSec = totalGameTimeStampSec;
         }
 
+        public bool IsEmpty()
+        {
+            return totalTimeStampSec < -1;
+        }
+
         public void write_ushort(System.IO.BinaryWriter w)
         {
             //MAX 1000 hours
@@ -188,15 +193,20 @@ namespace VikingEngine
         {
             return new GameTimeStamp(Ref.TotalGameTimeSec);
         }
-        public bool minPassed(float minutes)
+        public bool hasMinPassed(float minutes)
         {
             return Ref.TotalGameTimeSec - totalTimeStampSec >= TimeExt.MinuteInSeconds * minutes;
         }
-        public bool secPassed(float seconds)
+        public bool hasSecPassed(float seconds)
         {
             return Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
         }
-        public bool msPassed(float ms)
+
+        public float secPassed()
+        {
+            return Ref.TotalGameTimeSec - totalTimeStampSec;
+        }
+        public bool hasMsPassed(float ms)
         {
             return Ref.TotalGameTimeSec - totalTimeStampSec >= TimeExt.MsToSec * ms;
         }

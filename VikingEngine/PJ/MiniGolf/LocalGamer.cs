@@ -186,7 +186,7 @@ namespace VikingEngine.PJ.MiniGolf
         void updateRolling()
         {
             idleTimer = 0;
-            if (power != null && gamerdata.button.DownEvent && fireTimeStamp.msPassed(200))
+            if (power != null && gamerdata.button.DownEvent && fireTimeStamp.hasMsPassed(200))
             {
                 if (power.activate(ball))
                 {

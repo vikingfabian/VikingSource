@@ -428,7 +428,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        abstract public bool IdleObjetive();
+        abstract public bool IdleObjective();
 
        
 

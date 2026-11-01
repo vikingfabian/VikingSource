@@ -110,6 +110,8 @@ namespace VikingEngine.DSSWars.GameObject
         public bool primaryCity = false;
         public FlatArray_Three<int> naturalExpansion = new FlatArray_Three<int>();
 
+        public bool fogExplored = false;
+
         public bool CanBuildLogistics(int toLevel)
         {
             if (buildingStructure.tingshouse)
@@ -1839,10 +1841,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            Intvector2MinMax minMax = (citySumTileArea * SumTile4_4.TileWidth).MinMax;//workerCullingMinMax;
-            minMax.Combine(guardCullingMinMax);
-           
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
+            if (fogExplored)
+            {
+                Intvector2MinMax minMax = (citySumTileArea * SumTile4_4.TileWidth).MinMax;//workerCullingMinMax;
+                minMax.Combine(guardCullingMinMax);
+
+                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
+            }
         }
 
         public double childAddPerMin()

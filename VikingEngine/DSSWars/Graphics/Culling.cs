@@ -171,21 +171,23 @@ namespace VikingEngine.DSSWars
             enterRender_detailLayer = detailLayer;
         }
 
-        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minWp, ref Vector2 maxWp)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, bool inFogView, ref Vector2 minWp, ref Vector2 maxWp)
         {
             bool enterOverview = false;
             bool enterDetail = false;
 
-            for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
+            if (inFogView)
             {
-                var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
-                if (state.enterArea.IntersectRect(minWp * MapTile1_1.ModelScale_Inv, maxWp * MapTile1_1.ModelScale_Inv))
+                for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
                 {
-                    enterOverview |= state.midLayer;
-                    enterDetail |= state.detailLayer;                    
+                    var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
+                    if (state.enterArea.IntersectRect(minWp * MapTile1_1.ModelScale_Inv, maxWp * MapTile1_1.ModelScale_Inv))
+                    {
+                        enterOverview |= state.midLayer;
+                        enterDetail |= state.detailLayer;
+                    }
                 }
             }
-
             enterRender_overviewLayer = enterOverview;
             enterRender_detailLayer = enterDetail;
            

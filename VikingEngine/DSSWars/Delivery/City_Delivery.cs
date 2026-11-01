@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         if (!correctOwner && DssRef.world.diplomacy.GetRelation(pfaction, othercity.pfaction).Relation >= RelationType.RelationType2_Good)
                                         {
                                             correctOwner = true;
-                                            if (!othercity.IsNetHosted && status.remoteDeliveryUpdateRequest.minPassed(5))
+                                            if (!othercity.IsNetHosted && status.remoteDeliveryUpdateRequest.hasMinPassed(5))
                                             { 
                                                 var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDeliverStatusRequest, Network.PacketReliability.Unrelyable,
                                                     Network.SendPacketTo.OneSpecific, othercity.NetHostingPeer().fullId, out var packet);

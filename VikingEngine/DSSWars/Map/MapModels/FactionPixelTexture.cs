@@ -49,6 +49,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
         {
             var previousTexture = texture;
             texture = new Graphics.PixelTexture(PixelTextureScale());
+            texture.ClearPixelArray(Color.Black);
             Graphics.GpuResourceSync.Release(previousTexture);
         }
 
@@ -218,6 +219,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     while (loop.Next())
                     {
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
+                        if (tile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None && DssRef.storage.ruleset.module_fogOfWar)
+                        {
+                            continue;
+                        }
                         texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.FactionAndTerrainColor(tile, leanY));
                     }
 
@@ -229,6 +234,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         //midu
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
+                        if (tile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None && DssRef.storage.ruleset.module_fogOfWar)
+                        {
+                            continue;
+                        }
                         Color color = TileColor.BorderAndTerrainColor(tile, leanY, out var groundColor);
                         if (groundColor)
                         {
@@ -242,7 +251,24 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     while (loop.Next())
                     {
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY));
+                        if (DssRef.storage.ruleset.module_fogOfWar)
+                        {
+                            if (tile.sumTile.fogExploreLevel != WorldData.FogOfWarView_None)
+                            {
+                                if (tile.sumTile.fogExploreLevel > WorldData.FogOfWarView_TerrainOnly)
+                                {
+                                    texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY));
+                                }
+                                else
+                                {
+                                    texture.SetPixel(loop.Position / TilesPerPixelScale, ColorExt.ChangeBrighness(TileColor.MinimapColor(tile, leanY), -70));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY));
+                        } 
                     }
                     AddCityIcons();
                     break;
@@ -352,23 +378,25 @@ namespace VikingEngine.DSSWars.Map.MapModels
             var citiesC = DssRef.world.cities.counter();
             while (citiesC.Next()) //foreach (var city in DssRef.world.cities)
             {
-                TileColor.cityColor(citiesC.sel, out Color centerCol, out Color outline, out Color factionCol);
-                IntVector2 center = (citiesC.sel.maptilePos + (TilesPerPixelScale / 2))/ TilesPerPixelScale;
-                texture.SetPixel(center, centerCol);
-                Rectangle2 cityArea = Rectangle2.FromCenterTileAndRadius(center, 1);
-                ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(cityArea);
-                while (edgeLoop.Next())
+                if (citiesC.sel.fogExplored)
                 {
-                    texture.TrySetPixel(edgeLoop.Position, outline);
-                }
+                    TileColor.cityColor(citiesC.sel, out Color centerCol, out Color outline, out Color factionCol);
+                    IntVector2 center = (citiesC.sel.maptilePos + (TilesPerPixelScale / 2)) / TilesPerPixelScale;
+                    texture.SetPixel(center, centerCol);
+                    Rectangle2 cityArea = Rectangle2.FromCenterTileAndRadius(center, 1);
+                    ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(cityArea);
+                    while (edgeLoop.Next())
+                    {
+                        texture.TrySetPixel(edgeLoop.Position, outline);
+                    }
 
-                cityArea.AddRadius(1);
-                edgeLoop = new ForXYEdgeLoop(cityArea);
-                while (edgeLoop.Next())
-                {
-                    texture.TrySetPixel(edgeLoop.Position, factionCol);
+                    cityArea.AddRadius(1);
+                    edgeLoop = new ForXYEdgeLoop(cityArea);
+                    while (edgeLoop.Next())
+                    {
+                        texture.TrySetPixel(edgeLoop.Position, factionCol);
+                    }
                 }
-
             }
         }
 

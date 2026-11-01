@@ -992,7 +992,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //{
                     //    Debug.Log($">End battle state, time {enterBattleStateTime.Seconds}");
                     //}
-                    if (!enterBattleStateTime.secPassed(5))
+                    if (!enterBattleStateTime.hasSecPassed(5))
                     {
                         return;
                     }
@@ -1264,7 +1264,7 @@ namespace VikingEngine.DSSWars.GameObject
                             //{
                             //    Debug.Log($"Exit battle, time {enterBattleStateTime.Seconds}");
                             //}
-                            if (enterBattleStateTime.secPassed(fullUpdate? 5 :20))
+                            if (enterBattleStateTime.hasSecPassed(fullUpdate? 5 :20))
                             {
                                 //Capture city here
                                 if (tArmy.IsArmy())

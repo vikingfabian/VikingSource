@@ -137,7 +137,7 @@ namespace VikingEngine.PJ.StupidHorse.StupidGO
                     if (forwardDir)
                     {
                         int add;
-                        if (landingTime.msPassed(90))
+                        if (landingTime.hasMsPassed(90))
                         {
                             add = 1;
                             SoundManager.whip.Play();

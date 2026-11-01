@@ -133,10 +133,11 @@ namespace VikingEngine.DSSWars.GameState
 
             CrossHeightMap crossHeightMap = new CrossHeightMap();
 
+            DssRef.world.fogTexture.initTexture();
             mapLayerFar = new MapLayer3_Far(crossHeightMap);
             mapLayerMid = new MapLayer2_Mid(mapLayerFar, crossHeightMap);
             mapLayerNear = new MapLayer1_Near(crossHeightMap);
-            DssRef.world.fogTexture.initTexture();
+           
 
             crossHeightMap.init();
 

@@ -135,6 +135,11 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         Biom biom = DssRef.map.bioms.bioms[(int)comTile.sumTile.biom1];
                         var col = biom.colors_height[comTile.sumTile.biomColorHeight];
 
+                        if (comTile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None)
+                        {
+                            continue;
+                        }
+
                         for (int y = 0; y < Map.MapData.SumTile4_4.TileWidth; ++y)
                         {
                             int mapY = chunkGrindex.Y * Map.MapData.MapChunkData8_8.TileWidth +

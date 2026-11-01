@@ -1797,7 +1797,7 @@ namespace VikingEngine.DSSWars.Players
                         for (int i = 0; i < Trials; i++)
                         {
                             var army = faction.armies.GetRandomUnsafe(Ref.rnd);
-                            if (army != null && army.IdleObjetive() && army.groups.Count >= 5)
+                            if (army != null && army.IdleObjective() && army.groups.Count >= 5)
                             {
                                 mainArmy = army;
                                 mainArmyState = MainArmyState_CollectSupport;
@@ -1925,7 +1925,7 @@ namespace VikingEngine.DSSWars.Players
                 else if (mainArmyState == MainArmyState_Attack ||
                     mainArmyState == MainArmyState_Defend)
                 {
-                    if (mainArmy.IdleObjetive())
+                    if (mainArmy.IdleObjective())
                     {
                         mainArmyState = MainArmyState_CollectSupport;
                     }
@@ -2001,7 +2001,7 @@ namespace VikingEngine.DSSWars.Players
             }
             if (mainArmyState == MainArmyState_Attack || mainArmyState == MainArmyState_Defend)
             {
-                return !mainArmy.IdleObjetive();
+                return !mainArmy.IdleObjective();
             }
             return false;
         }
@@ -2412,7 +2412,7 @@ namespace VikingEngine.DSSWars.Players
             for (int i = 0; i < 3; i++)
             {
                 var army2 = faction.armies.GetRandomUnsafe(Ref.rnd);
-                if (army2 != null && army2.IdleObjetive())
+                if (army2 != null && army2.IdleObjective())
                 {
                     if (army == null ||
                         army2.strengthValue > army.strengthValue)

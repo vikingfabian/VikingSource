@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars
         public int lostCity_Time0 = -1;
         public int lostCity_Time1 = -1;
         public bool quickMatchFaction = false;
-
+        public bool fogExplored = false;
         public XP.TechnologyTemplate technology;
 
         public Faction(int index)

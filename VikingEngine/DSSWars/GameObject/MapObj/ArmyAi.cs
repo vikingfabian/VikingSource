@@ -42,15 +42,13 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 walkGoal, adjustedWalkGoal;
         GameTimeStamp teleportTime;
 
+        
+        GameTimeStamp lastActiveTime = GameTimeStamp.None;
         public IntVector2 nextNodePos;
         public AbsMapObject attackTarget = null;
         public PFaction attackTargetFaction;
-        //bool nextPathNode = false;
-            
-        //public ArmyAi(Army army)
-        //{
-        //    this.army = army;
-        //}
+        
+
 
         public void aiUpdate(bool fullUpdate)
         {
@@ -493,7 +491,7 @@ namespace VikingEngine.DSSWars.GameObject
         void onNewGoal(bool teleport)
         {
             IntVector2 goal;
-            if (IdleObjetive())
+            if (IdleObjective())
             {
                 goal = maptilePos;
                 //needPath_playerview = false;
@@ -719,7 +717,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
        
-        override public bool IdleObjetive()
+        override public bool IdleObjective()
         {
             if (objective == ArmyObjective.Attack) 
             {

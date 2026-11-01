@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
-
+        public bool InFogView = false;
         public float food = 0;
         public float conservedFood = 0;
         public SoldierUpkeep totalUpkeep = new SoldierUpkeep();
@@ -86,6 +86,16 @@ namespace VikingEngine.DSSWars.GameObject
         public Army()
         {
             id = ++DssRef.state.NextArmyId;
+        }
+
+        public int fogViewRadius()
+        {
+            double expandedView = 1;
+            if (army_isIdle)
+            {
+                expandedView += 0.25f * Bound.Max(lastActiveTime.secPassed() / 20, 4);
+            }
+            return MathExt.MultiplyInt(4 + groups.Count * 0.75, expandedView);
         }
 
         public override bool MayBattle()
@@ -710,10 +720,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void update()
         {
-            if (debugTagged || id == -1)
-            {
-                lib.DoNothing();
-            }
+            //if (debugTagged || id == -1)
+            //{
+            //    lib.DoNothing();
+            //}
 
             updateArmyMovement(Ref.DeltaGameTimeMs);
 
@@ -784,7 +794,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             bool inPointMode = false; //for later opt, all groups are removed for perfromance
 
-            if (!IdleObjetive())
+            if (!IdleObjective())
             {
                 if (inPointMode)
                 {
@@ -857,7 +867,7 @@ namespace VikingEngine.DSSWars.GameObject
                         ++armyCenterCount;
                     }
 
-                    if ((!IdleObjetive() || Ref.peRnd.ChanceF(0.05f)) && armyCenterCount > 0 && armyCenter.X > 1) 
+                    if ((!IdleObjective() || Ref.peRnd.ChanceF(0.05f)) && armyCenterCount > 0 && armyCenter.X > 1) 
                     {
                         var newPosition = armyCenter / armyCenterCount;
 
@@ -976,7 +986,7 @@ namespace VikingEngine.DSSWars.GameObject
                 FindMinValue lowestMobility = new FindMinValue(false);
 
                 bool allGropsAreIdle = true;
-
+                bool fogViewResult = false;
                 Vector2 minpos = VectorExt.V2Max;
                 Vector2 maxpos = VectorExt.V2Min;
 
@@ -1022,6 +1032,11 @@ namespace VikingEngine.DSSWars.GameObject
                         maxpos.Y = groupsC.sel.position.Z;
                     }
 
+                    if (!fogViewResult)
+                    {
+                        fogViewResult = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(groupsC.sel.maptilePos)).fogExploreLevel > WorldData.FogOfWarView_TerrainOnly;
+                    }
+                    
                     totalStrength += groupsC.sel.strengthValue();/*AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip)*/;//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
                     float mobility = groupsC.sel.mobilityValue();
                     totalMobility += mobility;
@@ -1029,7 +1044,11 @@ namespace VikingEngine.DSSWars.GameObject
                     totalSupply += AllUnits.GroupSupply(groupsC.sel.soldierCount, ref groupsC.sel.soldierData);
                 }
 
-                army_isIdle = allGropsAreIdle && IdleObjetive();
+                army_isIdle = allGropsAreIdle && IdleObjective();
+                if (!army_isIdle)
+                {
+                    lastActiveTime.setNow();
+                }
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 soldiersCount = count;
@@ -1070,6 +1089,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 cullingTopLeft = minpos - CamCullingRadius;
                 cullingBottomRight = maxpos + CamCullingRadius;
+                InFogView = fogViewResult;
             }
 
         }
@@ -1111,7 +1131,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, InFogView, ref cullingTopLeft, ref cullingBottomRight);
 
             if (DssRef.state.LocalHost().unitsPixelTexture != null)
             {

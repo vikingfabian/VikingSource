@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.Players
                     }
 
                     if (/*armiesC.sel.InBattle() ||*/
-                        armiesC.sel.IdleObjetive())
+                        armiesC.sel.IdleObjective())
                     {
                         complete();
                     }

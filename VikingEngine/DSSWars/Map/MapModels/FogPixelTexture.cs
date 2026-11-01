@@ -9,11 +9,13 @@ namespace VikingEngine.Core.DSSWars.Map.MapModels
 {
     class FogPixelTexture
     {
-        static readonly Color[] FogLevelColor = new Color[] {
-            Color.Black,//None,
-            new Color(byte.MinValue, byte.MinValue, byte.MinValue, (byte)100),//TerrainOnly,
-            ColorExt.Empty,//Full,
-        };
+        static readonly Color TerrainOnlyCol = new Color(byte.MinValue, byte.MinValue, byte.MinValue, (byte)100);
+        static readonly Color FullViewCol = ColorExt.Empty;
+        //static readonly Color[] FogLevelColor = new Color[] {
+        //    Color.Black,//None,
+        //    new Color(byte.MinValue, byte.MinValue, byte.MinValue, (byte)100),//TerrainOnly,
+        //    ColorExt.Empty,//Full,
+        //};
         public Graphics.PixelTexture texture;
         bool textureNeedsRefresh = false;
 
@@ -57,7 +59,18 @@ namespace VikingEngine.Core.DSSWars.Map.MapModels
                 //{
                 //    lib.DoNothing();
                 //}
-                texture.SetPixel(loop.Position, FogLevelColor[(int)tile.fogExploreLevel]);
+                if (tile.fogExploreLevel > WorldData.FogOfWarView_None)
+                {
+                    if (tile.fogExploreLevel > WorldData.FogOfWarView_TerrainOnly)
+                    {
+                        texture.SetPixel(loop.Position, FullViewCol);
+                    }
+                    else
+                    {
+                        texture.SetPixel(loop.Position, TerrainOnlyCol);
+                    }
+                }
+                
                 //switch (DssRef.world.tileGrid.Get(loop.Position).fogExploreLevel)
                 //{
                 //    case VikingEngine.DSSWars.Map.MapData.FogOfWar_ExlporeLevel.Full:

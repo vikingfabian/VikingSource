@@ -120,29 +120,32 @@ namespace VikingEngine.DSSWars.Map.MapModels
             var armies = faction_sp.armies.counter();
             while (armies.Next())
             {
-                var groups = armies.sel.groups.counter();
-                while (groups.Next())
+                if (armies.sel.InFogView)
                 {
-                    Vector3 pos = groups.sel.position;
-                    pos.Y += 0.07f;
-
-                    if (pos.Y < MapHeight2.UnitQuadMinY)
+                    var groups = armies.sel.groups.counter();
+                    while (groups.Next())
                     {
-                        pos.Y = MapHeight2.UnitQuadMinY;
+                        Vector3 pos = groups.sel.position;
+                        pos.Y += 0.07f;
+
+                        if (pos.Y < MapHeight2.UnitQuadMinY)
+                        {
+                            pos.Y = MapHeight2.UnitQuadMinY;
+                        }
+
+                        topPoly.quadXZPlacement(pos,
+                            new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians - MathExt.TauOver4);
+                        polygons.Add(topPoly);
+
+                        topPoly.quadXZSides(0.08f, SpriteName.WhiteArea_LFtiles, Dir4.N, second, polygons);
+
+                        PolygonColor typeSymbol = topPoly;
+                        typeSymbol.Move(new Vector3(0, 0.01f, 0));
+                        typeSymbol.setSprite(SpriteName.WarsTextureGroupSquareMelee, Dir4.N);
+                        typeSymbol.SetColor(second);
+
+
                     }
-
-                    topPoly.quadXZPlacement(pos,
-                        new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians - MathExt.TauOver4);
-                    polygons.Add(topPoly);
-
-                    topPoly.quadXZSides(0.08f, SpriteName.WhiteArea_LFtiles, Dir4.N, second, polygons);
-
-                    PolygonColor typeSymbol = topPoly;
-                    typeSymbol.Move(new Vector3(0, 0.01f, 0));
-                    typeSymbol.setSprite(SpriteName.WarsTextureGroupSquareMelee, Dir4.N);
-                    typeSymbol.SetColor(second);
-
-
                 }
             }
         }
@@ -176,7 +179,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 var armies = faction.armies.counter();
                 while (armies.Next())
                 {                   
-                    if (armies.sel.strengthValue > 0)
+                    if (armies.sel.InFogView && armies.sel.strengthValue > 0)
                     {
                         float scale = armyStrengthRange.GetValuePercentPosClamped(armies.sel.strengthValue);
                         scale = StrengthPercToScale.GetFromPercent(scale);
